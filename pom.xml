@@ -60,7 +60,7 @@
     <dependency>
       <groupId>io.papermc</groupId>
       <artifactId>paperlib</artifactId>
-      <version>1.0.7</version>
+      <version>1.0.8</version>
     </dependency>
 
     <!-- from enginehub repository -->
@@ -170,7 +170,7 @@
     <dependency>
       <groupId>org.bstats</groupId>
       <artifactId>bstats-bukkit</artifactId>
-      <version>3.0.0</version>
+      <version>3.0.2</version>
     </dependency>
     <dependency>
       <groupId>me.filoghost.holographicdisplays</groupId>
@@ -319,17 +319,17 @@
     <dependency>
       <groupId>net.kyori</groupId>
       <artifactId>adventure-api</artifactId>
-      <version>4.11.0</version>
+      <version>4.13.1</version>
     </dependency>
     <dependency>
       <groupId>net.kyori</groupId>
       <artifactId>adventure-platform-bukkit</artifactId>
-      <version>4.1.2</version>
+      <version>4.3.0</version>
     </dependency>
     <dependency>
       <groupId>net.kyori</groupId>
       <artifactId>adventure-text-serializer-plain</artifactId>
-      <version>4.11.0</version>
+      <version>4.13.1</version>
     </dependency>
 
     <!-- from minecraft repository -->
@@ -360,24 +360,24 @@
     <dependency>
       <groupId>org.jetbrains</groupId>
       <artifactId>annotations</artifactId>
-      <version>23.0.0</version>
+      <version>24.0.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
-      <version>2.19.0</version>
+      <version>2.20.0</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-      <version>2.19.0</version>
+      <version>2.20.0</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-artifact</artifactId>
-      <version>3.8.6</version>
+      <version>4.0.0-alpha-5</version>
       <exclusions>
         <exclusion>
           <groupId>org.apache.commons</groupId>
@@ -393,7 +393,7 @@
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.11.0</version>
+      <version>2.12.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -433,6 +433,11 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-launcher</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <scope>test</scope>
@@ -449,14 +454,14 @@
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>5.8.2</version>
+        <version>5.10.0-M1</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-bom</artifactId>
-        <version>4.6.1</version>
+        <version>5.3.1</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -640,6 +645,12 @@
                     <exclude>plugin.yml</exclude>
                   </excludes>
                 </filter>
+                <filter>
+                  <artifact>net.kyori</artifact>
+                  <excludes>
+                    <exclude>classpath.index</exclude>
+                  </excludes>
+                </filter>
               </filters>
               <relocations>
                 <relocation>
@@ -783,6 +794,36 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${basedir}/target/site</directory>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-maven</artifactId>
+        <configuration>
+          <avoidCallsTo>
+            <avoidCallsTo>org.betonquest.betonquest.api.BetonQuestLogger</avoidCallsTo>
+          </avoidCallsTo>
+          <excludedTestClasses>
+            <excludedTestClass>org.betonquest.betonquest.modules.config.transformers.TransformerTest</excludedTestClass>
+            <excludedTestClass>
+              org.betonquest.betonquest.modules.schedule.impl.realtime.daily.RealtimeDailySchedulerTest
+            </excludedTestClass>
+            <excludedTestClass>org.betonquest.betonquest.api.bukkit.command.SilentConsoleCommandSenderTest
+            </excludedTestClass>
+            <excludedTestClass>org.betonquest.betonquest.modules.schedule.impl.realtime.cron.RealtimeCronSchedulerTest
+            </excludedTestClass>
+          </excludedTestClasses>
+        </configuration>
+      </plugin>
     </plugins>
     <pluginManagement>
       <plugins>
@@ -843,12 +884,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>3.2.0</version>
+          <version>3.2.2</version>
           <dependencies>
             <dependency>
               <groupId>com.puppycrawl.tools</groupId>
               <artifactId>checkstyle</artifactId>
-              <version>10.3</version>
+              <version>10.11.0</version>
             </dependency>
           </dependencies>
           <configuration>
@@ -925,17 +966,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.4.1</version>
+          <version>3.4.3</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jxr-plugin</artifactId>
           <version>3.3.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>jdepend-maven-plugin</artifactId>
-          <version>2.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -955,7 +991,7 @@
             <dependency>
               <groupId>org.pitest</groupId>
               <artifactId>pitest-junit5-plugin</artifactId>
-              <version>1.1.0</version>
+              <version>1.2.0</version>
             </dependency>
           </dependencies>
         </plugin>
@@ -994,8 +1030,8 @@
         <artifactId>maven-surefire-report-plugin</artifactId>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>jdepend-maven-plugin</artifactId>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-maven</artifactId>
       </plugin>
     </plugins>
   </reporting>
@@ -1061,6 +1097,32 @@
       <properties>
         <Test-ConfigurationSection>| ConfigurationSection</Test-ConfigurationSection>
       </properties>
+    </profile>
+
+    <profile>
+      <!--
+           Pitest's reports are always copied when goal `site` is called, but gives an exception
+           when the reports are not generated. This profile activates the plugin only when the reports exist.
+           Reports can be generated by running `test-compile org.pitest:pitest-maven:mutationCoverage`
+      -->
+      <id>Site-SkipPitestWhenNoReport</id>
+      <activation>
+        <file>
+          <missing>target/artifacts/pit-reports</missing>
+        </file>
+      </activation>
+
+      <reporting>
+        <plugins>
+          <plugin>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-maven</artifactId>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+        </plugins>
+      </reporting>
     </profile>
   </profiles>
 </project>

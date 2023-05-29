@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Test for {@link CronSchedule} that support reboot & custom nicknames
+ * Test for {@link CronSchedule} that support reboot and custom nicknames
  */
 @SuppressWarnings("PMD.JUnit5TestShouldBePackagePrivate")
 public class CronRebootScheduleTest extends CronScheduleBaseTest {
