@@ -7,7 +7,6 @@ import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -23,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * This test tests all config transformers.
  */
 @ExtendWith(BetonQuestLoggerService.class)
-@Disabled
 class TransformerTest {
 
     /**

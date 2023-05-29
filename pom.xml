@@ -812,6 +812,16 @@
           <avoidCallsTo>
             <avoidCallsTo>org.betonquest.betonquest.api.BetonQuestLogger</avoidCallsTo>
           </avoidCallsTo>
+          <excludedTestClasses>
+            <excludedTestClass>org.betonquest.betonquest.modules.config.transformers.TransformerTest</excludedTestClass>
+            <excludedTestClass>
+              org.betonquest.betonquest.modules.schedule.impl.realtime.daily.RealtimeDailySchedulerTest
+            </excludedTestClass>
+            <excludedTestClass>org.betonquest.betonquest.api.bukkit.command.SilentConsoleCommandSenderTest
+            </excludedTestClass>
+            <excludedTestClass>org.betonquest.betonquest.modules.schedule.impl.realtime.cron.RealtimeCronSchedulerTest
+            </excludedTestClass>
+          </excludedTestClasses>
         </configuration>
       </plugin>
     </plugins>

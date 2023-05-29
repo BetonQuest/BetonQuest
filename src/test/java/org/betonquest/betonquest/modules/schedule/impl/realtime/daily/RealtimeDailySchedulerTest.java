@@ -6,7 +6,6 @@ import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.betonquest.betonquest.modules.schedule.LastExecutionCache;
 import org.betonquest.betonquest.modules.schedule.ScheduleID;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -24,7 +23,6 @@ import static org.mockito.Mockito.*;
  * Tests for the {@link RealtimeDailyScheduler}
  */
 @ExtendWith(BetonQuestLoggerService.class)
-@Disabled
 @SuppressWarnings("PMD.DoNotUseThreads")
 class RealtimeDailySchedulerTest {
 
