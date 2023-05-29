@@ -645,6 +645,12 @@
                     <exclude>plugin.yml</exclude>
                   </excludes>
                 </filter>
+                <filter>
+                  <artifact>net.kyori</artifact>
+                  <excludes>
+                    <exclude>classpath.index</exclude>
+                  </excludes>
+                </filter>
               </filters>
               <relocations>
                 <relocation>
