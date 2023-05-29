@@ -805,6 +805,15 @@
           </filesets>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-maven</artifactId>
+        <configuration>
+          <avoidCallsTo>
+            <avoidCallsTo>org.betonquest.betonquest.api.BetonQuestLogger</avoidCallsTo>
+          </avoidCallsTo>
+        </configuration>
+      </plugin>
     </plugins>
     <pluginManagement>
       <plugins>
@@ -975,11 +984,6 @@
               <version>1.2.0</version>
             </dependency>
           </dependencies>
-          <configuration>
-            <avoidCallsTo>
-              <avoidCallsTo>org.betonquest.betonquest.api.BetonQuestLogger</avoidCallsTo>
-            </avoidCallsTo>
-          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
