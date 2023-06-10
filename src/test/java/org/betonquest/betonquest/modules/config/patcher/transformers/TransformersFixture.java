@@ -19,7 +19,7 @@ public class TransformersFixture {
     /**
      * The file that contains a demo config for this test.
      */
-    private static final File CONFIG_FILE = new File("src/test/resources/modules.config/config.yml");
+    protected static final File CONFIG_FILE = new File("src/test/resources/modules.config/config.yml");
 
     @BeforeEach
     void setupConfig() throws IOException, InvalidConfigurationException {

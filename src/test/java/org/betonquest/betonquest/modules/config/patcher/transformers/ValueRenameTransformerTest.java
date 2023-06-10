@@ -23,7 +23,7 @@ class ValueRenameTransformerTest extends TransformersFixture {
     }
 
     @Test
-    void flawless_on_non_existing() {
+    void throws_exception_on_non_existing() {
         assertThrows(PatchException.class, () -> TRANSFORMER.transform(Map.of("key", "section.invalidKey", "oldValueRegex", "test", "newValue", "newTest"), CONFIG));
     }
 
