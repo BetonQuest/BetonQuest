@@ -22,7 +22,7 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
 
     public ObjectivePaymentEvent(final Instruction instructions) throws InstructionParseException {
         super(instructions);
-        template = ObjectiveData.class;
+        template = PaymentData.class;
         targetAmount = instructions.getVarNum();
         if (targetAmount.isExplicitLessThanOne()) {
             throw new InstructionParseException("Amount needs to be one or more");
