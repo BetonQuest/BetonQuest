@@ -1,8 +1,9 @@
 package org.betonquest.betonquest.conditions;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
@@ -16,16 +17,13 @@ import java.util.Locale;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class DayOfWeekCondition extends Condition {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final DayOfWeek day;
 
     @SuppressWarnings("PMD.PreserveStackTrace")
     public DayOfWeekCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
+        final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(BetonQuestLogger.class);
         super.staticness = true;
         super.persistent = true;
         final String dayString = instruction.next();
@@ -35,7 +33,7 @@ public class DayOfWeekCondition extends Condition {
         } catch (final DateTimeException e) {
             throw new InstructionParseException(dayString + " is not a valid day of a week", e);
         } catch (final NumberFormatException e) {
-            LOG.debug(instruction.getPackage(), "Could not parse number!", e);
+            log.debug(instruction.getPackage(), "Could not parse number!", e);
             try {
                 dayOfWeek = DayOfWeek.valueOf(dayString.toUpperCase(Locale.ROOT));
             } catch (final IllegalArgumentException iae) {

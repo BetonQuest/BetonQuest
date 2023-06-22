@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.point;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -15,9 +16,15 @@ import java.util.Locale;
 public class PointEventFactory implements EventFactory {
 
     /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
      * Create the points event factory.
      */
-    public PointEventFactory() {
+    public PointEventFactory(final BetonQuestLogger log) {
+        this.log = log;
     }
 
     @Override
@@ -31,18 +38,18 @@ public class PointEventFactory implements EventFactory {
         if (action != null) {
             try {
                 final Point type = Point.valueOf(action.toUpperCase(Locale.ROOT));
-                return new PointEvent(categoryName, category, new VariableNumber(instruction.getPackage(), number), type, instruction.getPackage(), fullId, notify);
+                return new PointEvent(log, categoryName, category, new VariableNumber(instruction.getPackage(), number), type, instruction.getPackage(), fullId, notify);
             } catch (final IllegalArgumentException e) {
                 throw new InstructionParseException("Unknown modification action: " + action, e);
             }
         }
         if (!number.isEmpty() && number.charAt(0) == '*') {
-            return new PointEvent(categoryName, category, new VariableNumber(instruction.getPackage(), number.replace("*", "")), Point.MULTIPLY, instruction.getPackage(), fullId, notify);
+            return new PointEvent(log, categoryName, category, new VariableNumber(instruction.getPackage(), number.replace("*", "")), Point.MULTIPLY, instruction.getPackage(), fullId, notify);
         }
         if (number.isEmpty() || number.charAt(0) == '-') {
             final String newNumber = number.replace("-", "");
-            return new PointEvent(categoryName, category, new VariableNumber(instruction.getPackage(), newNumber), Point.SUBTRACT, instruction.getPackage(), fullId, notify);
+            return new PointEvent(log, categoryName, category, new VariableNumber(instruction.getPackage(), newNumber), Point.SUBTRACT, instruction.getPackage(), fullId, notify);
         }
-        return new PointEvent(categoryName, category, new VariableNumber(instruction.getPackage(), number), Point.ADD, instruction.getPackage(), fullId, notify);
+        return new PointEvent(log, categoryName, category, new VariableNumber(instruction.getPackage(), number), Point.ADD, instruction.getPackage(), fullId, notify);
     }
 }

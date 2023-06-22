@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.modules.schedule;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.io.File;
@@ -26,7 +26,7 @@ public class LastExecutionCache {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create("Cache");
+    private final BetonQuestLogger log;
 
     /**
      * Config accessor for the cache.
@@ -36,9 +36,11 @@ public class LastExecutionCache {
     /**
      * Create a new execution cache instance for a given schedule.
      *
+     * @param log        the logger that will be used for logging
      * @param dataFolder the BetonQuest data folder
      */
-    public LastExecutionCache(final File dataFolder) {
+    public LastExecutionCache(final BetonQuestLogger log, final File dataFolder) {
+        this.log = log;
         try {
             final Path cacheFile = new File(dataFolder, CACHE_FILE).toPath();
             if (!Files.exists(cacheFile)) {
@@ -46,9 +48,9 @@ public class LastExecutionCache {
                 Files.createFile(cacheFile);
             }
             this.cache = ConfigAccessor.create(cacheFile.toFile());
-            LOG.debug("Successfully loaded schedule cache.");
+            this.log.debug("Successfully loaded schedule cache.");
         } catch (final IOException | InvalidConfigurationException e) {
-            LOG.error("Error while loading schedule cache: " + e.getMessage(), e);
+            this.log.error("Error while loading schedule cache: " + e.getMessage(), e);
         }
     }
 
@@ -58,13 +60,13 @@ public class LastExecutionCache {
     public void reload() {
         try {
             if (cache == null) {
-                LOG.error("Schedule cache not present!");
+                log.error("Schedule cache not present!");
             } else {
                 cache.reload();
-                LOG.debug("Successfully reloaded schedule cache.");
+                log.debug("Successfully reloaded schedule cache.");
             }
         } catch (final IOException e) {
-            LOG.error("Could not reload schedule cache: " + e.getMessage(), e);
+            log.error("Could not reload schedule cache: " + e.getMessage(), e);
         }
     }
 
@@ -76,14 +78,14 @@ public class LastExecutionCache {
      */
     public void cacheRawExecutionTime(final ScheduleID schedule, final String rawTime) {
         if (cache == null) {
-            LOG.error("Schedule cache not present!");
+            log.error("Schedule cache not present!");
             return;
         }
         cache.getConfig().set(schedule.getFullID(), rawTime);
         try {
             cache.save();
         } catch (final IOException e) {
-            LOG.error("Could not save schedule cache: " + e.getMessage(), e);
+            log.error("Could not save schedule cache: " + e.getMessage(), e);
         }
     }
 
@@ -106,7 +108,7 @@ public class LastExecutionCache {
      */
     public Optional<String> getRawLastExecutionTime(final ScheduleID schedule) {
         if (cache == null) {
-            LOG.error("Schedule cache not present!");
+            log.error("Schedule cache not present!");
             return Optional.empty();
         }
         return Optional.ofNullable(cache.getConfig().getString(schedule.getFullID()));

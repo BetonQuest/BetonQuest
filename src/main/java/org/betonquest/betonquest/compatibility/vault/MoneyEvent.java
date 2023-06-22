@@ -1,9 +1,10 @@
 package org.betonquest.betonquest.compatibility.vault;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -20,7 +21,7 @@ public class MoneyEvent extends QuestEvent {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final VariableNumber amount;
 
@@ -30,6 +31,7 @@ public class MoneyEvent extends QuestEvent {
 
     public MoneyEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         String string = instruction.next();
         if (!string.isEmpty() && string.charAt(0) == '*') {
             multi = true;
@@ -69,7 +71,7 @@ public class MoneyEvent extends QuestEvent {
                     Config.sendNotify(instruction.getPackage().getQuestPath(), profile.getOnlineProfile().get(), "money_given",
                             new String[]{decimalFormat.format(difference), currencyName}, "money_given,info");
                 } catch (final QuestRuntimeException e) {
-                    LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'money_given' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
+                    log.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'money_given' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
                 }
             }
         } else if (difference < 0) {
@@ -79,7 +81,7 @@ public class MoneyEvent extends QuestEvent {
                     Config.sendNotify(instruction.getPackage().getQuestPath(), profile.getOnlineProfile().get(), "money_taken",
                             new String[]{decimalFormat.format(difference), currencyName}, "money_taken,info");
                 } catch (final QuestRuntimeException e) {
-                    LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'money_taken' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
+                    log.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'money_taken' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
                 }
             }
         }

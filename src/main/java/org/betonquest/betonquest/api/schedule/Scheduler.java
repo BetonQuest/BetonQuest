@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.modules.schedule.ScheduleID;
 
@@ -29,14 +29,14 @@ import java.util.Map;
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 public abstract class Scheduler<S extends Schedule> {
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create("Schedules");
-
-    /**
      * Map containing all schedules that belong to this scheduler.
      */
     protected final Map<ScheduleID, S> schedules;
+
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
 
     /**
      * Flag stating if this scheduler is currently running.
@@ -45,8 +45,11 @@ public abstract class Scheduler<S extends Schedule> {
 
     /**
      * Default constructor.
+     *
+     * @param log the logger that will be used for logging
      */
-    public Scheduler() {
+    public Scheduler(final BetonQuestLogger log) {
+        this.log = log;
         schedules = new HashMap<>();
         running = false;
     }
@@ -99,7 +102,7 @@ public abstract class Scheduler<S extends Schedule> {
      * @param schedule a schedule that reached execution time, providing a list of events to run
      */
     protected void executeEvents(final S schedule) {
-        LOG.debug(schedule.getId().getPackage(), "Schedule '" + schedule.getId() + "' runs its events...");
+        log.debug(schedule.getId().getPackage(), "Schedule '" + schedule.getId() + "' runs its events...");
         for (final EventID eventID : schedule.getEvents()) {
             BetonQuest.event(null, eventID);
         }

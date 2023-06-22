@@ -3,7 +3,7 @@ package org.betonquest.betonquest.modules.web.downloader;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -49,11 +49,6 @@ public class Downloader implements Callable<Boolean> {
     public static final int RESPONSE_400 = 400;
 
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create("Downloader");
-
-    /**
      * Directory where downloaded repositories should be cached
      */
     private static final String CACHE_DIR = ".cache/downloader/";
@@ -74,6 +69,11 @@ public class Downloader implements Callable<Boolean> {
      * Used to identify zip entries that are package.yml files
      */
     private static final String PACKAGE_YML = "package.yml";
+
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
 
     /**
      * The BetonQuest Data folder that contains all plugin configuration
@@ -128,6 +128,7 @@ public class Downloader implements Callable<Boolean> {
      * Constructs a new downloader instance for the given repository and branch.
      * Call {@link #call()} to actually start the download
      *
+     * @param log        the logger that will be used for logging
      * @param dataFolder BetonQuest plugin data folder
      * @param namespace  GitHub namespace of the repo in the format {@code user/repo} or {@code organisation/repo}.
      * @param ref        Git Tag or Git Branch
@@ -137,8 +138,9 @@ public class Downloader implements Callable<Boolean> {
      * @param recurse    if true subpackages will be included recursive, if false don't
      * @param overwrite  if true existing files will be overwritten, if false an exception is thrown
      */
-    public Downloader(final File dataFolder, final String namespace, final String ref, final String offsetPath,
+    public Downloader(final BetonQuestLogger log, final File dataFolder, final String namespace, final String ref, final String offsetPath,
                       final String sourcePath, final String targetPath, final boolean recurse, final boolean overwrite) {
+        this.log = log;
         this.dataFolder = dataFolder.toPath();
         this.namespace = namespace;
         this.ref = ref;
@@ -159,7 +161,7 @@ public class Downloader implements Callable<Boolean> {
     public Boolean call() throws Exception {
         requestCommitSHA();
         if (Files.exists(getCacheFile())) {
-            LOG.debug(getCacheFile() + " is already cached, reusing it");
+            log.debug(getCacheFile() + " is already cached, reusing it");
         } else {
             download();
             cleanupOld();
@@ -178,7 +180,7 @@ public class Downloader implements Callable<Boolean> {
         final URL url = new URL(GITHUB_REFS_URL
                 .replace("{namespace}", namespace)
                 .replace("{ref}", ref));
-        LOG.debug("Requesting commit sha for " + namespace + " at " + ref + " from github api");
+        log.debug("Requesting commit sha for " + namespace + " at " + ref + " from github api");
         final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.connect();
         final int code = connection.getResponseCode();
@@ -198,7 +200,7 @@ public class Downloader implements Callable<Boolean> {
             }
             final Optional<JsonElement> sha = Optional.ofNullable(object.getAsJsonObject().get("sha"));
             this.sha = sha.orElseThrow().getAsString();
-            LOG.debug("Commit has sha '" + this.sha + "'");
+            log.debug("Commit has sha '" + this.sha + "'");
         } catch (JsonParseException | NoSuchElementException | IllegalStateException e) {
             throw new IOException("Unable to parse the JSON returned by Github API", e);
         }
@@ -285,7 +287,7 @@ public class Downloader implements Callable<Boolean> {
             while ((read = input.read(dataBuffer, 0, 1024)) != -1) {
                 output.write(dataBuffer, 0, read);
             }
-            LOG.debug("Repo has been saved to cache as " + getCacheFile());
+            log.debug("Repo has been saved to cache as " + getCacheFile());
         }
     }
 
@@ -297,13 +299,13 @@ public class Downloader implements Callable<Boolean> {
      */
     @SuppressWarnings("PMD.AssignmentInOperand")
     private void extract() throws DownloadFailedException, IOException {
-        LOG.debug("Extracting downloaded files from cache");
+        log.debug("Extracting downloaded files from cache");
         final Set<String> packages = listAllPackagesInZip();
         final List<String> ignoredPackages = filterIgnoredPackagesInZip(packages);
         ignoredPackages.forEach(packages::remove);
         if (!ignoredPackages.isEmpty()) {
-            LOG.debug("Ignoring the following sub packages:");
-            ignoredPackages.stream().map(s -> "    " + s).forEach(LOG::debug);
+            log.debug("Ignoring the following sub packages:");
+            ignoredPackages.stream().map(s -> "    " + s).forEach(log::debug);
         }
         checkAnyPackageOverwritten(packages);
         boolean foundAny = false;
@@ -348,7 +350,7 @@ public class Downloader implements Callable<Boolean> {
             }
             try (OutputStream out = Files.newOutputStream(newFile, options)) {
                 input.transferTo(out);
-                LOG.debug("Extracted " + newFile);
+                log.debug("Extracted " + newFile);
             } catch (final FileAlreadyExistsException e) {
                 throw new DownloadFailedException("File already exists: " + e.getMessage(), e);
             }
@@ -384,13 +386,13 @@ public class Downloader implements Callable<Boolean> {
      */
     private void cleanupOld() throws IOException {
         final Path cacheDir = getCacheFile().getParent();
-        LOG.debug("Cleaning up any old files from cache");
+        log.debug("Cleaning up any old files from cache");
         Files.walkFileTree(cacheDir, new SimpleFileVisitor<>() {
             @Override
             public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
                 if (attrs.isRegularFile() && isCacheFile(file) && !file.equals(getCacheFile())) {
                     Files.delete(file);
-                    LOG.debug("Deleted " + file);
+                    log.debug("Deleted " + file);
                     return CONTINUE;
                 } else {
                     return super.visitFile(file, attrs);

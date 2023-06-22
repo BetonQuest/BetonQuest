@@ -73,7 +73,7 @@ en:
   next: '&2Next'
   inventory_full_backpack: '&e*&bYour inventory is full! The item was moved to your backpack.&e*'
   inventory_full_drop: '&e*&bYour inventory is full! The item was dropped on the ground.&e*'
-  changelog: '&f[BetonQuest]: &e*&bNew changelog is available in the plugin''s directory. Read the changes and delete or rename the file to dismiss this message!&e*'
+  changelog: '&f[BetonQuest]: &e*&bNew changelog is available in the plugin''s directory. Read the changes and delete or copy the file to dismiss this message!&e*'
   pullback: '&cYou must finish your conversation!'
   items_given: '&2Received {1}&2 x{2}'
   items_taken: '&2Lost {1}&2 x{2}'

@@ -1,16 +1,19 @@
 package org.betonquest.betonquest.modules.logger;
 
-import org.betonquest.betonquest.modules.logger.util.LogValidator;
+import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static org.mockito.Mockito.*;
 
 /**
  * This class test the {@link TopicLogger}.
  */
-@SuppressWarnings("PMD.MoreThanOneLogger")
 class TopicLoggerTest {
     /**
      * The logger topic.
@@ -32,27 +35,35 @@ class TopicLoggerTest {
      */
     private static final String EXCEPTION_MESSAGE = "Test Exception";
 
-    private TopicLogger getTopicLogger() {
-        return new TopicLogger(LogValidator.getSilentLogger(), TopicLoggerTest.class, LOGGER_TOPIC);
+    /**
+     * The {@link Handler} for testing.
+     */
+    private Handler handler;
+
+    /**
+     * The {@link TopicLogger} to test.
+     */
+    private TopicLogger logger;
+
+    @BeforeEach
+    void setUp() {
+        this.handler = mock(Handler.class);
+        final Logger parentLogger = BetonQuestLoggerService.getSilentLogger();
+        parentLogger.addHandler(handler);
+        this.logger = new TopicLogger(parentLogger, TopicLoggerTest.class, LOGGER_TOPIC);
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
-    void testLogLevelAndMessage() {
-        final Logger logger = getTopicLogger();
-        final LogValidator logValidator = LogValidator.getForLogger(logger);
+    void logLevelAndMessage() {
         logger.log(Level.INFO, LOG_MESSAGE);
-        logValidator.assertLogEntry(Level.INFO, LOG_MESSAGE_WITH_TOPIC);
-        logValidator.assertEmpty();
+        verify(handler, times(1)).publish(argThat(record -> record.getLevel() == Level.INFO && LOG_MESSAGE_WITH_TOPIC.equals(record.getMessage())));
+        verifyNoMoreInteractions(handler);
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
-    void testLogLevelMessageExceptionAndExceptionMessage() {
-        final Logger logger = getTopicLogger();
-        final LogValidator logValidator = LogValidator.getForLogger(logger);
+    void logLevelMessageExceptionAndExceptionMessage() {
         logger.log(Level.SEVERE, LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
-        logValidator.assertLogEntry(Level.SEVERE, LOG_MESSAGE_WITH_TOPIC, IOException.class, EXCEPTION_MESSAGE);
-        logValidator.assertEmpty();
+        verify(handler, times(1)).publish(argThat(record -> record.getLevel() == Level.SEVERE && LOG_MESSAGE_WITH_TOPIC.equals(record.getMessage())));
+        verifyNoMoreInteractions(handler);
     }
 }

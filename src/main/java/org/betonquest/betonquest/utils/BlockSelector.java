@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.utils;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -37,7 +38,7 @@ public class BlockSelector {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
     private final List<Material> materials;
 
@@ -140,7 +141,7 @@ public class BlockSelector {
         try {
             state.setBlockData(getBlockData());
         } catch (final IllegalArgumentException exception) {
-            LOG.error("Could not place block '" + this + "'! Probably the block has a invalid blockstate: " + exception.getMessage(), exception);
+            log.error("Could not place block '" + this + "'! Probably the block has a invalid blockstate: " + exception.getMessage(), exception);
         }
 
         state.update(true, applyPhysics);

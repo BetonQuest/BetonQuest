@@ -2,7 +2,7 @@ package org.betonquest.betonquest.database;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Point;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.database.Saver.Record;
 
 import java.sql.ResultSet;
@@ -18,7 +18,7 @@ public class GlobalData implements TagData {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
     @SuppressWarnings("PMD.DoNotUseThreads")
     private final Saver saver = BetonQuest.getInstance().getSaver();
@@ -48,11 +48,11 @@ public class GlobalData implements TagData {
                 while (globalPoints.next()) {
                     this.globalPoints.add(new Point(globalPoints.getString("category"), globalPoints.getInt("count")));
                 }
-                LOG.debug("There are " + this.globalTags.size() + " global_tags and " + this.globalPoints.size()
+                log.debug("There are " + this.globalTags.size() + " global_tags and " + this.globalPoints.size()
                         + " global_points loaded");
             }
         } catch (final SQLException e) {
-            LOG.error("There was an exception with SQL", e);
+            log.error("There was an exception with SQL", e);
         }
     }
 

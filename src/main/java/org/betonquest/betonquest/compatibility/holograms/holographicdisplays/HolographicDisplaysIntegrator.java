@@ -5,9 +5,10 @@ import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.hologram.PlaceholderSetting;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
@@ -25,13 +26,14 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     /**
      * Creates a new HolographicDisplaysIntegrator for HolographicDisplays
      */
     public HolographicDisplaysIntegrator() {
         super("HolographicDisplays", "3.0.0", "SNAPSHOT-b");
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
     }
 
     @Override
@@ -45,12 +47,14 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
     public void hook() throws HookException {
         super.hook();
         if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
-            LOG.warn("Holograms from HolographicDisplays won't be able to hide from players without ProtocolLib plugin! "
+            log.warn("Holograms from HolographicDisplays won't be able to hide from players without ProtocolLib plugin! "
                     + "Install it to use conditioned holograms.");
         }
-        final HolographicDisplaysAPI api = HolographicDisplaysAPI.get(BetonQuest.getInstance());
-        api.registerIndividualPlaceholder("bq", new HologramPlaceholder());
-        api.registerGlobalPlaceholder("bqg", new HologramGlobalPlaceholder());
+        final BetonQuest instance = BetonQuest.getInstance();
+        final HolographicDisplaysAPI api = HolographicDisplaysAPI.get(instance);
+        final BetonQuestLoggerFactory loggerFactory = instance.getLoggerFactory();
+        api.registerIndividualPlaceholder("bq", new HologramPlaceholder(loggerFactory.create(HologramPlaceholder.class)));
+        api.registerGlobalPlaceholder("bqg", new HologramGlobalPlaceholder(loggerFactory.create(HologramGlobalPlaceholder.class)));
     }
 
     @Override
@@ -68,7 +72,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
                     return prefix + instruction.getPackage().getQuestPath() + ":" + instruction.getInstruction() + "}";
                 }
             } catch (final InstructionParseException exception) {
-                LOG.warn("Could not create variable '" + group + "' variable: " + exception.getMessage(), exception);
+                log.warn("Could not create variable '" + group + "' variable: " + exception.getMessage(), exception);
             }
             return group;
         });

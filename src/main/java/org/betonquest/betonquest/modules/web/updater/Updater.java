@@ -2,8 +2,8 @@ package org.betonquest.betonquest.modules.web.updater;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.bukkit.ChatColor;
@@ -27,11 +27,6 @@ import java.util.UUID;
  */
 public class Updater {
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
-
-    /**
      * The minimum delay when checking for updates, this prevents too many api requests when reloading the plugin often.
      */
     private static final TemporalAmount CHECK_DELAY = Duration.ofMinutes(10);
@@ -42,9 +37,9 @@ public class Updater {
     private static final TemporalAmount NOTIFICATION_DELAY = Duration.ofHours(20);
 
     /**
-     * The indicator for dev versions.
+     * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final String DEV_INDICATOR = "DEV";
+    private final BetonQuestLogger log;
 
     /**
      * The plugins {@link ConfigurationFile} for the debugging settings.
@@ -100,19 +95,20 @@ public class Updater {
     /**
      * Create a new Updater instance.
      *
-     * @param config              The {@link ConfigurationFile} that contains the 'update' section
-     * @param currentVersion      The current plugin {@link Version}
+     * @param log                 the logger that will be used for logging
+     * @param config              The config for the updater
      * @param updateSourceHandler The {@link UpdateSourceHandler} to get all available versions
      * @param updateDownloader    The {@link UpdateDownloader} to download new versions
      * @param plugin              The {@link org.bukkit.plugin.Plugin} instance
      * @param scheduler           The {@link BukkitScheduler} instance
      * @param instantSource       The {@link InstantSource} instance
      */
-    public Updater(final ConfigurationFile config, final Version currentVersion, final UpdateSourceHandler updateSourceHandler,
-                   final UpdateDownloader updateDownloader, final BetonQuest plugin,
-                   final BukkitScheduler scheduler, final InstantSource instantSource) {
+    public Updater(final BetonQuestLogger log, final UpdaterConfig config, final Version currentVersion,
+                   final UpdateSourceHandler updateSourceHandler, final UpdateDownloader updateDownloader,
+                   final BetonQuest plugin, final BukkitScheduler scheduler, final InstantSource instantSource) {
+        this.log = log;
+        this.config = config;
         this.latest = Pair.of(currentVersion, null);
-        this.config = new UpdaterConfig(config, latest.getKey(), DEV_INDICATOR);
         this.updateSourceHandler = updateSourceHandler;
         this.updateDownloader = updateDownloader;
         this.plugin = plugin;
@@ -146,7 +142,7 @@ public class Updater {
         scheduler.runTaskAsynchronously(plugin, () -> {
             if (searchUpdate()) {
                 final boolean automatic = config.isAutomatic();
-                LOG.info(getUpdateNotification(automatic));
+                log.info(getUpdateNotification(automatic));
                 if (automatic) {
                     update(null);
                 }
@@ -155,7 +151,7 @@ public class Updater {
     }
 
     private boolean searchUpdate() {
-        final Pair<Version, String> newLatest = updateSourceHandler.searchUpdate(config, latest.getKey(), DEV_INDICATOR);
+        final Pair<Version, String> newLatest = updateSourceHandler.searchUpdate(config, latest.getKey(), config.getDevIndicator());
         if (newLatest.getValue() == null) {
             return false;
         }
@@ -226,7 +222,7 @@ public class Updater {
                 updateNotification = "Update was downloaded! Restart the server to update the plugin.";
             } catch (final QuestRuntimeException e) {
                 sendMessage(sender, ChatColor.RED + e.getMessage());
-                LOG.debug("Error while performing update!", e);
+                log.debug("Error while performing update!", e);
             }
         });
     }
@@ -260,7 +256,7 @@ public class Updater {
     }
 
     private void sendMessage(final CommandSender sender, final String message) {
-        LOG.info(ChatColor.stripColor(message));
+        log.info(ChatColor.stripColor(message));
         if (sender != null && !(sender instanceof ConsoleCommandSender)) {
             sender.sendMessage(plugin.getPluginTag() + message);
         }

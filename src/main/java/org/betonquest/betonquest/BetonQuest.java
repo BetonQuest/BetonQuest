@@ -5,7 +5,6 @@ import io.papermc.lib.PaperLib;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.LoadDataEvent;
 import org.betonquest.betonquest.api.Objective;
@@ -13,6 +12,9 @@ import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.logger.CachingBetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -124,6 +126,7 @@ import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.id.VariableID;
 import org.betonquest.betonquest.item.QuestItemHandler;
 import org.betonquest.betonquest.menu.RPGMenu;
+import org.betonquest.betonquest.modules.logger.DefaultBetonQuestLoggerFactory;
 import org.betonquest.betonquest.modules.logger.HandlerFactory;
 import org.betonquest.betonquest.modules.logger.PlayerLogWatcher;
 import org.betonquest.betonquest.modules.logger.handler.chat.AccumulatingReceiverSelector;
@@ -145,6 +148,7 @@ import org.betonquest.betonquest.modules.web.WebDownloadSource;
 import org.betonquest.betonquest.modules.web.updater.UpdateDownloader;
 import org.betonquest.betonquest.modules.web.updater.UpdateSourceHandler;
 import org.betonquest.betonquest.modules.web.updater.Updater;
+import org.betonquest.betonquest.modules.web.updater.UpdaterConfig;
 import org.betonquest.betonquest.modules.web.updater.source.DevelopmentUpdateSource;
 import org.betonquest.betonquest.modules.web.updater.source.ReleaseUpdateSource;
 import org.betonquest.betonquest.modules.web.updater.source.implementations.GitHubReleaseSource;
@@ -192,22 +196,33 @@ import org.betonquest.betonquest.objectives.StepObjective;
 import org.betonquest.betonquest.objectives.TameObjective;
 import org.betonquest.betonquest.objectives.VariableObjective;
 import org.betonquest.betonquest.quest.event.NullStaticEventFactory;
+import org.betonquest.betonquest.quest.event.burn.BurnEvent;
 import org.betonquest.betonquest.quest.event.burn.BurnEventFactory;
+import org.betonquest.betonquest.quest.event.cancel.CancelEvent;
 import org.betonquest.betonquest.quest.event.cancel.CancelEventFactory;
+import org.betonquest.betonquest.quest.event.chat.ChatEvent;
 import org.betonquest.betonquest.quest.event.chat.ChatEventFactory;
 import org.betonquest.betonquest.quest.event.chest.ChestClearEventFactory;
 import org.betonquest.betonquest.quest.event.chest.ChestTakeEventFactory;
+import org.betonquest.betonquest.quest.event.conversation.CancelConversationEvent;
 import org.betonquest.betonquest.quest.event.conversation.CancelConversationEventFactory;
 import org.betonquest.betonquest.quest.event.conversation.ConversationEventFactory;
+import org.betonquest.betonquest.quest.event.damage.DamageEvent;
 import org.betonquest.betonquest.quest.event.damage.DamageEventFactory;
 import org.betonquest.betonquest.quest.event.door.DoorEventFactory;
+import org.betonquest.betonquest.quest.event.effect.DeleteEffectEvent;
 import org.betonquest.betonquest.quest.event.effect.DeleteEffectEventFactory;
+import org.betonquest.betonquest.quest.event.effect.EffectEvent;
 import org.betonquest.betonquest.quest.event.effect.EffectEventFactory;
+import org.betonquest.betonquest.quest.event.experience.ExperienceEvent;
 import org.betonquest.betonquest.quest.event.experience.ExperienceEventFactory;
 import org.betonquest.betonquest.quest.event.explosion.ExplosionEventFactory;
 import org.betonquest.betonquest.quest.event.hunger.HungerEventFactory;
+import org.betonquest.betonquest.quest.event.journal.GiveJournalEvent;
 import org.betonquest.betonquest.quest.event.journal.GiveJournalEventFactory;
+import org.betonquest.betonquest.quest.event.journal.JournalEvent;
 import org.betonquest.betonquest.quest.event.journal.JournalEventFactory;
+import org.betonquest.betonquest.quest.event.kill.KillEvent;
 import org.betonquest.betonquest.quest.event.kill.KillEventFactory;
 import org.betonquest.betonquest.quest.event.language.LanguageEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.FromClassQuestEventFactory;
@@ -216,22 +231,30 @@ import org.betonquest.betonquest.quest.event.legacy.QuestEventFactoryAdapter;
 import org.betonquest.betonquest.quest.event.lever.LeverEventFactory;
 import org.betonquest.betonquest.quest.event.lightning.LightningEventFactory;
 import org.betonquest.betonquest.quest.event.logic.IfElseEventFactory;
+import org.betonquest.betonquest.quest.event.notify.NotifyAllEvent;
 import org.betonquest.betonquest.quest.event.notify.NotifyAllEventFactory;
+import org.betonquest.betonquest.quest.event.notify.NotifyEvent;
 import org.betonquest.betonquest.quest.event.notify.NotifyEventFactory;
+import org.betonquest.betonquest.quest.event.party.PartyEvent;
 import org.betonquest.betonquest.quest.event.party.PartyEventFactory;
 import org.betonquest.betonquest.quest.event.point.DeleteGlobalPointEventFactory;
 import org.betonquest.betonquest.quest.event.point.DeletePointEventFactory;
 import org.betonquest.betonquest.quest.event.point.GlobalPointEventFactory;
+import org.betonquest.betonquest.quest.event.point.PointEvent;
 import org.betonquest.betonquest.quest.event.point.PointEventFactory;
 import org.betonquest.betonquest.quest.event.random.PickRandomEventFactory;
 import org.betonquest.betonquest.quest.event.scoreboard.ScoreboardEventFactory;
 import org.betonquest.betonquest.quest.event.setblock.SetBlockEventFactory;
+import org.betonquest.betonquest.quest.event.sudo.SudoEvent;
 import org.betonquest.betonquest.quest.event.sudo.SudoEventFactory;
 import org.betonquest.betonquest.quest.event.tag.TagGlobalEventFactory;
 import org.betonquest.betonquest.quest.event.tag.TagPlayerEventFactory;
+import org.betonquest.betonquest.quest.event.teleport.TeleportEvent;
 import org.betonquest.betonquest.quest.event.teleport.TeleportEventFactory;
 import org.betonquest.betonquest.quest.event.time.TimeEventFactory;
+import org.betonquest.betonquest.quest.event.velocity.VelocityEvent;
 import org.betonquest.betonquest.quest.event.velocity.VelocityEventFactory;
+import org.betonquest.betonquest.quest.event.weather.WeatherEvent;
 import org.betonquest.betonquest.quest.event.weather.WeatherEventFactory;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.variables.ConditionVariable;
@@ -254,6 +277,7 @@ import org.bukkit.Server;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.Event;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -312,11 +336,14 @@ public class BetonQuest extends JavaPlugin {
     private static final Map<String, QuestCanceler> CANCELERS = new HashMap<>();
 
     /**
+     * The indicator for dev versions.
+     */
+    private static final String DEV_INDICATOR = "DEV";
+
+    /**
      * The BetonQuest Plugin instance.
      */
     private static BetonQuest instance;
-
-    private static BetonQuestLogger log;
 
     /**
      * Map of registered events.
@@ -324,6 +351,10 @@ public class BetonQuest extends JavaPlugin {
     private final Map<String, QuestEventFactory> eventTypes = new HashMap<>();
 
     private final ConcurrentHashMap<Profile, PlayerData> playerDataMap = new ConcurrentHashMap<>();
+
+    private BetonQuestLoggerFactory loggerFactory;
+
+    private BetonQuestLogger log;
 
     private String pluginTag;
 
@@ -402,17 +433,17 @@ public class BetonQuest extends JavaPlugin {
                     // to delay the check by one tick.
                     // If this happens during a shutdown, the check will be delayed past the last tick.
                     // This will throw a CancellationException and IllegalPluginAccessExceptions.
-                    // For Paper we can detect this and only log it to the debug log.
+                    // For Paper we can detect this and only log it to the debug getInstance().log.
                     // When the conditions get reworked, this complete check can be removed including the Spigot message.
                     if (PaperLib.isPaper() && Bukkit.getServer().isStopping()) {
-                        log.debug("Exception during shutdown while checking conditions (expected):", e);
+                        getInstance().log.debug("Exception during shutdown while checking conditions (expected):", e);
                         return false;
                     }
                     if (PaperLib.isSpigot()) {
-                        log.warn("The following exception is only ok when the server is currently stopping."
+                        getInstance().log.warn("The following exception is only ok when the server is currently stopping."
                                 + "Switch to papermc.io to fix this.");
                     }
-                    log.reportException(e);
+                    getInstance().log.reportException(e);
                     return false;
                 }
             }
@@ -430,7 +461,7 @@ public class BetonQuest extends JavaPlugin {
     @SuppressWarnings("PMD.NPathComplexity")
     public static boolean condition(final Profile profile, final ConditionID conditionID) {
         if (conditionID == null) {
-            log.debug("Null condition ID!");
+            getInstance().log.debug("Null condition ID!");
             return false;
         }
         Condition condition = null;
@@ -441,26 +472,26 @@ public class BetonQuest extends JavaPlugin {
             }
         }
         if (condition == null) {
-            log.warn(conditionID.getPackage(), "The condition " + conditionID + " is not defined!");
+            getInstance().log.warn(conditionID.getPackage(), "The condition " + conditionID + " is not defined!");
             return false;
         }
         if (profile == null && !condition.isStatic()) {
-            log.debug(conditionID.getPackage(), "Cannot check non-static condition without a player, returning false");
+            getInstance().log.debug(conditionID.getPackage(), "Cannot check non-static condition without a player, returning false");
             return false;
         }
         if (profile != null && profile.getOnlineProfile().isEmpty() && !condition.isPersistent()) {
-            log.debug(conditionID.getPackage(), "Player was offline, condition is not persistent, returning false");
+            getInstance().log.debug(conditionID.getPackage(), "Player was offline, condition is not persistent, returning false");
             return false;
         }
         final boolean outcome;
         try {
             outcome = condition.handle(profile);
         } catch (final QuestRuntimeException e) {
-            log.warn(conditionID.getPackage(), "Error while checking '" + conditionID + "' condition: " + e.getMessage(), e);
+            getInstance().log.warn(conditionID.getPackage(), "Error while checking '" + conditionID + "' condition: " + e.getMessage(), e);
             return false;
         }
         final boolean isMet = outcome != conditionID.inverted();
-        log.debug(conditionID.getPackage(),
+        getInstance().log.debug(conditionID.getPackage(),
                 (isMet ? "TRUE" : "FALSE") + ": " + (conditionID.inverted() ? "inverted" : "") + " condition "
                         + conditionID + " for " + profile);
         return isMet;
@@ -475,7 +506,7 @@ public class BetonQuest extends JavaPlugin {
      */
     public static void event(@Nullable final Profile profile, final EventID eventID) {
         if (eventID == null) {
-            log.debug("Null event ID!");
+            getInstance().log.debug("Null event ID!");
             return;
         }
         QuestEvent event = null;
@@ -486,19 +517,19 @@ public class BetonQuest extends JavaPlugin {
             }
         }
         if (event == null) {
-            log.warn(eventID.getPackage(), "Event " + eventID + " is not defined");
+            getInstance().log.warn(eventID.getPackage(), "Event " + eventID + " is not defined");
             return;
         }
         if (profile == null) {
-            log.debug(eventID.getPackage(), "Firing static event " + eventID);
+            getInstance().log.debug(eventID.getPackage(), "Firing static event " + eventID);
         } else {
-            log.debug(eventID.getPackage(),
+            getInstance().log.debug(eventID.getPackage(),
                     "Firing event " + eventID + " for " + profile);
         }
         try {
             event.fire(profile);
         } catch (final QuestRuntimeException e) {
-            log.warn(eventID.getPackage(), "Error while firing '" + eventID + "' event: " + e.getMessage(), e);
+            getInstance().log.warn(eventID.getPackage(), "Error while firing '" + eventID + "' event: " + e.getMessage(), e);
         }
     }
 
@@ -511,7 +542,7 @@ public class BetonQuest extends JavaPlugin {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     public static void newObjective(final Profile profile, final ObjectiveID objectiveID) {
         if (profile == null || objectiveID == null) {
-            log.debug(objectiveID.getPackage(), "Null arguments for the objective!");
+            getInstance().log.debug(objectiveID.getPackage(), "Null arguments for the objective!");
             return;
         }
         Objective objective = null;
@@ -522,7 +553,7 @@ public class BetonQuest extends JavaPlugin {
             }
         }
         if (objective.containsPlayer(profile)) {
-            log.debug(objectiveID.getPackage(), profile + " already has the " + objectiveID + " objective");
+            getInstance().log.debug(objectiveID.getPackage(), profile + " already has the " + objectiveID + " objective");
             return;
         }
         objective.newPlayer(profile);
@@ -537,7 +568,7 @@ public class BetonQuest extends JavaPlugin {
      */
     public static void resumeObjective(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
         if (profile == null || objectiveID == null || instruction == null) {
-            log.debug("Null arguments for the objective!");
+            getInstance().log.debug("Null arguments for the objective!");
             return;
         }
         Objective objective = null;
@@ -548,11 +579,11 @@ public class BetonQuest extends JavaPlugin {
             }
         }
         if (objective == null) {
-            log.warn(objectiveID.getPackage(), "Objective " + objectiveID + " does not exist");
+            getInstance().log.warn(objectiveID.getPackage(), "Objective " + objectiveID + " does not exist");
             return;
         }
         if (objective.containsPlayer(profile)) {
-            log.debug(objectiveID.getPackage(),
+            getInstance().log.debug(objectiveID.getPackage(),
                     profile + " already has the " + objectiveID + " objective!");
             return;
         }
@@ -593,16 +624,16 @@ public class BetonQuest extends JavaPlugin {
             final Variable variable = variableClass.getConstructor(Instruction.class)
                     .newInstance(new VariableInstruction(variableID.getPackage(), null, "%" + instructionVar.getInstruction() + "%"));
             VARIABLES.put(variableID, variable);
-            log.debug(pack, "Variable " + variableID + " loaded");
+            getInstance().log.debug(pack, "Variable " + variableID + " loaded");
             return variable;
         } catch (final InvocationTargetException e) {
             if (e.getCause() instanceof InstructionParseException) {
                 throw new InstructionParseException("Error in " + variableID + " variable: " + e.getCause().getMessage(), e);
             } else {
-                log.reportException(pack, e);
+                getInstance().log.reportException(pack, e);
             }
         } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-            log.reportException(pack, e);
+            getInstance().log.reportException(pack, e);
         }
         return null;
     }
@@ -649,7 +680,7 @@ public class BetonQuest extends JavaPlugin {
                     try {
                         CANCELERS.put(entry.getKey() + "." + key, new QuestCanceler(pack, key));
                     } catch (final InstructionParseException e) {
-                        log.warn(pack, "Could not load '" + pack.getQuestPath() + "." + key + "' quest canceler: " + e.getMessage(), e);
+                        getInstance().log.warn(pack, "Could not load '" + pack.getQuestPath() + "." + key + "' quest canceler: " + e.getMessage(), e);
                     }
                 }
             }
@@ -658,6 +689,15 @@ public class BetonQuest extends JavaPlugin {
 
     public static Map<String, QuestCanceler> getCanceler() {
         return CANCELERS;
+    }
+
+    /**
+     * Get the BetonQuest logger factory.
+     *
+     * @return The logger factory.
+     */
+    public BetonQuestLoggerFactory getLoggerFactory() {
+        return loggerFactory;
     }
 
     /**
@@ -695,21 +735,29 @@ public class BetonQuest extends JavaPlugin {
         }
     }
 
+    @Override
+    public void onLoad() {
+        final CachingBetonQuestLoggerFactory loggerFactory = new CachingBetonQuestLoggerFactory(new DefaultBetonQuestLoggerFactory());
+        getServer().getServicesManager().register(BetonQuestLoggerFactory.class, loggerFactory, this, ServicePriority.Lowest);
+    }
+
     @SuppressWarnings({"PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @Override
     public void onEnable() {
         instance = this;
-        log = BetonQuestLogger.create(this);
+        this.loggerFactory = getServer().getServicesManager().load(BetonQuestLoggerFactory.class);
+        assert loggerFactory != null;
+        this.log = loggerFactory.create(this);
         pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
 
         final JREVersionPrinter jreVersionPrinter = new JREVersionPrinter();
         final String jreInfo = jreVersionPrinter.getMessage();
-        log.info(jreInfo);
+        getInstance().log.info(jreInfo);
 
         try {
             config = ConfigurationFile.create(new File(getDataFolder(), "config.yml"), this, "config.yml");
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
-            log.error("Could not load the config.yml file!", e);
+            getInstance().log.error("Could not load the config.yml file!", e);
             return;
         }
 
@@ -721,46 +769,46 @@ public class BetonQuest extends JavaPlugin {
         registerLogHandler(getServer(), chatHandler);
 
         final String version = getDescription().getVersion();
-        log.debug("BetonQuest " + version + " is starting...");
-        log.debug(jreInfo);
+        getInstance().log.debug("BetonQuest " + version + " is starting...");
+        getInstance().log.debug(jreInfo);
 
         Config.setup(this, config);
         Notify.load();
 
         final boolean mySQLEnabled = config.getBoolean("mysql.enabled", true);
         if (mySQLEnabled) {
-            log.debug("Connecting to MySQL database");
-            this.database = new MySQL(this, config.getString("mysql.host"),
+            getInstance().log.debug("Connecting to MySQL database");
+            this.database = new MySQL(loggerFactory.create(MySQL.class, "Database"), this, config.getString("mysql.host"),
                     config.getString("mysql.port"),
                     config.getString("mysql.base"),
                     config.getString("mysql.user"),
                     config.getString("mysql.pass"));
             if (database.getConnection() != null) {
                 isMySQLUsed = true;
-                log.info("Successfully connected to MySQL database!");
+                getInstance().log.info("Successfully connected to MySQL database!");
             }
         }
         if (!mySQLEnabled || !isMySQLUsed) {
-            this.database = new SQLite(this, "database.db");
+            this.database = new SQLite(loggerFactory.create(SQLite.class, "Database"), this, "database.db");
             if (mySQLEnabled) {
-                log.warn("No connection to the mySQL Database! Using SQLite for storing data as fallback!");
+                getInstance().log.warn("No connection to the mySQL Database! Using SQLite for storing data as fallback!");
             } else {
-                log.info("Using SQLite for storing data!");
+                getInstance().log.info("Using SQLite for storing data!");
             }
         }
 
         database.createTables();
 
-        saver = new AsyncSaver();
+        saver = new AsyncSaver(loggerFactory.create(AsyncSaver.class, "Database"));
         saver.start();
         Backup.loadDatabaseFromBackup();
 
-        new JoinQuitListener();
+        new JoinQuitListener(loggerFactory, loggerFactory.create(JoinQuitListener.class));
 
         new QuestItemHandler();
 
-        eventScheduling = new EventScheduling(SCHEDULE_TYPES);
-        lastExecutionCache = new LastExecutionCache(getDataFolder());
+        eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), SCHEDULE_TYPES);
+        lastExecutionCache = new LastExecutionCache(loggerFactory.create(LastExecutionCache.class, "Cache"), getDataFolder());
 
         new GlobalObjectives();
 
@@ -770,14 +818,14 @@ public class BetonQuest extends JavaPlugin {
 
         new MobKillListener();
 
-        new CustomDropListener();
+        new CustomDropListener(loggerFactory.create(CustomDropListener.class));
 
-        new QuestCommand(adventure, new PlayerLogWatcher(receiverSelector), debugHistoryHandler);
+        new QuestCommand(loggerFactory, loggerFactory.create(QuestCommand.class), adventure, new PlayerLogWatcher(receiverSelector), debugHistoryHandler);
         new JournalCommand();
-        new BackpackCommand();
+        new BackpackCommand(loggerFactory.create(BackpackCommand.class));
         new CancelQuestCommand();
         new CompassCommand();
-        new LangCommand();
+        new LangCommand(loggerFactory.create(LangCommand.class));
 
         registerConditions("health", HealthCondition.class);
         registerConditions("permission", PermissionCondition.class);
@@ -831,37 +879,37 @@ public class BetonQuest extends JavaPlugin {
         registerEvents("command", CommandEvent.class);
         registerEvent("tag", new TagPlayerEventFactory(this, getSaver()));
         registerEvent("globaltag", new TagGlobalEventFactory(this));
-        registerEvent("journal", new JournalEventFactory(this, InstantSource.system(), getSaver()));
-        registerNonStaticEvent("teleport", new TeleportEventFactory(getServer(), getServer().getScheduler(), this));
+        registerEvent("journal", new JournalEventFactory(loggerFactory.create(JournalEvent.class), this, InstantSource.system(), getSaver()));
+        registerNonStaticEvent("teleport", new TeleportEventFactory(loggerFactory.create(TeleportEvent.class), getServer(), getServer().getScheduler(), this));
         registerEvent("explosion", new ExplosionEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvent("lightning", new LightningEventFactory(getServer(), getServer().getScheduler(), this));
-        registerNonStaticEvent("point", new PointEventFactory());
+        registerNonStaticEvent("point", new PointEventFactory(loggerFactory.create(PointEvent.class)));
         registerEvent("globalpoint", new GlobalPointEventFactory());
         registerEvents("give", GiveEvent.class);
         registerEvents("take", TakeEvent.class);
-        registerNonStaticEvent("conversation", new ConversationEventFactory(getServer(), getServer().getScheduler(), this));
-        registerNonStaticEvent("kill", new KillEventFactory(getServer(), getServer().getScheduler(), this));
-        registerNonStaticEvent("effect", new EffectEventFactory(getServer(), getServer().getScheduler(), this));
-        registerNonStaticEvent("deleffect", new DeleteEffectEventFactory(getServer(), getServer().getScheduler(), this));
+        registerNonStaticEvent("conversation", new ConversationEventFactory(loggerFactory, loggerFactory.create(ConversationEventFactory.class), getServer(), getServer().getScheduler(), this));
+        registerNonStaticEvent("kill", new KillEventFactory(loggerFactory.create(KillEvent.class), getServer(), getServer().getScheduler(), this));
+        registerNonStaticEvent("effect", new EffectEventFactory(loggerFactory.create(EffectEvent.class), getServer(), getServer().getScheduler(), this));
+        registerNonStaticEvent("deleffect", new DeleteEffectEventFactory(loggerFactory.create(DeleteEffectEvent.class), getServer(), getServer().getScheduler(), this));
         registerEvent("deletepoint", new DeletePointEventFactory());
         registerEvents("spawn", SpawnMobEvent.class);
         registerEvents("killmob", KillMobEvent.class);
         registerEvent("time", new TimeEventFactory(getServer(), getServer().getScheduler(), this));
-        registerNonStaticEvent("weather", new WeatherEventFactory(getServer(), getServer().getScheduler(), this));
+        registerNonStaticEvent("weather", new WeatherEventFactory(loggerFactory.create(WeatherEvent.class), getServer(), getServer().getScheduler(), this));
         registerEvents("folder", FolderEvent.class);
         registerEvent("setblock", new SetBlockEventFactory(getServer(), getServer().getScheduler(), this));
-        registerNonStaticEvent("damage", new DamageEventFactory(getServer(), getServer().getScheduler(), this));
-        registerNonStaticEvent("party", new PartyEventFactory());
+        registerNonStaticEvent("damage", new DamageEventFactory(loggerFactory.create(DamageEvent.class), getServer(), getServer().getScheduler(), this));
+        registerNonStaticEvent("party", new PartyEventFactory(loggerFactory.create(PartyEvent.class)));
         registerEvents("clear", ClearEvent.class);
         registerEvents("run", RunEvent.class);
-        registerNonStaticEvent("givejournal", new GiveJournalEventFactory(getServer(), getServer().getScheduler(), this));
-        registerNonStaticEvent("sudo", new SudoEventFactory(getServer(), getServer().getScheduler(), this));
+        registerNonStaticEvent("givejournal", new GiveJournalEventFactory(loggerFactory.create(GiveJournalEvent.class), getServer(), getServer().getScheduler(), this));
+        registerNonStaticEvent("sudo", new SudoEventFactory(loggerFactory.create(SudoEvent.class), getServer(), getServer().getScheduler(), this));
         registerEvents("opsudo", OpSudoEvent.class);
         registerEvents("chestgive", ChestGiveEvent.class);
         registerEvent("chesttake", new ChestTakeEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvent("chestclear", new ChestClearEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvents("compass", CompassEvent.class);
-        registerNonStaticEvent("cancel", new CancelEventFactory());
+        registerNonStaticEvent("cancel", new CancelEventFactory(loggerFactory.create(CancelEvent.class)));
         registerNonStaticEvent("score", new ScoreboardEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvent("lever", new LeverEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvent("door", new DoorEventFactory(getServer(), getServer().getScheduler(), this));
@@ -869,15 +917,15 @@ public class BetonQuest extends JavaPlugin {
         registerEvents("variable", VariableEvent.class);
         registerNonStaticEvent("language", new LanguageEventFactory(this));
         registerEvent("pickrandom", new PickRandomEventFactory());
-        registerNonStaticEvent("experience", new ExperienceEventFactory(getServer(), getServer().getScheduler(), this));
-        registerNonStaticEvent("notify", new NotifyEventFactory(getServer(), getServer().getScheduler(), this));
-        registerEvent("notifyall", new NotifyAllEventFactory(getServer(), getServer().getScheduler(), this));
-        registerNonStaticEvent("chat", new ChatEventFactory(getServer(), getServer().getScheduler(), this));
+        registerNonStaticEvent("experience", new ExperienceEventFactory(loggerFactory.create(ExperienceEvent.class), getServer(), getServer().getScheduler(), this));
+        registerNonStaticEvent("notify", new NotifyEventFactory(loggerFactory.create(NotifyEvent.class), getServer(), getServer().getScheduler(), this));
+        registerEvent("notifyall", new NotifyAllEventFactory(loggerFactory.create(NotifyAllEvent.class), getServer(), getServer().getScheduler(), this));
+        registerNonStaticEvent("chat", new ChatEventFactory(loggerFactory.create(ChatEvent.class), getServer(), getServer().getScheduler(), this));
         registerEvents("freeze", FreezeEvent.class);
-        registerNonStaticEvent("burn", new BurnEventFactory(getServer(), getServer().getScheduler(), this));
-        registerNonStaticEvent("velocity", new VelocityEventFactory(getServer(), getServer().getScheduler(), this));
-        registerNonStaticEvent("hunger", new HungerEventFactory(getServer(), getServer().getScheduler(), this));
-        registerNonStaticEvent("cancelconversation", new CancelConversationEventFactory());
+        registerNonStaticEvent("burn", new BurnEventFactory(loggerFactory.create(BurnEvent.class), getServer(), getServer().getScheduler(), this));
+        registerNonStaticEvent("velocity", new VelocityEventFactory(loggerFactory.create(VelocityEvent.class), getServer(), getServer().getScheduler(), this));
+        registerNonStaticEvent("hunger", new HungerEventFactory(loggerFactory.create(HungerEventFactory.class), getServer(), getServer().getScheduler(), this));
+        registerNonStaticEvent("cancelconversation", new CancelConversationEventFactory(loggerFactory.create(CancelConversationEvent.class)));
         registerEvent("deleteglobalpoint", new DeleteGlobalPointEventFactory());
 
         registerObjectives("location", LocationObjective.class);
@@ -947,8 +995,8 @@ public class BetonQuest extends JavaPlugin {
         registerVariable("math", MathVariable.class);
         registerVariable("randomnumber", RandomNumberVariable.class);
 
-        registerScheduleType("realtime-daily", RealtimeDailySchedule.class, new RealtimeDailyScheduler(lastExecutionCache));
-        registerScheduleType("realtime-cron", RealtimeCronSchedule.class, new RealtimeCronScheduler(lastExecutionCache));
+        registerScheduleType("realtime-daily", RealtimeDailySchedule.class, new RealtimeDailyScheduler(loggerFactory.create(RealtimeDailyScheduler.class, "Schedules"), lastExecutionCache));
+        registerScheduleType("realtime-cron", RealtimeCronSchedule.class, new RealtimeCronScheduler(loggerFactory.create(RealtimeCronScheduler.class, "Schedules"), lastExecutionCache));
 
         new Compatibility();
         globalData = new GlobalData();
@@ -964,14 +1012,14 @@ public class BetonQuest extends JavaPlugin {
                 playerData.startObjectives();
                 playerData.getJournal().update();
                 if (playerData.getConversation() != null) {
-                    new ConversationResumer(onlineProfile, playerData.getConversation());
+                    new ConversationResumer(loggerFactory, onlineProfile, playerData.getConversation());
                 }
             }
 
             try {
                 playerHider = new PlayerHider();
             } catch (final InstructionParseException e) {
-                log.error("Could not start PlayerHider! " + e.getMessage(), e);
+                getInstance().log.error("Could not start PlayerHider! " + e.getMessage(), e);
             }
         });
 
@@ -981,7 +1029,7 @@ public class BetonQuest extends JavaPlugin {
             final Logger coreLogger = (Logger) LogManager.getRootLogger();
             coreLogger.addFilter(new AnswerFilter());
         } catch (final ClassNotFoundException | NoClassDefFoundError e) {
-            log.warn("Could not disable /betonquestanswer logging", e);
+            getInstance().log.warn("Could not disable /betonquestanswer logging", e);
         }
 
         final Map<String, InstructionMetricsSupplier<? extends ID>> metricsSuppliers = new HashMap<>();
@@ -993,11 +1041,11 @@ public class BetonQuest extends JavaPlugin {
 
         setupUpdater();
 
-        rpgMenu = new RPGMenu();
+        rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory);
         rpgMenu.onEnable();
 
         PaperLib.suggestPaper(this);
-        log.info("BetonQuest successfully enabled!");
+        getInstance().log.info("BetonQuest successfully enabled!");
     }
 
     private void setupUpdater() {
@@ -1012,11 +1060,12 @@ public class BetonQuest extends JavaPlugin {
                 new WebContentSource());
         final List<ReleaseUpdateSource> releaseHandlers = List.of(gitHubReleaseSource, nexusReleaseAndDevelopmentSource);
         final List<DevelopmentUpdateSource> developmentHandlers = List.of(nexusReleaseAndDevelopmentSource);
-        final UpdateSourceHandler updateSourceHandler = new UpdateSourceHandler(releaseHandlers, developmentHandlers);
+        final UpdateSourceHandler updateSourceHandler = new UpdateSourceHandler(loggerFactory.create(UpdateSourceHandler.class), releaseHandlers, developmentHandlers);
 
         final Version pluginVersion = new Version(this.getDescription().getVersion());
-        updater = new Updater(config, pluginVersion, updateSourceHandler, updateDownloader, this,
-                getServer().getScheduler(), InstantSource.system());
+        final UpdaterConfig updaterConfig = new UpdaterConfig(loggerFactory.create(UpdaterConfig.class), config, pluginVersion, DEV_INDICATOR);
+        updater = new Updater(loggerFactory.create(Updater.class), updaterConfig, pluginVersion, updateSourceHandler, updateDownloader,
+                this, getServer().getScheduler(), InstantSource.system());
     }
 
     @SuppressWarnings("PMD.DoNotUseThreads")
@@ -1053,12 +1102,12 @@ public class BetonQuest extends JavaPlugin {
         // load new data
         for (final QuestPackage pack : Config.getPackages().values()) {
             final String packName = pack.getQuestPath();
-            log.debug(pack, "Loading stuff in package " + packName);
+            getInstance().log.debug(pack, "Loading stuff in package " + packName);
             final ConfigurationSection eConfig = Config.getPackages().get(packName).getConfig().getConfigurationSection("events");
             if (eConfig != null) {
                 for (final String key : eConfig.getKeys(false)) {
                     if (key.contains(" ")) {
-                        log.warn(pack,
+                        getInstance().log.warn(pack,
                                 "Event name cannot contain spaces: '" + key + "' (in " + packName + " package)");
                         continue;
                     }
@@ -1066,20 +1115,20 @@ public class BetonQuest extends JavaPlugin {
                     try {
                         identifier = new EventID(pack, key);
                     } catch (final ObjectNotFoundException e) {
-                        log.warn(pack, "Error while loading event '" + packName + "." + key + "': " + e.getMessage(), e);
+                        getInstance().log.warn(pack, "Error while loading event '" + packName + "." + key + "': " + e.getMessage(), e);
                         continue;
                     }
                     final String type;
                     try {
                         type = identifier.generateInstruction().getPart(0);
                     } catch (final InstructionParseException e) {
-                        log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
+                        getInstance().log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
                         continue;
                     }
                     final QuestEventFactory eventFactory = getEventFactory(type);
                     if (eventFactory == null) {
                         // if it's null then there is no such type registered, log an error
-                        log.warn(pack, "Event type " + type + " is not registered, check if it's"
+                        getInstance().log.warn(pack, "Event type " + type + " is not registered, check if it's"
                                 + " spelled correctly in '" + identifier + "' event.");
                         continue;
                     }
@@ -1087,9 +1136,9 @@ public class BetonQuest extends JavaPlugin {
                     try {
                         final QuestEvent event = eventFactory.parseEventInstruction(identifier.generateInstruction());
                         EVENTS.put(identifier, event);
-                        log.debug(pack, "  Event '" + identifier + "' loaded");
+                        getInstance().log.debug(pack, "  Event '" + identifier + "' loaded");
                     } catch (final InstructionParseException e) {
-                        log.warn(pack, "Error in '" + identifier + "' event (" + type + "): " + e.getMessage(), e);
+                        getInstance().log.warn(pack, "Error in '" + identifier + "' event (" + type + "): " + e.getMessage(), e);
                     }
                 }
             }
@@ -1097,7 +1146,7 @@ public class BetonQuest extends JavaPlugin {
             if (cConfig != null) {
                 for (final String key : cConfig.getKeys(false)) {
                     if (key.contains(" ")) {
-                        log.warn(pack,
+                        getInstance().log.warn(pack,
                                 "Condition name cannot contain spaces: '" + key + "' (in " + packName + " package)");
                         continue;
                     }
@@ -1105,21 +1154,21 @@ public class BetonQuest extends JavaPlugin {
                     try {
                         identifier = new ConditionID(pack, key);
                     } catch (final ObjectNotFoundException e) {
-                        log.warn(pack, "Error while loading condition '" + packName + "." + key + "': " + e.getMessage(), e);
+                        getInstance().log.warn(pack, "Error while loading condition '" + packName + "." + key + "': " + e.getMessage(), e);
                         continue;
                     }
                     final String type;
                     try {
                         type = identifier.generateInstruction().getPart(0);
                     } catch (final InstructionParseException e) {
-                        log.warn(pack, "Condition type not defined in '" + packName + "." + key + "'", e);
+                        getInstance().log.warn(pack, "Condition type not defined in '" + packName + "." + key + "'", e);
                         continue;
                     }
                     final Class<? extends Condition> conditionClass = CONDITION_TYPES.get(type);
                     // if it's null then there is no such type registered, log an
                     // error
                     if (conditionClass == null) {
-                        log.warn(pack, "Condition type " + type + " is not registered,"
+                        getInstance().log.warn(pack, "Condition type " + type + " is not registered,"
                                 + " check if it's spelled correctly in '" + identifier + "' condition.");
                         continue;
                     }
@@ -1127,15 +1176,15 @@ public class BetonQuest extends JavaPlugin {
                         final Condition condition = conditionClass.getConstructor(Instruction.class)
                                 .newInstance(identifier.generateInstruction());
                         CONDITIONS.put(identifier, condition);
-                        log.debug(pack, "  Condition '" + identifier + "' loaded");
+                        getInstance().log.debug(pack, "  Condition '" + identifier + "' loaded");
                     } catch (final InvocationTargetException e) {
                         if (e.getCause() instanceof InstructionParseException) {
-                            log.warn(pack, "Error in '" + identifier + "' condition (" + type + "): " + e.getCause().getMessage(), e);
+                            getInstance().log.warn(pack, "Error in '" + identifier + "' condition (" + type + "): " + e.getCause().getMessage(), e);
                         } else {
-                            log.reportException(pack, e);
+                            getInstance().log.reportException(pack, e);
                         }
                     } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-                        log.reportException(pack, e);
+                        getInstance().log.reportException(pack, e);
                     }
                 }
             }
@@ -1143,7 +1192,7 @@ public class BetonQuest extends JavaPlugin {
             if (oConfig != null) {
                 for (final String key : oConfig.getKeys(false)) {
                     if (key.contains(" ")) {
-                        log.warn(pack,
+                        getInstance().log.warn(pack,
                                 "Objective name cannot contain spaces: '" + key + "' (in " + packName + " package)");
                         continue;
                     }
@@ -1151,21 +1200,21 @@ public class BetonQuest extends JavaPlugin {
                     try {
                         identifier = new ObjectiveID(pack, key);
                     } catch (final ObjectNotFoundException e) {
-                        log.warn(pack, "Error while loading objective '" + packName + "." + key + "': " + e.getMessage(), e);
+                        getInstance().log.warn(pack, "Error while loading objective '" + packName + "." + key + "': " + e.getMessage(), e);
                         continue;
                     }
                     final String type;
                     try {
                         type = identifier.generateInstruction().getPart(0);
                     } catch (final InstructionParseException e) {
-                        log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
+                        getInstance().log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
                         continue;
                     }
                     final Class<? extends Objective> objectiveClass = OBJECTIVE_TYPES.get(type);
                     // if it's null then there is no such type registered, log an
                     // error
                     if (objectiveClass == null) {
-                        log.warn(pack,
+                        getInstance().log.warn(pack,
                                 "Objective type " + type + " is not registered, check if it's"
                                         + " spelled correctly in '" + identifier + "' objective.");
                         continue;
@@ -1174,15 +1223,15 @@ public class BetonQuest extends JavaPlugin {
                         final Objective objective = objectiveClass.getConstructor(Instruction.class)
                                 .newInstance(identifier.generateInstruction());
                         OBJECTIVES.put(identifier, objective);
-                        log.debug(pack, "  Objective '" + identifier + "' loaded");
+                        getInstance().log.debug(pack, "  Objective '" + identifier + "' loaded");
                     } catch (final InvocationTargetException e) {
                         if (e.getCause() instanceof InstructionParseException) {
-                            log.warn(pack, "Error in '" + identifier + "' objective (" + type + "): " + e.getCause().getMessage(), e);
+                            getInstance().log.warn(pack, "Error in '" + identifier + "' objective (" + type + "): " + e.getCause().getMessage(), e);
                         } else {
-                            log.reportException(pack, e);
+                            getInstance().log.reportException(pack, e);
                         }
                     } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-                        log.reportException(pack, e);
+                        getInstance().log.reportException(pack, e);
                     }
                 }
             }
@@ -1192,7 +1241,7 @@ public class BetonQuest extends JavaPlugin {
                     try {
                         CONVERSATIONS.put(pack.getQuestPath() + "." + convName, new ConversationData(pack, convName, conversationsConfig.getConfigurationSection(convName)));
                     } catch (final InstructionParseException e) {
-                        log.warn(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
+                        getInstance().log.warn(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
                     }
                 }
             }
@@ -1200,10 +1249,10 @@ public class BetonQuest extends JavaPlugin {
             eventScheduling.loadData(pack);
             // check external pointers
             ConversationData.postEnableCheck();
-            log.debug(pack, "Everything in package " + packName + " loaded");
+            getInstance().log.debug(pack, "Everything in package " + packName + " loaded");
         }
 
-        log.info("There are " + CONDITIONS.size() + " conditions, " + EVENTS.size() + " events, "
+        getInstance().log.info("There are " + CONDITIONS.size() + " conditions, " + EVENTS.size() + " events, "
                 + OBJECTIVES.size() + " objectives and " + CONVERSATIONS.size() + " conversations loaded from "
                 + Config.getPackages().size() + " packages.");
         // start those freshly loaded objectives for all players
@@ -1223,11 +1272,11 @@ public class BetonQuest extends JavaPlugin {
      */
     public void reload() {
         // reload the configuration
-        log.debug("Reloading configuration");
+        getInstance().log.debug("Reloading configuration");
         try {
             config.reload();
         } catch (final IOException e) {
-            log.warn("Could not reload config! " + e.getMessage(), e);
+            getInstance().log.warn("Could not reload config! " + e.getMessage(), e);
         }
         Config.setup(this, config);
         Notify.load();
@@ -1237,7 +1286,7 @@ public class BetonQuest extends JavaPlugin {
         BetonQuest.getInstance().getUpdater().search();
         // stop current global locations listener
         // and start new one with reloaded configs
-        log.debug("Restarting global locations");
+        getInstance().log.debug("Restarting global locations");
         new GlobalObjectives();
         ConversationColors.loadColors();
         Compatibility.reload();
@@ -1245,7 +1294,7 @@ public class BetonQuest extends JavaPlugin {
         loadData();
         // start objectives and update journals for every online profiles
         for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
-            log.debug("Updating journal for player " + onlineProfile);
+            getInstance().log.debug("Updating journal for player " + onlineProfile);
             final PlayerData playerData = instance.getPlayerData(onlineProfile);
             GlobalObjectives.startAll(onlineProfile);
             final Journal journal = playerData.getJournal();
@@ -1257,7 +1306,7 @@ public class BetonQuest extends JavaPlugin {
         try {
             playerHider = new PlayerHider();
         } catch (final InstructionParseException e) {
-            log.error("Could not start PlayerHider! " + e.getMessage(), e);
+            getInstance().log.error("Could not start PlayerHider! " + e.getMessage(), e);
         }
     }
 
@@ -1289,7 +1338,7 @@ public class BetonQuest extends JavaPlugin {
         }
 
         // done
-        log.info("BetonQuest succesfully disabled!");
+        getInstance().log.info("BetonQuest succesfully disabled!");
 
         if (this.adventure != null) {
             this.adventure.close();
@@ -1341,7 +1390,7 @@ public class BetonQuest extends JavaPlugin {
      * @param playerData PlayerData object to store
      */
     public void putPlayerData(final Profile profile, final PlayerData playerData) {
-        log.debug("Inserting data for " + profile);
+        getInstance().log.debug("Inserting data for " + profile);
         playerDataMap.put(profile, playerData);
     }
 
@@ -1395,7 +1444,7 @@ public class BetonQuest extends JavaPlugin {
      * @param conditionClass class object for the condition
      */
     public void registerConditions(final String name, final Class<? extends Condition> conditionClass) {
-        log.debug("Registering " + name + " condition type");
+        getInstance().log.debug("Registering " + name + " condition type");
         CONDITION_TYPES.put(name, conditionClass);
     }
 
@@ -1408,8 +1457,8 @@ public class BetonQuest extends JavaPlugin {
      */
     @Deprecated
     public void registerEvents(final String name, final Class<? extends QuestEvent> eventClass) {
-        log.debug("Registering " + name + " event type");
-        eventTypes.put(name, new FromClassQuestEventFactory<>(eventClass));
+        getInstance().log.debug("Registering " + name + " event type");
+        eventTypes.put(name, new FromClassQuestEventFactory<>(loggerFactory.create(FromClassQuestEventFactory.class), eventClass));
     }
 
     /**
@@ -1444,7 +1493,7 @@ public class BetonQuest extends JavaPlugin {
      * @param staticEventFactory factory to create the static event
      */
     public void registerEvent(final String name, final EventFactory eventFactory, final StaticEventFactory staticEventFactory) {
-        log.debug("Registering " + name + " event type");
+        getInstance().log.debug("Registering " + name + " event type");
         eventTypes.put(name, new QuestEventFactoryAdapter(eventFactory, staticEventFactory));
     }
 
@@ -1455,7 +1504,7 @@ public class BetonQuest extends JavaPlugin {
      * @param objectiveClass class object for the objective
      */
     public void registerObjectives(final String name, final Class<? extends Objective> objectiveClass) {
-        log.debug("Registering " + name + " objective type");
+        getInstance().log.debug("Registering " + name + " objective type");
         OBJECTIVE_TYPES.put(name, objectiveClass);
     }
 
@@ -1466,7 +1515,7 @@ public class BetonQuest extends JavaPlugin {
      * @param convIOClass class object to register
      */
     public void registerConversationIO(final String name, final Class<? extends ConversationIO> convIOClass) {
-        log.debug("Registering " + name + " conversation IO type");
+        getInstance().log.debug("Registering " + name + " conversation IO type");
         CONVERSATION_IO_TYPES.put(name, convIOClass);
     }
 
@@ -1477,7 +1526,7 @@ public class BetonQuest extends JavaPlugin {
      * @param interceptorClass class object to register
      */
     public void registerInterceptor(final String name, final Class<? extends Interceptor> interceptorClass) {
-        log.debug("Registering " + name + " interceptor type");
+        getInstance().log.debug("Registering " + name + " interceptor type");
         INTERCEPTOR_TYPES.put(name, interceptorClass);
     }
 
@@ -1488,7 +1537,7 @@ public class BetonQuest extends JavaPlugin {
      * @param ioClass class object to register
      */
     public void registerNotifyIO(final String name, final Class<? extends NotifyIO> ioClass) {
-        log.debug("Registering " + name + " notify IO type");
+        getInstance().log.debug("Registering " + name + " notify IO type");
         NOTIFY_IO_TYPES.put(name, ioClass);
     }
 
@@ -1499,7 +1548,7 @@ public class BetonQuest extends JavaPlugin {
      * @param variable class object of this type
      */
     public void registerVariable(final String name, final Class<? extends Variable> variable) {
-        log.debug("Registering " + name + " variable type");
+        getInstance().log.debug("Registering " + name + " variable type");
         VARIABLE_TYPES.put(name, variable);
     }
 
@@ -1589,23 +1638,23 @@ public class BetonQuest extends JavaPlugin {
      */
     public String getVariableValue(final String packName, final String name, final Profile profile) {
         if (!Config.getPackages().containsKey(packName)) {
-            log.warn("Variable '" + name + "' contains the non-existent package '" + packName + "' !");
+            getInstance().log.warn("Variable '" + name + "' contains the non-existent package '" + packName + "' !");
             return "";
         }
         final QuestPackage pack = Config.getPackages().get(packName);
         try {
             final Variable var = createVariable(pack, name);
             if (var == null) {
-                log.warn(pack, "Could not resolve variable '" + name + "'.");
+                getInstance().log.warn(pack, "Could not resolve variable '" + name + "'.");
                 return "";
             }
             if (profile == null && !var.isStaticness()) {
-                log.warn(pack, "Variable '" + name + "' cannot be executed without a profile reference!");
+                getInstance().log.warn(pack, "Variable '" + name + "' cannot be executed without a profile reference!");
                 return "";
             }
             return var.getValue(profile);
         } catch (final InstructionParseException e) {
-            log.warn(pack, "&cCould not create variable '" + name + "': " + e.getMessage(), e);
+            getInstance().log.warn(pack, "&cCould not create variable '" + name + "': " + e.getMessage(), e);
             return "";
         }
     }

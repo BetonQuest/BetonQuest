@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.modules.logger;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  * This is the implementation of the interface {@link BetonQuestLogger}.
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public class BetonQuestLoggerImpl implements BetonQuestLogger {
+public class DefaultBetonQuestLogger implements BetonQuestLogger {
 
     /**
      * The {@link Plugin} this logger belongs to.
@@ -32,9 +32,32 @@ public class BetonQuestLoggerImpl implements BetonQuestLogger {
      * @param clazz        The calling class.
      * @param topic        The topic of the logger.
      */
-    public BetonQuestLoggerImpl(@NotNull final Plugin plugin, final Logger parentLogger, final Class<?> clazz, final String topic) {
+    public DefaultBetonQuestLogger(@NotNull final Plugin plugin, final Logger parentLogger, final Class<?> clazz, final String topic) {
         this.plugin = plugin;
         this.logger = new TopicLogger(parentLogger, clazz, topic);
+    }
+
+    @Override
+    public void debug(final String msg) {
+        debug(null, msg);
+    }
+
+    @Override
+    public void debug(final QuestPackage pack, final String msg) {
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, msg, plugin, pack);
+        logger.log(record);
+    }
+
+    @Override
+    public void debug(final String msg, final Throwable thrown) {
+        debug(null, msg, thrown);
+    }
+
+    @Override
+    public void debug(final QuestPackage pack, final String msg, final Throwable thrown) {
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, msg, plugin, pack);
+        record.setThrown(thrown);
+        logger.log(record);
     }
 
     @Override
@@ -93,29 +116,6 @@ public class BetonQuestLoggerImpl implements BetonQuestLogger {
     @Override
     public void error(final QuestPackage pack, final String msg, final Throwable thrown) {
         final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.SEVERE, msg, plugin, pack);
-        record.setThrown(thrown);
-        logger.log(record);
-    }
-
-    @Override
-    public void debug(final String msg) {
-        debug(null, msg);
-    }
-
-    @Override
-    public void debug(final QuestPackage pack, final String msg) {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, msg, plugin, pack);
-        logger.log(record);
-    }
-
-    @Override
-    public void debug(final String msg, final Throwable thrown) {
-        debug(null, msg, thrown);
-    }
-
-    @Override
-    public void debug(final QuestPackage pack, final String msg, final Throwable thrown) {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, msg, plugin, pack);
         record.setThrown(thrown);
         logger.log(record);
     }

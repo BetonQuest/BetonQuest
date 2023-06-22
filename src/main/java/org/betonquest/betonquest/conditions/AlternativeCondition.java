@@ -2,8 +2,8 @@ package org.betonquest.betonquest.conditions;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.ConditionID;
@@ -22,12 +22,13 @@ public class AlternativeCondition extends Condition {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final List<ConditionID> conditionIDs;
 
     public AlternativeCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         conditionIDs = instruction.getList(instruction::getCondition);
     }
 
@@ -53,7 +54,7 @@ public class AlternativeCondition extends Condition {
                         return true;
                     }
                 } catch (final InterruptedException | ExecutionException e) {
-                    LOG.reportException(instruction.getPackage(), e);
+                    log.reportException(instruction.getPackage(), e);
                     return false;
                 }
             }

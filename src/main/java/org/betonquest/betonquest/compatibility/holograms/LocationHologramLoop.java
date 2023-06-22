@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
@@ -19,8 +21,8 @@ public class LocationHologramLoop extends HologramLoop {
     /**
      * Starts a loop, which checks hologram conditions and shows them to players.
      */
-    public LocationHologramLoop() {
-        super();
+    public LocationHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
+        super(loggerFactory, log);
         initialize("holograms");
     }
 

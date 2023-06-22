@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.kill;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -14,6 +15,11 @@ import org.bukkit.scheduler.BukkitScheduler;
  * Factory for the kill event.
  */
 public class KillEventFactory implements EventFactory {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
     /**
      * Server to use for syncing to the primary server thread.
      */
@@ -36,7 +42,8 @@ public class KillEventFactory implements EventFactory {
      * @param scheduler scheduler to use
      * @param plugin    plugin to use
      */
-    public KillEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+    public KillEventFactory(final BetonQuestLogger log, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+        this.log = log;
         this.server = server;
         this.scheduler = scheduler;
         this.plugin = plugin;
@@ -46,7 +53,7 @@ public class KillEventFactory implements EventFactory {
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
-                        new KillEvent(),
+                        log, new KillEvent(),
                         instruction.getPackage()),
                 server, scheduler, plugin);
     }

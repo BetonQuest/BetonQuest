@@ -3,19 +3,19 @@ package org.betonquest.betonquest.compatibility.vault;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class VaultIntegrator implements Integrator {
+    private static VaultIntegrator instance;
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
-
-    private static VaultIntegrator instance;
+    private final BetonQuestLogger log;
 
     private final BetonQuest plugin;
 
@@ -26,6 +26,7 @@ public class VaultIntegrator implements Integrator {
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public VaultIntegrator() {
         instance = this;
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         plugin = BetonQuest.getInstance();
     }
 
@@ -56,14 +57,14 @@ public class VaultIntegrator implements Integrator {
             economy = economyProvider.getProvider();
         }
         if (economy == null) {
-            LOG.warn("There is no economy plugin on the server!");
+            log.warn("There is no economy plugin on the server!");
         } else {
             plugin.registerEvents("money", MoneyEvent.class);
             plugin.registerConditions("money", MoneyCondition.class);
             plugin.registerVariable("money", MoneyVariable.class);
         }
         if (permission == null) {
-            LOG.warn("Could not get permission provider!");
+            log.warn("Could not get permission provider!");
         } else {
             plugin.registerEvents("permission", PermissionEvent.class);
         }

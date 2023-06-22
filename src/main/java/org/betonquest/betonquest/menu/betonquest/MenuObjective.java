@@ -2,8 +2,8 @@ package org.betonquest.betonquest.menu.betonquest;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -23,12 +23,13 @@ public class MenuObjective extends Objective implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final MenuID menuID;
 
     public MenuObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         template = ObjectiveData.class;
         try {
             this.menuID = new MenuID(instruction.getPackage(), instruction.next());
@@ -72,7 +73,7 @@ public class MenuObjective extends Objective implements Listener {
         if ("menu".equalsIgnoreCase(name)) {
             final Menu menuData = BetonQuest.getInstance().getRpgMenu().getMenu(menuID);
             if (menuData == null) {
-                LOG.debug(instruction.getPackage(), "Error while getting menu property in '" + instruction.getID() + "' objective: "
+                log.debug(instruction.getPackage(), "Error while getting menu property in '" + instruction.getID() + "' objective: "
                         + "menu with id " + menuID + " isn't loaded");
                 return "";
             }

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.database;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
@@ -17,7 +17,7 @@ public class AsyncSaver extends Thread implements Listener, Saver {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     /**
      * The connector that conntects to the database.
@@ -36,9 +36,12 @@ public class AsyncSaver extends Thread implements Listener, Saver {
 
     /**
      * Creates new database saver thread.
+     *
+     * @param log the logger that will be used for logging
      */
-    public AsyncSaver() {
+    public AsyncSaver(final BetonQuestLogger log) {
         super();
+        this.log = log;
         this.con = new Connector();
         this.queue = new ConcurrentLinkedQueue<>();
         this.running = true;
@@ -59,7 +62,7 @@ public class AsyncSaver extends Thread implements Listener, Saver {
                         active = false;
                         wait();
                     } catch (final InterruptedException e) {
-                        LOG.error("There was a exception with SQL", e);
+                        log.error("There was a exception with SQL", e);
                     }
                 }
             }

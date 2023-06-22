@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.conversation;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.config.Config;
 import org.bukkit.ChatColor;
 
@@ -16,7 +17,7 @@ public final class ConversationColors {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(ConversationColors.class);
 
     private static ChatColor[] npcColors;
 

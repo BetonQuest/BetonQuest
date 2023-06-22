@@ -4,9 +4,9 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -34,7 +34,7 @@ public class FishObjective extends CountingObjective implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final BlockSelector blockSelector;
 
@@ -44,6 +44,7 @@ public class FishObjective extends CountingObjective implements Listener {
 
     public FishObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "fish_to_catch");
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(FishObjective.class);
         blockSelector = new BlockSelector(instruction.next());
         targetAmount = instruction.getVarNum();
         preCheckAmountNotLessThanOne(targetAmount);
@@ -89,7 +90,7 @@ public class FishObjective extends CountingObjective implements Listener {
         try {
             targetLocation = hookTargetLocation.getLocation(profile);
         } catch (final QuestRuntimeException e) {
-            LOG.warn(e.getMessage(), e);
+            log.warn(e.getMessage(), e);
             return true;
         }
         final int range = rangeVar.getInt(profile);

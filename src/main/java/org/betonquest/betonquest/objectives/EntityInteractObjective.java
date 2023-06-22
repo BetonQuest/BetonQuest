@@ -4,8 +4,8 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -45,7 +45,7 @@ public class EntityInteractObjective extends CountingObjective {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final CompoundLocation loc;
 
@@ -69,6 +69,7 @@ public class EntityInteractObjective extends CountingObjective {
 
     public EntityInteractObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "mobs_to_click");
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         template = EntityInteractData.class;
         interaction = instruction.getEnum(Interaction.class);
         mobType = instruction.getEnum(EntityType.class);
@@ -149,7 +150,7 @@ public class EntityInteractObjective extends CountingObjective {
                     return false;
                 }
             } catch (final QuestRuntimeException e) {
-                LOG.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
+                log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
             }
         }
 

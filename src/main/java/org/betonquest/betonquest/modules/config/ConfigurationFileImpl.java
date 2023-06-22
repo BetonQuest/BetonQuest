@@ -1,10 +1,12 @@
 package org.betonquest.betonquest.modules.config;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDecorator;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegisterer;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.modules.config.patcher.DefaultPatchTransformerRegisterer;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
 
@@ -20,7 +22,7 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create("ConfigurationFile");
+    private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(ConfigurationFileImpl.class, "ConfigurationFile");
 
     /**
      * Holds the config file.
@@ -33,22 +35,17 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
      * <br>
      * See {@link ConfigurationFile#create} for more information.
      *
-     * @param accessor      a {@link ConfigAccessor} that holds the config file
-     * @param patchAccessor a {@link ConfigAccessor} that holds the patch file
+     * @param accessor a {@link ConfigAccessor} that holds the config file
      * @throws InvalidConfigurationException if patch modifications couldn't be saved
      */
-    private ConfigurationFileImpl(final ConfigAccessor accessor, final ConfigAccessor patchAccessor, final PatchTransformerRegisterer patchTransformerRegisterer, final URI relativeRoot) throws InvalidConfigurationException {
+    private ConfigurationFileImpl(final ConfigAccessor accessor, final Patcher patcher, final URI relativeRoot) throws InvalidConfigurationException {
         super(accessor.getConfig());
         this.accessor = accessor;
-        if (patchAccessor != null) {
-            final Patcher patcher = new Patcher(accessor.getConfig(), patchAccessor.getConfig());
-            patchTransformerRegisterer.registerTransformers(patcher);
-            if (patchConfig(patcher, relativeRoot)) {
-                try {
-                    accessor.save();
-                } catch (final IOException e) {
-                    throw new InvalidConfigurationException("The configuration file was patched but could not be saved! Reason: " + e.getMessage(), e);
-                }
+        if (patcher != null && patchConfig(patcher, relativeRoot)) {
+            try {
+                accessor.save();
+            } catch (final IOException e) {
+                throw new InvalidConfigurationException("The configuration file was patched but could not be saved! Reason: " + e.getMessage(), e);
             }
         }
     }
@@ -91,9 +88,9 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
             throw new InvalidConfigurationException("Default values were applied to the config but could not be saved! Reason: " + e.getMessage(), e);
         }
         final ConfigAccessor patchAccessor = createPatchAccessor(plugin, resourceFile);
-        return new ConfigurationFileImpl(accessor, patchAccessor,
-                patchTransformerRegisterer == null ? new PatchTransformerRegisterer() {
-                } : patchTransformerRegisterer, plugin.getDataFolder().getParentFile().toURI());
+        final Patcher patcher = new Patcher(BetonQuest.getInstance().getLoggerFactory().create(Patcher.class, "ConfigurationFile Patcher"), accessor.getConfig(), patchAccessor.getConfig());
+        (patchTransformerRegisterer == null ? new DefaultPatchTransformerRegisterer() : patchTransformerRegisterer).registerTransformers(patcher);
+        return new ConfigurationFileImpl(accessor, patcher, plugin.getDataFolder().getParentFile().toURI());
     }
 
     private static ConfigAccessor createPatchAccessor(final Plugin plugin, final String resourceFile) throws InvalidConfigurationException {

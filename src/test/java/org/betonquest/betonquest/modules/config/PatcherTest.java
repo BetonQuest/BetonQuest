@@ -1,8 +1,9 @@
 package org.betonquest.betonquest.modules.config;
 
 import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegisterer;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.modules.config.patcher.DefaultPatchTransformerRegisterer;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
-import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,9 +13,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.File;
 import java.util.List;
-import java.util.logging.Level;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 /**
  * A test for the {@link Patcher}.
@@ -25,8 +26,7 @@ class PatcherTest {
     /**
      * Anonymous {@link PatchTransformerRegisterer} for testing.
      */
-    private static final PatchTransformerRegisterer REGISTERER = new PatchTransformerRegisterer() {
-    };
+    private static final PatchTransformerRegisterer REGISTERER = new DefaultPatchTransformerRegisterer();
 
     /**
      * The patch file for this test.
@@ -45,11 +45,11 @@ class PatcherTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-    void testHasUpdate() throws InvalidConfigurationException {
+    void testHasUpdate(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final YamlConfiguration configBeforeTest = new YamlConfiguration();
         configBeforeTest.loadFromString(config.saveToString());
 
-        final Patcher patcher = new Patcher(config, patch);
+        final Patcher patcher = new Patcher(logger, config, patch);
         assertTrue(patcher.hasUpdate(), "Patcher did not recognise the possible update.");
         assertEquals(new Version("3.4.5-CONFIG-6"), patcher.getNextConfigVersion(), "Patcher did not return the newest patch version as next config version.");
         assertEquals(configBeforeTest.saveToString(), config.saveToString(), "The patcher must only patch when patcher.patch() is called.");
@@ -57,7 +57,7 @@ class PatcherTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-    void testHasNoUpdateForNewerConfigs() throws InvalidConfigurationException {
+    void testHasNoUpdateForNewerConfigs(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final YamlConfiguration configFromTheFuture = new YamlConfiguration();
         configFromTheFuture.loadFromString("""
                 configVersion: 6.2.3-CONFIG-12
@@ -71,7 +71,7 @@ class PatcherTest {
                     key: journalLock
                     value: true
                 """);
-        final Patcher patcher = new Patcher(configFromTheFuture, patch);
+        final Patcher patcher = new Patcher(logger, configFromTheFuture, patch);
         assertFalse(patcher.hasUpdate(), "Patcher recognised patches from outdated versions as possible updates.");
         assertFalse(patcher.updateVersion(), "The Patcher updated the configVersion when it should not.");
 
@@ -83,11 +83,11 @@ class PatcherTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-    void testAppliesUpdates() throws InvalidConfigurationException {
+    void testAppliesUpdates(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final YamlConfiguration expectedConfig = new YamlConfiguration();
         expectedConfig.loadFromString(config.saveToString());
 
-        final Patcher patcher = new Patcher(config, patch);
+        final Patcher patcher = new Patcher(logger, config, patch);
         assertTrue(patcher.hasUpdate(), "Patcher did not recognise the possible update.");
         assertFalse(patcher.updateVersion(), "The Patcher updated the configVersion when it should not.");
 
@@ -111,7 +111,7 @@ class PatcherTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
-    void testPatchVersionNumberTooShort(final LogValidator validator) throws InvalidConfigurationException {
+    void testPatchVersionNumberTooShort(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final YamlConfiguration invalidConfig = createConfigFromString("""
                 "1.0":
                   - type: SET
@@ -119,26 +119,26 @@ class PatcherTest {
                     value: true
                 """);
 
-        new Patcher(config, invalidConfig);
-        validator.assertLogEntry(Level.SEVERE, "(ConfigurationFile Patcher) Invalid patch file! A version number is too short or too long.");
-        validator.assertEmpty();
+        new Patcher(logger, config, invalidConfig);
+        verify(logger, times(1)).error(eq("Invalid patch file! A version number is too short or too long."), any(InvalidConfigurationException.class));
+        verifyNoMoreInteractions(logger);
     }
 
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
-    void testPatchMalformed(final LogValidator validator) throws InvalidConfigurationException {
+    void testPatchMalformed(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final YamlConfiguration invalidConfig = createConfigFromString("""
                 "1.0": Nonsense
                 """);
 
-        new Patcher(config, invalidConfig);
-        validator.assertLogEntry(Level.SEVERE, "(ConfigurationFile Patcher) Invalid patch file! The patch is malformed.");
-        validator.assertEmpty();
+        new Patcher(logger, config, invalidConfig);
+        verify(logger, times(1)).error(eq("Invalid patch file! The patch is malformed."), any(InvalidConfigurationException.class));
+        verifyNoMoreInteractions(logger);
     }
 
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
-    void testPatchIsNonsense(final LogValidator validator) throws InvalidConfigurationException {
+    void testPatchIsNonsense(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                 1:
                   - Nonsense
@@ -146,13 +146,13 @@ class PatcherTest {
         final YamlConfiguration invalidConfig = new YamlConfiguration();
         invalidConfig.loadFromString(patch);
 
-        new Patcher(config, invalidConfig);
-        validator.assertLogEntry(Level.SEVERE, "(ConfigurationFile Patcher) Invalid patch file! A version number is too short or too long.");
-        validator.assertEmpty();
+        new Patcher(logger, config, invalidConfig);
+        verify(logger, times(1)).error(eq("Invalid patch file! A version number is too short or too long."), any(InvalidConfigurationException.class));
+        verifyNoMoreInteractions(logger);
     }
 
     @Test
-    void testUnknownTransformerType(final LogValidator validator) throws InvalidConfigurationException {
+    void testUnknownTransformerType(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                 3.4.5.6:
                   - type: INVALID
@@ -161,26 +161,26 @@ class PatcherTest {
                 """;
         final YamlConfiguration invalidConfig = new YamlConfiguration();
         invalidConfig.loadFromString(patch);
-        final Patcher patcher = new Patcher(config, invalidConfig);
+        final Patcher patcher = new Patcher(logger, config, invalidConfig);
         final boolean patchNoError = patcher.patch();
         assertFalse(patchNoError, "Patcher says there were no problems although there were.");
-        validator.assertLogEntry(Level.INFO, "(ConfigurationFile Patcher) Applying patches to update to '3.4.5-CONFIG-6'...");
-        validator.assertLogEntry(Level.INFO, "(ConfigurationFile Patcher) Applying patch of type 'INVALID'...");
-        validator.assertLogEntry(Level.WARNING, "(ConfigurationFile Patcher) There has been an issue while applying the patches for '3.4.5.6': Unknown transformation type 'INVALID' used!");
-        validator.assertEmpty();
+        verify(logger, times(1)).info("Applying patches to update to '3.4.5-CONFIG-6'...");
+        verify(logger, times(1)).info("Applying patch of type 'INVALID'...");
+        verify(logger, times(1)).warn("There has been an issue while applying the patches for '3.4.5.6': Unknown transformation type 'INVALID' used!");
+        verifyNoMoreInteractions(logger);
     }
 
     @Test
-    void testEmptyPatchFile() throws InvalidConfigurationException {
+    void testEmptyPatchFile(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = "";
         final YamlConfiguration patchConfig = new YamlConfiguration();
         patchConfig.loadFromString(patch);
-        final Patcher patcher = new Patcher(config, patchConfig);
+        final Patcher patcher = new Patcher(logger, config, patchConfig);
         assertFalse(patcher.hasUpdate(), "An empty patch cannot provide updates.");
     }
 
     @Test
-    void testLegacyConfig() throws InvalidConfigurationException {
+    void testLegacyConfig(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final YamlConfiguration emptyConfig = createConfigFromString("");
 
         final YamlConfiguration patchConfig = createConfigFromString("""
@@ -190,7 +190,7 @@ class PatcherTest {
                   value: newValue
                 """);
 
-        final Patcher patcher = new Patcher(emptyConfig, patchConfig);
+        final Patcher patcher = new Patcher(logger, emptyConfig, patchConfig);
         REGISTERER.registerTransformers(patcher);
         patcher.patch();
         final YamlConfiguration desiredResult = createConfigFromString("""
@@ -204,7 +204,7 @@ class PatcherTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-    void testConfigFromResourceUpdate() throws InvalidConfigurationException {
+    void testConfigFromResourceUpdate(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final YamlConfiguration emptyConfig = createConfigFromString("""
                         configVersion: ""
                         someKey: someValue
@@ -217,7 +217,7 @@ class PatcherTest {
                   value: newValue
                 """);
 
-        final Patcher patcher = new Patcher(emptyConfig, patchConfig);
+        final Patcher patcher = new Patcher(logger, emptyConfig, patchConfig);
         REGISTERER.registerTransformers(patcher);
         patcher.patch();
         assertEquals("100.200.300-CONFIG-400", patcher.getCurrentConfigVersion(), "The Patcher did not return the highest available patch version.");

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.bukkit.config.util;
 
-import org.betonquest.betonquest.modules.logger.util.LogValidator;
+import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -63,7 +63,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
         itemStackMockedStatic = mockStatic(ItemStack.class);
 
         final Server serverMock = mock(Server.class);
-        when(serverMock.getLogger()).thenReturn(LogValidator.getSilentLogger());
+        when(serverMock.getLogger()).thenReturn(BetonQuestLoggerService.getSilentLogger());
         Bukkit.setServer(serverMock);
 
         mockWorlds(serverMock);

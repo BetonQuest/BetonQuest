@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.schedule.impl.realtime.cron;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.CronSchedule;
 import org.betonquest.betonquest.modules.schedule.LastExecutionCache;
@@ -26,7 +26,7 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create("Schedules");
+    private final BetonQuestLogger log;
 
     /**
      * A cache where the last execution times of a schedule are stored.
@@ -41,44 +41,48 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
     /**
      * Create a new realtime scheduler and pass BetonQuest instance to it.
      *
+     * @param log                the logger that will be used for logging
      * @param lastExecutionCache cache where the last execution times of a schedule are stored
      */
-    public RealtimeCronScheduler(final LastExecutionCache lastExecutionCache) {
-        super();
+    public RealtimeCronScheduler(final BetonQuestLogger log, final LastExecutionCache lastExecutionCache) {
+        super(log);
+        this.log = log;
         this.lastExecutionCache = lastExecutionCache;
     }
 
     /**
      * Create a new realtime scheduler and pass BetonQuest instance to it.
      *
+     * @param log                the logger that will be used for logging
      * @param executor           supplier used to create new instances of the executor used by this scheduler
      * @param lastExecutionCache cache where the last execution times of a schedule are stored
      */
-    public RealtimeCronScheduler(final Supplier<ScheduledExecutorService> executor, final LastExecutionCache lastExecutionCache) {
-        super(executor);
+    public RealtimeCronScheduler(final BetonQuestLogger log, final Supplier<ScheduledExecutorService> executor, final LastExecutionCache lastExecutionCache) {
+        super(log, executor);
+        this.log = log;
         this.lastExecutionCache = lastExecutionCache;
     }
 
     @Override
     public void start() {
-        LOG.debug("Starting realtime scheduler.");
+        log.debug("Starting realtime scheduler.");
         if (reboot) {
             reboot = false;
             runRebootSchedules();
         }
         catchupMissedSchedules();
         super.start();
-        LOG.debug("Realtime scheduler start complete.");
+        log.debug("Realtime scheduler start complete.");
     }
 
     /**
      * Run schedules with '@reboot' time instruction on reboot.
      */
     private void runRebootSchedules() {
-        LOG.debug("Collecting reboot schedules...");
+        log.debug("Collecting reboot schedules...");
         final List<RealtimeCronSchedule> rebootSchedules = schedules.values().stream()
                 .filter(CronSchedule::shouldRunOnReboot).toList();
-        LOG.debug("Found " + rebootSchedules.size() + " reboot schedules. They will be run on next server tick.");
+        log.debug("Found " + rebootSchedules.size() + " reboot schedules. They will be run on next server tick.");
         rebootSchedules.forEach(this::executeEvents);
     }
 
@@ -88,9 +92,9 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
      */
     private void catchupMissedSchedules() {
         final List<RealtimeCronSchedule> missedSchedules = listMissedSchedules();
-        LOG.debug("Found " + missedSchedules.size() + " missed schedule runs that will be caught up.");
+        log.debug("Found " + missedSchedules.size() + " missed schedule runs that will be caught up.");
         if (!missedSchedules.isEmpty()) {
-            LOG.debug("Running missed schedules to catch up...");
+            log.debug("Running missed schedules to catch up...");
             for (final RealtimeCronSchedule missed : missedSchedules) {
                 lastExecutionCache.cacheExecutionTime(missed.getId(), Instant.now());
                 executeEvents(missed);
@@ -128,7 +132,7 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
         while (!missedRuns.isEmpty()) {
             final MissedRun earliest = missedRuns.poll();
             missed.add(earliest.schedule);
-            LOG.debug(earliest.schedule.getId().getPackage(),
+            log.debug(earliest.schedule.getId().getPackage(),
                     "Schedule '" + earliest.schedule.getId() + "' run missed at " + earliest.runTime);
             if (earliest.schedule.getCatchup() == CatchupStrategy.ALL) {
                 final Optional<ZonedDateTime> nextExecution = earliest.schedule.getExecutionTime().nextExecution(earliest.runTime);

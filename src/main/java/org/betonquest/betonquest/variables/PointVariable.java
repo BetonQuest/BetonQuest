@@ -3,8 +3,8 @@ package org.betonquest.betonquest.variables;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Point;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Variable;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -19,10 +19,6 @@ import java.util.Locale;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class PointVariable extends Variable {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     protected String category;
 
@@ -33,6 +29,7 @@ public class PointVariable extends Variable {
     @SuppressWarnings("PMD")
     public PointVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
+        final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         category = instruction.next();
 
         if (instruction.size() == 4) {
@@ -43,7 +40,7 @@ public class PointVariable extends Variable {
                 };
                 category = id.getPackage().getQuestPath() + "." + pointCategory;
             } catch (final ObjectNotFoundException e) {
-                LOG.warn(instruction.getPackage(), e.getMessage());
+                log.warn(instruction.getPackage(), e.getMessage());
             }
 
         } else if (instruction.size() == 3) {

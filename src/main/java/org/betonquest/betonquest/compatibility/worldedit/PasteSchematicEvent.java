@@ -13,9 +13,10 @@ import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -35,7 +36,7 @@ public class PasteSchematicEvent extends QuestEvent {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final CompoundLocation loc;
 
@@ -46,6 +47,7 @@ public class PasteSchematicEvent extends QuestEvent {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public PasteSchematicEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         staticness = true;
         persistent = true;
         loc = instruction.getLocation();
@@ -91,7 +93,7 @@ public class PasteSchematicEvent extends QuestEvent {
                 Operations.complete(operation);
             }
         } catch (final IOException | WorldEditException e) {
-            LOG.warn(instruction.getPackage(), "Error while pasting a schematic: " + e.getMessage(), e);
+            log.warn(instruction.getPackage(), "Error while pasting a schematic: " + e.getMessage(), e);
         }
         return null;
     }

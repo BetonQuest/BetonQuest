@@ -3,6 +3,7 @@ package org.betonquest.betonquest.modules.config.quest;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
@@ -27,8 +28,8 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
      * @throws FileNotFoundException         thrown if a file could not be found during the creation
      *                                       of a {@link ConfigAccessor}
      */
-    public QuestPackageImpl(final String questPath, final File root, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
-        super(questPath, root, files);
+    public QuestPackageImpl(final BetonQuestLogger log, final String questPath, final File root, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
+        super(log, questPath, root, files);
     }
 
     @Override

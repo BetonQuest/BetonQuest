@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.schedule.impl.realtime.daily;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.modules.schedule.LastExecutionCache;
 import org.betonquest.betonquest.modules.schedule.impl.ExecutorServiceScheduler;
@@ -24,7 +24,7 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create("Schedules");
+    private final BetonQuestLogger log;
 
     /**
      * A cache where the last execution times of a schedule are stored.
@@ -34,30 +34,34 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
     /**
      * Create a new simple scheduler and pass BetonQuest instance to it.
      *
+     * @param log                the logger that will be used for logging
      * @param executor           supplier used to create new instances of the executor used by this scheduler
      * @param lastExecutionCache cache where the last execution times of a schedule are stored
      */
-    public RealtimeDailyScheduler(final Supplier<ScheduledExecutorService> executor, final LastExecutionCache lastExecutionCache) {
-        super(executor);
+    public RealtimeDailyScheduler(final BetonQuestLogger log, final Supplier<ScheduledExecutorService> executor, final LastExecutionCache lastExecutionCache) {
+        super(log, executor);
+        this.log = log;
         this.lastExecutionCache = lastExecutionCache;
     }
 
     /**
      * Create a new simple scheduler and pass BetonQuest instance to it.
      *
+     * @param log                the logger that will be used for logging
      * @param lastExecutionCache cache where the last execution times of a schedule are stored
      */
-    public RealtimeDailyScheduler(final LastExecutionCache lastExecutionCache) {
-        super();
+    public RealtimeDailyScheduler(final BetonQuestLogger log, final LastExecutionCache lastExecutionCache) {
+        super(log);
+        this.log = log;
         this.lastExecutionCache = lastExecutionCache;
     }
 
     @Override
     public void start() {
-        LOG.debug("Starting simple scheduler.");
+        log.debug("Starting simple scheduler.");
         catchupMissedSchedules();
         super.start();
-        LOG.debug("Simple scheduler start complete.");
+        log.debug("Simple scheduler start complete.");
     }
 
     /**
@@ -65,11 +69,11 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
      * The method should guarantee that the schedules are executed in the order they would have occurred.
      */
     private void catchupMissedSchedules() {
-        LOG.debug("Collecting missed schedules...");
+        log.debug("Collecting missed schedules...");
         final List<RealtimeDailySchedule> missedSchedules = listMissedSchedules();
-        LOG.debug("Found " + missedSchedules.size() + " missed schedule runs that will be caught up.");
+        log.debug("Found " + missedSchedules.size() + " missed schedule runs that will be caught up.");
         if (!missedSchedules.isEmpty()) {
-            LOG.debug("Running missed schedules to catch up...");
+            log.debug("Running missed schedules to catch up...");
             for (final RealtimeDailySchedule schedule : missedSchedules) {
                 lastExecutionCache.cacheExecutionTime(schedule.getId(), Instant.now());
                 executeEvents(schedule);
@@ -106,7 +110,7 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
         while (!missedRuns.isEmpty()) {
             final MissedRun earliest = missedRuns.poll();
             missed.add(earliest.schedule);
-            LOG.debug(earliest.schedule.getId().getPackage(),
+            log.debug(earliest.schedule.getId().getPackage(),
                     "Schedule '" + earliest.schedule.getId() + "' run missed at " + earliest.runTime);
             if (earliest.schedule.getCatchup() == CatchupStrategy.ALL) {
                 final Instant nextExecution = earliest.runTime.plus(1, ChronoUnit.DAYS);

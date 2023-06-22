@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.fallback.MultiFallbackConfiguration;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,8 +43,8 @@ public class QuestTemplate extends Quest {
      * @throws FileNotFoundException         thrown if a file could not be found during the creation
      *                                       of a {@link org.betonquest.betonquest.api.config.ConfigAccessor}
      */
-    public QuestTemplate(final String questPath, final File root, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
-        super(questPath, root, files);
+    public QuestTemplate(final BetonQuestLogger log, final String questPath, final File root, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
+        super(log, questPath, root, files);
         templates = new HashSet<>();
     }
 

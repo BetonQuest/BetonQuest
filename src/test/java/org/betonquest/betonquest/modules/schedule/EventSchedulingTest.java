@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.KeyConflictExcep
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -44,9 +45,9 @@ class EventSchedulingTest {
     private Map<String, ScheduleType<?>> scheduleTypes;
 
     @BeforeEach
-    void setUp() {
+    void setUp(final BetonQuestLogger logger) {
         scheduleTypes = new HashMap<>();
-        scheduling = new EventScheduling(scheduleTypes);
+        scheduling = new EventScheduling(logger, scheduleTypes);
     }
 
     @SuppressWarnings("unchecked")

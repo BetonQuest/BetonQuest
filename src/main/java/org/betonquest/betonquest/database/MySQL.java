@@ -2,7 +2,7 @@ package org.betonquest.betonquest.database;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,7 +23,7 @@ public class MySQL extends Database {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final String user;
 
@@ -45,8 +45,9 @@ public class MySQL extends Database {
      * @param username Username
      * @param password Password
      */
-    public MySQL(final BetonQuest plugin, final String hostname, final String port, final String database, final String username, final String password) {
-        super(plugin);
+    public MySQL(final BetonQuestLogger log, final BetonQuest plugin, final String hostname, final String port, final String database, final String username, final String password) {
+        super(log, plugin);
+        this.log = log;
         this.hostname = hostname;
         this.port = port;
         this.database = database;
@@ -62,7 +63,7 @@ public class MySQL extends Database {
             connection = DriverManager.getConnection(
                     "jdbc:mysql://" + this.hostname + ":" + this.port + "/" + this.database + "?&useSSL=false", this.user, this.password);
         } catch (final ClassNotFoundException | SQLException e) {
-            LOG.warn("MySQL says: " + e.getMessage(), e);
+            log.warn("MySQL says: " + e.getMessage(), e);
         }
         return connection;
     }

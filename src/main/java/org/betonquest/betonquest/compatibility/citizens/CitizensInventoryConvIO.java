@@ -4,7 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import net.citizensnpcs.trait.SkinTrait;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.InventoryConvIO;
@@ -20,10 +20,11 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     public CitizensInventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         super(conv, onlineProfile);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
     }
 
     @Override
@@ -51,7 +52,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
                 }
             } catch (final NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
                            | InterruptedException | ExecutionException e) {
-                LOG.debug(citizensConv.getPackage(), "Could not resolve a skin Texture!", e);
+                log.debug(citizensConv.getPackage(), "Could not resolve a skin Texture!", e);
             }
         }
         return super.updateSkullMeta(meta);

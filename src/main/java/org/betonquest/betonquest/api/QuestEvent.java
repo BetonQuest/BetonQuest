@@ -2,6 +2,7 @@ package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -24,11 +25,6 @@ import org.betonquest.betonquest.utils.PlayerConverter;
  */
 public abstract class QuestEvent extends ForceSyncHandler<Void> {
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
-
-    /**
      * Stores the user-provided instruction for this event.
      */
     protected final Instruction instruction;
@@ -37,6 +33,11 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
      * Stores conditions that must be met when firing this event.
      */
     protected final ConditionID[] conditions;
+
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
 
     /**
      * Whether the event is static.
@@ -64,6 +65,7 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
      */
     public QuestEvent(final Instruction instruction, final boolean forceSync) throws InstructionParseException {
         super(forceSync);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         this.instruction = instruction;
         final String[] tempConditions1 = instruction.getArray(instruction.getOptional("condition"));
         final String[] tempConditions2 = instruction.getArray(instruction.getOptional("conditions"));
@@ -118,37 +120,37 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
 
     private void handleNullProfile() throws QuestRuntimeException {
         if (staticness) {
-            LOG.debug(instruction.getPackage(), "Static event will be fired without a profile.");
+            log.debug(instruction.getPackage(), "Static event will be fired without a profile.");
             if (!BetonQuest.conditions(null, conditions)) {
-                LOG.debug(instruction.getPackage(), "Event conditions were not met");
+                log.debug(instruction.getPackage(), "Event conditions were not met");
                 return;
             }
             handle(null);
             return;
         }
-        LOG.debug(instruction.getPackage(), "Static event will be fired once for every online profile:");
+        log.debug(instruction.getPackage(), "Static event will be fired once for every online profile:");
         for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
             if (!BetonQuest.conditions(onlineProfile, conditions)) {
-                LOG.debug(instruction.getPackage(), "Event conditions were not met for " + onlineProfile);
+                log.debug(instruction.getPackage(), "Event conditions were not met for " + onlineProfile);
                 return;
             }
-            LOG.debug(instruction.getPackage(), "Firing this static event for " + onlineProfile);
+            log.debug(instruction.getPackage(), "Firing this static event for " + onlineProfile);
             handle(onlineProfile);
         }
     }
 
     private void handleOfflineProfile(final Profile profile) throws QuestRuntimeException {
         if (persistent) {
-            LOG.debug(instruction.getPackage(), "Persistent event will be fired for offline profile.");
+            log.debug(instruction.getPackage(), "Persistent event will be fired for offline profile.");
             handle(profile);
         } else {
-            LOG.debug(instruction.getPackage(), profile + " is offline, cannot fire event because it's not persistent.");
+            log.debug(instruction.getPackage(), profile + " is offline, cannot fire event because it's not persistent.");
         }
     }
 
     private void handleOnlineProfile(final Profile profile) throws QuestRuntimeException {
         if (!BetonQuest.conditions(profile, conditions)) {
-            LOG.debug(instruction.getPackage(), "Event conditions were not met for " + profile);
+            log.debug(instruction.getPackage(), "Event conditions were not met for " + profile);
             return;
         }
         handle(profile);

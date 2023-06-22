@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.damage;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -15,6 +16,11 @@ import org.bukkit.scheduler.BukkitScheduler;
  * Factory to create damage events from {@link Instruction}s.
  */
 public class DamageEventFactory implements EventFactory {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
     /**
      * Server to use for syncing to the primary server thread.
      */
@@ -37,7 +43,8 @@ public class DamageEventFactory implements EventFactory {
      * @param scheduler scheduler to use
      * @param plugin    plugin to use
      */
-    public DamageEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+    public DamageEventFactory(final BetonQuestLogger log, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+        this.log = log;
         this.server = server;
         this.scheduler = scheduler;
         this.plugin = plugin;
@@ -48,7 +55,7 @@ public class DamageEventFactory implements EventFactory {
         final VariableNumber damage = instruction.getVarNum();
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
-                        new DamageEvent(damage), instruction.getPackage()),
+                        log, new DamageEvent(damage), instruction.getPackage()),
                 server, scheduler, plugin);
     }
 }

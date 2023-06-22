@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.database;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.plugin.Plugin;
 
 import java.sql.Connection;
@@ -15,20 +15,21 @@ import java.util.SortedMap;
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public abstract class Database {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
-
     protected final Plugin plugin;
 
     protected final String prefix;
 
     protected final String profileInitialName;
 
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
     protected Connection con;
 
-    protected Database(final BetonQuest plugin) {
+    protected Database(final BetonQuestLogger log, final BetonQuest plugin) {
+        this.log = log;
         this.plugin = plugin;
         this.prefix = plugin.getPluginConfig().getString("mysql.prefix", "");
         this.profileInitialName = plugin.getPluginConfig().getString("profiles.initial_name", "");
@@ -40,7 +41,7 @@ public abstract class Database {
                 con = openConnection();
             }
         } catch (final SQLException e) {
-            LOG.warn("Failed opening database connection: " + e.getMessage(), e);
+            log.warn("Failed opening database connection: " + e.getMessage(), e);
         }
         return con;
     }
@@ -51,7 +52,7 @@ public abstract class Database {
         try {
             con.close();
         } catch (final SQLException e) {
-            LOG.error("There was an exception with SQL", e);
+            log.error("There was an exception with SQL", e);
         }
         con = null;
     }
@@ -69,7 +70,7 @@ public abstract class Database {
                 markMigrationExecuted(getConnection(), key);
             }
         } catch (final SQLException sqlException) {
-            LOG.error("There was an exception with SQL", sqlException);
+            log.error("There was an exception with SQL", sqlException);
         }
     }
 

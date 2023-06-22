@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.modules.schedule;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfigurationSection;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -20,7 +20,7 @@ public class EventScheduling {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create("Schedules");
+    private final BetonQuestLogger log;
 
     /**
      * Map that contains all types of schedulers,
@@ -33,7 +33,8 @@ public class EventScheduling {
      *
      * @param scheduleTypes map containing the schedule types, provided by {@link org.betonquest.betonquest.BetonQuest}
      */
-    public EventScheduling(final Map<String, ScheduleType<?>> scheduleTypes) {
+    public EventScheduling(final BetonQuestLogger log, final Map<String, ScheduleType<?>> scheduleTypes) {
+        this.log = log;
         this.scheduleTypes = scheduleTypes;
     }
 
@@ -43,15 +44,15 @@ public class EventScheduling {
      * @param questPackage package to load
      */
     public void loadData(final QuestPackage questPackage) {
-        LOG.debug(questPackage, "Parsing schedules for package '" + questPackage.getQuestPath() + "'.");
+        log.debug(questPackage, "Parsing schedules for package '" + questPackage.getQuestPath() + "'.");
         final ConfigurationSection configuration = questPackage.getConfig().getConfigurationSection("schedules");
         if (configuration == null) {
-            LOG.debug(questPackage, "Package contains no schedules.");
+            log.debug(questPackage, "Package contains no schedules.");
             return;
         }
         for (final String key : configuration.getKeys(false)) {
             if (key.contains(" ")) {
-                LOG.warn(questPackage,
+                log.warn(questPackage,
                         "Schedule name cannot contain spaces: '" + key + "' (in " + questPackage.getQuestPath() + " package)");
                 continue;
             }
@@ -67,18 +68,18 @@ public class EventScheduling {
                     final ScheduleType<?> scheduleType = Optional.ofNullable(scheduleTypes.get(type))
                             .orElseThrow(() -> new InstructionParseException("The schedule type '" + type + "' is not defined"));
                     scheduleType.createAndScheduleNewInstance(scheduleID, scheduleConfig);
-                    LOG.debug(questPackage, "Parsed schedule '" + scheduleID + "'.");
+                    log.debug(questPackage, "Parsed schedule '" + scheduleID + "'.");
                 } catch (final InstructionParseException e) {
-                    LOG.warn(questPackage, "Error loading schedule '" + scheduleID + "':" + e.getMessage(), e);
+                    log.warn(questPackage, "Error loading schedule '" + scheduleID + "':" + e.getMessage(), e);
                 } catch (final InvocationTargetException | NoSuchMethodException | InstantiationException
                                | IllegalAccessException e) {
-                    LOG.reportException(questPackage, e);
+                    log.reportException(questPackage, e);
                 }
             } catch (final ObjectNotFoundException e) {
-                LOG.warn(questPackage, "Cannot load schedule with name '" + key + "': " + e.getMessage(), e);
+                log.warn(questPackage, "Cannot load schedule with name '" + key + "': " + e.getMessage(), e);
             }
         }
-        LOG.debug(questPackage, "Finished loading schedules from package '" + questPackage.getQuestPath() + "'.");
+        log.debug(questPackage, "Finished loading schedules from package '" + questPackage.getQuestPath() + "'.");
     }
 
     /**
@@ -86,12 +87,12 @@ public class EventScheduling {
      */
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public void startAll() {
-        LOG.debug("Starting schedulers...");
+        log.debug("Starting schedulers...");
         for (final ScheduleType<?> type : scheduleTypes.values()) {
             try {
                 type.scheduler.start();
             } catch (final Exception e) {
-                LOG.error("Error while enabling " + type.scheduler + ": " + e.getMessage(), e);
+                log.error("Error while enabling " + type.scheduler + ": " + e.getMessage(), e);
             }
         }
     }
@@ -101,12 +102,12 @@ public class EventScheduling {
      */
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public void stopAll() {
-        LOG.debug("Stopping schedulers...");
+        log.debug("Stopping schedulers...");
         for (final ScheduleType<?> type : scheduleTypes.values()) {
             try {
                 type.scheduler.stop();
             } catch (final Exception e) {
-                LOG.error("Error while enabling " + type.scheduler + ": " + e.getMessage(), e);
+                log.error("Error while enabling " + type.scheduler + ": " + e.getMessage(), e);
             }
         }
     }

@@ -1,9 +1,10 @@
-package org.betonquest.betonquest.modules.config.transformers;
+package org.betonquest.betonquest.modules.config.patcher.transformers;
 
 import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegisterer;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.modules.config.Patcher;
+import org.betonquest.betonquest.modules.config.patcher.DefaultPatchTransformerRegisterer;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
-import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,9 +15,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 /**
  * This test tests all config transformers.
@@ -27,8 +28,7 @@ class TransformerTest {
     /**
      * Anonymous {@link PatchTransformerRegisterer} for testing.
      */
-    public static final PatchTransformerRegisterer REGISTERER = new PatchTransformerRegisterer() {
-    };
+    public static final PatchTransformerRegisterer REGISTERER = new DefaultPatchTransformerRegisterer();
 
     /**
      * The file that contains a demo config for this test.
@@ -46,7 +46,7 @@ class TransformerTest {
     }
 
     @Test
-    void testValueRename() throws InvalidConfigurationException {
+    void testValueRename(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                   - type: VALUE_RENAME
@@ -54,14 +54,14 @@ class TransformerTest {
                     oldValueRegex: test
                     newValue: newTest
                 """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
 
         CONFIG.set("section.testKey", "newTest");
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
-    void testValueRenameErrorMissingKey(final LogValidator validator) throws InvalidConfigurationException {
+    void testValueRenameErrorMissingKey(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                   - type: VALUE_RENAME
@@ -69,13 +69,13 @@ class TransformerTest {
                     oldValueRegex: test
                     newValue: newTest
                 """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
-        validateLogging(validator, "VALUE_RENAME", "The key 'section.invalidKey' did not exist, skipping transformation.");
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
+        validateLogging(logger, "VALUE_RENAME", "The key 'section.invalidKey' did not exist, skipping transformation.");
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
-    void testValueRenameErrorNoMatchForValue(final LogValidator validator) throws InvalidConfigurationException {
+    void testValueRenameErrorNoMatchForValue(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                   - type: VALUE_RENAME
@@ -83,13 +83,13 @@ class TransformerTest {
                     oldValueRegex: noMatchRegex
                     newValue: newTest
                 """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
-        validateLogging(validator, "VALUE_RENAME", "Value does not match the given regex, skipping transformation.");
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
+        validateLogging(logger, "VALUE_RENAME", "Value does not match the given regex, skipping transformation.");
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
-    void testListEntryAddLast() throws InvalidConfigurationException {
+    void testListEntryAddLast(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                     - type: LIST_ENTRY_ADD
@@ -97,7 +97,7 @@ class TransformerTest {
                       entry: newEntry
                       position: LAST
                 """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
 
         final List<String> list = CONFIG.getStringList("section.myList");
         list.add("newEntry");
@@ -106,7 +106,7 @@ class TransformerTest {
     }
 
     @Test
-    void testListEntryAddFirst() throws InvalidConfigurationException {
+    void testListEntryAddFirst(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                     - type: LIST_ENTRY_ADD
@@ -114,7 +114,7 @@ class TransformerTest {
                       entry: newEntry
                       position: FIRST
                 """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
 
         final List<String> list = CONFIG.getStringList("section.myList");
         final List<String> newList = new ArrayList<>();
@@ -125,14 +125,14 @@ class TransformerTest {
     }
 
     @Test
-    void testListEntryAddDefault() throws InvalidConfigurationException {
+    void testListEntryAddDefault(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                     - type: LIST_ENTRY_ADD
                       key: section.myList
                       entry: newEntry
                 """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
 
         final List<String> list = CONFIG.getStringList("section.myList");
         list.add("newEntry");
@@ -141,7 +141,7 @@ class TransformerTest {
     }
 
     @Test
-    void testListEntryAddRubbish() throws InvalidConfigurationException {
+    void testListEntryAddRubbish(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                     - type: LIST_ENTRY_ADD
@@ -149,7 +149,7 @@ class TransformerTest {
                       entry: newEntry
                       position: rubbish
                 """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
 
         final List<String> list = CONFIG.getStringList("section.myList");
         list.add("newEntry");
@@ -158,7 +158,7 @@ class TransformerTest {
     }
 
     @Test
-    void testListEntryAddMissingKey(final LogValidator validator) throws InvalidConfigurationException {
+    void testListEntryAddMissingKey(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                     - type: LIST_ENTRY_ADD
@@ -166,18 +166,18 @@ class TransformerTest {
                       entry: newEntry
                       position: LAST
                 """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
 
         final List<String> list = CONFIG.getStringList("section.invalidKey");
         list.add("newEntry");
         CONFIG.set("section.invalidKey", list);
 
-        validateLogging(validator, "LIST_ENTRY_ADD", "List 'section.invalidKey' did not exist, so it was created.");
+        validateLogging(logger, "LIST_ENTRY_ADD", "List 'section.invalidKey' did not exist, so it was created.");
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
-    void testListEntryRename() throws InvalidConfigurationException {
+    void testListEntryRename(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                   - type: LIST_ENTRY_RENAME
@@ -185,7 +185,7 @@ class TransformerTest {
                     oldEntryRegex: currentEntry
                     newEntry: newEntry
                 """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
 
         final List<String> list = CONFIG.getStringList("section.myList");
         final int index = list.indexOf("currentEntry");
@@ -196,7 +196,7 @@ class TransformerTest {
     }
 
     @Test
-    void testListEntryRenameMissingKey(final LogValidator validator) throws InvalidConfigurationException {
+    void testListEntryRenameMissingKey(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                   - type: LIST_ENTRY_RENAME
@@ -204,15 +204,15 @@ class TransformerTest {
                     oldEntryRegex: currentEntry
                     newEntry: newEntry
                 """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
         CONFIG.set("section.invalidKey", new ArrayList<String>());
 
-        validateLogging(validator, "LIST_ENTRY_RENAME", "List 'section.invalidKey' did not exist, so an empty list was created.");
+        validateLogging(logger, "LIST_ENTRY_RENAME", "List 'section.invalidKey' did not exist, so an empty list was created.");
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
-    void testListEntryRenameNoMatchRegex(final LogValidator validator) throws InvalidConfigurationException {
+    void testListEntryRenameNoMatchRegex(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                   - type: LIST_ENTRY_RENAME
@@ -220,20 +220,20 @@ class TransformerTest {
                     oldEntryRegex: invalidRegex
                     newEntry: newEntry
                 """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
-        validateLogging(validator, "LIST_ENTRY_RENAME", "Tried to rename 'invalidRegex' with 'newEntry' but there was no such element in the list 'section.myList'.");
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
+        validateLogging(logger, "LIST_ENTRY_RENAME", "Tried to copy 'invalidRegex' with 'newEntry' but there was no such element in the list 'section.myList'.");
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
-    void testListRemove() throws InvalidConfigurationException {
+    void testListRemove(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                   2.0.0.1:
                     - type: LIST_ENTRY_REMOVE
                       key: section.myList
                       entry: removedEntry
                 """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
 
         final List<?> list = CONFIG.getList("section.myList");
         assertNotNull(list, "List was null.");
@@ -244,41 +244,41 @@ class TransformerTest {
     }
 
     @Test
-    void testListRemove(final LogValidator validator) throws InvalidConfigurationException {
+    void testListRemoveNonExisting(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                   2.0.0.1:
                     - type: LIST_ENTRY_REMOVE
                       key: section.invalidList
                       entry: removedEntry
                 """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
         CONFIG.set("section.invalidList", new ArrayList<String>());
-        validateLogging(validator, "LIST_ENTRY_REMOVE", "List 'section.invalidList' did not exist, so an empty list was created.");
+        validateLogging(logger, "LIST_ENTRY_REMOVE", "List 'section.invalidList' did not exist, so an empty list was created.");
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
-    void testListRemoveInvalidKey(final LogValidator validator) throws InvalidConfigurationException {
+    void testListRemoveInvalidKey(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                   2.0.0.1:
                     - type: LIST_ENTRY_REMOVE
                       key: section.myList
                       entry: invalidEntry
                 """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
 
-        validateLogging(validator, "LIST_ENTRY_REMOVE", "Tried to remove 'invalidEntry' but there was no such element in the list 'section.myList'.");
+        validateLogging(logger, "LIST_ENTRY_REMOVE", "Tried to remove 'invalidEntry' but there was no such element in the list 'section.myList'.");
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
-    void testRemove() throws InvalidConfigurationException {
+    void testRemove(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                     - type: REMOVE
                       key: section.myList
                 """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
 
         CONFIG.set("section.myList", null);
 
@@ -286,28 +286,28 @@ class TransformerTest {
     }
 
     @Test
-    void testRemoveNonExistent(final LogValidator validator) throws InvalidConfigurationException {
+    void testRemoveNonExistent(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                     - type: REMOVE
                       key: section.nonExistent
                 """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
 
-        validateLogging(validator, "REMOVE", "Key 'section.nonExistent' did not exist, so it was not deleted.");
+        validateLogging(logger, "REMOVE", "Key 'section.nonExistent' did not exist, so it was not deleted.");
 
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
-    void testKeyRename() throws InvalidConfigurationException {
+    void testKeyRename(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                     - type: KEY_RENAME
                       oldKey: section.test
                       newKey: section.testNew
                 """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
 
         final String value = CONFIG.getString("section.test");
         CONFIG.set("section.test", null);
@@ -317,14 +317,14 @@ class TransformerTest {
     }
 
     @Test
-    void testKeyRenameList() throws InvalidConfigurationException {
+    void testKeyRenameList(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                     - type: KEY_RENAME
                       oldKey: section.myList
                       newKey: section.newList
                 """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
 
         final Object value = CONFIG.get("section.myList");
         CONFIG.set("section.myList", null);
@@ -334,28 +334,28 @@ class TransformerTest {
     }
 
     @Test
-    void testKeyRename(final LogValidator validator) throws InvalidConfigurationException {
+    void testKeyRenameNonExisting(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                     - type: KEY_RENAME
                       oldKey: section.invalid
                       newKey: section.testNew
                 """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
 
-        validateLogging(validator, "KEY_RENAME", "Key 'section.invalid' was not set, skipping transformation to 'section.testNew'.");
+        validateLogging(logger, "KEY_RENAME", "Key 'section.invalid' was not set, skipping transformation to 'section.testNew'.");
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
-    void testSet() throws InvalidConfigurationException {
+    void testSet(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                   2.0.0.1:
                     - type: SET
                       key: journalLock
                       value: true
                 """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
 
         CONFIG.set("journalLock", "true");
 
@@ -363,7 +363,7 @@ class TransformerTest {
     }
 
     @Test
-    void testTransformStringToBoolean() throws InvalidConfigurationException {
+    void testTransformStringToBoolean(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                   2.0.0.1:
                     - type: TYPE_TRANSFORM
@@ -372,13 +372,13 @@ class TransformerTest {
                 """;
 
         CONFIG.set("section.boolean", true);
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
 
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
-    void testTransformStringToInt() throws InvalidConfigurationException {
+    void testTransformStringToInt(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                   2.0.0.1:
                     - type: TYPE_TRANSFORM
@@ -387,13 +387,13 @@ class TransformerTest {
                 """;
 
         CONFIG.set("section.int", 3);
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
 
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
-    void testTransformStringToFloat() throws InvalidConfigurationException {
+    void testTransformStringToFloat(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                   2.0.0.1:
                     - type: TYPE_TRANSFORM
@@ -402,13 +402,13 @@ class TransformerTest {
                 """;
 
         CONFIG.set("section.float", 2.5F);
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
 
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
-    void testTransformStringToDouble() throws InvalidConfigurationException {
+    void testTransformStringToDouble(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                   2.0.0.1:
                     - type: TYPE_TRANSFORM
@@ -417,13 +417,13 @@ class TransformerTest {
                 """;
 
         CONFIG.set("section.double", 2.123_456_789_123_456_7D);
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
 
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
-    void testTransformBooleanToString() throws InvalidConfigurationException {
+    void testTransformBooleanToString(final BetonQuestLogger logger) throws InvalidConfigurationException {
         final String patch = """
                   2.0.0.1:
                     - type: TYPE_TRANSFORM
@@ -432,12 +432,12 @@ class TransformerTest {
                 """;
 
         CONFIG.set("section.double", "true");
-        final String serializedConfig = getSerializedPatchedConfig(patch);
+        final String serializedConfig = getSerializedPatchedConfig(logger, patch);
 
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
-    private String getSerializedPatchedConfig(final String patch) throws InvalidConfigurationException {
+    private String getSerializedPatchedConfig(final BetonQuestLogger logger, final String patch) throws InvalidConfigurationException {
         final YamlConfiguration patchConfig = new YamlConfiguration();
         patchConfig.loadFromString(patch);
 
@@ -448,16 +448,16 @@ class TransformerTest {
         //New version is automatically set for all tests
         CONFIG.set("configVersion", "2.0.0-CONFIG-1");
 
-        final Patcher patcher = new Patcher(questConfig, patchConfig);
+        final Patcher patcher = new Patcher(logger, questConfig, patchConfig);
         REGISTERER.registerTransformers(patcher);
         patcher.patch();
         return questConfig.saveToString();
     }
 
-    private void validateLogging(final LogValidator validator, final String transformerType, final String exceptionMessage) {
-        validator.assertLogEntry(Level.INFO, "(ConfigurationFile Patcher) Applying patches to update to '2.0.0-CONFIG-1'...");
-        validator.assertLogEntry(Level.INFO, "(ConfigurationFile Patcher) Applying patch of type '" + transformerType + "'...");
-        validator.assertLogEntry(Level.WARNING, "(ConfigurationFile Patcher) There has been an issue while applying the patches for '2.0.0.1': " + exceptionMessage);
-        validator.assertEmpty();
+    private void validateLogging(final BetonQuestLogger logger, final String transformerType, final String exceptionMessage) {
+        verify(logger, times(1)).info("Applying patches to update to '2.0.0-CONFIG-1'...");
+        verify(logger, times(1)).info("Applying patch of type '" + transformerType + "'...");
+        verify(logger, times(1)).warn("There has been an issue while applying the patches for '2.0.0.1': " + exceptionMessage);
+        verifyNoMoreInteractions(logger);
     }
 }

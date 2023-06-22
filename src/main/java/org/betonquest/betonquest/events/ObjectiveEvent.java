@@ -2,8 +2,8 @@ package org.betonquest.betonquest.events;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
@@ -26,7 +26,7 @@ public class ObjectiveEvent extends QuestEvent {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     /**
      * The BetonQuest instance.
@@ -51,6 +51,7 @@ public class ObjectiveEvent extends QuestEvent {
      */
     public ObjectiveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         staticness = true;
         betonQuest = BetonQuest.getInstance();
 
@@ -74,7 +75,7 @@ public class ObjectiveEvent extends QuestEvent {
                     PlayerConverter.getOnlineProfiles().forEach(onlineProfile -> cancelObjectiveForOnlinePlayer(onlineProfile, objective));
                     betonQuest.getSaver().add(new Saver.Record(UpdateType.REMOVE_ALL_OBJECTIVES, objective.toString()));
                 } else {
-                    LOG.warn(instruction.getPackage(), "You tried to call an objective add / finish event in a static context! Only objective delete works here.");
+                    log.warn(instruction.getPackage(), "You tried to call an objective add / finish event in a static context! Only objective delete works here.");
                 }
             } else if (profile.getOnlineProfile().isEmpty()) {
                 Bukkit.getScheduler().runTaskAsynchronously(betonQuest, () -> {
@@ -83,7 +84,7 @@ public class ObjectiveEvent extends QuestEvent {
                         case "start", "add" -> playerData.addNewRawObjective(objective);
                         case "delete", "remove" -> playerData.removeRawObjective(objective);
                         case "complete", "finish" ->
-                                LOG.warn(instruction.getPackage(), "Cannot complete objective for " + profile + ", because he is offline!");
+                                log.warn(instruction.getPackage(), "Cannot complete objective for " + profile + ", because he is offline!");
                         default -> {
                         }
                     }

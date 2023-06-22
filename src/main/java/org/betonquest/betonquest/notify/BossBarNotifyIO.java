@@ -2,8 +2,8 @@ package org.betonquest.betonquest.notify;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -24,7 +24,7 @@ public class BossBarNotifyIO extends NotifyIO {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final List<BarFlag> barFlags;
 
@@ -41,6 +41,7 @@ public class BossBarNotifyIO extends NotifyIO {
     @SuppressWarnings("PMD.CyclomaticComplexity")
     public BossBarNotifyIO(final QuestPackage pack, final Map<String, String> data) throws InstructionParseException {
         super(pack, data);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
         barFlags = new ArrayList<>();
         if (data.containsKey("barflags")) {
@@ -83,7 +84,7 @@ public class BossBarNotifyIO extends NotifyIO {
         try {
             resolvedProgress = normalizeBossBarProgress(getFloatData(onlineProfile.getPlayer(), "progress", 1));
         } catch (final InstructionParseException | QuestRuntimeException e) {
-            LOG.warn(pack, "Invalid variable in bossbar notification from package " + pack.getQuestPath() + ": " + e.getMessage(), e);
+            log.warn(pack, "Invalid variable in bossbar notification from package " + pack.getQuestPath() + ": " + e.getMessage(), e);
         }
         bossBar.setProgress(resolvedProgress);
         bossBar.addPlayer(onlineProfile.getPlayer());

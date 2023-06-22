@@ -56,7 +56,7 @@ public class RunEvent extends QuestEvent {
             throw new InstructionParseException("Event type " + parts[0] + " is not registered, check if it's"
                     + " spelled correctly in internal event");
         }
-        final Instruction eventInstruction = new Instruction(this.instruction.getPackage(), null, instruction);
+        final Instruction eventInstruction = new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), this.instruction.getPackage(), null, instruction);
         return eventFactory.parseEventInstruction(eventInstruction);
     }
 

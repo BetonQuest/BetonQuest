@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.citizens;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
@@ -18,12 +19,13 @@ public class CitizensIntegrator implements Integrator {
 
     @Override
     public void hook() {
-        citizensListener = new CitizensListener();
+        final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
+        citizensListener = new CitizensListener(loggerFactory, loggerFactory.create(CitizensListener.class));
         new CitizensWalkingListener();
 
         // if ProtocolLib is hooked, start NPCHider
         if (Compatibility.getHooked().contains("ProtocolLib")) {
-            NPCHider.start();
+            NPCHider.start(BetonQuest.getInstance().getLoggerFactory().create(NPCHider.class));
             plugin.registerEvents("updatevisibility", UpdateVisibilityNowEvent.class);
         }
         plugin.registerObjectives("npckill", NPCKillObjective.class);

@@ -4,6 +4,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.common.worldselector.ConstantWorldSelector;
 import org.betonquest.betonquest.api.common.worldselector.PlayerWorldSelector;
 import org.betonquest.betonquest.api.common.worldselector.WorldSelector;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
@@ -26,6 +27,11 @@ import java.util.Locale;
  */
 public class WeatherEventFactory implements EventFactory, StaticEventFactory {
     /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
      * Server to use for syncing to the primary server thread.
      */
     private final Server server;
@@ -47,7 +53,8 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
      * @param scheduler scheduler to use
      * @param plugin    plugin to use
      */
-    public WeatherEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+    public WeatherEventFactory(final BetonQuestLogger log, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+        this.log = log;
         this.server = server;
         this.scheduler = scheduler;
         this.plugin = plugin;
@@ -59,7 +66,7 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
         final WorldSelector worldSelector = parseWorld(instruction.getOptional("world"));
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
-                        new WeatherEvent(weather, worldSelector), instruction.getPackage()),
+                        log, new WeatherEvent(weather, worldSelector), instruction.getPackage()),
                 server, scheduler, plugin);
     }
 

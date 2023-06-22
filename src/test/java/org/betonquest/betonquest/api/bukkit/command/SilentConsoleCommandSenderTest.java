@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.bukkit.command;
 
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
-import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.UUID;
-import java.util.logging.Level;
 
 import static org.mockito.Mockito.*;
 
@@ -35,8 +34,8 @@ class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
     }
 
     @Override
-    public SilentConsoleCommandSender getSilentCommandSender() {
-        silentSender = new SilentConsoleCommandSender(sender);
+    public SilentConsoleCommandSender getSilentCommandSender(final BetonQuestLogger logger) {
+        silentSender = new SilentConsoleCommandSender(logger, sender);
         return silentSender;
     }
 
@@ -71,18 +70,18 @@ class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
     }
 
     @Test
-    void sendRawMessage(final LogValidator validator) {
+    void sendRawMessage(final BetonQuestLogger logger) {
         silentSender.sendRawMessage("test1");
         verify(sender, never()).sendRawMessage("test1");
-        validator.assertLogEntry(Level.FINE, "(SilentConsoleCommandSender) Silently sending message to console: test1");
-        validator.assertEmpty();
+        verify(logger, times(1)).debug("Silently sending message to console: test1");
+        verifyNoMoreInteractions(logger);
     }
 
     @Test
-    void testSendRawMessage(final LogValidator validator) {
+    void testSendRawMessage(final BetonQuestLogger logger) {
         silentSender.sendRawMessage(null, "test3");
         verify(sender, never()).sendRawMessage(any(UUID.class), anyString());
-        validator.assertLogEntry(Level.FINE, "(SilentConsoleCommandSender) Silently sending message to console: test3");
-        validator.assertEmpty();
+        verify(logger, times(1)).debug("Silently sending message to console: test3");
+        verifyNoMoreInteractions(logger);
     }
 }

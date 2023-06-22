@@ -2,9 +2,10 @@ package org.betonquest.betonquest.bstats;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.modules.config.quest.QuestPackageImpl;
-import org.betonquest.betonquest.modules.logger.util.LogValidator;
+import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.CustomChart;
 import org.bukkit.Bukkit;
@@ -15,6 +16,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
 
@@ -33,6 +35,7 @@ import static org.mockito.Mockito.*;
 /**
  * Tests for the {@link BStatsMetrics} class.
  */
+@ExtendWith(BetonQuestLoggerService.class)
 class BStatsMetricsTest {
 
     /**
@@ -69,16 +72,15 @@ class BStatsMetricsTest {
 
     @BeforeAll
     static void initializeBukkit() {
-        bukkitLogger = LogValidator.getSilentLogger();
+        bukkitLogger = BetonQuestLoggerService.getSilentLogger();
         server = mock(Server.class);
         when(server.getLogger()).thenReturn(bukkitLogger);
         Bukkit.setServer(server);
     }
 
     private void setupLogger() {
-        final Logger logger = LogValidator.getSilentLogger();
+        final Logger logger = BetonQuestLoggerService.getSilentLogger();
         logger.setParent(bukkitLogger);
-        final LogValidator logValidator = LogValidator.getForLogger(logger);
 
         final Plugin plugin = mock(Plugin.class);
         when(plugin.getLogger()).thenReturn(logger);
@@ -86,11 +88,9 @@ class BStatsMetricsTest {
         final PluginManager pluginManager = mock(PluginManager.class);
         when(pluginManager.getPlugins()).thenReturn(new Plugin[]{plugin});
         when(server.getPluginManager()).thenReturn(pluginManager);
-
-        logValidator.flush();
     }
 
-    private QuestPackage setupQuestPackage(final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    private QuestPackage setupQuestPackage(final BetonQuestLogger logger, final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final Path packageDirectory = questPackagesDirectory.resolve("test");
         if (!packageDirectory.toFile().mkdir()) {
             throw new IOException("Failed to create test package directory.");
@@ -99,7 +99,7 @@ class BStatsMetricsTest {
         if (!packageConfigFile.createNewFile()) {
             throw new IOException("Failed to create test package main configuration file.");
         }
-        return new QuestPackageImpl(PACKAGE_PATH, packageConfigFile, Collections.emptyList());
+        return new QuestPackageImpl(logger, PACKAGE_PATH, packageConfigFile, Collections.emptyList());
     }
 
     @Test
@@ -119,11 +119,11 @@ class BStatsMetricsTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-    void testCustomChartCallableGetsUpdates(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCustomChartCallableGetsUpdates(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         setupLogger();
         final Plugin plugin = mock(Plugin.class);
 
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
         final PluginDescriptionFile description = new PluginDescriptionFile("BetonQuest", "2.0.0", "org.betonquest.betonquest.BetonQuest");
         when(plugin.getDescription()).thenReturn(description);
@@ -137,7 +137,7 @@ class BStatsMetricsTest {
         final Map<ID, Void> ids = new HashMap<>();
 
         final ID firstId = mock(ID.class);
-        final Instruction firstInstruction = new Instruction(questPackage, firstId, TEST_INSTRUCTION);
+        final Instruction firstInstruction = new Instruction(logger, questPackage, firstId, TEST_INSTRUCTION);
         when(firstId.generateInstruction()).thenReturn(firstInstruction);
 
         ids.put(firstId, null);
@@ -162,7 +162,7 @@ class BStatsMetricsTest {
         assertCollectedChartData("{\"chartId\":\"idEnabled\",\"data\":{\"values\":{\"test\":1}}}", enabledChart);
 
         final ID secondId = mock(ID.class);
-        final Instruction secondInstruction = new Instruction(questPackage, secondId, TEST_INSTRUCTION);
+        final Instruction secondInstruction = new Instruction(logger, questPackage, secondId, TEST_INSTRUCTION);
         when(secondId.generateInstruction()).thenReturn(secondInstruction);
         ids.put(secondId, null);
 
@@ -170,7 +170,7 @@ class BStatsMetricsTest {
         assertCollectedChartData("{\"chartId\":\"idEnabled\",\"data\":{\"values\":{\"test\":1}}}", enabledChart);
 
         final ID thirdId = mock(ID.class);
-        final Instruction thirdInstruction = new Instruction(questPackage, thirdId, OTHER_INSTRUCTION);
+        final Instruction thirdInstruction = new Instruction(logger, questPackage, thirdId, OTHER_INSTRUCTION);
         when(thirdId.generateInstruction()).thenReturn(thirdInstruction);
         ids.put(thirdId, null);
 

@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.modules.config.quest;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.KeyConflictException;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.NotNull;
@@ -23,14 +23,14 @@ import java.util.List;
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 public abstract class Quest {
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
-
-    /**
      * The merged {@link MultiConfiguration} that represents this {@link Quest}.
      */
     protected final MultiConfiguration config;
+
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
 
     /**
      * The address of this {@link Quest}.
@@ -60,7 +60,8 @@ public abstract class Quest {
      * @throws FileNotFoundException         thrown if a file could not be found during the creation
      *                                       of a {@link ConfigAccessor}
      */
-    public Quest(final String questPath, final File root, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
+    public Quest(final BetonQuestLogger log, final String questPath, final File root, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
+        this.log = log;
         this.questPath = questPath;
         this.root = root;
         this.configs = new ArrayList<>();
@@ -108,13 +109,13 @@ public abstract class Quest {
                     try {
                         configAccessor.save();
                     } catch (final IOException e) {
-                        LOG.warn("Could not save file '" + configAccessor.getConfigurationFile().getPath() + "'! Reason: " + e.getMessage(), e);
+                        log.warn("Could not save file '" + configAccessor.getConfigurationFile().getPath() + "'! Reason: " + e.getMessage(), e);
                         exceptionOccurred = true;
                     }
                     continue unsaved;
                 }
             }
-            LOG.warn("No related ConfigAccessor found for ConfigurationSection '" + unsavedConfig.getName() + "'!");
+            log.warn("No related ConfigAccessor found for ConfigurationSection '" + unsavedConfig.getName() + "'!");
             exceptionOccurred = true;
         }
         if (exceptionOccurred) {

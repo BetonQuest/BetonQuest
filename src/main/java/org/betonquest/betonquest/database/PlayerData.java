@@ -5,10 +5,10 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.Pointer;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.PlayerTagAddEvent;
 import org.betonquest.betonquest.api.PlayerTagRemoveEvent;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Saver.Record;
@@ -37,7 +37,7 @@ public class PlayerData implements TagData {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
     @SuppressWarnings("PMD.DoNotUseThreads")
     private final Saver saver = BetonQuest.getInstance().getSaver();
@@ -112,7 +112,7 @@ public class PlayerData implements TagData {
                     try {
                         item = new QuestItem(instruction).generate(amount);
                     } catch (final InstructionParseException e) {
-                        LOG.warn("Could not load backpack item for " + profile
+                        log.warn("Could not load backpack item for " + profile
                                 + ", with instruction '" + instruction + "', because: " + e.getMessage(), e);
                         continue;
                     }
@@ -137,12 +137,12 @@ public class PlayerData implements TagData {
                             profileID, BetonQuest.getInstance().getPluginConfig().getString("profiles.initial_name", "default")));
                 }
 
-                LOG.debug("There are " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
+                log.debug("There are " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
                         + " points, " + entries.size() + " journal entries and " + backpack.size()
                         + " items loaded for " + profile);
             }
         } catch (final SQLException e) {
-            LOG.error("There was an exception with SQL", e);
+            log.error("There was an exception with SQL", e);
         }
     }
 
@@ -316,7 +316,7 @@ public class PlayerData implements TagData {
                 final ObjectiveID objectiveID = new ObjectiveID(null, objective);
                 BetonQuest.resumeObjective(profile, objectiveID, entry.getValue());
             } catch (final ObjectNotFoundException e) {
-                LOG.warn("Loaded '" + objective
+                log.warn("Loaded '" + objective
                         + "' objective from the database, but it is not defined in configuration. Skipping.", e);
             }
         }

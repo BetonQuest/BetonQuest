@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.compatibility.holograms.lines;
 
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramLoop;
 
@@ -22,7 +24,7 @@ public abstract class AbstractLine {
 
     /**
      * Creates a new instance of the content line. It may validate data, however, the main validation is handled by
-     * {@link HologramLoop#HologramLoop()}.
+     * {@link HologramLoop#HologramLoop(BetonQuestLoggerFactory, BetonQuestLogger)}.
      *
      * @param staticText false if this line needs to be updated
      * @param linesAdded the amount of lines added by this line when {@link #setLine(BetonHologram, int)} is called

@@ -1,8 +1,8 @@
 package org.betonquest.betonquest;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -14,7 +14,7 @@ public class VariableNumber {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
     /**
      * The constant value of this variable number if no variable was set.
@@ -130,7 +130,7 @@ public class VariableNumber {
             try {
                 parsed = Double.parseDouble(resolved);
             } catch (final NumberFormatException e) {
-                LOG.debug("Could not parse the variable as a number, it's value is: '" + resolved + "'; returning 0.", e);
+                log.debug("Could not parse the variable as a number, it's value is: '" + resolved + "'; returning 0.", e);
             }
             return parsed;
         }

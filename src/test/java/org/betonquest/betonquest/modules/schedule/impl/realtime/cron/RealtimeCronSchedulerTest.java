@@ -1,11 +1,9 @@
 package org.betonquest.betonquest.modules.schedule.impl.realtime.cron;
 
 import com.cronutils.model.time.ExecutionTime;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
-import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.betonquest.betonquest.modules.schedule.LastExecutionCache;
 import org.betonquest.betonquest.modules.schedule.ScheduleID;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +17,6 @@ import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 
 import static org.mockito.Mockito.*;
 
@@ -55,45 +52,45 @@ class RealtimeCronSchedulerTest {
     }
 
     @Test
-    void testStartWithoutSchedules(final LogValidator validator) {
+    void testStartWithoutSchedules(final BetonQuestLogger logger) {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
-        final RealtimeCronScheduler scheduler = spy(new RealtimeCronScheduler(cache));
+        final RealtimeCronScheduler scheduler = spy(new RealtimeCronScheduler(logger, cache));
         scheduler.start();
 
-        validator.assertLogEntry(Level.FINE, "(Schedules) Starting realtime scheduler.");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Collecting reboot schedules...");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Found 0 reboot schedules. They will be run on next server tick.");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Found 0 missed schedule runs that will be caught up.");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Realtime scheduler start complete.");
-        validator.assertEmpty();
+        verify(logger, times(1)).debug("Starting realtime scheduler.");
+        verify(logger, times(1)).debug("Collecting reboot schedules...");
+        verify(logger, times(1)).debug("Found 0 reboot schedules. They will be run on next server tick.");
+        verify(logger, times(1)).debug("Found 0 missed schedule runs that will be caught up.");
+        verify(logger, times(1)).debug("Realtime scheduler start complete.");
+        verifyNoMoreInteractions(logger);
         verify(scheduler, never()).schedule(any());
     }
 
     @Test
-    void testStartWithRebootSchedules(final LogValidator validator) throws InstructionParseException, ObjectNotFoundException {
+    void testStartWithRebootSchedules(final BetonQuestLogger logger) {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
-        final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(cache);
+        final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(logger, cache);
         final RealtimeCronSchedule schedule = getSchedule(CatchupStrategy.NONE, true);
         scheduler.addSchedule(schedule);
         scheduler.start();
 
-        validator.assertLogEntry(Level.FINE, "(Schedules) Starting realtime scheduler.");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Collecting reboot schedules...");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Found 1 reboot schedules. They will be run on next server tick.");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Schedule 'test.schedule' runs its events...");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Found 0 missed schedule runs that will be caught up.");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Realtime scheduler start complete.");
-        validator.assertEmpty();
+        verify(logger, times(1)).debug("Starting realtime scheduler.");
+        verify(logger, times(1)).debug("Collecting reboot schedules...");
+        verify(logger, times(1)).debug("Found 1 reboot schedules. They will be run on next server tick.");
+        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' runs its events...");
+        verify(logger, times(1)).debug("Found 0 missed schedule runs that will be caught up.");
+        verify(logger, times(1)).debug("Realtime scheduler start complete.");
+        verifyNoMoreInteractions(logger);
         verify(schedule, times(1)).getEvents();
     }
 
     @Test
-    void testStartWithMissedSchedulesStrategyOne(final LogValidator validator) {
+    void testStartWithMissedSchedulesStrategyOne(final BetonQuestLogger logger) {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final Instant lastExecution = Instant.now().minusSeconds(60);
         when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(lastExecution));
 
-        final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(cache);
+        final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(logger, cache);
         final RealtimeCronSchedule schedule = getSchedule(CatchupStrategy.ONE, false);
         final ExecutionTime executionTime = mock(ExecutionTime.class);
         final ZonedDateTime nextMissedExecution = lastExecution.plusSeconds(30).atZone(ZoneId.systemDefault());
@@ -102,25 +99,25 @@ class RealtimeCronSchedulerTest {
         scheduler.addSchedule(schedule);
         scheduler.start();
 
-        validator.assertLogEntry(Level.FINE, "(Schedules) Starting realtime scheduler.");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Collecting reboot schedules...");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Found 0 reboot schedules. They will be run on next server tick.");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Schedule 'test.schedule' run missed at " + nextMissedExecution);
-        validator.assertLogEntry(Level.FINE, "(Schedules) Found 1 missed schedule runs that will be caught up.");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Running missed schedules to catch up...");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Schedule 'test.schedule' runs its events...");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Realtime scheduler start complete.");
-        validator.assertEmpty();
+        verify(logger, times(1)).debug("Starting realtime scheduler.");
+        verify(logger, times(1)).debug("Collecting reboot schedules...");
+        verify(logger, times(1)).debug("Found 0 reboot schedules. They will be run on next server tick.");
+        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' run missed at " + nextMissedExecution);
+        verify(logger, times(1)).debug("Found 1 missed schedule runs that will be caught up.");
+        verify(logger, times(1)).debug("Running missed schedules to catch up...");
+        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' runs its events...");
+        verify(logger, times(1)).debug("Realtime scheduler start complete.");
+        verifyNoMoreInteractions(logger);
         verify(schedule, times(1)).getEvents();
     }
 
     @Test
-    void testStartWithMissedSchedulesStrategyAll(final LogValidator validator) {
+    void testStartWithMissedSchedulesStrategyAll(final BetonQuestLogger logger) {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final Instant lastExecution = Instant.now().minusSeconds(60);
         when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(lastExecution));
 
-        final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(cache);
+        final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(logger, cache);
         final RealtimeCronSchedule schedule = getSchedule(CatchupStrategy.ALL, false);
         final ExecutionTime executionTime = mock(ExecutionTime.class);
         final ZonedDateTime nextMissedExecution1 = lastExecution.plusSeconds(20).atZone(ZoneId.systemDefault());
@@ -136,25 +133,23 @@ class RealtimeCronSchedulerTest {
         scheduler.addSchedule(schedule);
         scheduler.start();
 
-        validator.assertLogEntry(Level.FINE, "(Schedules) Starting realtime scheduler.");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Collecting reboot schedules...");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Found 0 reboot schedules. They will be run on next server tick.");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Schedule 'test.schedule' run missed at " + nextMissedExecution1);
-        validator.assertLogEntry(Level.FINE, "(Schedules) Schedule 'test.schedule' run missed at " + nextMissedExecution2);
-        validator.assertLogEntry(Level.FINE, "(Schedules) Schedule 'test.schedule' run missed at " + nextMissedExecution3);
-        validator.assertLogEntry(Level.FINE, "(Schedules) Found 3 missed schedule runs that will be caught up.");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Running missed schedules to catch up...");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Schedule 'test.schedule' runs its events...");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Schedule 'test.schedule' runs its events...");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Schedule 'test.schedule' runs its events...");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Realtime scheduler start complete.");
-        validator.assertEmpty();
+        verify(logger, times(1)).debug("Starting realtime scheduler.");
+        verify(logger, times(1)).debug("Collecting reboot schedules...");
+        verify(logger, times(1)).debug("Found 0 reboot schedules. They will be run on next server tick.");
+        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' run missed at " + nextMissedExecution1);
+        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' run missed at " + nextMissedExecution2);
+        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' run missed at " + nextMissedExecution3);
+        verify(logger, times(1)).debug("Found 3 missed schedule runs that will be caught up.");
+        verify(logger, times(1)).debug("Running missed schedules to catch up...");
+        verify(logger, times(3)).debug(null, "Schedule 'test.schedule' runs its events...");
+        verify(logger, times(1)).debug("Realtime scheduler start complete.");
+        verifyNoMoreInteractions(logger);
         verify(schedule, times(3)).getEvents();
     }
 
     @Test
     @SuppressWarnings("PMD.DoNotUseThreads")
-    void testStartSchedule(final LogValidator validator) {
+    void testStartSchedule(final BetonQuestLogger logger) {
         final Duration duration = Duration.ofSeconds(20);
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);
@@ -163,7 +158,7 @@ class RealtimeCronSchedulerTest {
             runnable.run();
             return null;
         });
-        final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(() -> executorService, cache);
+        final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(logger, () -> executorService, cache);
         final RealtimeCronSchedule schedule = getSchedule(CatchupStrategy.NONE, false);
         final ExecutionTime executionTime = mock(ExecutionTime.class);
         when(executionTime.timeToNextExecution(any())).thenReturn(
@@ -175,15 +170,13 @@ class RealtimeCronSchedulerTest {
         scheduler.addSchedule(schedule);
         scheduler.start();
 
-        validator.assertLogEntry(Level.FINE, "(Schedules) Starting realtime scheduler.");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Collecting reboot schedules...");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Found 0 reboot schedules. They will be run on next server tick.");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Found 0 missed schedule runs that will be caught up.");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Schedule 'test.schedule' runs its events...");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Schedule 'test.schedule' runs its events...");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Schedule 'test.schedule' runs its events...");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Realtime scheduler start complete.");
-        validator.assertEmpty();
+        verify(logger, times(1)).debug("Starting realtime scheduler.");
+        verify(logger, times(1)).debug("Collecting reboot schedules...");
+        verify(logger, times(1)).debug("Found 0 reboot schedules. They will be run on next server tick.");
+        verify(logger, times(1)).debug("Found 0 missed schedule runs that will be caught up.");
+        verify(logger, times(3)).debug(null, "Schedule 'test.schedule' runs its events...");
+        verify(logger, times(1)).debug("Realtime scheduler start complete.");
+        verifyNoMoreInteractions(logger);
         verify(schedule, times(3)).getEvents();
     }
 }

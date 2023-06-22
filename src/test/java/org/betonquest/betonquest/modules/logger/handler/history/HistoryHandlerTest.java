@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.modules.logger.handler.history;
 
 import org.betonquest.betonquest.modules.logger.handler.ResettableHandler;
-import org.betonquest.betonquest.modules.logger.util.LogValidator;
+import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.utils.WriteOperation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
@@ -33,19 +34,19 @@ class HistoryHandlerTest {
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     void testStartLoggingPrintsHistoryInCorrectOrder() throws IOException {
         final LogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
-        final LogValidator validator = new LogValidator();
+        final Handler validator = mock(Handler.class);
         final HistoryHandler historyHandler = new HistoryHandler(false, loggingUpdater, logQueue, new ResettableHandler(() -> validator));
 
-        final Logger logger = LogValidator.getSilentLogger();
+        final Logger logger = BetonQuestLoggerService.getSilentLogger();
         logger.addHandler(historyHandler);
         logger.log(new LogRecord(Level.INFO, "record1"));
 
-        validator.assertEmpty();
+        verifyNoInteractions(validator);
         historyHandler.startLogging();
-        validator.assertLogEntry(Level.INFO, "=====START OF HISTORY=====");
-        validator.assertLogEntry(Level.INFO, "record1");
-        validator.assertLogEntry(Level.INFO, "=====END OF HISTORY=====");
-        validator.assertEmpty();
+        verify(validator, times(1)).publish(argThat((record) -> "=====START OF HISTORY=====".equals(record.getMessage())));
+        verify(validator, times(1)).publish(argThat((record) -> "record1".equals(record.getMessage())));
+        verify(validator, times(1)).publish(argThat((record) -> "=====END OF HISTORY=====".equals(record.getMessage())));
+        verifyNoMoreInteractions(validator);
         historyHandler.flush();
         historyHandler.close();
     }
@@ -54,16 +55,16 @@ class HistoryHandlerTest {
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     void testLoggingAfterStart() throws IOException {
         final LogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
-        final LogValidator validator = new LogValidator();
+        final Handler validator = mock(Handler.class);
         final HistoryHandler historyHandler = new HistoryHandler(false, loggingUpdater, logQueue, new ResettableHandler(() -> validator));
 
-        final Logger logger = LogValidator.getSilentLogger();
+        final Logger logger = BetonQuestLoggerService.getSilentLogger();
         logger.addHandler(historyHandler);
         historyHandler.startLogging();
         logger.log(new LogRecord(Level.INFO, "record2"));
 
-        validator.assertLogEntry(Level.INFO, "record2");
-        validator.assertEmpty();
+        verify(validator, times(1)).publish(argThat((record) -> "record2".equals(record.getMessage())));
+        verifyNoMoreInteractions(validator);
         historyHandler.flush();
         historyHandler.close();
     }

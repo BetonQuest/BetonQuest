@@ -1,15 +1,14 @@
 package org.betonquest.betonquest.api.bukkit.command;
 
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
-import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.bukkit.command.CommandSender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.UUID;
-import java.util.logging.Level;
 
 import static org.mockito.Mockito.*;
 
@@ -29,9 +28,9 @@ class SilentCommandSenderTest {
     private SilentCommandSender silentSender;
 
     @BeforeEach
-    void setUp() {
+    void setUp(final BetonQuestLogger logger) {
         sender = getCommandSender();
-        silentSender = getSilentCommandSender();
+        silentSender = getSilentCommandSender(logger);
     }
 
     /**
@@ -48,40 +47,40 @@ class SilentCommandSenderTest {
      *
      * @return the silent command sender to test
      */
-    public SilentCommandSender getSilentCommandSender() {
-        return new SilentCommandSender(sender);
+    public SilentCommandSender getSilentCommandSender(final BetonQuestLogger logger) {
+        return new SilentCommandSender(logger, sender);
     }
 
     @Test
-    void testSendMessage(final LogValidator validator) {
+    void testSendMessage(final BetonQuestLogger logger) {
         silentSender.sendMessage("test1");
         verify(sender, never()).sendMessage(anyString());
-        validator.assertLogEntry(Level.FINE, "(SilentCommandSender) Silently sending message to console: test1");
-        validator.assertEmpty();
+        verify(logger, times(1)).debug("Silently sending message to console: test1");
+        verifyNoMoreInteractions(logger);
     }
 
     @Test
-    void testTestSendMessage(final LogValidator validator) {
+    void testTestSendMessage(final BetonQuestLogger logger) {
         silentSender.sendMessage("test2", "test3");
         verify(sender, never()).sendMessage(anyString(), anyString());
-        validator.assertLogEntry(Level.FINE, "(SilentCommandSender) Silently sending messages to console: test2, test3");
-        validator.assertEmpty();
+        verify(logger, times(1)).debug("Silently sending messages to console: test2, test3");
+        verifyNoMoreInteractions(logger);
     }
 
     @Test
-    void testTestSendMessage1(final LogValidator validator) {
+    void testTestSendMessage1(final BetonQuestLogger logger) {
         silentSender.sendMessage(null, "test4");
         verify(sender, never()).sendMessage(any(UUID.class), anyString());
-        validator.assertLogEntry(Level.FINE, "(SilentCommandSender) Silently sending message to console: test4");
-        validator.assertEmpty();
+        verify(logger, times(1)).debug("Silently sending message to console: test4");
+        verifyNoMoreInteractions(logger);
     }
 
     @Test
-    void testTestSendMessage2(final LogValidator validator) {
+    void testTestSendMessage2(final BetonQuestLogger logger) {
         silentSender.sendMessage((UUID) null, "test5", "test6");
         verify(sender, never()).sendMessage(any(UUID.class), anyString(), anyString());
-        validator.assertLogEntry(Level.FINE, "(SilentCommandSender) Silently sending messages to console: test5, test6");
-        validator.assertEmpty();
+        verify(logger, times(1)).debug("Silently sending messages to console: test5, test6");
+        verifyNoMoreInteractions(logger);
     }
 
     @Test

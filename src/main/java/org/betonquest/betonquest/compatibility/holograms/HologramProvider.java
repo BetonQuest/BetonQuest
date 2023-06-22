@@ -1,8 +1,9 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.citizens.CitizensHologramLoop;
@@ -29,14 +30,14 @@ public class HologramProvider implements Integrator {
     public static final Pattern VARIABLE_VALIDATOR = Pattern.compile("%[^ %\\s]+%");
 
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
-
-    /**
      * HologramIntegrators when 'hooked' add themselves to this list
      */
     private static final List<HologramIntegrator> ATTEMPTED_INTEGRATIONS = new ArrayList<>();
+
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(HologramProvider.class);
 
     /**
      * Singleton instance of this HologramProvider, only ever null if not initialised.
@@ -150,9 +151,10 @@ public class HologramProvider implements Integrator {
 
     @Override
     public void hook() throws HookException {
-        this.locationHologramLoop = new LocationHologramLoop();
+        final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
+        this.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class));
         if (Compatibility.getHooked().contains("Citizens")) {
-            this.citizensHologramLoop = new CitizensHologramLoop();
+            this.citizensHologramLoop = new CitizensHologramLoop(loggerFactory, loggerFactory.create(CitizensHologramLoop.class));
         }
         new HologramListener();
     }
@@ -166,10 +168,11 @@ public class HologramProvider implements Integrator {
                 Collections.sort(ATTEMPTED_INTEGRATIONS);
 
                 instance.integrator = ATTEMPTED_INTEGRATIONS.get(0);
-                instance.locationHologramLoop = new LocationHologramLoop();
+                final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
+                instance.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class));
                 if (instance.citizensHologramLoop != null) {
                     this.citizensHologramLoop.close();
-                    this.citizensHologramLoop = new CitizensHologramLoop();
+                    this.citizensHologramLoop = new CitizensHologramLoop(loggerFactory, loggerFactory.create(CitizensHologramLoop.class));
                 }
             }
         }

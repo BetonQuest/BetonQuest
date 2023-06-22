@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.modules.web.updater;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.versioning.VersionComparator;
 import org.betonquest.betonquest.modules.web.updater.source.DevelopmentUpdateSource;
@@ -23,7 +23,7 @@ public class UpdateSourceHandler {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     /**
      * A list of {@link ReleaseUpdateSource} instances.
@@ -40,10 +40,12 @@ public class UpdateSourceHandler {
      * One list for {@link ReleaseUpdateSource} and one for {@link DevelopmentUpdateSource}
      * can be passed. One is for release builds, the other for development builds.
      *
+     * @param log                    the logger that will be used for logging
      * @param releaseHandlerList     A list of {@link ReleaseUpdateSource} instances
      * @param developmentHandlerList A list of {@link DevelopmentUpdateSource} instances
      */
-    public UpdateSourceHandler(final List<ReleaseUpdateSource> releaseHandlerList, final List<DevelopmentUpdateSource> developmentHandlerList) {
+    public UpdateSourceHandler(final BetonQuestLogger log, final List<ReleaseUpdateSource> releaseHandlerList, final List<DevelopmentUpdateSource> developmentHandlerList) {
+        this.log = log;
         this.releaseHandlerList = releaseHandlerList;
         this.developmentHandlerList = developmentHandlerList;
     }
@@ -69,17 +71,17 @@ public class UpdateSourceHandler {
         try {
             latest = searchUpdateFor(latest, releaseHandlerList, comparator, ReleaseUpdateSource::getReleaseVersions);
         } catch (final UnknownHostException e) {
-            LOG.warn("The update server for release builds is currently not available!");
+            log.warn("The update server for release builds is currently not available!");
         } catch (final IOException e) {
-            LOG.warn("Could not get the latest release build! " + e.getMessage(), e);
+            log.warn("Could not get the latest release build! " + e.getMessage(), e);
         }
         if (config.isDevDownloadEnabled() && !(latest.getValue() != null && config.isForcedStrategy())) {
             try {
                 latest = searchUpdateFor(latest, developmentHandlerList, comparator, DevelopmentUpdateSource::getDevelopmentVersions);
             } catch (final UnknownHostException e) {
-                LOG.warn("The update server for dev builds is currently not available!");
+                log.warn("The update server for dev builds is currently not available!");
             } catch (final IOException e) {
-                LOG.warn("Could not get the latest dev build! " + e.getMessage(), e);
+                log.warn("Could not get the latest dev build! " + e.getMessage(), e);
             }
         }
         return latest;

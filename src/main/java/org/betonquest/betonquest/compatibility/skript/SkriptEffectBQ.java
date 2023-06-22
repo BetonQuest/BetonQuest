@@ -6,7 +6,7 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -22,7 +22,7 @@ public class SkriptEffectBQ extends Effect {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private Expression<String> event;
 
@@ -30,6 +30,7 @@ public class SkriptEffectBQ extends Effect {
 
     public SkriptEffectBQ() {
         super();
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
     }
 
     @SuppressWarnings("unchecked")
@@ -56,7 +57,7 @@ public class SkriptEffectBQ extends Effect {
                 try {
                     BetonQuest.event(PlayerConverter.getID(player.getSingle(event)), new EventID(null, eventID));
                 } catch (final ObjectNotFoundException e) {
-                    LOG.warn("Error when running Skript event - could not load '" + eventID + "' event: " + e.getMessage(), e);
+                    log.warn("Error when running Skript event - could not load '" + eventID + "' event: " + e.getMessage(), e);
                 }
 
             }

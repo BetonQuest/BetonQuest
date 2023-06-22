@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.schedule.ScheduleID;
@@ -25,8 +26,8 @@ class SchedulerTest {
     }
 
     @Test
-    void testAddSchedule() {
-        final Scheduler<Schedule> scheduler = new MockedScheduler();
+    void testAddSchedule(final BetonQuestLogger logger) {
+        final Scheduler<Schedule> scheduler = new MockedScheduler(logger);
         final ScheduleID scheduleID = mock(ScheduleID.class);
         final Schedule schedule = mockSchedule(scheduleID);
         scheduler.addSchedule(schedule);
@@ -35,8 +36,8 @@ class SchedulerTest {
     }
 
     @Test
-    void testStart() {
-        final Scheduler<Schedule> scheduler = new MockedScheduler();
+    void testStart(final BetonQuestLogger logger) {
+        final Scheduler<Schedule> scheduler = new MockedScheduler(logger);
         assertFalse(scheduler.isRunning(), "isRunning should be false before start is called");
         scheduler.start();
         assertTrue(scheduler.isRunning(), "isRunning should be true after start is called");
@@ -44,8 +45,8 @@ class SchedulerTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-    void testStop() {
-        final Scheduler<Schedule> scheduler = new MockedScheduler();
+    void testStop(final BetonQuestLogger logger) {
+        final Scheduler<Schedule> scheduler = new MockedScheduler(logger);
         final ScheduleID scheduleID = mock(ScheduleID.class);
         final Schedule schedule = mockSchedule(scheduleID);
         scheduler.schedules.put(scheduleID, schedule);
@@ -58,22 +59,28 @@ class SchedulerTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
-    void testExecuteEvents() {
-        final Scheduler<Schedule> scheduler = new MockedScheduler();
+    void testExecuteEvents(final MockedStatic<BetonQuest> betonQuest, final BetonQuestLogger logger) {
+        final Scheduler<Schedule> scheduler = new MockedScheduler(logger);
         final Schedule schedule = mockSchedule(mock(ScheduleID.class));
         final EventID eventA = mock(EventID.class);
         final EventID eventB = mock(EventID.class);
         when(schedule.getEvents()).thenReturn(List.of(eventA, eventB));
-        try (MockedStatic<BetonQuest> betonQuest = mockStatic(BetonQuest.class)) {
-            scheduler.executeEvents(schedule);
-            betonQuest.verify(() -> BetonQuest.event(null, eventA));
-            betonQuest.verify(() -> BetonQuest.event(null, eventB));
-        }
+        scheduler.executeEvents(schedule);
+        betonQuest.verify(() -> BetonQuest.event(null, eventA));
+        betonQuest.verify(() -> BetonQuest.event(null, eventB));
     }
 
     /**
      * Class extending a scheduler without any changes.
      */
     private static class MockedScheduler extends Scheduler<Schedule> {
+        /**
+         * Default constructor.
+         *
+         * @param log the logger that will be used for logging
+         */
+        public MockedScheduler(final BetonQuestLogger logger) {
+            super(logger);
+        }
     }
 }

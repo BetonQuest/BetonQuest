@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import io.papermc.lib.PaperLib;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -82,7 +83,7 @@ public abstract class HeadHandler {
         if (PaperLib.isPaper()) {
             return new PaperHeadHandler();
         } else {
-            return new SpigotHeadHandler();
+            return new SpigotHeadHandler(BetonQuest.getInstance().getLoggerFactory().create(SpigotHeadHandler.class));
         }
     }
 

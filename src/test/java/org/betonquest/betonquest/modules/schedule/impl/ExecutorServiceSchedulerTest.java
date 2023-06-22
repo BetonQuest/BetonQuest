@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.modules.schedule.impl;
 
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
-import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.betonquest.betonquest.modules.schedule.ScheduleID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.logging.Level;
 
 import static org.betonquest.betonquest.modules.schedule.impl.ExecutorServiceScheduler.TERMINATION_TIMEOUT_MS;
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,8 +45,8 @@ class ExecutorServiceSchedulerTest {
     }
 
     @BeforeEach
-    void setUp() {
-        scheduler = spy(new ExecutorServiceScheduler<Schedule>(this::newExecutor) {
+    void setUp(final BetonQuestLogger logger) {
+        scheduler = spy(new ExecutorServiceScheduler<Schedule>(logger, this::newExecutor) {
             @Override
             protected void schedule(final Schedule schedule) {
                 //mock, do nothing
@@ -65,12 +64,12 @@ class ExecutorServiceSchedulerTest {
 
         assertNotNull(scheduler.executor, "Executor should be present");
         assertEquals(executor, scheduler.executor, "Executor should be provided by supplier");
-        verify(scheduler).schedule(schedule1);
-        verify(scheduler).schedule(schedule2);
+        verify(scheduler, times(1)).schedule(schedule1);
+        verify(scheduler, times(1)).schedule(schedule2);
     }
 
     @Test
-    void testStopSuccess(final LogValidator validator) throws InterruptedException {
+    void testStopSuccess(final BetonQuestLogger logger) throws InterruptedException {
         scheduler.start();
         doReturn(true).when(executor).awaitTermination(anyLong(), any());
         scheduler.stop();
@@ -78,13 +77,14 @@ class ExecutorServiceSchedulerTest {
         assertEquals(executor, scheduler.executor, "Executor should be provided by supplier");
         verify(executor).shutdownNow();
         verify(executor).awaitTermination(TERMINATION_TIMEOUT_MS, TimeUnit.MILLISECONDS);
-        validator.assertLogEntry(Level.FINE, "(Schedules) Stopping  scheduler.");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Successfully shut down executor service.");
-        validator.assertLogEntry(Level.FINE, "(Schedules) Stop complete.");
+        verify(logger, times(1)).debug("Stopping  scheduler.");
+        verify(logger, times(1)).debug("Successfully shut down executor service.");
+        verify(logger, times(1)).debug("Stop complete.");
+        verifyNoMoreInteractions(logger);
     }
 
     @Test
-    void testStopInterrupted(final LogValidator validator) throws InterruptedException {
+    void testStopInterrupted(final BetonQuestLogger logger) throws InterruptedException {
         scheduler.start();
         doThrow(InterruptedException.class).when(executor).awaitTermination(anyLong(), any());
         scheduler.stop();
@@ -92,12 +92,14 @@ class ExecutorServiceSchedulerTest {
         assertEquals(executor, scheduler.executor, "Executor should be provided by supplier");
         verify(executor).shutdownNow();
         verify(executor).awaitTermination(TERMINATION_TIMEOUT_MS, TimeUnit.MILLISECONDS);
-        validator.assertLogEntry(Level.FINE, "(Schedules) Stopping  scheduler.");
-        validator.assertLogEntry(Level.SEVERE, "(Schedules) Error while stopping scheduler", InterruptedException.class);
+        verify(logger, times(1)).debug("Stopping  scheduler.");
+        verify(logger, times(1)).error(eq("Error while stopping scheduler"), any(InterruptedException.class));
+        verify(logger, times(1)).debug("Stop complete.");
+        verifyNoMoreInteractions(logger);
     }
 
     @Test
-    void testStopTimeout(final LogValidator validator) throws InterruptedException {
+    void testStopTimeout(final BetonQuestLogger logger) throws InterruptedException {
         scheduler.start();
         doReturn(false).when(executor).awaitTermination(anyLong(), any());
         scheduler.stop();
@@ -105,12 +107,9 @@ class ExecutorServiceSchedulerTest {
         assertEquals(executor, scheduler.executor, "Executor should be provided by supplier");
         verify(executor).shutdownNow();
         verify(executor).awaitTermination(TERMINATION_TIMEOUT_MS, TimeUnit.MILLISECONDS);
-        validator.assertLogEntry(Level.FINE, "(Schedules) Stopping  scheduler.");
-        validator.assertLogEntry(
-                Level.SEVERE,
-                "(Schedules) Error while stopping scheduler",
-                TimeoutException.class,
-                "Not all schedules could be terminated within time constraints"
-        );
+        verify(logger, times(1)).debug("Stopping  scheduler.");
+        verify(logger, times(1)).error(eq("Error while stopping scheduler"), any(TimeoutException.class));
+        verify(logger, times(1)).debug("Stop complete.");
+        verifyNoMoreInteractions(logger);
     }
 }

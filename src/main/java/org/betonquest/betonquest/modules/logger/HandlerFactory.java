@@ -1,8 +1,9 @@
 package org.betonquest.betonquest.modules.logger;
 
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.modules.logger.filter.LogRecordTypeFilter;
 import org.betonquest.betonquest.modules.logger.format.ChatFormatter;
 import org.betonquest.betonquest.modules.logger.format.LogfileFormatter;
@@ -38,7 +39,7 @@ public final class HandlerFactory {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create("LogWatcherFactory");
+    private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(HandlerFactory.class, "LogWatcherFactory");
 
     private HandlerFactory() {
         // Empty
@@ -113,7 +114,7 @@ public final class HandlerFactory {
             try {
                 Files.move(logFile.toPath(), newFile.toPath());
             } catch (final IOException e) {
-                throw new IOException("Could not rename '" + logFile.getName() + "' file! Continue writing into the same log file.", e);
+                throw new IOException("Could not copy '" + logFile.getName() + "' file! Continue writing into the same log file.", e);
             }
         }
         if (!createFolderAndFile(logFile)) {

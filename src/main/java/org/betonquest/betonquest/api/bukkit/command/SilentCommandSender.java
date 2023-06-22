@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.bukkit.command;
 
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
@@ -22,7 +22,7 @@ public class SilentCommandSender implements CommandSender {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create("SilentCommandSender");
+    private final BetonQuestLogger log;
 
     /**
      * The wrapped command sender.
@@ -32,34 +32,32 @@ public class SilentCommandSender implements CommandSender {
     /**
      * Create a new silent command sender.
      *
+     * @param log    the logger that will be used for logging
      * @param sender the command sender to wrap
      */
-    public SilentCommandSender(final CommandSender sender) {
+    public SilentCommandSender(final BetonQuestLogger log, final CommandSender sender) {
+        this.log = log;
         this.sender = sender;
-    }
-
-    public CommandSender getSender() {
-        return sender;
     }
 
     @Override
     public void sendMessage(@NotNull final String message) {
-        LOG.debug("Silently sending message to console: " + message);
+        log.debug("Silently sending message to console: " + message);
     }
 
     @Override
     public void sendMessage(final @NotNull String... messages) {
-        LOG.debug("Silently sending messages to console: " + String.join(", ", messages));
+        log.debug("Silently sending messages to console: " + String.join(", ", messages));
     }
 
     @Override
     public void sendMessage(@Nullable final UUID sender, @NotNull final String message) {
-        LOG.debug("Silently sending message to console: " + message);
+        log.debug("Silently sending message to console: " + message);
     }
 
     @Override
     public void sendMessage(@Nullable final UUID sender, final @NotNull String... messages) {
-        LOG.debug("Silently sending messages to console: " + String.join(", ", messages));
+        log.debug("Silently sending messages to console: " + String.join(", ", messages));
     }
 
     @Override

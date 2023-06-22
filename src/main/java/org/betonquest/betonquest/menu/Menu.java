@@ -3,8 +3,9 @@ package org.betonquest.betonquest.menu;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableString;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -41,7 +42,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     /**
      * The internal id of the menu
@@ -94,8 +95,9 @@ public class Menu extends SimpleYMLSection implements Listener {
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.NPathComplexity", "PMD.CyclomaticComplexity",
             "PMD.CognitiveComplexity", "checkstyle:EmptyCatchBlock"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public Menu(final MenuID menuID) throws InvalidConfigurationException {
+    public Menu(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final MenuID menuID) throws InvalidConfigurationException {
         super(menuID.getPackage(), menuID.getFullID(), menuID.getConfig());
+        this.log = log;
         this.menuID = menuID;
         //load size
         this.height = getInt("height");
@@ -151,7 +153,7 @@ public class Menu extends SimpleYMLSection implements Listener {
                 if (command.startsWith("/")) {
                     command = command.substring(1);
                 }
-                return new MenuBoundCommand(command);
+                return new MenuBoundCommand(loggerFactory.create(MenuBoundCommand.class), command);
             }
         }.get();
         // load items
@@ -160,7 +162,7 @@ public class Menu extends SimpleYMLSection implements Listener {
         }
         final HashMap<String, MenuItem> itemsMap = new HashMap<>();
         for (final String key : config.getConfigurationSection("items").getKeys(false)) {
-            itemsMap.put(key, new MenuItem(pack, menuID, key, config.getConfigurationSection("items." + key)));
+            itemsMap.put(key, new MenuItem(loggerFactory.create(MenuItem.class), pack, menuID, key, config.getConfigurationSection("items." + key)));
         }
         //load slots
         this.slots = new ArrayList<>();
@@ -207,7 +209,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     public boolean mayOpen(final Profile profile) {
         for (final ConditionID conditionID : openConditions) {
             if (!BetonQuest.condition(profile, conditionID)) {
-                LOG.debug(pack, "Denied opening of " + name + ": Condition " + conditionID + "returned false.");
+                log.debug(pack, "Denied opening of " + name + ": Condition " + conditionID + "returned false.");
                 return false;
             }
         }
@@ -239,7 +241,7 @@ public class Menu extends SimpleYMLSection implements Listener {
             return;
         }
         //open the menu
-        LOG.debug(pack, onlineprofile + " used bound item of menu " + this.menuID);
+        log.debug(pack, onlineprofile + " used bound item of menu " + this.menuID);
         menu.openMenu(onlineprofile, this.menuID);
     }
 
@@ -250,10 +252,10 @@ public class Menu extends SimpleYMLSection implements Listener {
      */
     @SuppressWarnings("PMD.AvoidDuplicateLiterals")
     public void runOpenEvents(final Profile profile) {
-        LOG.debug(pack, "Menu " + menuID + ": Running open events");
+        log.debug(pack, "Menu " + menuID + ": Running open events");
         for (final EventID event : this.openEvents) {
             BetonQuest.event(profile, event);
-            LOG.debug(pack, "Menu " + menuID + ": Run event " + event);
+            log.debug(pack, "Menu " + menuID + ": Run event " + event);
         }
     }
 
@@ -263,10 +265,10 @@ public class Menu extends SimpleYMLSection implements Listener {
      * @param player the player to run the events for
      */
     public void runCloseEvents(final Player player) {
-        LOG.debug(pack, "Menu " + menuID + ": Running close events");
+        log.debug(pack, "Menu " + menuID + ": Running close events");
         for (final EventID event : this.closeEvents) {
             BetonQuest.event(PlayerConverter.getID(player), event);
-            LOG.debug(pack, "Menu " + menuID + ": Run event " + event);
+            log.debug(pack, "Menu " + menuID + ": Run event " + event);
         }
     }
 
@@ -360,8 +362,8 @@ public class Menu extends SimpleYMLSection implements Listener {
      */
     private class MenuBoundCommand extends SimpleCommand {
 
-        public MenuBoundCommand(final String name) {
-            super(name, 0);
+        public MenuBoundCommand(final BetonQuestLogger log, final String name) {
+            super(log, name, 0);
         }
 
         @Override
@@ -372,7 +374,7 @@ public class Menu extends SimpleYMLSection implements Listener {
             }
             final OnlineProfile onlineProfile = PlayerConverter.getID(player);
             if (mayOpen(onlineProfile)) {
-                LOG.debug(pack, onlineProfile + " run bound command of " + menuID);
+                log.debug(pack, onlineProfile + " run bound command of " + menuID);
                 menu.openMenu(onlineProfile, menuID);
                 return true;
             } else {

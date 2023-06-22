@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.GlobalObjectives;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
@@ -35,14 +36,14 @@ import java.util.Optional;
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods", "PMD.GodClass"})
 public abstract class Objective {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
-
     protected final int notifyInterval;
 
     protected final boolean notify;
+
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
 
     protected Instruction instruction;
 
@@ -80,6 +81,7 @@ public abstract class Objective {
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     public Objective(final Instruction instruction) throws InstructionParseException {
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         this.instruction = instruction;
         // extract events and conditions
         final String[] tempEvents1 = instruction.getArray(instruction.getOptional("event"));
@@ -198,14 +200,14 @@ public abstract class Objective {
             BetonQuest.getInstance().getPlayerData(profile).addNewRawObjective((ObjectiveID) instruction.getID());
             createObjectiveForPlayer(profile, getDefaultDataInstruction(profile));
         }
-        LOG.debug(instruction.getPackage(),
+        log.debug(instruction.getPackage(),
                 "Objective \"" + instruction.getID().getFullID() + "\" has been completed for "
                         + profile + ", firing events.");
         // fire all events
         for (final EventID event : events) {
             BetonQuest.event(profile, event);
         }
-        LOG.debug(instruction.getPackage(),
+        log.debug(instruction.getPackage(),
                 "Firing events in objective \"" + instruction.getID().getFullID() + "\" for "
                         + profile + " finished");
     }
@@ -219,7 +221,7 @@ public abstract class Objective {
      * @return if all conditions of this objective has been met
      */
     public final boolean checkConditions(final Profile profile) {
-        LOG.debug(instruction.getPackage(), "Condition check in \"" + instruction.getID().getFullID()
+        log.debug(instruction.getPackage(), "Condition check in \"" + instruction.getID().getFullID()
                 + "\" objective for " + profile);
         return BetonQuest.conditions(profile, conditions);
     }
@@ -239,9 +241,9 @@ public abstract class Objective {
             Config.sendNotify(instruction.getPackage().getQuestPath(), onlineProfile, messageName, stringVariables, messageName + ",info");
         } catch (final QuestRuntimeException exception) {
             try {
-                LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the '" + messageName + "' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                log.warn(instruction.getPackage(), "The notify system was unable to play a sound for the '" + messageName + "' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
             } catch (final InstructionParseException e) {
-                LOG.reportException(instruction.getPackage(), e);
+                log.reportException(instruction.getPackage(), e);
             }
         }
     }
@@ -308,10 +310,10 @@ public abstract class Objective {
 
     private void handleObjectiveDataConstructionError(final Profile profile, final ReflectiveOperationException exception) {
         if (exception.getCause() instanceof InstructionParseException) {
-            LOG.warn(instruction.getPackage(), "Error while loading " + this.instruction.getID().getFullID() + " objective data for "
+            log.warn(instruction.getPackage(), "Error while loading " + this.instruction.getID().getFullID() + " objective data for "
                     + profile + ": " + exception.getCause().getMessage(), exception);
         } else {
-            LOG.reportException(instruction.getPackage(), exception);
+            log.reportException(instruction.getPackage(), exception);
         }
     }
 
@@ -440,10 +442,10 @@ public abstract class Objective {
      * Sets the label of this objective. Don't worry about it, it's only used by
      * the rest of BetonQuest's logic.
      *
-     * @param rename new ID of the objective
+     * @param newID new ID of the objective
      */
-    public void setLabel(final ObjectiveID rename) {
-        instruction = new Instruction(instruction.getPackage(), rename, instruction.toString());
+    public void setLabel(final ObjectiveID newID) {
+        instruction = instruction.copy(newID);
     }
 
     /**
@@ -607,7 +609,7 @@ public abstract class Objective {
                     return;
                 }
                 last = System.currentTimeMillis();
-                LOG.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
+                log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
             }
         }
     }

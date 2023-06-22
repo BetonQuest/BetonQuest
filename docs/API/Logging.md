@@ -78,7 +78,7 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
             All 3rd party plugins need to create a new file named `lombok.config` in their projects root.
             Copy the following to the file:
             ````linenums="1"
-            lombok.log.custom.declaration = org.betonquest.betonquest.api.BetonQuestLogger org.betonquest.betonquest.api.BetonQuestLogger.create(TYPE)(TYPE,TOPIC)
+            lombok.log.custom.declaration = org.betonquest.betonquest.api.logger.BetonQuestLogger org.betonquest.betonquest.api.logger.BetonQuestLogger.create(TYPE)(TYPE,TOPIC)
             lombok.log.fieldName = LOG
             ````
             Additionally, Lombok also needs to be setup for the project. The exact configuration depends on your project

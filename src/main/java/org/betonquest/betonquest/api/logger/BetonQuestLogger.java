@@ -1,12 +1,8 @@
-package org.betonquest.betonquest.api;
+package org.betonquest.betonquest.api.logger;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.modules.logger.BetonQuestLoggerImpl;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginLogger;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.logging.Level;
 
@@ -18,113 +14,62 @@ import java.util.logging.Level;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public interface BetonQuestLogger {
-    /**
-     * Creates a logger and determines the class automatically.
-     * You can use the {@link BetonQuestLogger#create(Class)} method, to create a logger for a specific class.
-     * <p>
-     * Use this method to create a logger without a topic.
-     *
-     * @return A {@link BetonQuestLogger} implementation.
-     * @throws IllegalStateException Thrown if this is called from a class, that extends {@link Plugin}
-     */
-    static BetonQuestLogger create() {
-        final Class<?> clazz = getCallingClass();
-        return create(clazz);
-    }
 
     /**
-     * Creates a logger and determines the class automatically.
-     * You can use the {@link BetonQuestLogger#create(Class, String)} method, to create a logger for a specific class.
+     * Logs a debug message with the {@link Level#FINE} level to the log.
      * <p>
-     * Use this method to create a logger with a topic.
+     * Use this for additional debug log information.
+     * <p>
+     * If you can provide an exception use {@link BetonQuestLogger#debug(String, Throwable)} instead.
+     * <p>
+     * Don't use this method, if you can provide a {@link QuestPackage}.
+     * Use {@link BetonQuestLogger#debug(QuestPackage, String)} instead.
      *
-     * @param topic The optional topic of the logger.
-     * @return A {@link BetonQuestLogger} implementation.
-     * @throws IllegalStateException Thrown if this is called from a class, that extends {@link Plugin}
+     * @param msg The message to log.
      */
-    static BetonQuestLogger create(final String topic) {
-        final Class<?> clazz = getCallingClass();
-        return create(clazz, topic);
-    }
-
-    @NotNull
-    private static Class<?> getCallingClass() {
-        try {
-            return Class.forName(Thread.currentThread().getStackTrace()[3].getClassName());
-        } catch (final ClassNotFoundException e) {
-            throw new IllegalStateException("It was not possible to create a logger for the current class!", e);
-        }
-    }
+    void debug(String msg);
 
     /**
-     * Creates a logger for a given class.
-     * You can also use the {@link BetonQuestLogger#create()} method, then the class is automatically determined.
+     * Logs a debug message with the {@link Level#FINE} level to the log.
+     * The {@link Throwable} is logged together with the message.
      * <p>
-     * Use this method to create a logger without a topic.
+     * Use this for additional debug log information.
+     * <p>
+     * If you cannot provide an exception use {@link BetonQuestLogger#debug(String)} instead.
+     * <p>
+     * Don't use this method, if you can provide a {@link QuestPackage}.
+     * Use {@link BetonQuestLogger#debug(QuestPackage, String, Throwable)} instead.
      *
-     * @param clazz The class to create a logger for.
-     * @return A {@link BetonQuestLogger} implementation.
-     * @throws IllegalStateException Thrown if this is called from a class, that extends {@link Plugin}
+     * @param msg    The message to log.
+     * @param thrown The throwable to log.
      */
-    static BetonQuestLogger create(@NotNull final Class<?> clazz) {
-        return create(clazz, null);
-    }
+    void debug(String msg, Throwable thrown);
 
     /**
-     * Creates a logger for a given class.
-     * You can also use the {@link BetonQuestLogger#create(String)} method, then the class is automatically determined.
+     * Logs a debug message with the {@link Level#FINE} level to the log.
      * <p>
-     * Use this method to create a logger with a topic.
+     * Use this for additional debug log information.
+     * <p>
+     * If you can provide an exception use {@link BetonQuestLogger#debug(QuestPackage, String, Throwable)} instead.
      *
-     * @param clazz The class to create a logger for.
-     * @param topic The optional topic of the logger.
-     * @return A {@link BetonQuestLogger} implementation.
-     * @throws IllegalStateException Thrown if this is called from a class, that extends {@link Plugin}
+     * @param pack The related {@link QuestPackage} or null.
+     * @param msg  The message to log.
      */
-    @SuppressWarnings("PMD.UseProperClassLoader")
-    static BetonQuestLogger create(@NotNull final Class<?> clazz, @Nullable final String topic) {
-        if (Plugin.class.isAssignableFrom(clazz)) {
-            throw new IllegalStateException("It is not allowed to use this create method from the class '"
-                    + clazz.getName() + "' which directly or indirectly extends 'org.bukkit.plugin.Plugin'!");
-        }
-        for (final Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
-            if (plugin.getClass().getClassLoader().equals(clazz.getClassLoader())) {
-                return new BetonQuestLoggerImpl(plugin, plugin.getLogger(), clazz, topic);
-            }
-        }
-        throw new IllegalStateException("The class '" + clazz.getName()
-                + "' has not been loaded by a 'org.bukkit.plugin.Plugin'. "
-                + "Therefore, it was not possible to create a logger for this class!");
-    }
+    void debug(QuestPackage pack, String msg);
 
     /**
-     * Creates a logger.
+     * Logs a debug message with the {@link Level#FINE} level to the log.
+     * The {@link Throwable} is logged together with the message.
      * <p>
-     * Use this method to create a logger for the {@link Plugin} class without a topic.
-     * For other classes use the {@link BetonQuestLogger#create()}, {@link BetonQuestLogger#create(String)},
-     * {@link BetonQuestLogger#create(Class)} or {@link BetonQuestLogger#create(Class, String)} method.
-     *
-     * @param plugin The plugin which is used for logging.
-     * @return A {@link BetonQuestLogger} implementation.
-     */
-    static BetonQuestLogger create(@NotNull final Plugin plugin) {
-        return create(plugin, null);
-    }
-
-    /**
-     * Creates a logger.
+     * Use this for additional debug log information.
      * <p>
-     * Use this method to create a logger for the {@link Plugin} class without a topic.
-     * For other classes use the {@link BetonQuestLogger#create()}, {@link BetonQuestLogger#create(String)},
-     * {@link BetonQuestLogger#create(Class)} or {@link BetonQuestLogger#create(Class, String)} method.
+     * If you cannot provide an exception use {@link BetonQuestLogger#debug(QuestPackage, String)} instead.
      *
-     * @param plugin The plugin which is used for logging.
-     * @param topic  The optional topic of the logger.
-     * @return A {@link BetonQuestLogger} implementation.
+     * @param pack   The related {@link QuestPackage} or null.
+     * @param msg    The message to log.
+     * @param thrown The throwable to log.
      */
-    static BetonQuestLogger create(@NotNull final Plugin plugin, @Nullable final String topic) {
-        return new BetonQuestLoggerImpl(plugin, plugin.getLogger(), plugin.getClass(), topic);
-    }
+    void debug(QuestPackage pack, String msg, Throwable thrown);
 
     /**
      * Logs a normal message with the {@link Level#INFO} level to the log.
@@ -263,62 +208,6 @@ public interface BetonQuestLogger {
      * @param thrown The throwable to log.
      */
     void error(QuestPackage pack, String msg, Throwable thrown);
-
-    /**
-     * Logs a debug message with the {@link Level#FINE} level to the log.
-     * <p>
-     * Use this for additional debug log information.
-     * <p>
-     * If you can provide an exception use {@link BetonQuestLogger#debug(String, Throwable)} instead.
-     * <p>
-     * Don't use this method, if you can provide a {@link QuestPackage}.
-     * Use {@link BetonQuestLogger#debug(QuestPackage, String)} instead.
-     *
-     * @param msg The message to log.
-     */
-    void debug(String msg);
-
-    /**
-     * Logs a debug message with the {@link Level#FINE} level to the log.
-     * The {@link Throwable} is logged together with the message.
-     * <p>
-     * Use this for additional debug log information.
-     * <p>
-     * If you cannot provide an exception use {@link BetonQuestLogger#debug(String)} instead.
-     * <p>
-     * Don't use this method, if you can provide a {@link QuestPackage}.
-     * Use {@link BetonQuestLogger#debug(QuestPackage, String, Throwable)} instead.
-     *
-     * @param msg    The message to log.
-     * @param thrown The throwable to log.
-     */
-    void debug(String msg, Throwable thrown);
-
-    /**
-     * Logs a debug message with the {@link Level#FINE} level to the log.
-     * <p>
-     * Use this for additional debug log information.
-     * <p>
-     * If you can provide an exception use {@link BetonQuestLogger#debug(QuestPackage, String, Throwable)} instead.
-     *
-     * @param pack The related {@link QuestPackage} or null.
-     * @param msg  The message to log.
-     */
-    void debug(QuestPackage pack, String msg);
-
-    /**
-     * Logs a debug message with the {@link Level#FINE} level to the log.
-     * The {@link Throwable} is logged together with the message.
-     * <p>
-     * Use this for additional debug log information.
-     * <p>
-     * If you cannot provide an exception use {@link BetonQuestLogger#debug(QuestPackage, String)} instead.
-     *
-     * @param pack   The related {@link QuestPackage} or null.
-     * @param msg    The message to log.
-     * @param thrown The throwable to log.
-     */
-    void debug(QuestPackage pack, String msg, Throwable thrown);
 
     /**
      * Logs a {@link Throwable} with the {@link Level#SEVERE} level to the log.

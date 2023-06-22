@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.notify;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableString;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
@@ -28,8 +29,8 @@ public class NotifyAllEventFactory extends NotifyEventFactory implements EventFa
      * @param scheduler Scheduler to use for syncing to the primary server thread.
      * @param plugin    Plugin to use for syncing to the primary server thread.
      */
-    public NotifyAllEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
-        super(server, scheduler, plugin);
+    public NotifyAllEventFactory(final BetonQuestLogger log, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+        super(log, server, scheduler, plugin);
     }
 
     @Override

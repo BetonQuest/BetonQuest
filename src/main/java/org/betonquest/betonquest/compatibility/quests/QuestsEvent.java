@@ -1,9 +1,10 @@
 package org.betonquest.betonquest.compatibility.quests;
 
 import me.blackvein.quests.Quest;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
@@ -15,7 +16,7 @@ public class QuestsEvent extends QuestEvent {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final String questName;
 
@@ -23,6 +24,7 @@ public class QuestsEvent extends QuestEvent {
 
     public QuestsEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         questName = instruction.next();
         override = instruction.hasArgument("check-requirements");
     }
@@ -37,7 +39,7 @@ public class QuestsEvent extends QuestEvent {
             }
         }
         if (quest == null) {
-            LOG.warn(instruction.getPackage(), "Quest '" + questName + "' is not defined");
+            log.warn(instruction.getPackage(), "Quest '" + questName + "' is not defined");
             return null;
         }
         QuestsIntegrator.getQuestsInstance().getQuester(profile.getProfileUUID()).takeQuest(quest, override);

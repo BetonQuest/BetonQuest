@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.effect;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -18,6 +19,11 @@ import java.util.List;
  * Factory to create delete effect events from {@link Instruction}s.
  */
 public class DeleteEffectEventFactory implements EventFactory {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
     /**
      * Server to use for syncing to the primary server thread.
      */
@@ -40,7 +46,8 @@ public class DeleteEffectEventFactory implements EventFactory {
      * @param scheduler scheduler to use
      * @param plugin    plugin to use
      */
-    public DeleteEffectEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+    public DeleteEffectEventFactory(final BetonQuestLogger log, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+        this.log = log;
         this.server = server;
         this.scheduler = scheduler;
         this.plugin = plugin;
@@ -61,6 +68,6 @@ public class DeleteEffectEventFactory implements EventFactory {
         }
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
-                        new DeleteEffectEvent(effects), instruction.getPackage()), server, scheduler, plugin);
+                        log, new DeleteEffectEvent(effects), instruction.getPackage()), server, scheduler, plugin);
     }
 }

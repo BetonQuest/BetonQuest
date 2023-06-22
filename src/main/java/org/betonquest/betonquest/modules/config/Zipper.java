@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.modules.config;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +22,7 @@ public final class Zipper {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create("Zipper");
+    private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(Zipper.class, "Zipper");
 
     private Zipper() {
     }

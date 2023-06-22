@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.compatibility.holograms.lines;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.QueryType;
 import org.bukkit.Bukkit;
@@ -18,7 +18,7 @@ public class TopXObject {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     /**
      * Number of lines stored in maximum.
@@ -43,11 +43,13 @@ public class TopXObject {
     /**
      * Creates new instance of TopXObject.
      *
+     * @param log       the logger that will be used for logging
      * @param limit     Number of lines
      * @param category  Name of point
      * @param orderType Direction of order
      */
-    public TopXObject(final int limit, final String category, final OrderType orderType) {
+    public TopXObject(final BetonQuestLogger log, final int limit, final String category, final OrderType orderType) {
+        this.log = log;
         this.category = category;
         this.limit = limit;
         this.orderType = orderType;
@@ -73,7 +75,7 @@ public class TopXObject {
                 entries.add(new TopXLine(playerName, resultSet.getLong("count")));
             }
         } catch (final SQLException e) {
-            LOG.error("There was an SQL exception while querying the top " + limit, e);
+            log.error("There was an SQL exception while querying the top " + limit, e);
         }
     }
 

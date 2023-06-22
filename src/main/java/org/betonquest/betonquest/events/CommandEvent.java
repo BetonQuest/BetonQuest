@@ -1,8 +1,10 @@
 package org.betonquest.betonquest.events;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.bukkit.command.SilentCommandSender;
 import org.betonquest.betonquest.api.bukkit.command.SilentConsoleCommandSender;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -17,12 +19,13 @@ import java.util.Arrays;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class CommandEvent extends QuestEvent {
-    private static final CommandSender SILENT_SENDER = new SilentConsoleCommandSender(Bukkit.getConsoleSender());
+    private final CommandSender silentSender;
 
     private final VariableString[] commands;
 
     public CommandEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
+        this.silentSender = new SilentConsoleCommandSender(BetonQuest.getInstance().getLoggerFactory().create(SilentCommandSender.class, "CommandEvent"), Bukkit.getConsoleSender());
         staticness = true;
         persistent = true;
         final String string = instruction.getInstruction().trim();
@@ -46,19 +49,19 @@ public class CommandEvent extends QuestEvent {
         for (final VariableString variableCommand : commands) {
             if (!variableCommand.containsVariables()) {
                 final String command = variableCommand.getString(profile);
-                Bukkit.getServer().dispatchCommand(SILENT_SENDER, command);
+                Bukkit.getServer().dispatchCommand(silentSender, command);
                 continue;
             }
             if (profile == null) {
                 for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                     final String command = variableCommand.getString(onlineProfile);
-                    Bukkit.getServer().dispatchCommand(SILENT_SENDER, command);
+                    Bukkit.getServer().dispatchCommand(silentSender, command);
                 }
                 continue;
             }
             if (profile.getOnlineProfile().isPresent()) {
                 final String command = variableCommand.getString(profile);
-                Bukkit.getServer().dispatchCommand(SILENT_SENDER, command);
+                Bukkit.getServer().dispatchCommand(silentSender, command);
                 continue;
             }
             final String name = profile.getPlayer().getName();
@@ -66,7 +69,7 @@ public class CommandEvent extends QuestEvent {
                 continue;
             }
             final String command = variableCommand.getString(profile).replaceAll("%player%", name);
-            Bukkit.getServer().dispatchCommand(SILENT_SENDER, command);
+            Bukkit.getServer().dispatchCommand(silentSender, command);
         }
         return null;
     }

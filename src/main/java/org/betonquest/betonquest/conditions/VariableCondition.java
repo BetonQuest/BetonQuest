@@ -1,9 +1,10 @@
 package org.betonquest.betonquest.conditions;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableString;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
@@ -16,7 +17,7 @@ public class VariableCondition extends Condition {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     /**
      * The variable to compare with the regex.
@@ -36,6 +37,7 @@ public class VariableCondition extends Condition {
      */
     public VariableCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, instruction.hasArgument("forceSync"));
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         variable = new VariableString(instruction.getPackage(), instruction.next());
         regex = new VariableString(instruction.getPackage(), instruction.next(), true);
     }
@@ -48,7 +50,7 @@ public class VariableCondition extends Condition {
             return resolvedVariable.matches(resolvedRegex);
         } catch (final PatternSyntaxException e) {
             final String variableAddress = this.instruction.getID().toString();
-            LOG.warn("Invalid regular expression '%s' used in variable condition '%s'. Error: %s"
+            log.warn("Invalid regular expression '%s' used in variable condition '%s'. Error: %s"
                     .formatted(e.getPattern(), variableAddress, e.getMessage()), e);
             return false;
         }

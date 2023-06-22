@@ -184,7 +184,7 @@ public abstract class ID {
             return null;
         }
         if (instruction == null) {
-            instruction = new Instruction(pack, this, rawInstruction);
+            instruction = new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), pack, this, rawInstruction);
         }
         return instruction;
     }

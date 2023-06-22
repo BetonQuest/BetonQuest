@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -23,11 +23,6 @@ import java.util.UUID;
 @SuppressWarnings("deprecation")
 public class SpigotHeadHandler extends HeadHandler {
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
-
-    /**
      * Prefix for JSON structure minecraft uses for defining skin texture URL.
      */
     private static final String TEXTURE_PREFIX = "{\"textures\":{\"SKIN\":{\"url\":\"";
@@ -38,10 +33,16 @@ public class SpigotHeadHandler extends HeadHandler {
     private static final String TEXTURE_SUFFIX = "\"}}}";
 
     /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
      * Construct a new HeadHandler.
      */
-    public SpigotHeadHandler() {
+    public SpigotHeadHandler(final BetonQuestLogger log) {
         super();
+        this.log = log;
     }
 
     /**
@@ -97,7 +98,7 @@ public class SpigotHeadHandler extends HeadHandler {
                 playerProfile.getTextures().setSkin(url);
                 skullMeta.setOwnerProfile(playerProfile);
             } catch (final MalformedURLException | IllegalArgumentException e) {
-                LOG.warn("The quest item that was just given to '" + profile.getPlayer().getName() + "' has an invalid head texture.", e);
+                log.warn("The quest item that was just given to '" + profile.getPlayer().getName() + "' has an invalid head texture.", e);
             }
         }
     }
