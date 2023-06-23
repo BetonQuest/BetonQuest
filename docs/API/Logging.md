@@ -39,93 +39,98 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
 
 ## Obtaining a BetonQuestLogger Instance
 
+First you need to obtain a `BetonQuestLoggerFactory` instance. For this you have two ways:
+
 !!! note ""
 
-    === "Using plain Java"    
+    === "Using the ServiceManager"
         !!! abstract ""
-            Simply create a BetonQuestLogger instance in your class as such:
-    
-            === "Without topic"
-                ````java linenums="1" title="Automatically determine the logging class"
-                public final class MyCustomEvent {
-                    private final static BetonQuestLogger LOG = BetonQuestLogger.create();
-                ````
-                ````java linenums="1" title="Manually specify the logging class"
-                public final class MyCustomEvent {
-                    private final static BetonQuestLogger LOG = BetonQuestLogger.create(MyCustomEvent.class);
-                ````
+            This is the recommended way to obtain a BetonQuestLoggerFactory instance. Simply add this in your `onEnable()` method:
             
-            === "With topic"
-                Automatically determine the class for the logger.
-                ````java linenums="1"
-                public final class MyCustomEvent {
-                    private final static BetonQuestLogger LOG = BetonQuestLogger.create("MyCustomTopic");
-                ````
-                Manually specify the class for the logger.
-                ````java linenums="1"
-                public final class MyCustomEvent {
-                    private final static BetonQuestLogger LOG = BetonQuestLogger.create(MyCustomEvent.class, "MyCustomTopic");
-                ````
-    === "Using Lombok"
-        **This is for BetonQuest addons that rely on BetonQuest and have Lombok set up**  
-        Using Lombok enables you to use the handy [@CustomLog](https://projectlombok.org/features/log)
-        annotation on each class you want a logger for.
-        This requires a Lombok setup in your project and in your IDE.
-    
-        !!! abstract "1. Setup"
-            The first step is to install a Lombok plugin in your IDE. IntelliJ contains it by default.
-    
-            All 3rd party plugins need to create a new file named `lombok.config` in their projects root.
-            Copy the following to the file:
-            ````linenums="1"
-            lombok.log.custom.declaration = org.betonquest.betonquest.api.logger.BetonQuestLogger org.betonquest.betonquest.api.logger.BetonQuestLogger.create(TYPE)(TYPE,TOPIC)
-            lombok.log.fieldName = LOG
+            ````java linenums="1"
+            final BetonQuestLoggerFactory loggerFactory = Bukkit.getServicesManager().load(BetonQuestLoggerFactory.class);
             ````
-            Additionally, Lombok also needs to be setup for the project. The exact configuration depends on your project
-            setup.
+            
+            This only works if BetonQuest is installed on the server. If you want to support servers without BetonQuest,
+            you need to do it this way:
+            
+            ````java linenums="1"
+            RegisteredServiceProvider<BetonQuestLoggerFactory> provider = Bukkit.getServicesManager().getRegistration(BetonQuestLoggerFactory.class);
+            if (provider != null) {
+                BetonQuestLoggerFactory loggerFactory = provider.getProvider();
+            }
+            ````
+    === "Using the BetonQuest instance"
+        !!! abstract ""
+            This can be used but we do not recommend it, as we may change the way the BetonQuest instance is obtained in the future.
+            
+            ````java linenums="1"
+            final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
+            ````
     
-        !!! abstract "2. Usage"
-            Simply add the `@CustomLog` annotation to any class definition. This will **not** work on any class that
-            extends `Plugin`, see the warning box below for more information. 
-    
-            === "Without topic"
-                ````java linenums="1"
-                @CustomLog
-                public final class MyCustomEvent {
-                ````
-            === "With topic"
-                ````java linenums="1"
-                @CustomLog(topic = "MyCustomTopic")
-                public final class MyCustomEvent {
-                ````
-    
+    ??? info "`BetonQuestLoggerFactory` additional background implementation information"
+        As the BetonQuestLoggerFactory is a service, it is not guaranteed that the instance you get
+        is the one BetonQuest created by default. But here we expain the behavior of the default BetonQuestLoggerFactory.
+        
+        First there is the `DefaultBetonQuestLoggerFactory` class,
+        which is the default implementation of the `BetonQuestLoggerFactory` interface.
+        It simnply creates child logger for the given class for the Logger of your plugin.
+        This is done by checking which plugin did load the class.
+        
+        This default implementation is wrapped into the `CachingBetonQuestLoggerFactory`.
+        This class can be used to cache any implementation of the `BetonQuestLoggerFactory` interface.
+        It returns always the same instance for the same class.
+        There is one special behavior if the BetonQuestLogger is created with a topic. 
+        In that case the `CachingBetonQuestLoggerFactory` will create a new instance for each different topic,
+        but it will still cache the instances for the same topic or without a topic.
+    ---
+ 
+After you now have a `BetonQuestLoggerFactory` instance, you can create a `BetonQuestLogger` instance using one of the following methods:
 
-
-!!! warning "Get the logger in your JavaPlugin class"
-    The methods described above don't work for your plugin's main class (or any other class that extends `Plugin`). 
-    Create the logger instance in the `onEnable()` method instead.
+!!! note ""
 
     === "Without topic"
-        ````java linenums="1"
-        public final class BetonQuestAddon extends JavaPlugin {
+        !!! abstract ""
+            This is a the standard way to create a BetonQuestLogger instance.
+            
+            ````java linenums="1"
+            final BetonQuestLogger logger = loggerFactory.create(MyClass.class);
+            ````
     
-            private static BetonQuestLogger log;
-    
-            @Override
-            public void onEnable() {
-                log = BetonQuestLogger.create(this);
-        ````
-
     === "With topic"
-        ````java linenums="1"
-        public final class BetonQuestAddon extends JavaPlugin {
+        !!! abstract ""
+            This is useful if you want to give your log messages a prefix like `(Database)`.
+            Mainly _PascalCase_ should be used for topics and they should be short and meaningful to the user. 
+            
+            ````java linenums="1"
+            final BetonQuestLogger logger = loggerFactory.create(MyClass.class, "MyCustomTopic");
+            ````
     
-            private static BetonQuestLogger log;
+    !!! warning "Get the logger in your JavaPlugin class"
+        The methods described above don't work for your plugin's main class (or any other class that extends `Plugin`). 
+        Create the logger instance in the `onEnable()` method instead like this:
     
-            @Override
-            public void onEnable() {
-                log = BetonQuestLogger.create(this, "MyCustomTopic");
-        ````
+        === "Without topic"
+            ````java linenums="1"
+            public final class BetonQuestAddon extends JavaPlugin {
+        
+                private static BetonQuestLogger log;
+        
+                @Override
+                public void onEnable() {
+                    log = BetonQuestLogger.create(this);
+            ````
+    
+        === "With topic"
+            ````java linenums="1"
+            public final class BetonQuestAddon extends JavaPlugin {
+        
+                private static BetonQuestLogger log;
+        
+                @Override
+                public void onEnable() {
+                    log = BetonQuestLogger.create(this, "MyCustomTopic");
+            ````
 
 ## Using the BetonQuestLogger
 A BetonQuestLogger will be available as the variable `LOG` once you [obtained a BetonQuestLogger instance](#obtaining-a-betonquestlogger-instance). 
@@ -134,7 +139,7 @@ Make sure to give the JavaDocs a quick read!
 
 The usage then look like this:
 ````java linenums="1"
-LOG.info("Hello Log!");
+log.info("Hello Log!");
 ````
 
 ### Method Overview
