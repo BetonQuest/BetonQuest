@@ -88,7 +88,13 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
             throw new InvalidConfigurationException("Default values were applied to the config but could not be saved! Reason: " + e.getMessage(), e);
         }
         final ConfigAccessor patchAccessor = createPatchAccessor(plugin, resourceFile);
-        final Patcher patcher = new Patcher(BetonQuest.getInstance().getLoggerFactory().create(Patcher.class, "ConfigurationFile Patcher"), accessor.getConfig(), patchAccessor.getConfig());
+        final Patcher patcher;
+        if (patchAccessor == null) {
+            patcher = null;
+        } else {
+            final BetonQuestLogger patcherLogger = BetonQuest.getInstance().getLoggerFactory().create(Patcher.class, "ConfigurationFile Patcher");
+            patcher = new Patcher(patcherLogger, accessor.getConfig(), patchAccessor.getConfig());
+        }
         (patchTransformerRegisterer == null ? new DefaultPatchTransformerRegisterer() : patchTransformerRegisterer).registerTransformers(patcher);
         return new ConfigurationFileImpl(accessor, patcher, plugin.getDataFolder().getParentFile().toURI());
     }
