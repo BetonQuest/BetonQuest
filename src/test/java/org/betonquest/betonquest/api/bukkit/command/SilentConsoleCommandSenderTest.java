@@ -64,7 +64,7 @@ class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
     }
 
     @Test
-    void testAbandonConversation() {
+    void abandonConversation_ConversationAbandonedEvent() {
         silentSender.abandonConversation(mock(Conversation.class), mock(ConversationAbandonedEvent.class));
         verify(sender, times(1)).abandonConversation(any(Conversation.class), any(ConversationAbandonedEvent.class));
     }
@@ -78,7 +78,7 @@ class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
     }
 
     @Test
-    void testSendRawMessage(final BetonQuestLogger logger) {
+    void sendRawMessage_sender(final BetonQuestLogger logger) {
         silentSender.sendRawMessage(null, "test3");
         verify(sender, never()).sendRawMessage(any(UUID.class), anyString());
         verify(logger, times(1)).debug("Silently sending message to console: test3");
