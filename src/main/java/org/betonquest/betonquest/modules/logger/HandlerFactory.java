@@ -114,7 +114,7 @@ public final class HandlerFactory {
             try {
                 Files.move(logFile.toPath(), newFile.toPath());
             } catch (final IOException e) {
-                throw new IOException("Could not copy '" + logFile.getName() + "' file! Continue writing into the same log file.", e);
+                throw new IOException("Could not rename '" + logFile.getName() + "' file! Continue writing into the same log file.", e);
             }
         }
         if (!createFolderAndFile(logFile)) {

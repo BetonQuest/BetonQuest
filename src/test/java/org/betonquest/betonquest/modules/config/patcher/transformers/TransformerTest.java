@@ -221,7 +221,7 @@ class TransformerTest {
                     newEntry: newEntry
                 """;
         final String serializedConfig = getSerializedPatchedConfig(logger, patch);
-        validateLogging(logger, "LIST_ENTRY_RENAME", "Tried to copy 'invalidRegex' with 'newEntry' but there was no such element in the list 'section.myList'.");
+        validateLogging(logger, "LIST_ENTRY_RENAME", "Tried to rename 'invalidRegex' with 'newEntry' but there was no such element in the list 'section.myList'.");
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 

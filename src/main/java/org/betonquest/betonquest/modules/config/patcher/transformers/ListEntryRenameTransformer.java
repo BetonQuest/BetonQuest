@@ -47,7 +47,7 @@ public class ListEntryRenameTransformer implements PatchTransformer {
             throw new PatchException("List '" + key + "' did not exist, so an empty list was created.");
         }
         if (!match.get()) {
-            throw new PatchException("Tried to copy '%s' with '%s' but there was no such element in the list '%s'."
+            throw new PatchException("Tried to rename '%s' with '%s' but there was no such element in the list '%s'."
                     .formatted(regex, newEntry, key));
         }
     }
