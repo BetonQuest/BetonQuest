@@ -61,7 +61,7 @@ class BStatsMetricsTest {
     /**
      * Logger used by the mock Bukkit server instance.
      */
-    private static Logger bukkitLogger;
+    private static Logger logger;
 
     /**
      * Create the {@link BStatsMetrics}' test class.
@@ -72,16 +72,13 @@ class BStatsMetricsTest {
 
     @BeforeAll
     static void initializeBukkit() {
-        bukkitLogger = BetonQuestLoggerService.getSilentLogger();
+        logger = mock(Logger.class);
         server = mock(Server.class);
-        when(server.getLogger()).thenReturn(bukkitLogger);
+        when(server.getLogger()).thenReturn(logger);
         Bukkit.setServer(server);
     }
 
     private void setupLogger() {
-        final Logger logger = BetonQuestLoggerService.getSilentLogger();
-        logger.setParent(bukkitLogger);
-
         final Plugin plugin = mock(Plugin.class);
         when(plugin.getLogger()).thenReturn(logger);
 
