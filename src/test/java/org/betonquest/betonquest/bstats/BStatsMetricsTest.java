@@ -8,7 +8,6 @@ import org.betonquest.betonquest.modules.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.CustomChart;
-import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
@@ -75,7 +74,6 @@ class BStatsMetricsTest {
         logger = mock(Logger.class);
         server = mock(Server.class);
         when(server.getLogger()).thenReturn(logger);
-        Bukkit.setServer(server);
     }
 
     private void setupLogger() {
