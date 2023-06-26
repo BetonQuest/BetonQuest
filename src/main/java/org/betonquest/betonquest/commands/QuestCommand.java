@@ -333,7 +333,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     public Optional<List<String>> simpleTabComplete(final CommandSender sender, final Command command, final String alias, final String... args) {
         if (args.length == 1) {
             return Optional.of(Arrays.asList("condition", "event", "item", "give", "objective", "globaltag",
-                    "globalpoint", "tag", "point", "journal", "delete", "copy", "version", "purge",
+                    "globalpoint", "tag", "point", "journal", "delete", "rename", "version", "purge",
                     "update", "reload", "backup", "debug", "download"));
         }
         switch (args[0].toLowerCase(Locale.ROOT)) {
