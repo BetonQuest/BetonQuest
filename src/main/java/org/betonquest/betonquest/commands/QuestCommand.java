@@ -1325,7 +1325,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     log.warn(nameID.getPackage(), e.getMessage(), e);
                     return;
                 }
-                // copy objective instance
+                // rename objective instance
                 final ObjectiveID renameID;
                 try {
                     renameID = new ObjectiveID(null, rename);
