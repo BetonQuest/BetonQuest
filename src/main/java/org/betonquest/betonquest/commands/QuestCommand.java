@@ -494,7 +494,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 log.warn("Could not find Item: " + e.getMessage(), e);
                 return;
             }
-            final GiveEvent give = new GiveEvent(new Instruction(instance.getLoggerFactory().create(Instruction.class), itemID.getPackage(), null, "give " + itemID.getBaseID()));
+            final GiveEvent give = new GiveEvent(new Instruction(loggerFactory.create(Instruction.class), itemID.getPackage(), null, "give " + itemID.getBaseID()));
             give.fire(PlayerConverter.getID((Player) sender));
         } catch (final InstructionParseException | QuestRuntimeException e) {
             sendMessage(sender, "error", e.getMessage());
