@@ -1401,7 +1401,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     /**
      * Returns a list including all possible options for tab complete of the
-     * /betonquest copy command
+     * /betonquest rename command
      *
      * @param args
      * @return
