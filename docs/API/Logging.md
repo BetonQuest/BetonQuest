@@ -74,7 +74,7 @@ First you need to obtain a `BetonQuestLoggerFactory` instance. For this you have
         
         First there is the `DefaultBetonQuestLoggerFactory` class,
         which is the default implementation of the `BetonQuestLoggerFactory` interface.
-        It simnply creates child logger for the given class for the Logger of your plugin.
+        It simply creates a child logger for the given class using the Logger of your plugin.
         This is done by checking which plugin did load the class.
         
         This default implementation is wrapped into the `CachingBetonQuestLoggerFactory`.
