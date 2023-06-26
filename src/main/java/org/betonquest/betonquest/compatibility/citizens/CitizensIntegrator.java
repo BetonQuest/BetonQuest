@@ -25,7 +25,7 @@ public class CitizensIntegrator implements Integrator {
 
         // if ProtocolLib is hooked, start NPCHider
         if (Compatibility.getHooked().contains("ProtocolLib")) {
-            NPCHider.start(BetonQuest.getInstance().getLoggerFactory().create(NPCHider.class));
+            NPCHider.start(loggerFactory.create(NPCHider.class));
             plugin.registerEvents("updatevisibility", UpdateVisibilityNowEvent.class);
         }
         plugin.registerObjectives("npckill", NPCKillObjective.class);
