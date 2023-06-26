@@ -261,7 +261,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         }
                     }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
-                case "copy":
+                case "rename":
                 case "r":
                     log.debug("Loading data asynchronously");
                     new BukkitRunnable() {
