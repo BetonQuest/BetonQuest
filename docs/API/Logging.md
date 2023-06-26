@@ -51,15 +51,9 @@ First you need to obtain a `BetonQuestLoggerFactory` instance. For this you have
             final BetonQuestLoggerFactory loggerFactory = Bukkit.getServicesManager().load(BetonQuestLoggerFactory.class);
             ````
             
-            This only works if BetonQuest is installed on the server. If you want to support servers without BetonQuest,
-            you need to do it this way:
+            This will only return a BetonQuestLoggerFactory instance if BetonQuest is installed and already loaded.
+            Otherwise it will return `null`.
             
-            ````java linenums="1"
-            RegisteredServiceProvider<BetonQuestLoggerFactory> provider = Bukkit.getServicesManager().getRegistration(BetonQuestLoggerFactory.class);
-            if (provider != null) {
-                BetonQuestLoggerFactory loggerFactory = provider.getProvider();
-            }
-            ````
     === "Using the BetonQuest instance"
         !!! abstract ""
             This can be used but we do not recommend it, as we may change the way the BetonQuest instance is obtained in the future.
@@ -67,6 +61,7 @@ First you need to obtain a `BetonQuestLoggerFactory` instance. For this you have
             ````java linenums="1"
             final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
             ````
+            BetonQuest.getInstance() will return `null` if BetonQuest is not installed or not loaded yet.
     
     ??? info "`BetonQuestLoggerFactory` additional background implementation information"
         As the BetonQuestLoggerFactory is a service, it is not guaranteed that the instance you get
