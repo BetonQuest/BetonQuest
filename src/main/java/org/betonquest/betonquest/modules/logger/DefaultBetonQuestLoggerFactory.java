@@ -21,7 +21,7 @@ public class DefaultBetonQuestLoggerFactory implements BetonQuestLoggerFactory {
     @SuppressWarnings("PMD.UseProperClassLoader")
     public BetonQuestLogger create(@NotNull final Class<?> clazz, @Nullable final String topic) {
         if (Plugin.class.isAssignableFrom(clazz)) {
-            throw new IllegalStateException("It is not allowed to use this create method from the class '"
+            throw new IllegalArgumentException("It is not allowed to use this create method from the class '"
                     + clazz.getName() + "' which directly or indirectly extends 'org.bukkit.plugin.Plugin'!");
         }
         for (final Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
