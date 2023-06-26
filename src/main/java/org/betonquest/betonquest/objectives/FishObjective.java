@@ -44,7 +44,7 @@ public class FishObjective extends CountingObjective implements Listener {
 
     public FishObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "fish_to_catch");
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(FishObjective.class);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         blockSelector = new BlockSelector(instruction.next());
         targetAmount = instruction.getVarNum();
         preCheckAmountNotLessThanOne(targetAmount);
