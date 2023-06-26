@@ -31,7 +31,6 @@ public interface BetonQuestLoggerFactory {
      * @return A {@link BetonQuestLogger} implementation.
      * @throws IllegalStateException Thrown if this is called from a class, that extends {@link Plugin}
      */
-    @SuppressWarnings("PMD.UseProperClassLoader")
     BetonQuestLogger create(@NotNull Class<?> clazz, @Nullable String topic);
 
     /**
