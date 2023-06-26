@@ -1542,7 +1542,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         cmds.put("event", "event <player> <event>");
         cmds.put("item", "item <name>");
         cmds.put("give", "give <name>");
-        cmds.put("copy", "copy <tag/point/globalpoint/objective/journal> <old> <new>");
+        cmds.put("rename", "rename <tag/point/globalpoint/objective/journal> <old> <new>");
         cmds.put("delete", "delete <tag/point/objective/journal> <name>");
         cmds.put("config", "config <read/set/add> <path> [string]");
         cmds.put("vector", "vector <pack.varname> <vectorname>");
