@@ -1314,7 +1314,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     log.warn("Could not find Objective: " + e.getMessage(), e);
                     return;
                 }
-                // copy objective in the file
+                // rename objective in the file
                 final MultiConfiguration configuration = nameID.getPackage().getConfig();
                 final String newPath = "objectives." + rename.split("\\.")[1];
                 configuration.set(newPath, nameID.generateInstruction().getInstruction());
