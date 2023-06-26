@@ -383,7 +383,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "del":
             case "d":
                 return completeDeleting(args);
-            case "copy":
+            case "rename":
             case "r":
                 return completeRenaming(args);
             case "purge":
