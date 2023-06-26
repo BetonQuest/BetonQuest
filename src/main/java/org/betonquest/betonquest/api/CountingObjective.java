@@ -143,9 +143,6 @@ public abstract class CountingObjective extends Objective {
         /**
          * Custom {@link BetonQuestLogger} instance for this class.
          */
-        /**
-         * Custom {@link BetonQuestLogger} instance for this class.
-         */
         private final BetonQuestLogger log;
 
         /**
