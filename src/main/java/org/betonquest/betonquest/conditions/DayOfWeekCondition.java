@@ -23,7 +23,7 @@ public class DayOfWeekCondition extends Condition {
     @SuppressWarnings("PMD.PreserveStackTrace")
     public DayOfWeekCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
-        final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(BetonQuestLogger.class);
+        final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         super.staticness = true;
         super.persistent = true;
         final String dayString = instruction.next();
