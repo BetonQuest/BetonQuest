@@ -48,7 +48,7 @@ public class CraftingObjective extends CountingObjective implements Listener {
             case SWAP_OFFHAND:
                 return InventoryUtils.calculateSwapCraftAmount(result, inventory.getItemInOffHand());
             case DROP:
-                return result.getAmount();
+                return InventoryUtils.calculateDropCraftAmount(result, event.getCursor());
             case LEFT:
             case RIGHT:
                 return InventoryUtils.calculateSimpleCraftAmount(result, event.getCursor());
@@ -59,8 +59,8 @@ public class CraftingObjective extends CountingObjective implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCrafting(final CraftItemEvent event) {
-        if (event.getWhoClicked() instanceof Player) {
-            final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getWhoClicked());
+        if (event.getWhoClicked() instanceof final Player player) {
+            final OnlineProfile onlineProfile = PlayerConverter.getID(player);
             if (containsPlayer(onlineProfile) && item.compare(event.getRecipe().getResult()) && checkConditions(onlineProfile)) {
                 getCountingData(onlineProfile).progress(calculateCraftAmount(event));
                 completeIfDoneOrNotify(onlineProfile);

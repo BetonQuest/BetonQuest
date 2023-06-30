@@ -123,4 +123,19 @@ public final class InventoryUtils {
         }
         return 0;
     }
+
+    /**
+     * Calculates how many items can be made by dropping the item with q. No items can be dropped with q from a
+     * workbench if the player has an item in hand.
+     *
+     * @param result the result of one craft action
+     * @param cursor the item currently held in the cursor
+     * @return either 0 or the amount of the result
+     */
+    public static int calculateDropCraftAmount(final ItemStack result, final ItemStack cursor) {
+        if (cursor != null && cursor.getType().equals(Material.AIR)) {
+            return result.getAmount();
+        }
+        return 0;
+    }
 }
