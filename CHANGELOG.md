@@ -171,6 +171,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - French translation has been updated
     - `action` objective - cancels now the event, before other plugins check for it (better third-party support)
 - Item enchantments was changed to include zero as a legal value, not just positive numbers
+- the objectives mmocorecastskill and mmoitemcastability were merged into the mmoskill objective
 ### Deprecated
 ### Removed
 - deprecated internals, code and old features

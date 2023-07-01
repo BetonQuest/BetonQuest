@@ -7,14 +7,32 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * A condition that checks the value of a MythicLib stat.
+ */
 public class MythicLibStatCondition extends Condition {
+
+    /**
+     * The name of the stat to check.
+     */
     private final String statName;
 
+    /**
+     * The required minimum target level of the stat.
+     */
     private final double targetLevel;
 
+    /**
+     * Whether the actual level must be equal to the target level.
+     */
     private final boolean mustBeEqual;
 
+    /**
+     * Parses the instruction and creates a new condition.
+     *
+     * @param instruction the user-provided instruction
+     * @throws InstructionParseException if the instruction is invalid
+     */
     public MythicLibStatCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
@@ -26,11 +44,7 @@ public class MythicLibStatCondition extends Condition {
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         final MMOPlayerData data = MMOPlayerData.get(profile.getPlayerUUID());
-        if (data == null) {
-            return false;
-        }
         final double actualLevel = data.getStatMap().getStat(statName);
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }
-
 }

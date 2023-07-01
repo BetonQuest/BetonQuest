@@ -675,18 +675,20 @@ itemType and itemID.
 mmoitemapplygem SWORD CUTLASS GEM_OF_ACCURACY
 ```
 
-#### Cast item ability: `mmoitemcastability`
-This objective requires the player to cast an ability using an item. The only argument is the abilityID.
-```YAML linenums="1"
-mmoitemcastability LIFE_ENDER
-```
+#### Activate MythicLib skill: `mmoskill`
+This objective requires the player to activate a MythicLib skill (e.g. with MMOItems or MMOCore). 
 
-#### Cast class skill: `mmocorecastskill`
-This objective requires the player to cast a class skill. The only argument is the abilityID.
-```YAML linenums="1"
-mmocorecastskill BACKSTAB
-```
+| Parameter | Syntax     | Default Value          | Explanation                                                                                                                                                                          |
+|-----------|------------|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| _skill_   | SKILL_ID   | :octicons-x-circle-16: | The ID of the skill.                                                                                                                                                                 |
+| _trigger_ | name:level | All trigger types.     | The [types of triggers](https://gitlab.com/phoenix-dvpmt/mythiclib/-/wikis/Skills#trigger-types) that can be used to activate the skill. If not specified, all triggers are allowed. |
 
+
+```YAML title="Example" linenums="1"
+triggerSkill: "mmoskill LIFE_ENDER event:updateStatistics"
+castSkillWithMMOCore: "mmoskill DEEP_WOUND trigger:CAST event:completeTutorial"
+itemSkill: "mmoskill DEEP_WOUND trigger:RIGHT_CLICK,LEFT_CLICK event:giveReward"
+```
 
 ### Events
 

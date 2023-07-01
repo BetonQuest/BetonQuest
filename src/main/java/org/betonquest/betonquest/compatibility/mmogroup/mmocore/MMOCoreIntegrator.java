@@ -21,7 +21,6 @@ public class MMOCoreIntegrator implements Integrator {
         plugin.registerConditions("mmoprofession", MMOCoreProfessionLevelCondition.class);
 
         plugin.registerObjectives("mmoprofessionlevelup", MMOCoreProfessionObjective.class);
-        plugin.registerObjectives("mmocorecastskill", MMOCoreCastSkillObjective.class);
         plugin.registerObjectives("mmocorebreakblock", MMOCoreBreakCustomBlockObjective.class);
 
         plugin.registerEvents("mmoclassexperience", MMOCoreClassExperienceEvent.class);

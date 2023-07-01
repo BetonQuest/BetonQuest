@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
+import io.lumine.mythic.lib.api.crafting.event.MythicCraftItemEvent;
 import io.lumine.mythic.lib.api.item.NBTItem;
 import io.lumine.mythic.lib.api.util.ui.FriendlyFeedbackProvider;
 import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.api.crafting.recipe.CraftingRecipe;
 import net.Indyuce.mmoitems.api.crafting.recipe.Recipe;
-import net.Indyuce.mmoitems.api.event.CraftMMOItemEvent;
 import net.Indyuce.mmoitems.api.event.PlayerUseCraftingStationEvent;
 import net.Indyuce.mmoitems.api.util.message.FFPMMOItems;
 import net.Indyuce.mmoitems.manager.TypeManager;
@@ -17,6 +17,7 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -68,9 +69,11 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
      * @param event The event
      */
     @EventHandler(ignoreCancelled = true)
-    public void onRecipeUse(final CraftMMOItemEvent event) {
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
-        final ItemStack craftedItem = event.getResult();
+    public void onRecipeUse(final MythicCraftItemEvent event) {
+        final HumanEntity humanEntity = event.getTrigger().getWhoClicked();
+        final Player crafter = (Player) humanEntity;
+        final OnlineProfile onlineProfile = PlayerConverter.getID(crafter);
+        final ItemStack craftedItem = event.getCache().getResultOfOperation().getResultInventory().getFirst();
 
         if (containsPlayer(onlineProfile)
                 && isValidItem(craftedItem)

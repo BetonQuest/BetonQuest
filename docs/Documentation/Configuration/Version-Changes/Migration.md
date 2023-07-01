@@ -21,6 +21,7 @@ Skip to the first version that is newer than the version that you're migrating f
 - [2.0.0-DEV-539 - NPC Holograms](#200-dev-539-npc-holograms)
 - [2.0.0-DEV-644 - Database migration for profiles](#200-dev-644-database-migration-for-profiles)
 - [2.0.0-DEV-647 - EffectLib](#200-dev-647-effectlib)
+- [2.0.0-DEV-673 - MMO Updates](#200-dev-673-mmo-updates)
 
 ### 2.0.0-DEV-98 - RPGMenu Merge
 
@@ -298,4 +299,25 @@ effectlib:
 3. In case you never had the `npcs` field and the effect were played on every npc in the package,
 you now need to add the `npcs` section with every npc the effect should be played at.
 4. In case you never had the `pitch` field, you need to use the default value of `-90`.
+</div>
+
+### 2.0.0-DEV-673 - MMO Updates
+
+A change related to the integration of the MMO suite by Phoenix Development was made. 
+The objectives `mmocorecastskill` and `mmoitemcastability` were merged into the `mmoskill` objective.
+The `mmoskill` objective works exactly like its predecessors, but also supports defining one or more trigger types.
+
+See the [objective's documentation](../../Scripting/Building-Blocks/Integration-List.md#activate-mythiclib-skill-mmoskill) for more information.
+<div class="grid" markdown>
+
+```YAML title="Old Syntax"
+castMMOCoreSkill: "mmocorecastskill DEEP_WOUND"
+castMMOItemSkill: "mmoitemcastability DEEP_WOUND"
+```
+
+```YAML title="New Syntax"
+castMMOCoreSkill: "mmoskill DEEP_WOUND trigger:CAST"
+castMMOItemSkill: "mmoskill DEEP_WOUND trigger:RIGHT_CLICK"
+```
+
 </div>
