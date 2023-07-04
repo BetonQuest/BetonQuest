@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
+import io.lumine.mythic.lib.api.crafting.event.MythicCraftItemEvent;
 import io.lumine.mythic.lib.api.item.NBTItem;
 import io.lumine.mythic.lib.api.util.ui.FriendlyFeedbackProvider;
 import net.Indyuce.mmoitems.MMOItems;
@@ -22,6 +23,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
@@ -68,15 +70,19 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
      * @param event The event
      */
     @EventHandler(ignoreCancelled = true)
-    public void onRecipeUse(final CraftMMOItemEvent event) {
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
-        final ItemStack craftedItem = event.getResult();
+    public void onRecipeUse(final MythicCraftItemEvent event) {
 
-        if (containsPlayer(onlineProfile)
-                && isValidItem(craftedItem)
-                && checkConditions(onlineProfile)) {
-            progressCraftObjective(onlineProfile, craftedItem.getAmount());
-        }
+        Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(),() -> {
+            final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getTrigger().getWhoClicked());
+            ItemStack craftedItem = event.getTrigger().getCursor();
+
+            if (containsPlayer(onlineProfile)
+                    && isValidItem(craftedItem)
+                    && checkConditions(onlineProfile)) {
+                progressCraftObjective(onlineProfile, craftedItem.getAmount());
+            }
+            }, 3);
+
     }
 
     /**
