@@ -762,7 +762,7 @@ mmoitemtake ARMOR KINGS_CHESTPLATE invOrder:Armor,Backpack
 
 ## MythicMobs[](http://dev.bukkit.org/bukkit-plugins/mythicmobs/)
 !!! info ""
-    **Required MythicMobs version: _5.0.0_ or above** 
+    **Required MythicMobs version: _5.3.5_ or above** 
 
 
 ### Objectives
