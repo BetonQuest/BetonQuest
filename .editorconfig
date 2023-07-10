@@ -27,3 +27,8 @@ continuation_indent_size = 8
 line_comment = //
 block_comment_start = /*
 block_comment_end = */
+
+# Ignore Python Virtualenv files
+[/lib/**]
+indent_style = unset
+indent_size = unset
