@@ -39,7 +39,24 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
 
 ## Obtaining a BetonQuestLogger Instance
 
-First you need to obtain a `BetonQuestLoggerFactory` instance. For this you have two ways:
+For testing proposes in BetonQueest you always need inject the `BetonQuestLogger` into your class,
+and we recommend you to do the same for your addon plugin.  
+This can be done by adding a constructor parameter like this:
+
+````java linenums="1"
+public final class MyAddonClass {
+
+    private final BetonQuestLogger log;
+
+    public MyAddonClass(final BetonQuestLogger log) {
+        this.log = log;
+    }
+}
+````
+
+Now you only need an `BetonQuestLogger` instance to inject into your class.
+For this you now need to know how to obtain a `BetonQuestLoggerFactory` instance.  
+For this you have three options:
 
 !!! note ""
 
