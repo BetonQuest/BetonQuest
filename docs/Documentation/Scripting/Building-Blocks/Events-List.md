@@ -157,7 +157,7 @@ This event can open and close doors, trapdoors and fence gates. The syntax is ex
 Drops the defined items at a defined location. The event takes two parameters: `items` and `location`.
 Items is a list of [items](../../Features/Items.md) to be dropped.
 Every item can optionally be followed by a colon to define an amount `<item>:<amount>` otherwise the amount is 1.
-The optional location defines where the items will be dropped. It must be specified in the [ULF](../Data-Formats.md#unified-location-formating).
+The optional location defines where the items will be dropped. It must be specified in the [unified location format](../Data-Formats.md#unified-location-formating).
 If no location is given then the items will be dropped at the player's current location.
 
 If the drop event is used in a schedule then the items will be dropped at the given location.
