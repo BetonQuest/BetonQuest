@@ -138,6 +138,12 @@ public class Instruction {
         return optionalValue == null ? defaultString : optionalValue;
     }
 
+    /**
+     * Gets an optional key:value instruction argument or null if the key is not present.
+     *
+     * @param prefix the prefix of the optional value without ":"
+     * @return the value or null
+     */
     public String getOptional(final String prefix) {
         for (final String part : parts) {
             if (part.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT) + ":")) {
