@@ -23,25 +23,24 @@ It is a major goal to write JUnit tests for most parts of BetonQuest.
 
 ## Handling Logging
 
-_You may need to read [Logging](../../../API/Logging.md) to understand this paragraph._
+_See [Logging](../../../API/Logging.md) for general information about BetonQuest's logging._
 
-This error can occur everytime the `BetonQuestLogger` is used in a class that is called by a JUnit test:
+=== "Testing"    
+    You can mock the `BetonQuestLogger` directly.
+    
+    In case you need a `BetonQuestLoggerFactory` you must inject a `BetonQuestLogger` into the `SingletonLoggerFactory`.
+    Then you can use this factory in your tests. It will always return the logger instance you injected. 
 
-```
-Cannot invoke "org.bukkit.Server.getPluginManager()" because "org.bukkit.Bukkit.server" is null
-```
-
-If this is the case, you need the `BetonQuestLoggerService`. Simply add the following annotation to the
-class:
-
-````java linenums="1" hl_lines="1"
-@ExtendWith(BetonQuestLoggerService.class)
-public class TestClass {
-````
-
-The test should now work as intended because a new anonymous logger is created everytime the `BetonQuestLogger`
-is used. All these loggers have a silent parent logger - so there are no visible log messages in the command line. The 
-`BetonQuestLoggerService` also enables a few new features:
+=== "Legacy Testing"
+    If you write a test for a legacy class that requires a `BetonQuestLogger` or a `BetonQuestLoggerFactory` you can use the
+    `BetonQuestLoggerService` like so:
+    
+    ````java linenums="1" hl_lines="1"
+      @ExtendWith(BetonQuestLoggerService.class)
+      public class TestClass {
+    ````
+    Now you can easily obtain a `BetonQuestLoggerFactory`, a `BetonQuestLogger` and a static mock of the `BetonQuest` instance
+    by adding them as parameters into the test method's signature. They will be automatically injected.
 
 ### LogValidator
 

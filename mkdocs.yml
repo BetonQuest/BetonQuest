@@ -251,6 +251,7 @@ nav:
               - 'Changelog': Documentation/CHANGELOG.md
   - 'API':
       - 'Overview': API/Overview.md
+      - 'Getting Started': API/Getting-Started.md
       - 'Legacy API': API/API.md
       - 'ConfigurationFile': API/ConfigurationFile.md
       - 'Logging': API/Logging.md
