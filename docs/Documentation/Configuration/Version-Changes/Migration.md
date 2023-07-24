@@ -21,7 +21,7 @@ Skip to the first version that is newer than the version that you're migrating f
 - [2.0.0-DEV-539 - NPC Holograms](#200-dev-539-npc-holograms)
 - [2.0.0-DEV-644 - Database migration for profiles](#200-dev-644-database-migration-for-profiles)
 - [2.0.0-DEV-647 - EffectLib](#200-dev-647-effectlib)
-- [2.0.0-DEV-673 - MMO Updates](#200-dev-673-mmo-updates)
+- [2.0.0-DEV-674 - MMO Updates](#200-dev-674-mmo-updates)
 
 ### 2.0.0-DEV-98 - RPGMenu Merge
 
@@ -301,7 +301,7 @@ you now need to add the `npcs` section with every npc the effect should be playe
 4. In case you never had the `pitch` field, you need to use the default value of `-90`.
 </div>
 
-### 2.0.0-DEV-673 - MMO Updates
+### 2.0.0-DEV-674 - MMO Updates
 
 A change related to the integration of the MMO suite by Phoenix Development was made. 
 The objectives `mmocorecastskill` and `mmoitemcastability` were merged into the `mmoskill` objective.
