@@ -125,21 +125,21 @@
     <dependency>
       <groupId>io.lumine</groupId>
       <artifactId>MythicLib-dist</artifactId>
-      <version>1.4</version>
+      <version>1.6-SNAPSHOT</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>net.Indyuce</groupId>
-      <artifactId>MMOCore</artifactId>
-      <version>1.9.3</version>
+      <artifactId>MMOCore-API</artifactId>
+      <version>1.12-SNAPSHOT</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>net.Indyuce</groupId>
-      <artifactId>MMOItems</artifactId>
-      <version>6.7.3</version>
+      <artifactId>MMOItems-API</artifactId>
+      <version>6.9.4-SNAPSHOT</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
