@@ -3,12 +3,13 @@ package org.betonquest.betonquest.modules.schedule.impl.realtime.cron;
 import com.cronutils.model.time.ExecutionTime;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.schedule.LastExecutionCache;
 import org.betonquest.betonquest.modules.schedule.ScheduleID;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -23,9 +24,8 @@ import static org.mockito.Mockito.*;
 /**
  * Tests for the {@link RealtimeCronScheduler}
  */
-@ExtendWith(BetonQuestLoggerService.class)
+@ExtendWith(MockitoExtension.class)
 class RealtimeCronSchedulerTest {
-
     /**
      * Mocked schedule id.
      */
@@ -35,24 +35,20 @@ class RealtimeCronSchedulerTest {
         when(SCHEDULE_ID.toString()).thenReturn("test.schedule");
     }
 
+    @Mock
+    private BetonQuestLogger logger;
+
     @NotNull
     private static RealtimeCronSchedule getSchedule(final CatchupStrategy catchupStrategy, final boolean shouldRunOnReboot) {
         final RealtimeCronSchedule schedule = mock(RealtimeCronSchedule.class);
         when(schedule.shouldRunOnReboot()).thenReturn(shouldRunOnReboot);
-
         when(schedule.getId()).thenReturn(SCHEDULE_ID);
-
-        final ExecutionTime executionTime = mock(ExecutionTime.class);
-        when(executionTime.timeToNextExecution(any())).thenReturn(Optional.empty());
-        when(schedule.getExecutionTime()).thenReturn(executionTime);
-
         when(schedule.getCatchup()).thenReturn(catchupStrategy);
-
         return schedule;
     }
 
     @Test
-    void testStartWithoutSchedules(final BetonQuestLogger logger) {
+    void testStartWithoutSchedules() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final RealtimeCronScheduler scheduler = spy(new RealtimeCronScheduler(logger, cache));
         scheduler.start();
@@ -67,10 +63,15 @@ class RealtimeCronSchedulerTest {
     }
 
     @Test
-    void testStartWithRebootSchedules(final BetonQuestLogger logger) {
+    void testStartWithRebootSchedules() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(logger, cache);
         final RealtimeCronSchedule schedule = getSchedule(CatchupStrategy.NONE, true);
+
+        final ExecutionTime executionTime = mock(ExecutionTime.class);
+        when(executionTime.timeToNextExecution(any())).thenReturn(Optional.empty());
+        when(schedule.getExecutionTime()).thenReturn(executionTime);
+
         scheduler.addSchedule(schedule);
         scheduler.start();
 
@@ -85,7 +86,7 @@ class RealtimeCronSchedulerTest {
     }
 
     @Test
-    void testStartWithMissedSchedulesStrategyOne(final BetonQuestLogger logger) {
+    void testStartWithMissedSchedulesStrategyOne() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final Instant lastExecution = Instant.now().minusSeconds(60);
         when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(lastExecution));
@@ -112,7 +113,7 @@ class RealtimeCronSchedulerTest {
     }
 
     @Test
-    void testStartWithMissedSchedulesStrategyAll(final BetonQuestLogger logger) {
+    void testStartWithMissedSchedulesStrategyAll() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final Instant lastExecution = Instant.now().minusSeconds(60);
         when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(lastExecution));
@@ -149,7 +150,7 @@ class RealtimeCronSchedulerTest {
 
     @Test
     @SuppressWarnings("PMD.DoNotUseThreads")
-    void testStartSchedule(final BetonQuestLogger logger) {
+    void testStartSchedule() {
         final Duration duration = Duration.ofSeconds(20);
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);

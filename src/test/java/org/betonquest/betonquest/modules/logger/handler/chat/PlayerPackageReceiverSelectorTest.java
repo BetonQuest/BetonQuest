@@ -1,8 +1,6 @@
 package org.betonquest.betonquest.modules.logger.handler.chat;
 
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -17,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Test {@link PlayerPackageReceiverSelector}.
  */
-@ExtendWith(BetonQuestLoggerService.class)
 class PlayerPackageReceiverSelectorTest {
     /**
      * Message for test log records.

@@ -3,13 +3,14 @@ package org.betonquest.betonquest.modules.config;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegisterer;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.modules.config.patcher.DefaultPatchTransformerRegisterer;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;
 import java.util.List;
@@ -20,9 +21,8 @@ import static org.mockito.Mockito.*;
 /**
  * A test for the {@link Patcher}.
  */
-@ExtendWith(BetonQuestLoggerService.class)
+@ExtendWith(MockitoExtension.class)
 class PatcherTest {
-
     /**
      * Anonymous {@link PatchTransformerRegisterer} for testing.
      */
@@ -33,6 +33,9 @@ class PatcherTest {
      */
     private final YamlConfiguration patch = YamlConfiguration.loadConfiguration(new File("src/test/resources/modules.config/config.patch.yml"));
 
+    @Mock
+    private BetonQuestLogger logger;
+
     /**
      * The config that will be patched.
      */
@@ -40,12 +43,12 @@ class PatcherTest {
 
     @BeforeEach
     void cleanConfig() {
-        config = YamlConfiguration.loadConfiguration(new File("src/test/resources/modules.config/config.yml"));
+        this.config = YamlConfiguration.loadConfiguration(new File("src/test/resources/modules.config/config.yml"));
     }
 
     @Test
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-    void testHasUpdate(final BetonQuestLogger logger) throws InvalidConfigurationException {
+    void testHasUpdate() throws InvalidConfigurationException {
         final YamlConfiguration configBeforeTest = new YamlConfiguration();
         configBeforeTest.loadFromString(config.saveToString());
 
@@ -57,7 +60,7 @@ class PatcherTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-    void testHasNoUpdateForNewerConfigs(final BetonQuestLogger logger) throws InvalidConfigurationException {
+    void testHasNoUpdateForNewerConfigs() throws InvalidConfigurationException {
         final YamlConfiguration configFromTheFuture = new YamlConfiguration();
         configFromTheFuture.loadFromString("""
                 configVersion: 6.2.3-CONFIG-12
@@ -83,7 +86,7 @@ class PatcherTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-    void testAppliesUpdates(final BetonQuestLogger logger) throws InvalidConfigurationException {
+    void testAppliesUpdates() throws InvalidConfigurationException {
         final YamlConfiguration expectedConfig = new YamlConfiguration();
         expectedConfig.loadFromString(config.saveToString());
 
@@ -111,7 +114,7 @@ class PatcherTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
-    void testPatchVersionNumberTooShort(final BetonQuestLogger logger) throws InvalidConfigurationException {
+    void testPatchVersionNumberTooShort() throws InvalidConfigurationException {
         final YamlConfiguration invalidConfig = createConfigFromString("""
                 "1.0":
                   - type: SET
@@ -126,7 +129,7 @@ class PatcherTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
-    void testPatchMalformed(final BetonQuestLogger logger) throws InvalidConfigurationException {
+    void testPatchMalformed() throws InvalidConfigurationException {
         final YamlConfiguration invalidConfig = createConfigFromString("""
                 "1.0": Nonsense
                 """);
@@ -138,7 +141,7 @@ class PatcherTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
-    void testPatchIsNonsense(final BetonQuestLogger logger) throws InvalidConfigurationException {
+    void testPatchIsNonsense() throws InvalidConfigurationException {
         final String patch = """
                 1:
                   - Nonsense
@@ -152,7 +155,7 @@ class PatcherTest {
     }
 
     @Test
-    void testUnknownTransformerType(final BetonQuestLogger logger) throws InvalidConfigurationException {
+    void testUnknownTransformerType() throws InvalidConfigurationException {
         final String patch = """
                 3.4.5.6:
                   - type: INVALID
@@ -171,7 +174,7 @@ class PatcherTest {
     }
 
     @Test
-    void testEmptyPatchFile(final BetonQuestLogger logger) throws InvalidConfigurationException {
+    void testEmptyPatchFile() throws InvalidConfigurationException {
         final String patch = "";
         final YamlConfiguration patchConfig = new YamlConfiguration();
         patchConfig.loadFromString(patch);
@@ -180,7 +183,7 @@ class PatcherTest {
     }
 
     @Test
-    void testLegacyConfig(final BetonQuestLogger logger) throws InvalidConfigurationException {
+    void testLegacyConfig() throws InvalidConfigurationException {
         final YamlConfiguration emptyConfig = createConfigFromString("");
 
         final YamlConfiguration patchConfig = createConfigFromString("""
@@ -204,7 +207,7 @@ class PatcherTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-    void testConfigFromResourceUpdate(final BetonQuestLogger logger) throws InvalidConfigurationException {
+    void testConfigFromResourceUpdate() throws InvalidConfigurationException {
         final YamlConfiguration emptyConfig = createConfigFromString("""
                         configVersion: ""
                         someKey: someValue

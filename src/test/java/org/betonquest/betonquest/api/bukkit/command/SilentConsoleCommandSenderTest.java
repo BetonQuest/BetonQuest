@@ -1,12 +1,9 @@
 package org.betonquest.betonquest.api.bukkit.command;
 
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.UUID;
 
@@ -15,7 +12,6 @@ import static org.mockito.Mockito.*;
 /**
  * This class tests the {@link SilentConsoleCommandSender} class.
  */
-@ExtendWith(BetonQuestLoggerService.class)
 class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
     /**
      * The console command sender to use.
@@ -34,7 +30,7 @@ class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
     }
 
     @Override
-    public SilentConsoleCommandSender getSilentCommandSender(final BetonQuestLogger logger) {
+    public SilentConsoleCommandSender getSilentCommandSender() {
         silentSender = new SilentConsoleCommandSender(logger, sender);
         return silentSender;
     }
@@ -70,7 +66,7 @@ class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
     }
 
     @Test
-    void sendRawMessage(final BetonQuestLogger logger) {
+    void sendRawMessage() {
         silentSender.sendRawMessage("test1");
         verify(sender, never()).sendRawMessage("test1");
         verify(logger, times(1)).debug("Silently sending message to console: test1");
@@ -78,7 +74,7 @@ class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
     }
 
     @Test
-    void sendRawMessage_sender(final BetonQuestLogger logger) {
+    void sendRawMessage_sender() {
         silentSender.sendRawMessage(null, "test3");
         verify(sender, never()).sendRawMessage(any(UUID.class), anyString());
         verify(logger, times(1)).debug("Silently sending message to console: test3");

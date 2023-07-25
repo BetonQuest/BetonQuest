@@ -2,10 +2,8 @@ package org.betonquest.betonquest.modules.web.updater;
 
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
 import org.betonquest.betonquest.modules.versioning.Version;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -18,7 +16,6 @@ import static org.mockito.Mockito.*;
 /**
  * This class tests the {@link UpdaterConfig}.
  */
-@ExtendWith(BetonQuestLoggerService.class)
 final class UpdaterConfigTest {
     /**
      * Invalid {@link UpdateStrategy}
@@ -184,8 +181,8 @@ final class UpdaterConfigTest {
 
     @ParameterizedTest
     @MethodSource("combinations")
-    void testUpdaterConfig(final Input input, final Expected expected, final BetonQuestLogger logger) {
-        final UpdaterConfig updaterConfig = getMockedConfig(logger, input, input.version);
+    void testUpdaterConfig(final Input input, final Expected expected) {
+        final UpdaterConfig updaterConfig = getMockedConfig(mock(BetonQuestLogger.class), input, input.version);
         updaterConfig.reloadFromConfig();
         assertSettings(expected, updaterConfig);
     }

@@ -2,11 +2,12 @@ package org.betonquest.betonquest.api.bukkit.command;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.bukkit.command.CommandSender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.UUID;
 
@@ -15,8 +16,11 @@ import static org.mockito.Mockito.*;
 /**
  * This class tests the {@link SilentCommandSender} class.
  */
-@ExtendWith(BetonQuestLoggerService.class)
+@ExtendWith(MockitoExtension.class)
 class SilentCommandSenderTest {
+    @Mock
+    protected BetonQuestLogger logger;
+
     /**
      * The command sender to use.
      */
@@ -28,9 +32,9 @@ class SilentCommandSenderTest {
     private SilentCommandSender silentSender;
 
     @BeforeEach
-    void setUp(final BetonQuestLogger logger) {
+    void setUp() {
         sender = getCommandSender();
-        silentSender = getSilentCommandSender(logger);
+        silentSender = getSilentCommandSender();
     }
 
     /**
@@ -47,12 +51,12 @@ class SilentCommandSenderTest {
      *
      * @return the silent command sender to test
      */
-    public SilentCommandSender getSilentCommandSender(final BetonQuestLogger logger) {
+    public SilentCommandSender getSilentCommandSender() {
         return new SilentCommandSender(logger, sender);
     }
 
     @Test
-    void sendMessage(final BetonQuestLogger logger) {
+    void sendMessage() {
         silentSender.sendMessage("test1");
         verify(sender, never()).sendMessage(anyString());
         verify(logger, times(1)).debug("Silently sending message to console: test1");
@@ -60,7 +64,7 @@ class SilentCommandSenderTest {
     }
 
     @Test
-    void sendMessage_multiple(final BetonQuestLogger logger) {
+    void sendMessage_multiple() {
         silentSender.sendMessage("test2", "test3");
         verify(sender, never()).sendMessage(anyString(), anyString());
         verify(logger, times(1)).debug("Silently sending messages to console: test2, test3");
@@ -68,7 +72,7 @@ class SilentCommandSenderTest {
     }
 
     @Test
-    void sendMessage_Sender_null(final BetonQuestLogger logger) {
+    void sendMessage_Sender_null() {
         silentSender.sendMessage(null, "test4");
         verify(sender, never()).sendMessage(any(UUID.class), anyString());
         verify(logger, times(1)).debug("Silently sending message to console: test4");
@@ -76,7 +80,7 @@ class SilentCommandSenderTest {
     }
 
     @Test
-    void sendMessage_UUID_null(final BetonQuestLogger logger) {
+    void sendMessage_UUID_null() {
         silentSender.sendMessage((UUID) null, "test5", "test6");
         verify(sender, never()).sendMessage(any(UUID.class), anyString(), anyString());
         verify(logger, times(1)).debug("Silently sending messages to console: test5, test6");

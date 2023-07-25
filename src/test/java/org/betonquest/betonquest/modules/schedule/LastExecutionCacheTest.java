@@ -2,7 +2,6 @@ package org.betonquest.betonquest.modules.schedule;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,8 +26,9 @@ import static org.mockito.Mockito.*;
  * Test that the LastExecutionCache is properly loading & saving to cache file.
  */
 @ExtendWith(MockitoExtension.class)
-@ExtendWith(BetonQuestLoggerService.class)
 class LastExecutionCacheTest {
+    @Mock
+    private BetonQuestLogger logger;
 
     /**
      * The cache to test.
@@ -54,7 +54,7 @@ class LastExecutionCacheTest {
     private ScheduleID scheduleID;
 
     @BeforeEach
-    void setUp(final BetonQuestLogger logger) {
+    void setUp() {
         try (MockedStatic<ConfigAccessor> configAccessor = mockStatic(ConfigAccessor.class);
              MockedStatic<Files> files = mockStatic(Files.class)) {
             lenient().when(cacheAccessor.getConfig()).thenReturn(cacheContent);
@@ -66,7 +66,7 @@ class LastExecutionCacheTest {
     }
 
     @Test
-    void testLoadIOException(final BetonQuestLogger logger) {
+    void testLoadIOException() {
         try (MockedStatic<ConfigAccessor> configAccessor = mockStatic(ConfigAccessor.class);
              MockedStatic<Files> files = mockStatic(Files.class)) {
             lenient().when(cacheAccessor.getConfig()).thenReturn(cacheContent);
@@ -81,7 +81,7 @@ class LastExecutionCacheTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
-    void testSaveIOException(final BetonQuestLogger logger) throws IOException {
+    void testSaveIOException() throws IOException {
         when(scheduleID.getFullID()).thenReturn("test-package.testCacheIOException");
         when(cacheAccessor.save()).thenThrow(new IOException("ioexception"));
         lastExecutionCache.cacheExecutionTime(scheduleID, Instant.parse("1970-01-01T00:00:00Z"));
@@ -90,7 +90,7 @@ class LastExecutionCacheTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
-    void testReloadIOException(final BetonQuestLogger logger) throws IOException {
+    void testReloadIOException() throws IOException {
         when(cacheAccessor.reload()).thenThrow(new IOException("ioexception"));
         lastExecutionCache.reload();
         verify(logger, times(1)).error(eq("Could not reload schedule cache: ioexception"), any(IOException.class));

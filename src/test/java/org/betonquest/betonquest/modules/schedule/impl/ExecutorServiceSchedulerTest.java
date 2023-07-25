@@ -2,11 +2,12 @@ package org.betonquest.betonquest.modules.schedule.impl;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.Schedule;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.schedule.ScheduleID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -20,8 +21,10 @@ import static org.mockito.Mockito.*;
  * Tests for the {@link ExecutorServiceScheduler}
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
-@ExtendWith(BetonQuestLoggerService.class)
+@ExtendWith(MockitoExtension.class)
 class ExecutorServiceSchedulerTest {
+    @Mock
+    private BetonQuestLogger logger;
 
     /**
      * The scheduler to test
@@ -45,7 +48,7 @@ class ExecutorServiceSchedulerTest {
     }
 
     @BeforeEach
-    void setUp(final BetonQuestLogger logger) {
+    void setUp() {
         scheduler = spy(new ExecutorServiceScheduler<Schedule>(logger, this::newExecutor) {
             @Override
             protected void schedule(final Schedule schedule) {
@@ -69,7 +72,7 @@ class ExecutorServiceSchedulerTest {
     }
 
     @Test
-    void testStopSuccess(final BetonQuestLogger logger) throws InterruptedException {
+    void testStopSuccess() throws InterruptedException {
         scheduler.start();
         doReturn(true).when(executor).awaitTermination(anyLong(), any());
         scheduler.stop();
@@ -84,7 +87,7 @@ class ExecutorServiceSchedulerTest {
     }
 
     @Test
-    void testStopInterrupted(final BetonQuestLogger logger) throws InterruptedException {
+    void testStopInterrupted() throws InterruptedException {
         scheduler.start();
         doThrow(InterruptedException.class).when(executor).awaitTermination(anyLong(), any());
         scheduler.stop();
@@ -99,7 +102,7 @@ class ExecutorServiceSchedulerTest {
     }
 
     @Test
-    void testStopTimeout(final BetonQuestLogger logger) throws InterruptedException {
+    void testStopTimeout() throws InterruptedException {
         scheduler.start();
         doReturn(false).when(executor).awaitTermination(anyLong(), any());
         scheduler.stop();

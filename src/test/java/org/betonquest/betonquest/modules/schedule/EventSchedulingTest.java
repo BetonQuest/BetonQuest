@@ -9,13 +9,13 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.schedule.EventScheduling.ScheduleType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -31,9 +31,8 @@ import static org.mockito.Mockito.*;
 /**
  * Tests if starting & stopping EventScheduling works reliable and if loading Schedules works as intended.
  */
-@ExtendWith(BetonQuestLoggerService.class)
+@ExtendWith(MockitoExtension.class)
 class EventSchedulingTest {
-
     /**
      * Event Scheduling instance.
      */
@@ -45,9 +44,9 @@ class EventSchedulingTest {
     private Map<String, ScheduleType<?>> scheduleTypes;
 
     @BeforeEach
-    void setUp(final BetonQuestLogger logger) {
+    void setUp() {
         scheduleTypes = new HashMap<>();
-        scheduling = new EventScheduling(logger, scheduleTypes);
+        scheduling = new EventScheduling(mock(BetonQuestLogger.class), scheduleTypes);
     }
 
     @SuppressWarnings("unchecked")
@@ -58,9 +57,8 @@ class EventSchedulingTest {
     }
 
     @SuppressWarnings("unchecked")
-    private ScheduleType<?> registerSpyType(final String name) throws InstructionParseException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    private ScheduleType<?> registerSpyType(final String name) {
         final ScheduleType<Schedule> spyType = spy(new ScheduleType<Schedule>(Schedule.class, mock(Scheduler.class)));
-        doNothing().when(spyType).createAndScheduleNewInstance(any(), any());
         scheduleTypes.put(name, spyType);
         return spyType;
     }
@@ -130,7 +128,9 @@ class EventSchedulingTest {
     void testLoad() throws KeyConflictException, InvalidSubConfigurationException, InstructionParseException,
             InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         final ScheduleType<?> simpleType = registerSpyType("realtime-daily");
+        doNothing().when(simpleType).createAndScheduleNewInstance(any(), any());
         final ScheduleType<?> cronType = registerSpyType("realtime-cron");
+        doNothing().when(cronType).createAndScheduleNewInstance(any(), any());
         final QuestPackage pack = mockQuestPackage("src/test/resources/modules.schedule/packageExample.yml");
         scheduling.loadData(pack);
         verify(simpleType).createAndScheduleNewInstance(argThat(id -> "testSimple".equals(id.getBaseID())), any());

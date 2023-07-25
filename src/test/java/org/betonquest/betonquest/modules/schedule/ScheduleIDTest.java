@@ -3,9 +3,7 @@ package org.betonquest.betonquest.modules.schedule;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -14,7 +12,6 @@ import static org.mockito.Mockito.*;
  * This test should ensure that new ScheduleIDs can be constructed and throw an
  * ObjectNotFoundException if no schedule with that ID exists.
  */
-@ExtendWith(BetonQuestLoggerService.class)
 class ScheduleIDTest {
 
     @Test

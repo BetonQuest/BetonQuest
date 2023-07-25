@@ -3,9 +3,6 @@ package org.betonquest.betonquest.modules.logger.util;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -59,23 +56,11 @@ public class BetonQuestLoggerService implements BeforeEachCallback, ParameterRes
     @Override
     public void beforeEach(final ExtensionContext context) {
         this.logger = mock(BetonQuestLogger.class);
-        loggerFactory = new BetonQuestLoggerFactory() {
-            @Override
-            public BetonQuestLogger create(@NotNull final Class<?> clazz, @Nullable final String topic) {
-                return logger;
-            }
-
-            @Override
-            public BetonQuestLogger create(@NotNull final Plugin plugin, @Nullable final String topic) {
-                return logger;
-            }
-        };
-
+        this.loggerFactory = new SingletonLoggerFactory(logger);
         final BetonQuest betonQuest = mock(BetonQuest.class);
         lenient().when(betonQuest.getLoggerFactory()).thenReturn(loggerFactory);
         staticBetonQuest = mockStatic(BetonQuest.class);
         staticBetonQuest.when(BetonQuest::getInstance).thenReturn(betonQuest);
-
     }
 
     @Override

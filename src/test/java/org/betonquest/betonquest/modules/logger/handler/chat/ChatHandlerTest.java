@@ -3,7 +3,6 @@ package org.betonquest.betonquest.modules.logger.handler.chat;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.betonquest.betonquest.modules.logger.format.ChatFormatter;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -21,7 +20,6 @@ import static org.mockito.Mockito.*;
 /**
  * Test {@link ChatHandler}.
  */
-@ExtendWith(BetonQuestLoggerService.class)
 @ExtendWith(MockitoExtension.class)
 class ChatHandlerTest {
 

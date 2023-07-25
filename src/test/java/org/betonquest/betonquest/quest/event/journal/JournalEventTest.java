@@ -4,7 +4,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
@@ -19,7 +18,6 @@ import static org.mockito.Mockito.*;
 /**
  * Test {@link JournalEvent}.
  */
-@ExtendWith(BetonQuestLoggerService.class)
 @ExtendWith(MockitoExtension.class)
 class JournalEventTest {
     @Test

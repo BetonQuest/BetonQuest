@@ -2,12 +2,13 @@ package org.betonquest.betonquest.modules.schedule.impl.realtime.daily;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.schedule.LastExecutionCache;
 import org.betonquest.betonquest.modules.schedule.ScheduleID;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -21,10 +22,9 @@ import static org.mockito.Mockito.*;
 /**
  * Tests for the {@link RealtimeDailyScheduler}
  */
-@ExtendWith(BetonQuestLoggerService.class)
 @SuppressWarnings("PMD.DoNotUseThreads")
+@ExtendWith(MockitoExtension.class)
 class RealtimeDailySchedulerTest {
-
     /**
      * Mocked schedule id.
      */
@@ -33,6 +33,9 @@ class RealtimeDailySchedulerTest {
     static {
         when(SCHEDULE_ID.toString()).thenReturn("test.schedule");
     }
+
+    @Mock
+    private BetonQuestLogger logger;
 
     @NotNull
     private static RealtimeDailySchedule getSchedule(final CatchupStrategy catchupStrategy) {
@@ -45,7 +48,7 @@ class RealtimeDailySchedulerTest {
     }
 
     @Test
-    void testStartWithoutSchedules(final BetonQuestLogger logger) {
+    void testStartWithoutSchedules() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final RealtimeDailyScheduler scheduler = spy(new RealtimeDailyScheduler(logger, cache));
         scheduler.start();
@@ -59,7 +62,7 @@ class RealtimeDailySchedulerTest {
     }
 
     @Test
-    void testStartWithMissedSchedulesStrategyOne(final BetonQuestLogger logger) {
+    void testStartWithMissedSchedulesStrategyOne() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final Instant lastExecution = Instant.now().minus(2, ChronoUnit.DAYS).plusSeconds(60);
         final Instant nextMissedExecution = lastExecution.plus(1, ChronoUnit.DAYS);
@@ -83,7 +86,7 @@ class RealtimeDailySchedulerTest {
     }
 
     @Test
-    void testStartWithMissedSchedulesStrategyAll(final BetonQuestLogger logger) {
+    void testStartWithMissedSchedulesStrategyAll() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final Instant lastExecution = Instant.now().minus(4, ChronoUnit.DAYS).plusSeconds(60);
         final Instant nextMissedExecution1 = lastExecution.plus(1, ChronoUnit.DAYS);
@@ -111,13 +114,12 @@ class RealtimeDailySchedulerTest {
     }
 
     @Test
-    void testStartSchedule(final BetonQuestLogger logger) {
+    void testStartSchedule() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final Instant nextExecution1 = Instant.now();
         final Instant nextExecution2 = nextExecution1.plus(1, ChronoUnit.DAYS);
         final Instant nextExecution3 = nextExecution1.plus(2, ChronoUnit.DAYS);
         final Instant nextExecution4 = nextExecution1.plus(3, ChronoUnit.DAYS);
-        when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(nextExecution1));
         final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);
         when(executorService.schedule(any(Runnable.class), anyLong(), eq(TimeUnit.MILLISECONDS))).then(invocation -> {
             final Runnable runnable = invocation.getArgument(0);

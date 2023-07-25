@@ -4,13 +4,14 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.util.scheduler.BukkitSchedulerMock;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InOrder;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.InstantSource;
 import java.util.UUID;
@@ -21,12 +22,14 @@ import static org.mockito.Mockito.*;
 /**
  * This class tests the {@link Updater}.
  */
-@ExtendWith(BetonQuestLoggerService.class)
+@ExtendWith(MockitoExtension.class)
 class UpdaterTest {
+    @Mock
+    private BetonQuestLogger logger;
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
-    void testUpdateAvailable(final BetonQuestLogger logger) {
+    void testUpdateAvailable() {
         final Version version = new Version("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final BetonQuest plugin = mock(BetonQuest.class);
@@ -49,7 +52,7 @@ class UpdaterTest {
     }
 
     @Test
-    void testNoUpdateAvailable(final BetonQuestLogger logger) {
+    void testNoUpdateAvailable() {
         final Version version = new Version("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final BetonQuest plugin = mock(BetonQuest.class);
@@ -71,7 +74,7 @@ class UpdaterTest {
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
-    void testUpdate(final BetonQuestLogger logger) {
+    void testUpdate() {
         final Version version = new Version("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final UpdateDownloader downloader = mock(UpdateDownloader.class);
@@ -115,7 +118,7 @@ class UpdaterTest {
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
-    void testUpdateAutomatic(final BetonQuestLogger logger) {
+    void testUpdateAutomatic() {
         final Version version = new Version("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final UpdateDownloader downloader = mock(UpdateDownloader.class);
@@ -155,7 +158,7 @@ class UpdaterTest {
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
-    void testUpdateAvailableSearchAgain(final BetonQuestLogger logger) {
+    void testUpdateAvailableSearchAgain() {
         final Version version = new Version("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final BetonQuest plugin = mock(BetonQuest.class);
@@ -187,7 +190,7 @@ class UpdaterTest {
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
-    void testUpdateWithInvalidUrl(final BetonQuestLogger logger) {
+    void testUpdateWithInvalidUrl() {
         final Version version = new Version("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final BetonQuest plugin = mock(BetonQuest.class);
@@ -216,14 +219,13 @@ class UpdaterTest {
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
-    void testUpdateSearchAgain(final BetonQuestLogger logger) {
+    void testUpdateSearchAgain() {
         final Version version = new Version("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final UpdateDownloader downloader = mock(UpdateDownloader.class);
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        when(plugin.getPluginTag()).thenReturn("");
         final Version newVersion = new Version("2.0.0-DEV-5");
         when(handler.searchUpdate(any(), eq(version), any())).thenReturn(Pair.of(newVersion, "https://betonquest.org/5"));
         when(handler.searchUpdate(any(), eq(newVersion), any())).thenReturn(Pair.of(new Version("2.0.0-DEV-6"), "https://betonquest.org/6"));
@@ -252,7 +254,7 @@ class UpdaterTest {
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
-    void testUpdateWithoutAvailable(final BetonQuestLogger logger) {
+    void testUpdateWithoutAvailable() {
         final Version version = new Version("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final UpdateDownloader downloader = mock(UpdateDownloader.class);
@@ -283,7 +285,7 @@ class UpdaterTest {
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
-    void testUpdateAlreadyDownloaded(final BetonQuestLogger logger) {
+    void testUpdateAlreadyDownloaded() {
         final Version version = new Version("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final UpdateDownloader downloader = mock(UpdateDownloader.class);
@@ -315,13 +317,11 @@ class UpdaterTest {
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
-    void testUpdateWithDisabled(final BetonQuestLogger logger) {
+    void testUpdateWithDisabled() {
         final Version version = new Version("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
-
-        when(handler.searchUpdate(any(), any(), any())).thenReturn(Pair.of(new Version("2.0.0-DEV-3"), null));
 
         final UpdaterConfigTest.Input patchDev = new UpdaterConfigTest.Input(null, false, false, "PATCH_DEV", false);
         final UpdaterConfig updaterConfig = UpdaterConfigTest.getMockedConfig(logger, patchDev, version);
