@@ -3,8 +3,8 @@ package org.betonquest.betonquest.objectives;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -32,7 +32,7 @@ public class DieObjective extends Objective implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final boolean cancel;
 
@@ -40,6 +40,7 @@ public class DieObjective extends Objective implements Listener {
 
     public DieObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         template = ObjectiveData.class;
         cancel = instruction.hasArgument("cancel");
         location = instruction.getLocation(instruction.getOptional("respawn"));
@@ -81,7 +82,7 @@ public class DieObjective extends Objective implements Listener {
                     targetLocation = location.getLocation(onlineProfile);
                 }
             } catch (final QuestRuntimeException e) {
-                LOG.warn(instruction.getPackage(), "Couldn't execute onLastDamage in DieObjective", e);
+                log.warn(instruction.getPackage(), "Couldn't execute onLastDamage in DieObjective", e);
             }
             final Location finaltagetLocation = targetLocation;
             new BukkitRunnable() {

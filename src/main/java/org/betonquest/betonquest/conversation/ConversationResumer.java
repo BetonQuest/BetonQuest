@@ -2,6 +2,7 @@ package org.betonquest.betonquest.conversation;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Saver.Record;
@@ -20,6 +21,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class ConversationResumer implements Listener {
+    /**
+     * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
+     */
+    private final BetonQuestLoggerFactory loggerFactory;
+
     private final String original;
 
     private final Player player;
@@ -34,7 +40,8 @@ public class ConversationResumer implements Listener {
 
     private final double distance;
 
-    public ConversationResumer(final OnlineProfile onlineProfile, final String convID) {
+    public ConversationResumer(final BetonQuestLoggerFactory loggerFactory, final OnlineProfile onlineProfile, final String convID) {
+        this.loggerFactory = loggerFactory;
         this.original = convID;
         this.player = onlineProfile.getPlayer();
         this.onlineProfile = onlineProfile;
@@ -63,7 +70,7 @@ public class ConversationResumer implements Listener {
             HandlerList.unregisterAll(this);
             BetonQuest.getInstance().getSaver()
                     .add(new Record(UpdateType.UPDATE_CONVERSATION, "null", onlineProfile.getProfileUUID().toString()));
-            new Conversation(onlineProfile, conversationID, loc, option);
+            new Conversation(loggerFactory.create(Conversation.class), onlineProfile, conversationID, loc, option);
         }
     }
 

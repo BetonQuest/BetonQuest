@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.schedule.impl;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
@@ -32,7 +32,7 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create("Schedules");
+    private final BetonQuestLogger log;
 
     /**
      * Supplier used to create the {@link #executor}.
@@ -46,18 +46,22 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
 
     /**
      * Constructor to create a new instance of this scheduler.
+     *
+     * @param log the logger that will be used for logging
      */
-    public ExecutorServiceScheduler() {
-        this(Executors::newSingleThreadScheduledExecutor);
+    public ExecutorServiceScheduler(final BetonQuestLogger log) {
+        this(log, Executors::newSingleThreadScheduledExecutor);
     }
 
     /**
      * Constructor to create a new instance of this scheduler with a custom executor.
      *
+     * @param log      the logger that will be used for logging
      * @param executor supplier used to create new instances of the executor used by this scheduler
      */
-    public ExecutorServiceScheduler(final Supplier<ScheduledExecutorService> executor) {
-        super();
+    public ExecutorServiceScheduler(final BetonQuestLogger log, final Supplier<ScheduledExecutorService> executor) {
+        super(log);
+        this.log = log;
         this.executorServiceSupplier = executor;
     }
 
@@ -108,7 +112,7 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
     @Override
     public void stop() {
         if (isRunning()) {
-            LOG.debug("Stopping " + getClass().getSimpleName().toLowerCase(Locale.ROOT).replace("scheduler", "")
+            log.debug("Stopping " + getClass().getSimpleName().toLowerCase(Locale.ROOT).replace("scheduler", "")
                     + " scheduler.");
             executor.shutdownNow();
             try {
@@ -116,12 +120,12 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
                 if (!terminated) {
                     throw new TimeoutException("Not all schedules could be terminated within time constraints");
                 }
-                LOG.debug("Successfully shut down executor service.");
+                log.debug("Successfully shut down executor service.");
             } catch (final InterruptedException | TimeoutException e) {
-                LOG.error("Error while stopping scheduler", e);
+                log.error("Error while stopping scheduler", e);
             }
             super.stop();
-            LOG.debug("Stop complete.");
+            log.debug("Stop complete.");
         }
     }
 }

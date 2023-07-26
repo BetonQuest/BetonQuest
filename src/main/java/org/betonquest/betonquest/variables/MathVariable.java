@@ -1,8 +1,9 @@
 package org.betonquest.betonquest.variables;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Variable;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -19,12 +20,13 @@ public class MathVariable extends Variable {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final Token calculation;
 
     public MathVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         final String instructionString = instruction.getInstruction();
         if (!instructionString.matches("math\\.calc:.+")) {
             throw new InstructionParseException("invalid format");
@@ -42,7 +44,7 @@ public class MathVariable extends Variable {
             }
             return String.valueOf(value);
         } catch (final QuestRuntimeException e) {
-            LOG.warn(instruction.getPackage(), "Could not calculate '" + calculation + "' (" + e.getMessage() + "). Returning 0 instead.", e);
+            log.warn(instruction.getPackage(), "Could not calculate '" + calculation + "' (" + e.getMessage() + "). Returning 0 instead.", e);
             return "0";
         }
     }

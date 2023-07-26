@@ -3,10 +3,10 @@ package org.betonquest.betonquest.events;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -26,7 +26,7 @@ public class CompassEvent extends QuestEvent {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final Action action;
 
@@ -36,6 +36,7 @@ public class CompassEvent extends QuestEvent {
 
     public CompassEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         persistent = true;
 
         action = instruction.getEnum(Action.class);
@@ -62,10 +63,10 @@ public class CompassEvent extends QuestEvent {
             case DEL:
                 // Add Tag to player
                 try {
-                    final Instruction tagInstruction = new Instruction(instruction.getPackage(), null, "tag " + action.toString().toLowerCase(Locale.ROOT) + " compass-" + compass);
+                    final Instruction tagInstruction = new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), instruction.getPackage(), null, "tag " + action.toString().toLowerCase(Locale.ROOT) + " compass-" + compass);
                     BetonQuest.getInstance().getEventFactory("tag").parseEventInstruction(tagInstruction).handle(profile);
                 } catch (final InstructionParseException e) {
-                    LOG.warn(instruction.getPackage(), "Failed to tag " + profile + " with compass point: " + compass, e);
+                    log.warn(instruction.getPackage(), "Failed to tag " + profile + " with compass point: " + compass, e);
                 }
                 return null;
             case SET:
@@ -73,7 +74,7 @@ public class CompassEvent extends QuestEvent {
                 try {
                     location = compassLocation.getLocation(profile);
                 } catch (final QuestRuntimeException e) {
-                    LOG.warn(instruction.getPackage(), "Failed to set compass: " + compass, e);
+                    log.warn(instruction.getPackage(), "Failed to set compass: " + compass, e);
                     return null;
                 }
                 if (profile.getOnlineProfile().isPresent()) {

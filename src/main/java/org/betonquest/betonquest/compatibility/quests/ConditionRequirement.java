@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.quests;
 
 import me.blackvein.quests.CustomRequirement;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
@@ -19,10 +19,11 @@ public class ConditionRequirement extends CustomRequirement {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
-    public ConditionRequirement() {
+    public ConditionRequirement(final BetonQuestLogger log) {
         super();
+        this.log = log;
         setName("BetonQuest condition");
         setAuthor("Co0sh");
         addStringPrompt("Condition", "Specify BetonQuest condition name (with the package, like: package.condition)", null);
@@ -36,7 +37,7 @@ public class ConditionRequirement extends CustomRequirement {
             final ConditionID condition = new ConditionID(null, string);
             return BetonQuest.condition(onlineProfile, condition);
         } catch (final ObjectNotFoundException e) {
-            LOG.warn("Error while checking quest requirement - BetonQuest condition '" + string + "' not found: " + e.getMessage(), e);
+            log.warn("Error while checking quest requirement - BetonQuest condition '" + string + "' not found: " + e.getMessage(), e);
             return false;
         }
     }

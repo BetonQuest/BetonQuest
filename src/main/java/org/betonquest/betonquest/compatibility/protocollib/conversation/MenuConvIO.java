@@ -14,8 +14,8 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.ChatConvIO;
@@ -52,11 +52,6 @@ import java.util.stream.Stream;
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods",
         "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public class MenuConvIO extends ChatConvIO {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
-
     // Thread safety
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
@@ -135,6 +130,7 @@ public class MenuConvIO extends ChatConvIO {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public MenuConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         super(conv, onlineProfile);
+        final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
         for (final QuestPackage pack : Stream.concat(
                 Config.getPackages().values().stream().filter(p -> p != conv.getPackage()),
@@ -175,7 +171,7 @@ public class MenuConvIO extends ChatConvIO {
                 }
             }
         } catch (final IllegalArgumentException e) {
-            LOG.warn(conv.getPackage(), conv.getPackage().getQuestPath() + ": Invalid data for 'control_cancel': " + configControlCancel, e);
+            log.warn(conv.getPackage(), conv.getPackage().getQuestPath() + ": Invalid data for 'control_cancel': " + configControlCancel, e);
         }
         try {
             for (final CONTROL control : Arrays.stream(configControlSelect.split(","))
@@ -187,7 +183,7 @@ public class MenuConvIO extends ChatConvIO {
                 }
             }
         } catch (final IllegalArgumentException e) {
-            LOG.warn(conv.getPackage(), conv.getPackage().getQuestPath() + ": Invalid data for 'control_select': " + configControlSelect, e);
+            log.warn(conv.getPackage(), conv.getPackage().getQuestPath() + ": Invalid data for 'control_select': " + configControlSelect, e);
         }
         try {
             for (final CONTROL control : Arrays.stream(configControlMove.split(","))
@@ -198,7 +194,7 @@ public class MenuConvIO extends ChatConvIO {
                 }
             }
         } catch (final IllegalArgumentException e) {
-            LOG.warn(conv.getPackage(), conv.getPackage().getQuestPath() + ": Invalid data for 'control_move': " + configControlMove, e);
+            log.warn(conv.getPackage(), conv.getPackage().getQuestPath() + ": Invalid data for 'control_move': " + configControlMove, e);
         }
     }
 

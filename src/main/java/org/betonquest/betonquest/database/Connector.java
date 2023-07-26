@@ -2,7 +2,7 @@ package org.betonquest.betonquest.database;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +16,7 @@ public class Connector {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     /**
      * Table prefix.
@@ -38,6 +38,7 @@ public class Connector {
      */
     public Connector() {
         final BetonQuest plugin = BetonQuest.getInstance();
+        this.log = plugin.getLoggerFactory().create(Connector.class);
         prefix = plugin.getPluginConfig().getString("mysql.prefix", "");
         database = plugin.getDB();
         connection = database.getConnection();
@@ -52,7 +53,7 @@ public class Connector {
         try {
             connection.prepareStatement("SELECT 1").executeQuery().close();
         } catch (final SQLException e) {
-            LOG.error("Reconnecting to the database", e);
+            log.error("Reconnecting to the database", e);
             database.closeConnection();
             connection = database.getConnection();
         }
@@ -89,7 +90,7 @@ public class Connector {
             variableResolver.resolve(statement);
             return statement.executeQuery();
         } catch (final SQLException e) {
-            LOG.error("There was a exception with SQL", e);
+            log.error("There was a exception with SQL", e);
             return null;
         }
     }
@@ -108,7 +109,7 @@ public class Connector {
             }
             statement.executeUpdate();
         } catch (final SQLException e) {
-            LOG.error("There was an exception with SQL", e);
+            log.error("There was an exception with SQL", e);
         }
     }
 

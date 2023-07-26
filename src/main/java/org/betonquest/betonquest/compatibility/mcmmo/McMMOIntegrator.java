@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.mcmmo;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.compatibility.Integrator;
 
 @SuppressWarnings("PMD.CommentRequired")
@@ -9,12 +9,13 @@ public class McMMOIntegrator implements Integrator {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final BetonQuest plugin;
 
     public McMMOIntegrator() {
         plugin = BetonQuest.getInstance();
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
     }
 
     @Override
@@ -23,9 +24,9 @@ public class McMMOIntegrator implements Integrator {
         plugin.registerEvents("mcmmoexp", McMMOAddExpEvent.class);
         try {
             new MCMMOQuestItemHandler();
-            LOG.debug("Enabled MCMMO QuestItemHandler");
+            log.debug("Enabled MCMMO QuestItemHandler");
         } catch (final LinkageError e) {
-            LOG.warn("MCMMO version is not compatible with the QuestItemHandler.", e);
+            log.warn("MCMMO version is not compatible with the QuestItemHandler.", e);
         }
     }
 

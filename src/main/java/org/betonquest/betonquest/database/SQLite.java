@@ -2,7 +2,7 @@ package org.betonquest.betonquest.database;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class SQLite extends Database {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final String dbLocation;
 
@@ -35,8 +35,9 @@ public class SQLite extends Database {
      * @param plugin     Plugin instance
      * @param dbLocation Location of the Database (Must end in .db)
      */
-    public SQLite(final BetonQuest plugin, final String dbLocation) {
-        super(plugin);
+    public SQLite(final BetonQuestLogger log, final BetonQuest plugin, final String dbLocation) {
+        super(log, plugin);
+        this.log = log;
         this.dbLocation = dbLocation;
     }
 
@@ -51,7 +52,7 @@ public class SQLite extends Database {
             try {
                 file.createNewFile();
             } catch (final IOException e) {
-                LOG.error("Unable to create database!", e);
+                log.error("Unable to create database!", e);
             }
         }
         Connection connection = null;
@@ -60,7 +61,7 @@ public class SQLite extends Database {
             connection = DriverManager
                     .getConnection("jdbc:sqlite:" + plugin.getDataFolder().toPath() + "/" + dbLocation);
         } catch (ClassNotFoundException | SQLException e) {
-            LOG.error("There was an exception with SQL", e);
+            log.error("There was an exception with SQL", e);
         }
         return connection;
     }

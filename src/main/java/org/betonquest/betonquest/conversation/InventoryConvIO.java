@@ -3,7 +3,7 @@ package org.betonquest.betonquest.conversation;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
@@ -37,12 +37,12 @@ import java.util.Map;
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.TooManyFields", "PMD.CommentRequired", "PMD.AvoidFieldNameMatchingMethodName", "PMD.AvoidLiteralsInIfCondition", "PMD.NPathComplexity"})
 public class InventoryConvIO implements Listener, ConversationIO {
+    private static final Map<String, ItemStack> SKULL_CACHE = new HashMap<>();
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
-
-    private static final Map<String, ItemStack> SKULL_CACHE = new HashMap<>();
+    private final BetonQuestLogger log;
 
     protected String response;
 
@@ -85,6 +85,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public InventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         this.conv = conv;
         this.player = onlineProfile.getPlayer();
         final Map<String, ChatColor[]> colors = ConversationColors.getColors();
@@ -174,10 +175,10 @@ public class InventoryConvIO implements Listener, ConversationIO {
         // set the NPC head
         final ItemStack npc;
         if (SKULL_CACHE.containsKey(npcName)) {
-            LOG.debug(conv.getPackage(), "skull cache hit");
+            log.debug(conv.getPackage(), "skull cache hit");
             npc = SKULL_CACHE.get(npcName);
         } else {
-            LOG.debug(conv.getPackage(), "skull cache miss");
+            log.debug(conv.getPackage(), "skull cache miss");
             npc = new ItemStack(Material.PLAYER_HEAD);
             npc.setDurability((short) 3);
             final SkullMeta npcMeta = (SkullMeta) npc.getItemMeta();
@@ -191,7 +192,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                         inv.setItem(0, npc);
                     });
                 } catch (final IllegalArgumentException e) {
-                    LOG.debug(conv.getPackage(), "Could not load skull for chest conversation!", e);
+                    log.debug(conv.getPackage(), "Could not load skull for chest conversation!", e);
                 }
             });
         }
@@ -229,7 +230,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                     try {
                         data = Short.parseShort(materialName.substring(colonIndex + 1));
                     } catch (final NumberFormatException e) {
-                        LOG.warn(conv.getPackage(), "Could not read material data: " + e.getMessage(), e);
+                        log.warn(conv.getPackage(), "Could not read material data: " + e.getMessage(), e);
                         data = 0;
                     }
                     materialName = materialName.substring(0, colonIndex);

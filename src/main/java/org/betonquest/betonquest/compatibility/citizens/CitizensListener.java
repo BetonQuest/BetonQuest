@@ -4,7 +4,8 @@ import net.citizensnpcs.api.event.NPCClickEvent;
 import net.citizensnpcs.api.event.NPCLeftClickEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.CombatTagger;
@@ -28,9 +29,14 @@ public class CitizensListener implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final Map<UUID, Long> npcInteractionLimiter = new HashMap<>();
+
+    /**
+     * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
+     */
+    private final BetonQuestLoggerFactory loggerFactory;
 
     private RightClickListener rightClick;
 
@@ -41,7 +47,9 @@ public class CitizensListener implements Listener {
     /**
      * Initializes the listener
      */
-    public CitizensListener() {
+    public CitizensListener(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
+        this.loggerFactory = loggerFactory;
+        this.log = log;
         reload();
     }
 
@@ -84,7 +92,7 @@ public class CitizensListener implements Listener {
             try {
                 Config.sendNotify(null, onlineProfile, "busy", "busy,error");
             } catch (final QuestRuntimeException e) {
-                LOG.warn("The notify system was unable to play a sound for the 'busy' category. Error was: '" + e.getMessage() + "'", e);
+                log.warn("The notify system was unable to play a sound for the 'busy' category. Error was: '" + e.getMessage() + "'", e);
             }
             return;
         }
@@ -95,7 +103,7 @@ public class CitizensListener implements Listener {
         }
         if (assignment != null) {
             event.setCancelled(true);
-            new CitizensConversation(onlineProfile, assignment, event.getNPC().getEntity().getLocation(),
+            new CitizensConversation(loggerFactory.create(CitizensConversation.class), onlineProfile, assignment, event.getNPC().getEntity().getLocation(),
                     event.getNPC());
         }
     }

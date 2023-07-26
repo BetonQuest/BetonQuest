@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.modules.config;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.patcher.PatchException;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformer;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.versioning.VersionComparator;
@@ -23,11 +23,6 @@ import java.util.regex.Pattern;
  * Patches BetonQuest's configuration file.
  */
 public class Patcher {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create("ConfigurationFile Patcher");
-
     /**
      * The comment at the version entry in the config.
      */
@@ -52,6 +47,11 @@ public class Patcher {
      * Regex pattern of the internal config version schema.
      */
     private static final Pattern VERSION_PATTERN = Pattern.compile("(\\d*\\.\\d*\\.\\d*)\\.(\\d*)");
+
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
 
     /**
      * The config to patch.
@@ -94,17 +94,19 @@ public class Patcher {
      * <br>
      * Updates can be applied using {@link Patcher#patch()}.
      *
+     * @param log         the logger that will be used for logging
      * @param config      the config that must be patched
      * @param patchConfig the patchConfig that contains patches
      */
     @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", justification = "False Positive, default value is explicitly set.")
-    public Patcher(final ConfigurationSection config, final ConfigurationSection patchConfig) {
+    public Patcher(final BetonQuestLogger log, final ConfigurationSection config, final ConfigurationSection patchConfig) {
+        this.log = log;
         this.pluginConfig = config;
         this.patchConfig = patchConfig;
         try {
             buildVersionIndex(this.patchConfig, "");
         } catch (final InvalidConfigurationException e) {
-            LOG.error("Invalid patch file! " + e.getMessage(), e);
+            this.log.error("Invalid patch file! " + e.getMessage(), e);
         }
         final String configVersion = config.getString(CONFIG_VERSION_PATH, TECHNICAL_DEFAULT_VERSION);
         if (configVersion.isEmpty()) {
@@ -222,7 +224,7 @@ public class Patcher {
             if (!comparator.isOtherNewerThanCurrent(configVersion, version)) {
                 continue;
             }
-            LOG.info("Applying patches to update to '" + version.getVersion() + "'...");
+            log.info("Applying patches to update to '" + version.getVersion() + "'...");
             final String patchDataPath = versionData.getValue();
             setConfigVersion(getNewVersion(patchDataPath));
             if (!applyPatch(patchDataPath)) {
@@ -258,8 +260,8 @@ public class Patcher {
                 applyTransformation(typeSafeTransformationData, transformationType);
             } catch (final PatchException e) {
                 noErrors = false;
-                LOG.info("Applying patch of type '" + transformationType + "'...");
-                LOG.warn("There has been an issue while applying the patches for '" + patchDataPath + "': " + e.getMessage());
+                log.info("Applying patch of type '" + transformationType + "'...");
+                log.warn("There has been an issue while applying the patches for '" + patchDataPath + "': " + e.getMessage());
             }
         }
         return noErrors;

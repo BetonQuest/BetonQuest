@@ -1,22 +1,17 @@
 package org.betonquest.betonquest.api.bukkit.command;
 
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
-import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.UUID;
-import java.util.logging.Level;
 
 import static org.mockito.Mockito.*;
 
 /**
  * This class tests the {@link SilentConsoleCommandSender} class.
  */
-@ExtendWith(BetonQuestLoggerService.class)
 class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
     /**
      * The console command sender to use.
@@ -36,7 +31,7 @@ class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
 
     @Override
     public SilentConsoleCommandSender getSilentCommandSender() {
-        silentSender = new SilentConsoleCommandSender(sender);
+        silentSender = new SilentConsoleCommandSender(logger, sender);
         return silentSender;
     }
 
@@ -65,24 +60,24 @@ class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
     }
 
     @Test
-    void testAbandonConversation() {
+    void abandonConversation_ConversationAbandonedEvent() {
         silentSender.abandonConversation(mock(Conversation.class), mock(ConversationAbandonedEvent.class));
         verify(sender, times(1)).abandonConversation(any(Conversation.class), any(ConversationAbandonedEvent.class));
     }
 
     @Test
-    void sendRawMessage(final LogValidator validator) {
+    void sendRawMessage() {
         silentSender.sendRawMessage("test1");
         verify(sender, never()).sendRawMessage("test1");
-        validator.assertLogEntry(Level.FINE, "(SilentConsoleCommandSender) Silently sending message to console: test1");
-        validator.assertEmpty();
+        verify(logger, times(1)).debug("Silently sending message to console: test1");
+        verifyNoMoreInteractions(logger);
     }
 
     @Test
-    void testSendRawMessage(final LogValidator validator) {
+    void sendRawMessage_sender() {
         silentSender.sendRawMessage(null, "test3");
         verify(sender, never()).sendRawMessage(any(UUID.class), anyString());
-        validator.assertLogEntry(Level.FINE, "(SilentConsoleCommandSender) Silently sending message to console: test3");
-        validator.assertEmpty();
+        verify(logger, times(1)).debug("Silently sending message to console: test3");
+        verifyNoMoreInteractions(logger);
     }
 }

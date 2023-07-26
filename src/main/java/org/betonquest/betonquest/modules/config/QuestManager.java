@@ -1,9 +1,10 @@
 package org.betonquest.betonquest.modules.config;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.modules.config.quest.Quest;
 import org.betonquest.betonquest.modules.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.modules.config.quest.QuestTemplate;
@@ -50,7 +51,7 @@ public class QuestManager {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     /**
      * All loaded {@link QuestPackage}s.
@@ -62,7 +63,8 @@ public class QuestManager {
      *
      * @param root The root directory where to create the root folders for templates and packages
      */
-    public QuestManager(final File root) {
+    public QuestManager(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final File root) {
+        this.log = log;
         this.packages = new HashMap<>();
 
         final File templatesDir = new File(root, QUEST_TEMPLATES_FOLDER);
@@ -75,15 +77,15 @@ public class QuestManager {
         final Map<String, QuestTemplate> templates = new HashMap<>();
         try {
             searchForPackages(templatesDir, templatesDir, FILE_NAME_INDICATOR, FILE_TYPE_INDICATOR, (questPath, questFile, files) -> {
-                final QuestTemplate quest = new QuestTemplate(questPath, questFile, files);
+                final QuestTemplate quest = new QuestTemplate(loggerFactory.create(QuestTemplate.class), questPath, questFile, files);
                 templates.put(quest.getQuestPath(), quest);
             });
             searchForPackages(packagesDir, packagesDir, FILE_NAME_INDICATOR, FILE_TYPE_INDICATOR, (questPath, questFile, files) -> {
-                final QuestPackageImpl quest = new QuestPackageImpl(questPath, questFile, files);
+                final QuestPackageImpl quest = new QuestPackageImpl(loggerFactory.create(QuestPackageImpl.class), questPath, questFile, files);
                 try {
                     quest.applyQuestTemplates(templates);
                 } catch (final InvalidConfigurationException e) {
-                    LOG.warn("Error while loading '" + packagesDir.getPath() + "'! Reason: " + e.getMessage(), e);
+                    log.warn("Error while loading '" + packagesDir.getPath() + "'! Reason: " + e.getMessage(), e);
                     return;
                 }
                 if (quest.getConfig().getBoolean("package.enabled", true)) {
@@ -91,7 +93,7 @@ public class QuestManager {
                 }
             });
         } catch (final IOException e) {
-            LOG.error("Error while loading '" + packagesDir.getPath() + "'!", e);
+            log.error("Error while loading '" + packagesDir.getPath() + "'!", e);
         }
     }
 
@@ -104,7 +106,7 @@ public class QuestManager {
 
     private boolean createFolderIfAbsent(final File file) {
         if (!file.exists() && !file.mkdir()) {
-            LOG.error("It was not possible to create the folder '" + file.getPath() + "'!");
+            log.error("It was not possible to create the folder '" + file.getPath() + "'!");
             return false;
         }
         return true;
@@ -129,7 +131,7 @@ public class QuestManager {
                 try {
                     files.addAll(searchForPackages(root, subFile, fileNameIndicator, fileTypeIndicator, creator));
                 } catch (final IOException e) {
-                    LOG.warn(e.getMessage(), e);
+                    log.warn(e.getMessage(), e);
                 }
             } else {
                 if (!subFile.getName().endsWith(fileTypeIndicator)) {
@@ -162,7 +164,7 @@ public class QuestManager {
         try {
             creator.create(questPath, relativeRoot, files);
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
-            LOG.warn(root.getParentFile().getName() + " '" + questPath + "' could not be loaded, reason: " + e.getMessage(), e);
+            log.warn(root.getParentFile().getName() + " '" + questPath + "' could not be loaded, reason: " + e.getMessage(), e);
         }
     }
 

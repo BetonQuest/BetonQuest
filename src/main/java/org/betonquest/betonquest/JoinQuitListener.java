@@ -1,7 +1,8 @@
 package org.betonquest.betonquest;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
@@ -26,14 +27,21 @@ import java.io.File;
 @SuppressWarnings("PMD.CommentRequired")
 public class JoinQuitListener implements Listener {
     /**
+     * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
+     */
+    private final BetonQuestLoggerFactory loggerFactory;
+
+    /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     /**
      * Creates new listener, which will handle the data loading/saving
      */
-    public JoinQuitListener() {
+    public JoinQuitListener(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
+        this.loggerFactory = loggerFactory;
+        this.log = log;
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
@@ -57,7 +65,7 @@ public class JoinQuitListener implements Listener {
         if (playerData == null) {
             playerData = new PlayerData(onlineProfile);
             BetonQuest.getInstance().putPlayerData(onlineProfile, playerData);
-            LOG.warn("Failed to load data for " + onlineProfile + ", forcing.");
+            log.warn("Failed to load data for " + onlineProfile + ", forcing.");
         }
         playerData.startObjectives();
         GlobalObjectives.startAll(onlineProfile);
@@ -68,7 +76,7 @@ public class JoinQuitListener implements Listener {
                 try {
                     Config.sendNotify(null, PlayerConverter.getID(event.getPlayer()), "changelog", null, "changelog,info");
                 } catch (final QuestRuntimeException e) {
-                    LOG.warn("The notify system was unable to play a sound for the 'changelog' category. Error was: '" + e.getMessage() + "'", e);
+                    log.warn("The notify system was unable to play a sound for the 'changelog' category. Error was: '" + e.getMessage() + "'", e);
                 }
             }
         }
@@ -77,7 +85,7 @@ public class JoinQuitListener implements Listener {
             playerData.getJournal().update();
         }
         if (playerData.getConversation() != null) {
-            new ConversationResumer(onlineProfile, playerData.getConversation());
+            new ConversationResumer(loggerFactory, onlineProfile, playerData.getConversation());
         }
     }
 

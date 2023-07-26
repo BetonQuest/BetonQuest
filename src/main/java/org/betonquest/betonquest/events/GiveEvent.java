@@ -4,8 +4,8 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -26,7 +26,7 @@ public class GiveEvent extends QuestEvent {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final Item[] questItems;
 
@@ -36,6 +36,7 @@ public class GiveEvent extends QuestEvent {
 
     public GiveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         questItems = instruction.getItemList();
         notify = instruction.hasArgument("notify");
         backpack = instruction.hasArgument("backpack");
@@ -56,7 +57,7 @@ public class GiveEvent extends QuestEvent {
                                     questItem.getName() == null ? questItem.getMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " ") : questItem.getName(),
                                     String.valueOf(amountInt)}, "items_given,info");
                 } catch (final QuestRuntimeException e) {
-                    LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'mobs_to_kill' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
+                    log.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'mobs_to_kill' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
                 }
             }
             while (amountInt > 0) {
@@ -93,7 +94,7 @@ public class GiveEvent extends QuestEvent {
         try {
             Config.sendNotify(null, profile.getOnlineProfile().get(), "inventory_full_" + type.toStringLowercase(), null, "inventory_full_" + type.toStringLowercase() + ",inventory_full,error");
         } catch (final QuestRuntimeException e) {
-            LOG.warn("The notify system was unable to play a sound for the 'inventory_full_" + type.toStringLowercase() + "' category. Error was: '" + e.getMessage() + "'", e);
+            log.warn("The notify system was unable to play a sound for the 'inventory_full_" + type.toStringLowercase() + "' category. Error was: '" + e.getMessage() + "'", e);
         }
     }
 

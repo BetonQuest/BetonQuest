@@ -3,8 +3,8 @@ package org.betonquest.betonquest.conversation;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -30,7 +30,7 @@ public class ConversationData {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(ConversationData.class);
 
     private static final List<String> EXTERNAL_POINTERS = new ArrayList<>();
 

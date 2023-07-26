@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.event.tag;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.modules.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
@@ -32,7 +33,7 @@ class TagGlobalEventFactoryIntegrationTest {
     @Mock
     private BetonQuest betonQuest;
 
-    private QuestPackage setupQuestPackage(final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    private QuestPackage setupQuestPackage(final BetonQuestLogger logger, final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final Path packageDirectory = questPackagesDirectory.resolve("test");
         if (!packageDirectory.toFile().mkdir()) {
             throw new IOException("Failed to create test package directory.");
@@ -41,186 +42,186 @@ class TagGlobalEventFactoryIntegrationTest {
         if (!packageConfigFile.createNewFile()) {
             throw new IOException("Failed to create test package main configuration file.");
         }
-        return new QuestPackageImpl("test", packageConfigFile, Collections.emptyList());
+        return new QuestPackageImpl(logger, "test", packageConfigFile, Collections.emptyList());
     }
 
     @Test
-    void testCreateGlobalTagAddEventWithMultipleTags(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCreateGlobalTagAddEventWithMultipleTags(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final TagGlobalEventFactory factory = new TagGlobalEventFactory(betonQuest);
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(questPackage, null, "globaltag add tag-1,tag-2,tag-3");
+        final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag add tag-1,tag-2,tag-3");
         assertDoesNotThrow(() -> factory.parseEvent(instruction), "globaltag event action add could not be created");
     }
 
     @Test
-    void testCreateTagAddEventWithOneTag(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCreateTagAddEventWithOneTag(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final TagGlobalEventFactory factory = new TagGlobalEventFactory(betonQuest);
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(questPackage, null, "globaltag add tag-1");
+        final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag add tag-1");
         assertDoesNotThrow(() -> factory.parseEvent(instruction), "globaltag event action add could not be created");
     }
 
     @Test
-    void testCreateTagAddEventWithoutTags(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCreateTagAddEventWithoutTags(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final TagGlobalEventFactory factory = new TagGlobalEventFactory(betonQuest);
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(questPackage, null, "globaltag add");
+        final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag add");
         assertThrows(InstructionParseException.class, () -> factory.parseEvent(instruction), "globaltag event action add without tags should throw an exception when created");
     }
 
     @Test
-    void testCreateTagDeleteEventWithMultipleTags(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCreateTagDeleteEventWithMultipleTags(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final TagGlobalEventFactory factory = new TagGlobalEventFactory(betonQuest);
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(questPackage, null, "globaltag delete tag-1,tag-2,tag-3");
+        final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag delete tag-1,tag-2,tag-3");
         assertDoesNotThrow(() -> factory.parseEvent(instruction), "globaltag event action delete could not be created");
     }
 
     @Test
-    void testCreateTagDeleteEventWithOneTag(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCreateTagDeleteEventWithOneTag(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final TagGlobalEventFactory factory = new TagGlobalEventFactory(betonQuest);
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(questPackage, null, "globaltag delete tag-1");
+        final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag delete tag-1");
         assertDoesNotThrow(() -> factory.parseEvent(instruction), "globaltag event action delete could not be created");
     }
 
     @Test
-    void testCreateTagDeleteEventWithoutTags(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCreateTagDeleteEventWithoutTags(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final TagGlobalEventFactory factory = new TagGlobalEventFactory(betonQuest);
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(questPackage, null, "globaltag delete");
+        final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag delete");
         assertThrows(InstructionParseException.class, () -> factory.parseEvent(instruction), "globaltag event action delete without tags should throw an exception when created");
     }
 
     @Test
-    void testCreateTagDelEventWithMultipleTags(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCreateTagDelEventWithMultipleTags(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final TagGlobalEventFactory factory = new TagGlobalEventFactory(betonQuest);
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(questPackage, null, "globaltag del tag-1,tag-2,tag-3");
+        final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag del tag-1,tag-2,tag-3");
         assertDoesNotThrow(() -> factory.parseEvent(instruction), "globaltag event action del could not be created");
     }
 
     @Test
-    void testCreateTagDelEventWithOneTag(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCreateTagDelEventWithOneTag(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final TagGlobalEventFactory factory = new TagGlobalEventFactory(betonQuest);
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(questPackage, null, "globaltag del tag-1");
+        final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag del tag-1");
         assertDoesNotThrow(() -> factory.parseEvent(instruction), "globaltag event action del could not be created");
     }
 
     @Test
-    void testCreateTagDelEventWithoutTags(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCreateTagDelEventWithoutTags(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final TagGlobalEventFactory factory = new TagGlobalEventFactory(betonQuest);
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(questPackage, null, "globaltag del");
+        final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag del");
         assertThrows(InstructionParseException.class, () -> factory.parseEvent(instruction), "globaltag event action del without tags should throw an exception when created");
     }
 
     @Test
-    void testCreateInvalidTagEvent(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCreateInvalidTagEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final TagGlobalEventFactory factory = new TagGlobalEventFactory(betonQuest);
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(questPackage, null, "globaltag invalid tag-1,tag-2");
+        final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag invalid tag-1,tag-2");
         assertThrows(InstructionParseException.class, () -> factory.parseEvent(instruction), "globaltag event action invalid should throw an exception when created");
     }
 
     @Test
-    void testCreateTagAddStaticEventWithMultipleTags(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCreateTagAddStaticEventWithMultipleTags(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final TagGlobalEventFactory factory = new TagGlobalEventFactory(betonQuest);
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(questPackage, null, "globaltag add tag-1,tag-2,tag-3");
+        final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag add tag-1,tag-2,tag-3");
         assertDoesNotThrow(() -> factory.parseStaticEvent(instruction), "globaltag event action add could not be created");
     }
 
     @Test
-    void testCreateTagAddStaticEventWithOneTag(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCreateTagAddStaticEventWithOneTag(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final TagGlobalEventFactory factory = new TagGlobalEventFactory(betonQuest);
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(questPackage, null, "globaltag add tag-1");
+        final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag add tag-1");
         assertDoesNotThrow(() -> factory.parseStaticEvent(instruction), "globaltag event action add could not be created");
     }
 
     @Test
-    void testCreateTagAddStaticEventWithoutTags(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCreateTagAddStaticEventWithoutTags(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final TagGlobalEventFactory factory = new TagGlobalEventFactory(betonQuest);
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(questPackage, null, "globaltag add");
+        final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag add");
         assertThrows(InstructionParseException.class, () -> factory.parseStaticEvent(instruction), "globaltag event action add without tags should throw an exception when created");
     }
 
     @Test
-    void testCreateTagDeleteStaticEventWithMultipleTags(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCreateTagDeleteStaticEventWithMultipleTags(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final TagGlobalEventFactory factory = new TagGlobalEventFactory(betonQuest);
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(questPackage, null, "globaltag delete tag-1,tag-2,tag-3");
+        final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag delete tag-1,tag-2,tag-3");
         assertDoesNotThrow(() -> factory.parseStaticEvent(instruction), "globaltag event action delete could not be created");
     }
 
     @Test
-    void testCreateTagDeleteStaticEventWithOneTag(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCreateTagDeleteStaticEventWithOneTag(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final TagGlobalEventFactory factory = new TagGlobalEventFactory(betonQuest);
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(questPackage, null, "globaltag delete tag-1");
+        final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag delete tag-1");
         assertDoesNotThrow(() -> factory.parseStaticEvent(instruction), "globaltag event action delete could not be created");
     }
 
     @Test
-    void testCreateTagDeleteStaticEventWithoutTags(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCreateTagDeleteStaticEventWithoutTags(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final TagGlobalEventFactory factory = new TagGlobalEventFactory(betonQuest);
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(questPackage, null, "globaltag delete");
+        final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag delete");
         assertThrows(InstructionParseException.class, () -> factory.parseStaticEvent(instruction), "globaltag event action delete without tags should throw an exception when created");
     }
 
     @Test
-    void testCreateTagDelStaticEventWithMultipleTags(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCreateTagDelStaticEventWithMultipleTags(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final TagGlobalEventFactory factory = new TagGlobalEventFactory(betonQuest);
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(questPackage, null, "globaltag del tag-1,tag-2,tag-3");
+        final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag del tag-1,tag-2,tag-3");
         assertDoesNotThrow(() -> factory.parseStaticEvent(instruction), "globaltag event action del could not be created");
     }
 
     @Test
-    void testCreateTagDelStaticEventWithOneTag(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCreateTagDelStaticEventWithOneTag(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final TagGlobalEventFactory factory = new TagGlobalEventFactory(betonQuest);
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(questPackage, null, "globaltag del tag-1");
+        final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag del tag-1");
         assertDoesNotThrow(() -> factory.parseStaticEvent(instruction), "globaltag event action del could not be created");
     }
 
     @Test
-    void testCreateTagDelStaticEventWithoutTags(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCreateTagDelStaticEventWithoutTags(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final TagGlobalEventFactory factory = new TagGlobalEventFactory(betonQuest);
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(questPackage, null, "globaltag del");
+        final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag del");
         assertThrows(InstructionParseException.class, () -> factory.parseStaticEvent(instruction), "globaltag event action del without tags should throw an exception when created");
     }
 
     @Test
-    void testCreateInvalidStaticTagEvent(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCreateInvalidStaticTagEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final TagGlobalEventFactory factory = new TagGlobalEventFactory(betonQuest);
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(questPackage, null, "globaltag invalid tag-1,tag-2");
+        final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag invalid tag-1,tag-2");
         assertThrows(InstructionParseException.class, () -> factory.parseStaticEvent(instruction), "globaltag event action invalid should throw an exception when created");
     }
 }

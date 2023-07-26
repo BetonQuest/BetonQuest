@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.quests;
 
 import me.blackvein.quests.CustomReward;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.EventID;
@@ -19,10 +19,11 @@ public class EventReward extends CustomReward {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
-    public EventReward() {
+    public EventReward(final BetonQuestLogger log) {
         super();
+        this.log = log;
         setName("BetonQuest event");
         setAuthor("Co0sh");
         setRewardName("Event");
@@ -37,7 +38,7 @@ public class EventReward extends CustomReward {
             final EventID event = new EventID(null, string);
             BetonQuest.event(onlineProfile, event);
         } catch (final ObjectNotFoundException e) {
-            LOG.warn("Error while running quest reward - BetonQuest event '" + string + "' not found: " + e.getMessage(), e);
+            log.warn("Error while running quest reward - BetonQuest event '" + string + "' not found: " + e.getMessage(), e);
         }
     }
 

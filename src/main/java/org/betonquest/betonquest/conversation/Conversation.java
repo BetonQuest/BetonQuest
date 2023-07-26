@@ -5,11 +5,11 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.ConversationOptionEvent;
 import org.betonquest.betonquest.api.PlayerConversationEndEvent;
 import org.betonquest.betonquest.api.PlayerConversationStartEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
@@ -50,12 +50,12 @@ import java.util.concurrent.TimeoutException;
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.CommentRequired"})
 public class Conversation implements Listener {
+    private static final ConcurrentHashMap<Profile, Conversation> LIST = new ConcurrentHashMap<>();
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
-
-    private static final ConcurrentHashMap<Profile, Conversation> LIST = new ConcurrentHashMap<>();
+    private final BetonQuestLogger log;
 
     private final OnlineProfile onlineProfile;
 
@@ -93,12 +93,13 @@ public class Conversation implements Listener {
      * Starts a new conversation between player and npc at given location. It uses
      * starting options to determine where to start.
      *
+     * @param log            the logger that will be used for logging
      * @param onlineProfile  the {@link OnlineProfile} of the player
      * @param conversationID ID of the conversation
      * @param location       location where the conversation has been started
      */
-    public Conversation(final OnlineProfile onlineProfile, final String conversationID, final Location location) {
-        this(onlineProfile, conversationID, location, null);
+    public Conversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final String conversationID, final Location location) {
+        this(log, onlineProfile, conversationID, location, null);
     }
 
     /**
@@ -106,13 +107,15 @@ public class Conversation implements Listener {
      * starting with the given option. If the option is null, then it will start
      * from the beginning.
      *
+     * @param log            the logger that will be used for logging
      * @param onlineProfile  the {@link OnlineProfile} of the player
      * @param conversationID ID of the conversation
      * @param location       location where the conversation has been started
      * @param option         ID of the option from where to start
      */
-    public Conversation(final OnlineProfile onlineProfile, final String conversationID,
+    public Conversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final String conversationID,
                         final Location location, final String option) {
+        this.log = log;
         this.conv = this;
         this.plugin = BetonQuest.getInstance();
         this.onlineProfile = onlineProfile;
@@ -127,14 +130,14 @@ public class Conversation implements Listener {
 
         // check if data is present
         if (data == null) {
-            LOG.warn(pack, "Conversation '" + conversationID
+            this.log.warn(pack, "Conversation '" + conversationID
                     + "' does not exist. Check for errors on /bq reload! It probably couldn't be loaded due to some other error.");
             return;
         }
 
         // if the player has active conversation, terminate this one
         if (LIST.containsKey(onlineProfile)) {
-            LOG.debug(pack, onlineProfile + " is in conversation right now, returning.");
+            this.log.debug(pack, onlineProfile + " is in conversation right now, returning.");
             return;
         }
 
@@ -151,7 +154,7 @@ public class Conversation implements Listener {
             }
             options = new String[]{inputOption};
         }
-        LOG.debug(pack, "Starting conversation '" + convID + "' for '" + onlineProfile + "'.");
+        this.log.debug(pack, "Starting conversation '" + convID + "' for '" + onlineProfile + "'.");
         new Starter(options).runTaskAsynchronously(BetonQuest.getInstance());
     }
 
@@ -276,7 +279,7 @@ public class Conversation implements Listener {
                     }
                 }
             } catch (final CancellationException | InterruptedException | ExecutionException | TimeoutException e) {
-                LOG.reportException(pack, e);
+                log.reportException(pack, e);
                 continue;
             }
             final String option = future.getKey();
@@ -312,7 +315,7 @@ public class Conversation implements Listener {
         if (ended) {
             return;
         }
-        LOG.debug(pack, "Ending conversation '" + convID + "' for '" + onlineProfile + "'.");
+        log.debug(pack, "Ending conversation '" + convID + "' for '" + onlineProfile + "'.");
         ended = true;
         inOut.end();
         // fire final events
@@ -397,7 +400,7 @@ public class Conversation implements Listener {
             try {
                 Config.sendNotify(getPackage().getQuestPath(), PlayerConverter.getID(event.getPlayer()), "command_blocked", "command_blocked,error");
             } catch (final QuestRuntimeException e) {
-                LOG.warn(pack, "The notify system was unable to play a sound for the 'command_blocked' category. Error was: '" + e.getMessage() + "'", e);
+                log.warn(pack, "The notify system was unable to play a sound for the 'command_blocked' category. Error was: '" + e.getMessage() + "'", e);
             }
         }
     }
@@ -431,7 +434,7 @@ public class Conversation implements Listener {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public void suspend() {
         if (inOut == null) {
-            LOG.warn(pack, "Conversation IO is not loaded, conversation will end for player "
+            log.warn(pack, "Conversation IO is not loaded, conversation will end for player "
                     + onlineProfile.getProfileName());
             LIST.remove(onlineProfile);
             HandlerList.unregisterAll(this);
@@ -531,7 +534,7 @@ public class Conversation implements Listener {
 
             // stop the conversation if it's canceled
             if (event.isCancelled()) {
-                LOG.debug(pack, "Conversation '" + convID + "' for '" + player.getPlayerProfile() + "' has been "
+                log.debug(pack, "Conversation '" + convID + "' for '" + player.getPlayerProfile() + "' has been "
                         + "canceled because it's PlayerConversationStartEvent has been canceled.");
                 return;
             }
@@ -546,7 +549,7 @@ public class Conversation implements Listener {
                 conv.inOut = convIO.getConstructor(Conversation.class, OnlineProfile.class).newInstance(conv, onlineProfile);
             } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
                            | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                LOG.warn(pack, "Error when loading conversation IO", e);
+                log.warn(pack, "Error when loading conversation IO", e);
                 return;
             }
 
@@ -561,7 +564,7 @@ public class Conversation implements Listener {
                     conv.interceptor = interceptor.getConstructor(Conversation.class, OnlineProfile.class).newInstance(conv, onlineProfile);
                 } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
                                | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                    LOG.warn(pack, "Error when loading interceptor", e);
+                    log.warn(pack, "Error when loading interceptor", e);
                     return;
                 }
             }

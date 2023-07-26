@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Pointer;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -18,7 +17,6 @@ import static org.mockito.Mockito.*;
 /**
  * Test {@link AddEntryJournalChanger}.
  */
-@ExtendWith(BetonQuestLoggerService.class)
 @ExtendWith(MockitoExtension.class)
 class AddEntryJournalChangerTest {
     @Test

@@ -2,8 +2,8 @@ package org.betonquest.betonquest.conditions;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -20,12 +20,13 @@ public class CheckCondition extends Condition {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final List<Condition> internalConditions = new ArrayList<>();
 
     public CheckCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         final String[] parts = instruction.getInstruction().substring(5).trim().split(" ");
         if (parts.length <= 0) {
             throw new InstructionParseException("Not enough arguments");
@@ -60,14 +61,14 @@ public class CheckCondition extends Condition {
                     + " spelled correctly in internal condition");
         }
         try {
-            return conditionClass.getConstructor(Instruction.class).newInstance(
-                    new Instruction(this.instruction.getPackage(), null, instruction));
+            final Instruction innerInstruction = new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), this.instruction.getPackage(), null, instruction);
+            return conditionClass.getConstructor(Instruction.class).newInstance(innerInstruction);
         } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException
                        | InvocationTargetException e) {
             if (e.getCause() instanceof InstructionParseException) {
                 throw new InstructionParseException("Error in internal condition: " + e.getCause().getMessage(), e);
             } else {
-                LOG.reportException(this.instruction.getPackage(), e);
+                log.reportException(this.instruction.getPackage(), e);
             }
         }
         return null;

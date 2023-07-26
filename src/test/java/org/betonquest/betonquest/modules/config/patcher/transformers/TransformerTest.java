@@ -1,34 +1,34 @@
-package org.betonquest.betonquest.modules.config.transformers;
+package org.betonquest.betonquest.modules.config.patcher.transformers;
 
 import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegisterer;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.modules.config.Patcher;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
-import org.betonquest.betonquest.modules.logger.util.LogValidator;
+import org.betonquest.betonquest.modules.config.patcher.DefaultPatchTransformerRegisterer;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 /**
  * This test tests all config transformers.
  */
-@ExtendWith(BetonQuestLoggerService.class)
+@ExtendWith(MockitoExtension.class)
 class TransformerTest {
-
     /**
      * Anonymous {@link PatchTransformerRegisterer} for testing.
      */
-    public static final PatchTransformerRegisterer REGISTERER = new PatchTransformerRegisterer() {
-    };
+    public static final PatchTransformerRegisterer REGISTERER = new DefaultPatchTransformerRegisterer();
 
     /**
      * The file that contains a demo config for this test.
@@ -39,6 +39,9 @@ class TransformerTest {
      * The demo config that is used for this test.
      */
     private static final YamlConfiguration CONFIG = new YamlConfiguration();
+
+    @Mock
+    private BetonQuestLogger logger;
 
     @BeforeEach
     void resetConfig() throws IOException, InvalidConfigurationException {
@@ -61,7 +64,7 @@ class TransformerTest {
     }
 
     @Test
-    void testValueRenameErrorMissingKey(final LogValidator validator) throws InvalidConfigurationException {
+    void testValueRenameErrorMissingKey() throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                   - type: VALUE_RENAME
@@ -70,12 +73,12 @@ class TransformerTest {
                     newValue: newTest
                 """;
         final String serializedConfig = getSerializedPatchedConfig(patch);
-        validateLogging(validator, "VALUE_RENAME", "The key 'section.invalidKey' did not exist, skipping transformation.");
+        validateLogging("VALUE_RENAME", "The key 'section.invalidKey' did not exist, skipping transformation.");
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
-    void testValueRenameErrorNoMatchForValue(final LogValidator validator) throws InvalidConfigurationException {
+    void testValueRenameErrorNoMatchForValue() throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                   - type: VALUE_RENAME
@@ -84,7 +87,7 @@ class TransformerTest {
                     newValue: newTest
                 """;
         final String serializedConfig = getSerializedPatchedConfig(patch);
-        validateLogging(validator, "VALUE_RENAME", "Value does not match the given regex, skipping transformation.");
+        validateLogging("VALUE_RENAME", "Value does not match the given regex, skipping transformation.");
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
@@ -158,7 +161,7 @@ class TransformerTest {
     }
 
     @Test
-    void testListEntryAddMissingKey(final LogValidator validator) throws InvalidConfigurationException {
+    void testListEntryAddMissingKey() throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                     - type: LIST_ENTRY_ADD
@@ -172,7 +175,7 @@ class TransformerTest {
         list.add("newEntry");
         CONFIG.set("section.invalidKey", list);
 
-        validateLogging(validator, "LIST_ENTRY_ADD", "List 'section.invalidKey' did not exist, so it was created.");
+        validateLogging("LIST_ENTRY_ADD", "List 'section.invalidKey' did not exist, so it was created.");
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
@@ -196,7 +199,7 @@ class TransformerTest {
     }
 
     @Test
-    void testListEntryRenameMissingKey(final LogValidator validator) throws InvalidConfigurationException {
+    void testListEntryRenameMissingKey() throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                   - type: LIST_ENTRY_RENAME
@@ -207,12 +210,12 @@ class TransformerTest {
         final String serializedConfig = getSerializedPatchedConfig(patch);
         CONFIG.set("section.invalidKey", new ArrayList<String>());
 
-        validateLogging(validator, "LIST_ENTRY_RENAME", "List 'section.invalidKey' did not exist, so an empty list was created.");
+        validateLogging("LIST_ENTRY_RENAME", "List 'section.invalidKey' did not exist, so an empty list was created.");
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
-    void testListEntryRenameNoMatchRegex(final LogValidator validator) throws InvalidConfigurationException {
+    void testListEntryRenameNoMatchRegex() throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                   - type: LIST_ENTRY_RENAME
@@ -221,7 +224,7 @@ class TransformerTest {
                     newEntry: newEntry
                 """;
         final String serializedConfig = getSerializedPatchedConfig(patch);
-        validateLogging(validator, "LIST_ENTRY_RENAME", "Tried to rename 'invalidRegex' with 'newEntry' but there was no such element in the list 'section.myList'.");
+        validateLogging("LIST_ENTRY_RENAME", "Tried to rename 'invalidRegex' with 'newEntry' but there was no such element in the list 'section.myList'.");
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
@@ -244,7 +247,7 @@ class TransformerTest {
     }
 
     @Test
-    void testListRemove(final LogValidator validator) throws InvalidConfigurationException {
+    void testListRemoveNonExisting() throws InvalidConfigurationException {
         final String patch = """
                   2.0.0.1:
                     - type: LIST_ENTRY_REMOVE
@@ -253,12 +256,12 @@ class TransformerTest {
                 """;
         final String serializedConfig = getSerializedPatchedConfig(patch);
         CONFIG.set("section.invalidList", new ArrayList<String>());
-        validateLogging(validator, "LIST_ENTRY_REMOVE", "List 'section.invalidList' did not exist, so an empty list was created.");
+        validateLogging("LIST_ENTRY_REMOVE", "List 'section.invalidList' did not exist, so an empty list was created.");
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
-    void testListRemoveInvalidKey(final LogValidator validator) throws InvalidConfigurationException {
+    void testListRemoveInvalidKey() throws InvalidConfigurationException {
         final String patch = """
                   2.0.0.1:
                     - type: LIST_ENTRY_REMOVE
@@ -267,7 +270,7 @@ class TransformerTest {
                 """;
         final String serializedConfig = getSerializedPatchedConfig(patch);
 
-        validateLogging(validator, "LIST_ENTRY_REMOVE", "Tried to remove 'invalidEntry' but there was no such element in the list 'section.myList'.");
+        validateLogging("LIST_ENTRY_REMOVE", "Tried to remove 'invalidEntry' but there was no such element in the list 'section.myList'.");
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
@@ -286,7 +289,7 @@ class TransformerTest {
     }
 
     @Test
-    void testRemoveNonExistent(final LogValidator validator) throws InvalidConfigurationException {
+    void testRemoveNonExistent() throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                     - type: REMOVE
@@ -294,7 +297,7 @@ class TransformerTest {
                 """;
         final String serializedConfig = getSerializedPatchedConfig(patch);
 
-        validateLogging(validator, "REMOVE", "Key 'section.nonExistent' did not exist, so it was not deleted.");
+        validateLogging("REMOVE", "Key 'section.nonExistent' did not exist, so it was not deleted.");
 
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
@@ -334,7 +337,7 @@ class TransformerTest {
     }
 
     @Test
-    void testKeyRename(final LogValidator validator) throws InvalidConfigurationException {
+    void testKeyRenameNonExisting() throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                     - type: KEY_RENAME
@@ -343,7 +346,7 @@ class TransformerTest {
                 """;
         final String serializedConfig = getSerializedPatchedConfig(patch);
 
-        validateLogging(validator, "KEY_RENAME", "Key 'section.invalid' was not set, skipping transformation to 'section.testNew'.");
+        validateLogging("KEY_RENAME", "Key 'section.invalid' was not set, skipping transformation to 'section.testNew'.");
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
@@ -448,16 +451,16 @@ class TransformerTest {
         //New version is automatically set for all tests
         CONFIG.set("configVersion", "2.0.0-CONFIG-1");
 
-        final Patcher patcher = new Patcher(questConfig, patchConfig);
+        final Patcher patcher = new Patcher(logger, questConfig, patchConfig);
         REGISTERER.registerTransformers(patcher);
         patcher.patch();
         return questConfig.saveToString();
     }
 
-    private void validateLogging(final LogValidator validator, final String transformerType, final String exceptionMessage) {
-        validator.assertLogEntry(Level.INFO, "(ConfigurationFile Patcher) Applying patches to update to '2.0.0-CONFIG-1'...");
-        validator.assertLogEntry(Level.INFO, "(ConfigurationFile Patcher) Applying patch of type '" + transformerType + "'...");
-        validator.assertLogEntry(Level.WARNING, "(ConfigurationFile Patcher) There has been an issue while applying the patches for '2.0.0.1': " + exceptionMessage);
-        validator.assertEmpty();
+    private void validateLogging(final String transformerType, final String exceptionMessage) {
+        verify(logger, times(1)).info("Applying patches to update to '2.0.0-CONFIG-1'...");
+        verify(logger, times(1)).info("Applying patch of type '" + transformerType + "'...");
+        verify(logger, times(1)).warn("There has been an issue while applying the patches for '2.0.0.1': " + exceptionMessage);
+        verifyNoMoreInteractions(logger);
     }
 }

@@ -3,8 +3,8 @@ package org.betonquest.betonquest.menu;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -47,7 +47,7 @@ public class MenuItem extends SimpleYMLSection {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     /**
      * The betonquest quest item this item is based on
@@ -97,9 +97,10 @@ public class MenuItem extends SimpleYMLSection {
     @SuppressWarnings({"PMD.ExceptionAsFlowControl", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity",
             "PMD.NPathComplexity", "checkstyle:EmptyCatchBlock"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public MenuItem(final QuestPackage pack, final MenuID menuID, final String name, final ConfigurationSection section)
+    public MenuItem(final BetonQuestLogger log, final QuestPackage pack, final MenuID menuID, final String name, final ConfigurationSection section)
             throws InvalidConfigurationException {
         super(pack, name, section);
+        this.log = log;
         try {
             //load item
             final ItemID itemID = new ItemID(pack, getString("item").trim());
@@ -117,7 +118,7 @@ public class MenuItem extends SimpleYMLSection {
             try {
                 this.descriptions.putAll(generateDescriptions(menuID.getFullID(), section));
             } catch (final Missing e) {
-                LOG.warn("Missing description for menu item  '" + itemID.getFullID() + "' in menu '"
+                log.warn("Missing description for menu item  '" + itemID.getFullID() + "' in menu '"
                         + menuID.getFullID() + "' in package '" + pack.getQuestPath() + "'! Reason: " + e.getMessage(), e);
             }
             //load events
@@ -193,31 +194,31 @@ public class MenuItem extends SimpleYMLSection {
         switch (type) {
             case LEFT:
                 for (final EventID eventID : this.leftClick) {
-                    LOG.debug(pack, "Item " + name + ": Run event " + eventID);
+                    log.debug(pack, "Item " + name + ": Run event " + eventID);
                     BetonQuest.event(PlayerConverter.getID(player), eventID);
                 }
                 return this.close;
             case SHIFT_LEFT:
                 for (final EventID eventID : this.shiftLeftClick) {
-                    LOG.debug(pack, "Item " + name + ": Run event " + eventID);
+                    log.debug(pack, "Item " + name + ": Run event " + eventID);
                     BetonQuest.event(PlayerConverter.getID(player), eventID);
                 }
                 return this.close;
             case RIGHT:
                 for (final EventID eventID : this.rightClick) {
-                    LOG.debug(pack, "Item " + name + ": Run event " + eventID);
+                    log.debug(pack, "Item " + name + ": Run event " + eventID);
                     BetonQuest.event(PlayerConverter.getID(player), eventID);
                 }
                 return this.close;
             case SHIFT_RIGHT:
                 for (final EventID eventID : this.shiftRightClick) {
-                    LOG.debug(pack, "Item " + name + ": Run event " + eventID);
+                    log.debug(pack, "Item " + name + ": Run event " + eventID);
                     BetonQuest.event(PlayerConverter.getID(player), eventID);
                 }
                 return this.close;
             case MIDDLE:
                 for (final EventID eventID : this.middleMouseClick) {
-                    LOG.debug(pack, "Item " + name + ": Run event " + eventID);
+                    log.debug(pack, "Item " + name + ": Run event " + eventID);
                     BetonQuest.event(PlayerConverter.getID(player), eventID);
                 }
                 return this.close;
@@ -235,9 +236,9 @@ public class MenuItem extends SimpleYMLSection {
     public boolean display(final Profile profile) {
         for (final ConditionID condition : this.conditions) {
             if (BetonQuest.condition(profile, condition)) {
-                LOG.debug(pack, "Item " + name + ": condition " + condition + " returned true");
+                log.debug(pack, "Item " + name + ": condition " + condition + " returned true");
             } else {
-                LOG.debug(pack, "Item " + name + " wont be displayed: condition" + condition + " returned false.");
+                log.debug(pack, "Item " + name + " wont be displayed: condition" + condition + " returned false.");
                 return false;
             }
         }
@@ -267,13 +268,13 @@ public class MenuItem extends SimpleYMLSection {
                     meta.setLore(description.getLore(profile));
                     item.setItemMeta(meta);
                 } catch (final NullPointerException npe) {
-                    LOG.error(pack, "Couldn't add custom text to '" + name + "': No text for language '"
+                    log.error(pack, "Couldn't add custom text to '" + name + "': No text for language '"
                             + Config.getLanguage() + "' " + "specified");
                 }
             }
             return item;
         } catch (final QuestRuntimeException qre) {
-            LOG.error(pack, "QuestRuntimeException while creating '" + name + "': " + qre.getMessage());
+            log.error(pack, "QuestRuntimeException while creating '" + name + "': " + qre.getMessage());
             return new ItemStack(Material.AIR);
         }
     }

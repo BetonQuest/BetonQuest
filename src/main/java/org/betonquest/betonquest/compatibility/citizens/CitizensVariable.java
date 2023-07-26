@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.citizens;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -78,7 +79,7 @@ public class CitizensVariable extends Variable {
         }
 
         final String newInstruction = String.join(".", Arrays.copyOfRange(splitInstruction, 2, splitInstruction.length));
-        location = new LocationVariable(new Instruction(instruction.getPackage(), null, newInstruction));
+        location = new LocationVariable(new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), instruction.getPackage(), null, newInstruction));
     }
 
     @Override

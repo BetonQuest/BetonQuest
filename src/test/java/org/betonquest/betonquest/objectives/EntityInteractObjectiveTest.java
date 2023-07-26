@@ -1,12 +1,15 @@
 package org.betonquest.betonquest.objectives;
 
+import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test for {@link EntityInteractObjective} and its inner classes.
  */
+@ExtendWith(BetonQuestLoggerService.class)
 class EntityInteractObjectiveTest {
 
     /**

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.bukkit.command;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
@@ -16,7 +16,7 @@ public class SilentConsoleCommandSender extends SilentCommandSender implements C
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create("SilentConsoleCommandSender");
+    private final BetonQuestLogger log;
 
     /**
      * The wrapped command sender.
@@ -26,10 +26,12 @@ public class SilentConsoleCommandSender extends SilentCommandSender implements C
     /**
      * Create a new silent console command sender.
      *
+     * @param log    the logger that will be used for logging
      * @param sender the command sender to wrap
      */
-    public SilentConsoleCommandSender(final ConsoleCommandSender sender) {
-        super(sender);
+    public SilentConsoleCommandSender(final BetonQuestLogger log, final ConsoleCommandSender sender) {
+        super(log, sender);
+        this.log = log;
         this.sender = sender;
     }
 
@@ -60,11 +62,11 @@ public class SilentConsoleCommandSender extends SilentCommandSender implements C
 
     @Override
     public void sendRawMessage(@NotNull final String message) {
-        LOG.debug("Silently sending message to console: " + message);
+        log.debug("Silently sending message to console: " + message);
     }
 
     @Override
     public void sendRawMessage(@Nullable final UUID sender, @NotNull final String message) {
-        LOG.debug("Silently sending message to console: " + message);
+        log.debug("Silently sending message to console: " + message);
     }
 }

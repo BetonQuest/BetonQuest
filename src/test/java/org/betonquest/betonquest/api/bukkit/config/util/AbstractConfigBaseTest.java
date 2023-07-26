@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.api.bukkit.config.util;
 
-import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -24,6 +23,7 @@ import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -63,7 +63,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
         itemStackMockedStatic = mockStatic(ItemStack.class);
 
         final Server serverMock = mock(Server.class);
-        when(serverMock.getLogger()).thenReturn(LogValidator.getSilentLogger());
+        when(serverMock.getLogger()).thenReturn(mock(Logger.class));
         Bukkit.setServer(serverMock);
 
         mockWorlds(serverMock);

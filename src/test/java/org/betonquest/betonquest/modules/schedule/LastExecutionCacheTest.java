@@ -1,8 +1,7 @@
 package org.betonquest.betonquest.modules.schedule;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
-import org.betonquest.betonquest.modules.logger.util.LogValidator;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +17,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.Optional;
-import java.util.logging.Level;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -28,8 +26,9 @@ import static org.mockito.Mockito.*;
  * Test that the LastExecutionCache is properly loading & saving to cache file.
  */
 @ExtendWith(MockitoExtension.class)
-@ExtendWith(BetonQuestLoggerService.class)
 class LastExecutionCacheTest {
+    @Mock
+    private BetonQuestLogger logger;
 
     /**
      * The cache to test.
@@ -61,40 +60,40 @@ class LastExecutionCacheTest {
             lenient().when(cacheAccessor.getConfig()).thenReturn(cacheContent);
             configAccessor.when(() -> ConfigAccessor.create(any(File.class))).thenReturn(cacheAccessor);
             files.when(() -> Files.exists(any(Path.class))).thenReturn(true);
-            lastExecutionCache = new LastExecutionCache(new File("."));
+            lastExecutionCache = new LastExecutionCache(logger, new File("."));
+            verify(logger, times(1)).debug("Successfully loaded schedule cache.");
         }
     }
 
     @Test
-    void testLoadIOException(final LogValidator validator) {
+    void testLoadIOException() {
         try (MockedStatic<ConfigAccessor> configAccessor = mockStatic(ConfigAccessor.class);
              MockedStatic<Files> files = mockStatic(Files.class)) {
             lenient().when(cacheAccessor.getConfig()).thenReturn(cacheContent);
             configAccessor.when(() -> ConfigAccessor.create(any(File.class))).thenThrow(new FileNotFoundException("FileNotFound"));
             files.when(() -> Files.exists(any(Path.class))).thenReturn(true);
-            lastExecutionCache = new LastExecutionCache(new File("."));
-            validator.assertLogEntry(Level.SEVERE, "(Cache) Error while loading schedule cache: FileNotFound");
+            lastExecutionCache = new LastExecutionCache(logger, new File("."));
+            verify(logger, times(1)).error(eq("Error while loading schedule cache: FileNotFound"), any(FileNotFoundException.class));
             final Optional<Instant> result = lastExecutionCache.getLastExecutionTime(scheduleID);
             assertEquals(Optional.empty(), result, "result should be empty");
-            validator.assertLogEntry(Level.SEVERE, "(Cache) Schedule cache not present!");
         }
     }
 
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
-    void testSaveIOException(final LogValidator validator) throws IOException {
+    void testSaveIOException() throws IOException {
         when(scheduleID.getFullID()).thenReturn("test-package.testCacheIOException");
         when(cacheAccessor.save()).thenThrow(new IOException("ioexception"));
         lastExecutionCache.cacheExecutionTime(scheduleID, Instant.parse("1970-01-01T00:00:00Z"));
-        validator.assertLogEntry(Level.SEVERE, "(Cache) Could not save schedule cache: ioexception");
+        verify(logger, times(1)).error(eq("Could not save schedule cache: ioexception"), any(IOException.class));
     }
 
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
-    void testReloadIOException(final LogValidator validator) throws IOException {
+    void testReloadIOException() throws IOException {
         when(cacheAccessor.reload()).thenThrow(new IOException("ioexception"));
         lastExecutionCache.reload();
-        validator.assertLogEntry(Level.SEVERE, "(Cache) Could not reload schedule cache: ioexception");
+        verify(logger, times(1)).error(eq("Could not reload schedule cache: ioexception"), any(IOException.class));
     }
 
     @Test

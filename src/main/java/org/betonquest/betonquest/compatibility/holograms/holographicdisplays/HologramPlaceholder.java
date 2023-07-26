@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.holograms.holographicdisplays;
 
 import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholder;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
@@ -16,12 +16,16 @@ public class HologramPlaceholder implements IndividualPlaceholder {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
 
     /**
      * Creates new instance of HologramPlaceholder
      */
-    public HologramPlaceholder() {
+    public HologramPlaceholder(final BetonQuestLogger log) {
+        this.log = log;
     }
 
     @Override
@@ -41,7 +45,7 @@ public class HologramPlaceholder implements IndividualPlaceholder {
         if (args.length == limit) {
             return BetonQuest.getInstance().getVariableValue(args[0], "%" + args[1] + "%", profile);
         }
-        LOG.warn("Could not parse hologram variable " + arguments + "! Expected format %<package>.<variable>%");
+        log.warn("Could not parse hologram variable " + arguments + "! Expected format %<package>.<variable>%");
         return arguments;
     }
 }

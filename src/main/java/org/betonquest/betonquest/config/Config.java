@@ -2,10 +2,11 @@ package org.betonquest.betonquest.config;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -33,7 +34,7 @@ public final class Config {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(Config.class);
 
     private static final Set<String> LANGUAGES = new LinkedHashSet<>();
 
@@ -76,7 +77,8 @@ public final class Config {
             }
         }
 
-        questManager = new QuestManager(root);
+        final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
+        questManager = new QuestManager(loggerFactory, loggerFactory.create(QuestManager.class), root);
     }
 
     /**

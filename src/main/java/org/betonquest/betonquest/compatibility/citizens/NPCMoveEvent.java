@@ -9,8 +9,8 @@ import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -32,12 +32,12 @@ import java.util.Map;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class NPCMoveEvent extends QuestEvent implements Listener {
+    private static final Map<Integer, NPCMoveEvent> MOVING_NPCS = new HashMap<>();
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
-
-    private static final Map<Integer, NPCMoveEvent> MOVING_NPCS = new HashMap<>();
+    private final BetonQuestLogger log;
 
     private final List<CompoundLocation> locations;
 
@@ -57,6 +57,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 
     public NPCMoveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         npcId = instruction.getInt();
         if (npcId < 0) {
             throw new InstructionParseException("NPC ID cannot be less than 0");
@@ -161,7 +162,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             return;
         }
         if (event instanceof NavigationStuckEvent || event instanceof NavigationCancelEvent) {
-            LOG.warn(instruction.getPackage(), "The NPC was stucked, maybe the distance between two points was too high. "
+            log.warn(instruction.getPackage(), "The NPC was stucked, maybe the distance between two points was too high. "
                     + "This is a Citizens behavior, your NPC was teleported by Citizens, we continue the movement from this location.");
         }
         if (locationsIterator.hasNext()) {
@@ -169,7 +170,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             try {
                 next = locationsIterator.next().getLocation(currentProfile);
             } catch (final QuestRuntimeException e) {
-                LOG.warn(instruction.getPackage(), "Error while NPC " + npc.getId() + " navigation: " + e.getMessage(), e);
+                log.warn(instruction.getPackage(), "Error while NPC " + npc.getId() + " navigation: " + e.getMessage(), e);
                 return;
             }
             if (npc.isSpawned()) {
@@ -182,7 +183,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
         try {
             npc.getNavigator().setTarget(locationsIterator.previous().getLocation(currentProfile));
         } catch (final QuestRuntimeException e) {
-            LOG.warn(instruction.getPackage(), "Error while finishing NPC " + npc.getId() + " navigation: " + e.getMessage(), e);
+            log.warn(instruction.getPackage(), "Error while finishing NPC " + npc.getId() + " navigation: " + e.getMessage(), e);
         }
         npc.getNavigator().setPaused(true);
         new BukkitRunnable() {

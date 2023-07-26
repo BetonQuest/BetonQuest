@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.compatibility.aureliumskills.AureliumSkillsIntegrator;
 import org.betonquest.betonquest.compatibility.brewery.BreweryIntegrator;
 import org.betonquest.betonquest.compatibility.citizens.CitizensIntegrator;
@@ -54,7 +54,7 @@ public class Compatibility implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(Compatibility.class);
 
     /**
      * An instance of this class.

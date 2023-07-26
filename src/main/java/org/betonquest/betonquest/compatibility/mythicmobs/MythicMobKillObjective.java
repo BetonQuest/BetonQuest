@@ -7,7 +7,6 @@ import io.lumine.mythic.core.mobs.ActiveMob;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
@@ -32,11 +31,6 @@ import java.util.Set;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class MythicMobKillObjective extends CountingObjective implements Listener {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
-
     /**
      * The names of all mobs that this objective should count.
      */

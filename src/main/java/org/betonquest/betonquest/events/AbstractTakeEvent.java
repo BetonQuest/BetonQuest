@@ -2,8 +2,8 @@ package org.betonquest.betonquest.events;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
@@ -30,17 +30,18 @@ import java.util.stream.Collectors;
 @Deprecated
 @SuppressWarnings("PMD.CommentRequired")
 public abstract class AbstractTakeEvent extends QuestEvent {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
-
     protected final boolean notify;
 
     protected final List<CheckType> checkOrder;
 
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
     public AbstractTakeEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         checkOrder = getCheckOrder(instruction);
         notify = instruction.hasArgument("notify");
     }
@@ -89,7 +90,7 @@ public abstract class AbstractTakeEvent extends QuestEvent {
                 Config.sendNotify(instruction.getPackage().getQuestPath(), onlineProfile, "items_taken",
                         new String[]{itemName, String.valueOf(amount)}, "items_taken,info");
             } catch (final QuestRuntimeException exception) {
-                LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'items_taken' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'", exception);
+                log.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'items_taken' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'", exception);
             }
         }
     }

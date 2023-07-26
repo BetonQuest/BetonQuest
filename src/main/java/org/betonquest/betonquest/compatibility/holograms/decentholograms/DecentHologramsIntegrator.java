@@ -4,9 +4,9 @@ import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
@@ -25,13 +25,14 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     /**
      * Creates a new DecentHologramsIntegrator for DecentHolograms
      */
     public DecentHologramsIntegrator() {
         super("DecentHolograms", "2.7.5");
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
     }
 
     @Override
@@ -45,7 +46,7 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
     public void hook() throws HookException {
         super.hook();
         if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            LOG.warn("Holograms from DecentHolograms will not be able to use BetonQuest variables in text lines "
+            log.warn("Holograms from DecentHolograms will not be able to use BetonQuest variables in text lines "
                     + "without PlaceholderAPI plugin! Install it to use holograms with variables!");
         }
     }
@@ -64,7 +65,7 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
                     return "%betonquest_" + instruction.getPackage().getQuestPath() + ":" + instruction.getInstruction() + "%";
                 }
             } catch (final InstructionParseException exception) {
-                LOG.warn("Could not create variable '" + group + "' variable: " + exception.getMessage(), exception);
+                log.warn("Could not create variable '" + group + "' variable: " + exception.getMessage(), exception);
             }
             return group;
         });

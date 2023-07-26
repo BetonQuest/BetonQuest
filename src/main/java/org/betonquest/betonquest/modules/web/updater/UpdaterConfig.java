@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.web.updater;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.bukkit.configuration.ConfigurationSection;
@@ -14,11 +14,6 @@ import java.util.Locale;
 @SuppressWarnings("PMD.DataClass")
 public class UpdaterConfig {
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
-
-    /**
      * The string prefix of the path to the settings in the given {@link ConfigurationSection}
      */
     private static final String UPDATE_SECTION = "update.";
@@ -27,6 +22,11 @@ public class UpdaterConfig {
      * The separator between the {@link UpdateStrategy} and a given dev indicator
      */
     private static final String DEV_SEPARATOR = "_";
+
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
 
     /**
      * The configuration section that contains the `update` section for all settings
@@ -71,11 +71,13 @@ public class UpdaterConfig {
     /**
      * Reads the configuration file.
      *
+     * @param log          the logger that will be used for logging
      * @param config       the {@link ConfigurationSection} that contains the updater settings
      * @param current      the current {@link Version} of the plugin
      * @param devIndicator the string qualifier that represents dev versions
      */
-    public UpdaterConfig(final ConfigurationSection config, final Version current, final String devIndicator) {
+    public UpdaterConfig(final BetonQuestLogger log, final ConfigurationSection config, final Version current, final String devIndicator) {
+        this.log = log;
         this.config = config;
         this.current = current;
         this.devIndicator = devIndicator.toUpperCase(Locale.ROOT);
@@ -96,7 +98,7 @@ public class UpdaterConfig {
         try {
             strategy = UpdateStrategy.valueOf(updateStrategy);
         } catch (final IllegalArgumentException exception) {
-            LOG.error("Could not parse 'update.strategy' in 'config.yml'!", exception);
+            log.error("Could not parse 'update.strategy' in 'config.yml'!", exception);
         }
     }
 
@@ -126,6 +128,10 @@ public class UpdaterConfig {
      */
     public @NotNull UpdateStrategy getStrategy() {
         return strategy;
+    }
+
+    public String getDevIndicator() {
+        return devIndicator;
     }
 
     /**

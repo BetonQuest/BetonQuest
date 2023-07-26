@@ -2,10 +2,8 @@ package org.betonquest.betonquest.modules.logger.format;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.bukkit.plugin.Plugin;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -16,7 +14,6 @@ import static org.mockito.Mockito.*;
 /**
  * A test for the {@link LogfileFormatter}.
  */
-@ExtendWith(BetonQuestLoggerService.class)
 class LogfileFormatterTest {
     /**
      * The mocked plugin instance.

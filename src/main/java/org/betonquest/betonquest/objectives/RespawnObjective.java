@@ -2,8 +2,8 @@ package org.betonquest.betonquest.objectives;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -22,12 +22,13 @@ public class RespawnObjective extends Objective implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final CompoundLocation location;
 
     public RespawnObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         template = ObjectiveData.class;
         location = instruction.getLocation(instruction.getOptional("location"));
     }
@@ -41,7 +42,7 @@ public class RespawnObjective extends Objective implements Listener {
                 try {
                     event.setRespawnLocation(location.getLocation(onlineProfile));
                 } catch (final QuestRuntimeException e) {
-                    LOG.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: \" + e.getMessage()", e);
+                    log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: \" + e.getMessage()", e);
                 }
             }
             completeObjective(onlineProfile);

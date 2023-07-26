@@ -8,6 +8,8 @@ import net.citizensnpcs.api.event.NPCTeleportEvent;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramLoop;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
@@ -53,8 +55,8 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
     /**
      * Starts a loop, which checks hologram conditions and shows them to players.
      */
-    public CitizensHologramLoop() {
-        super();
+    public CitizensHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
+        super(loggerFactory, log);
         npcHolograms = new ArrayList<>();
         holograms = initialize("npc_holograms");
         followTask = Bukkit.getServer().getScheduler().runTaskTimer(BetonQuest.getInstance(),

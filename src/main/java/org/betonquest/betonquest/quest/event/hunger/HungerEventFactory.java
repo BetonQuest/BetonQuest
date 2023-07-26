@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.hunger;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -16,6 +17,11 @@ import java.util.Locale;
  * Factory for the hunger event.
  */
 public class HungerEventFactory implements EventFactory {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
     /**
      * Server to use for syncing to the primary server thread.
      */
@@ -38,7 +44,8 @@ public class HungerEventFactory implements EventFactory {
      * @param scheduler scheduler to use
      * @param plugin    plugin to use
      */
-    public HungerEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+    public HungerEventFactory(final BetonQuestLogger log, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+        this.log = log;
         this.server = server;
         this.scheduler = scheduler;
         this.plugin = plugin;
@@ -51,7 +58,7 @@ public class HungerEventFactory implements EventFactory {
             final int amount = instruction.getInt();
             return new PrimaryServerThreadEvent(
                     new OnlineProfileRequiredEvent(
-                            new HungerEvent(hunger, amount), instruction.getPackage()
+                            log, new HungerEvent(hunger, amount), instruction.getPackage()
                     ), server, scheduler, plugin);
         } catch (final IllegalArgumentException e) {
             throw new InstructionParseException("Error while parsing action! Must be 'set', 'give', or 'take'.", e);

@@ -2,9 +2,10 @@ package org.betonquest.betonquest.objectives;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
@@ -42,7 +43,7 @@ public class ChestPutObjective extends Objective implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final Condition chestItemCondition;
 
@@ -58,6 +59,8 @@ public class ChestPutObjective extends Objective implements Listener {
 
     public ChestPutObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
+        final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
+        this.log = loggerFactory.create(getClass());
         template = ObjectiveData.class;
         // extract location
         loc = instruction.getLocation();
@@ -65,7 +68,7 @@ public class ChestPutObjective extends Objective implements Listener {
         final String items = instruction.next();
         multipleAccess = Boolean.parseBoolean(instruction.getOptional("multipleaccess"));
         try {
-            chestItemCondition = new ChestItemCondition(new Instruction(instruction.getPackage(), new NoID(instruction.getPackage()), "chestitem " + location + " " + items));
+            chestItemCondition = new ChestItemCondition(new Instruction(loggerFactory.create(Instruction.class), instruction.getPackage(), new NoID(instruction.getPackage()), "chestitem " + location + " " + items));
         } catch (final InstructionParseException | ObjectNotFoundException e) {
             throw new InstructionParseException("Could not create inner chest item condition: " + e.getMessage(), e);
         }
@@ -88,7 +91,7 @@ public class ChestPutObjective extends Objective implements Listener {
             try {
                 Config.sendNotify(null, PlayerConverter.getID((Player) event.getPlayer()), "chest_occupied", null);
             } catch (final QuestRuntimeException e) {
-                LOG.warn("The notify system was unable to send the message for 'chest_occupied'. Error was: '"
+                log.warn("The notify system was unable to send the message for 'chest_occupied'. Error was: '"
                         + e.getMessage() + "'", e);
             }
             event.setCancelled(true);
@@ -139,7 +142,7 @@ public class ChestPutObjective extends Objective implements Listener {
                 }
             }
         } catch (final QuestRuntimeException e) {
-            LOG.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
+            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
         }
     }
 
@@ -156,7 +159,7 @@ public class ChestPutObjective extends Objective implements Listener {
         final Block block = targetChestLocation.getBlock();
         if (!(block.getState() instanceof InventoryHolder)) {
             final World world = targetChestLocation.getWorld();
-            LOG.warn(instruction.getPackage(),
+            log.warn(instruction.getPackage(),
                     String.format("Error in '%s' chestput objective: Block at location x:%d y:%d z:%d in world '%s' isn't a chest!",
                             instruction.getID().getFullID(),
                             targetChestLocation.getBlockX(),

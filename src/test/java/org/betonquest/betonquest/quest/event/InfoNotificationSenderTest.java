@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
-import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -14,7 +14,6 @@ import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
-import java.util.logging.Level;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -27,9 +26,9 @@ import static org.mockito.Mockito.*;
 class InfoNotificationSenderTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
-    void testSendNotifyIsCalled(@Mock final QuestPackage questPackage) {
+    void testSendNotifyIsCalled(final BetonQuestLogger logger, @Mock final QuestPackage questPackage) {
         when(questPackage.getQuestPath()).thenReturn("package.path");
-        final NotificationSender sender = new InfoNotificationSender("message-name", questPackage, "full.id");
+        final NotificationSender sender = new InfoNotificationSender(logger, "message-name", questPackage, "full.id");
 
         try (MockedStatic<Config> config = mockStatic(Config.class)) {
             final Profile profile = getMockedProfile();
@@ -40,18 +39,17 @@ class InfoNotificationSenderTest {
     }
 
     @Test
-    void testSendNotifyHandlesError(@Mock final QuestPackage questPackage, final LogValidator logValidator) {
+    void testSendNotifyHandlesError(@Mock final QuestPackage questPackage, final BetonQuestLogger logger) {
         when(questPackage.getQuestPath()).thenReturn("package.path");
-        final NotificationSender sender = new InfoNotificationSender("message-name", questPackage, "full.id");
+        final NotificationSender sender = new InfoNotificationSender(logger, "message-name", questPackage, "full.id");
 
         try (MockedStatic<Config> config = mockStatic(Config.class)) {
             config.when(() -> Config.sendNotify(any(), any(OnlineProfile.class), any(), any(), any()))
                     .thenThrow(new QuestRuntimeException("Test cause."));
             assertDoesNotThrow(() -> sender.sendNotification(getMockedProfile()), "Failing to send a notification should not throw an exception.");
         }
-        logValidator.assertLogEntry(Level.WARNING, "The notify system was unable to play a sound for the 'message-name' category in 'full.id'. Error was: 'Test cause.'");
-        logValidator.assertLogEntry(Level.FINE, "Additional stacktrace:", QuestRuntimeException.class, "Test cause.");
-        logValidator.assertEmpty();
+        verify(logger, times(1)).warn(eq(questPackage), eq("The notify system was unable to play a sound for the 'message-name' category in 'full.id'. Error was: 'Test cause.'"), any(QuestRuntimeException.class));
+        verifyNoMoreInteractions(logger);
     }
 
     private Profile getMockedProfile() {

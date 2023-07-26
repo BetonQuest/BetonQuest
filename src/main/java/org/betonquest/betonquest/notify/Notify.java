@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.notify;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,7 +23,7 @@ public final class Notify {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(Notify.class);
 
     private static final Map<String, Map<String, String>> CATEGORY_SETTINGS = new HashMap<>();
 

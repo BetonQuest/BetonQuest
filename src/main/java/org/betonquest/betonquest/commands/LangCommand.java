@@ -3,7 +3,7 @@ package org.betonquest.betonquest.commands;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.PlayerData;
@@ -26,10 +26,11 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public LangCommand() {
+    public LangCommand(final BetonQuestLogger log) {
+        this.log = log;
         BetonQuest.getInstance().getCommand("questlang").setExecutor(this);
         BetonQuest.getInstance().getCommand("questlang").setTabCompleter(this);
     }
@@ -51,7 +52,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
                 builder.append(lang).append(", ");
             }
             if (builder.length() < 3) {
-                LOG.warn("No translations loaded, somethings wrong!");
+                log.warn("No translations loaded, somethings wrong!");
                 return false;
             }
             final String finalMessage = builder.substring(0, builder.length() - 2) + ".";
@@ -68,7 +69,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
             try {
                 Config.sendNotify(null, onlineProfile, "language_changed", new String[]{lang}, "language_changed,info");
             } catch (final QuestRuntimeException e) {
-                LOG.warn("The notify system was unable to play a sound for the 'language_changed' category. Error was: '" + e.getMessage() + "'", e);
+                log.warn("The notify system was unable to play a sound for the 'language_changed' category. Error was: '" + e.getMessage() + "'", e);
             }
 
         } else {

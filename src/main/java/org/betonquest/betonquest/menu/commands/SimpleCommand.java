@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.menu.commands;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.menu.config.RPGMenuConfig;
 import org.betonquest.betonquest.menu.utils.Utils;
 import org.bukkit.Bukkit;
@@ -28,12 +28,12 @@ import java.util.List;
  */
 @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.AvoidUncheckedExceptionsInSignatures", "PMD.CommentRequired"})
 public abstract class SimpleCommand extends Command implements PluginIdentifiableCommand {
+    public final int minimalArgs;
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
-
-    public final int minimalArgs;
+    private final BetonQuestLogger log;
 
     private final Permission perimssion;
 
@@ -41,14 +41,16 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
 
     private String usage = "null";
 
-    public SimpleCommand(final String name, final int minimalArgs) {
+    public SimpleCommand(final BetonQuestLogger log, final String name, final int minimalArgs) {
         super(name);
+        this.log = log;
         this.minimalArgs = minimalArgs;
         this.perimssion = null;
     }
 
-    public SimpleCommand(final String name, final Permission reqPermission, final int minimalArgs, final String... alises) {
+    public SimpleCommand(final BetonQuestLogger log, final String name, final Permission reqPermission, final int minimalArgs, final String... alises) {
         super(name, "", "", Arrays.asList(alises));
+        this.log = log;
         this.minimalArgs = minimalArgs;
         this.perimssion = reqPermission;
     }
@@ -142,10 +144,10 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
             this.commandMap = (CommandMap) Utils.getField(managerClass, "commandMap").get(manager);
             this.commandMap.register("betonquest", this);
             syncCraftBukkitCommands();
-            LOG.debug("Registered command " + getName() + "!");
+            log.debug("Registered command " + getName() + "!");
             return true;
         } catch (final Exception e) {
-            LOG.error("Could not register command " + getName() + ":", e);
+            log.error("Could not register command " + getName() + ":", e);
             return false;
         }
     }
@@ -174,7 +176,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
                 commands.remove(this);
             }
             syncCraftBukkitCommands();
-            LOG.debug("Unregistered command " + getName() + "!");
+            log.debug("Unregistered command " + getName() + "!");
             return true;
         } catch (final RuntimeException e) {
             if (!"java.lang.reflect.InaccessibleObjectException".equals(e.getClass().getName())) {
@@ -182,7 +184,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
             }
             return false;
         } catch (final Exception e) {
-            LOG.error("Could not unregister command '" + getName() + "':", e);
+            log.error("Could not unregister command '" + getName() + "':", e);
             return false;
         }
     }

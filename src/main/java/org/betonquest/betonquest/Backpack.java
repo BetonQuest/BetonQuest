@@ -2,9 +2,9 @@ package org.betonquest.betonquest;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.tuple.Pair;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.QuestCanceler;
@@ -42,7 +42,7 @@ public class Backpack implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
     /**
      * The {@link OnlineProfile} of the player
@@ -196,7 +196,7 @@ public class Backpack implements Listener {
                     try {
                         previous = new QuestItem(new ItemID(null, previousButton)).generate(1);
                     } catch (final ObjectNotFoundException | InstructionParseException e) {
-                        LOG.warn("Could not load previous button: " + e.getMessage(), e);
+                        log.warn("Could not load previous button: " + e.getMessage(), e);
                     }
                 }
                 if (previous == null) {
@@ -214,7 +214,7 @@ public class Backpack implements Listener {
                     try {
                         next = new QuestItem(new ItemID(null, nextButton)).generate(1);
                     } catch (final ObjectNotFoundException | InstructionParseException e) {
-                        LOG.warn("Could not load next button: " + e.getMessage(), e);
+                        log.warn("Could not load next button: " + e.getMessage(), e);
                     }
                 }
                 if (next == null) {
@@ -234,7 +234,7 @@ public class Backpack implements Listener {
                     try {
                         cancel = new QuestItem(new ItemID(null, cancelButton)).generate(1);
                     } catch (final ObjectNotFoundException | InstructionParseException e) {
-                        LOG.warn("Could not load cancel button: " + e.getMessage(), e);
+                        log.warn("Could not load cancel button: " + e.getMessage(), e);
                     }
                 }
                 if (cancel == null) {
@@ -256,7 +256,7 @@ public class Backpack implements Listener {
                     try {
                         compassItem = new QuestItem(new ItemID(null, compassButton)).generate(1);
                     } catch (final ObjectNotFoundException | InstructionParseException e) {
-                        LOG.warn("Could not load compass button: " + e.getMessage(), e);
+                        log.warn("Could not load compass button: " + e.getMessage(), e);
                     }
                 }
                 if (compassItem == null) {
@@ -394,7 +394,7 @@ public class Backpack implements Listener {
             int numberOfRows = (size - size % 9) / 9 + 1;
             if (numberOfRows > 6) {
                 numberOfRows = 6;
-                LOG.warn(onlineProfile + " has too many active quests, please"
+                log.warn(onlineProfile + " has too many active quests, please"
                         + " don't allow for so many of them. It slows down your server!");
             }
             inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "cancel_page"));
@@ -456,11 +456,11 @@ public class Backpack implements Listener {
                             name = pack.getString("compass." + key + ".name");
                         }
                         if (name == null) {
-                            LOG.warn("Name not defined in a compass pointer in " + packName + " package: " + key);
+                            log.warn("Name not defined in a compass pointer in " + packName + " package: " + key);
                             continue;
                         }
                         if (location == null) {
-                            LOG.warn("Location not defined in a compass pointer in " + packName + " package: " + key);
+                            log.warn("Location not defined in a compass pointer in " + packName + " package: " + key);
                             continue;
                         }
                         // check if the player has special compass tag
@@ -470,13 +470,13 @@ public class Backpack implements Listener {
                         // if the tag is present, continue
                         final String[] parts = location.split(";");
                         if (parts.length != 4) {
-                            LOG.warn("Could not parse location in a compass pointer in " + packName + " package: "
+                            log.warn("Could not parse location in a compass pointer in " + packName + " package: "
                                     + key);
                             continue;
                         }
                         final World world = Bukkit.getWorld(parts[3]);
                         if (world == null) {
-                            LOG.warn("World does not exist in a compass pointer in " + packName + " package: " + key);
+                            log.warn("World does not exist in a compass pointer in " + packName + " package: " + key);
                         }
                         final int locX;
                         final int locY;
@@ -486,7 +486,7 @@ public class Backpack implements Listener {
                             locY = Integer.parseInt(parts[1]);
                             locZ = Integer.parseInt(parts[2]);
                         } catch (final NumberFormatException e) {
-                            LOG.warn("Could not parse location coordinates in a compass pointer in " + packName
+                            log.warn("Could not parse location coordinates in a compass pointer in " + packName
                                     + " package: " + key, e);
                             onlineProfile.getPlayer().closeInventory();
                             return;
@@ -507,7 +507,7 @@ public class Backpack implements Listener {
             final int size = locations.size();
             final int numberOfRows = (size - size % 9) / 9 + 1;
             if (numberOfRows > 6) {
-                LOG.warn(onlineProfile + " has too many compass pointers, please"
+                log.warn(onlineProfile + " has too many compass pointers, please"
                         + " don't allow for so many of them. It slows down your server!");
                 onlineProfile.getPlayer().closeInventory();
                 return;
@@ -521,11 +521,11 @@ public class Backpack implements Listener {
                 try {
                     compass = new QuestItem(new ItemID(item.getKey(), item.getValue())).generate(1);
                 } catch (final InstructionParseException e) {
-                    LOG.warn("Could not load compass button: " + e.getMessage(), e);
+                    log.warn("Could not load compass button: " + e.getMessage(), e);
                     onlineProfile.getPlayer().closeInventory();
                     return;
                 } catch (final ObjectNotFoundException e) {
-                    LOG.warn("Could not find item: " + e.getMessage(), e);
+                    log.warn("Could not find item: " + e.getMessage(), e);
                     compass = new ItemStack(Material.COMPASS);
                 }
                 final ItemMeta meta = compass.getItemMeta();

@@ -3,11 +3,11 @@ package org.betonquest.betonquest;
 import com.google.common.collect.Lists;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.StringUtils;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.PlayerJournalAddEvent;
 import org.betonquest.betonquest.api.PlayerJournalDeleteEvent;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
@@ -46,7 +46,7 @@ public class Journal {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
     private final Profile profile;
 
@@ -235,13 +235,13 @@ public class Journal {
                     text = pack.getFormattedString("journal." + pointerName);
                 }
             } else {
-                LOG.warn(pack, "No defined journal entry " + pointerName + " in package " + pack.getQuestPath());
+                log.warn(pack, "No defined journal entry " + pointerName + " in package " + pack.getQuestPath());
                 text = "error";
             }
 
             // handle case when the text isn't defined
             if (text == null) {
-                LOG.warn(pack, "No text defined for journal entry " + pointerName + " in language " + lang);
+                log.warn(pack, "No text defined for journal entry " + pointerName + " in language " + lang);
                 text = "error";
             }
 
@@ -250,7 +250,7 @@ public class Journal {
                 try {
                     BetonQuest.createVariable(pack, variable);
                 } catch (final InstructionParseException e) {
-                    LOG.warn(pack, "Error while creating variable '" + variable + "' on journal page '" + pointerName + "' in "
+                    log.warn(pack, "Error while creating variable '" + variable + "' on journal page '" + pointerName + "' in "
                             + profile + " journal: " + e.getMessage(), e);
                 }
                 text = text.replace(variable,
@@ -295,7 +295,7 @@ public class Journal {
                                 continue;
                             }
                         } catch (final ObjectNotFoundException e) {
-                            LOG.warn(pack, "Error while generating main page in " + profile + " journal: " + e.getMessage(), e);
+                            log.warn(pack, "Error while generating main page in " + profile + " journal: " + e.getMessage(), e);
                             continue;
                         }
                     }
@@ -320,7 +320,7 @@ public class Journal {
                         try {
                             BetonQuest.createVariable(pack, variable);
                         } catch (final InstructionParseException e) {
-                            LOG.warn(pack, "Error while creating variable '" + variable + "' on main page in "
+                            log.warn(pack, "Error while creating variable '" + variable + "' on main page in "
                                     + profile + " journal: " + e.getMessage(), e);
                         }
                         text = text.replace(variable,
@@ -337,7 +337,7 @@ public class Journal {
                     }
                     linesOrder.add(text + "§r"); // reset the formatting
                 } else {
-                    LOG.warn(pack, "Priority of " + packName + "." + key
+                    log.warn(pack, "Priority of " + packName + "." + key
                             + " journal main page line is not defined");
                 }
             }
@@ -391,7 +391,7 @@ public class Journal {
             try {
                 Config.sendNotify(null, profile.getOnlineProfile().get(), "inventory_full_backpack", null, "inventory_full_backpack,inventory_full,error");
             } catch (final QuestRuntimeException e) {
-                LOG.warn("The notify system was unable to play a sound for the 'inventory_full_backpack' category. Error was: '" + e.getMessage() + "'", e);
+                log.warn("The notify system was unable to play a sound for the 'inventory_full_backpack' category. Error was: '" + e.getMessage() + "'", e);
             }
         }
     }

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.quests;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import me.blackvein.quests.Quests;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.bukkit.Bukkit;
 
@@ -26,8 +27,9 @@ public class QuestsIntegrator implements Integrator {
         questsInstance = (Quests) Bukkit.getPluginManager().getPlugin("Quests");
         plugin.registerConditions("quest", QuestsCondition.class);
         plugin.registerEvents("quest", QuestsEvent.class);
-        questsInstance.getCustomRewards().add(new EventReward());
-        questsInstance.getCustomRequirements().add(new ConditionRequirement());
+        final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
+        questsInstance.getCustomRewards().add(new EventReward(loggerFactory.create(EventReward.class)));
+        questsInstance.getCustomRequirements().add(new ConditionRequirement(loggerFactory.create(ConditionRequirement.class)));
     }
 
     @Override

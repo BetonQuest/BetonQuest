@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.sudo;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -14,6 +15,11 @@ import org.bukkit.scheduler.BukkitScheduler;
  * Creates a new SudoEvent from an {@link Instruction}.
  */
 public class SudoEventFactory implements EventFactory {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
     /**
      * Server to use for syncing to the primary server thread.
      */
@@ -36,7 +42,8 @@ public class SudoEventFactory implements EventFactory {
      * @param scheduler scheduler scheduler to use
      * @param plugin    plugin to use
      */
-    public SudoEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+    public SudoEventFactory(final BetonQuestLogger log, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+        this.log = log;
         this.server = server;
         this.scheduler = scheduler;
         this.plugin = plugin;
@@ -51,7 +58,7 @@ public class SudoEventFactory implements EventFactory {
         final String[] commands = instr.substring(instr.indexOf(' ') + 1, index).split("\\|");
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
-                        new SudoEvent(commands), instruction.getPackage()),
+                        log, new SudoEvent(commands), instruction.getPackage()),
                 server, scheduler, plugin);
     }
 }

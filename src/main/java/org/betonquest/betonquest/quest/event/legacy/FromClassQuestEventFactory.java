@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.legacy;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
@@ -20,7 +20,7 @@ public class FromClassQuestEventFactory<T extends QuestEvent> implements QuestEv
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     /**
      * Class of the event to create.
@@ -30,9 +30,11 @@ public class FromClassQuestEventFactory<T extends QuestEvent> implements QuestEv
     /**
      * Create the factory for a specific event class.
      *
+     * @param log        the logger that will be used for logging
      * @param eventClass event class to create with this factory
      */
-    public FromClassQuestEventFactory(final Class<T> eventClass) {
+    public FromClassQuestEventFactory(final BetonQuestLogger log, final Class<T> eventClass) {
+        this.log = log;
         this.eventClass = eventClass;
     }
 
@@ -50,7 +52,7 @@ public class FromClassQuestEventFactory<T extends QuestEvent> implements QuestEv
         } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
             error = e;
         }
-        LOG.reportException(instruction.getPackage(), error);
+        log.reportException(instruction.getPackage(), error);
         throw new InstructionParseException("A broken event prevents the creation of " + instruction, error);
     }
 }

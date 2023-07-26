@@ -1,8 +1,9 @@
 package org.betonquest.betonquest.compatibility.effectlib;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -23,11 +24,6 @@ import java.util.Set;
  */
 public class EffectLibParticleManager {
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
-
-    /**
      * The config section for the location and npc settings
      */
     private static final String EFFECTLIB_CONFIG_SECTION = "effectlib";
@@ -38,6 +34,16 @@ public class EffectLibParticleManager {
     private static final String NPCS_CONFIG_SECTION = "npcs";
 
     /**
+     * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
+     */
+    private final BetonQuestLoggerFactory loggerFactory;
+
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
      * All active {@link EffectLibRunnable}s managed by this class.
      */
     private final List<EffectLibRunnable> activeParticles = new ArrayList<>();
@@ -45,7 +51,9 @@ public class EffectLibParticleManager {
     /**
      * Loads the particle configuration and starts the effects.
      */
-    public EffectLibParticleManager() {
+    public EffectLibParticleManager(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
+        this.loggerFactory = loggerFactory;
+        this.log = log;
         loadParticleConfiguration();
     }
 
@@ -65,21 +73,21 @@ public class EffectLibParticleManager {
 
                 final String effectClass = settings.getString("class");
                 if (effectClass == null) {
-                    LOG.warn(pack, "Could not load npc effect '" + key + "' in package " + pack.getQuestPath() + ": "
+                    log.warn(pack, "Could not load npc effect '" + key + "' in package " + pack.getQuestPath() + ": "
                             + "No effect class given.");
                     continue;
                 }
 
                 final int interval = settings.getInt("interval", 100);
                 if (interval <= 0) {
-                    LOG.warn(pack, "Could not load npc effect '" + key + "' in package " + pack.getQuestPath() + ": "
+                    log.warn(pack, "Could not load npc effect '" + key + "' in package " + pack.getQuestPath() + ": "
                             + "Effect interval must be bigger than 0.");
                     continue;
                 }
 
                 final int conditionsCheckInterval = settings.getInt("checkinterval", 100);
                 if (conditionsCheckInterval <= 0) {
-                    LOG.warn(pack, "Could not load npc effect '" + key + "' in package " + pack.getQuestPath() + ": "
+                    log.warn(pack, "Could not load npc effect '" + key + "' in package " + pack.getQuestPath() + ": "
                             + "Check interval must be bigger than 0.");
                     continue;
                 }
@@ -92,7 +100,7 @@ public class EffectLibParticleManager {
                 final List<ConditionID> conditions = loadConditions(pack, key, settings);
 
                 final EffectConfiguration effect = new EffectConfiguration(effectClass, locations, npcs, conditions, settings, conditionsCheckInterval);
-                final EffectLibRunnable particleRunnable = new EffectLibRunnable(effect);
+                final EffectLibRunnable particleRunnable = new EffectLibRunnable(loggerFactory.create(EffectLibRunnable.class), effect);
 
                 activeParticles.add(particleRunnable);
                 particleRunnable.runTaskTimer(BetonQuest.getInstance(), 1, interval);
@@ -121,7 +129,7 @@ public class EffectLibParticleManager {
                 try {
                     locations.add(new CompoundLocation(pack, GlobalVariableResolver.resolve(pack, rawLocation)));
                 } catch (final InstructionParseException exception) {
-                    LOG.warn(pack, "Could not load npc effect '" + key + "' in package " + pack.getQuestPath() + ": "
+                    log.warn(pack, "Could not load npc effect '" + key + "' in package " + pack.getQuestPath() + ": "
                             + "Location is invalid:" + exception.getMessage());
                 }
             }
@@ -136,7 +144,7 @@ public class EffectLibParticleManager {
             try {
                 conditions.add(new ConditionID(pack, conditionID));
             } catch (final ObjectNotFoundException e) {
-                LOG.warn(pack, "Error while loading npc_effects '" + key + "': " + e.getMessage(), e);
+                log.warn(pack, "Error while loading npc_effects '" + key + "': " + e.getMessage(), e);
             }
         }
         return conditions;

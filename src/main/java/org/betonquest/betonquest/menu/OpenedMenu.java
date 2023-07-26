@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.menu.events.MenuClickEvent;
 import org.betonquest.betonquest.menu.events.MenuCloseEvent;
@@ -27,14 +27,14 @@ import java.util.UUID;
 @SuppressWarnings("PMD.CommentRequired")
 public class OpenedMenu implements Listener {
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
-
-    /**
      * Hashmap containing all currently opened menus
      */
     private static final Map<UUID, OpenedMenu> OPENED_MENUS = new HashMap<>();
+
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
 
     private final OnlineProfile onlineProfile;
 
@@ -44,7 +44,8 @@ public class OpenedMenu implements Listener {
 
     private boolean closed;
 
-    public OpenedMenu(final OnlineProfile onlineProfile, final Menu menu) {
+    public OpenedMenu(final BetonQuestLogger log, final OnlineProfile onlineProfile, final Menu menu) {
+        this.log = log;
         // If player already has an open menu we close it first
         final OpenedMenu current = getMenu(onlineProfile);
         if (current != null) {
@@ -149,7 +150,7 @@ public class OpenedMenu implements Listener {
         for (int i = 0; i < items.length; i++) {
             content[i] = (items[i] == null) ? new ItemStack(Material.AIR) : items[i].generateItem(onlineProfile);
         }
-        LOG.debug(getId().getPackage(), "updated contents of menu " + getId() + " for " + onlineProfile);
+        log.debug(getId().getPackage(), "updated contents of menu " + getId() + " for " + onlineProfile);
         inventory.setContents(content);
     }
 
@@ -195,9 +196,9 @@ public class OpenedMenu implements Listener {
         Bukkit.getServer().getScheduler().runTask(BetonQuest.getInstance(), () -> {
             final MenuClickEvent clickEvent = new MenuClickEvent(onlineProfile, getId(), event.getSlot(), item.getId(), event.getClick());
             Bukkit.getPluginManager().callEvent(clickEvent);
-            LOG.debug(getId().getPackage(), onlineProfile + " clicked on slot " + event.getSlot() + " with item " + item.getId() + " in menu " + getId());
+            log.debug(getId().getPackage(), onlineProfile + " clicked on slot " + event.getSlot() + " with item " + item.getId() + " in menu " + getId());
             if (clickEvent.isCancelled()) {
-                LOG.debug(getId().getPackage(), "click of " + onlineProfile + " in menu " + getId() + " was cancelled by a bukkit event listener");
+                log.debug(getId().getPackage(), "click of " + onlineProfile + " in menu " + getId() + " was cancelled by a bukkit event listener");
                 return;
             }
             //done if already closed by a 3rd party listener
@@ -235,7 +236,7 @@ public class OpenedMenu implements Listener {
         //call event
         final MenuCloseEvent closeEvent = new MenuCloseEvent(onlineProfile, getId());
         Bukkit.getPluginManager().callEvent(closeEvent);
-        LOG.debug(getId().getPackage(), onlineProfile + " closed menu " + getId());
+        log.debug(getId().getPackage(), onlineProfile + " closed menu " + getId());
         //clean up
         HandlerList.unregisterAll(this);
         OPENED_MENUS.remove(onlineProfile.getProfileUUID());

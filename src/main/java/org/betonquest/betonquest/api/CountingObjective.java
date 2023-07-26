@@ -1,7 +1,9 @@
 package org.betonquest.betonquest.api;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
@@ -13,11 +15,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * and a versatile data object to track the progress.
  */
 public abstract class CountingObjective extends Objective {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create("CountingObjective");
-
     /**
      * The message name for notification messages used by default.
      */
@@ -143,6 +140,10 @@ public abstract class CountingObjective extends Objective {
      * Objective data for counting objectives.
      */
     public static class CountingData extends ObjectiveData {
+        /**
+         * Custom {@link BetonQuestLogger} instance for this class.
+         */
+        private final BetonQuestLogger log;
 
         /**
          * The target amount of units initially required for completion.
@@ -175,6 +176,7 @@ public abstract class CountingObjective extends Objective {
          */
         public CountingData(final String instruction, final Profile profile, final String objID) {
             super(instruction, profile, objID);
+            this.log = BetonQuest.getInstance().getLoggerFactory().create(CountingObjective.CountingData.class);
             final String countingInstruction = instruction.split(";", 2)[0];
             final String[] instructionParts = countingInstruction.split("/");
             switch (instructionParts.length) {
@@ -203,11 +205,11 @@ public abstract class CountingObjective extends Objective {
             try {
                 return Integer.parseInt(countingInstruction);
             } catch (final NumberFormatException e) {
-                LOG.warn("Loaded counting objective '" + objID + "' from database with invalid amount."
+                log.warn("Loaded counting objective '" + objID + "' from database with invalid amount."
                         + " This is probably caused by a change of the objective's implementation."
                         + " The objective will be reset to an amount of 1."
                         + " This is normally the previous amount and can be ignored.");
-                LOG.debug("Invalid instruction string: '" + instruction + "'");
+                log.debug("Invalid instruction string: '" + instruction + "'");
                 dirty.set(true);
                 return 1;
             }

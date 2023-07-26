@@ -1,116 +1,99 @@
 package org.betonquest.betonquest.modules.logger.util;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
-import org.betonquest.betonquest.modules.logger.BetonQuestLoggerImpl;
-import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.extension.AfterAllCallback;
-import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.logger.SingletonLoggerFactory;
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.mockito.MockedStatic;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.logging.Logger;
 
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Resolves a {@link LogValidator} for JUnit 5 tests.
+ * This class provides a {@link BetonQuestLogger} and {@link BetonQuestLoggerFactory} for testing.
+ * It can also expose the parent {@link Logger} used for the created BetonQuestLogger
+ * and a {@link java.util.logging.Handler} that is registered for the parent logger.
  */
-public class BetonQuestLoggerService implements ParameterResolver, BeforeAllCallback, AfterAllCallback {
+public class BetonQuestLoggerService implements BeforeEachCallback, ParameterResolver, AfterEachCallback {
     /**
-     * The topic of generated {@link BetonQuestLogger} in the {@link ParameterResolver}.
+     * The instance of a handler that is registered for the parent logger.
      */
-    public static final String LOGGER_TOPIC = "GeneratedTopic";
+    private BetonQuestLogger logger;
 
     /**
-     * The mocked plugin instance.
+     * The instance of the BetonQuestLoggerFactory.
      */
-    private final Plugin plugin;
-
-    /**
-     * The instance of the parent logger.
-     */
-    private final Logger parentLogger;
+    private BetonQuestLoggerFactory loggerFactory;
 
     /**
      * The MockedStatic instance of {@link BetonQuestLogger} class.
      */
-    private MockedStatic<BetonQuestLogger> betonQuestLogger;
+    private MockedStatic<BetonQuest> staticBetonQuest;
 
     /**
      * Default {@link BetonQuestLoggerService} Constructor.
      */
     public BetonQuestLoggerService() {
-        plugin = mock(Plugin.class);
-        when(plugin.getName()).thenReturn("GeneratedPlugin");
-        parentLogger = LogValidator.getSilentLogger();
+    }
+
+    /**
+     * Creates an anonymous and silent logger. This is an optimal way to obtain a logger for testing.
+     *
+     * @return a silent logger
+     */
+    public static Logger getSilentLogger() {
+        final Logger logger = Logger.getAnonymousLogger();
+        logger.setUseParentHandlers(false);
+        return logger;
     }
 
     @Override
-    public void beforeAll(final ExtensionContext context) {
-        betonQuestLogger = mockStatic(BetonQuestLogger.class);
-        betonQuestLogger.when(BetonQuestLogger::create).thenAnswer(invocation ->
-                new BetonQuestLoggerImpl(plugin, parentLogger, getCallingClass(), null));
-        betonQuestLogger.when(() -> BetonQuestLogger.create(anyString())).thenAnswer(invocation ->
-                new BetonQuestLoggerImpl(plugin, parentLogger, getCallingClass(), invocation.getArgument(0)));
-        betonQuestLogger.when(() -> BetonQuestLogger.create(any(Class.class))).thenAnswer(invocation ->
-                new BetonQuestLoggerImpl(plugin, parentLogger, invocation.getArgument(0), null));
-        betonQuestLogger.when(() -> BetonQuestLogger.create(any(Class.class), anyString())).thenAnswer(invocation ->
-                new BetonQuestLoggerImpl(plugin, parentLogger, invocation.getArgument(0), invocation.getArgument(1)));
-        betonQuestLogger.when(() -> BetonQuestLogger.create(any(Plugin.class))).thenAnswer(invocation ->
-                new BetonQuestLoggerImpl(plugin, parentLogger, invocation.getArgument(0).getClass(), null));
-        betonQuestLogger.when(() -> BetonQuestLogger.create(any(Plugin.class), anyString())).thenAnswer(invocation ->
-                new BetonQuestLoggerImpl(plugin, parentLogger, invocation.getArgument(0).getClass(), invocation.getArgument(1)));
-    }
-
-    @NotNull
-    private Class<?> getCallingClass() {
-        try {
-            final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-            boolean found = false;
-            for (final StackTraceElement stackTraceElement : stackTrace) {
-                final String className = stackTraceElement.getClassName();
-                if (className.equals(BetonQuestLogger.class.getName())) {
-                    found = true;
-                    continue;
-                }
-                if (found) {
-                    return Class.forName(className);
-                }
-            }
-        } catch (final ClassNotFoundException e) {
-            throw new IllegalStateException("It was not possible to create a logger for the current class!", e);
-        }
-        throw new IllegalStateException("It was not possible to create a logger for the current class!");
+    public void beforeEach(final ExtensionContext context) {
+        this.logger = mock(BetonQuestLogger.class);
+        this.loggerFactory = new SingletonLoggerFactory(logger);
+        final BetonQuest betonQuest = mock(BetonQuest.class);
+        lenient().when(betonQuest.getLoggerFactory()).thenReturn(loggerFactory);
+        staticBetonQuest = mockStatic(BetonQuest.class);
+        staticBetonQuest.when(BetonQuest::getInstance).thenReturn(betonQuest);
     }
 
     @Override
-    public void afterAll(final ExtensionContext context) {
-        betonQuestLogger.close();
-        betonQuestLogger = null;
+    public void afterEach(final ExtensionContext context) {
+        staticBetonQuest.close();
+        staticBetonQuest = null;
     }
 
     @Override
     public boolean supportsParameter(final ParameterContext parameterContext, final ExtensionContext extensionContext) {
-        return parameterContext.getParameter().getType() == LogValidator.class
-                || parameterContext.getParameter().getType() == Logger.class
-                || parameterContext.getParameter().getType() == BetonQuestLogger.class;
+        return isStaticBetonQuest(parameterContext)
+                || parameterContext.getParameter().getType() == BetonQuestLogger.class
+                || parameterContext.getParameter().getType() == BetonQuestLoggerFactory.class;
     }
 
     @Override
     public Object resolveParameter(final ParameterContext parameterContext, final ExtensionContext extensionContext) {
-        if (parameterContext.getParameter().getType() == LogValidator.class) {
-            return LogValidator.getForLogger(parentLogger);
-        }
-        if (parameterContext.getParameter().getType() == Logger.class) {
-            return parentLogger;
+        if (isStaticBetonQuest(parameterContext)) {
+            return staticBetonQuest;
         }
         if (parameterContext.getParameter().getType() == BetonQuestLogger.class) {
-            return new BetonQuestLoggerImpl(plugin, parentLogger, parameterContext.getClass(), LOGGER_TOPIC);
+            return logger;
+        }
+        if (parameterContext.getParameter().getType() == BetonQuestLoggerFactory.class) {
+            return loggerFactory;
         }
         return null;
+    }
+
+    private boolean isStaticBetonQuest(final ParameterContext parameterContext) {
+        return parameterContext.getParameter().getType() == MockedStatic.class
+                && parameterContext.getParameter().getParameterizedType() instanceof final ParameterizedType parameterizedType
+                && parameterizedType.getActualTypeArguments()[0].equals(BetonQuest.class);
     }
 }

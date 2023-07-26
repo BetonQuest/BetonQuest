@@ -1,8 +1,9 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.ItemLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TextLine;
@@ -34,14 +35,21 @@ public abstract class HologramLoop {
     protected static final Pattern TOP_LINE_VALIDATOR = Pattern.compile("^top:([\\w.]+);(\\w+);(\\d+);?[&§]?([\\da-f])?;?[&§]?([\\da-f])?;?[&§]?([\\da-f])?;?[&§]?([\\da-f])?$", Pattern.CASE_INSENSITIVE);
 
     /**
+     * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
+     */
+    private final BetonQuestLoggerFactory loggerFactory;
+
+    /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     /**
      * Creates a new instance of the loop.
      */
-    public HologramLoop() {
+    public HologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
+        this.loggerFactory = loggerFactory;
+        this.log = log;
     }
 
     /**
@@ -67,7 +75,7 @@ public abstract class HologramLoop {
                 try {
                     holograms.add(initializeHolograms(defaultInterval, pack, hologramSection));
                 } catch (final InstructionParseException e) {
-                    LOG.warn(pack, "Error while loading hologram '" + key + "' in package '" + pack.getQuestPath() + "': " + e.getMessage(), e);
+                    log.warn(pack, "Error while loading hologram '" + key + "' in package '" + pack.getQuestPath() + "': " + e.getMessage(), e);
                 }
             }
         }
@@ -202,7 +210,7 @@ public abstract class HologramLoop {
                 colorCodes.append(code);
             }
         }
-        return new TopLine(pointName, orderType, limit, colorCodes.toString().toCharArray());
+        return new TopLine(loggerFactory, pointName, orderType, limit, colorCodes.toString().toCharArray());
     }
 
     @NotNull

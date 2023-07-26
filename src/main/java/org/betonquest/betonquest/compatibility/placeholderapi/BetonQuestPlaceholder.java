@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.placeholderapi;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
@@ -16,10 +16,11 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create("PlaceholderAPI Integration");
+    private final BetonQuestLogger log;
 
-    public BetonQuestPlaceholder() {
+    public BetonQuestPlaceholder(final BetonQuestLogger log) {
         super();
+        this.log = log;
     }
 
     /**
@@ -85,7 +86,7 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
         final String placeholderIdentifier;
         final int index = identifier.indexOf(':');
         if (index == -1) {
-            LOG.warn("Variable without explicit package requested through PAPI: '%s'".formatted(identifier));
+            log.warn("Variable without explicit package requested through PAPI: '%s'".formatted(identifier));
             return "";
         } else {
             pack = identifier.substring(0, index);

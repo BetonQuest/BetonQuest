@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.event.point;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.config.Config;
@@ -17,7 +17,7 @@ public class PointEvent implements Event {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     /**
      * The plain name of the category
@@ -57,6 +57,7 @@ public class PointEvent implements Event {
     /**
      * Creates a new point event
      *
+     * @param log          the logger that will be used for logging
      * @param categoryName the plain name of the category
      * @param category     the category name
      * @param count        the count
@@ -65,7 +66,8 @@ public class PointEvent implements Event {
      * @param fullId       the full id of the event
      * @param notify       whether to notify the player about the change
      */
-    public PointEvent(final String categoryName, final String category, final VariableNumber count, final Point pointType, final QuestPackage questPackage, final String fullId, final boolean notify) {
+    public PointEvent(final BetonQuestLogger log, final String categoryName, final String category, final VariableNumber count, final Point pointType, final QuestPackage questPackage, final String fullId, final boolean notify) {
+        this.log = log;
         this.categoryName = categoryName;
         this.category = category;
         this.count = count;
@@ -85,7 +87,7 @@ public class PointEvent implements Event {
                 Config.sendNotify(questPackage.getQuestPath(), profile.getOnlineProfile().get(), pointType.getNotifyCategory(),
                         new String[]{String.valueOf(countDouble), categoryName}, pointType.getNotifyCategory() + ",info");
             } catch (final QuestRuntimeException e) {
-                LOG.warn(questPackage, "The notify system was unable to play a sound for the 'point_multiplied' category in '" + fullId + "'. Error was: '" + e.getMessage() + "'", e);
+                log.warn(questPackage, "The notify system was unable to play a sound for the 'point_multiplied' category in '" + fullId + "'. Error was: '" + e.getMessage() + "'", e);
             }
         }
     }

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ItemID;
@@ -18,9 +18,10 @@ public class CustomDropListener implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
-    public CustomDropListener() {
+    public CustomDropListener(final BetonQuestLogger log) {
+        this.log = log;
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
@@ -37,7 +38,7 @@ public class CustomDropListener implements Listener {
                             .generate(Integer.parseInt(item.substring(separatorIndex + 1))));
                 }
             } catch (final InstructionParseException | ObjectNotFoundException e) {
-                LOG.warn("Error when dropping custom item from entity: " + e.getMessage(), e);
+                log.warn("Error when dropping custom item from entity: " + e.getMessage(), e);
             }
             dropIndex++;
         }

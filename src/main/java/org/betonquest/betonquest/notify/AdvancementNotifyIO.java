@@ -4,8 +4,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.Bukkit;
@@ -24,7 +24,7 @@ public class AdvancementNotifyIO extends NotifyIO {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final String frame;
 
@@ -32,6 +32,7 @@ public class AdvancementNotifyIO extends NotifyIO {
 
     public AdvancementNotifyIO(final QuestPackage pack, final Map<String, String> data) throws InstructionParseException {
         super(pack, data);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
         frame = data.getOrDefault("frame", "challenge").toLowerCase(Locale.ROOT);
         icon = data.getOrDefault("icon", "minecraft:map").toLowerCase(Locale.ROOT);
@@ -55,7 +56,7 @@ public class AdvancementNotifyIO extends NotifyIO {
         try {
             add(key, message);
         } catch (final JsonIOException e) {
-            LOG.warn("Failed to create notification with text: '" + message + "'! Cause: " + e.getMessage(), e);
+            log.warn("Failed to create notification with text: '" + message + "'! Cause: " + e.getMessage(), e);
         }
         return key;
     }

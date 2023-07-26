@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.holograms.holographicdisplays;
 
 import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -12,12 +12,13 @@ public class HologramGlobalPlaceholder implements GlobalPlaceholder {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     /**
      * Creates new instance of HologramGlobalPlaceholder
      */
-    public HologramGlobalPlaceholder() {
+    public HologramGlobalPlaceholder(final BetonQuestLogger log) {
+        this.log = log;
     }
 
     @Override
@@ -36,7 +37,7 @@ public class HologramGlobalPlaceholder implements GlobalPlaceholder {
         if (args.length == limit) {
             return BetonQuest.getInstance().getVariableValue(args[0], "%" + args[1] + "%", null);
         }
-        LOG.warn("Could not parse hologram variable " + arguments + "! " + "Expected format %<package>.<variable>%");
+        log.warn("Could not parse hologram variable " + arguments + "! " + "Expected format %<package>.<variable>%");
         return arguments;
     }
 }

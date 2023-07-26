@@ -3,8 +3,8 @@ package org.betonquest.betonquest.objectives;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -38,7 +38,7 @@ public class ActionObjective extends Objective implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final Click action;
 
@@ -54,6 +54,7 @@ public class ActionObjective extends Objective implements Listener {
 
     public ActionObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         template = ObjectiveData.class;
 
         action = instruction.getEnum(Click.class);
@@ -87,7 +88,7 @@ public class ActionObjective extends Objective implements Listener {
                     return;
                 }
             } catch (final QuestRuntimeException e) {
-                LOG.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
+                log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
                 return;
             }
         }
@@ -130,7 +131,7 @@ public class ActionObjective extends Objective implements Listener {
             try {
                 location = loc.getLocation(profile);
             } catch (final QuestRuntimeException e) {
-                LOG.warn(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
+                log.warn(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
                         + e.getMessage(), e);
                 return "";
             }

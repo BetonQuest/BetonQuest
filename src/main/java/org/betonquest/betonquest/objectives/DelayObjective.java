@@ -3,8 +3,8 @@ package org.betonquest.betonquest.objectives;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -31,7 +31,7 @@ public class DelayObjective extends Objective {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final int interval;
 
@@ -41,6 +41,7 @@ public class DelayObjective extends Objective {
 
     public DelayObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
+        log = BetonQuest.getInstance().getLoggerFactory().create(this.getClass());
         template = DelayData.class;
 
         parseDelay();
@@ -119,7 +120,7 @@ public class DelayObjective extends Objective {
             final double time = delay.getDouble(profile);
             millis = timeToMilliSeconds(time);
         } catch (final InstructionParseException e) {
-            LOG.warn("Error in delay objective '" + instruction.getID() + "': " + e.getMessage());
+            log.warn("Error in delay objective '" + instruction.getID() + "': " + e.getMessage());
         }
         return Double.toString(new Date().getTime() + millis);
     }

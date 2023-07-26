@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.conversation;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -12,14 +13,20 @@ import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 public class CancelConversationEventFactory implements EventFactory {
 
     /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
      * Create the conversation cancel event factory.
      */
-    public CancelConversationEventFactory() {
+    public CancelConversationEventFactory(final BetonQuestLogger log) {
+        this.log = log;
     }
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         return new OnlineProfileRequiredEvent(
-                new CancelConversationEvent(), instruction.getPackage());
+                log, new CancelConversationEvent(), instruction.getPackage());
     }
 }

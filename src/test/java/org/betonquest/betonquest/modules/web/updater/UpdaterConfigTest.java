@@ -1,10 +1,9 @@
 package org.betonquest.betonquest.modules.web.updater;
 
 import org.betonquest.betonquest.api.config.ConfigurationFile;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
 import org.betonquest.betonquest.modules.versioning.Version;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -17,7 +16,6 @@ import static org.mockito.Mockito.*;
 /**
  * This class tests the {@link UpdaterConfig}.
  */
-@ExtendWith(BetonQuestLoggerService.class)
 final class UpdaterConfigTest {
     /**
      * Invalid {@link UpdateStrategy}
@@ -172,20 +170,19 @@ final class UpdaterConfigTest {
     }
 
     @SuppressWarnings("PMD.CommentDefaultAccessModifier")
-    static ConfigurationFile getMockedConfig(final Input input) {
+    static UpdaterConfig getMockedConfig(final BetonQuestLogger logger, final Input input, final Version version) {
         final ConfigurationFile config = mock(ConfigurationFile.class);
         when(config.getBoolean("update.enabled", true)).thenReturn(input.enabled);
         when(config.getBoolean("update.ingameNotification", true)).thenReturn(input.ingameNotification);
         when(config.getString("update.strategy", null)).thenReturn(input.strategy);
         when(config.getBoolean("update.automatic", false)).thenReturn(input.automatic);
-        return config;
+        return new UpdaterConfig(logger, config, version, DEV_INDICATOR);
     }
 
     @ParameterizedTest
     @MethodSource("combinations")
     void testUpdaterConfig(final Input input, final Expected expected) {
-        final ConfigurationFile config = getMockedConfig(input);
-        final UpdaterConfig updaterConfig = new UpdaterConfig(config, input.version, DEV_INDICATOR);
+        final UpdaterConfig updaterConfig = getMockedConfig(mock(BetonQuestLogger.class), input, input.version);
         updaterConfig.reloadFromConfig();
         assertSettings(expected, updaterConfig);
     }

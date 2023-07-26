@@ -2,9 +2,10 @@ package org.betonquest.betonquest.menu;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -35,7 +36,12 @@ public class RPGMenu {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
+
+    /**
+     * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
+     */
+    private final BetonQuestLoggerFactory loggerFactory;
 
     private final Map<MenuID, Menu> menus;
 
@@ -43,7 +49,9 @@ public class RPGMenu {
 
     private RPGMenuCommand pluginCommand;
 
-    public RPGMenu() {
+    public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory) {
+        this.log = log;
+        this.loggerFactory = loggerFactory;
         menus = new HashMap<>();
     }
 
@@ -101,17 +109,17 @@ public class RPGMenu {
     public void openMenu(final OnlineProfile onlineProfile, final MenuID menuID) {
         final Menu menu = menus.get(menuID);
         if (menu == null) {
-            LOG.error(menuID.getPackage(), "Could not open menu '" + menuID + "': Unknown menu");
+            log.error(menuID.getPackage(), "Could not open menu '" + menuID + "': Unknown menu");
             return;
         }
         final MenuOpenEvent openEvent = new MenuOpenEvent(onlineProfile, menuID);
         Bukkit.getPluginManager().callEvent(openEvent);
         if (openEvent.isCancelled()) {
-            LOG.debug(menu.getPackage(), "A Bukkit listener canceled opening of menu " + menuID + " for " + onlineProfile);
+            log.debug(menu.getPackage(), "A Bukkit listener canceled opening of menu " + menuID + " for " + onlineProfile);
             return;
         }
-        new OpenedMenu(onlineProfile, menu);
-        LOG.debug(menu.getPackage(), "opening menu " + menuID + " for " + onlineProfile);
+        new OpenedMenu(loggerFactory.create(OpenedMenu.class), onlineProfile, menu);
+        log.debug(menu.getPackage(), "opening menu " + menuID + " for " + onlineProfile);
     }
 
     @SuppressWarnings("PMD.AvoidDuplicateLiterals")
@@ -122,13 +130,13 @@ public class RPGMenu {
         BetonQuest.getInstance().registerEvents("menu", MenuQuestEvent.class);
         BetonQuest.getInstance().registerVariable("menu", MenuVariable.class);
         //load the plugin command
-        this.pluginCommand = new RPGMenuCommand();
+        this.pluginCommand = new RPGMenuCommand(loggerFactory.create(RPGMenuCommand.class));
         //create config if it doesn't exist
         final File config = new File(BetonQuest.getInstance().getDataFolder(), "menuConfig.yml");
         try {
             ConfigAccessor.create(config, BetonQuest.getInstance(), "menuConfig.yml");
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
-            LOG.warn(e.getMessage(), e);
+            log.warn(e.getMessage(), e);
         }
     }
 
@@ -159,7 +167,7 @@ public class RPGMenu {
         try {
             this.config = new RPGMenuConfig();
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
-            LOG.error("Invalid Configuration.", e);
+            log.error("Invalid Configuration.", e);
             info.addError(e);
             info.result = ReloadResult.FAILED;
             return info;
@@ -173,21 +181,21 @@ public class RPGMenu {
             for (final String name : menus.getKeys(false)) {
                 try {
                     final MenuID menuID = new MenuID(pack, name);
-                    this.menus.put(menuID, new Menu(menuID));
+                    this.menus.put(menuID, new Menu(loggerFactory, loggerFactory.create(Menu.class), menuID));
                     info.loaded++;
                 } catch (final InvalidConfigurationException e) {
-                    LOG.warn(pack, e.getMessage());
+                    log.warn(pack, e.getMessage());
                     info.addError(e);
                     info.result = ReloadResult.SUCCESS;
                 } catch (final ObjectNotFoundException e) {
-                    LOG.error(pack, "Strange unhandled exception during loading: " + e);
+                    log.error(pack, "Strange unhandled exception during loading: " + e);
                     info.result = ReloadResult.FAILED;
                     return info;
                 }
             }
         }
         final ChatColor color = (info.result == ReloadResult.FULL_SUCCESS) ? ChatColor.GREEN : ChatColor.YELLOW;
-        LOG.info(color + "Reloaded " + info.loaded + color + " menus");
+        log.info(color + "Reloaded " + info.loaded + color + " menus");
         return info;
     }
 
@@ -205,12 +213,12 @@ public class RPGMenu {
         }
         final ReloadInformation info = new ReloadInformation();
         try {
-            this.menus.put(menuID, new Menu(menuID));
+            this.menus.put(menuID, new Menu(loggerFactory, loggerFactory.create(Menu.class), menuID));
             info.result = ReloadResult.FULL_SUCCESS;
             info.loaded = 1;
-            LOG.info(menuID.getPackage(), "Reloaded menu " + menuID);
+            log.info(menuID.getPackage(), "Reloaded menu " + menuID);
         } catch (final InvalidConfigurationException e) {
-            LOG.warn(menuID.getPackage(), e.getMessage());
+            log.warn(menuID.getPackage(), e.getMessage());
             info.result = ReloadResult.FAILED;
             info.addError(e);
         }

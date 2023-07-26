@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.event.notify;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.config.Config;
@@ -35,6 +36,11 @@ public class NotifyEventFactory implements EventFactory {
     private static final Pattern LANGUAGE_PATTERN = Pattern.compile("\\{(?<lang>[a-z-]{2,5})} (?<message>.*?)(?= \\{[a-z-]{2,5}} |$)");
 
     /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
      * Server to use for syncing to the primary server thread.
      */
     private final Server server;
@@ -56,7 +62,8 @@ public class NotifyEventFactory implements EventFactory {
      * @param scheduler Scheduler to use for syncing to the primary server thread.
      * @param plugin    Plugin to use for syncing to the primary server thread.
      */
-    public NotifyEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+    public NotifyEventFactory(final BetonQuestLogger log, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+        this.log = log;
         this.server = server;
         this.scheduler = scheduler;
         this.plugin = plugin;
@@ -68,7 +75,7 @@ public class NotifyEventFactory implements EventFactory {
         final NotifyIO notifyIO = processInstruction(instruction, translations);
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
-                        new NotifyEvent(notifyIO, translations),
+                        log, new NotifyEvent(notifyIO, translations),
                         instruction.getPackage()),
                 server, scheduler, plugin
         );

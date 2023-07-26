@@ -37,7 +37,7 @@ public class ProtocolLibIntegrator implements Integrator {
         }
         // if Citizens is hooked, start NPCHider
         if (Compatibility.getHooked().contains("Citizens")) {
-            NPCHider.start();
+            NPCHider.start(BetonQuest.getInstance().getLoggerFactory().create(NPCHider.class));
             plugin.registerEvents("updatevisibility", UpdateVisibilityNowEvent.class);
         }
         if (Compatibility.getHooked().contains("MythicMobs")) {
@@ -51,7 +51,7 @@ public class ProtocolLibIntegrator implements Integrator {
     public void reload() {
         //if NPCHider is running, reload it
         if (NPCHider.getInstance() != null) {
-            NPCHider.start();
+            NPCHider.start(BetonQuest.getInstance().getLoggerFactory().create(NPCHider.class));
         }
         //if MythicHider is running, reload it
         if (MythicHider.getInstance() != null) {

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
@@ -35,12 +35,12 @@ import java.util.regex.Pattern;
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount", "PMD.GodClass", "PMD.CommentRequired",
         "PMD.AvoidFieldNameMatchingTypeName", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods"})
 public class Instruction {
+    private static final Pattern NUMBER_PATTERN = Pattern.compile("(?:\\s|\\G|^)(([+\\-])?\\d+)(?:\\s|$)");
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
-
-    private static final Pattern NUMBER_PATTERN = Pattern.compile("(?:\\s|\\G|^)(([+\\-])?\\d+)(?:\\s|$)");
+    private final BetonQuestLogger log;
 
     private final QuestPackage pack;
 
@@ -56,12 +56,13 @@ public class Instruction {
 
     private String lastOptional;
 
-    public Instruction(final QuestPackage pack, final ID identifier, final String instruction) {
+    public Instruction(final BetonQuestLogger log, final QuestPackage pack, final ID identifier, final String instruction) {
+        this.log = log;
         this.pack = pack;
         try {
             this.identifier = identifier == null ? new NoID(pack) : identifier;
         } catch (final ObjectNotFoundException e) {
-            LOG.warn(pack, "Could not find instruction: " + e.getMessage(), e);
+            this.log.warn(pack, "Could not find instruction: " + e.getMessage(), e);
         }
         this.instruction = instruction;
         this.parts = Utils.split(instruction);
@@ -94,7 +95,11 @@ public class Instruction {
      * @return a new instruction
      */
     public Instruction copy() {
-        return new Instruction(pack, identifier, instruction);
+        return new Instruction(log, pack, identifier, instruction);
+    }
+
+    public Instruction copy(final ObjectiveID newID) {
+        return new Instruction(log, pack, newID, instruction);
     }
 
     /////////////////////

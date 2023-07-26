@@ -7,6 +7,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.menu.MenuID;
@@ -33,8 +34,8 @@ public class RPGMenuCommand extends SimpleCommand {
 
     private final RPGMenu menu = BetonQuest.getInstance().getRpgMenu();
 
-    public RPGMenuCommand() {
-        super("rpgmenu", new Permission("betonquest.admin"), 0, "qm", "menu", "menus", "rpgmenus", "rpgm");
+    public RPGMenuCommand(final BetonQuestLogger log) {
+        super(log, "rpgmenu", new Permission("betonquest.admin"), 0, "qm", "menu", "menus", "rpgmenus", "rpgm");
         setDescription("Core command of the RPGMenu addon for BetonQuest");
         setUsage("/rpgmenu <reload/open/list>");
         register();

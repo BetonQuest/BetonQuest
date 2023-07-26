@@ -4,8 +4,8 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -31,7 +31,7 @@ public class ArrowShootObjective extends Objective implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     private final CompoundLocation loc;
 
@@ -39,6 +39,7 @@ public class ArrowShootObjective extends Objective implements Listener {
 
     public ArrowShootObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         template = ObjectiveData.class;
         loc = instruction.getLocation();
         range = instruction.getVarNum();
@@ -77,7 +78,7 @@ public class ArrowShootObjective extends Objective implements Listener {
                 }
             }.runTask(BetonQuest.getInstance());
         } catch (final QuestRuntimeException e) {
-            LOG.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
+            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
         }
     }
 

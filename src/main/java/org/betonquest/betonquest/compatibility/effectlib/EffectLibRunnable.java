@@ -4,7 +4,7 @@ import de.slikey.effectlib.util.DynamicLocation;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -26,7 +26,7 @@ public class EffectLibRunnable extends BukkitRunnable {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+    private final BetonQuestLogger log;
 
     /**
      * The configuration of the effect to show.
@@ -46,10 +46,12 @@ public class EffectLibRunnable extends BukkitRunnable {
     /**
      * Constructs this runnable with the given effect.
      *
+     * @param log                 the logger that will be used for logging
      * @param effectConfiguration the effect to show.
      */
-    public EffectLibRunnable(final EffectConfiguration effectConfiguration) {
+    public EffectLibRunnable(final BetonQuestLogger log, final EffectConfiguration effectConfiguration) {
         super();
+        this.log = log;
         this.effectConfiguration = effectConfiguration;
         this.activeProfiles = new ArrayList<>();
     }
@@ -107,7 +109,7 @@ public class EffectLibRunnable extends BukkitRunnable {
                 location = compoundLocation.getLocation(profile);
                 EffectLibIntegrator.getEffectManager().start(effect.effectClass(), effect.settings(), location, profile.getPlayer());
             } catch (final QuestRuntimeException exception) {
-                LOG.warn("Error while resolving a location of an EffectLib particle effect of type '" + effect.effectClass() + "'. Check that your location (variables) are correct. Error:", exception);
+                log.warn("Error while resolving a location of an EffectLib particle effect of type '" + effect.effectClass() + "'. Check that your location (variables) are correct. Error:", exception);
             }
         }
     }

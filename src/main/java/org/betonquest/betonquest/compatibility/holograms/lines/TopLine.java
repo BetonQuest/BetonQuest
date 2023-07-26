@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.holograms.lines;
 
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 
 import java.util.Arrays;
@@ -38,14 +39,14 @@ public class TopLine extends AbstractLine {
      * @param colors    Color codes for individual parts of display (#, name, dash, and score)
      */
     @SuppressWarnings("PMD.UseVarargs")
-    public TopLine(final String category, final TopXObject.OrderType orderType, final int limit, final char[] colors) {
+    public TopLine(final BetonQuestLoggerFactory loggerFactory, final String category, final TopXObject.OrderType orderType, final int limit, final char[] colors) {
         super(false, limit);
         this.category = category;
         this.orderType = orderType;
         this.colors = colors.clone();
 
         topXObject = new TopXObject(
-                limit,
+                loggerFactory.create(TopXObject.class), limit,
                 category,
                 orderType);
     }

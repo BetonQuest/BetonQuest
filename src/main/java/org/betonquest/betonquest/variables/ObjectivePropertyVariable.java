@@ -2,9 +2,9 @@ package org.betonquest.betonquest.variables;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.Variable;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -15,11 +15,6 @@ import org.betonquest.betonquest.id.ObjectiveID;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class ObjectivePropertyVariable extends Variable {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
-
     private final String propertyName;
 
     private final ObjectiveID objective;
@@ -27,6 +22,7 @@ public class ObjectivePropertyVariable extends Variable {
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public ObjectivePropertyVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
+        final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(this.getClass());
 
         final String rawInstruction = instruction.getInstruction();
         final String[] parts = rawInstruction.split("\\.");
@@ -45,7 +41,7 @@ public class ObjectivePropertyVariable extends Variable {
         try {
             tempObjective = new ObjectiveID(instruction.getPackage(), objectiveID);
         } catch (final ObjectNotFoundException e) {
-            LOG.warn(instruction.getPackage(), "Error in objective property variable '" + instruction + "' " + e.getMessage());
+            log.warn(instruction.getPackage(), "Error in objective property variable '" + instruction + "' " + e.getMessage());
         }
         objective = tempObjective;
     }
