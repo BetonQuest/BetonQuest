@@ -37,108 +37,84 @@ These features were mainly made for BetonQuest, but are also very useful for 3rd
     Topics are supposed to give important log messages extra attention by making them stand out.
     The naming convention is to use _PascalCase_ for topics.
 
-## Obtaining a BetonQuestLogger Instance
+## Obtaining a BetonQuestLogger
 
-For testing proposes you always need to inject the `BetonQuestLogger` into your class when developing BetonQuest.
-We recommend you to do the same for your addon plugin. This can be done by adding a constructor parameter like this:
+You should always use dependency injection to provide a `BetonQuestLogger` instance to your class.
+This is a simple example:
 
-````java linenums="1"
-public final class MyAddonClass {
+
+```java linenums="1"
+public class MyAddon extends JavaPlugin {
+
+    private BetonQuestLoggerFactory loggerFactory;
+
+    @Override
+    public void onEnable() { //(2)!
+        loggerFactory = Bukkit.getServicesManager().load(BetonQuestLoggerFactory.class); //(1)!
+        new MyFeature(loggerFactory.create(MyFeature.class));
+    }
+}
+```
+
+1. Make sure [BetonQuest is loaded](./Overview.md#ensuring-that-betonquest-is-loaded) before using this code!
+2. The earliest point to obtain a `BetonQuestLoggerFactory` is in the `onEnable()` method of your plugin.
+
+```java linenums="1"
+public class MyFeature {
 
     private final BetonQuestLogger log;
 
-    public MyAddonClass(final BetonQuestLogger log) {
+    public MyFeature(final BetonQuestLogger log) {
         this.log = log;
     }
 }
-````
+```
 
-Now you need an `BetonQuestLogger` instance to inject into your class.
 
-First check if a logger factory or a logger is already present in the current context. If your design is clean,
-this should be the case. One should always initialize the logger in the 
-main class and pass it to the other classes. 
 
-!!! note ""
-    === "For Addons: Using the ServiceManager"
-        This is the recommended way to obtain a BetonQuestLoggerFactory instance. Simply add this in your `onEnable()` method:        
-        ````java linenums="1"
-        final BetonQuestLoggerFactory loggerFactory = Bukkit.getServicesManager().load(BetonQuestLoggerFactory.class);
-        ````
-        
-        This will only return a BetonQuestLoggerFactory instance if BetonQuest is already loaded and should normally be called in the `onEnable` method.
-        Otherwise it will return `null`.
-        
-    === "For internal development: Legacy classes"
-        If you are working on a legacy class that requires a `BetonQuestLogger` and exists in an architecture that has not
-        been migrated to pass the `BetonQuestLoggerFactory` around, you can obtain the `BetonQuestLoggerService` like so:
-        
-        ````java linenums="1"
-        final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
-        ````
-        `BetonQuest.getInstance()` will only return a BetonQuest instance if BetonQuest is already enabled
-        
-    ??? info "`BetonQuestLoggerFactory` additional background implementation information"
-        As the BetonQuestLoggerFactory is a service, it is not guaranteed that the instance you get
-        is the one BetonQuest created by default. But here we explain the behavior of the default BetonQuestLoggerFactory.
-        
-        First there is the `DefaultBetonQuestLoggerFactory` class,
-        which is the default implementation of the `BetonQuestLoggerFactory` interface.
-        It simply creates a child logger for the given class using the Logger of your plugin.
-        This is done by checking which plugin loaded the class.
-        
-        This default implementation is wrapped into the `CachingBetonQuestLoggerFactory`.
-        This class can be used to cache any implementation of the `BetonQuestLoggerFactory` interface.
-        It returns always the same instance for the same class.
-        There is one special behavior if the BetonQuestLogger is created with a topic. 
-        In that case the `CachingBetonQuestLoggerFactory` will create a new instance for each different topic,
-        but it will still cache the instances for the same topic or without a topic.
-    
- 
-Now that you have a `BetonQuestLoggerFactory` instance, you can create a `BetonQuestLogger` instance using one of the following methods:
+!!! warning "Getting the logger in a class that extends `Plugin`"
+    The methods described above don't work for your plugin's main class (or any other class that extends `Plugin`). 
+    Create the logger instance in the `onEnable()` method instead like this:
 
-!!! note ""
+    ```java linenums="1"
+    public class BetonQuestAddon extends JavaPlugin {
 
-    === "Without topic"
-        This is the default way to create a BetonQuestLogger instance.
-        
-        ````java linenums="1"
-        final BetonQuestLogger logger = loggerFactory.create(MyClass.class);
-        ````
+        private BetonQuestLoggerFactory loggerFactory; 
+        private BetonQuestLogger log;
+
+        @Override
+        public void onEnable() {
+            loggerFactory = Bukkit.getServicesManager().load(BetonQuestLoggerFactory.class);
+            log = BetonQuestLoggerFactory.create(this);
+        }
+    }
+    ```
+
+??? info "`BetonQuestLoggerFactory` additional background implementation information"
+    As the BetonQuestLoggerFactory is a service, it is not guaranteed that the instance you get
+    is the one BetonQuest created by default. But here we explain the behavior of the default BetonQuestLoggerFactory.
     
-    === "With topic"
-        This is useful if you want to give your log messages a prefix like `(Database)`.
-        Mainly _PascalCase_ should be used for topics and they should be short and meaningful to the user. 
-        
-        ````java linenums="1"
-        final BetonQuestLogger logger = loggerFactory.create(MyClass.class, "MyCustomTopic");
-        ````
+    First there is the `DefaultBetonQuestLoggerFactory` class,
+    which is the default implementation of the `BetonQuestLoggerFactory` interface.
+    It simply creates a child logger for the given class using the Logger of your plugin.
+    This is done by checking which plugin loaded the class.
     
-    !!! warning "Getting the logger in a class that extends `Plugin`"
-        The methods described above don't work for your plugin's main class (or any other class that extends `Plugin`). 
-        Create the logger instance in the `onEnable()` method instead like this:
+    This default implementation is wrapped into the `CachingBetonQuestLoggerFactory`.
+    This class can be used to cache any implementation of the `BetonQuestLoggerFactory` interface.
+    It returns always the same instance for the same class.
+    There is one special behavior if the BetonQuestLogger is created with a topic. 
+    In that case the `CachingBetonQuestLoggerFactory` will create a new instance for each different topic,
+    but it will still cache the instances for the same topic or without a topic.
     
-        === "Without topic"
-            ````java linenums="1"
-            public final class BetonQuestAddon extends JavaPlugin {
-        
-                private static BetonQuestLogger log;
-        
-                @Override
-                public void onEnable() {
-                    log = BetonQuestLogger.create(this);
-            ````
-    
-        === "With topic"
-            ````java linenums="1"
-            public final class BetonQuestAddon extends JavaPlugin {
-        
-                private static BetonQuestLogger log;
-        
-                @Override
-                public void onEnable() {
-                    log = BetonQuestLogger.create(this, "MyCustomTopic");
-            ````
+## Logging with Topics
+
+
+This is useful if you want to give your log messages a prefix like `(Database)`.
+Mainly _PascalCase_ should be used for topics and they should be short and meaningful to the user. 
+
+```java linenums="1"
+final BetonQuestLogger logger = loggerFactory.create(MyClass.class, "MyCustomTopic");
+```
 
 ## Using the BetonQuestLogger
 A BetonQuestLogger will be available as the variable `log` once you [obtained a BetonQuestLogger instance](#obtaining-a-betonquestlogger-instance). 
@@ -152,8 +128,8 @@ log.info("Hello Log!");
 
 ### Method Overview
 
-All methods come in multiple variants. Always provide a package if possible, as this makes it possible to filter the log
-message.
+All methods come in multiple variants. Always provide a package if possible, as this allows the user to filter log
+messages.
  
 
 | Name                              | Use Case                                                                                                                                                   | Example                                                                                             |
