@@ -66,7 +66,7 @@ main class and pass it to the other classes.
         final BetonQuestLoggerFactory loggerFactory = Bukkit.getServicesManager().load(BetonQuestLoggerFactory.class);
         ````
         
-        This will only return a BetonQuestLoggerFactory instance if BetonQuest is installed and already loaded.
+        This will only return a BetonQuestLoggerFactory instance if BetonQuest is already loaded and should normally be called in the `onEnable` method.
         Otherwise it will return `null`.
         
     === "For internal development: Legacy classes"
