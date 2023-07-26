@@ -24,24 +24,24 @@ class SingletonLoggerFactoryTest {
     @Test
     void same_instance_on_create_with_Class() {
         final BetonQuestLogger betonQuestLogger = factory.create(SingletonLoggerFactoryTest.class);
-        assertEquals(logger, betonQuestLogger, "Logger should be the same instance");
+        assertSame(logger, betonQuestLogger, "Logger should be the same instance");
     }
 
     @Test
     void same_instance_on_create_with_Class_and_Topic() {
         final BetonQuestLogger betonQuestLogger = factory.create(SingletonLoggerFactoryTest.class, "topic");
-        assertEquals(logger, betonQuestLogger, "Logger should be the same instance");
+        assertSame(logger, betonQuestLogger, "Logger should be the same instance");
     }
 
     @Test
     void same_instance_on_create_with_Plugin() {
         final BetonQuestLogger betonQuestLogger = factory.create(mock(org.bukkit.plugin.Plugin.class));
-        assertEquals(logger, betonQuestLogger, "Logger should be the same instance");
+        assertSame(logger, betonQuestLogger, "Logger should be the same instance");
     }
 
     @Test
     void same_instance_on_create_with_Plugin_and_Topic() {
         final BetonQuestLogger betonQuestLogger = factory.create(mock(org.bukkit.plugin.Plugin.class), "topic");
-        assertEquals(logger, betonQuestLogger, "Logger should be the same instance");
+        assertSame(logger, betonQuestLogger, "Logger should be the same instance");
     }
 }
