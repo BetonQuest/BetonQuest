@@ -1,7 +1,5 @@
-package org.betonquest.betonquest.modules.logger.util;
+package org.betonquest.betonquest.api.logger;
 
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
