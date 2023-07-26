@@ -76,7 +76,7 @@ main class and pass it to the other classes.
         ````java linenums="1"
         final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
         ````
-        `BetonQuest.getInstance()` will return `null` if BetonQuest is not installed or not loaded yet.
+        `BetonQuest.getInstance()` will only return a BetonQuest instance if BetonQuest is already enabled
         
     ??? info "`BetonQuestLoggerFactory` additional background implementation information"
         As the BetonQuestLoggerFactory is a service, it is not guaranteed that the instance you get
