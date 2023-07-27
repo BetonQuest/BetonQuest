@@ -122,7 +122,7 @@ public class VariableNumber {
     private double resolveVariable(final Profile profile) {
         if (variable == null) {
             return number;
-        } else if (profile == null) {
+        } else if (profile == null && !variable.isStaticness()) {
             return 0;
         } else {
             final String resolved = variable.getValue(profile);

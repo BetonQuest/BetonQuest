@@ -210,6 +210,7 @@ import org.betonquest.betonquest.quest.event.conversation.ConversationEventFacto
 import org.betonquest.betonquest.quest.event.damage.DamageEvent;
 import org.betonquest.betonquest.quest.event.damage.DamageEventFactory;
 import org.betonquest.betonquest.quest.event.door.DoorEventFactory;
+import org.betonquest.betonquest.quest.event.drop.DropEventFactory;
 import org.betonquest.betonquest.quest.event.effect.DeleteEffectEvent;
 import org.betonquest.betonquest.quest.event.effect.DeleteEffectEventFactory;
 import org.betonquest.betonquest.quest.event.effect.EffectEvent;
@@ -927,6 +928,7 @@ public class BetonQuest extends JavaPlugin {
         registerNonStaticEvent("hunger", new HungerEventFactory(loggerFactory.create(HungerEventFactory.class), getServer(), getServer().getScheduler(), this));
         registerNonStaticEvent("cancelconversation", new CancelConversationEventFactory(loggerFactory.create(CancelConversationEvent.class)));
         registerEvent("deleteglobalpoint", new DeleteGlobalPointEventFactory());
+        registerEvent("drop", new DropEventFactory(getServer(), getServer().getScheduler(), this));
 
         registerObjectives("location", LocationObjective.class);
         registerObjectives("block", BlockObjective.class);

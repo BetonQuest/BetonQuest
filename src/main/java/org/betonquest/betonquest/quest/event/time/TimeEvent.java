@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.time;
 
-import org.betonquest.betonquest.api.common.worldselector.WorldSelector;
+import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -18,7 +18,7 @@ public class TimeEvent implements Event {
     /**
      * The selector to get the world for that the time should be set.
      */
-    private final WorldSelector worldSelector;
+    private final Selector<World> worldSelector;
 
     /**
      * The raw time value that will be applied.
@@ -26,13 +26,13 @@ public class TimeEvent implements Event {
     private final long rawTime;
 
     /**
-     * Create the time event.
+     * Creates the time event.
      *
      * @param time          the time type to set
      * @param rawTime       the raw time value to set
      * @param worldSelector to get the world that should be affected
      */
-    public TimeEvent(final Time time, final long rawTime, final WorldSelector worldSelector) {
+    public TimeEvent(final Time time, final long rawTime, final Selector<World> worldSelector) {
         this.time = time;
         this.rawTime = rawTime;
         this.worldSelector = worldSelector;
@@ -40,7 +40,7 @@ public class TimeEvent implements Event {
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
-        final World world = worldSelector.getWorld(profile);
+        final World world = worldSelector.selectFor(profile);
         world.setTime(time.applyTo(world, rawTime));
     }
 }

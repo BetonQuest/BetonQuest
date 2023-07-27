@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.event.time;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.common.worldselector.ConstantWorldSelector;
-import org.betonquest.betonquest.api.common.worldselector.PlayerWorldSelector;
-import org.betonquest.betonquest.api.common.worldselector.WorldSelector;
+import org.betonquest.betonquest.api.common.function.ConstantSelector;
+import org.betonquest.betonquest.api.common.function.Selector;
+import org.betonquest.betonquest.api.common.function.Selectors;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
@@ -14,6 +14,7 @@ import org.betonquest.betonquest.quest.event.NullStaticEventAdapter;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.bukkit.Server;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +39,7 @@ public class TimeEventFactory implements EventFactory, StaticEventFactory {
     private final Plugin plugin;
 
     /**
-     * Create the time event factory.
+     * Creates the time event factory.
      *
      * @param server    server to use
      * @param scheduler scheduler to use
@@ -55,7 +56,7 @@ public class TimeEventFactory implements EventFactory, StaticEventFactory {
         final String timeString = instruction.next();
         final Time time = parseTimeType(timeString);
         final long rawTime = parseTime(timeString);
-        final WorldSelector worldSelector = parseWorld(instruction.getOptional("world"));
+        final Selector<World> worldSelector = parseWorld(instruction.getOptional("world"));
         return new PrimaryServerThreadEvent(
                 new TimeEvent(time, rawTime, worldSelector),
                 server, scheduler, plugin);
@@ -86,12 +87,12 @@ public class TimeEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @NotNull
-    private WorldSelector parseWorld(final String worldName) {
+    private Selector<World> parseWorld(final String worldName) {
         if (worldName == null) {
-            return new PlayerWorldSelector();
+            return Selectors.fromPlayer(Player::getWorld);
         } else {
             final World world = server.getWorld(worldName);
-            return new ConstantWorldSelector(world);
+            return new ConstantSelector<>(world);
         }
     }
 }

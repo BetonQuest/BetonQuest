@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.event.weather;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.common.worldselector.ConstantWorldSelector;
-import org.betonquest.betonquest.api.common.worldselector.PlayerWorldSelector;
-import org.betonquest.betonquest.api.common.worldselector.WorldSelector;
+import org.betonquest.betonquest.api.common.function.ConstantSelector;
+import org.betonquest.betonquest.api.common.function.Selector;
+import org.betonquest.betonquest.api.common.function.Selectors;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -16,6 +16,7 @@ import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.bukkit.Server;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
@@ -47,8 +48,9 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
     private final Plugin plugin;
 
     /**
-     * Create the weather event factory.
+     * Creates the weather event factory.
      *
+     * @param log       logger to use
      * @param server    server to use
      * @param scheduler scheduler to use
      * @param plugin    plugin to use
@@ -63,7 +65,7 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final Weather weather = parseWeather(instruction.next());
-        final WorldSelector worldSelector = parseWorld(instruction.getOptional("world"));
+        final Selector<World> worldSelector = parseWorld(instruction.getOptional("world"));
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
                         log, new WeatherEvent(weather, worldSelector), instruction.getPackage()),
@@ -91,12 +93,12 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @NotNull
-    private WorldSelector parseWorld(final String worldName) {
+    private Selector<World> parseWorld(final String worldName) {
         if (worldName == null) {
-            return new PlayerWorldSelector();
+            return Selectors.fromPlayer(Player::getWorld);
         } else {
             final World world = server.getWorld(worldName);
-            return new ConstantWorldSelector(world);
+            return new ConstantSelector<>(world);
         }
     }
 }

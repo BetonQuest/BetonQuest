@@ -132,6 +132,16 @@ public class Instruction {
     }
 
     /**
+     * Gets an optional key:value instruction argument or null if the key is not present.
+     *
+     * @param prefix the prefix of the optional value without ":"
+     * @return the value or null
+     */
+    public String getOptional(final String prefix) {
+        return getOptional(prefix, null);
+    }
+
+    /**
      * Gets an optional value or the default value if value is not present.
      *
      * @param prefix        the prefix of the optional value
@@ -139,25 +149,7 @@ public class Instruction {
      * @return the value or the default value
      */
     public String getOptional(final String prefix, final String defaultString) {
-        final String optionalValue = getOptional(prefix);
-        return optionalValue == null ? defaultString : optionalValue;
-    }
-
-    /**
-     * Gets an optional key:value instruction argument or null if the key is not present.
-     *
-     * @param prefix the prefix of the optional value without ":"
-     * @return the value or null
-     */
-    public String getOptional(final String prefix) {
-        for (final String part : parts) {
-            if (part.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT) + ":")) {
-                lastOptional = prefix;
-                currentIndex = -1;
-                return part.substring(prefix.length() + 1);
-            }
-        }
-        return null;
+        return getOptionalArgument(prefix).orElse(defaultString);
     }
 
     /**
@@ -192,6 +184,21 @@ public class Instruction {
 
     public CompoundLocation getLocation() throws InstructionParseException {
         return getLocation(next());
+    }
+
+    /**
+     * Gets a location from an (optional) argument.
+     *
+     * @param prefix argument prefix
+     * @return the location if it was defined in the instruction
+     * @throws InstructionParseException if the location format is invalid
+     */
+    public Optional<CompoundLocation> getLocationArgument(final String prefix) throws InstructionParseException {
+        final Optional<String> argument = getOptionalArgument(prefix);
+        if (argument.isPresent()) {
+            return Optional.of(getLocation(argument.get()));
+        }
+        return Optional.empty();
     }
 
     public CompoundLocation getLocation(final String string) throws InstructionParseException {
@@ -237,6 +244,18 @@ public class Instruction {
 
     public Item[] getItemList() throws InstructionParseException {
         return getItemList(next());
+    }
+
+    /**
+     * Gets a list of items from an (optional) argument.
+     * If the argument is not given then an empty list will be returned.
+     *
+     * @param prefix argument prefix
+     * @return array of items given; or empty list if there is no such argument
+     * @throws InstructionParseException if the item definitions contain errors
+     */
+    public Item[] getItemListArgument(final String prefix) throws InstructionParseException {
+        return getItemList(getOptionalArgument(prefix).orElse(null));
     }
 
     public Item[] getItemList(final String string) throws InstructionParseException {
