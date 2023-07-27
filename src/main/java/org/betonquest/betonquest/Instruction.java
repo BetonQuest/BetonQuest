@@ -187,7 +187,7 @@ public class Instruction {
     }
 
     /**
-     * Get a location from an (optional) argument.
+     * Gets a location from an (optional) argument.
      *
      * @param prefix argument prefix
      * @return the location if it was defined in the instruction
@@ -247,7 +247,7 @@ public class Instruction {
     }
 
     /**
-     * Get a list of items from an (optional) argument.
+     * Gets a list of items from an (optional) argument.
      * If the argument is not given then an empty list will be returned.
      *
      * @param prefix argument prefix

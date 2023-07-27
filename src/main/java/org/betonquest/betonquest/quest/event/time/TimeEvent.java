@@ -26,7 +26,7 @@ public class TimeEvent implements Event {
     private final long rawTime;
 
     /**
-     * Create the time event.
+     * Creates the time event.
      *
      * @param time          the time type to set
      * @param rawTime       the raw time value to set

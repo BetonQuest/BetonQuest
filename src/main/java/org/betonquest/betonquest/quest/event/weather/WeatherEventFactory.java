@@ -48,7 +48,7 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
     private final Plugin plugin;
 
     /**
-     * Create the weather event factory.
+     * Creates the weather event factory.
      *
      * @param log       logger to use
      * @param server    server to use

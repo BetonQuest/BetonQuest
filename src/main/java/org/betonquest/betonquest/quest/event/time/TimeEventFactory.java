@@ -39,7 +39,7 @@ public class TimeEventFactory implements EventFactory, StaticEventFactory {
     private final Plugin plugin;
 
     /**
-     * Create the time event factory.
+     * Creates the time event factory.
      *
      * @param server    server to use
      * @param scheduler scheduler to use

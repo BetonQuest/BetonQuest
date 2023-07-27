@@ -22,7 +22,7 @@ public class WeatherEvent implements Event {
     private final Selector<World> worldSelector;
 
     /**
-     * Create the weather event to set the given state.
+     * Creates the weather event to set the given state.
      *
      * @param weather       the weather to set
      * @param worldSelector to get the world that should be affected
