@@ -486,6 +486,10 @@
       <url>https://mvn.lumine.io/repository/maven-public/</url>
     </repository>
     <repository>
+      <id>betonquest-phoenixdevelopment-repo</id>
+      <url>https://nexus.phoenixdevt.fr/repository/maven-public/</url>
+    </repository>
+    <repository>
       <id>betonquest-citizensnpcs-repo</id>
       <url>https://maven.citizensnpcs.co/repo</url>
     </repository>
