@@ -132,7 +132,7 @@ Keep that in mind when creating sounds close to a player. They can move around t
 | soundcategory     | The [category](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/SoundCategory.html) in which the sound will be played.                                  |
 | soundvolume       | Minecraft's [special sound volume](https://minecraft.gamepedia.com/Commands/playsound#Arguments). Default: _1_                                             |
 | soundpitch        | Pitch of the sound. Default: _1_ Min: _0_ Max: _2_                                                                                                         |
-| soundlocation     | Default: The player's location. A location using the BetonQuest [ULF](../../Scripting/Data-Formats#unified-location-formating). Can include variables.     |
+| soundlocation     | Default: The player's location. A location using the BetonQuest [ULF](../../Scripting/Data-Formats.md#unified-location-formating). Can include variables.  |
 | soundplayeroffset | This option is special. See below.                                                                                                                         |
 
 <h3>soundplayeroffset:</h3>
