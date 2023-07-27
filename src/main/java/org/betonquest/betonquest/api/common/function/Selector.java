@@ -10,7 +10,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
  */
 public interface Selector<T> {
     /**
-     * Get the target that should be used for the given profile.
+     * Gets the target that should be used for the given profile.
      *
      * @param profile profile to get the target for
      * @return the appropriate target to use

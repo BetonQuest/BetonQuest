@@ -23,7 +23,7 @@ public class DropEvent implements Event {
     private final Selector<Location> locationSelector;
 
     /**
-     * Create an event that drops the given items at a location selected by the given selector.
+     * Creates an event that drops the given items at a location selected by the given selector.
      *
      * @param items items to be dropped
      * @param locationSelector selector for the drop location

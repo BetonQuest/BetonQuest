@@ -14,7 +14,7 @@ public class ConstantSelector<T> implements Selector<T> {
     private final T target;
 
     /**
-     * Create a selector that will always select the provided target.
+     * Creates a selector that will always select the provided target.
      *
      * @param target target to be selected
      */

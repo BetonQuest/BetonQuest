@@ -15,7 +15,7 @@ public final class Selectors {
     }
 
     /**
-     * Create a selector that will select the target by calling the given function with the offline player.
+     * Creates a selector that will select the target by calling the given function with the offline player.
      *
      * @param <T> type of the target to be selected
      * @param offlinePlayerToTarget function for obtaining the target from an offline player
@@ -26,7 +26,7 @@ public final class Selectors {
     }
 
     /**
-     * Create a selector that will select the target by calling the given function with the online profile
+     * Creates a selector that will select the target by calling the given function with the online profile
      * or fail with a {@link QuestRuntimeException} if the player is not online.
      *
      * @param <T> type of the target to be selected
@@ -40,7 +40,7 @@ public final class Selectors {
     }
 
     /**
-     * Create a selector that will select the target by calling the given function with the player
+     * Creates a selector that will select the target by calling the given function with the player
      * or fail with a {@link QuestRuntimeException} if the player is not online.
      *
      * @param <T> type of the target to be selected

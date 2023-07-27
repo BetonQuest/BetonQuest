@@ -39,7 +39,7 @@ public class DropEventFactory implements EventFactory, StaticEventFactory {
     private final Plugin plugin;
 
     /**
-     * Create the drop event factory.
+     * Creates the drop event factory.
      *
      * @param server server to use
      * @param scheduler scheduler to use
