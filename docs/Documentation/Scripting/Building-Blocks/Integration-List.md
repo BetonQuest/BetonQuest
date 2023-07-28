@@ -1085,13 +1085,23 @@ events:
 
 **persistent**, **static**
 
-This event will paste a schematic at the given location. The first argument is a location and the second one is the name of schematic file. The file must be located in `WorldEdit/schematics` or `FastAsyncWorldEdit/schematics` and have a name like `some_building.schematic`. An optional `noair` can be added to paste ignoring air blocks.
-If you have only a `.schem` schematic, simply append `.schem` to the schematic name.
+This event will paste a schematic at the given location.
+The first argument is a location and the second one is the name of a schematic file.
+The file must be located in `WorldEdit/schematics` or `FastAsyncWorldEdit/schematics` and must have a name like
+`some_building.{++schematic++}`. If WorldEdit saves `.schem` schematic files, simply append `.schem` to the
+schematic name in the event's instruction.
+
+The optional `noair` keyword can be added to ignore air blocks while pasting.
+
 
 ```YAML title="Example"
 events:
-  pasteCastle: "paste 100;200;300;world castle noair"
+  pasteCastle: "paste 100;200;300;world castle noair" #(1)!
+  pasteTree: "paste 100;200;300;world tree.schem noair" #(2)!
 ```
+
+1. Pastes the schematic file `castle.{++schematic++}` at the location `100;200;300;world`.
+2. Pastes the schematic file `tree.{++schem++}` at the location `100;200;300;world`.
 
 ## WorldGuard[](http://dev.bukkit.org/bukkit-plugins/worldguard/)
 

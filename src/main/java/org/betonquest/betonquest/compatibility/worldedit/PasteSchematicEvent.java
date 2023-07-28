@@ -83,7 +83,8 @@ public class PasteSchematicEvent extends QuestEvent {
             }
 
             final Location location = loc.getLocation(profile);
-            try (EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(BukkitAdapter.adapt(location.getWorld()), -1)) {
+
+            try (EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder().maxBlocks(-1).world(BukkitAdapter.adapt(location.getWorld())).build()) {
                 final Operation operation = new ClipboardHolder(clipboard)
                         .createPaste(editSession)
                         .to(BukkitAdapter.asBlockVector(location))
