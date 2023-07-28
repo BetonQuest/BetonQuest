@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.config.transformers;
+package org.betonquest.betonquest.modules.config.patcher.transformers;
 
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;

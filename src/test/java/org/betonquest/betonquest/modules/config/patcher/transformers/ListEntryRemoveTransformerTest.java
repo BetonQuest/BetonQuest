@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.config.transformers;
+package org.betonquest.betonquest.modules.config.patcher.transformers;
 
 import org.betonquest.betonquest.api.config.patcher.PatchException;
 import org.junit.jupiter.api.Test;

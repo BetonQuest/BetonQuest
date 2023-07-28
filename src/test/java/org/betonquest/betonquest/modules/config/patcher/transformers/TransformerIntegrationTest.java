@@ -1,7 +1,9 @@
-package org.betonquest.betonquest.modules.config.transformers;
+package org.betonquest.betonquest.modules.config.patcher.transformers;
 
 import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegisterer;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.modules.config.Patcher;
+import org.betonquest.betonquest.modules.config.patcher.DefaultPatchTransformerRegisterer;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 /**
  * This test tests all config transformers.
@@ -24,7 +27,7 @@ class TransformerIntegrationTest extends TransformersFixture {
     /**
      * Anonymous {@link PatchTransformerRegisterer} for testing.
      */
-    public final PatchTransformerRegisterer REGISTERER = new PatchTransformerRegisterer() {
+    public final PatchTransformerRegisterer registerer = new DefaultPatchTransformerRegisterer() {
     };
 
     private void assertAfterPatch(final String patch) throws InvalidConfigurationException, IOException {
@@ -36,14 +39,15 @@ class TransformerIntegrationTest extends TransformersFixture {
 
         CONFIG.set("configVersion", "2.0.0-CONFIG-1");
 
-        final Patcher patcher = new Patcher(questConfig, patchConfig);
-        REGISTERER.registerTransformers(patcher);
+        final Patcher patcher = new Patcher(mock(BetonQuestLogger.class), questConfig, patchConfig);
+        registerer.registerTransformers(patcher);
         patcher.patch();
 
         assertEquals(CONFIG.saveToString(), questConfig.saveToString(), "Patch was not applied correctly.");
     }
 
     @Nested
+    @SuppressWarnings("PMD.ShortClassName")
     class Type {
         @Test
         void flawless_String_to_Boolean() throws InvalidConfigurationException, IOException {
@@ -134,6 +138,7 @@ class TransformerIntegrationTest extends TransformersFixture {
     }
 
     @Nested
+    @SuppressWarnings("PMD.ShortClassName")
     class Set {
         @Test
         void flawless() throws InvalidConfigurationException, IOException {
