@@ -4,12 +4,10 @@ import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegisterer;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.modules.config.Patcher;
 import org.betonquest.betonquest.modules.config.patcher.DefaultPatchTransformerRegisterer;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,7 +19,6 @@ import static org.mockito.Mockito.*;
 /**
  * This test tests all config transformers.
  */
-@ExtendWith(BetonQuestLoggerService.class)
 class TransformerIntegrationTest extends TransformersFixture {
 
     /**
