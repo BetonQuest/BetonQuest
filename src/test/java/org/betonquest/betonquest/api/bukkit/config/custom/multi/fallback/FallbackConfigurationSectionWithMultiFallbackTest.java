@@ -4,10 +4,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfi
 import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfigurationSectionTest;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Tag;
-
-import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class FallbackConfigurationSectionWithMultiFallbackTest extends FallbackConfigurationSectionTest {
     @Override
     public ConfigurationSection getConfig() {
-        final Configuration original = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/fallback/original.yml"));
-        fallback = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/fallback/fallback.yml"));
+        final Configuration original = setupOriginal();
+        fallback = setupFallback();
 
         final Configuration defaults = super.getDefaultConfig().getDefaults();
         assertNotNull(defaults);

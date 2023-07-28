@@ -1,31 +1,20 @@
 package org.betonquest.betonquest.api.bukkit.config.util;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.Server;
-import org.bukkit.UnsafeValues;
 import org.bukkit.World;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.mockito.MockedStatic;
 
-import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Logger;
 
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -37,9 +26,14 @@ import static org.mockito.Mockito.*;
  */
 public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
     /**
-     * The static mock of {@link ItemStack}
+     * The mocked {@link World} instance for testing
      */
-    private static MockedStatic<ItemStack> itemStackMockedStatic;
+    protected final World world = mock(World.class, "ValidWorld");
+
+    /**
+     * The mocked invalid {@link World} instance for testing
+     */
+    protected final World worldInvalid = mock(World.class, "InvalidWorld");
 
     /**
      * The {@link T} instance for testing
@@ -50,62 +44,6 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
      * Empty constructor
      */
     public AbstractConfigBaseTest() {
-    }
-
-    /**
-     * Mock static things and {@link World}s {@link ItemStack}s and {@link OfflinePlayer}s
-     */
-    @BeforeAll
-    public static void beforeAll() {
-        ConfigurationSerialization.registerClass(TestObject.class);
-        ConfigurationSerialization.registerClass(FakeOfflinePlayer.class, "org.bukkit.craftbukkit.CraftOfflinePlayer");
-
-        itemStackMockedStatic = mockStatic(ItemStack.class);
-
-        final Server serverMock = mock(Server.class);
-        when(serverMock.getLogger()).thenReturn(mock(Logger.class));
-        Bukkit.setServer(serverMock);
-
-        mockWorlds(serverMock);
-        mockItems(serverMock);
-        mockOfflinePlayer(serverMock);
-    }
-
-    private static void mockWorlds(final Server serverMock) {
-        final World world = mock(World.class);
-        final World worldInvalid = mock(World.class);
-
-        when(serverMock.getWorld("Test")).thenReturn(world);
-        when(serverMock.getWorld("TestInvalid")).thenReturn(worldInvalid);
-    }
-
-    @SuppressWarnings("deprecation")
-    private static void mockItems(final Server serverMock) {
-        final UnsafeValues values = mock(UnsafeValues.class);
-        when(values.getMaterial(eq("BONE"), anyInt())).thenReturn(Material.BONE);
-        when(serverMock.getUnsafe()).thenReturn(values);
-        final ItemFactory itemFactory = mock(ItemFactory.class);
-        when(itemFactory.ensureServerConversions(any())).thenAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
-        when(itemFactory.equals(any(), any())).thenReturn(true);
-        when(serverMock.getItemFactory()).thenReturn(itemFactory);
-
-        itemStackMockedStatic.when(() -> ItemStack.deserialize(anyMap())).thenReturn(new ItemStack(Material.BONE, 42));
-    }
-
-    private static void mockOfflinePlayer(final Server serverMock) {
-        when(serverMock.getOfflinePlayer(any(UUID.class))).thenAnswer(invocationOnMock -> {
-            final OfflinePlayer offlinePlayer = mock(OfflinePlayer.class);
-            when(offlinePlayer.getUniqueId()).thenReturn(invocationOnMock.getArgument(0));
-            return offlinePlayer;
-        });
-    }
-
-    /**
-     * Close the static mocks
-     */
-    @AfterAll
-    public static void afterAll() {
-        itemStackMockedStatic.close();
     }
 
     /**
@@ -121,11 +59,80 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
      * @return The {@link Configuration}
      */
     public final Configuration getDefaultConfig() {
-        final Configuration config = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/config.yml"));
+        final Configuration config = setupConfig();
         final Configuration defaultSection = new MemoryConfiguration();
         defaultSection.set("default.key", "value");
         config.setDefaults(defaultSection);
         return config;
+    }
+
+    private Configuration setupConfig() {
+        return new YamlConfigurationBuilder()
+                .setupChildSection()
+                .setupGet()
+                .setupExistingSet()
+                .setupString()
+                .setupInteger()
+                .setupBoolean()
+                .setupDouble()
+                .setupLong()
+                .setupList()
+                .setupStringList()
+                .setupIntegerList()
+                .setupBooleanList()
+                .setupDoubleList()
+                .setupCharacterList()
+                .setupMapList()
+                .setupObject()
+                .setupVector()
+                .setupColor()
+                .setupSection()
+                .setupLocation(world)
+                .setupItem()
+                .setupOfflinePlayer(UUID.fromString("eba17d33-959d-42a7-a4d9-e9aebef5969e"))
+                .build();
+    }
+
+    /**
+     * Setup the original configuration.
+     *
+     * @return The original configuration.
+     */
+    protected Configuration setupOriginal() {
+        return new YamlConfigurationBuilder()
+                .setupChildSection()
+                .setupString()
+                .setupDouble()
+                .setupStringList()
+                .setupDoubleList()
+                .setupObject()
+                .setupSection()
+                .setupOfflinePlayer(UUID.fromString("eba17d33-959d-42a7-a4d9-e9aebef5969e"))
+                .setupExistingSet()
+                .build();
+    }
+
+    /**
+     * Setup the fallback configuration.
+     *
+     * @return The fallback configuration.
+     */
+    protected Configuration setupFallback() {
+        return new YamlConfigurationBuilder()
+                .setupGet()
+                .setupInteger()
+                .setupLong()
+                .setupIntegerList()
+                .setupCharacterList()
+                .setupVector()
+                .setupLocation(world)
+                .setupBoolean()
+                .setupList()
+                .setupBooleanList()
+                .setupMapList()
+                .setupColor()
+                .setupItem()
+                .build();
     }
 
     /**

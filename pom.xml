@@ -932,8 +932,7 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>3.0.0</version>
           <configuration>
-            <reuseForks>false</reuseForks>
-            <forkCount>0.5C</forkCount>
+            <parallel>all</parallel>
             <groups>none()${Test-All}${Test-ConfigurationSection}</groups>
           </configuration>
         </plugin>

@@ -3,10 +3,7 @@ package org.betonquest.betonquest.api.bukkit.config.custom.fallback;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Tag;
-
-import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,8 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class FallbackConfigurationNestedTest extends FallbackConfigurationTest {
     @Override
     public Configuration getConfig() {
-        final Configuration original = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/fallback/original.yml"));
-        fallback = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/fallback/fallback.yml"));
+        final Configuration original = setupOriginal();
+        fallback = setupFallback();
 
         final Configuration defaults = super.getDefaultConfig().getDefaults();
         assertNotNull(defaults);
