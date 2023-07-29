@@ -816,6 +816,7 @@
           <avoidCallsTo>
             <avoidCallsTo>org.betonquest.betonquest.api.logger.BetonQuestLogger</avoidCallsTo>
           </avoidCallsTo>
+          <includedGroups>none() | any()</includedGroups>
         </configuration>
       </plugin>
     </plugins>
