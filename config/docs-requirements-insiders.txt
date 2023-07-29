@@ -1,5 +1,5 @@
 #MkDocs and the MkDocs-material theme
-git+https://${MKDOCS_MATERIAL_INSIDERS}@github.com/squidfunk/mkdocs-material-insiders.git@9.1.18-insiders-4.37.0
+git+https://${MKDOCS_MATERIAL_INSIDERS}@github.com/squidfunk/mkdocs-material-insiders.git@9.1.21-insiders-4.37.1
 
 mkdocs-snippets
 

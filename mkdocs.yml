@@ -43,6 +43,8 @@ theme:
     - search.suggest
     - content.tooltips
     - toc.follow
+    - navigation.instant
+
   palette:
     - scheme: slate
       primary: indigo
