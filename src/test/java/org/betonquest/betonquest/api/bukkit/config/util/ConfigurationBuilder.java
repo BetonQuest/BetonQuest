@@ -200,7 +200,7 @@ public class ConfigurationBuilder {
     }
 
     /**
-     * Sets up a "Object" for testing.
+     * Sets up an "Object" for testing.
      *
      * @return The {@link ConfigurationBuilder} for chaining
      */
@@ -251,7 +251,7 @@ public class ConfigurationBuilder {
     }
 
     /**
-     * Sets up a "Item" for testing.
+     * Sets up an "Item" for testing.
      *
      * @return The {@link ConfigurationBuilder} for chaining
      */

@@ -829,8 +829,10 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
 
     @Test
     @Override
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testGetItemStack() {
         final ItemStack configItem = config.getItemStack("item");
+        assertNotNull(configItem);
         assertEquals(Material.BONE, configItem.getType());
         assertEquals(42, configItem.getAmount());
     }
@@ -843,9 +845,11 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
 
     @Test
     @Override
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testGetItemStackWithDefault() {
         final ItemStack itemDefault = mock(ItemStack.class);
         final ItemStack configItem = config.getItemStack("item", itemDefault);
+        assertNotEquals(itemDefault, configItem);
         assertEquals(Material.BONE, configItem.getType());
         assertEquals(42, configItem.getAmount());
     }

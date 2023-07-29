@@ -92,7 +92,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
     }
 
     /**
-     * Setup the original configuration.
+     * Set up the original configuration.
      *
      * @return The original configuration.
      */
@@ -111,7 +111,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
     }
 
     /**
-     * Setup the fallback configuration.
+     * Set up the fallback configuration.
      *
      * @return The fallback configuration.
      */
@@ -133,6 +133,11 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
                 .build();
     }
 
+    /**
+     * Set up a part of the multi configuration.
+     *
+     * @return The part of the multi configuration.
+     */
     protected ConfigurationSection setupMultiConfig1() {
         return new ConfigurationBuilder()
                 .setupChildSection()
@@ -146,6 +151,11 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
                 .build();
     }
 
+    /**
+     * Set up a part of the multi configuration.
+     *
+     * @return The part of the multi configuration.
+     */
     protected ConfigurationSection setupMultiConfig2() {
         return new ConfigurationBuilder()
                 .setupGet()
@@ -158,6 +168,11 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
                 .build();
     }
 
+    /**
+     * Set up a part of the multi configuration.
+     *
+     * @return The part of the multi configuration.
+     */
     protected ConfigurationSection setupMultiConfig3() {
         return new ConfigurationBuilder()
                 .setupExistingSet()
