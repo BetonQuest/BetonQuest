@@ -1,0 +1,15 @@
+version: "1.0"
+linter: jetbrains/qodana-jvm-community:2023.1
+
+bootstrap: |
+  apt-get update
+  apt-get install git-lfs
+  git lfs install
+
+include:
+  - name: Deprecation
+  - name: DeprecatedIsStillUsed
+  - name: DanglingJavadoc
+  - name: JavadocLinkAsPlainText
+  - name: MissingJavadoc
+  - name: NullableProblems

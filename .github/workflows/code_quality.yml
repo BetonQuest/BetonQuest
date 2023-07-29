@@ -15,13 +15,13 @@ jobs:
       pull-requests: write
       checks: write
     steps:
-      - uses: nschloe/action-cached-lfs-checkout@v1 # explicitly checkout LFS aswell
+      - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}  # to check out the actual pull request commit, not the merge commit
           fetch-depth: 0  # a full history is required for pull request analysis
       - name: 'Qodana Scan'
         uses: JetBrains/qodana-action@v2023.2
         with:
-          args: --volume,.mvn/settings.xml:/root/.m2/settings.xml
+          args: -u,root --volume,/home/runner/work/BetonQuest/BetonQuest/.mvn:/root/.m2
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
