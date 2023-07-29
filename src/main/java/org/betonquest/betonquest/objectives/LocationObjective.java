@@ -64,12 +64,16 @@ public class LocationObjective extends Objective implements Listener {
     }
 
     private void checkLocation(final Location toLocation, final Profile profile) throws QuestRuntimeException {
+        if (!containsPlayer(profile)) {
+            return;
+        }
         final Location location = loc.getLocation(profile);
-        if (containsPlayer(profile) && toLocation.getWorld().equals(location.getWorld())) {
-            final double pRange = range.getDouble(profile);
-            if (toLocation.distanceSquared(location) <= pRange * pRange && super.checkConditions(profile)) {
-                completeObjective(profile);
-            }
+        if (!toLocation.getWorld().equals(location.getWorld())) {
+            return;
+        }
+        final double pRange = range.getDouble(profile);
+        if (toLocation.distanceSquared(location) <= pRange * pRange && super.checkConditions(profile)) {
+            completeObjective(profile);
         }
     }
 
