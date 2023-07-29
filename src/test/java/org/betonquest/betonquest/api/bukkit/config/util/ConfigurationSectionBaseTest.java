@@ -800,7 +800,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
     @Test
     @Override
     public void testGetOfflinePlayerWithDefault() {
-        final OfflinePlayer offlinePlayerDefault = YamlConfigurationBuilder.getMockedOfflinePlayer(UUID.fromString("5179617b-8418-4099-8773-37a4ac587dd8"));
+        final OfflinePlayer offlinePlayerDefault = ConfigurationBuilder.getMockedOfflinePlayer(UUID.fromString("5179617b-8418-4099-8773-37a4ac587dd8"));
         final OfflinePlayer player = config.getOfflinePlayer("offlinePlayer", offlinePlayerDefault);
         assertNotNull(player);
         assertEquals(UUID.fromString("eba17d33-959d-42a7-a4d9-e9aebef5969e"), player.getUniqueId());
@@ -809,7 +809,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
     @Test
     @Override
     public void testGetOfflinePlayerWithDefaultOnInvalidConfigPath() {
-        final OfflinePlayer offlinePlayerDefault = YamlConfigurationBuilder.getMockedOfflinePlayer(UUID.fromString("5179617b-8418-4099-8773-37a4ac587dd8"));
+        final OfflinePlayer offlinePlayerDefault = ConfigurationBuilder.getMockedOfflinePlayer(UUID.fromString("5179617b-8418-4099-8773-37a4ac587dd8"));
         final OfflinePlayer player = config.getOfflinePlayer("offlinePlayer_invalid", offlinePlayerDefault);
         assertNotNull(player);
         assertEquals(offlinePlayerDefault.getUniqueId(), player.getUniqueId());

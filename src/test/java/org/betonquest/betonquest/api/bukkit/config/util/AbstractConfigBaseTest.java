@@ -1,13 +1,11 @@
 package org.betonquest.betonquest.api.bukkit.config.util;
 
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -67,7 +65,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
     }
 
     private Configuration setupConfig() {
-        return new YamlConfigurationBuilder()
+        return new ConfigurationBuilder()
                 .setupChildSection()
                 .setupGet()
                 .setupExistingSet()
@@ -99,7 +97,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
      * @return The original configuration.
      */
     protected Configuration setupOriginal() {
-        return new YamlConfigurationBuilder()
+        return new ConfigurationBuilder()
                 .setupChildSection()
                 .setupString()
                 .setupDouble()
@@ -118,7 +116,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
      * @return The fallback configuration.
      */
     protected Configuration setupFallback() {
-        return new YamlConfigurationBuilder()
+        return new ConfigurationBuilder()
                 .setupGet()
                 .setupInteger()
                 .setupLong()
@@ -135,22 +133,41 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
                 .build();
     }
 
-    /**
-     * A fake {@link OfflinePlayer} that add a method for deserialization.
-     */
-    public interface FakeOfflinePlayer extends OfflinePlayer {
-        /**
-         * Method to deserialize a {@link OfflinePlayer}.
-         * This will call the {@link Bukkit#getOfflinePlayer(UUID)} method.
-         * Therefore, this is only for the method {@link ConfigurationSerialization#registerClass(Class, String)}.
-         *
-         * @param args The map of arguments
-         * @return The returned {@link OfflinePlayer} from {@link Bukkit#getOfflinePlayer(UUID)}
-         */
-        @SuppressWarnings("unused")
-        static OfflinePlayer deserialize(final Map<String, Object> args) {
-            return Bukkit.getOfflinePlayer(UUID.fromString((String) args.get("UUID")));
-        }
+    protected ConfigurationSection setupMultiConfig1() {
+        return new ConfigurationBuilder()
+                .setupChildSection()
+                .setupString()
+                .setupDouble()
+                .setupStringList()
+                .setupDoubleList()
+                .setupObject()
+                .setupSection()
+                .setupOfflinePlayer(UUID.fromString("eba17d33-959d-42a7-a4d9-e9aebef5969e"))
+                .build();
+    }
+
+    protected ConfigurationSection setupMultiConfig2() {
+        return new ConfigurationBuilder()
+                .setupGet()
+                .setupInteger()
+                .setupLong()
+                .setupIntegerList()
+                .setupCharacterList()
+                .setupVector()
+                .setupLocation(world)
+                .build();
+    }
+
+    protected ConfigurationSection setupMultiConfig3() {
+        return new ConfigurationBuilder()
+                .setupExistingSet()
+                .setupBoolean()
+                .setupList()
+                .setupBooleanList()
+                .setupMapList()
+                .setupColor()
+                .setupItem()
+                .build();
     }
 
     /**
