@@ -1,11 +1,14 @@
 package org.betonquest.betonquest.api.bukkit.config.custom.multi.fallback;
 
-import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfiguration;
 import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfigurationNestedTest;
+import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.junit.jupiter.api.Tag;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.TestClassWithoutTestCases"})
 class FallbackConfigurationNestedWithMultiFallbackTest extends FallbackConfigurationNestedTest {
     @Override
-    public Configuration getConfig() {
+    public Configuration getConfig() throws InvalidConfigurationException {
         final Configuration original = setupOriginal();
         fallback = setupFallback();
 
@@ -33,6 +36,6 @@ class FallbackConfigurationNestedWithMultiFallbackTest extends FallbackConfigura
         assertNotNull(originalSection);
         assertNotNull(fallbackSection);
 
-        return new FallbackConfiguration(originalSection, fallbackSection);
+        return new MultiFallbackConfiguration(new MultiSectionConfiguration(List.of(originalSection)), fallbackSection);
     }
 }

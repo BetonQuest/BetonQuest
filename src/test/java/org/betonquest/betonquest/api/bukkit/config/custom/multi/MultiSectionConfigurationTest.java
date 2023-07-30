@@ -43,7 +43,7 @@ public class MultiSectionConfigurationTest extends ConfigurationBaseTest {
     @Override
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testOptions() {
-        assertTrue(config.options().copyDefaults());
+        assertFalse(config.options().copyDefaults());
         config.options().copyDefaults(true);
         assertTrue(config.options().copyDefaults());
 

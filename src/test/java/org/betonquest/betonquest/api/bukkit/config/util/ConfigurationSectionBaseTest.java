@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.inventory.ItemStack;
@@ -40,7 +41,7 @@ import static org.mockito.Mockito.*;
 public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<ConfigurationSection> implements ConfigurationSectionTestInterface {
 
     @Override
-    public ConfigurationSection getConfig() {
+    public ConfigurationSection getConfig() throws InvalidConfigurationException {
         return getDefaultConfig();
     }
 

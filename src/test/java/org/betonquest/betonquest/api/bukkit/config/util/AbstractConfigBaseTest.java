@@ -4,6 +4,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
@@ -36,20 +37,26 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
     /**
      * The {@link T} instance for testing
      */
-    protected final T config = getConfig();
+    protected final T config;
 
     /**
-     * Empty constructor
+     * Empty constructor.
      */
     public AbstractConfigBaseTest() {
+        try {
+            config = getConfig();
+        } catch (final InvalidConfigurationException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     /**
      * Get the {@link T} that should be tested.
      *
      * @return The {@link T} to be tested
+     * @throws InvalidConfigurationException if the {@link Configuration} is invalid
      */
-    public abstract T getConfig();
+    public abstract T getConfig() throws InvalidConfigurationException;
 
     /**
      * Get the default {@link Configuration} for test.

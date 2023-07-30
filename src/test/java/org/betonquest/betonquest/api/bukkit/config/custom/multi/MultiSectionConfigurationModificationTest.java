@@ -5,8 +5,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.MemorySection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -47,10 +45,10 @@ public class MultiSectionConfigurationModificationTest {
     private MultiConfiguration config;
 
     /**
-     * A {@link FileConfiguration} containing the result of the merged
+     * A {@link Configuration} containing the result of the merged
      * {@link MultiSectionConfigurationModificationTest#config}.
      */
-    private FileConfiguration configAll;
+    private Configuration configAll;
 
     /**
      * Creates the {@link MultiSectionConfigurationModificationTest#configAll},
@@ -60,69 +58,61 @@ public class MultiSectionConfigurationModificationTest {
      */
     @BeforeEach
     public void setupConfigs() {
-        configAll = new YamlConfiguration();
+        configAll = new MemoryConfiguration();
         setupConfig1(configAll);
         setupConfig2(configAll);
         setupConfig3(configAll);
-        config1 = setupConfig1(new YamlConfiguration());
-        config2 = setupConfig2(new YamlConfiguration());
-        config3 = setupConfig3(new YamlConfiguration());
+        config1 = setupConfig1(new MemoryConfiguration());
+        config2 = setupConfig2(new MemoryConfiguration());
+        config3 = setupConfig3(new MemoryConfiguration());
         config = getConfig();
     }
 
     private Configuration setupConfig1(final Configuration config) {
-        final ConfigurationSection pathSection = config.createSection("events.custom.path");
-        pathSection.set("give.type", "give");
-        pathSection.set("give.item", "emerald");
-        pathSection.set("give.amount", 5);
-        pathSection.set("take.type", "give");
-        pathSection.set("take.item", "emerald");
-        pathSection.set("take.amount", 5);
+        config.set("events.custom.path.give.type", "give");
+        config.set("events.custom.path.give.item", "emerald");
+        config.set("events.custom.path.give.amount", 5);
+        config.set("events.custom.path.take.type", "give");
+        config.set("events.custom.path.take.item", "emerald");
+        config.set("events.custom.path.take.amount", 5);
 
-        final ConfigurationSection journalSection = config.createSection("events.custom.journal");
-        journalSection.set("type", "journal");
-        journalSection.set("action", "add");
-        journalSection.set("target", "quest_started");
+        config.set("events.custom.journal.type", "journal");
+        config.set("events.custom.journal.action", "add");
+        config.set("events.custom.journal.target", "quest_started");
 
         return config;
     }
 
     private Configuration setupConfig2(final Configuration config) {
-        final ConfigurationSection pathSection = config.createSection("events.custom.path");
-        pathSection.set("notify.type", "notify");
-        pathSection.set("notify.message", "Example Message");
-        pathSection.set("notify.io", "chat");
-        pathSection.set("cancel.type", "cancel");
-        pathSection.set("cancel.target", "myQuest");
+        config.set("events.custom.path.notify.type", "notify");
+        config.set("events.custom.path.notify.message", "Example Message");
+        config.set("events.custom.path.notify.io", "chat");
+        config.set("events.custom.path.cancel.type", "cancel");
+        config.set("events.custom.path.cancel.target", "myQuest");
 
-        final ConfigurationSection emeraldSection = config.createSection("conditions.items.emerald");
-        emeraldSection.set("type", "item");
-        emeraldSection.set("item", "emerald");
-        emeraldSection.set("amount", 5);
+        config.set("conditions.items.emerald.type", "item");
+        config.set("conditions.items.emerald.item", "emerald");
+        config.set("conditions.items.emerald.amount", 5);
 
         return config;
     }
 
     private Configuration setupConfig3(final Configuration config) {
-        final ConfigurationSection finishedSection = config.createSection("events.custom.finished");
-        finishedSection.set("type", "notify");
-        finishedSection.set("message", "Quest Finished");
-        finishedSection.set("io", "advancement");
+        config.set("events.custom.finished.type", "notify");
+        config.set("events.custom.finished.message", "Quest Finished");
+        config.set("events.custom.finished.io", "advancement");
 
-        final ConfigurationSection startSection = config.createSection("events.start");
-        startSection.set("type", "notify");
-        startSection.set("message", "Quest Started");
-        startSection.set("io", "advancement");
+        config.set("events.start.type", "notify");
+        config.set("events.start.message", "Quest Started");
+        config.set("events.start.io", "advancement");
 
-        final ConfigurationSection stoneSection = config.createSection("conditions.items.stone");
-        stoneSection.set("type", "item");
-        stoneSection.set("item", "stone");
-        stoneSection.set("amount", 3);
+        config.set("conditions.items.stone.type", "item");
+        config.set("conditions.items.stone.item", "stone");
+        config.set("conditions.items.stone.amount", 3);
 
-        final ConfigurationSection itemIronSection = config.createSection("conditions.item_iron");
-        itemIronSection.set("type", "item");
-        itemIronSection.set("item", "iron");
-        itemIronSection.set("amount", 2);
+        config.set("conditions.item_iron.type", "item");
+        config.set("conditions.item_iron.item", "iron");
+        config.set("conditions.item_iron.amount", 2);
 
         return config;
     }
@@ -149,26 +139,25 @@ public class MultiSectionConfigurationModificationTest {
 
     @Test
     void testMergedResult() {
-        final YamlConfiguration yamlConfig = new YamlConfiguration();
-        for (final Map.Entry<String, Object> entry : config.getValues(false).entrySet()) {
-            yamlConfig.set(entry.getKey(), entry.getValue());
-        }
-
-        assertContainsAll(configAll, yamlConfig);
-        assertContainsAll(yamlConfig, configAll);
+        assertConfigurationEquals(configAll, config);
     }
 
-    private void assertContainsAll(final ConfigurationSection config1, final ConfigurationSection config2) {
-        if (config1 == null) {
-            assertNull(config2);
+    private void assertConfigurationEquals(final ConfigurationSection expected, final ConfigurationSection actual) {
+        if (expected == null) {
+            assertNull(actual);
             return;
         }
-        assertNotNull(config2);
-        for (final String key : config.getKeys(false)) {
-            if (config1.isConfigurationSection(key)) {
-                assertContainsAll(config1.getConfigurationSection(key), config2.getConfigurationSection(key));
+        assertNotNull(actual);
+        final Set<String> expectedKeys = expected.getKeys(false);
+        final Set<String> actualKeys = actual.getKeys(false);
+        assertEquals(expectedKeys.size(), actualKeys.size(), "ConfigurationSections contain different amounts of keys.");
+        assertTrue(expectedKeys.containsAll(actualKeys), "ConfigurationSections have differing keys.");
+        for (final String key : expectedKeys) {
+            if (expected.isConfigurationSection(key)) {
+                assertTrue(actual.isConfigurationSection(key));
+                assertConfigurationEquals(expected.getConfigurationSection(key), actual.getConfigurationSection(key));
             } else {
-                assertEquals(config1.get(key), config2.get(key));
+                assertEquals(expected.get(key), actual.get(key));
             }
         }
     }

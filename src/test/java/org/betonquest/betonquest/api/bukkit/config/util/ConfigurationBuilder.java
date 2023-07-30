@@ -7,7 +7,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +18,7 @@ import java.util.UUID;
 import static org.mockito.Mockito.*;
 
 /**
- * This class is a builder for {@link YamlConfiguration}s for testing.
+ * This class is a builder for {@link Configuration}s for testing.
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class ConfigurationBuilder {

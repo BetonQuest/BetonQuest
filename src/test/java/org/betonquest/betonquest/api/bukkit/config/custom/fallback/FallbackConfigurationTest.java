@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api.bukkit.config.custom.fallback;
 import org.betonquest.betonquest.api.bukkit.config.util.ConfigurationBaseTest;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -33,7 +34,7 @@ public class FallbackConfigurationTest extends ConfigurationBaseTest {
     private Map<String, Object> valuesDefault;
 
     @Override
-    public Configuration getConfig() {
+    public Configuration getConfig() throws InvalidConfigurationException {
         final Configuration original = setupOriginal();
         fallback = setupFallback();
 

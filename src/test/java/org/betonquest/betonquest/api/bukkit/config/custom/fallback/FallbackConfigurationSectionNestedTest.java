@@ -2,6 +2,7 @@ package org.betonquest.betonquest.api.bukkit.config.custom.fallback;
 
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.junit.jupiter.api.Tag;
 
@@ -14,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.TestClassWithoutTestCases"})
 public class FallbackConfigurationSectionNestedTest extends FallbackConfigurationSectionTest {
     @Override
-    public ConfigurationSection getConfig() {
+    public ConfigurationSection getConfig() throws InvalidConfigurationException {
         final Configuration original = setupOriginal();
         fallback = setupFallback();
 

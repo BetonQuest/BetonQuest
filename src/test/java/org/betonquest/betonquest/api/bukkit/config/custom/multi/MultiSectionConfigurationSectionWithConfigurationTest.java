@@ -46,7 +46,7 @@ public class MultiSectionConfigurationSectionWithConfigurationTest extends Confi
     @Override
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testGetKeysDeepFalse() {
-        assertEquals("[boolean, booleanList, characterList, childSection, color, default, double, doubleList, existingSet, get, integer, integerList, item, list, location, long, mapList, object, offlinePlayer, section, string, stringList, vector]",
+        assertEquals("[boolean, booleanList, characterList, childSection, color, double, doubleList, existingSet, get, integer, integerList, item, list, location, long, mapList, object, offlinePlayer, section, string, stringList, vector]",
                 config.getKeys(false).stream().sorted().toList().toString());
 
         final ConfigurationSection section = config.getConfigurationSection("childSection");
@@ -58,7 +58,7 @@ public class MultiSectionConfigurationSectionWithConfigurationTest extends Confi
     @Override
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testGetKeysDeepTrue() {
-        assertEquals("[boolean, booleanList, characterList, childSection, childSection.nestedChildSection, childSection.nestedChildSection.key, color, default, default.key, double, doubleList, existingSet, get, integer, integerList, item, list, location, long, mapList, object, offlinePlayer, section, section.key, string, stringList, vector]",
+        assertEquals("[boolean, booleanList, characterList, childSection, childSection.nestedChildSection, childSection.nestedChildSection.key, color, double, doubleList, existingSet, get, integer, integerList, item, list, location, long, mapList, object, offlinePlayer, section, section.key, string, stringList, vector]",
                 config.getKeys(true).stream().sorted().toList().toString());
 
         final ConfigurationSection section = config.getConfigurationSection("childSection");
