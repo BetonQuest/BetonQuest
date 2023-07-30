@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -64,7 +65,10 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
         buildKeyIndex(sourceConfigs);
         validateKeyIndex();
         mergeFromKeyIndex();
-        original.options().copyDefaults(true);
+        final List<ConfigurationSection> defaultList = sourceConfigs.stream().map(ConfigurationSection::getDefaultSection).filter(Objects::nonNull).toList();
+        if (!defaultList.isEmpty()) {
+            original.setDefaults(new MultiSectionConfiguration(defaultList));
+        }
     }
 
     private void checkSourceConfigs(final List<ConfigurationSection> sourceConfigs) throws InvalidSubConfigurationException {

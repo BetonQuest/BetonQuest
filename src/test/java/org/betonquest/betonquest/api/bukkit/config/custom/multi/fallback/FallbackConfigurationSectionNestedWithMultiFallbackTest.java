@@ -1,14 +1,14 @@
 package org.betonquest.betonquest.api.bukkit.config.custom.multi.fallback;
 
-import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfiguration;
 import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfigurationSectionNestedTest;
+import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Tag;
 
-import java.io.File;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,9 +19,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.TestClassWithoutTestCases"})
 public class FallbackConfigurationSectionNestedWithMultiFallbackTest extends FallbackConfigurationSectionNestedTest {
     @Override
-    public ConfigurationSection getConfig() {
-        final Configuration original = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/fallback/original.yml"));
-        fallback = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/fallback/fallback.yml"));
+    public ConfigurationSection getConfig() throws InvalidConfigurationException {
+        final Configuration original = setupOriginal();
+        fallback = setupFallback();
 
         final Configuration defaults = super.getDefaultConfig().getDefaults();
         assertNotNull(defaults);
@@ -36,6 +36,6 @@ public class FallbackConfigurationSectionNestedWithMultiFallbackTest extends Fal
         assertNotNull(originalSection);
         assertNotNull(fallbackSection);
 
-        return new FallbackConfiguration(originalSection, fallbackSection);
+        return new MultiFallbackConfiguration(new MultiSectionConfiguration(List.of(originalSection)), fallbackSection);
     }
 }

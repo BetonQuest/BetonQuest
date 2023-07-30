@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.api.bukkit.config.util;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.inventory.ItemStack;
@@ -25,6 +25,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 /**
  * This class tests all methods in the {@link ConfigurationSection} interface.
@@ -40,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<ConfigurationSection> implements ConfigurationSectionTestInterface {
 
     @Override
-    public ConfigurationSection getConfig() {
+    public ConfigurationSection getConfig() throws InvalidConfigurationException {
         return getDefaultConfig();
     }
 
@@ -786,10 +787,9 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
     @Test
     @Override
     public void testGetOfflinePlayer() {
-        final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString("eba17d33-959d-42a7-a4d9-e9aebef5969e"));
         final OfflinePlayer player = config.getOfflinePlayer("offlinePlayer");
         assertNotNull(player);
-        assertEquals(offlinePlayer.getUniqueId(), player.getUniqueId());
+        assertEquals(UUID.fromString("eba17d33-959d-42a7-a4d9-e9aebef5969e"), player.getUniqueId());
     }
 
     @Test
@@ -801,17 +801,16 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
     @Test
     @Override
     public void testGetOfflinePlayerWithDefault() {
-        final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString("eba17d33-959d-42a7-a4d9-e9aebef5969e"));
-        final OfflinePlayer offlinePlayerDefault = Bukkit.getOfflinePlayer(UUID.fromString("5179617b-8418-4099-8773-37a4ac587dd8"));
+        final OfflinePlayer offlinePlayerDefault = ConfigurationBuilder.getMockedOfflinePlayer(UUID.fromString("5179617b-8418-4099-8773-37a4ac587dd8"));
         final OfflinePlayer player = config.getOfflinePlayer("offlinePlayer", offlinePlayerDefault);
         assertNotNull(player);
-        assertEquals(offlinePlayer.getUniqueId(), player.getUniqueId());
+        assertEquals(UUID.fromString("eba17d33-959d-42a7-a4d9-e9aebef5969e"), player.getUniqueId());
     }
 
     @Test
     @Override
     public void testGetOfflinePlayerWithDefaultOnInvalidConfigPath() {
-        final OfflinePlayer offlinePlayerDefault = Bukkit.getOfflinePlayer(UUID.fromString("5179617b-8418-4099-8773-37a4ac587dd8"));
+        final OfflinePlayer offlinePlayerDefault = ConfigurationBuilder.getMockedOfflinePlayer(UUID.fromString("5179617b-8418-4099-8773-37a4ac587dd8"));
         final OfflinePlayer player = config.getOfflinePlayer("offlinePlayer_invalid", offlinePlayerDefault);
         assertNotNull(player);
         assertEquals(offlinePlayerDefault.getUniqueId(), player.getUniqueId());
@@ -831,9 +830,12 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
 
     @Test
     @Override
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testGetItemStack() {
-        final ItemStack item = new ItemStack(Material.BONE, 42);
-        assertEquals(item, config.getItemStack("item"));
+        final ItemStack configItem = config.getItemStack("item");
+        assertNotNull(configItem);
+        assertEquals(Material.BONE, configItem.getType());
+        assertEquals(42, configItem.getAmount());
     }
 
     @Test
@@ -844,10 +846,13 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
 
     @Test
     @Override
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testGetItemStackWithDefault() {
-        final ItemStack item = new ItemStack(Material.BONE, 42);
-        final ItemStack itemDefault = new ItemStack(Material.BONE_MEAL, 12);
-        assertEquals(item, config.getItemStack("item", itemDefault));
+        final ItemStack itemDefault = mock(ItemStack.class);
+        final ItemStack configItem = config.getItemStack("item", itemDefault);
+        assertNotEquals(itemDefault, configItem);
+        assertEquals(Material.BONE, configItem.getType());
+        assertEquals(42, configItem.getAmount());
     }
 
     @Test
@@ -908,7 +913,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
     @Test
     @Override
     public void testGetLocation() {
-        final Location location = new Location(Bukkit.getWorld("Test"), 1, 2, 3, 4, 5);
+        final Location location = new Location(world, 1, 2, 3, 4, 5);
         assertEquals(location, config.getLocation("location"));
     }
 
@@ -921,15 +926,15 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
     @Test
     @Override
     public void testGetLocationWithDefault() {
-        final Location location = new Location(Bukkit.getWorld("Test"), 1, 2, 3, 4, 5);
-        final Location locationDefault = new Location(Bukkit.getWorld("TestInvalid"), 1, 2, 3, 4, 5);
+        final Location location = new Location(world, 1, 2, 3, 4, 5);
+        final Location locationDefault = new Location(worldInvalid, 1, 2, 3, 4, 5);
         assertEquals(location, config.getLocation("location", locationDefault));
     }
 
     @Test
     @Override
     public void testGetLocationWithDefaultOnInvalidConfigPath() {
-        final Location locationDefault = new Location(Bukkit.getWorld("TestInvalid"), 1, 2, 3, 4, 5);
+        final Location locationDefault = new Location(worldInvalid, 1, 2, 3, 4, 5);
         assertEquals(locationDefault, config.getLocation("location_invalid", locationDefault));
     }
 

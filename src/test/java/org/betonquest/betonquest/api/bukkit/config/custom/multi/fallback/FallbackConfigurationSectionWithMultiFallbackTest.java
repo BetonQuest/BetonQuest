@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.api.bukkit.config.custom.multi.fallback;
 
-import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfiguration;
 import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfigurationSectionTest;
+import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.junit.jupiter.api.Tag;
 
-import java.io.File;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,14 +18,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.TestClassWithoutTestCases"})
 public class FallbackConfigurationSectionWithMultiFallbackTest extends FallbackConfigurationSectionTest {
     @Override
-    public ConfigurationSection getConfig() {
-        final Configuration original = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/fallback/original.yml"));
-        fallback = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/fallback/fallback.yml"));
+    public ConfigurationSection getConfig() throws InvalidConfigurationException {
+        final Configuration original = setupOriginal();
+        fallback = setupFallback();
 
         final Configuration defaults = super.getDefaultConfig().getDefaults();
         assertNotNull(defaults);
         original.setDefaults(defaults);
 
-        return new FallbackConfiguration(original, fallback);
+        return new MultiFallbackConfiguration(new MultiSectionConfiguration(List.of(original)), fallback);
     }
 }

@@ -67,7 +67,9 @@ class DefaultBetonQuestLoggerTest {
         this.handler = mock(Handler.class);
         final Logger parentLogger = BetonQuestLoggerService.getSilentLogger();
         parentLogger.addHandler(handler);
-        this.logger = new DefaultBetonQuestLogger(mock(Plugin.class), parentLogger, getClass(), null);
+        final Plugin plugin = mock(Plugin.class);
+        when(plugin.getName()).thenReturn("TestPlugin");
+        this.logger = new DefaultBetonQuestLogger(plugin, parentLogger, getClass(), null);
         this.questPackage = mock(QuestPackage.class);
         when(this.questPackage.getQuestPath()).thenReturn(PACKAGE_NAME);
     }

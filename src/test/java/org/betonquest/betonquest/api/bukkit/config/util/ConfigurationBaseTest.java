@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.bukkit.config.util;
 
 import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ConfigurationBaseTest extends AbstractConfigBaseTest<Configuration> implements ConfigurationTestInterface {
 
     @Override
-    public Configuration getConfig() {
+    public Configuration getConfig() throws InvalidConfigurationException {
         return getDefaultConfig();
     }
 

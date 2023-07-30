@@ -1,8 +1,9 @@
 package org.betonquest.betonquest.api.bukkit.config.custom.multi;
 
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -21,7 +22,7 @@ class MultiSectionConfigurationInvalidSubConfigurationExceptionTest {
 
     @Test
     void testInvalidPathSeparator() {
-        final YamlConfiguration configuration = new YamlConfiguration();
+        final Configuration configuration = new MemoryConfiguration();
         configuration.options().pathSeparator('/');
         try {
             new MultiSectionConfiguration(List.of(configuration));
