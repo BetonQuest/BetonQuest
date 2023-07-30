@@ -5,7 +5,6 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * This is a test for the {@link MultiSectionConfiguration}.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.JUnit5TestShouldBePackagePrivate", "PMD.JUnitAssertionsShouldIncludeMessage"})
+@SuppressWarnings({"PMD.JUnit5TestShouldBePackagePrivate", "PMD.JUnitAssertionsShouldIncludeMessage",
+        "PMD.TestClassWithoutTestCases"})
 public class MultiSectionConfigurationTest extends ConfigurationBaseTest {
 
     @Override
@@ -37,18 +37,5 @@ public class MultiSectionConfigurationTest extends ConfigurationBaseTest {
             fail(e);
         }
         return null;
-    }
-
-    @Test
-    @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-    public void testOptions() {
-        assertFalse(config.options().copyDefaults());
-        config.options().copyDefaults(true);
-        assertTrue(config.options().copyDefaults());
-
-        assertEquals('.', config.options().pathSeparator());
-        config.options().pathSeparator('-');
-        assertEquals('-', config.options().pathSeparator());
     }
 }
