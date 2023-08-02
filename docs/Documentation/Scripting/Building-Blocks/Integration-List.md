@@ -1128,3 +1128,5 @@ To complete this objective you need to enter WorldGuard region with specified na
 objectives:
   deathZone: "region deathZone entry events:kill"
 ```
+## [RedisChat](https://emibergo.gitbook.io/redischat/)
+This integration stops the chat when a conversation starts and then resumes it when the conversation ends.
