@@ -11,8 +11,8 @@ In total @snippet:constants:totalIntegratedPluginsNumber@ plugins have dedicated
 
 BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features.  
 _AureliumSkills, Brewery, Citizens, DecentHolograms, Denizen, EffectLib, FakeBlock, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
-mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests, Shopkeepers, ProSkillAPI,
-Skript, RedisChat, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard._
+mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests, RedisChat, Shopkeepers, ProSkillAPI,
+Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard._
 
 ## Provided by other plugins
 Some plugins also hook into BetonQuest and provide support by themselves:  
