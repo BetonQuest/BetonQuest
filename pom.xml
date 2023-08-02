@@ -255,6 +255,39 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>com.github.Emibergo02</groupId>
+      <artifactId>RedisChat</artifactId>
+      <version>main-d1a2d70e05-1</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>xyz.xenondevs.invui</groupId>
+          <artifactId>invui-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>xyz.xenondevs.invui</groupId>
+          <artifactId>inventory-access-r5</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>xyz.xenondevs.invui</groupId>
+          <artifactId>inventory-access-r7</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>xyz.xenondevs.invui</groupId>
+          <artifactId>inventory-access-r9</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>xyz.xenondevs.invui</groupId>
+          <artifactId>inventory-access-r13</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>xyz.xenondevs.invui</groupId>
+          <artifactId>inventory-access-r14</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
       <groupId>com.github.MilkBowl</groupId>
       <artifactId>VaultAPI</artifactId>
       <version>1.7.1</version>
