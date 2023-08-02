@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 ### Removed
 ### Fixed
+- conversation could have a deadlock and a player can get stuck in a conversation
 ### Security
 
 ## [1.12.10] - 2023-02-18

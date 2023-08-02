@@ -51,8 +51,9 @@ import java.util.stream.Stream;
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods",
         "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public class MenuConvIO extends ChatConvIO {
-
-    // Thread safety
+    /**
+     * Thread safety
+     */
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
     // Actions
