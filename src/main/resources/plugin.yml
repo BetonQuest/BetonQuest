@@ -35,6 +35,7 @@ softdepend:
   - LuckPerms
   - AureliumSkills
   - fake-block
+  - RedisChat
 commands:
   betonquest:
     description: General quest command
