@@ -20,6 +20,7 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.ChatConvIO;
 import org.betonquest.betonquest.conversation.Conversation;
+import org.betonquest.betonquest.conversation.ConversationState;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
@@ -44,7 +45,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Stream;
@@ -52,7 +52,9 @@ import java.util.stream.Stream;
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods",
         "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public class MenuConvIO extends ChatConvIO {
-    // Thread safety
+    /**
+     * Thread safety
+     */
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
     /**
@@ -70,9 +72,8 @@ public class MenuConvIO extends ChatConvIO {
 
     protected int selectedOption;
 
-    protected AtomicBoolean started = new AtomicBoolean(false);
-
-    protected AtomicBoolean ended = new AtomicBoolean(false);
+    @SuppressWarnings("PMD.AvoidUsingVolatile")
+    protected volatile ConversationState state = ConversationState.CREATED;
 
     protected PacketAdapter packetAdapter;
 
@@ -200,16 +201,16 @@ public class MenuConvIO extends ChatConvIO {
 
     @SuppressWarnings("deprecation")
     private void start() {
-        if (hasStartedUnsafe()) {
+        if (state.isStarted()) {
             return;
         }
 
         lock.writeLock().lock();
         try {
-            if (hasStarted()) {
+            if (state.isStarted()) {
                 return;
             }
-            started.set(true);
+            state = ConversationState.ACTIVE;
 
             // Create something painful looking for the player to sit on and make it invisible.
             stand = player.getWorld().spawn(player.getLocation().clone().add(0, -1.1, 0), ArmorStand.class);
@@ -250,7 +251,7 @@ public class MenuConvIO extends ChatConvIO {
         }
 
         // Only want to hook the player when there are player options
-        if (!hasStarted() && options.size() > 0) {
+        if (!options.isEmpty()) {
             start();
         }
 
@@ -262,7 +263,7 @@ public class MenuConvIO extends ChatConvIO {
                 public void run() {
                     showDisplay();
 
-                    if (hasEnded()) {
+                    if (state.isEnded()) {
                         this.cancel();
                     }
                 }
@@ -484,15 +485,15 @@ public class MenuConvIO extends ChatConvIO {
      */
     @Override
     public void end() {
-        if (hasEndedUnsafe()) {
+        if (state.isEnded()) {
             return;
         }
         lock.writeLock().lock();
         try {
-            if (hasEnded()) {
+            if (state.isEnded()) {
                 return;
             }
-            ended.set(true);
+            state = ConversationState.ENDED;
 
             if (packetAdapter != null) {
                 ProtocolLibrary.getProtocolManager().removePacketListener(packetAdapter);
@@ -610,13 +611,13 @@ public class MenuConvIO extends ChatConvIO {
     @SuppressWarnings("PMD.CollapsibleIfStatements")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerInteractEvent(final PlayerInteractEvent event) {
-        if (!isActiveUnsafe()) {
+        if (state.isInactive()) {
             return;
         }
 
         lock.readLock().lock();
         try {
-            if (!isActive()) {
+            if (state.isInactive()) {
                 return;
             }
 
@@ -643,13 +644,13 @@ public class MenuConvIO extends ChatConvIO {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerInteractEntityEvent(final PlayerInteractEntityEvent event) {
-        if (!isActiveUnsafe()) {
+        if (state.isInactive()) {
             return;
         }
 
         lock.readLock().lock();
         try {
-            if (!isActive()) {
+            if (state.isInactive()) {
                 return;
             }
 
@@ -673,13 +674,13 @@ public class MenuConvIO extends ChatConvIO {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void entityDamageByEntityEvent(final EntityDamageByEntityEvent event) {
-        if (!isActiveUnsafe()) {
+        if (state.isInactive()) {
             return;
         }
 
         lock.readLock().lock();
         try {
-            if (!isActive()) {
+            if (state.isInactive()) {
                 return;
             }
 
@@ -734,13 +735,13 @@ public class MenuConvIO extends ChatConvIO {
     @SuppressWarnings("PMD.NPathComplexity")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerItemHeldEvent(final PlayerItemHeldEvent event) {
-        if (!isActiveUnsafe()) {
+        if (state.isInactive()) {
             return;
         }
 
         lock.readLock().lock();
         try {
-            if (!isActive()) {
+            if (state.isInactive()) {
                 return;
             }
 
@@ -772,45 +773,6 @@ public class MenuConvIO extends ChatConvIO {
                 updateDisplay();
                 debounce = true;
             }
-        } finally {
-            lock.readLock().unlock();
-        }
-    }
-
-    private boolean isActiveUnsafe() {
-        return hasStarted() && !hasEnded();
-    }
-
-    private boolean isActive() {
-        lock.readLock().lock();
-        try {
-            return isActiveUnsafe();
-        } finally {
-            lock.readLock().unlock();
-        }
-    }
-
-    private boolean hasStartedUnsafe() {
-        return started.get();
-    }
-
-    private boolean hasStarted() {
-        lock.readLock().lock();
-        try {
-            return hasStartedUnsafe();
-        } finally {
-            lock.readLock().unlock();
-        }
-    }
-
-    private boolean hasEndedUnsafe() {
-        return ended.get();
-    }
-
-    private boolean hasEnded() {
-        lock.readLock().lock();
-        try {
-            return hasEndedUnsafe();
         } finally {
             lock.readLock().unlock();
         }

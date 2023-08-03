@@ -244,6 +244,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - npcHider not working for citizens with a ModelEngine trait
     - 1.19 ProtocolLib warnings about deprecated packages
     - conversation IO chest did not show the correct NPC heads
+    - conversation could have a deadlock and a player can get stuck in a conversation
     - `npcrange` objective - is triggered at wrong time
     - `command` event - includes 'conditions:...' into the command
     - `craft` objective - multi-craft, drop-craft, hotbar/offhand-craft, shift-Q-craft and any illegal crafting is

@@ -44,6 +44,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Represents a conversation between player and NPC
@@ -56,6 +58,11 @@ public class Conversation implements Listener {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
+
+    /**
+     * Thread safety
+     */
+    private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
     private final OnlineProfile onlineProfile;
 
@@ -79,13 +86,14 @@ public class Conversation implements Listener {
 
     private final boolean messagesDelaying;
 
+    @SuppressWarnings("PMD.AvoidUsingVolatile")
+    protected volatile ConversationState state = ConversationState.CREATED;
+
     private ConversationData data;
 
     private ConversationIO inOut;
 
     private String option;
-
-    private boolean ended;
 
     private Interceptor interceptor;
 
@@ -312,51 +320,65 @@ public class Conversation implements Listener {
      * active conversations
      */
     public void endConversation() {
-        if (ended) {
+        if (state.isInactive()) {
             return;
         }
-        log.debug(pack, "Ending conversation '" + convID + "' for '" + onlineProfile + "'.");
-        ended = true;
-        inOut.end();
-        // fire final events
-        for (final EventID event : data.getFinalEvents()) {
-            BetonQuest.event(onlineProfile, event);
-        }
-        //only display status messages if conversationIO allows it
-        if (conv.inOut.printMessages()) {
-            // print message
-            conv.inOut.print(Config.parseMessage(pack.getQuestPath(), onlineProfile, "conversation_end", data.getQuester(language)));
-        }
-        //play conversation end sound
-        Config.playSound(onlineProfile, "end");
+        lock.writeLock().lock();
+        try {
+            if (state.isInactive()) {
+                return;
+            }
+            state = ConversationState.ENDED;
 
-        // End interceptor after a second
-        if (interceptor != null) {
+            log.debug(pack, "Ending conversation '" + convID + "' for '" + onlineProfile + "'.");
+            inOut.end();
+            // fire final events
+            for (final EventID event : data.getFinalEvents()) {
+                BetonQuest.event(onlineProfile, event);
+            }
+            //only display status messages if conversationIO allows it
+            if (conv.inOut.printMessages()) {
+                // print message
+                conv.inOut.print(Config.parseMessage(pack.getQuestPath(), onlineProfile, "conversation_end", data.getQuester(language)));
+            }
+            //play conversation end sound
+            Config.playSound(onlineProfile, "end");
+
+            // End interceptor after a second
+            if (interceptor != null) {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        interceptor.end();
+                    }
+                }.runTaskLaterAsynchronously(BetonQuest.getInstance(), 20);
+            }
+
+            // delete conversation
+            LIST.remove(onlineProfile);
+            HandlerList.unregisterAll(this);
+
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    interceptor.end();
+                    Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(onlineProfile, Conversation.this));
                 }
-            }.runTaskLaterAsynchronously(BetonQuest.getInstance(), 20);
+            }.runTask(BetonQuest.getInstance());
+        } finally {
+            lock.writeLock().unlock();
         }
-
-        // delete conversation
-        LIST.remove(onlineProfile);
-        HandlerList.unregisterAll(this);
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(onlineProfile, Conversation.this));
-            }
-        }.runTask(BetonQuest.getInstance());
     }
 
     /**
      * @return whenever this conversation has already ended
      */
     public boolean isEnded() {
-        return ended;
+        lock.readLock().lock();
+        try {
+            return state.isEnded();
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     /**
@@ -433,37 +455,49 @@ public class Conversation implements Listener {
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public void suspend() {
-        if (inOut == null) {
-            log.warn(pack, "Conversation IO is not loaded, conversation will end for player "
-                    + onlineProfile.getProfileName());
-            LIST.remove(onlineProfile);
-            HandlerList.unregisterAll(this);
+        if (state.isInactive()) {
             return;
         }
-        inOut.end();
 
-        // save the conversation to the database
-        final String loc = location.getX() + ";" + location.getY() + ";" + location.getZ() + ";"
-                + location.getWorld().getName();
-        plugin.getSaver().add(new Record(UpdateType.UPDATE_CONVERSATION,
-                convID + " " + option + " " + loc, onlineProfile.getProfileUUID().toString()));
-
-        // End interceptor
-        if (interceptor != null) {
-            interceptor.end();
-        }
-
-        // delete conversation
-        LIST.remove(onlineProfile);
-        HandlerList.unregisterAll(this);
-
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(onlineProfile, Conversation.this));
+        lock.readLock().lock();
+        try {
+            if (state.isInactive()) {
+                return;
             }
-        }.runTask(BetonQuest.getInstance());
+            if (inOut == null) {
+                log.warn(pack, "Conversation IO is not loaded, conversation will end for player "
+                        + onlineProfile.getProfileName());
+                LIST.remove(onlineProfile);
+                HandlerList.unregisterAll(this);
+                return;
+            }
+            inOut.end();
+
+            // save the conversation to the database
+            final String loc = location.getX() + ";" + location.getY() + ";" + location.getZ() + ";"
+                    + location.getWorld().getName();
+            plugin.getSaver().add(new Record(UpdateType.UPDATE_CONVERSATION,
+                    convID + " " + option + " " + loc, onlineProfile.getProfileUUID().toString()));
+
+            // End interceptor
+            if (interceptor != null) {
+                interceptor.end();
+            }
+
+            // delete conversation
+            LIST.remove(onlineProfile);
+            HandlerList.unregisterAll(this);
+
+            new BukkitRunnable() {
+
+                @Override
+                public void run() {
+                    Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(onlineProfile, Conversation.this));
+                }
+            }.runTask(BetonQuest.getInstance());
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     /**
@@ -511,6 +545,7 @@ public class Conversation implements Listener {
     /**
      * Starts the conversation, should be called asynchronously.
      */
+    @SuppressWarnings({"PMD.NPathComplexity", "PMD.CyclomaticComplexity"})
     private class Starter extends BukkitRunnable {
 
         private String[] options;
@@ -522,95 +557,107 @@ public class Conversation implements Listener {
 
         @Override
         public void run() {
-            // the conversation start event must be run on next tick
-            final PlayerConversationStartEvent event = new PlayerConversationStartEvent(onlineProfile, conv);
-            new BukkitRunnable() {
-
-                @Override
-                public void run() {
-                    Bukkit.getServer().getPluginManager().callEvent(event);
-                }
-            }.runTask(BetonQuest.getInstance());
-
-            // stop the conversation if it's canceled
-            if (event.isCancelled()) {
-                log.debug(pack, "Conversation '" + convID + "' for '" + player.getPlayerProfile() + "' has been "
-                        + "canceled because it's PlayerConversationStartEvent has been canceled.");
+            if (state.isStarted()) {
                 return;
             }
 
-            // now the conversation should start no matter what;
-            // the inOut can be safely instantiated; doing it before
-            // would leave it active while the conversation is not
-            // started, causing it to display "null" all the time
+            lock.writeLock().lock();
             try {
-                final String name = data.getConversationIO();
-                final Class<? extends ConversationIO> convIO = plugin.getConvIO(name);
-                conv.inOut = convIO.getConstructor(Conversation.class, OnlineProfile.class).newInstance(conv, onlineProfile);
-            } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
-                           | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                log.warn(pack, "Error when loading conversation IO", e);
-                return;
-            }
-
-            // register listener for immunity and blocking commands
-            Bukkit.getPluginManager().registerEvents(conv, BetonQuest.getInstance());
-
-            // start interceptor if needed
-            if (messagesDelaying) {
-                try {
-                    final String name = data.getInterceptor();
-                    final Class<? extends Interceptor> interceptor = plugin.getInterceptor(name);
-                    conv.interceptor = interceptor.getConstructor(Conversation.class, OnlineProfile.class).newInstance(conv, onlineProfile);
-                } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
-                               | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                    log.warn(pack, "Error when loading interceptor", e);
+                if (state.isStarted()) {
                     return;
                 }
+                state = ConversationState.ACTIVE;
+                // the conversation start event must be run on next tick
+                final PlayerConversationStartEvent event = new PlayerConversationStartEvent(onlineProfile, conv);
+                new BukkitRunnable() {
+
+                    @Override
+                    public void run() {
+                        Bukkit.getServer().getPluginManager().callEvent(event);
+                    }
+                }.runTask(BetonQuest.getInstance());
+
+                // stop the conversation if it's canceled
+                if (event.isCancelled()) {
+                    log.debug(pack, "Conversation '" + convID + "' for '" + player.getPlayerProfile() + "' has been "
+                            + "canceled because it's PlayerConversationStartEvent has been canceled.");
+                    return;
+                }
+
+                // now the conversation should start no matter what;
+                // the inOut can be safely instantiated; doing it before
+                // would leave it active while the conversation is not
+                // started, causing it to display "null" all the time
+                try {
+                    final String name = data.getConversationIO();
+                    final Class<? extends ConversationIO> convIO = plugin.getConvIO(name);
+                    conv.inOut = convIO.getConstructor(Conversation.class, OnlineProfile.class).newInstance(conv, onlineProfile);
+                } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
+                               | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+                    log.warn(pack, "Error when loading conversation IO", e);
+                    return;
+                }
+
+                // register listener for immunity and blocking commands
+                Bukkit.getPluginManager().registerEvents(conv, BetonQuest.getInstance());
+
+                // start interceptor if needed
+                if (messagesDelaying) {
+                    try {
+                        final String name = data.getInterceptor();
+                        final Class<? extends Interceptor> interceptor = plugin.getInterceptor(name);
+                        conv.interceptor = interceptor.getConstructor(Conversation.class, OnlineProfile.class).newInstance(conv, onlineProfile);
+                    } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
+                                   | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+                        log.warn(pack, "Error when loading interceptor", e);
+                        return;
+                    }
+                }
+
+                if (options == null) {
+                    options = data.getStartingOptions();
+
+                    // first select the option before sending message, so it
+                    // knows which is used
+                    selectOption(options, false);
+
+                    // check whether to add a prefix
+                    final String prefix = data.getPrefix(language, option);
+                    String prefixName = null;
+                    String[] prefixVariables = null;
+                    if (prefix != null) {
+                        prefixName = "conversation_prefix";
+                        prefixVariables = new String[]{prefix};
+                    }
+
+                    //only display status messages if conversationIO allows it
+                    if (conv.inOut.printMessages()) {
+                        // print message about starting a conversation only if it
+                        // is started, not resumed
+                        conv.inOut.print(Config.parseMessage(pack.getQuestPath(), onlineProfile, "conversation_start", new String[]{data.getQuester(language)},
+                                prefixName, prefixVariables));
+                    }
+                    //play the conversation start sound
+                    Config.playSound(onlineProfile, "start");
+                } else {
+                    // don't forget to select the option prior to printing its text
+                    selectOption(options, true);
+                }
+
+                // print NPC's text
+                printNPCText();
+                final ConversationOptionEvent optionEvent = new ConversationOptionEvent(PlayerConverter.getID(player), conv, option, conv.option);
+
+                new BukkitRunnable() {
+
+                    @Override
+                    public void run() {
+                        Bukkit.getPluginManager().callEvent(optionEvent);
+                    }
+                }.runTask(BetonQuest.getInstance());
+            } finally {
+                lock.writeLock().unlock();
             }
-
-            if (options == null) {
-                options = data.getStartingOptions();
-
-                // first select the option before sending message, so it
-                // knows which is used
-                selectOption(options, false);
-
-                // check whether to add a prefix
-                final String prefix = data.getPrefix(language, option);
-                String prefixName = null;
-                String[] prefixVariables = null;
-                if (prefix != null) {
-                    prefixName = "conversation_prefix";
-                    prefixVariables = new String[]{prefix};
-                }
-
-                //only display status messages if conversationIO allows it
-                if (conv.inOut.printMessages()) {
-                    // print message about starting a conversation only if it
-                    // is started, not resumed
-                    conv.inOut.print(Config.parseMessage(pack.getQuestPath(), onlineProfile, "conversation_start", new String[]{data.getQuester(language)},
-                            prefixName, prefixVariables));
-                }
-                //play the conversation start sound
-                Config.playSound(onlineProfile, "start");
-            } else {
-                // don't forget to select the option prior to printing its text
-                selectOption(options, true);
-            }
-
-            // print NPC's text
-            printNPCText();
-            final ConversationOptionEvent optionEvent = new ConversationOptionEvent(PlayerConverter.getID(player), conv, option, conv.option);
-
-            new BukkitRunnable() {
-
-                @Override
-                public void run() {
-                    Bukkit.getPluginManager().callEvent(optionEvent);
-                }
-            }.runTask(BetonQuest.getInstance());
-
         }
     }
 
@@ -672,18 +719,29 @@ public class Conversation implements Listener {
 
         @Override
         public void run() {
-            // don't forget to select the option prior to printing its text
-            selectOption(data.getPointers(onlineProfile, option, OptionType.PLAYER), false);
-            // print to player npc's answer
-            printNPCText();
-            final ConversationOptionEvent event = new ConversationOptionEvent(PlayerConverter.getID(player), conv, option, conv.option);
-
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    Bukkit.getServer().getPluginManager().callEvent(event);
+            if (!state.isActive()) {
+                return;
+            }
+            lock.readLock().lock();
+            try {
+                if (!state.isActive()) {
+                    return;
                 }
-            }.runTask(BetonQuest.getInstance());
+                // don't forget to select the option prior to printing its text
+                selectOption(data.getPointers(onlineProfile, option, OptionType.PLAYER), false);
+                // print to player npc's answer
+                printNPCText();
+                final ConversationOptionEvent event = new ConversationOptionEvent(PlayerConverter.getID(player), conv, option, conv.option);
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        Bukkit.getServer().getPluginManager().callEvent(event);
+                    }
+                }.runTask(BetonQuest.getInstance());
+            } finally {
+                lock.readLock().unlock();
+            }
         }
     }
 
@@ -701,8 +759,18 @@ public class Conversation implements Listener {
 
         @Override
         public void run() {
-            // print options
-            printOptions(data.getPointers(onlineProfile, option, OptionType.NPC));
+            if (!state.isActive()) {
+                return;
+            }
+            lock.readLock().lock();
+            try {
+                if (!state.isActive()) {
+                    return;
+                }
+                printOptions(data.getPointers(onlineProfile, option, OptionType.NPC));
+            } finally {
+                lock.readLock().unlock();
+            }
         }
     }
 
