@@ -3,6 +3,7 @@ package org.betonquest.betonquest.database;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.config.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
@@ -14,6 +15,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @SuppressWarnings("PMD.DoNotUseThreads")
 @SuppressFBWarnings("IS2_INCONSISTENT_SYNC")
 public class AsyncSaver extends Thread implements Listener, Saver {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -28,6 +30,11 @@ public class AsyncSaver extends Thread implements Listener, Saver {
      * The queue of records to be saved to the database.
      */
     private final ConcurrentLinkedQueue<Record> queue;
+
+    /**
+     * The amount of time, until the AsyncSaver tries to reconnect if there was an connection los
+     */
+    private final long reconnectInterval;
 
     /**
      * Whether the saver is currently running or not.
@@ -45,11 +52,13 @@ public class AsyncSaver extends Thread implements Listener, Saver {
         this.con = new Connector();
         this.queue = new ConcurrentLinkedQueue<>();
         this.running = true;
+        this.reconnectInterval = Long.parseLong(Config.getString("config.mysql.reconnect_interval"));
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     @Override
     @SuppressFBWarnings("UW_UNCOND_WAIT")
+    @SuppressWarnings("PMD.CognitiveComplexity")
     public void run() {
         boolean active = false;
         while (true) {
@@ -62,12 +71,19 @@ public class AsyncSaver extends Thread implements Listener, Saver {
                         active = false;
                         wait();
                     } catch (final InterruptedException e) {
-                        log.error("There was a exception with SQL", e);
+                        log.warn("AsyncSaver got interrupted!");
                     }
                 }
             }
             if (!active) {
-                con.refresh();
+                while (!con.refresh()) {
+                    log.warn("Failed to re-establish connection with the database! Trying again in one second...");
+                    try {
+                        sleep(reconnectInterval);
+                    } catch (final InterruptedException e) {
+                        log.warn("AsyncSaver got interrupted!");
+                    }
+                }
                 active = true;
             }
             final Record rec = queue.poll();

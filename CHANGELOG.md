@@ -47,6 +47,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - config option `journal.lock_default_journal_slot` to lock the journal to the `default_journal_slot`
 - config option `journal.give_on_respawn` to add the journal to the inventory after the player respawns
 - config option `journal.custom_model_data` to give the journal a ressource pack based skin
+- config option `mysql.reconnect_interval` to set the reconnect interval if the connection to the database gets lost
 - compass now supports items from other packages
 - new messages.yml entries `inventory_full_backpack` and `inventory_full_drop` to have more specific messages,
   when the inventory of the player is full
@@ -68,7 +69,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `command` objective
 - `equip` objective
 - `delay` objective - now support variables
-- `sudp` event - now supports variables
+- `sudo` event - now supports variables
 - `opsudo` event - now supports variables
 - `variable` condition - now supports variables
 - `bossbar` notify style now supports variables for the `progress` and `stay` arguments
@@ -212,6 +213,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - LocationObjective resolves variable for a player who does not have the objective, and so maybe also dont have the variable
 - performance when using many conditions / events / ... repeatedly
 - `/q journal` command allowed invalid journal pointers
+- AsyncSaver will shut itself down if the database connection is lost, resulting in data loss
 - Things that are also fixed in 1.12.X:
     - eating of items when entering the chest conversation io actually consumed the item 
     - legacy `§x` HEX color format not working in some contexts

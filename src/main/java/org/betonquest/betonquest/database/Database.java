@@ -41,7 +41,7 @@ public abstract class Database {
                 con = openConnection();
             }
         } catch (final SQLException e) {
-            log.warn("Failed opening database connection: " + e.getMessage(), e);
+            log.error("Failed opening database connection!", e);
         }
         return con;
     }
@@ -49,10 +49,12 @@ public abstract class Database {
     protected abstract Connection openConnection() throws SQLException;
 
     public void closeConnection() {
-        try {
-            con.close();
-        } catch (final SQLException e) {
-            log.error("There was an exception with SQL", e);
+        if (con != null) {
+            try {
+                con.close();
+            } catch (final SQLException e) {
+                log.error("Failed to close the database connection!", e);
+            }
         }
         con = null;
     }
@@ -70,7 +72,7 @@ public abstract class Database {
                 markMigrationExecuted(getConnection(), key);
             }
         } catch (final SQLException sqlException) {
-            log.error("There was an exception with SQL", sqlException);
+            log.error("There was an exception with SQL while creating the database tables!", sqlException);
         }
     }
 

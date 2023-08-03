@@ -7,6 +7,7 @@ mysql:
   pass: ''
   base: ''
   prefix: betonquest_
+  reconnect_interval: 1000
 language: en
 update:
   enabled: true

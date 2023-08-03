@@ -42,21 +42,25 @@ public class Connector {
         prefix = plugin.getPluginConfig().getString("mysql.prefix", "");
         database = plugin.getDB();
         connection = database.getConnection();
-        refresh();
     }
 
     /**
      * This method should be used before any other database operations.
      */
     @SuppressFBWarnings({"ODR_OPEN_DATABASE_RESOURCE", "OBL_UNSATISFIED_OBLIGATION"})
-    public final void refresh() {
-        try {
-            connection.prepareStatement("SELECT 1").executeQuery().close();
-        } catch (final SQLException e) {
-            log.error("Reconnecting to the database", e);
-            database.closeConnection();
+    public final boolean refresh() {
+        if (connection == null) {
             connection = database.getConnection();
+        } else {
+            try {
+                connection.prepareStatement("SELECT 1").executeQuery().close();
+            } catch (final SQLException e) {
+                log.warn("Database connection was lost, reconnecting...", e);
+                database.closeConnection();
+                connection = database.getConnection();
+            }
         }
+        return connection != null;
     }
 
     /**

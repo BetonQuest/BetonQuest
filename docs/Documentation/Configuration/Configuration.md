@@ -29,6 +29,7 @@ mysql:
   pass: ''        #The password of that user.
   base: ''        #The database that BetonQuest will write to. You need to create it in your database server.
   prefix: betonquest_  #The table prefix of BetonQuest's data in the database.
+  reconnect_interval: 1000 #The time intervall the database tries to reconnect if the connection gets lost
 ```
 
 
