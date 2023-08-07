@@ -17,7 +17,7 @@ public class RedisChatInterceptor implements Interceptor {
     /**
      * RedisChatAPI instance
      */
-    private static final RedisChatAPI api = RedisChatAPI.getAPI();
+    private final RedisChatAPI api;
 
     /**
      * Creates an interceptor for RedisChat
@@ -30,8 +30,11 @@ public class RedisChatInterceptor implements Interceptor {
     public RedisChatInterceptor(final Conversation conv, final OnlineProfile onlineProfile) {
         this.conv = conv;
         this.player = onlineProfile.getPlayer();
-        if (api != null)
-            api.pauseChat(player);
+        this.api = RedisChatAPI.getAPI();
+        if (api == null) {
+            throw new RuntimeException("RedisChat API not found");
+        }
+        api.pauseChat(player);
     }
 
 
@@ -50,7 +53,6 @@ public class RedisChatInterceptor implements Interceptor {
 
     @Override
     public void end() {
-        if (api != null)
-            api.unpauseChat(player);
+        api.unpauseChat(player);
     }
 }
