@@ -947,7 +947,6 @@ public class BetonQuest extends JavaPlugin {
         registerConversationIO("combined", InventoryConvIO.Combined.class);
         registerConversationIO("slowtellraw", SlowTellrawConvIO.class);
 
-        registerInterceptor("redischat", RedisChatInterceptor.class);
         registerInterceptor("simple", SimpleInterceptor.class);
         registerInterceptor("none", NonInterceptingInterceptor.class);
 
