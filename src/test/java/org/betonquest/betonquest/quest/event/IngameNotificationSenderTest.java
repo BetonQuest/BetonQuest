@@ -19,16 +19,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Test {@link InfoNotificationSender}.
+ * Test {@link IngameNotificationSender}.
  */
 @ExtendWith(BetonQuestLoggerService.class)
 @ExtendWith(MockitoExtension.class)
-class InfoNotificationSenderTest {
+class IngameNotificationSenderTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     void testSendNotifyIsCalled(final BetonQuestLogger logger, @Mock final QuestPackage questPackage) {
         when(questPackage.getQuestPath()).thenReturn("package.path");
-        final NotificationSender sender = new InfoNotificationSender(logger, "message-name", questPackage, "full.id");
+        final NotificationSender sender = new IngameNotificationSender(logger, questPackage, "full.id", NotificationLevel.INFO, "message-name");
 
         try (MockedStatic<Config> config = mockStatic(Config.class)) {
             final Profile profile = getMockedProfile();
@@ -41,7 +41,7 @@ class InfoNotificationSenderTest {
     @Test
     void testSendNotifyHandlesError(@Mock final QuestPackage questPackage, final BetonQuestLogger logger) {
         when(questPackage.getQuestPath()).thenReturn("package.path");
-        final NotificationSender sender = new InfoNotificationSender(logger, "message-name", questPackage, "full.id");
+        final NotificationSender sender = new IngameNotificationSender(logger, questPackage, "full.id", NotificationLevel.INFO, "message-name");
 
         try (MockedStatic<Config> config = mockStatic(Config.class)) {
             config.when(() -> Config.sendNotify(any(), any(OnlineProfile.class), any(), any(), any()))
