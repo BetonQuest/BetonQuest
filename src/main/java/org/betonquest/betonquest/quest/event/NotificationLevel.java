@@ -28,7 +28,7 @@ public enum NotificationLevel {
      *
      * @return the category
      */
-    public String category() {
+    public String getCategory() {
         return category;
     }
 }

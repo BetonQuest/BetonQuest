@@ -16,11 +16,6 @@ public class IngameNotificationSender implements NotificationSender {
     private final BetonQuestLogger log;
 
     /**
-     * The notification level.
-     */
-    private final NotificationLevel level;
-
-    /**
      * Message package to send the message from.
      */
     private final String messageName;
@@ -43,28 +38,29 @@ public class IngameNotificationSender implements NotificationSender {
     /**
      * Create the info-category notification sender.
      *
-     * @param log          the logger that will be used for logging
-     * @param questPackage quest package to send the message from
-     * @param fullId       full ID of the message sending object
-     * @param level        the notification level
-     * @param messageName  message package to send the message from
-     * @param categories   categories to send the message to
+     * @param log                  the logger that will be used for logging
+     * @param questPackage         quest package to send the message from
+     * @param fullId               full ID of the message sending object
+     * @param level                the notification level
+     * @param messageName          message package to send the message from
+     * @param additionalCategories categories to send the message to
      */
-    public IngameNotificationSender(final BetonQuestLogger log, final QuestPackage questPackage, final String fullId, final NotificationLevel level, final String messageName, final String... categories) {
+    public IngameNotificationSender(final BetonQuestLogger log, final QuestPackage questPackage, final String fullId, final NotificationLevel level, final String messageName, final String... additionalCategories) {
         this.log = log;
-        this.level = level;
         this.messageName = messageName;
         this.questPackage = questPackage;
         this.fullId = fullId;
-        this.categories = categories;
+        this.categories = new String[additionalCategories.length + 2];
+        categories[0] = messageName;
+        System.arraycopy(additionalCategories, 0, categories, 1, additionalCategories.length);
+        categories[categories.length - 1] = level.getCategory();
     }
 
     @Override
     public void sendNotification(final Profile profile, final String... variables) {
         profile.getOnlineProfile().ifPresent(onlineProfile -> {
             try {
-                final String fullCategoryList = String.join(",", messageName, String.join(",", categories), level.category());
-                Config.sendNotify(questPackage.getQuestPath(), onlineProfile, messageName, variables, fullCategoryList);
+                Config.sendNotify(questPackage.getQuestPath(), onlineProfile, messageName, variables, String.join(",", categories));
             } catch (final QuestRuntimeException e) {
                 log.warn(questPackage, "The notify system was unable to play a sound for the '" + messageName + "' message in '" + fullId + "'. Error was: '" + e.getMessage() + "'", e);
             }
