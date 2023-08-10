@@ -11,6 +11,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.Pointer;
+import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
@@ -18,13 +19,13 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
-import org.betonquest.betonquest.events.GiveEvent;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -40,6 +41,10 @@ import org.betonquest.betonquest.modules.logger.handler.history.LogPublishingCon
 import org.betonquest.betonquest.modules.web.downloader.DownloadFailedException;
 import org.betonquest.betonquest.modules.web.downloader.Downloader;
 import org.betonquest.betonquest.modules.web.updater.Updater;
+import org.betonquest.betonquest.quest.event.IngameNotificationSender;
+import org.betonquest.betonquest.quest.event.NoNotificationSender;
+import org.betonquest.betonquest.quest.event.NotificationLevel;
+import org.betonquest.betonquest.quest.event.give.GiveEvent;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
@@ -494,8 +499,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 log.warn("Could not find Item: " + e.getMessage(), e);
                 return;
             }
-            final GiveEvent give = new GiveEvent(new Instruction(loggerFactory.create(Instruction.class), itemID.getPackage(), null, "give " + itemID.getBaseID()));
-            give.fire(PlayerConverter.getID((Player) sender));
+            final Event give = new GiveEvent(
+                    new Instruction.Item[]{new Instruction.Item(itemID, new VariableNumber(1))},
+                    new NoNotificationSender(),
+                    new IngameNotificationSender(log, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR, "inventory_full_backpack", "inventory_full"),
+                    new IngameNotificationSender(log, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR, "inventory_full_drop", "inventory_full"),
+                    false
+            );
+            give.execute(PlayerConverter.getID((Player) sender));
         } catch (final InstructionParseException | QuestRuntimeException e) {
             sendMessage(sender, "error", e.getMessage());
             log.warn("Error while creating an item: " + e.getMessage(), e);
