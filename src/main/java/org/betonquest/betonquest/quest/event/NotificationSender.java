@@ -10,7 +10,8 @@ public interface NotificationSender {
     /**
      * Send the notification.
      *
-     * @param profile the {@link Profile} of the player to receive the notification
+     * @param profile   the {@link Profile} of the player to receive the notification
+     * @param variables the variables to use in the notification
      */
-    void sendNotification(Profile profile);
+    void sendNotification(Profile profile, String... variables);
 }

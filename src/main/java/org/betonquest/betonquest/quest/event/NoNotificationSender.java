@@ -14,7 +14,7 @@ public class NoNotificationSender implements NotificationSender {
     }
 
     @Override
-    public void sendNotification(final Profile profile) {
+    public void sendNotification(final Profile profile, final String... variables) {
         // null object pattern
     }
 }
