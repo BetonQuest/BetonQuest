@@ -7,7 +7,7 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 /**
- * Notification sender that sends notifications in the error category.
+ * Notification sender that sends ingame chat notifications to the player if they are online.
  */
 public class IngameNotificationSender implements NotificationSender {
     /**
