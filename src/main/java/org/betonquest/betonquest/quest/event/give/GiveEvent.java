@@ -25,17 +25,17 @@ public class GiveEvent implements Event {
     private final Item[] questItems;
 
     /**
-     * The notification sender for items given.
+     * The notification sender to use when putting items into the player's inventory.
      */
     private final NotificationSender itemsGivenSender;
 
     /**
-     * The notification sender for items in backpack.
+     * The notification sender to use when putting items into the player's backpack.
      */
     private final NotificationSender itemsInBackpackSender;
 
     /**
-     * The notification sender for items dropped.
+     * The notification sender to use when dropping items at the player's location.
      */
     private final NotificationSender itemsDroppedSender;
 
@@ -48,9 +48,9 @@ public class GiveEvent implements Event {
      * Create the give event.
      *
      * @param questItems            the items to give
-     * @param itemsGivenSender      the notification sender for items given
-     * @param itemsInBackpackSender the notification sender for items in backpack
-     * @param itemsDroppedSender    the notification sender for items dropped
+     * @param itemsGivenSender      the notification sender when giving items
+     * @param itemsInBackpackSender the notification sender when putting items into the backpack
+     * @param itemsDroppedSender    the notification sender when dropping items
      * @param backpack              whether to put the items to the player's backpack
      */
     public GiveEvent(final Item[] questItems, final NotificationSender itemsGivenSender, final NotificationSender itemsInBackpackSender, final NotificationSender itemsDroppedSender, final boolean backpack) {
@@ -107,12 +107,12 @@ public class GiveEvent implements Event {
     }
 
     /**
-     * Gives the item to the player. Returns null if the item was given successfully, otherwise returns the
-     * items that was not given.
+     * Gives the item stack to the player. Returns null if all items of the stack were given successfully,
+     * otherwise returns the items that were not given.
      *
      * @param player    the player to give the item to
-     * @param itemStack the item to give
-     * @return the item that was not given
+     * @param itemStack the items to give
+     * @return the items that could not be given
      */
     private ItemStack giveToInventory(final Player player, final ItemStack itemStack) {
         return player.getInventory().addItem(itemStack).values().stream().findAny().orElse(null);
