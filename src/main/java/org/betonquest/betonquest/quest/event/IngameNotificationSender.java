@@ -42,7 +42,7 @@ public class IngameNotificationSender implements NotificationSender {
      * @param questPackage         quest package to send the message from
      * @param fullId               full ID of the message sending object
      * @param level                the notification level
-     * @param messageName          message package to send the message from
+     * @param messageName          identifier of the message to send
      * @param additionalCategories categories to send the message to
      */
     public IngameNotificationSender(final BetonQuestLogger log, final QuestPackage questPackage, final String fullId, final NotificationLevel level, final String messageName, final String... additionalCategories) {
