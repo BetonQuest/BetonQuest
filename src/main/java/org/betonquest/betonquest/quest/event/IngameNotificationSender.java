@@ -16,7 +16,7 @@ public class IngameNotificationSender implements NotificationSender {
     private final BetonQuestLogger log;
 
     /**
-     * Message package to send the message from.
+     * Message name to fetch the localized message from the messages.yml config files.
      */
     private final String messageName;
 
