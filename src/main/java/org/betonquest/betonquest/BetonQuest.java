@@ -465,13 +465,7 @@ public class BetonQuest extends JavaPlugin {
             getInstance().log.debug("Null condition ID!");
             return false;
         }
-        Condition condition = null;
-        for (final Entry<ConditionID, Condition> e : CONDITIONS.entrySet()) {
-            if (e.getKey().equals(conditionID)) {
-                condition = e.getValue();
-                break;
-            }
-        }
+        final Condition condition = CONDITIONS.get(conditionID);
         if (condition == null) {
             getInstance().log.warn(conditionID.getPackage(), "The condition " + conditionID + " is not defined!");
             return false;
@@ -510,13 +504,7 @@ public class BetonQuest extends JavaPlugin {
             getInstance().log.debug("Null event ID!");
             return;
         }
-        QuestEvent event = null;
-        for (final Entry<EventID, QuestEvent> e : EVENTS.entrySet()) {
-            if (e.getKey().equals(eventID)) {
-                event = e.getValue();
-                break;
-            }
-        }
+        final QuestEvent event = EVENTS.get(eventID);
         if (event == null) {
             getInstance().log.warn(eventID.getPackage(), "Event " + eventID + " is not defined");
             return;
@@ -546,13 +534,7 @@ public class BetonQuest extends JavaPlugin {
             getInstance().log.debug(objectiveID.getPackage(), "Null arguments for the objective!");
             return;
         }
-        Objective objective = null;
-        for (final Entry<ObjectiveID, Objective> e : OBJECTIVES.entrySet()) {
-            if (e.getKey().equals(objectiveID)) {
-                objective = e.getValue();
-                break;
-            }
-        }
+        final Objective objective = OBJECTIVES.get(objectiveID);
         if (objective.containsPlayer(profile)) {
             getInstance().log.debug(objectiveID.getPackage(), profile + " already has the " + objectiveID + " objective");
             return;
@@ -572,13 +554,7 @@ public class BetonQuest extends JavaPlugin {
             getInstance().log.debug("Null arguments for the objective!");
             return;
         }
-        Objective objective = null;
-        for (final Entry<ObjectiveID, Objective> e : OBJECTIVES.entrySet()) {
-            if (e.getKey().equals(objectiveID)) {
-                objective = e.getValue();
-                break;
-            }
-        }
+        final Objective objective = OBJECTIVES.get(objectiveID);
         if (objective == null) {
             getInstance().log.warn(objectiveID.getPackage(), "Objective " + objectiveID + " does not exist");
             return;
@@ -609,10 +585,9 @@ public class BetonQuest extends JavaPlugin {
             throw new InstructionParseException("Could not load variable: " + e.getMessage(), e);
         }
         // no need to create duplicated variables
-        for (final Entry<VariableID, Variable> e : VARIABLES.entrySet()) {
-            if (e.getKey().equals(variableID)) {
-                return e.getValue();
-            }
+        final Variable existingVariable = VARIABLES.get(variableID);
+        if (existingVariable != null) {
+            return existingVariable;
         }
         final Instruction instructionVar = variableID.generateInstruction();
         final Class<? extends Variable> variableClass = VARIABLE_TYPES.get(instructionVar.getPart(0));
@@ -1596,12 +1571,7 @@ public class BetonQuest extends JavaPlugin {
      * @return Objective object or null if it does not exist
      */
     public Objective getObjective(final ObjectiveID objectiveID) {
-        for (final Entry<ObjectiveID, Objective> e : OBJECTIVES.entrySet()) {
-            if (e.getKey().equals(objectiveID)) {
-                return e.getValue();
-            }
-        }
-        return null;
+        return OBJECTIVES.get(objectiveID);
     }
 
     /**

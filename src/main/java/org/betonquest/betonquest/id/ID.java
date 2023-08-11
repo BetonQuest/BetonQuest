@@ -166,12 +166,16 @@ public abstract class ID {
     }
 
     @Override
-    public boolean equals(final Object other) {
-        if (other instanceof final ID identifier) {
-            return identifier.identifier.equals(this.identifier)
-                    && identifier.pack.getQuestPath().equals(this.pack.getQuestPath());
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
         }
-        return false;
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final ID other = (ID) obj;
+        return Objects.equals(identifier, other.identifier)
+                && Objects.equals(pack.getQuestPath(), other.pack.getQuestPath());
     }
 
     @Override
