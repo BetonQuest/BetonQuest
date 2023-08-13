@@ -1,8 +1,4 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/ConfigPatcher.md
-2.0.0.6:
-  - type: TYPE_TRANSFORM
-    key: hook.redischat
-    newType: boolean
 2.0.0.5:
   - type: VALUE_RENAME
     key: items.backpack.compass_button

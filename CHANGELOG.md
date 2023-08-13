@@ -27,6 +27,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - add FakeBlock Compatibility
     - added `fakeblock` event that has the arguments `showgroup` and `hidegroup` to show and hide FakeBlock groups
     - added `hook.fake-block` config option, default: `true`
+- add RedisChat Compatibility
+    - added `redis` chat interceptor
 - added Event Schedules to replace old static-events system
     - static events from schedulers now respect static conditions
 - added support for Base64 encode custom heads
