@@ -58,6 +58,7 @@ import org.betonquest.betonquest.conditions.HeightCondition;
 import org.betonquest.betonquest.conditions.HungerCondition;
 import org.betonquest.betonquest.conditions.InConversationCondition;
 import org.betonquest.betonquest.conditions.ItemCondition;
+import org.betonquest.betonquest.conditions.ItemDurabilityCondition;
 import org.betonquest.betonquest.conditions.JournalCondition;
 import org.betonquest.betonquest.conditions.LanguageCondition;
 import org.betonquest.betonquest.conditions.LocationCondition;
@@ -831,6 +832,7 @@ public class BetonQuest extends JavaPlugin {
         registerConditions("burning", BurningCondition.class);
         registerConditions("inconversation", InConversationCondition.class);
         registerConditions("hunger", HungerCondition.class);
+        registerConditions("itemdurability", ItemDurabilityCondition.class);
 
         registerEvents("objective", ObjectiveEvent.class);
         registerEvents("command", CommandEvent.class);
