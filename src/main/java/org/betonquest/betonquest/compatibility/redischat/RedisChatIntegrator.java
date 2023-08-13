@@ -29,10 +29,11 @@ public class RedisChatIntegrator implements Integrator, Listener {
 
     @Override
     public void reload() {
-
+        // no actions required
     }
 
     @Override
     public void close() {
+        // no actions required
     }
 }
