@@ -882,7 +882,7 @@ public class BetonQuest extends JavaPlugin {
         registerNonStaticEvent("givejournal", new GiveJournalEventFactory(loggerFactory.create(GiveJournalEvent.class), getServer(), getServer().getScheduler(), this));
         registerNonStaticEvent("sudo", new SudoEventFactory(loggerFactory.create(SudoEvent.class), getServer(), getServer().getScheduler(), this));
         registerEvents("opsudo", OpSudoEvent.class);
-        registerNonStaticEvent("chestgive", new ChestGiveEventFactory(getServer(), getServer().getScheduler(), this));
+        registerEvent("chestgive", new ChestGiveEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvent("chesttake", new ChestTakeEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvent("chestclear", new ChestClearEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvents("compass", CompassEvent.class);
