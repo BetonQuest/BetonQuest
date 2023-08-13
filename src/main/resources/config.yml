@@ -30,7 +30,7 @@ conversation_IO_config:
   chest:
     show_number: true
     show_npc_text: true
-default_interceptor: packet,simple
+default_interceptor: redis,packet,simple
 default_hologram: DecentHolograms,HolographicDisplays
 display_chat_after_conversation: true
 combat_delay: 10
