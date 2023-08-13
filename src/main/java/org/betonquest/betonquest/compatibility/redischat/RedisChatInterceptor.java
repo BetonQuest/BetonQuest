@@ -8,6 +8,8 @@ import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.Interceptor;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
+
 /**
  * Chat Interceptor that works with RedisChat.
  */
@@ -39,10 +41,7 @@ public class RedisChatInterceptor implements Interceptor {
     public RedisChatInterceptor(final Conversation conv, final OnlineProfile onlineProfile) {
         this.conv = conv;
         this.player = onlineProfile.getPlayer();
-        this.api = RedisChatAPI.getAPI();
-        if (api == null) {
-            throw new RuntimeException("RedisChat API not found");
-        }
+        this.api = Objects.requireNonNull(RedisChatAPI.getAPI());
         api.pauseChat(player);
     }
 
