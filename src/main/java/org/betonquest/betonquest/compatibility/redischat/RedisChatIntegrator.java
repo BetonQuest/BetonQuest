@@ -5,10 +5,19 @@ import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.exceptions.HookException;
 import org.bukkit.event.Listener;
 
-@SuppressWarnings({"PMD.AtLeastOneConstructor", "PMD.UncommentedEmptyMethodBody", "PMD.CommentRequired"})
+/**
+ * Integrator for RedisChat.
+ */
 public class RedisChatIntegrator implements Integrator, Listener {
+
+    /**
+     * The BetonQuest plugin class instance.
+     */
     private final BetonQuest plugin;
 
+    /**
+     * Creates the RedisChat integrator.
+     */
     public RedisChatIntegrator() {
         plugin = BetonQuest.getInstance();
     }

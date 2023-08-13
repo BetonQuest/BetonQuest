@@ -8,21 +8,30 @@ import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.Interceptor;
 import org.bukkit.entity.Player;
 
+/**
+ * Chat Interceptor that works with RedisChat.
+ */
 public class RedisChatInterceptor implements Interceptor {
 
+    /**
+     * The conversation this interceptor acts for.
+     */
     protected final Conversation conv;
 
+    /**
+     * The player whose chat is being intercepted.
+     */
     protected final Player player;
 
     /**
-     * RedisChatAPI instance
+     * RedisChatAPI instance.
      */
     private final RedisChatAPI api;
 
     /**
-     * Creates an interceptor for RedisChat
+     * Creates an interceptor for RedisChat.
      * Stops the chat on conversation start and resumes it on conversation end,
-     * sending all the missed messages to the player
+     * sending all the missed messages to the player.
      *
      * @param conv          Conversation to intercept
      * @param onlineProfile OnlineProfile of the player
@@ -38,9 +47,6 @@ public class RedisChatInterceptor implements Interceptor {
     }
 
 
-    /**
-     * Send message, bypassing Interceptor
-     */
     @Override
     public void sendMessage(final String message) {
         player.spigot().sendMessage(TextComponent.fromLegacyText(message));
