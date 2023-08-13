@@ -107,6 +107,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `give` event - new `backpack` argument to place items in the backpack (if a valid QuestItem)
 - `party` event - new optional `amount` of maximal affected players
 - `drop` event
+- `itemdurability` event
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`
     - FastAsyncWorldEdit compatibility
