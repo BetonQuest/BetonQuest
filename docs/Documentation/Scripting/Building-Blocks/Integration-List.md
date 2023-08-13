@@ -911,7 +911,7 @@ This event will start the quest for the player. The first argument must be the n
 
 ### Chat Interceptor
 
-#### RedisChat interceptor: `redis`
+#### RedisChat interceptor: `redischat`
 This chat interceptor works directly with RedisChat to pause the chat during conversations.
 
 ## Shopkeepers[](http://dev.bukkit.org/bukkit-plugins/shopkeepers/)

@@ -3,7 +3,7 @@
   - type: VALUE_RENAME
     key: default_interceptor
     oldValueRegex: 'packet,simple'
-    newValue: 'redis,packet,simple'
+    newValue: 'redischat,packet,simple'
 2.0.0.5:
   - type: VALUE_RENAME
     key: items.backpack.compass_button
