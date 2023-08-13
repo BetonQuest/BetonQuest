@@ -176,6 +176,7 @@
       <groupId>me.filoghost.holographicdisplays</groupId>
       <artifactId>holographicdisplays-api</artifactId>
       <version>3.0.0</version>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.gmail.nossr50.mcMMO</groupId>
@@ -253,6 +254,7 @@
       <artifactId>fake-block-api</artifactId>
       <version>test-1</version>
       <scope>provided</scope>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.github.Emibergo02</groupId>
