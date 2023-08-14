@@ -9,7 +9,6 @@ import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * To check durability on the item on a specific slot,
@@ -34,7 +33,7 @@ public class ItemDurabilityCondition extends Condition {
     /**
      * Creates an item durability condition
      */
-    public ItemDurabilityCondition(@NotNull final Instruction instruction) throws InstructionParseException {
+    public ItemDurabilityCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         this.slot = instruction.getEnum(EquipmentSlot.class);
         this.amount = instruction.getVarNum();
@@ -42,7 +41,7 @@ public class ItemDurabilityCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(@NotNull final Profile profile) {
+    protected Boolean execute(final Profile profile) {
         final ItemStack itemStack = profile.getOnlineProfile().get().getPlayer().getEquipment().getItem(slot);
         if (itemStack.getType().isAir() || !(itemStack.getItemMeta() instanceof final Damageable damageable)) {
             return false;

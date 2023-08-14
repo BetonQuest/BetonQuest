@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Returns the durability of a vanilla item
@@ -43,7 +42,7 @@ public class ItemDurabilityVariable extends Variable {
     /**
      * Creates a new item durability variable
      */
-    public ItemDurabilityVariable(@NotNull final Instruction instruction) throws InstructionParseException {
+    public ItemDurabilityVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         this.slot = instruction.getEnum(EquipmentSlot.class);
         this.relative = instruction.hasArgument("relative");
@@ -51,7 +50,7 @@ public class ItemDurabilityVariable extends Variable {
         this.inPercent = instruction.hasArgument("percent");
     }
 
-    private int digits(@NotNull final Instruction instruction) throws InstructionParseException {
+    private int digits(final Instruction instruction) throws InstructionParseException {
         if (instruction.hasArgument("digits")) {
             for (int i = instruction.size() - 2; i >= 0; i--) {
                 final String part = instruction.getPart(i);
@@ -64,7 +63,7 @@ public class ItemDurabilityVariable extends Variable {
     }
 
     @Override
-    public String getValue(@NotNull final Profile profile) {
+    public String getValue(final Profile profile) {
         final Player player = profile.getOnlineProfile().get().getPlayer();
         final ItemStack itemStack = player.getEquipment().getItem(slot);
         final int maxDurability = itemStack.getType().getMaxDurability();
