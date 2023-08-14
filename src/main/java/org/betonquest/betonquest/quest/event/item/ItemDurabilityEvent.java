@@ -74,8 +74,11 @@ public class ItemDurabilityEvent implements Event {
         if (damageable.isUnbreakable() && !ignoreUnbreakable) {
             return;
         }
-        final int value = amount.getInt(profile);
+        final double value = amount.getDouble(profile);
         if (value == 0) {
+            if (modification == Point.SET || modification == Point.MULTIPLY) {
+                processBreak(player, itemStack, damageable);
+            }
             return;
         }
         processDamage(player, itemStack, damageable, value);
@@ -136,7 +139,7 @@ public class ItemDurabilityEvent implements Event {
             final PlayerItemBreakEvent event = new PlayerItemBreakEvent(player, itemStack);
             Bukkit.getPluginManager().callEvent(event);
         }
-        itemStack.subtract();
+        itemStack.setAmount(itemStack.getAmount() - 1);
         damageable.setDamage(0);
         player.playSound(player, Sound.ENTITY_ITEM_BREAK, 1, 1);
     }
