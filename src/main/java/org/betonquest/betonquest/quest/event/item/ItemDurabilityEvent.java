@@ -9,7 +9,6 @@ import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerItemBreakEvent;
-import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -100,19 +99,7 @@ public class ItemDurabilityEvent implements Event {
             return;
         }
 
-        final int actualDifference;
-        if (ignoreEvents) {
-            actualDifference = durabilityModifiedDamage;
-        } else {
-            final PlayerItemDamageEvent event = new PlayerItemDamageEvent(player, itemStack, durabilityModifiedDamage, damageDifference);
-            Bukkit.getPluginManager().callEvent(event);
-            if (event.isCancelled()) {
-                return;
-            }
-            actualDifference = event.getDamage();
-        }
-
-        final int actualNewDamage = oldDamage + actualDifference;
+        final int actualNewDamage = oldDamage + durabilityModifiedDamage;
         damageable.setDamage(actualNewDamage);
 
         if (maxDurability - actualNewDamage <= 0) {
