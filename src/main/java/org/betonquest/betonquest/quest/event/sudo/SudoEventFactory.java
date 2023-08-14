@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.sudo;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.event.Event;
@@ -38,6 +39,7 @@ public class SudoEventFactory implements EventFactory {
     /**
      * Create the sudo event factory.
      *
+     * @param log       the logger to use
      * @param server    server to use
      * @param scheduler scheduler scheduler to use
      * @param plugin    plugin to use
@@ -51,14 +53,20 @@ public class SudoEventFactory implements EventFactory {
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        final String instr = instruction.getInstruction().trim();
-        int index = instr.indexOf("conditions:");
+        final Command[] commands;
+        final String string = instruction.getInstruction().trim();
+        int index = string.indexOf("conditions:");
 
-        index = index == -1 ? instr.length() : index;
-        final String[] commands = instr.substring(instr.indexOf(' ') + 1, index).split("\\|");
+        index = index == -1 ? string.length() : index;
+        final String[] rawCommands = string.substring(string.indexOf(' ') + 1, index).split("\\|");
+
+        commands = new Command[rawCommands.length];
+        for (int i = 0; i < rawCommands.length; i++) {
+            commands[i] = new Command(rawCommands[i], BetonQuest.resolveVariables(rawCommands[i]));
+        }
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
-                        log, new SudoEvent(commands), instruction.getPackage()),
+                        log, new SudoEvent(instruction.getPackage(), commands), instruction.getPackage()),
                 server, scheduler, plugin);
     }
 }
