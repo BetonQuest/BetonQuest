@@ -78,7 +78,7 @@ public class ItemDurabilityVariable extends Variable {
                 format += "%%";
                 value *= 100;
             }
-            return String.format(player.locale(), format, value);
+            return String.format(format, value);
         }
         return String.valueOf(durability);
     }
