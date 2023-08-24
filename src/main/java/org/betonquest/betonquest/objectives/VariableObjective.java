@@ -104,7 +104,7 @@ public class VariableObjective extends Objective implements Listener {
 
         public VariableData(final String instruction, final Profile profile, final String objID) {
             super(instruction, profile, objID);
-            final String[] rawVariables = instruction.split("(^)(?=\\S+:)");
+            final String[] rawVariables = instruction.split("(\n)(?=\\S+:)");
             for (final String rawVariable : rawVariables) {
                 if (rawVariable.contains(":")) {
                     final String[] parts = rawVariable.split(":", 2);
