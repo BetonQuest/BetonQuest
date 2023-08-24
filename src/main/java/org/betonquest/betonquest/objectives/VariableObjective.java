@@ -13,7 +13,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -100,19 +100,15 @@ public class VariableObjective extends Objective implements Listener {
 
     public static class VariableData extends ObjectiveData {
 
-        private final Map<String, String> variables = new HashMap<>();
+        private static final Pattern VARIABLE_SPLIT_PATTERN = Pattern.compile("(\n)(?=(?:(?:[^\n]*?[^\\\\\n])?(?:\\\\\\\\)+?|[^\n]*?[^\\\\\n]):)");
+
+        private static final Pattern KEY_VALUE_PATTERN = Pattern.compile("^(?<key>(?:[^\n]*?[^\\\\\n])?(?:\\\\\\\\)+?|[^\n]*?[^\\\\\n]):(?<value>.*)$", Pattern.DOTALL);
+
+        private final Map<String, String> variables;
 
         public VariableData(final String instruction, final Profile profile, final String objID) {
             super(instruction, profile, objID);
-            final String[] rawVariables = instruction.split("(\n)(?=\\S+:)");
-            for (final String rawVariable : rawVariables) {
-                if (rawVariable.contains(":")) {
-                    final String[] parts = rawVariable.split(":", 2);
-                    final String key = parts[0];
-                    final String value = parts[1];
-                    variables.put(key, value);
-                }
-            }
+            variables = deserializeData(instruction);
         }
 
         public String get(final String key) {
@@ -120,7 +116,7 @@ public class VariableObjective extends Objective implements Listener {
         }
 
         public void add(final String key, final String value) {
-            if (value.isEmpty()) {
+            if (value == null || value.isEmpty()) {
                 variables.remove(key);
             } else {
                 variables.put(key, value);
@@ -130,13 +126,50 @@ public class VariableObjective extends Objective implements Listener {
 
         @Override
         public String toString() {
-            final StringBuilder builder = new StringBuilder();
-            for (final Entry<String, String> entry : variables.entrySet()) {
-                builder.append(entry.getKey()).append(':').append(entry.getValue()).append('\n');
-            }
-            return builder.toString().trim();
+            return serializeData(variables);
         }
 
-    }
+        public static String serializeData(final Map<String, String> values) {
+            final StringBuilder builder = new StringBuilder();
+            for (final Entry<String, String> entry : values.entrySet()) {
+                builder
+                        .append(serializePart(entry.getKey()))
+                        .append(':')
+                        .append(serializePart(entry.getValue()))
+                        .append('\n');
+            }
+            if (!builder.isEmpty()) {
+                builder.deleteCharAt(builder.length() - 1);
+            }
+            return builder.toString();
+        }
 
+        private static String serializePart(final String part) {
+            return part
+                    .replace("\\", "\\\\")
+                    .replace(":", "\\:")
+                    .replace("\n", "\\n");
+        }
+
+        public static Map<String, String> deserializeData(final String data) {
+            final Map<String, String> variables = new LinkedHashMap<>();
+            final String[] rawVariables = VARIABLE_SPLIT_PATTERN.split(data);
+            for (final String rawVariable : rawVariables) {
+                final Matcher keyValueMatcher = KEY_VALUE_PATTERN.matcher(rawVariable);
+                if (keyValueMatcher.matches()) {
+                    final String key = deserializePart(keyValueMatcher.group("key"));
+                    final String value = deserializePart(keyValueMatcher.group("value"));
+                    variables.put(key, value);
+                }
+            }
+            return variables;
+        }
+
+        private static String deserializePart(final String part) {
+            return part
+                    .replace("\\n", "\n")
+                    .replace("\\:", ":")
+                    .replace("\\\\", "\\");
+        }
+    }
 }
