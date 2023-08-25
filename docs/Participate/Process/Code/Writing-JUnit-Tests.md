@@ -21,6 +21,11 @@ It is a major goal to write JUnit tests for most parts of BetonQuest.
 - Some parts of the code require a lot of Bukkit API mocking. If this takes too much time no tests are
   necessary
 
+### Naming Convention
+We use `snake_case` for test method names.
+The name should be descriptive and readable as the IDE will use it to display the test results
+and the underscores will be replaced by spaces.
+
 ## Handling Logging
 
 _See [Logging](../../../API/Logging.md) for general information about BetonQuest's logging._
