@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class VariableObjectiveTest {
     @ParameterizedTest
     @MethodSource("serializedVariableObjectiveData")
-    void testLoadingVariable(final String serializedData, final String expectedKey, final String expectedValue, @Mock final Profile profile) {
+    void loading_variables_from_serialized_data(final String serializedData, final String expectedKey, final String expectedValue, @Mock final Profile profile) {
         final VariableObjective.VariableData data = new VariableObjective.VariableData(serializedData, profile, "");
         final String value = data.get(expectedKey);
         assertEquals(expectedValue, value, "Values from deserialized variable objective instruction should be correct.");
@@ -27,7 +27,7 @@ class VariableObjectiveTest {
 
     @ParameterizedTest
     @MethodSource("serializableVariableObjectiveData")
-    void testStoringVariable(final Map<String, String> variables, final String expectedData) {
+    void storing_variables_as_serialized_data(final Map<String, String> variables, final String expectedData) {
         final String serialized = VariableObjective.VariableData.serializeData(variables);
         assertEquals(expectedData, serialized, "Serialized variable objective data instruction should be correct.");
     }
