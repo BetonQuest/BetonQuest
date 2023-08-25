@@ -47,7 +47,6 @@ public class RedisChatInterceptor implements Interceptor {
         api.pauseChat(player);
     }
 
-
     @Override
     public void sendMessage(final String message) {
         player.spigot().sendMessage(TextComponent.fromLegacyText(message));
