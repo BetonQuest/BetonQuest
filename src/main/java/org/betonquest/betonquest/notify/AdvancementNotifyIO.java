@@ -63,12 +63,22 @@ public class AdvancementNotifyIO extends NotifyIO {
 
     @SuppressWarnings("deprecation")
     private void add(final NamespacedKey key, final String message) {
-        Bukkit.getUnsafe().loadAdvancement(key, generateJson(message));
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Bukkit.getUnsafe().loadAdvancement(key, generateJson(message));
+            }
+        }.runTask(BetonQuest.getInstance());
     }
 
     @SuppressWarnings("deprecation")
     private void remove(final NamespacedKey key) {
-        Bukkit.getUnsafe().removeAdvancement(key);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Bukkit.getUnsafe().removeAdvancement(key);
+            }
+        }.runTask(BetonQuest.getInstance());
     }
 
     private void grant(final NamespacedKey key, final Player player) {
