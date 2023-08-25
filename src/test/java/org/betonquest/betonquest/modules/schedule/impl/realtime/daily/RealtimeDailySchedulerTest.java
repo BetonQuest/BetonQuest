@@ -16,7 +16,9 @@ import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 /**
@@ -67,7 +69,7 @@ class RealtimeDailySchedulerTest {
         final Instant lastExecution = Instant.now().minus(2, ChronoUnit.DAYS).plusSeconds(60);
         final Instant nextMissedExecution = lastExecution.plus(1, ChronoUnit.DAYS);
         when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(lastExecution));
-        final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);
+        @SuppressWarnings("PMD.CloseResource") final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);
         final RealtimeDailyScheduler scheduler = new RealtimeDailyScheduler(logger, () -> executorService, cache);
         final RealtimeDailySchedule schedule = getSchedule(CatchupStrategy.ONE);
         when(schedule.getNextExecution()).thenReturn(Instant.now());
@@ -93,7 +95,7 @@ class RealtimeDailySchedulerTest {
         final Instant nextMissedExecution2 = lastExecution.plus(2, ChronoUnit.DAYS);
         final Instant nextMissedExecution3 = lastExecution.plus(3, ChronoUnit.DAYS);
         when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(lastExecution));
-        final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);
+        @SuppressWarnings("PMD.CloseResource") final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);
         final RealtimeDailyScheduler scheduler = new RealtimeDailyScheduler(logger, () -> executorService, cache);
         final RealtimeDailySchedule schedule = getSchedule(CatchupStrategy.ALL);
         when(schedule.getNextExecution()).thenReturn(Instant.now());
@@ -120,7 +122,7 @@ class RealtimeDailySchedulerTest {
         final Instant nextExecution2 = nextExecution1.plus(1, ChronoUnit.DAYS);
         final Instant nextExecution3 = nextExecution1.plus(2, ChronoUnit.DAYS);
         final Instant nextExecution4 = nextExecution1.plus(3, ChronoUnit.DAYS);
-        final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);
+        @SuppressWarnings("PMD.CloseResource") final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);
         when(executorService.schedule(any(Runnable.class), anyLong(), eq(TimeUnit.MILLISECONDS))).then(invocation -> {
             final Runnable runnable = invocation.getArgument(0);
             final long delay = invocation.getArgument(1);
