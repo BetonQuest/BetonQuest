@@ -11,7 +11,7 @@ In total @snippet:constants:totalIntegratedPluginsNumber@ plugins have dedicated
 
 BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features.  
 _AureliumSkills, Brewery, Citizens, DecentHolograms, Denizen, EffectLib, FakeBlock, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
-mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests, Shopkeepers, ProSkillAPI,
+mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests, RedisChat, Shopkeepers, ProSkillAPI,
 Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard._
 
 ## Provided by other plugins
@@ -860,11 +860,18 @@ You can also use placeholders from other plugins in BetonQuest. Simply insert a 
 
 ## ProtocolLib[](https://www.spigotmc.org/resources/1997/)
 
-### Freeze players: 'freeze'
+### Events
+
+#### Freeze players: 'freeze'
 This event allows you to freeze player for the given amount of ticks:
 ```YAML
 freezeMe: "freeze 100" #Freezes the player for 5 seconds
 ```
+
+### Chat Interceptor
+
+#### Packet interceptor: `packet`
+This interceptor works on network package level and is thus much more reliable than the `simple` interceptor when working with advanced Chat plugins. 
 
 ## Quests[](https://www.spigotmc.org/resources/3711/)
 
@@ -899,6 +906,13 @@ This event will start the quest for the player. The first argument must be the n
     ```YAML
     quest stone_miner check-requirements
     ```
+
+## RedisChat[](https://emibergo.gitbook.io/redischat/)
+
+### Chat Interceptor
+
+#### RedisChat interceptor: `redischat`
+This chat interceptor works directly with RedisChat to pause the chat during conversations.
 
 ## Shopkeepers[](http://dev.bukkit.org/bukkit-plugins/shopkeepers/)
 

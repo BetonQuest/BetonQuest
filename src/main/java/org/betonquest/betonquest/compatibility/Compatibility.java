@@ -25,6 +25,7 @@ import org.betonquest.betonquest.compatibility.mythicmobs.MythicMobsIntegrator;
 import org.betonquest.betonquest.compatibility.placeholderapi.PlaceholderAPIIntegrator;
 import org.betonquest.betonquest.compatibility.protocollib.ProtocolLibIntegrator;
 import org.betonquest.betonquest.compatibility.quests.QuestsIntegrator;
+import org.betonquest.betonquest.compatibility.redischat.RedisChatIntegrator;
 import org.betonquest.betonquest.compatibility.shopkeepers.ShopkeepersIntegrator;
 import org.betonquest.betonquest.compatibility.skillapi.SkillAPIIntegrator;
 import org.betonquest.betonquest.compatibility.skript.SkriptIntegrator;
@@ -242,6 +243,7 @@ public class Compatibility implements Listener {
         register("DecentHolograms", DecentHologramsIntegrator.class);
         register("HolographicDisplays", HolographicDisplaysIntegrator.class);
         register("fake-block", FakeBlockIntegrator.class);
+        register("RedisChat", RedisChatIntegrator.class);
     }
 
     private void register(final String name, final Class<? extends Integrator> integrator) {
