@@ -22,6 +22,6 @@ jobs:
       - name: 'Qodana Scan'
         uses: JetBrains/qodana-action@c68f6a352f4c822b1feff40bb1045a3e52e41060
         with:
-          args: -u,root --volume,/home/runner/work/BetonQuest/BetonQuest/.mvn:/root/.m2
+          args: --volume,/home/runner/work/BetonQuest/BetonQuest/.mvn:/root/.m2
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
