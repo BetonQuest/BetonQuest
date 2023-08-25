@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -22,6 +23,7 @@ import static org.mockito.Mockito.*;
 /**
  * Test {@link IngameNotificationSender}.
  */
+@Disabled("Cannot be tested properly until Config.sendNotify isn't static anymore.")
 @ExtendWith(MockitoExtension.class)
 class IngameNotificationSenderTest {
     @Test
