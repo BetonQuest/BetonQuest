@@ -537,7 +537,7 @@ You can specify armor which the mob will wear and items it will hold with `h:` (
 ## Sudo: `sudo`
 
 This event is similar to `command` event, the only difference is that it will fire a command as the player (often referred to as player commands).
-Additional commands can be defined by separating them with `|` character. If you want to use a `|` character in the message use `\|`.
+Additional commands can be defined by separating them with `|` character. If you want to use a `|` character in the message use `\|`. Variables are supported.
 
 Looking for [run as op](#opsudo-opsudo)?
 Looking for [console commands](#command-command)?
