@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.sudo;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -11,6 +11,10 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Creates a new SudoEvent from an {@link Instruction}.
@@ -53,20 +57,22 @@ public class SudoEventFactory implements EventFactory {
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        final Command[] commands;
+        final List<VariableString> commands = new ArrayList<>();
         final String string = instruction.getInstruction().trim();
         int index = string.indexOf("conditions:");
-
         index = index == -1 ? string.length() : index;
-        final String[] rawCommands = string.substring(string.indexOf(' ') + 1, index).split("\\|");
-
-        commands = new Command[rawCommands.length];
-        for (int i = 0; i < rawCommands.length; i++) {
-            commands[i] = new Command(rawCommands[i], BetonQuest.resolveVariables(rawCommands[i]));
+        final String command = (String) string.subSequence(0, index);
+        // Split commands by | but allow one to use \| to represent a pipe character
+        final List<String> rawCommands = Arrays.stream(command.substring(command.indexOf(' ') + 1).split("(?<!\\\\)\\|"))
+                .map(s -> s.replace("\\|", "|"))
+                .map(String::trim)
+                .toList();
+        for (final String rawCommand : rawCommands) {
+            commands.add(new VariableString(instruction.getPackage(), rawCommand));
         }
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
-                        log, new SudoEvent(instruction.getPackage(), commands), instruction.getPackage()),
+                        log, new SudoEvent(commands), instruction.getPackage()),
                 server, scheduler, plugin);
     }
 }
