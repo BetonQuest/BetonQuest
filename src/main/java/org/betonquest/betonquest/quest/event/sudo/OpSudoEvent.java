@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
+import java.util.List;
 
 /**
  * Forces the player to run commands.
@@ -16,15 +16,15 @@ public class OpSudoEvent implements Event {
     /**
      * The commands to run.
      */
-    private final VariableString[] commands;
+    private final List<VariableString> commands;
 
     /**
      * Creates a new SudoEvent.
      *
      * @param commands the commands to run
      */
-    public OpSudoEvent(final VariableString... commands) {
-        this.commands = Arrays.copyOf(commands, commands.length);
+    public OpSudoEvent(final List<VariableString> commands) {
+        this.commands = commands;
     }
 
     @Override
@@ -33,9 +33,7 @@ public class OpSudoEvent implements Event {
         final boolean previousOp = player.isOp();
         try {
             player.setOp(true);
-            for (final VariableString variableCommand : commands) {
-                player.performCommand(variableCommand.getString(profile));
-            }
+            commands.forEach(command -> player.performCommand(command.getString(profile)));
         } finally {
             player.setOp(previousOp);
         }

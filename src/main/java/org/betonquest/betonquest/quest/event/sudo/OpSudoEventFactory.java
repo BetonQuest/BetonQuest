@@ -12,7 +12,9 @@ import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Creates a new OpSudoEvent from an {@link Instruction}.
@@ -56,19 +58,18 @@ public class OpSudoEventFactory implements EventFactory {
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        final VariableString[] commands;
+        final List<VariableString> commands = new ArrayList<>();
         final String string = instruction.getInstruction().trim();
         int index = string.indexOf("conditions:");
         index = index == -1 ? string.length() : index;
         final String command = (String) string.subSequence(0, index);
         // Split commands by | but allow one to use \| to represent a pipe character
-        final String[] rawCommands = Arrays.stream(command.substring(command.indexOf(' ') + 1).split("(?<!\\\\)\\|"))
+        final List<String> rawCommands = Arrays.stream(command.substring(command.indexOf(' ') + 1).split("(?<!\\\\)\\|"))
                 .map(s -> s.replace("\\|", "|"))
                 .map(String::trim)
-                .toArray(String[]::new);
-        commands = new VariableString[rawCommands.length];
-        for (int i = 0; i < rawCommands.length; i++) {
-            commands[i] = new VariableString(instruction.getPackage(), rawCommands[i]);
+                .toList();
+        for (final String rawCommand : rawCommands) {
+            commands.add(new VariableString(instruction.getPackage(), rawCommand));
         }
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
