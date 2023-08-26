@@ -210,6 +210,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - the craft objective could be completed without consuming materials
 - LocationObjective resolves variable for a player who does not have the objective, and so maybe also dont have the variable
 - performance when using many conditions / events / ... repeatedly
+- `/q journal` command allowed invalid journal pointers
 - Things that are also fixed in 1.12.X:
     - eating of items when entering the chest conversation io actually consumed the item 
     - legacy `§x` HEX color format not working in some contexts
