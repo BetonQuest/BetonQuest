@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.event.sudo;
 
-import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -17,22 +16,15 @@ public class OpSudoEvent implements Event {
     /**
      * The commands to run.
      */
-    private final Command[] commands;
-
-    /**
-     * The quest package this event is in.
-     */
-    private final QuestPackage questPackage;
+    private final VariableString[] commands;
 
     /**
      * Creates a new SudoEvent.
      *
-     * @param commands     the commands to run
-     * @param questPackage the quest package this event is in
+     * @param commands the commands to run
      */
-    public OpSudoEvent(final Command[] commands, final QuestPackage questPackage) {
+    public OpSudoEvent(final VariableString... commands) {
         this.commands = Arrays.copyOf(commands, commands.length);
-        this.questPackage = questPackage;
     }
 
     @Override
@@ -41,27 +33,11 @@ public class OpSudoEvent implements Event {
         final boolean previousOp = player.isOp();
         try {
             player.setOp(true);
-            for (final Command command : commands) {
-                player.performCommand(resolveVariables(profile, command));
+            for (final VariableString variableCommand : commands) {
+                player.performCommand(variableCommand.getString(profile));
             }
         } finally {
             player.setOp(previousOp);
         }
-    }
-
-    /**
-     * Resolves the variables in the command.
-     *
-     * @param profile the profile to resolve the variables for
-     * @param command the command to resolve the variables in
-     * @return the command with the variables resolved
-     */
-    private String resolveVariables(final Profile profile, final Command command) {
-        String com = command.command();
-        for (final String var : command.variables()) {
-            com = com.replace(var, BetonQuest.getInstance().getVariableValue(
-                    questPackage.getQuestPath(), var, profile));
-        }
-        return com;
     }
 }
