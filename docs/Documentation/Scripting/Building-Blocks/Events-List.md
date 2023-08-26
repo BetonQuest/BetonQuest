@@ -412,7 +412,7 @@ events:
 ## OPsudo: `opsudo`
 
 This event is similar to the `sudo` event, the only difference is that it will fire a command as the player with temporary OP permissions. 
-Additional commands can be defined by separating them with `|` character. If you want to use a `|` character in the message use `\|`.
+Additional commands can be defined by separating them with `|` character. If you want to use a `|` character in the message use `\|`. Variables are supported.
 
 Looking for [run as normal player](#sudo-sudo)?
 Looking for [console commands](#command-command)?
