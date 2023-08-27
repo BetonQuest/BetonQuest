@@ -18,36 +18,36 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * The item durability event, to modify the durability of an item
+ * The item durability event, to modify the durability of an item.
  */
 public class ItemDurabilityEvent implements Event {
     /**
-     * The slot to target
+     * The slot to target.
      */
     private final EquipmentSlot slot;
 
     /**
-     * The point type, how the durability should be modified
+     * The point type, how the durability should be modified.
      */
     private final Point modification;
 
     /**
-     * The amount of the modification
+     * The amount of the modification.
      */
     private final VariableNumber amount;
 
     /**
-     * To ignore {@link ItemMeta#isUnbreakable()} and {@link Enchantment#DURABILITY}
+     * To ignore {@link ItemMeta#isUnbreakable()} and {@link Enchantment#DURABILITY}.
      */
     private final boolean ignoreUnbreakable;
 
     /**
-     * To ignore bukkit event logic
+     * To ignore bukkit event logic.
      */
     private final boolean ignoreEvents;
 
     /**
-     * Creates a new item durability event
+     * Creates a new item durability event.
      *
      * @param slot              of the item
      * @param modification      on the durability

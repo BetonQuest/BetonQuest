@@ -10,37 +10,37 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 
 /**
- * Returns the durability of a vanilla item
+ * Returns the durability of a vanilla item.
  */
 public class ItemDurabilityVariable extends Variable {
     /**
-     * The default amount of digits after comma
+     * The default amount of digits after comma.
      */
     private static final int DEFAULT_DIGITS = 2;
 
     /**
-     * The slot of the item
+     * The slot of the item.
      */
     private final EquipmentSlot slot;
 
     /**
-     * If the durability should be displayed relative to maximum,
-     * where 1 is max
+     * If the durability should be displayed relative to maximum.
+     * Maximum is 1.
      */
     private final boolean relative;
 
     /**
-     * The amount of digits displayed after comma
+     * The amount of digits displayed after comma.
      */
     private final int digitsAfter;
 
     /**
-     * If the output should be multiplied with 100 and with a '%' in the end
+     * If the output should be multiplied with 100 and with a '%' in the end.
      */
     private final boolean inPercent;
 
     /**
-     * Creates a new item durability variable
+     * Creates a new item durability variable.
      */
     public ItemDurabilityVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);

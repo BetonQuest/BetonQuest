@@ -12,26 +12,26 @@ import org.bukkit.inventory.meta.Damageable;
 
 /**
  * To check durability on the item on a specific slot,
- * in opposite to {@link QuestItem#getDurability()}
+ * in opposite to {@link QuestItem#getDurability()}.
  */
 public class ItemDurabilityCondition extends Condition {
     /**
-     * The slot to check
+     * The slot to check.
      */
     private final EquipmentSlot slot;
 
     /**
-     * The durability needed
+     * The durability needed.
      */
     private final VariableNumber amount;
 
     /**
-     * If the durability should be handled as value from 0 to 1
+     * If the durability should be handled as value from 0 to 1.
      */
     private final boolean relative;
 
     /**
-     * Creates an item durability condition
+     * Creates an item durability condition.
      */
     public ItemDurabilityCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
