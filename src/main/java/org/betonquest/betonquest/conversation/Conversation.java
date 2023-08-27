@@ -569,12 +569,14 @@ public class Conversation implements Listener {
                 state = ConversationState.ACTIVE;
                 // the conversation start event must be run on next tick
                 final PlayerConversationStartEvent event = new PlayerConversationStartEvent(onlineProfile, conv);
+                // blocks this thread until the conversation start event is fully dispatched
                 final CompletableFuture<?> blocking = new CompletableFuture<>();
                 new BukkitRunnable() {
 
                     @Override
                     public void run() {
                         Bukkit.getServer().getPluginManager().callEvent(event);
+                        // allows this function to continue
                         blocking.complete(null);
                     }
                 }.runTask(BetonQuest.getInstance());
