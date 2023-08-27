@@ -579,6 +579,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         final String pointerName = args[3];
+        if (!pointerName.contains(".")) {
+            sendMessage(sender, "specify_pointer");
+            return;
+        }
         // if there are arguments, handle them
         switch (args[2].toLowerCase(Locale.ROOT)) {
             case "add":
