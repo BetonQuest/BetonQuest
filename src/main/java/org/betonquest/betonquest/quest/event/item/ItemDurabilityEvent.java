@@ -94,10 +94,11 @@ public class ItemDurabilityEvent implements Event {
         final int damageDifference = newDamage - oldDamage;
 
         final int durabilityModifiedDamage;
+        final boolean isArmor = isArmor(itemStack);
         if (damageDifference < 0) {
-            durabilityModifiedDamage = -getDurabilityModifiedDamage(damageable, -damageDifference);
+            durabilityModifiedDamage = -getDurabilityModifiedDamage(damageable, -damageDifference, isArmor);
         } else if (damageDifference > 0) {
-            durabilityModifiedDamage = getDurabilityModifiedDamage(damageable, damageDifference);
+            durabilityModifiedDamage = getDurabilityModifiedDamage(damageable, damageDifference, isArmor);
         } else {
             return;
         }
@@ -112,7 +113,7 @@ public class ItemDurabilityEvent implements Event {
         itemStack.setItemMeta(damageable);
     }
 
-    private int getDurabilityModifiedDamage(final ItemMeta meta, final int damageDifference) {
+    private int getDurabilityModifiedDamage(final ItemMeta meta, final int damageDifference, final boolean isArmor) {
         if (ignoreUnbreakable) {
             return damageDifference;
         }
@@ -121,17 +122,13 @@ public class ItemDurabilityEvent implements Event {
             return damageDifference;
         }
         final int levelPlusOne = level + 1;
-        // TODO Armor gets less damage reduction according to the wiki
-        //  https://minecraft.fandom.com/wiki/Unbreaking#Usage
-        int damage = 0;
-        final int chance = 100 / levelPlusOne;
-        for (int i = 0; i < damageDifference; i++) {
-            final int random = ThreadLocalRandom.current().nextInt(100);
-            if (random >= chance) {
-                damage++;
-            }
+        final int chance;
+        if (isArmor) {
+            chance = 60 + 40 / levelPlusOne;
+        } else {
+            chance = 100 / levelPlusOne;
         }
-        return damage;
+        return (int) ThreadLocalRandom.current().ints(damageDifference).filter(random -> random >= chance).count();
     }
 
     private void processBreak(final Player player, final ItemStack itemStack, final Damageable damageable) {
@@ -142,5 +139,16 @@ public class ItemDurabilityEvent implements Event {
         itemStack.setAmount(itemStack.getAmount() - 1);
         damageable.setDamage(0);
         player.playSound(player, Sound.ENTITY_ITEM_BREAK, 1, 1);
+    }
+
+    private boolean isArmor(final ItemStack itemStack) {
+        if (itemStack == null) {
+            return false;
+        }
+        final String typeNameString = itemStack.getType().name();
+        return typeNameString.endsWith("_HELMET")
+                || typeNameString.endsWith("_CHESTPLATE")
+                || typeNameString.endsWith("_LEGGINGS")
+                || typeNameString.endsWith("_BOOTS");
     }
 }
