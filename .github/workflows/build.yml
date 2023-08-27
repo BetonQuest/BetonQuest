@@ -369,7 +369,9 @@ jobs:
           VERSION=("$TWO_DIGIT_VERSION")
           if [ "$TXT" = "docs-requirements-insiders.txt" ]; then FLAGS+=(--config-file mkdocs.insiders.yml)"; fi
           if [ "$VERSION_TYPE" = release ]; then
-            VERSION+=(RELEASE)
+            if [ ${{ github.ref }} == 'refs/heads/main' ] || { mike list --json "$TWO_DIGIT_VERSION" | grep -q '"aliases" *: *\[[^]]*"RELEASE"'; }; then
+              VERSION+=(RELEASE)
+            fi
           else
             ARGUMENTS+=(--title="$TWO_DIGIT_VERSION-DEV")
           fi
