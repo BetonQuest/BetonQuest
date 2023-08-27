@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.sudo;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableString;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -20,11 +20,10 @@ import java.util.List;
  * Creates a new OpSudoEvent from an {@link Instruction}.
  */
 public class OpSudoEventFactory implements EventFactory {
-
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
+     * Logger factory to create a logger for events.
      */
-    private final BetonQuestLogger log;
+    private final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * Server to use for syncing to the primary server thread.
@@ -44,13 +43,13 @@ public class OpSudoEventFactory implements EventFactory {
     /**
      * Create the OpSudoEvent factory.
      *
-     * @param log       the logger to use
-     * @param server    server to use
-     * @param scheduler scheduler scheduler to use
-     * @param plugin    plugin to use
+     * @param loggerFactory logger factory to use
+     * @param server        server to use
+     * @param scheduler     scheduler scheduler to use
+     * @param plugin        plugin to use
      */
-    public OpSudoEventFactory(final BetonQuestLogger log, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
-        this.log = log;
+    public OpSudoEventFactory(final BetonQuestLoggerFactory loggerFactory, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+        this.loggerFactory = loggerFactory;
         this.server = server;
         this.scheduler = scheduler;
         this.plugin = plugin;
@@ -73,7 +72,7 @@ public class OpSudoEventFactory implements EventFactory {
         }
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
-                        log, new OpSudoEvent(commands), instruction.getPackage()),
+                        loggerFactory.create(OpSudoEvent.class), new OpSudoEvent(commands), instruction.getPackage()),
                 server, scheduler, plugin);
     }
 }

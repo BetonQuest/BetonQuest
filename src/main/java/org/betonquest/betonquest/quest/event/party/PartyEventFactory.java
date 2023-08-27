@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.party;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -11,20 +11,21 @@ import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 
 /**
- * Fires specified events for every player in the party
+ * Fires specified events for every player in the party.
  */
 public class PartyEventFactory implements EventFactory {
+    /**
+     * Logger factory to create a logger for events.
+     */
+    private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
+     * Creates a PartyEventFactory instance.
+     *
+     * @param loggerFactory logger factory to use
      */
-    private final BetonQuestLogger log;
-
-    /**
-     * Creates a PartyEventFactory instance
-     */
-    public PartyEventFactory(final BetonQuestLogger log) {
-        this.log = log;
+    public PartyEventFactory(final BetonQuestLoggerFactory loggerFactory) {
+        this.loggerFactory = loggerFactory;
     }
 
     @Override
@@ -33,6 +34,6 @@ public class PartyEventFactory implements EventFactory {
         final VariableNumber amount = instruction.getVarNum(instruction.getOptional("amount"));
         final ConditionID[] conditions = instruction.getList(instruction::getCondition).toArray(new ConditionID[0]);
         final EventID[] events = instruction.getList(instruction::getEvent).toArray(new EventID[0]);
-        return new OnlineProfileRequiredEvent(log, new PartyEvent(range, amount, conditions, events), instruction.getPackage());
+        return new OnlineProfileRequiredEvent(loggerFactory.create(PartyEvent.class), new PartyEvent(range, amount, conditions, events), instruction.getPackage());
     }
 }

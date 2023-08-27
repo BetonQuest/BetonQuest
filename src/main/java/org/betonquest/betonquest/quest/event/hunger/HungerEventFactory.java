@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.hunger;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -18,9 +18,9 @@ import java.util.Locale;
  */
 public class HungerEventFactory implements EventFactory {
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
+     * Logger factory to create a logger for events.
      */
-    private final BetonQuestLogger log;
+    private final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * Server to use for syncing to the primary server thread.
@@ -40,12 +40,13 @@ public class HungerEventFactory implements EventFactory {
     /**
      * Create the hunger event factory.
      *
-     * @param server    server to use
-     * @param scheduler scheduler to use
-     * @param plugin    plugin to use
+     * @param loggerFactory logger factory to use
+     * @param server        server to use
+     * @param scheduler     scheduler to use
+     * @param plugin        plugin to use
      */
-    public HungerEventFactory(final BetonQuestLogger log, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
-        this.log = log;
+    public HungerEventFactory(final BetonQuestLoggerFactory loggerFactory, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+        this.loggerFactory = loggerFactory;
         this.server = server;
         this.scheduler = scheduler;
         this.plugin = plugin;
@@ -58,7 +59,7 @@ public class HungerEventFactory implements EventFactory {
             final int amount = instruction.getInt();
             return new PrimaryServerThreadEvent(
                     new OnlineProfileRequiredEvent(
-                            log, new HungerEvent(hunger, amount), instruction.getPackage()
+                            loggerFactory.create(HungerEventFactory.class), new HungerEvent(hunger, amount), instruction.getPackage()
                     ), server, scheduler, plugin);
         } catch (final IllegalArgumentException e) {
             throw new InstructionParseException("Error while parsing action! Must be 'set', 'give', or 'take'.", e);
