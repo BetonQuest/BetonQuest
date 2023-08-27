@@ -42,6 +42,7 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -545,7 +546,7 @@ public class Conversation implements Listener {
     /**
      * Starts the conversation, should be called asynchronously.
      */
-    @SuppressWarnings({"PMD.NPathComplexity", "PMD.CyclomaticComplexity"})
+    @SuppressWarnings({"PMD.NPathComplexity", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     private class Starter extends BukkitRunnable {
 
         private String[] options;
@@ -569,22 +570,19 @@ public class Conversation implements Listener {
                 state = ConversationState.ACTIVE;
                 // the conversation start event must be run on next tick
                 final PlayerConversationStartEvent event = new PlayerConversationStartEvent(onlineProfile, conv);
-                // blocks this thread until the conversation start event is fully dispatched
-                final CompletableFuture<?> blocking = new CompletableFuture<>();
-                new BukkitRunnable() {
-
-                    @Override
-                    public void run() {
-                        Bukkit.getServer().getPluginManager().callEvent(event);
-                        // allows this function to continue
-                        blocking.complete(null);
-                    }
-                }.runTask(BetonQuest.getInstance());
+                final Future<Void> eventDispatcherTask = Bukkit.getServer().getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> {
+                    Bukkit.getServer().getPluginManager().callEvent(event);
+                    return null;
+                });
 
                 try {
-                    blocking.get(5, TimeUnit.SECONDS);
-                } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                    log.warn(pack, "Error when waiting for event to be dispatched", e);
+                    eventDispatcherTask.get(1, TimeUnit.SECONDS);
+                } catch (InterruptedException | TimeoutException exception) {
+                    log.warn(pack, "Calling PlayerConversationStartEvent took too long.", exception);
+                } catch (ExecutionException exception) {
+                    log.error(pack, "Error while calling PlayerConversationStartEvent.", exception);
+                    LIST.remove(onlineProfile);
+                    return;
                 }
 
                 // stop the conversation if it's canceled
