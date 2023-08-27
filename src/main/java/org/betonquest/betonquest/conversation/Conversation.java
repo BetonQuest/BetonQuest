@@ -42,6 +42,7 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -545,7 +546,7 @@ public class Conversation implements Listener {
     /**
      * Starts the conversation, should be called asynchronously.
      */
-    @SuppressWarnings({"PMD.NPathComplexity", "PMD.CyclomaticComplexity"})
+    @SuppressWarnings({"PMD.NPathComplexity", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     private class Starter extends BukkitRunnable {
 
         private String[] options;
@@ -569,18 +570,26 @@ public class Conversation implements Listener {
                 state = ConversationState.ACTIVE;
                 // the conversation start event must be run on next tick
                 final PlayerConversationStartEvent event = new PlayerConversationStartEvent(onlineProfile, conv);
-                new BukkitRunnable() {
+                final Future<Void> eventDispatcherTask = Bukkit.getServer().getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> {
+                    Bukkit.getServer().getPluginManager().callEvent(event);
+                    return null;
+                });
 
-                    @Override
-                    public void run() {
-                        Bukkit.getServer().getPluginManager().callEvent(event);
-                    }
-                }.runTask(BetonQuest.getInstance());
+                try {
+                    eventDispatcherTask.get(1, TimeUnit.SECONDS);
+                } catch (InterruptedException | TimeoutException exception) {
+                    log.warn(pack, "Calling PlayerConversationStartEvent took too long.", exception);
+                } catch (ExecutionException exception) {
+                    log.error(pack, "Error while calling PlayerConversationStartEvent.", exception);
+                    LIST.remove(onlineProfile);
+                    return;
+                }
 
                 // stop the conversation if it's canceled
                 if (event.isCancelled()) {
                     log.debug(pack, "Conversation '" + convID + "' for '" + player.getPlayerProfile() + "' has been "
                             + "canceled because it's PlayerConversationStartEvent has been canceled.");
+                    LIST.remove(onlineProfile);
                     return;
                 }
 
