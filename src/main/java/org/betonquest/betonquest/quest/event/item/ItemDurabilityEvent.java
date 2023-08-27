@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 
 /**
  * The item durability event, to modify the durability of an item.
@@ -47,6 +47,11 @@ public class ItemDurabilityEvent implements Event {
     private final boolean ignoreEvents;
 
     /**
+     * The random instance to use.
+     */
+    private final Random random;
+
+    /**
      * Creates a new item durability event.
      *
      * @param slot              of the item
@@ -54,13 +59,15 @@ public class ItemDurabilityEvent implements Event {
      * @param amount            argument of the modification
      * @param ignoreUnbreakable whether if the enchantment and tag should be ignored or respected
      * @param ignoreEvents      whether the bukkit events should be ignored or called
+     * @param random            to use for the durability calculation
      */
-    public ItemDurabilityEvent(final EquipmentSlot slot, final Point modification, final VariableNumber amount, final boolean ignoreUnbreakable, final boolean ignoreEvents) {
+    public ItemDurabilityEvent(final EquipmentSlot slot, final Point modification, final VariableNumber amount, final boolean ignoreUnbreakable, final boolean ignoreEvents, final Random random) {
         this.slot = slot;
         this.modification = modification;
         this.amount = amount;
         this.ignoreUnbreakable = ignoreUnbreakable;
         this.ignoreEvents = ignoreEvents;
+        this.random = random;
     }
 
     @Override
@@ -128,7 +135,7 @@ public class ItemDurabilityEvent implements Event {
         } else {
             chance = 100 / levelPlusOne;
         }
-        return (int) ThreadLocalRandom.current().ints(damageDifference).filter(random -> random >= chance).count();
+        return (int) random.ints(damageDifference).filter(random -> random >= chance).count();
     }
 
     private void processBreak(final Player player, final ItemStack itemStack, final Damageable damageable) {

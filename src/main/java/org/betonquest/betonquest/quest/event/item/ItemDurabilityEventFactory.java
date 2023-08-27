@@ -15,6 +15,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.util.Random;
+
 /**
  * Factory for the item durability event.
  */
@@ -61,7 +63,7 @@ public class ItemDurabilityEventFactory implements EventFactory {
         final VariableNumber amount = instruction.getVarNum();
         final boolean ignoreUnbreakable = instruction.hasArgument("ignoreUnbreakable");
         final boolean ignoreEvents = instruction.hasArgument("ignoreEvents");
-        final ItemDurabilityEvent event = new ItemDurabilityEvent(slot, operation, amount, ignoreUnbreakable, ignoreEvents);
+        final ItemDurabilityEvent event = new ItemDurabilityEvent(slot, operation, amount, ignoreUnbreakable, ignoreEvents, new Random());
         return new PrimaryServerThreadEvent(new OnlineProfileRequiredEvent(loggerFactory.create(event.getClass()), event, instruction.getPackage()),
                 server, scheduler, plugin);
     }
