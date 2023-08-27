@@ -569,18 +569,27 @@ public class Conversation implements Listener {
                 state = ConversationState.ACTIVE;
                 // the conversation start event must be run on next tick
                 final PlayerConversationStartEvent event = new PlayerConversationStartEvent(onlineProfile, conv);
+                final CompletableFuture<?> blocking = new CompletableFuture<>();
                 new BukkitRunnable() {
 
                     @Override
                     public void run() {
                         Bukkit.getServer().getPluginManager().callEvent(event);
+                        blocking.complete(null);
                     }
                 }.runTask(BetonQuest.getInstance());
+
+                try {
+                    blocking.get(5, TimeUnit.SECONDS);
+                } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                    log.warn(pack, "Error when waiting for event to be dispatched", e);
+                }
 
                 // stop the conversation if it's canceled
                 if (event.isCancelled()) {
                     log.debug(pack, "Conversation '" + convID + "' for '" + player.getPlayerProfile() + "' has been "
                             + "canceled because it's PlayerConversationStartEvent has been canceled.");
+                    LIST.remove(onlineProfile);
                     return;
                 }
 
