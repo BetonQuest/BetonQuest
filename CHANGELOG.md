@@ -68,6 +68,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `command` objective
 - `equip` objective
 - `delay` objective - now support variables
+- `sudp` event - now supports variables
 - `opsudo` event - now supports variables
 - `variable` condition - now supports variables
 - `bossbar` notify style now supports variables for the `progress` and `stay` arguments

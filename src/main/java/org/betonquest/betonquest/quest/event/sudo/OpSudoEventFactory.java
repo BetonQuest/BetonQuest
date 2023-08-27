@@ -17,9 +17,10 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Creates a new SudoEvent from an {@link Instruction}.
+ * Creates a new OpSudoEvent from an {@link Instruction}.
  */
-public class SudoEventFactory implements EventFactory {
+public class OpSudoEventFactory implements EventFactory {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -41,14 +42,14 @@ public class SudoEventFactory implements EventFactory {
     private final Plugin plugin;
 
     /**
-     * Create the sudo event factory.
+     * Create the OpSudoEvent factory.
      *
      * @param log       the logger to use
      * @param server    server to use
      * @param scheduler scheduler scheduler to use
      * @param plugin    plugin to use
      */
-    public SudoEventFactory(final BetonQuestLogger log, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+    public OpSudoEventFactory(final BetonQuestLogger log, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
         this.log = log;
         this.server = server;
         this.scheduler = scheduler;
@@ -72,7 +73,7 @@ public class SudoEventFactory implements EventFactory {
         }
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
-                        log, new SudoEvent(commands), instruction.getPackage()),
+                        log, new OpSudoEvent(commands), instruction.getPackage()),
                 server, scheduler, plugin);
     }
 }

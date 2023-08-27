@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Forces the player to run commands.
  */
-public class SudoEvent implements Event {
+public class OpSudoEvent implements Event {
 
     /**
      * The commands to run.
@@ -23,13 +23,19 @@ public class SudoEvent implements Event {
      *
      * @param commands the commands to run
      */
-    public SudoEvent(final List<VariableString> commands) {
+    public OpSudoEvent(final List<VariableString> commands) {
         this.commands = commands;
     }
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
         final Player player = profile.getOnlineProfile().get().getPlayer();
-        commands.forEach(command -> player.performCommand(command.getString(profile)));
+        final boolean previousOp = player.isOp();
+        try {
+            player.setOp(true);
+            commands.forEach(command -> player.performCommand(command.getString(profile)));
+        } finally {
+            player.setOp(previousOp);
+        }
     }
 }
