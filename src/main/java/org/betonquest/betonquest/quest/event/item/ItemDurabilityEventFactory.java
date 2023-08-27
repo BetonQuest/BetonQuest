@@ -18,7 +18,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 /**
  * Factory for the item durability event.
  */
-public class ItemDamageEventFactory implements EventFactory {
+public class ItemDurabilityEventFactory implements EventFactory {
     /**
      * Factory to create custom {@link BetonQuestLogger} instance for the event.
      */
@@ -40,14 +40,14 @@ public class ItemDamageEventFactory implements EventFactory {
     private final Plugin plugin;
 
     /**
-     * Create the item damage event factory.
+     * Create the item durability event factory.
      *
      * @param loggerFactory logger factory to use
      * @param server        server to use
      * @param scheduler     scheduler to use
      * @param plugin        plugin to use
      */
-    public ItemDamageEventFactory(final BetonQuestLoggerFactory loggerFactory, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+    public ItemDurabilityEventFactory(final BetonQuestLoggerFactory loggerFactory, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
         this.loggerFactory = loggerFactory;
         this.server = server;
         this.scheduler = scheduler;
