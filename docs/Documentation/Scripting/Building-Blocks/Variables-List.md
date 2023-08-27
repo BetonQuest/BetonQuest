@@ -127,6 +127,22 @@ Both `name` and `lore` supports the `raw` subargument to get the text without fo
 %item.epic_sword.lore:0.raw%
 ```
 
+### Item durability variable
+
+With this variable you can display the durability of an item.
+The first argument is the slot.
+An optional argument is `relative` which will display the durability of the item relative to the maximum
+from 0 to 1, where 1 is the maximum. You can specify the amount of digits with the argument `digits:x`,
+where `x` is a whole number. This default is 2 digits.
+Additionally, you get the output in percent (inclusive the '%' symbol).
+
+```
+%itemdurability.HAND%
+%itemdurability.CHEST.relative%
+%itemdurability.CHEST.relative.percent%
+%itemdurability.HEAD.relative.digits:5%
+```
+
 ### Location Variable
 
 This variable resolves to all aspects of the player's location. The x, y and z coordinates, the world name, the yaw and pitch (head rotation).

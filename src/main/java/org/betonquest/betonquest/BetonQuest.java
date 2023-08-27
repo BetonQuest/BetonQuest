@@ -58,6 +58,7 @@ import org.betonquest.betonquest.conditions.HeightCondition;
 import org.betonquest.betonquest.conditions.HungerCondition;
 import org.betonquest.betonquest.conditions.InConversationCondition;
 import org.betonquest.betonquest.conditions.ItemCondition;
+import org.betonquest.betonquest.conditions.ItemDurabilityCondition;
 import org.betonquest.betonquest.conditions.JournalCondition;
 import org.betonquest.betonquest.conditions.LanguageCondition;
 import org.betonquest.betonquest.conditions.LocationCondition;
@@ -210,6 +211,7 @@ import org.betonquest.betonquest.quest.event.experience.ExperienceEventFactory;
 import org.betonquest.betonquest.quest.event.explosion.ExplosionEventFactory;
 import org.betonquest.betonquest.quest.event.give.GiveEventFactory;
 import org.betonquest.betonquest.quest.event.hunger.HungerEventFactory;
+import org.betonquest.betonquest.quest.event.item.ItemDurabilityEventFactory;
 import org.betonquest.betonquest.quest.event.journal.GiveJournalEventFactory;
 import org.betonquest.betonquest.quest.event.journal.JournalEventFactory;
 import org.betonquest.betonquest.quest.event.kill.KillEventFactory;
@@ -242,6 +244,7 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.variables.ConditionVariable;
 import org.betonquest.betonquest.variables.GlobalPointVariable;
 import org.betonquest.betonquest.variables.GlobalTagVariable;
+import org.betonquest.betonquest.variables.ItemDurabilityVariable;
 import org.betonquest.betonquest.variables.ItemVariable;
 import org.betonquest.betonquest.variables.LocationVariable;
 import org.betonquest.betonquest.variables.MathVariable;
@@ -831,6 +834,7 @@ public class BetonQuest extends JavaPlugin {
         registerConditions("burning", BurningCondition.class);
         registerConditions("inconversation", InConversationCondition.class);
         registerConditions("hunger", HungerCondition.class);
+        registerConditions("itemdurability", ItemDurabilityCondition.class);
 
         registerEvents("objective", ObjectiveEvent.class);
         registerEvents("command", CommandEvent.class);
@@ -885,6 +889,7 @@ public class BetonQuest extends JavaPlugin {
         registerNonStaticEvent("cancelconversation", new CancelConversationEventFactory(loggerFactory));
         registerEvent("deleteglobalpoint", new DeleteGlobalPointEventFactory());
         registerEvent("drop", new DropEventFactory(getServer(), getServer().getScheduler(), this));
+        registerNonStaticEvent("itemdurability", new ItemDurabilityEventFactory(loggerFactory, getServer(), getServer().getScheduler(), this));
 
         registerObjectives("location", LocationObjective.class);
         registerObjectives("block", BlockObjective.class);
@@ -952,6 +957,7 @@ public class BetonQuest extends JavaPlugin {
         registerVariable("location", LocationVariable.class);
         registerVariable("math", MathVariable.class);
         registerVariable("randomnumber", RandomNumberVariable.class);
+        registerVariable("itemdurability", ItemDurabilityVariable.class);
 
         registerScheduleType("realtime-daily", RealtimeDailySchedule.class, new RealtimeDailyScheduler(loggerFactory.create(RealtimeDailyScheduler.class, "Schedules"), lastExecutionCache));
         registerScheduleType("realtime-cron", RealtimeCronSchedule.class, new RealtimeCronScheduler(loggerFactory.create(RealtimeCronScheduler.class, "Schedules"), lastExecutionCache));
