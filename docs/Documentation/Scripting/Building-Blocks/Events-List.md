@@ -313,9 +313,13 @@ string is `if condition event1 else event2`, where `condition` is a condition ID
 
 Adds or removes durability from an item in the slot.
 The first argument is the slot, the second the change of durability and the third the amount.
-Optional arguments are `ignoreUnbreakable` to ignore the unbreakable flag and durability/unbreaking enchantment
+Optional arguments are `ignoreUnbreakable` to ignore the unbreakable flag and unbreaking enchantment
 and `ignoreEvents` to bypass event logic, so other plugins will not be able to interfere.
 Available slot types: `HAND`, `OFF_HAND`, `HEAD`, `CHEST`, `LEGS`, `FEET`.
+
+!!! info
+    Both increasing and decreasing durability will be affected by the unbreaking enchantment.
+    To prevent this behaviour use the `ignoreUnbreakable` argument.
 
 !!! example
     ```YAML
