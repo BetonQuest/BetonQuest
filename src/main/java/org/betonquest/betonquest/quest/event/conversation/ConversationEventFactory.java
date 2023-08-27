@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.event.conversation;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -18,14 +17,9 @@ import org.bukkit.scheduler.BukkitScheduler;
  */
 public class ConversationEventFactory implements EventFactory {
     /**
-     * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
+     * Logger factory to create a logger for events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
-
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * Server to use for syncing to the primary server thread.
@@ -45,13 +39,13 @@ public class ConversationEventFactory implements EventFactory {
     /**
      * Create the conversation event factory.
      *
-     * @param server    server to use
-     * @param scheduler scheduler to use
-     * @param plugin    plugin to use
+     * @param loggerFactory logger factory to use
+     * @param server        server to use
+     * @param scheduler     scheduler to use
+     * @param plugin        plugin to use
      */
-    public ConversationEventFactory(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+    public ConversationEventFactory(final BetonQuestLoggerFactory loggerFactory, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
         this.loggerFactory = loggerFactory;
-        this.log = log;
         this.server = server;
         this.scheduler = scheduler;
         this.plugin = plugin;
@@ -62,7 +56,7 @@ public class ConversationEventFactory implements EventFactory {
         final String conversation = Utils.addPackage(instruction.getPackage(), instruction.next());
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
-                        log, new ConversationEvent(loggerFactory, conversation), instruction.getPackage()
+                        loggerFactory.create(ConversationEventFactory.class), new ConversationEvent(loggerFactory, conversation), instruction.getPackage()
                 ), server, scheduler, plugin
         );
     }

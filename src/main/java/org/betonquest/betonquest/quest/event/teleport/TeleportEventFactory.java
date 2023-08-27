@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.teleport;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -17,9 +17,9 @@ import org.bukkit.scheduler.BukkitScheduler;
  */
 public class TeleportEventFactory implements EventFactory {
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
+     * Logger factory to create a logger for events.
      */
-    private final BetonQuestLogger log;
+    private final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * Server to use for syncing to the primary server thread.
@@ -39,12 +39,13 @@ public class TeleportEventFactory implements EventFactory {
     /**
      * Create the teleport event factory.
      *
-     * @param server    server to use
-     * @param scheduler scheduler to use
-     * @param plugin    plugin to use
+     * @param loggerFactory logger factory to use
+     * @param server        server to use
+     * @param scheduler     scheduler to use
+     * @param plugin        plugin to use
      */
-    public TeleportEventFactory(final BetonQuestLogger log, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
-        this.log = log;
+    public TeleportEventFactory(final BetonQuestLoggerFactory loggerFactory, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+        this.loggerFactory = loggerFactory;
         this.server = server;
         this.scheduler = scheduler;
         this.plugin = plugin;
@@ -55,7 +56,7 @@ public class TeleportEventFactory implements EventFactory {
         final CompoundLocation location = instruction.getLocation();
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
-                        log, new TeleportEvent(location), instruction.getPackage()),
+                        loggerFactory.create(TeleportEvent.class), new TeleportEvent(location), instruction.getPackage()),
                 server, scheduler, plugin);
     }
 }

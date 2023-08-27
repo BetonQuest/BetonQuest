@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.point;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -20,17 +20,17 @@ import java.util.Locale;
 public class PointEventFactory implements EventFactory {
 
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
+     * Logger factory to create a logger for events.
      */
-    private final BetonQuestLogger log;
+    private final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * Create the points event factory.
      *
-     * @param log the logger to use
+     * @param loggerFactory logger factory to use
      */
-    public PointEventFactory(final BetonQuestLogger log) {
-        this.log = log;
+    public PointEventFactory(final BetonQuestLoggerFactory loggerFactory) {
+        this.loggerFactory = loggerFactory;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class PointEventFactory implements EventFactory {
 
         final NotificationSender pointSender;
         if (instruction.hasArgument("notify")) {
-            pointSender = new IngameNotificationSender(log, instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.INFO, type.getNotifyCategory());
+            pointSender = new IngameNotificationSender(loggerFactory.create(PointEvent.class), instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.INFO, type.getNotifyCategory());
         } else {
             pointSender = new NoNotificationSender();
         }

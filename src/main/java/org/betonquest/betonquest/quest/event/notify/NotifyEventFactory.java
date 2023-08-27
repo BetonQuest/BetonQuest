@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.notify;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.config.Config;
@@ -36,9 +36,9 @@ public class NotifyEventFactory implements EventFactory {
     private static final Pattern LANGUAGE_PATTERN = Pattern.compile("\\{(?<lang>[a-z-]{2,5})} (?<message>.*?)(?= \\{[a-z-]{2,5}} |$)");
 
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
+     * Logger factory to create a logger for events.
      */
-    private final BetonQuestLogger log;
+    private final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * Server to use for syncing to the primary server thread.
@@ -58,12 +58,13 @@ public class NotifyEventFactory implements EventFactory {
     /**
      * Creates a new factory for {@link NotifyEvent}.
      *
-     * @param server    Server to use for syncing to the primary server thread.
-     * @param scheduler Scheduler to use for syncing to the primary server thread.
-     * @param plugin    Plugin to use for syncing to the primary server thread.
+     * @param loggerFactory Logger factory to use for creating the event logger.
+     * @param server        Server to use for syncing to the primary server thread.
+     * @param scheduler     Scheduler to use for syncing to the primary server thread.
+     * @param plugin        Plugin to use for syncing to the primary server thread.
      */
-    public NotifyEventFactory(final BetonQuestLogger log, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
-        this.log = log;
+    public NotifyEventFactory(final BetonQuestLoggerFactory loggerFactory, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+        this.loggerFactory = loggerFactory;
         this.server = server;
         this.scheduler = scheduler;
         this.plugin = plugin;
@@ -75,7 +76,7 @@ public class NotifyEventFactory implements EventFactory {
         final NotifyIO notifyIO = processInstruction(instruction, translations);
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
-                        log, new NotifyEvent(notifyIO, translations),
+                        loggerFactory.create(NotifyEvent.class), new NotifyEvent(notifyIO, translations),
                         instruction.getPackage()),
                 server, scheduler, plugin
         );
