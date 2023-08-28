@@ -36,12 +36,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
@@ -544,13 +539,20 @@ public class Conversation implements Listener {
                 state = ConversationState.ACTIVE;
                 // the conversation start event must be run on next tick
                 final PlayerConversationStartEvent event = new PlayerConversationStartEvent(player, conv);
-                new BukkitRunnable() {
+                final Future<Void> eventDispatcherTask = Bukkit.getServer().getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> {
+                    Bukkit.getServer().getPluginManager().callEvent(event);
+                    return null;
+                });
 
-                    @Override
-                    public void run() {
-                        Bukkit.getServer().getPluginManager().callEvent(event);
-                    }
-                }.runTask(BetonQuest.getInstance());
+                try {
+                    eventDispatcherTask.get(1, TimeUnit.SECONDS);
+                } catch (InterruptedException | TimeoutException exception) {
+                    LogUtils.getLogger().log(Level.WARNING, "Calling PlayerConversationStartEvent took too long.");
+                    LogUtils.logThrowableIgnore(exception);
+                } catch (ExecutionException exception) {
+                    LogUtils.getLogger().log(Level.SEVERE, "Error while calling PlayerConversationStartEvent.", exception);
+                    return;
+                }
 
                 // stop the conversation if it's canceled
                 if (event.isCancelled()) {
