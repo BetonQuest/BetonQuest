@@ -88,7 +88,7 @@ public final class Utils {
                 final int charsPerPage = Integer.parseInt(Config.getString("config.journal.chars_per_page"));
                 StringBuilder page = new StringBuilder();
                 for (final String word : bigPage.split(" ")) {
-                    if (page.length() + word.length() + 1 > charsPerPage) {
+                    if (getStringLength(page.toString()) + getStringLength(word) + 1 > charsPerPage) {
                         pages.add(page.toString().trim());
                         page = new StringBuilder();
                     }
@@ -102,8 +102,7 @@ public final class Utils {
                 int lines = 0;
                 for (final String line : bigPage.split("((?<!\\\\)\\\\n|\n)")) {
                     StringBuilder lineBuilder = new StringBuilder();
-                    final int lineLength = getStringLength(line);
-                    if (lineLength <= charsPerLine) {
+                    if (getStringLength(line) <= charsPerLine) {
                         lines++;
                         if (lines > linesPerPage) {
                             pages.add(page.toString());
@@ -145,7 +144,7 @@ public final class Utils {
     }
 
     private static int getStringLength(final String string) {
-        return string.replaceAll("[&§][A-Ra-r0-9]", "").replaceAll("((?<!\\\\)\\\\n|\n)", "").length();
+        return string.replaceAll("[&§][0-9A-Fa-fK-Ok-oRrXx]", "").replaceAll("((?<!\\\\)\\\\n|\n)", "").length();
     }
 
     /**
