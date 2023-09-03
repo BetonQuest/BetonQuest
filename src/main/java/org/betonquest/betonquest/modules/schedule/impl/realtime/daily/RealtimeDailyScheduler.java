@@ -58,6 +58,7 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
 
     @Override
     public void start() {
+        lastExecutionCache.cacheStartupTime(schedules.keySet());
         log.debug("Starting simple scheduler.");
         catchupMissedSchedules();
         super.start();
@@ -134,7 +135,7 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
             if (schedule.getCatchup() != CatchupStrategy.NONE) {
                 final Optional<Instant> lastExecutionTime = lastExecutionCache.getLastExecutionTime(schedule.getId());
                 if (lastExecutionTime.isPresent()
-                        && lastExecutionTime.get().plus(1, ChronoUnit.DAYS).isBefore(Instant.now())) {
+                        && schedule.getNextExecution(lastExecutionTime.get()).isBefore(Instant.now())) {
                     missedRuns.add(new MissedRun(schedule, lastExecutionTime.get().plus(1, ChronoUnit.DAYS)));
                 }
             }

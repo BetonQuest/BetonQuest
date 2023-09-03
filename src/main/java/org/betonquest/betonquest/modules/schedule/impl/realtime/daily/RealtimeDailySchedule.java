@@ -8,6 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -56,14 +57,25 @@ public class RealtimeDailySchedule extends Schedule {
     /**
      * Get the next execution time as instant.
      *
+     * @param startTime the time to start searching for the next execution
      * @return instant when the next run of this schedule will be
      */
-    public Instant getNextExecution() {
-        final OffsetDateTime now = OffsetDateTime.now();
+    public Instant getNextExecution(final Instant startTime) {
+        final OffsetDateTime now = OffsetDateTime.ofInstant(startTime, ZoneId.systemDefault());
         OffsetDateTime targetTime = getTimeToRun().atOffset(now.getOffset()).atDate(now.toLocalDate());
         if (targetTime.isBefore(now)) {
             targetTime = targetTime.plusDays(1);
         }
         return targetTime.toInstant();
+    }
+
+    /**
+     * Get the next execution time as instant.
+     * This method uses {@link Instant#now()} as the start time.
+     *
+     * @return instant when the next run of this schedule will be
+     */
+    public Instant getNextExecution() {
+        return getNextExecution(Instant.now());
     }
 }

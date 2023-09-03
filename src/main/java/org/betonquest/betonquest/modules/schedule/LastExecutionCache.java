@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Collection;
 import java.util.Optional;
 
 /**
@@ -133,6 +134,21 @@ public class LastExecutionCache {
      */
     public boolean isCached(final ScheduleID scheduleID) {
         return getRawLastExecutionTime(scheduleID).isPresent();
+    }
+
+    /**
+     * For all schedules that are not in the cache, cache the current time as last execution time.
+     * This allows to find missed schedules during shutdown.
+     *
+     * @param schedules ids of the schedules to cache
+     */
+    public void cacheStartupTime(final Collection<ScheduleID> schedules) {
+        final Instant startupTime = Instant.now();
+        for (final ScheduleID schedule : schedules) {
+            if (!isCached(schedule)) {
+                cacheExecutionTime(schedule, startupTime);
+            }
+        }
     }
 
 }

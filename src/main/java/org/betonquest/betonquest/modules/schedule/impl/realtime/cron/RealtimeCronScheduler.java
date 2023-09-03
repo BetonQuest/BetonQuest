@@ -65,6 +65,7 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
 
     @Override
     public void start() {
+        lastExecutionCache.cacheStartupTime(schedules.keySet());
         log.debug("Starting realtime scheduler.");
         if (reboot) {
             reboot = false;
