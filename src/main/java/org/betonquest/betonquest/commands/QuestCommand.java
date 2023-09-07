@@ -664,7 +664,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         // if there are no arguments then list player's points
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
-            final List<Point> points = playerData.getPoints();
+            final List<Point> points;
+            if (args.length == 4) {
+                final String category = args[3].toLowerCase(Locale.ROOT);
+                points = playerData.getPoints().stream()
+                        .filter(point -> point.getCategory().regionMatches(true, 0, category, 0, category.length()))
+                        .toList();
+            } else {
+                points = playerData.getPoints();
+            }
             log.debug("Listing points");
             sendMessage(sender, "player_points");
             for (final Point point : points) {
@@ -995,7 +1003,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         // if there are no arguments then list player's tags
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
-            final List<String> tags = new ArrayList<>(playerData.getTags());
+            final List<String> tags;
+            if (args.length == 4) {
+                final String tagName = args[3].toLowerCase(Locale.ROOT);
+                tags = new ArrayList<>(playerData.getTags().stream()
+                        .filter(tag -> tag.regionMatches(true, 0, tagName, 0, tagName.length()))
+                        .toList());
+            } else {
+                tags = new ArrayList<>(playerData.getTags());
+            }
             log.debug("Listing tags");
             sendMessage(sender, "player_tags");
             Collections.sort(tags);

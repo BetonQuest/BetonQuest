@@ -170,6 +170,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `cancelquest` command - has its own permission now
 - `compass` command - has its own permission now
 - `language` command - is now persistent
+- `point` command - list can now be filtered by beginning letters
+- `tag` command - list can now be filtered by beginning letters
 - `variable` condition supports escapable underscores to avoid replacement
 - `kill` event - now kills the player, instead of dealing damage, which is more reliable
 - `lightning` event - now has a new noDamage argument
