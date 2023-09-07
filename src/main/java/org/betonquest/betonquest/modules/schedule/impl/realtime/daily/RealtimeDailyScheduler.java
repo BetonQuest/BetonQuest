@@ -134,9 +134,9 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
         for (final RealtimeDailySchedule schedule : schedules.values()) {
             if (schedule.getCatchup() != CatchupStrategy.NONE) {
                 final Optional<Instant> lastExecutionTime = lastExecutionCache.getLastExecutionTime(schedule.getId());
-                if (lastExecutionTime.isPresent()
-                        && schedule.getNextExecution(lastExecutionTime.get()).isBefore(Instant.now())) {
-                    missedRuns.add(new MissedRun(schedule, lastExecutionTime.get().plus(1, ChronoUnit.DAYS)));
+                final Optional<Instant> nextExecution = lastExecutionTime.map(schedule::getNextExecution);
+                if (nextExecution.isPresent() && nextExecution.get().isBefore(Instant.now())) {
+                    missedRuns.add(new MissedRun(schedule, nextExecution.get()));
                 }
             }
         }
