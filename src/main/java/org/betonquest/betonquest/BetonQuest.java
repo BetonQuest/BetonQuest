@@ -130,6 +130,7 @@ import org.betonquest.betonquest.item.QuestItemHandler;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.modules.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.modules.config.DefaultConfigurationFileFactory;
+import org.betonquest.betonquest.modules.config.patcher.migration.Migrator;
 import org.betonquest.betonquest.modules.logger.DefaultBetonQuestLoggerFactory;
 import org.betonquest.betonquest.modules.logger.HandlerFactory;
 import org.betonquest.betonquest.modules.logger.PlayerLogWatcher;
@@ -792,6 +793,8 @@ public class BetonQuest extends JavaPlugin {
         final String version = getDescription().getVersion();
         getInstance().log.debug("BetonQuest " + version + " is starting...");
         getInstance().log.debug(jreInfo);
+
+        Migrator.migrate();
 
         Config.setup(this, config);
         Notify.load();
