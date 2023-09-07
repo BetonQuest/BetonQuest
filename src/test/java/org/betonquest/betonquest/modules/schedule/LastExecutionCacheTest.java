@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -163,5 +165,26 @@ class LastExecutionCacheTest {
     void reload() throws IOException {
         lastExecutionCache.reload();
         verify(cacheAccessor).reload();
+    }
+
+    @Test
+    void testCacheStartup() throws IOException {
+        final Instant start = Instant.now();
+        final ScheduleID newSchedule = mock(ScheduleID.class);
+        final ScheduleID cachedSchedule = mock(ScheduleID.class);
+        final String expected = "2000-01-01T00:00:00Z";
+        when(newSchedule.getFullID()).thenReturn("test-package.testCacheStartup-newSchedule");
+        when(cachedSchedule.getFullID()).thenReturn("test-package.testCacheStartup-cachedSchedule");
+        when(cacheContent.getString("test-package.testCacheStartup-newSchedule")).thenReturn(null);
+        when(cacheContent.getString("test-package.testCacheStartup-cachedSchedule")).thenReturn(expected);
+        lastExecutionCache.cacheStartupTime(List.of(newSchedule, cachedSchedule));
+        final Instant end = Instant.now();
+        final ArgumentMatcher<String> isCurrentTime = value -> {
+            final Instant cachedTime = Instant.parse(value);
+            return cachedTime.isAfter(start) && cachedTime.isBefore(end);
+        };
+        verify(cacheContent).set(eq("test-package.testCacheStartup-newSchedule"), argThat(isCurrentTime));
+        verify(cacheContent, never()).set(eq("test-package.testCacheStartup-cachedSchedule"), anyString());
+        verify(cacheAccessor).save();
     }
 }

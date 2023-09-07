@@ -55,6 +55,7 @@ class RealtimeDailySchedulerTest {
         final RealtimeDailyScheduler scheduler = spy(new RealtimeDailyScheduler(logger, cache));
         scheduler.start();
 
+        verify(cache).cacheStartupTime(any());
         verify(logger, times(1)).debug("Starting simple scheduler.");
         verify(logger, times(1)).debug("Collecting missed schedules...");
         verify(logger, times(1)).debug("Found 0 missed schedule runs that will be caught up.");
@@ -161,6 +162,7 @@ class RealtimeDailySchedulerTest {
         scheduler.addSchedule(schedule);
         scheduler.start();
 
+        verify(cache).cacheStartupTime(any());
         verify(logger, times(1)).debug("Starting simple scheduler.");
         verify(logger, times(1)).debug("Collecting missed schedules...");
         verify(logger, times(1)).debug("Found 0 missed schedule runs that will be caught up.");
