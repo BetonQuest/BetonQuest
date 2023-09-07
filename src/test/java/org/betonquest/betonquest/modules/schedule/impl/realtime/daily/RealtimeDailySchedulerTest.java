@@ -72,6 +72,7 @@ class RealtimeDailySchedulerTest {
         @SuppressWarnings("PMD.CloseResource") final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);
         final RealtimeDailyScheduler scheduler = new RealtimeDailyScheduler(logger, () -> executorService, cache);
         final RealtimeDailySchedule schedule = getSchedule(CatchupStrategy.ONE);
+        when(schedule.getNextExecution(any())).thenReturn(nextMissedExecution);
         when(schedule.getNextExecution()).thenReturn(Instant.now());
         scheduler.addSchedule(schedule);
         scheduler.start();
@@ -98,6 +99,7 @@ class RealtimeDailySchedulerTest {
         @SuppressWarnings("PMD.CloseResource") final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);
         final RealtimeDailyScheduler scheduler = new RealtimeDailyScheduler(logger, () -> executorService, cache);
         final RealtimeDailySchedule schedule = getSchedule(CatchupStrategy.ALL);
+        when(schedule.getNextExecution(any())).thenReturn(nextMissedExecution1, nextMissedExecution2, nextMissedExecution3);
         when(schedule.getNextExecution()).thenReturn(Instant.now());
         scheduler.addSchedule(schedule);
         scheduler.start();
