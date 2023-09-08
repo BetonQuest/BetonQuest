@@ -64,6 +64,7 @@ import org.betonquest.betonquest.conditions.LanguageCondition;
 import org.betonquest.betonquest.conditions.LocationCondition;
 import org.betonquest.betonquest.conditions.LookingAtCondition;
 import org.betonquest.betonquest.conditions.MooncycleCondition;
+import org.betonquest.betonquest.conditions.NumberCompareCondition;
 import org.betonquest.betonquest.conditions.ObjectiveCondition;
 import org.betonquest.betonquest.conditions.PartialDateCondition;
 import org.betonquest.betonquest.conditions.PartyCondition;
@@ -835,6 +836,7 @@ public class BetonQuest extends JavaPlugin {
         registerConditions("inconversation", InConversationCondition.class);
         registerConditions("hunger", HungerCondition.class);
         registerConditions("itemdurability", ItemDurabilityCondition.class);
+        registerConditions("numbercompare", NumberCompareCondition.class);
 
         registerEvents("objective", ObjectiveEvent.class);
         registerEvents("command", CommandEvent.class);
