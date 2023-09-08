@@ -548,6 +548,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Lists, adds or removes journal entries of certain profile
      */
+    @SuppressWarnings("PMD.NcssCount")
     private void handleJournals(final CommandSender sender, final String... args) {
         final Profile profile = getTargetProfile(sender, args);
         if (profile == null) {
@@ -563,9 +564,18 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final Journal journal = playerData.getJournal();
         // if there are no arguments then list player's pointers
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
+            final List<Pointer> pointers;
+            if (args.length == 4) {
+                final String pointerName = args[3].toLowerCase(Locale.ROOT);
+                pointers = journal.getPointers().stream()
+                        .filter(pointer -> pointer.getPointer().regionMatches(true, 0, pointerName, 0, pointerName.length()))
+                        .toList();
+            } else {
+                pointers = journal.getPointers();
+            }
             log.debug("Listing journal pointers");
             sendMessage(sender, "player_journal");
-            for (final Pointer pointer : journal.getPointers()) {
+            for (final Pointer pointer : pointers) {
                 final String date = new SimpleDateFormat(Config.getString("config.date_format"), Locale.ROOT)
                         .format(new Date(pointer.getTimestamp()));
                 sender.sendMessage("§b- " + pointer.getPointer() + " §c(§2" + date + "§c)");
@@ -732,7 +742,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final GlobalData data = instance.getGlobalData();
         // if there are no arguments then list all global points
         if (args.length < 2 || "list".equalsIgnoreCase(args[1]) || "l".equalsIgnoreCase(args[1])) {
-            final List<Point> points = data.getPoints();
+            final List<Point> points;
+            if (args.length == 3) {
+                final String category = args[2].toLowerCase(Locale.ROOT);
+                points = data.getPoints().stream()
+                        .filter(point -> point.getCategory().regionMatches(true, 0, category, 0, category.length()))
+                        .toList();
+            } else {
+                points = data.getPoints();
+            }
             log.debug("Listing global points");
             sendMessage(sender, "global_points");
             for (final Point point : points) {
@@ -1063,7 +1081,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final GlobalData data = instance.getGlobalData();
         // if there are no arguments then list all global tags
         if (args.length < 2 || "list".equalsIgnoreCase(args[1]) || "l".equalsIgnoreCase(args[1])) {
-            final List<String> tags = data.getTags();
+            final List<String> tags;
+            if (args.length == 3) {
+                final String tagName = args[2].toLowerCase(Locale.ROOT);
+                tags = new ArrayList<>(data.getTags().stream()
+                        .filter(tag -> tag.regionMatches(true, 0, tagName, 0, tagName.length()))
+                        .toList());
+            } else {
+                tags = new ArrayList<>(data.getTags());
+            }
             log.debug("Listing global tags");
             sendMessage(sender, "global_tags");
             for (final String tag : tags) {
@@ -1174,12 +1200,25 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 // objectives
                 tags = new ArrayList<>();
                 for (final Objective objective : BetonQuest.getInstance().getPlayerObjectives(profile)) {
-                    tags.add(objective.getLabel());
+                    if (args.length == 4) {
+                        if (objective.getLabel().regionMatches(true, 0, args[3], 0, args[3].length())) {
+                            tags.add(objective.getLabel());
+                        }
+                    } else {
+                        tags.add(objective.getLabel());
+                    }
                 }
             } else {
                 // if player is offline then convert his raw objective strings
                 // to tags
-                tags = new ArrayList<>(playerData.getRawObjectives().keySet());
+                if (args.length == 4) {
+                    final String tagName = args[3].toLowerCase(Locale.ROOT);
+                    tags = new ArrayList<>(playerData.getRawObjectives().keySet().stream()
+                            .filter(objective -> objective.regionMatches(true, 0, tagName, 0, tagName.length()))
+                            .toList());
+                } else {
+                    tags = new ArrayList<>(playerData.getRawObjectives().keySet());
+                }
             }
             // display objectives
             log.debug("Listing objectives");
