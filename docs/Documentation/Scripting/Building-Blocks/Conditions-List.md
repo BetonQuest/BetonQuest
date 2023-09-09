@@ -305,9 +305,19 @@ This condition checks the players moon cycle (1 is full moon, 8 is Waxing Gibbou
     mooncycle 1
     ```
 
+## Number compare: `numbercompare`
+
+This condition compares two numbers.
+The valid operations are: `<`, `<=`, `=`, `>=`, `>`.
+
+!!! example
+    ```YAML
+    numbercompare %ph.other_plugin:points% >= 100
+    ```
+
 ## Objective: `objective`
 
-This conditions is very simple: it's true only when the player has an active objective. The only argument is the name of the objective, as defined in the _objectives_ section.
+This condition is very simple: it's true only when the player has an active objective. The only argument is the name of the objective, as defined in the _objectives_ section.
 
 !!! example
     ```YAML
