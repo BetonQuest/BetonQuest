@@ -20,7 +20,6 @@ public class MMOItemsIntegrator implements Integrator {
         plugin.registerObjectives("mmoitemcraft", MMOItemsCraftObjective.class);
         plugin.registerObjectives("mmoitemupgrade", MMOItemsUpgradeObjective.class);
         plugin.registerObjectives("mmoitemapplygem", MMOItemsApplyGemObjective.class);
-        plugin.registerObjectives("mmoitemcastability", MMOItemsCastAbilityObjective.class);
 
         plugin.registerEvents("mmoitemgive", MMOItemsGiveEvent.class);
         plugin.registerEvents("mmoitemtake", MMOItemsTakeEvent.class);

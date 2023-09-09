@@ -19,7 +19,7 @@ import pl.betoncraft.betonquest.compatibility.magic.MagicIntegrator;
 import pl.betoncraft.betonquest.compatibility.mcmmo.McMMOIntegrator;
 import pl.betoncraft.betonquest.compatibility.mmogroup.mmocore.MMOCoreIntegrator;
 import pl.betoncraft.betonquest.compatibility.mmogroup.mmoitems.MMOItemsIntegrator;
-import pl.betoncraft.betonquest.compatibility.mmogroup.mmolib.MMOLibIntegrator;
+import pl.betoncraft.betonquest.compatibility.mmogroup.mmolib.MythicLibIntegrator;
 import pl.betoncraft.betonquest.compatibility.mythicmobs.MythicMobsIntegrator;
 import pl.betoncraft.betonquest.compatibility.placeholderapi.PlaceholderAPIIntegrator;
 import pl.betoncraft.betonquest.compatibility.protocollib.ProtocolLibIntegrator;
@@ -64,7 +64,7 @@ public class Compatibility implements Listener {
         integrators.put("WorldEdit", new WorldEditIntegrator());
         integrators.put("FastAsyncWorldEdit", new WorldEditIntegrator());
         integrators.put("mcMMO", new McMMOIntegrator());
-        integrators.put("MMOLib", new MMOLibIntegrator());
+        integrators.put("MMOLib", new MythicLibIntegrator());
         integrators.put("MMOCore", new MMOCoreIntegrator());
         integrators.put("MMOItems", new MMOItemsIntegrator());
         integrators.put("EffectLib", new EffectLibIntegrator());
@@ -156,7 +156,7 @@ public class Compatibility implements Listener {
             try {
                 integrator.hook();
                 hooked.add(name);
-            }  catch (final HookException exception) {
+            } catch (final HookException exception) {
                 final String message = String.format("Could not hook into %s %s! %s",
                         hookedPlugin.getName(),
                         hookedPlugin.getDescription().getVersion(),

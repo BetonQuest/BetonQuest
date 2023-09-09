@@ -1,7 +1,7 @@
 package pl.betoncraft.betonquest.compatibility.mythicmobs;
 
-import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper;
-import io.lumine.xikage.mythicmobs.api.exceptions.InvalidMobTypeException;
+import io.lumine.mythic.api.exceptions.InvalidMobTypeException;
+import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import org.bukkit.Location;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.VariableNumber;

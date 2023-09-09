@@ -145,9 +145,9 @@
 
     <!-- from lumine repository -->
     <dependency>
-      <groupId>io.lumine.xikage</groupId>
-      <artifactId>MythicMobs</artifactId>
-      <version>4.11.2</version>
+      <groupId>io.lumine</groupId>
+      <artifactId>Mythic-Dist</artifactId>
+      <version>5.3.5</version>
       <scope>provided</scope>
       <optional>true</optional>
       <exclusions>
@@ -159,8 +159,8 @@
     </dependency>
     <dependency>
       <groupId>io.lumine</groupId>
-      <artifactId>MythicLib</artifactId>
-      <version>1.1.5</version>
+      <artifactId>MythicLib-dist</artifactId>
+      <version>1.6-SNAPSHOT</version>
       <scope>provided</scope>
       <optional>true</optional>
       <exclusions>
@@ -172,8 +172,8 @@
     </dependency>
     <dependency>
       <groupId>net.Indyuce</groupId>
-      <artifactId>MMOCore</artifactId>
-      <version>1.8.2</version>
+      <artifactId>MMOCore-API</artifactId>
+      <version>1.12-SNAPSHOT</version>
       <scope>provided</scope>
       <optional>true</optional>
       <exclusions>
@@ -185,8 +185,8 @@
     </dependency>
     <dependency>
       <groupId>net.Indyuce</groupId>
-      <artifactId>MMOItems</artifactId>
-      <version>6.6.3</version>
+      <artifactId>MMOItems-API</artifactId>
+      <version>6.9.4-SNAPSHOT</version>
       <scope>provided</scope>
       <optional>true</optional>
       <exclusions>
@@ -686,7 +686,8 @@
                 </relocation>
                 <relocation>
                   <pattern>org.apache.commons</pattern>
-                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.apache.commons</shadedPattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.apache.commons
+                  </shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>com.google.common</pattern>

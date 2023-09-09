@@ -1,15 +1,17 @@
 package pl.betoncraft.betonquest.compatibility.mmogroup.mmoitems;
 
+import io.lumine.mythic.lib.api.crafting.event.MythicCraftItemEvent;
 import io.lumine.mythic.lib.api.item.NBTItem;
+import io.lumine.mythic.lib.api.util.ui.FriendlyFeedbackProvider;
 import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
-import net.Indyuce.mmoitems.api.crafting.ConfigMMOItem;
 import net.Indyuce.mmoitems.api.crafting.recipe.CraftingRecipe;
 import net.Indyuce.mmoitems.api.crafting.recipe.Recipe;
-import net.Indyuce.mmoitems.api.event.CraftMMOItemEvent;
 import net.Indyuce.mmoitems.api.event.PlayerUseCraftingStationEvent;
+import net.Indyuce.mmoitems.api.util.message.FFPMMOItems;
 import net.Indyuce.mmoitems.manager.TypeManager;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -75,14 +77,15 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
      * This event is called by MMOItems "recipe-amounts" crafting system.
      */
     @EventHandler(ignoreCancelled = true)
-    public void onRecipeUse(final CraftMMOItemEvent event) {
-        final String playerID = PlayerConverter.getID(event.getPlayer());
-
+    public void onRecipeUse(final MythicCraftItemEvent event) {
+        final HumanEntity humanEntity = event.getTrigger().getWhoClicked();
+        final Player crafter = (Player) humanEntity;
+        final String playerID = PlayerConverter.getID(crafter);
         if (!containsPlayer(playerID) || !checkConditions(playerID)) {
             return;
         }
 
-        final ItemStack craftedItem = event.getResult();
+        final ItemStack craftedItem = event.getCache().getResultOfOperation().getResultInventory().getFirst();
         if (isInvalidItem(craftedItem)) {
             return;
         }
@@ -116,8 +119,8 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
 
         final CraftingRecipe craftingRecipe = (CraftingRecipe) usedRecipe;
 
-        final ConfigMMOItem craftedItem = craftingRecipe.getOutput();
-        if (isInvalidItem(craftedItem.getPreview())) {
+        final ItemStack craftedItem = craftingRecipe.getOutput().getItemStack(new FriendlyFeedbackProvider(FFPMMOItems.get()));
+        if (isInvalidItem(craftedItem)) {
             return;
         }
 

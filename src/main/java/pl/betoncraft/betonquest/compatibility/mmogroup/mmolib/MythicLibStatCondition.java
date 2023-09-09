@@ -9,13 +9,13 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 @SuppressWarnings("PMD.CommentRequired")
-public class MMOLibStatCondition extends Condition {
+public class MythicLibStatCondition extends Condition {
 
     private final String statName;
     private final double targetLevel;
     private boolean mustBeEqual;
 
-    public MMOLibStatCondition(final Instruction instruction) throws InstructionParseException {
+    public MythicLibStatCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
         statName = instruction.next();
@@ -29,9 +29,6 @@ public class MMOLibStatCondition extends Condition {
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         final Player player = PlayerConverter.getPlayer(playerID);
         final MMOPlayerData data = MMOPlayerData.get(player);
-        if (data == null) {
-            return false;
-        }
         final double actualLevel = data.getStatMap().getStat(statName);
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }

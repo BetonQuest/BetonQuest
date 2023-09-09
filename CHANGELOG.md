@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
 ### Changed
+- the MythicMobs integration was updated to MythicMobs 5.3.5
+- the MythicLib integration was updated to MythicLib 1.6-SNAPSHOT
+  - the objectives mmocorecastskill and mmoitemcastability were merged into the mmoskill objective
+- the MMOCore-API integration was updated to MMOCore-API 1.12-SNAPSHOT
+- the MMOItems-API integration was updated to MMOItems-API 6.9.4-SNAPSHOT
 ### Deprecated
 ### Removed
 ### Fixed
