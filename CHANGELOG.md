@@ -172,6 +172,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `language` command - is now persistent
 - `point` command - list can now be filtered by beginning letters
 - `tag` command - list can now be filtered by beginning letters
+- `globalpoint` command - list can now be filtered by beginning letters
+- `globaltag` command - list can now be filtered by beginning letters
+- `journal` command - list can now be filtered by beginning letters
+- `objective` command - list can now be filtered by beginning letters
 - `variable` condition supports escapable underscores to avoid replacement
 - `kill` event - now kills the player, instead of dealing damage, which is more reliable
 - `lightning` event - now has a new noDamage argument
