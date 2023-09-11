@@ -549,7 +549,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Lists, adds or removes journal entries of certain profile
      */
-    @SuppressWarnings("PMD.NcssCount")
     private void handleJournals(final CommandSender sender, final String... args) {
         final Profile profile = getTargetProfile(sender, args);
         if (profile == null) {
