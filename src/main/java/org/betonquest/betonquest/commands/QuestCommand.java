@@ -67,7 +67,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -78,6 +77,8 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.stream.Stream;
 
@@ -564,12 +565,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // if there are no arguments then list player's pointers
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
             log.debug("Listing journal pointers");
+            final Predicate<Pointer> shouldDisplay = createListFilter(args, 3, Pointer::getPointer);
             sendMessage(sender, "player_journal");
-            for (final Pointer pointer : journal.getPointers()) {
-                final String date = new SimpleDateFormat(Config.getString("config.date_format"), Locale.ROOT)
-                        .format(new Date(pointer.getTimestamp()));
-                sender.sendMessage("§b- " + pointer.getPointer() + " §c(§2" + date + "§c)");
-            }
+            journal.getPointers().stream()
+                    .filter(shouldDisplay)
+                    .forEach(pointer -> {
+                        final String date = new SimpleDateFormat(Config.getString("config.date_format"), Locale.ROOT)
+                                .format(new Date(pointer.getTimestamp()));
+                        sender.sendMessage("§b- " + pointer.getPointer() + " §c(§2" + date + "§c)");
+                    });
             return;
         }
         // if there is not enough arguments, display warning
@@ -664,12 +668,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         // if there are no arguments then list player's points
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
-            final List<Point> points = playerData.getPoints();
             log.debug("Listing points");
+            final Predicate<Point> shouldDisplay = createListFilter(args, 3, Point::getCategory);
             sendMessage(sender, "player_points");
-            for (final Point point : points) {
-                sender.sendMessage("§b- " + point.getCategory() + "§e: §a" + point.getCount());
-            }
+            playerData.getPoints().stream()
+                    .filter(shouldDisplay)
+                    .forEach(point -> sender.sendMessage("§b- " + point.getCategory() + "§e: §a" + point.getCount()));
             return;
         }
         // if there is not enough arguments, display warning
@@ -724,12 +728,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final GlobalData data = instance.getGlobalData();
         // if there are no arguments then list all global points
         if (args.length < 2 || "list".equalsIgnoreCase(args[1]) || "l".equalsIgnoreCase(args[1])) {
-            final List<Point> points = data.getPoints();
             log.debug("Listing global points");
+            final Predicate<Point> shouldDisplay = createListFilter(args, 2, Point::getCategory);
             sendMessage(sender, "global_points");
-            for (final Point point : points) {
-                sender.sendMessage("§b- " + point.getCategory() + "§e: §a" + point.getCount());
-            }
+            data.getPoints().stream()
+                    .filter(shouldDisplay)
+                    .forEach(point -> sender.sendMessage("§b- " + point.getCategory() + "§e: §a" + point.getCount()));
             return;
         }
         // handle purge
@@ -995,13 +999,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         // if there are no arguments then list player's tags
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
-            final List<String> tags = new ArrayList<>(playerData.getTags());
             log.debug("Listing tags");
+            final Predicate<String> shouldDisplay = createListFilter(args, 3, Function.identity());
             sendMessage(sender, "player_tags");
-            Collections.sort(tags);
-            for (final String tag : tags) {
-                sender.sendMessage("§b- " + tag);
-            }
+            playerData.getTags().stream()
+                    .filter(shouldDisplay)
+                    .sorted()
+                    .forEach(tag -> sender.sendMessage("§b- " + tag));
             return;
         }
         // if there is not enough arguments, display warning
@@ -1047,12 +1051,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final GlobalData data = instance.getGlobalData();
         // if there are no arguments then list all global tags
         if (args.length < 2 || "list".equalsIgnoreCase(args[1]) || "l".equalsIgnoreCase(args[1])) {
-            final List<String> tags = data.getTags();
             log.debug("Listing global tags");
+            final Predicate<String> shouldDisplay = createListFilter(args, 2, Function.identity());
             sendMessage(sender, "global_tags");
-            for (final String tag : tags) {
-                sender.sendMessage("§b- " + tag);
-            }
+            data.getTags().stream()
+                    .filter(shouldDisplay)
+                    .sorted()
+                    .forEach(tag -> sender.sendMessage("§b- " + tag));
             return;
         }
         // handle purge
@@ -1151,27 +1156,22 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         // if there are no arguments then list player's objectives
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
-            final List<String> tags;
-            if (isOnline) {
-                // if the player is online then just retrieve tags from his
-                // active
-                // objectives
-                tags = new ArrayList<>();
-                for (final Objective objective : BetonQuest.getInstance().getPlayerObjectives(profile)) {
-                    tags.add(objective.getLabel());
-                }
-            } else {
-                // if player is offline then convert his raw objective strings
-                // to tags
-                tags = new ArrayList<>(playerData.getRawObjectives().keySet());
-            }
             // display objectives
             log.debug("Listing objectives");
-            sendMessage(sender, "player_objectives");
-            Collections.sort(tags);
-            for (final String tag : tags) {
-                sender.sendMessage("§b- " + tag);
+            final Predicate<String> shouldDisplay = createListFilter(args, 3, Function.identity());
+            final Stream<String> objectives;
+            if (isOnline) {
+                // if the player is online then just retrieve tags from his active objectives
+                objectives = BetonQuest.getInstance().getPlayerObjectives(profile).stream()
+                        .map(Objective::getLabel);
+            } else {
+                // if player is offline then convert his raw objective strings to tags
+                objectives = playerData.getRawObjectives().keySet().stream();
             }
+            sendMessage(sender, "player_objectives");
+            objectives.filter(shouldDisplay)
+                    .sorted()
+                    .forEach(objective -> sender.sendMessage("§b- " + objective));
             return;
         }
         // if there is not enough arguments, display warning
@@ -1844,6 +1844,18 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             final String message = Config.getMessage(Config.getLanguage(), messageName, variables);
             sender.sendMessage(message);
         }
+    }
+
+    private <T> Predicate<T> createListFilter(final String[] args, final int filterIndex, final Function<T, String> getId) {
+        if (args.length > filterIndex) {
+            return createCaseInsensitivePrefixPredicate(args[filterIndex], getId);
+        } else {
+            return pointer -> true;
+        }
+    }
+
+    private <T> Predicate<T> createCaseInsensitivePrefixPredicate(final String prefix, final Function<T, String> getId) {
+        return element -> getId.apply(element).regionMatches(true, 0, prefix, 0, prefix.length());
     }
 
     private enum AccessorType {

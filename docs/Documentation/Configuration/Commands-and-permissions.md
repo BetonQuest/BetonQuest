@@ -13,12 +13,12 @@ Optional arguments are displayed as such: `[argument]`.
 * `/cancelquest` - Opens the quest canceler menu
 * `/q` - Lists all available admin commands
 * `/q reload` - Reloads the plugin
-* `/q objectives <playerName> <list/add/del/complete> <objectiveName>` - Shows player's currently active objectives
-* `/q tags <playerName> <list/add/del> <tag>` - Lists all player's tags
-* `/q globaltags <playerName> <list/add/del> <tag>` - Lists all global tags
-* `/q points <playerName> <list/add/del> <category> <amount>` - Lists all player's points in all categories
-* `/q globalpoints <playerName> <list/add/del> <category> <amount>`
-* `/q journal <playerName> <list/add/del> <package.pointer> <date>`
+* `/q objectives <playerName> <list/add/del/complete> <objectiveName/filter>` - Shows player's currently active objectives
+* `/q tags <playerName> <list/add/del> <tag/filter>` - Lists all player's tags
+* `/q globaltags <playerName> <list/add/del> <tag/filter>` - Lists all global tags
+* `/q points <playerName> <list/add/del> <category/filter> <amount>` - Lists all player's points in all categories
+* `/q globalpoints <playerName> <list/add/del> <category/filter> <amount>`
+* `/q journal <playerName> <list/add/del> <package.pointer/filter> <date>`
 * `/q event <playerName> <package.eventID>` - Fires an event for the player
 * `/q condition <playerName> <package.conditionID>` - Shows if the player meet specified condition or not
 * `/q item <package.itemID>` - Creates an item based on what you're holding in hand
@@ -35,6 +35,9 @@ Optional arguments are displayed as such: `[argument]`.
 * `/rpgmenu reload <menu>` - Allows reloading all configuration files or just reloading the configuration of one specific menu.
 * `/rpgmenu list` - Lists all currently loaded menus and allows opening them just by clicking on them.
 * `/rpgmenu open <menu> [player]` - Opens a menu for you or another player. [Opening conditions](../Features/Menus/Menu.md#general-menu-settings) of the menu will be ignored when using this command.
+
+The filter only works on the list and will match all objectives/tags/points that start with the filter. 
+Please note, that the names are a composition of the package name and the name of the objective/tag/point.
 
 ### Custom Menu Opening commands
 The plugin lets you create a new command for each menu which allows all players to open the menu.  
