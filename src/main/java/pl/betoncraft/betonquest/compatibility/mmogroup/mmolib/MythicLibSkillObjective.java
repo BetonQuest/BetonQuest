@@ -55,8 +55,8 @@ public class MythicLibSkillObjective extends Objective implements Listener {
     private Collection<TriggerType> parseTriggerTypes(final String triggerTypeString) throws InstructionParseException {
         final Collection<TriggerType> types = new ArrayList<>();
         final Collection<String> possibleTypes = new ArrayList<>();
-        for (TriggerType type : TriggerType.values()) {
-            String name = type.name();
+        for (final TriggerType type : TriggerType.values()) {
+            final String name = type.name();
             possibleTypes.add(name);
         }
         final String[] parts = triggerTypeString.toUpperCase(Locale.ROOT).split(",");
@@ -86,7 +86,7 @@ public class MythicLibSkillObjective extends Objective implements Listener {
             return;
         }
 
-        String playerID = PlayerConverter.getID(event.getPlayer());
+        final String playerID = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(playerID) || !checkConditions(playerID)) {
             return;
         }
