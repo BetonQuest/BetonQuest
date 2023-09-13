@@ -193,6 +193,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `title` event
 - `playsound` event
 ### Fixed
+- catchup now works even if schedule was never executed before
 - q version now works again
 - RPGMenu error when teleport events are used as click events
 - RPGMenu bound items not always working
