@@ -149,6 +149,30 @@ class RealtimeCronSchedulerTest {
     }
 
     @Test
+    void testStartWithoutMissedSchedulesStrategyAll() {
+        final LastExecutionCache cache = mock(LastExecutionCache.class);
+        final Instant lastExecution = Instant.now().minusSeconds(40);
+        when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(lastExecution));
+
+        final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(logger, cache);
+        final RealtimeCronSchedule schedule = getSchedule(CatchupStrategy.ALL, false);
+        final ExecutionTime executionTime = mock(ExecutionTime.class);
+        final ZonedDateTime nextExecution = Instant.now().plusSeconds(20).atZone(ZoneId.systemDefault());
+        when(executionTime.nextExecution(any())).thenReturn(Optional.of(nextExecution));
+        when(schedule.getExecutionTime()).thenReturn(executionTime);
+        scheduler.addSchedule(schedule);
+        scheduler.start();
+
+        verify(logger, times(1)).debug("Starting realtime scheduler.");
+        verify(logger, times(1)).debug("Collecting reboot schedules...");
+        verify(logger, times(1)).debug("Found 0 reboot schedules. They will be run on next server tick.");
+        verify(logger, times(1)).debug("Found 0 missed schedule runs that will be caught up.");
+        verify(logger, times(1)).debug("Realtime scheduler start complete.");
+        verifyNoMoreInteractions(logger);
+        verify(schedule, never()).getEvents();
+    }
+
+    @Test
     @SuppressWarnings("PMD.DoNotUseThreads")
     void testStartSchedule() {
         final Duration duration = Duration.ofSeconds(20);

@@ -55,6 +55,7 @@ class RealtimeDailySchedulerTest {
         final RealtimeDailyScheduler scheduler = spy(new RealtimeDailyScheduler(logger, cache));
         scheduler.start();
 
+        verify(cache).cacheStartupTime(any());
         verify(logger, times(1)).debug("Starting simple scheduler.");
         verify(logger, times(1)).debug("Collecting missed schedules...");
         verify(logger, times(1)).debug("Found 0 missed schedule runs that will be caught up.");
@@ -72,6 +73,7 @@ class RealtimeDailySchedulerTest {
         @SuppressWarnings("PMD.CloseResource") final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);
         final RealtimeDailyScheduler scheduler = new RealtimeDailyScheduler(logger, () -> executorService, cache);
         final RealtimeDailySchedule schedule = getSchedule(CatchupStrategy.ONE);
+        when(schedule.getNextExecution(any())).thenReturn(nextMissedExecution);
         when(schedule.getNextExecution()).thenReturn(Instant.now());
         scheduler.addSchedule(schedule);
         scheduler.start();
@@ -98,6 +100,7 @@ class RealtimeDailySchedulerTest {
         @SuppressWarnings("PMD.CloseResource") final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);
         final RealtimeDailyScheduler scheduler = new RealtimeDailyScheduler(logger, () -> executorService, cache);
         final RealtimeDailySchedule schedule = getSchedule(CatchupStrategy.ALL);
+        when(schedule.getNextExecution(any())).thenReturn(nextMissedExecution1, nextMissedExecution2, nextMissedExecution3);
         when(schedule.getNextExecution()).thenReturn(Instant.now());
         scheduler.addSchedule(schedule);
         scheduler.start();
@@ -113,6 +116,53 @@ class RealtimeDailySchedulerTest {
         verify(logger, times(1)).debug("Simple scheduler start complete.");
         verifyNoMoreInteractions(logger);
         verify(schedule, times(3)).getEvents();
+    }
+
+    @Test
+    void testStartWithoutMissedSchedulesStrategyAll() {
+        final LastExecutionCache cache = mock(LastExecutionCache.class);
+        final Instant lastExecution = Instant.now().minus(1, ChronoUnit.DAYS).plus(1, ChronoUnit.HOURS);
+        final Instant nextExecution = lastExecution.plus(1, ChronoUnit.DAYS);
+        when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(lastExecution));
+        @SuppressWarnings("PMD.CloseResource") final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);
+        final RealtimeDailyScheduler scheduler = new RealtimeDailyScheduler(logger, () -> executorService, cache);
+        final RealtimeDailySchedule schedule = getSchedule(CatchupStrategy.ALL);
+        when(schedule.getNextExecution(any())).thenReturn(nextExecution);
+        when(schedule.getNextExecution()).thenReturn(nextExecution);
+        scheduler.addSchedule(schedule);
+        scheduler.start();
+
+        verify(logger, times(1)).debug("Starting simple scheduler.");
+        verify(logger, times(1)).debug("Collecting missed schedules...");
+        verify(logger, times(1)).debug("Found 0 missed schedule runs that will be caught up.");
+        verify(logger, times(1)).debug("Simple scheduler start complete.");
+        verifyNoMoreInteractions(logger);
+        verify(schedule, never()).getEvents();
+    }
+
+    @Test
+    void testStartWithIrregularLastExecution() {
+        final LastExecutionCache cache = mock(LastExecutionCache.class);
+        final Instant firstStartup = Instant.now().minus(1, ChronoUnit.DAYS).minus(3, ChronoUnit.HOURS);
+        final Instant missedExecution = Instant.now().minus(6, ChronoUnit.HOURS);
+        when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(firstStartup));
+        @SuppressWarnings("PMD.CloseResource") final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);
+        final RealtimeDailyScheduler scheduler = new RealtimeDailyScheduler(logger, () -> executorService, cache);
+        final RealtimeDailySchedule schedule = getSchedule(CatchupStrategy.ALL);
+        when(schedule.getNextExecution(any())).thenReturn(missedExecution);
+        when(schedule.getNextExecution()).thenReturn(Instant.now());
+        scheduler.addSchedule(schedule);
+        scheduler.start();
+
+        verify(logger, times(1)).debug("Starting simple scheduler.");
+        verify(logger, times(1)).debug("Collecting missed schedules...");
+        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' run missed at " + missedExecution);
+        verify(logger, times(1)).debug("Found 1 missed schedule runs that will be caught up.");
+        verify(logger, times(1)).debug("Running missed schedules to catch up...");
+        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' runs its events...");
+        verify(logger, times(1)).debug("Simple scheduler start complete.");
+        verifyNoMoreInteractions(logger);
+        verify(schedule, times(1)).getEvents();
     }
 
     @Test
@@ -137,6 +187,7 @@ class RealtimeDailySchedulerTest {
         scheduler.addSchedule(schedule);
         scheduler.start();
 
+        verify(cache).cacheStartupTime(any());
         verify(logger, times(1)).debug("Starting simple scheduler.");
         verify(logger, times(1)).debug("Collecting missed schedules...");
         verify(logger, times(1)).debug("Found 0 missed schedule runs that will be caught up.");
