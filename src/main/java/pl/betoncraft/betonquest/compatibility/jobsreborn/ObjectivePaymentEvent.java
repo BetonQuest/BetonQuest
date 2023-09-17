@@ -19,7 +19,7 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public ObjectivePaymentEvent(final Instruction instructions) throws InstructionParseException {
         super(instructions);
-        template = ObjectiveData.class;
+        template = PaymentData.class;
         if (instructions.size() < 2) {
             throw new InstructionParseException("Not enough arguments");
         }
