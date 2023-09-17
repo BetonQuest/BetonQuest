@@ -154,7 +154,7 @@ Sometimes, user reviews describe a plugin better than the author can:
 | Clientside Particles     |                :white_check_mark:                |                :x:                |                :x:                 |        :x:         | :material-check-bold: [^4] |     :white_check_mark:     |            :x:             |
 
 
-Use this table with caution, it might be outdated (last update <span class="bq-highlight">**3rd of September 2021**</span>).
+Use this table with caution, it might be outdated (last update <span class="bq-highlight">**15th of September 2023**</span>).
 Please let us know if there is any outdated information.
 
 *[Organized File Structure]: Can multiple folders and files be used to organize your quests?
