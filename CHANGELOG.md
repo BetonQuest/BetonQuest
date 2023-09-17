@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - conversation could have a deadlock and a player can get stuck in a conversation
 - conversation could not be canceled due to a race condition
+- JobsReborn ObjectivePaymentEvent couldn't be used
 ### Security
 
 ## [1.12.10] - 2023-02-18
