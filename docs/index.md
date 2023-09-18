@@ -134,8 +134,8 @@ Sometimes, user reviews describe a plugin better than the author can:
 | Free                     |                :white_check_mark:                |        :white_check_mark:         |         :white_check_mark:         | :white_check_mark: |     :white_check_mark:     |         :x:  (20$)         |       :x:  (19.99$)        |
 | OpenSource               |                :white_check_mark:                |        :white_check_mark:         |         :white_check_mark:         | :white_check_mark: |     :white_check_mark:     |            :x:             |            :x:             |
 | API                      |                :white_check_mark:                |        :white_check_mark:         |         :white_check_mark:         | :white_check_mark: |     :white_check_mark:     | :material-check-bold: [^1] | :material-check-bold: [^1] |
-| Version Support          |                   1.18 - 1.19                    |            1.8 - 1.19             |             1.8 - 1.19             |    1.17 - 1.19     |         1.8 - 1.19         |         1.7 - 1.19         |         1.7 - 1.19         |
-| Integrated Plugins       | @snippet:constants:totalIntegratedPluginsNumber@ |                13                 |                 14                 |         20         |             15             |             29             |             1              |
+| Version Support          |                   1.18 - 1.20                    |            1.8 - 1.20             |             1.8 - 1.20             |    1.17 - 1.20     |         1.8 - 1.19         |         1.7 - 1.20         |         1.7 - 1.20         |
+| Integrated Plugins       | @snippet:constants:totalIntegratedPluginsNumber@ |                14                 |                 16                 |         22         |             29             |             28             |             1              |
 | BetonQuest integration   |                                                  |    :material-check-bold: [^5]     |                :x:                 | :white_check_mark: |            :x:             |            :x:             |            :x:             |
 | Ingame Editor            |                     :x: [^6]                     |         Chat & GUI (Paid)         |                :x:                 | :white_check_mark: |            GUI             |            GUI             |            GUI             |
 | Database Support         |                  SQLite & MySQL                  |               MySQL               |               MySQL                |   SQLite & MySQL   |           MySQL            |           MySQL            |       SQLite & MySQL       |
@@ -154,7 +154,7 @@ Sometimes, user reviews describe a plugin better than the author can:
 | Clientside Particles     |                :white_check_mark:                |                :x:                |                :x:                 |        :x:         | :material-check-bold: [^4] |     :white_check_mark:     |            :x:             |
 
 
-Use this table with caution, it might be outdated (last update <span class="bq-highlight">**3rd of September 2021**</span>).
+Use this table with caution, it might be outdated (last update <span class="bq-highlight">**15th of September 2023**</span>).
 Please let us know if there is any outdated information.
 
 *[Organized File Structure]: Can multiple folders and files be used to organize your quests?
