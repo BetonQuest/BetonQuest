@@ -356,8 +356,8 @@ jobs:
         run: |
           git apply target/docs/changes.patch
           rm target/docs/changes.patch
-      - name: Deploy Release to Github Pages
-        if: "env.VERSION_TYPE == 'release'"
+      - name: Deploy to Github Pages
+        if: "env.VERSION_TYPE == 'release' || env.VERSION_TYPE == 'development'"
         run: |
           git config --global user.name "BetonQuest-Bot"
           git config --global user.email "contact@betonquest.org"
@@ -365,30 +365,24 @@ jobs:
           IFS='.' read -r major minor _ <<< "$VERSION"
           TWO_DIGIT_VERSION="$major.$minor"
           
-          if [ "$TXT" = "docs-requirements-insiders.txt" ]
-          then
-            mike deploy --push --update-aliases "$TWO_DIGIT_VERSION" RELEASE --config-file mkdocs.insiders.yml
-          else
-             mike deploy --push --update-aliases "$TWO_DIGIT_VERSION" RELEASE
+          FLAGS=(--push --update-aliases)
+          VERSION=()
+          if [ "$TXT" = "docs-requirements-insiders.txt" ]; then FLAGS+=(--config-file mkdocs.insiders.yml)"; fi
+          if [ "$VERSION_TYPE" = release ]; then
+            VERSION+=("$TWO_DIGIT_VERSION" "$TWO_DIGIT_VERSION-DEV")
+            if [ ${{ github.ref }} == 'refs/heads/main' ] || { mike list --json "$TWO_DIGIT_VERSION" | grep -q '"aliases" *: *\[[^]]*"RELEASE"'; }; then
+              VERSION+=(RELEASE)
+            fi
+          else if [ "$VERSION_TYPE" = development ]; then
+            VERSION+=("$TWO_DIGIT_VERSION-DEV")
           fi
           
-          mike delete --push "$TWO_DIGIT_VERSION-DEV"
-      - name: Deploy development to Github Pages
-        if: "env.VERSION_TYPE == 'development'"
-        run: |
-          git config --global user.name "BetonQuest-Bot"
-          git config --global user.email "contact@betonquest.org"
-
-          IFS='.' read -r major minor _ <<< "$VERSION"
-          TWO_DIGIT_VERSION="$major.$minor"
+          if [ ${{ github.ref }} == 'refs/heads/main' ]; then VERSION+=(DEV); fi
           
-          if [ "$TXT" = "docs-requirements-insiders.txt" ]
-          then
-            [ ${{ github.ref }} == 'refs/heads/main' ] && mike deploy --push --update-aliases "$TWO_DIGIT_VERSION-DEV" DEV --config-file mkdocs.insiders.yml || mike deploy --push --update-aliases "$TWO_DIGIT_VERSION-DEV" --config-file mkdocs.insiders.yml
-          else
-            [ ${{ github.ref }} == 'refs/heads/main' ] && mike deploy --push --update-aliases "$TWO_DIGIT_VERSION-DEV" DEV || mike deploy --push --update-aliases "$TWO_DIGIT_VERSION-DEV"
+          if [ "$VERSION_TYPE" = release ]; then
+            mike delete "$TWO_DIGIT_VERSION-DEV"
           fi
-
+          mike deploy "${FLAGS[@]}" "${VERSION[@]}"
   create-release:
     name: Create GitHub Release
     if: "needs.prepare.outputs.VERSION_TYPE == 'release' && needs.deploy-artifacts.result == 'success' && needs.deploy-docs.result == 'success'"
