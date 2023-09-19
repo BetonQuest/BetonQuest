@@ -367,19 +367,23 @@ jobs:
           TWO_DIGIT_VERSION="$major.$minor"
           
           FLAGS=(--push --update-aliases)
-          VERSION=("$TWO_DIGIT_VERSION")
+          VERSION=()
           if [ "$TXT" = "docs-requirements-insiders.txt" ]; then FLAGS+=(--config-file mkdocs.insiders.yml)"; fi
           if [ "$VERSION_TYPE" = release ]; then
+            VERSION+=("$TWO_DIGIT_VERSION" "$TWO_DIGIT_VERSION-DEV")
             if [ ${{ github.ref }} == 'refs/heads/main' ] || { mike list --json "$TWO_DIGIT_VERSION" | grep -q '"aliases" *: *\[[^]]*"RELEASE"'; }; then
               VERSION+=(RELEASE)
             fi
-          else
-            ARGUMENTS+=(--title="$TWO_DIGIT_VERSION-DEV")
+          else if [ "$VERSION_TYPE" = development ]; then
+            VERSION+=("$TWO_DIGIT_VERSION-DEV")
           fi
+          
           if [ ${{ github.ref }} == 'refs/heads/main' ]; then VERSION+=(DEV); fi
           
+          if [ "$VERSION_TYPE" = release ]; then
+            mike delete "$TWO_DIGIT_VERSION-DEV"
+          fi
           mike deploy "${FLAGS[@]}" "${VERSION[@]}"
-
   create-release:
     name: Create GitHub Release
     if: "needs.prepare.outputs.VERSION_TYPE == 'release' && needs.deploy-artifacts.result == 'success' && needs.deploy-docs.result == 'success'"
