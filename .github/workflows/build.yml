@@ -373,7 +373,7 @@ jobs:
             if [ ${{ github.ref }} == 'refs/heads/main' ] || { mike list --json "$TWO_DIGIT_VERSION" | grep -q '"aliases" *: *\[[^]]*"RELEASE"'; }; then
               VERSION+=(RELEASE)
             fi
-          else if [ "$VERSION_TYPE" = development ]; then
+          elif [ "$VERSION_TYPE" = development ]; then
             VERSION+=("$TWO_DIGIT_VERSION-DEV")
             if ! { mike list --json | grep -q "\"version\" *: *\"$TWO_DIGIT_VERSION\""; }; then
               VERSION+=("$TWO_DIGIT_VERSION")
