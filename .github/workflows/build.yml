@@ -375,6 +375,9 @@ jobs:
             fi
           else if [ "$VERSION_TYPE" = development ]; then
             VERSION+=("$TWO_DIGIT_VERSION-DEV")
+            if ! { mike list --json | grep -q "\"version\" *: *\"$TWO_DIGIT_VERSION\""; }; then
+              VERSION+=("$TWO_DIGIT_VERSION")
+            fi
           fi
           
           if [ ${{ github.ref }} == 'refs/heads/main' ]; then VERSION+=(DEV); fi
