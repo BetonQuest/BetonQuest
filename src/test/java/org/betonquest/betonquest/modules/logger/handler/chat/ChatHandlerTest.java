@@ -46,7 +46,9 @@ class ChatHandlerTest {
 
     @Test
     void testFormatException() {
-        final ChatHandler handler = new ChatHandler(mock(RecordReceiverSelector.class), mock(BukkitAudiences.class));
+        final RecordReceiverSelector recordReceiverSelector = mock(RecordReceiverSelector.class);
+        when(recordReceiverSelector.findReceivers(any())).thenReturn(Set.of(UUID.randomUUID()));
+        final ChatHandler handler = new ChatHandler(recordReceiverSelector, mock(BukkitAudiences.class));
         final Formatter formatter = mock(Formatter.class);
         when(formatter.format(any())).thenThrow(new RuntimeException());
         handler.setFormatter(formatter);
