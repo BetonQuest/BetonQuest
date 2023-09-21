@@ -10,7 +10,9 @@ import org.betonquest.betonquest.api.LoadDataEvent;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.Variable;
+import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
+import org.betonquest.betonquest.api.config.ConfigurationFileFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -125,6 +127,8 @@ import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.id.VariableID;
 import org.betonquest.betonquest.item.QuestItemHandler;
 import org.betonquest.betonquest.menu.RPGMenu;
+import org.betonquest.betonquest.modules.config.DefaultConfigAccessorFactory;
+import org.betonquest.betonquest.modules.config.DefaultConfigurationFileFactory;
 import org.betonquest.betonquest.modules.logger.DefaultBetonQuestLoggerFactory;
 import org.betonquest.betonquest.modules.logger.HandlerFactory;
 import org.betonquest.betonquest.modules.logger.PlayerLogWatcher;
@@ -264,6 +268,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.ServicePriority;
+import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -339,6 +344,10 @@ public class BetonQuest extends JavaPlugin {
     private final ConcurrentHashMap<Profile, PlayerData> playerDataMap = new ConcurrentHashMap<>();
 
     private BetonQuestLoggerFactory loggerFactory;
+
+    private ConfigAccessorFactory configAccessorFactory;
+
+    private ConfigurationFileFactory configurationFileFactory;
 
     private BetonQuestLogger log;
 
@@ -662,6 +671,24 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
+     * Get the ConfigAccessor factory.
+     *
+     * @return The ConfigAccessor factory.
+     */
+    public ConfigAccessorFactory getConfigAccessorFactory() {
+        return configAccessorFactory;
+    }
+
+    /**
+     * Get the ConfigurationFile factory.
+     *
+     * @return The ConfigurationFile factory.
+     */
+    public ConfigurationFileFactory getConfigurationFileFactory() {
+        return configurationFileFactory;
+    }
+
+    /**
      * Get the adventure instance.
      *
      * @return The adventure instance.
@@ -698,16 +725,30 @@ public class BetonQuest extends JavaPlugin {
 
     @Override
     public void onLoad() {
+        final ServicesManager servicesManager = getServer().getServicesManager();
+
         final CachingBetonQuestLoggerFactory loggerFactory = new CachingBetonQuestLoggerFactory(new DefaultBetonQuestLoggerFactory());
-        getServer().getServicesManager().register(BetonQuestLoggerFactory.class, loggerFactory, this, ServicePriority.Lowest);
+        servicesManager.register(BetonQuestLoggerFactory.class, loggerFactory, this, ServicePriority.Lowest);
+
+        final ConfigAccessorFactory configAccessorFactory = new DefaultConfigAccessorFactory();
+        servicesManager.register(ConfigAccessorFactory.class, configAccessorFactory, this, ServicePriority.Lowest);
+
+        final ConfigurationFileFactory configurationFileFactory = new DefaultConfigurationFileFactory();
+        servicesManager.register(ConfigurationFileFactory.class, configurationFileFactory, this, ServicePriority.Lowest);
     }
 
     @SuppressWarnings({"PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @Override
     public void onEnable() {
         instance = this;
-        this.loggerFactory = getServer().getServicesManager().load(BetonQuestLoggerFactory.class);
+        final ServicesManager servicesManager = getServer().getServicesManager();
+        this.loggerFactory = servicesManager.load(BetonQuestLoggerFactory.class);
         assert loggerFactory != null;
+        this.configAccessorFactory = servicesManager.load(ConfigAccessorFactory.class);
+        assert configAccessorFactory != null;
+        this.configurationFileFactory = servicesManager.load(ConfigurationFileFactory.class);
+        assert configurationFileFactory != null;
+
         this.log = loggerFactory.create(this);
         pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
 
