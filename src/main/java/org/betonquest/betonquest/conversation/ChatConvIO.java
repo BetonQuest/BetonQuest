@@ -94,7 +94,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         if (!event.getTo().getWorld().equals(conv.getLocation().getWorld()) || event.getTo()
                 .distance(conv.getLocation()) > maxNpcDistance) {
             // we can stop the player or end conversation
-            if (conv.isMovementBlock()) {
+            if (conv.isMovementBlock() || !conv.state.isStarted()) {
                 moveBack(event);
             } else {
                 conv.endConversation();
