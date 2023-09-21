@@ -28,7 +28,7 @@ public class ChatHandler extends Handler {
      * Creates a new {@link ChatHandler}.
      *
      * @param receiverSelector a selector to decide the receiving players
-     * @param bukkitAudiences The {@link BukkitAudiences} instance for sending messages.
+     * @param bukkitAudiences  The {@link BukkitAudiences} instance for sending messages.
      */
     public ChatHandler(final RecordReceiverSelector receiverSelector, final BukkitAudiences bukkitAudiences) {
         super();
@@ -49,12 +49,17 @@ public class ChatHandler extends Handler {
             return;
         }
 
+        final Set<UUID> receivers = receiverSelector.findReceivers(record);
+        if (receivers.isEmpty()) {
+            return;
+        }
+
         final String message = format(record);
         if (message == null) {
             return;
         }
 
-        sendMessageToPlayers(record, message);
+        sendMessageToPlayers(receivers, message);
     }
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
@@ -67,8 +72,7 @@ public class ChatHandler extends Handler {
         }
     }
 
-    private void sendMessageToPlayers(final LogRecord record, final String msg) {
-        final Set<UUID> receivers = receiverSelector.findReceivers(record);
+    private void sendMessageToPlayers(final Set<UUID> receivers, final String msg) {
         for (final UUID uuid : receivers) {
             bukkitAudiences.player(uuid).sendMessage(GsonComponentSerializer.gson().deserialize(msg));
         }
