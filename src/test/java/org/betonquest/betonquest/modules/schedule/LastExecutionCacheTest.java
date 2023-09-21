@@ -181,7 +181,7 @@ class LastExecutionCacheTest {
         final Instant end = Instant.now();
         final ArgumentMatcher<String> isCurrentTime = value -> {
             final Instant cachedTime = Instant.parse(value);
-            return cachedTime.isAfter(start) && cachedTime.isBefore(end);
+            return !cachedTime.isBefore(start) && !cachedTime.isAfter(end);
         };
         verify(cacheContent).set(eq("test-package.testCacheStartup-newSchedule"), argThat(isCurrentTime));
         verify(cacheContent, never()).set(eq("test-package.testCacheStartup-cachedSchedule"), anyString());
