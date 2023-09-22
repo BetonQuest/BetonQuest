@@ -15,6 +15,7 @@ import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -101,6 +102,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     private final BetonQuest instance = BetonQuest.getInstance();
 
+    private final ConfigAccessorFactory configAccessorFactory;
+
     private final BukkitAudiences bukkitAudiences;
 
     /**
@@ -117,9 +120,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Registers a new executor and a new tab completer of the /betonquest command.
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public QuestCommand(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final BukkitAudiences bukkitAudiences, final PlayerLogWatcher logWatcher, final LogPublishingController debuggingController) {
+    public QuestCommand(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final BukkitAudiences bukkitAudiences, final PlayerLogWatcher logWatcher, final LogPublishingController debuggingController) {
         this.loggerFactory = loggerFactory;
         this.log = log;
+        this.configAccessorFactory = configAccessorFactory;
         this.bukkitAudiences = bukkitAudiences;
         this.logWatcher = logWatcher;
         this.debuggingController = debuggingController;
@@ -315,7 +319,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         sendMessage(sender, "offline");
                         break;
                     }
-                    Utils.backup();
+                    Utils.backup(configAccessorFactory);
                     break;
                 case "debug":
                     handleDebug(sender, args);

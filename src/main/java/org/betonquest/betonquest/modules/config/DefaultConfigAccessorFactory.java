@@ -12,6 +12,12 @@ import java.io.FileNotFoundException;
  * Factory for {@link ConfigAccessor} instances.
  */
 public class DefaultConfigAccessorFactory implements ConfigAccessorFactory {
+    /**
+     * Creates a new DefaultConfigAccessorFactory instance.
+     */
+    public DefaultConfigAccessorFactory() {
+    }
+
     @Override
     public ConfigAccessor create(final File configurationFile, final Plugin plugin, final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
         return new ConfigAccessorImpl(configurationFile, plugin, resourceFile);

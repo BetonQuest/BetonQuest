@@ -11,8 +11,6 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -57,27 +55,10 @@ class LastExecutionCacheTest {
 
     @BeforeEach
     void setUp() {
-        try (MockedStatic<ConfigAccessor> configAccessor = mockStatic(ConfigAccessor.class);
-             MockedStatic<Files> files = mockStatic(Files.class)) {
+        try (MockedStatic<Files> files = mockStatic(Files.class)) {
             lenient().when(cacheAccessor.getConfig()).thenReturn(cacheContent);
-            configAccessor.when(() -> ConfigAccessor.create(any(File.class))).thenReturn(cacheAccessor);
             files.when(() -> Files.exists(any(Path.class))).thenReturn(true);
-            lastExecutionCache = new LastExecutionCache(logger, new File("."));
-            verify(logger, times(1)).debug("Successfully loaded schedule cache.");
-        }
-    }
-
-    @Test
-    void testLoadIOException() {
-        try (MockedStatic<ConfigAccessor> configAccessor = mockStatic(ConfigAccessor.class);
-             MockedStatic<Files> files = mockStatic(Files.class)) {
-            lenient().when(cacheAccessor.getConfig()).thenReturn(cacheContent);
-            configAccessor.when(() -> ConfigAccessor.create(any(File.class))).thenThrow(new FileNotFoundException("FileNotFound"));
-            files.when(() -> Files.exists(any(Path.class))).thenReturn(true);
-            lastExecutionCache = new LastExecutionCache(logger, new File("."));
-            verify(logger, times(1)).error(eq("Error while loading schedule cache: FileNotFound"), any(FileNotFoundException.class));
-            final Optional<Instant> result = lastExecutionCache.getLastExecutionTime(scheduleID);
-            assertEquals(Optional.empty(), result, "result should be empty");
+            lastExecutionCache = new LastExecutionCache(logger, cacheAccessor);
         }
     }
 

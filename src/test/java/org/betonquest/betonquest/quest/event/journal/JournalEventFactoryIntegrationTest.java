@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.SingletonLoggerFactory;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.modules.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.modules.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactoryAdapter;
@@ -64,7 +65,7 @@ class JournalEventFactoryIntegrationTest {
         if (!packageConfigFile.createNewFile()) {
             throw new IOException("Failed to create test package main configuration file.");
         }
-        return new QuestPackageImpl(logger, "test", packageConfigFile, Collections.emptyList());
+        return new QuestPackageImpl(logger, new DefaultConfigAccessorFactory(), "test", packageConfigFile, Collections.emptyList());
     }
 
     private QuestEventFactoryAdapter createJournalEventFactory(final BetonQuestLogger logger) {

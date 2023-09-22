@@ -2,12 +2,8 @@ package org.betonquest.betonquest.modules.schedule;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.bukkit.configuration.InvalidConfigurationException;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -20,11 +16,6 @@ import java.util.Optional;
  */
 public class LastExecutionCache {
     /**
-     * The File where last executions should be cached.
-     */
-    public static final String CACHE_FILE = ".cache/schedules.yml";
-
-    /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
@@ -32,27 +23,17 @@ public class LastExecutionCache {
     /**
      * Config accessor for the cache.
      */
-    private ConfigAccessor cache;
+    private final ConfigAccessor cache;
 
     /**
      * Create a new execution cache instance for a given schedule.
      *
-     * @param log        the logger that will be used for logging
-     * @param dataFolder the BetonQuest data folder
+     * @param log   the logger that will be used for logging
+     * @param cache the config accessor for the cache
      */
-    public LastExecutionCache(final BetonQuestLogger log, final File dataFolder) {
+    public LastExecutionCache(final BetonQuestLogger log, final ConfigAccessor cache) {
         this.log = log;
-        try {
-            final Path cacheFile = new File(dataFolder, CACHE_FILE).toPath();
-            if (!Files.exists(cacheFile)) {
-                Files.createDirectories(Optional.ofNullable(cacheFile.getParent()).orElseThrow());
-                Files.createFile(cacheFile);
-            }
-            this.cache = ConfigAccessor.create(cacheFile.toFile());
-            this.log.debug("Successfully loaded schedule cache.");
-        } catch (final IOException | InvalidConfigurationException e) {
-            this.log.error("Error while loading schedule cache: " + e.getMessage(), e);
-        }
+        this.cache = cache;
     }
 
     /**

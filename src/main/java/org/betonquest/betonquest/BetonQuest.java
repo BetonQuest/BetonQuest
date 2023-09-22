@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.LoadDataEvent;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.Variable;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.ConfigurationFileFactory;
@@ -277,6 +278,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.InstantSource;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -284,6 +287,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
@@ -330,6 +334,11 @@ public class BetonQuest extends JavaPlugin {
      * The indicator for dev versions.
      */
     private static final String DEV_INDICATOR = "DEV";
+
+    /**
+     * The File where last executions should be cached.
+     */
+    private static final String CACHE_FILE = ".cache/schedules.yml";
 
     /**
      * The BetonQuest Plugin instance.
@@ -723,31 +732,22 @@ public class BetonQuest extends JavaPlugin {
         }
     }
 
-    @Override
-    public void onLoad() {
+    private <T> T registerAndGetService(final Class<T> clazz, final T service) {
         final ServicesManager servicesManager = getServer().getServicesManager();
-
-        final CachingBetonQuestLoggerFactory loggerFactory = new CachingBetonQuestLoggerFactory(new DefaultBetonQuestLoggerFactory());
-        servicesManager.register(BetonQuestLoggerFactory.class, loggerFactory, this, ServicePriority.Lowest);
-
-        final ConfigAccessorFactory configAccessorFactory = new DefaultConfigAccessorFactory();
-        servicesManager.register(ConfigAccessorFactory.class, configAccessorFactory, this, ServicePriority.Lowest);
-
-        final ConfigurationFileFactory configurationFileFactory = new DefaultConfigurationFileFactory();
-        servicesManager.register(ConfigurationFileFactory.class, configurationFileFactory, this, ServicePriority.Lowest);
+        servicesManager.register(clazz, service, this, ServicePriority.Lowest);
+        final T loaded = servicesManager.load(clazz);
+        assert loaded != null;
+        return loaded;
     }
 
     @SuppressWarnings({"PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @Override
     public void onEnable() {
         instance = this;
-        final ServicesManager servicesManager = getServer().getServicesManager();
-        this.loggerFactory = servicesManager.load(BetonQuestLoggerFactory.class);
-        assert loggerFactory != null;
-        this.configAccessorFactory = servicesManager.load(ConfigAccessorFactory.class);
-        assert configAccessorFactory != null;
-        this.configurationFileFactory = servicesManager.load(ConfigurationFileFactory.class);
-        assert configurationFileFactory != null;
+
+        this.loggerFactory = registerAndGetService(BetonQuestLoggerFactory.class, new CachingBetonQuestLoggerFactory(new DefaultBetonQuestLoggerFactory()));
+        this.configAccessorFactory = registerAndGetService(ConfigAccessorFactory.class, new DefaultConfigAccessorFactory());
+        this.configurationFileFactory = registerAndGetService(ConfigurationFileFactory.class, new DefaultConfigurationFileFactory(loggerFactory, loggerFactory.create(DefaultConfigurationFileFactory.class), configAccessorFactory));
 
         this.log = loggerFactory.create(this);
         pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
@@ -757,9 +757,17 @@ public class BetonQuest extends JavaPlugin {
         getInstance().log.info(jreInfo);
 
         try {
-            config = ConfigurationFile.create(new File(getDataFolder(), "config.yml"), this, "config.yml");
+            config = configurationFileFactory.create(new File(getDataFolder(), "config.yml"), this, "config.yml");
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
             getInstance().log.error("Could not load the config.yml file!", e);
+            return;
+        }
+
+        final ConfigAccessor menuConfigAccessor;
+        try {
+            menuConfigAccessor = configAccessorFactory.create(new File(getDataFolder(), "menuConfig.yml"), this, "menuConfig.yml");
+        } catch (final InvalidConfigurationException | FileNotFoundException e) {
+            getInstance().log.error("Could not load the menuConfig.yml file!", e);
             return;
         }
 
@@ -803,14 +811,26 @@ public class BetonQuest extends JavaPlugin {
 
         saver = new AsyncSaver(loggerFactory.create(AsyncSaver.class, "Database"));
         saver.start();
-        Backup.loadDatabaseFromBackup();
+        Backup.loadDatabaseFromBackup(configAccessorFactory);
 
         new JoinQuitListener(loggerFactory, loggerFactory.create(JoinQuitListener.class));
 
         new QuestItemHandler();
 
         eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), SCHEDULE_TYPES);
-        lastExecutionCache = new LastExecutionCache(loggerFactory.create(LastExecutionCache.class, "Cache"), getDataFolder());
+        final ConfigAccessor cache;
+        try {
+            final Path cacheFile = new File(getDataFolder(), CACHE_FILE).toPath();
+            if (!Files.exists(cacheFile)) {
+                Files.createDirectories(Optional.ofNullable(cacheFile.getParent()).orElseThrow());
+                Files.createFile(cacheFile);
+            }
+            cache = configAccessorFactory.create(cacheFile.toFile());
+        } catch (final IOException | InvalidConfigurationException e) {
+            this.log.error("Error while loading schedule cache: " + e.getMessage(), e);
+            return;
+        }
+        lastExecutionCache = new LastExecutionCache(loggerFactory.create(LastExecutionCache.class, "Cache"), cache);
 
         new GlobalObjectives();
 
@@ -822,7 +842,7 @@ public class BetonQuest extends JavaPlugin {
 
         new CustomDropListener(loggerFactory.create(CustomDropListener.class));
 
-        new QuestCommand(loggerFactory, loggerFactory.create(QuestCommand.class), adventure, new PlayerLogWatcher(receiverSelector), debugHistoryHandler);
+        new QuestCommand(loggerFactory, loggerFactory.create(QuestCommand.class), configAccessorFactory, adventure, new PlayerLogWatcher(receiverSelector), debugHistoryHandler);
         new JournalCommand();
         new BackpackCommand(loggerFactory.create(BackpackCommand.class));
         new CancelQuestCommand();
@@ -1048,7 +1068,7 @@ public class BetonQuest extends JavaPlugin {
 
         setupUpdater();
 
-        rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory);
+        rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, menuConfigAccessor);
         rpgMenu.onEnable();
 
         PaperLib.suggestPaper(this);

@@ -50,5 +50,5 @@ public interface ConfigAccessorFactory {
      * @throws FileNotFoundException         thrown if the {@code configurationFile} or the {@code resourceFile}
      *                                       could not be found
      */
-    ConfigAccessor create(final File configurationFile, final Plugin plugin, final String resourceFile) throws InvalidConfigurationException, FileNotFoundException;
+    ConfigAccessor create(File configurationFile, Plugin plugin, String resourceFile) throws InvalidConfigurationException, FileNotFoundException;
 }
