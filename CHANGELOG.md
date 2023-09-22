@@ -223,6 +223,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `/q journal` command allowed invalid journal pointers
 - AsyncSaver will shut itself down if the database connection is lost, resulting in data loss
 - Journal entries did count color codes as line length, affecting the formatting of pages
+- Notification categories could be modified during runtime with the notify event
 - Things that are also fixed in 1.12.X:
     - eating of items when entering the chest conversation io actually consumed the item 
     - legacy `§x` HEX color format not working in some contexts
