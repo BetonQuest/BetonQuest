@@ -92,7 +92,7 @@ public final class Notify {
         for (final String category : categories) {
             final Map<String, String> data = CATEGORY_SETTINGS.get(category);
             if (data != null) {
-                return data;
+                return new HashMap<>(data);
             }
         }
         return new HashMap<>();
