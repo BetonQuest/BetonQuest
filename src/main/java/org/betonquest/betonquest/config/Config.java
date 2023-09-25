@@ -3,7 +3,9 @@ package org.betonquest.betonquest.config;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
+import org.betonquest.betonquest.api.config.ConfigurationFileFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -59,11 +61,13 @@ public final class Config {
     public static void setup(final BetonQuest plugin, final ConfigurationFile config) {
         Config.plugin = plugin;
         LANGUAGES.clear();
+        final ConfigAccessorFactory configAccessorFactory = BetonQuest.getInstance().getConfigAccessorFactory();
+        final ConfigurationFileFactory configurationFileFactory = BetonQuest.getInstance().getConfigurationFileFactory();
 
         final File root = plugin.getDataFolder();
         try {
-            messages = ConfigurationFile.create(new File(root, "messages.yml"), plugin, "messages.yml");
-            internal = ConfigAccessor.create(plugin, "messages-internal.yml");
+            messages = configurationFileFactory.create(new File(root, "messages.yml"), plugin, "messages.yml");
+            internal = configAccessorFactory.create(plugin, "messages-internal.yml");
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
             LOG.warn(e.getMessage(), e);
             return;
@@ -78,7 +82,7 @@ public final class Config {
         }
 
         final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
-        questManager = new QuestManager(loggerFactory, loggerFactory.create(QuestManager.class), root);
+        questManager = new QuestManager(loggerFactory, loggerFactory.create(QuestManager.class), configAccessorFactory, root);
     }
 
     /**

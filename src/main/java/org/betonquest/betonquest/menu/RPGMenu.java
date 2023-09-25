@@ -22,7 +22,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.HandlerList;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,15 +42,21 @@ public class RPGMenu {
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
+    /**
+     * The {@link ConfigAccessor} for the menu config file.
+     */
+    private final ConfigAccessor menuConfigAccessor;
+
     private final Map<MenuID, Menu> menus;
 
     private RPGMenuConfig config;
 
     private RPGMenuCommand pluginCommand;
 
-    public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory) {
+    public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor menuConfigAccessor) {
         this.log = log;
         this.loggerFactory = loggerFactory;
+        this.menuConfigAccessor = menuConfigAccessor;
         menus = new HashMap<>();
     }
 
@@ -131,13 +136,6 @@ public class RPGMenu {
         BetonQuest.getInstance().registerVariable("menu", MenuVariable.class);
         //load the plugin command
         this.pluginCommand = new RPGMenuCommand(loggerFactory.create(RPGMenuCommand.class));
-        //create config if it doesn't exist
-        final File config = new File(BetonQuest.getInstance().getDataFolder(), "menuConfig.yml");
-        try {
-            ConfigAccessor.create(config, BetonQuest.getInstance(), "menuConfig.yml");
-        } catch (final InvalidConfigurationException | FileNotFoundException e) {
-            log.warn(e.getMessage(), e);
-        }
     }
 
     public void onDisable() {
@@ -165,7 +163,7 @@ public class RPGMenu {
         }
         final ReloadInformation info = new ReloadInformation();
         try {
-            this.config = new RPGMenuConfig();
+            this.config = new RPGMenuConfig(menuConfigAccessor);
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
             log.error("Invalid Configuration.", e);
             info.addError(e);

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.database;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -38,18 +39,19 @@ public final class Backup {
     /**
      * Backs the database up to a specified .yml file (it should not exist)
      *
-     * @param databaseBackupFile non-existent file where the database should be dumped
+     * @param configAccessorFactory the factory that will be used to create {@link ConfigAccessor}s
+     * @param databaseBackupFile    non-existent file where the database should be dumped
      * @return true if the backup was successful, false if there was an error
      */
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     @SuppressWarnings({"PMD.CognitiveComplexity"})
-    public static boolean backupDatabase(final File databaseBackupFile) {
+    public static boolean backupDatabase(final ConfigAccessorFactory configAccessorFactory, final File databaseBackupFile) {
         final BetonQuest instance = BetonQuest.getInstance();
         try {
             boolean done = true;
             // prepare the config file
             databaseBackupFile.createNewFile();
-            final ConfigAccessor accessor = ConfigAccessor.create(databaseBackupFile);
+            final ConfigAccessor accessor = configAccessorFactory.create(databaseBackupFile);
             final FileConfiguration config = accessor.getConfig();
             // prepare the database and map
             final HashMap<String, ResultSet> map = new HashMap<>();
@@ -114,10 +116,12 @@ public final class Backup {
 
     /**
      * If the database backup file exists, loads it into the database.
+     *
+     * @param configAccessorFactory the factory that will be used to create {@link ConfigAccessor}s
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.NcssCount", "PMD.AvoidDuplicateLiterals"})
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
-    public static void loadDatabaseFromBackup() {
+    public static void loadDatabaseFromBackup(final ConfigAccessorFactory configAccessorFactory) {
         final BetonQuest instance = BetonQuest.getInstance();
         final File file = new File(instance.getDataFolder(), "database-backup.yml");
         // if the backup doesn't exist then there is nothing to load, return
@@ -136,7 +140,7 @@ public final class Backup {
         }
         final String filename = "old-database-" + backupNumber + ".yml";
         LOG.info("Backing up old database!");
-        if (!backupDatabase(new File(backupFolder, filename))) {
+        if (!backupDatabase(configAccessorFactory, new File(backupFolder, filename))) {
             LOG.warn("There was an error during old database backup process. This means that"
                     + " if the plugin loaded new database (from backup), the old one would be lost "
                     + "forever. Because of that the loading of backup was aborted!");
@@ -144,7 +148,7 @@ public final class Backup {
         }
         final ConfigAccessor accessor;
         try {
-            accessor = ConfigAccessor.create(file);
+            accessor = configAccessorFactory.create(file);
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
             LOG.warn(e.getMessage(), e);
             return;

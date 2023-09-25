@@ -2,6 +2,7 @@ package org.betonquest.betonquest.modules.config;
 
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -61,9 +62,12 @@ public class QuestManager {
     /**
      * Loads all {@link QuestTemplate}s and {@link QuestPackage}s from the root directory and applies all templates.
      *
-     * @param root The root directory where to create the root folders for templates and packages
+     * @param loggerFactory         logger factory to use
+     * @param log                   the logger that will be used for logging
+     * @param configAccessorFactory the factory that will be used to create {@link ConfigAccessor}s
+     * @param root                  The root directory where to create the root folders for templates and packages
      */
-    public QuestManager(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final File root) {
+    public QuestManager(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final File root) {
         this.log = log;
         this.packages = new HashMap<>();
 
@@ -77,11 +81,11 @@ public class QuestManager {
         final Map<String, QuestTemplate> templates = new HashMap<>();
         try {
             searchForPackages(templatesDir, templatesDir, FILE_NAME_INDICATOR, FILE_TYPE_INDICATOR, (questPath, questFile, files) -> {
-                final QuestTemplate quest = new QuestTemplate(loggerFactory.create(QuestTemplate.class), questPath, questFile, files);
+                final QuestTemplate quest = new QuestTemplate(loggerFactory.create(QuestTemplate.class), configAccessorFactory, questPath, questFile, files);
                 templates.put(quest.getQuestPath(), quest);
             });
             searchForPackages(packagesDir, packagesDir, FILE_NAME_INDICATOR, FILE_TYPE_INDICATOR, (questPath, questFile, files) -> {
-                final QuestPackageImpl quest = new QuestPackageImpl(loggerFactory.create(QuestPackageImpl.class), questPath, questFile, files);
+                final QuestPackageImpl quest = new QuestPackageImpl(loggerFactory.create(QuestPackageImpl.class), configAccessorFactory, questPath, questFile, files);
                 try {
                     quest.applyQuestTemplates(templates);
                 } catch (final InvalidConfigurationException e) {

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.utils;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unimi.dsi.fastutil.Pair;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
@@ -44,13 +45,16 @@ public final class Utils {
 
     /**
      * Does a full configuration backup.
+     *
+     * @param configAccessorFactory the factory that will be used to create
+     *                              {@link org.betonquest.betonquest.api.config.ConfigAccessor}s
      */
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
-    public static void backup() {
+    public static void backup(final ConfigAccessorFactory configAccessorFactory) {
         LOG.info("Backing up!");
         final long time = new Date().getTime();
         final BetonQuest instance = BetonQuest.getInstance();
-        if (!Backup.backupDatabase(new File(instance.getDataFolder(), "database-backup.yml"))) {
+        if (!Backup.backupDatabase(configAccessorFactory, new File(instance.getDataFolder(), "database-backup.yml"))) {
             LOG.warn("There was an error during backing up the database! This does not affect"
                     + " the configuration backup, nor damage your database. You should backup"
                     + " the database maually if you want to be extra safe, but it's not necessary if"

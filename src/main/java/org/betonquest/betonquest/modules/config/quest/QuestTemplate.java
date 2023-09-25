@@ -3,6 +3,8 @@ package org.betonquest.betonquest.modules.config.quest;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.fallback.MultiFallbackConfiguration;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -34,17 +36,19 @@ public class QuestTemplate extends Quest {
     /**
      * Creates a new {@link QuestTemplate}. For more information see {@link Quest}.
      *
-     * @param questPath the path that addresses this {@link QuestTemplate}
-     * @param root      the root file of this {@link QuestTemplate}
-     * @param files     all files contained by this {@link QuestTemplate}
+     * @param log                   the logger that will be used for logging
+     * @param configAccessorFactory the factory that will be used to create {@link ConfigAccessor}s
+     * @param questPath             the path that addresses this {@link QuestTemplate}
+     * @param root                  the root file of this {@link QuestTemplate}
+     * @param files                 all files contained by this {@link QuestTemplate}
      * @throws InvalidConfigurationException thrown if a {@link org.betonquest.betonquest.api.config.ConfigAccessor}
      *                                       could not be created or an exception occurred while creating the
      *                                       {@link MultiConfiguration}
      * @throws FileNotFoundException         thrown if a file could not be found during the creation
      *                                       of a {@link org.betonquest.betonquest.api.config.ConfigAccessor}
      */
-    public QuestTemplate(final BetonQuestLogger log, final String questPath, final File root, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
-        super(log, questPath, root, files);
+    public QuestTemplate(final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final String questPath, final File root, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
+        super(log, configAccessorFactory, questPath, root, files);
         templates = new HashSet<>();
     }
 

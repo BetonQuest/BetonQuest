@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.KeyConflictExcep
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.configuration.ConfigurationSection;
@@ -33,6 +34,11 @@ public abstract class Quest {
     private final BetonQuestLogger log;
 
     /**
+     * The factory that will be used to create {@link ConfigAccessor}s.
+     */
+    private final ConfigAccessorFactory configAccessorFactory;
+
+    /**
      * The address of this {@link Quest}.
      */
     private final String questPath;
@@ -52,23 +58,26 @@ public abstract class Quest {
      * <p>
      * All {@code files} are merged into one {@link MultiConfiguration} config.
      *
-     * @param questPath the path that addresses this {@link Quest}
-     * @param root      the root file of this {@link Quest}
-     * @param files     all files contained in this {@link Quest}
+     * @param log                   the logger that will be used for logging
+     * @param configAccessorFactory the factory that will be used to create {@link ConfigAccessor}s
+     * @param questPath             the path that addresses this {@link Quest}
+     * @param root                  the root file of this {@link Quest}
+     * @param files                 all files contained in this {@link Quest}
      * @throws InvalidConfigurationException thrown if a {@link ConfigAccessor} could not be created
      *                                       or an exception occurred while creating the {@link MultiConfiguration}
      * @throws FileNotFoundException         thrown if a file could not be found during the creation
      *                                       of a {@link ConfigAccessor}
      */
-    public Quest(final BetonQuestLogger log, final String questPath, final File root, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
+    public Quest(final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final String questPath, final File root, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
         this.log = log;
+        this.configAccessorFactory = configAccessorFactory;
         this.questPath = questPath;
         this.root = root;
         this.configs = new ArrayList<>();
 
         final HashMap<ConfigurationSection, String> configurations = new HashMap<>();
         for (final File file : files) {
-            final ConfigAccessor configAccessor = ConfigAccessor.create(file);
+            final ConfigAccessor configAccessor = configAccessorFactory.create(file);
             configs.add(configAccessor);
             configurations.put(configAccessor.getConfig(), getRelativePath(root, file));
         }
@@ -156,7 +165,7 @@ public abstract class Quest {
         } catch (final IOException e) {
             throw new InvalidConfigurationException(e.getMessage(), e);
         }
-        final ConfigAccessor newAccessor = ConfigAccessor.create(newConfig);
+        final ConfigAccessor newAccessor = configAccessorFactory.create(newConfig);
         configs.add(newAccessor);
         return newAccessor;
     }
