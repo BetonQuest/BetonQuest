@@ -9,7 +9,7 @@ icon: octicons/info-16
     Newly added API's are subject to change and will have an API state assigned to them.
 
     We appreciate any feedback!
-    The [old API page](API.md) is still available.
+    The [old API page](API.md) is still available and still explain current API that was not reworked yet.
 
     ??? question "API States"
         @snippet:api-state:state-explanation@
@@ -63,3 +63,7 @@ You can add BetonQuest as a dependency using your build system. Here is the conf
           - BetonQuest
         # ...
         ```
+
+---
+## Next Steps
+Now you should read how to [Obtain the API](Obtaining-API.md).
