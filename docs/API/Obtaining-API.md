@@ -37,4 +37,4 @@ The old API use the `BetonQuest` class as an entry point to the API.
 The most methods are static and can be accessed directly. Other methods are accessed through the `BetonQuest` instance.
 It is possible to obtain the `BetonQuest` instance by using the `BetonQuest.getInstance()` method.
 
-All the old API is documented on the [Legacy API](API.md) page.
+All the old API is documented on the [Legacy API](Legacy-API.md) page.
