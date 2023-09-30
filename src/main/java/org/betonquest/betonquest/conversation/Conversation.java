@@ -324,7 +324,14 @@ public class Conversation implements Listener {
         if (state.isInactive()) {
             return;
         }
-        lock.writeLock().lock();
+        if (plugin.getServer().isPrimaryThread()) {
+            if (!lock.writeLock().tryLock()) {
+                plugin.getServer().getScheduler().runTaskAsynchronously(plugin, this::endConversation);
+                return;
+            }
+        } else {
+            lock.writeLock().lock();
+        }
         try {
             if (state.isInactive()) {
                 return;
