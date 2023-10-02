@@ -253,8 +253,8 @@ nav:
               - 'Changelog': Documentation/CHANGELOG.md
   - 'API':
       - 'Overview': API/Overview.md
-      - 'Obtaining API': API/Obtaining-Legacy-API.md
-      - 'Legacy API': API/Legacy-Legacy-API.md
+      - 'Obtaining API': API/Obtaining-API.md
+      - 'Legacy API': API/Legacy-API.md
       - 'ConfigurationFile': API/ConfigurationFile.md
       - 'Logging': API/Logging.md
       - 'Schedules': API/Schedules.md
