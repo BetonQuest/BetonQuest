@@ -15,12 +15,14 @@ Additionally, it takes care of patching the config whenever syntax or content ch
 
 By creating a ConfigurationFile you either load an existing config or create the default one from your plugin's resources.
 ```java
+ConfigurationFileFactory configurationFileFactory; //(1)!
 Plugin plugin = MyBQAddonPlugin.getInstance();
-File configFile = new File(plugin.getDataFolder(), "config.yml"); // (1)!
-ConfigurationFile config = new ConfigurationFile(configFile, plugin, "defaultConfig.yml");
+File configFile = new File(plugin.getDataFolder(), "config.yml"); // (2)!
+ConfigurationFile config = configurationFileFactory.create(configFile, plugin, "defaultConfig.yml");
 ```
 
-1. This is the location the config will be saved to. In this case it's a file named "_config.yml_" in your plugin's folder.
+1. Obtained via the ServicesManager, see the [Obtaining API](Obtaining-API.md) page.
+2. This is the location the config will be saved to. In this case it's a file named "_config.yml_" in your plugin's folder.
 
 Additionally, the ConfigurationFile will attempt to patch itself with a patch file. See [updating ConfigurationFiles](#updating-configurationfiles) for more information.
 
@@ -31,6 +33,13 @@ You can reload, save and delete the ConfigurationFile by calling it's correspond
 methods.
 
 Make sure to add a `configVersion` key with an empty string as it's value when adding a new config resource file.
+
+``` YAML title="Example config.yml"
+configVersion: ""
+language: en
+...
+```
+
 The patcher will then automatically set the version to the newest available patch version.
 This frees you from the hassle of updating the `configVersion` key in the default resource file every time you add a patch.
  
@@ -263,15 +272,12 @@ This is just a functional interface, that registers additional transformers.
 Utilizing this possibility will however override the default transformers. You need to re-add them explicitly. 
 
 ```JAVA title="Anonymous PatchTransformerRegisterer Example"
-config = ConfigurationFile.create(configFile, MyPlugin.getInstance(), "config.yml",
-    new PatchTransformerRegisterer() {
-        @Override
-        public void registerTransformers(final Patcher patcher) {
-            PatchTransformerRegisterer.super.registerTransformers(patcher); //(1)!
-            // Register your own transformers here:
-            patcher.registerTransformer("myTransformer", new MyTransformer()); 
-        }
-    });
+PatchTransformerRegisterer defaultTransformers = new DefaultPatchTransformerRegisterer();
+config = ConfigurationFile.create(configFile, MyPlugin.getInstance(), "config.yml", patcher -> {
+    defaultTransformers.registerTransformers(patcher); //(1)!
+    // Register your own transformers here:
+    patcher.registerTransformer("myTransformer", new MyTransformer()); 
+});
 ```
 
 1. Call this if you want to use the default transformers alongside your own.
