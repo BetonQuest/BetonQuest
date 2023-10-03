@@ -257,7 +257,7 @@ nav:
       - APIs:
           - 'Legacy API': API/Legacy-API.md
           - 'Logging': API/Logging.md
-          - 'ConfigurationFile': API/ConfigurationFile.md
+          - 'Configuration Files': API/ConfigurationFiles.md
           - 'Schedules': API/Schedules.md
   - 'Participate':
       - 'Overview': Participate/Overview.md

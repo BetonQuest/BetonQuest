@@ -3,6 +3,10 @@ icon: material/note-edit
 ---
 @snippet:api-state:draft@
 
+!!! abstract "[ServicesManager](Obtaining-API.md) API Classes"
+    * `org.betonquest.betonquest.api.config.ConfigurationFileFactory`
+---
+
 BetonQuest provides the `ConfigurationFile`, a simple API to load, reload, save and delete configuration files.
 It extends `ConfigurationSection` and therefore also provides the well-known Bukkit methods to access and modify the configuration.
 Additionally, it takes care of patching the config whenever syntax or content changes need to be made.
