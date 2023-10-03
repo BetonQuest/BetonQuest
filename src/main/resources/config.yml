@@ -40,6 +40,7 @@ remove_items_after_respawn: true
 quest_items_unbreakable: true
 player_hider_check_interval: 20
 npc_hider_check_interval: 100
+hologram_update_interval: 200
 sounds:
   start: ENTITY_VILLAGER_AMBIENT
   end: ENTITY_VILLAGER_YES
