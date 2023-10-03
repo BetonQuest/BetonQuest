@@ -143,6 +143,10 @@ Cannot be disabled currently. If you want this to be semi-disabled set a very hi
 `npc_hider_check_interval` is the interval in which the NPCHider checks the conditions and updates the NPC's visibility.
 Cannot be disabled currently. If you want this to be semi-disabled set a very high value.
 
+### Hologram update interval
+`hologram_update_interval` is the interval in which the holograms check the conditions and update content and visibility.
+Cannot be disabled currently. If you want this to be semi-disabled set a very high value.
+
 ### Sounds
 This section defines what sounds will be played on these occasions:
 
