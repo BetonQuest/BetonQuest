@@ -3,6 +3,10 @@ icon: material/text-box-outline
 ---
 @snippet:api-state:stable@
 
+!!! abstract "[ServicesManager](Obtaining-API.md) API Classes"
+    * `org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory`
+---
+
 This page shows you everything you need to know about the BetonQuest logger, no matter if you are working on BetonQuest 
 itself or an integration / addon.
 
@@ -38,54 +42,30 @@ These features were mainly made for BetonQuest, but are also very useful for 3rd
     The naming convention is to use _PascalCase_ for topics.
 
 ## Obtaining a BetonQuestLogger
-
-You should always use dependency injection to provide a `BetonQuestLogger` instance to your class.
-This is a simple example:
-
-
+Use the `BetonQuestLoggerFactory.create()` method to obtain a new BetonQuestLogger instance:
 ```java linenums="1"
-public class MyAddon extends JavaPlugin {
-
-    private BetonQuestLoggerFactory loggerFactory;
-
-    @Override
-    public void onEnable() { //(2)!
-        loggerFactory = Bukkit.getServicesManager().load(BetonQuestLoggerFactory.class); //(1)!
-        new MyFeature(loggerFactory.create(MyFeature.class));
-    }
-}
+BetonQuestLoggerFactory loggerFactory; //(1)!
+BetonQuestLogger logger = loggerFactory.create(MyFeature.class);
 ```
 
-1. Make sure [BetonQuest is loaded](./Overview.md#ensuring-that-betonquest-is-loaded) before using this code!
-2. The earliest point to obtain a `BetonQuestLoggerFactory` is in the `onEnable()` method of your plugin.
-
-```java linenums="1"
-public class MyFeature {
-
-    private final BetonQuestLogger log;
-
-    public MyFeature(final BetonQuestLogger log) {
-        this.log = log;
-    }
-}
-```
+1. Obtained via the ServicesManager, see the [Obtaining API](Obtaining-API.md) page.
 
 
-
-!!! warning "Getting the logger in a class that extends `Plugin`"
-    The methods described above don't work for your plugin's main class (or any other class that extends `Plugin`). 
-    Create the logger instance in the `onEnable()` method instead like this:
+!!! hint "Getting the logger in a class that extends `Plugin`"
+    A class extends `Plugin` can not get an injected `BetonQuestLogger` instance,
+    and can also not use the above `create` method.
+    Therefore, you need to create the logger instance in the `onEnable()` method instead like this:
 
     ```java linenums="1"
     public class BetonQuestAddon extends JavaPlugin {
 
-        private BetonQuestLoggerFactory loggerFactory; 
+        private BetonQuestLoggerFactory betonQuestLoggerFactory; 
         private BetonQuestLogger log;
 
         @Override
         public void onEnable() {
-            loggerFactory = Bukkit.getServicesManager().load(BetonQuestLoggerFactory.class);
-            log = BetonQuestLoggerFactory.create(this);
+            betonQuestLoggerFactory = Bukkit.getServicesManager().load(BetonQuestLoggerFactory.class);
+            log = betonQuestLoggerFactory.create(this);
         }
     }
     ```
@@ -107,31 +87,27 @@ public class MyFeature {
     but it will still cache the instances for the same topic or without a topic.
     
 ## Logging with Topics
-
-
 This is useful if you want to give your log messages a prefix like `(Database)`.
 Mainly _PascalCase_ should be used for topics and they should be short and meaningful to the user. 
 
 ```java linenums="1"
-final BetonQuestLogger logger = loggerFactory.create(MyClass.class, "MyCustomTopic");
+BetonQuestLoggerFactory loggerFactory;
+BetonQuestLogger logger = loggerFactory.create(MyFeature.class, "MyCustomTopic");
 ```
 
 ## Using the BetonQuestLogger
-A BetonQuestLogger will be available as the variable `log` once you [obtained a BetonQuestLogger instance](#obtaining-a-betonquestlogger-instance). 
-It has a bunch of methods for all use cases. Its JavaDocs explain when and how to use these.
+The BetonQuestLogger has a bunch of methods for all use cases. Its JavaDocs explain when and how to use these.
 Make sure to give the JavaDocs a quick read!
 
-The usage then look like this:
+The usage might look like this:
 ````java linenums="1"
-log.info("Hello Log!");
+logger.info("Hello Log!");
 ````
 
 ### Method Overview
-
 All methods come in multiple variants. Always provide a package if possible, as this allows the user to filter log
 messages.
  
-
 | Name                              | Use Case                                                                                                                                                   | Example                                                                                             |
 |-----------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
 | :shushing_face: Debug             | Used to display internal states or events that may be beneficial for bug-fixing. These messages are only be visible in the debug log.                      | An event has been fired.                                                                            |

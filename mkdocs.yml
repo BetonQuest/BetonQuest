@@ -254,10 +254,11 @@ nav:
   - 'API':
       - 'Overview': API/Overview.md
       - 'Obtaining API': API/Obtaining-API.md
-      - 'Legacy API': API/Legacy-API.md
-      - 'ConfigurationFile': API/ConfigurationFile.md
-      - 'Logging': API/Logging.md
-      - 'Schedules': API/Schedules.md
+      - APIs:
+          - 'Legacy API': API/Legacy-API.md
+          - 'Logging': API/Logging.md
+          - 'ConfigurationFile': API/ConfigurationFile.md
+          - 'Schedules': API/Schedules.md
   - 'Participate':
       - 'Overview': Participate/Overview.md
       - 'Donate Money': Participate/Donating-Money.md

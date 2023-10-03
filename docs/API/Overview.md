@@ -9,7 +9,7 @@ icon: octicons/info-16
     Newly added API's are subject to change and will have an API state assigned to them.
 
     We appreciate any feedback!
-    The [old API page](Legacy-Legacy-API.md) is still available and still explains API that was not reworked yet.
+    The [old API page](Legacy-API.md) is still available and still explains API that was not reworked yet.
 
     ??? question "API States"
         @snippet:api-state:state-explanation@
