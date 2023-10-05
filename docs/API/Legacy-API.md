@@ -6,7 +6,7 @@ icon: octicons/gear-16
     Main parts are already reworked in BetonQuest 2.0, other parts will mainly be reworked in 3.0 and 4.0 in the far future.
     All API on this page will get replacements, but there are none at the moment, so if you use this API,
     you will have to rewrite your code in the future.
-    The documentation on this page may not be upt to date and may not be complete anymore.
+    The documentation on this page may not be up to date and may not be complete anymore.
     
     If we change something we will update the JavaDocs, so make sure to check them out if something seems to be missing here.
     This is the case because we prefer to delete outdated content from this page instead of updating it.
