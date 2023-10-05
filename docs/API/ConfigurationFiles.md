@@ -37,7 +37,7 @@ Make sure to add a `configVersion` key with an empty string as it's value when a
 ``` YAML title="Example config.yml"
 configVersion: ""
 language: en
-...
+# ...
 ```
 
 The patcher will then automatically set the version to the newest available patch version.
