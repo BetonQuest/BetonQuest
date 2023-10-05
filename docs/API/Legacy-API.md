@@ -62,7 +62,7 @@ For example `delay` objective starts and cancels a runnable, instead of using li
 
 If your objective has some properties (used in variables) you should override the `String getProperty(String property, String playerID)` method.
 At runtime, if anyone uses `%objective.yourObjective.theProperty%` variable,
-BetonQuest will call that method with `theProperty` keyword as the first argument
+BetonQuest will call that method with `theProperty` keyword as the first argument.
 Using it you should parse the data of the objective and return it as a String.
 If the supplied property name is incorrect or there was an error during getting the value,
 return an empty String and optionally log an error (`LogUtils.getLogger().log(...)`).
