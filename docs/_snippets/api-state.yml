@@ -1,19 +1,14 @@
 draft: |-
   ??? warning "API State: `Draft`"
       @snippet:api-state:state-explanation@
-  ---
 
 stable: |-
   ??? warning "API State: `Stable`"
       @snippet:api-state:state-explanation@
-  ---
-
 
 unfinished: |-
   ??? warning "API State: `Unfinished`"
       @snippet:api-state:state-explanation@
-  ---
-
 
 state-explanation: |-
   <h3><u>Unfinished</u> </h3>
@@ -35,5 +30,3 @@ state-explanation: |-
   Only bugs and major conceptual problems would lead to more changes.
 
   **This part of the API should be safe to use. We try to keep it compatible with previous versions if changes are needed.**
-  
-  
