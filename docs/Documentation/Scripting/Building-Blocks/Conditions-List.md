@@ -7,7 +7,7 @@ icon: octicons/question-16
 
 This condition checks if the player has specified advancement. The only argument is the full name of the advancement.
 This includes the namespace, the tab and the name of the advancement as configured on your server. 
-[List of all vanilla advancements](https://minecraft.gamepedia.com/Advancement#List_of_advancements).
+[List of all vanilla advancements](https://minecraft.wiki/w/Advancement#List_of_advancements).
 
 !!! example
     ```YAML
@@ -298,7 +298,7 @@ Checks if the player is looking at a block with the given location or material. 
 
 ## Moon Cycle: `mooncycle`
 
-This condition checks the players moon cycle (1 is full moon, 8 is Waxing Gibbous) and returns if the player is under that moon. A list of phases can be found [here](https://minecraft.gamepedia.com/Moon).
+This condition checks the players moon cycle (1 is full moon, 8 is Waxing Gibbous) and returns if the player is under that moon. A list of phases can be found [here](https://minecraft.wiki/w/Moon).
 
 !!! example
     ```YAML

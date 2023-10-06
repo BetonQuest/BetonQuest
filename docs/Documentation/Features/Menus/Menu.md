@@ -30,7 +30,7 @@ These are general settings for customizing a menu.
 
 | Setting Name | <div style="width:160px">Example</div> | Description                                                                                                                                                                     |
 |:------------:|:---------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|   `title`    | `title: "&6&lQuests"`                  | Will be displayed in the top left corner of your menu. You can use [color codes](https://minecraft.gamepedia.com/Formatting_codes) to color the title. Variables are supported. |
+|   `title`    | `title: "&6&lQuests"`                  | Will be displayed in the top left corner of your menu. You can use [color codes](https://minecraft.wiki/w/Formatting_codes) to color the title. Variables are supported. |
 |   `height`   | `height: 3`                            | How many lines of slots your menu will have. Minimum 1, Maximum 6.                                                                                                              |
 
 #### Optional Settings
@@ -76,7 +76,7 @@ The three basic optional settings.
 ### The optional `text` setting
 By default, the name and description of the quest item is displayed when hovering over the item.
 You can overwrite this by using the `text` setting.
-Both [color codes](https://minecraft.gamepedia.com/Formatting_codes) and [variables](../../Scripting/Building-Blocks/Variables-List.md) are supported.
+Both [color codes](https://minecraft.wiki/w/Formatting_codes) and [variables](../../Scripting/Building-Blocks/Variables-List.md) are supported.
 The text can be provided as a single string with newlines, a multi-line string, or a list of strings, see examples.
 
 ``` YAML title="List Example"
