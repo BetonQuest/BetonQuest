@@ -122,7 +122,7 @@ during the animation.
 
 ### Sound
 This IO just plays a sound. You can use its options in any other IO.
-You should read the [wiki page](https://minecraft.gamepedia.com/Commands/playsound) of the playsound command
+You should read the [wiki page](https://minecraft.wiki/w/Commands/playsound) of the playsound command
 as Minecraft's sound system is kinda strange. Just one example: Sound never moves in Minecraft. It's totally static.
 Keep that in mind when creating sounds close to a player. They can move around the sound and make it louder or quieter by walking towards / away from it.
 
@@ -130,7 +130,7 @@ Keep that in mind when creating sounds close to a player. They can move around t
 |-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | sound             | Sound to play. If blank, no sound. Either vanilla Minecraft sounds (get them using /playsound autocompletion) or the name of a sound from a resource pack. |
 | soundcategory     | The [category](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/SoundCategory.html) in which the sound will be played.                                  |
-| soundvolume       | Minecraft's [special sound volume](https://minecraft.gamepedia.com/Commands/playsound#Arguments). Default: _1_                                             |
+| soundvolume       | Minecraft's [special sound volume](https://minecraft.wiki/w/Commands/playsound#Arguments). Default: _1_                                             |
 | soundpitch        | Pitch of the sound. Default: _1_ Min: _0_ Max: _2_                                                                                                         |
 | soundlocation     | Default: The player's location. A location using the BetonQuest [ULF](../../Scripting/Data-Formats.md#unified-location-formating). Can include variables.  |
 | soundplayeroffset | This option is special. See below.                                                                                                                         |
