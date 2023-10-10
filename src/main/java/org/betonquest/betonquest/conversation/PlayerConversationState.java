@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.conversation;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -16,7 +15,7 @@ import org.bukkit.Location;
  * @param currentOption       the option that was selected by the player when the conversation was stopped
  * @param location            the location of the player when the conversation was started
  */
-@CustomLog
+
 public record PlayerConversationState(ConversationID currentConversation, String currentOption, Location location) {
 
     /**

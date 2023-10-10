@@ -142,14 +142,6 @@ public class Conversation implements Listener {
         this.blacklist = plugin.getPluginConfig().getStringList("cmd_blacklist");
         this.messagesDelaying = "true".equalsIgnoreCase(plugin.getPluginConfig().getString("display_chat_after_conversation"));
 
-        //TODO: Impossible?
-        if (data == null) {
-            this.log.warn(pack, "Conversation '" + conversationID
-                    + "' does not exist. Check for errors on /bq reload! It probably couldn't be loaded due to some other error.");
-            return;
-        }
-
-        // if the player has active conversation, terminate this one
         if (ACTIVE_CONVERSATIONS.containsKey(onlineProfile)) {
             this.log.debug(pack, onlineProfile + " is in conversation right now, returning.");
             return;
@@ -167,7 +159,7 @@ public class Conversation implements Listener {
             }
             options = new String[]{inputOption};
         }
-        this.log.debug(pack, "Starting conversation '" + convID + "' for '" + onlineProfile + "'.");
+        this.log.debug(pack, "Starting conversation '" + conversationID.getFullID() + "' for '" + onlineProfile + "'.");
         new Starter(options).runTaskAsynchronously(BetonQuest.getInstance());
     }
 
@@ -341,7 +333,7 @@ public class Conversation implements Listener {
             }
             state = ConversationState.ENDED;
 
-            log.debug(pack, "Ending conversation '" + convID + "' for '" + onlineProfile + "'.");
+            log.debug(pack, "Ending conversation '" + conv.getID().getFullID() + "' for '" + onlineProfile + "'.");
             inOut.end();
             // fire final events
             for (final EventID event : data.getFinalEvents()) {
@@ -587,17 +579,17 @@ public class Conversation implements Listener {
                     eventDispatcherTask.get(1, TimeUnit.SECONDS);
                 } catch (InterruptedException | TimeoutException exception) {
                     log.warn(pack, "Calling PlayerConversationStartEvent took too long.", exception);
-                } catch (ExecutionException exception) {
+                } catch (final ExecutionException exception) {
                     log.error(pack, "Error while calling PlayerConversationStartEvent.", exception);
-                    LIST.remove(onlineProfile);
+                    ACTIVE_CONVERSATIONS.remove(onlineProfile);
                     return;
                 }
 
                 // stop the conversation if it's canceled
                 if (event.isCancelled()) {
-                    log.debug(pack, "Conversation '" + convID + "' for '" + player.getPlayerProfile() + "' has been "
+                    log.debug(pack, "Conversation '" + conv.getID().getFullID() + "' for '" + player.getPlayerProfile() + "' has been "
                             + "canceled because it's PlayerConversationStartEvent has been canceled.");
-                    LIST.remove(onlineProfile);
+                    ACTIVE_CONVERSATIONS.remove(onlineProfile);
                     return;
                 }
 

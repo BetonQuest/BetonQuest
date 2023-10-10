@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.compatibility.citizens;
 
 import net.citizensnpcs.api.npc.NPC;
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.conversation.Conversation;

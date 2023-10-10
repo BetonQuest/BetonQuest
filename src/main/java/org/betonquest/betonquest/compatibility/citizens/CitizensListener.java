@@ -147,10 +147,11 @@ public class CitizensListener implements Listener {
         final String selector = npcsByName ? npcName : npcId;
         final ConversationID conversationID = assignedConversations.get(selector);
 
-        if (conversationID != null) {
-            LOG.debug("Player '" + event.getClicker().getName() + "' clicked NPC '" + npcId + "' but there is no conversation assigned to it.");
+        if (conversationID == null) {
+            log.debug("Player '" + event.getClicker().getName() + "' clicked NPC '" + npcId + "' but there is no conversation assigned to it.");
+        } else {
             event.setCancelled(true);
-            new CitizensConversation(loggerFactory.create(CitizensConversation.class), onlineProfile, conversationID, assignment, event.getNPC().getEntity().getLocation(),
+            new CitizensConversation(loggerFactory.create(CitizensConversation.class), onlineProfile, conversationID, event.getNPC().getEntity().getLocation(),
                     event.getNPC());
         }
     }
@@ -169,30 +170,32 @@ public class CitizensListener implements Listener {
                         conversationID = new ConversationID(pack, conversationIDPath);
                         assignedConversations.put(assignment, conversationID);
                     } catch (final ObjectNotFoundException e) {
-                        LOG.warn("Conversation '" + conversationIDPath + "' assigned to NPC '" + assignment + "' in package '" + pack.getQuestPath() + "' does not exist", e);
+                        log.warn("Conversation '" + conversationIDPath + "' assigned to NPC '" + assignment + "' in package '" + pack.getQuestPath() + "' does not exist", e);
                     }
                 }
             }
-
-            private class RightClickListener implements Listener {
-
-                public RightClickListener() {
-                }
-
-                @EventHandler(ignoreCancelled = true)
-                public void onNPCClick(final NPCRightClickEvent event) {
-                    interactLogic(event);
-                }
-            }
-
-            private class LeftClickListener implements Listener {
-
-                public LeftClickListener() {
-                }
-
-                @EventHandler(ignoreCancelled = true)
-                public void onNPCClick(final NPCLeftClickEvent event) {
-                    interactLogic(event);
-                }
-            }
         }
+    }
+
+    private class RightClickListener implements Listener {
+
+        public RightClickListener() {
+        }
+
+        @EventHandler(ignoreCancelled = true)
+        public void onNPCClick(final NPCRightClickEvent event) {
+            interactLogic(event);
+        }
+    }
+
+    private class LeftClickListener implements Listener {
+
+        public LeftClickListener() {
+        }
+
+        @EventHandler(ignoreCancelled = true)
+        public void onNPCClick(final NPCLeftClickEvent event) {
+            interactLogic(event);
+        }
+    }
+}

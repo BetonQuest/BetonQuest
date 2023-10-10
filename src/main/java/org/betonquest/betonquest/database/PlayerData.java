@@ -8,7 +8,6 @@ import org.betonquest.betonquest.Pointer;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.PlayerTagAddEvent;
 import org.betonquest.betonquest.api.PlayerTagRemoveEvent;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
@@ -118,12 +117,12 @@ public class PlayerData implements TagData {
                     setupProfile();
                 }
 
-                LOG.debug("Loaded " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
+                log.debug("Loaded " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
                         + " points, " + entries.size() + " journal entries and " + backpack.size()
                         + " items for " + profile);
             }
         } catch (final SQLException e) {
-            LOG.error("There was an exception with SQL", e);
+            log.error("There was an exception with SQL", e);
         }
     }
 
@@ -140,7 +139,7 @@ public class PlayerData implements TagData {
         try {
             activeConversation = PlayerConversationState.fromString(fullInstruction);
         } catch (final ObjectNotFoundException e) {
-            LOG.debug("The profile" + profile + " is in a conversation that does not exist anymore (" +
+            log.debug("The profile" + profile + " is in a conversation that does not exist anymore (" +
                     fullInstruction + "). The player will ", e);
             saver.add(new Record(UpdateType.UPDATE_CONVERSATION, "null", profileID));
         }
@@ -162,7 +161,7 @@ public class PlayerData implements TagData {
         try {
             item = new QuestItem(instruction).generate(amount);
         } catch (final InstructionParseException e) {
-            LOG.warn("Could not load backpack item for " + profile
+            log.warn("Could not load backpack item for " + profile
                     + ", with instruction '" + instruction + "', because: " + e.getMessage(), e);
             return;
         }
