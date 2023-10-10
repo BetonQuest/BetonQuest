@@ -34,6 +34,7 @@ public class CitizensListener implements Listener {
      * The section in which the assignments from NPCs to conversations are stored.
      */
     private static final String NPC_SECTION = "npcs";
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -64,7 +65,6 @@ public class CitizensListener implements Listener {
      * A listener for left-clicking a Citizens NPC.
      */
     private LeftClickListener leftClick;
-
 
     /**
      * The minimum time between two interactions with an NPC.
@@ -112,7 +112,7 @@ public class CitizensListener implements Listener {
      * @param event the event for the NPC interaction
      */
     @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
-    public void interactLogic(final NPCClickEvent event) {
+    private void interactLogic(final NPCClickEvent event) {
         if (!event.getClicker().hasPermission("betonquest.conversation")) {
             return;
         }
@@ -152,8 +152,7 @@ public class CitizensListener implements Listener {
             log.debug("Player '" + event.getClicker().getName() + "' clicked NPC '" + npcId + "' but there is no conversation assigned to it.");
         } else {
             event.setCancelled(true);
-            new CitizensConversation(loggerFactory.create(CitizensConversation.class), onlineProfile, conversationID, event.getNPC().getEntity().getLocation(),
-                    event.getNPC());
+            new CitizensConversation(loggerFactory.create(CitizensConversation.class), onlineProfile, conversationID, event.getNPC().getEntity().getLocation(), event.getNPC());
         }
     }
 
@@ -171,7 +170,7 @@ public class CitizensListener implements Listener {
                         conversationID = new ConversationID(pack, conversationIDPath);
                         assignedConversations.put(assignment, conversationID);
                     } catch (final ObjectNotFoundException e) {
-                        log.warn("Conversation '" + conversationIDPath + "' assigned to NPC '" + assignment + "' in package '" + pack.getQuestPath() + "' does not exist", e);
+                        log.warn("Conversation '" + conversationIDPath + "' assigned to NPC '" + assignment + "' in package '" + pack.getQuestPath() + "' does not exist.", e);
                     }
                 }
             }

@@ -20,6 +20,7 @@ public class QuestCancelerIDBuilder {
      * The package the conversation is in.
      */
     private final QuestPackage pack;
+
     /**
      * The id of the conversation.
      */
@@ -46,9 +47,9 @@ public class QuestCancelerIDBuilder {
         try {
             return new QuestCancelerID(pack, identifier);
         } catch (final ObjectNotFoundException e) {
-            throw new InstructionParseException("Quest canceler '" + pack.getQuestPath() + "." + identifier + "' does not exist. Make sure you have" +
-                    " no typos in the quest canceler's name. Alternatively the quest canceler contains an error and could not" +
-                    " be loaded after the reload. Check the output of /bq reload to see errors regarding this quest canceler.", e);
+            throw new InstructionParseException("Quest canceler '" + pack.getQuestPath() + "." + identifier + "' does not exist. Make sure you have"
+                    + " no typos in the quest canceler's name. Alternatively the quest canceler contains an error and could not"
+                    + " be loaded after the reload. Check the output of /bq reload to see errors regarding this quest canceler.", e);
         }
     }
 }

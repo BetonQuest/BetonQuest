@@ -1282,7 +1282,7 @@ public class BetonQuest extends JavaPlugin {
                 for (final String convName : conversationsConfig.getKeys(false)) {
                     try {
                         CONVERSATIONS.put(new ConversationID(pack, convName), new ConversationData(pack, convName, conversationsConfig.getConfigurationSection(convName)));
-                    } catch (final InstructionParseException  | ObjectNotFoundException e) {
+                    } catch (final InstructionParseException | ObjectNotFoundException e) {
                         getInstance().log.warn(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
                     }
                 }

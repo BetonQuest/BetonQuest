@@ -19,6 +19,7 @@ public class ConversationIDBuilder {
      * The package the conversation is in.
      */
     private final QuestPackage pack;
+
     /**
      * The id of the conversation.
      */
@@ -45,9 +46,7 @@ public class ConversationIDBuilder {
         try {
             return new ConversationID(pack, identifier);
         } catch (final ObjectNotFoundException e) {
-            throw new InstructionParseException("Conversation '" + pack.getQuestPath() + "." + identifier + "' does not exist. Make sure you have" +
-                    " no typos in the conversation's name. Alternatively the conversation contains an error and could not" +
-                    " be loaded after the reload. Check the output of /bq reload to see errors regarding this conversation.", e);
+            throw new InstructionParseException("Conversation '" + pack.getQuestPath() + "." + identifier + "' does not exist. Make sure you have" + " no typos in the conversation's name. Alternatively the conversation contains an error and could not" + " be loaded after the reload. Check the output of /bq reload to see errors regarding this conversation.", e);
         }
     }
 }

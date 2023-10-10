@@ -42,16 +42,7 @@ public record PlayerConversationState(ConversationID currentConversation, String
         final String optionName = mainParts[1];
         final String[] location = mainParts[2].split(";");
 
-        return Optional.of(new PlayerConversationState(
-                new ConversationID(questPackage, identifier),
-                optionName,
-                new Location(
-                        org.bukkit.Bukkit.getWorld(location[3]),
-                        Double.parseDouble(location[0]),
-                        Double.parseDouble(location[1]),
-                        Double.parseDouble(location[2])
-                )
-        ));
+        return Optional.of(new PlayerConversationState(new ConversationID(questPackage, identifier), optionName, new Location(org.bukkit.Bukkit.getWorld(location[3]), Double.parseDouble(location[0]), Double.parseDouble(location[1]), Double.parseDouble(location[2]))));
     }
 
     /**
@@ -63,8 +54,7 @@ public record PlayerConversationState(ConversationID currentConversation, String
      */
     @Override
     public String toString() {
-        return currentConversation + " " + currentOption + " " +
-                "%s;%s;%s;%s".formatted(location.getX(), location.getY(), location.getZ(), location.getWorld().getName());
+        return currentConversation + " " + currentOption + " " + "%s;%s;%s;%s".formatted(location.getX(), location.getY(), location.getZ(), location.getWorld().getName());
 
     }
 }

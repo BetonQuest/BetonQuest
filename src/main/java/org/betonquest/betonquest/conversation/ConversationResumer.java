@@ -27,9 +27,11 @@ public class ConversationResumer implements Listener {
     private final BetonQuestLoggerFactory loggerFactory;
 
     private final PlayerConversationState state;
+
     private final Player player;
 
     private final OnlineProfile onlineProfile;
+
     private final double distance;
 
     /**
@@ -60,8 +62,7 @@ public class ConversationResumer implements Listener {
         }
         if (event.getTo().getWorld().equals(state.location().getWorld()) && event.getTo().distanceSquared(state.location()) < distance * distance) {
             HandlerList.unregisterAll(this);
-            BetonQuest.getInstance().getSaver()
-                    .add(new Record(UpdateType.UPDATE_CONVERSATION, "null", onlineProfile.getProfileUUID().toString()));
+            BetonQuest.getInstance().getSaver().add(new Record(UpdateType.UPDATE_CONVERSATION, "null", onlineProfile.getProfileUUID().toString()));
             new Conversation(loggerFactory.create(Conversation.class), onlineProfile, state.currentConversation(), state.location(), state.currentOption());
         }
     }
@@ -77,7 +78,6 @@ public class ConversationResumer implements Listener {
             return;
         }
         HandlerList.unregisterAll(this);
-        BetonQuest.getInstance().getSaver()
-                .add(new Record(UpdateType.UPDATE_CONVERSATION, state.toString(), onlineProfile.getProfileUUID().toString()));
+        BetonQuest.getInstance().getSaver().add(new Record(UpdateType.UPDATE_CONVERSATION, state.toString(), onlineProfile.getProfileUUID().toString()));
     }
 }
