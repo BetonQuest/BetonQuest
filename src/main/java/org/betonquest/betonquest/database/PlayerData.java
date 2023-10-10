@@ -32,7 +32,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * Represents an object storing all profile-related data, which can load and save it.
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 @SuppressFBWarnings("JLM_JSR166_UTILCONCURRENT_MONITORENTER")
 public class PlayerData implements TagData {
     /**
@@ -139,6 +139,7 @@ public class PlayerData implements TagData {
         try {
             activeConversation = PlayerConversationState.fromString(fullInstruction);
         } catch (final ObjectNotFoundException e) {
+            //TODO: The player will do what?
             log.debug("The profile" + profile + " is in a conversation that does not exist anymore (" +
                     fullInstruction + "). The player will ", e);
             saver.add(new Record(UpdateType.UPDATE_CONVERSATION, "null", profileID));

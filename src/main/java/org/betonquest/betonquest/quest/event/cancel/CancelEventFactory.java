@@ -7,6 +7,8 @@ import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.id.QuestCancelerID;
+import org.betonquest.betonquest.id.builder.QuestCancelerIDBuilder;
 import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 
 /**
@@ -29,11 +31,8 @@ public class CancelEventFactory implements EventFactory {
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        final String cancelerName = instruction.getPackage().getQuestPath() + "." + instruction.next();
-        final QuestCanceler canceler = BetonQuest.getCanceler().get(cancelerName);
-        if (canceler == null) {
-            throw new InstructionParseException("Could not find canceler '" + cancelerName + "'");
-        }
+        final QuestCancelerID cancelerID = new QuestCancelerIDBuilder(instruction.getPackage(), instruction.next()).build();
+        final QuestCanceler canceler = BetonQuest.getCanceler().get(cancelerID);
         return new OnlineProfileRequiredEvent(loggerFactory.create(CancelEvent.class), new CancelEvent(canceler), instruction.getPackage());
     }
 }

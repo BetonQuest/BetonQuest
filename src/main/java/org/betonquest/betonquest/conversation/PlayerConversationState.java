@@ -31,14 +31,14 @@ public record PlayerConversationState(ConversationID currentConversation, String
         final String fullID = mainParts[0];
         final String[] splitID = fullID.split("\\.");
         final String packName = splitID[0];
-        final String id = splitID[1];
+        final String identifier = splitID[1];
         final QuestPackage questPackage = Config.getPackages().get(packName);
 
         final String optionName = mainParts[2];
         final String[] location = mainParts[3].split(";");
 
         return new PlayerConversationState(
-                new ConversationID(questPackage, id),
+                new ConversationID(questPackage, identifier),
                 optionName,
                 new Location(
                         org.bukkit.Bukkit.getWorld(location[3]),

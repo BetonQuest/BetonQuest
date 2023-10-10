@@ -80,7 +80,7 @@ public class Conversation implements Listener {
 
     private final Location location;
 
-    private final ConversationID id;
+    private final ConversationID identifier;
 
     private final List<String> blacklist;
 
@@ -134,7 +134,7 @@ public class Conversation implements Listener {
         this.plugin = BetonQuest.getInstance();
         this.onlineProfile = onlineProfile;
         this.player = onlineProfile.getPlayer();
-        this.id = conversationID;
+        this.identifier = conversationID;
         this.pack = conversationID.getPackage();
         this.language = plugin.getPlayerData(onlineProfile).getLanguage();
         this.location = location;
@@ -196,17 +196,14 @@ public class Conversation implements Listener {
         // get npc's text
         option = null;
         for (final String option : inputOptions) {
-            final String convName;
             final String optionName;
             if (option.contains(".")) {
                 final String[] parts = option.split("\\.");
-                convName = parts[0];
                 optionName = parts[1];
             } else {
-                convName = data.getName();
                 optionName = option;
             }
-            final ConversationData currentData = plugin.getConversation(id);
+            final ConversationData currentData = plugin.getConversation(identifier);
             if (force || BetonQuest.conditions(this.onlineProfile, currentData.getConditionIDs(optionName, OptionType.NPC))) {
                 this.option = optionName;
                 data = currentData;
@@ -477,7 +474,7 @@ public class Conversation implements Listener {
             inOut.end();
 
             // save the conversation to the database
-            final PlayerConversationState state = new PlayerConversationState(id, option, location);
+            final PlayerConversationState state = new PlayerConversationState(identifier, option, location);
             plugin.getSaver().add(new Record(UpdateType.UPDATE_CONVERSATION, state.toString(), onlineProfile.getProfileUUID().toString()));
 
             // End interceptor
@@ -533,7 +530,7 @@ public class Conversation implements Listener {
      * @return the ID of the conversation
      */
     public ConversationID getID() {
-        return id;
+        return identifier;
     }
 
     /**

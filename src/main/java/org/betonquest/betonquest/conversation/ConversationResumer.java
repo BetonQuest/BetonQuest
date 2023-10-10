@@ -2,6 +2,7 @@ package org.betonquest.betonquest.conversation;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
@@ -18,6 +19,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 /**
  * Resumes the conversation for a disconnected or "fleeing" player.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ConversationResumer implements Listener {
     /**
      * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.

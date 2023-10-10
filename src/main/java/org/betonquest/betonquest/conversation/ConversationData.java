@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static org.betonquest.betonquest.conversation.ConversationData.OptionType.NPC;
+import static org.betonquest.betonquest.conversation.ConversationData.OptionType.PLAYER;
+
 /**
  * Represents the data of the conversation.
  */
@@ -159,7 +162,7 @@ public class ConversationData {
         }
         npcOptions = new HashMap<>();
         for (final String key : npcSection.getKeys(false)) {
-            npcOptions.put(key, new Option(key, OptionType.NPC, conv));
+            npcOptions.put(key, new Option(key, NPC, conv));
         }
         // check if all starting options point to existing NPC options
         startingOptions = rawStartingOptions.split(",");
@@ -181,7 +184,7 @@ public class ConversationData {
         playerOptions = new HashMap<>();
         if (playerSection != null) {
             for (final String key : playerSection.getKeys(false)) {
-                playerOptions.put(key, new Option(key, OptionType.PLAYER, conv));
+                playerOptions.put(key, new Option(key, PLAYER, conv));
             }
         }
 
@@ -262,7 +265,7 @@ public class ConversationData {
                         + "' conversation, but it does not even exist. Check your spelling!");
                 continue;
             }
-            if (conv.getText(Config.getLanguage(), targetOption, OptionType.NPC) == null) {
+            if (conv.getText(Config.getLanguage(), targetOption, NPC) == null) {
                 LOG.warn(conv.pack, "External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
                         + option + " points to '" + targetOption + "' NPC option in '" + targetConv
                         + "' conversation, but it does not exist.");
@@ -360,7 +363,7 @@ public class ConversationData {
 
     public String getText(final Profile profile, final String lang, final String option, final OptionType type) {
         final Option opt;
-        if (type == OptionType.NPC) {
+        if (type == NPC) {
             opt = npcOptions.get(option);
         } else {
             opt = playerOptions.get(option);
@@ -378,19 +381,21 @@ public class ConversationData {
         return pack.getQuestPath();
     }
 
-    public ConditionID[] getConditionIDs(final String option, final OptionType type) {
-        final Map<String, Option> options;
-        if (type == OptionType.NPC) {
-            options = npcOptions;
-        } else {
-            options = playerOptions;
-        }
+    /**
+     * Gets the conditions required for the specified option to be selected.
+     *
+     * @param option the conversation option
+     * @param type   the type of the option
+     * @return the conditions required for the specified option to be selected
+     */
+    public List<ConditionID> getConditionIDs(final String option, final OptionType type) {
+        final Map<String, Option> options = type == NPC ? npcOptions : playerOptions;
         return options.get(option).getConditions();
     }
 
     public EventID[] getEventIDs(final Profile profile, final String option, final OptionType type) {
         final Map<String, Option> options;
-        if (type == OptionType.NPC) {
+        if (type == NPC) {
             options = npcOptions;
         } else {
             options = playerOptions;
@@ -404,7 +409,7 @@ public class ConversationData {
 
     public String[] getPointers(final Profile profile, final String option, final OptionType type) {
         final Map<String, Option> options;
-        if (type == OptionType.NPC) {
+        if (type == NPC) {
             options = npcOptions;
         } else {
             options = playerOptions;
@@ -413,7 +418,7 @@ public class ConversationData {
     }
 
     public Option getOption(final String option, final OptionType type) {
-        return type == OptionType.NPC ? npcOptions.get(option) : playerOptions.get(option);
+        return type == NPC ? npcOptions.get(option) : playerOptions.get(option);
     }
 
     /**
@@ -437,7 +442,7 @@ public class ConversationData {
             }
             final QuestPackage pack = Config.getPackages().get(getPackName());
             final ConversationData currentData = BetonQuest.getInstance().getConversation(new ConversationID(pack, convName));
-            if (BetonQuest.conditions(profile, currentData.getConditionIDs(optionName, ConversationData.OptionType.NPC))) {
+            if (BetonQuest.conditions(profile, currentData.getConditionIDs(optionName, NPC))) {
                 return true;
             }
         }
@@ -631,20 +636,8 @@ public class ConversationData {
             return ret.toString();
         }
 
-        public ConditionID[] getConditions() {
-            return getConditions(new ArrayList<>());
-        }
-
-        public ConditionID[] getConditions(final List<String> optionPath) {
-            // Prevent infinite loops
-            if (optionPath.contains(getName())) {
-                return new ConditionID[0];
-            }
-            optionPath.add(getName());
-
-            final List<ConditionID> ret = new ArrayList<>(conditions);
-
-            return ret.toArray(new ConditionID[0]);
+        public List<ConditionID> getConditions() {
+            return new ArrayList<>(conditions);
         }
 
         public EventID[] getEvents(final Profile profile) {

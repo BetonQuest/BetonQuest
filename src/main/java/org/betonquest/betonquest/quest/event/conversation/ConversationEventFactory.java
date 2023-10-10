@@ -5,9 +5,10 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.id.ConversationID;
+import org.betonquest.betonquest.id.builder.ConversationIDBuilder;
 import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
-import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -53,11 +54,12 @@ public class ConversationEventFactory implements EventFactory {
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        final String conversation = Utils.addPackage(instruction.getPackage(), instruction.next());
+        final ConversationID conversationID = new ConversationIDBuilder(instruction.getPackage(), instruction.next()).build();
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
-                        loggerFactory.create(ConversationEventFactory.class), new ConversationEvent(loggerFactory, conversation), instruction.getPackage()
+                        loggerFactory.create(ConversationEventFactory.class), new ConversationEvent(loggerFactory, conversationID), instruction.getPackage()
                 ), server, scheduler, plugin
         );
     }
 }
+

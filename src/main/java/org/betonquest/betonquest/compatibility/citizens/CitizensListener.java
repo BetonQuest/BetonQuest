@@ -38,6 +38,7 @@ public class CitizensListener implements Listener {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
+
     /**
      * Stores the last time the player interacted with an NPC.
      */
@@ -177,6 +178,10 @@ public class CitizensListener implements Listener {
         }
     }
 
+    /**
+     * A listener for right-clicking a Citizens NPC.
+     */
+    @SuppressWarnings("PMD.CommentRequired")
     private class RightClickListener implements Listener {
 
         public RightClickListener() {
@@ -188,6 +193,10 @@ public class CitizensListener implements Listener {
         }
     }
 
+    /**
+     * A listener for left-clicking a Citizens NPC.
+     */
+    @SuppressWarnings("PMD.CommentRequired")
     private class LeftClickListener implements Listener {
 
         public LeftClickListener() {
