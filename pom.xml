@@ -10,8 +10,6 @@
     <minecraft.api.version>1.18</minecraft.api.version>
     <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.target>17</maven.compiler.target>
-    <maven.compiler.source>17</maven.compiler.source>
     <Test-All/>
     <Test-ConfigurationSection/>
   </properties>
@@ -840,6 +838,9 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.10.1</version>
+          <configuration>
+            <release>17</release>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
