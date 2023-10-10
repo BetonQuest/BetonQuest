@@ -6,6 +6,8 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConversationID;
 import org.bukkit.Location;
 
+import java.util.Optional;
+
 /**
  * Represents the state of a conversation for a player.
  * The player may disconnect during a conversation that cannot be stopped.
@@ -25,19 +27,22 @@ public record PlayerConversationState(ConversationID currentConversation, String
      * @return the conversation state represented by the string
      * @throws ObjectNotFoundException if the conversation ID is invalid
      */
-    public static PlayerConversationState fromString(final String string) throws ObjectNotFoundException {
+    public static Optional<PlayerConversationState> fromString(final String string) throws ObjectNotFoundException {
         final String[] mainParts = string.split(" ");
 
+        if (mainParts.length != 3) {
+            return Optional.empty();
+        }
         final String fullID = mainParts[0];
         final String[] splitID = fullID.split("\\.");
         final String packName = splitID[0];
         final String identifier = splitID[1];
         final QuestPackage questPackage = Config.getPackages().get(packName);
 
-        final String optionName = mainParts[2];
-        final String[] location = mainParts[3].split(";");
+        final String optionName = mainParts[1];
+        final String[] location = mainParts[2].split(";");
 
-        return new PlayerConversationState(
+        return Optional.of(new PlayerConversationState(
                 new ConversationID(questPackage, identifier),
                 optionName,
                 new Location(
@@ -46,7 +51,7 @@ public record PlayerConversationState(ConversationID currentConversation, String
                         Double.parseDouble(location[1]),
                         Double.parseDouble(location[2])
                 )
-        );
+        ));
     }
 
     /**
@@ -63,4 +68,3 @@ public record PlayerConversationState(ConversationID currentConversation, String
 
     }
 }
-

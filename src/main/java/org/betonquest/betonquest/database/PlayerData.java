@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -137,11 +138,11 @@ public class PlayerData implements TagData {
         final String fullInstruction = playerResult.getString("conversation");
 
         try {
-            activeConversation = PlayerConversationState.fromString(fullInstruction);
+            final Optional<PlayerConversationState> playerConversationState = PlayerConversationState.fromString(fullInstruction);
+            playerConversationState.ifPresent(conversationState -> activeConversation = conversationState);
         } catch (final ObjectNotFoundException e) {
-            //TODO: The player will do what?
-            log.debug("The profile" + profile + " is in a conversation that does not exist anymore (" +
-                    fullInstruction + "). The player will ", e);
+            log.debug("The profile" + profile + " is in a conversation that does not exist anymore ("
+                    + fullInstruction + ").", e);
             saver.add(new Record(UpdateType.UPDATE_CONVERSATION, "null", profileID));
         }
     }
