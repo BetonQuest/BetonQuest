@@ -2,6 +2,7 @@ package org.betonquest.betonquest.utils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.util.ChatPaginator;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class LocalChatPaginator extends ChatPaginator {
                 {'`', 3}, {'a', 6}, {'b', 6}, {'c', 6}, {'d', 6}, {'e', 6}, {'f', 5}, {'g', 6},
                 {'h', 6}, {'i', 2}, {'j', 6}, {'k', 5}, {'l', 3}, {'m', 6}, {'n', 6}, {'o', 6},
                 {'p', 6}, {'q', 6}, {'r', 6}, {'s', 6}, {'t', 4}, {'u', 6}, {'v', 6}, {'w', 6},
-                {'x', 6}, {'y', 6}, {'z', 6}, {'{', 5}, {'|', 2}, {'}', 5}, {'~', 7}
+                {'x', 6}, {'y', 6}, {'z', 6}, {'{', 5}, {'|', 2}, {'}', 5}, {'~', 7},
         }).collect(Collectors.toMap(data -> (Character) data[0], data -> (Integer) data[1]));
     }
 
@@ -51,26 +52,17 @@ public class LocalChatPaginator extends ChatPaginator {
      * @return An array of word-wrapped lines.
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
-    public static String[] wordWrap(final String rawString, final int lineLength, final String wrapPrefix) {
-
-        // A null string is a single line
-        if (rawString == null) {
-            return new String[]{""};
-        }
-
+    public static String[] wordWrap(@NotNull final String rawString, final int lineLength, @NotNull final String wrapPrefix) {
         final int maxWidth = lineLength * DEFAULT_CHAR_WIDTH;
-
-        // A string shorter than the lineWidth is a single line
         if (getWidth(rawString) <= maxWidth && !rawString.contains("\n")) {
             return new String[]{rawString};
         }
 
-        // Work out wrapPrefix color chars
         final int maxWrapWidth = maxWidth - getWidth(wrapPrefix);
+        final char[] rawChars = rawString.toCharArray();
 
-        final char[] rawChars = (rawString + ' ').toCharArray(); // add a trailing space to trigger pagination
         StringBuilder word = new StringBuilder();
-        StringBuilder line = new StringBuilder();
+        StringBuilder line = new StringBuilder(lineLength);
         final List<String> lines = new LinkedList<>();
         int wordWidth = 0;
         int lineWidth = 0;
@@ -78,73 +70,65 @@ public class LocalChatPaginator extends ChatPaginator {
         for (int i = 0; i < rawChars.length; i++) {
             final char singleChar = rawChars[i];
 
-            // skip chat color modifiers
+            if (singleChar == '\n') {
+                line.append(word);
+                lines.add(line.toString());
+                line = new StringBuilder(lineLength);
+                word = new StringBuilder();
+                wordWidth = 0;
+                lineWidth = 0;
+                continue;
+            }
+
             if (singleChar == ChatColor.COLOR_CHAR) {
                 if (rawChars.length <= i + 1) {
                     break;
                 }
                 word.append(ChatColor.COLOR_CHAR).append(rawChars[i + 1]);
-                i++; // Eat the next character as we have already processed it
+                i++;
                 continue;
             }
 
-            final int width = getWidth(singleChar);
+            final int singleCharWidth = getWidth(singleChar);
 
-            if (singleChar != ' ' && singleChar != '\n') {
-                // Extremely long word begins a line, break the word up
-                if (line.length() == 0 && wordWidth + width >= (lines.isEmpty() ? maxWidth : maxWrapWidth)) {
+            if (singleChar != ' ') {
+                if (line.isEmpty() && wordWidth + singleCharWidth >= (lines.isEmpty() ? maxWidth : maxWrapWidth)) {
                     lines.add(word.toString());
                     word = new StringBuilder();
                     wordWidth = 0;
                 }
-
-                // Word too long with rest of line, force line to wrap
-                if (line.length() > 0 && lineWidth + wordWidth + width >= (lines.isEmpty() ? maxWidth : maxWrapWidth)) {
-                    lines.add(line.toString());
-                    line = new StringBuilder();
-                    lineWidth = 0;
-                }
-
                 word.append(singleChar);
-                wordWidth += width;
+                wordWidth += singleCharWidth;
                 continue;
             }
 
-            if (singleChar == '\n') {
-                // NewLine forces a new line
-                line.append(' ');
-                line.append(word);
+            if (!line.isEmpty() && lineWidth + wordWidth >= (lines.isEmpty() ? maxWidth : maxWrapWidth)) {
                 lines.add(line.toString());
-                line = new StringBuilder();
-                word = new StringBuilder();
+                line = new StringBuilder(lineLength);
                 lineWidth = 0;
-                continue;
             }
+            word.append(singleChar);
+            wordWidth += singleCharWidth;
 
-            if (line.length() > 0) {
-                line.append(' ');
-                lineWidth += getWidth(' ');
-            }
             line.append(word);
             lineWidth += wordWidth;
             word = new StringBuilder();
             wordWidth = 0;
         }
 
-        if (line.length() > 0) { // Only add the last line if there is anything to add
+        if (!word.isEmpty()) {
+            line.append(word);
+        }
+
+        if (!line.isEmpty()) {
             lines.add(line.toString());
         }
 
-        // Iterate over the wrapped lines, applying the last color from one line to the beginning of the next
-        if (lines.get(0).length() == 0 || lines.get(0).charAt(0) != ChatColor.COLOR_CHAR) {
-            lines.set(0, ChatColor.WHITE + lines.get(0));
-        }
         for (int i = 1; i < lines.size(); i++) {
-            final String pLine = lines.get(i - 1);
-            final String subLine = lines.get(i);
+            final String previousLine = lines.get(i - 1);
+            final String currentLine = lines.get(i);
 
-            //char color = pLine.charAt(pLine.lastIndexOf(ChatColor.COLOR_CHAR) + 1);
-            lines.set(i, wrapPrefix + ChatColor.getLastColors(pLine) + subLine);
+            lines.set(i, wrapPrefix + ChatColor.getLastColors(previousLine) + currentLine);
         }
 
         return lines.toArray(new String[0]);
@@ -173,45 +157,4 @@ public class LocalChatPaginator extends ChatPaginator {
     public static int getWidth(final Character character) {
         return FONT_SIZES.containsKey(character) ? FONT_SIZES.get(character) : DEFAULT_CHAR_WIDTH;
     }
-
-    /**
-     * Returns the length of the line minus hidden characters.
-     *
-     * @param input the input string.
-     * @return the length of the line minus hidden characters.
-     */
-    public static int lineLength(final String input) {
-        int ret = 0;
-        final char[] rawChars = input.toCharArray();
-        for (int i = 0; i < rawChars.length; i++) {
-            if (rawChars[i] == ChatColor.COLOR_CHAR) {
-                i += 1;
-                continue;
-            }
-            ret++;
-        }
-        return ret;
-    }
-
-    /**
-     * Return the number of hidden characters in input
-     *
-     * @param input the input string.
-     * @return number of hidden characters.
-     */
-    public static int hiddenCount(final String input) {
-        final char[] rawChars = input.toCharArray();
-        int count = 0;
-        for (int i = 0; i < rawChars.length; i++) {
-            final char colorChar = rawChars[i];
-
-            if (colorChar == ChatColor.COLOR_CHAR) {
-                count += 2;
-                i++;
-            }
-
-        }
-        return count;
-    }
-
 }
