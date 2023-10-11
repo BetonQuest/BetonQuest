@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConversationID;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import java.util.Optional;
@@ -38,11 +39,14 @@ public record PlayerConversationState(ConversationID currentConversation, String
         final String packName = splitID[0];
         final String identifier = splitID[1];
         final QuestPackage questPackage = Config.getPackages().get(packName);
+        final ConversationID currentConversation = new ConversationID(questPackage, identifier);
 
         final String optionName = mainParts[1];
-        final String[] location = mainParts[2].split(";");
 
-        return Optional.of(new PlayerConversationState(new ConversationID(questPackage, identifier), optionName, new Location(org.bukkit.Bukkit.getWorld(location[3]), Double.parseDouble(location[0]), Double.parseDouble(location[1]), Double.parseDouble(location[2]))));
+        final String[] locationString = mainParts[2].split(";");
+        final Location location = new Location(Bukkit.getWorld(locationString[3]), Double.parseDouble(locationString[0]), Double.parseDouble(locationString[1]), Double.parseDouble(locationString[2]));
+
+        return Optional.of(new PlayerConversationState(currentConversation, optionName, location));
     }
 
     /**
