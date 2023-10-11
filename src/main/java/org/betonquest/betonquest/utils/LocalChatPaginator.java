@@ -99,7 +99,6 @@ public class LocalChatPaginator extends ChatPaginator {
                 }
                 word.append(singleChar);
                 wordWidth += singleCharWidth;
-                continue;
             }
 
             if (!line.isEmpty() && lineWidth + wordWidth >= (lines.isEmpty() ? maxWidth : maxWrapWidth)) {
@@ -107,13 +106,16 @@ public class LocalChatPaginator extends ChatPaginator {
                 line = new StringBuilder(lineLength);
                 lineWidth = 0;
             }
-            word.append(singleChar);
-            wordWidth += singleCharWidth;
 
-            line.append(word);
-            lineWidth += wordWidth;
-            word = new StringBuilder();
-            wordWidth = 0;
+            if (singleChar == ' ') {
+                word.append(singleChar);
+                wordWidth += singleCharWidth;
+
+                line.append(word);
+                lineWidth += wordWidth;
+                word = new StringBuilder();
+                wordWidth = 0;
+            }
         }
 
         if (!word.isEmpty()) {
