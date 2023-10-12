@@ -211,7 +211,7 @@ This is usefully to easily refer to a bunch of events at once, e.g. in a convers
 Events marked as _persistent_ will be fired even after the player logs out.
 Beware though, all conditions are false when the player is offline (even inverted ones),
 so those events should not be blocked by any conditions!  
-You can use the `cancelOnLogout` argument, to stop the folder executing further events, if the player quits the game.
+You can use the `cancelOnLogout` argument to stop the folder executing any remaining events if the player disconnects.
 
 
 | Parameter        | Syntax            | Default Value          | Explanation                                                                                     |
