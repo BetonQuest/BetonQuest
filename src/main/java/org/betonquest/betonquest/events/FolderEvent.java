@@ -4,36 +4,78 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.EventID;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.Random;
 
 /**
  * Folder event is a collection of other events, that can be run after a delay and the events can be randomly chosen to
  * run or not.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class FolderEvent extends QuestEvent {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(this.getClass());
+
+    /**
+     * Random generator used to choose events to run.
+     */
     private final Random randomGenerator = new Random();
 
+    /**
+     * The delay to apply before running the events.
+     */
     private final VariableNumber delay;
 
+    /**
+     * The delay to apply between each event.
+     */
     private final VariableNumber period;
 
+    /**
+     * The number of events to run.
+     */
     private final VariableNumber random;
 
+    /**
+     * The events to run.
+     */
     private final EventID[] events;
 
+    /**
+     * Whether the delay and period are in ticks.
+     */
     private final boolean ticks;
 
+    /**
+     * Whether the delay and period are in minutes.
+     */
     private final boolean minutes;
 
+    /**
+     * Whether the event should be cancelled on logout.
+     */
+    private final boolean cancelOnLogout;
+
+    /**
+     * The constructor called by BetonQuest via reflection.
+     *
+     * @param instruction the instruction to parse
+     * @throws InstructionParseException if the instruction is invalid
+     */
     public FolderEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         staticness = true;
@@ -44,12 +86,13 @@ public class FolderEvent extends QuestEvent {
         random = instruction.getVarNum(instruction.getOptional("random"));
         ticks = instruction.hasArgument("ticks");
         minutes = instruction.hasArgument("minutes");
+        cancelOnLogout = instruction.hasArgument("cancelOnLogout");
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final ArrayList<EventID> chosenList = new ArrayList<>();
+        final Deque<EventID> chosenList = new LinkedList<>();
         // choose randomly which events should be fired
         final int randomInt = random == null ? 0 : random.getInt(profile);
         if (randomInt > 0 && randomInt <= events.length) {
@@ -73,9 +116,14 @@ public class FolderEvent extends QuestEvent {
                 BetonQuest.event(profile, event);
             }
         } else if (execPeriod == null) {
+            final FolderEventCanceller eventCanceller = createFolderEventCanceller(profile);
             new BukkitRunnable() {
                 @Override
                 public void run() {
+                    eventCanceller.destroy();
+                    if (eventCanceller.isCancelled()) {
+                        return;
+                    }
                     for (final EventID event : chosenList) {
                         BetonQuest.event(profile, event);
                     }
@@ -83,16 +131,19 @@ public class FolderEvent extends QuestEvent {
             }.runTaskLater(BetonQuest.getInstance(), execDelay);
         } else {
             if (execDelay == null && !chosenList.isEmpty()) {
-                final EventID event = chosenList.remove(0);
+                final EventID event = chosenList.removeFirst();
                 BetonQuest.event(profile, event);
             }
             if (!chosenList.isEmpty()) {
+                final FolderEventCanceller eventCanceller = createFolderEventCanceller(profile);
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        final EventID event = chosenList.remove(0);
-                        if (chosenList.isEmpty()) {
+                        final EventID event = chosenList.pollFirst();
+                        if (eventCanceller.isCancelled() || event == null) {
+                            eventCanceller.destroy();
                             this.cancel();
+                            return;
                         }
                         BetonQuest.event(profile, event);
                     }
@@ -102,7 +153,15 @@ public class FolderEvent extends QuestEvent {
         return null;
     }
 
-    private Long getInTicks(final VariableNumber timeVariable, final Profile profile) throws QuestRuntimeException {
+    private FolderEventCanceller createFolderEventCanceller(final Profile profile) {
+        if (cancelOnLogout) {
+            return new QuitListener(log, profile);
+        } else {
+            return () -> false;
+        }
+    }
+
+    private Long getInTicks(final VariableNumber timeVariable, final Profile profile) {
         if (timeVariable == null) {
             return null;
         }
@@ -120,4 +179,77 @@ public class FolderEvent extends QuestEvent {
         return time;
     }
 
+    /**
+     * Interface to check if an execution of a folder event is cancelled.
+     */
+    private interface FolderEventCanceller {
+        /**
+         * Whether the execution of the folder event should be cancelled.
+         *
+         * @return true if the event needs to be cancelled; false otherwise
+         */
+        boolean isCancelled();
+
+        /**
+         * Clean up any resources used by the canceller if necessary.
+         */
+        default void destroy() {
+            // Empty
+        }
+    }
+
+    /**
+     * Registers the quit listener if the event should be cancelled on logout.
+     */
+    private static class QuitListener implements FolderEventCanceller, Listener {
+        /**
+         * Custom {@link BetonQuestLogger} instance for this class.
+         */
+        private final BetonQuestLogger log;
+
+        /**
+         * The profile of the player to check for.
+         */
+        private final Profile profile;
+
+        /**
+         * Whether the event is cancelled.
+         */
+        private boolean cancelled;
+
+        /**
+         * Create a quit listener for the given profile's player.
+         *
+         * @param log     logger for debug messages
+         * @param profile profile to check for
+         */
+        public QuitListener(final BetonQuestLogger log, final Profile profile) {
+            this.log = log;
+            this.profile = profile;
+            BetonQuest.getInstance().getServer().getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        }
+
+        /**
+         * Handle quit events to check if an execution of the folder event needs to be cancelled.
+         *
+         * @param event player quit event to handle
+         */
+        @EventHandler
+        public void onPlayerQuit(final PlayerQuitEvent event) {
+            if (event.getPlayer().getUniqueId().equals(profile.getPlayerUUID())) {
+                cancelled = true;
+                log.debug("Folder event cancelled due to disconnect of " + profile);
+            }
+        }
+
+        @Override
+        public boolean isCancelled() {
+            return cancelled;
+        }
+
+        @Override
+        public void destroy() {
+            PlayerQuitEvent.getHandlerList().unregister(this);
+        }
+    }
 }
