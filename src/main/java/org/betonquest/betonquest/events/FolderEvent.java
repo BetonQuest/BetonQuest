@@ -16,7 +16,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
@@ -62,7 +64,7 @@ public class FolderEvent extends QuestEvent implements Listener {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final ArrayList<EventID> chosenList = new ArrayList<>();
+        final Deque<EventID> chosenList = new LinkedList<>();
         // choose randomly which events should be fired
         final int randomInt = random == null ? 0 : random.getInt(profile);
         if (randomInt > 0 && randomInt <= events.length) {
@@ -101,7 +103,7 @@ public class FolderEvent extends QuestEvent implements Listener {
             }.runTaskLater(BetonQuest.getInstance(), execDelay);
         } else {
             if (execDelay == null && !chosenList.isEmpty()) {
-                final EventID event = chosenList.remove(0);
+                final EventID event = chosenList.removeFirst();
                 BetonQuest.event(profile, event);
             }
             if (!chosenList.isEmpty()) {
@@ -109,7 +111,7 @@ public class FolderEvent extends QuestEvent implements Listener {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        final EventID event = chosenList.remove(0);
+                        final EventID event = chosenList.pollFirst();
                         if (cancelled.remove(profile.getProfileUUID()) || event == null) {
                             unregister();
                             this.cancel();
