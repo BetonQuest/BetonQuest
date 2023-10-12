@@ -42,7 +42,7 @@ public class FolderEvent extends QuestEvent implements Listener {
 
     private final boolean cancelOnLogout;
 
-    private final List<UUID> cancelled;
+    private final Set<UUID> cancelled;
 
     public FolderEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
