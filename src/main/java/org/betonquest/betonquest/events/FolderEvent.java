@@ -142,11 +142,15 @@ public class FolderEvent extends QuestEvent implements Listener {
     }
 
     private void register() {
-        BetonQuest.getInstance().getServer().getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        if (cancelOnLogout) {
+            BetonQuest.getInstance().getServer().getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        }
     }
 
     private void unregister() {
-        PlayerQuitEvent.getHandlerList().unregister(this);
+        if (cancelOnLogout) {
+            PlayerQuitEvent.getHandlerList().unregister(this);
+        }
     }
 
     @EventHandler
