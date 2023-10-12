@@ -221,7 +221,7 @@ You can use the `cancelOnLogout` argument to stop the folder executing any remai
 | _period_         | period:number     | 1 tick                 | The time between each event. Minimum value is one tick (~20ms).                                 |
 | _time unit_      | Keyword           | Seconds                | The unit of time to use for delay and period. Either `ticks` or `minutes`. Omit to use seconds. |
 | _random_         | random:number     | Disabled               | Enables "random mode". Will randomly pick the defined amount of events .                        |
-| _cancelOnLogout_ | Keyword           | Disabled               | If enabled, the folder will stop executing events, if the player logs out.                      |
+| _cancelOnLogout_ | Keyword           | Disabled               | If enabled, the folder will stop executing events if the player disconnects.                    |
 
 
 ```YAML title="Examples" 
