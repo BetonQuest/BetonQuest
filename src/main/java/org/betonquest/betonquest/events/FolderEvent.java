@@ -109,7 +109,7 @@ public class FolderEvent extends QuestEvent implements Listener {
                     @Override
                     public void run() {
                         final EventID event = chosenList.remove(0);
-                        if (event == null || cancelled.remove(profile.getProfileUUID())) {
+                        if (cancelled.remove(profile.getProfileUUID()) || event == null) {
                             unregister();
                             this.cancel();
                             return;
