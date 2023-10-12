@@ -8,18 +8,24 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.utils.PlayerConverter;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * Folder event is a collection of other events, that can be run after a delay and the events can be randomly chosen to
  * run or not.
  */
 @SuppressWarnings("PMD.CommentRequired")
-public class FolderEvent extends QuestEvent {
+public class FolderEvent extends QuestEvent implements Listener {
     private final Random randomGenerator = new Random();
 
     private final VariableNumber delay;
@@ -34,6 +40,10 @@ public class FolderEvent extends QuestEvent {
 
     private final boolean minutes;
 
+    private final boolean cancelOnLogout;
+
+    private final List<UUID> cancelled;
+
     public FolderEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         staticness = true;
@@ -44,6 +54,8 @@ public class FolderEvent extends QuestEvent {
         random = instruction.getVarNum(instruction.getOptional("random"));
         ticks = instruction.hasArgument("ticks");
         minutes = instruction.hasArgument("minutes");
+        cancelOnLogout = instruction.hasArgument("cancelOnLogout");
+        cancelled = new ArrayList<>();
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
@@ -73,9 +85,14 @@ public class FolderEvent extends QuestEvent {
                 BetonQuest.event(profile, event);
             }
         } else if (execPeriod == null) {
+            register();
             new BukkitRunnable() {
                 @Override
                 public void run() {
+                    unregister();
+                    if (cancelled.remove(profile.getProfileUUID())) {
+                        return;
+                    }
                     for (final EventID event : chosenList) {
                         BetonQuest.event(profile, event);
                     }
@@ -87,12 +104,15 @@ public class FolderEvent extends QuestEvent {
                 BetonQuest.event(profile, event);
             }
             if (!chosenList.isEmpty()) {
+                register();
                 new BukkitRunnable() {
                     @Override
                     public void run() {
                         final EventID event = chosenList.remove(0);
-                        if (chosenList.isEmpty()) {
+                        if (event == null || cancelled.remove(profile.getProfileUUID())) {
+                            unregister();
                             this.cancel();
+                            return;
                         }
                         BetonQuest.event(profile, event);
                     }
@@ -120,4 +140,18 @@ public class FolderEvent extends QuestEvent {
         return time;
     }
 
+    private void register() {
+        BetonQuest.getInstance().getServer().getPluginManager().registerEvents(this, BetonQuest.getInstance());
+    }
+
+    private void unregister() {
+        PlayerQuitEvent.getHandlerList().unregister(this);
+    }
+
+    @EventHandler
+    public void onPlayerQuit(final PlayerQuitEvent event) {
+        if (cancelOnLogout) {
+            cancelled.add(PlayerConverter.getID(event.getPlayer()).getProfileUUID());
+        }
+    }
 }

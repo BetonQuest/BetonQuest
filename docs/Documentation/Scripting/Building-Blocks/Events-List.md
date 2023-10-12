@@ -210,16 +210,18 @@ This is usefully to easily refer to a bunch of events at once, e.g. in a convers
 
 Events marked as _persistent_ will be fired even after the player logs out.
 Beware though, all conditions are false when the player is offline (even inverted ones),
-so those events should not be blocked by any conditions!
+so those events should not be blocked by any conditions!  
+You can use the `cancelOnLogout` argument, to stop the folder executing further events, if the player quits the game.
 
 
-| Parameter       | Syntax            | Default Value          | Explanation                                                                                     |
-|-----------------|-------------------|------------------------|-------------------------------------------------------------------------------------------------|
-| _events to run_ | eventName1,event2 | :octicons-x-circle-16: | One or multiple events to run. Contains event names seperated by commas.                        |
-| _delay_         | Keyword           | without delay          | The delay before the folder starts executing it's events.                                       |
-| _period_        | period:number     | 1 tick                 | The time between each event. Minimum value is one tick (~20ms).                                 |
-| _time unit_     | Keyword           | Seconds                | The unit of time to use for delay and period. Either `ticks` or `minutes`. Omit to use seconds. |
-| _random_        | random:number     | Disabled               | Enables "random mode". Will randomly pick the defined amount of events .                        |
+| Parameter        | Syntax            | Default Value          | Explanation                                                                                     |
+|------------------|-------------------|------------------------|-------------------------------------------------------------------------------------------------|
+| _events to run_  | eventName1,event2 | :octicons-x-circle-16: | One or multiple events to run. Contains event names seperated by commas.                        |
+| _delay_          | Keyword           | without delay          | The delay before the folder starts executing it's events.                                       |
+| _period_         | period:number     | 1 tick                 | The time between each event. Minimum value is one tick (~20ms).                                 |
+| _time unit_      | Keyword           | Seconds                | The unit of time to use for delay and period. Either `ticks` or `minutes`. Omit to use seconds. |
+| _random_         | random:number     | Disabled               | Enables "random mode". Will randomly pick the defined amount of events .                        |
+| _cancelOnLogout_ | Keyword           | Disabled               | If enabled, the folder will stop executing events, if the player logs out.                      |
 
 
 ```YAML title="Examples" 
