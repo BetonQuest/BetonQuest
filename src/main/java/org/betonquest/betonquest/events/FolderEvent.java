@@ -55,7 +55,7 @@ public class FolderEvent extends QuestEvent implements Listener {
         ticks = instruction.hasArgument("ticks");
         minutes = instruction.hasArgument("minutes");
         cancelOnLogout = instruction.hasArgument("cancelOnLogout");
-        cancelled = new ArrayList<>();
+        cancelled = new HashSet<>();
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
