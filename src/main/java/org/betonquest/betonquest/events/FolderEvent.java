@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -17,10 +16,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -28,7 +25,7 @@ import java.util.UUID;
  * run or not.
  */
 @SuppressWarnings("PMD.CommentRequired")
-public class FolderEvent extends QuestEvent implements Listener {
+public class FolderEvent extends QuestEvent {
     private final Random randomGenerator = new Random();
 
     private final VariableNumber delay;
@@ -45,8 +42,6 @@ public class FolderEvent extends QuestEvent implements Listener {
 
     private final boolean cancelOnLogout;
 
-    private final Set<UUID> cancelled;
-
     public FolderEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         staticness = true;
@@ -58,7 +53,6 @@ public class FolderEvent extends QuestEvent implements Listener {
         ticks = instruction.hasArgument("ticks");
         minutes = instruction.hasArgument("minutes");
         cancelOnLogout = instruction.hasArgument("cancelOnLogout");
-        cancelled = new HashSet<>();
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
@@ -88,12 +82,12 @@ public class FolderEvent extends QuestEvent implements Listener {
                 BetonQuest.event(profile, event);
             }
         } else if (execPeriod == null) {
-            register();
+            final FolderEventCanceller eventCanceller = createFolderEventCanceller(profile);
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    unregister();
-                    if (cancelled.remove(profile.getProfileUUID())) {
+                    eventCanceller.destroy();
+                    if (eventCanceller.isCancelled()) {
                         return;
                     }
                     for (final EventID event : chosenList) {
@@ -107,13 +101,13 @@ public class FolderEvent extends QuestEvent implements Listener {
                 BetonQuest.event(profile, event);
             }
             if (!chosenList.isEmpty()) {
-                register();
+                final FolderEventCanceller eventCanceller = createFolderEventCanceller(profile);
                 new BukkitRunnable() {
                     @Override
                     public void run() {
                         final EventID event = chosenList.pollFirst();
-                        if (cancelled.remove(profile.getProfileUUID()) || event == null) {
-                            unregister();
+                        if (eventCanceller.isCancelled() || event == null) {
+                            eventCanceller.destroy();
                             this.cancel();
                             return;
                         }
@@ -123,6 +117,14 @@ public class FolderEvent extends QuestEvent implements Listener {
             }
         }
         return null;
+    }
+
+    private FolderEventCanceller createFolderEventCanceller(final Profile profile) {
+        if (cancelOnLogout) {
+            return new QuitListener(profile.getProfileUUID());
+        } else {
+            return () -> false;
+        }
     }
 
     private Long getInTicks(final VariableNumber timeVariable, final Profile profile) throws QuestRuntimeException {
@@ -143,22 +145,40 @@ public class FolderEvent extends QuestEvent implements Listener {
         return time;
     }
 
-    private void register() {
-        if (cancelOnLogout) {
+    private interface FolderEventCanceller {
+        boolean isCancelled();
+
+        default void destroy() {
+            // Empty
+        }
+    }
+
+    /**
+     * Registers the quit listener if the event should be cancelled on logout.
+     */
+    private static class QuitListener implements FolderEventCanceller, Listener {
+        private final UUID playerUuid;
+
+        private boolean cancelled;
+
+        public QuitListener(final UUID playerUuid) {
+            this.playerUuid = playerUuid;
             BetonQuest.getInstance().getServer().getPluginManager().registerEvents(this, BetonQuest.getInstance());
         }
-    }
 
-    private void unregister() {
-        if (cancelOnLogout) {
-            PlayerQuitEvent.getHandlerList().unregister(this);
+        @EventHandler
+        public void onPlayerQuit(final PlayerQuitEvent event) {
+            cancelled = cancelled || event.getPlayer().getUniqueId().equals(playerUuid);
         }
-    }
 
-    @EventHandler
-    public void onPlayerQuit(final PlayerQuitEvent event) {
-        if (cancelOnLogout) {
-            cancelled.add(PlayerConverter.getID(event.getPlayer()).getProfileUUID());
+        @Override
+        public boolean isCancelled() {
+            return cancelled;
+        }
+
+        @Override
+        public void destroy() {
+            PlayerQuitEvent.getHandlerList().unregister(this);
         }
     }
 }
