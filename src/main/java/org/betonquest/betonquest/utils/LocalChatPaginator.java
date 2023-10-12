@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.utils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.util.ChatPaginator;
 import org.jetbrains.annotations.NotNull;
@@ -125,6 +126,8 @@ public class LocalChatPaginator extends ChatPaginator {
         if (!line.isEmpty()) {
             lines.add(line.toString());
         }
+
+        lines.replaceAll(str -> StringUtils.stripEnd(str, null));
 
         for (int i = 1; i < lines.size(); i++) {
             final String previousLine = lines.get(i - 1);
