@@ -112,8 +112,20 @@ class LocalChatPaginatorTest {
                 Arguments.of("§aV§be§cr§dy §ec§fo§1l§2o§3r§4f§5u§6l§7!",
                         new String[]{"§aV§be§cr§dy §ec§fo§1l§2o§3r§4f§5u§6l§7!"},
                         12, ""),
+                Arguments.of("fun with spaces",
+                        new String[]{"fun with", "spaces"},
+                        7, ""),
+                Arguments.of("fun              with            spaces",
+                        new String[]{"fun", "", "  with", "", "", "spac", "es"},
+                        5, ""),
                 Arguments.of("fun\nwith\nspaces",
                         new String[]{"fun", "with", "spaces"},
+                        25, ""),
+                Arguments.of("fun          \n    with   \n                                      spaces",
+                        new String[]{"fun", "    with", "", "spaces"},
+                        25, ""),
+                Arguments.of("fun          \n    with   \n                                       spaces",
+                        new String[]{"fun", "    with", "", " spaces"},
                         25, "")
         );
     }
