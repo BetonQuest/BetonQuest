@@ -95,7 +95,12 @@ public class LocalChatPaginator extends ChatPaginator {
             final int singleCharWidth = getWidth(singleChar);
 
             if (singleChar != ' ') {
-                if (line.isEmpty() && wordWidth + singleCharWidth >= (lines.isEmpty() ? maxWidth : maxWrapWidth)) {
+                if (!line.isEmpty() && lineWidth + wordWidth + singleCharWidth > (lines.isEmpty() ? maxWidth : maxWrapWidth)) {
+                    lines.add(line.toString());
+                    line = new StringBuilder(lineLength);
+                    lineWidth = 0;
+                }
+                if (line.isEmpty() && wordWidth + singleCharWidth > (lines.isEmpty() ? maxWidth : maxWrapWidth)) {
                     lines.add(word.toString());
                     word = new StringBuilder();
                     wordWidth = 0;
@@ -104,7 +109,7 @@ public class LocalChatPaginator extends ChatPaginator {
                 wordWidth += singleCharWidth;
             }
 
-            if (!line.isEmpty() && lineWidth + wordWidth >= (lines.isEmpty() ? maxWidth : maxWrapWidth)) {
+            if (!line.isEmpty() && lineWidth + wordWidth > (lines.isEmpty() ? maxWidth : maxWrapWidth)) {
                 lines.add(line.toString());
                 line = new StringBuilder(lineLength);
                 lineWidth = 0;
