@@ -55,8 +55,11 @@ public class LocalChatPaginator extends ChatPaginator {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     public static String[] wordWrap(@NotNull final String rawString, final int lineLength, @NotNull final String wrapPrefix) {
         final int maxWidth = lineLength * DEFAULT_CHAR_WIDTH;
-        if (getWidth(rawString) <= maxWidth && !rawString.contains("\n")) {
-            return new String[]{rawString};
+        if (!rawString.contains("\n")) {
+            final String strippedRawString = StringUtils.stripEnd(rawString, null);
+            if (getWidth(strippedRawString) <= maxWidth) {
+                return new String[]{strippedRawString};
+            }
         }
 
         final int maxWrapWidth = maxWidth - getWidth(wrapPrefix);
@@ -81,10 +84,9 @@ public class LocalChatPaginator extends ChatPaginator {
                 continue;
             }
 
-            if (singleChar == ChatColor.COLOR_CHAR) {
-                if (rawChars.length <= i + 1) {
-                    break;
-                }
+            if (singleChar == ChatColor.COLOR_CHAR
+                    && i + 1 < rawChars.length
+                    && ChatColor.getByChar(rawChars[i + 1]) != null) {
                 word.append(ChatColor.COLOR_CHAR).append(rawChars[i + 1]);
                 i++;
                 continue;
