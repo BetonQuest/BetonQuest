@@ -84,11 +84,16 @@ public class LocalChatPaginator extends ChatPaginator {
                 continue;
             }
 
-            if (singleChar == ChatColor.COLOR_CHAR
-                    && i + 1 < rawChars.length
-                    && ChatColor.getByChar(rawChars[i + 1]) != null) {
-                word.append(ChatColor.COLOR_CHAR).append(rawChars[i + 1]);
-                i++;
+            if (singleChar == ChatColor.COLOR_CHAR) {
+                word.append(ChatColor.COLOR_CHAR);
+                if (rawChars.length <= i + 1) {
+                    continue;
+                }
+                final char colorCode = rawChars[i + 1];
+                if (colorCode == 'x' || ChatColor.getByChar(colorCode) != null) {
+                    word.append(colorCode);
+                    i++;
+                }
                 continue;
             }
 
