@@ -194,11 +194,12 @@ This event will teleport the NPC with the given ID to the given location.
 The player has to right-click on the NPC with specified ID. It can also optionally cancel the action, so the conversation won't start.
 The first argument is number (ID of the NPC).
 You can add the optional argument `cancel` to cancel the actual interaction with the NPC. 
-With `leftclick` you can also allow left-clicks on the NPC.
+With `interaction` you can also define the type of interaction that is required, you can define `left`, `right` or `both`.
 
 !!! example
     ```YAML
     npcinteract 3 cancel conditions:sneak events:steal
+    npcinteract 54 interaction:left events:poke
     ```
 
 #### NPC Kill: `npckill`
