@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.compatibility.citizens;
 
+import net.citizensnpcs.api.event.NPCClickEvent;
+import net.citizensnpcs.api.event.NPCLeftClickEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
@@ -23,6 +25,8 @@ public class NPCInteractObjective extends Objective implements Listener {
 
     private final boolean cancel;
 
+    private final boolean leftClick;
+
     public NPCInteractObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
@@ -31,10 +35,22 @@ public class NPCInteractObjective extends Objective implements Listener {
             throw new InstructionParseException("ID cannot be negative");
         }
         cancel = instruction.hasArgument("cancel");
+        leftClick = instruction.hasArgument("leftclick");
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onNPCClick(final NPCRightClickEvent event) {
+    public void onNPCRightClick(final NPCRightClickEvent event) {
+        onNPCClick(event);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onNPCLeftClick(final NPCLeftClickEvent event) {
+        if (leftClick) {
+            onNPCClick(event);
+        }
+    }
+
+    private void onNPCClick(final NPCClickEvent event) {
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getClicker());
         if (event.getNPC().getId() != npcId || !containsPlayer(onlineProfile)) {
             return;
