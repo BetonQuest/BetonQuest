@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.compatibility.citizens;
 
+import net.citizensnpcs.api.event.NPCClickEvent;
+import net.citizensnpcs.api.event.NPCLeftClickEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
@@ -23,6 +25,8 @@ public class NPCInteractObjective extends Objective implements Listener {
 
     private final boolean cancel;
 
+    private final InteractionType interactionType;
+
     public NPCInteractObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
@@ -31,10 +35,24 @@ public class NPCInteractObjective extends Objective implements Listener {
             throw new InstructionParseException("ID cannot be negative");
         }
         cancel = instruction.hasArgument("cancel");
+        interactionType = instruction.getEnum("interaction", InteractionType.class, InteractionType.RIGHT_CLICK);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onNPCClick(final NPCRightClickEvent event) {
+    public void onNPCRightClick(final NPCRightClickEvent event) {
+        if (interactionType.isRight()) {
+            onNPCClick(event);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onNPCLeftClick(final NPCLeftClickEvent event) {
+        if (interactionType.isLeft()) {
+            onNPCClick(event);
+        }
+    }
+
+    private void onNPCClick(final NPCClickEvent event) {
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getClicker());
         if (event.getNPC().getId() != npcId || !containsPlayer(onlineProfile)) {
             return;
@@ -65,6 +83,29 @@ public class NPCInteractObjective extends Objective implements Listener {
     @Override
     public String getProperty(final String name, final Profile profile) {
         return "";
+    }
+
+    private enum InteractionType {
+        LEFT_CLICK(true, false),
+        RIGHT_CLICK(false, true),
+        BOTH(true, true);
+
+        final boolean left;
+
+        final boolean right;
+
+        InteractionType(final boolean left, final boolean right) {
+            this.left = left;
+            this.right = right;
+        }
+
+        public boolean isLeft() {
+            return left;
+        }
+
+        public boolean isRight() {
+            return right;
+        }
     }
 
 }
