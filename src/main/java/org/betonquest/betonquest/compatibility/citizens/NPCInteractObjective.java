@@ -35,7 +35,7 @@ public class NPCInteractObjective extends Objective implements Listener {
             throw new InstructionParseException("ID cannot be negative");
         }
         cancel = instruction.hasArgument("cancel");
-        interactionType = instruction.getEnum("interaction", InteractionType.class, InteractionType.RIGHT_CLICK);
+        interactionType = instruction.getEnum(instruction.getOptional("interaction"), InteractionType.class, InteractionType.RIGHT_CLICK);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)

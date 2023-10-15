@@ -111,7 +111,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `itemdurability` event, condition and variable
 - `numbercompare` condition
 - `cancelOnLogout` argument for `folder` event
-- `npcinteract` event - now supports the argument `interaction` to choose between left, right or both clicks
+- `npcinteract` objective - now supports the argument `interaction` to choose between left, right or both clicks
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`
     - FastAsyncWorldEdit compatibility
