@@ -39,6 +39,8 @@ public class LocalChatPaginator extends ChatPaginator {
         }).collect(Collectors.toMap(data -> (Character) data[0], data -> (Integer) data[1]));
     }
 
+    public static final int SPACE_WIDTH = FONT_SIZES.get(' ');
+
     public static String[] wordWrap(final String rawString, final int lineLength) {
         return wordWrap(rawString, lineLength, "");
     }
@@ -52,7 +54,7 @@ public class LocalChatPaginator extends ChatPaginator {
      * @param wrapPrefix The string to prefix the wrapped line with
      * @return An array of word-wrapped lines.
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity", "PMD.NcssCount"})
     public static String[] wordWrap(@NotNull final String rawString, final int lineLength, @NotNull final String wrapPrefix) {
         final int maxWidth = lineLength * DEFAULT_CHAR_WIDTH;
         if (!rawString.contains("\n")) {
@@ -73,51 +75,54 @@ public class LocalChatPaginator extends ChatPaginator {
 
         for (int i = 0; i < rawChars.length; i++) {
             final char singleChar = rawChars[i];
-
-            if (singleChar == '\n') {
-                line.append(word);
-                lines.add(line.toString());
-                line = new StringBuilder(lineLength);
-                word = new StringBuilder();
-                wordWidth = 0;
-                lineWidth = 0;
-                continue;
-            }
-
-            if (singleChar == ChatColor.COLOR_CHAR
-                    && i + 1 < rawChars.length
-                    && ChatColor.getByChar(rawChars[i + 1]) != null) {
-                word.append(ChatColor.COLOR_CHAR).append(rawChars[i + 1]);
-                i++;
-                continue;
-            }
-
-            final int singleCharWidth = getWidth(singleChar);
-
-            if (singleChar != ' ') {
-                if (line.isEmpty() && wordWidth + singleCharWidth >= (lines.isEmpty() ? maxWidth : maxWrapWidth)) {
-                    lines.add(word.toString());
+            switch (singleChar) {
+                case '\n' -> {
+                    line.append(word);
+                    lines.add(line.toString());
+                    line = new StringBuilder(lineLength);
+                    word = new StringBuilder();
+                    wordWidth = 0;
+                    lineWidth = 0;
+                }
+                case ChatColor.COLOR_CHAR -> {
+                    word.append(ChatColor.COLOR_CHAR);
+                    if (rawChars.length <= i + 1) {
+                        continue;
+                    }
+                    final char colorCode = rawChars[i + 1];
+                    if (colorCode == 'x' || ChatColor.getByChar(colorCode) != null) {
+                        word.append(colorCode);
+                        i++;
+                    }
+                }
+                case ' ' -> {
+                    if (!line.isEmpty() && lineWidth + wordWidth > (lines.isEmpty() ? maxWidth : maxWrapWidth)) {
+                        lines.add(line.toString());
+                        line = new StringBuilder(lineLength);
+                        lineWidth = 0;
+                    }
+                    word.append(' ');
+                    wordWidth += SPACE_WIDTH;
+                    line.append(word);
+                    lineWidth += wordWidth;
                     word = new StringBuilder();
                     wordWidth = 0;
                 }
-                word.append(singleChar);
-                wordWidth += singleCharWidth;
-            }
-
-            if (!line.isEmpty() && lineWidth + wordWidth >= (lines.isEmpty() ? maxWidth : maxWrapWidth)) {
-                lines.add(line.toString());
-                line = new StringBuilder(lineLength);
-                lineWidth = 0;
-            }
-
-            if (singleChar == ' ') {
-                word.append(singleChar);
-                wordWidth += singleCharWidth;
-
-                line.append(word);
-                lineWidth += wordWidth;
-                word = new StringBuilder();
-                wordWidth = 0;
+                default -> {
+                    final int singleCharWidth = getWidth(singleChar);
+                    if (!line.isEmpty() && lineWidth + wordWidth + singleCharWidth > (lines.isEmpty() ? maxWidth : maxWrapWidth)) {
+                        lines.add(line.toString());
+                        line = new StringBuilder(lineLength);
+                        lineWidth = 0;
+                    }
+                    if (line.isEmpty() && wordWidth + singleCharWidth > (lines.isEmpty() ? maxWidth : maxWrapWidth)) {
+                        lines.add(word.toString());
+                        word = new StringBuilder();
+                        wordWidth = 0;
+                    }
+                    word.append(singleChar);
+                    wordWidth += singleCharWidth;
+                }
             }
         }
 
