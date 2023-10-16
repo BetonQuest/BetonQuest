@@ -170,7 +170,6 @@ of a folder. Appending a level allows you to select which types of messages are 
 shows all `WARNINGS` and `ERRORS` from the log. If you want to see more information use the levels `info` or `debug`.
 Beware though, the debug level might be spammy.
 
-
 ### Download from GitHub: `download`
 The download command (`/q download`) can be used to download tutorial quests & quest templates from
 the [Quest-Tutorials](https://github.com/BetonQuest/Quest-Tutorials) repository. For
