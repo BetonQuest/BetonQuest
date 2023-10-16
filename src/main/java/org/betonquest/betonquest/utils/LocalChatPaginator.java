@@ -2,7 +2,6 @@ package org.betonquest.betonquest.utils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
-import org.bukkit.util.ChatPaginator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
@@ -16,10 +15,16 @@ import java.util.stream.Stream;
  * <p>
  * We also try to handle variable width characters.
  */
-@SuppressWarnings("PMD.CommentRequired")
-public class LocalChatPaginator extends ChatPaginator {
+public final class LocalChatPaginator {
+    /**
+     * Pixel-length of characters in the default resource pack Minecraft font.
+     * Only the most common characters are defined.
+     */
     public static final Map<Character, Integer> FONT_SIZES;
 
+    /**
+     * Default assumption for pixel-length of characters that are not covered by {@link #FONT_SIZES}.
+     */
     public static final int DEFAULT_CHAR_WIDTH = 6;
 
     static {
@@ -39,9 +44,26 @@ public class LocalChatPaginator extends ChatPaginator {
         }).collect(Collectors.toMap(data -> (Character) data[0], data -> (Integer) data[1]));
     }
 
+    /**
+     * Pixel-length of a space character.
+     */
     public static final int SPACE_WIDTH = FONT_SIZES.get(' ');
 
-    public static String[] wordWrap(final String rawString, final int lineLength) {
+    private LocalChatPaginator() {
+    }
+
+    /**
+     * Breaks a raw string up into a series of lines that have similar
+     * length when displayed with the default Minecraft font.
+     * Wrapping happens on space characters if possible,
+     * but very long words will be broken if necessary.
+     *
+     * @param rawString  input string to wrap
+     * @param lineLength expected line length in characters to aim for
+     * @return array containing lines
+     */
+    @NotNull
+    public static String[] wordWrap(@NotNull final String rawString, final int lineLength) {
         return wordWrap(rawString, lineLength, "");
     }
 
@@ -54,7 +76,8 @@ public class LocalChatPaginator extends ChatPaginator {
      * @param wrapPrefix The string to prefix the wrapped line with
      * @return An array of word-wrapped lines.
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity", "PMD.NcssCount"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.NcssCount"})
+    @NotNull
     public static String[] wordWrap(@NotNull final String rawString, final int lineLength, @NotNull final String wrapPrefix) {
         final int maxWidth = lineLength * DEFAULT_CHAR_WIDTH;
         if (!rawString.contains("\n")) {
@@ -166,7 +189,13 @@ public class LocalChatPaginator extends ChatPaginator {
         return ret;
     }
 
+    /**
+     * Get the width of a character in pixels. Returned values are for the default Minecraft font.
+     *
+     * @param character character to look up
+     * @return width of the character
+     */
     public static int getWidth(final Character character) {
-        return FONT_SIZES.containsKey(character) ? FONT_SIZES.get(character) : DEFAULT_CHAR_WIDTH;
+        return FONT_SIZES.getOrDefault(character, DEFAULT_CHAR_WIDTH);
     }
 }
