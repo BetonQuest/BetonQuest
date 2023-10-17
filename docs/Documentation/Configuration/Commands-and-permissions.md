@@ -223,9 +223,6 @@ multiple times to download more than one package at once
 `-f <file>`, `--file=<file>` select the files that should be downloaded; this option can be provided multiple times to
 download more than one file at once
 
-`targetPath` is where in your BetonQuest folder the files shall be put, relative to either the QuestPackages or
-QuestTemplates folder defined as `type`.
-
 `-l <localBasePackage>`, `--local=<localBasePackage>` local base package to put the downloaded packages and files into
 
 `-r`, `--recursive` also include [nested packages](../Scripting/Packages-&-Templates.md#__tabbed_1_3) in the download
