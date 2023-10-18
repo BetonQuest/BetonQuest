@@ -5,6 +5,8 @@ import java.util.List;
 /**
  * Command data for downloading remote quests.
  *
+ * @param gitHubRepository      repository to download from
+ * @param gitReference          git reference to download
  * @param layoutRule            the rule to determine the repositories layout
  * @param downloadPackages      whether to download packages
  * @param downloadTemplates     whether to download templates
@@ -17,10 +19,11 @@ import java.util.List;
  * @param force                 whether to force the download by overwriting local files if necessary
  */
 public record DownloadCommand(
+        String gitHubRepository,
+        String gitReference,
         RepositoryLayoutRule layoutRule,
         boolean downloadPackages,
         boolean downloadTemplates,
-
         String sourcePath,
         String repositoryBasePackage,
         String localBasePackage,

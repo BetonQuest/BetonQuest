@@ -115,6 +115,8 @@ public class JsapDownloadCommandParser implements CommandParser<DownloadCommand>
         final boolean downloadPackagesSelected = result.getBoolean(DOWNLOAD_PACKAGE_FLAG);
         final boolean downloadTemplatesSelected = result.getBoolean(DOWNLOAD_TEMPLATE_FLAG);
         return new DownloadCommand(
+                result.getString(GITHUB_REPOSITORY_FLAG),
+                toGitReference(result.getString(GIT_REFERENCE_FLAG)),
                 RepositoryLayoutRule.fromFlags(result.getBoolean(LAYOUT_STRUCTURED_FLAG), result.getBoolean(LAYOUT_RAW_FLAG)),
                 downloadPackagesSelected || !downloadTemplatesSelected,
                 downloadTemplatesSelected || !downloadPackagesSelected,
@@ -126,5 +128,13 @@ public class JsapDownloadCommandParser implements CommandParser<DownloadCommand>
                 result.getBoolean(RECURSIVE_FLAG),
                 result.getBoolean(FORCE_FLAG)
         );
+    }
+
+    private String toGitReference(final String gitBranchOrReference) {
+        if (gitBranchOrReference.startsWith("refs/")) {
+            return gitBranchOrReference;
+        } else {
+            return "refs/heads/" + gitBranchOrReference;
+        }
     }
 }
