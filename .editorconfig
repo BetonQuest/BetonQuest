@@ -34,7 +34,7 @@ block_comment_end = */
 indent_size = 4
 
 # Ignore Python Virtualenv files
-[/{lib,venv}/**]
+[/{lib,venv,.venv}/**]
 indent_style = unset
 indent_size = unset
 
