@@ -22,6 +22,8 @@ class JsapDownloadCommandParserTest {
     public static Stream<Arguments> validCommands() {
         return Stream.of(
                 Arguments.of(new String[]{"BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
@@ -34,6 +36,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"-RP", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.FORCE_RAW,
                         true,
                         false,
@@ -46,6 +50,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"--raw", "--download-package", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.FORCE_RAW,
                         true,
                         false,
@@ -58,6 +64,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"-RT", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.FORCE_RAW,
                         false,
                         true,
@@ -70,6 +78,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"--raw", "--download-template", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.FORCE_RAW,
                         false,
                         true,
@@ -82,6 +92,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"-S", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.FORCE_STRUCTURED,
                         true,
                         true,
@@ -94,6 +106,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"--structured", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.FORCE_STRUCTURED,
                         true,
                         true,
@@ -106,6 +120,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"-P", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         false,
@@ -118,6 +134,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"--download-package", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         false,
@@ -130,6 +148,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"-T", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         false,
                         true,
@@ -142,6 +162,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"--download-template", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         false,
                         true,
@@ -154,6 +176,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"-PT", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
@@ -166,6 +190,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"--download-package", "--download-template", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
@@ -178,6 +204,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"-s", "chapter_one", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
@@ -190,6 +218,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"--source=chapter_one", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
@@ -202,6 +232,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"-b", "first_act.scene_one", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
@@ -214,6 +246,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"--base-package=first_act.scene_one", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
@@ -226,6 +260,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"-l", "external", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
@@ -238,6 +274,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"--local=external", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
@@ -250,6 +288,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"-p", "evil.jake", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
@@ -262,6 +302,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"--package=evil.jake", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
@@ -274,6 +316,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"-p", "evil.jake", "-p", "evil.bob", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
@@ -286,6 +330,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"--package", "evil.jake", "--package", "evil.bob", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
@@ -298,6 +344,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"-F", "good/frank.yml", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
@@ -310,6 +358,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"--file", "good/frank.yml", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
@@ -322,6 +372,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"-F", "good/frank.yml", "-F", "good/joseph.yml", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
@@ -334,6 +386,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"--file=good/frank.yml", "--file=good/joseph.yml", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
@@ -346,6 +400,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"-r", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
@@ -358,6 +414,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"--recursive", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
@@ -370,6 +428,8 @@ class JsapDownloadCommandParserTest {
                         false
                 )),
                 Arguments.of(new String[]{"-f", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
@@ -382,6 +442,8 @@ class JsapDownloadCommandParserTest {
                         true
                 )),
                 Arguments.of(new String[]{"--force", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                        "BetonQuest/Quest-Tutorials",
+                        "refs/heads/main",
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
