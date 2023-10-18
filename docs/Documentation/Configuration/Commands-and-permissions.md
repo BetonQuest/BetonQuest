@@ -201,7 +201,7 @@ the [configuration](Configuration.md#quest-downloader), read more about this in 
 `-T`, `--downloadTemplate` download template files; if either both or none of this option and `-T` is given then both
 templates and packages will be downloaded
 
-`-P`, `--downloadPackage` download package files; if either both or none of this option and `-T` is given then both
+`-P`, `--downloadPackage` download package files; if either both or none of this option and `-P` is given then both
 templates and packages will be downloaded
 
 `-R`, `--raw` do not expect the folders `QuestPackages` and `QuestTemplates` at the source and do not give them special
