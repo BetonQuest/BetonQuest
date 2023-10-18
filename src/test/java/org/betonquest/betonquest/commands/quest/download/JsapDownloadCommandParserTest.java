@@ -45,7 +45,7 @@ class JsapDownloadCommandParserTest {
                         false,
                         false
                 )),
-                Arguments.of(new String[]{"--raw", "--downloadPackage", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                Arguments.of(new String[]{"--raw", "--download-package", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
                         RepositoryLayoutRule.FORCE_RAW,
                         true,
                         false,
@@ -69,7 +69,7 @@ class JsapDownloadCommandParserTest {
                         false,
                         false
                 )),
-                Arguments.of(new String[]{"--raw", "--downloadTemplate", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                Arguments.of(new String[]{"--raw", "--download-template", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
                         RepositoryLayoutRule.FORCE_RAW,
                         false,
                         true,
@@ -117,7 +117,7 @@ class JsapDownloadCommandParserTest {
                         false,
                         false
                 )),
-                Arguments.of(new String[]{"--downloadPackage", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                Arguments.of(new String[]{"--download-package", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         false,
@@ -141,7 +141,7 @@ class JsapDownloadCommandParserTest {
                         false,
                         false
                 )),
-                Arguments.of(new String[]{"--downloadTemplate", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                Arguments.of(new String[]{"--download-template", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
                         RepositoryLayoutRule.AUTO_DETECT,
                         false,
                         true,
@@ -165,7 +165,7 @@ class JsapDownloadCommandParserTest {
                         false,
                         false
                 )),
-                Arguments.of(new String[]{"--downloadPackage", "--downloadTemplate", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
+                Arguments.of(new String[]{"--download-package", "--download-template", "BetonQuest/Quest-Tutorials", "main"}, new DownloadCommand(
                         RepositoryLayoutRule.AUTO_DETECT,
                         true,
                         true,
