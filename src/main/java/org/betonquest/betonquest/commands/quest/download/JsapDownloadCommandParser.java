@@ -28,8 +28,8 @@ public class JsapDownloadCommandParser {
     private JSAP createDownloadSubcommandJsap() {
         try {
             final JSAP jsap = new JSAP();
-            jsap.registerParameter(new Switch(DOWNLOAD_TEMPLATE_FLAG, 'T', "downloadTemplate"));
-            jsap.registerParameter(new Switch(DOWNLOAD_PACKAGE_FLAG, 'P', "downloadPackage"));
+            jsap.registerParameter(new Switch(DOWNLOAD_TEMPLATE_FLAG, 'T', "download-template"));
+            jsap.registerParameter(new Switch(DOWNLOAD_PACKAGE_FLAG, 'P', "download-package"));
             jsap.registerParameter(new Switch(LAYOUT_RAW_FLAG, 'R', "raw"));
             jsap.registerParameter(new Switch(LAYOUT_STRUCTURED_FLAG, 'S', "structured"));
             jsap.registerParameter(new FlaggedOption(REPOSITORY_SOURCE_PATH_FLAG, JSAP.STRING_PARSER, "", true, 's', "source"));
