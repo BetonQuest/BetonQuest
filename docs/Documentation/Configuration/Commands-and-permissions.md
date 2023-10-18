@@ -220,14 +220,14 @@ the base path will not be mirrored locally
 `-p <package>`, `--package=<package>` select the packages that should be downloaded; this option can be provided
 multiple times to download more than one package at once
 
-`-f <file>`, `--file=<file>` select the files that should be downloaded; this option can be provided multiple times to
+`-F <file>`, `--file=<file>` select the files that should be downloaded; this option can be provided multiple times to
 download more than one file at once
 
 `-l <localBasePackage>`, `--local=<localBasePackage>` local base package to put the downloaded packages and files into
 
 `-r`, `--recursive` also include [nested packages](../Scripting/Packages-&-Templates.md#__tabbed_1_3) in the download
 
-`-o`, `--overwrite` allow overwriting local files; if not set an error will be logged and the download will be aborted
+`-f`, `--force` allow overwriting local files; if not set an error will be logged and the download will be aborted
 
 #### Layout auto-detection
 By default, the download command will try to detect if the repository at the given source location is structured like
