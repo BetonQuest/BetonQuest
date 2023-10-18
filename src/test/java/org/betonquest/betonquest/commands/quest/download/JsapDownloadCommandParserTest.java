@@ -16,7 +16,7 @@ class JsapDownloadCommandParserTest {
     void parse_correct_commands(final String[] commandLineArguments, final DownloadCommand expectedCommand) {
         final JsapDownloadCommandParser parser = new JsapDownloadCommandParser();
         final DownloadCommand actualCommand = parser.parse(commandLineArguments);
-        assertEquals(expectedCommand, actualCommand);
+        assertEquals(expectedCommand, actualCommand, "Parsed command should equal.");
     }
 
     public static Stream<Arguments> validCommands() {
