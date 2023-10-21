@@ -275,8 +275,8 @@ cn:
   items_to_pickup: '&2{1} 个物品需要拾取'
   items_to_smelt: '&2{1} 个物品需要熔炼'
   items_to_craft: '&2{1} 个物品需要制作'
-  items_to_enchant: '&2{1} items left to enchant' # TODO: missing translation
-  level_to_gain: '&2{1} levels left to gain' # TODO: missing translation
+  items_to_enchant: '&2{1} 个物品需要附魔'
+  level_to_gain: '&2{1} 级经验还需要获取'
   busy: '&c你还在战斗中'
   quest_canceled: '&2任务 {1}&2 已取消!'
   cancel: '&c取消任务'
