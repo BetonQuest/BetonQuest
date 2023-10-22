@@ -21,6 +21,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Player has to wait specified amount of time. He may logout, the objective
@@ -136,7 +138,6 @@ public class DelayObjective extends Objective {
         };
     }
 
-    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition"})
     @NotNull
     private String parseVariableLeft(final Profile profile) {
         final String lang = BetonQuest.getInstance().getPlayerData(profile).getLanguage();
@@ -157,11 +158,21 @@ public class DelayObjective extends Objective {
         final String hours = buildTimeDescription(hoursWord, hoursWordSingular, duration.toHoursPart());
         final String minutes = buildTimeDescription(minutesWord, minutesWordSingular, duration.toMinutesPart());
         final String seconds = buildTimeDescription(secondsWord, secondsWordSingular, duration.toSecondsPart());
-        return days + hours + minutes + seconds;
+
+        return Stream.of(days, hours, minutes, seconds)
+                .filter(word -> !word.isEmpty())
+                .collect(Collectors.joining(" "));
     }
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     private String buildTimeDescription(final String timeUnitWord, final String timeUnitSingularWord, final long timeAmount) {
-        return timeAmount >= 1 ? timeAmount + " " + (timeAmount == 1 ? timeUnitSingularWord : timeUnitWord + " ") : "";
+        if (timeAmount > 1) {
+            return timeAmount + " " + timeUnitWord;
+        } else if (timeAmount == 1) {
+            return timeAmount + " " + timeUnitSingularWord;
+        } else {
+            return "";
+        }
     }
 
     private String parseVariableDate(final Profile profile) {
