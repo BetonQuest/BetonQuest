@@ -64,7 +64,7 @@ public class GiveEvent implements Event {
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
         final Player player = profile.getOnlineProfile().get().getPlayer();
-        Arrays.stream(questItems).toList().forEach(item -> {
+        for (final Item item : questItems) {
             final QuestItem questItem = item.getItem();
             final int amount = item.getAmount().getInt(profile);
             giveItems(profile, player, questItem, amount);
@@ -72,15 +72,20 @@ public class GiveEvent implements Event {
                     ? questItem.getMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " ")
                     : questItem.getName();
             itemsGivenSender.sendNotification(profile, questItemName, String.valueOf(amount));
-        });
+        }
     }
 
-    private void giveItems(final Profile profile, final Player player, final QuestItem questItem, final int totalAmount) {
+    @SuppressWarnings("PMD.CognitiveComplexity")
+    private void giveItems(final Profile profile, final Player player, final QuestItem questItem, final int totalAmount)
+            throws QuestRuntimeException {
         int amount = totalAmount;
         while (amount > 0) {
-            boolean fullInventory = false;
             final ItemStack itemStackTemplate = questItem.generate(1, profile);
             final int stackSize = Math.min(amount, itemStackTemplate.getMaxStackSize());
+            if (stackSize <= 0) {
+                throw new QuestRuntimeException("Item stack size is 0 or less!");
+            }
+            boolean fullInventory = false;
             ItemStack itemStack = itemStackTemplate.clone();
             itemStack.setAmount(stackSize);
             if (!backpack) {
