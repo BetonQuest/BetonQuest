@@ -25,6 +25,10 @@ import org.betonquest.betonquest.utils.LocalChatPaginator;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Slab;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -212,8 +216,15 @@ public class MenuConvIO extends ChatConvIO {
             }
             state = ConversationState.ACTIVE;
 
-            // Create something painful looking for the player to sit on and make it invisible.
-            stand = player.getWorld().spawn(player.getLocation().clone().add(0, -1.1, 0), ArmorStand.class);
+            final World world = player.getWorld();
+            final Location location = player.getLocation();
+            final Location target = location.clone();
+            target.setY(world.getHighestBlockYAt(location));
+            final BlockData blockData = target.getBlock().getBlockData();
+            if (blockData instanceof final Slab slab && slab.getType() == Slab.Type.BOTTOM) {
+                target.add(0, -0.5, 0);
+            }
+            stand = world.spawn(target.add(0, -0.375, 0), ArmorStand.class);
 
             stand.setGravity(false);
             stand.setVisible(false);
