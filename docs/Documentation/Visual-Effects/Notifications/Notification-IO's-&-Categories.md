@@ -90,7 +90,6 @@ Anything after these characters will be shown in the subtitle.
 | fadeIn          | Ticks to fade the title in. Default 10    |
 | stay            | Ticks to keep title on screen. Default 70 |
 | fadeOut         | Ticks to fade the title out. Default 20   |
-| fadeOut         | Ticks to fade the title out. Default 20   |
 | [Sound](#sound) | Any option from the [SoundIO](#sound).    |
 
 ### SubTitle
@@ -188,7 +187,7 @@ Does not output any sound or text 🔕. Can be used to remove built-in notificat
 
 ## Categories
 
-Notify Categories are pre-defined [NotifyIO settings](#notify-ios). They can be applied to any notify event and are used
+Notify Categories are pre-defined [NotifyIO settings](#categories). They can be applied to any notify event and are used
 by BetonQuest's built-in notifications.
 All categories must be defined in a section called `notifications`.
 
