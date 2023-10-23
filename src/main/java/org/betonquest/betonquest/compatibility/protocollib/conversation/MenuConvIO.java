@@ -26,7 +26,6 @@ import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Slab;
@@ -217,10 +216,8 @@ public class MenuConvIO extends ChatConvIO {
             }
             state = ConversationState.ACTIVE;
 
-            final World world = player.getWorld();
-            final Location location = player.getLocation();
-            final Location target = getBlockBelowPlayer(location);
-            stand = world.spawn(target.add(0, -0.375, 0), ArmorStand.class);
+            final Location target = getBlockBelowPlayer(player);
+            stand = player.getWorld().spawn(target.add(0, -0.375, 0), ArmorStand.class);
 
             stand.setGravity(false);
             stand.setVisible(false);
@@ -246,12 +243,19 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
-    private Location getBlockBelowPlayer(final Location location) {
+    private Location getBlockBelowPlayer(final Player player) {
+        final Location location = player.getLocation();
+        if (player.isFlying()) {
+            return location.add(0, -1, 0);
+        }
         final Location target = location.clone();
         Block block = target.getBlock();
         while (!block.isSolid()) {
             target.add(0, -1, 0);
             block = target.getBlock();
+            if (target.getY() < target.getWorld().getMinHeight()) {
+                return location;
+            }
         }
         target.setY(block.getY());
         final BlockData blockData = block.getBlockData();
