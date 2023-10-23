@@ -27,6 +27,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Slab;
 import org.bukkit.configuration.ConfigurationSection;
@@ -218,12 +219,7 @@ public class MenuConvIO extends ChatConvIO {
 
             final World world = player.getWorld();
             final Location location = player.getLocation();
-            final Location target = location.clone();
-            target.setY(world.getHighestBlockYAt(location));
-            final BlockData blockData = target.getBlock().getBlockData();
-            if (blockData instanceof final Slab slab && slab.getType() == Slab.Type.BOTTOM) {
-                target.add(0, -0.5, 0);
-            }
+            final Location target = getBlockBelowPlayer(location);
             stand = world.spawn(target.add(0, -0.375, 0), ArmorStand.class);
 
             stand.setGravity(false);
@@ -248,6 +244,21 @@ public class MenuConvIO extends ChatConvIO {
         } finally {
             lock.writeLock().unlock();
         }
+    }
+
+    private Location getBlockBelowPlayer(final Location location) {
+        final Location target = location.clone();
+        Block block = target.getBlock();
+        while (!block.isSolid()) {
+            target.add(0, -1, 0);
+            block = target.getBlock();
+        }
+        target.setY(block.getY());
+        final BlockData blockData = block.getBlockData();
+        if (blockData instanceof final Slab slab && slab.getType() == Slab.Type.BOTTOM) {
+            target.add(0, -0.5, 0);
+        }
+        return target;
     }
 
     /**
