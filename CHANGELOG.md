@@ -229,6 +229,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Notification categories could be modified during runtime with the notify event
 - Leading spaces are now preserved in conversation messages and journal entries 
 - giving `air` with the give command or the give event crashes the server
+- duplication of holograms when reloading BetonQuest and the hologram is hidden
 - Things that are also fixed in 1.12.X:
     - eating of items when entering the chest conversation io actually consumed the item 
     - legacy `§x` HEX color format not working in some contexts
