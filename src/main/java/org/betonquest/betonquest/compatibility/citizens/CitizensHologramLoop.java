@@ -149,8 +149,8 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
         holograms.stream()
                 .filter(hologramWrapper -> hologramWrapper.holograms().contains(hologram))
                 .forEach(hologramWrapper -> {
-                    hologramWrapper.updateVisibility();
                     hologramWrapper.initialiseContent();
+                    hologramWrapper.updateVisibility();
                 });
     }
 

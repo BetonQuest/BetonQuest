@@ -39,8 +39,8 @@ public final class HologramRunner {
             @Override
             public void run() {
                 for (final HologramWrapper h : holograms) {
-                    h.updateVisibility();
                     h.updateContent();
+                    h.updateVisibility();
                 }
             }
         };
@@ -58,8 +58,9 @@ public final class HologramRunner {
         RUNNERS.computeIfAbsent(hologram.interval(),
                         k -> new HologramRunner(hologram.interval()))
                 .addRunnerHologram(hologram);
-        hologram.updateVisibility();
         hologram.initialiseContent();
+        hologram.holograms().forEach(BetonHologram::showAll);
+        hologram.updateVisibility();
     }
 
     /**
