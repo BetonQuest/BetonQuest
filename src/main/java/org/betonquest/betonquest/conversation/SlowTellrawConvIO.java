@@ -39,16 +39,16 @@ public class SlowTellrawConvIO extends TellrawConvIO {
         }
 
         // NPC Text
-        final List<String> lines = new ArrayList<>(Arrays.asList(LocalChatPaginator.wordWrap(
-                Utils.replaceReset(textFormat.replace("%npc%", npcName) + npcText, npcTextColor),
-                60)));
-
+        final String[] lines = LocalChatPaginator.wordWrap(
+                Utils.replaceReset(textFormat.replace("%npc%", npcName) + npcText, npcTextColor), 50);
         endLines = new ArrayList<>();
 
         new BukkitRunnable() {
+            private int lineCount;
+
             @Override
             public void run() {
-                if (lines.isEmpty()) {
+                if (lineCount == lines.length) {
                     for (int j = 1; j <= options.size(); j++) {
                         // Build ColorString
                         final TextComponent colorComponent = new TextComponent();
@@ -78,8 +78,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
                     this.cancel();
                     return;
                 }
-
-                conv.sendMessage(lines.remove(0));
+                conv.sendMessage(lines[lineCount++]);
             }
         }.runTaskTimer(BetonQuest.getInstance(), 0, 2);
     }
