@@ -738,3 +738,20 @@ events:
   events:
     cancel: "cancelconversation"
 ```
+## Log message to console: `log`
+
+**persistent**, **static**  
+
+Prints a provided message to the server log. Any variables used in the message will be resolved. 
+Note that when used in static context (by schedules) replacing player dependent variables won't work as the event is player independent.
+
+| Parameter | Syntax           | Default Value | Explanation                                                                                                                               |
+|-----------|------------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| _level_   | `level:logLevel` | `INFO`        | Optionally the log level can be specified but only **before** the message. <br>There are 4 levels: `debug`, `info`, `warning` and `error` |
+
+```YAML title="Example"
+  events:
+    logPlayer: "log %player% completed first quest."
+    debug: "log level:DEBUG daily quests have been reset"
+```
+

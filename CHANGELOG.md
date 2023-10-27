@@ -112,6 +112,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `numbercompare` condition
 - `cancelOnLogout` argument for `folder` event
 - `npcinteract` objective - now supports the argument `interaction` to choose between left, right or both clicks
+- `log` event
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`
     - FastAsyncWorldEdit compatibility

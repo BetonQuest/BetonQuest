@@ -227,6 +227,7 @@ import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactoryAdapter;
 import org.betonquest.betonquest.quest.event.lever.LeverEventFactory;
 import org.betonquest.betonquest.quest.event.lightning.LightningEventFactory;
+import org.betonquest.betonquest.quest.event.log.LogEventFactory;
 import org.betonquest.betonquest.quest.event.logic.IfElseEventFactory;
 import org.betonquest.betonquest.quest.event.notify.NotifyAllEventFactory;
 import org.betonquest.betonquest.quest.event.notify.NotifyEventFactory;
@@ -953,6 +954,7 @@ public class BetonQuest extends JavaPlugin {
         registerEvent("deleteglobalpoint", new DeleteGlobalPointEventFactory());
         registerEvent("drop", new DropEventFactory(getServer(), getServer().getScheduler(), this));
         registerNonStaticEvent("itemdurability", new ItemDurabilityEventFactory(loggerFactory, getServer(), getServer().getScheduler(), this));
+        registerEvent("log", new LogEventFactory(loggerFactory));
 
         registerObjectives("location", LocationObjective.class);
         registerObjectives("block", BlockObjective.class);
