@@ -22,18 +22,25 @@ public class LogEvent implements Event {
     private final BetonQuestLogger logger;
 
     /**
+     * Level to log the message at.
+     */
+    private final LogEventLevel level;
+
+    /**
      * Create a new {@link LogEvent}
      *
-     * @param logger logger used for logging messages.
+     * @param logger  logger used for logging messages.
+     * @param level   level to log the message at.
      * @param message message that should be printed to the server log.
      */
-    public LogEvent(final BetonQuestLogger logger, final VariableString message) {
+    public LogEvent(final BetonQuestLogger logger, final LogEventLevel level, final VariableString message) {
         this.logger = logger;
         this.message = message;
+        this.level = level;
     }
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
-        logger.info(message.getString(profile));
+        level.log(logger, message.getString(profile));
     }
 }

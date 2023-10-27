@@ -25,6 +25,11 @@ public class LogEventFactory implements EventFactory, StaticEventFactory {
     private static final Pattern CONDITIONS_REGEX = Pattern.compile("conditions?:\\S*\\s*$");
 
     /**
+     * Regex used to detect a level statement at the beginning of the instruction.
+     */
+    private static final Pattern LEVEL_REGEX = Pattern.compile("^\\s*level:\\S*\\s");
+
+    /**
      * Logger factory to create a logger for events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
@@ -40,15 +45,14 @@ public class LogEventFactory implements EventFactory, StaticEventFactory {
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+        final LogEventLevel level = instruction.getEnum("level", LogEventLevel.class, LogEventLevel.INFO);
         final String raw = instruction.getInstruction();
-        final Matcher matcher = CONDITIONS_REGEX.matcher(raw);
-        final VariableString message;
-        if (matcher.find()) {
-            message = new VariableString(instruction.getPackage(), raw.substring(0, matcher.start()));
-        } else {
-            message = new VariableString(instruction.getPackage(), raw);
-        }
-        return new LogEvent(loggerFactory.create(LogEvent.class), message);
+        final Matcher conditionsMatcher = CONDITIONS_REGEX.matcher(raw);
+        final Matcher levelMatcher = LEVEL_REGEX.matcher(raw);
+        final int msgStart = levelMatcher.find() ? levelMatcher.end() : 0;
+        final int msgEnd = conditionsMatcher.find() ? conditionsMatcher.start() : raw.length();
+        final VariableString message = new VariableString(instruction.getPackage(), raw.substring(msgStart, msgEnd));
+        return new LogEvent(loggerFactory.create(LogEvent.class), level, message);
     }
 
     @Override
