@@ -3,7 +3,6 @@ package org.betonquest.betonquest.api;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
@@ -11,7 +10,6 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.utils.PlayerConverter;
 
 /**
  * <p>
@@ -119,24 +117,17 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
     }
 
     private void handleNullProfile() throws QuestRuntimeException {
-        if (staticness) {
-            log.debug(instruction.getPackage(), "Static event will be fired without a profile.");
-            if (!BetonQuest.conditions(null, conditions)) {
-                log.debug(instruction.getPackage(), "Event conditions were not met");
-                return;
-            }
-            handle(null);
+        if (!staticness) {
+            log.warn(instruction.getPackage(),
+                    "Cannot fire non-static event '" + instruction.getID() + "' without a player!");
             return;
         }
-        log.debug(instruction.getPackage(), "Static event will be fired once for every online profile:");
-        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
-            if (!BetonQuest.conditions(onlineProfile, conditions)) {
-                log.debug(instruction.getPackage(), "Event conditions were not met for " + onlineProfile);
-                return;
-            }
-            log.debug(instruction.getPackage(), "Firing this static event for " + onlineProfile);
-            handle(onlineProfile);
+        log.debug(instruction.getPackage(), "Static event will be fired without a profile.");
+        if (!BetonQuest.conditions(null, conditions)) {
+            log.debug(instruction.getPackage(), "Event conditions were not met");
+            return;
         }
+        handle(null);
     }
 
     private void handleOfflineProfile(final Profile profile) throws QuestRuntimeException {

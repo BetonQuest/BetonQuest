@@ -478,7 +478,8 @@ public class BetonQuest extends JavaPlugin {
             return false;
         }
         if (profile == null && !condition.isStatic()) {
-            getInstance().log.debug(conditionID.getPackage(), "Cannot check non-static condition without a player, returning false");
+            getInstance().log.warn(conditionID.getPackage(),
+                    "Cannot check non-static condition '" + conditionID + "' without a player, returning false");
             return false;
         }
         if (profile != null && profile.getOnlineProfile().isEmpty() && !condition.isPersistent()) {
@@ -517,7 +518,7 @@ public class BetonQuest extends JavaPlugin {
             return;
         }
         if (profile == null) {
-            getInstance().log.debug(eventID.getPackage(), "Firing static event " + eventID);
+            getInstance().log.debug(eventID.getPackage(), "Firing event " + eventID + " player independent");
         } else {
             getInstance().log.debug(eventID.getPackage(),
                     "Firing event " + eventID + " for " + profile);
