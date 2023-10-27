@@ -27,7 +27,7 @@ public class LogEvent implements Event {
     private final LogEventLevel level;
 
     /**
-     * Create a new {@link LogEvent}
+     * Create a new {@link LogEvent}.
      *
      * @param logger  logger used for logging messages.
      * @param level   level to log the message at.

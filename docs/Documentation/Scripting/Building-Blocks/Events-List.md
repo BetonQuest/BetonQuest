@@ -743,7 +743,7 @@ events:
 **persistent**, **static**  
 
 Prints a provided message to the server log. Any variables used in the message will be resolved. 
-Note that when used in static context (by schedules) replacing variables won't work as the event is player independent.
+Note that when used in static context (by schedules) replacing player dependent variables won't work as the event is player independent.
 
 | Parameter | Syntax           | Default Value | Explanation                                                                                                                               |
 |-----------|------------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------|
