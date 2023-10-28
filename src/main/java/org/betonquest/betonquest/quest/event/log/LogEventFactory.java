@@ -45,8 +45,8 @@ public class LogEventFactory implements EventFactory, StaticEventFactory {
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        final LogEventLevel level = instruction.getEnum("level", LogEventLevel.class, LogEventLevel.INFO);
-        final String raw = instruction.getInstruction();
+        final LogEventLevel level = instruction.getEnum(instruction.getOptional("level"), LogEventLevel.class, LogEventLevel.INFO);
+        final String raw = instruction.getInstruction().substring("log".length() + 1);
         final Matcher conditionsMatcher = CONDITIONS_REGEX.matcher(raw);
         final Matcher levelMatcher = LEVEL_REGEX.matcher(raw);
         final int msgStart = levelMatcher.find() ? levelMatcher.end() : 0;
