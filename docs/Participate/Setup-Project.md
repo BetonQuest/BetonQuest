@@ -35,6 +35,16 @@ the BetonQuest repository from your account. You can also directly
     We use [Git LFS](https://git-lfs.github.com/) to store big files like media files, so you need to install that too.
     Once you have executed the file that you downloaded from the Git LFS website, just run `git lfs install`.
     Then use `git lfs pull` to actually download the files.
+    
+???+ "If you want to work on the Quest-Tutorials"
+    Quest-Tutorials are located at `docs/_tutorials` as a [git submodule](https://www.vogella.com/tutorials/GitSubmodules/article.html).   
+    To initialize the submodule (which downloads all files), run the following command in the terminal on the project's root directory:
+    
+    ```bash
+    git submodule update --init
+    ```
+    
+    If you are not familiar with git submodules, you can always just clone the Quest-Tutorials repository in a separate location.
 
 ### Adding remote repository
 In IntelliJ click on `Git` in the left upper corner and then `Manage Remotes...`.
