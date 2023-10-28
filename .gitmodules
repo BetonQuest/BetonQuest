@@ -1,0 +1,3 @@
+[submodule "Quest-Tutorials"]
+	path = docs/_tutorials
+	url = https://github.com/BetonQuest/Quest-Tutorials
