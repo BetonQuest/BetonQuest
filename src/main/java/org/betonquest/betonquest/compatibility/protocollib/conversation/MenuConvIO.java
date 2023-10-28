@@ -302,7 +302,6 @@ public class MenuConvIO extends ChatConvIO {
     }
 
     // Override this event from our parent
-
     @SuppressWarnings("deprecation")
     @Override
     @EventHandler(ignoreCancelled = true)
@@ -785,15 +784,14 @@ public class MenuConvIO extends ChatConvIO {
                 return;
             }
 
-            // Cheat and assume the closest distance between previous and new slots is the direction scrolled
-            final int slotDistance = event.getPreviousSlot() - event.getNewSlot();
+            final Direction scrollDirection = getScrollDirection(event.getPreviousSlot(), event.getNewSlot());
 
-            if ((slotDistance > 5 || slotDistance < 0 && slotDistance >= -5) && selectedOption < options.size() - 1) {
+            if (scrollDirection == Direction.DOWN && selectedOption < options.size() - 1) {
                 oldSelectedOption = selectedOption;
                 selectedOption++;
                 updateDisplay();
                 debounce = true;
-            } else if (slotDistance != 0 && selectedOption > 0) {
+            } else if (scrollDirection == Direction.UP && selectedOption > 0) {
                 oldSelectedOption = selectedOption;
                 selectedOption--;
                 updateDisplay();
@@ -802,6 +800,15 @@ public class MenuConvIO extends ChatConvIO {
         } finally {
             lock.readLock().unlock();
         }
+    }
+
+    private Direction getScrollDirection(final int start, final int end) {
+        for (int offset = 1; offset <= 4; offset++) {
+            if ((start + offset) % 9 == end) {
+                return Direction.DOWN;
+            }
+        }
+        return Direction.UP;
     }
 
     public enum ACTION {
@@ -816,5 +823,10 @@ public class MenuConvIO extends ChatConvIO {
         SCROLL,
         MOVE,
         LEFT_CLICK
+    }
+
+    public enum Direction {
+        UP,
+        DOWN
     }
 }
