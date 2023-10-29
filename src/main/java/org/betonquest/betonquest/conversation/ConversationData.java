@@ -287,7 +287,7 @@ public class ConversationData {
         for (final Option option : playerOptions.values()) {
             for (final String pointer : option.getPointers()) {
                 if (pointer.contains(".")) {
-                    externalPointers.add(resolvePointer(pack, convName, option.getName(), OptionType.PLAYER, pointer));
+                    externalPointers.add(resolvePointer(pack, convName, option.getName(), NPC, pointer));
                 } else if (!npcOptions.containsKey(pointer)) {
                     throw new InstructionParseException(
                             String.format("Player option %s points to %s NPC option, but it does not exist",
@@ -308,7 +308,7 @@ public class ConversationData {
         for (final Option option : npcOptions.values()) {
             for (final String pointer : option.getPointers()) {
                 if (pointer.contains(".")) {
-                    externalPointers.add(resolvePointer(pack, convName, option.getName(), OptionType.NPC, pointer));
+                    externalPointers.add(resolvePointer(pack, convName, option.getName(), PLAYER, pointer));
                 } else if (!playerOptions.containsKey(pointer)) {
                     throw new InstructionParseException(
                             String.format("NPC option %s points to %s player option, but it does not exist",
