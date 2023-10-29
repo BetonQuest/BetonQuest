@@ -16,6 +16,7 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.ConversationData.OptionType;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
+import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
@@ -50,7 +51,8 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
- * Represents a conversation between player and NPC
+ * Manages an active conversation between a player and a NPC.
+ * Handles the conversation flow based on {@link ConversationData}.
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.CommentRequired"})
 public class Conversation implements Listener {
@@ -95,6 +97,9 @@ public class Conversation implements Listener {
     @SuppressWarnings("PMD.AvoidUsingVolatile")
     protected volatile ConversationState state = ConversationState.CREATED;
 
+    /**
+     * The conversation data that is currently being used.
+     */
     private ConversationData data;
 
     private ConversationIO inOut;
@@ -191,23 +196,34 @@ public class Conversation implements Listener {
      *                conditions are not met
      */
     private void selectOption(final String[] options, final boolean force) {
-        final String[] inputOptions = force ? new String[]{options[0]} : options;
+        final List<String> inputOptions = force ? List.of(options[0]) : List.of(options);
 
-        // get npc's text
-        option = null;
+        this.option = null;
+
         for (final String option : inputOptions) {
-            final String optionName;
-            if (option.contains(".")) {
-                final String[] parts = option.split("\\.");
-                optionName = parts[1];
-            } else {
-                optionName = option;
+            final ConversationOptionResolverResult result;
+            try {
+                result = new ConversationOptionResolver(plugin, pack, data.getName(), option).resolve();
+            } catch (final InstructionParseException e) {
+                throw new RuntimeException(e);
             }
-            final ConversationData currentData = plugin.getConversation(identifier);
-            if (force || BetonQuest.conditions(this.onlineProfile, currentData.getConditionIDs(optionName, OptionType.NPC))) {
-                this.option = optionName;
-                data = currentData;
-                break;
+
+            // If we refer to another conversation starting options the optionName is null
+            if (result.optionName() == null) {
+                final String[] optionNames = result.conversationData().getStartingOptions();
+                for (final String name : optionNames) {
+                    if (force || BetonQuest.conditions(this.onlineProfile, result.conversationData().getConditionIDs(name, OptionType.NPC))) {
+                        this.data = result.conversationData();
+                        this.option = name;
+                        break;
+                    }
+                }
+            } else {
+                if (force || BetonQuest.conditions(this.onlineProfile, result.conversationData().getConditionIDs(result.optionName(), OptionType.NPC))) {
+                    this.data = result.conversationData();
+                    this.option = result.optionName();
+                    break;
+                }
             }
         }
     }
@@ -733,6 +749,9 @@ public class Conversation implements Listener {
                 if (!state.isActive()) {
                     return;
                 }
+
+                //TODO: option is James.null
+
                 // don't forget to select the option prior to printing its text
                 selectOption(data.getPointers(onlineProfile, option, OptionType.PLAYER), false);
                 // print to player npc's answer

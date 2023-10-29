@@ -1281,16 +1281,18 @@ public class BetonQuest extends JavaPlugin {
             if (conversationsConfig != null) {
                 for (final String convName : conversationsConfig.getKeys(false)) {
                     try {
-                        CONVERSATIONS.put(new ConversationID(pack, convName), new ConversationData(pack, convName, conversationsConfig.getConfigurationSection(convName)));
+                        CONVERSATIONS.put(new ConversationID(pack, convName), new ConversationData(this, pack, convName, conversationsConfig.getConfigurationSection(convName)));
                     } catch (final InstructionParseException | ObjectNotFoundException e) {
                         getInstance().log.warn(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
                     }
                 }
             }
+            // check external pointers
+            CONVERSATIONS.entrySet().removeIf(entry -> entry.getValue().containsInvalidExternalPointers());
+
             // load schedules
             eventScheduling.loadData(pack);
-            // check external pointers
-            ConversationData.postEnableCheck();
+
             getInstance().log.debug(pack, "Everything in package " + packName + " loaded");
         }
 

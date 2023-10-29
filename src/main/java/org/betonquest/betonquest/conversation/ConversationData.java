@@ -31,81 +31,128 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public class ConversationData {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(ConversationData.class);
+    private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(ConversationData.class);
 
-    private static final List<String> EXTERNAL_POINTERS = new ArrayList<>();
+    /**
+     * All references made by this conversation's pointers to other conversations.
+     */
+    private final List<CrossConversationReference> externalPointers = new ArrayList<>();
 
+    /**
+     * The {@link BetonQuest} instance.
+     */
+    private final BetonQuest plugin;
+
+    /**
+     * The {@link QuestPackage} this conversation is in.
+     */
     private final QuestPackage pack;
 
+    /**
+     * The name of this conversation.
+     */
     private final String convName;
 
-    private final Map<String, String> quester = new HashMap<>(); // maps for multiple languages
+    /**
+     * A map of the questers name in different languages.
+     */
+    private final Map<String, String> quester = new HashMap<>();
 
-    private final Map<String, String> prefix = new HashMap<>(); // global conversation prefix
+    /**
+     * A map of the global conversation prefix in different languages.
+     */
+    private final Map<String, String> prefix = new HashMap<>();
 
-    private final EventID[] finalEvents;
-
-    private final String[] startingOptions;
-
+    /**
+     * If true, the player will not be able to move during this conversation.
+     */
     private final boolean blockMovement;
 
-    private final Map<String, Option> npcOptions;
+    /**
+     * All events that will be executed once the conversation has ended.
+     */
+    private EventID[] finalEvents;
 
-    private final Map<String, Option> playerOptions;
+    /**
+     * The NPC options that the conversation can start from.
+     */
+    private List<String> startingOptions;
 
+    /**
+     * A map of all things the NPC can say during this conversation.
+     * The key is the option name that can be pointed to.
+     */
+    private Map<String, Option> npcOptions;
+
+    /**
+     * A map of all things the player can say during this conversation.
+     * The key is the option name that can be pointed to.
+     */
+    private Map<String, Option> playerOptions;
+
+    /**
+     * The conversation IO that should be used for this conversation.
+     */
     private String convIO;
 
+    /**
+     * The interceptor that should be used for this conversation.
+     */
     private String interceptor;
 
     /**
      * Loads conversation from package.
      *
-     * @param pack the package containing this conversation
-     * @param name the name of the conversation
+     * @param plugin      the plugin instance
+     * @param pack        the package containing this conversation
+     * @param name        the name of the conversation
+     * @param convSection the configuration section of the conversation
      * @throws InstructionParseException when there is a syntax error in the defined conversation
      */
     @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public ConversationData(final QuestPackage pack, final String name, final ConfigurationSection conv) throws InstructionParseException {
+    public ConversationData(final BetonQuest plugin, final QuestPackage pack, final String name, final ConfigurationSection convSection) throws InstructionParseException {
+        this.plugin = plugin;
         this.pack = pack;
         final String pkg = pack.getQuestPath();
-        LOG.debug(pack, String.format("Loading %s conversation from %s package", name, pkg));
+        log.debug(pack, String.format("Loading %s conversation from %s package", name, pkg));
         // package and name must be correct, it loads only existing
         // conversations
         convName = name;
         // get the main data
-        if (conv == null) {
+        if (convSection == null) {
             throw new InstructionParseException("The configuration is null!");
         }
-        if (conv.get("quester") == null) {
+        if (convSection.get("quester") == null) {
             throw new InstructionParseException("The 'quester' name is missing in the conversation file!");
         }
-        if (conv.isConfigurationSection("quester")) {
-            for (final String lang : conv.getConfigurationSection("quester").getKeys(false)) {
-                quester.put(lang, ChatColor.translateAlternateColorCodes('&', pack.getString("conversations." + name + ".quester." + lang)));
+        if (convSection.isConfigurationSection("quester")) {
+            for (final String lang : convSection.getConfigurationSection("quester").getKeys(false)) {
+                quester.put(lang, ChatColor.translateAlternateColorCodes('&', pack.getString("conversations." + convName + ".quester." + lang)));
             }
         } else {
-            quester.put(Config.getLanguage(), ChatColor.translateAlternateColorCodes('&', pack.getString("conversations." + name + ".quester")));
+            quester.put(Config.getLanguage(), ChatColor.translateAlternateColorCodes('&', pack.getString("conversations." + convName + ".quester")));
         }
-        if (conv.isConfigurationSection("prefix")) {
-            for (final String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
-                final String pref = pack.getString("conversations." + name + ".prefix." + lang);
+        if (convSection.isConfigurationSection("prefix")) {
+            for (final String lang : convSection.getConfigurationSection("prefix").getKeys(false)) {
+                final String pref = pack.getString("conversations." + convName + ".prefix." + lang);
                 if (pref != null && !pref.equals("")) {
                     prefix.put(lang, pref);
                 }
             }
         } else {
-            final String pref = pack.getString("conversations." + name + ".prefix");
+            final String pref = pack.getString("conversations." + convName + ".prefix");
             if (pref != null && !pref.equals("")) {
                 prefix.put(Config.getLanguage(), pref);
             }
         }
-        final String stop = pack.getString("conversations." + name + ".stop");
+        final String stop = pack.getString("conversations." + convName + ".stop");
         blockMovement = stop != null && stop.equalsIgnoreCase("true");
-        final String rawConvIO = pack.getString("conversations." + name + ".conversationIO", BetonQuest.getInstance().getPluginConfig().getString("default_conversation_IO", "menu,chest"));
+        final String rawConvIO = pack.getString("conversations." + convName + ".conversationIO", BetonQuest.getInstance().getPluginConfig().getString("default_conversation_IO", "menu,chest"));
 
         // check if all data is valid (or at least exist)
         for (final String s : rawConvIO.split(",")) {
@@ -118,7 +165,7 @@ public class ConversationData {
             throw new InstructionParseException("No registered conversation IO found: " + rawConvIO);
         }
 
-        final String rawInterceptor = pack.getString("conversations." + name + ".interceptor", BetonQuest.getInstance().getPluginConfig().getString("default_interceptor", "simple"));
+        final String rawInterceptor = pack.getString("conversations." + convName + ".interceptor", BetonQuest.getInstance().getPluginConfig().getString("default_interceptor", "simple"));
         for (final String s : rawInterceptor.split(",")) {
             if (BetonQuest.getInstance().getInterceptor(s.trim()) != null) {
                 interceptor = s.trim();
@@ -137,12 +184,84 @@ public class ConversationData {
                 throw new InstructionParseException("Quester's name is not defined");
             }
         }
-        final String rawStartingOptions = pack.getString("conversations." + name + ".first");
-        if (rawStartingOptions == null || rawStartingOptions.equals("")) {
+
+        parseOptions(pack, convSection);
+
+        log.debug(pack, String.format("Conversation loaded: %d NPC options and %d player options", npcOptions.size(),
+                playerOptions.size()));
+    }
+
+    /**
+     * Checks if external pointers point to valid options. It cannot be checked
+     * when constructing ConversationData objects because conversations that are
+     * being pointed to may not yet exist.
+     * <p>
+     * This method should be called when all conversations are loaded. It will
+     * not throw any exceptions, just display errors in the console.
+     *
+     * @return true if any errors occurred while loading the conversation
+     */
+    public boolean containsInvalidExternalPointers() {
+        boolean containsError = false;
+        for (final CrossConversationReference externalPointer : externalPointers) {
+
+            final ConversationData conv;
+
+            final String sourceOption;
+            if (externalPointer.sourceOption() == null) {
+                sourceOption = "starting option";
+            } else {
+                sourceOption = "'" + externalPointer.sourceOption() + "' option";
+            }
+
+            try {
+                conv = BetonQuest.getInstance().getConversation(new ConversationID(externalPointer.targetPack(), externalPointer.targetConv()));
+            } catch (final ObjectNotFoundException e) {
+                containsError = true;
+                log.warn("Cross-conversation pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
+                        + sourceOption + " points to the '" + externalPointer.targetConv()
+                        + "' conversation in the package '" + externalPointer.targetPack() + "' but that conversation does not exist. Check your spelling!");
+                continue;
+            }
+
+            // This is null if we refer to the starting options of a conversation
+            if (externalPointer.targetOption() == null) {
+                continue;
+            }
+
+            if (conv.getText(Config.getLanguage(), externalPointer.targetOption(), NPC) == null) {
+                containsError = true;
+                log.warn(conv.pack, "External pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, '"
+                        + sourceOption + "' option points to '" + externalPointer.targetOption() + "' NPC option in '" + externalPointer.targetConv()
+                        + "' conversation from package '" + externalPointer.targetPack() + "', but it does not exist.");
+            }
+        }
+        externalPointers.clear();
+        return containsError;
+    }
+
+    /**
+     * Resolves a pointer to an option in a conversation.
+     *
+     * @param pack                    the package from which we are searching for the conversation
+     * @param currentConversationName the current conversation data's name
+     * @param option                  the option string to resolve
+     * @return a {@link CrossConversationReference} pointing to the option
+     * @throws InstructionParseException when the conversation could not be resolved
+     */
+    private CrossConversationReference resolvePointer(final QuestPackage pack, final String currentConversationName, final String currentOptionName, final String option) throws InstructionParseException {
+        final ConversationOptionResolverResult result = new ConversationOptionResolver(plugin, pack, currentConversationName, option).resolve();
+        return new CrossConversationReference(pack, currentConversationName, currentOptionName, result.conversationData().pack, result.conversationData().convName, result.optionName());
+    }
+
+    private void parseOptions(final QuestPackage pack, final ConfigurationSection convSection) throws InstructionParseException {
+        final String rawStartingOptions = pack.getString("conversations." + convName + ".first");
+        if (rawStartingOptions == null || rawStartingOptions.isEmpty()) {
             throw new InstructionParseException("Starting options are not defined");
         }
-        final String rawFinalEvents = pack.getString("conversations." + name + ".final_events");
-        if (rawFinalEvents == null || rawFinalEvents.equals("")) {
+
+        final String rawFinalEvents = pack.getString("conversations." + convName + ".final_events");
+        if (rawFinalEvents == null || rawFinalEvents.isEmpty()) {
             finalEvents = new EventID[0];
         } else {
             final String[] array = rawFinalEvents.split(",");
@@ -155,61 +274,20 @@ public class ConversationData {
                 }
             }
         }
-        // load all NPC options
-        final ConfigurationSection npcSection = conv.getConfigurationSection("NPC_options");
-        if (npcSection == null) {
-            throw new InstructionParseException("NPC_options section not defined");
-        }
-        npcOptions = new HashMap<>();
-        for (final String key : npcSection.getKeys(false)) {
-            npcOptions.put(key, new Option(key, NPC, conv));
-        }
-        // check if all starting options point to existing NPC options
-        startingOptions = rawStartingOptions.split(",");
-        // remove spaces between the options
-        for (int i = 0; i < startingOptions.length; i++) {
-            startingOptions[i] = startingOptions[i].trim();
-        }
-        for (final String startingOption : startingOptions) {
-            if (startingOption.contains(".")) {
-                final String entirePointer = pack.getQuestPath() + "." + convName + ".<starting_option>."
-                        + startingOption;
-                EXTERNAL_POINTERS.add(entirePointer);
-            } else if (!npcOptions.containsKey(startingOption)) {
-                throw new InstructionParseException("Starting option " + startingOption + " does not exist");
-            }
-        }
-        // load all Player options
-        final ConfigurationSection playerSection = conv.getConfigurationSection("player_options");
-        playerOptions = new HashMap<>();
-        if (playerSection != null) {
-            for (final String key : playerSection.getKeys(false)) {
-                playerOptions.put(key, new Option(key, PLAYER, conv));
-            }
-        }
 
-        // check if every pointer points to existing option.
-        for (final Option option : npcOptions.values()) {
-            for (final String pointer : option.getPointers()) {
-                if (!playerOptions.containsKey(pointer)) {
-                    throw new InstructionParseException(
-                            String.format("NPC option %s points to %s player option, but it does not exist",
-                                    option.getName(), pointer));
-                }
-            }
-            for (final String extend : option.getExtends()) {
-                if (!npcOptions.containsKey(extend)) {
-                    throw new InstructionParseException(
-                            String.format("NPC option %s extends %s, but it does not exist",
-                                    option.getName(), extend));
-                }
-            }
-        }
+        loadNpcOptions(convSection);
+        validateStartingOptions(pack, rawStartingOptions);
+
+        loadPlayerOptions(convSection);
+        validateNpcOptions();
+        validatePlayerOptions(pack);
+    }
+
+    private void validatePlayerOptions(final QuestPackage pack) throws InstructionParseException {
         for (final Option option : playerOptions.values()) {
             for (final String pointer : option.getPointers()) {
                 if (pointer.contains(".")) {
-                    final String entirePointer = pack.getQuestPath() + "." + convName + "." + option.getName() + "." + pointer;
-                    EXTERNAL_POINTERS.add(entirePointer);
+                    externalPointers.add(resolvePointer(pack, convName, option.getName(), pointer));
                 } else if (!npcOptions.containsKey(pointer)) {
                     throw new InstructionParseException(
                             String.format("Player option %s points to %s NPC option, but it does not exist",
@@ -224,54 +302,67 @@ public class ConversationData {
                 }
             }
         }
+    }
 
-        // done, everything will work
-        LOG.debug(pack, String.format("Conversation loaded: %d NPC options and %d player options", npcOptions.size(),
-                playerOptions.size()));
+    private void validateNpcOptions() throws InstructionParseException {
+        for (final Option option : npcOptions.values()) {
+            for (final String pointer : option.getPointers()) {
+                if (pointer.contains(".")) {
+                    externalPointers.add(resolvePointer(pack, convName, option.getName(), pointer));
+                } else if (!playerOptions.containsKey(pointer)) {
+                    throw new InstructionParseException(
+                            String.format("NPC option %s points to %s player option, but it does not exist",
+                                    option.getName(), pointer));
+                }
+            }
+            for (final String extend : option.getExtends()) {
+                if (!npcOptions.containsKey(extend)) {
+                    throw new InstructionParseException(
+                            String.format("NPC option %s extends %s, but it does not exist",
+                                    option.getName(), extend));
+                }
+            }
+        }
     }
 
     /**
-     * Checks if external pointers point to valid options. It cannot be checked
-     * when constructing ConversationData objects because conversations that are
-     * being pointed to may not yet exist.
-     * <p>
-     * This method should be called when all conversations are loaded. It will
-     * not throw any exceptions, just display errors in the console.
+     * Checks if all starting options point to existing NPC options.
+     *
+     * @param pack               the package containing this conversation
+     * @param rawStartingOptions the raw starting options
+     * @throws InstructionParseException when the conversation could not be resolved
      */
-    public static void postEnableCheck() {
-        for (final String externalPointer : EXTERNAL_POINTERS) {
-            final String[] parts = externalPointer.split("\\.");
-            final String packName = parts[0];
-            final QuestPackage questPackage = Config.getPackages().get(packName);
-            final String sourceConv = parts[1];
-            final String sourceOption = parts[2];
-            final String targetConv = parts[3];
-            final String targetOption = parts[4];
-            final ConversationData conv;
-            try {
-                conv = BetonQuest.getInstance().getConversation(new ConversationID(questPackage, targetConv));
-            } catch (final ObjectNotFoundException e) {
-                LOG.warn("External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
-                        + "'" + sourceOption + "' player option points to '" + targetConv
-                        + "' conversation, but it does not even exist. Check your spelling!");
-                continue;
-            }
+    private void validateStartingOptions(final QuestPackage pack, final String rawStartingOptions) throws InstructionParseException {
+        startingOptions = Arrays.stream(rawStartingOptions.split(",")).map(String::trim).toList();
 
-            final String option = "<starting_option>".equals(sourceOption) ? "starting option"
-                    : "'" + sourceOption + "' player option";
-            if (conv == null) {
-                LOG.warn("External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
-                        + option + " points to '" + targetConv
-                        + "' conversation, but it does not even exist. Check your spelling!");
-                continue;
-            }
-            if (conv.getText(Config.getLanguage(), targetOption, NPC) == null) {
-                LOG.warn(conv.pack, "External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
-                        + option + " points to '" + targetOption + "' NPC option in '" + targetConv
-                        + "' conversation, but it does not exist.");
+        for (final String startingOption : startingOptions) {
+            if (startingOption.contains(".")) {
+                externalPointers.add(resolvePointer(pack, convName, null, startingOption));
+            } else if (!npcOptions.containsKey(startingOption)) {
+                throw new InstructionParseException("Starting option " + startingOption + " does not exist");
             }
         }
-        EXTERNAL_POINTERS.clear();
+    }
+
+    private void loadPlayerOptions(final ConfigurationSection conv) throws InstructionParseException {
+        final ConfigurationSection playerSection = conv.getConfigurationSection("player_options");
+        playerOptions = new HashMap<>();
+        if (playerSection != null) {
+            for (final String key : playerSection.getKeys(false)) {
+                playerOptions.put(key, new Option(key, PLAYER, conv));
+            }
+        }
+    }
+
+    private void loadNpcOptions(final ConfigurationSection convSection) throws InstructionParseException {
+        final ConfigurationSection npcSection = convSection.getConfigurationSection("NPC_options");
+        if (npcSection == null) {
+            throw new InstructionParseException("NPC_options section not defined");
+        }
+        npcOptions = new HashMap<>();
+        for (final String key : npcSection.getKeys(false)) {
+            npcOptions.put(key, new Option(key, NPC, convSection));
+        }
     }
 
     /**
@@ -311,15 +402,14 @@ public class ConversationData {
     }
 
     /**
-     * @param lang language of quester's name
-     * @return the quester's name
+     * Gets the quester's name in the specified language.
+     * If the name is not translated the default language will be used.
+     *
+     * @param lang language key
+     * @return the quester's name in the specified language
      */
     public String getQuester(final String lang) {
-        String text = quester.get(lang);
-        if (text == null) {
-            text = quester.get(Config.getLanguage());
-        }
-        return text;
+        return quester.get(lang) != null ? quester.get(lang) : quester.get(Config.getLanguage());
     }
 
     /**
@@ -333,7 +423,7 @@ public class ConversationData {
      * @return the starting options
      */
     public String[] getStartingOptions() {
-        return Arrays.copyOf(startingOptions, startingOptions.length);
+        return Arrays.copyOf(startingOptions.toArray(new String[0]), startingOptions.size());
     }
 
     /**
@@ -472,7 +562,7 @@ public class ConversationData {
     }
 
     /**
-     * Represents an option
+     * Represents a conversation option.
      */
     private class Option {
         private final String name;
@@ -510,7 +600,7 @@ public class ConversationData {
                 if (conv.isConfigurationSection("prefix")) {
                     for (final String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
                         final String pref = GlobalVariableResolver.resolve(pack, conv.getConfigurationSection("prefix").getString(lang));
-                        if (pref != null && !pref.equals("")) {
+                        if (pref != null && !pref.isEmpty()) {
                             inlinePrefix.put(lang, pref);
                         }
                     }
@@ -520,7 +610,7 @@ public class ConversationData {
                     }
                 } else {
                     final String pref = GlobalVariableResolver.resolve(pack, conv.getString("prefix"));
-                    if (pref != null && !pref.equals("")) {
+                    if (pref != null && !pref.isEmpty()) {
                         inlinePrefix.put(defaultLang, pref);
                     }
                 }
@@ -542,7 +632,7 @@ public class ConversationData {
 
                 final List<String> variables = new ArrayList<>();
                 for (final String theText : text.values()) {
-                    if (theText == null || theText.equals("")) {
+                    if (theText == null || theText.isEmpty()) {
                         throw new InstructionParseException("Text not defined in " + type.getReadable() + " " + name);
                     }
                     // variables are possibly duplicated because there probably is
@@ -568,7 +658,7 @@ public class ConversationData {
             // Conditions
             try {
                 for (final String rawCondition : GlobalVariableResolver.resolve(pack, conv.getString("conditions", conv.getString("condition", ""))).split(",")) {
-                    if (!Objects.equals(rawCondition, "")) {
+                    if (!rawCondition.isEmpty()) {
                         conditions.add(new ConditionID(pack, rawCondition.trim()));
                     }
                 }

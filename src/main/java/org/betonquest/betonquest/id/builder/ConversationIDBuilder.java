@@ -11,7 +11,7 @@ import org.betonquest.betonquest.id.ConversationID;
 public class ConversationIDBuilder {
 
     /*
-     * Really only exists to ensure a consistent log message in case of errors. Missing conversation have been a huge
+     * Really only exists to ensure a consistent log message in case of errors. "Missing" conversations have been a huge
      * problem for users.
      */
 

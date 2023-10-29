@@ -36,11 +36,18 @@ public abstract class ID {
 
     protected String rawInstruction;
 
+    /**
+     * Creates a new ID. Handles relative and absolute paths and edge cases with special IDs like variables.
+     *
+     * @param pack       the package the ID is in
+     * @param identifier the id instruction string
+     * @throws ObjectNotFoundException if the ID could not be parsed
+     */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity",
             "PMD.AvoidLiteralsInIfCondition", "PMD.NcssCount"})
     protected ID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         // id must be specified
-        if (identifier == null || identifier.length() == 0) {
+        if (identifier == null || identifier.isEmpty()) {
             throw new ObjectNotFoundException("ID is null");
         }
         // resolve package name
@@ -49,45 +56,9 @@ public abstract class ID {
             int dotIndex = identifier.indexOf('.');
             final String packName = identifier.substring(0, dotIndex);
             if (pack != null && packName.startsWith(UP_STR + "-")) {
-                // resolve relative name if we have a supplied package
-                final String[] root = pack.getQuestPath().split("-");
-                final String[] path = packName.split("-");
-                // count how many packages up we need to go
-                int stepsUp = 0;
-                while (stepsUp < path.length && UP_STR.equals(path[stepsUp])) {
-                    stepsUp++;
-                }
-                // can't go out of BetonQuest folder of course
-                if (stepsUp > root.length) {
-                    throw new ObjectNotFoundException("Relative path goes out of package scope! Consider removing a few '"
-                            + UP_STR + "'s in ID " + identifier);
-                }
-                // construct the final absolute path
-                final StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < root.length - stepsUp; i++) {
-                    builder.append(root[i]).append('-');
-                }
-                for (int i = stepsUp; i < path.length; i++) {
-                    builder.append(path[i]).append('-');
-                }
-                final String absolute = builder.substring(0, builder.length() - 1);
-                this.pack = Config.getPackages().get(absolute);
-                // throw error earlier so it can have more information than default one at the bottom
-                if (this.pack == null) {
-                    throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' resolved to '"
-                            + absolute + "', but this package does not exist!");
-                }
-                // We want to go down
+                resolveRelativePathUp(pack, identifier, packName);
             } else if (pack != null && packName.startsWith("-")) {
-                final String currentPath = pack.getQuestPath();
-                final String fullPath = currentPath + packName;
-
-                this.pack = Config.getPackages().get(fullPath);
-                // throw error earlier so it can have more information than default one at the bottom
-                if (this.pack == null) {
-                    throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' resolved to '"
-                            + fullPath + "', but this package does not exist!");
-                }
+                resolveRelativePathDown(pack, identifier, packName);
             } else {
                 // if no relative path is available, check if packName is a package or if it is an ID
                 // split at ':' first as to only consider the identifier before the ':' in the case of the math variable
@@ -98,26 +69,7 @@ public abstract class ID {
                     dotIndex = -1;
                 } else {
                     if (BetonQuest.isVariableType(packName)) {
-                        // if first term shares the same name as a variable type
-                        if (parts.length == 2 && isIdFromPack(potentialPack, parts[1])) {
-                            this.pack = potentialPack;
-                        } else if (parts.length > 2) {
-                            if (BetonQuest.isVariableType(parts[1]) && isIdFromPack(potentialPack, parts[2])) {
-                                // if second term is a variable type and third term is an ID
-                                // we can assume that the ID is in the form pack.variable.id.args
-                                this.pack = potentialPack;
-                            } else if (isIdFromPack(potentialPack, parts[1])) {
-                                // if second term is not a variable type, check if it's an ID. If it is an ID
-                                // we can assume that the ID is in the form variable.id.args
-                                this.pack = pack;
-                                dotIndex = -1;
-                            } else {
-                                this.pack = potentialPack;
-                            }
-                        } else {
-                            this.pack = pack;
-                            dotIndex = -1;
-                        }
+                        dotIndex = resolveIdOfVariable(pack, parts, potentialPack, dotIndex);
                     } else {
                         this.pack = potentialPack;
                     }
@@ -140,6 +92,74 @@ public abstract class ID {
             throw new ObjectNotFoundException("Package in ID '" + identifier + "' does not exist");
         }
     }
+
+    private void resolveRelativePathUp(final QuestPackage pack, final String identifier, final String packName) throws ObjectNotFoundException {
+        // resolve relative name if we have a supplied package
+        final String[] root = pack.getQuestPath().split("-");
+        final String[] path = packName.split("-");
+        // count how many packages up we need to go
+        int stepsUp = 0;
+        while (stepsUp < path.length && UP_STR.equals(path[stepsUp])) {
+            stepsUp++;
+        }
+        // can't go out of BetonQuest folder of course
+        if (stepsUp > root.length) {
+            throw new ObjectNotFoundException("Relative path goes out of package scope! Consider removing a few '"
+                    + UP_STR + "'s in ID " + identifier);
+        }
+        // construct the final absolute path
+        final StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < root.length - stepsUp; i++) {
+            builder.append(root[i]).append('-');
+        }
+        for (int i = stepsUp; i < path.length; i++) {
+            builder.append(path[i]).append('-');
+        }
+        final String absolute = builder.substring(0, builder.length() - 1);
+        this.pack = Config.getPackages().get(absolute);
+        // throw error earlier so it can have more information than default one at the bottom
+        if (this.pack == null) {
+            throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' resolved to '"
+                    + absolute + "', but this package does not exist!");
+        }
+    }
+
+    private void resolveRelativePathDown(final QuestPackage pack, final String identifier, final String packName) throws ObjectNotFoundException {
+        final String currentPath = pack.getQuestPath();
+        final String fullPath = currentPath + packName;
+
+        this.pack = Config.getPackages().get(fullPath);
+        // throw error earlier so it can have more information than default one at the bottom
+        if (this.pack == null) {
+            throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' resolved to '"
+                    + fullPath + "', but this package does not exist!");
+        }
+    }
+
+    private int resolveIdOfVariable(final QuestPackage pack, final String[] parts, final QuestPackage potentialPack, int dotIndex) {
+        // if first term shares the same name as a variable type
+        if (parts.length == 2 && isIdFromPack(potentialPack, parts[1])) {
+            this.pack = potentialPack;
+        } else if (parts.length > 2) {
+            if (BetonQuest.isVariableType(parts[1]) && isIdFromPack(potentialPack, parts[2])) {
+                // if second term is a variable type and third term is an ID
+                // we can assume that the ID is in the form pack.variable.id.args
+                this.pack = potentialPack;
+            } else if (isIdFromPack(potentialPack, parts[1])) {
+                // if second term is not a variable type, check if it's an ID. If it is an ID
+                // we can assume that the ID is in the form variable.id.args
+                this.pack = pack;
+                dotIndex = -1;
+            } else {
+                this.pack = potentialPack;
+            }
+        } else {
+            this.pack = pack;
+            dotIndex = -1;
+        }
+        return dotIndex;
+    }
+
 
     /**
      * Checks if an ID belongs to a provided QuestPackage. This checks all events, conditions, objectives and variables
