@@ -41,6 +41,22 @@ In IntelliJ click on `Git` in the left upper corner and then `Manage Remotes...`
 In the new window you already see a remote called `origin`. This remote is your fork of BetonQuest.
 Now add a new repository with the name `upstream` and the url `https://github.com/BetonQuest/BetonQuest.git`.
 
+### Setup Quest-Tutorials submodule
+
+!!! info "You can skip this chapter for now, if you don't want to work on Quest-Tutorials"
+    If you are unfamiliar with submodules you can also just clone the Quest-Tutorials as separate repo.
+
+First of all you must create your own fork of [Quest-Tutorials](https://github.com/BetonQuest/Quest-Tutorials) repo.
+Quest-Tutorials are located at `docs/_tutorials` as a [git submodule](https://www.vogella.com/tutorials/GitSubmodules/article.html).
+To initialize the submodule (which downloads all files), run `git submodule update --init` on the project's root directory.
+
+If you setup the BetonQuest repo correctly (with your Fork as origin) this submodule will automatically point to the fork you just created.
+To also add the BetonQuest Quest-Tutorials repo as remote, navigate the submodules root (`docs/_tutorials`) and add a new remote with the name `upstream` and the url `https://github.com/BetonQuest/Quest-Tutorials` or use IntelliJs `Manage Remotes` Dialog.
+
+??? tip "You want to clone the entire repo including the submodules from the get-go?"
+    Append `--recurse-submodules` to your clone command.  
+    Make sure you have created all necessary forks before and don't forget to add the remotes for the submodule.
+
 ## IntelliJ settings
 Formatting for .md (Markdown) files can break some features of
 [Material for MkDocs](https://squidfunk.github.io/mkdocs-material), so we disable it for these files.
