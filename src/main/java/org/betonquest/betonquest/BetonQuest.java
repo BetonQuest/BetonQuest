@@ -1273,7 +1273,7 @@ public class BetonQuest extends JavaPlugin {
                             getInstance().log.reportException(pack, e);
                         }
                     } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-                        getInstance().log.reportException(pack, e);
+                        log.reportException(pack, e);
                     }
                 }
             }
@@ -1283,18 +1283,26 @@ public class BetonQuest extends JavaPlugin {
                     try {
                         CONVERSATIONS.put(new ConversationID(pack, convName), new ConversationData(this, pack, convName, conversationsConfig.getConfigurationSection(convName)));
                     } catch (final InstructionParseException | ObjectNotFoundException e) {
-                        getInstance().log.warn(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
+                        log.warn(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
                     }
                 }
             }
-            // check external pointers
-            CONVERSATIONS.entrySet().removeIf(entry -> entry.getValue().containsInvalidExternalPointers());
-
             // load schedules
             eventScheduling.loadData(pack);
 
             getInstance().log.debug(pack, "Everything in package " + packName + " loaded");
         }
+
+        CONVERSATIONS.entrySet().removeIf(entry -> {
+            final ConversationData convData = entry.getValue();
+            try {
+                convData.checkExternalPointers();
+            } catch (final InstructionParseException e) {
+                log.warn(convData.getPack(), "Error in '" + convData.getPack().getQuestPath() + "." + convData.getName() + "' conversation: " + e.getMessage(), e);
+                return true;
+            }
+            return false;
+        });
 
         getInstance().log.info("There are " + CONDITIONS.size() + " conditions, " + EVENTS.size() + " events, "
                 + OBJECTIVES.size() + " objectives and " + CONVERSATIONS.size() + " conversations loaded from "
