@@ -29,6 +29,10 @@ public record PlayerConversationState(ConversationID currentConversation, String
      * @throws ObjectNotFoundException if the conversation ID is invalid
      */
     public static Optional<PlayerConversationState> fromString(final String string) throws ObjectNotFoundException {
+        if (string == null || string.isEmpty()) {
+            return Optional.empty();
+        }
+
         final String[] mainParts = string.split(" ");
 
         if (mainParts.length != 3) {
@@ -59,6 +63,5 @@ public record PlayerConversationState(ConversationID currentConversation, String
     @Override
     public String toString() {
         return currentConversation + " " + currentOption + " " + "%s;%s;%s;%s".formatted(location.getX(), location.getY(), location.getZ(), location.getWorld().getName());
-
     }
 }
