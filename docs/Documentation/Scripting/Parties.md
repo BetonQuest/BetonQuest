@@ -6,9 +6,12 @@ icon: material/party-popper
 
 Parties are very simple. So simple, that they are hard to understand if you already know some other party system.
 Basically, they don't even have to be created before using them. 
-Parties are defined directly in conditions/events (`party` event, `party` conditions, check them out in the reference 
-lists below). In such instruction strings the first argument is a number - range. It defines the radius where the party
-members will be looked for. Second is a list of conditions. Only the players that meet those conditions will be 
+Parties are defined directly in the [party event](./Building-Blocks/Events-List.md#party-event-party) or the
+[party condition](./Building-Blocks/Conditions-List.md#party-party).  
+In such instruction strings the first argument is a number - range. It defines the radius where the party
+members will be looked for. A range of 0 will look for all players in the same world as the player who triggered the event.
+And a range of -1 will look for all players in all worlds.  
+Second is a list of conditions. Only the players that meet those conditions will be 
 considered as members of the party. It's most intuitive for players, as they don't have to do anything to be in a party
 - no commands, no GUIs, just starting the same quest or having the same item - you choose what and when makes the party.
 
