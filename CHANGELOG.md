@@ -233,6 +233,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - giving `air` with the give command or the give event crashes the server
 - duplication of holograms when reloading BetonQuest and the hologram is hidden
 - `menu` conversation IO kicked players when conversation started in the air caused by flying detection
+- `menu` conversation IO did not stopped scrolling at the bottom and began to scroll from the top again
 - Things that are also fixed in 1.12.X:
     - eating of items when entering the chest conversation io actually consumed the item 
     - legacy `§x` HEX color format not working in some contexts
