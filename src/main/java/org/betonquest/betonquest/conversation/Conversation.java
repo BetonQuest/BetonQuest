@@ -203,7 +203,7 @@ public class Conversation implements Listener {
         for (final String option : inputOptions) {
             final ConversationOptionResolverResult result;
             try {
-                result = new ConversationOptionResolver(plugin, pack, data.getName(), option).resolve();
+                result = new ConversationOptionResolver(plugin, pack, data.getName(), OptionType.NPC, option).resolve();
             } catch (final InstructionParseException e) {
                 throw new RuntimeException(e);
             }

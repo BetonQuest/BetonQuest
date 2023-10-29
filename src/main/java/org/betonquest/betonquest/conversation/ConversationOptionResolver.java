@@ -22,6 +22,11 @@ public class ConversationOptionResolver {
     private QuestPackage pack;
 
     /**
+     * The {@link org.betonquest.betonquest.conversation.ConversationData.OptionType} of the option.
+     */
+    private final ConversationData.OptionType optionType;
+
+    /**
      * The name of the option that is searched.
      */
     private String optionName;
@@ -38,10 +43,12 @@ public class ConversationOptionResolver {
      * @param plugin                  the plugin instance
      * @param currentPackage          the package from which we are searching for the conversation
      * @param currentConversationName the current conversation data
+     * @param optionType              the {@link org.betonquest.betonquest.conversation.ConversationData.OptionType} of the option
      * @param option                  the option string to resolve
      */
-    public ConversationOptionResolver(final BetonQuest plugin, final QuestPackage currentPackage, final String currentConversationName, final String option) throws InstructionParseException {
+    public ConversationOptionResolver(final BetonQuest plugin, final QuestPackage currentPackage, final String currentConversationName, final ConversationData.OptionType optionType, final String option) throws InstructionParseException {
         this.plugin = plugin;
+        this.optionType = optionType;
 
         final String[] parts = option.split("\\.");
         switch (parts.length) {
@@ -87,7 +94,7 @@ public class ConversationOptionResolver {
 
         //Since the conversation might be in another package we must load this again
         final ConversationData newData = plugin.getConversation(conversationWithNextOption);
-        return new ConversationOptionResolverResult(newData, optionName);
+        return new ConversationOptionResolverResult(newData, optionType, optionName);
     }
 
 }

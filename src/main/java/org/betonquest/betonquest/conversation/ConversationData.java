@@ -230,7 +230,7 @@ public class ConversationData {
                 continue;
             }
 
-            if (conv.getText(Config.getLanguage(), targetOptionName, NPC) == null) {
+            if (conv.getText(Config.getLanguage(), targetOptionName, resolvedPointer.type()) == null) {
                 log.warn(conv.pack, "External pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
                         + sourceOption + " option points to '" + targetOptionName + "' NPC option in '" + targetConvName
                         + "' conversation from package '" + targetPack.getQuestPath() + "', but it does not exist.");
@@ -244,12 +244,13 @@ public class ConversationData {
      *
      * @param pack                    the package from which we are searching for the conversation
      * @param currentConversationName the current conversation data's name
-     * @param option                  the option string to resolve
+     * @param currentOptionName       the option string to resolve
+     * @param optionType              the {@link org.betonquest.betonquest.conversation.ConversationData.OptionType} of the option
      * @return a {@link CrossConversationReference} pointing to the option
      * @throws InstructionParseException when the conversation could not be resolved
      */
-    private CrossConversationReference resolvePointer(final QuestPackage pack, final String currentConversationName, final String currentOptionName, final String option) throws InstructionParseException {
-        final ConversationOptionResolver resolver = new ConversationOptionResolver(plugin, pack, currentConversationName, option);
+    private CrossConversationReference resolvePointer(final QuestPackage pack, final String currentConversationName, final String currentOptionName, final OptionType optionType, final String option) throws InstructionParseException {
+        final ConversationOptionResolver resolver = new ConversationOptionResolver(plugin, pack, currentConversationName, optionType, option);
         return new CrossConversationReference(pack, currentConversationName, currentOptionName, resolver);
     }
 
@@ -286,7 +287,7 @@ public class ConversationData {
         for (final Option option : playerOptions.values()) {
             for (final String pointer : option.getPointers()) {
                 if (pointer.contains(".")) {
-                    externalPointers.add(resolvePointer(pack, convName, option.getName(), pointer));
+                    externalPointers.add(resolvePointer(pack, convName, option.getName(), OptionType.PLAYER, pointer));
                 } else if (!npcOptions.containsKey(pointer)) {
                     throw new InstructionParseException(
                             String.format("Player option %s points to %s NPC option, but it does not exist",
@@ -307,7 +308,7 @@ public class ConversationData {
         for (final Option option : npcOptions.values()) {
             for (final String pointer : option.getPointers()) {
                 if (pointer.contains(".")) {
-                    externalPointers.add(resolvePointer(pack, convName, option.getName(), pointer));
+                    externalPointers.add(resolvePointer(pack, convName, option.getName(), OptionType.NPC, pointer));
                 } else if (!playerOptions.containsKey(pointer)) {
                     throw new InstructionParseException(
                             String.format("NPC option %s points to %s player option, but it does not exist",
@@ -336,7 +337,7 @@ public class ConversationData {
 
         for (final String startingOption : startingOptions) {
             if (startingOption.contains(".")) {
-                externalPointers.add(resolvePointer(pack, convName, null, startingOption));
+                externalPointers.add(resolvePointer(pack, convName, null, NPC, startingOption));
             } else if (!npcOptions.containsKey(startingOption)) {
                 throw new InstructionParseException("Starting option " + startingOption + " does not exist");
             }
@@ -540,8 +541,19 @@ public class ConversationData {
         return false;
     }
 
+    /**
+     * Types of conversation options.
+     */
     public enum OptionType {
+
+        /**
+         * Things the NPC says.
+         */
         NPC("NPC_options", "NPC option"),
+
+        /**
+         * Options selectable by the player.
+         */
         PLAYER("player_options", "player option");
 
         private final String identifier;
