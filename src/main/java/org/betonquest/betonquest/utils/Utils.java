@@ -29,11 +29,12 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Various utilities.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods", "PMD.GodClass"})
 public final class Utils {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -166,18 +167,36 @@ public final class Utils {
                 && item.getItemMeta().getLore().contains(Config.getMessage(Config.getLanguage(), "quest_item"));
     }
 
+    /**
+     * Gets the party of the player.
+     * A range of 0 means worldwide and -1 means server-wide.
+     *
+     * @param onlineProfile the player to get the party of
+     * @param range         the range of the party
+     * @param conditions    conditions that the party members must meet
+     * @return the party of the player
+     */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static Map<OnlineProfile, Double> getParty(final OnlineProfile onlineProfile, final double range, final ConditionID... conditions) {
         final Location loc = onlineProfile.getPlayer().getLocation();
         final World world = loc.getWorld();
         final double squared = range * range;
 
-        return PlayerConverter.getOnlineProfiles().stream()
-                .filter(profile -> world.equals(profile.getPlayer().getWorld()))
-                .map(profile -> Pair.of(profile, profile.getPlayer().getLocation().distanceSquared(loc)))
-                .filter(pair -> pair.right() <= squared)
+        final Stream<OnlineProfile> players = PlayerConverter.getOnlineProfiles().stream();
+        final Stream<OnlineProfile> worldPlayers = range == -1 ? players : players.filter(profile -> world.equals(profile.getPlayer().getWorld()));
+        final Stream<Pair<OnlineProfile, Double>> distancePlayers = worldPlayers.map(profile -> Pair.of(profile, getDistanceSquared(profile, loc)));
+        final Stream<Pair<OnlineProfile, Double>> rangePlayers = range <= 0 ? distancePlayers : distancePlayers.filter(pair -> pair.right() <= squared);
+        return rangePlayers
                 .filter(pair -> BetonQuest.conditions(pair.left(), conditions))
                 .collect(Collectors.toMap(Pair::left, Pair::right));
+    }
+
+    private static double getDistanceSquared(final OnlineProfile profile, final Location loc) {
+        try {
+            return profile.getPlayer().getLocation().distanceSquared(loc);
+        } catch (final IllegalArgumentException e) {
+            return Double.MAX_VALUE;
+        }
     }
 
     /**

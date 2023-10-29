@@ -444,7 +444,8 @@ Looking for [console commands](#command-command)?
 
 ## Party event: `party`
 
-Runs the specified list of events (third argument) for every player in a [party](../Parties.md).
+This is part of the [party system](../Parties.md).
+Runs the specified list of events (third argument) for every player in the party.
 The last optional argument `amount` specifies a maximum number of players to select.
 Selected players will be picked from the party if they are in range and meet the conditions.
 Players are selected according to their distance from the player who triggered the event.
