@@ -192,20 +192,21 @@ public class ConversationData {
     }
 
     /**
-     * Checks if external pointers point to valid options. It cannot be checked
-     * when constructing ConversationData objects because conversations that are
+     * Checks if external pointers point to valid options. This cannot be checked
+     * when constructing {@link ConversationData} objects because conversations that are
      * being pointed to may not yet exist.
      * <p>
-     * This method should be called when all conversations are loaded. It will
-     * not throw any exceptions, just display errors in the console.
+     * This method should be called when all conversations are loaded.
      *
-     * @return true if any errors occurred while loading the conversation
+     * @throws InstructionParseException when a pointer to an external conversation could not be resolved
      */
-    public boolean containsInvalidExternalPointers() {
-        boolean containsError = false;
+    public void checkExternalPointers() throws InstructionParseException {
         for (final CrossConversationReference externalPointer : externalPointers) {
 
-            final ConversationData conv;
+            final ConversationOptionResolverResult resolvedPointer = externalPointer.resolver().resolve();
+            final QuestPackage targetPack = resolvedPointer.conversationData().pack;
+            final String targetConvName = resolvedPointer.conversationData().convName;
+            final String targetOptionName = resolvedPointer.optionName();
 
             final String sourceOption;
             if (externalPointer.sourceOption() == null) {
@@ -214,30 +215,28 @@ public class ConversationData {
                 sourceOption = "'" + externalPointer.sourceOption() + "' option";
             }
 
+            final ConversationData conv;
             try {
-                conv = BetonQuest.getInstance().getConversation(new ConversationID(externalPointer.targetPack(), externalPointer.targetConv()));
+                conv = BetonQuest.getInstance().getConversation(new ConversationID(targetPack, targetConvName));
             } catch (final ObjectNotFoundException e) {
-                containsError = true;
                 log.warn("Cross-conversation pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
-                        + sourceOption + " points to the '" + externalPointer.targetConv()
-                        + "' conversation in the package '" + externalPointer.targetPack() + "' but that conversation does not exist. Check your spelling!");
+                        + sourceOption + " points to the '" + targetConvName
+                        + "' conversation in the package '" + targetPack.getQuestPath() + "' but that conversation does not exist. Check your spelling!");
                 continue;
             }
 
             // This is null if we refer to the starting options of a conversation
-            if (externalPointer.targetOption() == null) {
+            if (targetOptionName == null) {
                 continue;
             }
 
-            if (conv.getText(Config.getLanguage(), externalPointer.targetOption(), NPC) == null) {
-                containsError = true;
-                log.warn(conv.pack, "External pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, '"
-                        + sourceOption + "' option points to '" + externalPointer.targetOption() + "' NPC option in '" + externalPointer.targetConv()
-                        + "' conversation from package '" + externalPointer.targetPack() + "', but it does not exist.");
+            if (conv.getText(Config.getLanguage(), targetOptionName, NPC) == null) {
+                log.warn(conv.pack, "External pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
+                        + sourceOption + " option points to '" + targetOptionName + "' NPC option in '" + targetConvName
+                        + "' conversation from package '" + targetPack.getQuestPath() + "', but it does not exist.");
             }
         }
         externalPointers.clear();
-        return containsError;
     }
 
     /**
@@ -250,8 +249,8 @@ public class ConversationData {
      * @throws InstructionParseException when the conversation could not be resolved
      */
     private CrossConversationReference resolvePointer(final QuestPackage pack, final String currentConversationName, final String currentOptionName, final String option) throws InstructionParseException {
-        final ConversationOptionResolverResult result = new ConversationOptionResolver(plugin, pack, currentConversationName, option).resolve();
-        return new CrossConversationReference(pack, currentConversationName, currentOptionName, result.conversationData().pack, result.conversationData().convName, result.optionName());
+        final ConversationOptionResolver resolver = new ConversationOptionResolver(plugin, pack, currentConversationName, option);
+        return new CrossConversationReference(pack, currentConversationName, currentOptionName, resolver);
     }
 
     private void parseOptions(final QuestPackage pack, final ConfigurationSection convSection) throws InstructionParseException {
@@ -465,10 +464,12 @@ public class ConversationData {
     }
 
     /**
-     * @return the name of the package
+     * Gets the package containing this conversation.
+     *
+     * @return the package containing this conversation
      */
-    public String getPackName() {
-        return pack.getQuestPath();
+    public QuestPackage getPack() {
+        return pack;
     }
 
     /**
@@ -530,7 +531,7 @@ public class ConversationData {
                 convName = getName();
                 optionName = option;
             }
-            final QuestPackage pack = Config.getPackages().get(getPackName());
+            final QuestPackage pack = Config.getPackages().get(getPack());
             final ConversationData currentData = BetonQuest.getInstance().getConversation(new ConversationID(pack, convName));
             if (BetonQuest.conditions(profile, currentData.getConditionIDs(optionName, NPC))) {
                 return true;

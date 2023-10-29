@@ -243,7 +243,7 @@ public class Conversation implements Listener {
         String text = data.getText(onlineProfile, language, option, OptionType.NPC);
         // resolve variables
         for (final String variable : BetonQuest.resolveVariables(text)) {
-            text = text.replace(variable, plugin.getVariableValue(data.getPackName(), variable, onlineProfile));
+            text = text.replace(variable, plugin.getVariableValue(data.getPack().getQuestPath(), variable, onlineProfile));
         }
         text = ChatColor.translateAlternateColorCodes('&', text);
 
@@ -306,7 +306,7 @@ public class Conversation implements Listener {
             // replace variables with their values
             String text = data.getText(onlineProfile, language, option, OptionType.PLAYER);
             for (final String variable : BetonQuest.resolveVariables(text)) {
-                text = text.replace(variable, plugin.getVariableValue(data.getPackName(), variable, onlineProfile));
+                text = text.replace(variable, plugin.getVariableValue(data.getPack().getQuestPath(), variable, onlineProfile));
             }
             text = ChatColor.translateAlternateColorCodes('&', text);
 
@@ -732,6 +732,9 @@ public class Conversation implements Listener {
      */
     private class ResponsePrinter extends BukkitRunnable {
 
+        /**
+         * The option that has been selected and should be printed.
+         */
         private final String option;
 
         public ResponsePrinter(final String option) {
@@ -749,8 +752,6 @@ public class Conversation implements Listener {
                 if (!state.isActive()) {
                     return;
                 }
-
-                //TODO: option is James.null
 
                 // don't forget to select the option prior to printing its text
                 selectOption(data.getPointers(onlineProfile, option, OptionType.PLAYER), false);
@@ -775,6 +776,9 @@ public class Conversation implements Listener {
      */
     private class OptionPrinter extends BukkitRunnable {
 
+        /**
+         * The option that has been selected and should be printed.
+         */
         private final String option;
 
         public OptionPrinter(final String option) {
