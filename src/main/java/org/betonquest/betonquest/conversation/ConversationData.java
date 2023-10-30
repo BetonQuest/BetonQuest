@@ -29,7 +29,7 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
 /**
  * Represents the data of the conversation.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.CommentRequired", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals"})
 public class ConversationData {
 
     /**
@@ -245,7 +245,7 @@ public class ConversationData {
      * @param pack                    the package from which we are searching for the conversation
      * @param currentConversationName the current conversation data's name
      * @param currentOptionName       the option string to resolve
-     * @param optionType              the {@link org.betonquest.betonquest.conversation.ConversationData.OptionType} of the option
+     * @param optionType              the {@link ConversationData.OptionType} of the option
      * @return a {@link CrossConversationReference} pointing to the option
      * @throws InstructionParseException when the conversation could not be resolved
      */

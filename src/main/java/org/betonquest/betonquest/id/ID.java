@@ -14,7 +14,7 @@ import java.util.Objects;
  * Identifies any object(events, objectives, conversations etc.) of BetonQuest's scripting system via the path syntax.
  * Handles relative and absolute paths.
  */
-@SuppressWarnings({"PMD.ShortClassName", "PMD.AbstractClassWithoutAbstractMethod", "PMD.CommentRequired"})
+@SuppressWarnings({"PMD.ShortClassName", "PMD.AbstractClassWithoutAbstractMethod", "PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.AvoidReassigningParameters"})
 public abstract class ID {
 
     /**

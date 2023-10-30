@@ -54,7 +54,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * Manages an active conversation between a player and a NPC.
  * Handles the conversation flow based on {@link ConversationData}.
  */
-@SuppressWarnings({"PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.CommentRequired"})
+@SuppressWarnings({"PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
 public class Conversation implements Listener {
 
     /**
@@ -205,7 +205,11 @@ public class Conversation implements Listener {
             try {
                 result = new ConversationOptionResolver(plugin, pack, data.getName(), OptionType.NPC, option).resolve();
             } catch (final InstructionParseException e) {
-                throw new RuntimeException(e);
+                log.error("Failed to resolve conversation option '" + option
+                        + "' for conversation '" + data.getName() + "' in package '" + pack.getQuestPath() + "'. "
+                        + "This should be impossible since all pointers are checked before any conversation can be"
+                        + "started. Please contact support.", e);
+                continue;
             }
 
             // If we refer to another conversation starting options the optionName is null

@@ -17,24 +17,24 @@ public class ConversationOptionResolver {
     private final BetonQuest plugin;
 
     /**
-     * The package from which we are searching for the conversation.
-     */
-    private QuestPackage pack;
-
-    /**
-     * The {@link org.betonquest.betonquest.conversation.ConversationData.OptionType} of the option.
+     * The {@link ConversationData.OptionType} of the option.
      */
     private final ConversationData.OptionType optionType;
 
     /**
+     * The package from which we are searching for the conversation.
+     */
+    private final QuestPackage pack;
+
+    /**
      * The name of the option that is searched.
      */
-    private String optionName;
+    private final String optionName;
 
     /**
      * The name of the conversation that is searched.
      */
-    private String convName;
+    private final String convName;
 
     /**
      * Prepares the given information for resolving a conversation option inside a conversation.
@@ -43,7 +43,7 @@ public class ConversationOptionResolver {
      * @param plugin                  the plugin instance
      * @param currentPackage          the package from which we are searching for the conversation
      * @param currentConversationName the current conversation data
-     * @param optionType              the {@link org.betonquest.betonquest.conversation.ConversationData.OptionType} of the option
+     * @param optionType              the {@link ConversationData.OptionType} of the option
      * @param option                  the option string to resolve
      */
     public ConversationOptionResolver(final BetonQuest plugin, final QuestPackage currentPackage, final String currentConversationName, final ConversationData.OptionType optionType, final String option) throws InstructionParseException {
@@ -60,7 +60,8 @@ public class ConversationOptionResolver {
                 convName = parts[1];
                 optionName = parts[2];
             }
-            // Either pack.Conv/ (= Other package, user specified only the conversation but not the option, so we use the "starting options")
+            // Either pack.Conv/ (= Other package, user specified only the conversation but not the option,
+            // therefore we need to select the "starting options". This means optionName = null.)
             // Or Conv.option (= Same package but different conversation)
             case 2 -> {
                 if (option.contains("/")) {
@@ -80,6 +81,8 @@ public class ConversationOptionResolver {
                 convName = currentConversationName;
                 optionName = parts[0];
             }
+            default -> throw new InstructionParseException("Invalid conversation pointer format in package '"
+                    + currentPackage.getQuestPath() + "', conversation '" + currentConversationName + "':" + option);
         }
     }
 

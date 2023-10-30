@@ -22,6 +22,12 @@ import java.util.Optional;
 public record PlayerConversationState(ConversationID currentConversation, String currentOption, Location location) {
 
     /**
+     * The required amount of arguments in the string representation of the conversation state.
+     * The string must be split at every space to obtain the arguments.
+     */
+    private static final int REQUIRED_AMOUNT_OF_ARGUMENTS = 3;
+
+    /**
      * Creates a conversation state from a string.
      *
      * @param string the string representation of {@link PlayerConversationState}
@@ -35,7 +41,7 @@ public record PlayerConversationState(ConversationID currentConversation, String
 
         final String[] mainParts = string.split(" ");
 
-        if (mainParts.length != 3) {
+        if (mainParts.length != REQUIRED_AMOUNT_OF_ARGUMENTS) {
             return Optional.empty();
         }
         final String fullID = mainParts[0];
