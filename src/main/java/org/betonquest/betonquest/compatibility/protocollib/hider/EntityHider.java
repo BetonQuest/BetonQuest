@@ -45,7 +45,6 @@ public class EntityHider implements Listener {
         final List<PacketType> entityPackets = new ArrayList<>(List.of(
                 PacketType.Play.Server.ENTITY_EQUIPMENT,
                 PacketType.Play.Server.ANIMATION,
-                PacketType.Play.Server.NAMED_ENTITY_SPAWN,
                 PacketType.Play.Server.COLLECT,
                 PacketType.Play.Server.SPAWN_ENTITY,
                 PacketType.Play.Server.SPAWN_ENTITY_EXPERIENCE_ORB,
@@ -68,6 +67,11 @@ public class EntityHider implements Listener {
         if (!PaperLib.isVersion(19)) {
             entityPackets.add(PacketType.Play.Server.SPAWN_ENTITY_LIVING);
             entityPackets.add(PacketType.Play.Server.SPAWN_ENTITY_PAINTING);
+        }
+        // TODO version switch:
+        // Remove this code when only 1.20.2+ is supported
+        if (!PaperLib.isVersion(20, 2)) {
+            entityPackets.add(PacketType.Play.Server.NAMED_ENTITY_SPAWN);
         }
 
         ENTITY_PACKETS = entityPackets.toArray(PacketType[]::new);

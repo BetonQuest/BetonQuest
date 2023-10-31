@@ -275,6 +275,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - conversation IO chest did not show the correct NPC heads
     - conversation could have a deadlock and a player can get stuck in a conversation
     - conversation could not be canceled due to a race condition
+    - ProtocolLib warning for Minecraft 1.20.2
     - `npcrange` objective - is triggered at wrong time
     - `command` event - includes 'conditions:...' into the command
     - `craft` objective - multi-craft, drop-craft, hotbar/offhand-craft, shift-Q-craft and any illegal crafting is
