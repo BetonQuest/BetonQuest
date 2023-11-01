@@ -201,8 +201,7 @@ jobs:
           echo "$(cat ./CHANGELOG.md)" >> './docs/Documentation/CHANGELOG.md'
       - name: Set ref in download commands
         run: |
-          GIT_SHA="$(cd docs/_tutorials && git rev-parse HEAD)"
-          if [ $VERSION_TYPE == 'release' ]; then REFERENCE="${{ github.ref }}"; else REFERENCE="${GIT_SHA}" fi
+          if [ $VERSION_TYPE == 'release' ]; then REFERENCE="${{ github.ref }}"; else REFERENCE="$(cd docs/_tutorials/ && git rev-parse HEAD)" fi
           find docs -type f -exec sed -i "s#/bq download BetonQuest/Quest-Tutorials \${ref} QuestPackages #/bq download BetonQuest/Quest-Tutorials ${REFERENCE} QuestPackages #" {} +
       - name: Set user feedback form version in mkdocs.yml
         run: |
