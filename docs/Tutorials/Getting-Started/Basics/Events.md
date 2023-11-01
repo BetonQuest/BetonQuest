@@ -17,7 +17,7 @@ In this tutorial, we will give the player items and teleport them to different l
 </div>
 @snippet:tutorials:download-setup-warning@
     ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conversations/1-DirectoryStructure /tutorialQuest
+    /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Basics/Conversations/1-DirectoryStructure /tutorialQuest
     ```
     You can now find all files needed for this tutorial in this location:
     "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/tutorialQuest_"
@@ -130,7 +130,7 @@ You can also run this command from the console (without the slash at the start).
 
 @snippet:tutorials:download-solution@
     ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Events/1-FirstEvent /tutorialQuest overwrite
+    /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Basics/Events/1-FirstEvent /tutorialQuest overwrite
     ```
 
 
@@ -209,7 +209,7 @@ Now speak with the NPC again to take the tour.
 
 @snippet:tutorials:download-solution@
     ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Events/2-TownTour /tutorialQuest overwrite
+    /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Basics/Events/2-TownTour /tutorialQuest overwrite
     ```
 
 ## Summary

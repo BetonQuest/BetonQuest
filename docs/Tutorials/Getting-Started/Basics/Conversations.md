@@ -16,7 +16,7 @@ and a NPC. Therefore, these are the basic tool for story telling.
 
 @snippet:tutorials:download-setup@
     ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conversations/1-DirectoryStructure /tutorialQuest overwrite
+    /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Basics/Conversations/1-DirectoryStructure /tutorialQuest overwrite
     ```
     You can now find all files needed for this tutorial in this location:
     "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/tutorialQuest_"

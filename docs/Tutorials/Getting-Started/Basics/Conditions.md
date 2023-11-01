@@ -22,7 +22,7 @@ In this tutorial you will learn how to create and use conditions!
 </div>
 @snippet:tutorials:download-setup-warning@
     ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/1-DirectoryStructure /tutorialQuest
+    /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Basics/Conditions/1-DirectoryStructure /tutorialQuest
     ```
     You can now find all files needed for this tutorial in this location:
     "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/tutorialQuest_"
@@ -94,7 +94,7 @@ If it is day it should show true and if it is night, false.
 
 @snippet:tutorials:download-solution@
     ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/2-FirstCondition /tutorialQuest overwrite
+    /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Basics/Conditions/2-FirstCondition /tutorialQuest overwrite
     ```
 
 ## 4. Integrating conditions into objectives
@@ -227,7 +227,7 @@ and won't give you more!
 
 @snippet:tutorials:download-solution@
        ```
-       /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/3-ConditionsInConversations /tutorialQuest overwrite
+       /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Basics/Conditions/3-ConditionsInConversations /tutorialQuest overwrite
        ```
 
 ### 5.2. Limiting the town tour as well
@@ -239,7 +239,7 @@ using the method you just learned.
     :warning: _This will overwrite any changes (including NPC ID's and locations) you have made to the example.<br>_
     Linking NPCs to conversations is explained in the [basics tutorial](./Conversations.md#1-linking-a-conversation-to-a-npc).
     ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/4-JackCompleted /tutorialQuest overwrite
+    /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Basics/Conditions/4-JackCompleted /tutorialQuest overwrite
     ```
 
 ### 5.3. Making the Blacksmith only trade the armor once
@@ -370,7 +370,7 @@ in the `items` section of your "_package.yml_" file.
 
 @snippet:tutorials:download-solution@
        ```
-       /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/5-FullExample /tutorialQuest overwrite
+       /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Basics/Conditions/5-FullExample /tutorialQuest overwrite
        ```
 
 ## 6. Conditions in Events
