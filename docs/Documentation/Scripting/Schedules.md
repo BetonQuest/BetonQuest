@@ -19,10 +19,10 @@ To determine if an event is player independent (and can be used in schedules), l
 
     Changes the block at the given position.
 
-1.  This flag states that `setblock` can be used as static event.
+1.  This flag states that `setblock` can be used player independent.
 
 But sometimes you might want your schedule to run a player dependent event, like `message` or `give` for all players on the server.
-To do this you can use the `forall` event. It will run the given events for all players on the server. 
+To do this you can use the [`runforall`](Building-Blocks/Events-List.md#run-events-for-all-online-players-runforall) event. It will run the given events for all players on the server. 
 You can even use conditions to filter out players.
 
 ## Realtime schedules
