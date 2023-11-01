@@ -148,6 +148,8 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
+        with:
+          submodules: 'true'
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
       - name: Restore LFS cache
@@ -397,9 +399,9 @@ jobs:
           git config --global user.name "BetonQuest-Bot"
           git config --global user.email "contact@betonquest.org"
           
-          cd docs/_tutorials
-          git tag v${VERSION}
-          git push origin v${VERSION}
+          cd docs/_tutorials/
+          git tag "v$VERSION"
+          git push origin "v$VERSION"
   create-release:
     name: Create GitHub Release
     if: "needs.prepare.outputs.VERSION_TYPE == 'release' && needs.deploy-artifacts.result == 'success' && needs.deploy-docs.result == 'success'"
