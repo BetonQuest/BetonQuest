@@ -160,7 +160,6 @@ public abstract class ID {
         return dotIndex;
     }
 
-
     /**
      * Checks if an ID belongs to a provided QuestPackage. This checks all events, conditions, objectives and variables
      * for any ID matching the provided string

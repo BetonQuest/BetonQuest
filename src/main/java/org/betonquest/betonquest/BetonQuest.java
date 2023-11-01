@@ -1281,7 +1281,8 @@ public class BetonQuest extends JavaPlugin {
             if (conversationsConfig != null) {
                 for (final String convName : conversationsConfig.getKeys(false)) {
                     try {
-                        CONVERSATIONS.put(new ConversationID(pack, convName), new ConversationData(this, pack, convName, conversationsConfig.getConfigurationSection(convName)));
+                        final ConversationID convID = new ConversationID(pack, convName);
+                        CONVERSATIONS.put(convID, new ConversationData(this, convID, conversationsConfig.getConfigurationSection(convName)));
                     } catch (final InstructionParseException | ObjectNotFoundException e) {
                         log.warn(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
                     }

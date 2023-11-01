@@ -5,7 +5,6 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.builder.ConversationIDBuilder;
@@ -44,9 +43,9 @@ public class ConversationCondition extends Condition {
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         try {
             return BetonQuest.getInstance().getConversation(conversationID).isReady(profile);
-            //TODO: This can never happen, the underlying implementation should be fixed to only work with conversationIDs
-        } catch (final ObjectNotFoundException e) {
-            throw new QuestRuntimeException("Remote conversation could not be found: ", e);
+        } catch (final InstructionParseException e) {
+            throw new QuestRuntimeException("External pointers in the conversation this condition checks for could not"
+                    + " be resoled during runtime.", e);
         }
     }
 }

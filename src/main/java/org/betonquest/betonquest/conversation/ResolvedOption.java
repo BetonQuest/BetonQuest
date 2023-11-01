@@ -5,8 +5,8 @@ package org.betonquest.betonquest.conversation;
  *
  * @param conversationData the data of the conversation that contains the option
  * @param type             the {@link org.betonquest.betonquest.conversation.ConversationData.OptionType} of the option
- * @param optionName       the name of the option
+ * @param name             the name of the option
  */
-public record ConversationOptionResolverResult(ConversationData conversationData, ConversationData.OptionType type,
-                                               String optionName) {
+public record ResolvedOption(ConversationData conversationData, ConversationData.OptionType type,
+                             String name) {
 }

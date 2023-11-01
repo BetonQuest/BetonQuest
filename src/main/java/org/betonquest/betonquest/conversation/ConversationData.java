@@ -15,9 +15,11 @@ import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +50,11 @@ public class ConversationData {
     private final BetonQuest plugin;
 
     /**
+     * The {@link ConversationID} of the conversation holding this data.
+     */
+    private final ConversationID conversationID;
+
+    /**
      * The {@link QuestPackage} this conversation is in.
      */
     private final QuestPackage pack;
@@ -75,7 +82,7 @@ public class ConversationData {
     /**
      * All events that will be executed once the conversation has ended.
      */
-    private EventID[] finalEvents;
+    private final List<EventID> finalEvents = new ArrayList<>();
 
     /**
      * The NPC options that the conversation can start from.
@@ -86,13 +93,13 @@ public class ConversationData {
      * A map of all things the NPC can say during this conversation.
      * The key is the option name that can be pointed to.
      */
-    private Map<String, Option> npcOptions;
+    private Map<String, ConversationOption> npcOptions;
 
     /**
      * A map of all things the player can say during this conversation.
      * The key is the option name that can be pointed to.
      */
-    private Map<String, Option> playerOptions;
+    private Map<String, ConversationOption> playerOptions;
 
     /**
      * The conversation IO that should be used for this conversation.
@@ -107,22 +114,20 @@ public class ConversationData {
     /**
      * Loads conversation from package.
      *
-     * @param plugin      the plugin instance
-     * @param pack        the package containing this conversation
-     * @param name        the name of the conversation
-     * @param convSection the configuration section of the conversation
+     * @param plugin         the plugin instance
+     * @param conversationID the {@link ConversationID} of the conversation holding this data
+     * @param convSection    the configuration section of the conversation
      * @throws InstructionParseException when there is a syntax error in the defined conversation
      */
     @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public ConversationData(final BetonQuest plugin, final QuestPackage pack, final String name, final ConfigurationSection convSection) throws InstructionParseException {
+    public ConversationData(final BetonQuest plugin, final ConversationID conversationID, final ConfigurationSection convSection) throws InstructionParseException {
         this.plugin = plugin;
-        this.pack = pack;
-        final String pkg = pack.getQuestPath();
-        log.debug(pack, String.format("Loading %s conversation from %s package", name, pkg));
-        // package and name must be correct, it loads only existing
-        // conversations
-        convName = name;
+        this.conversationID = conversationID;
+        this.pack = conversationID.getPackage();
+        this.convName = conversationID.getBaseID();
+        log.debug(pack, String.format("Loading conversation '%s'.", convName));
+
         // get the main data
         if (convSection == null) {
             throw new InstructionParseException("The configuration is null!");
@@ -140,13 +145,13 @@ public class ConversationData {
         if (convSection.isConfigurationSection("prefix")) {
             for (final String lang : convSection.getConfigurationSection("prefix").getKeys(false)) {
                 final String pref = pack.getString("conversations." + convName + ".prefix." + lang);
-                if (pref != null && !pref.equals("")) {
+                if (pref != null && !pref.isEmpty()) {
                     prefix.put(lang, pref);
                 }
             }
         } else {
             final String pref = pack.getString("conversations." + convName + ".prefix");
-            if (pref != null && !pref.equals("")) {
+            if (pref != null && !pref.isEmpty()) {
                 prefix.put(Config.getLanguage(), pref);
             }
         }
@@ -203,10 +208,10 @@ public class ConversationData {
     public void checkExternalPointers() throws InstructionParseException {
         for (final CrossConversationReference externalPointer : externalPointers) {
 
-            final ConversationOptionResolverResult resolvedPointer = externalPointer.resolver().resolve();
+            final ResolvedOption resolvedPointer = externalPointer.resolver().resolve();
             final QuestPackage targetPack = resolvedPointer.conversationData().pack;
             final String targetConvName = resolvedPointer.conversationData().convName;
-            final String targetOptionName = resolvedPointer.optionName();
+            final String targetOptionName = resolvedPointer.name();
 
             final String sourceOption;
             if (externalPointer.sourceOption() == null) {
@@ -230,7 +235,7 @@ public class ConversationData {
                 continue;
             }
 
-            if (conv.getText(Config.getLanguage(), targetOptionName, resolvedPointer.type()) == null) {
+            if (conv.getText(Config.getLanguage(), resolvedPointer) == null) {
                 log.warn(conv.pack, "External pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
                         + sourceOption + " option points to '" + targetOptionName + "' NPC option in '" + targetConvName
                         + "' conversation from package '" + targetPack.getQuestPath() + "', but it does not exist.");
@@ -255,20 +260,12 @@ public class ConversationData {
     }
 
     private void parseOptions(final QuestPackage pack, final ConfigurationSection convSection) throws InstructionParseException {
-        final String rawStartingOptions = pack.getString("conversations." + convName + ".first");
-        if (rawStartingOptions == null || rawStartingOptions.isEmpty()) {
-            throw new InstructionParseException("Starting options are not defined");
-        }
-
         final String rawFinalEvents = pack.getString("conversations." + convName + ".final_events");
-        if (rawFinalEvents == null || rawFinalEvents.isEmpty()) {
-            finalEvents = new EventID[0];
-        } else {
+        if (rawFinalEvents != null && !rawFinalEvents.isEmpty()) {
             final String[] array = rawFinalEvents.split(",");
-            finalEvents = new EventID[array.length];
-            for (int i = 0; i < array.length; i++) {
+            for (final String identifier : array) {
                 try {
-                    finalEvents[i] = new EventID(pack, array[i]);
+                    finalEvents.add(new EventID(pack, identifier));
                 } catch (final ObjectNotFoundException e) {
                     throw new InstructionParseException("Error while loading final events: " + e.getMessage(), e);
                 }
@@ -276,7 +273,7 @@ public class ConversationData {
         }
 
         loadNpcOptions(convSection);
-        validateStartingOptions(pack, rawStartingOptions);
+        loadStartingOptions(pack);
 
         loadPlayerOptions(convSection);
         validateNpcOptions();
@@ -284,8 +281,8 @@ public class ConversationData {
     }
 
     private void validatePlayerOptions(final QuestPackage pack) throws InstructionParseException {
-        for (final Option option : playerOptions.values()) {
-            for (final String pointer : option.getPointers()) {
+        for (final ConversationOption option : playerOptions.values()) {
+            for (final String pointer : option.getPointers(null)) {
                 if (pointer.contains(".")) {
                     externalPointers.add(resolvePointer(pack, convName, option.getName(), NPC, pointer));
                 } else if (!npcOptions.containsKey(pointer)) {
@@ -294,6 +291,7 @@ public class ConversationData {
                                     option.getName(), pointer));
                 }
             }
+            //TODO: Needs support for ccps
             for (final String extend : option.getExtends()) {
                 if (!playerOptions.containsKey(extend)) {
                     throw new InstructionParseException(
@@ -305,8 +303,8 @@ public class ConversationData {
     }
 
     private void validateNpcOptions() throws InstructionParseException {
-        for (final Option option : npcOptions.values()) {
-            for (final String pointer : option.getPointers()) {
+        for (final ConversationOption option : npcOptions.values()) {
+            for (final String pointer : option.getPointers(null)) {
                 if (pointer.contains(".")) {
                     externalPointers.add(resolvePointer(pack, convName, option.getName(), PLAYER, pointer));
                 } else if (!playerOptions.containsKey(pointer)) {
@@ -328,11 +326,15 @@ public class ConversationData {
     /**
      * Checks if all starting options point to existing NPC options.
      *
-     * @param pack               the package containing this conversation
-     * @param rawStartingOptions the raw starting options
+     * @param pack the package containing this conversation
      * @throws InstructionParseException when the conversation could not be resolved
      */
-    private void validateStartingOptions(final QuestPackage pack, final String rawStartingOptions) throws InstructionParseException {
+    private void loadStartingOptions(final QuestPackage pack) throws InstructionParseException {
+        final String rawStartingOptions = pack.getString("conversations." + convName + ".first");
+        if (rawStartingOptions == null || rawStartingOptions.isEmpty()) {
+            throw new InstructionParseException("Starting options are not defined");
+        }
+
         startingOptions = Arrays.stream(rawStartingOptions.split(",")).map(String::trim).toList();
 
         for (final String startingOption : startingOptions) {
@@ -348,8 +350,8 @@ public class ConversationData {
         final ConfigurationSection playerSection = conv.getConfigurationSection("player_options");
         playerOptions = new HashMap<>();
         if (playerSection != null) {
-            for (final String key : playerSection.getKeys(false)) {
-                playerOptions.put(key, new Option(key, PLAYER, conv));
+            for (final String name : playerSection.getKeys(false)) {
+                playerOptions.put(name, new ConversationOption(conversationID, name, PLAYER, conv));
             }
         }
     }
@@ -360,8 +362,8 @@ public class ConversationData {
             throw new InstructionParseException("NPC_options section not defined");
         }
         npcOptions = new HashMap<>();
-        for (final String key : npcSection.getKeys(false)) {
-            npcOptions.put(key, new Option(key, NPC, convSection));
+        for (final String name : npcSection.getKeys(false)) {
+            npcOptions.put(name, new ConversationOption(conversationID, name, NPC, convSection));
         }
     }
 
@@ -381,12 +383,12 @@ public class ConversationData {
      *               conversation
      * @return the conversation prefix, or null if not defined
      */
-    public String getPrefix(final String lang, final String option) {
+    public String getPrefix(final String lang, final ResolvedOption option) {
         // get prefix from an option
         if (option != null) {
-            String pref = npcOptions.get(option).getInlinePrefix(lang);
+            String pref = option.conversationData().npcOptions.get(option.name()).getInlinePrefix(lang);
             if (pref == null) {
-                pref = npcOptions.get(option).getInlinePrefix(Config.getLanguage());
+                pref = option.conversationData().npcOptions.get(option.name()).getInlinePrefix(Config.getLanguage());
             }
             if (pref != null) {
                 return pref;
@@ -412,18 +414,30 @@ public class ConversationData {
         return quester.get(lang) != null ? quester.get(lang) : quester.get(Config.getLanguage());
     }
 
-    /**
-     * @return the final events
-     */
-    public EventID[] getFinalEvents() {
-        return Arrays.copyOf(finalEvents, finalEvents.length);
+    public List<String> getPointers(final Profile profile, final ResolvedOption option) {
+        final Map<String, ConversationOption> optionMaps;
+        if (option.type() == OptionType.NPC) {
+            optionMaps = option.conversationData().npcOptions;
+        } else {
+            optionMaps = option.conversationData().playerOptions;
+        }
+        return optionMaps.get(option.name()).getPointers(profile);
     }
 
     /**
-     * @return the starting options
+     * @return the final events
      */
-    public String[] getStartingOptions() {
-        return Arrays.copyOf(startingOptions.toArray(new String[0]), startingOptions.size());
+    public List<EventID> getFinalEvents() {
+        return new ArrayList<>(finalEvents);
+    }
+
+    /**
+     * Returns a list of all option names that the conversation can start from.
+     *
+     * @return a list of all option names
+     */
+    public List<String> getStartingOptions() {
+        return new ArrayList<>(startingOptions);
     }
 
     /**
@@ -447,16 +461,34 @@ public class ConversationData {
         return interceptor;
     }
 
-    public String getText(final String lang, final String option, final OptionType type) {
-        return getText(null, lang, option, type);
+    /**
+     * Gets the text of the specified option in the specified language.
+     * <br>
+     * Does not respect option extends. Use {@link #getText(Profile, String, ResolvedOption)} instead.
+     *
+     * @param lang   the desired language of the text
+     * @param option the option
+     * @return the text of the specified option in the specified language
+     */
+    public String getText(final String lang, final ResolvedOption option) {
+        return getText(null, lang, option);
     }
 
-    public String getText(final Profile profile, final String lang, final String option, final OptionType type) {
-        final Option opt;
-        if (type == NPC) {
-            opt = npcOptions.get(option);
+    /**
+     * Gets the text of the specified option in the specified language.
+     * Respects extended options.
+     *
+     * @param profile the profile of the player
+     * @param lang    the desired language of the text
+     * @param option  the option
+     * @return the text of the specified option in the specified language
+     */
+    public String getText(final Profile profile, final String lang, final ResolvedOption option) {
+        final ConversationOption opt;
+        if (option.type() == NPC) {
+            opt = option.conversationData().npcOptions.get(option.name());
         } else {
-            opt = playerOptions.get(option);
+            opt = option.conversationData().playerOptions.get(option.name());
         }
         if (opt == null) {
             return null;
@@ -481,60 +513,58 @@ public class ConversationData {
      * @return the conditions required for the specified option to be selected
      */
     public List<ConditionID> getConditionIDs(final String option, final OptionType type) {
-        final Map<String, Option> options = type == NPC ? npcOptions : playerOptions;
+        final Map<String, ConversationOption> options = type == NPC ? npcOptions : playerOptions;
         return options.get(option).getConditions();
     }
 
-    public EventID[] getEventIDs(final Profile profile, final String option, final OptionType type) {
-        final Map<String, Option> options;
+    /**
+     * Gets the events that will be executed when the specified option is selected.
+     *
+     * @param profile the profile of the player
+     * @param option  the name of the conversation option
+     * @param type    the type of the option
+     * @return a list of {@link EventID}s
+     */
+    public List<EventID> getEventIDs(final Profile profile, final ResolvedOption option, final OptionType type) {
+        final Map<String, ConversationOption> options;
         if (type == NPC) {
-            options = npcOptions;
+            options = option.conversationData().npcOptions;
         } else {
-            options = playerOptions;
+            options = option.conversationData().playerOptions;
         }
-        if (options.containsKey(option)) {
-            return options.get(option).getEvents(profile);
+        if (options.containsKey(option.name())) {
+            return options.get(option.name()).getEvents(profile);
         } else {
-            return new EventID[0];
+            return Collections.emptyList();
         }
     }
 
-    public String[] getPointers(final Profile profile, final String option, final OptionType type) {
-        final Map<String, Option> options;
-        if (type == NPC) {
-            options = npcOptions;
-        } else {
-            options = playerOptions;
-        }
-        return options.get(option).getPointers(profile);
-    }
-
-    public Option getOption(final String option, final OptionType type) {
+    private ConversationOption getOption(final String option, final OptionType type) {
         return type == NPC ? npcOptions.get(option) : playerOptions.get(option);
     }
 
     /**
-     * Check if conversation has at least one valid option for player
+     * Checks if the conversation can start for the given player. This means it must have at least one option with
+     * conditions that are met by the player.
      *
      * @param profile the {@link Profile} of the player
      * @return True, if the player can star the conversation.
+     * @throws InstructionParseException if an external pointer inside the conversation could not be resolved
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public boolean isReady(final Profile profile) throws ObjectNotFoundException {
+    public boolean isReady(final Profile profile) throws InstructionParseException {
         for (final String option : getStartingOptions()) {
-            final String convName;
+            final ConversationData sourceData;
             final String optionName;
             if (option.contains(".")) {
-                final String[] parts = option.split("\\.");
-                convName = parts[0];
-                optionName = parts[1];
+                final ResolvedOption result = new ConversationOptionResolver(plugin, pack, this.convName, NPC, option).resolve();
+                sourceData = result.conversationData();
+                optionName = result.name();
             } else {
-                convName = getName();
+                sourceData = this;
                 optionName = option;
             }
-            final QuestPackage pack = Config.getPackages().get(getPack());
-            final ConversationData currentData = BetonQuest.getInstance().getConversation(new ConversationID(pack, convName));
-            if (BetonQuest.conditions(profile, currentData.getConditionIDs(optionName, NPC))) {
+            if (BetonQuest.conditions(profile, sourceData.getConditionIDs(optionName, NPC))) {
                 return true;
             }
         }
@@ -577,27 +607,73 @@ public class ConversationData {
     /**
      * Represents a conversation option.
      */
-    private class Option {
-        private final String name;
+    private class ConversationOption {
 
+        /**
+         * The {@link QuestPackage} in which the conversation this option belongs to is defined.
+         */
+        private final QuestPackage pack;
+
+        /**
+         * The name of the conversation this option belongs to.
+         */
+        private final String conversationName;
+
+        /**
+         * The name of the option, as defined in the config.
+         */
+        private final String optionName;
+
+        /**
+         * The {@link OptionType} of the option.
+         */
         private final OptionType type;
 
+        /**
+         * The inline prefix of the option.
+         */
         private final Map<String, String> inlinePrefix = new HashMap<>();
 
+        /**
+         * A map of the text of the option in different languages.
+         */
         private final Map<String, String> text = new HashMap<>();
 
+        /**
+         * Conditions that must be met for the option to be available.
+         */
         private final List<ConditionID> conditions = new ArrayList<>();
 
+        /**
+         * Events that are triggered when the option is selected.
+         */
         private final List<EventID> events = new ArrayList<>();
 
+        /**
+         * Other options that are available after this option is selected.
+         */
         private final List<String> pointers;
 
+        /**
+         * Other options that this option extends from.
+         */
         private final List<String> extendLinks;
 
+        /**
+         * Creates a ConversationOption.
+         *
+         * @param conversationID the {@link ConversationID} of the conversation this option belongs to
+         * @param name           the name of the option, as defined in the config
+         * @param type           the {@link OptionType} of the option
+         * @param convSection    the {@link ConfigurationSection} of the option
+         * @throws InstructionParseException if the configuration is invalid
+         */
         @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
         @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-        protected Option(final String name, final OptionType type, final ConfigurationSection convSection) throws InstructionParseException {
-            this.name = name;
+        protected ConversationOption(final ConversationID conversationID, final String name, final OptionType type, final ConfigurationSection convSection) throws InstructionParseException {
+            this.pack = conversationID.getPackage();
+            this.conversationName = conversationID.getBaseID();
+            this.optionName = name;
             this.type = type;
             final ConfigurationSection conv = convSection.getConfigurationSection(type.getIdentifier() + "." + name);
 
@@ -608,7 +684,51 @@ public class ConversationData {
             }
 
             final String defaultLang = Config.getLanguage();
-            // Prefix
+
+            parsePrefix(name, type, conv, defaultLang);
+            parseText(name, type, conv, defaultLang);
+            parseConditions(name, type, conv);
+            parseEvents(name, type, conv);
+
+            pointers = Arrays.stream(GlobalVariableResolver.resolve(pack, conv.getString("pointers", conv.getString("pointer", ""))).split(","))
+                    .filter(StringUtils::isNotEmpty)
+                    .map(String::trim).toList();
+
+            extendLinks = Arrays.stream(GlobalVariableResolver.resolve(pack, conv.getString("extends", conv.getString("extend", ""))).split(","))
+                    .filter(StringUtils::isNotEmpty)
+                    .map(String::trim).toList();
+        }
+
+        private void parseEvents(final String name, final OptionType type, final ConfigurationSection conv) throws InstructionParseException {
+            try {
+                for (final String rawEvent : GlobalVariableResolver.resolve(pack, conv.getString("events", conv.getString("event", ""))).split(",")) {
+                    if (!Objects.equals(rawEvent, "")) {
+                        events.add(new EventID(pack, rawEvent.trim()));
+                    }
+                }
+            } catch (final ObjectNotFoundException e) {
+                throw new InstructionParseException("Error in '" + name + "' " + type.getReadable() + " option's events: "
+                        + e.getMessage(), e);
+            }
+        }
+
+        private void parseConditions(final String name, final OptionType type, final ConfigurationSection conv) throws InstructionParseException {
+            try {
+                for (final String rawCondition : GlobalVariableResolver.resolve(pack, conv.getString("conditions", conv.getString("condition", ""))).split(",")) {
+                    if (!rawCondition.isEmpty()) {
+                        conditions.add(new ConditionID(pack, rawCondition.trim()));
+                    }
+                }
+            } catch (final ObjectNotFoundException e) {
+                throw new InstructionParseException("Error in '" + name + "' " + type.getReadable() + " option's conditions: "
+                        + e.getMessage(), e);
+            }
+        }
+
+        //TODO: Consider removing this undocumented feature.
+        @SuppressWarnings({"PMD.CognitiveComplexity"})
+        @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
+        private void parsePrefix(final String name, final OptionType type, final ConfigurationSection conv, final String defaultLang) throws InstructionParseException {
             if (conv.contains("prefix")) {
                 if (conv.isConfigurationSection("prefix")) {
                     for (final String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
@@ -628,21 +748,25 @@ public class ConversationData {
                     }
                 }
             }
+        }
 
-            // Text
+        @SuppressWarnings({"PMD.CognitiveComplexity"})
+        @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
+        private void parseText(final String name, final OptionType type, final ConfigurationSection conv, final String defaultLang) throws InstructionParseException {
             if (conv.contains("text")) {
                 if (conv.isConfigurationSection("text")) {
                     for (final String lang : conv.getConfigurationSection("text").getKeys(false)) {
-                        text.put(lang, pack.getFormattedString("conversations." + convName + "." + type.getIdentifier() + "." + name + ".text."
+                        text.put(lang, pack.getFormattedString("conversations." + conversationName + "." + type.getIdentifier() + "." + name + ".text."
                                 + lang));
                     }
                     if (!text.containsKey(defaultLang)) {
                         throw new InstructionParseException("No default language for " + name + " " + type.getReadable());
                     }
                 } else {
-                    text.put(defaultLang, pack.getFormattedString("conversations." + convName + "." + type.getIdentifier() + "." + name + ".text"));
+                    text.put(defaultLang, pack.getFormattedString("conversations." + conversationName + "." + type.getIdentifier() + "." + name + ".text"));
                 }
 
+                //Register Vars for every language
                 final List<String> variables = new ArrayList<>();
                 for (final String theText : text.values()) {
                     if (theText == null || theText.isEmpty()) {
@@ -667,43 +791,15 @@ public class ConversationData {
                     }
                 }
             }
-
-            // Conditions
-            try {
-                for (final String rawCondition : GlobalVariableResolver.resolve(pack, conv.getString("conditions", conv.getString("condition", ""))).split(",")) {
-                    if (!rawCondition.isEmpty()) {
-                        conditions.add(new ConditionID(pack, rawCondition.trim()));
-                    }
-                }
-            } catch (final ObjectNotFoundException e) {
-                throw new InstructionParseException("Error in '" + name + "' " + type.getReadable() + " option's conditions: "
-                        + e.getMessage(), e);
-            }
-
-            // Events
-            try {
-                for (final String rawEvent : GlobalVariableResolver.resolve(pack, conv.getString("events", conv.getString("event", ""))).split(",")) {
-                    if (!Objects.equals(rawEvent, "")) {
-                        events.add(new EventID(pack, rawEvent.trim()));
-                    }
-                }
-            } catch (final ObjectNotFoundException e) {
-                throw new InstructionParseException("Error in '" + name + "' " + type.getReadable() + " option's events: "
-                        + e.getMessage(), e);
-            }
-
-            // Pointers
-            pointers = Arrays.stream(GlobalVariableResolver.resolve(pack, conv.getString("pointers", conv.getString("pointer", ""))).split(","))
-                    .filter(StringUtils::isNotEmpty)
-                    .map(String::trim).toList();
-
-            extendLinks = Arrays.stream(GlobalVariableResolver.resolve(pack, conv.getString("extends", conv.getString("extend", ""))).split(","))
-                    .filter(StringUtils::isNotEmpty)
-                    .map(String::trim).toList();
         }
 
+        /**
+         * Returns the name of this option as it is defined in the config.
+         *
+         * @return the name of this option
+         */
         public String getName() {
-            return name;
+            return optionName;
         }
 
         public String getInlinePrefix(final String lang) {
@@ -714,89 +810,117 @@ public class ConversationData {
             return thePrefix;
         }
 
+        /**
+         * Returns the text of this option in the given language.
+         *
+         * @param profile the profile of the player to get the text for
+         * @param lang    the language to get the text in
+         * @return the text of this option in the given language
+         */
         public String getText(final Profile profile, final String lang) {
             return getText(profile, lang, new ArrayList<>());
         }
 
-        public String getText(final Profile profile, final String lang, final List<String> optionPath) {
+        private String getText(final Profile profile, final String lang, final List<String> optionPath) {
             // Prevent infinite loops
             if (optionPath.contains(getName())) {
                 return "";
             }
             optionPath.add(getName());
 
-            final StringBuilder ret = new StringBuilder(text.getOrDefault(lang, text.getOrDefault(Config.getLanguage(), "")));
+            final StringBuilder text = new StringBuilder(this.text.getOrDefault(lang, this.text.getOrDefault(Config.getLanguage(), "")));
 
             if (profile != null) {
                 for (final String extend : extendLinks) {
                     if (BetonQuest.conditions(profile, getOption(extend, type).getConditions())) {
-                        ret.append(getOption(extend, type).getText(profile, lang, optionPath));
+                        text.append(getOption(extend, type).getText(profile, lang, optionPath));
                         break;
                     }
                 }
             }
 
-            return ret.toString();
+            return text.toString();
         }
 
+        /**
+         * Returns all conditions that must be met for this option to be available.
+         *
+         * @return a list of {@link ConditionID}s
+         */
         public List<ConditionID> getConditions() {
             return new ArrayList<>(conditions);
         }
 
-        public EventID[] getEvents(final Profile profile) {
+        /**
+         * Returns all events that are triggered when this option is selected.
+         * This will also include events from extended options (if the conditions for these are true for the
+         * given {@link Profile}).
+         *
+         * @param profile the profile of the player to get the events for
+         * @return a list of {@link EventID}s
+         */
+        public List<EventID> getEvents(final Profile profile) {
             return getEvents(profile, new ArrayList<>());
         }
 
-        public EventID[] getEvents(final Profile profile, final List<String> optionPath) {
+        private List<EventID> getEvents(final Profile profile, final List<String> optionPath) {
             // Prevent infinite loops
             if (optionPath.contains(getName())) {
-                return new EventID[0];
+                return Collections.emptyList();
             }
             optionPath.add(getName());
 
-            final List<EventID> ret = new ArrayList<>(events);
+            final List<EventID> events = new ArrayList<>(this.events);
 
             for (final String extend : extendLinks) {
                 if (BetonQuest.conditions(profile, getOption(extend, type).getConditions())) {
-                    ret.addAll(Arrays.asList(getOption(extend, type).getEvents(profile, optionPath)));
+                    events.addAll(getOption(extend, type).getEvents(profile, optionPath));
                     break;
                 }
             }
-
-            return ret.toArray(new EventID[0]);
+            return events;
         }
 
-        public String[] getPointers() {
-            return getPointers(null);
-        }
-
-        public String[] getPointers(final Profile profile) {
+        /**
+         * Returns all options that are available after this option is selected.
+         * <br>
+         * If the profile param is null pointers from extended options will not be included.
+         *
+         * @param profile the profile of the player to get the pointers for
+         * @return a list of option names
+         */
+        public List<String> getPointers(@Nullable final Profile profile) {
             return getPointers(profile, new ArrayList<>());
         }
 
-        public String[] getPointers(final Profile profile, final List<String> optionPath) {
+        private List<String> getPointers(final Profile profile, final List<String> optionPath) {
             // Prevent infinite loops
             if (optionPath.contains(getName())) {
-                return new String[0];
+                return Collections.emptyList();
             }
             optionPath.add(getName());
 
-            final List<String> ret = new ArrayList<>(pointers);
+            final List<String> pointers = new ArrayList<>(this.pointers);
 
             if (profile != null) {
                 for (final String extend : extendLinks) {
                     if (BetonQuest.conditions(profile, getOption(extend, type).getConditions())) {
-                        ret.addAll(Arrays.asList(getOption(extend, type).getPointers(profile, optionPath)));
+                        pointers.addAll(getOption(extend, type).getPointers(profile, optionPath));
                         break;
                     }
                 }
             }
 
-            return ret.toArray(new String[0]);
+            return pointers;
         }
 
-        public String[] getExtends() {
-            return extendLinks.toArray(new String[0]);
+        /**
+         * Returns the names of all options this option extends from.
+         *
+         * @return a list of option names
+         */
+        public List<String> getExtends() {
+            return new ArrayList<>(extendLinks);
         }
     }
 }

@@ -87,17 +87,17 @@ public class ConversationOptionResolver {
     }
 
     /**
-     * Resolves the given information to a {@link ConversationOptionResolverResult}.
+     * Resolves the given information to a {@link ResolvedOption}.
      *
-     * @return a {@link ConversationOptionResolverResult}
+     * @return a {@link ResolvedOption}
      * @throws InstructionParseException when the conversation could not be resolved
      */
-    public ConversationOptionResolverResult resolve() throws InstructionParseException {
+    public ResolvedOption resolve() throws InstructionParseException {
         final ConversationID conversationWithNextOption = new ConversationIDBuilder(pack, convName).build();
 
         //Since the conversation might be in another package we must load this again
         final ConversationData newData = plugin.getConversation(conversationWithNextOption);
-        return new ConversationOptionResolverResult(newData, optionType, optionName);
+        return new ResolvedOption(newData, optionType, optionName);
     }
 
 }
