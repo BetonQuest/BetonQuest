@@ -240,6 +240,8 @@ import org.betonquest.betonquest.quest.event.point.GlobalPointEventFactory;
 import org.betonquest.betonquest.quest.event.point.PointEventFactory;
 import org.betonquest.betonquest.quest.event.random.PickRandomEventFactory;
 import org.betonquest.betonquest.quest.event.scoreboard.ScoreboardEventFactory;
+import org.betonquest.betonquest.quest.event.run.RunForAllEventFactory;
+import org.betonquest.betonquest.quest.event.run.RunIndependentEventFactory;
 import org.betonquest.betonquest.quest.event.setblock.SetBlockEventFactory;
 import org.betonquest.betonquest.quest.event.stage.StageEventFactory;
 import org.betonquest.betonquest.quest.event.sudo.OpSudoEventFactory;
@@ -961,6 +963,8 @@ public class BetonQuest extends JavaPlugin {
         registerEvent("drop", new DropEventFactory(getServer(), getServer().getScheduler(), this));
         registerNonStaticEvent("itemdurability", new ItemDurabilityEventFactory(loggerFactory, getServer(), getServer().getScheduler(), this));
         registerEvent("log", new LogEventFactory(loggerFactory));
+        registerEvent("runForAll", new RunForAllEventFactory());
+        registerEvent("runIndependent", new RunIndependentEventFactory());
 
         registerObjectives("location", LocationObjective.class);
         registerObjectives("block", BlockObjective.class);
