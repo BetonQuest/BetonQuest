@@ -454,7 +454,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
          *
          * @param task the task to remove.
          */
-        private void addTask(final @NotNull ScheduledTask task) {
+        private void addTask(@NotNull final ScheduledTask task) {
             tasks.put(task.getTaskId(), task);
         }
 

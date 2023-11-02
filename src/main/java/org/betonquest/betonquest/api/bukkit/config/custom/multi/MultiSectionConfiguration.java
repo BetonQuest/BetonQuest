@@ -284,7 +284,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
         unsavedConfigs.add(targetConfig);
     }
 
-    private void checkConflictAndSet(final @NotNull String path, final @Nullable Object value) {
+    private void checkConflictAndSet(@NotNull final String path, @Nullable final Object value) {
         if (value == null || value instanceof ConfigurationSection) {
             deletePath(path);
             if (value == null) {
