@@ -67,6 +67,11 @@
       <property name="format" value="\t"/>
       <property name="message" value="Indent must use space characters"/>
     </module>
+    <module name="RegexpSinglelineJava">
+      <property name="id" value="NullabilityFinal"/>
+      <property name="format" value="\bfinal\s+@(NotNull|Nullable)\b"/>
+      <property name="message" value="Nullability annotations must be placed before the final modifier"/>
+    </module>
   </module>
 
   <!-- Whitespace -->

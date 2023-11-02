@@ -46,7 +46,7 @@ public class SilentCommandSender implements CommandSender {
     }
 
     @Override
-    public void sendMessage(final @NotNull String... messages) {
+    public void sendMessage(@NotNull final String... messages) {
         log.debug("Silently sending messages to console: " + String.join(", ", messages));
     }
 
@@ -56,7 +56,7 @@ public class SilentCommandSender implements CommandSender {
     }
 
     @Override
-    public void sendMessage(@Nullable final UUID sender, final @NotNull String... messages) {
+    public void sendMessage(@Nullable final UUID sender, @NotNull final String... messages) {
         log.debug("Silently sending messages to console: " + String.join(", ", messages));
     }
 

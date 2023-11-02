@@ -687,7 +687,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         }
 
         @SuppressWarnings("PMD.AvoidUncheckedExceptionsInSignatures")
-        private void checkValidState(final @Nullable ConfigurationSection original, final @Nullable ConfigurationSection fallback) throws IllegalStateException {
+        private void checkValidState(@Nullable final ConfigurationSection original, @Nullable final ConfigurationSection fallback) throws IllegalStateException {
             if (original == null && fallback == null) {
                 throw new IllegalStateException("Cannot construct a FallbackConfigurationSection when original and fallback are null");
             }

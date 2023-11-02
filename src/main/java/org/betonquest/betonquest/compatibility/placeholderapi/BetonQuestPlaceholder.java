@@ -81,7 +81,7 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
      * @return possibly-null String of the requested identifier.
      */
     @Override
-    public @NotNull String onPlaceholderRequest(final @Nullable Player player, final @NotNull String identifier) {
+    public @NotNull String onPlaceholderRequest(@Nullable final Player player, @NotNull final String identifier) {
         final String pack;
         final String placeholderIdentifier;
         final int index = identifier.indexOf(':');
