@@ -241,6 +241,7 @@ import org.betonquest.betonquest.quest.event.point.PointEventFactory;
 import org.betonquest.betonquest.quest.event.random.PickRandomEventFactory;
 import org.betonquest.betonquest.quest.event.scoreboard.ScoreboardEventFactory;
 import org.betonquest.betonquest.quest.event.setblock.SetBlockEventFactory;
+import org.betonquest.betonquest.quest.event.stage.StageEventFactory;
 import org.betonquest.betonquest.quest.event.sudo.OpSudoEventFactory;
 import org.betonquest.betonquest.quest.event.sudo.SudoEventFactory;
 import org.betonquest.betonquest.quest.event.tag.TagGlobalEventFactory;
@@ -926,6 +927,7 @@ public class BetonQuest extends JavaPlugin {
         registerNonStaticEvent("weather", new WeatherEventFactory(loggerFactory, getServer(), getServer().getScheduler(), this));
         registerEvents("folder", FolderEvent.class);
         registerEvent("setblock", new SetBlockEventFactory(getServer(), getServer().getScheduler(), this));
+        registerNonStaticEvent("stage", new StageEventFactory(this));
         registerNonStaticEvent("damage", new DamageEventFactory(loggerFactory, getServer(), getServer().getScheduler(), this));
         registerNonStaticEvent("party", new PartyEventFactory(loggerFactory));
         registerEvents("clear", ClearEvent.class);

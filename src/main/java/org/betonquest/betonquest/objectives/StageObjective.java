@@ -144,13 +144,15 @@ public class StageObjective extends Objective {
      * Increases the stage of a profile.
      *
      * @param profile the profile
+     * @param amount  the amount to increase
      * @throws QuestRuntimeException if the stage is not a valid stage for the objective
      */
-    public void increaseStage(final Profile profile) throws QuestRuntimeException {
-        final String stage = getStage(profile);
-        final String nextStage;
+    public void increaseStage(final Profile profile, final int amount) throws QuestRuntimeException {
+        String nextStage = getStage(profile);
         try {
-            nextStage = stageMap.nextStage(stage);
+            for (int i = 0; i < amount; i++) {
+                nextStage = stageMap.nextStage(nextStage);
+            }
         } catch (final QuestRuntimeException e) {
             if (!preventCompletion) {
                 completeObjective(profile);
@@ -158,6 +160,25 @@ public class StageObjective extends Objective {
             return;
         }
         setStage(profile, nextStage);
+    }
+
+    /**
+     * Decreases the stage of a profile.
+     *
+     * @param profile the profile
+     * @param amount  the amount to increase
+     * @throws QuestRuntimeException if the stage is not a valid stage for the objective
+     */
+    public void decreaseStage(final Profile profile, final int amount) throws QuestRuntimeException {
+        String previousStage = getStage(profile);
+        try {
+            for (int i = 0; i < amount; i++) {
+                previousStage = stageMap.previousStage(previousStage);
+            }
+        } catch (final QuestRuntimeException e) {
+            return;
+        }
+        setStage(profile, previousStage);
     }
 
     /**
@@ -169,23 +190,6 @@ public class StageObjective extends Objective {
      */
     public int getStageIndex(final String stage) throws QuestRuntimeException {
         return stageMap.getIndex(stage);
-    }
-
-    /**
-     * Decreases the stage of a profile.
-     *
-     * @param profile the profile
-     * @throws QuestRuntimeException if the stage is not a valid stage for the objective
-     */
-    public void decreaseStage(final Profile profile) throws QuestRuntimeException {
-        final String stage = getStage(profile);
-        final String previousStage;
-        try {
-            previousStage = stageMap.previousStage(stage);
-        } catch (final QuestRuntimeException e) {
-            return;
-        }
-        setStage(profile, previousStage);
     }
 
     /**
