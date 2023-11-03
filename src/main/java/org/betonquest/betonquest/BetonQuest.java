@@ -196,6 +196,7 @@ import org.betonquest.betonquest.objectives.RespawnObjective;
 import org.betonquest.betonquest.objectives.RideObjective;
 import org.betonquest.betonquest.objectives.ShearObjective;
 import org.betonquest.betonquest.objectives.SmeltingObjective;
+import org.betonquest.betonquest.objectives.StageObjective;
 import org.betonquest.betonquest.objectives.StepObjective;
 import org.betonquest.betonquest.objectives.TameObjective;
 import org.betonquest.betonquest.objectives.VariableObjective;
@@ -968,6 +969,7 @@ public class BetonQuest extends JavaPlugin {
         registerObjectives("arrow", ArrowShootObjective.class);
         registerObjectives("experience", ExperienceObjective.class);
         registerObjectives("step", StepObjective.class);
+        registerObjectives("stage", StageObjective.class);
         registerObjectives("logout", LogoutObjective.class);
         registerObjectives("login", LoginObjective.class);
         registerObjectives("password", PasswordObjective.class);
