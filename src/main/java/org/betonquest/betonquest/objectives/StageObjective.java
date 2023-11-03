@@ -16,6 +16,7 @@ import java.util.Locale;
 /**
  * The StageObjective is a special objective that can be used to create a stage system for a quest.
  */
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class StageObjective extends Objective {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -64,10 +65,12 @@ public class StageObjective extends Objective {
 
     @Override
     public void start() {
+        // Empty
     }
 
     @Override
     public void stop() {
+        // Empty
     }
 
     @Override
@@ -76,7 +79,7 @@ public class StageObjective extends Objective {
             return stageMap.getStage(0);
         } catch (final QuestRuntimeException e) {
             log.reportException(instruction.getPackage(), e);
-            throw new RuntimeException(e);
+            return "";
         }
     }
 
@@ -155,6 +158,17 @@ public class StageObjective extends Objective {
             return;
         }
         setStage(profile, nextStage);
+    }
+
+    /**
+     * Returns the index of the stage of a profile.
+     *
+     * @param stage the stage
+     * @return the index of the stage
+     * @throws QuestRuntimeException if the stage is not a valid stage for the objective
+     */
+    public int getStageIndex(final String stage) throws QuestRuntimeException {
+        return stageMap.getIndex(stage);
     }
 
     /**

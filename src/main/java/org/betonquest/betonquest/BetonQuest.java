@@ -78,6 +78,7 @@ import org.betonquest.betonquest.conditions.RealTimeCondition;
 import org.betonquest.betonquest.conditions.RideCondition;
 import org.betonquest.betonquest.conditions.ScoreboardCondition;
 import org.betonquest.betonquest.conditions.SneakCondition;
+import org.betonquest.betonquest.conditions.StageCondition;
 import org.betonquest.betonquest.conditions.TagCondition;
 import org.betonquest.betonquest.conditions.TestForBlockCondition;
 import org.betonquest.betonquest.conditions.TimeCondition;
@@ -871,6 +872,7 @@ public class BetonQuest extends JavaPlugin {
         registerConditions("effect", EffectCondition.class);
         registerConditions("rating", ArmorRatingCondition.class);
         registerConditions("sneak", SneakCondition.class);
+        registerConditions("stage", StageCondition.class);
         registerConditions("random", RandomCondition.class);
         registerConditions("journal", JournalCondition.class);
         registerConditions("testforblock", TestForBlockCondition.class);
