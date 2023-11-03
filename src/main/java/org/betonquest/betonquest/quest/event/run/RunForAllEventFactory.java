@@ -17,6 +17,13 @@ import java.util.List;
  * Create new {@link RunForAllEvent} from instruction.
  */
 public class RunForAllEventFactory implements StaticEventFactory, EventFactory {
+
+    /**
+     * Create new {@link RunForAllEventFactory}.
+     */
+    public RunForAllEventFactory() {
+    }
+
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         return new CallStaticEventAdapter(parseStaticEvent(instruction));

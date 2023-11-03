@@ -16,6 +16,12 @@ import java.util.List;
  */
 public class RunIndependentEventFactory implements StaticEventFactory, EventFactory {
 
+    /**
+     * Create new {@link RunIndependentEventFactory}.
+     */
+    public RunIndependentEventFactory() {
+    }
+
     @Override
     public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
         final List<EventID> eventIDS = instruction.getList(instruction.getOptional("events"), instruction::getEvent);
