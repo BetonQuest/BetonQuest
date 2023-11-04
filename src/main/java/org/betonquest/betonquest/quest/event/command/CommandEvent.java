@@ -15,7 +15,6 @@ import java.util.List;
  */
 public class CommandEvent implements Event {
 
-
     /**
      * Command sender to run the commands as.
      * <p>
