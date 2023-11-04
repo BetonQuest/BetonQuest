@@ -72,7 +72,9 @@ public class OpSudoEventFactory implements EventFactory {
         }
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
-                        loggerFactory.create(OpSudoEvent.class), new OpSudoEvent(commands), instruction.getPackage()),
+                        loggerFactory.create(OpPlayerEventAdapter.class),
+                        new OpPlayerEventAdapter(new SudoEvent(commands)),
+                        instruction.getPackage()),
                 server, scheduler, plugin);
     }
 }

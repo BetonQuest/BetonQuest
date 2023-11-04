@@ -1,30 +1,29 @@
 package org.betonquest.betonquest.quest.event.command;
 
-import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-
 /**
- * Forces the player to run commands.
+ * Adapt an event to be run as Op.
+ * <p>
+ * Gives the player op, executes the nested event and then reverts the operation if necessary.
  */
-public class OpSudoEvent implements Event {
+public class OpPlayerEventAdapter implements Event {
 
     /**
-     * The commands to run.
+     * The event to execute as Op.
      */
-    private final List<VariableString> commands;
+    private final Event event;
 
     /**
-     * Creates a new SudoEvent.
+     * Creates a new OpPlayerEventAdapter.
      *
-     * @param commands the commands to run
+     * @param event the event to execute as op.
      */
-    public OpSudoEvent(final List<VariableString> commands) {
-        this.commands = commands;
+    public OpPlayerEventAdapter(final Event event) {
+        this.event = event;
     }
 
     @Override
@@ -33,7 +32,7 @@ public class OpSudoEvent implements Event {
         final boolean previousOp = player.isOp();
         try {
             player.setOp(true);
-            commands.forEach(command -> player.performCommand(command.getString(profile)));
+            event.execute(profile);
         } finally {
             player.setOp(previousOp);
         }
