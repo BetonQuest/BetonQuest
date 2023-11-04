@@ -7,6 +7,8 @@ import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.objectives.StageObjective;
 
 import java.util.Locale;
@@ -31,33 +33,41 @@ public class StageEventFactory implements EventFactory {
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        final StageObjective stageObjective;
+        final ObjectiveID objectiveID;
         try {
-            stageObjective = (StageObjective) betonQuest.getObjective(instruction.getObjective());
+            objectiveID = instruction.getObjective();
         } catch (final ClassCastException e) {
             throw new InstructionParseException("Objective '" + instruction.getObjective() + "' is not a stage objective", e);
         }
         final String action = instruction.next();
         return switch (action.toLowerCase(Locale.ROOT)) {
-            case "set" -> createSetEvent(instruction, stageObjective);
-            case "increase" -> createIncreaseEvent(instruction, stageObjective);
-            case "decrease" -> createDecreaseEvent(instruction, stageObjective);
+            case "set" -> createSetEvent(instruction, objectiveID);
+            case "increase" -> createIncreaseEvent(instruction, objectiveID);
+            case "decrease" -> createDecreaseEvent(instruction, objectiveID);
             default -> throw new InstructionParseException("Unknown action '" + action + "'");
         };
     }
 
-    private Event createSetEvent(final Instruction instruction, final StageObjective stageObjective) throws InstructionParseException {
+    private Event createSetEvent(final Instruction instruction, final ObjectiveID objectiveID) throws InstructionParseException {
         final VariableString variableString = new VariableString(instruction.getPackage(), instruction.next());
-        return new StageEvent(profile -> stageObjective.setStage(profile, variableString.getString(profile)));
+        return new StageEvent(profile -> getStageObjective(objectiveID).setStage(profile, variableString.getString(profile)));
     }
 
-    private Event createIncreaseEvent(final Instruction instruction, final StageObjective stageObjective) throws InstructionParseException {
-        final VariableNumber amount = instruction.getVarNum();
-        return new StageEvent(profile -> stageObjective.increaseStage(profile, amount.getInt(profile)));
+    private Event createIncreaseEvent(final Instruction instruction, final ObjectiveID objectiveID) throws InstructionParseException {
+        final VariableNumber amount = instruction.hasNext() ? instruction.getVarNum() : null;
+        return new StageEvent(profile -> getStageObjective(objectiveID).increaseStage(profile, amount == null ? 1 : amount.getInt(profile)));
     }
 
-    private Event createDecreaseEvent(final Instruction instruction, final StageObjective stageObjective) throws InstructionParseException {
-        final VariableNumber amount = instruction.getVarNum();
-        return new StageEvent(profile -> stageObjective.decreaseStage(profile, amount.getInt(profile)));
+    private Event createDecreaseEvent(final Instruction instruction, final ObjectiveID objectiveID) throws InstructionParseException {
+        final VariableNumber amount = instruction.hasNext() ? instruction.getVarNum() : null;
+        return new StageEvent(profile -> getStageObjective(objectiveID).decreaseStage(profile, amount == null ? 1 : amount.getInt(profile)));
+    }
+
+    private StageObjective getStageObjective(final ObjectiveID objectiveID) throws QuestRuntimeException {
+        try {
+            return (StageObjective) betonQuest.getObjective(objectiveID);
+        } catch (final ClassCastException e) {
+            throw new QuestRuntimeException("Objective '" + objectiveID.getFullID() + "' is not a stage objective", e);
+        }
     }
 }

@@ -6,6 +6,7 @@ import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.objectives.StageObjective;
 
 /**
@@ -15,7 +16,7 @@ public class StageCondition extends BaseNumberCompareCondition {
     /**
      * The stage objective.
      */
-    private final StageObjective stage;
+    private final ObjectiveID objectiveID;
 
     /**
      * The target stage.
@@ -35,10 +36,9 @@ public class StageCondition extends BaseNumberCompareCondition {
      */
     public StageCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        try {
-            stage = (StageObjective) BetonQuest.getInstance().getObjective(instruction.getObjective());
-        } catch (final ClassCastException e) {
-            throw new InstructionParseException("Objective '" + instruction.getObjective() + "' is not a stage objective", e);
+        objectiveID = instruction.getObjective();
+        if (objectiveID == null) {
+            throw new InstructionParseException("Objective does not exist");
         }
         operation = fromSymbol(instruction.next());
         second = new VariableString(instruction.getPackage(), instruction.next());
@@ -46,16 +46,29 @@ public class StageCondition extends BaseNumberCompareCondition {
 
     @Override
     protected Double getFirst(final Profile profile) throws QuestRuntimeException {
+        final StageObjective stage = getStageObjective();
+        if (stage.getData(profile) == null) {
+            return -1.0;
+        }
         return (double) stage.getStageIndex(stage.getStage(profile));
     }
 
     @Override
     protected Double getSecond(final Profile profile) throws QuestRuntimeException {
+        final StageObjective stage = getStageObjective();
         return (double) stage.getStageIndex(second.getString(profile));
     }
 
     @Override
     protected Operation getOperation() {
         return operation;
+    }
+
+    private StageObjective getStageObjective() throws QuestRuntimeException {
+        try {
+            return (StageObjective) BetonQuest.getInstance().getObjective(objectiveID);
+        } catch (final ClassCastException e) {
+            throw new QuestRuntimeException("Objective '" + objectiveID.getFullID() + "' is not a stage objective", e);
+        }
     }
 }
