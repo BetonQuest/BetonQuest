@@ -291,12 +291,24 @@ public class ConversationData {
                                     option.getName(), pointer));
                 }
             }
-            //TODO: Needs support for ccps
-            for (final String extend : option.getExtends()) {
-                if (!playerOptions.containsKey(extend)) {
-                    throw new InstructionParseException(
-                            String.format("Player option %s extends %s, but it does not exist",
-                                    option.getName(), extend));
+            validateExtends(pack, option, PLAYER);
+        }
+    }
+
+    private void validateExtends(final QuestPackage pack, final ConversationOption option, final OptionType optionType) throws InstructionParseException {
+        final Map<String, ConversationData.ConversationOption> optionMap;
+        if (optionType == PLAYER) {
+            optionMap = playerOptions;
+        } else {
+            optionMap = npcOptions;
+        }
+        for (final String extend : option.getExtends()) {
+            if (extend.contains(".")) {
+                externalPointers.add(resolvePointer(pack, convName, option.getName(), optionType, extend));
+            } else {
+                if (!optionMap.containsKey(extend)) {
+                    throw new InstructionParseException(String.format("%s %s extends %s, but it does not exist",
+                            optionType.readable, option.getName(), extend));
                 }
             }
         }
@@ -313,13 +325,7 @@ public class ConversationData {
                                     option.getName(), pointer));
                 }
             }
-            for (final String extend : option.getExtends()) {
-                if (!npcOptions.containsKey(extend)) {
-                    throw new InstructionParseException(
-                            String.format("NPC option %s extends %s, but it does not exist",
-                                    option.getName(), extend));
-                }
-            }
+            validateExtends(pack, option, NPC);
         }
     }
 
@@ -414,9 +420,16 @@ public class ConversationData {
         return quester.get(lang) != null ? quester.get(lang) : quester.get(Config.getLanguage());
     }
 
+    /**
+     * Returns all addresses of options that are available after the provided option is selected.
+     *
+     * @param profile the profile of the player to get the pointers for
+     * @param option  the option to get the pointers for
+     * @return a list of pointer addresses
+     */
     public List<String> getPointers(final Profile profile, final ResolvedOption option) {
         final Map<String, ConversationOption> optionMaps;
-        if (option.type() == OptionType.NPC) {
+        if (option.type() == NPC) {
             optionMaps = option.conversationData().npcOptions;
         } else {
             optionMaps = option.conversationData().playerOptions;
@@ -882,12 +895,12 @@ public class ConversationData {
         }
 
         /**
-         * Returns all options that are available after this option is selected.
+         * Returns all addresses of options that are available after this option is selected.
          * <br>
          * If the profile param is null pointers from extended options will not be included.
          *
          * @param profile the profile of the player to get the pointers for
-         * @return a list of option names
+         * @return a list of option addresses
          */
         public List<String> getPointers(@Nullable final Profile profile) {
             return getPointers(profile, new ArrayList<>());
@@ -904,13 +917,20 @@ public class ConversationData {
 
             if (profile != null) {
                 for (final String extend : extendLinks) {
-                    if (BetonQuest.conditions(profile, getOption(extend, type).getConditions())) {
-                        pointers.addAll(getOption(extend, type).getPointers(profile, optionPath));
+                    final ResolvedOption resolvedExtend;
+                    try {
+                        resolvedExtend = new ConversationOptionResolver(plugin, pack, convName, type, extend).resolve();
+                    } catch (final InstructionParseException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    final ConversationData targetConvData = resolvedExtend.conversationData();
+                    if (BetonQuest.conditions(profile, targetConvData.getOption(resolvedExtend.name(), type).getConditions())) {
+                        pointers.addAll(targetConvData.getOption(resolvedExtend.name(), type).getPointers(profile, optionPath));
                         break;
                     }
                 }
             }
-
             return pointers;
         }
 

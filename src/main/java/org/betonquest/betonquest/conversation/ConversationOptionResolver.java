@@ -65,9 +65,10 @@ public class ConversationOptionResolver {
             // Or Conv.option (= Same package but different conversation)
             case 2 -> {
                 if (option.contains("/")) {
-                    final ConversationID conversationID = new ConversationIDBuilder(currentPackage, parts[0] + "." + parts[1]).build();
+                    final String conversationName = parts[1].substring(0, parts[1].length() - 1);
+                    final ConversationID conversationID = new ConversationIDBuilder(currentPackage, parts[0] + "." + conversationName).build();
                     pack = conversationID.getPackage();
-                    convName = parts[0];
+                    convName = conversationName;
                     optionName = null;
                 } else {
                     pack = currentPackage;
