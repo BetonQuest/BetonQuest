@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.event.sudo;
+package org.betonquest.betonquest.quest.event.command;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableString;
