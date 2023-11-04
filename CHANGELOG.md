@@ -194,6 +194,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - `action` objective - cancels now the event, before other plugins check for it (better third-party support)
 - Item enchantments was changed to include zero as a legal value, not just positive numbers
 - the objectives mmocorecastskill and mmoitemcastability were merged into the mmoskill objective
+- `command` event no longer runs for all players on the server if a variable is used
 ### Deprecated
 ### Removed
 - deprecated internals, code and old features
