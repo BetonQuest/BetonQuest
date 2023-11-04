@@ -68,6 +68,7 @@ public abstract class BaseCommandEventFactory implements EventFactory {
      * <p>
      * The commands are separated by | but one can use \| to represent a pipe character.
      * If the instruction contains a conditions: section, it will be trimmed from the command string.
+     * Spaces at the beginning and end of each command will be trimmed.
      *
      * @param instruction instruction to parse
      * @return list of commands
