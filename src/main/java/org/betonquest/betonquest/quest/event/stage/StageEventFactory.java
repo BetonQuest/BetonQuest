@@ -4,6 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.VariableString;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -55,12 +56,23 @@ public class StageEventFactory implements EventFactory {
 
     private Event createIncreaseEvent(final Instruction instruction, final ObjectiveID objectiveID) throws InstructionParseException {
         final VariableNumber amount = instruction.hasNext() ? instruction.getVarNum() : null;
-        return new StageEvent(profile -> getStageObjective(objectiveID).increaseStage(profile, amount == null ? 1 : amount.getInt(profile)));
+        return new StageEvent(profile -> getStageObjective(objectiveID).increaseStage(profile, getAmount(profile, amount)));
     }
 
     private Event createDecreaseEvent(final Instruction instruction, final ObjectiveID objectiveID) throws InstructionParseException {
         final VariableNumber amount = instruction.hasNext() ? instruction.getVarNum() : null;
-        return new StageEvent(profile -> getStageObjective(objectiveID).decreaseStage(profile, amount == null ? 1 : amount.getInt(profile)));
+        return new StageEvent(profile -> getStageObjective(objectiveID).decreaseStage(profile, getAmount(profile, amount)));
+    }
+
+    private int getAmount(final Profile profile, final VariableNumber amount) throws QuestRuntimeException {
+        if (amount == null) {
+            return 1;
+        }
+        final int targetAmount = amount.getInt(profile);
+        if (targetAmount <= 0) {
+            throw new QuestRuntimeException("Amount must be greater than 0");
+        }
+        return targetAmount;
     }
 
     private StageObjective getStageObjective(final ObjectiveID objectiveID) throws QuestRuntimeException {
