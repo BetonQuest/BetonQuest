@@ -83,7 +83,7 @@ public class TimeEventFactory implements EventFactory, StaticEventFactory {
     }
 
     private Long parseTime(final String timeString) {
-        return Math.abs((long) Float.parseFloat(timeString) * 1000);
+        return Math.abs((long) (Float.parseFloat(timeString) * 1000));
     }
 
     @NotNull
