@@ -45,6 +45,7 @@ public class ConversationOptionResolver {
      * @param currentConversationName the current conversation data
      * @param optionType              the {@link ConversationData.OptionType} of the option
      * @param option                  the option string to resolve
+     * @throws InstructionParseException when the conversation option could not be resolved
      */
     public ConversationOptionResolver(final BetonQuest plugin, final QuestPackage currentPackage, final String currentConversationName, final ConversationData.OptionType optionType, final String option) throws InstructionParseException {
         this.plugin = plugin;
