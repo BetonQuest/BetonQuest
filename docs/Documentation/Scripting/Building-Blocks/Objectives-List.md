@@ -482,10 +482,10 @@ The behaviour of completing the objective by increasing the stage can be disable
 When the conditions of the stage objective are not met, the stage of the player can not be modified.  
 You can modify the stages with the [stage event](./Events-List.md#modify-stage-stage) and check for it with the [stage condition](./Conditions-List.md#check-stage-stage).
 
-| Parameter              | Syntax                              | Default Value          | Explanation                                                          |
-|------------------------|-------------------------------------|------------------------|----------------------------------------------------------------------|
-| _stages_               | Comma separated list of stage names | :octicons-x-circle-16: | The stages that must be completed.                                   |
-| _completion behaviour_ | Keyword (`preventCompletion`)       | Compleation Enabled    | Prevents the objective from being completed by increasing the stage. |
+| Parameter           | Syntax              | Default Value          | Explanation                                                          |
+|---------------------|---------------------|------------------------|----------------------------------------------------------------------|
+| _stages_            | List of stage names | :octicons-x-circle-16: | The stages that must be completed.                                   |
+| _preventCompletion_ | Keyword             | Completion Enabled     | Prevents the objective from being completed by increasing the stage. |
 
 ```YAML title="Example"
 objectives:
