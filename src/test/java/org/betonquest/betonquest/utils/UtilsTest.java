@@ -44,10 +44,10 @@ class UtilsTest {
 
     @Test
     void testJoinLists() {
-        final List<Integer> a = List.of(1, 2, 3);
-        final List<Integer> b = List.of(4, 5, 6);
-        final List<Integer> c = List.of(7, 8, 9);
-        final List<Integer> result = Utils.joinLists(a, b, c);
-        assertEquals(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9), result, "Lists do not equal expected result!");
+        final List<Integer> first = List.of(1, 2);
+        final List<Integer> second = List.of(3, 4, 5);
+        final List<Integer> third = List.of(6);
+        final List<Integer> result = Utils.joinLists(first, second, third);
+        assertEquals(List.of(1, 2, 3, 4, 5, 6), result, "Lists do not equal expected result!");
     }
 }
