@@ -29,19 +29,9 @@ public class StageObjective extends Objective {
     private final StageMap stageMap;
 
     /**
-     * The stage that is used to complete the objective.
-     */
-    private final String completionStage;
-
-    /**
      * True if the increase of stages should not complete the objective.
      */
     private final boolean preventCompletion;
-
-    /**
-     * The fallback stage that is used for the profile if the current stage is not a valid stage.
-     */
-    private final String fallbackStage;
 
     /**
      * Creates a new stage objective.
@@ -55,12 +45,7 @@ public class StageObjective extends Objective {
         template = StageData.class;
 
         this.stageMap = new StageMap(instruction.getList(entry -> entry));
-        this.completionStage = instruction.getOptional("completion");
         this.preventCompletion = instruction.hasArgument("preventCompletion");
-        this.fallbackStage = instruction.getOptional("fallback");
-        if (fallbackStage != null && !stageMap.isValidStage(fallbackStage)) {
-            throw new InstructionParseException("Fallback stage must be one of the stages");
-        }
     }
 
     @Override
@@ -87,7 +72,7 @@ public class StageObjective extends Objective {
     public String getProperty(final String name, final Profile profile) {
         try {
             return switch (name.toLowerCase(Locale.ROOT)) {
-                case "index" -> String.valueOf(stageMap.getIndex(getStage(profile)));
+                case "index" -> String.valueOf(stageMap.getIndex(getStage(profile) + 1));
                 case "current" -> getStage(profile);
                 case "next" -> stageMap.nextStage(getStage(profile));
                 case "previous" -> stageMap.previousStage(getStage(profile));
@@ -112,11 +97,6 @@ public class StageObjective extends Objective {
         if (stageMap.isValidStage(stage)) {
             return stage;
         }
-        if (fallbackStage != null) {
-            log.warn(instruction.getPackage(), profile + " has invalid stage '" + stage + "' for objective '" + instruction.getID() + "'. Using fallback stage '" + fallbackStage + "'.");
-            stageData.setStage(fallbackStage);
-            return fallbackStage;
-        }
         throw new QuestRuntimeException(profile + " has invalid stage '" + stage + "' for objective '" + instruction.getID() + "'.");
     }
 
@@ -130,11 +110,9 @@ public class StageObjective extends Objective {
     public void setStage(final Profile profile, final String stage) throws QuestRuntimeException {
         final StageData stageData = (StageObjective.StageData) dataMap.get(profile);
         if (stageMap.isValidStage(stage)) {
-            stageData.setStage(stage);
-            return;
-        }
-        if (stage.equals(completionStage)) {
-            completeObjective(profile);
+            if (checkConditions(profile)) {
+                stageData.setStage(stage);
+            }
             return;
         }
         throw new QuestRuntimeException("Invalid stage '" + stage + "' for objective '" + instruction.getID() + "'.");
@@ -151,6 +129,9 @@ public class StageObjective extends Objective {
         String nextStage = getStage(profile);
         try {
             for (int i = 0; i < amount; i++) {
+                if (!checkConditions(profile)) {
+                    break;
+                }
                 nextStage = stageMap.nextStage(nextStage);
             }
         } catch (final QuestRuntimeException e) {
