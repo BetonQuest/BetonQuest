@@ -17,7 +17,7 @@ import java.util.Optional;
 public class PlayerNameVariable extends Variable {
 
     /**
-     * Logger for this class.
+     * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
