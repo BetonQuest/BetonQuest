@@ -480,7 +480,7 @@ and the second one is by completing the objective with the [objective event](./E
 The behaviour of completing the objective by increasing the stage can be disabled by setting the `preventCompletion` flag.
 
 When the conditions of the stage objective are not met, the stage of the player can not be modified.  
-You can modify the stages with the [stage event](./Events-List.md#modify-stage-stage) and check for it with the [stage condition](./Conditions-List.md#check-stage-stage).
+You can modify the stages with the [stage event](./Events-List.md#modify-stage-stage) and check it's state with the [stage condition](./Conditions-List.md#check-stage-stage).
 
 | Parameter           | Syntax              | Default Value          | Explanation                                                          |
 |---------------------|---------------------|------------------------|----------------------------------------------------------------------|
