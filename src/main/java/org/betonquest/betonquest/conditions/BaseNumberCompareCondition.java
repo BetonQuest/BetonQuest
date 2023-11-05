@@ -34,7 +34,7 @@ public abstract class BaseNumberCompareCondition extends Condition {
     protected abstract Double getFirst(Profile profile) throws QuestRuntimeException, IllegalStateException;
 
     /**
-     * Get the second number.
+     * Gets the second number.
      *
      * @param profile the profile to get the number from
      * @return the number
