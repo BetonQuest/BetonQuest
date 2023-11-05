@@ -791,8 +791,8 @@ To run the events only for a selection of players, use the `where:` option to fi
 
 | Parameter | Syntax             | Default Value          | Explanation                                                                                                                                                                                    |
 |-----------|--------------------|------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| _where_   | `where:conditions` | :octicons-x-circle-16: | A list of optional conditions (separated by `,`) that are checked for every player. <br>The events supplied in `events:` are only executed for the players that meet all the given conditions. |
 | _events_  | `events:events`    | :octicons-x-circle-16: | Required. The events to be run, separated by `,`.                                                                                                                                              |
+| _where_   | `where:conditions` | :octicons-x-circle-16: | A list of optional conditions (separated by `,`) that are checked for every player. <br>The events supplied in `events:` are only executed for the players that meet all the given conditions. |
 
 
 ```YAML title="Example"
