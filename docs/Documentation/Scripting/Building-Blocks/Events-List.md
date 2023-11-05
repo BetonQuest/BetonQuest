@@ -538,7 +538,7 @@ Very powerful if used to trigger redstone contraptions.
     ```
     
 ## Modify Stage: `stage`
-You can `set`, `increase` or `decrease` the players stage. By setting it the objective will never be completed.
+You can `set`, `increase` or `decrease` the player's stage. The objective will not automatically complete when using `set`.
 By increasing it the player will be able to complete the objective. When increasing or decreasing the stage
 you can optionally specify an amount to increase or decrease by.  
 When decreasing the objective it will do nothing when the first stage is reached.  
