@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
@@ -13,13 +14,23 @@ import java.util.Optional;
  * This variable resolves into the player's name. It can has optional "display"
  * argument, which will resolve it to the display name.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class PlayerNameVariable extends Variable {
 
+    /**
+     * Logger for this class.
+     */
     private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
+    /**
+     * Whether to resolve to the display name (see {@link Player#getDisplayName()}.
+     */
     private final boolean display;
 
+    /**
+     * Creates a new PlayerNameVariable from the given instruction.
+     *
+     * @param instruction the instruction
+     */
     public PlayerNameVariable(final Instruction instruction) {
         super(instruction);
         display = instruction.hasArgument("display");
