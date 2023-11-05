@@ -20,20 +20,20 @@ public class RunIndependentEvent implements StaticEvent {
     /**
      * List of Events to run.
      */
-    private final List<EventID> eventIDS;
+    private final List<EventID> events;
 
     /**
      * Create a new RunIndependentEvent instance.
      *
-     * @param eventIDS the events to run
+     * @param events the events to run
      */
-    public RunIndependentEvent(final List<EventID> eventIDS) {
-        this.eventIDS = eventIDS;
+    public RunIndependentEvent(final List<EventID> events) {
+        this.events = events;
     }
 
     @Override
     public void execute() throws QuestRuntimeException {
-        for (final EventID event : eventIDS) {
+        for (final EventID event : events) {
             BetonQuest.event(null, event);
         }
     }

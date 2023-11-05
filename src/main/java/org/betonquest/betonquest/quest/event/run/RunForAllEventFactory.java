@@ -10,6 +10,7 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.quest.event.CallStaticEventAdapter;
 import org.betonquest.betonquest.utils.PlayerConverter;
+import org.betonquest.betonquest.utils.Utils;
 
 import java.util.List;
 
@@ -31,9 +32,11 @@ public class RunForAllEventFactory implements StaticEventFactory, EventFactory {
 
     @Override
     public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
-        final List<EventID> eventIDS = instruction.getList(instruction.getOptional("events"), instruction::getEvent);
-        eventIDS.addAll(instruction.getList(instruction.getOptional("event"), instruction::getEvent));
-        final List<ConditionID> conditionIDS = instruction.getList(instruction.getOptional("where"), instruction::getCondition);
-        return new RunForAllEvent(PlayerConverter::getOnlineProfiles, eventIDS, conditionIDS);
+        final List<EventID> events = Utils.joinLists(
+                instruction.getList(instruction.getOptional("events"), instruction::getEvent),
+                instruction.getList(instruction.getOptional("event"), instruction::getEvent)
+        );
+        final List<ConditionID> conditions = instruction.getList(instruction.getOptional("where"), instruction::getCondition);
+        return new RunForAllEvent(PlayerConverter::getOnlineProfiles, events, conditions);
     }
 }

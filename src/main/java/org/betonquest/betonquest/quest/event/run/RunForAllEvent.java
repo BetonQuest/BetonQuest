@@ -26,31 +26,31 @@ public class RunForAllEvent implements StaticEvent {
     /**
      * List of Events to run.
      */
-    private final List<EventID> eventIDS;
+    private final List<EventID> events;
 
     /**
      * List of conditions each profile must meet to run the events.
      */
-    private final List<ConditionID> conditionIDS;
+    private final List<ConditionID> conditions;
 
     /**
      * Create a new RunForAllEvent instance.
      *
      * @param profileCollectionSupplier the supplier for generating the profiles
-     * @param eventIDS                  the events to run
-     * @param conditionIDS              the conditions each profile must meet to run the events
+     * @param events                  the events to run
+     * @param conditions              the conditions each profile must meet to run the events
      */
-    public RunForAllEvent(final Supplier<? extends Iterable<? extends Profile>> profileCollectionSupplier, final List<EventID> eventIDS, final List<ConditionID> conditionIDS) {
+    public RunForAllEvent(final Supplier<? extends Iterable<? extends Profile>> profileCollectionSupplier, final List<EventID> events, final List<ConditionID> conditions) {
         this.profileCollectionSupplier = profileCollectionSupplier;
-        this.eventIDS = eventIDS;
-        this.conditionIDS = conditionIDS;
+        this.events = events;
+        this.conditions = conditions;
     }
 
     @Override
     public void execute() throws QuestRuntimeException {
         for (final Profile profile : profileCollectionSupplier.get()) {
-            if (conditionIDS.isEmpty() || BetonQuest.conditions(profile, conditionIDS.toArray(new ConditionID[0]))) {
-                for (final EventID event : eventIDS) {
+            if (conditions.isEmpty() || BetonQuest.conditions(profile, conditions.toArray(new ConditionID[0]))) {
+                for (final EventID event : events) {
                     BetonQuest.event(profile, event);
                 }
             }

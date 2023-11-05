@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
@@ -330,5 +331,19 @@ public final class Utils {
             }
         }
         return list.toArray(new String[0]);
+    }
+
+    /**
+     * Join any number of lists of the same type into one.
+     *
+     * @param lists the lists to join
+     * @param <T>   the type of the lists
+     * @return a list containing all the elements of the input lists in the order they were supplied
+     */
+    @SafeVarargs
+    public static <T> List<T> joinLists(final List<T>... lists) {
+        return Arrays.stream(lists)
+                .flatMap(List::stream)
+                .toList();
     }
 }
