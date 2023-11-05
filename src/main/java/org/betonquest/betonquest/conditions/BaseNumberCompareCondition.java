@@ -22,7 +22,7 @@ public abstract class BaseNumberCompareCondition extends Condition {
     }
 
     /**
-     * Get the first number.
+     * Gets the first number.
      *
      * @param profile the profile to get the number from
      * @return the number
