@@ -21,7 +21,7 @@ public class StageCondition extends BaseNumberCompareCondition {
     /**
      * The target stage.
      */
-    private final VariableString second;
+    private final VariableString targetStage;
 
     /**
      * The operation.
@@ -41,7 +41,7 @@ public class StageCondition extends BaseNumberCompareCondition {
             throw new InstructionParseException("Objective does not exist");
         }
         operation = fromSymbol(instruction.next());
-        second = new VariableString(instruction.getPackage(), instruction.next());
+        targetStage = new VariableString(instruction.getPackage(), instruction.next());
     }
 
     @Override
@@ -60,7 +60,7 @@ public class StageCondition extends BaseNumberCompareCondition {
     @Override
     protected Double getSecond(final Profile profile) throws QuestRuntimeException {
         final StageObjective stage = getStageObjective();
-        final String targetState = second.getString(profile);
+        final String targetState = targetStage.getString(profile);
         try {
             return (double) stage.getStageIndex(targetState);
         } catch (final QuestRuntimeException e) {
