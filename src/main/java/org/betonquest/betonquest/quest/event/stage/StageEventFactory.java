@@ -34,12 +34,7 @@ public class StageEventFactory implements EventFactory {
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        final ObjectiveID objectiveID;
-        try {
-            objectiveID = instruction.getObjective();
-        } catch (final ClassCastException e) {
-            throw new InstructionParseException("Objective '" + instruction.getObjective() + "' is not a stage objective", e);
-        }
+        final ObjectiveID objectiveID = instruction.getObjective();
         final String action = instruction.next();
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "set" -> createSetEvent(instruction, objectiveID);
