@@ -50,13 +50,22 @@ public class StageCondition extends BaseNumberCompareCondition {
         if (stage.getData(profile) == null) {
             return -1.0;
         }
-        return (double) stage.getStageIndex(stage.getStage(profile)); // TODO return false for invalid stages
+        try {
+            return (double) stage.getStageIndex(stage.getStage(profile));
+        } catch (final QuestRuntimeException e) {
+            throw new IllegalStateException(profile + " has an invalid stage", e);
+        }
     }
 
     @Override
     protected Double getSecond(final Profile profile) throws QuestRuntimeException {
         final StageObjective stage = getStageObjective();
-        return (double) stage.getStageIndex(second.getString(profile)); // TODO return false for invalid stages
+        final String targetState = second.getString(profile);
+        try {
+            return (double) stage.getStageIndex(targetState);
+        } catch (final QuestRuntimeException e) {
+            throw new IllegalStateException("The stage " + targetState + "' does not exist", e);
+        }
     }
 
     @Override

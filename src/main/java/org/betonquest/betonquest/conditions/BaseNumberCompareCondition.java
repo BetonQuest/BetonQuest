@@ -27,8 +27,11 @@ public abstract class BaseNumberCompareCondition extends Condition {
      * @param profile the profile to get the number from
      * @return the number
      * @throws QuestRuntimeException when the number cannot be parsed
+     * @throws IllegalStateException when getting the number fails caused by an invalid state
+     *                               that should cause the condition to be false
      */
-    protected abstract Double getFirst(Profile profile) throws QuestRuntimeException;
+    @SuppressWarnings("PMD.AvoidUncheckedExceptionsInSignatures")
+    protected abstract Double getFirst(Profile profile) throws QuestRuntimeException, IllegalStateException;
 
     /**
      * Get the second number.
@@ -36,8 +39,11 @@ public abstract class BaseNumberCompareCondition extends Condition {
      * @param profile the profile to get the number from
      * @return the number
      * @throws QuestRuntimeException when the number cannot be parsed
+     * @throws IllegalStateException when getting the number fails caused by an invalid state
+     *                               that should cause the condition to be false
      */
-    protected abstract Double getSecond(Profile profile) throws QuestRuntimeException;
+    @SuppressWarnings("PMD.AvoidUncheckedExceptionsInSignatures")
+    protected abstract Double getSecond(Profile profile) throws QuestRuntimeException, IllegalStateException;
 
     /**
      * Get the operation.
@@ -67,7 +73,11 @@ public abstract class BaseNumberCompareCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        return getOperation().compare.check(getFirst(profile), getSecond(profile));
+        try {
+            return getOperation().compare.check(getFirst(profile), getSecond(profile));
+        } catch (final IllegalStateException e) {
+            return false;
+        }
     }
 
     /**
