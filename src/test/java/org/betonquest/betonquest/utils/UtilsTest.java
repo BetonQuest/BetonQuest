@@ -41,13 +41,4 @@ class UtilsTest {
             assertEquals(journalTextFormatted, journal, "Formatted text does not equal expected result!");
         }
     }
-
-    @Test
-    void testJoinLists() {
-        final List<Integer> first = List.of(1, 2);
-        final List<Integer> second = List.of(3, 4, 5);
-        final List<Integer> third = List.of(6);
-        final List<Integer> result = Utils.joinLists(first, second, third);
-        assertEquals(List.of(1, 2, 3, 4, 5, 6), result, "Lists do not equal expected result!");
-    }
 }
