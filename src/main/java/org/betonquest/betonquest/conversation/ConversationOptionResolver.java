@@ -53,31 +53,22 @@ public class ConversationOptionResolver {
 
         final String[] parts = option.split("\\.");
         switch (parts.length) {
-            // Different conversation, different package
-            // pack.Conv.option
+            // Either "pack.Conv." (Other package, user specified only the conversation but not the option,
+            // therefore we need to select the "starting options". This means the optionName must be null.)
+            // Or "pack.Conv.option" (different conversation, different package)
             case 3 -> {
                 final ConversationID conversationID = new ConversationIDBuilder(currentPackage, parts[0] + "." + parts[1]).build();
                 pack = conversationID.getPackage();
                 convName = parts[1];
-                optionName = parts[2];
+                optionName = parts[2].isEmpty() ? null : parts[2];
             }
-            // Either pack.Conv/ (= Other package, user specified only the conversation but not the option,
-            // therefore we need to select the "starting options". This means optionName = null.)
-            // Or Conv.option (= Same package but different conversation)
+            // "Conv.option" (Same package but different conversation)
             case 2 -> {
-                if (option.contains("/")) {
-                    final String conversationName = parts[1].substring(0, parts[1].length() - 1);
-                    final ConversationID conversationID = new ConversationIDBuilder(currentPackage, parts[0] + "." + conversationName).build();
-                    pack = conversationID.getPackage();
-                    convName = conversationName;
-                    optionName = null;
-                } else {
-                    pack = currentPackage;
-                    convName = parts[0];
-                    optionName = parts[1];
-                }
+                pack = currentPackage;
+                convName = parts[0];
+                optionName = parts[1];
             }
-            // Same conversation, same package
+            // "option" (Same conversation, same package)
             case 1 -> {
                 pack = currentPackage;
                 convName = currentConversationName;
