@@ -31,6 +31,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - added `redischat` chat interceptor
 - added Event Schedules to replace old static-events system
     - static events from schedulers now respect static conditions
+    - events called by schedules are always called player independent
+    - `runForAll` event can now be used to run events for all players that match a condition
+    - `runIndepent` event can be used to run events static (player independent) from player dependent contexts
 - added support for Base64 encode custom heads
     - can be created from items in inventory using the BetonQuest `item` command (Paper only, Bukkit/Spigot can be configured manually)
     - can be given to players using the BetonQuest `give` command
