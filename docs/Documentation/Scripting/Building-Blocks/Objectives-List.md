@@ -39,12 +39,12 @@ give accurate results. Experiment with this objective a bit to make sure you've 
 
 To complete this objective the player must break or place the specified amount of blocks.
 
-| Parameter       | Syntax                                            | Default Value          | Explanation                                                                                                                                                                                                                                                               |
-|-----------------|---------------------------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Parameter       | Syntax                                               | Default Value          | Explanation                                                                                                                                                                                                                                                               |
+|-----------------|------------------------------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | _Block Type_    | [Block Selector](../Data-Formats.md#block-selectors) | :octicons-x-circle-16: | The block which must be broken / placed.                                                                                                                                                                                                                                  |
-| _Amount_        | Number                                            | :octicons-x-circle-16: | The amount of blocks to break / place. Less than 0 for breaking and more than 0 for placing blocks.                                                                                                                                                                       |
-| _Safety Check_  | Keyword (`noSafety`)                              | Safety Check Enabled   | The Safety Check prevents faking the objective. The progress will be reduced when the player does to opposite of what they are supposed to do. Example: Player must break 10 blocks. They place 10 of their stored blocks. Now the total amount of blocks to break is 20. |
-| _Notifications_ | Keyword (`notify`)                                | Disabled               | Displays messages to the player each time they progress the objective. Optionally with the notification interval after colon.                                                                                                                                             |
+| _Amount_        | Number                                               | :octicons-x-circle-16: | The amount of blocks to break / place. Less than 0 for breaking and more than 0 for placing blocks.                                                                                                                                                                       |
+| _Safety Check_  | Keyword (`noSafety`)                                 | Safety Check Enabled   | The Safety Check prevents faking the objective. The progress will be reduced when the player does to opposite of what they are supposed to do. Example: Player must break 10 blocks. They place 10 of their stored blocks. Now the total amount of blocks to break is 20. |
+| _Notifications_ | Keyword (`notify`)                                   | Disabled               | Displays messages to the player each time they progress the objective. Optionally with the notification interval after colon.                                                                                                                                             |
 
 
 ```YAML
@@ -210,11 +210,11 @@ objectives:
 
 <h5> Variable Properties </h5> 
 
-| Name         | Example Output                        | Explanation                                                                                                              |
-|--------------|---------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
-| _left_       | 23 days 5 hours 45 minutes 17 seconds | Shows the time left until the objective is completed.                                                                    |
+| Name         | Example Output                        | Explanation                                                                                                                                  |
+|--------------|---------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| _left_       | 23 days 5 hours 45 minutes 17 seconds | Shows the time left until the objective is completed.                                                                                        |
 | _date_       | 17.04.2022 16:14                      | Shows the date the objective is completed at using the config's `date_format` [setting](../../Configuration/Configuration.md#misc-settings). |
-| _rawSeconds_ | 5482                                  | Shows the amount of seconds until objective completion.                                                                  |
+| _rawSeconds_ | 5482                                  | Shows the amount of seconds until objective completion.                                                                                      |
 
 
 ## Death: `die`
@@ -233,13 +233,13 @@ add them right after type of objective.
 
 Requires the player to catch something with the fishing rod. It doesn't have to be a fish, it can also be any other item.
 
-| Parameter       | Syntax                                                              | Default Value          | Explanation                                                                                                            |
-|-----------------|---------------------------------------------------------------------|------------------------|------------------------------------------------------------------------------------------------------------------------|
+| Parameter       | Syntax                                                                 | Default Value          | Explanation                                                                                                            |
+|-----------------|------------------------------------------------------------------------|------------------------|------------------------------------------------------------------------------------------------------------------------|
 | _item_          | [Block Selector](../Data-Formats.md#block-selectors)                   | :octicons-x-circle-16: | The item that must be caught.                                                                                          |
-| _amount_        | Any Number                                                          | :octicons-x-circle-16: | The amount that must be caught.                                                                                        |
-| _notifications_ | notify:number                                                       | notify:0               | Add `notify` to display a notification when a fish is caught. Optionally with the notification interval after a colon. |
+| _amount_        | Any Number                                                             | :octicons-x-circle-16: | The amount that must be caught.                                                                                        |
+| _notifications_ | notify:number                                                          | notify:0               | Add `notify` to display a notification when a fish is caught. Optionally with the notification interval after a colon. |
 | _hookLocation_  | hookLocation:[Location](../Data-Formats.md#unified-location-formating) | Everywhere             | The location at which the item must be caught. Range must also be defined.                                             |
-| _range_         | range:number                                                        | Everywhere             | The range around the `hookLocation`.                                                                                   |
+| _range_         | range:number                                                           | Everywhere             | The range around the `hookLocation`.                                                                                   |
 
 
 
@@ -472,6 +472,36 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 ```YAML title="Example"
 smeltIron: "smelt ironIngot 5 events:reward"
 ```
+
+## Stages: `stage`
+The Stage objective is a special objective that can be used to track the progress of a quest or a part of a quest.
+It can be completed in two ways, the first one is by increasing the stage more than there are stages defined
+and the second one is by completing the objective with the [objective event](./Events-List.md#objective-objective).
+The behaviour of completing the objective by increasing the stage can be disabled by setting the `preventCompletion` flag.
+
+When the conditions of the stage objective are not met, the stage of the player can not be modified.  
+You can modify the stages with the [stage event](./Events-List.md#modify-stage-stage) and check for it with the [stage condition](./Conditions-List.md#check-stage-stage).
+
+| Parameter              | Syntax                              | Default Value          | Explanation                                                          |
+|------------------------|-------------------------------------|------------------------|----------------------------------------------------------------------|
+| _stages_               | Comma separated list of stage names | :octicons-x-circle-16: | The stages that must be completed.                                   |
+| _completion behaviour_ | Keyword (`preventCompletion`)       | Compleation Enabled    | Prevents the objective from being completed by increasing the stage. |
+
+```YAML title="Example"
+objectives:
+  questProgress: "stage part1,part2,part3"
+  bakeCookies: "stage collectIngredients,cookCookies,deliverCookies preventCompletion"
+```
+
+<h5> Variable Properties </h5> 
+
+| Name       | Example Output     | Explanation                                                                    |
+|------------|--------------------|--------------------------------------------------------------------------------|
+| _index_    | 2                  | The index of the players current stage beginning at 1.                         |
+| _current_  | cookCookies        | The current stage name of the player or empty if the objective is not active.  |
+| _next_     | deliverCookies     | The next stage name of the player or empty if the objective is not active.     |
+| _previous_ | collectIngredients | The previous stage name of the player or empty if the objective is not active. |
+
 
 ## Step on pressure plate: `step`
 
