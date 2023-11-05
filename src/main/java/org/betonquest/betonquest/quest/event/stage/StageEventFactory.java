@@ -24,7 +24,7 @@ public class StageEventFactory implements EventFactory {
     private final BetonQuest betonQuest;
 
     /**
-     * Create the stage event factory.
+     * Creates the stage event factory.
      *
      * @param betonQuest BetonQuest instance
      */
