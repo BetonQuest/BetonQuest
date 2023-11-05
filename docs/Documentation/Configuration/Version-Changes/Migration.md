@@ -22,6 +22,7 @@ Skip to the first version that is newer than the version that you're migrating f
 - [2.0.0-DEV-644 - Database migration for profiles](#200-dev-644-database-migration-for-profiles)
 - [2.0.0-DEV-647 - EffectLib](#200-dev-647-effectlib)
 - [2.0.0-DEV-674 - MMO Updates](#200-dev-674-mmo-updates)
+- [2.0.0-DEV-XXX - Static Event Rework](#200-dev-674-mmo-updates)
 
 ### 2.0.0-DEV-98 - RPGMenu Merge
 
@@ -321,3 +322,67 @@ castMMOItemSkill: "mmoskill DEEP_WOUND trigger:RIGHT_CLICK"
 ```
 
 </div>
+
+### 2.0.0-DEV-XXX - Static Event Rework
+
+Until now if you used non-static events in a [schedule](../../Scripting/Schedules.md), they were executed for every player that was online at the time.  
+If you run such a schedule now you will get a warning message in the console similar to this:
+
+!!! example
+    ```
+    [15:27:10 WARN]: [BetonQuest] Cannot fire non-static event 'announcements.ringBell' without a player!
+    ```
+
+To fix this wrap the event in a [`runForAll`](../../Scripting/Building-Blocks/Events-List.md#run-events-for-all-online-players-runforall) event:
+
+<div class="grid" markdown>
+
+```YAML title="Old Syntax"
+events:
+  # Events that require a player (non-static events).
+  bell_sound: 'notify io:sound sound:block.bell.use'
+  bell_ring: 'folder bell_sound,bell_sound,bell_sound,bell_sound period:0.5'
+  # Player independent events (static events).
+  notify_goodNight: 'notifyall &6Good night, sleep well!'
+
+
+schedules:
+  sayGoodNight:
+    type: realtime-daily
+    time: '22:00'
+    events: bell_ring,notify_goodNight
+```
+
+```YAML title="New Syntax"
+events:
+  # Events that require a player (non-static events).
+  bell_sound: 'notify io:sound sound:block.bell.use'
+  bell_ring: 'folder bell_sound,bell_sound,bell_sound,bell_sound period:0.5'
+  # Player independent events (static events).
+  notify_goodNight: 'notifyall &6Good night, sleep well!'
+  bell_ring_all: 'runForAll bell_ring' #(1)!
+
+schedules:
+  sayGoodNight:
+    type: realtime-daily
+    time: '22:00'
+    events: bell_ring_all,notify_goodNight #(2)!
+```
+
+1. Runs `bell_ring` for all online players.
+2. `notify_goodNight` is a [static event](../../Scripting/Schedules.md#player-independent-events), so no need to wrap it in `runForAll`.
+
+</div>
+
+While this seems like more work for the same functionality it gives you more control over how events are run.  
+**With this change we finally allow using conditions in schedules!**  
+Just keep in mind you can only add player dependent conditions if the event is run player dependent (wrapped inside `runForAll`).
+
+!!! tip
+    To check if your event still works inside a schedule or if it must be wrapped,
+    use the following command to run the event without a player:
+     
+    ```
+    /q event - <package>.<event>
+    ```
+    The `-` is important, it means run independent :wink:.
