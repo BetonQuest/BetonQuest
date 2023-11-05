@@ -41,7 +41,7 @@ public class PlayerNameVariable extends Variable {
         if (display) {
             final Optional<OnlineProfile> onlineProfile = profile.getOnlineProfile();
             if (onlineProfile.isEmpty()) {
-                log.warn(instruction.getPackage(), profile.getPlayer().getName() + " is offline, cannot get display name");
+                log.warn(instruction.getPackage(), profile.getPlayer().getName() + " is offline, cannot get display name.");
                 return "";
             }
             return onlineProfile.get().getPlayer().getDisplayName();
