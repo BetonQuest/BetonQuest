@@ -197,14 +197,27 @@ You can however change the utilized conversationIO by changing the `default_conv
 In case you want to use a different type of conversation display for just one specific conversation you can add a `conversationIO:
 <type>` setting to the conversation file at the top of the YAML hierarchy (which is the same level as `quester` or `first` options).
 
-## Cross-conversation pointers
+## Cross-Conversation Pointers
 
-If you want to create a conversation with multiple NPCs at once or split a huge conversation into smaller, more focused files, you can point to NPC options in other conversations. Just type the pointer as `conversation.npc_option`.
+If you want to create a conversation with multiple NPCs at once or split a huge conversation into smaller, 
+more focused files, you can point to both npc and player options in other conversations. Use the 
+[cross-package syntax](../Scripting/Packages-&-Templates.md#working-across-packages) to do so.
 
-Keep in mind that you can only cross-point to NPC options. It means that you can use those pointers only in `first` starting options and in all player options. Using them in NPC options will throw errors.
+There is one special case when you want to refer to the starting options of another conversation. In this case you do not specify
+an option name after the second point (`package.conversation.`).
 
-!!! warning 
-    This does not work across packages yet.
+```YAML title="Cross-conversation Pointers Examples"
+myConversationOption:
+  text: "Look carefully at that guard over there..."
+  pointers: "lookCareful,guardConv.lookDetected,mainStory.Mirko.interrupt" #(1)!
+specialOption:
+  text: "This option points to the starting options of the conversation 'guardConv' in the package 'myPackage'."
+  pointers: "myPackage.guardConv."
+```
+
+1. `lookCareful` refers to another option in the same conversation named `lookCareful`.    
+   `guardConv.lookDetected` refers to the option `lookDetected` in the conversation `guardConv` in the same package.    
+   `mainStory.Mirko.interrupt` refers to the option `interrupt` in the conversation `Mirko` in the package `mainStory`.    
 
 ## Conversation Variables
 
