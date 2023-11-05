@@ -308,7 +308,7 @@ This condition checks the players moon cycle (1 is full moon, 8 is Waxing Gibbou
 ## Number compare: `numbercompare`
 
 This condition compares two numbers.
-The valid operations are: `<`, `<=`, `=`, `>=`, `>`.
+The valid operations are: `<`, `<=`, `=`, `!=`, `>=`, `>`.
 
 !!! example
     ```YAML
@@ -435,6 +435,23 @@ Sneak condition is only true when the player is sneaking. This would probably be
     ```YAML
     sneak
     ```
+    
+## Check Stage: `stage`
+This condition compares the players current stage with the given stage by its index numbers.
+For more take a look at the [stage objective](./Objectives-List.md#stages-stage).  
+The valid operations are: `<`, `<=`, `=`, `!=`, `>=`, `>`.
+
+| Parameter         | Syntax     | Default Value          | Explanation                              |
+|-------------------|------------|------------------------|------------------------------------------|
+| _stage objective_ | Objective  | :octicons-x-circle-16: | The name of the stage objective          |
+| _comparator_      | Comparator | :octicons-x-circle-16: | The comparator to use for the comparison |
+| _stage_           | Stage      | :octicons-x-circle-16: | The name of the stage to compare         |
+
+```YAML title="Example"
+conditions:
+  isDeliverCookies: "stage bakeCookies = deliverCookies"
+  isDeliverCookiesOrAbove: "stage bakeCookies > cookCookies"
+```
 
 ## Tag: `tag`
 

@@ -114,6 +114,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `npcinteract` objective - now supports the argument `interaction` to choose between left, right or both clicks
 - `log` event
 - `party` event - new range 0 and -1 to select players in the same world or server wide
+- `stage` objective, condition and event
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`
     - FastAsyncWorldEdit compatibility

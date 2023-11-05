@@ -536,6 +536,28 @@ Very powerful if used to trigger redstone contraptions.
     setblock REDSTONE_BLOCK 100;200;300;world
     setblock SAND 100;200;300;world ignorePhysics
     ```
+    
+## Modify Stage: `stage`
+You can `set`, `increase` or `decrease` the player's stage. The objective will not automatically complete when using `set`.
+By increasing it the player will be able to complete the objective. When increasing or decreasing the stage
+you can optionally specify an amount to increase or decrease by.  
+When decreasing the objective it will do nothing when the first stage is reached.  
+When the conditions of the stage objective are not met, the stage of the player can not be modified.  
+For more take a look at the [stage objective](./Objectives-List.md#stages-stage).
+
+| Parameter         | Syntax                          | Default Value          | Explanation                                     |
+|-------------------|---------------------------------|------------------------|-------------------------------------------------|
+| _stage objective_ | Objective                       | :octicons-x-circle-16: | The name of the stage objective                 |
+| _action_          | `set`, `increase` or `decrease` | :octicons-x-circle-16: | The action to perform                           |
+| _stage_           | Stage                           | :octicons-x-circle-16: | The name of the stage to set when `set` is used |
+| _amount_          | Number                          | 1                      | The amount to increase or decrease by           |
+
+```YAML title="Example"
+events:
+  setCookCookies: "stage bakeCookies set cookCookies"
+  increase: "stage bakeCookies increase"
+  decrease2: "stage bakeCookies decrease 2"
+```
 
 ## Spawn Mob: `spawn`
 
