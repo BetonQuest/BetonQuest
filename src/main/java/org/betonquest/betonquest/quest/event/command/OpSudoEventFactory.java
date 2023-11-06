@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
+import org.betonquest.betonquest.quest.event.OpPlayerEventAdapter;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
