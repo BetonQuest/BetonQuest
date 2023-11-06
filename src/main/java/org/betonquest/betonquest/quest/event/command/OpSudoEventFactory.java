@@ -33,7 +33,7 @@ public class OpSudoEventFactory extends BaseCommandEventFactory {
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
-                        loggerFactory.create(SudoEvent.class, "opsudo"),
+                        loggerFactory.create(SudoEvent.class),
                         new OpPlayerEventAdapter(new SudoEvent(parseCommands(instruction))),
                         instruction.getPackage()),
                 server, scheduler, plugin);
