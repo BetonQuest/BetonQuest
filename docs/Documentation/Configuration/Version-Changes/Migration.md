@@ -22,7 +22,7 @@ Skip to the first version that is newer than the version that you're migrating f
 - [2.0.0-DEV-644 - Database migration for profiles](#200-dev-644-database-migration-for-profiles)
 - [2.0.0-DEV-647 - EffectLib](#200-dev-647-effectlib)
 - [2.0.0-DEV-674 - MMO Updates](#200-dev-674-mmo-updates)
-- [2.0.0-DEV-XXX - Static Event Rework](#200-dev-674-mmo-updates)
+- [2.0.0-DEV-749 - Static Event Rework](#200-dev-749-static-event-rework)
 
 ### 2.0.0-DEV-98 - RPGMenu Merge
 
@@ -323,7 +323,7 @@ castMMOItemSkill: "mmoskill DEEP_WOUND trigger:RIGHT_CLICK"
 
 </div>
 
-### 2.0.0-DEV-XXX - Static Event Rework
+### 2.0.0-DEV-749 - Static Event Rework
 
 Until now if you used non-static events in a [schedule](../../Scripting/Schedules.md), they were executed for every player that was online at the time.  
 If you run such a schedule now you will get a warning message in the console similar to this:
