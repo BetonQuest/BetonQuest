@@ -4,33 +4,26 @@ icon: octicons/clock-16
 # Schedules
 Schedules allow you to run events periodically at specific times for the entire server.
 
-## Static Events
-When running events from a schedule it is unclear how events should behave:  
-Should an event be run once for each player on the server? 
-For events like `setblock` this would mean that the event is executed 20 times if 20 players are online.
-And what about offline players?    
+## Player independent events
+Whenever events are run from a conversation or an objective, they are always run for a specific player.
+For events run from a schedule this is not the case as there is no specific player involved.   
+This means you can only use events that are player independent, like `setblock` or `globaltag`, in schedules.
+The same applies to the conditions used by these events.
 
-This problem is solved by dividing all events into two categories:
+To determine if an event is player independent (and can be used in schedules), look for the **static** flag in the docs.
 
-1. **Static events** are not tied to a specific player, meaning they can be run independent.  
-   `setblock` for example always changes the same block, no matter for who it was called.  
-   When run by a schedule a static event will fire exactly once. You can only assign conditions that are static as well to such events.
-
-2. **Non-static events** are always tied to a specific player.
-   They will be run once for each online player. You can assign both non-static and static conditions to such events.
-
-All static events and conditions have a static flag in the docs, so you can easily distinguish them from non-static ones.
-
-!!! example
-
+!!! example annotate
     <h2>Set Block: `setblock`</h2>
 
     **persistent**, ==**static**== (1)
-    { .annotate }
 
     Changes the block at the given position.
 
-    1. This flag states that `setblock` can be used as static event.
+1.  This flag states that `setblock` can be used player independent.
+
+But sometimes you might want your schedule to run a player dependent event, like `message` or `give` for all players on the server.
+To do this you can use the [`runforall`](Building-Blocks/Events-List.md#run-events-for-all-online-players-runforall) event. It will run the given events for all players on the server. 
+You can even use conditions to filter out players.
 
 ## Realtime schedules
 

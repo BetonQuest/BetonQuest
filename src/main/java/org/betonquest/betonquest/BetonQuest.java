@@ -239,6 +239,8 @@ import org.betonquest.betonquest.quest.event.point.DeletePointEventFactory;
 import org.betonquest.betonquest.quest.event.point.GlobalPointEventFactory;
 import org.betonquest.betonquest.quest.event.point.PointEventFactory;
 import org.betonquest.betonquest.quest.event.random.PickRandomEventFactory;
+import org.betonquest.betonquest.quest.event.run.RunForAllEventFactory;
+import org.betonquest.betonquest.quest.event.run.RunIndependentEventFactory;
 import org.betonquest.betonquest.quest.event.scoreboard.ScoreboardEventFactory;
 import org.betonquest.betonquest.quest.event.setblock.SetBlockEventFactory;
 import org.betonquest.betonquest.quest.event.stage.StageEventFactory;
@@ -478,7 +480,8 @@ public class BetonQuest extends JavaPlugin {
             return false;
         }
         if (profile == null && !condition.isStatic()) {
-            getInstance().log.debug(conditionID.getPackage(), "Cannot check non-static condition without a player, returning false");
+            getInstance().log.warn(conditionID.getPackage(),
+                    "Cannot check non-static condition '" + conditionID + "' without a player, returning false");
             return false;
         }
         if (profile != null && profile.getOnlineProfile().isEmpty() && !condition.isPersistent()) {
@@ -517,7 +520,7 @@ public class BetonQuest extends JavaPlugin {
             return;
         }
         if (profile == null) {
-            getInstance().log.debug(eventID.getPackage(), "Firing static event " + eventID);
+            getInstance().log.debug(eventID.getPackage(), "Firing event " + eventID + " player independent");
         } else {
             getInstance().log.debug(eventID.getPackage(),
                     "Firing event " + eventID + " for " + profile);
@@ -960,6 +963,8 @@ public class BetonQuest extends JavaPlugin {
         registerEvent("drop", new DropEventFactory(getServer(), getServer().getScheduler(), this));
         registerNonStaticEvent("itemdurability", new ItemDurabilityEventFactory(loggerFactory, getServer(), getServer().getScheduler(), this));
         registerEvent("log", new LogEventFactory(loggerFactory));
+        registerEvent("runForAll", new RunForAllEventFactory());
+        registerEvent("runIndependent", new RunIndependentEventFactory());
 
         registerObjectives("location", LocationObjective.class);
         registerObjectives("block", BlockObjective.class);

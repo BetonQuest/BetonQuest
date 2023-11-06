@@ -778,3 +778,59 @@ Note that when used in static context (by schedules) replacing player dependent 
     debug: "log level:DEBUG daily quests have been reset"
 ```
 
+## Run events for all online players: `runForAll`
+
+**persistent**, **static**  
+
+Runs the specified event (or list of events) once for each player on the server.  
+
+The most common use case is to run an event for all online players from a [schedule](../Schedules.md).
+But you can also use it in conversations, objectives or other events.
+
+To run the events only for a selection of players, use the `where:` option to filter for players that meet specific conditions.
+
+| Parameter | Syntax             | Default Value          | Explanation                                                                                                                                                                                    |
+|-----------|--------------------|------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| _events_  | `events:events`    | :octicons-x-circle-16: | Required. The events to be run, separated by `,`.                                                                                                                                              |
+| _where_   | `where:conditions` | :octicons-x-circle-16: | A list of optional conditions (separated by `,`) that are checked for every player. <br>The events supplied in `events:` are only executed for the players that meet all the given conditions. |
+
+
+```YAML title="Example"
+events:
+    kickAll: "runForAll where:!isOp events:kickPlayer,restartQuest"
+```
+
+!!! warning
+    You can still append conditions to the `runForAll` event (e.g. `runForAll events:kickPlayer conditions:!isOp`).  
+    **This won't check the conditions for each player!**  
+    Instead it will check the conditions for the player that triggered the event or check them player independent if triggered player independent (e.g. by a schedule).
+
+## Run events player independent: `runIndependent`
+
+**persistent**, **static**  
+
+Runs the specified event (or list of events) player independent (as if it was run from a [schedule](../Schedules.md)).  
+
+This is usefully for events that behave differently when run player independent.
+
+??? abstract "Events that behave different if run player independent"
+    * [`tag delete`](#tag-tag) - deletes the tag for all players in the database (even if offline)
+    * [`objective remove`](#objective-objective) - removes the objective for all players in the database (even if offline)
+    * [`journal delete`](#journal-journal) - deletes the journal entry for all players in the database (even if offline)
+    * [`deletepoint`](#delete-point-deletepoint) - clears points of a given category for all players in the database (even if offline)
+
+| Parameter | Syntax          | Default Value          | Explanation                                       |
+|-----------|-----------------|------------------------|---------------------------------------------------|
+| _events_  | `events:events` | :octicons-x-circle-16: | Required. The events to be run, separated by `,`. |
+
+```YAML title="Example"
+events:
+    resetQuestForAll: "runIndependent events:removeObjective,clearTags,resetJournal"
+```
+
+!!! warning 
+    There are a lot of events and conditions that cannot be run (or checked) player independent.  
+    If you try to run such an event player independent (or check such a condition) this won't work, 
+    and you will get an error message in the console.
+    
+    For more information on player independent events [check this](../Schedules.md#player-independent-events).
