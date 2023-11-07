@@ -27,6 +27,8 @@ import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Slab;
@@ -224,6 +226,10 @@ public class MenuConvIO extends ChatConvIO {
 
             stand.setGravity(false);
             stand.setVisible(false);
+            final AttributeInstance attribute = stand.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+            if (attribute != null) {
+                attribute.setBaseValue(0);
+            }
 
             // Mount the player to it using packets
             final WrapperPlayServerMount mount = new WrapperPlayServerMount();
