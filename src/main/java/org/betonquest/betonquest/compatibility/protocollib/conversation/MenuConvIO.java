@@ -9,6 +9,7 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.papermc.lib.PaperLib;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -26,6 +27,8 @@ import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Slab;
@@ -217,10 +220,16 @@ public class MenuConvIO extends ChatConvIO {
             state = ConversationState.ACTIVE;
 
             final Location target = getBlockBelowPlayer(player);
-            stand = player.getWorld().spawn(target.add(0, -0.375, 0), ArmorStand.class);
+            // TODO version switch:
+            //  Remove this code when only 1.20.2+ is supported
+            stand = player.getWorld().spawn(target.add(0, PaperLib.isVersion(20, 2) ? -0.375 : -0.131_25, 0), ArmorStand.class);
 
             stand.setGravity(false);
             stand.setVisible(false);
+            final AttributeInstance attribute = stand.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+            if (attribute != null) {
+                attribute.setBaseValue(0);
+            }
 
             // Mount the player to it using packets
             final WrapperPlayServerMount mount = new WrapperPlayServerMount();
