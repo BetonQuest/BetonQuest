@@ -9,6 +9,7 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.papermc.lib.PaperLib;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -217,7 +218,9 @@ public class MenuConvIO extends ChatConvIO {
             state = ConversationState.ACTIVE;
 
             final Location target = getBlockBelowPlayer(player);
-            stand = player.getWorld().spawn(target.add(0, -0.375, 0), ArmorStand.class);
+            // TODO version switch:
+            //  Remove this code when only 1.20.2+ is supported
+            stand = player.getWorld().spawn(target.add(0, PaperLib.isVersion(20, 2) ? -0.375 : -0.131_25, 0), ArmorStand.class);
 
             stand.setGravity(false);
             stand.setVisible(false);
