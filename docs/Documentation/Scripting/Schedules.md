@@ -63,14 +63,15 @@ Just specify the time of the day when the events should run, and they will run e
     ```YAML
     # This example works out of the box. Copy-paste to try out how it works.
     events:
-      bell_sound: 'notify io:sound sound:block.bell.use'
+      bell_sound: 'notifyall io:sound sound:block.bell.use'
       bell_ring: 'folder bell_sound,bell_sound,bell_sound,bell_sound period:0.5'
-      notify_goodNight: 'notify &6Good night, sleep well!'
+      notify_goodNight: 'notifyall &6Good night, sleep well!'
     schedules:
       sayGoodNight:
         type: realtime-daily
         time: '22:00'
         events: bell_ring,notify_goodNight
+        events:
     ```
 ---
 
@@ -118,9 +119,9 @@ The supported syntax is identical to the original unix crontab syntax.
     ```YAML
     # This example works out of the box. Copy-paste to try out how it works.
     events:
-      bell_sound: 'notify io:sound sound:block.bell.use'
+      bell_sound: 'notifyall io:sound sound:block.bell.use'
       bell_ring: 'folder bell_sound,bell_sound,bell_sound,bell_sound period:0.5'
-      notify_goodNight: 'notify &6Good night, sleep well!'
+      notify_goodNight: 'notifyall &6Good night, sleep well!'
     schedules:
       sayGoodNight:
         type: realtime-cron
