@@ -6,6 +6,28 @@ toc_depth: 2
 
 @snippet:events:cancel@
 
+## Burn: `burn`
+
+| Parameter  | Syntax            | Default Value               | Explanation                                                        |
+|------------|-------------------|-----------------------------|--------------------------------------------------------------------|
+| _duration_ | `duration:number` | :octicons-x-circle-16:      | The duration the player will burn (in seconds). Can be a variable. |
+
+```YAML title="Example"
+events:
+  burn: "burn duration:4"
+  punishing_fire: "burn duration:%point.punishment.amount%"
+```
+
+## Cancel the Conversation: `cancelconversation`
+
+  Cancels the active conversation of the player.
+  
+```YAML title="Example"
+  events:
+    cancel: "cancelconversation"
+```
+
+
 ## Chat player message `chat`
 
 This event will send the given message as the player. Therefore, it will look like as if the player did send the message. 
@@ -189,6 +211,31 @@ Adds a specified potion effect to player. First argument is potion type. You can
     ```YAML
     effect BLINDNESS 30 1 ambient icon
     ```
+    
+## Give experience: `experience`
+
+This event allows you to manipulate player's experience. First you specify a number as the amount, then the modification action.
+You can use `action:addExperience`, `action:addLevel`, `action:setExperienceBar` and `action:setLevel` as modification types.
+
+To use this correctly, you need to understand this:
+
+* A player has experience points.
+* Experience levels, shown are shown as a number in the experience bar. Every level requires more experience points than the previous.  
+* The experience bar itself shows the percentage of the experience points needed to reach the next level.
+
+While `action:addExperience` only adds experience points, `action:addLevel` adds a level and keeps the current percentage.
+`action:setExperienceBar` sets the progress of the bar. Decimal values between `0` and `1` represent the fill level.
+This changes the underlying experience points, it's **not** just a visual change.
+`action:setLevel` sets only the level, expect if you specify a decimal number, then the experience bar will be
+set to the specified percentage.
+
+```YAML title="Example"
+add15XP: "experience 15 action:addExperience"
+add4andAHalfLevel: "experience 4.5 action:addLevel"
+remove2Level: "experience -2 action:addLevel"
+setXPBar: "experience 0.5 action:setExperienceBar"
+resetLevel: "experience 0.01 action:setLevel"
+```
 
 ## Explosion: `explosion`
 
@@ -408,6 +455,23 @@ events:
 
 @snippet:events:notify@
 
+## Log message to console: `log`
+
+**persistent**, **static**  
+
+Prints a provided message to the server log. Any variables used in the message will be resolved. 
+Note that when used in static context (by schedules) replacing player dependent variables won't work as the event is player independent.
+
+| Parameter | Syntax           | Default Value | Explanation                                                                                                                               |
+|-----------|------------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| _level_   | `level:logLevel` | `INFO`        | Optionally the log level can be specified but only **before** the message. <br>There are 4 levels: `debug`, `info`, `warning` and `error` |
+
+```YAML title="Example"
+  events:
+    logPlayer: "log %player% completed first quest."
+    debug: "log level:DEBUG daily quests have been reset"
+```
+
 ## Objective: `objective`
 
 **persistent**, **static**
@@ -506,6 +570,63 @@ Don't use conditions here, it behaves strangely.
     ```YAML
     run ^tag add beton ^give emerald:5 ^entry add beton ^kill
     ```
+
+## Run events for all online players: `runForAll`
+
+**persistent**, **static**  
+
+Runs the specified event (or list of events) once for each player on the server.  
+
+The most common use case is to run an event for all online players from a [schedule](../Schedules.md).
+But you can also use it in conversations, objectives or other events.
+
+To run the events only for a selection of players, use the `where:` option to filter for players that meet specific conditions.
+
+| Parameter | Syntax             | Default Value          | Explanation                                                                                                                                                                                    |
+|-----------|--------------------|------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| _events_  | `events:events`    | :octicons-x-circle-16: | Required. The events to be run, separated by `,`.                                                                                                                                              |
+| _where_   | `where:conditions` | :octicons-x-circle-16: | A list of optional conditions (separated by `,`) that are checked for every player. <br>The events supplied in `events:` are only executed for the players that meet all the given conditions. |
+
+
+```YAML title="Example"
+events:
+    kickAll: "runForAll where:!isOp events:kickPlayer,restartQuest"
+```
+
+!!! warning
+    You can still append conditions to the `runForAll` event (e.g. `runForAll events:kickPlayer conditions:!isOp`).  
+    **This won't check the conditions for each player!**  
+    Instead it will check the conditions for the player that triggered the event or check them player independent if triggered player independent (e.g. by a schedule).
+
+## Run events player independent: `runIndependent`
+
+**persistent**, **static**  
+
+Runs the specified event (or list of events) player independent (as if it was run from a [schedule](../Schedules.md)).  
+
+This is usefully for events that behave differently when run player independent.
+
+??? abstract "Events that behave different if run player independent"
+    * [`tag delete`](#tag-tag) - deletes the tag for all players in the database (even if offline)
+    * [`objective remove`](#objective-objective) - removes the objective for all players in the database (even if offline)
+    * [`journal delete`](#journal-journal) - deletes the journal entry for all players in the database (even if offline)
+    * [`deletepoint`](#delete-point-deletepoint) - clears points of a given category for all players in the database (even if offline)
+
+| Parameter | Syntax          | Default Value          | Explanation                                       |
+|-----------|-----------------|------------------------|---------------------------------------------------|
+| _events_  | `events:events` | :octicons-x-circle-16: | Required. The events to be run, separated by `,`. |
+
+```YAML title="Example"
+events:
+    resetQuestForAll: "runIndependent events:removeObjective,clearTags,resetJournal"
+```
+
+!!! warning 
+    There are a lot of events and conditions that cannot be run (or checked) player independent.  
+    If you try to run such an event player independent (or check such a condition) this won't work, 
+    and you will get an error message in the console.
+    
+    For more information on player independent events [check this](../Schedules.md#player-independent-events).
 
 ## Scoreboard: `score`
 
@@ -676,6 +797,26 @@ storing variables. This event will do nothing if the player does not already hav
     variable variable_objectiveID name %player%
     variable other_var_obj desc ""
     ```
+    
+## :fontawesome-solid-wind: Move the player: `velocity`
+
+| Parameter      | Syntax                          | Default Value          | Explanation                                                                                                                                                                                                                                                                                                               |
+|----------------|---------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| _vector_       | `vector:(x;y;z)`                | :octicons-x-circle-16: | The values of the vector, which are decimal numbers, can be interpreted as absolute numbers like the coordinate or as relative directions. For more understanding the relative direction is similar to `^ ^ ^` in minecraft or in other words `(sideways;upwards;forwards)`. Can be a variable.                           |
+| _direction_    | `direction:directionType`       | `absolute`             | There are 3 types how the vector can get applied to the player:<br> `absolute` won't change the vector at all.<br> `relative` will redirect the vector to the view of the player.<br> `relative_y` is a mix between absolute and relative. It will still direct to the view but only horizontally, so y will be absolute. |
+| _modification_ | `modification:modificationType` | `set`                  | Possible modifications are `set` and `add`. The modification type determines how the vector should be merged with the player's velocity. The player's velocity is the external force applied on the player.                                                                                                               |
+
+@snippet:general:relativeAxisExplanation@
+
+```YAML title="Example"
+events:
+  jumppad: "velocity vector:(2;0.8;4)"
+  dash: "velocity vector:(0;0.1;1.3) direction:relative_y"
+  variable_dash: "velocity vector:%objective.customVariable.dashLength% direction:relative_y"
+  fly: "velocity vector:(0;0.1;2) direction:relative modification:add"
+  
+```
+
 
 ## :fontawesome-solid-cloud-sun-rain: Weather: `weather`
 
@@ -697,140 +838,3 @@ events:
   setStorm: "weather storm duration:%point.tribute.left:150%"
 ```
     
-## Give experience: `experience`
-
-This event allows you to manipulate player's experience. First you specify a number as the amount, then the modification action.
-You can use `action:addExperience`, `action:addLevel`, `action:setExperienceBar` and `action:setLevel` as modification types.
-
-To use this correctly, you need to understand this:
-
-* A player has experience points.
-* Experience levels, shown are shown as a number in the experience bar. Every level requires more experience points than the previous.  
-* The experience bar itself shows the percentage of the experience points needed to reach the next level.
-
-While `action:addExperience` only adds experience points, `action:addLevel` adds a level and keeps the current percentage.
-`action:setExperienceBar` sets the progress of the bar. Decimal values between `0` and `1` represent the fill level.
-This changes the underlying experience points, it's **not** just a visual change.
-`action:setLevel` sets only the level, expect if you specify a decimal number, then the experience bar will be
-set to the specified percentage.
-
-```YAML title="Example"
-add15XP: "experience 15 action:addExperience"
-add4andAHalfLevel: "experience 4.5 action:addLevel"
-remove2Level: "experience -2 action:addLevel"
-setXPBar: "experience 0.5 action:setExperienceBar"
-resetLevel: "experience 0.01 action:setLevel"
-```
-
-## Burn: `burn`
-
-| Parameter  | Syntax            | Default Value               | Explanation                                                        |
-|------------|-------------------|-----------------------------|--------------------------------------------------------------------|
-| _duration_ | `duration:number` | :octicons-x-circle-16:      | The duration the player will burn (in seconds). Can be a variable. |
-
-```YAML title="Example"
-events:
-  burn: "burn duration:4"
-  punishing_fire: "burn duration:%point.punishment.amount%"
-```
-    
-## :fontawesome-solid-wind: Move the player: `velocity`
-
-| Parameter      | Syntax                          | Default Value          | Explanation                                                                                                                                                                                                                                                                                                               |
-|----------------|---------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| _vector_       | `vector:(x;y;z)`                | :octicons-x-circle-16: | The values of the vector, which are decimal numbers, can be interpreted as absolute numbers like the coordinate or as relative directions. For more understanding the relative direction is similar to `^ ^ ^` in minecraft or in other words `(sideways;upwards;forwards)`. Can be a variable.                           |
-| _direction_    | `direction:directionType`       | `absolute`             | There are 3 types how the vector can get applied to the player:<br> `absolute` won't change the vector at all.<br> `relative` will redirect the vector to the view of the player.<br> `relative_y` is a mix between absolute and relative. It will still direct to the view but only horizontally, so y will be absolute. |
-| _modification_ | `modification:modificationType` | `set`                  | Possible modifications are `set` and `add`. The modification type determines how the vector should be merged with the player's velocity. The player's velocity is the external force applied on the player.                                                                                                               |
-
-@snippet:general:relativeAxisExplanation@
-
-```YAML title="Example"
-events:
-  jumppad: "velocity vector:(2;0.8;4)"
-  dash: "velocity vector:(0;0.1;1.3) direction:relative_y"
-  variable_dash: "velocity vector:%objective.customVariable.dashLength% direction:relative_y"
-  fly: "velocity vector:(0;0.1;2) direction:relative modification:add"
-  
-```
-
-## Cancels the Conversation: `cancelconversation`
-
-  Cancels the active conversation of the player.
-  
-```YAML title="Example"
-  events:
-    cancel: "cancelconversation"
-```
-## Log message to console: `log`
-
-**persistent**, **static**  
-
-Prints a provided message to the server log. Any variables used in the message will be resolved. 
-Note that when used in static context (by schedules) replacing player dependent variables won't work as the event is player independent.
-
-| Parameter | Syntax           | Default Value | Explanation                                                                                                                               |
-|-----------|------------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| _level_   | `level:logLevel` | `INFO`        | Optionally the log level can be specified but only **before** the message. <br>There are 4 levels: `debug`, `info`, `warning` and `error` |
-
-```YAML title="Example"
-  events:
-    logPlayer: "log %player% completed first quest."
-    debug: "log level:DEBUG daily quests have been reset"
-```
-
-## Run events for all online players: `runForAll`
-
-**persistent**, **static**  
-
-Runs the specified event (or list of events) once for each player on the server.  
-
-The most common use case is to run an event for all online players from a [schedule](../Schedules.md).
-But you can also use it in conversations, objectives or other events.
-
-To run the events only for a selection of players, use the `where:` option to filter for players that meet specific conditions.
-
-| Parameter | Syntax             | Default Value          | Explanation                                                                                                                                                                                    |
-|-----------|--------------------|------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| _events_  | `events:events`    | :octicons-x-circle-16: | Required. The events to be run, separated by `,`.                                                                                                                                              |
-| _where_   | `where:conditions` | :octicons-x-circle-16: | A list of optional conditions (separated by `,`) that are checked for every player. <br>The events supplied in `events:` are only executed for the players that meet all the given conditions. |
-
-
-```YAML title="Example"
-events:
-    kickAll: "runForAll where:!isOp events:kickPlayer,restartQuest"
-```
-
-!!! warning
-    You can still append conditions to the `runForAll` event (e.g. `runForAll events:kickPlayer conditions:!isOp`).  
-    **This won't check the conditions for each player!**  
-    Instead it will check the conditions for the player that triggered the event or check them player independent if triggered player independent (e.g. by a schedule).
-
-## Run events player independent: `runIndependent`
-
-**persistent**, **static**  
-
-Runs the specified event (or list of events) player independent (as if it was run from a [schedule](../Schedules.md)).  
-
-This is usefully for events that behave differently when run player independent.
-
-??? abstract "Events that behave different if run player independent"
-    * [`tag delete`](#tag-tag) - deletes the tag for all players in the database (even if offline)
-    * [`objective remove`](#objective-objective) - removes the objective for all players in the database (even if offline)
-    * [`journal delete`](#journal-journal) - deletes the journal entry for all players in the database (even if offline)
-    * [`deletepoint`](#delete-point-deletepoint) - clears points of a given category for all players in the database (even if offline)
-
-| Parameter | Syntax          | Default Value          | Explanation                                       |
-|-----------|-----------------|------------------------|---------------------------------------------------|
-| _events_  | `events:events` | :octicons-x-circle-16: | Required. The events to be run, separated by `,`. |
-
-```YAML title="Example"
-events:
-    resetQuestForAll: "runIndependent events:removeObjective,clearTags,resetJournal"
-```
-
-!!! warning 
-    There are a lot of events and conditions that cannot be run (or checked) player independent.  
-    If you try to run such an event player independent (or check such a condition) this won't work, 
-    and you will get an error message in the console.
-    
-    For more information on player independent events [check this](../Schedules.md#player-independent-events).
