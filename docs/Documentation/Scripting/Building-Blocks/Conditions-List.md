@@ -494,7 +494,7 @@ This condition checks if a variable value matches given [regular expression](../
 
 
 ```YAML
-variables:
+conditions:
   anyNumber: "variable %objective.var.price% -?\d+" #(1)!
   isPlayer: "variable %ph.parties_members_1% %player%" #(2)!
   denizenVariable: "variable ph.denizen_<server.match_player[SomeName].has_flag[flag_name]> true forceSync" #(3)!
