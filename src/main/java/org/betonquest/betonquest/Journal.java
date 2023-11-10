@@ -277,18 +277,17 @@ public class Journal {
             if (section == null) {
                 continue;
             }
-            // handle every entry
             for (final String key : section.getKeys(false)) {
                 final int number = section.getInt(key + ".priority", -1);
-                // only add entry if the priority is set and not doubled
                 if (number >= 0) {
-                    // check conditions and continue loop if not met
-                    final String rawConditions = section.getString(key + ".conditions");
-                    if (rawConditions != null && rawConditions.length() > 0) {
+                    final String rawConditions = GlobalVariableResolver.resolve(pack, section.getString(key + ".conditions"));
+                    if (rawConditions != null && !rawConditions.isEmpty()) {
                         try {
                             final List<ConditionID> pageConditions = new ArrayList<>();
                             for (final String conditionString : rawConditions.split(",")) {
-                                pageConditions.add(new ConditionID(pack, conditionString));
+                                if (!conditionString.isEmpty()) {
+                                    pageConditions.add(new ConditionID(pack, conditionString));
+                                }
                             }
 
                             if (!BetonQuest.conditions(profile, pageConditions)) {
