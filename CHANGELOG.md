@@ -241,6 +241,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `menu` conversation IO kicked players when conversation started in the air caused by flying detection
 - `menu` conversation IO did not stopped scrolling at the bottom and began to scroll from the top again
 - removed the hearts of the Armorstand in the Menu Conversation IO
+- journal entries now keep their leading whitespaces
 - Things that are also fixed in 1.12.X:
     - eating of items when entering the chest conversation io actually consumed the item 
     - legacy `§x` HEX color format not working in some contexts
