@@ -5,8 +5,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConversationID;
-import org.betonquest.betonquest.id.builder.ConversationIDBuilder;
 import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.bukkit.Server;
@@ -54,7 +54,12 @@ public class ConversationEventFactory implements EventFactory {
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        final ConversationID conversationID = new ConversationIDBuilder(instruction.getPackage(), instruction.next()).build();
+        final ConversationID conversationID;
+        try {
+            conversationID = new ConversationID(instruction.getPackage(), instruction.next());
+        } catch (final ObjectNotFoundException e) {
+            throw new InstructionParseException(e.getMessage(), e);
+        }
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
                         loggerFactory.create(ConversationEventFactory.class), new ConversationEvent(loggerFactory, conversationID), instruction.getPackage()

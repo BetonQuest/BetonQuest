@@ -1298,7 +1298,7 @@ public class BetonQuest extends JavaPlugin {
             final ConversationData convData = entry.getValue();
             try {
                 convData.checkExternalPointers();
-            } catch (final InstructionParseException e) {
+            } catch (final InstructionParseException | ObjectNotFoundException e) {
                 log.warn(convData.getPack(), "Error in '" + convData.getPack().getQuestPath() + "." + convData.getName() + "' conversation: " + e.getMessage(), e);
                 return true;
             }

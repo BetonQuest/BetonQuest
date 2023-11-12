@@ -17,6 +17,7 @@ import org.betonquest.betonquest.conversation.ConversationData.OptionType;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
@@ -570,6 +571,21 @@ public class Conversation implements Listener {
         return interceptor;
     }
 
+    @Nullable
+    private List<ResolvedOption> resolvePointers(final ResolvedOption option) throws ObjectNotFoundException, InstructionParseException {
+        if (!state.isActive()) {
+            return null;
+        }
+
+        final List<String> rawPointers = option.conversationData().getPointers(onlineProfile, option);
+        final List<ResolvedOption> pointers = new ArrayList<>();
+        for (final String pointer : rawPointers) {
+            final OptionType nextType = option.type() == PLAYER ? NPC : PLAYER;
+            pointers.add(new ConversationOptionResolver(plugin, pack, conv.identifier.getBaseID(), nextType, pointer).resolve());
+        }
+        return pointers;
+    }
+
     /**
      * Starts the conversation, should be called asynchronously.
      */
@@ -717,9 +733,9 @@ public class Conversation implements Listener {
                 final ResolvedOption resolvedOption;
                 try {
                     resolvedOption = new ConversationOptionResolver(plugin, pack, identifier.getBaseID(), NPC, startingOption).resolve();
-                } catch (final InstructionParseException e) {
-                    log.error(pack, "Error when resolving conversation option. This should never happen", e);
-                    throw new RuntimeException(e); //TODO: Better approach available?
+                } catch (final InstructionParseException | ObjectNotFoundException e) {
+                    log.reportException(pack, e);
+                    throw new IllegalStateException("Cannot continue starting conversation without options.", e);
                 }
                 resolvedOptions.add(resolvedOption);
             }
@@ -794,16 +810,9 @@ public class Conversation implements Listener {
             }
             lock.readLock().lock();
             try {
-                if (!state.isActive()) {
+                final List<ResolvedOption> pointers = resolvePointers(option);
+                if (pointers == null) {
                     return;
-                }
-
-                // don't forget to select the option prior to printing its text
-                final List<String> rawPointers = option.conversationData().getPointers(onlineProfile, option);
-                final List<ResolvedOption> pointers = new ArrayList<>();
-                for (final String pointer : rawPointers) {
-                    final OptionType nextType = option.type() == PLAYER ? NPC : PLAYER;
-                    pointers.add(new ConversationOptionResolver(plugin, pack, conv.identifier.getBaseID(), nextType, pointer).resolve());
                 }
                 selectOption(pointers, false);
                 printNPCText();
@@ -818,8 +827,9 @@ public class Conversation implements Listener {
                         Bukkit.getServer().getPluginManager().callEvent(event);
                     }
                 }.runTask(BetonQuest.getInstance());
-            } catch (final InstructionParseException e) {
-                throw new RuntimeException(e);
+            } catch (final InstructionParseException | ObjectNotFoundException e) {
+                log.reportException(pack, e);
+                throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable pointers.", e);
             } finally {
                 lock.readLock().unlock();
             }
@@ -848,18 +858,12 @@ public class Conversation implements Listener {
             }
             lock.readLock().lock();
             try {
-                if (!state.isActive()) {
-                    return;
-                }
-                final List<String> rawPointers = option.conversationData().getPointers(onlineProfile, option);
-                final List<ResolvedOption> pointers = new ArrayList<>();
-                for (final String pointer : rawPointers) {
-                    final OptionType nextType = option.type() == PLAYER ? NPC : PLAYER;
-                    pointers.add(new ConversationOptionResolver(plugin, pack, conv.identifier.getBaseID(), nextType, pointer).resolve());
-                }
+                final List<ResolvedOption> pointers = resolvePointers(option);
+                if (pointers == null) return;
                 printOptions(pointers);
-            } catch (final InstructionParseException e) {
-                throw new RuntimeException(e);
+            } catch (final InstructionParseException | ObjectNotFoundException e) {
+                log.reportException(pack, e);
+                throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable options.", e);
             } finally {
                 lock.readLock().unlock();
             }

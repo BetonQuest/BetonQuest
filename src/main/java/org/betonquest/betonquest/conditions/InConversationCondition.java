@@ -5,8 +5,8 @@ import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConversationID;
-import org.betonquest.betonquest.id.builder.ConversationIDBuilder;
 
 /**
  * Checks if the player is in a conversation or, if specified, in the specified conversation
@@ -29,7 +29,11 @@ public class InConversationCondition extends Condition {
         if (rawConversationID == null) {
             conversationID = null;
         } else {
-            conversationID = new ConversationIDBuilder(instruction.getPackage(), rawConversationID).build();
+            try {
+                conversationID = new ConversationID(instruction.getPackage(), rawConversationID);
+            } catch (final ObjectNotFoundException e) {
+                throw new InstructionParseException(e.getMessage(), e);
+            }
         }
     }
 

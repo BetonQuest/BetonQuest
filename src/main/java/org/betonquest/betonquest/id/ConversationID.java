@@ -19,7 +19,10 @@ public class ConversationID extends ID {
         super(pack, identifier);
         rawInstruction = super.pack.getConfig().getString("conversations." + super.identifier);
         if (rawInstruction == null) {
-            throw new ObjectNotFoundException("Conversation '" + getFullID() + "' is not defined");
+            throw new ObjectNotFoundException("Conversation '" + pack.getQuestPath() + "." + identifier + "' does not"
+                    + " exist. Make sure you have" + " no typos in the conversation's name. Alternatively the"
+                    + " conversation contains an error and could not be loaded after the reload. Check the output of"
+                    + " /bq reload to see errors regarding this conversation.");
         }
     }
 }

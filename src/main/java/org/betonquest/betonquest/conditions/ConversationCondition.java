@@ -5,9 +5,9 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConversationID;
-import org.betonquest.betonquest.id.builder.ConversationIDBuilder;
 
 /**
  * Checks if the conversation with player has at least one possible option
@@ -36,14 +36,18 @@ public class ConversationCondition extends Condition {
             throw new InstructionParseException("Missing conversation parameter.");
         }
 
-        conversationID = new ConversationIDBuilder(instruction.getPackage(), instruction.current()).build();
+        try {
+            conversationID = new ConversationID(instruction.getPackage(), instruction.current());
+        } catch (final ObjectNotFoundException e) {
+            throw new InstructionParseException(e.getMessage(), e);
+        }
     }
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         try {
             return BetonQuest.getInstance().getConversation(conversationID).isReady(profile);
-        } catch (final InstructionParseException e) {
+        } catch (final InstructionParseException | ObjectNotFoundException e) {
             throw new QuestRuntimeException("External pointers in the conversation this condition checks for could not"
                     + " be resoled during runtime.", e);
         }
