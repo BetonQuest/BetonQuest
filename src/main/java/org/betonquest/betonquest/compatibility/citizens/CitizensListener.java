@@ -24,6 +24,7 @@ import org.bukkit.event.Listener;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 /**
@@ -157,20 +158,21 @@ public class CitizensListener implements Listener {
     }
 
     private void loadNPCConversationAssignments() {
-        for (final Map.Entry<String, QuestPackage> entry : Config.getPackages().entrySet()) {
+        for (final Entry<String, QuestPackage> entry : Config.getPackages().entrySet()) {
             final QuestPackage pack = entry.getValue();
 
             final ConfigurationSection assignments = pack.getConfig().getConfigurationSection(NPC_SECTION);
 
             if (assignments != null) {
-                for (final String assignment : assignments.getKeys(false)) {
+                for (final Entry<String, Object> assignment : assignments.getValues(false).entrySet()) {
                     final ConversationID conversationID;
-                    final String conversationIDPath = assignments.getString(assignment);
+                    final String npcID = assignment.getKey();
+                    final String conversationIDPath = assignment.getValue().toString();
                     try {
                         conversationID = new ConversationID(pack, conversationIDPath);
-                        assignedConversations.put(assignment, conversationID);
+                        assignedConversations.put(npcID, conversationID);
                     } catch (final ObjectNotFoundException e) {
-                        log.warn("Conversation '" + conversationIDPath + "' assigned to NPC '" + assignment + "' in package '" + pack.getQuestPath() + "' does not exist.", e);
+                        log.warn("Conversation '" + conversationIDPath + "' assigned to NPC '" + npcID + "' in package '" + pack.getQuestPath() + "' does not exist.", e);
                     }
                 }
             }
