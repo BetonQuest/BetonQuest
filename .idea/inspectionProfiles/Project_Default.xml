@@ -1,7 +1,6 @@
 <component name="InspectionProjectProfileManager">
   <profile version="1.0">
     <option name="myName" value="Project Default" />
-    <inspection_tool class="DeprecatedLombok" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="JavaDoc" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="TOP_LEVEL_CLASS_OPTIONS">
         <value>
@@ -44,35 +43,5 @@
       <option name="REPORT_PARAMETERS" value="true" />
       <option name="REPORT_IMPLICIT_FINALS" value="false" />
     </inspection_tool>
-    <inspection_tool class="Lombok" enabled="false" level="WARNING" enabled_by_default="false" />
-    <inspection_tool class="LombokGetterMayBeUsed" enabled="false" level="WARNING" enabled_by_default="false" />
-    <inspection_tool class="MissingJavadoc" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="TOP_LEVEL_CLASS_SETTINGS">
-        <Options>
-          <option name="MINIMAL_VISIBILITY" value="package" />
-          <option name="REQUIRED_TAGS" value="@param" />
-        </Options>
-      </option>
-      <option name="INNER_CLASS_SETTINGS">
-        <Options>
-          <option name="MINIMAL_VISIBILITY" value="private" />
-        </Options>
-      </option>
-      <option name="METHOD_SETTINGS">
-        <Options>
-          <option name="MINIMAL_VISIBILITY" value="protected" />
-          <option name="REQUIRED_TAGS" value="@return@param@throws or @exception" />
-        </Options>
-      </option>
-      <option name="FIELD_SETTINGS">
-        <Options>
-          <option name="MINIMAL_VISIBILITY" value="private" />
-        </Options>
-      </option>
-    </inspection_tool>
-    <inspection_tool class="RedundantModifiersValLombok" enabled="false" level="WARNING" enabled_by_default="false" />
-    <inspection_tool class="RedundantModifiersValueLombok" enabled="false" level="WARNING" enabled_by_default="false" />
-    <inspection_tool class="RedundantSlf4jDefinition" enabled="false" level="WARNING" enabled_by_default="false" />
-    <inspection_tool class="SpringQualifierCopyableLombok" enabled="false" level="WARNING" enabled_by_default="false" />
   </profile>
 </component>
