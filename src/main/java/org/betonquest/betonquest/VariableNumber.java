@@ -94,7 +94,7 @@ public class VariableNumber {
         try {
             return Double.parseDouble(variable);
         } catch (final NumberFormatException e) {
-            throw new InstructionParseException("Not a number: " + variable, e);
+            throw new InstructionParseException("Not a number: '" + variable + "'.", e);
         }
     }
 
