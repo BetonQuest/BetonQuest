@@ -5,6 +5,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -49,7 +50,7 @@ public class SpawnMobEvent extends QuestEvent {
 
     private final String name;
 
-    private final String marked;
+    private final VariableString marked;
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public SpawnMobEvent(final Instruction instruction) throws InstructionParseException {
@@ -67,7 +68,10 @@ public class SpawnMobEvent extends QuestEvent {
         final String nameString = instruction.getOptional("name");
         name = nameString == null ? null : Utils.format(nameString, true, false).replace('_', ' ');
         final String markedString = instruction.getOptional("marked");
-        marked = markedString == null ? null : Utils.addPackage(instruction.getPackage(), markedString);
+        marked = markedString == null ? null : new VariableString(
+                instruction.getPackage(),
+                Utils.addPackage(instruction.getPackage(), markedString)
+        );
         ItemID item;
         item = instruction.getItem(instruction.getOptional("h"));
         helmet = item == null ? null : new QuestItem(item);
@@ -118,7 +122,7 @@ public class SpawnMobEvent extends QuestEvent {
                 livingEntity.setCustomName(name);
             }
             if (marked != null) {
-                entity.setMetadata("betonquest-marked", new FixedMetadataValue(BetonQuest.getInstance(), marked.replace("%player%", profile.getProfileUUID().toString())));
+                entity.setMetadata("betonquest-marked", new FixedMetadataValue(BetonQuest.getInstance(), marked.getString(profile)));
             }
         }
         return null;

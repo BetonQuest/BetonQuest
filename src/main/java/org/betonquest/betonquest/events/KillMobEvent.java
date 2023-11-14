@@ -3,6 +3,7 @@ package org.betonquest.betonquest.events;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -28,7 +29,7 @@ public class KillMobEvent extends QuestEvent {
 
     private final String name;
 
-    private final String marked;
+    private final VariableString marked;
 
     public KillMobEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -41,7 +42,10 @@ public class KillMobEvent extends QuestEvent {
         name = nameStaring == null ? null : Utils.format(nameStaring, true, false).replace('_', ' ');
 
         final String markedString = instruction.getOptional("marked");
-        marked = markedString == null ? null : Utils.addPackage(instruction.getPackage(), markedString);
+        marked = markedString == null ? null : new VariableString(
+                instruction.getPackage(),
+                Utils.addPackage(instruction.getPackage(), markedString)
+        );
     }
 
     @Override
@@ -70,7 +74,7 @@ public class KillMobEvent extends QuestEvent {
                     return entity
                             .getMetadata("betonquest-marked")
                             .stream()
-                            .anyMatch(metadataValue -> metadataValue.asString().equals(marked.replace("%player%", profile.getProfileUUID().toString())));
+                            .anyMatch(metadataValue -> metadataValue.asString().equals(marked.getString(profile)));
                 })
                 //remove them
                 .forEach(Entity::remove);
