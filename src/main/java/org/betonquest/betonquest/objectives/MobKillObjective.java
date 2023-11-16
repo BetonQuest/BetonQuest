@@ -49,7 +49,7 @@ public class MobKillObjective extends CountingObjective implements Listener {
         }
         tags = instruction.getOptionalArgument("tags")
                 .map(s -> s.split(","))
-                .orElse(new String[0]);
+                .orElse(null);
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
