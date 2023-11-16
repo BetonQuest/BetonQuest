@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.objectives;
 
+import de.tr7zw.changeme.nbtapi.NBTEntity;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
@@ -15,6 +16,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.metadata.MetadataValue;
 
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -30,6 +32,8 @@ public class MobKillObjective extends CountingObjective implements Listener {
 
     protected String marked;
 
+    protected String[] tags;
+
     public MobKillObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "mobs_to_kill");
         entities = instruction.getList(mob -> instruction.getEnum(mob, EntityType.class));
@@ -43,6 +47,9 @@ public class MobKillObjective extends CountingObjective implements Listener {
         if (marked != null) {
             marked = Utils.addPackage(instruction.getPackage(), marked);
         }
+        tags = instruction.getOptionalArgument("tags")
+                .map(s -> s.split(","))
+                .orElse(new String[0]);
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
@@ -65,6 +72,15 @@ public class MobKillObjective extends CountingObjective implements Listener {
                 if (!m.asString().equals(marked.replace("%player%", event.getProfile().getProfileUUID().toString()))) {
                     return;
                 }
+            }
+        }
+
+        if (tags != null) {
+            final NBTEntity mcnbt = new NBTEntity(event.getEntity()); //Only for vanilla tags!
+            final HashSet<String> entityTags = new HashSet<>(mcnbt.getStringList("Tags"));
+            final HashSet<String> userDefinedTags = new HashSet<>(List.of(tags));
+            if (!entityTags.containsAll(userDefinedTags)) {
+                return;
             }
         }
 
