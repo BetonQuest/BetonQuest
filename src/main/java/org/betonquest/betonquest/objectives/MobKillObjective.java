@@ -76,7 +76,7 @@ public class MobKillObjective extends CountingObjective implements Listener {
         }
 
         if (tags != null) {
-            final NBTEntity mcnbt = new NBTEntity(event.getEntity()); //Only for vanilla tags!
+            final NBTEntity mcnbt = new NBTEntity(event.getEntity());
             final HashSet<String> entityTags = new HashSet<>(mcnbt.getStringList("Tags"));
             final HashSet<String> userDefinedTags = new HashSet<>(List.of(tags));
             if (!entityTags.containsAll(userDefinedTags)) {
