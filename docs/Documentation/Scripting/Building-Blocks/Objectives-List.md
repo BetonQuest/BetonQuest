@@ -395,6 +395,7 @@ All entities work, make sure to use their [correct types](https://hub.spigotmc.o
 | _type_    | ENTITY_TYPE,ENTITY_TYPE | :octicons-x-circle-16: | A list of entities, e.g. `ZOMBIE,SKELETON`.                                                                              |
 | _amount_  | Positive Number         | :octicons-x-circle-16: | Amount of mobs to kill in total.                                                                                         |
 | _name_    | name:text               | Disabled               | Only count named mobs. Spaces must be replaced with `_`.                                                                 |
+| _tags_    | tags:text               | Disabled               | Only count mobs that match all of the listed NBT tags                                                                    |
 | _marked_  | marked:keyword          | Disabled               | Only count marked mobs. See the [spawn event](Events-List.md#spawn-mob-spawn) for more information. Supports `%player%`. |
 | _notify_  | notify:interval         | Disabled               | Display a message to the player each time they kill a mob. Optionally with the notification interval after colon.        |
 
@@ -403,6 +404,7 @@ objectives:
   monsterHunter: "mobkill ZOMBIE,SKELETON,SPIDER 10 notify" #(1)!
   specialMob: "mobkill PIG 1 marked:special" #(2)!
   bossZombie: "mobkill ZOMBIE 1 name:Uber_Zombie" #(3)!
+  infernalZombie: "mobkill ZOMBIE 1 tags:infernalZombie,bossZombie" #(4)!
 ```
    
 1. The player must kill a zombie,skeleton or a spider to progress this objective. In total, they must kill 10 entities. Additionally, there will be a notification after each kill.
