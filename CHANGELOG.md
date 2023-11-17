@@ -127,7 +127,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - Version checks for ProtocolLib and Shopkeepers support
     - `mmoitemtake` event and `mmoitem` condition - now also check the backpack
         - this will not work until the item rework / until the backpack contains NBT data
-- entity kill Objective now supports `tags` as a parameter, which will need to match tags (NBT) of killed entity
+    - entity kill Objective now supports `tags` as a parameter, which will need to match tags (NBT) of killed entity
 ### Changed
 - Java 17 is now required
 - changed package names from `pl.betoncraft.betonquest` to `org.betonquest.betonquest`
