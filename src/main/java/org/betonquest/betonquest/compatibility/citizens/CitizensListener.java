@@ -163,17 +163,18 @@ public class CitizensListener implements Listener {
 
             final ConfigurationSection assignments = pack.getConfig().getConfigurationSection(NPC_SECTION);
 
-            if (assignments != null) {
-                for (final Entry<String, Object> assignment : assignments.getValues(false).entrySet()) {
-                    final ConversationID conversationID;
-                    final String npcID = assignment.getKey();
-                    final String conversationIDPath = assignment.getValue().toString();
-                    try {
-                        conversationID = new ConversationID(pack, conversationIDPath);
-                        assignedConversations.put(npcID, conversationID);
-                    } catch (final ObjectNotFoundException e) {
-                        log.warn("Conversation '" + conversationIDPath + "' assigned to NPC '" + npcID + "' in package '" + pack.getQuestPath() + "' does not exist.", e);
-                    }
+            if (assignments == null) {
+                continue;
+            }
+            for (final Entry<String, Object> assignment : assignments.getValues(false).entrySet()) {
+                final ConversationID conversationID;
+                final String npcID = assignment.getKey();
+                final String conversationIDPath = assignment.getValue().toString();
+                try {
+                    conversationID = new ConversationID(pack, conversationIDPath);
+                    assignedConversations.put(npcID, conversationID);
+                } catch (final ObjectNotFoundException e) {
+                    log.warn("Conversation '" + conversationIDPath + "' assigned to NPC '" + npcID + "' in package '" + pack.getQuestPath() + "' does not exist.", e);
                 }
             }
         }
