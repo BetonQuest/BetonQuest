@@ -859,7 +859,9 @@ public class Conversation implements Listener {
             lock.readLock().lock();
             try {
                 final List<ResolvedOption> pointers = resolvePointers(option);
-                if (pointers == null) return;
+                if (pointers == null) {
+                    return;
+                }
                 printOptions(pointers);
             } catch (final InstructionParseException | ObjectNotFoundException e) {
                 log.reportException(pack, e);
