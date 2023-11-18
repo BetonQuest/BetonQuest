@@ -123,6 +123,9 @@ public class Conversation implements Listener {
      */
     private ConversationIO inOut;
 
+    /**
+     * The next option that will be printed. Set by {@link #selectOption(List, boolean)}.
+     */
     private ResolvedOption option;
 
     /**
@@ -711,7 +714,7 @@ public class Conversation implements Listener {
                 }
 
                 printNPCText();
-                final ConversationOptionEvent optionEvent = new ConversationOptionEvent(PlayerConverter.getID(player), conv, option.name(), conv.option.name());
+                final ConversationOptionEvent optionEvent = new ConversationOptionEvent(PlayerConverter.getID(player), conv, option, conv.option);
 
                 new BukkitRunnable() {
 
@@ -817,9 +820,7 @@ public class Conversation implements Listener {
                 selectOption(pointers, false);
                 printNPCText();
 
-                //TODO: Check usability of API, we should reflect the new possibility to jump between conversationData.
-                final String npcResponse = conv.option == null ? null : conv.option.name();
-                final ConversationOptionEvent event = new ConversationOptionEvent(PlayerConverter.getID(player), conv, option.name(), npcResponse);
+                final ConversationOptionEvent event = new ConversationOptionEvent(PlayerConverter.getID(player), conv, option, conv.option);
 
                 new BukkitRunnable() {
                     @Override

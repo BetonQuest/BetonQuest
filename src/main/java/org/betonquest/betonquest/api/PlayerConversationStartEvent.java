@@ -7,7 +7,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 
 /**
- * Fires when profile ends a conversation with an NPC
+ * Fires when profile starts a conversation with an NPC
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class PlayerConversationStartEvent extends ProfileEvent implements Cancellable {
