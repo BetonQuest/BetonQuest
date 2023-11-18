@@ -574,12 +574,8 @@ public class Conversation implements Listener {
         return interceptor;
     }
 
-    @Nullable
+    @NotNull
     private List<ResolvedOption> resolvePointers(final ResolvedOption option) throws ObjectNotFoundException, InstructionParseException {
-        if (!state.isActive()) {
-            return null;
-        }
-
         final List<String> rawPointers = option.conversationData().getPointers(onlineProfile, option);
         final List<ResolvedOption> pointers = new ArrayList<>();
         for (final String pointer : rawPointers) {
@@ -813,11 +809,11 @@ public class Conversation implements Listener {
             }
             lock.readLock().lock();
             try {
-                final List<ResolvedOption> pointers = resolvePointers(option);
-                if (pointers == null) {
+                if (!state.isActive()) {
                     return;
                 }
-                selectOption(pointers, false);
+
+                selectOption(resolvePointers(option), false);
                 printNPCText();
 
                 final ConversationOptionEvent event = new ConversationOptionEvent(PlayerConverter.getID(player), conv, option, conv.option);
@@ -859,11 +855,10 @@ public class Conversation implements Listener {
             }
             lock.readLock().lock();
             try {
-                final List<ResolvedOption> pointers = resolvePointers(option);
-                if (pointers == null) {
+                if (!state.isActive()) {
                     return;
                 }
-                printOptions(pointers);
+                printOptions(resolvePointers(option));
             } catch (final InstructionParseException | ObjectNotFoundException e) {
                 log.reportException(pack, e);
                 throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable options.", e);
