@@ -39,6 +39,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -571,10 +572,9 @@ public class Conversation implements Listener {
         return interceptor;
     }
 
-    @Nullable
     private List<ResolvedOption> resolvePointers(final ResolvedOption option) throws ObjectNotFoundException, InstructionParseException {
         if (!state.isActive()) {
-            return null;
+            return Collections.emptyList();
         }
 
         final List<String> rawPointers = option.conversationData().getPointers(onlineProfile, option);
@@ -811,7 +811,7 @@ public class Conversation implements Listener {
             lock.readLock().lock();
             try {
                 final List<ResolvedOption> pointers = resolvePointers(option);
-                if (pointers == null) {
+                if (pointers.isEmpty()) {
                     return;
                 }
                 selectOption(pointers, false);
@@ -859,7 +859,7 @@ public class Conversation implements Listener {
             lock.readLock().lock();
             try {
                 final List<ResolvedOption> pointers = resolvePointers(option);
-                if (pointers == null) {
+                if (pointers.isEmpty()) {
                     return;
                 }
                 printOptions(pointers);
