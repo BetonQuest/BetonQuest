@@ -91,7 +91,11 @@ public class Conversation implements Listener {
 
     private final String language;
 
-    private final Location location;
+    /**
+     * The location at which the conversation was started. Used for checking if the player has moved too far away.
+     * For an NPC based conversation this would be the location of the NPC.
+     */
+    private final Location center;
 
     private final ConversationID identifier;
 
@@ -139,10 +143,10 @@ public class Conversation implements Listener {
      * @param log            the logger that will be used for logging
      * @param onlineProfile  the {@link OnlineProfile} of the player
      * @param conversationID ID of the conversation
-     * @param location       location where the conversation has been started
+     * @param center         location where the conversation has been started
      */
-    public Conversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final ConversationID conversationID, final Location location) {
-        this(log, onlineProfile, conversationID, location, null);
+    public Conversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final ConversationID conversationID, final Location center) {
+        this(log, onlineProfile, conversationID, center, null);
     }
 
     /**
@@ -153,11 +157,11 @@ public class Conversation implements Listener {
      * @param log            the logger that will be used for logging
      * @param onlineProfile  the {@link OnlineProfile} of the player
      * @param conversationID ID of the conversation
-     * @param location       location where the conversation has been started
+     * @param center         location where the conversation has been started
      * @param startingOption name of the option which the conversation should start at
      */
     public Conversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final ConversationID conversationID,
-                        final Location location, @Nullable final String startingOption) {
+                        final Location center, @Nullable final String startingOption) {
         this.log = log;
         this.conv = this;
         this.plugin = BetonQuest.getInstance();
@@ -166,7 +170,7 @@ public class Conversation implements Listener {
         this.identifier = conversationID;
         this.pack = conversationID.getPackage();
         this.language = plugin.getPlayerData(onlineProfile).getLanguage();
-        this.location = location;
+        this.center = center;
         this.data = plugin.getConversation(conversationID);
         this.blacklist = plugin.getPluginConfig().getStringList("cmd_blacklist");
         this.messagesDelaying = "true".equalsIgnoreCase(plugin.getPluginConfig().getString("display_chat_after_conversation"));
@@ -508,7 +512,7 @@ public class Conversation implements Listener {
             inOut.end();
 
             // save the conversation to the database
-            final PlayerConversationState state = new PlayerConversationState(identifier, option.name(), location);
+            final PlayerConversationState state = new PlayerConversationState(identifier, option.name(), center);
             plugin.getSaver().add(new Record(UpdateType.UPDATE_CONVERSATION, state.toString(), onlineProfile.getProfileUUID().toString()));
 
             // End interceptor
@@ -535,8 +539,8 @@ public class Conversation implements Listener {
     /**
      * @return the location where the conversation has been started
      */
-    public Location getLocation() {
-        return location;
+    public Location getCenter() {
+        return center;
     }
 
     /**

@@ -60,10 +60,10 @@ public class ConversationResumer implements Listener {
         if (!event.getPlayer().equals(player)) {
             return;
         }
-        if (event.getTo().getWorld().equals(state.location().getWorld()) && event.getTo().distanceSquared(state.location()) < distance * distance) {
+        if (event.getTo().getWorld().equals(state.center().getWorld()) && event.getTo().distanceSquared(state.center()) < distance * distance) {
             HandlerList.unregisterAll(this);
             BetonQuest.getInstance().getSaver().add(new Record(UpdateType.UPDATE_CONVERSATION, "null", onlineProfile.getProfileUUID().toString()));
-            new Conversation(loggerFactory.create(Conversation.class), onlineProfile, state.currentConversation(), state.location(), state.currentOption());
+            new Conversation(loggerFactory.create(Conversation.class), onlineProfile, state.currentConversation(), state.center(), state.currentOption());
         }
     }
 

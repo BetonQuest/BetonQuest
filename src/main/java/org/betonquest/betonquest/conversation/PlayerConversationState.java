@@ -16,10 +16,10 @@ import java.util.Optional;
  *
  * @param currentConversation the conversation that was active when the player disconnected
  * @param currentOption       the option that was selected by the player when the conversation was stopped
- * @param location            the location of the player when the conversation was started
+ * @param center              the center of the conversation
  */
 
-public record PlayerConversationState(ConversationID currentConversation, String currentOption, Location location) {
+public record PlayerConversationState(ConversationID currentConversation, String currentOption, Location center) {
 
     /**
      * The required amount of arguments in the string representation of the conversation state.
@@ -68,6 +68,6 @@ public record PlayerConversationState(ConversationID currentConversation, String
      */
     @Override
     public String toString() {
-        return currentConversation + " " + currentOption + " " + "%s;%s;%s;%s".formatted(location.getX(), location.getY(), location.getZ(), location.getWorld().getName());
+        return currentConversation + " " + currentOption + " " + "%s;%s;%s;%s".formatted(center.getX(), center.getY(), center.getZ(), center.getWorld().getName());
     }
 }
