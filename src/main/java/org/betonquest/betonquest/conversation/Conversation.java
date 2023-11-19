@@ -97,6 +97,9 @@ public class Conversation implements Listener {
      */
     private final Location center;
 
+    /**
+     * The ID of this conversation.
+     */
     private final ConversationID identifier;
 
     private final List<String> blacklist;

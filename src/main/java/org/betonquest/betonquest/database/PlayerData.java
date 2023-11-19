@@ -60,6 +60,9 @@ public class PlayerData implements TagData {
 
     private List<ItemStack> backpack = new CopyOnWriteArrayList<>();
 
+    /**
+     * The state of a conversation the player is in.
+     */
     private PlayerConversationState activeConversation;
 
     private String profileLanguage;

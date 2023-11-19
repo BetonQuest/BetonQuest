@@ -22,6 +22,7 @@ public class InConversationCondition extends Condition {
      * Constructor of the InConversationCondition
      *
      * @param instruction the instruction
+     * @throws InstructionParseException if the instruction is invalid
      */
     public InConversationCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);

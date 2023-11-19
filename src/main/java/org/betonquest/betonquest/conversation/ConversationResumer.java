@@ -19,24 +19,36 @@ import org.bukkit.event.player.PlayerQuitEvent;
 /**
  * Resumes the conversation for a disconnected or "fleeing" player.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class ConversationResumer implements Listener {
     /**
      * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
+    /**
+     * The state to resume from.
+     */
     private final PlayerConversationState state;
 
+    /**
+     * The player to resume the conversation for.
+     */
     private final Player player;
 
+    /**
+     * The profile to resume the conversation for.
+     */
     private final OnlineProfile onlineProfile;
 
+    /**
+     * The maximum distance between the player and the NPC.
+     */
     private final double distance;
 
     /**
      * Creates a new ConversationResumer for a profile and a conversation state.
      *
+     * @param loggerFactory the logger factory to use for creating loggers
      * @param onlineProfile the profile to resume the conversation for
      * @param state         the state of a suspended conversation
      */

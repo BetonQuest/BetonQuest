@@ -118,6 +118,7 @@ public class ConversationData {
      * @param conversationID the {@link ConversationID} of the conversation holding this data
      * @param convSection    the configuration section of the conversation
      * @throws InstructionParseException when there is a syntax error in the defined conversation
+     * @throws ObjectNotFoundException   when conversation options cannot be resolved
      */
     @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
@@ -203,9 +204,9 @@ public class ConversationData {
      * <p>
      * This method should be called when all conversations are loaded.
      *
-     * @throws InstructionParseException when a pointer to an external conversation could not be resolved
+     * @throws ObjectNotFoundException when a pointer to an external conversation could not be resolved
      */
-    public void checkExternalPointers() throws InstructionParseException, ObjectNotFoundException {
+    public void checkExternalPointers() throws ObjectNotFoundException {
         for (final CrossConversationReference externalPointer : externalPointers) {
 
             final ResolvedOption resolvedPointer = externalPointer.resolver().resolve();
@@ -562,7 +563,8 @@ public class ConversationData {
      *
      * @param profile the {@link Profile} of the player
      * @return True, if the player can star the conversation.
-     * @throws InstructionParseException if an external pointer inside the conversation could not be resolved
+     * @throws InstructionParseException if an external pointer reference has an invalid format
+     * @throws ObjectNotFoundException   if an external pointer inside the conversation could not be resolved
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public boolean isReady(final Profile profile) throws InstructionParseException, ObjectNotFoundException {
