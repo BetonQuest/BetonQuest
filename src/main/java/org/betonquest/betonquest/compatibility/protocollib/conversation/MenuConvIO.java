@@ -27,11 +27,10 @@ import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.type.Slab;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -45,13 +44,18 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.BoundingBox;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Stream;
@@ -219,7 +223,7 @@ public class MenuConvIO extends ChatConvIO {
             }
             state = ConversationState.ACTIVE;
 
-            final Location target = getBlockBelowPlayer(player);
+            final Location target = getBlockBelowPlayer(player).add(0, -1, 0);
             // TODO version switch:
             //  Remove this code when only 1.20.2+ is supported
             stand = player.getWorld().spawn(target.add(0, PaperLib.isVersion(20, 2) ? -0.375 : -0.131_25, 0), ArmorStand.class);
@@ -253,25 +257,42 @@ public class MenuConvIO extends ChatConvIO {
     }
 
     private Location getBlockBelowPlayer(final Player player) {
-        final Location location = player.getLocation();
-        final Location target = location.clone();
-        Block block = target.getBlock();
-        if (player.isFlying() | block.isSolid()) {
-            return location.add(0, -1, 0);
+        if (player.isFlying()) {
+            return player.getLocation();
         }
-        while (!block.isSolid()) {
-            target.add(0, -1, 0);
-            block = target.getBlock();
-            if (target.getY() < target.getWorld().getMinHeight()) {
+
+        final BoundingBox playerBoundingBox = player.getBoundingBox();
+        playerBoundingBox.shift(0, -(playerBoundingBox.getMinY() % 1), 0);
+        while (playerBoundingBox.getMinY() >= player.getWorld().getMinHeight()) {
+            final Set<Block> blocks = getBlocksInBoundingBox(player.getWorld(), playerBoundingBox);
+
+            final List<BoundingBox> boundingBoxes = blocks.stream()
+                    .map(block -> block.getCollisionShape().getBoundingBoxes().stream()
+                            .map(box -> box.shift(block.getLocation())).toList())
+                    .flatMap(Collection::stream)
+                    .filter(box -> box.overlaps(playerBoundingBox))
+                    .toList();
+
+            if (!boundingBoxes.isEmpty()) {
+                final Optional<Double> maxY = boundingBoxes.stream()
+                        .map(BoundingBox::getMaxY)
+                        .max(Double::compareTo);
+                final Location location = player.getLocation();
+                location.setY(maxY.get());
                 return location;
             }
+            playerBoundingBox.shift(0, -1, 0);
         }
-        target.setY(block.getY());
-        final BlockData blockData = block.getBlockData();
-        if (blockData instanceof final Slab slab && slab.getType() == Slab.Type.BOTTOM) {
-            target.add(0, -0.5, 0);
-        }
-        return target;
+        return player.getLocation();
+    }
+
+    private Set<Block> getBlocksInBoundingBox(final World world, final BoundingBox playerBoundingBox) {
+        final Set<Block> blocks = new HashSet<>();
+        blocks.add(new Location(world, playerBoundingBox.getMinX(), playerBoundingBox.getMinY(), playerBoundingBox.getMinZ()).getBlock());
+        blocks.add(new Location(world, playerBoundingBox.getMinX(), playerBoundingBox.getMinY(), playerBoundingBox.getMaxZ()).getBlock());
+        blocks.add(new Location(world, playerBoundingBox.getMaxX(), playerBoundingBox.getMinY(), playerBoundingBox.getMinZ()).getBlock());
+        blocks.add(new Location(world, playerBoundingBox.getMaxX(), playerBoundingBox.getMinY(), playerBoundingBox.getMaxZ()).getBlock());
+        return blocks;
     }
 
     /**
