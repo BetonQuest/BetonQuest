@@ -254,11 +254,11 @@ public class MenuConvIO extends ChatConvIO {
 
     private Location getBlockBelowPlayer(final Player player) {
         final Location location = player.getLocation();
-        if (player.isFlying()) {
-            return location.add(0, -1, 0);
-        }
         final Location target = location.clone();
         Block block = target.getBlock();
+        if (player.isFlying() | block.isSolid()) {
+            return location.add(0, -1, 0);
+        }
         while (!block.isSolid()) {
             target.add(0, -1, 0);
             block = target.getBlock();
