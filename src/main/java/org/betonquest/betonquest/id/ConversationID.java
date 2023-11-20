@@ -20,7 +20,7 @@ public class ConversationID extends ID {
         rawInstruction = super.pack.getConfig().getString("conversations." + super.identifier);
         if (rawInstruction == null) {
             throw new ObjectNotFoundException("Conversation '" + pack.getQuestPath() + "." + identifier + "' does not"
-                    + " exist. Ensure it was loaded without error.");
+                    + " exist. Ensure it was loaded without errors.");
         }
     }
 }
