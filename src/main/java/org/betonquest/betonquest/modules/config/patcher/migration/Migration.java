@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.modules.config.patcher.migration;
 
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.DoNothingMigrator;
-import org.betonquest.betonquest.modules.config.patcher.migration.migrators.EventScheduling;
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.NpcHolograms;
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.PackageSection;
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.PackageStructure;
@@ -14,81 +13,61 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
 /**
- * Handels the migration process.
+ * Handles the migration process.
  */
-public enum Migration {
+public class Migration {
     /**
-     * The migration for the RPGMenu merge.
+     * The migrators to use.
      */
-    RPG_MENU_MERGE(new RPGMenuMerge()),
-    /**
-     * The migration for the package structure.
-     */
-    PACKAGE_STRUCTURE(new PackageStructure()),
-    /**
-     * The migration for the event scheduling.
-     */
-    EVENT_SCHEDULEING(new EventScheduling(getAllQuestPackagesConfigs())),
-    /**
-     * The migration for the package section.
-     */
-    PACKAGE_SELECTION(new PackageSection(getAllQuestPackagesConfigs())),
-    /**
-     * The migration for the npc_holograms.
-     */
-    NPC_HOLOGRAMS(new NpcHolograms(getAllQuestConfigs())),
-    /**
-     * The migration for the effect_lib.
-     */
-    EFFECT_LIB(new DoNothingMigrator()),
-    /**
-     * The migration for the MMO updates.
-     */
-    MMO_UPDATES(new DoNothingMigrator());
+    private final List<Migrator> migrators;
 
     /**
-     * The migrator.
+     * Creates a new migration process.
      */
-    private final Migrator migrator;
+    public Migration() {
+        this.migrators = new LinkedList<>();
 
-    Migration(final Migrator migrator) {
-        this.migrator = migrator;
+        final Map<File, YamlConfiguration> allCongigs = getAllQuestPackagesConfigs();
+        migrators.add(new RPGMenuMerge());
+        migrators.add(new PackageStructure());
+        migrators.add(new org.betonquest.betonquest.modules.config.patcher.migration.migrators.EventScheduling(allCongigs));
+        migrators.add(new PackageSection(allCongigs));
+        allCongigs.putAll(getAllQuestTemplatesConfigs());
+        migrators.add(new NpcHolograms(allCongigs));
+        migrators.add(new DoNothingMigrator()); // EFFECT_LIB
+        migrators.add(new DoNothingMigrator()); // MMO_UPDATES
     }
 
     /**
      * Migrates all configs.
      */
-    public static void migrate() {
+    public void migrate() {
         boolean needMigration = false;
-        for (final Migration migration : values()) {
-            if (needMigration || migration.migrator.needMigration()) {
+        for (final Migrator migrator : migrators) {
+            if (needMigration || migrator.needMigration()) {
                 needMigration = true;
-                migration.migrator.migrate();
+                migrator.migrate();
             }
         }
     }
 
-    private static Map<File, YamlConfiguration> getAllQuestConfigs() {
-        final Map<File, YamlConfiguration> configs = getAllQuestPackagesConfigs();
-        configs.putAll(getAllQuestTemplatesConfigs());
-        return configs;
-    }
-
-    private static Map<File, YamlConfiguration> getAllQuestPackagesConfigs() {
+    private Map<File, YamlConfiguration> getAllQuestPackagesConfigs() {
         final Path path = Paths.get("plugins/BetonQuest/QuestPackages");
         return getAllConfigs(path);
     }
-
-    private static Map<File, YamlConfiguration> getAllQuestTemplatesConfigs() {
+    
+    private Map<File, YamlConfiguration> getAllQuestTemplatesConfigs() {
         final Path path = Paths.get("plugins/BetonQuest/QuestTemplates");
         return getAllConfigs(path);
     }
 
-    private static Map<File, YamlConfiguration> getAllConfigs(final Path path) {
+    private Map<File, YamlConfiguration> getAllConfigs(final Path path) {
         try (Stream<Path> findings = Files.find(path, Integer.MAX_VALUE, (p, a) -> p.getFileName().toString().endsWith(".yml"))) {
             final Map<File, YamlConfiguration> configs = new LinkedHashMap<>();
             findings.map(Path::toFile)
