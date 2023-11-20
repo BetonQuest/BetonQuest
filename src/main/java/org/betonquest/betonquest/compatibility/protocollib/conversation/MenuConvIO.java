@@ -258,7 +258,7 @@ public class MenuConvIO extends ChatConvIO {
 
     /**
      * Gets the location on the top of the block below the player.
-     * This is used to spawn the armor stand not in the air.
+     * This prevents the conversation's steering armor stand from spawning in the air.
      * <p>
      * This is done by getting the bounding box of the player.
      * Then all bounding boxes of the blocks in the bounding box of the player are checked for collision.
