@@ -256,6 +256,18 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
+    /**
+     * Gets the location on the top of the block below the player.
+     * This is used to spawn the armor stand not in the air.
+     * <p>
+     * This is done by getting the bounding box of the player.
+     * Then all bounding boxes of the blocks in the bounding box of the player are checked for collision.
+     * The highest collision is then returned.
+     * If no collision is found the process is repeated with the player bounding box shifted down by 1.
+     *
+     * @param player the player to get the location for
+     * @return the location on the top of the block below the player
+     */
     private Location getBlockBelowPlayer(final Player player) {
         if (player.isFlying()) {
             return player.getLocation();
@@ -286,6 +298,14 @@ public class MenuConvIO extends ChatConvIO {
         return player.getLocation();
     }
 
+    /**
+     * Get the blocks that are in the bounding box of the player.
+     * This could be 1, 2 or 4 blocks depending on the player's position.
+     *
+     * @param world             the world the player is in
+     * @param playerBoundingBox the bounding box of the player
+     * @return the blocks in the bounding box
+     */
     private Set<Block> getBlocksInBoundingBox(final World world, final BoundingBox playerBoundingBox) {
         final Set<Block> blocks = new HashSet<>();
         blocks.add(new Location(world, playerBoundingBox.getMinX(), playerBoundingBox.getMinY(), playerBoundingBox.getMinZ()).getBlock());
