@@ -299,7 +299,7 @@ public class MenuConvIO extends ChatConvIO {
     }
 
     /**
-     * Get the blocks that are in the bounding box of the player.
+     * Get the blocks that are at the bottom corners of the player's bounding box.
      * This could be 1, 2 or 4 blocks depending on the player's position.
      *
      * @param world             the world the player is in
