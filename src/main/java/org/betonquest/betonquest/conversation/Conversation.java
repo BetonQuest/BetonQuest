@@ -16,8 +16,11 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.ConversationData.OptionType;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
+import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
+import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -31,10 +34,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,17 +52,33 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import static org.betonquest.betonquest.conversation.ConversationData.OptionType.NPC;
+import static org.betonquest.betonquest.conversation.ConversationData.OptionType.PLAYER;
+
 /**
- * Represents a conversation between player and NPC
+ * Manages an active conversation between a player and a NPC.
+ * Handles the conversation flow based on {@link ConversationData}.
  */
-@SuppressWarnings({"PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.CommentRequired"})
+@SuppressWarnings({"PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired",
+        "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.AvoidDuplicateLiterals"})
 public class Conversation implements Listener {
-    private static final ConcurrentHashMap<Profile, Conversation> LIST = new ConcurrentHashMap<>();
+
+    /**
+     * The map of all active conversations.
+     */
+    private static final ConcurrentHashMap<Profile, Conversation> ACTIVE_CONVERSATIONS = new ConcurrentHashMap<>();
+
+    /**
+     * The {@link BetonQuest} instance.
+     */
+    private final BetonQuest plugin;
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
+
+    private final QuestPackage pack;
 
     /**
      * Thread safety
@@ -69,33 +89,54 @@ public class Conversation implements Listener {
 
     private final Player player;
 
-    private final QuestPackage pack;
-
     private final String language;
 
-    private final Location location;
+    /**
+     * The location at which the conversation was started. Used for checking if the player has moved too far away.
+     * For an NPC based conversation this would be the location of the NPC.
+     */
+    private final Location center;
 
-    private final String convID;
+    /**
+     * The ID of this conversation.
+     */
+    private final ConversationID identifier;
 
     private final List<String> blacklist;
 
     private final Conversation conv;
 
-    private final BetonQuest plugin;
-
-    private final Map<Integer, String> current = new HashMap<>();
+    /**
+     * A map of options that the player can currently choose.
+     * The key is the number of the option, the value is the option itself.
+     * <br>
+     * The conversationIO will pass an integer to the conversation, which will be used to get the option from this map.
+     */
+    private final Map<Integer, ResolvedOption> availablePlayerOptions = new HashMap<>();
 
     private final boolean messagesDelaying;
 
     @SuppressWarnings("PMD.AvoidUsingVolatile")
     protected volatile ConversationState state = ConversationState.CREATED;
 
+    /**
+     * The conversation data that is currently being used.
+     */
     private ConversationData data;
 
+    /**
+     * The {@link ConversationIO} used to display this conversation.
+     */
     private ConversationIO inOut;
 
-    private String option;
+    /**
+     * The next option that will be printed. Set by {@link #selectOption(List, boolean)}.
+     */
+    private ResolvedOption option;
 
+    /**
+     * The {@link Interceptor} used to hide unrelated messages while the player is in this conversation.
+     */
     private Interceptor interceptor;
 
     /**
@@ -105,10 +146,10 @@ public class Conversation implements Listener {
      * @param log            the logger that will be used for logging
      * @param onlineProfile  the {@link OnlineProfile} of the player
      * @param conversationID ID of the conversation
-     * @param location       location where the conversation has been started
+     * @param center         location where the conversation has been started
      */
-    public Conversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final String conversationID, final Location location) {
-        this(log, onlineProfile, conversationID, location, null);
+    public Conversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final ConversationID conversationID, final Location center) {
+        this(log, onlineProfile, conversationID, center, null);
     }
 
     /**
@@ -119,62 +160,52 @@ public class Conversation implements Listener {
      * @param log            the logger that will be used for logging
      * @param onlineProfile  the {@link OnlineProfile} of the player
      * @param conversationID ID of the conversation
-     * @param location       location where the conversation has been started
-     * @param option         ID of the option from where to start
+     * @param center         location where the conversation has been started
+     * @param startingOption name of the option which the conversation should start at
      */
-    public Conversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final String conversationID,
-                        final Location location, final String option) {
+    public Conversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final ConversationID conversationID,
+                        final Location center, @Nullable final String startingOption) {
         this.log = log;
         this.conv = this;
         this.plugin = BetonQuest.getInstance();
         this.onlineProfile = onlineProfile;
         this.player = onlineProfile.getPlayer();
-        this.pack = Config.getPackages().get(conversationID.substring(0, conversationID.indexOf('.')));
+        this.identifier = conversationID;
+        this.pack = conversationID.getPackage();
         this.language = plugin.getPlayerData(onlineProfile).getLanguage();
-        this.location = location;
-        this.convID = conversationID;
-        this.data = plugin.getConversation(convID);
+        this.center = center;
+        this.data = plugin.getConversation(conversationID);
         this.blacklist = plugin.getPluginConfig().getStringList("cmd_blacklist");
         this.messagesDelaying = "true".equalsIgnoreCase(plugin.getPluginConfig().getString("display_chat_after_conversation"));
 
-        // check if data is present
-        if (data == null) {
-            this.log.warn(pack, "Conversation '" + conversationID
-                    + "' does not exist. Check for errors on /bq reload! It probably couldn't be loaded due to some other error.");
+        if (ACTIVE_CONVERSATIONS.containsKey(onlineProfile)) {
+            log.debug(pack, onlineProfile + " is in conversation right now, returning.");
             return;
         }
 
-        // if the player has active conversation, terminate this one
-        if (LIST.containsKey(onlineProfile)) {
-            this.log.debug(pack, onlineProfile + " is in conversation right now, returning.");
-            return;
-        }
+        ACTIVE_CONVERSATIONS.put(onlineProfile, conv);
 
-        // add the player to the list of active conversations
-        LIST.put(onlineProfile, conv);
-
-        String inputOption = option;
-        final String[] options;
-        if (inputOption == null) {
-            options = null;
+        if (startingOption == null) {
+            log.debug(pack, "Starting conversation '" + conversationID.getFullID() + "' for '" + onlineProfile + "'.");
+            new Starter().runTaskAsynchronously(BetonQuest.getInstance());
         } else {
-            if (!inputOption.contains(".")) {
-                inputOption = conversationID.substring(conversationID.indexOf('.') + 1) + "." + inputOption;
+            String firstOption = startingOption;
+            if (!startingOption.contains(".")) {
+                firstOption = conversationID.getBaseID() + "." + startingOption;
             }
-            options = new String[]{inputOption};
+            log.debug(pack, "Starting conversation '" + conversationID.getFullID() + "' for '" + onlineProfile + "'.");
+            new Starter(firstOption).runTaskAsynchronously(BetonQuest.getInstance());
         }
-        this.log.debug(pack, "Starting conversation '" + convID + "' for '" + onlineProfile + "'.");
-        new Starter(options).runTaskAsynchronously(BetonQuest.getInstance());
     }
 
     /**
-     * Checks if the player is in a conversation
+     * Checks if the player is in a conversation.
      *
      * @param profile the {@link Profile} of the player
-     * @return if the player is on the list of active conversations
+     * @return if the player is the list of active conversations
      */
     public static boolean containsPlayer(final Profile profile) {
-        return LIST.containsKey(profile);
+        return ACTIVE_CONVERSATIONS.containsKey(profile);
     }
 
     /**
@@ -184,58 +215,59 @@ public class Conversation implements Listener {
      * @return player's active conversation or null if there is no conversation
      */
     public static Conversation getConversation(final Profile profile) {
-        return LIST.get(profile);
+        return ACTIVE_CONVERSATIONS.get(profile);
     }
 
     /**
-     * Chooses the first available option.
+     * Sets the data and option of this conversation to the one of the first option that the player meets the conditions for.
      *
      * @param options list of option pointers separated by commas
      * @param force   setting it to true will force the first option, even if
      *                conditions are not met
      */
-    private void selectOption(final String[] options, final boolean force) {
-        final String[] inputOptions = force ? new String[]{options[0]} : options;
+    private void selectOption(final List<ResolvedOption> options, final boolean force) {
+        final List<ResolvedOption> inputOptions = force ? List.of(options.get(0)) : options;
 
-        // get npc's text
-        option = null;
-        for (final String option : inputOptions) {
-            final String convName;
-            final String optionName;
-            if (option.contains(".")) {
-                final String[] parts = option.split("\\.");
-                convName = parts[0];
-                optionName = parts[1];
+        this.option = null;
+
+        for (final ResolvedOption option : inputOptions) {
+            // If we refer to another conversation starting options the name is null
+            if (option.name() == null) {
+                for (final String startingOptionName : option.conversationData().getStartingOptions()) {
+                    if (force || BetonQuest.conditions(onlineProfile, option.conversationData().getConditionIDs(startingOptionName, NPC))) {
+                        this.data = option.conversationData();
+                        this.option = new ResolvedOption(option.conversationData(), NPC, startingOptionName);
+                        break;
+                    }
+                }
             } else {
-                convName = data.getName();
-                optionName = option;
-            }
-            final ConversationData currentData = plugin.getConversation(pack.getQuestPath() + "." + convName);
-            if (force || BetonQuest.conditions(this.onlineProfile, currentData.getConditionIDs(optionName, OptionType.NPC))) {
-                this.option = optionName;
-                data = currentData;
-                break;
+                if (force || BetonQuest.conditions(onlineProfile, option.conversationData().getConditionIDs(option.name(), NPC))) {
+                    this.data = option.conversationData();
+                    this.option = option;
+                    break;
+                }
             }
         }
     }
 
     /**
      * Sends to the player the text said by NPC. It uses the selected option and
-     * displays it. Note: this method now requires a prior call to
+     * displays it.
+     * <br>
+     * Note: this method now requires a prior call to
      * selectOption()
      */
     private void printNPCText() {
-
         // if there are no possible options, end conversation
         if (option == null) {
             new ConversationEnder().runTask(BetonQuest.getInstance());
             return;
         }
 
-        String text = data.getText(onlineProfile, language, option, OptionType.NPC);
+        String text = data.getText(onlineProfile, language, option);
         // resolve variables
         for (final String variable : BetonQuest.resolveVariables(text)) {
-            text = text.replace(variable, plugin.getVariableValue(data.getPackName(), variable, onlineProfile));
+            text = text.replace(variable, plugin.getVariableValue(data.getPack().getQuestPath(), variable, onlineProfile));
         }
         text = ChatColor.translateAlternateColorCodes('&', text);
 
@@ -254,23 +286,24 @@ public class Conversation implements Listener {
 
         inOut.clear();
 
-        new PlayerEventRunner(current.get(number)).runTask(BetonQuest.getInstance());
+        new PlayerEventRunner(availablePlayerOptions.get(number)).runTask(BetonQuest.getInstance());
 
         // clear hashmap
-        current.clear();
+        availablePlayerOptions.clear();
     }
 
     /**
-     * Prints answers the player can choose.
+     * Selects all options the player can choose from based on the conditions.
+     * Then passes these onto the conversationIO for printing.
      *
      * @param options list of pointers to player options separated by commas
      */
     @SuppressWarnings("PMD.CognitiveComplexity")
-    private void printOptions(final String... options) {
-        final List<Pair<String, List<CompletableFuture<Boolean>>>> futuresOptions = new ArrayList<>();
-        for (final String option : options) {
+    private void printOptions(final List<ResolvedOption> options) {
+        final List<Pair<ResolvedOption, List<CompletableFuture<Boolean>>>> futuresOptions = new ArrayList<>();
+        for (final ResolvedOption option : options) {
             final List<CompletableFuture<Boolean>> conditions = new ArrayList<>();
-            for (final ConditionID conditionID : data.getConditionIDs(option, OptionType.PLAYER)) {
+            for (final ConditionID conditionID : option.conversationData().getConditionIDs(option.name(), option.type())) {
                 final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
                         () -> BetonQuest.condition(onlineProfile, conditionID));
                 conditions.add(future);
@@ -280,7 +313,7 @@ public class Conversation implements Listener {
 
         int optionsCount = 0;
         option:
-        for (final Pair<String, List<CompletableFuture<Boolean>>> future : futuresOptions) {
+        for (final Pair<ResolvedOption, List<CompletableFuture<Boolean>>> future : futuresOptions) {
             try {
                 for (final CompletableFuture<Boolean> completableFuture : future.getValue()) {
                     if (!completableFuture.get(1, TimeUnit.SECONDS)) {
@@ -291,14 +324,14 @@ public class Conversation implements Listener {
                 log.reportException(pack, e);
                 continue;
             }
-            final String option = future.getKey();
+            final ResolvedOption option = future.getKey();
             optionsCount++;
-            // print reply and put it to the hashmap
-            current.put(optionsCount, option);
+            availablePlayerOptions.put(optionsCount, option);
+
             // replace variables with their values
-            String text = data.getText(onlineProfile, language, option, OptionType.PLAYER);
+            String text = data.getText(onlineProfile, language, option);
             for (final String variable : BetonQuest.resolveVariables(text)) {
-                text = text.replace(variable, plugin.getVariableValue(data.getPackName(), variable, onlineProfile));
+                text = text.replace(variable, plugin.getVariableValue(data.getPack().getQuestPath(), variable, onlineProfile));
             }
             text = ChatColor.translateAlternateColorCodes('&', text);
 
@@ -311,7 +344,7 @@ public class Conversation implements Listener {
             }
         }.runTask(BetonQuest.getInstance());
         // end conversations if there are no possible options
-        if (current.isEmpty()) {
+        if (availablePlayerOptions.isEmpty()) {
             new ConversationEnder().runTask(BetonQuest.getInstance());
         }
     }
@@ -338,7 +371,7 @@ public class Conversation implements Listener {
             }
             state = ConversationState.ENDED;
 
-            log.debug(pack, "Ending conversation '" + convID + "' for '" + onlineProfile + "'.");
+            log.debug(pack, "Ending conversation '" + conv.getID().getFullID() + "' for '" + onlineProfile + "'.");
             inOut.end();
             // fire final events
             for (final EventID event : data.getFinalEvents()) {
@@ -363,7 +396,7 @@ public class Conversation implements Listener {
             }
 
             // delete conversation
-            LIST.remove(onlineProfile);
+            ACTIVE_CONVERSATIONS.remove(onlineProfile);
             HandlerList.unregisterAll(this);
 
             new BukkitRunnable() {
@@ -475,17 +508,15 @@ public class Conversation implements Listener {
             if (inOut == null) {
                 log.warn(pack, "Conversation IO is not loaded, conversation will end for player "
                         + onlineProfile.getProfileName());
-                LIST.remove(onlineProfile);
+                ACTIVE_CONVERSATIONS.remove(onlineProfile);
                 HandlerList.unregisterAll(this);
                 return;
             }
             inOut.end();
 
             // save the conversation to the database
-            final String loc = location.getX() + ";" + location.getY() + ";" + location.getZ() + ";"
-                    + location.getWorld().getName();
-            plugin.getSaver().add(new Record(UpdateType.UPDATE_CONVERSATION,
-                    convID + " " + option + " " + loc, onlineProfile.getProfileUUID().toString()));
+            final PlayerConversationState state = new PlayerConversationState(identifier, option.name(), center);
+            plugin.getSaver().add(new Record(UpdateType.UPDATE_CONVERSATION, state.toString(), onlineProfile.getProfileUUID().toString()));
 
             // End interceptor
             if (interceptor != null) {
@@ -493,7 +524,7 @@ public class Conversation implements Listener {
             }
 
             // delete conversation
-            LIST.remove(onlineProfile);
+            ACTIVE_CONVERSATIONS.remove(onlineProfile);
             HandlerList.unregisterAll(this);
 
             new BukkitRunnable() {
@@ -511,8 +542,8 @@ public class Conversation implements Listener {
     /**
      * @return the location where the conversation has been started
      */
-    public Location getLocation() {
-        return location;
+    public Location getCenter() {
+        return center;
     }
 
     /**
@@ -539,8 +570,8 @@ public class Conversation implements Listener {
     /**
      * @return the ID of the conversation
      */
-    public String getID() {
-        return convID;
+    public ConversationID getID() {
+        return identifier;
     }
 
     /**
@@ -550,17 +581,43 @@ public class Conversation implements Listener {
         return interceptor;
     }
 
+    @NotNull
+    private List<ResolvedOption> resolvePointers(final ResolvedOption option) throws ObjectNotFoundException, InstructionParseException {
+        final List<String> rawPointers = option.conversationData().getPointers(onlineProfile, option);
+        final List<ResolvedOption> pointers = new ArrayList<>();
+        for (final String pointer : rawPointers) {
+            final OptionType nextType = option.type() == PLAYER ? NPC : PLAYER;
+            pointers.add(new ConversationOptionResolver(plugin, pack, conv.identifier.getBaseID(), nextType, pointer).resolve());
+        }
+        return pointers;
+    }
+
     /**
      * Starts the conversation, should be called asynchronously.
      */
     @SuppressWarnings({"PMD.NPathComplexity", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     private class Starter extends BukkitRunnable {
 
-        private String[] options;
+        /**
+         * A list of options the conversation will start from.
+         */
+        private List<String> startingOptions = new ArrayList<>();
 
-        public Starter(final String... options) {
+        /**
+         * Starts a conversation at the given option.
+         *
+         * @param startingOption the name of the option to start at
+         */
+        public Starter(@NotNull final String startingOption) {
             super();
-            this.options = options == null ? null : Arrays.copyOf(options, options.length);
+            startingOptions.add(startingOption);
+        }
+
+        /**
+         * Starts a conversation with the first available starting option.
+         */
+        public Starter() {
+            super();
         }
 
         @Override
@@ -586,17 +643,17 @@ public class Conversation implements Listener {
                     eventDispatcherTask.get(1, TimeUnit.SECONDS);
                 } catch (InterruptedException | TimeoutException exception) {
                     log.warn(pack, "Calling PlayerConversationStartEvent took too long.", exception);
-                } catch (ExecutionException exception) {
+                } catch (final ExecutionException exception) {
                     log.error(pack, "Error while calling PlayerConversationStartEvent.", exception);
-                    LIST.remove(onlineProfile);
+                    ACTIVE_CONVERSATIONS.remove(onlineProfile);
                     return;
                 }
 
                 // stop the conversation if it's canceled
                 if (event.isCancelled()) {
-                    log.debug(pack, "Conversation '" + convID + "' for '" + player.getPlayerProfile() + "' has been "
+                    log.debug(pack, "Conversation '" + conv.getID().getFullID() + "' for '" + player.getPlayerProfile() + "' has been "
                             + "canceled because it's PlayerConversationStartEvent has been canceled.");
-                    LIST.remove(onlineProfile);
+                    ACTIVE_CONVERSATIONS.remove(onlineProfile);
                     return;
                 }
 
@@ -630,12 +687,12 @@ public class Conversation implements Listener {
                     }
                 }
 
-                if (options == null) {
-                    options = data.getStartingOptions();
-
+                if (startingOptions.isEmpty()) {
+                    startingOptions = data.getStartingOptions();
+                    final List<ResolvedOption> resolvedOptions = resolveOptions(startingOptions);
                     // first select the option before sending message, so it
                     // knows which is used
-                    selectOption(options, false);
+                    selectOption(resolvedOptions, false);
 
                     // check whether to add a prefix
                     final String prefix = data.getPrefix(language, option);
@@ -648,19 +705,17 @@ public class Conversation implements Listener {
 
                     //only display status messages if conversationIO allows it
                     if (conv.inOut.printMessages()) {
-                        // print message about starting a conversation only if it
-                        // is started, not resumed
+                        // print message about starting a conversation only if it is started, not resumed
                         conv.inOut.print(Config.parseMessage(pack.getQuestPath(), onlineProfile, "conversation_start", new String[]{data.getQuester(language)},
                                 prefixName, prefixVariables));
                     }
-                    //play the conversation start sound
+
                     Config.playSound(onlineProfile, "start");
                 } else {
-                    // don't forget to select the option prior to printing its text
-                    selectOption(options, true);
+                    final List<ResolvedOption> resolvedOptions = resolveOptions(startingOptions);
+                    selectOption(resolvedOptions, true);
                 }
 
-                // print NPC's text
                 printNPCText();
                 final ConversationOptionEvent optionEvent = new ConversationOptionEvent(PlayerConverter.getID(player), conv, option, conv.option);
 
@@ -675,6 +730,23 @@ public class Conversation implements Listener {
                 lock.writeLock().unlock();
             }
         }
+
+        @NotNull
+        @SuppressWarnings({"PMD.AvoidThrowingRawExceptionTypes"})
+        private List<ResolvedOption> resolveOptions(final List<String> startingOptions) {
+            final List<ResolvedOption> resolvedOptions = new ArrayList<>();
+            for (final String startingOption : startingOptions) {
+                final ResolvedOption resolvedOption;
+                try {
+                    resolvedOption = new ConversationOptionResolver(plugin, pack, identifier.getBaseID(), NPC, startingOption).resolve();
+                } catch (final InstructionParseException | ObjectNotFoundException e) {
+                    log.reportException(pack, e);
+                    throw new IllegalStateException("Cannot continue starting conversation without options.", e);
+                }
+                resolvedOptions.add(resolvedOption);
+            }
+            return resolvedOptions;
+        }
     }
 
     /**
@@ -682,17 +754,19 @@ public class Conversation implements Listener {
      */
     private class NPCEventRunner extends BukkitRunnable {
 
-        private final String option;
+        /**
+         * The option that has been selected and should be printed.
+         */
+        private final ResolvedOption option;
 
-        public NPCEventRunner(final String option) {
+        public NPCEventRunner(final ResolvedOption option) {
             super();
             this.option = option;
         }
 
         @Override
         public void run() {
-            // fire events
-            for (final EventID event : data.getEventIDs(onlineProfile, option, OptionType.NPC)) {
+            for (final EventID event : data.getEventIDs(onlineProfile, option, NPC)) {
                 BetonQuest.event(onlineProfile, event);
             }
             new OptionPrinter(option).runTaskAsynchronously(BetonQuest.getInstance());
@@ -704,17 +778,16 @@ public class Conversation implements Listener {
      */
     private class PlayerEventRunner extends BukkitRunnable {
 
-        private final String option;
+        private final ResolvedOption option;
 
-        public PlayerEventRunner(final String option) {
+        public PlayerEventRunner(final ResolvedOption option) {
             super();
             this.option = option;
         }
 
         @Override
         public void run() {
-            // fire events
-            for (final EventID event : data.getEventIDs(onlineProfile, option, OptionType.PLAYER)) {
+            for (final EventID event : data.getEventIDs(onlineProfile, option, PLAYER)) {
                 BetonQuest.event(onlineProfile, event);
             }
             new ResponsePrinter(option).runTaskAsynchronously(BetonQuest.getInstance());
@@ -726,9 +799,12 @@ public class Conversation implements Listener {
      */
     private class ResponsePrinter extends BukkitRunnable {
 
-        private final String option;
+        /**
+         * The option that has been selected and should be printed.
+         */
+        private final ResolvedOption option;
 
-        public ResponsePrinter(final String option) {
+        public ResponsePrinter(final ResolvedOption option) {
             super();
             this.option = option;
         }
@@ -743,10 +819,10 @@ public class Conversation implements Listener {
                 if (!state.isActive()) {
                     return;
                 }
-                // don't forget to select the option prior to printing its text
-                selectOption(data.getPointers(onlineProfile, option, OptionType.PLAYER), false);
-                // print to player npc's answer
+
+                selectOption(resolvePointers(option), false);
                 printNPCText();
+
                 final ConversationOptionEvent event = new ConversationOptionEvent(PlayerConverter.getID(player), conv, option, conv.option);
 
                 new BukkitRunnable() {
@@ -755,6 +831,9 @@ public class Conversation implements Listener {
                         Bukkit.getServer().getPluginManager().callEvent(event);
                     }
                 }.runTask(BetonQuest.getInstance());
+            } catch (final InstructionParseException | ObjectNotFoundException e) {
+                log.reportException(pack, e);
+                throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable pointers.", e);
             } finally {
                 lock.readLock().unlock();
             }
@@ -766,9 +845,12 @@ public class Conversation implements Listener {
      */
     private class OptionPrinter extends BukkitRunnable {
 
-        private final String option;
+        /**
+         * The option that has been selected and should be printed.
+         */
+        private final ResolvedOption option;
 
-        public OptionPrinter(final String option) {
+        public OptionPrinter(final ResolvedOption option) {
             super();
             this.option = option;
         }
@@ -783,7 +865,10 @@ public class Conversation implements Listener {
                 if (!state.isActive()) {
                     return;
                 }
-                printOptions(data.getPointers(onlineProfile, option, OptionType.NPC));
+                printOptions(resolvePointers(option));
+            } catch (final InstructionParseException | ObjectNotFoundException e) {
+                log.reportException(pack, e);
+                throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable options.", e);
             } finally {
                 lock.readLock().unlock();
             }

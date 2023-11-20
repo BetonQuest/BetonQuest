@@ -4,6 +4,7 @@ import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.conversation.Conversation;
+import org.betonquest.betonquest.id.ConversationID;
 import org.bukkit.Location;
 
 /**
@@ -14,7 +15,7 @@ public class CitizensConversation extends Conversation {
 
     private final NPC npc;
 
-    public CitizensConversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final String conversationID, final Location location, final NPC npc) {
+    public CitizensConversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final ConversationID conversationID, final Location location, final NPC npc) {
         super(log, onlineProfile, conversationID, location);
         this.npc = npc;
     }

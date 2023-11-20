@@ -91,8 +91,8 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
             return;
         }
         // if player passes max distance
-        if (!event.getTo().getWorld().equals(conv.getLocation().getWorld()) || event.getTo()
-                .distance(conv.getLocation()) > maxNpcDistance) {
+        if (!event.getTo().getWorld().equals(conv.getCenter().getWorld()) || event.getTo()
+                .distance(conv.getCenter()) > maxNpcDistance) {
             // we can stop the player or end conversation
             if (conv.isMovementBlock() || !conv.state.isStarted()) {
                 moveBack(event);
@@ -112,16 +112,16 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     private void moveBack(final PlayerMoveEvent event) {
         // if the player is in other world (he teleported himself), teleport him
         // back to the center of the conversation
-        if (!event.getTo().getWorld().equals(conv.getLocation().getWorld()) || event.getTo()
-                .distance(conv.getLocation()) > maxNpcDistance * 2) {
-            event.getPlayer().teleport(conv.getLocation());
+        if (!event.getTo().getWorld().equals(conv.getCenter().getWorld()) || event.getTo()
+                .distance(conv.getCenter()) > maxNpcDistance * 2) {
+            event.getPlayer().teleport(conv.getCenter());
             return;
         }
         // if not, then calculate the vector
         final float yaw = event.getTo().getYaw();
         final float pitch = event.getTo().getPitch();
-        Vector vector = new Vector(conv.getLocation().getX() - event.getTo().getX(),
-                conv.getLocation().getY() - event.getTo().getY(), conv.getLocation().getZ() - event.getTo().getZ());
+        Vector vector = new Vector(conv.getCenter().getX() - event.getTo().getX(),
+                conv.getCenter().getY() - event.getTo().getY(), conv.getCenter().getZ() - event.getTo().getZ());
         vector = vector.multiply(1 / vector.length());
         // and teleport him back using this vector
         final Location newLocation = event.getTo().clone();

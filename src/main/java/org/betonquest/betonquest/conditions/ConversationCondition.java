@@ -4,10 +4,10 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.conversation.ConversationData;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.Utils;
+import org.betonquest.betonquest.id.ConversationID;
 
 /**
  * Checks if the conversation with player has at least one possible option
@@ -18,28 +18,38 @@ import org.betonquest.betonquest.utils.Utils;
 @SuppressWarnings("PMD.CommentRequired")
 public class ConversationCondition extends Condition {
 
-    private final String conversationID;
+    /**
+     * The conversation to check.
+     */
+    private final ConversationID conversationID;
 
+    /**
+     * Creates a new ConversationCondition.
+     *
+     * @param instruction the user-provided instruction to parse
+     * @throws InstructionParseException if the instruction is invalid
+     */
     public ConversationCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
 
         if (instruction.next() == null) {
-            throw new InstructionParseException("Missing conversation parameter");
+            throw new InstructionParseException("Missing conversation parameter.");
         }
 
-        conversationID = instruction.current();
+        try {
+            conversationID = new ConversationID(instruction.getPackage(), instruction.current());
+        } catch (final ObjectNotFoundException e) {
+            throw new InstructionParseException(e.getMessage(), e);
+        }
     }
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-
-        final ConversationData conversation = BetonQuest.getInstance().getConversation(Utils.addPackage(instruction.getPackage(), conversationID));
-
-        if (conversation == null) {
-            throw new QuestRuntimeException("Conversation does not exist: " + instruction.getPackage().getQuestPath() + conversationID);
+        try {
+            return BetonQuest.getInstance().getConversation(conversationID).isReady(profile);
+        } catch (final InstructionParseException | ObjectNotFoundException e) {
+            throw new QuestRuntimeException("External pointers in the conversation this condition checks for could not"
+                    + " be resoled during runtime.", e);
         }
-
-        return conversation.isReady(profile);
     }
-
 }

@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.PlayerTagRemoveEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.conversation.PlayerConversationState;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -25,13 +26,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Represents an object storing all profile-related data, which can load and save it.
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 @SuppressFBWarnings("JLM_JSR166_UTILCONCURRENT_MONITORENTER")
 public class PlayerData implements TagData {
     /**
@@ -58,7 +60,10 @@ public class PlayerData implements TagData {
 
     private List<ItemStack> backpack = new CopyOnWriteArrayList<>();
 
-    private String conv;
+    /**
+     * The state of a conversation the player is in.
+     */
+    private PlayerConversationState activeConversation;
 
     private String profileLanguage;
 
@@ -87,7 +92,7 @@ public class PlayerData implements TagData {
                  ResultSet journalResults = con.querySQL(QueryType.SELECT_JOURNAL, profileID);
                  ResultSet pointResults = con.querySQL(QueryType.SELECT_POINTS, profileID);
                  ResultSet backpackResults = con.querySQL(QueryType.SELECT_BACKPACK, profileID);
-                 ResultSet playerResult = con.querySQL(QueryType.SELECT_PLAYER, profileID)) {
+                 ResultSet profileResult = con.querySQL(QueryType.SELECT_PLAYER, profileID)) {
 
                 while (objectiveResults.next()) {
                     objectives.put(objectiveResults.getString("objective"), objectiveResults.getString("instructions"));
@@ -106,44 +111,66 @@ public class PlayerData implements TagData {
                 }
 
                 while (backpackResults.next()) {
-                    final String instruction = backpackResults.getString("instruction");
-                    final int amount = backpackResults.getInt("amount");
-                    final ItemStack item;
-                    try {
-                        item = new QuestItem(instruction).generate(amount);
-                    } catch (final InstructionParseException e) {
-                        log.warn("Could not load backpack item for " + profile
-                                + ", with instruction '" + instruction + "', because: " + e.getMessage(), e);
-                        continue;
-                    }
-                    backpack.add(item);
+                    addItemToBackpack(backpackResults);
                 }
 
-                if (playerResult.next()) {
-                    profileLanguage = playerResult.getString("language");
-                    if ("default".equals(profileLanguage)) {
-                        profileLanguage = Config.getLanguage();
-                    }
-                    conv = playerResult.getString("conversation");
-                    if (conv == null || conv.equalsIgnoreCase("null")) {
-                        conv = null;
-                    }
+                if (profileResult.next()) {
+                    loadLanguage(profileResult);
+                    loadActiveConversation(profileResult);
                 } else {
-                    profileLanguage = Config.getLanguage();
-                    saver.add(new Record(UpdateType.ADD_PROFILE, profileID));
-                    saver.add(new Record(UpdateType.ADD_PLAYER, profile.getPlayer().getUniqueId().toString(),
-                            profileID, "default"));
-                    saver.add(new Record(UpdateType.ADD_PLAYER_PROFILE, profile.getPlayer().getUniqueId().toString(),
-                            profileID, BetonQuest.getInstance().getPluginConfig().getString("profiles.initial_name", "default")));
+                    setupProfile();
                 }
 
-                log.debug("There are " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
+                log.debug("Loaded " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
                         + " points, " + entries.size() + " journal entries and " + backpack.size()
-                        + " items loaded for " + profile);
+                        + " items for " + profile);
             }
         } catch (final SQLException e) {
             log.error("There was an exception with SQL", e);
         }
+    }
+
+    private void loadLanguage(final ResultSet playerResult) throws SQLException {
+        profileLanguage = playerResult.getString("language");
+        if ("default".equals(profileLanguage)) {
+            profileLanguage = Config.getLanguage();
+        }
+    }
+
+    private void loadActiveConversation(final ResultSet playerResult) throws SQLException {
+        final String fullInstruction = playerResult.getString("conversation");
+
+        try {
+            final Optional<PlayerConversationState> playerConversationState = PlayerConversationState.fromString(fullInstruction);
+            playerConversationState.ifPresent(conversationState -> activeConversation = conversationState);
+        } catch (final ObjectNotFoundException e) {
+            log.debug("The profile" + profile + " is in a conversation that does not exist anymore ("
+                    + fullInstruction + ").", e);
+            saver.add(new Record(UpdateType.UPDATE_CONVERSATION, "null", profileID));
+        }
+    }
+
+    private void setupProfile() {
+        profileLanguage = Config.getLanguage();
+        saver.add(new Record(UpdateType.ADD_PROFILE, profileID));
+        saver.add(new Record(UpdateType.ADD_PLAYER, profile.getPlayer().getUniqueId().toString(),
+                profileID, "default"));
+        saver.add(new Record(UpdateType.ADD_PLAYER_PROFILE, profile.getPlayer().getUniqueId().toString(),
+                profileID, BetonQuest.getInstance().getPluginConfig().getString("profiles.initial_name", "default")));
+    }
+
+    private void addItemToBackpack(final ResultSet backpackResults) throws SQLException {
+        final String instruction = backpackResults.getString("instruction");
+        final int amount = backpackResults.getInt("amount");
+        final ItemStack item;
+        try {
+            item = new QuestItem(instruction).generate(amount);
+        } catch (final InstructionParseException e) {
+            log.warn("Could not load backpack item for " + profile
+                    + ", with instruction '" + instruction + "', because: " + e.getMessage(), e);
+            return;
+        }
+        backpack.add(item);
     }
 
     /**
@@ -411,14 +438,7 @@ public class PlayerData implements TagData {
      */
     public void setBackpack(final List<ItemStack> list) {
         this.backpack = (List<ItemStack>) copyItemList(list, new CopyOnWriteArrayList<>());
-
-        // update the database (quite expensive way, should be changed)
-        saver.add(new Record(UpdateType.DELETE_BACKPACK, profileID));
-        for (final ItemStack itemStack : list) {
-            final String instruction = QuestItem.itemToString(itemStack);
-            final String amount = String.valueOf(itemStack.getAmount());
-            saver.add(new Record(UpdateType.ADD_BACKPACK, profileID, instruction, amount));
-        }
+        refreshBackpack(list);
     }
 
     /**
@@ -473,7 +493,11 @@ public class PlayerData implements TagData {
             }
             backpack.add(newItem);
         }
-        // update the database (quite expensive way, should be changed)
+        refreshBackpack(backpack);
+    }
+
+    private void refreshBackpack(final List<ItemStack> backpack) {
+        // quite expensive, should be changed
         saver.add(new Record(UpdateType.DELETE_BACKPACK, profileID));
         for (final ItemStack itemStack : backpack) {
             final String instruction = QuestItem.itemToString(itemStack);
@@ -504,11 +528,11 @@ public class PlayerData implements TagData {
     }
 
     /**
-     * @return the name of a conversation if the profile has active one or
-     * null if he does not.
+     * @return the id of a conversation if the profile has an active one or
+     * null.
      */
-    public String getConversation() {
-        return conv;
+    public PlayerConversationState getActiveConversation() {
+        return activeConversation;
     }
 
     /**

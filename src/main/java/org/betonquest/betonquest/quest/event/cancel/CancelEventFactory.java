@@ -2,11 +2,14 @@ package org.betonquest.betonquest.quest.event.cancel;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 
 /**
@@ -29,11 +32,15 @@ public class CancelEventFactory implements EventFactory {
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        final String cancelerName = instruction.getPackage().getQuestPath() + "." + instruction.next();
-        final QuestCanceler canceler = BetonQuest.getCanceler().get(cancelerName);
-        if (canceler == null) {
-            throw new InstructionParseException("Could not find canceler '" + cancelerName + "'");
+        final QuestPackage pack = instruction.getPackage();
+        final String identifier = instruction.next();
+        try {
+            final QuestCancelerID cancelerID = new QuestCancelerID(pack, identifier);
+            final QuestCanceler canceler = BetonQuest.getCanceler().get(cancelerID);
+            return new OnlineProfileRequiredEvent(loggerFactory.create(CancelEvent.class), new CancelEvent(canceler), pack);
+        } catch (final ObjectNotFoundException e) {
+            throw new InstructionParseException("Quest canceler '" + pack.getQuestPath() + "." + identifier + "' does not exist."
+                    + " Ensure it was loaded without errors.", e);
         }
-        return new OnlineProfileRequiredEvent(loggerFactory.create(CancelEvent.class), new CancelEvent(canceler), instruction.getPackage());
     }
 }

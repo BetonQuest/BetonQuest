@@ -122,9 +122,11 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
+import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ObjectiveID;
+import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.id.VariableID;
 import org.betonquest.betonquest.item.QuestItemHandler;
 import org.betonquest.betonquest.menu.RPGMenu;
@@ -330,11 +332,11 @@ public class BetonQuest extends JavaPlugin {
 
     private static final Map<ObjectiveID, Objective> OBJECTIVES = new HashMap<>();
 
-    private static final Map<String, ConversationData> CONVERSATIONS = new HashMap<>();
+    private static final Map<ConversationID, ConversationData> CONVERSATIONS = new HashMap<>();
 
     private static final Map<VariableID, Variable> VARIABLES = new HashMap<>();
 
-    private static final Map<String, QuestCanceler> CANCELERS = new HashMap<>();
+    private static final Map<QuestCancelerID, QuestCanceler> CANCELERS = new HashMap<>();
 
     /**
      * The indicator for dev versions.
@@ -664,8 +666,8 @@ public class BetonQuest extends JavaPlugin {
             if (cancelSection != null) {
                 for (final String key : cancelSection.getKeys(false)) {
                     try {
-                        CANCELERS.put(entry.getKey() + "." + key, new QuestCanceler(pack, key));
-                    } catch (final InstructionParseException e) {
+                        CANCELERS.put(new QuestCancelerID(pack, key), new QuestCanceler(pack, key));
+                    } catch (final InstructionParseException | ObjectNotFoundException e) {
                         getInstance().log.warn(pack, "Could not load '" + pack.getQuestPath() + "." + key + "' quest canceler: " + e.getMessage(), e);
                     }
                 }
@@ -673,7 +675,7 @@ public class BetonQuest extends JavaPlugin {
         }
     }
 
-    public static Map<String, QuestCanceler> getCanceler() {
+    public static Map<QuestCancelerID, QuestCanceler> getCanceler() {
         return CANCELERS;
     }
 
@@ -1051,8 +1053,8 @@ public class BetonQuest extends JavaPlugin {
                 playerDataMap.put(onlineProfile, playerData);
                 playerData.startObjectives();
                 playerData.getJournal().update();
-                if (playerData.getConversation() != null) {
-                    new ConversationResumer(loggerFactory, onlineProfile, playerData.getConversation());
+                if (playerData.getActiveConversation() != null) {
+                    new ConversationResumer(loggerFactory, onlineProfile, playerData.getActiveConversation());
                 }
             }
 
@@ -1271,7 +1273,7 @@ public class BetonQuest extends JavaPlugin {
                             getInstance().log.reportException(pack, e);
                         }
                     } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-                        getInstance().log.reportException(pack, e);
+                        log.reportException(pack, e);
                     }
                 }
             }
@@ -1279,18 +1281,29 @@ public class BetonQuest extends JavaPlugin {
             if (conversationsConfig != null) {
                 for (final String convName : conversationsConfig.getKeys(false)) {
                     try {
-                        CONVERSATIONS.put(pack.getQuestPath() + "." + convName, new ConversationData(pack, convName, conversationsConfig.getConfigurationSection(convName)));
-                    } catch (final InstructionParseException e) {
-                        getInstance().log.warn(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
+                        final ConversationID convID = new ConversationID(pack, convName);
+                        CONVERSATIONS.put(convID, new ConversationData(this, convID, conversationsConfig.getConfigurationSection(convName)));
+                    } catch (final InstructionParseException | ObjectNotFoundException e) {
+                        log.warn(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
                     }
                 }
             }
             // load schedules
             eventScheduling.loadData(pack);
-            // check external pointers
-            ConversationData.postEnableCheck();
+
             getInstance().log.debug(pack, "Everything in package " + packName + " loaded");
         }
+
+        CONVERSATIONS.entrySet().removeIf(entry -> {
+            final ConversationData convData = entry.getValue();
+            try {
+                convData.checkExternalPointers();
+            } catch (final ObjectNotFoundException e) {
+                log.warn(convData.getPack(), "Error in '" + convData.getPack().getQuestPath() + "." + convData.getName() + "' conversation: " + e.getMessage(), e);
+                return true;
+            }
+            return false;
+        });
 
         getInstance().log.info("There are " + CONDITIONS.size() + " conditions, " + EVENTS.size() + " events, "
                 + OBJECTIVES.size() + " objectives and " + CONVERSATIONS.size() + " conversations loaded from "
@@ -1621,12 +1634,12 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * @param name package name, dot and name of the conversation
+     * @param conversationID package name, dot and name of the conversation
      * @return ConversationData object for this conversation or null if it does
      * not exist
      */
-    public ConversationData getConversation(final String name) {
-        return CONVERSATIONS.get(name);
+    public ConversationData getConversation(final ConversationID conversationID) {
+        return CONVERSATIONS.get(conversationID);
     }
 
     /**
