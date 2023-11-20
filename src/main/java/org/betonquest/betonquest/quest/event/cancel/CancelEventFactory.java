@@ -40,7 +40,7 @@ public class CancelEventFactory implements EventFactory {
             return new OnlineProfileRequiredEvent(loggerFactory.create(CancelEvent.class), new CancelEvent(canceler), pack);
         } catch (final ObjectNotFoundException e) {
             throw new InstructionParseException("Quest canceler '" + pack.getQuestPath() + "." + identifier + "' does not exist."
-                    + " Ensure it was loaded without error.", e);
+                    + " Ensure it was loaded without errors.", e);
         }
     }
 }
