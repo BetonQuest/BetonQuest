@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.modules.config.patcher.migration;
 
-import org.betonquest.betonquest.modules.config.patcher.migration.migrators.DoNothingMigrator;
+import org.betonquest.betonquest.modules.config.patcher.migration.migrators.EffectLib;
+import org.betonquest.betonquest.modules.config.patcher.migration.migrators.MmoUpdates;
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.NpcHolograms;
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.PackageSection;
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.PackageStructure;
@@ -40,8 +41,8 @@ public class Migration {
         migrators.add(new PackageSection(allCongigs));
         allCongigs.putAll(getAllQuestTemplatesConfigs());
         migrators.add(new NpcHolograms(allCongigs));
-        migrators.add(new DoNothingMigrator()); // EFFECT_LIB
-        migrators.add(new DoNothingMigrator()); // MMO_UPDATES
+        migrators.add(new EffectLib(allCongigs)); // EFFECT_LIB
+        migrators.add(new MmoUpdates(allCongigs)); // MMO_UPDATES
     }
 
     /**
@@ -52,7 +53,11 @@ public class Migration {
         for (final Migrator migrator : migrators) {
             if (needMigration || migrator.needMigration()) {
                 needMigration = true;
-                migrator.migrate();
+                try {
+                    migrator.migrate();
+                } catch (final IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
@@ -61,7 +66,7 @@ public class Migration {
         final Path path = Paths.get("plugins/BetonQuest/QuestPackages");
         return getAllConfigs(path);
     }
-    
+
     private Map<File, YamlConfiguration> getAllQuestTemplatesConfigs() {
         final Path path = Paths.get("plugins/BetonQuest/QuestTemplates");
         return getAllConfigs(path);

@@ -5,6 +5,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -12,6 +13,20 @@ import java.util.Map;
  */
 public class NpcHolograms implements Migrator {
 
+    /**
+     * The npc_holograms string.
+     */
+    public static final String NPC_HOLOGRAMS = "npc_holograms";
+
+    /**
+     * The vector string.
+     */
+    public static final String VECTOR = "vector";
+
+    /**
+     * The default check interval.
+     */
+    public static final int DEFAULT_CHECK_INTERVAL = 200;
     /**
      * The configs to migrate.
      */
@@ -27,6 +42,7 @@ public class NpcHolograms implements Migrator {
     }
 
     @Override
+
     public boolean needMigration() {
         return configs.values().stream().anyMatch(config -> {
                     if (config.contains("npc_holograms.follow")
@@ -34,28 +50,26 @@ public class NpcHolograms implements Migrator {
                             | config.contains("holograms.check_interval")) {
                         return true;
                     }
-                    final ConfigurationSection npcHolograms = config.getConfigurationSection("npc_holograms");
+                    final ConfigurationSection npcHolograms = config.getConfigurationSection(NPC_HOLOGRAMS);
                     return npcHolograms != null && npcHolograms.getValues(false).values().stream()
                             .filter(subConfig -> subConfig instanceof ConfigurationSection)
                             .map(subConfig -> (ConfigurationSection) subConfig)
-                            .anyMatch(subConfig -> "0;3;0".equals(subConfig.getString("vector")));
+                            .anyMatch(subConfig -> "0;3;0".equals(subConfig.getString(VECTOR)));
                 }
         );
     }
 
     @Override
-    public void migrate() {
-        configs.forEach((file, config) -> {
-            migrateFollow(config.getConfigurationSection("npc_holograms"));
-            migrateCheckInterval(config.getConfigurationSection("npc_holograms"));
+    public void migrate() throws IOException {
+        for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
+            final File file = entry.getKey();
+            final YamlConfiguration config = entry.getValue();
+            migrateFollow(config.getConfigurationSection(NPC_HOLOGRAMS));
+            migrateCheckInterval(config.getConfigurationSection(NPC_HOLOGRAMS));
             migrateCheckInterval(config.getConfigurationSection("holograms"));
-            migrateVector(config.getConfigurationSection("npc_holograms"));
-            try {
-                config.save(file);
-            } catch (final Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
+            migrateVector(config.getConfigurationSection(NPC_HOLOGRAMS));
+            config.save(file);
+        }
     }
 
     private void migrateFollow(final ConfigurationSection npcHolograms) {
@@ -77,9 +91,9 @@ public class NpcHolograms implements Migrator {
         if (npcHolograms == null) {
             return;
         }
-        final int checkInterval = npcHolograms.getInt("check_interval", 200);
+        final int checkInterval = npcHolograms.getInt("check_interval", DEFAULT_CHECK_INTERVAL);
         npcHolograms.set("check_interval", null);
-        if (checkInterval == 200) {
+        if (checkInterval == DEFAULT_CHECK_INTERVAL) {
             return;
         }
         npcHolograms.getValues(false).values().stream()
@@ -99,12 +113,12 @@ public class NpcHolograms implements Migrator {
     }
 
     private void migrateVectorValue(final ConfigurationSection subConfig) {
-        final String vector = subConfig.getString("vector", "0;3;0");
+        final String vector = subConfig.getString(VECTOR, "0;3;0");
         if ("0;3;0".equals(vector)) {
-            subConfig.set("vector", null);
+            subConfig.set(VECTOR, null);
         } else {
             final String[] split = vector.split(";");
-            subConfig.set("vector", split[0] +
+            subConfig.set(VECTOR, split[0] +
                     (Integer.parseInt(split[1]) - 3) +
                     split[2]);
         }

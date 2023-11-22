@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.modules.config.patcher.migration;
 
+import java.io.IOException;
+
 /**
  * Handels the migration process.
  */
@@ -14,6 +16,8 @@ public interface Migrator {
 
     /**
      * Migrates the configs.
+     *
+     * @throws IOException if an error occurs
      */
-    void migrate();
+    void migrate() throws IOException;
 }

@@ -33,8 +33,10 @@ public class EventScheduling implements Migrator {
     }
 
     @Override
-    public void migrate() {
-        configs.forEach((file, config) -> {
+    public void migrate() throws IOException {
+        for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
+            final File file = entry.getKey();
+            final YamlConfiguration config = entry.getValue();
             final ConfigurationSection staticSection = config.getConfigurationSection("static");
             if (staticSection != null) {
                 staticSection.getValues(false).forEach((key, value) -> {
@@ -43,12 +45,8 @@ public class EventScheduling implements Migrator {
                     config.set("schedules." + key + ".events", value);
                 });
                 config.set("static", null);
-                try {
-                    config.save(file);
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
+                config.save(file);
             }
-        });
+        }
     }
 }

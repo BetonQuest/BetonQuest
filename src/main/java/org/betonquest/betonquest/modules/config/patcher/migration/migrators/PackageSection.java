@@ -5,6 +5,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -32,8 +33,10 @@ public class PackageSection implements Migrator {
     }
 
     @Override
-    public void migrate() {
-        configs.forEach((file, config) -> {
+    public void migrate() throws IOException {
+        for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
+            final File file = entry.getKey();
+            final YamlConfiguration config = entry.getValue();
             final ConfigurationSection staticSection = config.getConfigurationSection("enabled");
             if (staticSection != null) {
                 staticSection.getValues(false).forEach((key, value) -> {
@@ -41,11 +44,7 @@ public class PackageSection implements Migrator {
                 });
                 config.set("enabled", null);
             }
-            try {
-                config.save(file);
-            } catch (final Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
+            config.save(file);
+        }
     }
 }

@@ -7,9 +7,9 @@ import java.io.File;
 import java.util.Map;
 
 /**
- * Handels the effect_lib migration.
+ * Handels the mmo_updates migration.
  */
-public class EffectLib implements Migrator {
+public class MmoUpdates implements Migrator {
 
     /**
      * The configs to migrate.
@@ -17,11 +17,11 @@ public class EffectLib implements Migrator {
     private final Map<File, YamlConfiguration> configs;
 
     /**
-     * Creates a new effect_lib migrator.
+     * Creates a new mmo_updates migrator.
      *
      * @param configs The configs to migrate.
      */
-    public EffectLib(final Map<File, YamlConfiguration> configs) {
+    public MmoUpdates(final Map<File, YamlConfiguration> configs) {
         this.configs = configs;
     }
 
@@ -32,6 +32,5 @@ public class EffectLib implements Migrator {
 
     @Override
     public void migrate() {
-
     }
 }
