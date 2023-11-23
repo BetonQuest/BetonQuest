@@ -360,7 +360,7 @@ events:
   bell_ring: 'folder bell_sound,bell_sound,bell_sound,bell_sound period:0.5'
   # Player independent events (static events).
   notify_goodNight: 'notifyall &6Good night, sleep well!'
-  bell_ring_all: 'runForAll bell_ring' #(1)!
+  bell_ring_all: 'runForAll events:bell_ring' #(1)!
 
 schedules:
   sayGoodNight:
