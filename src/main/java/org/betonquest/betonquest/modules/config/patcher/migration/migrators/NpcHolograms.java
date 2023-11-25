@@ -27,6 +27,7 @@ public class NpcHolograms implements Migrator {
      * The default check interval.
      */
     public static final int DEFAULT_CHECK_INTERVAL = 200;
+
     /**
      * The configs to migrate.
      */
@@ -46,8 +47,8 @@ public class NpcHolograms implements Migrator {
     public boolean needMigration() {
         return configs.values().stream().anyMatch(config -> {
                     if (config.contains("npc_holograms.follow")
-                            | config.contains("npc_holograms.check_interval")
-                            | config.contains("holograms.check_interval")) {
+                            || config.contains("npc_holograms.check_interval")
+                            || config.contains("holograms.check_interval")) {
                         return true;
                     }
                     final ConfigurationSection npcHolograms = config.getConfigurationSection(NPC_HOLOGRAMS);
@@ -118,9 +119,7 @@ public class NpcHolograms implements Migrator {
             subConfig.set(VECTOR, null);
         } else {
             final String[] split = vector.split(";");
-            subConfig.set(VECTOR, split[0] +
-                    (Integer.parseInt(split[1]) - 3) +
-                    split[2]);
+            subConfig.set(VECTOR, split[0] + (Integer.parseInt(split[1]) - 3) + split[2]);
         }
     }
 }
