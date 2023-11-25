@@ -794,7 +794,7 @@ public class BetonQuest extends JavaPlugin {
         getInstance().log.debug("BetonQuest " + version + " is starting...");
         getInstance().log.debug(jreInfo);
 
-        new Migration().migrate();
+        migratePackages();
 
         Config.setup(this, config);
         Notify.load();
@@ -1094,6 +1094,19 @@ public class BetonQuest extends JavaPlugin {
 
         PaperLib.suggestPaper(this);
         getInstance().log.info("BetonQuest successfully enabled!");
+    }
+
+    private void migratePackages() {
+        try {
+            final Migration migration = new Migration();
+            try {
+                migration.migrate();
+            } catch (final IOException e) {
+                log.error("There was an exception while migrating form a previous version! Reason: " + e.getMessage(), e);
+            }
+        } catch (final IOException e) {
+            log.error("There war an exception loading all files for the migration! Reason: " + e.getMessage(), e);
+        }
     }
 
     private void setupUpdater() {

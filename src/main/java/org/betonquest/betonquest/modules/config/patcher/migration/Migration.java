@@ -31,7 +31,7 @@ public class Migration {
     /**
      * Creates a new migration process.
      */
-    public Migration() {
+    public Migration() throws IOException {
         this.migrators = new LinkedList<>();
 
         final Map<File, YamlConfiguration> allCongigs = getAllQuestPackagesConfigs();
@@ -41,51 +41,41 @@ public class Migration {
         migrators.add(new PackageSection(allCongigs));
         allCongigs.putAll(getAllQuestTemplatesConfigs());
         migrators.add(new NpcHolograms(allCongigs));
-        migrators.add(new EffectLib(allCongigs)); // EFFECT_LIB
-        migrators.add(new MmoUpdates(allCongigs)); // MMO_UPDATES
+        migrators.add(new EffectLib(allCongigs));
+        migrators.add(new MmoUpdates(allCongigs));
     }
 
     /**
      * Migrates all configs.
      */
-    public void migrate() {
+    public void migrate() throws IOException {
         boolean needMigration = false;
         for (final Migrator migrator : migrators) {
             if (needMigration || migrator.needMigration()) {
                 needMigration = true;
-                try {
-                    migrator.migrate();
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
+                migrator.migrate();
             }
         }
     }
 
-    private Map<File, YamlConfiguration> getAllQuestPackagesConfigs() {
+    private Map<File, YamlConfiguration> getAllQuestPackagesConfigs() throws IOException {
         final Path path = Paths.get("plugins/BetonQuest/QuestPackages");
         return getAllConfigs(path);
     }
 
-    private Map<File, YamlConfiguration> getAllQuestTemplatesConfigs() {
+    private Map<File, YamlConfiguration> getAllQuestTemplatesConfigs() throws IOException {
         final Path path = Paths.get("plugins/BetonQuest/QuestTemplates");
         return getAllConfigs(path);
     }
 
-    private Map<File, YamlConfiguration> getAllConfigs(final Path path) {
+    private Map<File, YamlConfiguration> getAllConfigs(final Path path) throws IOException {
         try (Stream<Path> findings = Files.find(path, Integer.MAX_VALUE, (p, a) -> p.getFileName().toString().endsWith(".yml"))) {
             final Map<File, YamlConfiguration> configs = new LinkedHashMap<>();
             findings.map(Path::toFile)
                     .forEach(file -> {
-                        try {
-                            configs.put(file, YamlConfiguration.loadConfiguration(file));
-                        } catch (final Exception e) {
-                            throw new RuntimeException(e);
-                        }
+                        configs.put(file, YamlConfiguration.loadConfiguration(file));
                     });
             return configs;
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
         }
     }
 }
