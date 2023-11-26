@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.modules.config.patcher.migration.migrators;
 
+import org.betonquest.betonquest.modules.config.patcher.migration.FileProducer;
 import org.betonquest.betonquest.modules.config.patcher.migration.Migrator;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -29,22 +30,23 @@ public class NpcHolograms implements Migrator {
     public static final int DEFAULT_CHECK_INTERVAL = 200;
 
     /**
-     * The configs to migrate.
+     * The config producer.
      */
-    private final Map<File, YamlConfiguration> configs;
+    private final FileProducer producer;
 
     /**
      * Creates a new npc_holograms migrator.
      *
-     * @param configs The configs to migrate.
+     * @param producer The config producer
      */
-    public NpcHolograms(final Map<File, YamlConfiguration> configs) {
-        this.configs = configs;
+    public NpcHolograms(final FileProducer producer) {
+        this.producer = producer;
     }
 
     @Override
 
-    public boolean needMigration() {
+    public boolean needMigration() throws IOException {
+        final Map<File, YamlConfiguration> configs = producer.getAllConfigs();
         return configs.values().stream().anyMatch(config -> {
                     if (config.contains("npc_holograms.follow")
                             || config.contains("npc_holograms.check_interval")
@@ -62,6 +64,7 @@ public class NpcHolograms implements Migrator {
 
     @Override
     public void migrate() throws IOException {
+        final Map<File, YamlConfiguration> configs = producer.getAllConfigs();
         for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
             final File file = entry.getKey();
             final YamlConfiguration config = entry.getValue();

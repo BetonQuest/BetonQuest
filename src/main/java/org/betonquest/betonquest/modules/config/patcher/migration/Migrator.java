@@ -12,7 +12,7 @@ public interface Migrator {
      *
      * @return true if the migration is needed
      */
-    boolean needMigration();
+    boolean needMigration() throws IOException;
 
     /**
      * Migrates the configs.

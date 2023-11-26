@@ -794,7 +794,7 @@ public class BetonQuest extends JavaPlugin {
         getInstance().log.debug("BetonQuest " + version + " is starting...");
         getInstance().log.debug(jreInfo);
 
-        migratePackages();
+        migratePackages(); //eventuell verschieben?
 
         Config.setup(this, config);
         Notify.load();

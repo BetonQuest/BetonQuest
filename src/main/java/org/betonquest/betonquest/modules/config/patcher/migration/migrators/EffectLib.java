@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.modules.config.patcher.migration.migrators;
 
+import org.betonquest.betonquest.modules.config.patcher.migration.FileProducer;
 import org.betonquest.betonquest.modules.config.patcher.migration.Migrator;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,26 +15,28 @@ import java.util.Map;
 public class EffectLib implements Migrator {
 
     /**
-     * The configs to migrate.
+     * The config producer.
      */
-    private final Map<File, YamlConfiguration> configs;
+    private final FileProducer producer;
 
     /**
      * Creates a new effect_lib migrator.
      *
-     * @param configs The configs to migrate.
+     * @param producer The config producer
      */
-    public EffectLib(final Map<File, YamlConfiguration> configs) {
-        this.configs = configs;
+    public EffectLib(final FileProducer producer) {
+        this.producer = producer;
     }
 
     @Override
-    public boolean needMigration() {
+    public boolean needMigration() throws IOException {
+        final Map<File, YamlConfiguration> configs = producer.getAllConfigs();
         return configs.values().stream().anyMatch(config -> config.contains("npc_effects"));
     }
 
     @Override
     public void migrate() throws IOException {
+        final Map<File, YamlConfiguration> configs = producer.getAllConfigs();
         for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
             final File file = entry.getKey();
             final YamlConfiguration config = entry.getValue();
@@ -48,7 +51,8 @@ public class EffectLib implements Migrator {
         }
     }
 
-    private void migrateSection(final ConfigurationSection npcEffects) {
+    private void migrateSection(final ConfigurationSection npcEffects) throws IOException {
+        final Map<File, YamlConfiguration> configs = producer.getAllConfigs();
         final int checkInterval = npcEffects.getInt("check_interval");
         npcEffects.set("check_interval", null);
         npcEffects.set("disabled", null);
