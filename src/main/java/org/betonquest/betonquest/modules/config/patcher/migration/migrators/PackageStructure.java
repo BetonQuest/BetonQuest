@@ -94,7 +94,7 @@ public class PackageStructure implements Migrator {
         try (Stream<Path> files = Files.find(questPackagePath, Integer.MAX_VALUE, (p, a) -> "main.yml".equals(p.getFileName().toString()))) {
             files.forEach(file -> {
                 try {
-                    Files.move(file, file.resolveSibling("packages.yml"));
+                    Files.move(file, file.resolveSibling("package.yml"));
                 } catch (final IOException e) {
                     throw new UncheckedIOException(e);
                 }
