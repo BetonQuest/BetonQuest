@@ -77,45 +77,55 @@ The server must be restarted to unregister command tab completions.
 * `betonquest.conversation` - allows talking with NPCs (default for players)
 * `betonquest.language` - allows changing the language (default for players)
 
-!!! warning
-    Don't give `betonquest.admin` permission to people you don't fully trust. They can use `/q config` command to add a `command` event, and this way execute any command as the console. This might be dangerous.
+## BetonQuest administration command: `/betonquest`
 
-## Main command details
+**Aliases:** `/q`, `/bq`, `/quest`, `/quests`, `/bquest`, `/bquests`, `/betonquest`, `/betonquests`
 
+**Permission:** `betonquest.admin`
+
+### Reload the plugin: `reload`
 Reloading loads all data from configuration, but not everything is updated. Player's data isn't touched to avoid lags made by database saving. The database is also the same, you will have to reload/restart the whole server for the database to change.
 
-Tags subcommand allows you to easily list and modify tags. '`/q tags Beton`' would list tags for player Beton. '`/q tags Beton add test`' would add "test" tag for that player, and '`/q tags Beton del test`' would remove it.
-
-Points subcommand is similar - listing points is done the same way. Adding points to a category looks like that: '`/q points Beton add reputation 20`' (adding 20 points to "reputation" category). You can also subtract points with negative amounts. Removing the whole point category can be achieved by '`/q points Beton del reputation`'.
-
-Journal subcommand works in the same way as those two above. Adding and removing looks like `/q journal Beton add quest.wood_started` (or `del`), and you can also specify the date of entry when adding it, by appending date written like this: `23.04.2014_16:52` at the end of the command. Note that there is `_` character instead of space!
-
+### Interact with quest primitives
+#### Manage objectives: `objective`
 Objective subcommand allows you to list all active objectives (shown as their labels) of the player. It can also directly add or cancel objectives using instruction strings. You can also complete the objective for the player using `complete` argument - it will run all events and remove the objective.
 
+#### Manage tags: `tag`
+Tags subcommand allows you to easily list and modify tags. '`/q tags Beton`' would list tags for player Beton. '`/q tags Beton add test`' would add "test" tag for that player, and '`/q tags Beton del test`' would remove it.
+
+#### Manage points: `point`
+Points subcommand is similar - listing points is done the same way. Adding points to a category looks like that: '`/q points Beton add reputation 20`' (adding 20 points to "reputation" category). You can also subtract points with negative amounts. Removing the whole point category can be achieved by '`/q points Beton del reputation`'.
+
+#### Run events: `event`
 Running events for online players can be done with event argument: '`/q event Beton quest.give_emeralds`' would run `give_emeralds` for player Beton (if he's online) from the package `quest`. If you want to run a static event, replace player's name with `-`.
 
+#### Check conditions: `condition`,
 There is also condition argument for checking conditions, for example '`/q condition Beton has_food`'. Events and conditions need to be defined in their files, this command doesn't accept raw instructions. If you want to check a static condition replace the player's name with `-`.
 
+#### Manage the journal: `journal`
+Journal subcommand works in the same way as those two above. Adding and removing looks like `/q journal Beton add quest.wood_started` (or `del`), and you can also specify the date of entry when adding it, by appending date written like this: `23.04.2014_16:52` at the end of the command. Note that there is `_` character instead of space!
+
+#### Manage items: `give` and `item`
 If you need to create for example "Nettlebane" quest item, just hold it in your hand and type '`/q item nettlebane`'. It will copy the item you're holding into the _items.yml_ file and save it there with the name you specified (in this case "nettlebane"). You can skip the package name here as well.
 
 The '`/q give package.item`' command will simply give you specified item.
 
-Config subcommand is used to modify or display values in configuration files. `set` option replaces the value with what you typed, `add` simply adds your string to the existing value. (Note on spaces: by default the plugin won't insert a space between existing and added value. You can however achieve that by prefixing the string with `_` character. For example: existing string is `objective location`, and you want to add `100;200;300;world;10`. Your command will look like `/q config add default.events.loc_obj _100;200;300;world;10`). `read` option allows you to display config value without modifying it.
-
-Path in this command is like an address of the value. Next branches are separated by dots. For example language setting in main configuration has path `config.language`, and a text in "bye" player option in the conversation `innkeeper` in a package named `example` quest has path `example.conversations.innkeeper.player_options.bye.text`
-
+### Purge player data: `purge`
 You can purge specific player with '`/q purge Beton`' command, where Beton is the name of the player. To purge the entire database at once simply change the prefix in _config.yml_ or delete _database.db_ file.
 
+### Delete data from the database: `delete`
 Delete command ('`/q delete`') allows you to delete from the database every tag, point, objective or journal entry with specified name.
 
+### Rename a quest-primitive without loosing data: `rename`
 Rename command ('`/q rename`') allows you to rename every tag, point, globalpoint, objective or journal entry in the database. In case of an objective it will also rename the objective in _objectives_ section in the configuration file, so it continues to work correctly.
 
+### Create a backup: `backup`
 If you want to backup your configuration and database make sure that your server is empty (this process requires all data to be saved to database -> all players offline) and run '`/q backup`' command. You will get a zip file containing all your data, ready to be unzipped for restoring the plugin.
 
+### Update the plugin: `update`
 Update command ('`/q update`') will try to download the newest version of the plugin and save it to the update folder. This folder is then handled by Spigot to update the plugin. If you accidentally use this command but do not wish to update the plugin, you should remove `BetonQuest.jar` file from the `plugins/update` folder before restarting/reloading the server.
 
-The `/q vector` command allows you to create vector variables from the specified in first argument location variable to your position. The result will be saved to the "vectors.{second argument}" variable.
-
+### Debug quests and BetonQuest: `debug`
 The debug command ('`/q debug`') allows you to enable or disable the debug mode. If the debug mode is enabled after
 server startup ('`/q debug true`'), all log entries from the configured log history time frame are written to the
 `/plugins/BetonQuest/logs/latest.log` file as history and writing will be continued until the debug mode is disabled
@@ -131,25 +141,77 @@ of a folder. Appending a level allows you to select which types of messages are 
 shows all `WARNINGS` and `ERRORS` from the log. If you want to see more information use the levels `info` or `debug`.
 Beware though, the debug level might be spammy.
 
-The download command (`/q download`) can be used to download tutorial quests & quest templates from
-the [Quest-Tutorials](https://github.com/BetonQuest/Quest-Tutorials) repository. For
-example `/q download BetonQuest/Quest-Tutorials main QuestPackages /default` will download the `default` tutorial quest and
-place it in the same folder. The first argument (`gitHubNamespace`) is the github repository in the format user/repo or
-organisation/repo. Before you can download from a repo you need to add the namespace to
-the [`repo_whitelist`](Configuration.md#quest-downloader) in the BetonQuest config. This is a security measure that
-prevents users from screwing up all your quests or downloading malicious files if they get the permission to run this
-command by accident. The second argument (`ref`) is either a branch name or a git reference to a specific commit that
-should be downloaded. So for a branch (eg. `main`) both `main` and `refs/heads/main` works. For a tag it
-is `refs/tags/tagname`. Pull request references (
-eg. `refs/pull/1731/head`) are also possible but must be enabled in the [config](Configuration.md#quest-downloader).
-Keep in mind that anyone can open a pullrequest so use this very carefully. Third argument (`type`) is
-either `QuestPackages` or `QuestTemplates` depending on what type you want to download. As 4th argument (`sourcePath`)
-you define what folders to download from the repo. It is appended to the type to get the full Path in the repo.
-Optionally you may add a 5th parameter:
-`targetPath` is where in your BetonQuest folder the files shall be put, relative to either the QuestPackages or
-QuestTemplates folder defined as `type`. If you want to place some QuestTemplates inside `QuestPackages` you can
-do this by adding `../QuestTemplates/` to the beginning of the target path.  
-Additionally you can add tags to the end of the command to control behavior of the downloader:
-If `recursive` is added [nested packages](../Scripting/Packages-&-Templates.md#__tabbed_1_3) or templates will be downloaded while by default they
-will be skipped. The tag `overwrite` defines that already existing files may be overwritten. By default, an error is
-logged and the download is stopped.
+### Download from GitHub: `download`
+The download command (`/q download`) can be used to download tutorial quests & quest templates from GitHub repositories.
+!!! example
+    To download the `default` tutorial quest from the [Quest-Tutorials](https://github.com/BetonQuest/Quest-Tutorials)
+    repository and place it in the local package `default` you can run:
+    ```
+    /q download BetonQuest/Quest-Tutorials main QuestPackages /default
+    ```
+
+#### Synopsis
+```
+/q download [options] <gitHubRepository> <gitBranchOrReference>
+```
+
+#### Description
+`gitHubRepository` is the GitHub repository name in the format `<namespace>/<project>` where `namespace` is either a
+GitHub user or organization. Repositories that can be downloaded from must be whitelisted in the
+[configuration](Configuration.md#quest-downloader) first, read more about this in the
+[security consideration](#security-considerations) section.
+
+`gitBranchOrReference` is either the git branch or a fully qualified git reference that should be downloaded. Thus, to
+download from a branch (e.g. `main`) you can either use the branch name directly (e.g. `main`) or use a git reference
+(e.g. `refs/head/main`). For all other git objects you need to use a reference, e.g. to download from tag `v1.2.3` use
+`refs/tags/1.2.3`. Additionally, pull requests (e.g. `refs/pull/1731/head`) are also supported but must be enabled in
+the [configuration](Configuration.md#quest-downloader), read more about this in the
+[security consideration](#security-considerations) section.
+
+#### Options
+`-T`, `--download-template` download template files; if either both or none of this option and `-T` is given then both
+templates and packages will be downloaded
+
+`-P`, `--download-package` download package files; if either both or none of this option and `-P` is given then both
+templates and packages will be downloaded
+
+`-R`, `--raw` do not expect the folders `QuestPackages` and `QuestTemplates` at the source and do not give them special
+meaning even if they are present; exactly one of `-T` or `-P` must be present as well when using this option to define
+where to put the downloaded files
+
+`-S`, `--structured` expect at least one of the folders `QuestPackages` and `QuestTemplates` to be present at the source
+and use them like they are used in the BetonQuest plugin folder
+
+`-s <path>`, `--source=<path>` source path to start the package search from; the path is relative to the git repository
+root that is being downloaded from
+
+`-b <basePackage>`, `--base-package=<basePackage>` base package within the quest sources to resolve packages and files;
+the base path will not be mirrored locally
+
+`-p <package>`, `--package=<package>` select the packages that should be downloaded; this option can be provided
+multiple times to download more than one package at once
+
+`-F <file>`, `--file=<file>` select the files that should be downloaded; this option can be provided multiple times to
+download more than one file at once
+
+`-l <localBasePackage>`, `--local=<localBasePackage>` local base package to put the downloaded packages and files into
+
+`-r`, `--recursive` also include [nested packages](../Scripting/Packages-&-Templates.md#__tabbed_1_3) in the download
+
+`-f`, `--force` allow overwriting local files; if not set an error will be logged and the download will be aborted
+
+#### Layout auto-detection
+By default, the download command will try to detect if the repository at the given source location is structured like
+the BetonQuest plugin folder. This is done by checking if there is a folder called `QuestPackages` or `QuestTemplates`,
+if any one of them is present then the download command will teat the quests sources like the BetonQuest plugin folder
+and is able to download both templates and packages at the same time. Otherwise, it will be treated as raw and requires
+the definition of what kind of files they are so that they can be put into the correct local directory, this can be done
+by using either the `-P` or the `-T` option.
+
+#### Security considerations
+To prevent the download of arbitrary quest files you need to add repositories you want to be able to download from to a
+whitelist. This is a security measure to prevent anyone from screwing up all your quests or downloading malicious files
+even if they have the permission to run this command.
+
+Also note that the download of pull requests needs to be manually enabled in the config if required as anyone could open
+a pull request to any of the whitelisted repositories and thus circumvent the whitelisting measure described above.
