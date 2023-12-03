@@ -14,6 +14,11 @@ import java.util.Map;
 public class PackageSection implements Migrator {
 
     /**
+     * The enabled string.
+     */
+    public static final String ENABLED = "enabled";
+
+    /**
      * The config producer.
      */
     private final FileProducer producer;
@@ -31,7 +36,7 @@ public class PackageSection implements Migrator {
     @Override
     public boolean needMigration() throws IOException {
         final Map<File, YamlConfiguration> configs = producer.getAllQuestPackagesConfigs();
-        return configs.values().stream().anyMatch(config -> config.contains("enabled"));
+        return configs.values().stream().anyMatch(config -> config.contains(ENABLED));
     }
 
     @Override
@@ -40,10 +45,10 @@ public class PackageSection implements Migrator {
         for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
             final File file = entry.getKey();
             final YamlConfiguration config = entry.getValue();
-            if (config.contains("enabled", true)) {
-                final boolean section = config.getBoolean("enabled");
+            if (config.contains(ENABLED, true)) {
+                final boolean section = config.getBoolean(ENABLED);
                 config.set("packages.enabled", section);
-                config.set("enabled", null);
+                config.set(ENABLED, null);
                 config.save(file);
             }
         }
