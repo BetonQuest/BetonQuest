@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 /**
  * Handels the mmo_updates migration.
@@ -32,32 +31,40 @@ public class MmoUpdates implements Migrator {
 
     @Override
     public boolean needMigration() throws IOException {
-        return getObjectiveSectionsWithOldMmoInstruction().findAny().isPresent();
-    }
-
-    @Override
-    public void migrate() throws IOException {
-        getObjectiveSectionsWithOldMmoInstruction().forEach(section -> section.getKeys(false).forEach(key -> {
-            final String value = section.getString(key);
-            if (value != null) {
-                if (value.startsWith("mmocorecastskill")) {
-                    section.set(key, "mmoskill " + value.substring("mmocorecastskill".length()) + " trigger:CAST");
-                } else if (value.startsWith("mmoitemcastability")) {
-                    section.set(key, "mmoskill " + value.substring("mmoitemcastability".length()) + " trigger:RIGHT_CLICK");
-                }
-            }
-        }));
-
-    }
-
-    private Stream<ConfigurationSection> getObjectiveSectionsWithOldMmoInstruction() throws IOException {
         final Map<File, YamlConfiguration> configs = producer.getAllConfigs();
         return configs.values().stream()
                 .map(config -> config.getConfigurationSection("objectives"))
                 .filter(Objects::nonNull)
-                .filter(config -> config.getKeys(false).stream()
+                .anyMatch(config -> config.getKeys(false).stream()
                         .map(config::getString)
                         .filter(Objects::nonNull)
                         .anyMatch(value -> value.startsWith("mmocorecastskill") || value.startsWith("mmoitemcastability")));
+    }
+
+    @Override
+    public void migrate() throws IOException {
+        final Map<File, YamlConfiguration> configs = producer.getAllConfigs();
+        for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
+            final File file = entry.getKey();
+            final YamlConfiguration config = entry.getValue();
+
+            final ConfigurationSection objectives = config.getConfigurationSection("objectives");
+            if (objectives == null) {
+                continue;
+            }
+            for (final String key : objectives.getKeys(false)) {
+                final String value = config.getString("objectives." + key);
+                if (value == null) {
+                    continue;
+                }
+                if (value.startsWith("mmocorecastskill")) {
+                    config.set("objectives." + key, "mmoskill " + value.substring("mmocorecastskill ".length()) + " trigger:CAST");
+                    config.save(file);
+                } else if (value.startsWith("mmoitemcastability")) {
+                    config.set("objectives." + key, "mmoskill " + value.substring("mmoitemcastability ".length()) + " trigger:RIGHT_CLICK");
+                    config.save(file);
+                }
+            }
+        }
     }
 }

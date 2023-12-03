@@ -41,7 +41,7 @@ public class EffectLib implements Migrator {
             final File file = entry.getKey();
             final YamlConfiguration config = entry.getValue();
 
-            final ConfigurationSection npcEffects = config.getConfigurationSection("npc_effects ");
+            final ConfigurationSection npcEffects = config.getConfigurationSection("npc_effects");
             if (npcEffects != null) {
                 config.set("effectlib", npcEffects);
                 migrateSection(npcEffects);
@@ -51,13 +51,15 @@ public class EffectLib implements Migrator {
         }
     }
 
-    private void migrateSection(final ConfigurationSection npcEffects) throws IOException {
-        final Map<File, YamlConfiguration> configs = producer.getAllConfigs();
+    private void migrateSection(final ConfigurationSection npcEffects) {
         final int checkInterval = npcEffects.getInt("check_interval");
         npcEffects.set("check_interval", null);
         npcEffects.set("disabled", null);
         npcEffects.getKeys(false).forEach(key -> {
-            final YamlConfiguration subConfig = configs.get(key);
+            final ConfigurationSection subConfig = npcEffects.getConfigurationSection(key);
+            if (subConfig == null) {
+                return;
+            }
             if (checkInterval != 0) {
                 subConfig.set("checkinterval", checkInterval);
             }

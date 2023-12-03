@@ -2,7 +2,6 @@ package org.betonquest.betonquest.modules.config.patcher.migration.migrators;
 
 import org.betonquest.betonquest.modules.config.patcher.migration.FileProducer;
 import org.betonquest.betonquest.modules.config.patcher.migration.Migrator;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -32,7 +31,7 @@ public class PackageSection implements Migrator {
     @Override
     public boolean needMigration() throws IOException {
         final Map<File, YamlConfiguration> configs = producer.getAllQuestPackagesConfigs();
-        return configs.values().stream().noneMatch(config -> config.contains("enabled"));
+        return configs.values().stream().anyMatch(config -> config.contains("enabled"));
     }
 
     @Override
@@ -41,12 +40,12 @@ public class PackageSection implements Migrator {
         for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
             final File file = entry.getKey();
             final YamlConfiguration config = entry.getValue();
-            final ConfigurationSection staticSection = config.getConfigurationSection("enabled");
-            if (staticSection != null) {
-                staticSection.getValues(false).forEach((key, value) -> config.set("packages.enabled", value));
+            if (config.contains("enabled", true)) {
+                final boolean section = config.getBoolean("enabled");
+                config.set("packages.enabled", section);
                 config.set("enabled", null);
+                config.save(file);
             }
-            config.save(file);
         }
     }
 }
