@@ -190,7 +190,7 @@ Holograms were reworked. Mainly three things have to be changed:
 
 ```YAML title="Old Syntax"
 npc_holograms:
-  check_interval: 100
+  check_interval: 200
   follow: true
   default:
     lines:
@@ -209,7 +209,7 @@ npc_holograms:
       - "Some text!"
     conditions: "has_some_quest"
     vector: 0;0;0 #(1)!
-    check_interval: 100 #(2)!
+    check_interval: 200 #(2)!
     follow: true #(3)!
     npcs:
       - 0
@@ -217,7 +217,7 @@ npc_holograms:
 ```
 
 1. You can delete this if you had `0;3;0` previously as the origin was changed. Subtract 3 from the y-axis for any other value.
-2. You can delete this if you had the default value of `100` (or whatever you set in "_config.yml_").
+2. You can delete this if you had the default value of `200` (or whatever you set in "_config.yml_").
 3. You can delete this if you had the default value of `false`.
 </div>
 
