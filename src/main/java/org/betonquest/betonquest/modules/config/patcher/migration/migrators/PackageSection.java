@@ -30,7 +30,6 @@ public class PackageSection implements Migrator {
      */
     public PackageSection(final FileProducer producer) {
         this.producer = producer;
-
     }
 
     @Override

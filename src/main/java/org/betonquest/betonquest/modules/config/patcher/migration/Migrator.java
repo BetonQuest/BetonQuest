@@ -11,6 +11,7 @@ public interface Migrator {
      * Checks if the migration is needed.
      *
      * @return true if the migration is needed
+     * @throws IOException if an IO error occurs
      */
     boolean needMigration() throws IOException;
 

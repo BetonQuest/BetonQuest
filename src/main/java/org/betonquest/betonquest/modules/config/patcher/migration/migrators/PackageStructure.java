@@ -104,7 +104,7 @@ public class PackageStructure implements Migrator {
         }
     }
 
-    private void createNestedSectionsInConfigs(final Path questPackagePath) throws IOException {
+    private void createNestedSectionsInConfigs(final Path questPackagePath) {
         createNestedSection(questPackagePath, "events");
         createNestedSection(questPackagePath, "objectives");
         createNestedSection(questPackagePath, "conditions");

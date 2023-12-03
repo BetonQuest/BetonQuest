@@ -47,7 +47,6 @@ public class MmoUpdates implements Migrator {
         for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
             final File file = entry.getKey();
             final YamlConfiguration config = entry.getValue();
-
             final ConfigurationSection objectives = config.getConfigurationSection("objectives");
             if (objectives == null) {
                 continue;

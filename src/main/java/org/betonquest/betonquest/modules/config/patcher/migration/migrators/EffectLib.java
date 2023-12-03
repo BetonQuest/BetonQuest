@@ -40,7 +40,6 @@ public class EffectLib implements Migrator {
         for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
             final File file = entry.getKey();
             final YamlConfiguration config = entry.getValue();
-
             final ConfigurationSection npcEffects = config.getConfigurationSection("npc_effects");
             if (npcEffects != null) {
                 config.set("effectlib", npcEffects);
