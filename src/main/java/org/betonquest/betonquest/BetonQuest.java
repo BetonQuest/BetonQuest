@@ -234,6 +234,7 @@ import org.betonquest.betonquest.quest.event.legacy.QuestEventFactoryAdapter;
 import org.betonquest.betonquest.quest.event.lever.LeverEventFactory;
 import org.betonquest.betonquest.quest.event.lightning.LightningEventFactory;
 import org.betonquest.betonquest.quest.event.log.LogEventFactory;
+import org.betonquest.betonquest.quest.event.logic.FirstEventFactory;
 import org.betonquest.betonquest.quest.event.logic.IfElseEventFactory;
 import org.betonquest.betonquest.quest.event.notify.NotifyAllEventFactory;
 import org.betonquest.betonquest.quest.event.notify.NotifyEventFactory;
@@ -510,16 +511,17 @@ public class BetonQuest extends JavaPlugin {
      *
      * @param profile the {@link Profile} for which the event must be executed or null
      * @param eventID ID of the event to fire
+     * @return whether the event was successfully run.
      */
-    public static void event(@Nullable final Profile profile, final EventID eventID) {
+    public static boolean event(@Nullable final Profile profile, final EventID eventID) {
         if (eventID == null) {
             getInstance().log.debug("Null event ID!");
-            return;
+            return false;
         }
         final QuestEvent event = EVENTS.get(eventID);
         if (event == null) {
             getInstance().log.warn(eventID.getPackage(), "Event " + eventID + " is not defined");
-            return;
+            return false;
         }
         if (profile == null) {
             getInstance().log.debug(eventID.getPackage(), "Firing event " + eventID + " player independent");
@@ -528,9 +530,10 @@ public class BetonQuest extends JavaPlugin {
                     "Firing event " + eventID + " for " + profile);
         }
         try {
-            event.fire(profile);
+            return event.fire(profile);
         } catch (final QuestRuntimeException e) {
             getInstance().log.warn(eventID.getPackage(), "Error while firing '" + eventID + "' event: " + e.getMessage(), e);
+            return false;
         }
     }
 
@@ -949,6 +952,7 @@ public class BetonQuest extends JavaPlugin {
         registerEvent("lever", new LeverEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvent("door", new DoorEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvent("if", new IfElseEventFactory());
+        registerEvent("first", new FirstEventFactory());
         registerEvents("variable", VariableEvent.class);
         registerNonStaticEvent("language", new LanguageEventFactory(this));
         registerEvent("pickrandom", new PickRandomEventFactory());
