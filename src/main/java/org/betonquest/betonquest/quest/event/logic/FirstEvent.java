@@ -30,7 +30,6 @@ public class FirstEvent implements Event {
         events = eventIDList.toArray(new EventID[0]);
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
         final Deque<EventID> chosenList = new LinkedList<>(Arrays.asList(events));

@@ -23,7 +23,6 @@ public class FirstEventFactory implements EventFactory, StaticEventFactory {
 
     }
 
-    @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.PrematureDeclaration"})
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final List<EventID> list = instruction.getList(instruction::getEvent);
