@@ -46,3 +46,11 @@ Since these downloadable solutions should always contain the progress from previ
 
 ??? example "Example"
     ![](../../../_media/content/Participate/Process/Docs/Writing-Tutorials/OutroExample.png)
+
+## Download Commands
+Whenever you want to provide a downloadable example, you can use the `/bq download` command.
+But when you do, always replace the git reference with the placeholder `${ref}`. 
+This would then look like this:
+````
+/bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Basics/Conversations/1-DirectoryStructure /tutorialQuest overwrite
+````
