@@ -120,6 +120,7 @@ plugins:
     glob:
       - _snippets/*
       - _custom_theme/*
+      - _tutorials/*
 
 extra:
   version:
