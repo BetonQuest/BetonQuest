@@ -533,7 +533,7 @@ public class BetonQuest extends JavaPlugin {
             return event.fire(profile);
         } catch (final QuestRuntimeException e) {
             getInstance().log.warn(eventID.getPackage(), "Error while firing '" + eventID + "' event: " + e.getMessage(), e);
-            return false;
+            return true;
         }
     }
 
