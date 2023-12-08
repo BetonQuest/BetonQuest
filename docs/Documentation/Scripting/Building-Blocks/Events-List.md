@@ -293,6 +293,9 @@ collapsing long if-else chains into single events.
 This event is especially powerful when it is used in conjunction with the `condition:` keyword,
 which can be used with any event.
 
+Note that if an event throws an exception, it still counts as having succeeded, and will not execute the rest of the
+events in the list.
+
 ```YAML title="Example"
 events: # (1)!
   firstExample: "first event1,event2,event3"
