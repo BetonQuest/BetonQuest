@@ -29,11 +29,9 @@ public class FirstEvent implements Event {
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
-        if (!events.isEmpty()) {
-            for (final EventID event : events) {
-                if (BetonQuest.event(profile, event)) {
-                    break;
-                }
+        for (final EventID event : events) {
+            if (BetonQuest.event(profile, event)) {
+                break;
             }
         }
     }
