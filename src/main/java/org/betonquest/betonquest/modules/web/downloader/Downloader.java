@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -176,7 +177,13 @@ public class Downloader implements Callable<Boolean> {
      * @throws DownloadFailedException if the download fails due to any qualified error
      * @throws IOException             if any io error occurs during request or parsing
      */
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private void requestCommitSHA() throws DownloadFailedException, IOException {
+        if (!ref.startsWith("refs/")) {
+            this.sha = ref;
+            log.debug("Commit has sha '" + this.sha + "'");
+            return;
+        }
         final URL url = new URL(GITHUB_REFS_URL
                 .replace("{namespace}", namespace)
                 .replace("{ref}", ref));
@@ -274,7 +281,7 @@ public class Downloader implements Callable<Boolean> {
      * @throws IOException if any io error occurs while downloading the repo
      */
     @SuppressWarnings("PMD.AssignmentInOperand")
-    private void download() throws IOException {
+    private void download() throws IOException, DownloadFailedException {
         Files.createDirectories(Optional.ofNullable(getCacheFile().getParent()).orElseThrow());
         final URL url = new URL(GITHUB_DOWNLOAD_URL
                 .replace("{namespace}", namespace)
@@ -288,6 +295,8 @@ public class Downloader implements Callable<Boolean> {
                 output.write(dataBuffer, 0, read);
             }
             log.debug("Repo has been saved to cache as " + getCacheFile());
+        } catch (final FileNotFoundException e) {
+            throw new DownloadFailedException("The commit SHA '" + this.sha + "' does not exist!", e);
         }
     }
 
