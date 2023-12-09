@@ -1748,7 +1748,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             }
         }
         final String githubNamespace = args[1];
-        final String ref = args[2].startsWith("refs/") ? args[2] : "refs/heads/" + args[2];
+        final String ref = args[2];
         final String offsetPath = args[3];
         final String errSummary = String.format("Download from %s ref %s of %s at %s to %s failed:",
                 githubNamespace, ref, offsetPath, sourcePath, targetPath);

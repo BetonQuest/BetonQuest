@@ -176,7 +176,13 @@ public class Downloader implements Callable<Boolean> {
      * @throws DownloadFailedException if the download fails due to any qualified error
      * @throws IOException             if any io error occurs during request or parsing
      */
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private void requestCommitSHA() throws DownloadFailedException, IOException {
+        if (!ref.startsWith("refs/")) {
+            this.sha = ref;
+            log.debug("Commit has sha '" + this.sha + "'");
+            return;
+        }
         final URL url = new URL(GITHUB_REFS_URL
                 .replace("{namespace}", namespace)
                 .replace("{ref}", ref));
