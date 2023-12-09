@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -280,7 +281,7 @@ public class Downloader implements Callable<Boolean> {
      * @throws IOException if any io error occurs while downloading the repo
      */
     @SuppressWarnings("PMD.AssignmentInOperand")
-    private void download() throws IOException {
+    private void download() throws IOException, DownloadFailedException {
         Files.createDirectories(Optional.ofNullable(getCacheFile().getParent()).orElseThrow());
         final URL url = new URL(GITHUB_DOWNLOAD_URL
                 .replace("{namespace}", namespace)
@@ -294,6 +295,8 @@ public class Downloader implements Callable<Boolean> {
                 output.write(dataBuffer, 0, read);
             }
             log.debug("Repo has been saved to cache as " + getCacheFile());
+        } catch (final FileNotFoundException e) {
+            throw new DownloadFailedException("The commit SHA '" + this.sha + "' does not exist!", e);
         }
     }
 

@@ -65,6 +65,17 @@ public final class ChatFormatter extends Formatter {
 
     @Override
     public String format(final LogRecord record) {
+        return GsonComponentSerializer.gson().serialize(formatTextComponent(record));
+    }
+
+    /**
+     * Formats a {@link LogRecord} to a readable chat {@link TextComponent}.
+     *
+     * @param record The record to format
+     * @return The formatted component
+     */
+    @NotNull
+    public TextComponent formatTextComponent(final LogRecord record) {
         final String color = formatColor(record.getLevel());
         final Optional<BetonQuestLogRecord> betonRecord = BetonQuestLogRecord.safeCast(record);
         final String plugin = betonRecord
@@ -78,9 +89,8 @@ public final class ChatFormatter extends Formatter {
         final String message = record.getMessage();
         final Component throwable = formatComponentThrowable(record);
 
-        final TextComponent formattedRecord = Component.text(displayMethod.getPluginTag(pluginName, plugin, shortName) + questPackage + color + message)
+        return Component.text(displayMethod.getPluginTag(pluginName, plugin, shortName) + questPackage + color + message)
                 .append(throwable);
-        return GsonComponentSerializer.gson().serialize(formattedRecord);
     }
 
     private String formatColor(final Level level) {

@@ -5,7 +5,6 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Journal;
@@ -63,6 +62,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -1783,7 +1783,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             try {
                 downloader.call();
                 sendMessage(sender, "download_success");
-            } catch (final DownloadFailedException | SecurityException e) {
+            } catch (final DownloadFailedException | SecurityException | FileNotFoundException e) {
                 sendMessage(sender, "download_failed", e.getMessage());
                 log.debug(errSummary, e);
             } catch (final Exception e) {
@@ -1791,8 +1791,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 if (sender instanceof final Player player) {
                     final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, "", instance);
                     record.setThrown(e);
-                    final String msgJson = new ChatFormatter().format(record);
-                    bukkitAudiences.player(player).sendMessage(GsonComponentSerializer.gson().deserialize(msgJson));
+                    bukkitAudiences.player(player).sendMessage(new ChatFormatter().formatTextComponent(record));
                     log.debug(errSummary, e);
                 } else {
                     log.error(errSummary, e);
