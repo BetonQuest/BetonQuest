@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.modules.config.patcher.migration.migrators;
 
-import org.betonquest.betonquest.modules.config.patcher.migration.FileProducer;
-import org.betonquest.betonquest.modules.config.patcher.migration.Migrator;
+import org.betonquest.betonquest.modules.config.patcher.migration.FileConfigurationProvider;
+import org.betonquest.betonquest.modules.config.patcher.migration.Migration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -10,28 +10,22 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Handels the EventScheduling migration.
+ * Handles the EventScheduling migration.
  */
-public class EventScheduling implements Migrator {
+public class EventScheduling implements Migration {
 
     /**
      * The config producer.
      */
-    private final FileProducer producer;
+    private final FileConfigurationProvider producer;
 
     /**
      * Creates a new EventScheduling migrator.
      *
      * @param producer The config producer
      */
-    public EventScheduling(final FileProducer producer) {
+    public EventScheduling(final FileConfigurationProvider producer) {
         this.producer = producer;
-    }
-
-    @Override
-    public boolean needMigration() throws IOException {
-        final Map<File, YamlConfiguration> configs = producer.getAllQuestPackagesConfigs();
-        return configs.values().stream().anyMatch(config -> config.contains("static"));
     }
 
     @Override

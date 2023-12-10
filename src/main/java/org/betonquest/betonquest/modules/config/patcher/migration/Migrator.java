@@ -1,24 +1,50 @@
 package org.betonquest.betonquest.modules.config.patcher.migration;
 
+import org.betonquest.betonquest.modules.config.patcher.migration.migrators.EffectLib;
+import org.betonquest.betonquest.modules.config.patcher.migration.migrators.EventScheduling;
+import org.betonquest.betonquest.modules.config.patcher.migration.migrators.MmoUpdates;
+import org.betonquest.betonquest.modules.config.patcher.migration.migrators.NpcHolograms;
+import org.betonquest.betonquest.modules.config.patcher.migration.migrators.PackageSection;
+import org.betonquest.betonquest.modules.config.patcher.migration.migrators.PackageStructure;
+import org.betonquest.betonquest.modules.config.patcher.migration.migrators.RPGMenuMerge;
+
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
- * Handels the migration process.
+ * Handles the migration process.
  */
-public interface Migrator {
-
+public class Migrator {
     /**
-     * Checks if the migration is needed.
-     *
-     * @return true if the migration is needed
-     * @throws IOException if an IO error occurs
+     * The migrations to use.
      */
-    boolean needMigration() throws IOException;
+    private final List<Migration> migrations;
 
     /**
-     * Migrates the configs.
+     * Creates a new migration process.
+     */
+    public Migrator() {
+        this.migrations = new LinkedList<>();
+        final FileConfigurationProvider provider = new FileConfigurationProvider();
+
+        migrations.add(new RPGMenuMerge());
+        migrations.add(new PackageStructure());
+        migrations.add(new EventScheduling(provider));
+        migrations.add(new PackageSection(provider));
+        migrations.add(new NpcHolograms(provider));
+        migrations.add(new EffectLib(provider));
+        migrations.add(new MmoUpdates(provider));
+    }
+
+    /**
+     * Migrates all configs.
      *
      * @throws IOException if an error occurs
      */
-    void migrate() throws IOException;
+    public void migrate() throws IOException {
+        for (final Migration migration : migrations) {
+            migration.migrate();
+        }
+    }
 }

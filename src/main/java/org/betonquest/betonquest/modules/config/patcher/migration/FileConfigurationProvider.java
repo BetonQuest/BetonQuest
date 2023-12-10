@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 /**
  * Produces all config files.
  */
-public class FileProducer {
+public class FileConfigurationProvider {
 
     /**
      * All configs.
@@ -24,7 +24,7 @@ public class FileProducer {
     /**
      * Creates a new file producer.
      */
-    public FileProducer() {
+    public FileConfigurationProvider() {
     }
 
     /**

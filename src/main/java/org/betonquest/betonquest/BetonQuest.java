@@ -130,7 +130,7 @@ import org.betonquest.betonquest.item.QuestItemHandler;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.modules.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.modules.config.DefaultConfigurationFileFactory;
-import org.betonquest.betonquest.modules.config.patcher.migration.Migration;
+import org.betonquest.betonquest.modules.config.patcher.migration.Migrator;
 import org.betonquest.betonquest.modules.logger.DefaultBetonQuestLoggerFactory;
 import org.betonquest.betonquest.modules.logger.HandlerFactory;
 import org.betonquest.betonquest.modules.logger.PlayerLogWatcher;
@@ -1098,14 +1098,9 @@ public class BetonQuest extends JavaPlugin {
 
     private void migratePackages() {
         try {
-            final Migration migration = new Migration();
-            try {
-                migration.migrate();
-            } catch (final IOException e) {
-                log.error("There was an exception while migrating form a previous version! Reason: " + e.getMessage(), e);
-            }
+            new Migrator().migrate();
         } catch (final IOException e) {
-            log.error("There war an exception loading all files for the migration! Reason: " + e.getMessage(), e);
+            log.error("There was an exception while migrating from a previous version! Reason: " + e.getMessage(), e);
         }
     }
 

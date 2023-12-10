@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.config.patcher.migration.migrators;
 
-import org.betonquest.betonquest.modules.config.patcher.migration.Migrator;
+import org.betonquest.betonquest.modules.config.patcher.migration.Migration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.stream.Stream;
 
 /**
- * Handels the PackageStructure migration.
+ * Handles the PackageStructure migration.
  */
-public class PackageStructure implements Migrator {
+public class PackageStructure implements Migration {
 
     /**
      * Creates a new PackageStructure migrator.
@@ -26,13 +26,13 @@ public class PackageStructure implements Migrator {
     }
 
     @Override
-    public boolean needMigration() {
-        final Path questPackages = Paths.get("plugins/BetonQuest/QuestPackages");
-        return !Files.exists(questPackages);
-    }
-
-    @Override
     public void migrate() throws IOException {
+        final Path questPackages = Paths.get("plugins/BetonQuest/QuestPackages");
+        if (Files.exists(questPackages)) {
+            // TODO
+            return;
+        }
+
         final Path betonquest = Paths.get("plugins/BetonQuest");
         final Path questPackagePath = Paths.get("plugins/BetonQuest/QuestPackages");
         final List<Path> questFiles = getQuestFiles(betonquest);
