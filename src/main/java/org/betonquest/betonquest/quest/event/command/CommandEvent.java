@@ -47,6 +47,10 @@ public class CommandEvent implements Event {
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
-        commands.forEach(command -> server.dispatchCommand(silentSender, command.getString(profile)));
+        try {
+            commands.forEach(command -> server.dispatchCommand(silentSender, command.getString(profile)));
+        } catch (final RuntimeException exception) {
+            throw new QuestRuntimeException(exception);
+        }
     }
 }

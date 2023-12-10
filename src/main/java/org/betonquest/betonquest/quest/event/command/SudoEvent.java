@@ -30,6 +30,10 @@ public class SudoEvent implements Event {
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
         final Player player = profile.getOnlineProfile().get().getPlayer();
-        commands.forEach(command -> player.performCommand(command.getString(profile)));
+        try {
+            commands.forEach(command -> player.performCommand(command.getString(profile)));
+        } catch (final RuntimeException exception) {
+            throw new QuestRuntimeException(exception);
+        }
     }
 }
