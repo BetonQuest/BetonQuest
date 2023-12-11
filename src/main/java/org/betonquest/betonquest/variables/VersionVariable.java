@@ -18,6 +18,7 @@ public class VersionVariable extends Variable {
 
     public VersionVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
+        staticness = true;
         final int pointIndex = instruction.getInstruction().indexOf("\\.");
         if (pointIndex == -1) {
             plugin = BetonQuest.getInstance();

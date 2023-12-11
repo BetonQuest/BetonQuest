@@ -52,6 +52,8 @@ conditions:
 
 ## Check conditions: `check`
 
+**persistent**, **static**
+
 This condition allow for specifying multiple instruction strings in one, longer string. Each instruction must be started with `^` character and no other dividers should be used. The condition will be met if all inner conditions are met. It's not the same as `and` condition, because you can specify an instruction string, not a condition name.
 
 !!! example
@@ -325,6 +327,8 @@ This condition is very simple: it's true only when the player has an active obje
     ```
 
 ## Alternative: `or`
+
+**persistent**, **static**
 
 Alternative of specified conditions. This means that only one of conditions has to be met in order for alternative to be true. You just define one mandatory argument, condition names separated by commas. `!` prefix works as always.
 

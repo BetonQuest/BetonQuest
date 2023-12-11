@@ -26,6 +26,8 @@ public class CheckCondition extends Condition {
 
     public CheckCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
+        staticness = true;
+        persistent = true;
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         final String[] parts = instruction.getInstruction().substring(5).trim().split(" ");
         if (parts.length <= 0) {

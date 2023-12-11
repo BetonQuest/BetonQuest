@@ -47,6 +47,7 @@ public class RandomNumberVariable extends Variable {
      */
     public RandomNumberVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
+        staticness = true;
         final String type = instruction.next();
         if ("whole".equalsIgnoreCase(type)) {
             this.fractional = false;

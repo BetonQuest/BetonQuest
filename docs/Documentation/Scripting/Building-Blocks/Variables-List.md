@@ -171,6 +171,8 @@ the variable will resolve.
     
 ### Math Variable
 
+**static**
+
 This variable allows you to perform a calculation based on other variables (for example point or objective variables)
 and resolves to the result of the specified calculation. The variable always starts with `math.calc:`, followed by the
 calculation which should be calculated. Supported operations are `+`, `-`, `*`, `/`, `^` and `%`. You can use `( )` and
@@ -210,6 +212,8 @@ This variable will be replaced with the name of the player. If you add `display`
 
 ### Random Number Variable
 
+**static**
+
 This variable gives a random number from the first value to the second.
 The first argument is `whole` or `decimal`, the second and third arguments are numbers or variables,
 seperated by a `~`.
@@ -226,6 +230,8 @@ Note that the first value is returned when it is higher than the second.
 ```
 
 ### Version Variable
+
+**static**
 
 This variable displays the version of the plugin. You can optionally add the name of the plugin as an argument to display version of another plugin.
 
