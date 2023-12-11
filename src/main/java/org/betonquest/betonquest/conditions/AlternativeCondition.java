@@ -28,6 +28,8 @@ public class AlternativeCondition extends Condition {
 
     public AlternativeCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
+        staticness = true;
+        persistent = true;
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         conditionIDs = instruction.getList(instruction::getCondition);
     }

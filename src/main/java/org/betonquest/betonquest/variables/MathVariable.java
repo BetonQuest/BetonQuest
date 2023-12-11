@@ -26,6 +26,7 @@ public class MathVariable extends Variable {
 
     public MathVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
+        staticness = true;
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         final String instructionString = instruction.getInstruction();
         if (!instructionString.matches("math\\.calc:.+")) {
