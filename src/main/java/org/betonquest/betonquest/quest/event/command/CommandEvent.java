@@ -50,7 +50,7 @@ public class CommandEvent implements Event {
         try {
             commands.forEach(command -> server.dispatchCommand(silentSender, command.getString(profile)));
         } catch (final RuntimeException exception) {
-            throw new QuestRuntimeException(exception);
+            throw new QuestRuntimeException("Unhandled exception executing command: " + exception.getMessage(), exception);
         }
     }
 }

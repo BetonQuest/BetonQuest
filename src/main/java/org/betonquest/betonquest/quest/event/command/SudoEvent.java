@@ -33,7 +33,7 @@ public class SudoEvent implements Event {
         try {
             commands.forEach(command -> player.performCommand(command.getString(profile)));
         } catch (final RuntimeException exception) {
-            throw new QuestRuntimeException(exception);
+            throw new QuestRuntimeException("Unhandled exception executing command: " + exception.getMessage(), exception);
         }
     }
 }
