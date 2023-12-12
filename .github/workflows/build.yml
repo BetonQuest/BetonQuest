@@ -148,6 +148,8 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
+        with:
+          submodules: 'true'
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
       - name: Restore LFS cache
@@ -197,6 +199,10 @@ jobs:
           DATE="$(date +%Y-%m-%d)"
           sed -i "s~\${maven\.build\.timestamp}~$DATE~g" ./CHANGELOG.md
           echo "$(cat ./CHANGELOG.md)" >> './docs/Documentation/CHANGELOG.md'
+      - name: Set ref in download commands
+        run: |
+          if [ $VERSION_TYPE == 'release' ]; then REFERENCE="${{ github.ref }}"; else REFERENCE="$(cd docs/_tutorials/ && git rev-parse HEAD)"; fi
+          find docs/ -type f -exec sed -i "s#/bq download BetonQuest/Quest-Tutorials \${ref} QuestPackages #/bq download BetonQuest/Quest-Tutorials ${REFERENCE} QuestPackages #" {} +
       - name: Set user feedback form version in mkdocs.yml
         run: |
           sed -i "s~%VERSION%~${VERSION}~g" ./mkdocs.yml
@@ -290,7 +296,6 @@ jobs:
           echo "upload_path=$UPLOAD_PATH" >> $GITHUB_OUTPUT
         env:
           REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
-
   deploy-docs:
     name: Deploy Docs
     concurrency: gh-pages-deploy
@@ -309,6 +314,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          submodules: ${{ env.VERSION_TYPE == 'release' }}
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
       - name: Restore LFS cache
@@ -386,6 +392,15 @@ jobs:
             mike delete "$TWO_DIGIT_VERSION-DEV"
           fi
           mike deploy "${FLAGS[@]}" "${VERSION[@]}"
+      - name: Set version Tag for Quest-Tutorials submodule
+        if: "env.VERSION_TYPE == 'release'"
+        run: |
+          git config --global user.name "BetonQuest-Bot"
+          git config --global user.email "contact@betonquest.org"
+          
+          cd docs/_tutorials/
+          git tag "v$VERSION"
+          git push origin "v$VERSION"
   create-release:
     name: Create GitHub Release
     if: "needs.prepare.outputs.VERSION_TYPE == 'release' && needs.deploy-artifacts.result == 'success' && needs.deploy-docs.result == 'success'"

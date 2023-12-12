@@ -198,6 +198,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Item enchantments was changed to include zero as a legal value, not just positive numbers
 - the objectives mmocorecastskill and mmoitemcastability were merged into the mmoskill objective
 - `command` event no longer runs for all players on the server if a variable is used
+- `math` and `version` variables - now static
+- `alternative` and `check` condition - now static
+- `open_events` in a menu are now called before the menu actually opens
 ### Deprecated
 ### Removed
 - deprecated internals, code and old features
@@ -245,6 +248,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `menu` conversation IO did not stopped scrolling at the bottom and began to scroll from the top again
 - removed the hearts of the Armorstand in the Menu Conversation IO
 - journal entries now keep their leading whitespaces
+- exceptions in `sudo` and `command` events leading to broken conversations that could not be exited
 - Things that are also fixed in 1.12.X:
     - eating of items when entering the chest conversation io actually consumed the item 
     - legacy `§x` HEX color format not working in some contexts

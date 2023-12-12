@@ -87,7 +87,7 @@ Then play around with this system to get a feel for it.
 
 @snippet:tutorials:download-complete-files@
     ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Syntax/packageStructure/1-MultiFileStructure /packageStructure/MultiFile
+    /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Syntax/packageStructure/1-MultiFileStructure /packageStructure/MultiFile
     ```
     You can now find all files needed for this tutorial in this location:
     "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure/MultiFile_"
@@ -277,7 +277,7 @@ Instead, a new folder will be created in the previous package.
 
 @snippet:tutorials:download-complete-files@
     ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Syntax/packageStructure/2-SingleFileStructure /packageStructure/SingleFile
+    /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Syntax/packageStructure/2-SingleFileStructure /packageStructure/SingleFile
     ```
     You can now find all files needed for this tutorial in this location:
     "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure/SingleFile_"
@@ -311,7 +311,7 @@ By creating a folder with a _package.yml_ file inside another package, you creat
 
 @snippet:tutorials:download-complete-files@
     ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Syntax/packageStructure/3-PackageInPackage /packageStructure/PackageInPackage
+    /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Syntax/packageStructure/3-PackageInPackage /packageStructure/PackageInPackage
     ```
     You can now find all files needed for this tutorial in this location:
     "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure/PackageInPackage_"
@@ -343,7 +343,7 @@ in the directory tree.
 
 @snippet:tutorials:download-complete-files@
     ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Syntax/packageStructure/4-SubDirectory /packageStructure/SubDirectory
+    /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Syntax/packageStructure/4-SubDirectory /packageStructure/SubDirectory
     ```
     You can now find all files needed for this tutorial in this location:
     "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure/SubDirectory_"

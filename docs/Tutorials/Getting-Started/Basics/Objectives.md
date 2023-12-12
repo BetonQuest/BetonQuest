@@ -18,7 +18,7 @@ fishing fish. The possibilities are nearly endless! You will learn about these i
 </div>
 @snippet:tutorials:download-setup-warning@
     ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Objectives/1-DirectoryStructure /tutorialQuest
+    /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Basics/Objectives/1-DirectoryStructure /tutorialQuest
     ```
     You can now find all files needed for this tutorial in this location:
     "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/tutorialQuest_"
@@ -203,7 +203,7 @@ the dialog to the npc in "_package.yml_". If not, [check the previous tutorials]
 
 @snippet:tutorials:download-solution@
     ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Objectives/2-FullExample /tutorialQuest
+    /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Basics/Objectives/2-FullExample /tutorialQuest
     ```
 
 ## Summary
