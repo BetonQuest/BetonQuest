@@ -54,12 +54,12 @@ public class OpenedMenu implements Listener {
 
         this.data = menu;
         this.onlineProfile = onlineProfile;
+        this.data.runOpenEvents(onlineProfile);
         final Inventory inventory = Bukkit.createInventory(null, data.getSize(), data.getTitle(onlineProfile));
         this.update(onlineProfile, inventory);
         onlineProfile.getPlayer().openInventory(inventory);
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
         OPENED_MENUS.put(onlineProfile.getProfileUUID(), this);
-        this.data.runOpenEvents(onlineProfile);
     }
 
     /**
