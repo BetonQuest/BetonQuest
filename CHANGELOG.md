@@ -199,6 +199,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `command` event no longer runs for all players on the server if a variable is used
 - `math` and `version` variables - now static
 - `alternative` and `check` condition - now static
+- `open_events` in a menu are now called before the menu actually opens
 ### Deprecated
 ### Removed
 - deprecated internals, code and old features
