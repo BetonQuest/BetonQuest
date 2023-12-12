@@ -120,6 +120,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `log` event
 - `party` event - new range 0 and -1 to select players in the same world or server wide
 - `stage` objective, condition and event
+- `first` event - attempts to run a list of events until one successfully runs, like a compressed `if` event
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`
     - FastAsyncWorldEdit compatibility
@@ -129,7 +130,6 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - Version checks for ProtocolLib and Shopkeepers support
     - `mmoitemtake` event and `mmoitem` condition - now also check the backpack
         - this will not work until the item rework / until the backpack contains NBT data
-- `first` event - attempts to run a list of events until one successfully runs, like a compressed `if` event
 ### Changed
 - Java 17 is now required
 - changed package names from `pl.betoncraft.betonquest` to `org.betonquest.betonquest`
