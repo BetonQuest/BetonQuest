@@ -45,8 +45,13 @@ public class CommandEvent implements Event {
         this.commands = commands;
     }
 
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
-        commands.forEach(command -> server.dispatchCommand(silentSender, command.getString(profile)));
+        try {
+            commands.forEach(command -> server.dispatchCommand(silentSender, command.getString(profile)));
+        } catch (final RuntimeException exception) {
+            throw new QuestRuntimeException("Unhandled exception executing command: " + exception.getMessage(), exception);
+        }
     }
 }
