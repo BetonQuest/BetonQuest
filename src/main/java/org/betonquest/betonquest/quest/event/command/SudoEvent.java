@@ -27,6 +27,7 @@ public class SudoEvent implements Event {
         this.commands = commands;
     }
 
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
         final Player player = profile.getOnlineProfile().get().getPlayer();

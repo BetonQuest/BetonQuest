@@ -45,6 +45,7 @@ public class CommandEvent implements Event {
         this.commands = commands;
     }
 
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
         try {
