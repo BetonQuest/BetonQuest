@@ -178,6 +178,10 @@ public class Conversation implements Listener {
         this.blacklist = plugin.getPluginConfig().getStringList("cmd_blacklist");
         this.messagesDelaying = "true".equalsIgnoreCase(plugin.getPluginConfig().getString("display_chat_after_conversation"));
 
+        if (data == null) {
+            log.warn(pack, "Conversation data is not defined, returning. Check for errors on reload!");
+            return;
+        }
         if (ACTIVE_CONVERSATIONS.containsKey(onlineProfile)) {
             log.debug(pack, onlineProfile + " is in conversation right now, returning.");
             return;
