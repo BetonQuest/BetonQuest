@@ -511,7 +511,7 @@ public class BetonQuest extends JavaPlugin {
      *
      * @param profile the {@link Profile} for which the event must be executed or null
      * @param eventID ID of the event to fire
-     * @return whether the event was successfully run.
+     * @return true if the event was run
      */
     public static boolean event(@Nullable final Profile profile, final EventID eventID) {
         if (eventID == null) {
