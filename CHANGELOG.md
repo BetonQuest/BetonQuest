@@ -201,6 +201,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `math` and `version` variables - now static
 - `alternative` and `check` condition - now static
 - `open_events` in a menu are now called before the menu actually opens
+- `conversation` event now support a start option
 ### Deprecated
 ### Removed
 - deprecated internals, code and old features

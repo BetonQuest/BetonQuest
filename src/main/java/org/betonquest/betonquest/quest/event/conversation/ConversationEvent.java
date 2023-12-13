@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConversationID;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Starts a conversation.
@@ -24,18 +25,26 @@ public class ConversationEvent implements Event {
     private final ConversationID conversation;
 
     /**
+     * The optional NPC option to start at.
+     */
+    private final String startOption;
+
+    /**
      * Creates a new ConversationEvent.
      *
-     * @param conversation the conversation to start
+     * @param loggerFactory loggerFactory to use
+     * @param conversation  the conversation to start
+     * @param startOption   name of the option which the conversation should start at
      */
-    public ConversationEvent(final BetonQuestLoggerFactory loggerFactory, final ConversationID conversation) {
+    public ConversationEvent(final BetonQuestLoggerFactory loggerFactory, final ConversationID conversation, @Nullable final String startOption) {
         this.loggerFactory = loggerFactory;
         this.conversation = conversation;
+        this.startOption = startOption;
     }
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
         final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
-        new Conversation(loggerFactory.create(Conversation.class), onlineProfile, conversation, onlineProfile.getPlayer().getLocation());
+        new Conversation(loggerFactory.create(Conversation.class), onlineProfile, conversation, onlineProfile.getPlayer().getLocation(), startOption);
     }
 }
