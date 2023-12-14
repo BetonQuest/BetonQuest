@@ -70,8 +70,6 @@ public class ConversationEventFactory implements EventFactory {
 
     /**
      * Gets an optional start option for the conversation.
-     * This can't verify if the option is actually valid
-     * because the conversation data is not loaded at event creation.
      *
      * @param instruction    to get option name from
      * @param conversationID to get option from
@@ -84,6 +82,7 @@ public class ConversationEventFactory implements EventFactory {
             return null;
         }
 
+        // We need to manually check the existence of the starting option because the conversation is not loaded yet.
         final String optionPath = "conversations." + conversationID.getBaseID() + ".NPC_options." + targetOptionName;
         if (!conversationID.getPackage().getConfig().contains(optionPath)) {
             throw new InstructionParseException("NPC Option '" + targetOptionName + "' does not exist in '" + conversationID + "'.");
