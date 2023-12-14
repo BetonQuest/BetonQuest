@@ -149,7 +149,7 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v3
         with:
-          submodules: 'true'
+          submodules: ${{ env.VERSION_TYPE == 'release' || env.VERSION_TYPE == 'development' }}
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
       - name: Restore LFS cache
@@ -200,6 +200,7 @@ jobs:
           sed -i "s~\${maven\.build\.timestamp}~$DATE~g" ./CHANGELOG.md
           echo "$(cat ./CHANGELOG.md)" >> './docs/Documentation/CHANGELOG.md'
       - name: Set ref in download commands
+        if: "env.VERSION_TYPE == 'release' || env.VERSION_TYPE == 'development'"
         run: |
           if [ $VERSION_TYPE == 'release' ]; then REFERENCE="${{ github.ref }}"; else REFERENCE="$(cd docs/_tutorials/ && git rev-parse HEAD)"; fi
           find docs/ -type f -exec sed -i "s#/bq download BetonQuest/Quest-Tutorials \${ref} QuestPackages #/bq download BetonQuest/Quest-Tutorials ${REFERENCE} QuestPackages #" {} +
