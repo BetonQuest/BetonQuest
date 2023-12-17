@@ -179,7 +179,7 @@ public class Conversation implements Listener {
         this.messagesDelaying = "true".equalsIgnoreCase(plugin.getPluginConfig().getString("display_chat_after_conversation"));
 
         if (data == null) {
-            log.warn(pack, "Conversation data is not defined, returning. Check for errors on reload!");
+            log.error(pack, "Tried to start conversation '" + conversationID.getFullID() + "' but it is not loaded! Check for errors on /bq reload!");
             return;
         }
         if (ACTIVE_CONVERSATIONS.containsKey(onlineProfile)) {
