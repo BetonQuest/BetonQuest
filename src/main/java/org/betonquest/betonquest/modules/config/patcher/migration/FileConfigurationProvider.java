@@ -40,11 +40,7 @@ public class FileConfigurationProvider {
         return allConfigs;
     }
 
-    /**
-     * @return All quest packages configs in QuestPackages folder
-     * @throws IOException If an I/O error occurs
-     */
-    public Map<File, YamlConfiguration> getAllQuestPackagesConfigs() throws IOException {
+    private Map<File, YamlConfiguration> getAllQuestPackagesConfigs() throws IOException {
         final Path path = Paths.get("plugins/BetonQuest/QuestPackages");
         return getAllConfigs(path);
     }

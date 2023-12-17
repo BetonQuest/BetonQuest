@@ -22,10 +22,10 @@ public class MmoUpdates implements Migration {
     /**
      * Creates a new mmo_updates migrator.
      *
-     * @param producer The config producer
+     * @param provider The config provider
      */
-    public MmoUpdates(final FileConfigurationProvider producer) {
-        this.producer = producer;
+    public MmoUpdates(final FileConfigurationProvider provider) {
+        this.producer = provider;
     }
 
     @Override

@@ -22,10 +22,10 @@ public class EffectLib implements Migration {
     /**
      * Creates a new effect_lib migrator.
      *
-     * @param producer The config producer
+     * @param provider The config provider
      */
-    public EffectLib(final FileConfigurationProvider producer) {
-        this.producer = producer;
+    public EffectLib(final FileConfigurationProvider provider) {
+        this.producer = provider;
     }
 
     @Override

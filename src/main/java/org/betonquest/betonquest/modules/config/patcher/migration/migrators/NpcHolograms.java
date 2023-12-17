@@ -37,10 +37,10 @@ public class NpcHolograms implements Migration {
     /**
      * Creates a new npc_holograms migrator.
      *
-     * @param producer The config producer
+     * @param provider The config provider
      */
-    public NpcHolograms(final FileConfigurationProvider producer) {
-        this.producer = producer;
+    public NpcHolograms(final FileConfigurationProvider provider) {
+        this.producer = provider;
     }
 
     @Override

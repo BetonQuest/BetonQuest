@@ -4,13 +4,12 @@ import org.betonquest.betonquest.modules.config.patcher.migration.Migration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -18,6 +17,20 @@ import java.util.stream.Stream;
  * Handles the PackageStructure migration.
  */
 public class PackageStructure implements Migration {
+    /**
+     * The BetonQuest folder.
+     */
+    public static final Path BETONQUEST = Paths.get("plugins/BetonQuest");
+
+    /**
+     * The BetonQuest quest packages folder.
+     */
+    public static final Path BETONQUEST_QUEST_PACKAGES = BETONQUEST.resolve("QuestPackages");
+
+    /**
+     * The BetonQuest quest templates folder.
+     */
+    public static final Path BETONQUEST_QUEST_TEMPLATES = BETONQUEST.resolve("QuestTemplates");
 
     /**
      * Creates a new PackageStructure migrator.
@@ -27,33 +40,25 @@ public class PackageStructure implements Migration {
 
     @Override
     public void migrate() throws IOException {
-        final Path questPackages = Paths.get("plugins/BetonQuest/QuestPackages");
-        if (Files.exists(questPackages)) {
-            // TODO
-            return;
-        }
-
-        final Path betonquest = Paths.get("plugins/BetonQuest");
-        final Path questPackagePath = Paths.get("plugins/BetonQuest/QuestPackages");
-        final List<Path> questFiles = getQuestFiles(betonquest);
         try {
-            moveQuestFiles(questPackagePath, questFiles);
-            renameMainToPackage(questPackagePath);
-            createNestedSectionsInConfigs(questPackagePath);
+            final List<Path> oldQuestFolders = getOldQuestFolders();
+            final List<Path> movedOldQuestFiles = moveOldQuestFolderFiles(oldQuestFolders);
+            final List<Path> renamedQuestFiles = renameMainToPackage(movedOldQuestFiles);
+            createNestedSectionsInConfigs(renamedQuestFiles);
         } catch (final UncheckedIOException e) {
             throw e.getCause();
         }
     }
 
     @NotNull
-    private List<Path> getQuestFiles(final Path betonquest) throws IOException {
-        try (Stream<Path> paths = Files.list(betonquest)) {
+    private List<Path> getOldQuestFolders() throws IOException {
+        try (Stream<Path> paths = Files.list(BETONQUEST)) {
             return paths.filter(Files::isDirectory)
+                    .filter(path -> !path.equals(BETONQUEST_QUEST_PACKAGES))
+                    .filter(path -> !path.equals(BETONQUEST_QUEST_TEMPLATES))
                     .filter(path -> {
-                        try {
-                            try (Stream<Path> findings = Files.find(path, Integer.MAX_VALUE, (p, a) -> "main.yml".equals(p.getFileName().toString()))) {
-                                return findings.findAny().isPresent();
-                            }
+                        try (Stream<Path> findings = Files.find(path, Integer.MAX_VALUE, (p, a) -> "main.yml".equals(p.getFileName().toString()))) {
+                            return findings.findAny().isPresent();
                         } catch (final IOException e) {
                             throw new UncheckedIOException(e);
                         }
@@ -62,99 +67,78 @@ public class PackageStructure implements Migration {
         }
     }
 
-    private void moveQuestFiles(final Path questPackagePath, final List<Path> questFiles) throws IOException {
-        Files.createDirectory(questPackagePath);
+    private List<Path> moveOldQuestFolderFiles(final List<Path> questFiles) throws IOException {
+        final List<Path> movedOldQuestFiles = new ArrayList<>();
         for (final Path path : questFiles) {
             try (Stream<Path> files = Files.walk(path)) {
                 files.forEach(file -> {
                     try {
-                        Files.copy(file, Paths.get("plugins/BetonQuest/QuestPackages/" + file.toString().substring("plugin/BetonQuest/".length())));
+                        final Path target = BETONQUEST_QUEST_PACKAGES.resolve(BETONQUEST.relativize(file));
+                        Files.move(file, target);
+                        movedOldQuestFiles.add(target);
                     } catch (final IOException e) {
                         throw new UncheckedIOException(e);
                     }
                 });
-            } catch (final IOException e) {
-                throw new UncheckedIOException(e);
             }
-            try (Stream<Path> files2 = Files.walk(path)) {
-                files2.sorted(Comparator.reverseOrder()).forEach(file -> {
+        }
+        return movedOldQuestFiles;
+    }
+
+    private List<Path> renameMainToPackage(final List<Path> questFiles) {
+        return questFiles.stream()
+                .map(path -> {
+                    if ("main.yml".equals(path.getFileName().toString())) {
+                        try {
+                            final Path target = path.resolveSibling("package.yml");
+                            Files.move(path, target);
+                            return target;
+                        } catch (final IOException e) {
+                            throw new UncheckedIOException(e);
+                        }
+                    }
+                    return path;
+                })
+                .toList();
+    }
+
+    private void createNestedSectionsInConfigs(final List<Path> questFiles) {
+        createNestedSection(questFiles, "events");
+        createNestedSection(questFiles, "objectives");
+        createNestedSection(questFiles, "conditions");
+        createNestedSection(questFiles, "journal");
+        createNestedSection(questFiles, "items");
+        createNestedSectionInSubFolders(questFiles, "conversations");
+        createNestedSectionInSubFolders(questFiles, "menus");
+    }
+
+    private void createNestedSection(final List<Path> questFiles, final String identifier) {
+        questFiles.stream()
+                .filter(file -> file.endsWith(identifier + ".yml"))
+                .forEach(file -> {
+                    final YamlConfiguration oldConfig = YamlConfiguration.loadConfiguration(file.toFile());
+                    final YamlConfiguration newConfig = new YamlConfiguration();
+                    newConfig.set(identifier, oldConfig);
                     try {
-                        Files.delete(file);
+                        newConfig.save(file.toFile());
                     } catch (final IOException e) {
                         throw new UncheckedIOException(e);
                     }
                 });
-            } catch (final IOException e) {
-                throw new UncheckedIOException(e);
-            }
-        }
     }
 
-    private void renameMainToPackage(final Path questPackagePath) {
-        try (Stream<Path> files = Files.find(questPackagePath, Integer.MAX_VALUE, (p, a) -> "main.yml".equals(p.getFileName().toString()))) {
-            files.forEach(file -> {
-                try {
-                    Files.move(file, file.resolveSibling("package.yml"));
-                } catch (final IOException e) {
-                    throw new UncheckedIOException(e);
-                }
-            });
-        } catch (final IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    private void createNestedSectionsInConfigs(final Path questPackagePath) {
-        createNestedSection(questPackagePath, "events");
-        createNestedSection(questPackagePath, "objectives");
-        createNestedSection(questPackagePath, "conditions");
-        createNestedSection(questPackagePath, "journal");
-        createNestedSection(questPackagePath, "items");
-        createNestedSectionInSubFolders(questPackagePath, "conversations");
-        createNestedSectionInSubFolders(questPackagePath, "menus");
-    }
-
-    private void createNestedSection(final Path questPackagePath, final String identifier) {
-        try (Stream<Path> files = Files.find(questPackagePath, Integer.MAX_VALUE, (p, a) -> p.getFileName().toString().equals(identifier + ".yml"))) {
-            files.map(Path::toFile)
-                    .forEach(file -> {
-                        final YamlConfiguration oldConfig = YamlConfiguration.loadConfiguration(file);
-                        final YamlConfiguration newConfig = new YamlConfiguration();
-                        newConfig.set(identifier, oldConfig);
-                        try {
-                            newConfig.save(file);
-                        } catch (final IOException e) {
-                            throw new UncheckedIOException(e);
-                        }
-                    });
-        } catch (final IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    private void createNestedSectionInSubFolders(final Path questPackagePath, final String identifier) {
-        try (Stream<Path> files = Files.find(questPackagePath, Integer.MAX_VALUE, (p, a) -> p.getFileName().toString().equals(identifier))) {
-            files.flatMap(path -> {
-                        try {
-                            return Files.walk(path);
-                        } catch (final IOException e) {
-                            throw new UncheckedIOException(e);
-                        }
-                    })
-                    .map(Path::toFile)
-                    .filter(File::isFile)
-                    .forEach(file -> {
-                        final YamlConfiguration oldConfig = YamlConfiguration.loadConfiguration(file);
-                        final YamlConfiguration newConfig = new YamlConfiguration();
-                        newConfig.set(identifier + "." + file.getName(), oldConfig);
-                        try {
-                            newConfig.save(file);
-                        } catch (final IOException e) {
-                            throw new UncheckedIOException(e);
-                        }
-                    });
-        } catch (final IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    private void createNestedSectionInSubFolders(final List<Path> questFiles, final String identifier) {
+        questFiles.stream()
+                .filter(file -> file.getParent().endsWith(identifier))
+                .forEach(file -> {
+                    final YamlConfiguration oldConfig = YamlConfiguration.loadConfiguration(file.toFile());
+                    final YamlConfiguration newConfig = new YamlConfiguration();
+                    newConfig.set(identifier + "." + file.getFileName(), oldConfig);
+                    try {
+                        newConfig.save(file.toFile());
+                    } catch (final IOException e) {
+                        throw new UncheckedIOException(e);
+                    }
+                });
     }
 }

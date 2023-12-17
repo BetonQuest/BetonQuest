@@ -22,15 +22,15 @@ public class EventScheduling implements Migration {
     /**
      * Creates a new EventScheduling migrator.
      *
-     * @param producer The config producer
+     * @param provider The config provider
      */
-    public EventScheduling(final FileConfigurationProvider producer) {
-        this.producer = producer;
+    public EventScheduling(final FileConfigurationProvider provider) {
+        this.producer = provider;
     }
 
     @Override
     public void migrate() throws IOException {
-        final Map<File, YamlConfiguration> configs = producer.getAllQuestPackagesConfigs();
+        final Map<File, YamlConfiguration> configs = producer.getAllConfigs();
         for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
             final File file = entry.getKey();
             final YamlConfiguration config = entry.getValue();
