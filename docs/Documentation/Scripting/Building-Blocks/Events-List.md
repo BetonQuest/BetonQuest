@@ -284,12 +284,43 @@ events:
 3. Randomly executes one of the three events after 5 seconds.
 4. Executes the events after one minute.
 
+## If-else through a list of events: `first`
+
+This event wraps multiple events inside itself, similar `folder`. Unlike `folder`, it attempts to execute each event,
+starting from the first onward. Once it successfully executes one event, it stops executing the rest. This is useful for
+collapsing long if-else chains into single events.
+
+This event is especially powerful when it is used in conjunction with the `condition:` keyword,
+which can be used with any event.
+
+```YAML title="Example"
+events: # (1)!
+  firstExample: "first event1,event2,event3"
+  event1: "point carry boxes 10 action:add condition:firstCondition"
+  event2: "point carry boxes 20 action:add condition:secondCondition"
+  event3: "point carry boxes 40 action:add condition:thirdCondition"
+```
+
+1. If firstCondition is false, secondCondition is true, and thirdCondition is true, event2 is the only event that will
+   be run.
+
+```YAML title="Equivalent using if-else"
+events:
+  firstExample: "if firstCondition event1 else firstExample2"
+  firstExample2: "if secondCondition event2 else firstExample3"
+  firstExample3: "if thirdCondition event3"
+  event1: "point carry boxes 10 action:add"
+  event2: "point carry boxes 20 action:add"
+  event3: "point carry boxes 40 action:add"
+```
+
 ## Give Items: `give`
 
-Gives the player predefined items. They are specified exactly as in `item` condition - 
-list separated by commas, every item can have amount separated by colon. Default amount is 1. 
+Gives the player predefined items. They are specified exactly as in `item` condition -
+list separated by commas, every item can have amount separated by colon. Default amount is 1.
 If the player doesn't have required space in the inventory, the items are dropped on the ground,
-unless they are quest items. Then they will be put into the backpack. You can also specify `notify` keyword to display a simple message to the player about receiving items.
+unless they are quest items. Then they will be put into the backpack. You can also specify `notify` keyword to display a
+simple message to the player about receiving items.
 The optional `backpack` argument forces quest items to be placed in the backpack.
 
 !!! example

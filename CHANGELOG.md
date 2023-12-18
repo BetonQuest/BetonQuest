@@ -120,6 +120,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `log` event
 - `party` event - new range 0 and -1 to select players in the same world or server wide
 - `stage` objective, condition and event
+- `first` event - attempts to run a list of events until one successfully runs, like a compressed `if` event
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`
     - FastAsyncWorldEdit compatibility

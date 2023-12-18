@@ -104,46 +104,51 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
      * If the profile is null, the event will be fired as a static event.
      *
      * @param profile the {@link Profile} of the player for whom the event will fire
+     * @return whether the event was successfully handled or not.
      * @throws QuestRuntimeException passes the exception from the event up the stack
      */
-    public final void fire(final Profile profile) throws QuestRuntimeException {
+    public final boolean fire(final Profile profile) throws QuestRuntimeException {
         if (profile == null) {
-            handleNullProfile();
+            return handleNullProfile();
         } else if (profile.getOnlineProfile().isEmpty()) {
-            handleOfflineProfile(profile);
+            return handleOfflineProfile(profile);
         } else {
-            handleOnlineProfile(profile);
+            return handleOnlineProfile(profile);
         }
     }
 
-    private void handleNullProfile() throws QuestRuntimeException {
+    private boolean handleNullProfile() throws QuestRuntimeException {
         if (!staticness) {
             log.warn(instruction.getPackage(),
                     "Cannot fire non-static event '" + instruction.getID() + "' without a player!");
-            return;
+            return false;
         }
         log.debug(instruction.getPackage(), "Static event will be fired without a profile.");
         if (!BetonQuest.conditions(null, conditions)) {
             log.debug(instruction.getPackage(), "Event conditions were not met");
-            return;
+            return false;
         }
         handle(null);
+        return true;
     }
 
-    private void handleOfflineProfile(final Profile profile) throws QuestRuntimeException {
+    private boolean handleOfflineProfile(final Profile profile) throws QuestRuntimeException {
         if (persistent) {
             log.debug(instruction.getPackage(), "Persistent event will be fired for offline profile.");
             handle(profile);
+            return true;
         } else {
             log.debug(instruction.getPackage(), profile + " is offline, cannot fire event because it's not persistent.");
+            return false;
         }
     }
 
-    private void handleOnlineProfile(final Profile profile) throws QuestRuntimeException {
+    private boolean handleOnlineProfile(final Profile profile) throws QuestRuntimeException {
         if (!BetonQuest.conditions(profile, conditions)) {
             log.debug(instruction.getPackage(), "Event conditions were not met for " + profile);
-            return;
+            return false;
         }
         handle(profile);
+        return true;
     }
 }
