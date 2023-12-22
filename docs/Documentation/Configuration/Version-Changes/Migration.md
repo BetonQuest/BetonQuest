@@ -18,7 +18,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
 - [2.0.0-DEV-450 - Package section](#200-dev-450-package-section) :gear:
 - [2.0.0-DEV-485 - Experience changes](#200-dev-485-experience-changes) :exclamation:
 - [2.0.0-DEV-538 - Smelt Objective](#200-dev-538-smelt-objective) :exclamation:
-- [2.0.0-DEV-539 - NPC Holograms](#200-dev-539-npc-holograms) :exclamation:
+- [2.0.0-DEV-539 - NPC Holograms](#200-dev-539-npc-and-non-npc-holograms) :exclamation:
 - [2.0.0-DEV-644 - Database migration for profiles](#200-dev-644-database-migration-for-profiles) :gear:
 - [2.0.0-DEV-647 - EffectLib](#200-dev-647-effectlib) :gear:
 - [2.0.0-DEV-674 - MMO Updates](#200-dev-674-mmo-updates) :gear:
