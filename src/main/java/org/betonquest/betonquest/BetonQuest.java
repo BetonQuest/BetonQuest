@@ -768,6 +768,8 @@ public class BetonQuest extends JavaPlugin {
         final String jreInfo = jreVersionPrinter.getMessage();
         getInstance().log.info(jreInfo);
 
+        migratePackages();
+
         try {
             config = configurationFileFactory.create(new File(getDataFolder(), "config.yml"), this, "config.yml");
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
@@ -793,8 +795,6 @@ public class BetonQuest extends JavaPlugin {
         final String version = getDescription().getVersion();
         getInstance().log.debug("BetonQuest " + version + " is starting...");
         getInstance().log.debug(jreInfo);
-
-        migratePackages();
 
         Config.setup(this, config);
         Notify.load();
