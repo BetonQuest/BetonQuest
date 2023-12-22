@@ -67,26 +67,23 @@ public class PackageStructure implements Migration {
         }
     }
 
-    private List<Path> moveOldQuestFolderFiles(final List<Path> questFiles) throws IOException {
+    private List<Path> moveOldQuestFolderFiles(final List<Path> questFolders) throws IOException {
         final List<Path> movedOldQuestFiles = new ArrayList<>();
-        for (final Path path : questFiles) {
-            try (Stream<Path> files = Files.walk(path)) {
-                files.forEach(file -> {
-                    try {
-                        final Path target = BETONQUEST_QUEST_PACKAGES.resolve(BETONQUEST.relativize(file));
-                        Files.move(file, target);
-                        movedOldQuestFiles.add(target);
-                    } catch (final IOException e) {
-                        throw new UncheckedIOException(e);
-                    }
-                });
+        for (final Path folder : questFolders) {
+            final Path targetFolder = BETONQUEST_QUEST_PACKAGES.resolve(BETONQUEST.relativize(folder));
+            Files.move(folder, targetFolder);
+            try (Stream<Path> files = Files.walk(targetFolder)) {
+                files
+                        .filter(file -> !Files.isDirectory(file))
+                        .filter(file -> file.getFileName().toString().endsWith(".yml"))
+                        .forEach(movedOldQuestFiles::add);
             }
         }
         return movedOldQuestFiles;
     }
 
-    private List<Path> renameMainToPackage(final List<Path> questFiles) {
-        return questFiles.stream()
+    private List<Path> renameMainToPackage(final List<Path> oldQuestFiles) {
+        return oldQuestFiles.stream()
                 .map(path -> {
                     if ("main.yml".equals(path.getFileName().toString())) {
                         try {
@@ -133,7 +130,8 @@ public class PackageStructure implements Migration {
                 .forEach(file -> {
                     final YamlConfiguration oldConfig = YamlConfiguration.loadConfiguration(file.toFile());
                     final YamlConfiguration newConfig = new YamlConfiguration();
-                    newConfig.set(identifier + "." + file.getFileName(), oldConfig);
+                    final String fileName = file.getFileName().toString();
+                    newConfig.set(identifier + "." + fileName.substring(0, fileName.lastIndexOf('.')), oldConfig);
                     try {
                         newConfig.save(file.toFile());
                     } catch (final IOException e) {
