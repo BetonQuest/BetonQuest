@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.objectives.EntityInteractObjective.Interaction;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -16,17 +17,37 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
+import static org.betonquest.betonquest.objectives.EntityInteractObjective.Interaction.ANY;
+import static org.betonquest.betonquest.objectives.EntityInteractObjective.Interaction.LEFT;
+import static org.betonquest.betonquest.objectives.EntityInteractObjective.Interaction.RIGHT;
+
 /**
- * Player has to right click the NPC
+ * An objective that requires the player to interact with a specific NPC.
  */
-@SuppressWarnings("PMD.CommentRequired")
+
 public class NPCInteractObjective extends Objective implements Listener {
+
+    /**
+     * The ID of the NPC to interact with.
+     */
     private final int npcId;
 
+    /**
+     * Whether to cancel the interaction with the NPC.
+     */
     private final boolean cancel;
 
-    private final InteractionType interactionType;
+    /**
+     * The type of interaction with the NPC.
+     */
+    private final Interaction interactionType;
 
+    /**
+     * Creates a new NPCInteractObjective from the given instruction.
+     *
+     * @param instruction the user-provided instruction
+     * @throws InstructionParseException if the instruction is invalid
+     */
     public NPCInteractObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
@@ -35,19 +56,29 @@ public class NPCInteractObjective extends Objective implements Listener {
             throw new InstructionParseException("ID cannot be negative");
         }
         cancel = instruction.hasArgument("cancel");
-        interactionType = instruction.getEnum(instruction.getOptional("interaction"), InteractionType.class, InteractionType.RIGHT_CLICK);
+        interactionType = instruction.getEnum(instruction.getOptional("interaction"), Interaction.class, RIGHT);
     }
 
+    /**
+     * Handles RightClick events.
+     *
+     * @param event the event provided by the NPC plugin
+     */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onNPCRightClick(final NPCRightClickEvent event) {
-        if (interactionType.isRight()) {
+        if (interactionType.equals(RIGHT) || interactionType.equals(ANY)) {
             onNPCClick(event);
         }
     }
 
+    /**
+     * Handles LeftClick events.
+     *
+     * @param event the event provided by the NPC plugin
+     */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onNPCLeftClick(final NPCLeftClickEvent event) {
-        if (interactionType.isLeft()) {
+        if (interactionType.equals(LEFT) || interactionType.equals(ANY)) {
             onNPCClick(event);
         }
     }
@@ -83,29 +114,6 @@ public class NPCInteractObjective extends Objective implements Listener {
     @Override
     public String getProperty(final String name, final Profile profile) {
         return "";
-    }
-
-    private enum InteractionType {
-        LEFT_CLICK(true, false),
-        RIGHT_CLICK(false, true),
-        BOTH(true, true);
-
-        final boolean left;
-
-        final boolean right;
-
-        InteractionType(final boolean left, final boolean right) {
-            this.left = left;
-            this.right = right;
-        }
-
-        public boolean isLeft() {
-            return left;
-        }
-
-        public boolean isRight() {
-            return right;
-        }
     }
 
 }

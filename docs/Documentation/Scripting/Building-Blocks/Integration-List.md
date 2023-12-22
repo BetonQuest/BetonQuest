@@ -194,7 +194,7 @@ This event will teleport the NPC with the given ID to the given location.
 The player has to right-click on the NPC with specified ID. It can also optionally cancel the action, so the conversation won't start.
 The first argument is number (ID of the NPC).
 You can add the optional argument `cancel` to cancel the actual interaction with the NPC. 
-With `interaction` you can also define the type of interaction that is required, you can define `left`, `right` or `both`.
+With `interaction` you can also define the type of interaction that is required, you can define `left`, `right` or `any`.
 
 !!! example
     ```YAML
