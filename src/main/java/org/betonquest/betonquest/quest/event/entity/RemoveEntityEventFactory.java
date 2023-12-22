@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.entity;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
@@ -69,7 +70,7 @@ public class RemoveEntityEventFactory implements EventFactory, StaticEventFactor
         final String name = instruction.getOptional("name");
         final boolean kill = instruction.hasArgument("kill");
         final String markedString = instruction.getOptional("marked");
-        final String marked = markedString == null ? null : Utils.addPackage(instruction.getPackage(), markedString);
+        final VariableString marked = markedString == null ? null : new VariableString(instruction.getPackage(), Utils.addPackage(instruction.getPackage(), markedString));
         return new PrimaryServerThreadEvent(new RemoveEntityEvent(types, loc, range, name, marked, kill),
                 server, scheduler, plugin);
     }

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.entity;
 
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -42,7 +43,7 @@ public class RemoveEntityEvent implements Event {
     /**
      * The mark of the mob.
      */
-    private final String marked;
+    private final VariableString marked;
 
     /**
      * Whether to kill the mob.
@@ -60,7 +61,7 @@ public class RemoveEntityEvent implements Event {
      * @param kill     whether to kill the entities
      */
     public RemoveEntityEvent(final EntityType[] types, final CompoundLocation location, final VariableNumber radius,
-                             @Nullable final String name, @Nullable final String marked, final boolean kill) {
+                             @Nullable final String name, @Nullable final VariableString marked, final boolean kill) {
         this.types = Arrays.copyOf(types, types.length);
         this.location = location;
         this.radius = radius;
@@ -88,7 +89,7 @@ public class RemoveEntityEvent implements Event {
                         return entity
                                 .getMetadata("betonquest-marked")
                                 .stream()
-                                .anyMatch(metadataValue -> metadataValue.asString().equals(marked.replace("%player%", profile.getProfileUUID().toString())));
+                                .anyMatch(metadataValue -> metadataValue.asString().equals(marked.getString(profile)));
                     })
                     .forEach(entity -> {
                                 if (kill) {
