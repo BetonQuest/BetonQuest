@@ -5,6 +5,11 @@ This guide explains how to migrate from BetonQuest 1.12.X or any BetonQuest 2.0.
 2.0.0.
 The majority of changes will be migrated automatically. However, some things must be migrated manually.
 
+The migration will first find any 1.12 packages in the BetonQuest plugin folder and migrate them to the 2.0 package
+format. It will then place them inside the newly introduced QuestPackages folder. Then it updates everything inside the
+QuestPackages folder to the new 2.0 syntax. This way the migration works for both 1.12 and 2.0.0-DEV packages.
+
+
 !!! warning 
     Before you start migrating, you should **backup your server**!
 
