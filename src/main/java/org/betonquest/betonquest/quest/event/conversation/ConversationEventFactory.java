@@ -60,11 +60,36 @@ public class ConversationEventFactory implements EventFactory {
         } catch (final ObjectNotFoundException e) {
             throw new InstructionParseException(e.getMessage(), e);
         }
+        final String startingOption = getStartOption(instruction, conversationID);
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
-                        loggerFactory.create(ConversationEventFactory.class), new ConversationEvent(loggerFactory, conversationID), instruction.getPackage()
+                        loggerFactory.create(ConversationEventFactory.class), new ConversationEvent(loggerFactory, conversationID, startingOption), instruction.getPackage()
                 ), server, scheduler, plugin
         );
     }
+
+    /**
+     * Gets an optional start option for the conversation.
+     *
+     * @param instruction    to get option name from
+     * @param conversationID to get option from
+     * @return null if no option argument is given, otherwise the option name
+     * @throws InstructionParseException if no NPC option with the given name is present
+     */
+    private String getStartOption(final Instruction instruction, final ConversationID conversationID) throws InstructionParseException {
+        final String targetOptionName = instruction.getOptional("option");
+        if (targetOptionName == null) {
+            return null;
+        }
+
+        // We need to manually check the existence of the starting option because the conversation is not loaded yet.
+        final String optionPath = "conversations." + conversationID.getBaseID() + ".NPC_options." + targetOptionName;
+        if (!conversationID.getPackage().getConfig().contains(optionPath)) {
+            throw new InstructionParseException("NPC Option '" + targetOptionName + "' does not exist in '" + conversationID + "'.");
+        }
+
+        return targetOptionName;
+    }
+
 }
 

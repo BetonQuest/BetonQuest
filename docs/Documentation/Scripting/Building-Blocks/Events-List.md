@@ -124,11 +124,16 @@ Looking for [run command as player](#sudo-sudo)?
 
 ## Conversation: `conversation`
 
-Starts a conversation at location of the player. The only argument is ID of the conversation. This bypasses the conversation permission!
+Starts a conversation at location of the player. 
+The first argument is ID of the conversation. This bypasses the conversation permission!
+
+The optional `option` argument is a NPC option where the conversation will start.
+When using this argument the conversation will start without its header. 
 
 !!! example
     ```YAML
     conversation village_smith
+    conversation tutorial option:explain_world
     ```
 
 ## Damage player: `damage`
