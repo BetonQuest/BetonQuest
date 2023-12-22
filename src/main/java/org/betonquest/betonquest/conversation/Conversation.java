@@ -587,11 +587,12 @@ public class Conversation implements Listener {
 
     @NotNull
     private List<ResolvedOption> resolvePointers(final ResolvedOption option) throws ObjectNotFoundException, InstructionParseException {
-        final List<String> rawPointers = option.conversationData().getPointers(onlineProfile, option);
+        final ConversationData nextConvData = option.conversationData();
+        final List<String> rawPointers = nextConvData.getPointers(onlineProfile, option);
         final List<ResolvedOption> pointers = new ArrayList<>();
         for (final String pointer : rawPointers) {
             final OptionType nextType = option.type() == PLAYER ? NPC : PLAYER;
-            pointers.add(new ConversationOptionResolver(plugin, pack, conv.identifier.getBaseID(), nextType, pointer).resolve());
+            pointers.add(new ConversationOptionResolver(plugin, nextConvData.getPack(), nextConvData.getName(), nextType, pointer).resolve());
         }
         return pointers;
     }
@@ -782,8 +783,16 @@ public class Conversation implements Listener {
      */
     private class PlayerEventRunner extends BukkitRunnable {
 
+        /**
+         * The option that has been selected.
+         */
         private final ResolvedOption option;
 
+        /**
+         * Creates a new PlayerEventRunner with the option that has been selected by the player.
+         *
+         * @param option the option that has been selected by the player
+         */
         public PlayerEventRunner(final ResolvedOption option) {
             super();
             this.option = option;

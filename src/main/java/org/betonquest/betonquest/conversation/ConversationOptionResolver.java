@@ -76,7 +76,7 @@ public class ConversationOptionResolver {
                 optionName = parts[0];
             }
             default -> throw new InstructionParseException("Invalid conversation pointer format in package '"
-                    + currentPackage.getQuestPath() + "', conversation '" + currentConversationName + "':" + option);
+                    + currentPackage.getQuestPath() + "', conversation '" + currentConversationName + "': " + option);
         }
     }
 
