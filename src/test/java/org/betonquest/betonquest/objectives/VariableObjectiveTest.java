@@ -17,21 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class VariableObjectiveTest {
-    @ParameterizedTest
-    @MethodSource("serializedVariableObjectiveData")
-    void loading_variables_from_serialized_data(final String serializedData, final String expectedKey, final String expectedValue, @Mock final Profile profile) {
-        final VariableObjective.VariableData data = new VariableObjective.VariableData(serializedData, profile, "");
-        final String value = data.get(expectedKey);
-        assertEquals(expectedValue, value, "Values from deserialized variable objective instruction should be correct.");
-    }
-
-    @ParameterizedTest
-    @MethodSource("serializableVariableObjectiveData")
-    void storing_variables_as_serialized_data(final Map<String, String> variables, final String expectedData) {
-        final String serialized = VariableObjective.VariableData.serializeData(variables);
-        assertEquals(expectedData, serialized, "Serialized variable objective data instruction should be correct.");
-    }
-
     public static Stream<Arguments> serializedVariableObjectiveData() {
         return Stream.of(
                 Arguments.of("", "any", null),
@@ -41,15 +26,15 @@ class VariableObjectiveTest {
                 Arguments.of("one:1\ntwo:22\nthree:333", "two", "22"),
                 Arguments.of("one:1\ntwo:22\nthree:333", "three", "333"),
                 Arguments.of("one:1\ntwo:22\nthree:333", "four", null),
-                Arguments.of("newline:This is a\\nnewline test!", "newline", "This is a\nnewline test!"),
+                Arguments.of("newline:This is a\\nnewline test!", "newline", "This is a\\nnewline test!"),
                 Arguments.of("newline:This is a\nnewline test!", "newline", "This is a\nnewline test!"),
                 Arguments.of("newline:This is a\nnewline test!", "newline test!", null),
-                Arguments.of("multi-newline:This\\nis\\na\\nmulti\\nnewline\\ntest!", "multi-newline", "This\nis\na\nmulti\nnewline\ntest!"),
+                Arguments.of("multi-newline:This\\nis\\na\\nmulti\\nnewline\\ntest!", "multi-newline", "This\\nis\\na\\nmulti\\nnewline\\ntest!"),
                 Arguments.of("multi-newline:This\nis\na\nmulti\nnewline\ntest!", "multi-newline", "This\nis\na\nmulti\nnewline\ntest!"),
                 Arguments.of("first-newliner:This is a\nnewline test!\nsecond-newliner:This also\ncontains a newline!", "first-newliner", "This is a\nnewline test!"),
                 Arguments.of("first-newliner:This is a\nnewline test!\nsecond-newliner:This also\ncontains a newline!", "second-newliner", "This also\ncontains a newline!"),
-                Arguments.of("first-newliner:This is a\\nnewline test!\nsecond-newliner:This also\\ncontains a newline!", "first-newliner", "This is a\nnewline test!"),
-                Arguments.of("first-newliner:This is a\\nnewline test!\nsecond-newliner:This also\\ncontains a newline!", "second-newliner", "This also\ncontains a newline!"),
+                Arguments.of("first-newliner:This is a\\nnewline test!\nsecond-newliner:This also\\ncontains a newline!", "first-newliner", "This is a\\nnewline test!"),
+                Arguments.of("first-newliner:This is a\\nnewline test!\nsecond-newliner:This also\\ncontains a newline!", "second-newliner", "This also\\ncontains a newline!"),
                 Arguments.of("contains_colon:This: Is a test.", "contains_colon", "This: Is a test."),
                 Arguments.of("contains_colon:This\\: Is a test.", "contains_colon", "This: Is a test."),
                 Arguments.of("rou\\ge:backslash", "rou\\ge", "backslash"),
@@ -63,9 +48,9 @@ class VariableObjectiveTest {
                 Arguments.of("ending\\::\\:beginning", "ending:", ":beginning"),
                 Arguments.of("escaped_escape\\\\:does_not_escape", "escaped_escape\\", "does_not_escape"),
                 Arguments.of(" starts_with_space : ends with space ", " starts_with_space ", " ends with space "),
-                Arguments.of("newline\\nin_key?:That's fancy!", "newline\nin_key?", "That's fancy!"),
+                Arguments.of("newline\\nin_key?:That's fancy!", "newline\\nin_key?", "That's fancy!"),
                 Arguments.of("test:works\nnewline_in\\nsecond_key?:That's fancy!", "test", "works"),
-                Arguments.of("test:works\nnewline_in\\nsecond_key?:That's fancy!", "newline_in\nsecond_key?", "That's fancy!"),
+                Arguments.of("test:works\nnewline_in\\nsecond_key?:That's fancy!", "newline_in\\nsecond_key?", "That's fancy!"),
                 Arguments.of("test:works\n\\\\:Only backslash key!", "test", "works"),
                 Arguments.of("test:works\n\\\\:Only backslash key!", "\\", "Only backslash key!"),
                 Arguments.of("test:works\n\\\\\\\\\\\\:Multi backslash key!", "test", "works"),
@@ -103,5 +88,20 @@ class VariableObjectiveTest {
             map.put(values[index], values[index + 1]);
         }
         return map;
+    }
+
+    @ParameterizedTest
+    @MethodSource("serializedVariableObjectiveData")
+    void loading_variables_from_serialized_data(final String serializedData, final String expectedKey, final String expectedValue, @Mock final Profile profile) {
+        final VariableObjective.VariableData data = new VariableObjective.VariableData(serializedData, profile, "");
+        final String value = data.get(expectedKey);
+        assertEquals(expectedValue, value, "Values from deserialized variable objective instruction should be correct.");
+    }
+
+    @ParameterizedTest
+    @MethodSource("serializableVariableObjectiveData")
+    void storing_variables_as_serialized_data(final Map<String, String> variables, final String expectedData) {
+        final String serialized = VariableObjective.VariableData.serializeData(variables);
+        assertEquals(expectedData, serialized, "Serialized variable objective data instruction should be correct.");
     }
 }
