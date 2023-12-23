@@ -1,5 +1,5 @@
 #MkDocs and the MkDocs-material theme
-mkdocs-material==9.1.21
+mkdocs-material==9.5.2
 
 mkdocs-snippets
 
