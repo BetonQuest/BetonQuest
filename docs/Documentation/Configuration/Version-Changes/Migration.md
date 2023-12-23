@@ -28,6 +28,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
 - [2.0.0-DEV-647 - EffectLib](#200-dev-647-effectlib) :gear:
 - [2.0.0-DEV-674 - MMO Updates](#200-dev-674-mmo-updates) :gear:
 - [2.0.0-DEV-749 - Static Event Rework](#200-dev-749-static-event-rework) :gear:
+- [2.0.0-DEV-769 - RemoveEntity-Event](#200-dev-769-removeentity-event) :gear:
 
 ### 2.0.0-DEV-98 - RPGMenu Merge :gear:
 
@@ -442,3 +443,31 @@ npc_holograms:
         /q event - <package>.<event>
         ```
         The `-` is important, it means run independent :wink:.
+
+### 2.0.0-DEV-769 - RemoveEntity-Event :gear:
+
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+    
+    As you probably noticed, the 'ClearEntity' event and the 'KillMob' event did almost the same thing.
+    Both got merged into the [RemoveEntity event](../../Scripting/Building-Blocks/Events-List.md#remove-entity-removeentity),
+    while keeping the syntax more or less the same.
+    
+    <div class="grid" markdown>
+    
+    ```YAML title="Old Syntax"
+    events:
+      clearArea: 'clear ZOMBIE,CREEPER 100;200;300;world 10 name:Monster'
+      killBolec: 'killmob ZOMBIE 100;200;300;world 40 name:Bolec'
+    ```
+    
+    ```YAML title="New Syntax"
+    events:
+      clearArea: 'removeentity ZOMBIE,CREEPER 100;200;300;world 10 name:Monster'
+      killBolec: 'removeentity ZOMBIE 100;200;300;world 40 name:Bolec kill'
+    ```
+    
+    
+    </div>

@@ -7,6 +7,7 @@ import org.betonquest.betonquest.modules.config.patcher.migration.migrators.NpcH
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.PackageSection;
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.PackageStructure;
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.RPGMenuMerge;
+import org.betonquest.betonquest.modules.config.patcher.migration.migrators.RemoveEntity;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -35,6 +36,7 @@ public class Migrator {
         migrations.add(new NpcHolograms(provider));
         migrations.add(new EffectLib(provider));
         migrations.add(new MmoUpdates(provider));
+        migrations.add(new RemoveEntity(provider));
     }
 
     /**

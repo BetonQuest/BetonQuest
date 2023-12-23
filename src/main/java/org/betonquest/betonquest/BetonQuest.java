@@ -932,7 +932,7 @@ public class BetonQuest extends JavaPlugin {
         registerNonStaticEvent("deleffect", new DeleteEffectEventFactory(loggerFactory, getServer(), getServer().getScheduler(), this));
         registerEvent("deletepoint", new DeletePointEventFactory());
         registerEvents("spawn", SpawnMobEvent.class);
-        registerEvent("killmob", new RemoveEntityEventFactory(getServer(), getServer().getScheduler(), this));
+        registerEvent("removeentity", new RemoveEntityEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvent("time", new TimeEventFactory(getServer(), getServer().getScheduler(), this));
         registerNonStaticEvent("weather", new WeatherEventFactory(loggerFactory, getServer(), getServer().getScheduler(), this));
         registerEvents("folder", FolderEvent.class);
@@ -940,7 +940,6 @@ public class BetonQuest extends JavaPlugin {
         registerNonStaticEvent("stage", new StageEventFactory(this));
         registerNonStaticEvent("damage", new DamageEventFactory(loggerFactory, getServer(), getServer().getScheduler(), this));
         registerNonStaticEvent("party", new PartyEventFactory(loggerFactory));
-        registerEvent("clear", new RemoveEntityEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvents("run", RunEvent.class);
         registerNonStaticEvent("givejournal", new GiveJournalEventFactory(loggerFactory, getServer(), getServer().getScheduler(), this));
         registerNonStaticEvent("sudo", new SudoEventFactory(loggerFactory, getServer(), getServer().getScheduler(), this));

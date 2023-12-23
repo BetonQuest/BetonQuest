@@ -92,8 +92,7 @@ public class RemoveEntityEvent implements Event {
                                 .anyMatch(metadataValue -> metadataValue.asString().equals(marked.getString(profile)));
                     })
                     .forEach(entity -> {
-                                if (kill) {
-                                    final LivingEntity mob = (LivingEntity) entity;
+                                if (kill && entity instanceof final LivingEntity mob) {
                                     mob.setHealth(0);
                                 } else {
                                     entity.remove();

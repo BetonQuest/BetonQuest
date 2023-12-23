@@ -10,9 +10,9 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Handles the mmo_updates migration.
+ * Handles the remove entity migration.
  */
-public class MmoUpdates implements Migration {
+public class RemoveEntity implements Migration {
 
     /**
      * The configs to migrate.
@@ -24,7 +24,7 @@ public class MmoUpdates implements Migration {
      *
      * @param provider The config provider
      */
-    public MmoUpdates(final FileConfigurationProvider provider) {
+    public RemoveEntity(final FileConfigurationProvider provider) {
         this.producer = provider;
     }
 
@@ -34,20 +34,21 @@ public class MmoUpdates implements Migration {
         for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
             final File file = entry.getKey();
             final YamlConfiguration config = entry.getValue();
-            final ConfigurationSection objectives = config.getConfigurationSection("objectives");
-            if (objectives == null) {
+            final ConfigurationSection events = config.getConfigurationSection("events");
+            if (events == null) {
                 continue;
             }
-            for (final String key : objectives.getKeys(false)) {
-                final String value = config.getString("objectives." + key);
+            for (final String key : events.getKeys(false)) {
+                final String value = config.getString("events." + key);
                 if (value == null) {
                     continue;
                 }
-                if (value.startsWith("mmocorecastskill ")) {
-                    config.set("objectives." + key, "mmoskill " + value.substring("mmocorecastskill ".length()) + " trigger:CAST");
+                if (value.startsWith("clear ")) {
+                    config.set("events." + key, "removeentity " + value.substring("clear ".length()));
                     config.save(file);
-                } else if (value.startsWith("mmoitemcastability ")) {
-                    config.set("objectives." + key, "mmoskill " + value.substring("mmoitemcastability ".length()) + " trigger:RIGHT_CLICK");
+                }
+                if (value.startsWith("killmob ")) {
+                    config.set("events." + key, "removeentity " + value.substring("killmob ".length()) + " kill");
                     config.save(file);
                 }
             }

@@ -190,6 +190,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `variable` condition supports escapable underscores to avoid replacement
 - `kill` event - now kills the player, instead of dealing damage, which is more reliable
 - `lightning` event - now has a new noDamage argument
+- `clear` and `killmob' events - got replaced by new `removeentity` event
 - the line length of `SlowTellRaw` conversation IO from 60 to 50 to fit the actual minecraft chat
 - Things that are also changed in 1.12.X:
     - math variable now allows rounding output with the ~ operator
