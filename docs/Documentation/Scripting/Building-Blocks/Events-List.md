@@ -76,15 +76,6 @@ This event works the same as `take` event, but it takes items from a chest at sp
     chesttake 100;200;300;world emerald:5,sword
     ```
 
-## Clear entities: `clear`
-
-This event removes all specified mobs from the specified area. The first required argument is a list of mobs (taken from [here](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html)) separated by commas. Next is location. After that there is the radius around the location (a positive number or a variable). You can also optionally specify `name:` argument, followed by name which removed mobs must have. You can use `marked:` argument to remove only mobs marked in `spawn` event.
-
-!!! example
-    ```YAML
-    clear ZOMBIE,CREEPER 100;200;300;world 10 name:Monster
-    ```
-
 ## Compass: `compass`
 
 When you run this event, you can add or remove a compass destination for the player. You may also directly set the player's compass destination as well. When a destination is added the player will be able to select a specified location as a target of his compass. To select the target the player must open his backpack and click on the compass icon. The first argument is `add`,`del` or `set`, and second one is the name of the target, as defined in the _compass_ section. Note that if you set a target the player will not automatically have it added to their choices.
@@ -436,24 +427,6 @@ Possible actions are:
 
 Kills the player. Nothing else.
 
-## Kill Mobs: `killmob`
- 
-**persistent**, **static**
-
-Kills all mobs of given type at the location. First argument is
-the [type of the mob](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html). Next argument is the
-location. Third argument is the radius around the location, in which the mobs must be to get killed.  
-You can also specify `name:` argument, followed by the name of the mob which should get killed. All `_` characters will
-be replaced with spaces. If you want to kill only mobs that have been marked using the spawn mob event use `marked:`
-argument followed by the keyword.
-
-Only mobs that are in loaded chunks can be killed by using this event.
-
-!!! example
-    ```YAML
-    killmob ZOMBIE 100;200;300;world 40 name:Bolec
-    ```
-
 ## Language Event: `language`
 
 **persistent**
@@ -592,6 +565,29 @@ loseAttitude: "point npc_attitude 2 action:subtract"
 resetCombo: "point combo 0 action:set"
 boostPoints: "point points 1.25 action:multiply notify"
 ```
+
+## Remove entity: `removeentity`
+
+**persistent**, **static**
+
+Removes or kill all entities (mobs) of given type at the location. You can look up all [type of entity's](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html).
+
+Can only effect loaded entities!
+
+| Parameter   | Syntax                                                                       | Default Value          | Explanation                                                                                                                                 |
+|-------------|------------------------------------------------------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| _entity(s)_ | `entity,entity`                                                              | :octicons-x-circle-16: | Required. List of entity's (separated by `,`).                                                                                              |
+| _location_  | [Unified Location Formatting](../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | Required. The center location of the target entity's.                                                                                       |
+| _radius_    | Number                                                                       | :octicons-x-circle-16: | Required. The radius around the location. Can be a variable.                                                                                |
+| _name_      | `name:name`                                                                  | :octicons-x-circle-16: | Name of the entity. All `_` will be replaced with spaces.                                                                                   |
+| _marked_    | `marked:mark`                                                                | :octicons-x-circle-16: | Mark of the entity (form the [spawn event](../../Scripting/Building-Blocks/Events-List.md#spawn-mob-spawn) for example). Can be a variable. |
+| _kill_      | `kill`                                                                       | :octicons-x-circle-16: | Whether to remove or actually kill the entity (if possible).                                                                                |
+
+```YAML title="Example"
+killArenaMobs: "removeentity ZOMBIE 100;200;300;world 10 name:Monster kill"
+clearGameArea: "removeentity ARROW,SNOWBALL,WOLF,ARMOR_STAND 100;200;300;world 50 marked:minigame"
+```
+
 
 ## Run events: `run`
 
