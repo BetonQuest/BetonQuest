@@ -45,6 +45,7 @@ public class ProtocolLibIntegrator implements Integrator {
         }
         plugin.registerConversationIO("menu", MenuConvIO.class);
         plugin.registerInterceptor("packet", PacketInterceptor.class);
+        plugin.registerEvents("freeze", FreezeEvent.class);
     }
 
     @Override

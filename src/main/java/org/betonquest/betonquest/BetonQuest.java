@@ -961,7 +961,6 @@ public class BetonQuest extends JavaPlugin {
         registerNonStaticEvent("notify", new NotifyEventFactory(loggerFactory, getServer(), getServer().getScheduler(), this));
         registerEvent("notifyall", new NotifyAllEventFactory(loggerFactory, getServer(), getServer().getScheduler(), this));
         registerNonStaticEvent("chat", new ChatEventFactory(loggerFactory, getServer(), getServer().getScheduler(), this));
-        registerEvents("freeze", FreezeEvent.class);
         registerNonStaticEvent("burn", new BurnEventFactory(loggerFactory, getServer(), getServer().getScheduler(), this));
         registerNonStaticEvent("velocity", new VelocityEventFactory(loggerFactory, getServer(), getServer().getScheduler(), this));
         registerNonStaticEvent("hunger", new HungerEventFactory(loggerFactory, getServer(), getServer().getScheduler(), this));
