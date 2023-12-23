@@ -570,7 +570,7 @@ boostPoints: "point points 1.25 action:multiply notify"
 
 **persistent**, **static**
 
-Removes or kill all entities (mobs) of given type at the location. You can look up all [type of entity's](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html).
+Removes or kill all entities (mobs) of given type at the location. Here you can look up all [type's of entity's](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html).
 
 Can only effect loaded entities!
 

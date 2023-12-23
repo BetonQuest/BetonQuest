@@ -43,10 +43,10 @@ public class MmoUpdates implements Migration {
                 if (value == null) {
                     continue;
                 }
-                if (value.startsWith("mmocorecastskill")) {
+                if (value.startsWith("mmocorecastskill ")) {
                     config.set("objectives." + key, "mmoskill " + value.substring("mmocorecastskill ".length()) + " trigger:CAST");
                     config.save(file);
-                } else if (value.startsWith("mmoitemcastability")) {
+                } else if (value.startsWith("mmoitemcastability ")) {
                     config.set("objectives." + key, "mmoskill " + value.substring("mmoitemcastability ".length()) + " trigger:RIGHT_CLICK");
                     config.save(file);
                 }

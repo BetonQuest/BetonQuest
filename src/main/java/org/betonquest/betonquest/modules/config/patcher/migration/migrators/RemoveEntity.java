@@ -43,11 +43,11 @@ public class RemoveEntity implements Migration {
                 if (value == null) {
                     continue;
                 }
-                if (value.startsWith("clear")) {
+                if (value.startsWith("clear ")) {
                     config.set("events." + key, "removeentity " + value.substring("clear ".length()));
                     config.save(file);
                 }
-                if (value.startsWith("killmob")) {
+                if (value.startsWith("killmob ")) {
                     config.set("events." + key, "removeentity " + value.substring("killmob ".length()) + " kill");
                     config.save(file);
                 }
