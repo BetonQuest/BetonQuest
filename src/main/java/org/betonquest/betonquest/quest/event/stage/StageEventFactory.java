@@ -11,6 +11,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.objectives.StageObjective;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
@@ -50,13 +51,24 @@ public class StageEventFactory implements EventFactory {
     }
 
     private Event createIncreaseEvent(final Instruction instruction, final ObjectiveID objectiveID) throws InstructionParseException {
-        final VariableNumber amount = instruction.hasNext() ? instruction.getVarNum() : null;
+        final VariableNumber amount = getVariableNumber(instruction);
         return new StageEvent(profile -> getStageObjective(objectiveID).increaseStage(profile, getAmount(profile, amount)));
     }
 
     private Event createDecreaseEvent(final Instruction instruction, final ObjectiveID objectiveID) throws InstructionParseException {
-        final VariableNumber amount = instruction.hasNext() ? instruction.getVarNum() : null;
+        final VariableNumber amount = getVariableNumber(instruction);
         return new StageEvent(profile -> getStageObjective(objectiveID).decreaseStage(profile, getAmount(profile, amount)));
+    }
+
+    @Nullable
+    private VariableNumber getVariableNumber(final Instruction instruction) throws InstructionParseException {
+        if (instruction.hasNext()) {
+            final String stringAmount = instruction.next();
+            if (!stringAmount.matches("condition(s)?:.+")) {
+                return new VariableNumber(instruction.getPackage(), stringAmount);
+            }
+        }
+        return null;
     }
 
     private int getAmount(final Profile profile, final VariableNumber amount) throws QuestRuntimeException {
