@@ -13,6 +13,7 @@ import org.bukkit.profile.PlayerTextures;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -84,7 +85,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
      * @return the skin URL
      */
     private URL resolveSkinURL(final String base64Texture) throws SkinFormatParseException {
-        final String decoded = new String(Base64.getDecoder().decode(base64Texture));
+        final String decoded = new String(Base64.getDecoder().decode(base64Texture), StandardCharsets.UTF_8);
         final Matcher matcher = SKIN_JSON_URL_PATTERN.matcher(decoded);
         if (!matcher.find()) {
             throw new SkinFormatParseException("Could not find the skin URL in the skin JSON!");
