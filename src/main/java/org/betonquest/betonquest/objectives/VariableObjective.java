@@ -111,24 +111,6 @@ public class VariableObjective extends Objective implements Listener {
             variables = deserializeData(instruction);
         }
 
-        public String get(final String key) {
-            return variables.get(key);
-        }
-
-        public void add(final String key, final String value) {
-            if (value == null || value.isEmpty()) {
-                variables.remove(key);
-            } else {
-                variables.put(key, value);
-            }
-            update();
-        }
-
-        @Override
-        public String toString() {
-            return serializeData(variables);
-        }
-
         public static String serializeData(final Map<String, String> values) {
             final StringBuilder builder = new StringBuilder();
             for (final Entry<String, String> entry : values.entrySet()) {
@@ -167,9 +149,27 @@ public class VariableObjective extends Objective implements Listener {
 
         private static String deserializePart(final String part) {
             return part
-                    .replace("\\n", "\n")
+                    .replace("\\\\n", "\n")
                     .replace("\\:", ":")
                     .replace("\\\\", "\\");
+        }
+
+        public String get(final String key) {
+            return variables.get(key);
+        }
+
+        public void add(final String key, final String value) {
+            if (value == null || value.isEmpty()) {
+                variables.remove(key);
+            } else {
+                variables.put(key, value);
+            }
+            update();
+        }
+
+        @Override
+        public String toString() {
+            return serializeData(variables);
         }
     }
 }
