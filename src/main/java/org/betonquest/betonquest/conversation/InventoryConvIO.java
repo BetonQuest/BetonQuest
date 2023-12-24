@@ -154,13 +154,13 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
         if (player.getGameMode() == GameMode.SPECTATOR) {
             conv.endConversation();
-            player.closeInventory();
+            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> player.closeInventory());
             conv.getInterceptor().sendMessage(Config.getMessage(PlayerConverter.getID(player).getProfileUUID().toString(), "conversation_spectator"));
             return;
         }
         if (response == null) {
             end();
-            player.closeInventory();
+            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> player.closeInventory());
             return;
         }
         if (options.isEmpty()) {
@@ -395,7 +395,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     public void end() {
         allowClose = true;
         if (inv != null) {
-            player.closeInventory();
+            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> player.closeInventory());
         }
     }
 
