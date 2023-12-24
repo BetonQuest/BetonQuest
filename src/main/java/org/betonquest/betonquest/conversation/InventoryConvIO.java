@@ -46,42 +46,24 @@ public class InventoryConvIO implements Listener, ConversationIO {
     private final BetonQuestLogger log;
 
     protected String response;
-
     protected Map<Integer, String> options = new HashMap<>();
-
     protected int playerOptionsCount;
-
     protected String npcName;
-
     protected String npcNameColor;
-
     protected String npcTextColor;
-
     protected String numberFormat;
-
     protected String optionColor;
-
     protected String answerPrefix;
-
     protected Conversation conv;
-
     protected Player player;
-
     protected Inventory inv;
-
     protected boolean processingLastClick;
-
-    protected boolean allowClose;
-
+    protected boolean allowListenerUnregister;
     protected boolean switching;
-
     protected Location loc;
-
     protected boolean printMessages;
-
     // Config
     protected boolean showNumber = true;
-
     protected boolean showNPCText = true;
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
@@ -158,14 +140,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             conv.getInterceptor().sendMessage(Config.getMessage(PlayerConverter.getID(player).getProfileUUID().toString(), "conversation_spectator"));
             return;
         }
-        if (response == null) {
-            end();
-            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> player.closeInventory());
-            return;
-        }
-        if (options.isEmpty()) {
-            end();
-        }
+
         // each row contains 7 options, so get amount of rows
         int rows = options.size() / 7;
         rows++;
@@ -362,7 +337,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             return;
         }
         // allow closing when the conversation has finished
-        if (allowClose) {
+        if (allowListenerUnregister) {
             HandlerList.unregisterAll(this);
             return;
         }
@@ -393,8 +368,10 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
     @Override
     public void end() {
-        allowClose = true;
-        if (inv != null) {
+        allowListenerUnregister = true;
+        // If a conversation's next option (this was actually it's previous / last option because this is called at the conversation's ending)
+        // is null, the previous option was a player's response. If the player ended the conversation we want to close the inventory.
+        if (inv != null && conv.nextNPCOption == null) {
             Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> player.closeInventory());
         }
     }
