@@ -97,8 +97,17 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
         }
     }
 
+    /**
+     * A CitizensInventoryConvIO that also prints the messages in the chat.
+     */
     public static class CitizensCombined extends CitizensInventoryConvIO {
 
+        /**
+         * Creates a new {@link CitizensCombined} conversationIO instance.
+         *
+         * @param conv          the conversation
+         * @param onlineProfile the online profile
+         */
         public CitizensCombined(final Conversation conv, final OnlineProfile onlineProfile) {
             super(conv, onlineProfile);
             super.printMessages = true;

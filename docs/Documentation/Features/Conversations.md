@@ -175,6 +175,8 @@ and the way the player interacts with them.
         <video controls loop src="../../../_media/content/Documentation/Conversations/ChestIO.mp4" width="100%">
           Sorry, your browser doesn't support embedded videos.
         </video>
+    === "Combined Style"
+        The same as the chest style but the conversation is also displayed in the chat.
     === "Simple Style"
         A chat output. The user has to write a number into their chat to select an option.
         ??? "Customizing the Simple Style"
