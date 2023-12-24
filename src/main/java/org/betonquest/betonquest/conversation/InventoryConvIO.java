@@ -26,6 +26,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -172,37 +173,23 @@ public class InventoryConvIO implements Listener, ConversationIO {
         inv = Bukkit.createInventory(null, 9 * rows, "NPC");
         inv.setContents(new ItemStack[9 * rows]);
         final ItemStack[] buttons = new ItemStack[9 * rows];
-        // set the NPC head
-        final ItemStack npc;
-        if (SKULL_CACHE.containsKey(npcName)) {
-            log.debug(conv.getPackage(), "skull cache hit");
-            npc = SKULL_CACHE.get(npcName);
-        } else {
-            log.debug(conv.getPackage(), "skull cache miss");
-            npc = new ItemStack(Material.PLAYER_HEAD);
-            npc.setDurability((short) 3);
-            final SkullMeta npcMeta = (SkullMeta) npc.getItemMeta();
-            npcMeta.setDisplayName(npcNameColor + npcName);
-            npc.setItemMeta(npcMeta);
-            Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
-                try {
-                    npc.setItemMeta(updateSkullMeta((SkullMeta) npc.getItemMeta()));
-                    Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
-                        SKULL_CACHE.put(npcName, npc);
-                        inv.setItem(0, npc);
-                    });
-                } catch (final IllegalArgumentException e) {
-                    log.debug(conv.getPackage(), "Could not load skull for chest conversation!", e);
-                }
-            });
+        buttons[0] = createNpcHead();
+        generateRows(rows, buttons);
+
+        if (printMessages) {
+            conv.sendMessage(npcNameColor + npcName + ChatColor.RESET + ": " + npcTextColor + response);
         }
 
-        final SkullMeta npcMeta = (SkullMeta) npc.getItemMeta();
-        npcMeta.setLore(Arrays.asList(LocalChatPaginator.wordWrap(
-                Utils.replaceReset(response, npcTextColor), 45)));
-        npc.setItemMeta(npcMeta);
+        Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
+            inv.setContents(buttons);
+            switching = true;
+            player.openInventory(inv);
+            switching = false;
+            processingLastClick = false;
+        });
+    }
 
-        buttons[0] = npc;
+    private void generateRows(final int rows, final ItemStack[] buttons) {
         // this is the number of an option
         int next = 0;
         // now fill the slots
@@ -282,16 +269,39 @@ public class InventoryConvIO implements Listener, ConversationIO {
             item.setItemMeta(meta);
             buttons[j] = item;
         }
-        if (printMessages) {
-            conv.sendMessage(npcNameColor + npcName + ChatColor.RESET + ": " + npcTextColor + response);
+    }
+
+    @NotNull
+    private ItemStack createNpcHead() {
+        final ItemStack npcHead;
+        if (SKULL_CACHE.containsKey(npcName)) {
+            log.debug(conv.getPackage(), "skull cache hit");
+            npcHead = SKULL_CACHE.get(npcName);
+        } else {
+            log.debug(conv.getPackage(), "skull cache miss");
+            npcHead = new ItemStack(Material.PLAYER_HEAD);
+            npcHead.setDurability((short) 3);
+            final SkullMeta npcMeta = (SkullMeta) npcHead.getItemMeta();
+            npcMeta.setDisplayName(npcNameColor + npcName);
+            npcHead.setItemMeta(npcMeta);
+            Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
+                try {
+                    npcHead.setItemMeta(updateSkullMeta((SkullMeta) npcHead.getItemMeta()));
+                    Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
+                        SKULL_CACHE.put(npcName, npcHead);
+                        inv.setItem(0, npcHead);
+                    });
+                } catch (final IllegalArgumentException e) {
+                    log.debug(conv.getPackage(), "Could not load skull for chest conversation!", e);
+                }
+            });
         }
-        Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
-            inv.setContents(buttons);
-            switching = true;
-            player.openInventory(inv);
-            switching = false;
-            processingLastClick = false;
-        });
+
+        final SkullMeta npcMeta = (SkullMeta) npcHead.getItemMeta();
+        npcMeta.setLore(Arrays.asList(LocalChatPaginator.wordWrap(
+                Utils.replaceReset(response, npcTextColor), 45)));
+        npcHead.setItemMeta(npcMeta);
+        return npcHead;
     }
 
     @SuppressWarnings("deprecation")
