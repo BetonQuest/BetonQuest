@@ -1,9 +1,14 @@
 package org.betonquest.betonquest.compatibility.citizens;
 
+import java.io.Serial;
+
 /**
  * An exception that is thrown when the base64 skin JSON is invalid.
  */
 public class SkinFormatParseException extends Exception {
+
+    @Serial
+    private static final long serialVersionUID = -6313544890230009673L;
 
     /**
      * {@link Exception#Exception(String)}
