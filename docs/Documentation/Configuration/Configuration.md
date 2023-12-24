@@ -90,15 +90,17 @@ value: `500`
 `max_npc_distance` is the distance you need to walk away from the NPC for the conversation to end (in the case of using
 chat-based conversation interface).
 
-### Default conversation style
+### Default Conversation Style
 
-`default_conversation_IO` is a comma-separated list of conversation interfaces with the first valid one used.
-Read [this page](../Features/Conversations.md) for more information about conversation interfaces.
+`default_conversation_IO` is a comma-separated list of conversation styles. The first one that is loaded
+(depending on the available 3rd party plugin integrations) is used.
+See [conversation styles](../Features/Conversations.md#conversation-displaying) for supported styles.
 
 ### Default Chat interceptor
 
-`default_interceptor` is a comma-separated list of chat interceptors with the first valid one used.
-Read [this page](../Features/Conversations.md) for more information about chat interceptors.
+`default_interceptor` is a comma-separated list of chat interceptors. The first one that is loaded
+(depending on the available 3rd party plugin integrations) is used.
+See [chat interceptors](../Features/Conversations.md#chat-interceptors) for supported chat interceptors.
 
 ### Default Hologram Plugin
 The holograms related features work with multiple plugins.
