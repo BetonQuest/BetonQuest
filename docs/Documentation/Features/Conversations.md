@@ -96,8 +96,16 @@ You can assign the same conversation to multiple NPCs.
 BetonQuest provides different conversation styles, so called "conversationIO's". They differ in their visual style
 and the way the player interacts with them.
 
+BetonQuest uses the `menu` style by default. If ProtocolLib is not installed, the `chest` style will be used.
+You can change this setting globally by changing the [`default_conversation_IO`](../Configuration/Configuration.md#default-conversation-style) option in the _config.yml_ file.
+
+It is also possible to override this setting per conversation. Add a `conversationIO:
+<type>` setting to the conversation file at the top of the YAML hierarchy (which is the same level as `quester` or `first` options).
+
+In both cases, you can choose from the following conversation styles:
+
 !!! example "Conversation Styles"
-    === "Menu Style"
+    === "`menu`"
         A modern conversation style that works with some of Minecraft's native controls.
         
         **Requires [ProtocolLib](https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/)**
@@ -162,7 +170,7 @@ and the way the player interacts with them.
           Sorry, your browser doesn't support embedded videos.
         </video>
         The blue overlay shows the player's key presses.
-    === "Chest Style"
+    === "`chest`"
         A chest GUI with clickable buttons where the NPC's text and options will be shown as item lore.
         ??? "Customizing the Chest Style"
             The colors of this style can be configured with the [`conversation_colors` config option](../Configuration/Configuration.md#conversation-colors).
@@ -175,29 +183,24 @@ and the way the player interacts with them.
         <video controls loop src="../../../_media/content/Documentation/Conversations/ChestIO.mp4" width="100%">
           Sorry, your browser doesn't support embedded videos.
         </video>
-    === "Combined Style"
+    === "`combined`"
         The same as the chest style but the conversation is also displayed in the chat.
-    === "Simple Style"
+    === "`simple`"
         A chat output. The user has to write a number into their chat to select an option.
         ??? "Customizing the Simple Style"
             The colors of this style can be configured with the [`conversation_colors` config option](../Configuration/Configuration.md#conversation-colors).
         ![SimpleIO](../../_media/content/Documentation/Conversations/SimpleIO.png)
-    === "Tellraw Style"
+    === "`tellraw`"
         The same as the simple style but the user can also click the numbers instead of writing them in the chat.
         ??? "Customizing the Simple Style"
             The colors of this style can be configured with the [`conversation_colors` config option](../Configuration/Configuration.md#conversation-colors).
         ![SimpleIO](../../_media/content/Documentation/Conversations/SimpleIO.png)
-    === "Slowtellraw Style"
+    === "`slowtellraw`"
         The same as tellraw style but the NPC's text is printed line by line, delayed by 0.5 seconds.
         ??? "Customizing the Simple Style"
             The colors of this style can be configured with the [`conversation_colors` config option](../Configuration/Configuration.md#conversation-colors).
         ![SimpleIO](../../_media/content/Documentation/Conversations/SimpleIO.png)
 
-BetonQuest uses the `menu` style by default. If ProtocolLib is not installed, the `chest` style will be used.
-You can however change the utilized conversationIO by changing the `default_conversation_IO` option in the _config.yml_ file.
-
-In case you want to use a different type of conversation display for just one specific conversation you can add a `conversationIO:
-<type>` setting to the conversation file at the top of the YAML hierarchy (which is the same level as `quester` or `first` options).
 
 ## Cross-Conversation Pointers
 
