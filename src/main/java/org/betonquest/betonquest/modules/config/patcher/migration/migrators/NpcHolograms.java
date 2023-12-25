@@ -107,7 +107,13 @@ public class NpcHolograms implements Migration {
             subConfig.set(VECTOR, null);
         } else {
             final String[] split = vector.split(";");
-            subConfig.set(VECTOR, split[0] + (Integer.parseInt(split[1]) - 3) + split[2]);
+            String yVector;
+            try {
+                yVector = String.valueOf(Double.parseDouble(split[1]) - 3);
+            } catch (final NumberFormatException e) {
+                yVector = split[1];
+            }
+            subConfig.set(VECTOR, split[0] + ";" + yVector + ";" + split[2]);
         }
     }
 }
