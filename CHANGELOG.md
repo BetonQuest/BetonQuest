@@ -251,6 +251,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - removed the hearts of the Armorstand in the Menu Conversation IO
 - journal entries now keep their leading whitespaces
 - exceptions in `sudo` and `command` events leading to broken conversations that could not be exited
+- the NPC's head could be stolen from conversations with the `chest` style
 - Things that are also fixed in 1.12.X:
     - eating of items when entering the chest conversation io actually consumed the item 
     - legacy `§x` HEX color format not working in some contexts
