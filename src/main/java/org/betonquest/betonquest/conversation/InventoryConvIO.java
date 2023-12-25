@@ -9,11 +9,7 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -389,12 +385,22 @@ public class InventoryConvIO implements Listener, ConversationIO {
     @Override
     public void end() {
         allowListenerUnregister = true;
-        // If a conversation's next option (this was actually it's previous / last option because this is called at the
-        // conversation's ending) is null, the previous option was a player's response. If the player ended the
-        // conversation we want to close the inventory.
-        if (inv != null && conv.nextNPCOption == null) {
+        if (mustBeClosed()) {
             Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> player.closeInventory());
         }
+    }
+
+    /**
+     * Checks whether the inventory must be closed when the conversation ends.
+     * <br><br>
+     * If a conversation's next option (this was actually it's previous / last option because this is called at the
+     * conversation's ending) is null, the previous option was a player's response. If the player ended the
+     * conversation we want to close the inventory.
+     *
+     * @return true if the inventory must be closed
+     */
+    private boolean mustBeClosed() {
+        return inv != null && conv.nextNPCOption == null;
     }
 
     @Override
