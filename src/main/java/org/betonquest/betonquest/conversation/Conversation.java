@@ -128,10 +128,12 @@ public class Conversation implements Listener {
      * The conversation data that is currently being used.
      */
     private ConversationData data;
+
     /**
      * The {@link ConversationIO} used to display this conversation.
      */
     private ConversationIO inOut;
+
     /**
      * The {@link Interceptor} used to hide unrelated messages while the player is in this conversation.
      */

@@ -38,6 +38,7 @@ import java.util.Map;
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidFieldNameMatchingMethodName", "PMD.AvoidLiteralsInIfCondition", "PMD.NPathComplexity"})
 public class InventoryConvIO implements Listener, ConversationIO {
+
     private static final Map<String, ItemStack> SKULL_CACHE = new HashMap<>();
 
     /**
@@ -46,24 +47,42 @@ public class InventoryConvIO implements Listener, ConversationIO {
     private final BetonQuestLogger log;
 
     protected String response;
+
     protected Map<Integer, String> options = new HashMap<>();
+
     protected int playerOptionsCount;
+
     protected String npcName;
+
     protected String npcNameColor;
+
     protected String npcTextColor;
+
     protected String numberFormat;
+
     protected String optionColor;
+
     protected String answerPrefix;
+
     protected Conversation conv;
+
     protected Player player;
+
     protected Inventory inv;
+
     protected boolean processingLastClick;
+
     protected boolean allowListenerUnregister;
+
     protected boolean switching;
+
     protected Location loc;
+
     protected boolean printMessages;
+
     // Config
     protected boolean showNumber = true;
+
     protected boolean showNPCText = true;
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
