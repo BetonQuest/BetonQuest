@@ -36,7 +36,7 @@ import java.util.Map;
 /**
  * Inventory GUI for conversations.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.TooManyFields", "PMD.CommentRequired", "PMD.AvoidFieldNameMatchingMethodName", "PMD.AvoidLiteralsInIfCondition", "PMD.NPathComplexity"})
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidFieldNameMatchingMethodName", "PMD.AvoidLiteralsInIfCondition", "PMD.NPathComplexity"})
 public class InventoryConvIO implements Listener, ConversationIO {
     private static final Map<String, ItemStack> SKULL_CACHE = new HashMap<>();
 
@@ -164,7 +164,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
         });
     }
 
-    private void generateRows(final int rows, final ItemStack[] buttons) {
+    @SuppressWarnings("PMD.CognitiveComplexity")
+    private void generateRows(final int rows, final ItemStack... buttons) {
         // this is the number of an option
         int next = 0;
         // now fill the slots
@@ -369,8 +370,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
     @Override
     public void end() {
         allowListenerUnregister = true;
-        // If a conversation's next option (this was actually it's previous / last option because this is called at the conversation's ending)
-        // is null, the previous option was a player's response. If the player ended the conversation we want to close the inventory.
+        // If a conversation's next option (this was actually it's previous / last option because this is called at the
+        // conversation's ending) is null, the previous option was a player's response. If the player ended the
+        // conversation we want to close the inventory.
         if (inv != null && conv.nextNPCOption == null) {
             Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> player.closeInventory());
         }
