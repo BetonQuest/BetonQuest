@@ -1,21 +1,38 @@
 # IntelliJ
 out/
 *.ipr
+
+# All except personal as of: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+.idea/workspace.xml
+.idea/usage.statistics.xml
+.idea/shelf/
+.idea/libraries
+.idea/modules.xml
+gradle.xml
 *.iml
-modules.xml
-/.idea
-# Custom dictionaries
-!/.idea/dictionaries/
 
+# Project specific excludes
+# We have no global data sources, rather developers might add local data sources that depend on their environment
+.idea/dataSources.xml
+.idea/dataSources.local.xml
+.idea/dataSources/
+# Only include explicitly defined dictionaries
+# The personal dictionary contains the name of the computer profile so let's not share it to prevent leaks
+.idea/dictionaries/
+!.idea/dictionaries/BetonQuest.dic
+!.idea/dictionaries/Minecraft.dic
+!.idea/dictionaries/ThirdParty.dic
 
+# mpeltonen/sbt-idea plugin
+.idea_modules/
 # Mongo Explorer plugin
 .idea/**/mongoSettings.xml
+# Sonarlint plugin
+.idea/sonarlint
 
 # File-based project format
 *.iws
 
-# mpeltonen/sbt-idea plugin
-.idea_modules/
 
 # JIRA plugin
 atlassian-ide-plugin.xml
@@ -26,11 +43,6 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
-
-
-
-# Sonarlint plugin
-.idea/sonarlint
 
 ### Linux ###
 *~
