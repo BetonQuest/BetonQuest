@@ -43,8 +43,6 @@ theme:
     - search.suggest
     - content.tooltips
     - toc.follow
-    - navigation.instant
-    - navigation.instant.prefetch
 
   palette:
     - scheme: slate
