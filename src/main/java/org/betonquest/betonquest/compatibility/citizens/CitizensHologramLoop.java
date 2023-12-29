@@ -136,7 +136,7 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
                             npcHologram.holograms().add(newHologram);
                             updateHologram(newHologram);
                         } else {
-                            if (hologram.isDisable()) {
+                            if (hologram.isDisabled()) {
                                 hologram.enable();
                             }
                             hologram.move(location);

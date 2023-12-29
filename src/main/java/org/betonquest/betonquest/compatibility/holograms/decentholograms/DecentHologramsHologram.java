@@ -115,7 +115,7 @@ public class DecentHologramsHologram implements BetonHologram {
     }
 
     @Override
-    public boolean isDisable() {
+    public boolean isDisabled() {
         return hologram.isDisabled();
     }
 

@@ -98,7 +98,7 @@ public interface BetonHologram {
      *
      * @return true if disabled, false otherwise
      */
-    boolean isDisable();
+    boolean isDisabled();
 
     /**
      * Disables the hologram without deleting it

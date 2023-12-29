@@ -119,7 +119,7 @@ public class HolographicDisplaysHologram implements BetonHologram {
     }
 
     @Override
-    public boolean isDisable() {
+    public boolean isDisabled() {
         return disabled;
     }
 
