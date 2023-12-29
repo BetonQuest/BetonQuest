@@ -20,6 +20,11 @@ public class HolographicDisplaysHologram implements BetonHologram {
     private final Hologram hologram;
 
     /**
+     * Indicates whether the hologram is disabled or not.
+     */
+    private boolean disabled;
+
+    /**
      * Create a BetonHologram to wrap the given HolographicDisplays hologram
      *
      * @param hologram The hologram object to wrap
@@ -69,11 +74,17 @@ public class HolographicDisplaysHologram implements BetonHologram {
 
     @Override
     public void show(final Player player) {
+        if (disabled) {
+            return;
+        }
         hologram.getVisibilitySettings().setIndividualVisibility(player, VisibilitySettings.Visibility.VISIBLE);
     }
 
     @Override
     public void hide(final Player player) {
+        if (disabled) {
+            return;
+        }
         hologram.getVisibilitySettings().setIndividualVisibility(player, VisibilitySettings.Visibility.HIDDEN);
     }
 
@@ -84,6 +95,9 @@ public class HolographicDisplaysHologram implements BetonHologram {
 
     @Override
     public void showAll() {
+        if (disabled) {
+            return;
+        }
         final VisibilitySettings settings = hologram.getVisibilitySettings();
         settings.setGlobalVisibility(VisibilitySettings.Visibility.VISIBLE);
         settings.clearIndividualVisibilities();
@@ -91,6 +105,9 @@ public class HolographicDisplaysHologram implements BetonHologram {
 
     @Override
     public void hideAll() {
+        if (disabled) {
+            return;
+        }
         final VisibilitySettings settings = hologram.getVisibilitySettings();
         settings.setGlobalVisibility(VisibilitySettings.Visibility.HIDDEN);
         settings.clearIndividualVisibilities();
@@ -99,6 +116,23 @@ public class HolographicDisplaysHologram implements BetonHologram {
     @Override
     public void delete() {
         hologram.delete();
+    }
+
+    @Override
+    public boolean isDisable() {
+        return disabled;
+    }
+
+    @Override
+    public void disable() {
+        hideAll();
+        disabled = true;
+    }
+
+    @Override
+    public void enable() {
+        disabled = false;
+        showAll();
     }
 
     @Override
