@@ -117,8 +117,9 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
         return npcIDs;
     }
 
+    @SuppressWarnings("PMD.CognitiveComplexity")
     private void updateHologram(final NPCHologram npcHologram) {
-        npcHologram.npcHolograms.entrySet().forEach(entry -> {
+        npcHologram.npcHolograms().entrySet().forEach(entry -> {
                     final Integer npcID = entry.getKey();
                     final BetonHologram hologram = entry.getValue();
                     final NPC npc = CitizensAPI.getNPCRegistry().getById(npcID);
@@ -126,10 +127,7 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
                         if (hologram == null) {
                             return;
                         }
-                        hologram.hideAll();
-                        entry.setValue(null);
-                        npcHologram.holograms().remove(hologram);
-                        hologram.delete();
+                        hologram.disable();
                     } else {
                         final Location location = npc.getStoredLocation().add(npcHologram.vector());
                         if (hologram == null) {
@@ -138,6 +136,9 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
                             npcHologram.holograms().add(newHologram);
                             updateHologram(newHologram);
                         } else {
+                            if (hologram.isDisabled()) {
+                                hologram.enable();
+                            }
                             hologram.move(location);
                         }
                     }

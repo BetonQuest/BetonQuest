@@ -94,6 +94,23 @@ public interface BetonHologram {
     void delete();
 
     /**
+     * Whether the hologram is disabled or not
+     *
+     * @return true if disabled, false otherwise
+     */
+    boolean isDisabled();
+
+    /**
+     * Disables the hologram without deleting it
+     */
+    void disable();
+
+    /**
+     * Enables the hologram after it has been disabled
+     */
+    void enable();
+
+    /**
      * Counts the amount of lines in this hologram when called
      *
      * @return the amount of lines
