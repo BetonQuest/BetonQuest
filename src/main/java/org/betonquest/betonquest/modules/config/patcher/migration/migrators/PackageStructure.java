@@ -52,6 +52,9 @@ public class PackageStructure implements Migration {
 
     @NotNull
     private List<Path> getOldQuestFolders() throws IOException {
+        if (!Files.exists(BETONQUEST)) {
+            return List.of();
+        }
         try (Stream<Path> paths = Files.list(BETONQUEST)) {
             return paths.filter(Files::isDirectory)
                     .filter(path -> !path.equals(BETONQUEST_QUEST_PACKAGES))
