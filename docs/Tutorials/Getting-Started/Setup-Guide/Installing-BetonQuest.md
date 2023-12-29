@@ -20,5 +20,5 @@ icon: octicons/download-24
 **Once you have installed these restart your server!**
 
 ---
-[:material-arrow-right: Next Step: Understanding YAML Syntax](../Basics/YAML.md){ .md-button .md-button--primary }
+[:material-arrow-right: Next Step: Understanding YAML Syntax](./YAML.md){ .md-button .md-button--primary }
 
