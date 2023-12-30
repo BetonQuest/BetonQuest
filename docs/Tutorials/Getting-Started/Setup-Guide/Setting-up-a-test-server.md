@@ -56,7 +56,7 @@ You can stop your server by typing `stop`. Alternatively, you can press ++ctrl+c
 Restart the server and connect to it via the server address `localhost` with your Minecraft game.
 
 - **Step 7**    
-Once you joined the server, enter the following command in your server's console: `op YOUR-NAME`    
+Once you joined the server, enter the following command in your server's console: `op <YOUR-NAME>`    
 This will give you all permissions on the server, which is required for the following steps.
 
 ---
