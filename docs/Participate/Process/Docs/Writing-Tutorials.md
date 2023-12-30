@@ -4,7 +4,7 @@ icon: material/book-education
 
 # Writing Tutorials
 All tutorials must follow this structure.
-An [example for a tutorial series](https://docs.betonquest.org/2.0.0-DEV/Tutorials/Getting-Started/Basics/Conversations/),
+An [example for a tutorial series](../../../../Tutorials/Getting-Started/Basics/Conversations),
 that conforms to this standard, can be found in our documentation.
 
 Whenever the tutorial refers to downloadable examples, the `/bq download` feature is meant.
