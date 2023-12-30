@@ -8,7 +8,7 @@ These are another essential building blog of quests as they allow you to create 
 actions. This works by attaching conditions to any conversation, event or objective.
 For example, you could have a conversation option that is only available if the player has a certain item in their inventory.
 
-In this tutorial you will learn how to create and use conditions!
+In this tutorial, you will learn how to create and use conditions!
 
 <div class="grid" markdown>
 !!! danger "Requirements"
@@ -61,7 +61,7 @@ So, what are we looking at here?
 *  The Condition Instruction:
     - `time`: The first value in the instruction is always the **condition type**.
     - `6-18`: This is an option of the `time` condition. It defines the timespan in which the condition is true. In this
-      case it is true from 6am to 6pm.
+       case, it is true from 6am to 6pm.
 
 Now we've created your first condition that checks if a specific game time is set on the server. Save the file and
 continue with the next step!
@@ -78,7 +78,7 @@ Running a command is the simplest way to accomplish this:
 
 Enter `/bq condition NAME tutorialQuest.isDay` on the server.
 This command will show you the result "false" or "true" depending on what time it is.
-If it is day it should show true and if it is night, false.
+During day time, the result will show true. In the nighttime it will be false.
 
 !!! note "Tip"
        Change the world time using the `/time set day` and `/time set night` commands.
@@ -99,9 +99,9 @@ If it is day it should show true and if it is night, false.
 
 ## 4. Integrating conditions into objectives
 
-Conditions can be added to objectives to limit the players ability to progress and complete the objective.
+Conditions can be added to objectives to limit the player's ability to progress and complete the objective.
 The objective will only progress when the condition is "true".
-In this case we want to achieve that the player is only able to make progress when he's fishing at night.
+In this case, we want to achieve that the player is only able to make progress when he's fishing at night.
 Let's add the condition `isDay` to the objective:
 
 ``` YAML title="objectives.yml"
@@ -218,7 +218,7 @@ conversations:
 4. This condition ensures that the player will only see the `alreadyFoodReceived` option if he has the tag `foodReceived`.
 
 
-As you can see we also added new options to it. Now the NPC will say that you already received the food
+As you can see, we also added new options to it. Now the NPC will say that you already received the food
 and won't give you more!
 
 !!! tip "Note about testing"
@@ -284,7 +284,7 @@ conditions:
   hasDoneQuest: "tag questDone"
 ```
 Additionally, we must add the new events as well. 
-Those remove 3 cod from the players inventory and add a tag for completing the quest.
+Those remove three cod from the player's inventory and add a tag for completing the quest.
 
 ```YAML title="events.yml" hl_lines="3-5"
 events:
@@ -294,10 +294,10 @@ events:
   takeFishFromPlayer: "take cod:3"  
 ```
 
-Now lets use all these new elements to finish up the conversation.
+Now let's use all these new elements to finish up the conversation.
 
 Note that we check the `hasFishInInv` twice in the dialog. This prevents players from cheating by dropping the items once
-the starting option is determined. If they do so the conversation will simply end without giving out any items.
+the starting option is determined. If they do so, the conversation will simply end without giving out any items.
 
 ``` YAML title="blacksmith.yml" hl_lines="8-21 24-32"
 conversations:
@@ -375,7 +375,7 @@ in the `items` section of your "_package.yml_" file.
 
 ## 6. Conditions in Events
 
-In this section you will learn how to use conditions in events. This is handy when you want to block an event
+In this section, you will learn how to use conditions in events. This is handy when you want to block an event
 from triggering because some conditions for the players are not met.
 
 We will temporarily create a tag condition called `receiveNotify` in the "_conditions.yml_" like so:
@@ -386,7 +386,7 @@ conditions:
 ```
 
 We will now create an event to test our recently created condition.
-For testing purpose we will use a notify event:
+For testing purposes, we will use a notify event:
 
 ``` YAML title="events.yml" hl_lines="2"
 events:
@@ -403,11 +403,11 @@ Let's break it down:
   * `conditions:receiveNotify`: The event will only trigger if the condition `receiveNotify` is met. This argument
      works for all events.
 
-You can see that the notify event uses a condition. This means the player is only be able to receive the notification
+You can see that the notify event uses a condition. This means the player is only able to receive the notification
 if they have the tag. 
 Save, reload and execute the command in the game to test how it works!
 
-You can simply test it with this BetonQuest command:
+You can test it with this BetonQuest command:
 ```
 /bq event PLAYERNAME tutorialQuest.notifyPlayer
 ```
@@ -431,7 +431,7 @@ in events.
 
 ## Summary
 
-You've learned what conditions are and how to use them in objectives, conversations and events.
+You've learned what conditions are and how to they are used in objectives, conversations and events.
 More conditions can be found in the [conditions list](../../../Documentation/Scripting/Building-Blocks/Conditions-List.md).
 ---
 

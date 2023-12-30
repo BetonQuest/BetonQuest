@@ -23,7 +23,7 @@ Jack: "Some data about Jack"
 ```
 Now you can use the :octicons-key-16: `Jack` to obtain `Some data about Jack`.
 
-Keys and values can also be nested into each other. Then they **must** be indented with two spaces.
+Keys and values can also be nested into each other. Then they **must** be indented with two **spaces**.
 
 ```YAML title="Nested YAML"
 outerName:
