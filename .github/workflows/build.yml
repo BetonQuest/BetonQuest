@@ -199,6 +199,10 @@ jobs:
           DATE="$(date +%Y-%m-%d)"
           sed -i "s~\${maven\.build\.timestamp}~$DATE~g" ./CHANGELOG.md
           echo "$(cat ./CHANGELOG.md)" >> './docs/Documentation/CHANGELOG.md'
+      - name: Set API/Overview.md version
+        run: |
+          if [ $VERSION_TYPE == 'release' ]; then MAVEN_VERSION="$VERSION"; else MAVEN_VERSION="${VERSION}-SNAPSHOT"; fi
+          sed -i "s~\${betonquest\.version}~${MAVEN_VERSION}~g" ./docs/API/Overview.md
       - name: Set ref in download commands
         if: "env.VERSION_TYPE == 'release' || env.VERSION_TYPE == 'development'"
         run: |
