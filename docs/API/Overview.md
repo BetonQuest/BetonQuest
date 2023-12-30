@@ -30,7 +30,7 @@ You can add BetonQuest as a dependency using your build system. Here is the conf
 <dependency>
     <groupId>org.betonquest</groupId>
     <artifactId>betonquest</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>${betonquest.version}</version>
     <scope>provided</scope>
 </dependency>
 ```
