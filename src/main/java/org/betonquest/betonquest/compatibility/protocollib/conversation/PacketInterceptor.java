@@ -61,9 +61,16 @@ public class PacketInterceptor implements Interceptor, Listener {
                 final PacketType packetType = packet.getType();
                 if (MinecraftVersion.WILD_UPDATE.atOrAbove()) {
                     if (packetType.equals(PacketType.Play.Server.SYSTEM_CHAT)) {
-                        final String message = packet.getStrings().read(0);
-                        if (message != null && message.contains("{\"extra\":[{\"text\":\"" + MESSAGE_PASSTHROUGH_TAG + "\"}")) {
-                            return;
+                        if (MinecraftVersion.v1_20_4.atOrAbove()) {
+                            final String message = packet.getChatComponents().read(0).getJson();
+                            if (message != null && message.contains("{\"text\":\"\",\"extra\":[\"" + MESSAGE_PASSTHROUGH_TAG + "\"")) {
+                                return;
+                            }
+                        } else {
+                            final String message = packet.getStrings().read(0);
+                            if (message != null && message.contains("{\"extra\":[{\"text\":\"" + MESSAGE_PASSTHROUGH_TAG + "\"}")) {
+                                return;
+                            }
                         }
                     }
                 } else {

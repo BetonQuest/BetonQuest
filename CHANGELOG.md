@@ -68,7 +68,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - amount of objectives now support variables
 - added quest item flag recording and restore
 - Conversations now support cross conversation pointers to conversations in other packages
-- QuestCancelers can now be referenced across packages 
+- QuestCancelers can now be referenced across packages
+- Chat Interceptor `packet` is now 1.20.4 compatible
 - `freeze` event - ProtocolLib compatibility feature: Blocks the player from moving for the specified amount of ticks
 - `block` objective - properties: `absoluteAmount`, `absoluteLeft` and `absoluteTotal`
 - `command` objective
