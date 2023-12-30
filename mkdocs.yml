@@ -1,6 +1,6 @@
 site_name: BetonQuest
 site_author: BetonQuest Organisation
-site_url: https://docs.betonquest.org/
+site_url: https://betonquest.org/
 site_dir: target/docs
 docs_dir: docs
 repo_name: BetonQuest on GitHub

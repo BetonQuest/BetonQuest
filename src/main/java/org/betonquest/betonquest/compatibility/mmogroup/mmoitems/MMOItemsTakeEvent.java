@@ -19,8 +19,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Removes items from player's inventory and/or backpack
  *
- * @deprecated Only needed because the 1.12.X item system cannot work with special items like the ones from MMOItems.
- * Will be removed in 2.0 in favor of the new item system. Then the {@link TakeEvent} will be able to handle everything.
+ * @deprecated Only needed because the BQ 1.12.X item system cannot work with special items like the ones from MMOItems.
+ * TODO: Will be replaced by the new item system. Then the {@link TakeEvent} will be able to handle everything.
  */
 @SuppressWarnings("PMD.CommentRequired")
 @Deprecated

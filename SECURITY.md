@@ -2,11 +2,11 @@
 
 The following versions are supported with security updates.
 
-| Version  | Supported          |
-| -------- | ------------------ |
-| 2.0      | :white_check_mark: |
-| 1.12 LTS | :white_check_mark: |
-| < 1.12   | :x:                |
+| Version | Supported          |
+|---------|--------------------|
+| 2       | :white_check_mark: |
+| 1.12    | :x:                |
+| < 1.12  | :x:                |
 
 ## Reporting a Vulnerability
 
