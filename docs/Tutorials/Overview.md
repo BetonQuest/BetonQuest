@@ -16,14 +16,6 @@ Help is never far away if you get stuck. We have a
      Learn all BetonQuest basics and build your first questline! 
  
      [:octicons-arrow-right-24: Getting started](./Getting-Started/About.md)
- 
- -   :simple-visualstudiocode: __Tools__
- 
-     ---
- 
-     Improve your quest writing efficiency with modern tools.
- 
-     [:octicons-arrow-right-24: Tools](./Tools/Setting-up-VSCode.md)
 
  -   :material-format-font:{ .lg .middle }  __Syntax__
  

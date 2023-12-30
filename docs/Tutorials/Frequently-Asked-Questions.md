@@ -9,8 +9,6 @@ If not, feel free to ask us in the
 
 ## Where is the command for creating quests?
 There is no such command. BetonQuest is too complex to edit it using commands or chest GUI's.
-We have a [VSCode addon](./Tools/Setting-up-VSCode.md) to make editing easier.
-
 
 ## Can you add particles over NPCs' heads like in "Quests" plugin?
 Yes! Check out the [EffectLib](../Documentation/Scripting/Building-Blocks/Integration-List.md/#effectlib) compatibility documentation.

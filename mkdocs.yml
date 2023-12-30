@@ -191,16 +191,17 @@ nav:
       - 'Getting Started':
           - 'About': Tutorials/Getting-Started/About.md
           - 'Setup Guide':
-              - 'Setting up a Test Server': Tutorials/Getting-Started/Setup-Guide/Setting-up-a-test-server.md
+              - 'Setting up a Test Server': Tutorials/Getting-Started/Setup-Guide/Setting-up-a-Test-Server.md
               - 'Installing BetonQuest': Tutorials/Getting-Started/Setup-Guide/Installing-BetonQuest.md
+              - 'Setting up VSCode': Tutorials/Getting-Started/Setup-Guide/Setting-up-VSCode.md
           - 'Basics':
-              - 'YAML': Tutorials/Getting-Started/Basics/YAML.md
+              - 'YAML': Tutorials/Getting-Started/Basics/YAML-Basics.md
               - 'Conversations': Tutorials/Getting-Started/Basics/Conversations.md
               - '    Events': Tutorials/Getting-Started/Basics/Events.md
               - 'Objectives': Tutorials/Getting-Started/Basics/Objectives.md
               - 'Conditions': Tutorials/Getting-Started/Basics/Conditions.md
       - 'Tools':
-          - 'Setting up VSCode': Tutorials/Tools/Setting-up-VSCode.md
+          - 'Handling YAML Errors': Tutorials/Tools/YAML-Errors.md
       - 'Syntax':
           - 'Quest Packages': Tutorials/Syntax/Quest-Packages.md
       - 'Frequently Asked Questions':

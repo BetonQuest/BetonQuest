@@ -8,7 +8,7 @@ and a NPC. Therefore, these are the basic tool for story telling.
       
 <div class="grid" markdown>
 !!! danger "Requirements"
-    * [Setup Guide](../Setup-Guide/Setting-up-a-test-server.md)
+    * [Setup Guide](../Setup-Guide/Setting-up-a-Test-Server.md)
 
 !!! example "Related Docs"
     * [Conversations](../../../Documentation/Features/Conversations.md)
