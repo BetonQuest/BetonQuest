@@ -50,10 +50,14 @@ Now check the server's folder. You will find a bunch of new folders and files th
 You need to accept the EULA (Minecraft's End-User-License-Agreement) to be able to run a Minecraft server.
 Open up the "_eula.txt_" file, read the terms and agree by setting `eula=false` to `eula=true`.
 
+- **Step 6**    
+From now on, the start file can be used to start the server.  
+You can stop your server by typing `stop`. Alternatively, you can press ++ctrl+c++ (for Mac: ++cmd+c++).  
+Restart the server and connect to it via the server address `localhost` with your Minecraft game.
 
-**From now on, the start file can be used to start the server.**  
-You can stop your server by selecting the console and pressing ++ctrl+c++ (for Mac: ++cmd+c++) or just type in `stop`.  
-To join your server, you can now connect to the server address `localhost` with your Minecraft game.
+- **Step 7**    
+Once you joined the server, enter the following command in your server's console: `op YOUR-NAME`    
+This will give you all permissions on the server, which is required for the following steps.
 
 ---
 [:material-arrow-right: Next Step: Install Dependencies](Installing-BetonQuest.md){ .md-button .md-button--primary }
