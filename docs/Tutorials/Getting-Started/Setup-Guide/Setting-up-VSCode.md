@@ -5,6 +5,8 @@ tags:
   - Editor
 ---
 
+# Setting Up Visual Studio Code
+
 What is the most important thing before writing quests?
 Correct! We need a good text editor to make our lives easier with shortcuts and syntax highlighting.
 In this tutorial, you will be introduced to Visual Studio Code (VSCode), the most popular text editor.
@@ -12,18 +14,9 @@ In this tutorial, you will be introduced to Visual Studio Code (VSCode), the mos
 In this tutorial, you will learn how to install and use it to your advantage!
 
 
-<div class="grid" markdown>
-!!! danger "Requirements"
-    * No further requirements.
+## 1. Download and Install VSCode
 
-!!! example "Related Docs"
-    * [YAML](../Getting-Started/Basics/YAML.md)
-</div>
-
-
-## 1. Download and installing VSCode
-
-In this step we will install VSCode on your computer.
+In this step, we will install VSCode on your computer.
 
 [:material-download: Install Visual Studio Code](https://code.visualstudio.com){ .md-button .md-button--primary .noExternalLinkIcon}
 
@@ -157,7 +150,7 @@ But now let's have a look at the same file in VSCode. The YAML Syntax extension 
 
 ![yaml errors 1](../../../_media/content/Tutorials/VSCode-Setup/yaml_errors_1.png)
 
-If you hover over the error you will see more information:
+If you hover over the error, you will see more information:
 
 ![yaml errors 2](../../../_media/content/Tutorials/VSCode-Setup/yaml_errors_2.png)
 
