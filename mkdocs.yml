@@ -191,7 +191,7 @@ nav:
       - 'Getting Started':
           - 'About': Tutorials/Getting-Started/About.md
           - 'Setup Guide':
-              - 'Setting up a Test Server': Tutorials/Getting-Started/Setup-Guide/Setting-up-a-test-server.md
+              - 'Setting up a Test Server': Tutorials/Getting-Started/Setup-Guide/Setting-up-a-Test-Server.md
               - 'Installing BetonQuest': Tutorials/Getting-Started/Setup-Guide/Installing-BetonQuest.md
               - 'Setting up VSCode': Tutorials/Getting-Started/Setup-Guide/Setting-up-VSCode.md
           - 'Basics':

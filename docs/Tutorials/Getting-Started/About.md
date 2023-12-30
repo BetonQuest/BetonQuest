@@ -15,4 +15,4 @@ Additionally, there are many more tutorials that you can do later on.
 
 If you get stuck at any point, do not hesitate to ask for help in the [Discord](https://discordapp.com/invite/rK6mfHq).
 
-[:material-cog-play: Let's get started by setting up your test server!](Setup-Guide/Setting-up-a-test-server.md){ .md-button .md-button--primary }
+[:material-cog-play: Let's get started by setting up your test server!](Setup-Guide/Setting-up-a-Test-Server.md){ .md-button .md-button--primary }

@@ -8,7 +8,7 @@ This page will guide you through the installation process for all plugins that a
 
 <div class="grid" markdown>
 !!! danger "Requirements"
-    * [Setting up a Test Server](./Setting-up-a-test-server.md)
+    * [Setting up a Test Server](./Setting-up-a-Test-Server.md)
 
 !!! example "Related Docs"
     * No related documentation
