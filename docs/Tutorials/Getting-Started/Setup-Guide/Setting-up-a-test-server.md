@@ -9,7 +9,7 @@ There are multiple reasons why you **really** need one:
 - Making quests can, especially for new questers, lead to unexpected behavior. This can be anything from spawning
 hundreds of mobs to endlessly giving out items to a player. Exactly the stuff you don't want to happen.
 - Working with a test server is usually faster and therefore more productive. You can restart it all the time,
-change plugin configurations as you wish etc.
+change plugin configurations as you wish, etc.
 
 ## Setup of your local server
 
@@ -25,7 +25,7 @@ Move the downloaded file in the newly created folder.
  
 - **Step 3**  
 Rename the file to just "_paper_".
-    If the file name contains a ".jar" ending make sure to keep it.
+If the file name contains a ".jar" ending make sure to keep it.
 
 - **Step 4**  
 You need a start script to start your server.
@@ -51,9 +51,9 @@ You need to accept the EULA (Minecraft's End-User-License-Agreement) to be able 
 Open up the "_eula.txt_" file, read the terms and agree by setting `eula=false` to `eula=true`.
 
 
-**From now on the start file can be used to start the server.**  
+**From now on, the start file can be used to start the server.**  
 You can stop your server by selecting the console and pressing ++ctrl+c++ (for Mac: ++cmd+c++) or just type in `stop`.  
-To join your server you can now connect to the server address `localhost` with your Minecraft game.
+To join your server, you can now connect to the server address `localhost` with your Minecraft game.
 
 ---
 [:material-arrow-right: Next Step: Install Dependencies](Installing-BetonQuest.md){ .md-button .md-button--primary }
