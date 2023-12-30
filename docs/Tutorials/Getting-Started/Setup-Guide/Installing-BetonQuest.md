@@ -3,6 +3,19 @@ icon: octicons/download-24
 ---
 # Installation
 
+To use BetonQuest, you need to install it on your server.
+This page will guide you through the installation process for all plugins that are required for this tutorial. 
+
+<div class="grid" markdown>
+!!! danger "Requirements"
+    * [Setting up a Test Server](./Setting-up-a-test-server.md)
+
+!!! example "Related Docs"
+    * No related documentation
+</div>
+
+## Required Plugins
+
 1. In order to use [BetonQuest](../../../Downloads/index.md) you (obviously)
    need to add the "_BetonQuest.jar_" to the "_plugins_" folder in the server. If you haven't downloaded it yet, you can
    get it from the [download page](../../../Downloads/index.md).

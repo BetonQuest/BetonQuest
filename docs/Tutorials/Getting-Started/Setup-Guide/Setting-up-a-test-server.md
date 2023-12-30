@@ -1,6 +1,17 @@
 ---
 icon: octicons/terminal-16
 ---
+
+As a starting point for your questing journey, we will set up a local development installation for BetonQuest.
+
+<div class="grid" markdown>
+!!! danger "Requirements"
+    * No further requirements
+
+!!! example "Related Docs"
+    * No related documentation
+</div>
+
 ## Why do I need a local server?!
 You might think that a local test server is useless because you already have a remote server.
 There are multiple reasons why you **really** need one:
