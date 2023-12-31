@@ -144,7 +144,7 @@ class BStatsMetricsTest {
 
         new BStatsMetrics(plugin, bstatsMetrics, Map.of("id", metricsSupplier));
 
-        verify(bstatsMetrics, times(5)).addCustomChart(chartArgumentCaptor.capture());
+        verify(bstatsMetrics, times(6)).addCustomChart(chartArgumentCaptor.capture());
         final List<CustomChart> customCharts = chartArgumentCaptor.getAllValues();
         final CustomChart countChart = customCharts.get(2);
         final CustomChart enabledChart = customCharts.get(3);
