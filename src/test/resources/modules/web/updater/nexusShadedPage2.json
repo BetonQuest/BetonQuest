@@ -1,7 +1,7 @@
 {
   "items": [
     {
-      "downloadUrl": "https://betonquest.org/nexus/repository/betonquest/org/betonquest/betonquest/1.12.7-SNAPSHOT/betonquest-1.12.7-20221210.125708-379-shaded.jar",
+      "downloadUrl": "https://nexus.betonquest.org/repository/betonquest/org/betonquest/betonquest/1.12.7-SNAPSHOT/betonquest-1.12.7-20221210.125708-379-shaded.jar",
       "repository": "betonquest",
       "format": "maven2",
       "contentType": "application/java-archive",
@@ -14,7 +14,7 @@
       }
     },
     {
-      "downloadUrl": "https://betonquest.org/nexus/repository/betonquest/org/betonquest/betonquest/1.12.5/betonquest-1.12.5-shaded.jar",
+      "downloadUrl": "https://nexus.betonquest.org/repository/betonquest/org/betonquest/betonquest/1.12.5/betonquest-1.12.5-shaded.jar",
       "repository": "betonquest",
       "format": "maven2",
       "contentType": "application/java-archive",
@@ -27,7 +27,7 @@
       }
     },
     {
-      "downloadUrl": "https://betonquest.org/nexus/repository/betonquest/org/betonquest/betonquest/1.12.6/betonquest-1.12.6-shaded.jar",
+      "downloadUrl": "https://nexus.betonquest.org/repository/betonquest/org/betonquest/betonquest/1.12.6/betonquest-1.12.6-shaded.jar",
       "repository": "betonquest",
       "format": "maven2",
       "contentType": "application/java-archive",
