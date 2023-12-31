@@ -1,11 +1,13 @@
 package org.betonquest.betonquest.bstats;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.ID;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;
 import org.bstats.charts.DrilldownPie;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
@@ -31,8 +33,8 @@ public class BStatsMetrics {
     /**
      * Create a BStatsMetrics instance.
      *
-     * @param plugin plugin to send metrics for
-     * @param metrics metrics instance to use
+     * @param plugin           plugin to send metrics for
+     * @param metrics          metrics instance to use
      * @param metricsSuppliers instruction metrics suppliers to query for metrics
      */
     public BStatsMetrics(final Plugin plugin, final Metrics metrics, final Map<String, InstructionMetricsSupplier<? extends ID>> metricsSuppliers) {
@@ -42,6 +44,7 @@ public class BStatsMetrics {
         versionMcBq();
         metricsSuppliers.forEach(this::listUsage);
         hookedPlugins();
+        installedPlugins();
     }
 
     private void versionMcBq() {
@@ -98,6 +101,23 @@ public class BStatsMetrics {
                 final Map<String, Integer> entry = new HashMap<>();
                 entry.put(hookVersion, 1);
                 map.put(hook, entry);
+            }
+            return map;
+        }));
+    }
+
+    private void installedPlugins() {
+        metrics.addCustomChart(new DrilldownPie("installedPlugins", () -> {
+            final Map<String, Map<String, Integer>> map = new HashMap<>();
+            for (final Plugin plug : Bukkit.getPluginManager().getPlugins()) {
+                if (plug instanceof BetonQuest) {
+                    continue;
+                }
+                final String hookVersion = plug.getDescription().getVersion();
+
+                final Map<String, Integer> entry = new HashMap<>();
+                entry.put(hookVersion, 1);
+                map.put(plug.getName() + " by " + plug.getDescription().getAuthors(), entry);
             }
             return map;
         }));
