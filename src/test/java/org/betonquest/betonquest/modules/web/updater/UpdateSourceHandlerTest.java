@@ -32,7 +32,7 @@ class UpdateSourceHandlerTest {
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
-    void testDevelopmentUpdateAvailable() throws IOException {
+    void development_update_available() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.PATCH, true);
         final Version version = new Version("2.0.0-DEV-3");
         final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
@@ -48,7 +48,7 @@ class UpdateSourceHandlerTest {
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
-    void testNoDevelopmentUpdateAvailable() throws IOException {
+    void no_development_update_available() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MINOR, true);
         final Version version = new Version("2.0.0-DEV-3");
         final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
@@ -63,7 +63,7 @@ class UpdateSourceHandlerTest {
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
-    void testReleaseUpdateAvailable() throws IOException {
+    void release_update_available() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MAJOR, false);
         final Version version = new Version("2.0.0-DEV-3");
         final List<ReleaseUpdateSource> releaseHandlerList = getUpdateSourceRelease();
@@ -79,7 +79,7 @@ class UpdateSourceHandlerTest {
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
-    void testNoReleaseUpdateAvailable() throws IOException {
+    void no_release_update_available() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.PATCH, true);
         final Version version = new Version("2.0.0");
         final List<ReleaseUpdateSource> releaseHandlerList = getUpdateSourceRelease();
@@ -94,7 +94,7 @@ class UpdateSourceHandlerTest {
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
-    void testReleaseAndDevelopmentUpdateAvailableForced() throws IOException {
+    void release_and_development_update_available_forced() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MINOR, true);
         when(config.isForcedStrategy()).thenReturn(true);
         final Version version = new Version("2.0.0-DEV-3");
@@ -111,7 +111,7 @@ class UpdateSourceHandlerTest {
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
-    void testReleaseAndDevelopmentUpdateAvailableNotForced() throws IOException {
+    void release_and_development_update_available_not_forced() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MAJOR, true);
         when(config.isForcedStrategy()).thenReturn(false);
         final Version version = new Version("2.0.0-DEV-3");
@@ -127,7 +127,7 @@ class UpdateSourceHandlerTest {
     }
 
     @Test
-    void testReleaseAndDevelopmentNoUpdateAvailable() {
+    void release_and_development_no_update_available() {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.PATCH, true);
         final Version version = new Version("2.0.0-DEV-3");
         final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
@@ -142,7 +142,7 @@ class UpdateSourceHandlerTest {
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
-    void testReleaseThrowsUnknownHostException() throws IOException {
+    void release_throws_UnknownHostException() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MINOR, false);
         final Version version = new Version("2.0.0-DEV-3");
         final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
@@ -158,19 +158,19 @@ class UpdateSourceHandlerTest {
         assertEquals("2.0.0-DEV-3", latest.getKey().getVersion(), "Actual version does not match expected");
         assertNull(latest.getValue(), "Expected no update URL");
 
-        verify(logger, times(1)).warn("The update server for release builds is currently not available!");
+        verify(logger, times(1)).warn("Could not fetch version updates. Probably the host is currently not available: Unknown host Test");
         verifyNoMoreInteractions(logger);
     }
 
     @Test
-    void testReleaseThrowsIOException() throws IOException {
+    void release_throws_IOException() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MAJOR, false);
         final Version version = new Version("2.0.0-DEV-3");
         final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
         final List<DevelopmentUpdateSource> developmentHandlerList = new ArrayList<>();
 
         final ReleaseUpdateSource releaseHandler = mock(ReleaseUpdateSource.class);
-        when(releaseHandler.getReleaseVersions()).thenThrow(new UnknownHostException("Unexpected problem"));
+        when(releaseHandler.getReleaseVersions()).thenThrow(new IOException("Unexpected problem"));
         releaseHandlerList.add(releaseHandler);
 
         final UpdateSourceHandler handler = new UpdateSourceHandler(logger, releaseHandlerList, developmentHandlerList);
@@ -179,12 +179,35 @@ class UpdateSourceHandlerTest {
         assertEquals("2.0.0-DEV-3", latest.getKey().getVersion(), "Actual version does not match expected");
         assertNull(latest.getValue(), "Expected no update URL");
 
-        verify(logger, times(1)).warn("The update server for release builds is currently not available!");
+        verify(logger, times(1)).warn(matches("Could not fetch version updates from a source: Unexpected problem"), any(IOException.class));
+        verifyNoMoreInteractions(logger);
+    }
+
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @Test
+    void one_of_two_releases_throws_IOException() throws IOException {
+        final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MAJOR, false);
+        final Version version = new Version("2.0.0-DEV-3");
+        final List<ReleaseUpdateSource> releaseHandlerList = getUpdateSourceRelease();
+        final List<DevelopmentUpdateSource> developmentHandlerList = new ArrayList<>();
+
+        final ReleaseUpdateSource releaseHandler = mock(ReleaseUpdateSource.class);
+        when(releaseHandler.getReleaseVersions()).thenThrow(new IOException("Unexpected problem"));
+        releaseHandlerList.add(releaseHandler);
+
+        final UpdateSourceHandler handler = new UpdateSourceHandler(logger, releaseHandlerList, developmentHandlerList);
+        final Pair<Version, String> latest = handler.searchUpdate(config, version, "DEV");
+
+        assertEquals("2.0.0", latest.getKey().getVersion(), "Actual version does not match expected");
+        assertNotNull(latest.getValue(), "Expected an URL");
+        assertEquals("https://betonquest.org/release", latest.getValue(), "Actual URL does not match expected");
+
+        verify(logger, times(1)).warn(matches("Could not fetch version updates from a source: Unexpected problem"), any(IOException.class));
         verifyNoMoreInteractions(logger);
     }
 
     @Test
-    void testDevelopmentThrowsUnknownHostException() throws IOException {
+    void development_throws_UnknownHostException() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.PATCH, true);
         final Version version = new Version("2.0.0-DEV-3");
         final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
@@ -200,12 +223,12 @@ class UpdateSourceHandlerTest {
         assertEquals("2.0.0-DEV-3", latest.getKey().getVersion(), "Actual version does not match expected");
         assertNull(latest.getValue(), "Expected no update URL");
 
-        verify(logger, times(1)).warn("The update server for dev builds is currently not available!");
+        verify(logger, times(1)).warn("Could not fetch version updates. Probably the host is currently not available: Unknown host Test");
         verifyNoMoreInteractions(logger);
     }
 
     @Test
-    void testDevelopmentThrowsIOException() throws IOException {
+    void development_throws_IOException() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MINOR, true);
         final Version version = new Version("2.0.0-DEV-3");
         final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
@@ -221,7 +244,30 @@ class UpdateSourceHandlerTest {
         assertEquals("2.0.0-DEV-3", latest.getKey().getVersion(), "Actual version does not match expected");
         assertNull(latest.getValue(), "Expected no update URL");
 
-        verify(logger, times(1)).warn(eq("Could not get the latest dev build! Unexpected problem"), any(IOException.class));
+        verify(logger, times(1)).warn(eq("Could not fetch version updates from a source: Unexpected problem"), any(IOException.class));
+        verifyNoMoreInteractions(logger);
+    }
+
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @Test
+    void one_of_two_developments_throws_IOException() throws IOException {
+        final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MINOR, true);
+        final Version version = new Version("2.0.0-DEV-3");
+        final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
+        final List<DevelopmentUpdateSource> developmentHandlerList = getUpdateSourceDevelopment("2.0.0-DEV-201");
+
+        final DevelopmentUpdateSource developmentHandler = mock(DevelopmentUpdateSource.class);
+        when(developmentHandler.getDevelopmentVersions()).thenThrow(new IOException("Unexpected problem"));
+        developmentHandlerList.add(developmentHandler);
+
+        final UpdateSourceHandler handler = new UpdateSourceHandler(logger, releaseHandlerList, developmentHandlerList);
+        final Pair<Version, String> latest = handler.searchUpdate(config, version, "DEV");
+
+        assertEquals("2.0.0-DEV-201", latest.getKey().getVersion(), "Actual version does not match expected");
+        assertNotNull(latest.getValue(), "Expected an URL");
+        assertEquals("https://betonquest.org/development", latest.getValue(), "Actual URL does not match expected");
+
+        verify(logger, times(1)).warn(eq("Could not fetch version updates from a source: Unexpected problem"), any(IOException.class));
         verifyNoMoreInteractions(logger);
     }
 

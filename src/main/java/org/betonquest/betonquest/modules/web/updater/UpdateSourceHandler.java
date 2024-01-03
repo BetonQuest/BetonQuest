@@ -68,34 +68,28 @@ public class UpdateSourceHandler {
     Pair<Version, String> searchUpdate(final UpdaterConfig config, final Version current, final String devIndicator) {
         final VersionComparator comparator = new VersionComparator(config.getStrategy(), devIndicator + "-");
         Pair<Version, String> latest = Pair.of(current, null);
-        try {
-            latest = searchUpdateFor(latest, releaseHandlerList, comparator, ReleaseUpdateSource::getReleaseVersions);
-        } catch (final UnknownHostException e) {
-            log.warn("The update server for release builds is currently not available!");
-        } catch (final IOException e) {
-            log.warn("Could not get the latest release build! " + e.getMessage(), e);
-        }
+        latest = searchUpdateFor(latest, releaseHandlerList, comparator, ReleaseUpdateSource::getReleaseVersions);
         if (config.isDevDownloadEnabled() && !(latest.getValue() != null && config.isForcedStrategy())) {
-            try {
-                latest = searchUpdateFor(latest, developmentHandlerList, comparator, DevelopmentUpdateSource::getDevelopmentVersions);
-            } catch (final UnknownHostException e) {
-                log.warn("The update server for dev builds is currently not available!");
-            } catch (final IOException e) {
-                log.warn("Could not get the latest dev build! " + e.getMessage(), e);
-            }
+            latest = searchUpdateFor(latest, developmentHandlerList, comparator, DevelopmentUpdateSource::getDevelopmentVersions);
         }
         return latest;
     }
 
     private <T> Pair<Version, String>
     searchUpdateFor(final Pair<Version, String> latest, final List<T> updateSources, final VersionComparator comparator,
-                    final UpdateSourceConsumer<T> consumer) throws IOException {
+                    final UpdateSourceConsumer<T> consumer) {
         Pair<Version, String> currentLatest = latest;
         for (final T updateSource : updateSources) {
-            for (final Map.Entry<Version, String> entry : consumer.consume(updateSource).entrySet()) {
-                if (comparator.isOtherNewerThanCurrent(latest.getKey(), entry.getKey())) {
-                    currentLatest = Pair.of(entry.getKey(), entry.getValue());
+            try {
+                for (final Map.Entry<Version, String> entry : consumer.consume(updateSource).entrySet()) {
+                    if (comparator.isOtherNewerThanCurrent(latest.getKey(), entry.getKey())) {
+                        currentLatest = Pair.of(entry.getKey(), entry.getValue());
+                    }
                 }
+            } catch (final UnknownHostException e) {
+                log.warn("Could not fetch version updates. Probably the host is currently not available: " + e.getMessage());
+            } catch (final IOException e) {
+                log.warn("Could not fetch version updates from a source: " + e.getMessage(), e);
             }
         }
         return currentLatest;
