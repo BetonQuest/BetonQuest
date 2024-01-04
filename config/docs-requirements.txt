@@ -4,7 +4,7 @@ mkdocs-material==9.5.2
 mkdocs-snippets
 
 #Tool for MkDocs versioning
-mike==1.1.2
+mike==2.0.0
 #mkdocs-exclude plugin to directories inside /docs from the build
 #Used to exclude snippets, theme customization etc.
 mkdocs-exclude==1.0.2

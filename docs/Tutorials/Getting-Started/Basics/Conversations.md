@@ -3,12 +3,12 @@ icon: material/message-processing
 tags:
   - Conversation-Tutorials
 ---
-In this tutorial you will learn the basics of the conversations. These allow you to create a dialog between the player
+In this tutorial, you will learn the basics of the conversations. These allow you to create a dialog between the player
 and a NPC. Therefore, these are the basic tool for story telling.
       
 <div class="grid" markdown>
 !!! danger "Requirements"
-    * [Setup Guide](../Setup-Guide/Setting-up-a-test-server.md)
+    * [Setup Guide](../Setup-Guide/Setting-up-a-Test-Server.md)
 
 !!! example "Related Docs"
     * [Conversations](../../../Documentation/Features/Conversations.md)
@@ -234,7 +234,7 @@ options by jumping (++space++ by default).
 
 @snippet:tutorials:download-solution@
     ```
-    /q download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conversations/2-FullExample /tutorialQuest overwrite
+    /q download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Basics/Conversations/2-FullExample /tutorialQuest overwrite
     ```
 
 ## Summary

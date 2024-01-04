@@ -6,6 +6,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [2.0.0] - 2023-12-31
+### Added
 - Logging
     - Ingame logging
         - Logging during `/q reload`
@@ -68,7 +76,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - amount of objectives now support variables
 - added quest item flag recording and restore
 - Conversations now support cross conversation pointers to conversations in other packages
-- QuestCancelers can now be referenced across packages 
+- QuestCancelers can now be referenced across packages
+- Chat Interceptor `packet` is now 1.20.4 compatible
 - `freeze` event - ProtocolLib compatibility feature: Blocks the player from moving for the specified amount of ticks
 - `block` objective - properties: `absoluteAmount`, `absoluteLeft` and `absoluteTotal`
 - `command` objective
@@ -251,6 +260,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - removed the hearts of the Armorstand in the Menu Conversation IO
 - journal entries now keep their leading whitespaces
 - exceptions in `sudo` and `command` events leading to broken conversations that could not be exited
+- the NPC's head could be stolen from conversations with the `chest` style
 - Things that are also fixed in 1.12.X:
     - eating of items when entering the chest conversation io actually consumed the item 
     - legacy `§x` HEX color format not working in some contexts

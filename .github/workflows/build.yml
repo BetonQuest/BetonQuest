@@ -8,7 +8,8 @@ jobs:
 
     outputs:
       VERSION: ${{ steps.save_version.outputs.version }}
-      VERSION_TYPE: ${{ steps.save_type.outputs.version_type }}
+      VERSION_TYPE: ${{ steps.save_version_type.outputs.version_type }}
+      VERSION_MAVEN: ${{ steps.save_version_maven.outputs.version_maven }}
       PREVIOUS_VERSION_TAG: ${{ steps.save_tag.outputs.previous_version_tag }}
       CHANGES_IN_DOCS_ONLY: ${{ steps.save_changes.outputs.changes_in_docs_only }}
 
@@ -57,11 +58,13 @@ jobs:
           TAG_VERSION="${GITHUB_REF#*/*/}"
           echo "Collected the tag version. The version is '$TAG_VERSION'"
           if [ ${TAG_VERSION:1} != $MAVEN_VERSION ]; then echo "::error::The version of the tag and the version of the pom are not equal! Tag is '$TAG_VERSION' and pom is '$MAVEN_VERSION'."; exit 1; fi
+          echo "VERSION_MAVEN=$MAVEN_VERSION" >> $GITHUB_ENV
           echo "MAVEN_VERSION=$MAVEN_VERSION" >> $GITHUB_ENV
           echo "VERSION_TYPE=release" >> $GITHUB_ENV
       - name: Set version for 'Development Build'
         if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/main' || startsWith(github.ref,'refs/heads/main_v') )"
         run: |
+          echo "VERSION_MAVEN=${MAVEN_VERSION}-SNAPSHOT" >> $GITHUB_ENV
           if [ $CHANGES_IN_DOCS_ONLY == true ]; then MAVEN_VERSION=${PREVIOUS_VERSION_TAG/build-number/DEV}; else MAVEN_VERSION=${MAVEN_VERSION}-DEV-${BUILD_NUMBER}; fi
           echo "MAVEN_VERSION=$MAVEN_VERSION" >> $GITHUB_ENV
           echo "VERSION_TYPE=development" >> $GITHUB_ENV
@@ -69,6 +72,7 @@ jobs:
         if: "github.repository != 'BetonQuest/BetonQuest' || !startsWith(github.ref,'refs/tags/v') && github.ref != 'refs/heads/main' && !startsWith(github.ref,'refs/heads/main_v')"
         run: |
           if [ ${{ github.repository }} != 'BetonQuest/BetonQuest' ]; then REPO=${{ github.repository }}-; fi
+          echo "VERSION_MAVEN=-${MAVEN_VERSION}-DEV-UNOFFICIAL" >> $GITHUB_ENV
           MAVEN_VERSION=${MAVEN_VERSION}-DEV-ARTIFACT-${REPO}${{ github.run_number }}
           echo "MAVEN_VERSION=$MAVEN_VERSION" >> $GITHUB_ENV
           echo "VERSION_TYPE=artifact" >> $GITHUB_ENV
@@ -78,10 +82,15 @@ jobs:
           echo "The version is '$MAVEN_VERSION'"
           echo "version=$MAVEN_VERSION" >> $GITHUB_OUTPUT
       - name: Save version type to output variable
-        id: save_type
+        id: save_version_type
         run: |
           echo "The version type is '$VERSION_TYPE'"
           echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
+      - name: Save version maven format to output variable
+        id: save_version_maven
+        run: |
+          echo "The version maven format is '$VERSION_MAVEN'"
+          echo "version_maven=$VERSION_MAVEN" >> $GITHUB_OUTPUT
 
   build-artifacts:
     name: Build Artifacts
@@ -91,6 +100,7 @@ jobs:
     env:
       VERSION: ${{ needs.prepare.outputs.VERSION }}
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
+      VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
       CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
 
@@ -142,6 +152,7 @@ jobs:
     env:
       VERSION: ${{ needs.prepare.outputs.VERSION }}
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
+      VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
       CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
 
@@ -199,6 +210,9 @@ jobs:
           DATE="$(date +%Y-%m-%d)"
           sed -i "s~\${maven\.build\.timestamp}~$DATE~g" ./CHANGELOG.md
           echo "$(cat ./CHANGELOG.md)" >> './docs/Documentation/CHANGELOG.md'
+      - name: Set API/Overview.md version
+        run: |
+          sed -i "s~\${betonquest\.version}~${VERSION_MAVEN}~g" ./docs/API/Overview.md
       - name: Set ref in download commands
         if: "env.VERSION_TYPE == 'release' || env.VERSION_TYPE == 'development'"
         run: |
@@ -240,6 +254,7 @@ jobs:
     env:
       VERSION: ${{ needs.prepare.outputs.VERSION }}
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
+      VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
       CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
 
@@ -307,6 +322,7 @@ jobs:
     env:
       VERSION: ${{ needs.prepare.outputs.VERSION }}
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
+      VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
       CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
 
@@ -411,6 +427,7 @@ jobs:
     env:
       VERSION: ${{ needs.prepare.outputs.VERSION }}
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
+      VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
       CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
 
@@ -460,6 +477,7 @@ jobs:
     env:
       VERSION: ${{ needs.prepare.outputs.VERSION }}
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
+      VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
       CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
 

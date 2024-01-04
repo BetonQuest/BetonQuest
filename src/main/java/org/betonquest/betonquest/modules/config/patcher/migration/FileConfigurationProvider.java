@@ -51,6 +51,9 @@ public class FileConfigurationProvider {
     }
 
     private Map<File, YamlConfiguration> getAllConfigs(final Path path) throws IOException {
+        if (!Files.exists(path)) {
+            return Map.of();
+        }
         try (Stream<Path> findings = Files.find(path, Integer.MAX_VALUE, (p, a) -> p.getFileName().toString().endsWith(".yml"))) {
             final Map<File, YamlConfiguration> configs = new LinkedHashMap<>();
             findings.map(Path::toFile)

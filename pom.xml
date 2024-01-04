@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <properties>
-    <revision>2.0.0</revision>
+    <revision>2.0.1</revision>
     <changelist>-SNAPSHOT</changelist>
     <betonquest.version>${revision}-DEV-UNOFFICIAL</betonquest.version>
     <minecraft.api.version>1.18</minecraft.api.version>
@@ -212,7 +212,7 @@
     <dependency>
       <groupId>com.comphenix.protocol</groupId>
       <artifactId>ProtocolLib</artifactId>
-      <version>5.1.0</version>
+      <version>5.2.0-SNAPSHOT</version>
       <scope>provided</scope>
       <optional>true</optional>
       <exclusions>
@@ -861,12 +861,12 @@
             <dependency>
               <groupId>net.sourceforge.pmd</groupId>
               <artifactId>pmd-core</artifactId>
-              <version>6.53.0</version>
+              <version>6.55.0</version>
             </dependency>
             <dependency>
               <groupId>net.sourceforge.pmd</groupId>
               <artifactId>pmd-java</artifactId>
-              <version>6.53.0</version>
+              <version>6.55.0</version>
             </dependency>
           </dependencies>
           <configuration>

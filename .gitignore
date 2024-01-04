@@ -70,15 +70,5 @@ deploy-key
 .classpath
 .project
 
-### VirtualEnv
-.Python
-[Bb]in
-[Ii]nclude
-[Ll]ib
-[Ll]ib64
-[Ll]ocal
-[Ss]cripts
-pyvenv.cfg
-.venv
-pip-selfcheck.json
-
+# Python Virtual Environments
+venv/
