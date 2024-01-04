@@ -1,0 +1,15 @@
+body .md-content__inner a[href^="http"]:not(.md-content__button,.noExternalLinkIcon) {
+  background-image: url(../../_media/content/linkExternalWhite.svg);
+  background-repeat: no-repeat;
+  background-position: top right;
+  padding-right: 0.7em;
+  background-size: 0.6em;
+}
+
+body[data-md-color-scheme="slate"] .md-content__inner a[href^="http"]:not(.md-content__button,.noExternalLinkIcon) {
+  background-image: url(../../_media/content/linkExternalDark.svg);
+}
+
+body .md-content__inner a[href^="http"]:not(.md-content__button,.noExternalLinkIcon):hover {
+  background-image: url(../../_media/content/linkExternalHover.svg);
+}

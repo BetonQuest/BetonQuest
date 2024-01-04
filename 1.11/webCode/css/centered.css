@@ -1,0 +1,7 @@
+.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center }
+.centered p {
+  margin-right: 0;
+  margin-left: 0; }

@@ -1,0 +1,2703 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="BetonQuest Organisation">
+      
+      
+        <link rel="canonical" href="https://docs.betonquest.org/1.12/Learn-Beton/Getting-Started/Learn-BetonQuest/">
+      
+      
+        <link rel="prev" href="../YAML-for-questers/">
+      
+      
+        <link rel="next" href="../../Frequently-Asked-Questions/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../media/design/favicon.ico">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.0.13+insiders-4.31.0">
+    
+    
+      
+        <title>🎓 Learn BetonQuest - BetonQuest</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.527e139f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.a0c5b2b5.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../webCode/css/centered.css">
+    
+      <link rel="stylesheet" href="../../../webCode/css/contentAreaFullWidth.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#checking-out-the-default-example-quest" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+<a style="color: black"> You're viewing the docs of an outdated or legacy development version! </a>
+<a href="../../../..">
+  <strong>Click here to go to the latest BetonQuest release.</strong>
+</a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="BetonQuest" class="md-header__button md-logo" aria-label="BetonQuest" data-md-component="logo">
+      
+  <img src="../../../media/design/BQIcon1k.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            BetonQuest
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              🎓 Learn BetonQuest
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M223.5 32C100 32 0 132.3 0 256s100 224 223.5 224c60.6 0 115.5-24.2 155.8-63.4 5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6-96.9 0-175.5-78.8-175.5-176 0-65.8 36-123.1 89.3-153.3 6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/BetonQuest/BetonQuest" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    BetonQuest on GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../.." class="md-tabs__link">
+          
+  
+    
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Welcome/" class="md-tabs__link md-tabs__link--active">
+          
+  
+  Learn Beton
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../User-Documentation/Reference/" class="md-tabs__link">
+          
+  
+  User Documentation
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../Developer-Documentation/Contributing-Guidelines/" class="md-tabs__link">
+          
+  
+  Developer Documentation
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../Contributing/Contributing/" class="md-tabs__link">
+          
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../Downloads/" class="md-tabs__link">
+        
+  
+    
+  
+  Downloads
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="BetonQuest" class="md-nav__button md-logo" aria-label="BetonQuest" data-md-component="logo">
+      
+  <img src="../../../media/design/BQIcon1k.png" alt="logo">
+
+    </a>
+    BetonQuest
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/BetonQuest/BetonQuest" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    BetonQuest on GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
+        
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Home
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    👋 Welcome!
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1_2" >
+        
+          <label class="md-nav__link" for="__nav_1_2" id="__nav_1_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Overview
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Features/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    ✨ Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../For-Owners/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    👔  For Owners
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../For-Questers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🎨 For Questers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Learn Beton
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Learn Beton
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Welcome/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    👋 Welcome!
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Setting-up-a-local-test-server/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    💻 Setting up a local test server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Installing-BetonQuest/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    📥 Installing BetonQuest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Setting-up-the-editor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    ✒️ Setting up the editor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../YAML-for-questers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    📑 YAML for questers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    
+  
+    🎓 Learn BetonQuest
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🎓 Learn BetonQuest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#checking-out-the-default-example-quest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checking out the "default" example quest.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-events-and-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using events and conditions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using events and conditions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Events
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conditions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basic-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basic tags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-your-first-conversation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writing your first conversation
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    ❓ Frequently Asked Questions
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ❓ Frequently Asked Questions
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Frequently-Asked-Questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🤔  General FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    User Documentation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Documentation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_1" >
+        
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    General
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    General
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../User-Documentation/Reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    📚   Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../User-Documentation/Conversations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    💬  Conversations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_2" >
+        
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Types
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Types
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../User-Documentation/Objectives-List/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    ✔️ Objectives List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../User-Documentation/Events-List/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    ⚙️ Events List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../User-Documentation/Conditions-List/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+      ❓    Conditions List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../User-Documentation/Compatibility/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🤝 Compatibility List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../User-Documentation/Variables-List/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🔮   Variables List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
+        
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Notifications
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notifications
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../User-Documentation/Notification-Settings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🔊   Settings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../User-Documentation/Notification-IO%27s-%26-Categories/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🏷️   IO's & Categories
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
+        
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Technical
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Technical
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../User-Documentation/Commands-and-permissions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🔒 Permissions & Commands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../User-Documentation/Updating-and-Backups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    📥 Updating
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../User-Documentation/Configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🔧  Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../User-Documentation/CHANGELOG/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🗃️ Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer Documentation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Developer Documentation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Developer-Documentation/Contributing-Guidelines/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    📚 Contributing Guidelines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Developer-Documentation/API/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    ⚙️ API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Developer-Documentation/Versioning-and-Releasing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🏭 Versioning & Releasing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Contributing/Contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🤝 Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_2" >
+        
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Contributing/Documentation/Setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🔧 Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Contributing/Documentation/Guidelines/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    📚 Guidelines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_3" >
+        
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Sponsorships
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Sponsorships
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Contributing/Sponsors/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    💲 Patreon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Downloads/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Downloads
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#checking-out-the-default-example-quest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checking out the "default" example quest.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-events-and-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using events and conditions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using events and conditions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Events
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conditions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basic-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basic tags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-your-first-conversation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writing your first conversation
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/BetonQuest/BetonQuest/edit/main_v1.12/documentation/Learn-Beton/Getting-Started/Learn-BetonQuest.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+    </a>
+  
+  
+
+
+  <h1>🎓 Learn BetonQuest</h1>
+
+<p>There are two ways to get started with BetonQuest:</p>
+<div class="admonition warning">
+<p class="admonition-title">About learning BetonQuest 1.12.X</p>
+<p>It is not recommended to learn BetonQuest 1.12.X as it is a legacy version and will only receive bug fixes.
+Instead, start with 2.0.0-DEV! It's a complete overhaul of the plugin and has a lot of new features. 
+While it is still in development, more than 100 servers run it already as it's very stable.     </p>
+<p>There are also much better tutorials for 2.0.0! </p>
+<p><a class="md-button md-button--primary" href="https://docs.betonquest.org/2.0.0-DEV/Tutorials/Overview/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8.22 2.97a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l2.97-2.97H3.75a.75.75 0 0 1 0-1.5h7.44L8.22 4.03a.75.75 0 0 1 0-1.06Z"/></svg></span> 2.0.0-DEV Tutorials</a></p>
+</div>
+<h2 id="checking-out-the-default-example-quest">Checking out the "default" example quest.<a class="headerlink" href="#checking-out-the-default-example-quest" title="Permanent link">🔗</a></h2>
+<p>Let's start by checking out the build in example quest. You can find it in the BetonQuest directory that has been
+generated in your plugins folder. The folder you are looking for is named "<em>default</em>".</p>
+<p>Open it up and find a file called <em>main.yml</em>. It contains a lot of options, but you only need to look at this section:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
+<span class="w">  </span><span class="s">&#39;0&#39;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">innkeeper</span>
+</code></pre></div></td></tr></table></div>
+You will need to change the <code>'0'</code> to the ID of the Citizens NPC you want to learn Beton with. 
+You obtain a NPC's ID by selecting it with <strong>/npc sel</strong> while looking at it and then running <strong>/npc id</strong>. <br />
+Execute <strong>/q reload</strong> and right-click the NPC.</p>
+<p>The conversation should start. If it did not, check if you correctly assigned the ID. Ask the Innkeeper for some quests.
+He will tell you to cut some trees. If you want, type <strong>/journal</strong> to get the journal and see a new entry.
+Now, don't try to place any wood blocks. BetonQuest will detect that and increase the number of blocks to destroy.
+Just go and find some trees that you can cut down. Now you can return to the Innkeeper and give him the wood.
+You will receive the reward.</p>
+<h2 id="using-events-and-conditions">Using events and conditions<a class="headerlink" href="#using-events-and-conditions" title="Permanent link">🔗</a></h2>
+<p>Now that you know how a (very) simple quest looks like time to start learning how to write something similar. 
+Let's start with events. We won't do conversations just now, since they heavily use events and conditions, 
+so you need to know them first. You can read complete reference to events in the <a href="../../../User-Documentation/Reference/#events">Reference chapter</a>.
+Do that now or just continue with this tutorial.</p>
+<h3 id="events">Events<a class="headerlink" href="#events" title="Permanent link">🔗</a></h3>
+<p>Let's just open <em>events.yml</em> file inside the <em>default</em> package. Add a new line at the bottom:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">mega</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">world!&quot;</span>
+</code></pre></div></td></tr></table></div>
+<p>This is an event instruction. BetonQuest will use it to determine what type of event is used and what exactly it should do.
+<code>mega</code> is the event's name, <code>notify</code> is the events type and <code>Hello world!</code> tells the notify event what it needs to display.
+In this case, if you run <code>mega</code> event, it will display <code>Hello world!</code> as a chat message. Now save the file,
+issue <strong>/q reload</strong> command and run the event with <strong>/q e {name} default.mega</strong> command (<code>q</code> is shortcut for <code>quest</code>,
+<code>e</code> is shortcut for <code>event</code>, <code>{name}</code> is your Minecraft name without the brackets, <code>default</code> is the package/quest
+and <code>mega</code> is the name of the event we've just created). It should show you a <code>Hello world!</code> notification in the chat.</p>
+<p>Let's create another event, a more complicated one. <code>teleport</code> seems complicated enough.
+As you can read in the <a href="../../../User-Documentation/Events-List/">Events list</a>, it needs a single argument, the location.
+Press F3 and check out your current location (it's shown on the left, three numbers, <code>x</code>, <code>y</code> and <code>z</code>).
+Now add in <em>events.yml</em> another line:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">tp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;teleport</span><span class="nv"> </span><span class="s">100;200;300;world&quot;</span>
+</code></pre></div></td></tr></table></div>
+<p>and replace <code>100</code> with your <code>x</code> coordinate, <code>200</code> with <code>y</code> and <code>300</code> with <code>z</code>. <code>world</code> needs to be replaced with your 
+current world's name. Save the file, reload the plugin (<strong>/q reload</strong>) and run this event with a command described
+before. It should teleport you to the location you have specified.</p>
+<p>Congratulations, you have just created your first events. Go ahead and do some experiments with other event types. 
+You can find them in <a href="../../../User-Documentation/Events-List/">Events list</a> chapter.
+Once you're done let's start learning conditions.</p>
+<h3 id="conditions">Conditions<a class="headerlink" href="#conditions" title="Permanent link">🔗</a></h3>
+<p>Open the <em>conditions.yml</em> file and add a new line:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">mega</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;location</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">5&quot;</span>
+</code></pre></div></td></tr></table></div>
+<p>Can you see how we named the <code>mega</code> condition in the same way as the <code>mega</code> event? They are not connected in any way.
+Condition names and event names are separated, so you can give them the same name without any problems. Now let's
+look at the instruction string. As you can suspect, <code>location</code> is a type of the condition. This one means that we'll be 
+checking if the player is near that location (you should change the location to the place where you're standing right now,
+so you don't have to run around the world). Note that at the end of location argument there is an additional number, <code>5</code>.
+This is the maximum distance you can be away from the location to meet the condition. Alright, save the file and reload the plugin.</p>
+<p>Now walk to the location you have defined in the condition. Try to stand on the exact block corresponding to that location. 
+Issue <strong>/q c {name} default.mega</strong> command (<code>c</code> is shortcut for <code>condition</code>). It should show you "Condition blah blah
+blah: <strong>true</strong>". We're focusing on that last word, <strong>true</strong>. This means that you're meeting the condition: you're standing within
+5 block radius of the location. Now move 2 blocks away and issue that command again. You should still be meeting the condition. 
+Walk 4 more blocks away and try now. It should show <strong>false</strong>. You are now outside of that 5 block radius. Get it? Great.</p>
+<p>Now I'll show you the simplest use of those conditions. Open the <em>events.yml</em> file again, and at the end of <code>mega</code> 
+instruction add <code>conditions:mega</code> argument. By the way, rename your events to something that actually fits the type
+of the event, otherwise it will get confusing really fast. Example:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">events.yml</label><label for="__tabbed_1_2">conditions.yml</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="c1"># This is a comment btw</span>
+<span class="c1"># Old:</span>
+<span class="nt">mega</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">world!&quot;</span>
+
+<span class="c1"># New:</span>
+<span class="nt">sayHello</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">world!</span><span class="nv"> </span><span class="s">conditions:isAtSpawn&quot;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="c1"># Old:</span>
+<span class="nt">mega</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;location</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">5&quot;</span>
+
+<span class="c1"># New:</span>
+<span class="nt">isAtSpawn</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;location</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">5&quot;</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>Now <code>sayHello</code> event will run only if it meets <code>isAtSpawn</code> condition. Reload the plugin, walk outside of the 5 block
+radius and try to run <code>sayHello</code> event. Puff, nothing happens. It's because you're not meeting <code>isAtSpawn</code> condition.
+Walk into the radius again and try to run that event now. It should happily display the <code>Hello world!</code> notification.</p>
+<p>It's very nice that we can add such conditions, but the problem is: what if you wanted to display the notification only if the
+player is <em>outside</em> the radius? Don't worry, you don't have to specify <code>inverted_location</code> condition or anything like that.
+You can simply negate the condition. Negation makes the condition behave in the exact opposite way, in this case it
+<code>isAtSpawn</code> will be met only if the player is outside of the 5 block radius, and it won't be met if he's inside.
+Open the <em>events.yml</em> and add an exclamation mark before the <code>isAtSpawn</code> condition, so it looks like this:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">sayHello</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">world!</span><span class="nv"> </span><span class="s">conditions:!isAtSpawn&quot;</span>
+</code></pre></div></td></tr></table></div>
+<p>This means "display the <code>Hello world!</code> notification if the <code>isAtSpawn</code> condition is <em>not met</em>". Save the file, reload the plugin
+and run the event inside and outside of the radius to see how it works.</p>
+<h2 id="basic-tags">Basic tags<a class="headerlink" href="#basic-tags" title="Permanent link">🔗</a></h2>
+<p>Now that you know how to use events and conditions I'll show you what tags are. Create new events:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">add_beton_tag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">beton&quot;</span>
+<span class="nt">del_beton_tag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">del</span><span class="nv"> </span><span class="s">beton&quot;</span>
+</code></pre></div></td></tr></table></div>
+<p>It's a good practice to give your events names that describe what they are doing. Imagine you have 100 events, <code>foo24</code>,
+<code>bar65</code>, <code>baz12</code> etc. You would get lost pretty quickly. So, <code>add_beton_tag</code> event here simply adds <code>beton</code> tag to the
+player, <code>del_beton_tag</code> removes it. Save the file, reload the plugin and run this event. Nothing happens... or does it?
+Issue <strong>/q t {name}</strong> command (<code>t</code> is shortcut for <code>tags</code>). It should show you a list with few entries.
+Right now focus on <code>default.beton</code>, the rest are used by the default quest for Innkeeper. Alright, <code>default</code> is the name
+of the package in which the tag is, and <code>beton</code> is the name of the tag, as defined in <code>add_beton_tag</code> event.
+Now run <code>del_beton_tag</code> event. Guess what, <code>default.beton</code> disappeared from the list! And that's it, you know how to
+add and remove tags. Pretty useless.</p>
+<p>Nothing could be more wrong. Tags are one the most powerful things in BetonQuest. They just need to be used with <code>tag</code>
+condition. Open <em>conditions.yml</em> and add</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">has_beton_tag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">beton&quot;</span>
+</code></pre></div></td></tr></table></div>
+<p>line. As you can imagine, <code>tag</code> is the type of condition (the same as <code>tag</code> event, but these are not the same things - one
+is an event, the other one is a condition) and <code>beton</code> is the name of the tag. You don't have to specify <code>default.beton</code>,
+but you can if you want. Now save, reload and check it with a command. It should show <strong>false</strong>, since you have removed
+the tag with <code>del_beton_tag</code> event. Add it again with <code>add_beton_tag</code> event and check the <code>has_beton_tag</code> condition again.
+Now it will show <strong>true</strong>.</p>
+<p>Now you probably understand how powerful this system is. You could for example set a tag on the first time the player
+talks with an NPC, and if the NPC sees that tag next time they talk, he will tell something different, like "welcome back".</p>
+<h2 id="creating-objectives">Creating objectives<a class="headerlink" href="#creating-objectives" title="Permanent link">🔗</a></h2>
+<p>Time to write some objectives! Open the <em>objectives.yml</em> file and add a new line:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">kill_creepers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mobkill</span><span class="nv"> </span><span class="s">CREEPER</span><span class="nv"> </span><span class="s">3</span><span class="nv"> </span><span class="s">events:tp</span><span class="nv"> </span><span class="s">conditions:has_beton_tag&quot;</span>
+</code></pre></div></td></tr></table></div>
+<p>Now let's analyze it. <code>kill_creepers</code> is a name of the objective. <code>mobkill</code> is a type. In this case, to complete the
+objective the player will have to kill some mobs. <code>creeper</code> is a type of the mob, so we know that these mobs will have
+to be Creepers. <code>3</code> is the amount. It means that the player has to kill 3 Creepers. <code>events:tp</code> means than once the
+player kills those Creepers, the <code>tp</code> event will be run.
+<code>conditions:has_beton_tag</code> tells us that the player will have to have <code>beton</code> tag while killing Creepers to complete the objective.
+Save it, reload the plugin and issue <strong>/q o {name} add default.kill_creepers</strong> command (<code>o</code> is for <code>objective</code>, <code>add</code>
+tells the plugin to add an objective).</p>
+<p>Now you can check if you actually have this objective with <strong>/q o {name}</strong> command, it will show you all your active
+objectives. It should show <code>default.kill_creepers</code>. Alright, remove (yes, remove!) the <code>beton</code> tag from you and find
+some Creepers to kill. Once you killes 3 of them you will notice that nothing happened. It's because <code>has_beton_tag</code>
+condtion is not met, so the objective does not count your progress. Now add the tag again and kill another Creepers.
+When the third is dead you should be teleported to the location defined in <code>tp</code> event.</p>
+<p>Congratulations, now you know how to use objectives. You should experiment with other types now, since objectives will
+be used very often in your quests. Once you're done check out the <em>Writing your first conversation</em> chapter to use your
+knowledge to write your fisrt conversation.</p>
+<h2 id="writing-your-first-conversation">Writing your first conversation<a class="headerlink" href="#writing-your-first-conversation" title="Permanent link">🔗</a></h2>
+<p>Now that you have seen BetonQuest in action and understood events, conditions and objectives, it's time for writing your
+first conversation. There's a <em>conversations</em> directory inside the default package. It contains a single file,
+<em>innkeeper.yml</em>. This is the conversation with Innkeeper, the one who asks you to cut some trees. Open it, we'll use
+that for reference. Now create a new file, let's say <em>miner.yml</em>. Now type
+(don't copy-paste it, you'll learn better while typing) that into the file:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">quester</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Miner</span>
+<span class="nt">first</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">greeting</span>
+<span class="nt">NPC_options</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">greeting</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Hi there, traveler!</span>
+</code></pre></div></td></tr></table></div>
+<p>It's the most basic conversation possible. The NPC named <code>Miner</code> upon starting the conversation will use <code>greeting</code> option,
+which means he will say <code>Hi there, traveler!</code>. Then the conversation will end, because there are no player options defined.
+Now you need to link the conversation with an NPC. For that you now need to create or select another NPC.
+Then you link your conversation to the npc in the <em>main.yml</em> file. Open it now. As you can see the previous NPC
+conversation is linked to <code>Innkeeper</code> word. Now add another line under the Innkeeper:
+<code>'1': miner</code>, save the file and reload the server. This will link our new conversation with the NPC with the id "1".
+Now click on that NPC.</p>
+<p>Guess what, the conversation finished right after it started. 
+The Miner just said <code>Hi there, traveler!</code>, as expected. Now go to the conversation file and edit it
+(again, manually, no copy-paste!) so the options look like this:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">NPC_options</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">greeting</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Hi there, traveler!</span>
+<span class="w">    </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hello,bye</span>
+<span class="nt">player_options</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hello</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Hello!</span>
+<span class="w">  </span><span class="nt">bye</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">I need to go, sorry.</span>
+</code></pre></div></td></tr></table></div>
+<p>When you save the file, reload the plugin and start the conversation again you will notice that there are two options
+for you to choose: <code>Hello!</code> and <code>I need to go, sorry.</code> Choosing any of them will end the conversation, because these
+options did not specify any pointers.</p>
+<p>Now add a new NPC option, for example <code>weather</code> with text <code>Nice weather.</code> and make <code>hello</code> player option point to it.
+When you save&amp;reload, the Miner should say <code>Nice weather.</code> when you tell him <code>Hello!</code>. I think you get how it works.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">NPC_options</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">greeting</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Hi there, traveler!</span>
+<span class="w">    </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hello,bye</span>
+<span class="w">  </span><span class="nt">weather</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Nice weather.</span>
+<span class="nt">player_options</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hello</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Hello!</span>
+<span class="w">    </span><span class="nt">pointer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">weather</span>
+<span class="w">  </span><span class="nt">bye</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">I need to go, sorry.</span>
+</code></pre></div></td></tr></table></div>
+<p>Now, every time you talk to the Miner, he will say the same thing. It would be nice if the second time you talk to him
+he knew your name. We can do that with tags. Define a <code>meet_miner</code> event and <code>has_met_miner</code> condition. When you talk
+to the Miner for the first time, he will check if you have met him. If not, he will meet you (with that event) and next
+time you talk, the condition will be passed and he will use your name.</p>
+<p>Now, rename <code>greeting</code> NPC option to <code>first_greeting</code>. Add <code>meet_miner</code> event and negated <code>has_met_miner</code> condition
+(negated because this option should only show if the player has not met the Miner yet). You will need to surround the
+condition with <code>''</code>, because strings cannot start with exclamation marks in YAML. It should look like this:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">first</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">first_greeting</span>
+<span class="nt">NPC_options</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">first_greeting</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Hi there, traveler!</span>
+<span class="w">    </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;!has_met_miner&#39;</span>
+<span class="w">    </span><span class="nt">event</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">meet_miner</span>
+<span class="w">    </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hello,bye</span><span class="w"> </span>
+</code></pre></div></td></tr></table></div>
+<p>This means: <code>first_greeting</code> should be used if the player <strong>does not</strong> pass <code>has_met_miner</code> condition (meaning he
+doesn't have a tag because he haven't talked to the NPC yet). When this option is used, it will fire <code>meet_miner</code> event
+and display <code>hello</code> and <code>bye</code> options. Alright, but what happens if the player met the Miner and now negated
+<code>has_met_miner</code> condition doesn't work? NPC will try to use next option defined in <code>first</code> setting. There is none yet,
+so let's add it.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">first</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">first_greeting,regular_greeting</span>
+<span class="nt">NPC_options</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">regular_greeting</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Hi %player%!</span>
+<span class="w">    </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hello,bye</span>
+</code></pre></div></td></tr></table></div>
+<p>This option does not have any conditions, so if the <code>first_greeting</code> fails, the NPC will always choose this one.
+Now take a look at the <code>%player%</code> thing. It's a variable. In this place it will show your name. There are more than this
+one, they are described in <em>Reference</em> chapter. Alright, save&amp;reload and start the conversation. If you did everything
+correctly, the Miner should greet you as a "traveler", and the second time you talk to him, he should greet you with
+your Minecraft name.</p>
+<p>Here's the whole conversation you created, so you can check if you understood everything correctly:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">first</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">first_greeting,regular_greeting</span>
+<span class="nt">NPC_options</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">first_greeting</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Hi there, traveler!</span>
+<span class="w">    </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;!has_met_miner&#39;</span>
+<span class="w">    </span><span class="nt">event</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">meet_miner</span>
+<span class="w">    </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hello,bye</span><span class="w"> </span>
+<span class="w">  </span><span class="nt">regular_greeting</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Hi %player%!</span>
+<span class="w">    </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hello,bye</span>
+<span class="w">  </span><span class="nt">weather</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Nice weather.</span>
+<span class="nt">player_options</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hello</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Hello!</span>
+<span class="w">    </span><span class="nt">pointer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">weather</span>
+<span class="w">  </span><span class="nt">bye</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">I need to go, sorry.</span>
+</code></pre></div></td></tr></table></div>
+<p>Now you should experiment some more with this conversation, you can help yourself by looking at the
+<a href="https://github.com/BetonQuest/BetonQuest/blob/main/src/main/resources/default/conversations/innkeeper.yml" target="_blank">innkeeper.yml</a> file.
+Try to understand how that conversation works step by step. As the excercise you should complete the Miner NPC, so he
+asks you to mine some iron ore, then smelt it in the furnace, next craft an armor with it and return to him wearing this armor.</p>
+<p>You might want to check out the <a href="../../../User-Documentation/Reference/">Reference</a> chapter to see how to handle items in 
+your quests and how to add entries to the journal. If you want to use Citizens NPCs instead of the ones made with clay 
+you will find information you need in that chapter too. To find out more about events, conditions, objectives and variables,
+take a look at the appropriate lists (after the <em>Reference</em> chapter).</p>
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      <span class="md-source-file__fact">
+        <span class="md-icon" title="Last update">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1-2.1-2M12.5 7v5.2l4 2.4-1 1L11 13V7h1.5M11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2v1.8Z"/></svg>
+        </span>
+        <span class='timeago' datetime='1674766344000' locale='en'></span>
+      </span>
+    
+    
+    
+    
+  </aside>
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2023  BetonQuest Organisation. GPLv3
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs Insiders
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://discord.gg/rK6mfHq" target="_blank" rel="noopener" title="discord.gg" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M524.531 69.836a1.5 1.5 0 0 0-.764-.7A485.065 485.065 0 0 0 404.081 32.03a1.816 1.816 0 0 0-1.923.91 337.461 337.461 0 0 0-14.9 30.6 447.848 447.848 0 0 0-134.426 0 309.541 309.541 0 0 0-15.135-30.6 1.89 1.89 0 0 0-1.924-.91 483.689 483.689 0 0 0-119.688 37.107 1.712 1.712 0 0 0-.788.676C39.068 183.651 18.186 294.69 28.43 404.354a2.016 2.016 0 0 0 .765 1.375 487.666 487.666 0 0 0 146.825 74.189 1.9 1.9 0 0 0 2.063-.676A348.2 348.2 0 0 0 208.12 430.4a1.86 1.86 0 0 0-1.019-2.588 321.173 321.173 0 0 1-45.868-21.853 1.885 1.885 0 0 1-.185-3.126 251.047 251.047 0 0 0 9.109-7.137 1.819 1.819 0 0 1 1.9-.256c96.229 43.917 200.41 43.917 295.5 0a1.812 1.812 0 0 1 1.924.233 234.533 234.533 0 0 0 9.132 7.16 1.884 1.884 0 0 1-.162 3.126 301.407 301.407 0 0 1-45.89 21.83 1.875 1.875 0 0 0-1 2.611 391.055 391.055 0 0 0 30.014 48.815 1.864 1.864 0 0 0 2.063.7A486.048 486.048 0 0 0 610.7 405.729a1.882 1.882 0 0 0 .765-1.352c12.264-126.783-20.532-236.912-86.934-334.541ZM222.491 337.58c-28.972 0-52.844-26.587-52.844-59.239s23.409-59.241 52.844-59.241c29.665 0 53.306 26.82 52.843 59.239 0 32.654-23.41 59.241-52.843 59.241Zm195.38 0c-28.971 0-52.843-26.587-52.843-59.239s23.409-59.241 52.843-59.241c29.667 0 53.307 26.82 52.844 59.239 0 32.654-23.177 59.241-52.844 59.241Z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://spigotmc.org/resources/2117/" target="_blank" rel="noopener" title="spigotmc.org" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M224 0c17.7 0 32 14.3 32 32v12l96-12c17.7 0 32 14.3 32 32s-14.3 32-32 32l-96-12-31-3.9-1-.1-1 .1-31 3.9-96 12c-17.7 0-32-14.3-32-32s14.3-32 32-32l96 12V32c0-17.7 14.3-32 32-32zM0 224c0-17.7 14.3-32 32-32h96l22.6-22.6c6-6 14.1-9.4 22.6-9.4H192v-43.8l32-4 32 4V160h18.7c8.5 0 16.6 3.4 22.6 9.4L320 192h32c88.4 0 160 71.6 160 160 0 17.7-14.3 32-32 32h-64c-17.7 0-32-14.3-32-32s-14.3-32-32-32h-36.1c-20.2 29-53.9 48-91.9 48s-71.7-19-91.9-48H32c-17.7 0-32-14.3-32-32v-64zm436.8 199.4c1.9-4.5 6.3-7.4 11.2-7.4s9.2 2.9 11.2 7.4l18.2 42.4c1.8 4.1 2.7 8.6 2.7 13.1v1.1c0 17.7-14.3 32-32 32s-32-14.3-32-32v-1.2c0-4.5.9-8.9 2.7-13.1l18.2-42.4z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/BetonQuest/BetonQuest" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="mailto://contact@betonquest.org" target="_blank" rel="noopener" title="contact@betonquest.org" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M1.75 2h12.5c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 14H1.75A1.75 1.75 0 0 1 0 12.25v-8.5C0 2.784.784 2 1.75 2ZM1.5 12.251c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V5.809L8.38 9.397a.75.75 0 0 1-.76 0L1.5 5.809v6.442Zm13-8.181v-.32a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25v.32L8 7.88Z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "content.action.edit", "navigation.tabs", "navigation.tabs.sticky", "navigation.tracking", "navigation.top", "navigation.sections", "navigation.expand", "search.share", "search.suggest"], "search": "../../../assets/javascripts/workers/search.6c7302c4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["RELEASE", "DEV"], "provider": "mike"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.9115145a.min.js"></script>
+      
+        <script src="../../../webCode/js/copyLinkToClipboard.js"></script>
+      
+    
+  
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/4.0.0-beta.2/timeago.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/4.0.0-beta.2/timeago.locales.min.js"></script>
+          <script>
+            var nodes = document.querySelectorAll('.timeago');
+            var locale = nodes[0].getAttribute('locale');
+            timeago.render(nodes, locale);
+          </script>
+        </body>
+</html>

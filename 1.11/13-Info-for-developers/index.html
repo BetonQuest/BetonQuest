@@ -1,0 +1,910 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <meta name="author" content="BetonQuest Organisation">
+      
+      
+        <link rel="canonical" href="https://betonquest.github.io/BetonQuest/13-Info-for-developers/">
+      
+      
+        
+      
+      
+        
+          <link rel="search" type="application/opensearchdescription+xml" href="https://betonquest.github.io/BetonQuest//search.xml" title="BetonQuest Search">
+        
+      
+      <link rel="shortcut icon" href="../media/design/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.2+insiders-1.13.2">
+    
+    
+      
+        <title>Developers - BetonQuest</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.9336a370.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fed55ee1.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../webCode/css/superFences.css">
+    
+      <link rel="stylesheet" href="../webCode/css/centered.css">
+    
+      <link rel="stylesheet" href="../webCode/css/contentAreaFullWidth.css">
+    
+      <link rel="stylesheet" href="../webCode/css/admonition.css">
+    
+    
+      
+        
+<script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-164568470-1","auto"),ga("set","anonymizeIp",!0),ga("send","pageview"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){if(this.value){var e=document.location.pathname;ga("send","pageview",e+"?q="+this.value)}})}),document.addEventListener("DOMContentSwitch",function(){ga("send","pageview",document.location.pathname)})</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="teal">
+  
+    
+    
+      <script>var palette=JSON.parse(localStorage.getItem("__palette")||"{}");if(void 0!==palette.color)for(var key in palette.color)document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#info-for-developers" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://betonquest.github.io/BetonQuest/" title="BetonQuest" class="md-header-nav__button md-logo" aria-label="BetonQuest">
+      
+  <img src="../media/design/BQIcon1k.png" alt="logo">
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            BetonQuest
+          </span>
+        </div>
+        <div class="md-header-nav__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Developers
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="md-header-nav__options">
+      
+        
+          
+          
+          
+          <button class="md-header-nav__button md-icon" title="Switch to dark mode" aria-label="Switch to dark mode" data-md-option="palette" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="teal" data-md-state="hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 017 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 01-1 1H9a1 1 0 01-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 017-7M9 21v-1h6v1a1 1 0 01-1 1h-4a1 1 0 01-1-1m3-17a5 5 0 00-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 00-5-5z"/></svg>
+          </button>
+        
+          
+          
+          
+          <button class="md-header-nav__button md-icon" title="Switch to light mode" aria-label="Switch to light mode" data-md-option="palette" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue" data-md-state="hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 00-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 001 1h6a1 1 0 001-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 00-7-7M9 21a1 1 0 001 1h4a1 1 0 001-1v-1H9v1z"/></svg>
+          </button>
+        
+      
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+      <div class="md-search__suggest" data-md-component="search-suggest"></div>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/BetonQuest/BetonQuest/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    BetonQuest on GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://betonquest.github.io/BetonQuest/" title="BetonQuest" class="md-nav__button md-logo" aria-label="BetonQuest">
+      
+  <img src="../media/design/BQIcon1k.png" alt="logo">
+
+    </a>
+    BetonQuest
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/BetonQuest/BetonQuest/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    BetonQuest on GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href=".." class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../02-Installation-and-Configuration/" class="md-nav__link">
+      Installation and Configuration
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../03-Commands-and-permissions/" class="md-nav__link">
+      Commands and Permissions
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../04-Quick-start-tutorial/" class="md-nav__link">
+      Quick Start Tutorial
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../05-Reference/" class="md-nav__link">
+      Reference
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../Notifications/" class="md-nav__link">
+      Notifications
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../06-Conditions-List/" class="md-nav__link">
+      Conditions
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../07-Events-List/" class="md-nav__link">
+      Events
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../08-Objectives-List/" class="md-nav__link">
+      Objectives
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../09-Variables-List/" class="md-nav__link">
+      Variables
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../10-Compatibility/" class="md-nav__link">
+      Compatibility
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../11-Tips-and-tricks/" class="md-nav__link">
+      Tips and Tricks
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../12-Frequently-Asked-Questions/" class="md-nav__link">
+      FAQ
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Developers
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" class="md-nav__link md-nav__link--active">
+      Developers
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#accessing-the-plugin" class="md-nav__link">
+    Accessing the plugin
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-events" class="md-nav__link">
+    Writing events
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-conditions" class="md-nav__link">
+    Writing conditions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-objectives" class="md-nav__link">
+    Writing objectives
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-instruction-object" class="md-nav__link">
+    Reading Instruction object
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-variables" class="md-nav__link">
+    Writing variables
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firing-events" class="md-nav__link">
+    Firing events
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checking-conditions" class="md-nav__link">
+    Checking conditions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#starting-objectives" class="md-nav__link">
+    Starting objectives
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-additional-conversation-inputoutput-methods" class="md-nav__link">
+    Creating additional conversation input/output methods
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#listening-to-betonquest-bukkit-events" class="md-nav__link">
+    Listening to BetonQuest (Bukkit) events
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugging" class="md-nav__link">
+    Debugging
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../14-Contributing/" class="md-nav__link">
+      Contributing
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#accessing-the-plugin" class="md-nav__link">
+    Accessing the plugin
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-events" class="md-nav__link">
+    Writing events
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-conditions" class="md-nav__link">
+    Writing conditions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-objectives" class="md-nav__link">
+    Writing objectives
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-instruction-object" class="md-nav__link">
+    Reading Instruction object
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-variables" class="md-nav__link">
+    Writing variables
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firing-events" class="md-nav__link">
+    Firing events
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checking-conditions" class="md-nav__link">
+    Checking conditions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#starting-objectives" class="md-nav__link">
+    Starting objectives
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-additional-conversation-inputoutput-methods" class="md-nav__link">
+    Creating additional conversation input/output methods
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#listening-to-betonquest-bukkit-events" class="md-nav__link">
+    Listening to BetonQuest (Bukkit) events
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugging" class="md-nav__link">
+    Debugging
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/BetonQuest/BetonQuest/edit/master/documentation/13-Info-for-developers.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="info-for-developers">Info for developers<a class="headerlink" href="#info-for-developers" title="Permanent link">🔗</a></h1>
+<h2 id="accessing-the-plugin">Accessing the plugin<a class="headerlink" href="#accessing-the-plugin" title="Permanent link">🔗</a></h2>
+<p>You can either add BetonQuest.jar directly to your build path or use Maven. First option if you're using Eclipse:</p>
+<ol>
+<li>Create a folder called lib in your project folder.</li>
+<li>Put BetonQuest.jar in this folder.</li>
+<li>Refresh your project in Eclipse.</li>
+<li>In Eclipse Project Explorer right click on BetonQuest.jar and select <code>Build Path -&gt; Add to Build Path</code>.</li>
+</ol>
+<p>And if you're using Maven simply add this to your <em>pom.xml</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;repositories&gt;</span>
+    <span class="nt">&lt;repository&gt;</span>
+        <span class="nt">&lt;id&gt;</span>betonquest-repo<span class="nt">&lt;/id&gt;</span>
+        <span class="nt">&lt;url&gt;</span>https://betonquest.pl/mvn<span class="nt">&lt;/url&gt;</span>
+    <span class="nt">&lt;/repository&gt;</span>
+<span class="nt">&lt;/repositories&gt;</span>
+
+<span class="nt">&lt;dependencies&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>pl.betoncraft.betonquest<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>BetonQuest<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>1.8.5<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;/dependencies&gt;</span>
+</code></pre></div>
+
+<h2 id="writing-events">Writing events<a class="headerlink" href="#writing-events" title="Permanent link">🔗</a></h2>
+<p>Writing events is the easiest. You need to create a class extending <code>QuestEvent</code> for each new event. The constructor must take one argument, an <code>Instruction</code> object. In the constructor you must extract all information from the instruction, for example skill names, locations etc. The description of the <code>Instruction</code> class is down below. Don't worry about checking event conditions, these are handled by the rest of BetonQuest's logic.</p>
+<p>Events are not bound to any player so firing it is done through <code>fire(String playerID)</code> method. You have to override it with your code responsible for doing stuff your event should do. Here you should use data previously parsed by the constructor. Don't access <code>Instruction</code> object here, it will lower the performance. You can convert <code>playerID</code> to <code>Player</code> object using the <code>PlayerConverter</code> class (it's a relict of times when both UUIDs and names could be used in Bukkit to identify players).</p>
+<p>If you want your event to be <em>persistent</em>, you need to set <code>super.persistent</code> variable to <code>true</code> in the constructor. This will make BetonQuest run this event even if the <code>playerID</code> points to an offline player, so prepare your code for that.</p>
+<p>If you want your event to be <em>static</em>, you need to set <code>super.staticness</code> variable to <code>true</code> in the constructor. This will allow BetonQuest to run this event with <code>playerID</code> set to <code>null</code>, so prepare your code for that.</p>
+<p>When you'll finish your class you need to invoke <code>registerEvents(String name, Class&lt;? extends QuestEvent&gt; class)</code> from BetonQuest instance (which you can get using <code>BetonQuest.getInstance()</code> static method). The name for your event will be used in instruction strings (such as "journal" for journal event). The class argument is the <code>Class</code> object of your event. You can get it using <code>YourEvent.class</code>. That's it, you created an event. Don't forget to check it for bugs!</p>
+<h2 id="writing-conditions">Writing conditions<a class="headerlink" href="#writing-conditions" title="Permanent link">🔗</a></h2>
+<p>Writing conditions is easy too. They must extend <code>Condition</code> and override <code>check(String playerID)</code> method, which should return <code>true</code> or <code>false</code>, depending on if the condition was met. You register them using <code>registerConditions(String name, Class&lt;? extends Condition)</code> method from BetonQuest instance as well. The rest is almost the same, you're defining the constructor which will parse the <code>Instruction</code> object and overriding <code>check(String playerID)</code> method to check if the player meets the condition. Don't worry about inverting it, as it's automatically done by BetonQuest.</p>
+<p>Conditions are always getting an online player in the <code>check(String playerID)</code> method, so you don't need to check that manually.</p>
+<h2 id="writing-objectives">Writing objectives<a class="headerlink" href="#writing-objectives" title="Permanent link">🔗</a></h2>
+<p>Objectives are more complicated because they use event handlers and they must store players' data. They extend <code>Objective</code> class. As always, you need to extract all data from supplied <code>Instruction</code> object in the constructor. Don't register listeners in the constructor!</p>
+<p>If your objective handles changing data (like amount of mobs left to kill) you should create a class extending <code>ObjectiveData</code>. For example <code>block</code> objective does need to store amount of blocks left to place/break, and it does that using "BlockData" class. In the constructor it receives three strings: data string, ID of the player and ID of the objective. The latter two are used by BetonQuest to correctly save and load the former one from the database.</p>
+<p>The data string should contains all the information you need in your objective. You must write a parser which will extract the information, methods used in the objective to alter the information, and override the <code>toString()</code> method in so it returns data string in the format parsable by your parser. Everytime the data in your object changes (like when killing a mob), you need to call <code>update()</code> method. It will save the data to the database.</p>
+<p>Now you should override <code>getDefaultDataInstruction()</code> method. It must return the default data instruction understandable by your parser. For example in <code>tame</code> objective it will return the amount of mobs to tame. If you don't use data objects, just return an empty string (not <code>null</code>, just <code>""</code>).</p>
+<p>In order for your objective to use the data object you have created you need to set the <code>template</code> variable to this object's class. If you're not defining the data object (because you don't need to handle the changing data), you should set the <code>template</code> simply to <code>ObjectiveData.class</code>.</p>
+<p>Every time your objective accepts the player's action (for example killing the right mob in MobKill objective) it must be also verified with <code>checkConditions()</code> method. You don't want your objective ignoring all conditions, right? When you decide that the objective is completed you should call <code>completeObjective()</code> method. It will fire all events for you, so you don't have to do this manually.</p>
+<p><code>start()</code> and <code>stop()</code> methods must start objective's listeners and stop them accordingly. It's because the plugin turns the objective's listeners off if there are no players having it active. Here usually you will register/unregister listeners, but some objectives may be different. For example <code>delay</code> objective starts and cancels a runnable, instead of using listeners.</p>
+<p>If your objective has some properties (used in variables) you should override the <code>String getProperty(String property, String playerID)</code> method. At runtime, if anyone uses <code>%objective.yourObjective.theProperty%</code> variable, BetonQuest will call that method with <code>theProperty</code> keyword as the first argument. Using it you should parse the data of the objective and return it as a String. If the supplied property name is incorrect or there was an error during getting the value, return an empty String and optionally log an error (<code>Debug.error(String message)</code>).</p>
+<p>Objectives are registered the same way as conditions and events, using <code>registerObjective(String name, Class&lt;? extends Objective&gt;)</code> method.</p>
+<h2 id="reading-instruction-object">Reading <code>Instruction</code> object<a class="headerlink" href="#reading-instruction-object" title="Permanent link">🔗</a></h2>
+<p>The <code>Instruction</code> object parses the instruction string defined by the user and splits it into arguments. You can ask it for required arguments one by one with <code>next()</code> method or a parser method like <code>getQuestItem()</code>. Required arguments are the ones specified at the very beginning of an instruction string, for example <code>add someTag</code> in <code>tag</code> event. It will automaticly throw <code>InstructionParseException</code> for you if it encounters an error, for example when there were no more arguments in user's instruction or it can't parse the argument to the type you asked for.</p>
+<p>You can also ask for optional arguments: if the instruction string contains argument <code>arg:something</code> and you ask for optional <code>arg</code>, it will give you <code>something</code>. If there is no optional argument, it will return <code>null</code>. Don't worry about passing that <code>null</code> to parser methods like <code>getLocation(String)</code>, they won't throw an error, they'll simply return that <code>null</code>.</p>
+<p>Parser methods are there for your convenience. You could write a location parser for yourself, but there's no need for that, you can just use <code>getLocation()</code> or <code>getLocation(String)</code> method and receive <code>LocationData</code> object. The former method is simply <code>getLocation(next())</code>.</p>
+<p>If your instruction is more complicated and <code>Instruction</code> class doesn't provide necessary methods, you can still parse the instruction string manually. You can get it with <code>getInstruction()</code> method. Just remember to throw <code>InstructionParseException</code> when the instruction supplied by the user is incorrect. BetonQuest will catch them and display a message in the console.</p>
+<h2 id="writing-variables">Writing variables<a class="headerlink" href="#writing-variables" title="Permanent link">🔗</a></h2>
+<p>All variables need to extend <code>Variable</code> class. In the constructor you must parse the instruction and extract all information about your variable's behavior. Then you have to override the <code>String getValue(String playerID)</code> method. It should return the value of the variable for the supplied player. If it's impossible, it should return an empty String. Registering variables is done via <code>BetonQuest.registerVariable(String name, Class&lt;? extends Variable&gt; variable)</code> method.</p>
+<h2 id="firing-events">Firing events<a class="headerlink" href="#firing-events" title="Permanent link">🔗</a></h2>
+<p>The plugin has a static method for firing events - <code>event(String playerID, EventID eventID)</code>. First parameter is ID of the player. Second one represents ID of the event. To get it, simply create an instance of the <code>EventID</code> class. You can't fire an event directly using an instruction string.</p>
+<h2 id="checking-conditions">Checking conditions<a class="headerlink" href="#checking-conditions" title="Permanent link">🔗</a></h2>
+<p>BetonQuest has static boolean method <code>condition(String playerID, String conditionID)</code>. It works similarly as event method described above.</p>
+<h2 id="starting-objectives">Starting objectives<a class="headerlink" href="#starting-objectives" title="Permanent link">🔗</a></h2>
+<p>The <code>newObjective(String playerID, String objectiveID)</code> method will launch the objective from start. You can however use <code>resumeObjective(String playerID, String objectiveID, String instruction)</code> to pass your own <code>ObjectiveData</code> instruction to the objective. It will not be saved to the database, because it is assumed that the objective has just been loaded from it and it exists there without any change. You should save it manually.</p>
+<h2 id="creating-additional-conversation-inputoutput-methods">Creating additional conversation input/output methods<a class="headerlink" href="#creating-additional-conversation-inputoutput-methods" title="Permanent link">🔗</a></h2>
+<p>In order to register an object as the conversation input/output it needs to implement <code>ConversationIO</code> interface. The constructor will receive three arguments: Conversation object, playerID String and NPC name String. It needs to parse the required data here and register all needed listeners. The <code>setResponse(String response)</code> method will receive NPC's text from the conversation. The <code>addOption(String option)</code> method will be called by the conversation for each reply option for this NPC text. The object must store all this data and when <code>display()</code> is called, it must use it to display the player the output. When it detects that the player chose an answer, it should pass it to the conversation using <code>Conversation.passPlayerAnswer(int number)</code> method. The integer is the number of the answer, starting at 1. <code>clear()</code> method will be called at the beginning of the new conversation cycle. It should clear all the previous options, so they do not overlap. <code>end()</code> method will be called when the conversation ends and it should unregister all listeners. You can also call that message when you detect that the player forced conversation ending (for example by moving away from the NPC). Remember to notify the conversation about that using <code>Conversation.end()</code>.</p>
+<p>Registering the conversation inputs/outputs is done in the same way as objectives, events and conditions, through <code>BetonQuest.registerConversationIO(String name, Class&lt;? extends ConversationIO&gt;)</code> method.</p>
+<h2 id="listening-to-betonquest-bukkit-events">Listening to BetonQuest (Bukkit) events<a class="headerlink" href="#listening-to-betonquest-bukkit-events" title="Permanent link">🔗</a></h2>
+<p>BetonQuest calls Bukkit events on a few occasions: when a conversation is started, finished and when an option is selected. You can find these events in <code>pl.betoncraft.betonquest.api</code> package and use them in your plugins. If you need any additional events just open and issue on GitHub or send me a pull request.</p>
+<h2 id="debugging">Debugging<a class="headerlink" href="#debugging" title="Permanent link">🔗</a></h2>
+<p>You can debug your code using <code>LogUtils</code> class by simply call <code>LogUtils.getlogger().log(..)</code> to log something.</p>
+<p>We use the following levels for this aspects:
+- <code>SEVER</code> - Anything happen, that breaks the plugin, or a main function of the plugin
+- <code>WARNING</code> - The most things, where something not normal or unexpected happens, but the plugin still work correctly for the rest(all catch blocks, when not SEVER)
+- <code>INFO</code> - Anything you want to log, that also should appear in the normal console
+- <code>CONFIG</code> - Not in use at the moment
+- <code>FINE</code> - All messages, that you want to only appear in the debug log file, not in the console
+- <code>FINER</code> - Do not use this, this is reserved, for exception logging, like you call LogUtils.logThrowable or LogUtils.logThrowableIgnore
+- <code>FINEST</code> - Not in use at the moment</p>
+<p>If you have a <code>catch</code> block, please log this with a message, that calls <code>exception.getMessage()</code> and log the complete exception by using the <code>Logutils.logThrowable(e)</code>. The methods <code>logThrowableReport()</code> and <code>logThrowableIgnore()</code> may only be executed by BetonQuest.</p>
+                
+                  
+                    
+
+<hr>
+<div class="md-source-date">
+  <small>
+    
+      Last update: <span class='timeago' datetime='1608813327000' locale='en'></span>
+    
+  </small>
+</div>
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../12-Frequently-Asked-Questions/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                FAQ
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../14-Contributing/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Contributing
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            © 2020  BetonQuest Organisation. GPLv3
+          </div>
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs Insiders
+          </a>
+        
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://discord.gg/rK6mfHq" target="_blank" rel="noopener" title="discord.gg" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M297.216 243.2c0 15.616-11.52 28.416-26.112 28.416-14.336 0-26.112-12.8-26.112-28.416s11.52-28.416 26.112-28.416c14.592 0 26.112 12.8 26.112 28.416zm-119.552-28.416c-14.592 0-26.112 12.8-26.112 28.416s11.776 28.416 26.112 28.416c14.592 0 26.112-12.8 26.112-28.416.256-15.616-11.52-28.416-26.112-28.416zM448 52.736V512c-64.494-56.994-43.868-38.128-118.784-107.776l13.568 47.36H52.48C23.552 451.584 0 428.032 0 398.848V52.736C0 23.552 23.552 0 52.48 0h343.04C424.448 0 448 23.552 448 52.736zm-72.96 242.688c0-82.432-36.864-149.248-36.864-149.248-36.864-27.648-71.936-26.88-71.936-26.88l-3.584 4.096c43.52 13.312 63.744 32.512 63.744 32.512-60.811-33.329-132.244-33.335-191.232-7.424-9.472 4.352-15.104 7.424-15.104 7.424s21.248-20.224 67.328-33.536l-2.56-3.072s-35.072-.768-71.936 26.88c0 0-36.864 66.816-36.864 149.248 0 0 21.504 37.12 78.08 38.912 0 0 9.472-11.52 17.152-21.248-32.512-9.728-44.8-30.208-44.8-30.208 3.766 2.636 9.976 6.053 10.496 6.4 43.21 24.198 104.588 32.126 159.744 8.96 8.96-3.328 18.944-8.192 29.44-15.104 0 0-12.8 20.992-46.336 30.464 7.68 9.728 16.896 20.736 16.896 20.736 56.576-1.792 78.336-38.912 78.336-38.912z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://patreon.com/betonquest" target="_blank" rel="noopener" title="patreon.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M512 194.8c0 101.3-82.4 183.8-183.8 183.8-101.7 0-184.4-82.4-184.4-183.8 0-101.6 82.7-184.3 184.4-184.3C429.6 10.5 512 93.2 512 194.8zM0 501.5h90v-491H0v491z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/BetonQuest/BetonQuest" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://betonquest.org/old" target="_blank" rel="noopener" title="betonquest.org" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M32 448c0 17.7 14.3 32 32 32h384c17.7 0 32-14.3 32-32V160H32v288zm160-212c0-6.6 5.4-12 12-12h104c6.6 0 12 5.4 12 12v8c0 6.6-5.4 12-12 12H204c-6.6 0-12-5.4-12-12v-8zM480 32H32C14.3 32 0 46.3 0 64v48c0 8.8 7.2 16 16 16h480c8.8 0 16-7.2 16-16V64c0-17.7-14.3-32-32-32z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://spigotmc.org/resources/betonquest.2117/" target="_blank" rel="noopener" title="spigotmc.org" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M352 256h-38.61c-15.71-13.44-35.46-23.07-57.39-28v-47.56l-32-3.38-32 3.38V228c-21.93 5-41.68 14.6-57.39 28H16a16 16 0 00-16 16v96a16 16 0 0016 16h92.79C129.38 421.73 173 448 224 448s94.62-26.27 115.21-64H352a32 32 0 0132 32 32 32 0 0032 32h64a32 32 0 0032-32 160 160 0 00-160-160zM81.59 159.91l142.41-15 142.41 15c9.42 1 17.59-6.81 17.59-16.8v-30.22c0-10-8.17-17.8-17.59-16.81L256 107.74V80a16 16 0 00-16-16h-32a16 16 0 00-16 16v27.74L81.59 96.08C72.17 95.09 64 102.9 64 112.89v30.22c0 9.99 8.17 17.8 17.59 16.8z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.49293c47.min.js"></script>
+      <script src="../assets/javascripts/bundle.32dc4fe5.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: ["navigation.sections", "navigation.expand", "search.highlight", "search.suggest"],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.0f64ce30.min.js"
+          }, typeof search !== "undefined" && search),
+          version: {"method": "mike"}
+        })
+      </script>
+      
+    
+  
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/4.0.0-beta.2/timeago.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/4.0.0-beta.2/timeago.locales.min.js"></script>
+          <script>
+            var nodes = document.querySelectorAll('.timeago');
+            var locale = nodes[0].getAttribute('locale');
+            timeago.render(nodes, locale);
+          </script>
+        </body>
+</html>

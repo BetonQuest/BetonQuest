@@ -1,0 +1,3238 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="BetonQuest Organisation">
+      
+      
+        <link rel="canonical" href="https://docs.betonquest.org/1.12/User-Documentation/CHANGELOG/">
+      
+      
+        <link rel="prev" href="../Configuration/">
+      
+      
+        <link rel="next" href="../../Developer-Documentation/Contributing-Guidelines/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../media/design/favicon.ico">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.0.13+insiders-4.31.0">
+    
+    
+      
+        <title>🗃️ Changelog - BetonQuest</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.527e139f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.a0c5b2b5.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../webCode/css/centered.css">
+    
+      <link rel="stylesheet" href="../../webCode/css/contentAreaFullWidth.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#placeholder-changelog" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+<a style="color: black"> You're viewing the docs of an outdated or legacy development version! </a>
+<a href="../../..">
+  <strong>Click here to go to the latest BetonQuest release.</strong>
+</a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="BetonQuest" class="md-header__button md-logo" aria-label="BetonQuest" data-md-component="logo">
+      
+  <img src="../../media/design/BQIcon1k.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            BetonQuest
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              🗃️ Changelog
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M223.5 32C100 32 0 132.3 0 256s100 224 223.5 224c60.6 0 115.5-24.2 155.8-63.4 5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6-96.9 0-175.5-78.8-175.5-176 0-65.8 36-123.1 89.3-153.3 6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/BetonQuest/BetonQuest" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    BetonQuest on GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+    
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Learn-Beton/Welcome/" class="md-tabs__link">
+          
+  
+  Learn Beton
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../Reference/" class="md-tabs__link md-tabs__link--active">
+          
+  
+  User Documentation
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Developer-Documentation/Contributing-Guidelines/" class="md-tabs__link">
+          
+  
+  Developer Documentation
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Contributing/Contributing/" class="md-tabs__link">
+          
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../Downloads/" class="md-tabs__link">
+        
+  
+    
+  
+  Downloads
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="BetonQuest" class="md-nav__button md-logo" aria-label="BetonQuest" data-md-component="logo">
+      
+  <img src="../../media/design/BQIcon1k.png" alt="logo">
+
+    </a>
+    BetonQuest
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/BetonQuest/BetonQuest" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    BetonQuest on GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
+        
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Home
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    👋 Welcome!
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1_2" >
+        
+          <label class="md-nav__link" for="__nav_1_2" id="__nav_1_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Overview
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Features/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    ✨ Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../For-Owners/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    👔  For Owners
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../For-Questers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🎨 For Questers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Learn Beton
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Learn Beton
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Learn-Beton/Welcome/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    👋 Welcome!
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Learn-Beton/Getting-Started/Setting-up-a-local-test-server/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    💻 Setting up a local test server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Learn-Beton/Getting-Started/Installing-BetonQuest/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    📥 Installing BetonQuest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Learn-Beton/Getting-Started/Setting-up-the-editor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    ✒️ Setting up the editor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Learn-Beton/Getting-Started/YAML-for-questers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    📑 YAML for questers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Learn-Beton/Getting-Started/Learn-BetonQuest/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🎓 Learn BetonQuest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    ❓ Frequently Asked Questions
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ❓ Frequently Asked Questions
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Learn-Beton/Frequently-Asked-Questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🤔  General FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    User Documentation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Documentation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_1" >
+        
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    General
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    General
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    📚   Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Conversations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    💬  Conversations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_2" >
+        
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Types
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Types
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Objectives-List/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    ✔️ Objectives List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Events-List/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    ⚙️ Events List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Conditions-List/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+      ❓    Conditions List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Compatibility/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🤝 Compatibility List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Variables-List/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🔮   Variables List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
+        
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Notifications
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notifications
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Notification-Settings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🔊   Settings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Notification-IO%27s-%26-Categories/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🏷️   IO's & Categories
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" checked>
+        
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Technical
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Technical
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Commands-and-permissions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🔒 Permissions & Commands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Updating-and-Backups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    📥 Updating
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🔧  Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🗃️ Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer Documentation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Developer Documentation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Developer-Documentation/Contributing-Guidelines/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    📚 Contributing Guidelines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Developer-Documentation/API/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    ⚙️ API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Developer-Documentation/Versioning-and-Releasing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🏭 Versioning & Releasing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Contributing/Contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🤝 Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_2" >
+        
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Contributing/Documentation/Setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    🔧 Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Contributing/Documentation/Guidelines/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    📚 Guidelines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_3" >
+        
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Sponsorships
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Sponsorships
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Contributing/Sponsors/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    💲 Patreon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Downloads/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Downloads
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/BetonQuest/BetonQuest/edit/main_v1.12/documentation/User-Documentation/CHANGELOG.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="placeholder-changelog">Placeholder Changelog<a class="headerlink" href="#placeholder-changelog" title="Permanent link">🔗</a></h1>
+<h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">🔗</a></h1>
+<p>All notable changes to this project will be documented in this file.</p>
+<p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
+and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
+<h2 id="11211-2023-12-25">[1.12.11] - 2023-12-25<a class="headerlink" href="#11211-2023-12-25" title="Permanent link">🔗</a></h2>
+<h3 id="added">Added<a class="headerlink" href="#added" title="Permanent link">🔗</a></h3>
+<h3 id="changed">Changed<a class="headerlink" href="#changed" title="Permanent link">🔗</a></h3>
+<ul>
+<li>the MythicMobs integration was updated to MythicMobs 5.3.5</li>
+<li>the MythicLib integration was updated to MythicLib 1.6-SNAPSHOT</li>
+<li>the objectives mmocorecastskill and mmoitemcastability were merged into the mmoskill objective</li>
+<li>the MMOCore-API integration was updated to MMOCore-API 1.12-SNAPSHOT</li>
+<li>the MMOItems-API integration was updated to MMOItems-API 6.9.4-SNAPSHOT</li>
+</ul>
+<h3 id="deprecated">Deprecated<a class="headerlink" href="#deprecated" title="Permanent link">🔗</a></h3>
+<h3 id="removed">Removed<a class="headerlink" href="#removed" title="Permanent link">🔗</a></h3>
+<h3 id="fixed">Fixed<a class="headerlink" href="#fixed" title="Permanent link">🔗</a></h3>
+<ul>
+<li>conversation could have a deadlock and a player can get stuck in a conversation</li>
+<li>conversation could not be canceled due to a race condition</li>
+<li>JobsReborn ObjectivePaymentEvent couldn't be used</li>
+<li>ProtocolLib warning for Minecraft 1.20.2</li>
+</ul>
+<h3 id="security">Security<a class="headerlink" href="#security" title="Permanent link">🔗</a></h3>
+<h2 id="11210-2023-02-18">[1.12.10] - 2023-02-18<a class="headerlink" href="#11210-2023-02-18" title="Permanent link">🔗</a></h2>
+<h3 id="added_1">Added<a class="headerlink" href="#added_1" title="Permanent link">🔗</a></h3>
+<h3 id="changed_1">Changed<a class="headerlink" href="#changed_1" title="Permanent link">🔗</a></h3>
+<h3 id="deprecated_1">Deprecated<a class="headerlink" href="#deprecated_1" title="Permanent link">🔗</a></h3>
+<h3 id="removed_1">Removed<a class="headerlink" href="#removed_1" title="Permanent link">🔗</a></h3>
+<h3 id="fixed_1">Fixed<a class="headerlink" href="#fixed_1" title="Permanent link">🔗</a></h3>
+<ul>
+<li>ProtocolLib's based <code>packet</code> interceptor was fixed for MC 1.19, now ProtocolLib 5.0.0 is required</li>
+<li>conversation IO chest did not show the correct NPC heads</li>
+<li><code>objective</code> event - static calls did not remove the objective for online players</li>
+<li>legacy <code>§x</code> HEX color format not working in some contexts</li>
+<li>eating of items when entering the chest conversation io actually consumed the item</li>
+</ul>
+<h3 id="security_1">Security<a class="headerlink" href="#security_1" title="Permanent link">🔗</a></h3>
+<h2 id="1129-2022-06-22">[1.12.9] - 2022-06-22<a class="headerlink" href="#1129-2022-06-22" title="Permanent link">🔗</a></h2>
+<h3 id="added_2">Added<a class="headerlink" href="#added_2" title="Permanent link">🔗</a></h3>
+<h3 id="changed_2">Changed<a class="headerlink" href="#changed_2" title="Permanent link">🔗</a></h3>
+<h3 id="deprecated_2">Deprecated<a class="headerlink" href="#deprecated_2" title="Permanent link">🔗</a></h3>
+<h3 id="removed_2">Removed<a class="headerlink" href="#removed_2" title="Permanent link">🔗</a></h3>
+<h3 id="fixed_2">Fixed<a class="headerlink" href="#fixed_2" title="Permanent link">🔗</a></h3>
+<ul>
+<li><code>weather</code> event - storm did not work</li>
+<li>1.19 ProtocolLib warnings about deprecated packages</li>
+</ul>
+<h3 id="security_2">Security<a class="headerlink" href="#security_2" title="Permanent link">🔗</a></h3>
+<h2 id="1128-2022-03-07">[1.12.8] - 2022-03-07<a class="headerlink" href="#1128-2022-03-07" title="Permanent link">🔗</a></h2>
+<h3 id="added_3">Added<a class="headerlink" href="#added_3" title="Permanent link">🔗</a></h3>
+<ul>
+<li>new line support for <code>journal_lore</code> in <code>messages.yml</code></li>
+</ul>
+<h3 id="changed_3">Changed<a class="headerlink" href="#changed_3" title="Permanent link">🔗</a></h3>
+<ul>
+<li>PikaMug Quests updated to version 4.1.3</li>
+</ul>
+<h3 id="deprecated_3">Deprecated<a class="headerlink" href="#deprecated_3" title="Permanent link">🔗</a></h3>
+<h3 id="removed_3">Removed<a class="headerlink" href="#removed_3" title="Permanent link">🔗</a></h3>
+<h3 id="fixed_3">Fixed<a class="headerlink" href="#fixed_3" title="Permanent link">🔗</a></h3>
+<ul>
+<li>reload with an invalid PlayerHider causes a NPE</li>
+<li>QuestItems could be eaten, this was caused by a changed mc behaviour</li>
+<li>command, sudo and opsudo events didn't work with conditions</li>
+<li>interact objective did not work with armorstands</li>
+<li>MMOItemsGiveEvent did not check if item actually exists</li>
+<li>notify IO <code>subtitle</code> and <code>title</code> with only a subtitle was not send</li>
+<li>npcHider not working for Citizens with ModelEngine trait</li>
+</ul>
+<h3 id="security_3">Security<a class="headerlink" href="#security_3" title="Permanent link">🔗</a></h3>
+<h2 id="1127-2021-12-11">[1.12.7] - 2021-12-11<a class="headerlink" href="#1127-2021-12-11" title="Permanent link">🔗</a></h2>
+<h3 id="added_4">Added<a class="headerlink" href="#added_4" title="Permanent link">🔗</a></h3>
+<h3 id="changed_4">Changed<a class="headerlink" href="#changed_4" title="Permanent link">🔗</a></h3>
+<h3 id="deprecated_4">Deprecated<a class="headerlink" href="#deprecated_4" title="Permanent link">🔗</a></h3>
+<h3 id="removed_4">Removed<a class="headerlink" href="#removed_4" title="Permanent link">🔗</a></h3>
+<h3 id="fixes">Fixes<a class="headerlink" href="#fixes" title="Permanent link">🔗</a></h3>
+<ul>
+<li>exception during reload, when npc_holograms are disabled</li>
+<li><code>entities</code> condition and <code>clear</code> event now support not living entities</li>
+<li>mmoitems item creation only worked with uppercase id's</li>
+</ul>
+<h3 id="security_4">Security<a class="headerlink" href="#security_4" title="Permanent link">🔗</a></h3>
+<ul>
+<li>updated log4j to 2.15.0 which fixes CVE-2021-44228</li>
+</ul>
+<h2 id="1126-2021-10-14">[1.12.6] - 2021-10-14<a class="headerlink" href="#1126-2021-10-14" title="Permanent link">🔗</a></h2>
+<h3 id="added_5">Added<a class="headerlink" href="#added_5" title="Permanent link">🔗</a></h3>
+<h3 id="changed_5">Changed<a class="headerlink" href="#changed_5" title="Permanent link">🔗</a></h3>
+<ul>
+<li><code>action</code> objective cancels now the event, before other plugins check for it (better third-party support)</li>
+</ul>
+<h3 id="deprecated_5">Deprecated<a class="headerlink" href="#deprecated_5" title="Permanent link">🔗</a></h3>
+<h3 id="removed_5">Removed<a class="headerlink" href="#removed_5" title="Permanent link">🔗</a></h3>
+<h3 id="fixes_1">Fixes<a class="headerlink" href="#fixes_1" title="Permanent link">🔗</a></h3>
+<ul>
+<li>added missing config options to the default config</li>
+<li>version check for ProtocolLibIntegrator</li>
+<li>quest item empty name comparison</li>
+<li>customized built-in messages that use the advancementIO</li>
+<li>BlockSelector without a namespace but starting with <code>:</code> did not work and threw an exception</li>
+</ul>
+<h3 id="security_5">Security<a class="headerlink" href="#security_5" title="Permanent link">🔗</a></h3>
+<h2 id="1125-2021-08-11">[1.12.5] - 2021-08-11<a class="headerlink" href="#1125-2021-08-11" title="Permanent link">🔗</a></h2>
+<h3 id="added_6">Added<a class="headerlink" href="#added_6" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Version checks for ProtocolLib and Shopkeepers support</li>
+</ul>
+<h3 id="changed_6">Changed<a class="headerlink" href="#changed_6" title="Permanent link">🔗</a></h3>
+<h3 id="deprecated_6">Deprecated<a class="headerlink" href="#deprecated_6" title="Permanent link">🔗</a></h3>
+<h3 id="removed_6">Removed<a class="headerlink" href="#removed_6" title="Permanent link">🔗</a></h3>
+<h3 id="fixes_2">Fixes<a class="headerlink" href="#fixes_2" title="Permanent link">🔗</a></h3>
+<ul>
+<li>MMOCoreClassCondition used the class display name instead of the class ID to compare classes.</li>
+<li>the take event called Paper's ItemStack.getI18NDisplayName() instead of Spigot's ItemStack.getItemMeta().getDisplayName</li>
+<li>fixed hooking in ProtocolLib</li>
+<li>max_npc_distance was set to 5.3 to prevent instant quiting of conversations</li>
+<li>conversation IO menu sometimes leave an armorstand spawned</li>
+<li>sometimes messages in a conversation are not send when packet interceptor is used</li>
+</ul>
+<h3 id="security_6">Security<a class="headerlink" href="#security_6" title="Permanent link">🔗</a></h3>
+<h2 id="1124-2021-07-05">[1.12.4] - 2021-07-05<a class="headerlink" href="#1124-2021-07-05" title="Permanent link">🔗</a></h2>
+<h3 id="added_7">Added<a class="headerlink" href="#added_7" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Vietnamese translation</li>
+<li>added invOrder setting to (mmoitem)take event</li>
+<li>the mmoitemtake event &amp; mmoitem condition now also check the backpack<ul>
+<li>this will not work until the item rework / until the backpack contains NBT data</li>
+</ul>
+</li>
+</ul>
+<h3 id="changed_7">Changed<a class="headerlink" href="#changed_7" title="Permanent link">🔗</a></h3>
+<ul>
+<li><code>/q create package</code> command does now create an empty package</li>
+</ul>
+<h3 id="deprecated_7">Deprecated<a class="headerlink" href="#deprecated_7" title="Permanent link">🔗</a></h3>
+<h3 id="removed_7">Removed<a class="headerlink" href="#removed_7" title="Permanent link">🔗</a></h3>
+<h3 id="fixes_3">Fixes<a class="headerlink" href="#fixes_3" title="Permanent link">🔗</a></h3>
+<ul>
+<li><code>brew</code> objective triggers all the time and counts correctly</li>
+<li>only generate default package if BetonQuest folder is empty</li>
+<li>fix backpack passing references instead of clones</li>
+<li>fixed combat event packet that changed with MC 1.17</li>
+</ul>
+<h3 id="security_7">Security<a class="headerlink" href="#security_7" title="Permanent link">🔗</a></h3>
+<ul>
+<li>the take event is now threadsafe</li>
+</ul>
+<h2 id="1123-2021-05-05">[1.12.3] - 2021-05-05<a class="headerlink" href="#1123-2021-05-05" title="Permanent link">🔗</a></h2>
+<h3 id="added_8">Added<a class="headerlink" href="#added_8" title="Permanent link">🔗</a></h3>
+<ul>
+<li>FastAsyncWorldEdit compatibility</li>
+<li>craft objective variable <code>total</code></li>
+<li>curly braces in math.calc variables for using variables with math symbols</li>
+<li>player attribute to QuestCompassTargetChangeEvent</li>
+</ul>
+<h3 id="changed_8">Changed<a class="headerlink" href="#changed_8" title="Permanent link">🔗</a></h3>
+<h3 id="deprecated_8">Deprecated<a class="headerlink" href="#deprecated_8" title="Permanent link">🔗</a></h3>
+<ul>
+<li>math variable now allows rounding output with the ~ operator</li>
+</ul>
+<h3 id="removed_8">Removed<a class="headerlink" href="#removed_8" title="Permanent link">🔗</a></h3>
+<h3 id="fixes_4">Fixes<a class="headerlink" href="#fixes_4" title="Permanent link">🔗</a></h3>
+<ul>
+<li>parsing of math variable</li>
+<li>craft objective: multi-craft, drop-craft, hotbar/offhand-craft, shift-Q-craft and any illegal crafting is correctly detected,</li>
+<li>craft objective variables <code>left</code> and <code>amount</code> were swapped</li>
+<li>NPC hider for not spawned NPCs</li>
+<li>Conversation IO Chest load NPC skull async from Citizens instead of sync</li>
+<li>block selector didn't respect regex boundary</li>
+<li>block selector regex errors are now properly handled</li>
+<li><code>default_journal_slot: -1</code> now uses the first free slot instead of the last hotbar slot</li>
+<li>mmobkill objective notify argument not working correctly</li>
+<li><code>fish</code> objective didn't count the amount of fish caught in one go (if modified by e.g. mcMMO)</li>
+<li>fixed smelt objective: only taking out normally did count, shift-extract got canceled</li>
+<li>empty values in <code>variable</code> objective now don't break on player join</li>
+<li>PacketInterceptor sync wait lag</li>
+<li>notifications using the chatIO were catched by the conversation interceptor</li>
+<li>case insensitive <code>password</code> objective did not work if the password contained upper case letters</li>
+<li>global variables didn't work in quester names</li>
+<li>quest items couldn't interact with any blocks, which also prevented them from mining blocks</li>
+<li>the shear objective's sheep couldn't have underscores in their names</li>
+<li>backpack passing references instead of clones</li>
+<li>compass event now allows global variables</li>
+</ul>
+<h3 id="security_8">Security<a class="headerlink" href="#security_8" title="Permanent link">🔗</a></h3>
+<ul>
+<li>it was possible to put a QuestItem into a chest</li>
+</ul>
+<h2 id="1122-2021-03-14">[1.12.2] - 2021-03-14<a class="headerlink" href="#1122-2021-03-14" title="Permanent link">🔗</a></h2>
+<h3 id="added_9">Added<a class="headerlink" href="#added_9" title="Permanent link">🔗</a></h3>
+<h3 id="changed_9">Changed<a class="headerlink" href="#changed_9" title="Permanent link">🔗</a></h3>
+<h3 id="deprecated_9">Deprecated<a class="headerlink" href="#deprecated_9" title="Permanent link">🔗</a></h3>
+<h3 id="removed_9">Removed<a class="headerlink" href="#removed_9" title="Permanent link">🔗</a></h3>
+<h3 id="fixes_5">Fixes<a class="headerlink" href="#fixes_5" title="Permanent link">🔗</a></h3>
+<ul>
+<li><code>npcrange</code> objective is triggered at wrong time</li>
+<li>Citizens compatibility for not spawned NPCs</li>
+<li>NotifyIOs are case-sensitive</li>
+<li>all mmo objectives trigger for everyone</li>
+<li>command event includes 'conditions:...' into the command</li>
+<li>tags and points are now thread safe</li>
+<li>compatibility for packet interceptor on papermc</li>
+<li>fix books not parsing color codes</li>
+<li>action objective for any block ignored location</li>
+</ul>
+<h3 id="security_9">Security<a class="headerlink" href="#security_9" title="Permanent link">🔗</a></h3>
+<h2 id="1121-2021-02-05">[1.12.1] - 2021-02-05<a class="headerlink" href="#1121-2021-02-05" title="Permanent link">🔗</a></h2>
+<h3 id="added_10">Added<a class="headerlink" href="#added_10" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Ingame update notification if the updater found an update</li>
+</ul>
+<h3 id="changed_10">Changed<a class="headerlink" href="#changed_10" title="Permanent link">🔗</a></h3>
+<h3 id="deprecated_10">Deprecated<a class="headerlink" href="#deprecated_10" title="Permanent link">🔗</a></h3>
+<h3 id="removed_10">Removed<a class="headerlink" href="#removed_10" title="Permanent link">🔗</a></h3>
+<h3 id="fixes_6">Fixes<a class="headerlink" href="#fixes_6" title="Permanent link">🔗</a></h3>
+<ul>
+<li>The Autoupdater got a small fix, and the fail safety for broken downloads was improved</li>
+<li><code>npcrange</code> objective does not throw errors when the player is in a different world than the NPC</li>
+<li>The block objectives notify could not be disabled</li>
+<li>fixed ConcurrentModificationException in EntityHider</li>
+<li>fixed notify enabled by default for some objectives</li>
+<li>fixed some grammar mistakes in debug messages</li>
+<li>fixed npc teleport and walk operations in unloaded chunks</li>
+<li>fixed inaccurate location variable decimal rounding</li>
+<li>fixed NullPointerException for NPCs with conversation</li>
+<li>fixed resuming to path finding when conversation interrupt movement</li>
+<li>fixes Die objective teleporting player during the tick</li>
+</ul>
+<h3 id="security_10">Security<a class="headerlink" href="#security_10" title="Permanent link">🔗</a></h3>
+<h2 id="1120-2021-01-10">[1.12.0] - 2021-01-10<a class="headerlink" href="#1120-2021-01-10" title="Permanent link">🔗</a></h2>
+<h3 id="added_11">Added<a class="headerlink" href="#added_11" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Tags and Objectives can now be removed with a static event for all players, even if they are not online<ul>
+<li>deletepoint event can now also be called to delete all points for all players</li>
+<li>journal del event can now also be called as static</li>
+</ul>
+</li>
+<li>Added integration for TeamRequiem plugins (MMOCore, MMOItems, MMOLib)<ul>
+<li>Conditions:<ul>
+<li>MMOClass condition (type &amp; class)</li>
+<li>MMOProfession condition</li>
+<li>MMOAttribute condition</li>
+<li>MMOItems item condition (item in inventory)</li>
+<li>MMOItems hand condition (item in main/offhand)</li>
+<li>MMOLib stats condition  (a ton of stats from Core and Items combined)</li>
+</ul>
+</li>
+<li>Objectives:<ul>
+<li>Level X Profession to X Level</li>
+<li>Craft / Upgrade X Item within Inventory</li>
+<li>Craft X item</li>
+<li>Apply Gem Stone to Item</li>
+<li>Upgrade Item via Consumable</li>
+<li>Cast Item ability</li>
+<li>Cast Class ability</li>
+<li>Mine MMOBlock</li>
+</ul>
+</li>
+<li>Events:<ul>
+<li>Add mmo class level or exp
+-️ Add mmo professional level or exp
+-️️ Add Skill points
+-️️ Add attribute points
+-️️ Add attribute reallocation points
+-️️ Add class points
+-️️ Give Item ️
+-️ Take Item</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>equal argument for condition 'empty'</li>
+<li>Condition 'wand' can now have an option '</li>
+<li>Implementing 1.15 support for Events and Conditions</li>
+<li>New Chat event, that write chat messages for a player</li>
+<li>Added 'pickup' objective</li>
+<li>Added stopnpc event, that will stop the movenpc event</li>
+<li>Added teleportnpc event, that will stop the movenpc event and teleport the npc to a given location</li>
+<li>Added option check_interval for holograms in custom.yml and added GlobalVariable support</li>
+<li>Added deletepoint event to delete player points</li>
+<li>Added mythicmobdistance condition that will check if a specific MythicMobs entity is near the player</li>
+<li>Added level argument to 'experience' objective and condition</li>
+<li>Added prefix argument in password objective</li>
+<li>Added level argument to 'experience' objective and condition</li>
+<li>Added prefix argument in password objective</li>
+<li>Added fail argument in password objective</li>
+<li>Added notify option to point event</li>
+<li>Added an interceptor that does not intercept: 'none'</li>
+<li>Added ConditionVariable. It returns true or false based on whether a player meets a condition.</li>
+<li>Improved bStats</li>
+<li>Added login objective</li>
+<li>Added period argument to folder event</li>
+<li>Added variable support to the Notify system</li>
+<li>Added variable support to the PickRandomEvent</li>
+<li>Added "acceptNPCLeftClick: true / false" config option</li>
+<li>Added optional "minlevel" and "maxlevel" arguments to mmobkill objective</li>
+<li>Added new options 'inside/outside' for npcrange objective, support for multiple npcs and improved performance</li>
+<li>Added new Event QuestCompassTargetChangeEvent that is triggered when a new CompassTarget is set. It is also possible to cancel it</li>
+<li>added multi language support for Notify system</li>
+<li>Added 'notifyall' event to broadcast a notification</li>
+<li>Added new notification IO 'sound'</li>
+<li>Added 'jump' objective</li>
+<li>Added left, amount and total properties to player kill objective</li>
+<li>Added 'neutralMobDeathAllPlayers' argument to the <code>mmobkill</code> objective</li>
+<li>Added custom model data support for items</li>
+<li>Added new config option 'npcInteractionLimit' default 500 that limits the click on an NPC to every x milliseconds</li>
+<li>Added PlayerHider to hide specific players for specified players</li>
+</ul>
+<h3 id="changed_11">Changed<a class="headerlink" href="#changed_11" title="Permanent link">🔗</a></h3>
+<ul>
+<li>devbuilds always show notifications for new devbuilds, even when the user is not on a _DEV strategy</li>
+<li>Items for HolographicDisplays are now defines in items.yml</li>
+<li>Command 'bq rename' can now be used for globalpoints</li>
+<li>The old updater was replaced with a new one</li>
+<li>AchievementCondition is replaced with AdvancementCondition</li>
+<li>Renamed objective Potion to Brew</li>
+<li>Renamed 'monsters' condition to 'entities'</li>
+<li>Renamed 'xp' event to 'experience'</li>
+<li>new config option mysql.enabled<ul>
+<li>if you already have an installation, you can add this manually to get rid of the mysql warning during startup</li>
+</ul>
+</li>
+<li>events in conversation options are now executed before npc or player responses are printed</li>
+<li>message event now ignores chat interceptors during conversation</li>
+<li>tame objective now works with all tamable mobs, including possible future ones</li>
+<li>improved chestput waring for locations without a chest</li>
+<li>reworked location variable: %location.(xyz|x|y|z|yaw|pitch|world|ulfShort|ulfLong)(.NUMBER)%</li>
+<li>multiple conditions and objectives now use the block selector. The same applies for the setblock event.</li>
+<li>static events now allow comma separated event list</li>
+<li>changed the <code>npc_effects</code> behavior to be package wide instead of global if no NPC is defined in the custom.yml</li>
+<li>EventHandlers in general updated to ignore cancelled events</li>
+<li>improved performance for condition checks (Bug where it took seconds to check for conditions)</li>
+<li>improved performance for conversation checks (Bug where it took seconds to check for conversation options)</li>
+<li>The plugin will no longer be loaded before the worlds are loaded</li>
+<li>Citizens Holograms are now more robust on reload and reload faster</li>
+<li>Added player death/respawn behavior to Region Objective and improved performance</li>
+<li>changed smelting and fish objective from material to BlockSelector</li>
+</ul>
+<h3 id="deprecated_11">Deprecated<a class="headerlink" href="#deprecated_11" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Marked message event for removal in BQ 2.0</li>
+<li>Marked playsound event for removal in BQ 2.0</li>
+<li>Marked title event for removal in BQ 2.0</li>
+</ul>
+<h3 id="removed_11">Removed<a class="headerlink" href="#removed_11" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Removed Deprecated Exceptions</li>
+<li>Removed RacesAndClasses support</li>
+<li>Removed LegendQuest support</li>
+<li>Removed BoutifulAPI support</li>
+<li>Removed the CLAY NPC</li>
+<li>removed legacy material support</li>
+<li>removed BetonLangAPI support</li>
+<li>removed PlayerPoints support(this can still be used via Vault)</li>
+</ul>
+<h3 id="fixes_7">Fixes<a class="headerlink" href="#fixes_7" title="Permanent link">🔗</a></h3>
+<ul>
+<li>event priority for block objective</li>
+<li>linebreaks in strings</li>
+<li>notify:1 for block objective did not work</li>
+<li>asynchronous database access for objectives</li>
+<li>Renaming an NPC will not cause an NPE for a NPC Hologram</li>
+<li>Objective 'craft' now supports shift-clicking</li>
+<li>Fixed generation of default package</li>
+<li>fixed line breaks</li>
+<li>fixed events notify interval of 1</li>
+<li>fixed potion/brew objective notify</li>
+<li>fixed the bug and removed its workaround when chest converationIO has no available start points</li>
+<li>fixed journal line breaking</li>
+<li>fixed movement of movenpc event</li>
+<li>fixed npcmove event</li>
+<li>fixed a bug, where a player causes an exception when he spams right left clicks in menu conversationIO</li>
+<li>fixed outdated Brewery dependency</li>
+<li>fixed message duplication when using the packet interceptor</li>
+<li>fixed Journal interaction with Lectern</li>
+<li>fixed QuestItems ignoring durability</li>
+<li>fixed QuestItem interaction with Lectern, Campfire and Composter</li>
+<li>update journal after closing magic inventory</li>
+<li>fixed lever event not toggling the lever</li>
+<li>fixed ConcurrentModificationException in PlayerData</li>
+<li>fixed issue where the PacketInterceptor prints the message tag in the chat</li>
+<li>fixed database backups breaking with some languages</li>
+<li>fixed when PlaceholderAPI variables contains dots</li>
+<li>fixed quester name not support &amp; as color code</li>
+<li>fixed Region Objective listen to player teleport event</li>
+<li>packet Interceptor stops 1 second AFTER the end of the conversation to allow slow messages to still have its chat protection</li>
+<li>fixed notify couldn't use variables that contain <code>:</code></li>
+<li>improved stability for brew objective when other plugins affect brewing</li>
+<li>fixed region and npcregion condition</li>
+<li>fixed debugging dose not start on server startup</li>
+<li>fixed ghost holograms caused by reloading BQ</li>
+<li>fixed deadlock(Server crash) in Conversations with a large amount of npc and player options with a large amount of conditions</li>
+<li>fixed door event not working correctly</li>
+<li>fixed <code>1 give</code> command exceptions</li>
+</ul>
+<h3 id="security_11">Security<a class="headerlink" href="#security_11" title="Permanent link">🔗</a></h3>
+<ul>
+<li>fixed issue, where objectives that count things are out of sync with the database. This has also affected BungeeCord support</li>
+</ul>
+<h2 id="1110-2020-01-02">[1.11.0] - 2020-01-02<a class="headerlink" href="#1110-2020-01-02" title="Permanent link">🔗</a></h2>
+<h3 id="added_12">Added<a class="headerlink" href="#added_12" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Support Minecraft 1.8 - 1.13.2+</li>
+<li>New Block Selector to select blocks by material and attributes. Can use wildcards as well.</li>
+<li>New 'mooncycle' condition - Determine what phase the moon is in</li>
+<li>Chest ConversationIO can now be configured to show NPC text per option.</li>
+<li>New 'extends' keyword in conversation to allow inheritance</li>
+<li>New 'conversation' condition that will return true if there is at least 1 conversation option available to an NPC</li>
+<li>New 'nujobs_canlevel' condition - True if player can level in Jobs Reborn</li>
+<li>New 'nujobs_hasjob' condition - True if player has job in Jobs Reborn</li>
+<li>New 'nujobs_jobfull' condition - True if a job is full in Jobs Reborn</li>
+<li>New 'nujobs_joblevel' condition - True if player has level in Jobs Reborn</li>
+<li>New 'nujobs_addexp' event - Add experience to player in Jobs Reborn</li>
+<li>New 'nujobs_addlevel' event - Add a level to player in Jobs Reborn</li>
+<li>New 'nujobs_dellevel' event - Remove a level from player in Jobs Reborn</li>
+<li>New 'nujobs_joinjob' event - Joins a player to a job in Jobs Reborn</li>
+<li>New 'nujobs_leavejob' event - Leaves a job in Jobs Reborn</li>
+<li>New 'nujobs_setlevel' event - Set a player's level in Jobs Reborn</li>
+<li>New 'nujobs_joinjob' objective - Triggers when player joins job in Jobs Reborn</li>
+<li>New 'nujobs_leavejob' objective - Triggers when a player leaves job in Jobs Reborn</li>
+<li>New 'nujobs_levelup' objective - Triggers when a player levels up in Jobs Reborn</li>
+<li>New 'nujobs_payment' objective - Triggers when a player receives money from Jobs Reborn</li>
+<li>New Notification System</li>
+<li>New 'notify' event - Create custom notifications on the ActionBar, BossBar, Title, Subtitle and Achievement</li>
+<li>New 'menu' conversation IO - Requires ProtocolLib. See: <a href="https://www.youtube.com/watch?v=Qtn7Dpdf4jw&amp;lc">https://www.youtube.com/watch?v=Qtn7Dpdf4jw&amp;lc</a></li>
+<li>New 'packet' chat interceptor - Requires ProtocolLib.</li>
+<li>new '/q debug' command - Enable or disable the debug mode</li>
+</ul>
+<h3 id="changes">Changes<a class="headerlink" href="#changes" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Event 'effect' can have 'ambient', 'hidden' and 'noicon' parameters</li>
+<li>Event 'effect' has '--ambient' parameter deprecated with a non fatal warning.</li>
+<li>Priority for 'journal_main_page' entries not unique anymore, it only orders the entries. Same priority sort it alphabetic</li>
+<li>Objective 'interact' can have 'loc', 'range' parameters</li>
+<li>Objective 'region' can optionally have 'entry' and/or 'exit' to only trigger when entering or exiting named region</li>
+<li>The old 'Debug' class was replaced by a more useful and powerful 'LogUtils' class</li>
+</ul>
+<h3 id="fixed_4">Fixed<a class="headerlink" href="#fixed_4" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Resolve variables in journal pages.</li>
+<li>WATER and LAVA can be specified in Action Objective</li>
+<li>Journals without dates now don't leave blank lines</li>
+<li>Journal separator can be disabled or customized</li>
+<li>NPCs now spawn correct, if they have a npc_hologram</li>
+<li>fixed NPE when no journal entry exists</li>
+<li>The default package is now compatible with all versions</li>
+</ul>
+<h2 id="110-2019-09-16">[1.10] - 2019-09-16<a class="headerlink" href="#110-2019-09-16" title="Permanent link">🔗</a></h2>
+<ul>
+<li>Development versions can be full of bugs. If you find any, please report them on GitHub Issues.</li>
+<li>This version is only compatible to Shopkeepers v2.2.0 and above</li>
+</ul>
+<h3 id="added_13">Added<a class="headerlink" href="#added_13" title="Permanent link">🔗</a></h3>
+<ul>
+<li>npc holograms above the head that follow the npc (requires HolographicDisplays)</li>
+<li>New 'facing' condition - check if player is facing a direction </li>
+<li>New 'looking' condition - check if player looks at a block</li>
+<li>New 'deleffect' event - delete potion effects of a player</li>
+<li>New '%citizen%' variable - display a npcs name or coordinates (requires Citizens)</li>
+<li>New 'npcrange' objective - player has to go towards a npc (requires Citizens)</li>
+<li>New 'npcdistance' condition - check if a player is close to a npc (requires Citizens)</li>
+<li>New 'npclocation' condition - check if a npc is at a location (requires Citizens)</li>
+<li>New 'npcregion' condition - check if a npc is inside a region (requires Citizens &amp; WorldGuard)</li>
+<li>New 'killmob' event - remove the mobs that you spawned with 'spawn' event</li>
+<li>New '/q version' command - get the version used</li>
+<li>New 'partialdate' condition - check if the date matches a pattern</li>
+<li>New 'dayofweek' condition - check if its weekend or monday</li>
+<li>New 'realtime' condition - check if its a specific time</li>
+<li>New 'xp' event - give a player xp.</li>
+<li>Global objecties (objectives that  are active for all players directly after start)</li>
+<li>Global tags and points (tags ad points that are not set for one specific player)</li>
+<li>New 'globaltag' event </li>
+<li>New 'globaltag' condition</li>
+<li>New 'globalpoint' event </li>
+<li>New 'globalpoint' condition</li>
+<li>New 'opsudo' event - Sudo commands with op permissions</li>
+<li>Brewery integration ('drunk', 'drunkquality' and 'hasbrew'conditions, 'givebrew' and 'takebrew' events) </li>
+<li>New 'title' event - display titles without the whole command hassle</li>
+<li>New 'playsound' event - plays a sound</li>
+<li>New 'fly' condition - check if the player is flying with Elytra</li>
+<li>New 'biome' condition - check the player's current biome</li>
+<li>New 'interact' objective - interact with an entity</li>
+<li>Conversations can individually override conversation IO type</li>
+<li>NPCs can be individually hidden from players if ProtocolLib is installed</li>
+</ul>
+<h3 id="changes_1">Changes<a class="headerlink" href="#changes_1" title="Permanent link">🔗</a></h3>
+<ul>
+<li>'compass' event can now directly set a players compass</li>
+<li>holograms from HolographicDisplays now can display items</li>
+<li>'movenpc' event now allows multiple locations to create a path</li>
+<li>'enchant' objective now allows multiple enchantments</li>
+<li>'particle' event can now create client side only particles</li>
+<li>'chest' converstionIO now dosn't display messages to chat for the old behaviour use 'combined'</li>
+<li>'money' event can now notify you about how much you recieved</li>
+<li>'mmobkill' objective now allows multiple mobs</li>
+<li>Translation system is integrated with BetonLangAPI</li>
+<li>NPC heads in "chest" conversation IO will display correct Citizens skin</li>
+<li>NPC particles (EffectLib integration) can be displayed to individual players</li>
+<li>Condition command allows checking static conditions</li>
+<li>'testforblock' condition can now check for specific data value</li>
+<li>'delay' objective and 'folder' event accept more time units</li>
+<li>'password' objective also accepts commands</li>
+<li>Commands can be tab-completed</li>
+</ul>
+<h3 id="fixed_5">Fixed<a class="headerlink" href="#fixed_5" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Fixed bug where players could take out items from the chest conversationIO</li>
+<li>Removed possibilities of dropping/transfering quest items and the journal</li>
+<li>Lots of smaller bugfixes</li>
+</ul>
+<h2 id="196-2017-11-27">[1.9.6] - 2017-11-27<a class="headerlink" href="#196-2017-11-27" title="Permanent link">🔗</a></h2>
+<h3 id="fixed_6">Fixed<a class="headerlink" href="#fixed_6" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Update version to 1.9.6</li>
+</ul>
+<h2 id="195-2017-11-27">[1.9.5] - 2017-11-27<a class="headerlink" href="#195-2017-11-27" title="Permanent link">🔗</a></h2>
+<h3 id="fixed_7">Fixed<a class="headerlink" href="#fixed_7" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Fixed global locations loading before the worlds</li>
+<li>Fixed loading order of Citizens/EffectLib integration</li>
+<li>Fixed restarting of persistent objectives not working correctly</li>
+<li>Fixed "unbreakable" tag not being read from items</li>
+</ul>
+<h2 id="194-2017-11-02">[1.9.4] - 2017-11-02<a class="headerlink" href="#194-2017-11-02" title="Permanent link">🔗</a></h2>
+<h3 id="fixed_8">Fixed<a class="headerlink" href="#fixed_8" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Fixed broken integration loading</li>
+</ul>
+<h2 id="193-2017-11-01">[1.9.3] - 2017-11-01<a class="headerlink" href="#193-2017-11-01" title="Permanent link">🔗</a></h2>
+<h3 id="fixed_9">Fixed<a class="headerlink" href="#fixed_9" title="Permanent link">🔗</a></h3>
+<ul>
+<li>NPC and mob kills will be correctly registered when killed by indirect means</li>
+<li>Replaced error with a nice message when config updating fails to start</li>
+<li>Unbreakable items are no longer breakable in newer Spigot releases</li>
+<li>Moved compatibility hooks to the first server tick to hook into lazy plugins</li>
+<li>Colors of text in "chest" conversations are now correctly applied over text breaks</li>
+<li>Added a nice message when conversation option is missing "text"</li>
+<li>Fixed a rare crash when NPC was stopped and its target was outside of loaded chunks</li>
+<li>Fixed checking item amounts in the backpack</li>
+<li>Allowed negative data in items for compatibility with dark magics</li>
+<li>Removed Denizen script checking, since it didn't work sometimes</li>
+</ul>
+<h2 id="192-2017-07-09">[1.9.2] - 2017-07-09<a class="headerlink" href="#192-2017-07-09" title="Permanent link">🔗</a></h2>
+<h3 id="fixed_10">Fixed<a class="headerlink" href="#fixed_10" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Conversations won't allow taking items from GUI windows</li>
+<li>When using wrong 'point' or 'item' variable there will be a nice error message</li>
+<li>NPCs can be safely despawned while in the middle of a conversation</li>
+<li>Error on '/q reload' when NPC particles are disabled is now gone</li>
+<li>Items for compass buttons are now correctly loaded</li>
+</ul>
+<h3 id="changes_2">Changes<a class="headerlink" href="#changes_2" title="Permanent link">🔗</a></h3>
+<ul>
+<li>These events are now correctly persistent: clear, explosion, lightning, setblock, spawn</li>
+<li>BetonQuest is using bStats instead of McStats</li>
+</ul>
+<h2 id="191-2017-04-18">[1.9.1] - 2017-04-18<a class="headerlink" href="#191-2017-04-18" title="Permanent link">🔗</a></h2>
+<h3 id="fixed_11">Fixed<a class="headerlink" href="#fixed_11" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Holograms are now correctly loaded</li>
+</ul>
+<h2 id="19-2017-04-03">[1.9] - 2017-04-03<a class="headerlink" href="#19-2017-04-03" title="Permanent link">🔗</a></h2>
+<p>Notes:
+- This version breaks compatibility with plugins hooking into BetonQuest. I'm sorry for that. Ask devs to update these plugins.
+- The error reporting feature was improved. If you see a lot of error messages when reloading the plugin (not stack traces, just regular, human-readable messages), it's probably because there are real problems in your quests.
+- BetonQuest won't accept ".yml" extensions at the end of conversation names in "main.yml". If your conversations aren't working (the plugin says they don't exist), check if you have these extensions IN THE "MAIN.YML" file and remove them.</p>
+<h3 id="fixed_12">Fixed<a class="headerlink" href="#fixed_12" title="Permanent link">🔗</a></h3>
+<ul>
+<li>'action' objective now detects fire interaction</li>
+<li>'empty' condition now skips armor and off-hand slots</li>
+<li>Items can be used cross-package</li>
+<li>New sound names are now used by default</li>
+<li>Fixed doubled quest items when dropping them is blocked by another plugin</li>
+<li>Lore and name now appear on heads and written books with custom data</li>
+<li>Fix error when trying to add air (empty hand) with "/q item" command</li>
+<li>Main page now can exceed a single page in the journal</li>
+<li>The plugin will reconnect to the database if something goes wrong</li>
+<li>Fishing objective now only accepts stuff from water</li>
+<li>Properties in 'mobkill' objective (left and amount) has switched places</li>
+</ul>
+<h3 id="changes_3">Changes<a class="headerlink" href="#changes_3" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Complete rewrite of item conditioning - read the docs to discover new features (previous syntax is still working without any behavior changes)</li>
+<li>Books in items.yml now automatically wrap pages, like the journal and main page</li>
+<li>Main page and entries in the journal can manually split pages with '|' character</li>
+<li>New lines in conversations can be made with "\n"</li>
+<li>Interval in 'delay' objective is now configurable</li>
+<li>'craft' and 'potion' objectives now use items defined in items.yml file</li>
+<li>Potion items are now defined with 'type:' argument instead of data value</li>
+<li>You can now use spaces between "first" options in conversations</li>
+<li>Static events can now be fired with "/q event - eventID" command</li>
+<li>Locations can have vectors defined directly in instruction strings</li>
+<li>Locations can be variables which resolve to location format</li>
+<li>Point condition can now check exact point amount with 'equal' argument</li>
+<li>In 'chest' conversation IO items can be specified with durability values after a colon</li>
+<li>Mobs spawned with 'spawn' event can have armor, items in hands and custom drops</li>
+<li>Unbreakability of quest items can be disabled (if you want to use "unbreakable" tag instead)</li>
+<li>Ranges in locations are now a separate argument ("10;20;30;world;4" is now "10;20;30;world 4")</li>
+<li>"main.yml" is now the only required file in the package. Empty files can be deleted</li>
+<li>Custom settings (i.e. EffectLib particle effects) are moved from "main.yml" to "custom.yml"</li>
+</ul>
+<h3 id="added_14">Added<a class="headerlink" href="#added_14" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Compatibility with Shopkeepers ('shopkeeper' event, 'shopamount' condition)</li>
+<li>Compatibility with PlaceholderAPI ('ph' variable and 'betonquest' placeholder)</li>
+<li>Compatibility with HolographicDisplays (holograms visible based on conditions)</li>
+<li>Compatibility with RacesAndClasses (race, class, exp, level, mana conditions/events/variables)</li>
+<li>Compatibility with LegendQuest (race, class, attribute, karma conditions/variables)</li>
+<li>Compatibility with WorldEdit ('paste' a schematic event)</li>
+<li>New condition 'riding' - check if the player is riding an entity</li>
+<li>New condition 'world' - check the world in which the player is</li>
+<li>New condition 'gamemode' - check player's game mode</li>
+<li>New condition 'achievement' - check if the player has an achievement</li>
+<li>New condition 'variable' - check if a variable matches a pattern</li>
+<li>New event 'lever' - switches a lever</li>
+<li>New event 'door' - opens/closes doors, trapdoors and gates</li>
+<li>New event 'if' - run one of two events, depending on condition</li>
+<li>New event 'movenpc' - move Citizens NPC to a location</li>
+<li>New event 'variable' - set a variable in "variable" objective</li>
+<li>New objective 'vehicle' - entering a vehicle entity</li>
+<li>New objective 'variable' - lets players define their own variables for you to use</li>
+<li>New objective 'kill' - kill players who meet specified conditions</li>
+<li>New objective 'breed' - breed animals (only 1.10.2+)</li>
+<li>New variable '%location%' - resolves to player's location</li>
+<li>Keyword "unbreakable" can be used in items to make them unbreakable</li>
+<li>When a conversation option is selected, a Bukkit event is called (for developers)</li>
+<li>Chat can be paused while in conversation, it will display when finished</li>
+<li>Objectives can be completed for players with "/q objective player complete"</li>
+<li>Option 'full_main_page' controls if the main page is a separate page in the journal</li>
+<li>Mobs spawned with 'spawn' can be "marked"; you can require marked mobs in 'mobkill' objective</li>
+<li>Firework support in items</li>
+<li>Relative package paths, where '_' means "one package up"</li>
+</ul>
+<h2 id="185-2016-05-14">[1.8.5] - 2016-05-14<a class="headerlink" href="#185-2016-05-14" title="Permanent link">🔗</a></h2>
+<h3 id="fixed_13">Fixed<a class="headerlink" href="#fixed_13" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Objectives are now correctly deleted with "objective delete" event and do notreappear after "/q reload".</li>
+<li>Objectives are no longer duplicated in the database when using "/q reload".</li>
+</ul>
+<h2 id="184-2016-05-06">[1.8.4] - 2016-05-06<a class="headerlink" href="#184-2016-05-06" title="Permanent link">🔗</a></h2>
+<h3 id="fixed_14">Fixed<a class="headerlink" href="#fixed_14" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Conversations are no longer started twice</li>
+</ul>
+<h2 id="183-2016-05-06">[1.8.3] - 2016-05-06<a class="headerlink" href="#183-2016-05-06" title="Permanent link">🔗</a></h2>
+<h3 id="fixed_15">Fixed<a class="headerlink" href="#fixed_15" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Events are no longer run in async thread when completing "password" objective</li>
+<li>Replaced stacktrace with error message when objective is incorrect in "objective" event</li>
+<li>Made color codes work with "one_entry_per_page" setting enabled</li>
+<li>Fixed a bug where taken backpack items were not removed from the database</li>
+<li>Quest items can now be equipped</li>
+<li>"die" objective now correctly handles damage done to the player</li>
+<li>Fixed error when conversation is started without any possible options</li>
+<li>Fixed error when killing NPCs with equipment</li>
+<li>Fixed problems with relogging while in conversations with "stop" option enabled</li>
+<li>Fixed error when loading corrupted item from the database</li>
+</ul>
+<h3 id="changes_4">Changes<a class="headerlink" href="#changes_4" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Updater is now based on GitHub Releases, no longer downloads major updates automatically, it is more configurable and can also download development versions with "/q update --dev"</li>
+</ul>
+<h3 id="added_15">Added<a class="headerlink" href="#added_15" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Added console message about the cause of "/q give" errors (tells you what is wrong with item instruction string)</li>
+</ul>
+<h2 id="182-2016-02-18">[1.8.2] - 2016-02-18<a class="headerlink" href="#182-2016-02-18" title="Permanent link">🔗</a></h2>
+<h3 id="fixed_16">Fixed<a class="headerlink" href="#fixed_16" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Fixed NPE when killing a mob without any "mobkill" objectives</li>
+</ul>
+<h2 id="181-2016-02-18">[1.8.1] - 2016-02-18<a class="headerlink" href="#181-2016-02-18" title="Permanent link">🔗</a></h2>
+<h3 id="fixed_17">Fixed<a class="headerlink" href="#fixed_17" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Removing journal entries from the database now works correctly</li>
+<li>MobKill objective now correctly handles kills</li>
+<li>Nested package names are now correctly resolved</li>
+<li>The formatting at the end of every main page line is reset</li>
+<li>Fixed Apache dependency problem</li>
+<li>Material name is no longer displayed in "chest" GUI conversations</li>
+<li>Fixed "notify" option in give/take events</li>
+</ul>
+<h2 id="18-2016-02-13">[1.8] - 2016-02-13<a class="headerlink" href="#18-2016-02-13" title="Permanent link">🔗</a></h2>
+<p>Notes:
+- As always in big updates, compatibility with plugins hooking into BetonQuest is broken. You need to check if everything is working.</p>
+<h3 id="fixed_18">Fixed<a class="headerlink" href="#fixed_18" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Die objective now reacts to death caused by other plugins</li>
+<li>Static events now are started correctly</li>
+<li>Static events now are canceled correctly</li>
+<li>Action objective now correctly checks locations</li>
+<li>Combat tag is removed after death</li>
+<li>Block, Craft and MythicMobs MobKill objectives now correctly save data</li>
+<li>Take event now correctly takes items from inventory, armor slots and backpack</li>
+</ul>
+<h3 id="added_16">Added<a class="headerlink" href="#added_16" title="Permanent link">🔗</a></h3>
+<ul>
+<li>New variable system in conversations (check out the documentation)</li>
+<li>More options for journal, including one entry per page and removing date</li>
+<li>Compatibility with mcMMO (level condition and experience event)</li>
+<li>Compatibility with EffectLib ('particle' event, NPC particles)</li>
+<li>Compatibility with PlayerPoints (points event and condition)</li>
+<li>Compatibility with Heroes (class and skill condition, experience event, Heroes kills in 'mobkill' objective)</li>
+<li>Compatibility with Magic ('wand' condition)</li>
+<li>Compatibility with Denizen (running task scripts with 'script' event)</li>
+<li>Compatibility with SkillAPI (class and level condition)</li>
+<li>Compatibility with Quests (checking for done quests, starting them, custom event reward, custom condition requirement)</li>
+<li>Optional prefix for conversations (contributed by Jack McKalling)</li>
+<li>Optional material for buttons in "chest" conversation IO</li>
+<li>Configurable main page in the journal</li>
+<li>New argument in objectives: "persistent" - makes them repeat after completing</li>
+<li>New condition 'check' - allows for specifying multiple instructions in one</li>
+<li>New condition 'objective' - checks if the player has an active objective</li>
+<li>New condition 'score' - check scores on scoreboards</li>
+<li>New condition 'chestitem' - checks if a chest contains items</li>
+<li>New event 'run' - allows for specifying multiple instructions in one</li>
+<li>New event 'givejournal' - gives journal to the player</li>
+<li>New event 'sudo' - forces the player to run a command</li>
+<li>New event 'compass' - point player's compass to a location</li>
+<li>New event 'cancel' - cancels a quest (as in main.yml)</li>
+<li>New event 'score' - modify scores on scoreboards</li>
+<li>New events 'chestgive', 'chesttake' and 'chestclear' - put and remove items in chests</li>
+<li>New objective 'logout' - the player needs to leave the server</li>
+<li>New objective 'password' - the player needs to type the password in the chat</li>
+<li>New objective 'fish' - catching fish</li>
+<li>New objective 'enchant' - enchanting an item</li>
+<li>New objective 'shear' - shearing a sheep</li>
+<li>New objective 'chestput' - putting items in a chest</li>
+<li>New objective 'potion' - brewing a potion</li>
+<li>New commands: /cancelquest and /compass - directly open backpack sub-pages</li>
+<li>New subcommand '/q delete' - delete all specific tags/points/objectives/entries</li>
+<li>New subcommand '/q rename' - rename all specific tags/points/objectives/entries</li>
+<li>New subcommand '/q give' - gives you an item from items.yml</li>
+</ul>
+<h3 id="changes_5">Changes<a class="headerlink" href="#changes_5" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Administrative messages are now English-only in new installations</li>
+<li>Journal event can remove entries from the journal</li>
+<li>In conversations, %quester% variable changed to %npc%</li>
+<li>In inventory GUI there is NPC's text in every option, for convenience</li>
+<li>Conversations can point to NPC options in other conversations within the package</li>
+<li>You can use spaces between events, conditions and pointers in conversations</li>
+<li>All tags and points are internally associated with a package now</li>
+<li>Some conditions are now static and persistent (just like events)</li>
+<li>Point event can now multiply points</li>
+<li>Vault Money event can now multiply money</li>
+<li>Journal event can now use "update" argument for updating variables on the main page</li>
+<li>Packages can now be moved to another directories</li>
+<li>Quest cancelers are now defined in a more convenient way</li>
+<li>/q command renamed to /betonquest, /j to /journal; previous forms are now aliases</li>
+<li>Conditions and events in objective instructions (and conditions in event instructions) can now be defined with "condition:" and "event:" argument (without "s" at the end)</li>
+</ul>
+<h2 id="176-2015-10-17">[1.7.6] - 2015-10-17<a class="headerlink" href="#176-2015-10-17" title="Permanent link">🔗</a></h2>
+<h3 id="fixed_19">Fixed<a class="headerlink" href="#fixed_19" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Conversation can no longer be started multiple times at once if it happens on the same tick</li>
+</ul>
+<h3 id="added_17">Added<a class="headerlink" href="#added_17" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Dutch translation by Jack McKalling</li>
+</ul>
+<h2 id="175-2015-09-12">[1.7.5] - 2015-09-12<a class="headerlink" href="#175-2015-09-12" title="Permanent link">🔗</a></h2>
+<h3 id="fixed_20">Fixed<a class="headerlink" href="#fixed_20" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Restored compatibility with MythicMobs 2.1.0</li>
+</ul>
+<h2 id="174-2015-08-29">[1.7.4] - 2015-08-29<a class="headerlink" href="#174-2015-08-29" title="Permanent link">🔗</a></h2>
+<h3 id="fixed_21">Fixed<a class="headerlink" href="#fixed_21" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Fixed error when player was quitting with active "stop" conversation while he had not changed his language with /ql command</li>
+</ul>
+<h3 id="changes_6">Changes<a class="headerlink" href="#changes_6" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Inventory GUI will close itself if there's nothing left to display</li>
+</ul>
+<h2 id="173-2015-08-20">[1.7.3] - 2015-08-20<a class="headerlink" href="#173-2015-08-20" title="Permanent link">🔗</a></h2>
+<h3 id="fixed_22">Fixed<a class="headerlink" href="#fixed_22" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Combat tagging does not work if the attack has been canceled</li>
+</ul>
+<h3 id="changes_7">Changes<a class="headerlink" href="#changes_7" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Options in conversation can also be defined using "event:", "condition:" and "pointers:" argument names (with and without 's' at the end). "text:" argument is unchanged.</li>
+</ul>
+<h2 id="172-2015-07-27">[1.7.2] - 2015-07-27<a class="headerlink" href="#172-2015-07-27" title="Permanent link">🔗</a></h2>
+<h3 id="fixed_23">Fixed<a class="headerlink" href="#fixed_23" title="Permanent link">🔗</a></h3>
+<ul>
+<li>"mobkill" objective now displays correct amount of mobs left to kill</li>
+<li>"delay" objective can be set to 0 delay</li>
+</ul>
+<h2 id="171-2015-07-19">[1.7.1] - 2015-07-19<a class="headerlink" href="#171-2015-07-19" title="Permanent link">🔗</a></h2>
+<h3 id="fixed_24">Fixed<a class="headerlink" href="#fixed_24" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Quests are loaded after other plugins register their types</li>
+<li>Journal condition correctly resolves package names</li>
+</ul>
+<h3 id="changes_8">Changes<a class="headerlink" href="#changes_8" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Updated French translation</li>
+</ul>
+<h2 id="17-2015-07-17">[1.7] - 2015-07-17<a class="headerlink" href="#17-2015-07-17" title="Permanent link">🔗</a></h2>
+<p>Notes:
+- BetonQuest no longer supports servers without UUID handling
+- There were a lot of changes since previous version, check carefully if everything is working
+- Compatibility with plugins hooking INTO BetonQuest is broken, they need to update</p>
+<h3 id="fixed_25">Fixed<a class="headerlink" href="#fixed_25" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Objectives no longer mysteriously double events</li>
+<li>Greatly improved performance in almost every aspect</li>
+<li>Finally fixed issues with special characters on some servers</li>
+<li>Fixed database saving/loading issues</li>
+<li>Fixed player options in conversations being white on next lines when using tellraw</li>
+</ul>
+<h3 id="added_18">Added<a class="headerlink" href="#added_18" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Quest canceling system</li>
+<li>New inventory GUI for conversations</li>
+<li>Added the "random" parameter in "folder" event - choose randomly X events to fire</li>
+<li>Action objective can be "canceled" - the click will not do anything</li>
+<li>Added "static events" mechanism for firing events at specified time of the day</li>
+<li>Optional message when the player is pulled back by stop option</li>
+<li>Optional message for take and give events</li>
+<li>Optional message when advancing in "block" and "mobkill" objectives</li>
+<li>Variable system for quick changing quest parameters (for example location of a quest)</li>
+<li>"/q vector" command for easy calculating location vector variables</li>
+<li>New "empty" condition - amount of empty inventory slots</li>
+<li>New "party" condition - manages the conditions in the party</li>
+<li>New "monsters" condition - true if there are monsters in the area</li>
+<li>New "clear" event - kills specified monsters in the area</li>
+<li>New "region" objective - reach WorldGuard region</li>
+<li>Blacklist of commands which cannot be used while in conversation</li>
+<li>Option to disable compatibility with other plugins</li>
+<li>Added remove_items_after_respawn option - for servers using keepInventory gamerule</li>
+</ul>
+<h3 id="changes_9">Changes<a class="headerlink" href="#changes_9" title="Permanent link">🔗</a></h3>
+<ul>
+<li>The plugin now uses package system: configuration has been moved into "default" package</li>
+<li>Objectives has returned to "objectives.yml" - it's improving performance</li>
+<li>The database is now updated in real time</li>
+<li>All quests can (but don't have to) be translated into multiple languages</li>
+<li>Players can change their language with /questlang command</li>
+<li>Conversations with stop option are resumed when the player logs out and in again</li>
+<li>Metrics are now toggled in PluginMetrics/config.yml</li>
+<li>All conditions, events, objectives, conversations etc. are loaded when the plugin starts/reloads</li>
+<li>Citizens NPC will stop when talked to</li>
+<li>Quest blocks cannot be placed, quest items will not break</li>
+<li>Conversations cannot be started while in combat</li>
+<li>Cannot fight while in conversation</li>
+<li>Tellraw conversations no longer spam the console</li>
+<li>Mobs can be spawned with a name (spawnmob event, "name:" argument)</li>
+<li>/q command is now more beautiful</li>
+<li>Removed unnecessary argument prefixes from conditions and events</li>
+<li>Removed "tag:" from objective instruction strings</li>
+<li>Conversations no longer need those empty lines everywhere ('')</li>
+<li>Dependencies updated: WorldGuard/WorldEdit 6.1, MythicMobs 2.0.4</li>
+</ul>
+<h2 id="162-2015-04-10">[1.6.2] - 2015-04-10<a class="headerlink" href="#162-2015-04-10" title="Permanent link">🔗</a></h2>
+<ul>
+<li>Fixed errors on data loading when MySQL is being used.</li>
+<li>Changes messages system to use simple file as default. If you want to use advanced translation just rename "advanced-messages.yml" to "messages.yml".</li>
+</ul>
+<h2 id="161-2015-03-26">[1.6.1] - 2015-03-26<a class="headerlink" href="#161-2015-03-26" title="Permanent link">🔗</a></h2>
+<ul>
+<li>Fixed errors on updating journals when using MySQL.</li>
+</ul>
+<h2 id="16-2015-03-16">[1.6] - 2015-03-16<a class="headerlink" href="#16-2015-03-16" title="Permanent link">🔗</a></h2>
+<p>Notes:
+- There is a bug/feature in 1.8 which adds '§0' at the end of every line in books generated by plugins. This breaks the conditions/events based on books with more than one line of text. The detailed instruction on how to work it around is in "Other important stuff" chapter, in the part about items.</p>
+<h3 id="fixed_26">Fixed<a class="headerlink" href="#fixed_26" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Items given by event that don't fit in the inventory will now drop instead of being deleted This does not apply to quest items, they will be added to backpack</li>
+<li>Events fired from conversations won't throw async errors</li>
+<li>Conversation can be started after plugin's reload without relogging</li>
+<li>/q reload no longer lags the server</li>
+<li>Corrected description in /q command</li>
+<li>Added input validation for global locations - if event is incorrect it will display an error instead of breaking the whole functionality</li>
+<li>The plugin should run fine on machines not supporting some special characters</li>
+<li>Inverted item condition now behave correctly</li>
+<li>Time condition now checks time correctly</li>
+</ul>
+<h3 id="added_19">Added<a class="headerlink" href="#added_19" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Added backpack for storing quest items, which cannot be dropped in any way</li>
+<li>Added database backups</li>
+<li>Added prefix for the database. New installations will use "betonquest_" prefix for tables, existing configuration will use empty prefix to maintain compatibility with other programs</li>
+<li>Players can chat while in conversations by prefixing their messages with '#' character</li>
+<li>New "random" condition - true with specified probability</li>
+<li>New "sneak" condition - true if player is sneaking</li>
+<li>New "journal" condition - true if player has journal entry</li>
+<li>New "testforblock" condition - true if block at given location matches given material</li>
+<li>New "arrow" objective - completed when arrow hits the specified target</li>
+<li>New "experience" objective - completed when player reaches certain level</li>
+<li>New "npcinteract" objective - completed when player right-clicks Citizens NPC</li>
+<li>New "damage" event - damages the player</li>
+<li>Skript support (event, effect and condition)</li>
+<li>WorldGuard support (region condition)</li>
+<li>Errors are logged to the "error.log" file in "logs" directory</li>
+<li>Debug option in config.yml for logging plugin's activity to "debug.log" file</li>
+<li>New commands for opening backpack: b, bb, backpack, bbackpack or betonbackpack</li>
+<li>Items are now aware of leather armor color, head owner and enchantments in books</li>
+</ul>
+<h3 id="changes_10">Changes<a class="headerlink" href="#changes_10" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Added and changed a lot of subcommands in /q command:<ul>
+<li>event and condition can be run for every online player</li>
+<li>tag, point, objective and (new) journal can edit every (even offline) player</li>
+<li>config (new) can set configuration files from command line</li>
+<li>backup (new) backups the whole configuration and database</li>
+</ul>
+</li>
+<li>Folder event now runs these events even after the player logs out: command, tag, objective, delete, point, setblock</li>
+<li>Changed /j command to open the backpack instead of just giving the journal</li>
+<li>Tellraw clicking on options in conversation now ignores old (used) options</li>
+<li>Using color codes in journal entries is now possible</li>
+<li>Give/take events and item condition can now check for multiple items with syntax 'give stick:2,stone:4,sword'</li>
+<li>Give/take events and item/hand conditions can now check for items only without enchantments/effects/name/lore etc.</li>
+<li>Inverting condition is now done by prefixing their name with "!" (in the place where you use them, like conversation, not in conditions.yml)</li>
+<li>Configuration updater is no longer based on plugin's version</li>
+<li>Backup files are now kept in "backups" directory, old ones are moved to it</li>
+<li>Changed internal structure of the code (may matter to developers - QuestEvent, Condition and Objective classes has been moved from "core" package to "api", update your imports)</li>
+</ul>
+<h2 id="154-2015-03-12">[1.5.4] - 2015-03-12<a class="headerlink" href="#154-2015-03-12" title="Permanent link">🔗</a></h2>
+<ul>
+<li>This version is almost the same as 1.5.3. The only difference is that it can load database backups created by 1.6 version. When updating to 1.6, the database format will change, so it won't be possible to go back, unless by loading the backup using this version of the plugin.</li>
+</ul>
+<h2 id="153-2014-12-26">[1.5.3] - 2014-12-26<a class="headerlink" href="#153-2014-12-26" title="Permanent link">🔗</a></h2>
+<ul>
+<li>Small fix of /q purge command not working on offline players.</li>
+</ul>
+<h2 id="152-2014-12-23">[1.5.2] - 2014-12-23<a class="headerlink" href="#152-2014-12-23" title="Permanent link">🔗</a></h2>
+<ul>
+<li>Fixed errors that were spamming the console when a player with active Location objective was teleporting to other worlds.</li>
+</ul>
+<h2 id="151-2014-12-22">[1.5.1] - 2014-12-22<a class="headerlink" href="#151-2014-12-22" title="Permanent link">🔗</a></h2>
+<h3 id="changes_11">Changes<a class="headerlink" href="#changes_11" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Multiple tags in one event are now possible</li>
+<li>Change /q event command to run from console</li>
+<li>Add color codes to item's name and lore</li>
+<li>Fix "stop" option in conversations not working</li>
+<li>Fix NPE on unknown answer in conversations</li>
+</ul>
+<h2 id="15-2014-12-21">[1.5] - 2014-12-21<a class="headerlink" href="#15-2014-12-21" title="Permanent link">🔗</a></h2>
+<h3 id="changes_12">Changes<a class="headerlink" href="#changes_12" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Added support for MythicMobs and Vault (see wiki for more info)</li>
+<li>AutoUpdater is now enabled by default! If you want you can change this and reload the plugin, nothing will be downloaded in that case</li>
+<li>Books saving format has changed. All books were automatically converted, but you need to check them if everything looks like it's supposed to.</li>
+<li>Command event accepts multiple commands separated by "|", eg. "command say beton|say quest"</li>
+<li>Event command now accepts optional <name> argument at the end; this will fire event for <name> player. eg. "/q event wood_reward Steve"</li>
+<li>Journal title and lore can now use colors (&amp;4 etc.) and journal is colorful; options in config.yml</li>
+<li>Added aliases for /q command: bq, bquest, bquests, betonquest, betonquests, quest, quests</li>
+<li>Added aliases for /j command: bj, journal, bjournal, betonjournal</li>
+<li>Objectives are now defined directly in event instruction, not in objectives.yml (which was deleted, if you want to restore something check the backup)</li>
+<li>Replies in conversations are now optionally clickable (tellraw option in config.yml)</li>
+<li>Added permission for starting a conversation: betonquest.conversation</li>
+<li>Conversation starting/ending, updating journal, plugin's update and full inventory can now make sounds; you can find a list of possible values here: jd.bukkit.org/rb/apidocs/org/bukkit/Sound.html</li>
+<li>Conditions for events are now defined as 'event_conditions:' instead of simply 'conditions:'. This is to distinguish conditions for objectives and for events, as both of them can exist in one instruction</li>
+<li>Updater is now run when disabling the plugin (it does matter if your server restarts every night)
+Notes:</li>
+<li>All Objective events has been converted to new format. The objectives.yml file has been deleted, so if it contained any objectives that weren't covered by an event they may seem lost. However there is a backup file and you can easily extract everything from it. Please refer to the wiki to learn how objectives are now defined or just study converted ones (it's pretty straightforward).</li>
+<li>AutoUpdater is now enabled by default. Every future update will be working exactly like before, all changes will be automatically updated by a converter, there is always a backup and you are informed about all changes in this file. So it's pretty safe to say that keeping this plugin up to date won't give you any trouble. If you don't want to have latest fixes and features you can disable updating but this will make the developer sad.</li>
+<li>Because of changes in how books behave since 1.8 you may experience some strange bugs with saving books to items.yml. Generally you should open a book before saving it using /q item command. And don't start or end your books with " character, as it's part of a workaround of this bug/feature.</li>
+</ul>
+<h2 id="143-2014-12-15">[1.4.3] - 2014-12-15<a class="headerlink" href="#143-2014-12-15" title="Permanent link">🔗</a></h2>
+<ul>
+<li>Removed debug messages from ActionObjective. You could have told me, any of you guys...</li>
+</ul>
+<h2 id="142-2014-12-09">[1.4.2] - 2014-12-09<a class="headerlink" href="#142-2014-12-09" title="Permanent link">🔗</a></h2>
+<ul>
+<li>Really fixed an updater.</li>
+</ul>
+<h2 id="141-2014-12-09">[1.4.1] - 2014-12-09<a class="headerlink" href="#141-2014-12-09" title="Permanent link">🔗</a></h2>
+<ul>
+<li>Fixed few bugs in Action objective.</li>
+<li>Fixed updater, hopefully.</li>
+</ul>
+<h2 id="14-2014-12-07">[1.4] - 2014-12-07<a class="headerlink" href="#14-2014-12-07" title="Permanent link">🔗</a></h2>
+<h3 id="changes_13">Changes<a class="headerlink" href="#changes_13" title="Permanent link">🔗</a></h3>
+<ul>
+<li>Conversations are now divided into multiple files in "conversations" directory</li>
+<li>Items are now saved to items.yml file and referenced by "take", "give", "item" and "hand" events/conditions</li>
+<li>Added /q item <itemID> command which saves currently held item to the config as specified itemID</li>
+<li>Added location to Action objective, which checks the location of the block (unlike location condition which checks location of the player)</li>
+<li>Added /q event <eventID> command which fires specified event</li>
+<li>Fixed multiple bugs with conversation starting and ending</li>
+<li>Block NPCs can now be used with Citizens enabled</li>
+<li>Added NPCKill objective for killing NPCs</li>
+<li>Added SetBlock event for setting a block at specified location</li>
+<li>Improved Material matching in configs</li>
+<li>Modified Action objective for greater flexibility:<ul>
+<li>It is now possible to detect clicking in air</li>
+<li>It is no longer possible to detect clicking on any block (as this accepts clicking on air)</li>
+<li>Can be used to detect book reading (with help of updated Hand condition)</li>
+</ul>
+</li>
+<li>Added AutoUpdater; it's disabled by default
+Notes:</li>
+<li>Conversion of configuration should have been done automatically, you don't have to worry about anything. If something went wrong you can revert changes from generated backup file, which contains all your previous configs.</li>
+<li>You can enable AutoUpdater by setting "autoupdate" to true in config.yml. It is completely safe because all next versions will generate backups and convert all files automatically. You will be notified on joining the server about new changelog file.</li>
+<li>Please refer to the wiki for changes in formatting instruction strings for various things: <a href="https://github.com/Co0sh/BetonQuest/wiki">https://github.com/Co0sh/BetonQuest/wiki</a></li>
+<li>You probably should also change names of converted items to something else than "item12". But that works too of course.</li>
+</ul>
+<h2 id="13-2014-11-30">[1.3] - 2014-11-30<a class="headerlink" href="#13-2014-11-30" title="Permanent link">🔗</a></h2>
+<h3 id="changes_14">Changes<a class="headerlink" href="#changes_14" title="Permanent link">🔗</a></h3>
+<ul>
+<li>UUID support (optional)</li>
+<li>NPCs made from a clay block, head and sign, for servers without Citizens2 plugin</li>
+<li>Global, long and persistent delay for events (as an objective)</li>
+<li>Folder event for multiple events, with optional short delay</li>
+<li>French translation (thanks to fastlockel)</li>
+<li>If you want to convert names to UUIDs run the plugin once and then change in the config "uuid: false" to true. Do not touch the "convert: true" option unless you want your database wiped! Conversion will happen on next plugin reload (eg. /q reload). This is not revertable!</li>
+<li>Remember to backup your config files before updating! It shouldn't destroy anything but you never know.</li>
+</ul>
+<h2 id="12-2014-11-23">[1.2] - 2014-11-23<a class="headerlink" href="#12-2014-11-23" title="Permanent link">🔗</a></h2>
+<ul>
+<li>Global locations now automatically run only once, no need for blocking it with tags and conditions. They use however tags that follow the syntax "global_<tag>", where <tag> is global location objective tag.</li>
+<li>Added optional respawn location for cancelled death objective, just add "respawn:100.5;200;300.5;world;90;0" to instruction string.</li>
+<li>Added German translation, thanks to coalaa!</li>
+<li>Added optional movement blocking while in conversation, just add option "stop: true" or "stop: false" in every conversation.</li>
+<li>Changed priority of conversation chat event to lowest, should work even for muted players.</li>
+<li>Fixed data values in block objective.</li>
+<li>Added metrics, you can disable them by setting "metrics: false" in config.yml</li>
+<li>Added support for SQLite, plugin will use it when connecting to MySQL fails.</li>
+<li>Fixed death objective not working every time and not removing all effects.</li>
+</ul>
+<h2 id="11-2014-11-08">[1.1] - 2014-11-08<a class="headerlink" href="#11-2014-11-08" title="Permanent link">🔗</a></h2>
+<ul>
+<li>Fixed many bugs including but not limited to:<ul>
+<li>negated conjunction condition</li>
+<li>unnecessary debug messages</li>
+<li>not working global locations</li>
+</ul>
+</li>
+<li>Replaced config examples with default quest</li>
+<li>Leaving data values in item's definition will make plugin ignore data value in most cases</li>
+<li>Improved journal to stop text leaks</li>
+<li>Item names now replace _ with spaces</li>
+</ul>
+<h2 id="10-2014-11-06">[1.0] - 2014-11-06<a class="headerlink" href="#10-2014-11-06" title="Permanent link">🔗</a></h2>
+<ul>
+<li>Initial release</li>
+</ul>
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      <span class="md-source-file__fact">
+        <span class="md-icon" title="Last update">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1-2.1-2M12.5 7v5.2l4 2.4-1 1L11 13V7h1.5M11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2v1.8Z"/></svg>
+        </span>
+        <span class='timeago' datetime='1596479943000' locale='en'></span>
+      </span>
+    
+    
+    
+    
+  </aside>
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2023  BetonQuest Organisation. GPLv3
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs Insiders
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://discord.gg/rK6mfHq" target="_blank" rel="noopener" title="discord.gg" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M524.531 69.836a1.5 1.5 0 0 0-.764-.7A485.065 485.065 0 0 0 404.081 32.03a1.816 1.816 0 0 0-1.923.91 337.461 337.461 0 0 0-14.9 30.6 447.848 447.848 0 0 0-134.426 0 309.541 309.541 0 0 0-15.135-30.6 1.89 1.89 0 0 0-1.924-.91 483.689 483.689 0 0 0-119.688 37.107 1.712 1.712 0 0 0-.788.676C39.068 183.651 18.186 294.69 28.43 404.354a2.016 2.016 0 0 0 .765 1.375 487.666 487.666 0 0 0 146.825 74.189 1.9 1.9 0 0 0 2.063-.676A348.2 348.2 0 0 0 208.12 430.4a1.86 1.86 0 0 0-1.019-2.588 321.173 321.173 0 0 1-45.868-21.853 1.885 1.885 0 0 1-.185-3.126 251.047 251.047 0 0 0 9.109-7.137 1.819 1.819 0 0 1 1.9-.256c96.229 43.917 200.41 43.917 295.5 0a1.812 1.812 0 0 1 1.924.233 234.533 234.533 0 0 0 9.132 7.16 1.884 1.884 0 0 1-.162 3.126 301.407 301.407 0 0 1-45.89 21.83 1.875 1.875 0 0 0-1 2.611 391.055 391.055 0 0 0 30.014 48.815 1.864 1.864 0 0 0 2.063.7A486.048 486.048 0 0 0 610.7 405.729a1.882 1.882 0 0 0 .765-1.352c12.264-126.783-20.532-236.912-86.934-334.541ZM222.491 337.58c-28.972 0-52.844-26.587-52.844-59.239s23.409-59.241 52.844-59.241c29.665 0 53.306 26.82 52.843 59.239 0 32.654-23.41 59.241-52.843 59.241Zm195.38 0c-28.971 0-52.843-26.587-52.843-59.239s23.409-59.241 52.843-59.241c29.667 0 53.307 26.82 52.844 59.239 0 32.654-23.177 59.241-52.844 59.241Z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://spigotmc.org/resources/2117/" target="_blank" rel="noopener" title="spigotmc.org" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M224 0c17.7 0 32 14.3 32 32v12l96-12c17.7 0 32 14.3 32 32s-14.3 32-32 32l-96-12-31-3.9-1-.1-1 .1-31 3.9-96 12c-17.7 0-32-14.3-32-32s14.3-32 32-32l96 12V32c0-17.7 14.3-32 32-32zM0 224c0-17.7 14.3-32 32-32h96l22.6-22.6c6-6 14.1-9.4 22.6-9.4H192v-43.8l32-4 32 4V160h18.7c8.5 0 16.6 3.4 22.6 9.4L320 192h32c88.4 0 160 71.6 160 160 0 17.7-14.3 32-32 32h-64c-17.7 0-32-14.3-32-32s-14.3-32-32-32h-36.1c-20.2 29-53.9 48-91.9 48s-71.7-19-91.9-48H32c-17.7 0-32-14.3-32-32v-64zm436.8 199.4c1.9-4.5 6.3-7.4 11.2-7.4s9.2 2.9 11.2 7.4l18.2 42.4c1.8 4.1 2.7 8.6 2.7 13.1v1.1c0 17.7-14.3 32-32 32s-32-14.3-32-32v-1.2c0-4.5.9-8.9 2.7-13.1l18.2-42.4z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/BetonQuest/BetonQuest" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="mailto://contact@betonquest.org" target="_blank" rel="noopener" title="contact@betonquest.org" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M1.75 2h12.5c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 14H1.75A1.75 1.75 0 0 1 0 12.25v-8.5C0 2.784.784 2 1.75 2ZM1.5 12.251c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V5.809L8.38 9.397a.75.75 0 0 1-.76 0L1.5 5.809v6.442Zm13-8.181v-.32a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25v.32L8 7.88Z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "content.action.edit", "navigation.tabs", "navigation.tabs.sticky", "navigation.tracking", "navigation.top", "navigation.sections", "navigation.expand", "search.share", "search.suggest"], "search": "../../assets/javascripts/workers/search.6c7302c4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["RELEASE", "DEV"], "provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.9115145a.min.js"></script>
+      
+        <script src="../../webCode/js/copyLinkToClipboard.js"></script>
+      
+    
+  
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/4.0.0-beta.2/timeago.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/4.0.0-beta.2/timeago.locales.min.js"></script>
+          <script>
+            var nodes = document.querySelectorAll('.timeago');
+            var locale = nodes[0].getAttribute('locale');
+            timeago.render(nodes, locale);
+          </script>
+        </body>
+</html>
