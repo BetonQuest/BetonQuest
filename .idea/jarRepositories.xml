@@ -17,19 +17,9 @@
       <option name="url" value="https://repo.maven.apache.org/maven2" />
     </remote-repository>
     <remote-repository>
-      <option name="id" value="betonquest-phoenixdevelopment-repo" />
-      <option name="name" value="betonquest-phoenixdevelopment-repo" />
-      <option name="url" value="https://nexus.phoenixdevt.fr" />
-    </remote-repository>
-    <remote-repository>
       <option name="id" value="betonquest-dmulloy2-repo" />
       <option name="name" value="betonquest-dmulloy2-repo" />
       <option name="url" value="https://repo.dmulloy2.net/nexus/repository/public/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="central" />
-      <option name="name" value="Central Repository" />
-      <option name="url" value="https://cache-redirector.jetbrains.com/maven-central" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="central" />

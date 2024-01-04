@@ -2,24 +2,35 @@
   <code_scheme name="Project" version="173">
     <option name="DO_NOT_FORMAT">
       <list>
-        <fileSet type="globPattern" pattern="*.md" />
+        <fileSet type="globPattern" pattern="CHANGELOG.md" />
       </list>
     </option>
+    <JSCodeStyleSettings version="0">
+      <option name="FORCE_SEMICOLON_STYLE" value="true" />
+      <option name="FORCE_QUOTE_STYlE" value="true" />
+    </JSCodeStyleSettings>
     <JavaCodeStyleSettings>
-      <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="99999999" />
+      <option name="GENERATE_FINAL_LOCALS" value="true" />
+      <option name="GENERATE_FINAL_PARAMETERS" value="true" />
+      <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="999999999" />
       <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="999999999" />
       <option name="PACKAGES_TO_USE_IMPORT_ON_DEMAND">
         <value>
-          <package name="java.awt" withSubpackages="false" static="false" />
           <package name="org.mockito.ArgumentMatchers" withSubpackages="false" static="true" />
           <package name="org.junit.jupiter.api.Assertions" withSubpackages="false" static="true" />
           <package name="org.mockito.Mockito" withSubpackages="false" static="true" />
-          <package name="javax.swing" withSubpackages="false" static="false" />
         </value>
       </option>
     </JavaCodeStyleSettings>
+    <Markdown>
+      <option name="MAX_LINES_AROUND_BLOCK_ELEMENTS" value="0" />
+      <option name="MAX_LINES_BETWEEN_PARAGRAPHS" value="0" />
+    </Markdown>
     <codeStyleSettings language="JAVA">
       <option name="BLANK_LINES_AROUND_FIELD" value="1" />
+    </codeStyleSettings>
+    <codeStyleSettings language="Markdown">
+      <option name="WRAP_ON_TYPING" value="1" />
     </codeStyleSettings>
   </code_scheme>
 </component>
