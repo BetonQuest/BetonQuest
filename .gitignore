@@ -1,6 +1,6 @@
 ## BetonQuest specific, maintained ignores ##
 
-# Maven tatget directory
+# Maven target directory
 **/target/
 
 # IntelliJ
