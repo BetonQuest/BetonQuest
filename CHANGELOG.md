@@ -37,7 +37,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - added `hook.fake-block` config option, default: `true`
 - add RedisChat Compatibility
     - added `redischat` chat interceptor
-- added Event Schedules to replace old static-events system
+- added Event Schedules to replace an old static-events system
     - static events from schedulers now respect static conditions
     - events called by schedules are always called player independent
     - `runForAll` event can now be used to run events for all players that match a condition
@@ -57,11 +57,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - config option `journal.show_in_backpack` to remove the journal from the backpack
 - config option `journal.lock_default_journal_slot` to lock the journal to the `default_journal_slot`
 - config option `journal.give_on_respawn` to add the journal to the inventory after the player respawns
-- config option `journal.custom_model_data` to give the journal a ressource pack based skin
+- config option `journal.custom_model_data` to give the journal a ressource-pack-based skin
 - config option `mysql.reconnect_interval` to set the reconnect interval if the connection to the database gets lost
 - compass now supports items from other packages
-- new messages.yml entries `inventory_full_backpack` and `inventory_full_drop` to have more specific messages,
-  when the inventory of the player is full
+- new messages.yml entries `inventory_full_backpack` and `inventory_full_drop` to have more specific messages, when the inventory of the player is full
 - `menu` conversationIO option `npc_name_newline_separator`
 - added `q download` command
 - variable support for menu titles
@@ -75,7 +74,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - menus now support string with newline or string list text values for lore
 - amount of objectives now support variables
 - added quest item flag recording and restore
-- Conversations now support cross conversation pointers to conversations in other packages
+- Conversations now support cross-conversation pointers to conversations in other packages
 - QuestCancelers can now be referenced across packages
 - Chat Interceptor `packet` is now 1.20.4 compatible
 - `freeze` event - ProtocolLib compatibility feature: Blocks the player from moving for the specified amount of ticks
@@ -99,7 +98,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `mmspawn` event now has argument `target` Makes the spawned mob target the player
 - `mmspawn` event now has argument `private` Visually hides the spawned mob from other players. Does not stop sound or particles
 - `mmspawn` event now supports the `marked` argument
-- `objective` event now supports a comma separated list of objectives
+- `objective` event now supports a comma-separated list of objectives
 - `mmobkill` objective now supports the `marked` and `deathRadiusAllPlayers` argument
 - `marked` argument now supports %player% variable 
 - `globaltag` and `globalpoint` variables
@@ -152,7 +151,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - NPC Holograms are reworked
     - individual refresh rate for each hologram
     - the boolean follow is now set per hologram
-    - the vector offset origin has been changed. The hologram is now directly above the NPCs head by default. This means all previously custom vectors are now increased by 3 blocks on the y-axis.
+    - the vector offset origin has been changed. The hologram is now directly above the NPCs head by default. This means all previously custom vectors are now increased by three blocks on the y-axis.
   - npc_effects are reworked
     - the section changed its naming from `npc_effects` to `effectlib`
     - the section `disabled` got removed
@@ -168,7 +167,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `weather` event - now has an optional variable duration (in seconds) and an optional world param
 - `paste` event - can now be static
 - `chestput` objective - can now block other players from accessing a chest while someone is putting items inside
-- The location and region objectives now register movement of players inside a vehicle
+- The location and region objectives now register the movement of players inside a vehicle
 - written book is now readable as a quest item
 - HolographicDisplays updated to 3.0.0
 - Added staticness indicator to variables that can be executed without a direct player connection
@@ -208,12 +207,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `playsound` event
 ### Fixed
 - added missing spaces to time left property of delay objective 
-- catchup now works even if schedule was never executed before
+- catchup now works even if the schedule was never executed before
 - q version now works again
 - RPGMenu error when teleport events are used as click events
 - RPGMenu bound items not always working
 - npc_holograms do now show errors during reload and not one tick later
-- first slot in backpack stays empty when journal is in player inventory
+- the first slot in backpack stays empty when journal is in player inventory
 - npc_holograms are not shown correctly with multiple defined npcs
 - spectator mode is now disabled for chest conversation io to prevent being stuck in the conversation
 - packet chat interceptor does not catch action bar anymore
@@ -223,17 +222,16 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - NPC holograms from Citizens are not hidden correctly
 - `location` objective - is now more robust if the player changes a world
 - `brew` objective - now counts newly brewed potions even if there were already some potions of the desired type in
-- `chestput` objective - did now work with double chests
-  other slots present
+- `chestput` objective - did now work with double chests other slots present
 - `menu`(open) event - showed the previous menu again
-- non .yml files causing errors when loading quest packages
-- `pickrandom` event - did not calculated chance correctly
-- `pickrandom` event - did not allowed dashes in event names
+- non .yml files cause errors when loading quest packages
+- `pickrandom` event - did not calculate chance correctly
+- `pickrandom` event - did not allow dashes in event names
 - `action` objective - ignored offhand at all
 - `enchant` objective - did not work at all, now has `amount` and `requirementMode` parameters
 - Hologram topX line not working with profiles
 - the craft objective could be completed without consuming materials
-- LocationObjective resolves variable for a player who does not have the objective, and so maybe also dont have the variable
+- LocationObjective resolves variable for a player who does not have the objective, and so maybe also don't have the variable
 - performance when using many conditions / events / ... repeatedly
 - `/q journal` command allowed invalid journal pointers
 - AsyncSaver will shut itself down if the database connection is lost, resulting in data loss
@@ -302,7 +300,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Removed
 ### Fixed
 - reload with an invalid PlayerHider causes a NPE
-- QuestItems could be eaten, this was caused by a changed mc behaviour
+- QuestItems could be eaten, this was caused by a changed mc behavior
 - command, sudo and opsudo events didn't work with conditions
 - interact objective did not work with armorstands
 - MMOItemsGiveEvent did not check if item actually exists
@@ -348,7 +346,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - fixed hooking in ProtocolLib
 - max_npc_distance was set to 5.3 to prevent instant quiting of conversations
 - conversation IO menu sometimes leave an armorstand spawned
-- sometimes messages in a conversation are not send when packet interceptor is used
+- sometimes messages in a conversation are not sent when the packet interceptor is used
 ### Security
 
 ## [1.12.4] - 2021-07-05
@@ -452,7 +450,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
         - MMOAttribute condition
         - MMOItems item condition (item in inventory)
         - MMOItems hand condition (item in main/offhand)
-        - MMOLib stats condition  (a ton of stats from Core and Items combined)
+        - MMOLib stats condition (a ton of stats from Core and Items combined)
     - Objectives:
         - Level X Profession to X Level
         - Craft / Upgrade X Item within Inventory
@@ -526,7 +524,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - multiple conditions and objectives now use the block selector. The same applies for the setblock event.
 - static events now allow comma separated event list
 - changed the `npc_effects` behavior to be package wide instead of global if no NPC is defined in the custom.yml
-- EventHandlers in general updated to ignore cancelled events
+- EventHandlers in general updated to ignore canceled events
 - improved performance for condition checks (Bug where it took seconds to check for conditions)
 - improved performance for conversation checks (Bug where it took seconds to check for conversation options)
 - The plugin will no longer be loaded before the worlds are loaded
@@ -545,7 +543,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Removed the CLAY NPC
 - removed legacy material support
 - removed BetonLangAPI support
-- removed PlayerPoints support(this can still be used via Vault)
+- removed PlayerPoints support (this can still be used via Vault)
 ### Fixes
 - event priority for block objective
 - linebreaks in strings
@@ -579,9 +577,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - fixed notify couldn't use variables that contain `:`
 - improved stability for brew objective when other plugins affect brewing
 - fixed region and npcregion condition
-- fixed debugging dose not start on server startup
+- fixed debugging does not start on server startup
 - fixed ghost holograms caused by reloading BQ
-- fixed deadlock(Server crash) in Conversations with a large amount of npc and player options with a large amount of conditions
+- fixed deadlock (Server crash) in Conversations with a large amount of npc and player options with a large amount of conditions
 - fixed door event not working correctly
 - fixed `1 give` command exceptions
 ### Security
@@ -594,7 +592,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - New 'mooncycle' condition - Determine what phase the moon is in
 - Chest ConversationIO can now be configured to show NPC text per option.
 - New 'extends' keyword in conversation to allow inheritance
-- New 'conversation' condition that will return true if there is at least 1 conversation option available to an NPC
+- New 'conversation' condition that will return true if there is at least one conversation option available to an NPC
 - New 'nujobs_canlevel' condition - True if player can level in Jobs Reborn
 - New 'nujobs_hasjob' condition - True if player has job in Jobs Reborn
 - New 'nujobs_jobfull' condition - True if a job is full in Jobs Reborn
@@ -649,7 +647,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - New 'dayofweek' condition - check if its weekend or monday
 - New 'realtime' condition - check if its a specific time
 - New 'xp' event - give a player xp.
-- Global objecties (objectives that  are active for all players directly after start)
+- Global objecties (objectives that are active for all players directly after start)
 - Global tags and points (tags ad points that are not set for one specific player)
 - New 'globaltag' event 
 - New 'globaltag' condition
@@ -670,7 +668,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - 'movenpc' event now allows multiple locations to create a path
 - 'enchant' objective now allows multiple enchantments
 - 'particle' event can now create client side only particles
-- 'chest' converstionIO now dosn't display messages to chat for the old behaviour use 'combined'
+- 'chest' converstionIO now dosn't display messages to chat for the old behavior use 'combined'
 - 'money' event can now notify you about how much you recieved
 - 'mmobkill' objective now allows multiple mobs
 - Translation system is integrated with BetonLangAPI
@@ -709,7 +707,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Moved compatibility hooks to the first server tick to hook into lazy plugins
 - Colors of text in "chest" conversations are now correctly applied over text breaks
 - Added a nice message when conversation option is missing "text"
-- Fixed a rare crash when NPC was stopped and its target was outside of loaded chunks
+- Fixed a rare crash when NPC was stopped and its target was outside loaded chunks
 - Fixed checking item amounts in the backpack
 - Allowed negative data in items for compatibility with dark magics
 - Removed Denizen script checking, since it didn't work sometimes
@@ -742,7 +740,7 @@ Notes:
 - Fixed doubled quest items when dropping them is blocked by another plugin
 - Lore and name now appear on heads and written books with custom data
 - Fix error when trying to add air (empty hand) with "/q item" command
-- Main page now can exceed a single page in the journal
+- The main page now can exceed a single page in the journal
 - The plugin will reconnect to the database if something goes wrong
 - Fishing objective now only accepts stuff from water
 - Properties in 'mobkill' objective (left and amount) has switched places
@@ -988,7 +986,7 @@ Notes:
 
 ## [1.6.2] - 2015-04-10
 - Fixed errors on data loading when MySQL is being used.
-- Changes messages system to use simple file as default. If you want to use advanced translation just rename "advanced-messages.yml" to "messages.yml".
+- Changes messages system to use simple file as default. If you want to use advanced translation rename "advanced-messages.yml" to "messages.yml".
 
 ## [1.6.1] - 2015-03-26
 - Fixed errors on updating journals when using MySQL.
@@ -1037,10 +1035,10 @@ Notes:
 - Using color codes in journal entries is now possible
 - Give/take events and item condition can now check for multiple items with syntax 'give stick:2,stone:4,sword'
 - Give/take events and item/hand conditions can now check for items only without enchantments/effects/name/lore etc.
-- Inverting condition is now done by prefixing their name with "!" (in the place where you use them, like conversation, not in conditions.yml)
+- Inverting conditions is now done by prefixing their name with "!" (in the place where you use them, like conversation, not in conditions.yml)
 - Configuration updater is no longer based on plugin's version
 - Backup files are now kept in "backups" directory, old ones are moved to it
-- Changed internal structure of the code (may matter to developers - QuestEvent, Condition and Objective classes has been moved from "core" package to "api", update your imports)
+- Changed internal structure of the code (may matter to developers - QuestEvent, Condition and Objective classes have been moved from "core" package to "api", update your imports)
 
 ## [1.5.4] - 2015-03-12
 - This version is almost the same as 1.5.3. The only difference is that it can load database backups created by 1.6 version. When updating to 1.6, the database format will change, so it won't be possible to go back, unless by loading the backup using this version of the plugin.
@@ -1063,7 +1061,7 @@ Notes:
 ### Changes
 - Added support for MythicMobs and Vault (see wiki for more info)
 - AutoUpdater is now enabled by default! If you want you can change this and reload the plugin, nothing will be downloaded in that case
-- Books saving format has changed. All books were automatically converted, but you need to check them if everything looks like it's supposed to.
+- Book saving format has changed. All books were automatically converted, but you need to check them if everything looks like it's supposed to.
 - Command event accepts multiple commands separated by "|", eg. "command say beton|say quest"
 - Event command now accepts optional <name> argument at the end; this will fire event for <name> player. eg. "/q event wood_reward Steve"
 - Journal title and lore can now use colors (&4 etc.) and journal is colorful; options in config.yml
@@ -1076,9 +1074,9 @@ Notes:
 - Conditions for events are now defined as 'event_conditions:' instead of simply 'conditions:'. This is to distinguish conditions for objectives and for events, as both of them can exist in one instruction
 - Updater is now run when disabling the plugin (it does matter if your server restarts every night)
 Notes:
-- All Objective events has been converted to new format. The objectives.yml file has been deleted, so if it contained any objectives that weren't covered by an event they may seem lost. However there is a backup file and you can easily extract everything from it. Please refer to the wiki to learn how objectives are now defined or just study converted ones (it's pretty straightforward).
-- AutoUpdater is now enabled by default. Every future update will be working exactly like before, all changes will be automatically updated by a converter, there is always a backup and you are informed about all changes in this file. So it's pretty safe to say that keeping this plugin up to date won't give you any trouble. If you don't want to have latest fixes and features you can disable updating but this will make the developer sad.
-- Because of changes in how books behave since 1.8 you may experience some strange bugs with saving books to items.yml. Generally you should open a book before saving it using /q item command. And don't start or end your books with " character, as it's part of a workaround of this bug/feature.
+- All Objective events has been converted to new format. The objectives.yml file has been deleted, so if it contained any objectives not covered by an event they may seem lost. However there is a backup file and you can extract everything from it. Please refer to the wiki to learn how objectives are now defined or just study converted ones (it's pretty straightforward).
+- AutoUpdater is now enabled by default. Every future update will be working exactly like before, all changes will be automatically updated by a converter, there is always a backup and you are informed about all changes in this file. So it's pretty safe to say that keeping this plugin up to date won't give you any trouble. If you don't want to have latest fixes and features you can disable updating, but this will make the developer sad.
+- Because of changes in how books behave since 1.8, you may experience some strange bugs with saving books to items.yml. Generally, you should open a book before saving it using /q item command. And don't start or end your books with " character, as it's part of a workaround of this bug/feature.
 
 ## [1.4.3] - 2014-12-15
 - Removed debug messages from ActionObjective. You could have told me, any of you guys...
@@ -1095,7 +1093,7 @@ Notes:
 - Conversations are now divided into multiple files in "conversations" directory
 - Items are now saved to items.yml file and referenced by "take", "give", "item" and "hand" events/conditions
 - Added /q item <itemID> command which saves currently held item to the config as specified itemID
-- Added location to Action objective, which checks the location of the block (unlike location condition which checks location of the player)
+- Added location to Action objective, which checks the location of the block (unlike location condition which checks the location of the player)
 - Added /q event <eventID> command which fires specified event
 - Fixed multiple bugs with conversation starting and ending
 - Block NPCs can now be used with Citizens enabled
@@ -1105,13 +1103,13 @@ Notes:
 - Modified Action objective for greater flexibility:
     - It is now possible to detect clicking in air
     - It is no longer possible to detect clicking on any block (as this accepts clicking on air)
-    - Can be used to detect book reading (with help of updated Hand condition)
+    - It can be used to detect book reading (with the help of updated Hand condition)
 - Added AutoUpdater; it's disabled by default
 Notes:
-- Conversion of configuration should have been done automatically, you don't have to worry about anything. If something went wrong you can revert changes from generated backup file, which contains all your previous configs.
-- You can enable AutoUpdater by setting "autoupdate" to true in config.yml. It is completely safe because all next versions will generate backups and convert all files automatically. You will be notified on joining the server about new changelog file.
+- Conversion of configuration should have been done automatically, you don't have to worry about anything. If something went wrong, you can revert changes from generated backup file, which contains all your previous configs.
+- You can enable AutoUpdater by setting "autoupdate" to true in config.yml. It is completely safe because all next versions will generate backups and convert all files automatically. You will be notified on joining the server about the new changelog file.
 - Please refer to the wiki for changes in formatting instruction strings for various things: https://github.com/Co0sh/BetonQuest/wiki
-- You probably should also change names of converted items to something else than "item12". But that works too of course.
+- You probably should also change the names of converted items to something else than "item12". But that works too.
 
 ## [1.3] - 2014-11-30
 ### Changes
@@ -1125,9 +1123,9 @@ Notes:
 
 ## [1.2] - 2014-11-23
 - Global locations now automatically run only once, no need for blocking it with tags and conditions. They use however tags that follow the syntax "global_<tag>", where <tag> is global location objective tag.
-- Added optional respawn location for cancelled death objective, just add "respawn:100.5;200;300.5;world;90;0" to instruction string.
+- Added optional respawn location for canceled death objective, just add "respawn:100.5;200;300.5;world;90;0" to instruction string.
 - Added German translation, thanks to coalaa!
-- Added optional movement blocking while in conversation, just add option "stop: true" or "stop: false" in every conversation.
+- Added optional movement blocking while in conversation, add option "stop: true" or "stop: false" in every conversation.
 - Changed priority of conversation chat event to lowest, should work even for muted players.
 - Fixed data values in block objective.
 - Added metrics, you can disable them by setting "metrics: false" in config.yml
