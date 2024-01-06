@@ -161,16 +161,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: ${{ env.VERSION_TYPE == 'release' || env.VERSION_TYPE == 'development' }}
-      - name: Create LFS file list
-        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
-      - name: Restore LFS cache
-        uses: actions/cache@v3
-        id: lfs-cache
-        with:
-          path: .git/lfs
-          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}-v1
-      - name: Git LFS Pull
-        run: git lfs pull
+      - uses: ./.github/actions/setup-git-lfs
       - name: Select mkDocs requirements
         run: |
           [ -z $MKDOCS_MATERIAL_INSIDERS ] && TXT=docs-requirements.txt || TXT=docs-requirements-insiders.txt
@@ -312,16 +303,7 @@ jobs:
         with:
           fetch-depth: 0
           submodules: ${{ env.VERSION_TYPE == 'release' }}
-      - name: Create LFS file list
-        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
-      - name: Restore LFS cache
-        uses: actions/cache@v3
-        id: lfs-cache
-        with:
-          path: .git/lfs
-          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}-v1
-      - name: Git LFS Pull
-        run: git lfs pull
+      - uses: ./.github/actions/setup-git-lfs
       - name: Select mkDocs requirements
         run: |
           [ -z $MKDOCS_MATERIAL_INSIDERS ] && TXT=docs-requirements.txt || TXT=docs-requirements-insiders.txt
