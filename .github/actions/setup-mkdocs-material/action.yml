@@ -1,0 +1,67 @@
+name: Setup MkDocs Material
+description: |
+  This action sets up a Python environment with the latest version of
+  MkDocs Material and its dependencies and optionally caches the build artifacts.
+
+inputs:
+  MKDOCS_MATERIAL_INSIDERS_TOKEN:
+    description: |
+      The GitHub token to use for installing the MkDocs Material Insiders.
+    required: true
+  PYTHON_CACHE:
+    description: |
+      The name of the Python cache to use.
+    required: false
+  PYTHON_CACHE_DEPENDENCY_PATH:
+    description: |
+      The path to the Python cache dependency.
+    required: false
+  CACHE:
+    description: |
+      Weather to cache build artifacts or not.
+    required: false
+  MKDOCS_SITE_DIR:
+    description: |
+      The path to the MkDocs site directory.
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Check MKDOCS_SITE_DIR
+      if: ${{ inputs.CACHE == 'true' && inputs.MKDOCS_SITE_DIR == '' }}
+      run: |
+        echo "If CACHE is true, MKDOCS_SITE_DIR is required"
+        exit 1
+      shell: bash
+    - name: Setup Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        architecture: 'x64'
+        cache: ${{ inputs.PYTHON_CACHE }}
+        cache-dependency-path: ${{ inputs.PYTHON_CACHE_DEPENDENCY_PATH }}
+    - name: Cache ${MKDOCS_SITE_DIR}
+      if: ${{ inputs.CACHE == 'true' }}
+      uses: actions/cache@v3
+      with:
+        path: ${MKDOCS_SITE_DIR}
+        key: ${{ runner.os }}-${MKDOCS_SITE_DIR}-${{ github.run_number }}
+    - name: Cache ${MKDOCS_SITE_DIR}/.cache/plugins/optimize
+      if: ${{ inputs.CACHE == 'true' }}
+      uses: actions/cache@v3
+      with:
+        path: ${MKDOCS_SITE_DIR}/.cache/plugins/optimize
+        key: ${{ runner.os }}-hardcoded-media-cache
+    - name: Install pngquant, a CI only dependency for mkdocs-material image optimization
+      uses: awalsh128/cache-apt-pkgs-action@v1.2.2
+      with:
+        packages: pngquant
+    - name: Install dependencies
+      run: |
+        [ -z $MKDOCS_MATERIAL_INSIDERS ] && TXT=docs-requirements.txt || TXT=docs-requirements-insiders.txt
+        python3 -m pip install --upgrade pip
+        pip install -r ./config/$TXT
+      shell: bash
+      env:
+        MKDOCS_MATERIAL_INSIDERS: ${{ inputs.MKDOCS_MATERIAL_INSIDERS_TOKEN }}

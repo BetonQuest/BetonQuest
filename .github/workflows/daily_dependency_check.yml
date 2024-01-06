@@ -40,35 +40,13 @@ jobs:
           key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}-v1
       - name: Git LFS Pull
         run: git lfs pull
-      - name: Setup Python 3.10
-        uses: actions/setup-python@v4
+      - uses: ./.github/actions/setup-mkdocs-material
         with:
-          python-version: '3.10'
-          architecture: 'x64'
-      - name: Install pngquant, a CI only dependency for mkdocs-material image optimization
-        uses: awalsh128/cache-apt-pkgs-action@v1.2.2
-        with:
-          packages: pngquant
-      - name: Select mkDocs requirements
-        run: |
-          [ -z $MKDOCS_MATERIAL_INSIDERS ] && TXT=docs-requirements.txt || TXT=docs-requirements-insiders.txt
-          echo "TXT=$TXT" >> $GITHUB_ENV
-        env:
-          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
-      - name: Install dependencies
-        run: |
-          python3 -m pip install --upgrade pip
-          pip install -r ./config/$TXT
-        env:
-          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
+          MKDOCS_MATERIAL_INSIDERS_TOKEN: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
       - name: Build with mkdocs
         run: |
-          if [ "$TXT" = "docs-requirements-insiders.txt" ]
-          then
-            mkdocs build --config-file mkdocs.insiders.yml
-          else
-            mkdocs build --config-file mkdocs.yml
-          fi
+          [ -z $MKDOCS_MATERIAL_INSIDERS ] && YML=mkdocs.insiders.yml || YML=mkdocs.yml
+          mkdocs build --config-file $YML
         env:
           ANALYTICS_PROPERTY: ${{ vars.ANALYTICS_PROPERTY }}
 
