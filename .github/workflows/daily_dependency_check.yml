@@ -38,8 +38,6 @@ jobs:
         run: |
           [ -z $MKDOCS_MATERIAL_INSIDERS ] && YML=mkdocs.insiders.yml || YML=mkdocs.yml
           mkdocs build --config-file $YML
-        env:
-          ANALYTICS_PROPERTY: ${{ vars.ANALYTICS_PROPERTY }}
 
   alert:
     name: Alert to Discord
