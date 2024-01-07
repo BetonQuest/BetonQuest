@@ -49,7 +49,7 @@ echo "[Webhook]: Preparing type related variables...";
 case "$VERSION_TYPE" in
   "release" )
     RELEASE_NAME="Release-Build"
-    RELEASE_DOWNLOAD_URL="https://github.com/BetonQuest/BetonQuest/releases"
+    RELEASE_DOWNLOAD_URL="${DOCS_URL}RELEASE/Downloads/"
     RELEASE_COMMIT_ICON_SUCCESS="$COMMIT_ICON_RELEASE"
     IFS='.' read -r major minor _ <<< "$VERSION"
     DOCS_VERSION="$major.$minor"
