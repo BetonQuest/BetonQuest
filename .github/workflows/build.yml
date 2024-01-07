@@ -202,6 +202,8 @@ jobs:
           [ -z $MKDOCS_MATERIAL_INSIDERS ] && YML=mkdocs.insiders.yml || YML=mkdocs.yml
           mkdocs build --config-file $YML
           git diff > target/docs/changes.patch
+        env:
+          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
       - name: Upload Docs
         uses: actions/upload-artifact@v3
         with:
