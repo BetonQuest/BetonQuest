@@ -36,8 +36,9 @@ jobs:
           MKDOCS_MATERIAL_INSIDERS_TOKEN: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
       - name: Build with mkdocs
         run: |
-          [ -z $MKDOCS_MATERIAL_INSIDERS ] && YML=mkdocs.insiders.yml || YML=mkdocs.yml
-          mkdocs build --config-file $YML
+          # We need an extra variable here because if we were to use the insider variable, every local build would involve the image optimization plugin.
+          if [ -z $MKDOCS_MATERIAL_INSIDERS ]; then export BQ_CI=true; fi
+          mkdocs build
         env:
           MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
 

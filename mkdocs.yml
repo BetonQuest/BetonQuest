@@ -122,6 +122,11 @@ plugins:
       - _snippets/*
       - _custom_theme/*
       - _tutorials/*
+  group:
+    enabled: !ENV BQ_CI
+    plugins:
+      - typeset
+      - optimize
 
 extra:
   version:
