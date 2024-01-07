@@ -45,13 +45,13 @@ runs:
       if: ${{ inputs.CACHE == 'true' }}
       uses: actions/cache@v3
       with:
-        path: ${inputs.MKDOCS_SITE_DIR}
-        key: ${{ runner.os }}-${inputs.MKDOCS_SITE_DIR}-${{ github.run_number }}
-    - name: Cache ${inputs.MKDOCS_SITE_DIR}/.cache/plugins/optimize
+        path: ${{ inputs.MKDOCS_SITE_DIR }}
+        key: ${{ runner.os }}-${{ inputs.MKDOCS_SITE_DIR }}-${{ github.run_number }}
+    - name: Cache ${{ inputs.MKDOCS_SITE_DIR }}/.cache/plugins/optimize
       if: ${{ inputs.CACHE == 'true' }}
       uses: actions/cache@v3
       with:
-        path: ${inputs.MKDOCS_SITE_DIR}/.cache/plugins/optimize
+        path: ${{ inputs.MKDOCS_SITE_DIR }}/.cache/plugins/optimize
         key: ${{ runner.os }}-hardcoded-media-cache
     - name: Install pngquant, a CI only dependency for mkdocs-material image optimization
       uses: awalsh128/cache-apt-pkgs-action@v1.2.2
