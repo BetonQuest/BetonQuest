@@ -59,9 +59,8 @@ runs:
         packages: pngquant
     - name: Install dependencies
       run: |
-        [ -z $MKDOCS_MATERIAL_INSIDERS ] && TXT=docs-requirements.txt || TXT=docs-requirements-insiders.txt
         python3 -m pip install --upgrade pip
-        pip install -r ./config/$TXT
+        python config/setup-docs-dependencies.py
       shell: bash
       env:
         MKDOCS_MATERIAL_INSIDERS: ${{ inputs.MKDOCS_MATERIAL_INSIDERS_TOKEN }}
