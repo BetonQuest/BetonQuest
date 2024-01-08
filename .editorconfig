@@ -10,6 +10,8 @@ indent_size = 2
 #end_of_line = lf
 [docs/_media/**]
 #end_of_line = unset
+[/.idea/**]
+insert_final_newline = unset
 
 [CHANGELOG.md]
 indent_size = 4
@@ -28,7 +30,11 @@ line_comment = //
 block_comment_start = /*
 block_comment_end = */
 
+[*.py]
+indent_size = 4
+
 # Ignore Python Virtualenv files
 [/lib/**]
 indent_style = unset
 indent_size = unset
+
