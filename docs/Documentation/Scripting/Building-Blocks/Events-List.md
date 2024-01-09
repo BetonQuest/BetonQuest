@@ -786,14 +786,15 @@ Changes the time of the world. The time is represented in 24 hours format as a f
 noon and 23 is 11 PM. For minutes, you can use floating point numbers, so 0.5 is half past midnight, 0.25 is quarter 
 past midnight and so on. (0.1 hours is 6 minutes). It's possible to add or subtract time by using `+` or `-` prefix or 
 to set the time by setting no prefix.
-Additionally, you can specify the world in which the time will be changed, by adding `world:`. 
+Additionally, you can specify the world in which the time will be changed, by adding `world:`.
+Using the `ticks` argument changes the time like the vanilla command.
 
 !!! example
     ```YAML
     time 6
     time +0.1
     time -12 world:rpgworld
-    time +%randomnumber.decimal.0.1~2% world:pvpworld
+    time +%randomnumber.whole.100~2000% world:pvpworld ticks
     ```
 
 ## :fontawesome-solid-person-walking-dashed-line-arrow-right: Teleport: `teleport`
