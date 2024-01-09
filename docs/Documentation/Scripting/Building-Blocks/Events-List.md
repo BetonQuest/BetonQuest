@@ -363,7 +363,10 @@ Works the same way as a normal tag event, but instead of setting a tag for one p
 
 ## Hunger: `hunger`
 
-This event changes the food level of the player. The second argument is the modification type. There are `give`, `take` and `set`. The second argument is the amount. With `set` can the food level be anything. If `give` or `take` is specified and the final amount won't be more than 20 or less than 0. If the hunger level is below 7, the player cannot sprint.
+This event changes the food level of the player. The second argument is the modification type.
+There are `give`, `take` and `set`. The second argument is the amount. With `set` can the food level be anything.
+If `give` or `take` is specified the final amount won't be more than 20 or less than 0.
+If the hunger level is below 7, the player cannot sprint.
 
 !!! example
     ```YAML
