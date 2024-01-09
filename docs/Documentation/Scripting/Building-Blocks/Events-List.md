@@ -861,6 +861,7 @@ events:
 
 Sets the weather in the world the player is currently in. The argument is `sun` for clear, sunny weather, `rain` for pure rain,
 `storm` for storm with rain, lightning and thunder or `thunder` for just lighting and thunder with no rain.
+Durations less than 1 is equal to no duration.
 
 | Parameter  | Syntax            | Default Value               | Explanation                                                                                                   |
 |------------|-------------------|-----------------------------|---------------------------------------------------------------------------------------------------------------|

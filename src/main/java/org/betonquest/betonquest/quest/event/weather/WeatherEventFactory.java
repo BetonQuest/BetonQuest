@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.weather;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.common.function.ConstantSelector;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
@@ -66,9 +67,11 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final Weather weather = parseWeather(instruction.next());
         final Selector<World> worldSelector = parseWorld(instruction.getOptional("world"));
+        final String durationString = instruction.getOptional("duration", "0");
+        final VariableNumber duration = instruction.getVarNum(durationString);
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
-                        loggerFactory.create(WeatherEvent.class), new WeatherEvent(weather, worldSelector), instruction.getPackage()),
+                        loggerFactory.create(WeatherEvent.class), new WeatherEvent(weather, worldSelector, duration), instruction.getPackage()),
                 server, scheduler, plugin);
     }
 

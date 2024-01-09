@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.weather;
 
+import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
@@ -22,19 +23,26 @@ public class WeatherEvent implements Event {
     private final Selector<World> worldSelector;
 
     /**
+     * The time weather will not change naturally.
+     */
+    private final VariableNumber duration;
+
+    /**
      * Creates the weather event to set the given state.
      *
      * @param weather       the weather to set
      * @param worldSelector to get the world that should be affected
+     * @param duration      how long the weather will not change - values <= 0 won't set a duration
      */
-    public WeatherEvent(final Weather weather, final Selector<World> worldSelector) {
+    public WeatherEvent(final Weather weather, final Selector<World> worldSelector, final VariableNumber duration) {
         this.weather = weather;
         this.worldSelector = worldSelector;
+        this.duration = duration;
     }
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
         final World world = worldSelector.selectFor(profile);
-        weather.applyTo(world);
+        weather.applyTo(world, duration.getInt(profile));
     }
 }
