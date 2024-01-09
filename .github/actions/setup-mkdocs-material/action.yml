@@ -24,6 +24,11 @@ inputs:
     description: |
       The path to the MkDocs site directory.
     required: false
+outputs:
+  MKDOCS_MATERIAL_INSIDERS_ENABLED:
+    description: |
+      Weather the MkDocs Material Insiders are enabled or not.
+    value: ${{ steps.setup-dependencies.outputs.enabled }}
 
 runs:
   using: composite
@@ -58,9 +63,11 @@ runs:
       with:
         packages: pngquant
     - name: Install dependencies
+      id: setup-dependencies
       run: |
         python3 -m pip install --upgrade pip
         python config/setup-docs-dependencies.py
+        echo "enabled=$(echo $MKDOCS_MATERIAL_INSIDERS_ENABLED)" >> $GITHUB_OUTPUT
       shell: bash
       env:
         MKDOCS_MATERIAL_INSIDERS: ${{ inputs.MKDOCS_MATERIAL_INSIDERS_TOKEN }}
