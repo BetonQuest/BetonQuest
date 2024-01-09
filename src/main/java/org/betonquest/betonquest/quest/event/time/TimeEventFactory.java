@@ -1,9 +1,11 @@
 package org.betonquest.betonquest.quest.event.time;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.common.function.ConstantSelector;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
@@ -55,10 +57,10 @@ public class TimeEventFactory implements EventFactory, StaticEventFactory {
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final String timeString = instruction.next();
         final Time time = parseTimeType(timeString);
-        final long rawTime = parseTime(timeString);
+        final VariableNumber rawTime = parseTime(instruction.getPackage(), timeString, time != Time.SET);
         final Selector<World> worldSelector = parseWorld(instruction.getOptional("world"));
         return new PrimaryServerThreadEvent(
-                new TimeEvent(time, rawTime, worldSelector),
+                new TimeEvent(time, rawTime, worldSelector, true),
                 server, scheduler, plugin);
     }
 
@@ -82,8 +84,9 @@ public class TimeEventFactory implements EventFactory, StaticEventFactory {
         };
     }
 
-    private Long parseTime(final String timeString) {
-        return Math.abs((long) (Float.parseFloat(timeString) * 1000));
+    private VariableNumber parseTime(final QuestPackage questPackage, final String timeString, final boolean cutFirst) throws InstructionParseException {
+        final String rawTime = cutFirst ? timeString.substring(1) : timeString;
+        return new VariableNumber(questPackage, rawTime);
     }
 
     @NotNull

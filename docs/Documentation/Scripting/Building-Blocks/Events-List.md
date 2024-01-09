@@ -793,6 +793,7 @@ Additionally, you can specify the world in which the time will be changed, by ad
     time 6
     time +0.1
     time -12 world:rpgworld
+    time +%randomnumber.decimal.0.1~2% world:pvpworld
     ```
 
 ## :fontawesome-solid-person-walking-dashed-line-arrow-right: Teleport: `teleport`
