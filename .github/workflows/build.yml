@@ -197,8 +197,8 @@ jobs:
           mkdocs build 
           git diff > target/docs/changes.patch
         env:
-          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
           MKDOCS_MATERIAL_INSIDERS_ENABLED: ${{ inputs.MKDOCS_MATERIAL_INSIDERS != '' }}
+          MKDOCS_MATERIAL_INSIDERS_ENABLED_CI: ${{ inputs.MKDOCS_MATERIAL_INSIDERS != '' }}
       - name: Upload Docs
         uses: actions/upload-artifact@v3
         with:
@@ -335,6 +335,9 @@ jobs:
             mike delete "$TWO_DIGIT_VERSION-DEV"
           fi
           mike deploy "${FLAGS[@]}" "${VERSION[@]}"
+        env:
+          MKDOCS_MATERIAL_INSIDERS_ENABLED: ${{ inputs.MKDOCS_MATERIAL_INSIDERS != '' }}
+          MKDOCS_MATERIAL_INSIDERS_ENABLED_CI: ${{ inputs.MKDOCS_MATERIAL_INSIDERS != '' }}
       - name: Set version Tag for Quest-Tutorials submodule
         if: "env.VERSION_TYPE == 'release'"
         run: |

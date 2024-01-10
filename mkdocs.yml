@@ -127,7 +127,7 @@ plugins:
       plugins:
         - typeset
   - group:
-      enabled: !ENV CI
+      enabled: !ENV MKDOCS_MATERIAL_INSIDERS_ENABLED_CI
       plugins:
         - optimize
 
