@@ -274,6 +274,7 @@ jobs:
           echo "upload_path=$UPLOAD_PATH" >> $GITHUB_OUTPUT
         env:
           REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
+
   deploy-docs:
     name: Deploy Docs
     concurrency: gh-pages-deploy
@@ -347,6 +348,7 @@ jobs:
           cd docs/_tutorials/
           git tag "v$VERSION"
           git push origin "v$VERSION"
+
   create-release:
     name: Create GitHub Release
     if: "needs.prepare.outputs.VERSION_TYPE == 'release' && needs.deploy-artifacts.result == 'success' && needs.deploy-docs.result == 'success'"
