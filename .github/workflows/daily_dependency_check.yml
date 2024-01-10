@@ -40,7 +40,8 @@ jobs:
           if [ -z $MKDOCS_MATERIAL_INSIDERS ]; then export BQ_CI=true; fi
           mkdocs build
         env:
-          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
+          MKDOCS_MATERIAL_INSIDERS_ENABLED: ${{ inputs.MKDOCS_MATERIAL_INSIDERS != '' }}
+          MKDOCS_MATERIAL_INSIDERS_ENABLED_CI: ${{ inputs.MKDOCS_MATERIAL_INSIDERS != '' }}
 
   alert:
     name: Alert to Discord
