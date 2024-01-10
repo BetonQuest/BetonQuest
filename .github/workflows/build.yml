@@ -164,11 +164,10 @@ jobs:
       - uses: ./.github/actions/setup-git-lfs
       - uses: ./.github/actions/setup-mkdocs-material
         with:
-          MKDOCS_MATERIAL_INSIDERS_TOKEN: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
-          PYTHON_CACHE: 'pip'
-          PYTHON_CACHE_DEPENDENCY_PATH: '**/config/${{ env.TXT }}'
-          CACHE: 'true'
+          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
           MKDOCS_SITE_DIR: 'target/docs'
+          PYTHON_CACHE: 'pip'
+          PYTHON_CACHE_DEPENDENCY_PATH: 'config/setup-docs-dependencies.py'
       - name: Set CHANGELOG.md version
         run: |
           sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
@@ -199,6 +198,7 @@ jobs:
           git diff > target/docs/changes.patch
         env:
           MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
+          MKDOCS_MATERIAL_INSIDERS_ENABLED: ${{ inputs.MKDOCS_MATERIAL_INSIDERS != '' }}
       - name: Upload Docs
         uses: actions/upload-artifact@v3
         with:
@@ -297,11 +297,10 @@ jobs:
       - uses: ./.github/actions/setup-git-lfs
       - uses: ./.github/actions/setup-mkdocs-material
         with:
-          MKDOCS_MATERIAL_INSIDERS_TOKEN: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
-          PYTHON_CACHE: 'pip'
-          PYTHON_CACHE_DEPENDENCY_PATH: '**/config/${{ env.TXT }}'
-          CACHE: 'true'
+          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
           MKDOCS_SITE_DIR: 'target/docs'
+          PYTHON_CACHE: 'pip'
+          PYTHON_CACHE_DEPENDENCY_PATH: 'config/setup-docs-dependencies.py'
       - name: Load patch file
         run: |
           git apply target/docs/changes.patch

@@ -33,7 +33,7 @@ jobs:
       - uses: ./.github/actions/setup-git-lfs
       - uses: ./.github/actions/setup-mkdocs-material
         with:
-          MKDOCS_MATERIAL_INSIDERS_TOKEN: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
+          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
       - name: Build with mkdocs
         run: |
           # We need an extra variable here because if we were to use the insider variable, every local build would involve the image optimization plugin.
