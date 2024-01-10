@@ -116,14 +116,17 @@ and added to the PATH environment variable. The Python installer allows you to d
 You also need to install [GTK](https://www.gtk.org/), the easiest way is to use this 
 [GTK installer](https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer/) if you are on Windows. 
 
-Install all other dependencies by entering `pip install -r config/docs-requirements.txt` in the terminal on the project's root directory.
-
 ??? "In case you are a [Material for MkDocs](https://squidfunk.github.io/mkdocs-material) insider (paid premium version)"  
-    Set your license key by executing `setx MKDOCS_MATERIAL_INSIDERS LICENSE_KEY_HERE /M` (Windows) in the terminal.
-    You must also install the [additional pngquant dependency](https://squidfunk.github.io/mkdocs-material/setup/dependencies/image-processing/#pngquant).
+    You need to set two environment variables to be able to build the docs with MkDocs Material insiders.  
+    
+    Set `MKDOCS_MATERIAL_INSIDERS` to your license key to be able to install the indiders version.
+    
+    When you want to see the insiders version on serve, you need to set `MKDOCS_MATERIAL_INSIDERS_ENABLED` to `true`.
+    
+    Under Windows you can set environment variables with `setx VARIABLE_NAME VALUE /M` in the terminal.
     Now you need to restart IntelliJ for the changes to take effect. 
-    Then run `pip install -r config/docs-requirements-insiders.txt` instead of `docs-requirements.txt`.
-    Run `mkdocs serve --config-file mkdocs.insiders.yml` to preview the docs.
+
+Install all other dependencies by entering `python config/setup-docs-dependencies.py` in the terminal on the project's root directory.
 
 ### See your changes live
 Run this command in IntelliJ's integrated terminal (at the bottom) to create a docs preview in your browser:
