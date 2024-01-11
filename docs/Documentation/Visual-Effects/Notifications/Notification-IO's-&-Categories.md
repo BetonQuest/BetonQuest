@@ -35,8 +35,9 @@ Writes the notification in the player's chat.
 | [Sound](#sound) | Any option from the [SoundIO](#sound). |
 
 ### Advancement
-Shows the notification using an achievement popup. Unfortunately Minecraft will play the default advancement sound here. 
-It's not possible to stop this sound from playing - if you want to get rid of it, you would have to override / remove
+Shows the notification using an achievement popup.
+Unfortunately, Minecraft will play the default advancement sound here. 
+It's not possible to stop this sound from playing—if you want to get rid of it, you would have to override / remove
 that sound from your server's resource pack.
 You can still add your own additional sound as usual though.
 It will then be played together with the default advancement sound.
@@ -110,7 +111,7 @@ Shows a totem with a "customModelData" NBT tag. This allows you to replace the t
 during the animation.
 
 ??? info "Preview"
-    <video controls loop src="../../../_media/content/Documentation/Notifications/TotemIO.mp4" width="100%">
+    <video controls loop src="../../../../_media/content/Documentation/Notifications/TotemIO.mp4" width="100%">
       Sorry, your browser doesn't support embedded videos.
     </video>
 
@@ -129,7 +130,7 @@ Keep that in mind when creating sounds close to a player. They can move around t
 |-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | sound             | Sound to play. If blank, no sound. Either vanilla Minecraft sounds (get them using /playsound autocompletion) or the name of a sound from a resource pack. |
 | soundcategory     | The [category](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/SoundCategory.html) in which the sound will be played.                                  |
-| soundvolume       | Minecraft's [special sound volume](https://minecraft.wiki/w/Commands/playsound#Arguments). Default: _1_                                             |
+| soundvolume       | Minecraft's [special sound volume](https://minecraft.wiki/w/Commands/playsound#Arguments). Default: _1_                                                    |
 | soundpitch        | Pitch of the sound. Default: _1_ Min: _0_ Max: _2_                                                                                                         |
 | soundlocation     | Default: The player's location. A location using the BetonQuest [ULF](../../Scripting/Data-Formats.md#unified-location-formating). Can include variables.  |
 | soundplayeroffset | This option is special. See below.                                                                                                                         |
@@ -167,7 +168,7 @@ and the z axis is before / behind the players face. It will move along the playe
 @snippet:general:relativeAxisExplanation@
 
 This makes it possible to go crazy with sounds. Just one example: A halloween special
-where the player hears a :ghost: whispering into his left ear - no matter where he is or how he turns his head... 🎃
+where the player hears a :ghost: whispering into his left ear—no matter where he is or how he turns his head... 🎃
 
 Here is a small example:
 ??? info "Video Example"
@@ -176,7 +177,7 @@ Here is a small example:
     🔴  = the actual location the sound is played at    
     *soundplayeroffset = (0,0,5)*
 
-    <video controls loop src="../../_media/content/Documentation/Notifications/RelativeVectorExample.mp4" width="100%">
+    <video controls loop src="../../../../_media/content/Documentation/Notifications/RelativeVectorExample.mp4" width="100%">
       Sorry, your browser doesn't support embedded videos.
     </video>
     The sound is always played 5 block away from the soundlocation. The direction is however based on where the player is looking.
