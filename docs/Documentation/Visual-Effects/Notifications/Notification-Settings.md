@@ -25,14 +25,14 @@ For example:
 When BetonQuest fails to add a quest item to a player's inventory it will send `&e*&bYour inventory is full!&e*`.    
 This message is defined in *messages.yml* along with other default plugin messages. You can redefine them to your liking.
 
-The Notify System can do much more than just changing messages though:
+The Notify System can do much more than just changing messages, though:
 
 All notifications will be displayed using the ChatIO and without a sound by default. You need to use
 [notification categories](./Notification-IO's-&-Categories.md#categories) to change this behaviour.
 These categories are pretty much just pre-defined [NotifyIO settings](./Notification-IO's-&-Categories.md#notify-ios).    
 Each notification in *messages.yml* has a special category with a reserved name assigned to it.
 
-For example: If you would like to have the "language_changed" notification displayed as an actionbar message you define the following:
+For example, If you would like to have the "language_changed" notification displayed as an actionbar message, you define the following:
 
 ```YAML
 notifications:        #General header for all notification settings
