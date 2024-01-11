@@ -19,7 +19,7 @@ def get_install_requires():
             print("\033[93m"
                 + "Warning: 'MKDOCS_MATERIAL_INSIDERS' is set "
                 + "but 'MKDOCS_MATERIAL_INSIDERS_ENABLED' is not set to 'true', "
-                + "so if you  serve mkdocs you will get the normal version!"
+                + "so if you serve mkdocs you will serve the normal version!"
                 + "\033[0m")
         return [
             f'git+https://{mkdocs_token}@github.com/squidfunk/mkdocs-material-insiders.git@9.5.2-insiders-4.47.1',
