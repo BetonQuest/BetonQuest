@@ -38,8 +38,8 @@ jobs:
         run: |
           mkdocs build
         env:
-          MKDOCS_MATERIAL_INSIDERS_ENABLED: ${{ inputs.MKDOCS_MATERIAL_INSIDERS != '' }}
-          MKDOCS_MATERIAL_INSIDERS_ENABLED_CI: ${{ inputs.MKDOCS_MATERIAL_INSIDERS != '' }}
+          MKDOCS_MATERIAL_INSIDERS_ENABLED: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
+          MKDOCS_MATERIAL_INSIDERS_ENABLED_CI: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
 
   alert:
     name: Alert to Discord
