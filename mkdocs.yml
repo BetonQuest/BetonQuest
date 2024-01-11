@@ -113,15 +113,23 @@ markdown_extensions:
       permalink: 🔗
 
 plugins:
-  search: { }
-  snippets:
-    directory: "_snippets"
-    identifier: "snippet"
-  exclude:
-    glob:
-      - _snippets/*
-      - _custom_theme/*
-      - _tutorials/*
+  - search: { }
+  - snippets:
+      directory: "_snippets"
+      identifier: "snippet"
+  - exclude:
+      glob:
+        - _snippets/*
+        - _custom_theme/*
+        - _tutorials/*
+  - group:
+      enabled: !ENV MKDOCS_MATERIAL_INSIDERS_ENABLED
+      plugins:
+        - typeset
+  - group:
+      enabled: !ENV MKDOCS_MATERIAL_INSIDERS_ENABLED_CI
+      plugins:
+        - optimize
 
 extra:
   version:

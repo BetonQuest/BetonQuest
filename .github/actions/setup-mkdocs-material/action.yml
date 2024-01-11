@@ -4,10 +4,19 @@ description: |
   MkDocs Material and its dependencies and optionally caches the build artifacts.
 
 inputs:
-  MKDOCS_MATERIAL_INSIDERS_TOKEN:
+  MKDOCS_MATERIAL_INSIDERS:
     description: |
       The GitHub token to use for installing the MkDocs Material Insiders.
     required: true
+  MKDOCS_SITE_DIR:
+    description: |
+      The path to the MkDocs site directory for caching.
+    required: false
+  PYTHON_VERSION:
+    description: |
+      The version of Python to use.
+    required: false
+    default: '3.10'
   PYTHON_CACHE:
     description: |
       The name of the Python cache to use.
@@ -16,39 +25,24 @@ inputs:
     description: |
       The path to the Python cache dependency.
     required: false
-  CACHE:
-    description: |
-      Weather to cache build artifacts or not.
-    required: false
-  MKDOCS_SITE_DIR:
-    description: |
-      The path to the MkDocs site directory.
-    required: false
 
 runs:
   using: composite
   steps:
-    - name: Check MKDOCS_SITE_DIR
-      if: ${{ inputs.CACHE == 'true' && inputs.MKDOCS_SITE_DIR == '' }}
-      run: |
-        echo "If CACHE is true, MKDOCS_SITE_DIR is required"
-        exit 1
-      shell: bash
-    - name: Setup Python 3.10
-      uses: actions/setup-python@v4
+    - name: Setup Python
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
-        architecture: 'x64'
+        python-version: ${{ inputs.PYTHON_VERSION }}
         cache: ${{ inputs.PYTHON_CACHE }}
         cache-dependency-path: ${{ inputs.PYTHON_CACHE_DEPENDENCY_PATH }}
-    - name: Cache ${inputs.MKDOCS_SITE_DIR}
-      if: ${{ inputs.CACHE == 'true' }}
+    - name: Cache MkDocs site directory
+      if: ${{ inputs.MKDOCS_SITE_DIR != '' }}
       uses: actions/cache@v3
       with:
         path: ${{ inputs.MKDOCS_SITE_DIR }}
         key: ${{ runner.os }}-${{ inputs.MKDOCS_SITE_DIR }}-${{ github.run_number }}
-    - name: Cache ${{ inputs.MKDOCS_SITE_DIR }}/.cache/plugins/optimize
-      if: ${{ inputs.CACHE == 'true' }}
+    - name: Cache MkDocs site directory /.cache/plugins/optimize
+      if: ${{ inputs.MKDOCS_SITE_DIR != '' }}
       uses: actions/cache@v3
       with:
         path: ${{ inputs.MKDOCS_SITE_DIR }}/.cache/plugins/optimize
@@ -57,11 +51,15 @@ runs:
       uses: awalsh128/cache-apt-pkgs-action@v1.2.2
       with:
         packages: pngquant
-    - name: Install dependencies
+    - name: Update python pip
+      id: setup-dependencies
       run: |
-        [ -z $MKDOCS_MATERIAL_INSIDERS ] && TXT=docs-requirements.txt || TXT=docs-requirements-insiders.txt
         python3 -m pip install --upgrade pip
-        pip install -r ./config/$TXT
+      shell: bash
+    - name: Install dependencies with config/setup-docs-dependencies.py
+      run: |
+        python config/setup-docs-dependencies.py
       shell: bash
       env:
-        MKDOCS_MATERIAL_INSIDERS: ${{ inputs.MKDOCS_MATERIAL_INSIDERS_TOKEN }}
+        MKDOCS_MATERIAL_INSIDERS: ${{ inputs.MKDOCS_MATERIAL_INSIDERS }}
+        MKDOCS_MATERIAL_INSIDERS_ENABLED: ${{ inputs.MKDOCS_MATERIAL_INSIDERS != '' }}

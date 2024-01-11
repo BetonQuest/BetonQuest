@@ -20,7 +20,7 @@ jobs:
           echo "Version tags are not supported in forks!"
           exit 1
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Read version from pom.xml
@@ -72,7 +72,7 @@ jobs:
         if: "github.repository != 'BetonQuest/BetonQuest' || !startsWith(github.ref,'refs/tags/v') && github.ref != 'refs/heads/main' && !startsWith(github.ref,'refs/heads/main_v')"
         run: |
           if [ ${{ github.repository }} != 'BetonQuest/BetonQuest' ]; then REPO=${{ github.repository }}-; fi
-          echo "VERSION_MAVEN=-${MAVEN_VERSION}-DEV-UNOFFICIAL" >> $GITHUB_ENV
+          echo "VERSION_MAVEN=${MAVEN_VERSION}-DEV-UNOFFICIAL" >> $GITHUB_ENV
           MAVEN_VERSION=${MAVEN_VERSION}-DEV-ARTIFACT-${REPO}${{ github.run_number }}
           echo "MAVEN_VERSION=$MAVEN_VERSION" >> $GITHUB_ENV
           echo "VERSION_TYPE=artifact" >> $GITHUB_ENV
@@ -106,7 +106,7 @@ jobs:
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup JDK 17
         uses: actions/setup-java@v3
         with:
@@ -158,23 +158,16 @@ jobs:
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: ${{ env.VERSION_TYPE == 'release' || env.VERSION_TYPE == 'development' }}
       - uses: ./.github/actions/setup-git-lfs
-      - name: Select mkDocs requirements
-        run: |
-          [ -z $MKDOCS_MATERIAL_INSIDERS ] && TXT=docs-requirements.txt || TXT=docs-requirements-insiders.txt
-          echo "TXT=$TXT" >> $GITHUB_ENV
-        env:
-          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
       - uses: ./.github/actions/setup-mkdocs-material
         with:
-          MKDOCS_MATERIAL_INSIDERS_TOKEN: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
-          PYTHON_CACHE: 'pip'
-          PYTHON_CACHE_DEPENDENCY_PATH: '**/config/${{ env.TXT }}'
-          CACHE: 'true'
+          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
           MKDOCS_SITE_DIR: 'target/docs'
+          PYTHON_CACHE: 'pip'
+          PYTHON_CACHE_DEPENDENCY_PATH: 'config/setup-docs-dependencies.py'
       - name: Set CHANGELOG.md version
         run: |
           sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
@@ -199,13 +192,13 @@ jobs:
           REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
       - name: Build with mkdocs
         run: |
-          if [ "$TXT" = "docs-requirements-insiders.txt" ]
-          then
-            mkdocs build --config-file mkdocs.insiders.yml
-          else
-            mkdocs build --config-file mkdocs.yml
-          fi
+          # We need an extra variable here because if we were to use the insider variable, every local build would involve the image optimization plugin.
+          if [ -z $MKDOCS_MATERIAL_INSIDERS ]; then export BQ_CI=true; fi
+          mkdocs build 
           git diff > target/docs/changes.patch
+        env:
+          MKDOCS_MATERIAL_INSIDERS_ENABLED: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
+          MKDOCS_MATERIAL_INSIDERS_ENABLED_CI: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
       - name: Upload Docs
         uses: actions/upload-artifact@v3
         with:
@@ -232,7 +225,7 @@ jobs:
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup JDK 17
         uses: actions/setup-java@v3
         with:
@@ -281,6 +274,7 @@ jobs:
           echo "upload_path=$UPLOAD_PATH" >> $GITHUB_OUTPUT
         env:
           REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
+
   deploy-docs:
     name: Deploy Docs
     concurrency: gh-pages-deploy
@@ -297,44 +291,17 @@ jobs:
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           submodules: ${{ env.VERSION_TYPE == 'release' }}
       - uses: ./.github/actions/setup-git-lfs
-      - name: Select mkDocs requirements
-        run: |
-          [ -z $MKDOCS_MATERIAL_INSIDERS ] && TXT=docs-requirements.txt || TXT=docs-requirements-insiders.txt
-          echo "TXT=$TXT" >> $GITHUB_ENV
-        env:
+      - uses: ./.github/actions/setup-mkdocs-material
+        with:
           MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
-      - name: Setup Python 3.10
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-          architecture: 'x64'
-          cache: 'pip'
-          cache-dependency-path: '**/config/${{ env.TXT }}'
-      - name: Cache target/docs
-        uses: actions/cache@v3
-        with:
-          path: target/docs
-          key: ${{ runner.os }}-target/docs-${{ github.run_number }}
-      - name: Cache target/docs/.cache/plugins/optimize
-        uses: actions/cache@v3
-        with:
-          path: target/docs/.cache/plugins/optimize
-          key: ${{ runner.os }}-hardcoded-media-cache
-      - name: Install pngquant, a CI only dependency for mkdocs-material image optimization
-        uses: awalsh128/cache-apt-pkgs-action@v1.2.2
-        with:
-          packages: pngquant
-      - name: Install dependencies
-        run: |
-          python3 -m pip install --upgrade pip
-          pip install -r ./config/$TXT
-        env:
-          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
+          MKDOCS_SITE_DIR: 'target/docs'
+          PYTHON_CACHE: 'pip'
+          PYTHON_CACHE_DEPENDENCY_PATH: 'config/setup-docs-dependencies.py'
       - name: Load patch file
         run: |
           git apply target/docs/changes.patch
@@ -369,6 +336,9 @@ jobs:
             mike delete "$TWO_DIGIT_VERSION-DEV"
           fi
           mike deploy "${FLAGS[@]}" "${VERSION[@]}"
+        env:
+          MKDOCS_MATERIAL_INSIDERS_ENABLED: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
+          MKDOCS_MATERIAL_INSIDERS_ENABLED_CI: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
       - name: Set version Tag for Quest-Tutorials submodule
         if: "env.VERSION_TYPE == 'release'"
         run: |
@@ -378,6 +348,7 @@ jobs:
           cd docs/_tutorials/
           git tag "v$VERSION"
           git push origin "v$VERSION"
+
   create-release:
     name: Create GitHub Release
     if: "needs.prepare.outputs.VERSION_TYPE == 'release' && needs.deploy-artifacts.result == 'success' && needs.deploy-docs.result == 'success'"
@@ -393,7 +364,7 @@ jobs:
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Cache target/artifacts
         uses: actions/cache@v3
         with:
@@ -443,7 +414,7 @@ jobs:
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Publish to Discord
         if: "always() && !cancelled()"
         run: |

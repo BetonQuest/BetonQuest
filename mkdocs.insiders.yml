@@ -1,5 +1,0 @@
-INHERIT: mkdocs.yml
-plugins:
-  typeset: { }
-  optimize:
-    enabled: !ENV [ CI, false ]
