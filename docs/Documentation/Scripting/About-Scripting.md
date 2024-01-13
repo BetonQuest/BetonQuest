@@ -13,7 +13,7 @@ This is made possible by a powerful quest scripting language.
                A[Quest Starts] --> B[Spy on Rebels]
                B --> C[Inform King]
                C --> D[Quest Ends]
-               
+
              style D fill:#16a349,stroke:#16a349
         ```
     === "Explanation"
@@ -21,15 +21,15 @@ This is made possible by a powerful quest scripting language.
         There is no way to influence the outcome of the quest.
         
         The capabilities of the quest plugin cannot be used outside of these linear quests.
-    
+
 !!! example "Quest Structure with BetonQuest"
-    === "Rebel Quest"
-        ```mermaid
-           flowchart TD
-              A[Quest Starts] --> B[Spy on Rebels]
-              B--> C[Decision: Inform King]
-              B--> D[Decision: Betray King]
-              
+=== "Rebel Quest"
+```mermaid
+flowchart TD
+A[Quest Starts] --> B[Spy on Rebels]
+B--> C[Decision: Inform King]
+B--> D[Decision: Betray King]
+
               C --> E[King rewards you]
               
               D --> F[Hunt the King down]
@@ -70,6 +70,7 @@ This is made possible by a powerful quest scripting language.
 </div>
 
 ## Building Blocks
+
 The BetonQuest scripting language is based on a few basic building blocks which are outlined in the following sections.
 They can be freely combined to create any quest you want.
 All of these are defined using an _instruction text_.
@@ -84,7 +85,7 @@ objectives:
 ```
 
 1. Every building block is defined in its own section. In this case, the section's content is a condition.
-2. `myCondition` is the name of this condition. The instruction text is `health 10`. 
+2. `myCondition` is the name of this condition. The instruction text is `health 10`.
    This is a condition which checks if the player has 10 health.
 
 ### Events
@@ -92,11 +93,10 @@ objectives:
 In certain moments you will want something to happen. Updating the journal, setting tags, giving rewards, all these are
 done using events. You define them by specifying a name and instruction string like shown above.
 At the end of the instruction string you can add the `conditions:` (with or without `s` at the end)
-attribute followed by a list of condition names separated by commas, 
+attribute followed by a list of condition names separated by commas,
 like `conditions:angry,!quest_started`. This will make an event fire only when these conditions are met.
 
 [Explore all Events](./Building-Blocks/Events-List.md){ .md-button }
-
 
 ### Objectives
 
@@ -111,10 +111,12 @@ will enable collecting a reward from an NPC). You define these like that: `condi
 at the end of instruction text. Separate them
 by commas and never use spaces! You can also use the singular forms of these arguments: `condition:` and `event:`.
 
-If you want to start an objective right after it was completed you can add the `persistent` argument at the end of its instruction string.
+If you want to start an objective right after it was completed you can add the `persistent` argument at the end of its
+instruction string.
 For example, you could create a custom respawn system with a `die` objective. When the player dies, they will be
 teleported to the spawnpoint and the `die` objective will be started again.
-The `perstistent` argument prevents the objective from being completed, although it will run all its events. To cancel such
+The `persistent` argument prevents the objective from being completed, although it will run all its events. To cancel
+such
 an objective you need to use `objective delete` event.
 
 ```YAML title="Example"
@@ -127,13 +129,16 @@ objectives:
 
 If you want an objective to be active for every player right after joining, you can create a global objective.
 This is done by adding `global` argument to the instruction of the objective.
-When you then reload BetonQuest it is started for all online players and also will be started for every player who joins.
+When you then reload BetonQuest it is started for all online players and also will be started for every player who
+joins.
 
 Possible use cases would be a quest which starts if a player reaches a specific location or breaks a specific block.
 
-To prevent the objective from being started every time a player joins, a tag is set for the player whenever the objective
+To prevent the objective from being started every time a player joins, a tag is set for the player whenever the
+objective
 is started. With this tag, the objective will not be started again.  
-These tags follow the syntax `<package>.global-<id>`, where `<id>` is the objectives id and `<package>` the package where
+These tags follow the syntax `<package>.global-<id>`, where `<id>` is the objectives id and `<package>` the package
+where
 the objective is located.
 
 ```YAML title="Example"
@@ -144,13 +149,15 @@ objectives:
 #### Variables
 
 !!! warning "Use with caution!"
-    The updating behaviour of already started objectives might change in BetonQuest 3. Perhaps variable changes will be 
-    reflected in the amount of an active objective. This is not the case right now.
+The updating behaviour of already started objectives might change in BetonQuest 3. Perhaps variable changes will be
+reflected in the amount of an active objective. This is not the case right now.
 
 Objectives support variables for their amount options.
-When the objective is started for a player, the amount is set to the variable's current value. The amount of an active objective will
+When the objective is started for a player, the amount is set to the variable's current value. The amount of an active
+objective will
 not be updated if the variable changes.
-Also, when the variable contains an invalid value for the given objective (e.g. a negative value) a default value of `1` is used.
+Also, when the variable contains an invalid value for the given objective (e.g. a negative value) a default value of `1`
+is used.
 
 ```YAML title="Examples"
 objectives:
@@ -161,12 +168,13 @@ objectives:
 
 [Explore all Objectives](./Building-Blocks/Objectives-List.md){ .md-button }
 
-
 ### Conditions
-Conditions allow you to control what options are available to players in conversations, how the NPC responds or if the objective
+
+Conditions allow you to control what options are available to players in conversations, how the NPC responds or if the
+objective
 will be completed. They check if a given in-game state is present and return `true` or `false` as a result.
 
-You can negate the condition (revert its output) by adding an exclamation mark (`!`) at the beginning of its name. 
+You can negate the condition (revert its output) by adding an exclamation mark (`!`) at the beginning of its name.
 This only works in the place where conditions are used, i.e. in conversations, not in the _conditions_ section).
 If you do so, make sure to enclose the condition in quotes, otherwise YAML will give you a syntax error.
 ```YAML title="Example"
@@ -180,18 +188,22 @@ events:
 
 ## Tags
 
-Tags are little pieces of text you can assign to player. They are particularly useful to 
-determine if player has started or completed quest. They are given with [`tag` event](./Building-Blocks/Events-List.md#point-point) and checked with
+Tags are little pieces of text you can assign to player. They are particularly useful to
+determine if player has started or completed quest. They are given
+with [`tag` event](./Building-Blocks/Events-List.md#point-point) and checked with
 [`tag` condition](./Building-Blocks/Conditions-List.md#tag-tag).
 All tags are bound to a package, so if you add the `questCompleted` tag from within a package named `monsterQuest`,
 the tag will look like `monsterQuest.questCompleted`.
- 
-Read [working across packages](./Packages-&-Templates.md#working-across-packages) to learn how to work with tags across packages.
+
+Read [working across packages](./Packages-&-Templates.md#working-across-packages) to learn how to work with tags across
+packages.
 
 ## Points
 
-Points are numbers that can be assigned to a player. You can set them with the [`point` event](./Building-Blocks/Events-List.md#point-point).
-you want. You can also take the points away, even to negative numbers. 
-Of course then you can check if player has (or doesn't have) certain amount with the [`point` condition](./Building-Blocks/Conditions-List.md#point-point). 
-They can be used as counter for specific number of quest done, as a reputation system in villages or even an NPC's 
+Points are numbers that can be assigned to a player. You can set them with
+the [`point` event](./Building-Blocks/Events-List.md#point-point).
+you want. You can also take the points away, even to negative numbers.
+Of course then you can check if player has (or doesn't have) certain amount with
+the [`point` condition](./Building-Blocks/Conditions-List.md#point-point).
+They can be used as counter for specific number of quest done, as a reputation system in villages or even an NPC's
 attitude to player.
