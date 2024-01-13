@@ -21,6 +21,7 @@ jobs:
       - uses: ./.github/actions/version
         with:
           ROOT_REPOSITORY: BetonQuest/BetonQuest
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Save version to output variable
         id: version
         run: |
