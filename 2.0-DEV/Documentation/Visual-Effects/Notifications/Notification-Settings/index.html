@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../../_media/brand/Icon/Icon32.ico">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.2+insiders-4.47.1">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3+insiders-4.49.2">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.78d85e4f.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.67c3bdf0.min.css">
       
         
         <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -4200,6 +4200,7 @@
                 
                   
 
+
   
     <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/Documentation/Visual-Effects/Notifications/Notification-Settings.md" title="Edit this page" class="md-content__button md-icon">
       
@@ -4228,12 +4229,12 @@ to sending a notice about a new changelog to an admin.</p>
 <p>For example:  <br />
 When BetonQuest fails to add a quest item to a player's inventory it will send <code>&amp;e*&amp;bYour inventory is full!&amp;e*</code>.  <br />
 This message is defined in <em>messages.yml</em> along with other default plugin messages. You can redefine them to your liking.</p>
-<p>The Notify System can do much more than just changing messages though:</p>
+<p>The Notify System can do much more than just changing messages, though:</p>
 <p>All notifications will be displayed using the ChatIO and without a sound by default. You need to use
 <a href="../Notification-IO%27s-%26-Categories/#categories">notification categories</a> to change this behaviour.
 These categories are pretty much just pre-defined <a href="../Notification-IO%27s-%26-Categories/#notify-ios">NotifyIO settings</a>.  <br />
 Each notification in <em>messages.yml</em> has a special category with a reserved name assigned to it.</p>
-<p>For example: If you would like to have the "language_changed" notification displayed as an actionbar message you define the following:</p>
+<p>For example, If you would like to have the "language_changed" notification displayed as an actionbar message, you define the following:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">notifications</span><span class="p">:</span><span class="w">        </span><span class="c1">#General header for all notification settings</span>
 <span class="w">  </span><span class="nt">language_changed</span><span class="p">:</span><span class="w">   </span><span class="c1">#Name of the category, same as in messages.yml</span>
 <span class="w">    </span><span class="nt">io</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actionbar</span><span class="w">     </span><span class="c1">#Setting the Notify IO to &quot;actionbar&quot;</span>

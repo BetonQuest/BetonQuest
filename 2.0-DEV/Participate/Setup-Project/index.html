@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../_media/brand/Icon/Icon32.ico">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.2+insiders-4.47.1">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3+insiders-4.49.2">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.78d85e4f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.67c3bdf0.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -4565,6 +4565,7 @@
                 
                   
 
+
   
     <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/Participate/Setup-Project.md" title="Edit this page" class="md-content__button md-icon">
       
@@ -4695,15 +4696,15 @@ and added to the PATH environment variable. The Python installer allows you to d
 "Add Python to environment variables".</p>
 <p>You also need to install <a href="https://www.gtk.org/">GTK</a>, the easiest way is to use this 
 <a href="https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer/">GTK installer</a> if you are on Windows. </p>
-<p>Install all other dependencies by entering <code>pip install -r config/docs-requirements.txt</code> in the terminal on the project's root directory.</p>
 <details>
 <summary>In case you are a <a href="https://squidfunk.github.io/mkdocs-material">Material for MkDocs</a> insider (paid premium version)</summary>
-<p>Set your license key by executing <code>setx MKDOCS_MATERIAL_INSIDERS LICENSE_KEY_HERE /M</code> (Windows) in the terminal.
-You must also install the <a href="https://squidfunk.github.io/mkdocs-material/setup/dependencies/image-processing/#pngquant">additional pngquant dependency</a>.
-Now you need to restart IntelliJ for the changes to take effect. 
-Then run <code>pip install -r config/docs-requirements-insiders.txt</code> instead of <code>docs-requirements.txt</code>.
-Run <code>mkdocs serve --config-file mkdocs.insiders.yml</code> to preview the docs.</p>
+<p>You need to set two environment variables to be able to build the docs with MkDocs Material insiders.  </p>
+<p>Set <code>MKDOCS_MATERIAL_INSIDERS</code> to your license key to be able to install the indiders version.</p>
+<p>When you want to see the insiders version on serve, you need to set <code>MKDOCS_MATERIAL_INSIDERS_ENABLED</code> to <code>true</code>.</p>
+<p>Under Windows you can set environment variables with <code>setx VARIABLE_NAME VALUE /M</code> in the terminal.
+Now you need to restart IntelliJ for the changes to take effect. </p>
 </details>
+<p>Install all other dependencies by entering <code>python config/setup-docs-dependencies.py</code> in the terminal on the project's root directory.</p>
 <h3 id="see-your-changes-live">See your changes live<a class="headerlink" href="#see-your-changes-live" title="Permanent link">🔗</a></h3>
 <p>Run this command in IntelliJ's integrated terminal (at the bottom) to create a docs preview in your browser:</p>
 <div class="highlight"><pre><span></span><code>mkdocs<span class="w"> </span>serve

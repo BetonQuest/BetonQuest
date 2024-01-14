@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../../_media/brand/Icon/Icon32.ico">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.2+insiders-4.47.1">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3+insiders-4.49.2">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.78d85e4f.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.67c3bdf0.min.css">
       
         
         <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -6820,6 +6820,7 @@
                 
                   
 
+
   
     <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/Documentation/Scripting/Building-Blocks/Events-List.md" title="Edit this page" class="md-content__button md-icon">
       
@@ -7159,7 +7160,10 @@ the 100<sup>th</sup> player who does the quest.</p>
 </code></pre></div>
 </div>
 <h2 id="hunger-hunger">Hunger: <code>hunger</code><a class="headerlink" href="#hunger-hunger" title="Permanent link">🔗</a></h2>
-<p>This event changes the food level of the player. The second argument is the modification type. There are <code>give</code>, <code>take</code> and <code>set</code>. The second argument is the amount. With <code>set</code> can the food level be anything. If <code>give</code> or <code>take</code> is specified and the final amount won't be more than 20 or less than 0. If the hunger level is below 7, the player cannot sprint.</p>
+<p>This event changes the food level of the player. The second argument is the modification type.
+There are <code>give</code>, <code>take</code> and <code>set</code>. The second argument is the amount. With <code>set</code> can the food level be anything.
+If <code>give</code> or <code>take</code> is specified the final amount won't be more than 20 or less than 0.
+If the hunger level is below 7, the player cannot sprint.</p>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">hunger set 20</span>
@@ -7710,12 +7714,14 @@ Validate it on the NPC’s reaction!</p>
 noon and 23 is 11 PM. For minutes, you can use floating point numbers, so 0.5 is half past midnight, 0.25 is quarter 
 past midnight and so on. (0.1 hours is 6 minutes). It's possible to add or subtract time by using <code>+</code> or <code>-</code> prefix or 
 to set the time by setting no prefix.
-Additionally, you can specify the world in which the time will be changed, by adding <code>world:</code>. </p>
+Additionally, you can specify the world in which the time will be changed, by adding <code>world:</code>.
+Using the <code>ticks</code> argument changes the time like the vanilla command.</p>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">time 6</span>
 <span class="l l-Scalar l-Scalar-Plain">time +0.1</span>
 <span class="l l-Scalar l-Scalar-Plain">time -12 world:rpgworld</span>
+<span class="l l-Scalar l-Scalar-Plain">time +%randomnumber.whole.100~2000% world:pvpworld ticks</span>
 </code></pre></div>
 </div>
 <h2 id="teleport-teleport"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M208 96a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm-84.3 104.5c1-.4 1.9-.8 2.9-1.2l-16.9 63.5c-5.6 21.1-.1 43.6 14.7 59.7l70.7 77.1 22 88.1c4.3 17.1 21.7 27.6 38.8 23.3s27.6-21.7 23.3-38.8l-23-92.1c-1.9-7.8-5.8-14.9-11.2-20.8l-49.5-54 19.3-65.5 9.6 23c4.4 10.6 12.5 19.3 22.8 24.5l26.7 13.3c15.8 7.9 35 1.5 42.9-14.3s1.5-35-14.3-42.9L281 232.7l-15.3-36.8c-17.2-41.1-57.4-67.9-102-67.9-22.8 0-45.3 4.8-66.1 14l-8 3.5c-32.9 14.6-58.1 42.4-69.4 76.5l-2.6 7.8c-5.6 16.8 3.5 34.9 20.2 40.5s34.9-3.5 40.5-20.2l2.6-7.8c5.7-17.1 18.3-30.9 34.7-38.2l8-3.5zm-30 135.1-25 62.4-59.3 59.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l61.6-61.7c4.6-4.6 8.2-10.1 10.6-16.1l14.5-36.2-40.7-44.4c-2.5-2.7-4.8-5.6-7-8.6zm456.9-182.2c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l25.4 25.3H384c-17.7 0-32 14.3-32 32s14.3 32 32 32h146.7l-25.4 25.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l80-80c12.5-12.5 12.5-32.8 0-45.3l-80-80zM392 0c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24s24-10.7 24-24V24c0-13.3-10.7-24-24-24zm24 152c0-13.3-10.7-24-24-24s-24 10.7-24 24v16c0 13.3 10.7 24 24 24s24-10.7 24-24v-16zm-24 168c-13.3 0-24 10.7-24 24v16c0 13.3 10.7 24 24 24s24-10.7 24-24v-16c0-13.3-10.7-24-24-24zm24 120c0-13.3-10.7-24-24-24s-24 10.7-24 24v48c0 13.3 10.7 24 24 24s24-10.7 24-24v-48z"/></svg></span> Teleport: <code>teleport</code><a class="headerlink" href="#teleport-teleport" title="Permanent link">🔗</a></h2>
@@ -7809,7 +7815,8 @@ Example: The positive x-axis will always point left from the perspective of the 
 <h2 id="weather-weather"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M294.2 1.2c5.1 2.1 8.7 6.7 9.6 12.1l10.4 62.4c-23.3 10.8-42.9 28.4-56 50.3-14.6-9-31.8-14.1-50.2-14.1-53 0-96 43-96 96 0 35.5 19.3 66.6 48 83.2.8 31.8 13.2 60.7 33.1 82.7l-56 39.2c-4.5 3.2-10.3 3.8-15.4 1.6s-8.7-6.7-9.6-12.1l-14-84.6-84.7-14.1c-5.4-.9-10-4.5-12.1-9.6s-1.5-10.9 1.6-15.4L52.5 208 2.9 137.2c-3.2-4.5-3.8-10.3-1.6-15.4s6.7-8.7 12.1-9.6l84.7-14.1 14.1-84.7c.9-5.4 4.5-10 9.6-12.1s10.9-1.5 15.4 1.6L208 52.5l70.8-49.6c4.5-3.2 10.3-3.8 15.4-1.6zM208 144c13.8 0 26.7 4.4 37.1 11.9-1.2 4.1-2.2 8.3-3 12.6-37.9 14.6-67.2 46.6-77.8 86.4-12.5-11.8-20.3-28.4-20.3-46.9 0-35.3 28.7-64 64-64zm69.4 276c11 7.4 14 22.3 6.7 33.3l-32 48c-7.4 11-22.3 14-33.3 6.7s-14-22.3-6.7-33.3l32-48c7.4-11 22.3-14 33.3-6.7zm96 0c11 7.4 14 22.3 6.7 33.3l-32 48c-7.4 11-22.3 14-33.3 6.7s-14-22.3-6.7-33.3l32-48c7.4-11 22.3-14 33.3-6.7zm96 0c11 7.4 14 22.3 6.7 33.3l-32 48c-7.4 11-22.3 14-33.3 6.7s-14-22.3-6.7-33.3l32-48c7.4-11 22.3-14 33.3-6.7zm96 0c11 7.4 14 22.3 6.7 33.3l-32 48c-7.4 11-22.3 14-33.3 6.7s-14-22.3-6.7-33.3l32-48c7.4-11 22.3-14 33.3-6.7zm74.5-116.1c0 44.2-35.8 80-80 80H288c-53 0-96-43-96-96 0-47.6 34.6-87 80-94.6V192c0-53 43-96 96-96 34.9 0 65.4 18.6 82.2 46.4 13-9.1 28.8-14.4 45.8-14.4 44.2 0 80 35.8 80 80 0 5.9-.6 11.7-1.9 17.2 37.4 6.7 65.8 39.4 65.8 78.7z"/></svg></span> Weather: <code>weather</code><a class="headerlink" href="#weather-weather" title="Permanent link">🔗</a></h2>
 <p><strong>persistent</strong>, <strong>static</strong>  </p>
 <p>Sets the weather in the world the player is currently in. The argument is <code>sun</code> for clear, sunny weather, <code>rain</code> for pure rain,
-<code>storm</code> for storm with rain, lightning and thunder or <code>thunder</code> for just lighting and thunder with no rain.</p>
+<code>storm</code> for storm with rain, lightning and thunder.
+Durations less than 1 is equal to no duration.</p>
 <table>
 <thead>
 <tr>
