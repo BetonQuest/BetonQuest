@@ -363,7 +363,10 @@ Works the same way as a normal tag event, but instead of setting a tag for one p
 
 ## Hunger: `hunger`
 
-This event changes the food level of the player. The second argument is the modification type. There are `give`, `take` and `set`. The second argument is the amount. With `set` can the food level be anything. If `give` or `take` is specified and the final amount won't be more than 20 or less than 0. If the hunger level is below 7, the player cannot sprint.
+This event changes the food level of the player. The second argument is the modification type.
+There are `give`, `take` and `set`. The second argument is the amount. With `set` can the food level be anything.
+If `give` or `take` is specified the final amount won't be more than 20 or less than 0.
+If the hunger level is below 7, the player cannot sprint.
 
 !!! example
     ```YAML
@@ -786,13 +789,15 @@ Changes the time of the world. The time is represented in 24 hours format as a f
 noon and 23 is 11 PM. For minutes, you can use floating point numbers, so 0.5 is half past midnight, 0.25 is quarter 
 past midnight and so on. (0.1 hours is 6 minutes). It's possible to add or subtract time by using `+` or `-` prefix or 
 to set the time by setting no prefix.
-Additionally, you can specify the world in which the time will be changed, by adding `world:`. 
+Additionally, you can specify the world in which the time will be changed, by adding `world:`.
+Using the `ticks` argument changes the time like the vanilla command.
 
 !!! example
     ```YAML
     time 6
     time +0.1
     time -12 world:rpgworld
+    time +%randomnumber.whole.100~2000% world:pvpworld ticks
     ```
 
 ## :fontawesome-solid-person-walking-dashed-line-arrow-right: Teleport: `teleport`

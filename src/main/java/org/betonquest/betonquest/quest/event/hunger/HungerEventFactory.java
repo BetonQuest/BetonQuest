@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.hunger;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -56,7 +57,7 @@ public class HungerEventFactory implements EventFactory {
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         try {
             final Hunger hunger = Hunger.valueOf(instruction.next().toUpperCase(Locale.ROOT).trim());
-            final int amount = instruction.getInt();
+            final VariableNumber amount = instruction.getVarNum();
             return new PrimaryServerThreadEvent(
                     new OnlineProfileRequiredEvent(
                             loggerFactory.create(HungerEventFactory.class), new HungerEvent(hunger, amount), instruction.getPackage()
