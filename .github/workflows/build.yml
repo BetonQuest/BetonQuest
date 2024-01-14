@@ -107,32 +107,14 @@ jobs:
           MKDOCS_SITE_DIR: 'target/docs'
           PYTHON_CACHE: 'pip'
           PYTHON_CACHE_DEPENDENCY_PATH: 'config/setup-docs-dependencies.py'
-      - name: Set CHANGELOG.md version
-        run: |
-          sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
-          DATE="$(date +%Y-%m-%d)"
-          sed -i "s~\${maven\.build\.timestamp}~$DATE~g" ./CHANGELOG.md
-          echo "$(cat ./CHANGELOG.md)" >> './docs/Documentation/CHANGELOG.md'
-      - name: Set API/Overview.md version
-        run: |
-          sed -i "s~\${betonquest\.version}~${VERSION_MAVEN}~g" ./docs/API/Overview.md
-      - name: Set ref in download commands
-        if: "env.VERSION_TYPE == 'release' || env.VERSION_TYPE == 'development'"
-        run: |
-          if [ $VERSION_TYPE == 'release' ]; then REFERENCE="${{ github.ref }}"; else REFERENCE="$(cd docs/_tutorials/ && git rev-parse HEAD)"; fi
-          find docs/ -type f -exec sed -i "s#/bq download BetonQuest/Quest-Tutorials \${ref} QuestPackages #/bq download BetonQuest/Quest-Tutorials ${REFERENCE} QuestPackages #" {} +
-      - name: Set user feedback form version in mkdocs.yml
-        run: |
-          sed -i "s~%VERSION%~${VERSION}~g" ./mkdocs.yml
-      - name: Set secret in downloads.js script
-        run: |
-          sed -i "s~\${REPOSITORY_URL}~$REPOSITORY_URL~g" ./docs/_webCode/js/downloads.js
-        env:
+      - uses: ./.github/actions/replace-docs-variables
+        with:
+          VERSION: ${{ env.VERSION }}
+          VERSION_TYPE: ${{ env.VERSION_TYPE }}
+          VERSION_MAVEN: ${{ env.VERSION_MAVEN }}
           REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
       - name: Build with mkdocs
         run: |
-          # We need an extra variable here because if we were to use the insider variable, every local build would involve the image optimization plugin.
-          if [ -z $MKDOCS_MATERIAL_INSIDERS ]; then export BQ_CI=true; fi
           mkdocs build 
           git diff > target/docs/changes.patch
         env:
