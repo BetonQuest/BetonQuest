@@ -3,6 +3,7 @@
     <option name="DO_NOT_FORMAT">
       <list>
         <fileSet type="globPattern" pattern="CHANGELOG.md" />
+        <fileSet type="globPattern" pattern="docs/**.md" />
       </list>
     </option>
     <JSCodeStyleSettings version="0">
