@@ -1,6 +1,7 @@
 package org.betonquest.betonquest;
 
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.OnlineQuestEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
@@ -69,6 +70,11 @@ public class JoinQuitListener implements Listener {
         }
         playerData.startObjectives();
         GlobalObjectives.startAll(onlineProfile);
+        BetonQuest.getEvents().forEach((e) -> {
+            if (e instanceof final OnlineQuestEvent onlineQuestEvent) {
+                onlineQuestEvent.onPlayerOnline(event);
+            }
+        });
         // display changelog message to the admins
         if (event.getPlayer().hasPermission("betonquest.admin")) {
             BetonQuest.getInstance().getUpdater().sendUpdateNotification(event.getPlayer());

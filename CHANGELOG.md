@@ -14,6 +14,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [2.0.0] - 2023-12-31
 ### Added
+- `ensureExecution` mode for `folder` event
 - Logging
     - Ingame logging
         - Logging during `/q reload`

@@ -256,21 +256,20 @@ Beware though, all conditions are false when the player is offline (even inverte
 so those events should not be blocked by any conditions!  
 You can use the `cancelOnLogout` argument to stop the folder executing any remaining events if the player disconnects.
 
-
-| Parameter        | Syntax            | Default Value          | Explanation                                                                                     |
-|------------------|-------------------|------------------------|-------------------------------------------------------------------------------------------------|
-| _events to run_  | eventName1,event2 | :octicons-x-circle-16: | One or multiple events to run. Contains event names seperated by commas.                        |
-| _delay_          | Keyword           | without delay          | The delay before the folder starts executing it's events.                                       |
-| _period_         | period:number     | without delay          | The time between each event of the folder.                                                      |
-| _time unit_      | Keyword           | Seconds                | The unit of time to use for delay and period. Either `ticks` or `minutes`. Omit to use seconds. |
-| _random_         | random:number     | Disabled               | Enables "random mode". Will randomly pick the defined amount of events .                        |
-| _cancelOnLogout_ | Keyword           | Disabled               | If enabled, the folder will stop executing events if the player disconnects.                    |
+| Parameter       | Syntax            | Default Value          | Explanation                                                                                                                                                                                                                                                       |
+|-----------------|-------------------|------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| _events to run_ | eventName1,event2 | :octicons-x-circle-16: | One or multiple events to run. Contains event names seperated by commas.                                                                                                                                                                                          |
+| _delay_         | Keyword           | without delay          | The delay before the folder starts executing it's events.                                                                                                                                                                                                         |
+| _period_        | period:number     | without delay          | The time between each event of the folder.                                                                                                                                                                                                                        |
+| _time unit_     | Keyword           | Seconds                | The unit of time to use for delay and period. Either `ticks` or `minutes`. Omit to use seconds.                                                                                                                                                                   |
+| _random_        | random:number     | Disabled               | Enables "random mode". Will randomly pick the defined amount of events .                                                                                                                                                                                          |
+| _executionMode_ | Keyword           | `default`              | There are three modes available: `default`, `cancelOnLogout` and `ensureExecution`. The `ensureExecution` can make sure every single event is executed with the player online. The `cancelOnLogout` will cancel the execution immediately after the player quits. |
 
 
 ```YAML title="Examples" 
 events:
   simpleFolder: "folder event1,event2,event3" # (1)!
-  runEvents: "folder event1,event2,event3 delay:5 period:1" # (2)!
+  runEvents: "folder event1,event2,event3 delay:5 period:1 executionMode:ensureExecution" # (2)!
   troll: "folder killPlayer,banPlayer,kickPlayer delay:5 random:1" # (3)!
   wait: "folder messagePlayer,giveReward delay:1 minutes" # (4)!
 ```
