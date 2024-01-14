@@ -59,9 +59,9 @@ public class TimeEventFactory implements EventFactory, StaticEventFactory {
         final Time time = parseTimeType(timeString);
         final VariableNumber rawTime = parseTime(instruction.getPackage(), timeString, time != Time.SET);
         final Selector<World> worldSelector = parseWorld(instruction.getOptional("world"));
-        final boolean inTicks = instruction.hasArgument("ticks");
+        final boolean hourFormat = !instruction.hasArgument("ticks");
         return new PrimaryServerThreadEvent(
-                new TimeEvent(time, rawTime, worldSelector, !inTicks),
+                new TimeEvent(time, rawTime, worldSelector, hourFormat),
                 server, scheduler, plugin);
     }
 
