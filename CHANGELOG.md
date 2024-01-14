@@ -12,6 +12,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Deprecated
 ### Removed
 ### Fixed
+- `weather` event did not use `duration`
 ### Security
 
 ## [2.0.0] - 2023-12-31
