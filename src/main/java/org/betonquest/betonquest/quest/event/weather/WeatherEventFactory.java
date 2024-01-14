@@ -67,8 +67,7 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final Weather weather = parseWeather(instruction.next());
         final Selector<World> worldSelector = parseWorld(instruction.getOptional("world"));
-        final String durationString = instruction.getOptional("duration", "0");
-        final VariableNumber duration = instruction.getVarNum(durationString);
+        final VariableNumber duration = instruction.getVarNum(instruction.getOptional("duration", "0"));
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
                         loggerFactory.create(WeatherEvent.class), new WeatherEvent(weather, worldSelector, duration), instruction.getPackage()),
