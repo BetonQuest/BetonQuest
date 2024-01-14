@@ -114,7 +114,7 @@ by commas and never use spaces! You can also use the singular forms of these arg
 If you want to start an objective right after it was completed you can add the `persistent` argument at the end of its instruction string.
 For example, you could create a custom respawn system with a `die` objective. When the player dies, they will be
 teleported to the spawnpoint and the `die` objective will be started again.
-The `perstistent` argument prevents the objective from being completed, although it will run all its events. To cancel such
+The `persistent` argument prevents the objective from being completed, although it will run all its events. To cancel such
 an objective you need to use `objective delete` event.
 
 ```YAML title="Example"
