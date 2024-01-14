@@ -32,7 +32,7 @@ public class WeatherEvent implements Event {
      *
      * @param weather       the weather to set
      * @param worldSelector to get the world that should be affected
-     * @param duration      how long the weather will not change - values <= 0 won't set a duration
+     * @param duration      how long the weather will not change - values &lt;= 0 won't set a duration
      */
     public WeatherEvent(final Weather weather, final Selector<World> worldSelector, final VariableNumber duration) {
         this.weather = weather;

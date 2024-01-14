@@ -40,7 +40,7 @@ public enum Weather {
      * Apply the weather to the given world.
      *
      * @param world    world to change the weather in
-     * @param duration how long the weather will remain - values <= 0 won't set a duration
+     * @param duration how long the weather will remain - values &lt;= 0 won't set a duration
      */
     public void applyTo(final World world, final int duration) {
         world.setStorm(storm);
