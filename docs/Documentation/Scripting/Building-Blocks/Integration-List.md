@@ -628,7 +628,7 @@ mmostat DAMAGE_REDUCTION 3
 
 #### Break Special Blocks: `mmocorebreakblock`
 This objective requires the player to break 
-[special blocks from MMOCore](https://gitlab.com/phoenix-dvpmt/mmocore/-/wikis/Mining%20and%20Block%20Regen).
+[special blocks from MMOCore](https://gitlab.com/phoenix-dvpmt/mmocore/-/wikis/Mining%20and%20Block%20Regen). Please note that you *must* use this objective over `block` if you are using MMOCore's custom mining system.
 All three different block types and an amount can be defined. You can also send notifications to the player by appending
 the `notify` keyword optionally with the notification interval after a colon.
 
