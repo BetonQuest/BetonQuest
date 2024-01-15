@@ -265,9 +265,9 @@ public class FolderEvent extends OnlineQuestEvent {
     private Integer getNextEvent(@NotNull final Profile profile) {
         final var fullId = getFullId();
         for (final String tag : BetonQuest.getInstance().getPlayerData(profile).getTags()) {
-            if (tag.startsWith(fullId)) {
+            if (tag.startsWith(fullId + "#")) {
                 final var eventMark = tag.substring(fullId.length());
-                if (eventMark.contains("#") && eventMark.contains("ensuredata")) {
+                if (eventMark.charAt(0) == '#' && eventMark.contains("#ensuredata")) {
                     final var data = Arrays.stream(eventMark.split("#")).filter((it) -> !it.isBlank())
                             .toList();
                     final var index = Integer.parseInt(data.get(0));
