@@ -15,6 +15,11 @@ inputs:
     description: |
       The password to use for the repository.
     required: true
+  ALLOW_HTTP:
+    description: |
+      Whether to allow http connections for repositories.
+    required: false
+    default: "false"
 
 runs:
   using: composite
@@ -31,7 +36,7 @@ runs:
               "configuration": {
                 "httpConfiguration": {
                   "all": {
-                    "usePreemptive": "true"
+                    "usePreemptive": "${inputs.ALLOW_HTTP}"
                   }
                 }
               }
