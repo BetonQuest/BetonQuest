@@ -1,0 +1,116 @@
+name: Setup version context
+description: |
+  Setup the version context with a bunch of environment variables based on maven.
+
+inputs:
+  ROOT_REPOSITORY:
+    description: |
+      The root repository name.
+    required: true
+  GITHUB_TOKEN:
+    description: |
+      The GitHub token to use for creating the build-number tag.
+    required: true
+
+outputs:
+  VERSION:
+    description: |
+      The version of the build.
+    value: ${{ steps.save_version.outputs.version }}
+  VERSION_TYPE:
+    description: |
+      The type of the build.
+    value: ${{ steps.save_version_type.outputs.version_type }}
+  VERSION_MAVEN:
+    description: |
+      The version of the build in maven format.
+    value: ${{ steps.save_version_maven.outputs.version_maven }}
+  VERSION_PREVIOUS_TAG:
+    description: |
+      The previous build-number tag from Development Build.
+    value: ${{ steps.save_tag.outputs.version_previous_tag }}
+  VERSION_CHANGES_IN_DOCS_ONLY:
+    description: |
+      Whether the changes are only in the docs folder.
+    value: ${{ steps.save_changes.outputs.version_changes_in_docs_only }}
+
+runs:
+  using: composite
+  steps:
+    - name: Validate that a fork does not create a version tag
+      if: "github.repository != inputs.ROOT_REPOSITORY && startsWith(github.ref,'refs/tags/v')"
+      run: |
+        echo "Version tags are not supported in forks!"
+        exit 1
+      shell: bash
+    - name: Read revision version from pom.xml
+      run: |
+        MAVEN_POM_REVISION_VERSION="$(mvn help:evaluate -Dexpression=revision -q -DforceStdout)"
+        echo "MAVEN_POM_REVISION_VERSION=$MAVEN_POM_REVISION_VERSION" >> $GITHUB_ENV
+      shell: bash
+    - name: Get the previous build-number tag from Development Build
+      id: save_tag
+      if: "github.repository == inputs.ROOT_REPOSITORY && ( github.ref == 'refs/heads/main' || startsWith(github.ref,'refs/heads/main_v') || startsWith(github.ref,'refs/tags/v') )"
+      run: |
+        VERSION_PREVIOUS_TAG="$(git tag -l ${MAVEN_POM_REVISION_VERSION}-build-number-* | head -n 1)"
+        echo "VERSION_PREVIOUS_TAG=$VERSION_PREVIOUS_TAG" >> $GITHUB_ENV
+        echo "version_previous_tag=$VERSION_PREVIOUS_TAG" >> $GITHUB_OUTPUT
+      shell: bash
+    - name: Check for difference in docs only
+      id: save_changes
+      if: "github.repository == inputs.ROOT_REPOSITORY && ( github.ref == 'refs/heads/main' || startsWith(github.ref,'refs/heads/main_v') )"
+      run: |
+        DIFF_OUTSIDE="$(git diff --quiet ${VERSION_PREVIOUS_TAG} -- . ':(exclude)docs/' && echo false || echo true)"
+        DIFF_INSIDE="$(git diff --quiet ${VERSION_PREVIOUS_TAG} -- docs/ && echo false || echo true)"
+        if [[ $DIFF_OUTSIDE == false && $DIFF_INSIDE == true ]]; then VERSION_CHANGES_IN_DOCS_ONLY=true; else VERSION_CHANGES_IN_DOCS_ONLY=false; fi
+        echo "VERSION_CHANGES_IN_DOCS_ONLY=$VERSION_CHANGES_IN_DOCS_ONLY" >> $GITHUB_ENV
+        echo "version_changes_in_docs_only=$VERSION_CHANGES_IN_DOCS_ONLY" >> $GITHUB_OUTPUT
+      shell: bash
+    - name: Generate build number for Development Build
+      if: "github.repository == inputs.ROOT_REPOSITORY && ( github.ref == 'refs/heads/main' || startsWith(github.ref,'refs/heads/main_v') ) && env.VERSION_CHANGES_IN_DOCS_ONLY == 'false'"
+      uses: onyxmueller/build-tag-number@v1
+      with:
+        token: ${{ inputs.GITHUB_TOKEN }}
+        prefix: ${{ env.MAVEN_POM_REVISION_VERSION }}
+    - name: Set version for 'Release Build'
+      if: "startsWith(github.ref,'refs/tags/v')"
+      run: |
+        TAG_VERSION="${GITHUB_REF#*/*/}"
+        echo "Collected the tag version. The version is '$TAG_VERSION'"
+        if [ ${TAG_VERSION:1} != $MAVEN_POM_REVISION_VERSION ]; then echo "::error::The version of the tag and the version of the pom are not equal! Tag is '$TAG_VERSION' and pom is '$MAVEN_POM_REVISION_VERSION'."; exit 1; fi
+        echo "VERSION_MAVEN=$MAVEN_POM_REVISION_VERSION" >> $GITHUB_ENV
+        echo "VERSION=$MAVEN_POM_REVISION_VERSION" >> $GITHUB_ENV
+        echo "VERSION_TYPE=release" >> $GITHUB_ENV
+      shell: bash
+    - name: Set version for 'Development Build'
+      if: "github.repository == inputs.ROOT_REPOSITORY && ( github.ref == 'refs/heads/main' || startsWith(github.ref,'refs/heads/main_v') )"
+      run: |
+        echo "VERSION_MAVEN=${MAVEN_POM_REVISION_VERSION}-SNAPSHOT" >> $GITHUB_ENV
+        if [ $VERSION_CHANGES_IN_DOCS_ONLY == true ]; then VERSION=${VERSION_PREVIOUS_TAG/build-number/DEV}; else VERSION=${MAVEN_POM_REVISION_VERSION}-DEV-${BUILD_NUMBER}; fi
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "VERSION_TYPE=development" >> $GITHUB_ENV
+      shell: bash
+    - name: Set version for 'Artifact Build'
+      if: "github.repository != inputs.ROOT_REPOSITORY || !startsWith(github.ref,'refs/tags/v') && github.ref != 'refs/heads/main' && !startsWith(github.ref,'refs/heads/main_v')"
+      run: |
+        if [ ${{ github.repository }} != inputs.ROOT_REPOSITORY ]; then REPO=${{ github.repository }}-; fi
+        echo "VERSION_MAVEN=${MAVEN_POM_REVISION_VERSION}-DEV-UNOFFICIAL" >> $GITHUB_ENV
+        VERSION=${MAVEN_POM_REVISION_VERSION}-DEV-ARTIFACT-${REPO}${{ github.run_number }}
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "VERSION_TYPE=artifact" >> $GITHUB_ENV
+      shell: bash
+    - name: Save version to output variable
+      id: save_version
+      run: |
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+      shell: bash
+    - name: Save version type to output variable
+      id: save_version_type
+      run: |
+        echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
+      shell: bash
+    - name: Save version maven format to output variable
+      id: save_version_maven
+      run: |
+        echo "version_maven=$VERSION_MAVEN" >> $GITHUB_OUTPUT
+      shell: bash
