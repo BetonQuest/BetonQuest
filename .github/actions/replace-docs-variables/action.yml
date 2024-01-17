@@ -1,0 +1,59 @@
+name: Replace all variables in docs
+description: |
+  Replace all variables in docs
+
+inputs:
+  VERSION:
+    description: |
+      The current version
+  VERSION_TYPE:
+    description: |
+      The type of the build.
+    required: true
+  VERSION_MAVEN:
+    description: |
+      The version of the build in maven format.
+    required: true
+  REPOSITORY_URL:
+    description: |
+      The maven repository url.
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Set CHANGELOG.md version
+      run: |
+        sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
+        DATE="$(date +%Y-%m-%d)"
+        sed -i "s~\${maven\.build\.timestamp}~$DATE~g" ./CHANGELOG.md
+        echo "$(cat ./CHANGELOG.md)" >> './docs/Documentation/CHANGELOG.md'
+      shell: bash
+      env:
+        VERSION: ${{ inputs.VERSION }}
+    - name: Set API/Overview.md version
+      run: |
+        sed -i "s~\${betonquest\.version}~${VERSION_MAVEN}~g" ./docs/API/Overview.md
+      shell: bash
+      env:
+        VERSION_MAVEN: ${{ inputs.VERSION_MAVEN }}
+    - name: Set ref in download commands
+      if: "inputs.VERSION_TYPE == 'release' || inputs.VERSION_TYPE == 'development'"
+      run: |
+        if [ $VERSION_TYPE == 'release' ]; then REFERENCE="${{ github.ref }}"; else REFERENCE="$(cd docs/_tutorials/ && git rev-parse HEAD)"; fi
+        find docs/ -type f -exec sed -i "s#/bq download BetonQuest/Quest-Tutorials \${ref} QuestPackages #/bq download BetonQuest/Quest-Tutorials ${REFERENCE} QuestPackages #" {} +
+      shell: bash
+      env:
+        VERSION_TYPE: ${{ inputs.VERSION_TYPE }}
+    - name: Set user feedback form version in mkdocs.yml
+      run: |
+        sed -i "s~%VERSION%~${VERSION}~g" ./mkdocs.yml
+      shell: bash
+      env:
+        VERSION: ${{ inputs.VERSION }}
+    - name: Set secret in downloads.js script
+      run: |
+        sed -i "s~\${REPOSITORY_URL}~$REPOSITORY_URL~g" ./docs/_webCode/js/downloads.js
+      shell: bash
+      env:
+        REPOSITORY_URL: ${{ inputs.REPOSITORY_URL }}
