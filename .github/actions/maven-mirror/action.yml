@@ -1,0 +1,44 @@
+name: Configures maven mirror settings
+description: |
+  Creates a settings.xml file for maven and configures the maven mirror settings.
+
+inputs:
+  REPOSITORY_ID:
+    description: |
+      The id of the repository to mirror.
+    required: true
+  REPOSITORY_USER:
+    description: |
+      The username to use for the repository.
+    required: true
+  REPOSITORY_PASS:
+    description: |
+      The password to use for the repository.
+    required: true
+  ALLOW_HTTP:
+    description: |
+      Whether to allow http connections for repositories.
+    required: false
+    default: "false"
+
+runs:
+  using: composite
+  steps:
+    - name: Set mirror for all repositories in settings.xml
+      uses: whelk-io/maven-settings-xml-action@v21
+      with:
+        servers: |
+          [
+            {
+              "id": "${inputs.REPOSITORY_ID}",
+              "username": "${inputs.REPOSITORY_USER}",
+              "password": "${inputs.REPOSITORY_PASS}",
+              "configuration": {
+                "httpConfiguration": {
+                  "all": {
+                    "usePreemptive": "${inputs.ALLOW_HTTP}"
+                  }
+                }
+              }
+            }
+          ]
