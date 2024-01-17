@@ -201,6 +201,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `alternative` and `check` condition - now static
 - `open_events` in a menu are now called before the menu actually opens
 - `conversation` event now support a start option
+- `riding` condition - renamed to `ride`
+- `vehicle` objective - renamed to `ride`
 ### Deprecated
 ### Removed
 - deprecated internals, code and old features
