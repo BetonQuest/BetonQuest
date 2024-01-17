@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Handles the mmo_updates migration.
+ * Handles the ride migration.
  */
 public class RideUpdates implements Migration {
 
@@ -20,7 +20,7 @@ public class RideUpdates implements Migration {
     private final FileConfigurationProvider producer;
 
     /**
-     * Creates a new mmo_updates migrator.
+     * Creates a new ride migrator.
      *
      * @param provider The config provider
      */
@@ -42,7 +42,7 @@ public class RideUpdates implements Migration {
         }
     }
 
-    private static boolean replaceValue(final YamlConfiguration config, final String sectionName, final String valueStart) throws IOException {
+    private boolean replaceValue(final YamlConfiguration config, final String sectionName, final String valueStart) throws IOException {
         final ConfigurationSection section = config.getConfigurationSection(sectionName);
         if (section == null) {
             return false;
