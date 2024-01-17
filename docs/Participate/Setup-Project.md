@@ -113,9 +113,6 @@ Make sure [Python3](https://www.python.org/downloads/) is installed on your loca
 and added to the PATH environment variable. The Python installer allows you to do so with a checkbox called something like
 "Add Python to environment variables".
 
-You also need to install [GTK](https://www.gtk.org/), the easiest way is to use this 
-[GTK installer](https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer/) if you are on Windows. 
-
 ??? "In case you are a [Material for MkDocs](https://squidfunk.github.io/mkdocs-material) insider (paid premium version)"  
     You need to set two environment variables to be able to build the docs with MkDocs Material insiders.  
     
