@@ -162,24 +162,11 @@ jobs:
         run: |
           git apply target/artifacts/changes.patch
           rm target/artifacts/changes.patch
-      - name: Set mirror for all repositories in settings.xml
-        uses: whelk-io/maven-settings-xml-action@v21
+      - uses: ./.github/actions/maven-mirror
         with:
-          servers: |
-            [
-              {
-                "id": "betonquest",
-                "username": "${env.REPOSITORY_USER}",
-                "password": "${env.REPOSITORY_PASS}",
-                "configuration": {
-                  "httpConfiguration": {
-                    "all": {
-                      "usePreemptive": "true"
-                    }
-                  }
-                }
-              }
-            ]
+          REPOSITORY_ID: betonquest
+          REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
+          REPOSITORY_PASS: ${{ secrets.REPOSITORY_PASS }}
       - name: Publish to Maven Repository
         run: |
           if [ $VERSION_TYPE == 'release' ]; then CHANGELIST=-Dchangelist=; fi
