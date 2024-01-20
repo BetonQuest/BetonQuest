@@ -31,8 +31,8 @@ jobs:
           echo "previous_version_tag=$PREVIOUS_VERSION_TAG" >> $GITHUB_OUTPUT
           echo "changes_in_docs_only=$CHANGES_IN_DOCS_ONLY" >> $GITHUB_OUTPUT
 
-  build-artifacts:
-    name: Build Artifacts
+  build-code:
+    name: Build Code
     needs: [ prepare ]
     runs-on: ubuntu-latest
 
@@ -57,19 +57,10 @@ jobs:
         with:
           path: target/artifacts
           key: ${{ runner.os }}-target/artifacts-${{ github.run_number }}
-      - name: Set CHANGELOG.md version
-        run: |
-          sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
-      - name: Set plugin version
-        run: |
-          sed -i "s~\${betonquest\.version}~${VERSION}~g" ./src/main/resources/plugin.yml
-      - name: Set pom.xml BetonQuest version
-        if: "env.VERSION_TYPE == 'development'"
-        run: |
-          mvn versions:set-property -DgenerateBackupPoms=false -Dproperty=betonquest.version -DnewVersion="$VERSION"
-      - name: Activate lf line ending check in editorconfig
-        run: |
-          sed -i "s~#end_of_line = ~end_of_line = ~g" ./.editorconfig
+      - uses: ./.github/actions/replace-code-variables
+        with:
+          VERSION: ${{ env.VERSION }}
+          VERSION_TYPE: ${{ env.VERSION_TYPE }}
       - name: Build with Maven. Phase 'verify'
         run: |
           if [ $VERSION_TYPE == 'release' ]; then CHANGELIST=-Dchangelist=; fi
@@ -128,10 +119,10 @@ jobs:
             target/docs/
             !target/docs/changes.patch
 
-  deploy-artifacts:
-    name: Deploy Artifacts
+  deploy-code:
+    name: Deploy Code
     if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY == 'false'"
-    needs: [ prepare, build-artifacts, build-docs ]
+    needs: [ prepare, build-code, build-docs ]
     runs-on: ubuntu-latest
 
     env:
@@ -187,7 +178,7 @@ jobs:
     name: Deploy Docs
     concurrency: gh-pages-deploy
     if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development'"
-    needs: [ prepare, build-artifacts, build-docs ]
+    needs: [ prepare, build-code, build-docs ]
     runs-on: ubuntu-latest
 
     env:
@@ -259,8 +250,8 @@ jobs:
 
   create-release:
     name: Create GitHub Release
-    if: "needs.prepare.outputs.VERSION_TYPE == 'release' && needs.deploy-artifacts.result == 'success' && needs.deploy-docs.result == 'success'"
-    needs: [ prepare, deploy-artifacts, deploy-docs ]
+    if: "needs.prepare.outputs.VERSION_TYPE == 'release' && needs.deploy-code.result == 'success' && needs.deploy-docs.result == 'success'"
+    needs: [ prepare, deploy-code, deploy-docs ]
     runs-on: ubuntu-latest
 
     env:
@@ -292,7 +283,7 @@ jobs:
           DATE="$(date +%Y-%m-%d)"
           sed -i "s~\${maven\.build\.timestamp}~$DATE~g" ./CHANGELOG.md
       - name: Create release
-        uses: docker://antonyurchenko/git-release:latest
+        uses: docker://antonyurchenko/git-release:v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DRAFT_RELEASE: false
@@ -310,7 +301,7 @@ jobs:
   discord-announcement:
     name: Official Deployment
     if: "always() && !cancelled() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && ( needs.prepare.outputs.CHANGES_IN_DOCS_ONLY == 'false' || failure() ) )"
-    needs: [ prepare, deploy-artifacts, deploy-docs, create-release ]
+    needs: [ prepare, deploy-code, deploy-docs, create-release ]
     runs-on: ubuntu-latest
 
     env:
@@ -331,4 +322,4 @@ jobs:
           JOB_STATUS: ${{ job.status }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
           DOCS_URL: ${{ vars.DOCS_URL }}
-          UPLOAD_PATH: ${{ needs.deploy-artifacts.outputs.UPLOAD_PATH }}
+          UPLOAD_PATH: ${{ needs.deploy-code.outputs.UPLOAD_PATH }}
