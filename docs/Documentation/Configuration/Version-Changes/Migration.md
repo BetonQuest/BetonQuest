@@ -18,6 +18,7 @@ QuestPackages folder to the new 2.0 syntax. This way the migration works for bot
 
 Steps marked with :gear: are migrated automatically. Steps marked with :exclamation: must be done manually.
 
+- [2.0.0-DEV-87 - Rename to `ride`](#200-dev-87-rename-to-ride) :gear:
 - [2.0.0-DEV-98 - RPGMenu Merge](#200-dev-98-rpgmenu-merge) :gear:
 - [2.0.0-DEV-238 - Package Structure Rework](#200-dev-238-package-structure-rework) :gear:
 - [2.0.0-DEV-337 - Event Scheduling Rework](#200-dev-337-event-scheduling-rework) :gear:
@@ -30,6 +31,41 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
 - [2.0.0-DEV-674 - MMO Updates](#200-dev-674-mmo-updates) :gear:
 - [2.0.0-DEV-749 - Static Event Rework](#200-dev-749-static-event-rework) :gear:
 - [2.0.0-DEV-769 - RemoveEntity-Event](#200-dev-769-removeentity-event) :gear:
+
+### 2.0.0-DEV-87 - Rename to `ride` :gear:
+
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+
+    
+    To unify the naming for riding a vehicle, we renamed the condition (`riding`) and the objective (`vehicle`)
+    to `ride`.
+    
+    <div class="grid" markdown>
+    
+    ```YAML title="Old Syntax (conditions.yml)"
+    rideHorse: riding Horse
+    ```
+    
+    ```YAML title="New Syntax (conditions.yml)"
+    rideHorse: ride Horse
+    ```
+    
+    </div>
+    
+    <div class="grid" markdown>
+    
+    ```YAML title="Old Syntax (objectives.yml)"
+    rideHorse: vehicle Horse events:teleport
+    ```
+    
+    ```YAML title="New Syntax (objectives.yml)"
+    rideHorse: ride Horse events:teleport
+    ```
+    
+    </div>
 
 ### 2.0.0-DEV-98 - RPGMenu Merge :gear:
 
@@ -452,7 +488,7 @@ npc_holograms:
     
     -------------
     
-    As you probably noticed, the 'ClearEntity' event and the 'KillMob' event did almost the same thing.
+    As you probably noticed, the `ClearEntity` event and the `KillMob` event did almost the same thing.
     Both got merged into the [RemoveEntity event](../../Scripting/Building-Blocks/Events-List.md#remove-entity-removeentity),
     while keeping the syntax more or less the same.
     

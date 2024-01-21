@@ -8,6 +8,7 @@ import org.betonquest.betonquest.modules.config.patcher.migration.migrators.Pack
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.PackageStructure;
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.RPGMenuMerge;
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.RemoveEntity;
+import org.betonquest.betonquest.modules.config.patcher.migration.migrators.RideUpdates;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -37,6 +38,7 @@ public class Migrator {
         migrations.add(new EffectLib(provider));
         migrations.add(new MmoUpdates(provider));
         migrations.add(new RemoveEntity(provider));
+        migrations.add(new RideUpdates(provider));
     }
 
     /**
