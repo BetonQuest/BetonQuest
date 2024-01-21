@@ -2776,6 +2776,29 @@
       
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#200-dev-87-rename-to-ride">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          2.0.0-DEV-87 - Rename to <code>ride</code> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#200-dev-98-rpgmenu-merge">
     <span class="md-ellipsis">
 
@@ -4234,6 +4257,29 @@
       
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#200-dev-87-rename-to-ride">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          2.0.0-DEV-87 - Rename to <code>ride</code> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#200-dev-98-rpgmenu-merge">
     <span class="md-ellipsis">
 
@@ -4632,6 +4678,7 @@ QuestPackages folder to the new 2.0 syntax. This way the migration works for bot
 <h2 id="changes">Changes<a class="headerlink" href="#changes" title="Permanent link">🔗</a></h2>
 <p>Steps marked with <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /> are migrated automatically. Steps marked with <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2757.svg" title=":exclamation:" /> must be done manually.</p>
 <ul>
+<li><a href="#200-dev-87-rename-to-ride">2.0.0-DEV-87 - Rename to <code>ride</code></a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /></li>
 <li><a href="#200-dev-98-rpgmenu-merge">2.0.0-DEV-98 - RPGMenu Merge</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /></li>
 <li><a href="#200-dev-238-package-structure-rework">2.0.0-DEV-238 - Package Structure Rework</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /></li>
 <li><a href="#200-dev-337-event-scheduling-rework">2.0.0-DEV-337 - Event Scheduling Rework</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /></li>
@@ -4645,6 +4692,26 @@ QuestPackages folder to the new 2.0 syntax. This way the migration works for bot
 <li><a href="#200-dev-749-static-event-rework">2.0.0-DEV-749 - Static Event Rework</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /></li>
 <li><a href="#200-dev-769-removeentity-event">2.0.0-DEV-769 - RemoveEntity-Event</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /></li>
 </ul>
+<h3 id="200-dev-87-rename-to-ride">2.0.0-DEV-87 - Rename to <code>ride</code> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /><a class="headerlink" href="#200-dev-87-rename-to-ride" title="Permanent link">🔗</a></h3>
+<details class="info">
+<summary>Automated Migration</summary>
+<p><em>The migration is automated. You shouldn't have to do anything.</em></p>
+<hr />
+<p>To unify the naming for riding a vehicle, we renamed the condition (<code>riding</code>) and the objective (<code>vehicle</code>)
+to <code>ride</code>.</p>
+<div class="grid" markdown>
+<div class="highlight"><span class="filename">Old Syntax (conditions.yml)</span><pre><span></span><code><span class="nt">rideHorse</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">riding Horse</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New Syntax (conditions.yml)</span><pre><span></span><code><span class="nt">rideHorse</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ride Horse</span>
+</code></pre></div>
+</div>
+<div class="grid" markdown>
+<div class="highlight"><span class="filename">Old Syntax (objectives.yml)</span><pre><span></span><code><span class="nt">rideHorse</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vehicle Horse events:teleport</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New Syntax (objectives.yml)</span><pre><span></span><code><span class="nt">rideHorse</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ride Horse events:teleport</span>
+</code></pre></div>
+</div>
+</details>
 <h3 id="200-dev-98-rpgmenu-merge">2.0.0-DEV-98 - RPGMenu Merge <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /><a class="headerlink" href="#200-dev-98-rpgmenu-merge" title="Permanent link">🔗</a></h3>
 <details class="info">
 <summary>Automated Migration</summary>
@@ -5046,7 +5113,7 @@ The <code>-</code> is important, it means run independent <img alt="😉" class=
 <summary>Automated Migration</summary>
 <p><em>The migration is automated. You shouldn't have to do anything.</em></p>
 <hr />
-<p>As you probably noticed, the 'ClearEntity' event and the 'KillMob' event did almost the same thing.
+<p>As you probably noticed, the <code>ClearEntity</code> event and the <code>KillMob</code> event did almost the same thing.
 Both got merged into the <a href="../../../Scripting/Building-Blocks/Events-List/#remove-entity-removeentity">RemoveEntity event</a>,
 while keeping the syntax more or less the same.</p>
 <div class="grid" markdown>
