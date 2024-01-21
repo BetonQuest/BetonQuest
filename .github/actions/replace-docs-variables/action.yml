@@ -1,6 +1,6 @@
-name: Replace all variables in docs
+name: Replace all variables in the docs
 description: |
-  Replace all variables in docs
+  Replace all variables in the docs
 
 inputs:
   VERSION:
