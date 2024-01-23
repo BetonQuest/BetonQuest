@@ -194,6 +194,7 @@ jobs:
         with:
           fetch-depth: 0
           submodules: ${{ env.VERSION_TYPE == 'release' }}
+          token: ${{ secrets.ALL_REPOSITORIES_ACCESS_TOKEN }}
       - uses: ./.github/actions/setup-git-lfs
       - uses: ./.github/actions/setup-mkdocs-material
         with:
