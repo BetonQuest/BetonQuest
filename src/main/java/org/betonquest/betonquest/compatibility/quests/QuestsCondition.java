@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.compatibility.quests;
 
-import me.blackvein.quests.Quest;
+import me.pikamug.quests.quests.Quest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;

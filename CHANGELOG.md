@@ -9,6 +9,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `hunger` event now supports variables
 - `time` event now supports variables and new `ticks` argument
 ### Changed
+- Quests by PikaMug got updated from version 4.X to 5.X
 ### Deprecated
 ### Removed
 ### Fixed
