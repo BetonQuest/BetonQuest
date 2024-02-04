@@ -41,6 +41,9 @@ theme:
     - navigation.sections
     - navigation.top
     - navigation.path
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
     - search.share
     - search.suggest
     - content.tooltips
