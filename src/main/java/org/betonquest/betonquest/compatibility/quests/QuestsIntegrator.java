@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.quests;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import me.blackvein.quests.Quests;
+import me.pikamug.quests.Quests;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Integrator;

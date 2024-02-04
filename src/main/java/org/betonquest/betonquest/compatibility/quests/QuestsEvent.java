@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.compatibility.quests;
 
-import me.blackvein.quests.Quest;
+import me.pikamug.quests.quests.Quest;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
@@ -32,7 +32,7 @@ public class QuestsEvent extends QuestEvent {
     @Override
     protected Void execute(final Profile profile) {
         Quest quest = null;
-        for (final Quest q : QuestsIntegrator.getQuestsInstance().getQuests()) {
+        for (final Quest q : QuestsIntegrator.getQuestsInstance().getLoadedQuests()) {
             if (q.getName().replace(' ', '_').equalsIgnoreCase(questName)) {
                 quest = q;
                 break;

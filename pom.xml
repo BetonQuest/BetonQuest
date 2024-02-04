@@ -185,16 +185,9 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>me.blackvein.quests</groupId>
-      <artifactId>quests-api</artifactId>
-      <version>4.8.4</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>me.blackvein.quests</groupId>
+      <groupId>me.pikamug.quests</groupId>
       <artifactId>quests-core</artifactId>
-      <version>4.8.4</version>
+      <version>5.0.0-rc.4</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
