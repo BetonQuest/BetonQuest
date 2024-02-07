@@ -6,7 +6,10 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.Powerable;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Container;
+import org.bukkit.block.data.type.Switch;
 
 /**
  * This event turns on, of or toggles levers.
@@ -43,8 +46,25 @@ public class LeverEvent implements Event {
                     + block.getZ() + " in world '" + block.getWorld().getName() + "'");
         }
 
-        final Powerable lever = (Powerable) block.getBlockData();
+        final Switch lever = (Switch) block.getBlockData();
         lever.setPowered(stateType.apply(lever.isPowered()));
         block.setBlockData(lever);
+        updateBlocksAround(block, lever);
+    }
+
+    private void updateBlocksAround(final Block block, final Switch powerableSwitch) {
+        final BlockFace attachedTo = switch (powerableSwitch.getAttachedFace()) {
+            case FLOOR -> BlockFace.DOWN;
+            case CEILING -> BlockFace.UP;
+            default -> powerableSwitch.getFacing().getOppositeFace();
+        };
+        final Block relative = block.getRelative(attachedTo);
+
+        final BlockState relativeState = relative.getState();
+        if (relativeState instanceof final Container container) {
+            container.getInventory().clear();
+        }
+        relative.setType(Material.AIR, false);
+        relativeState.update(true);
     }
 }
