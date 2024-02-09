@@ -1,6 +1,6 @@
 name: Setup Java and Maven
 description: |
-  This action setup Java and Maven and optionally caches the build artifacts.
+  This action setups Java and Maven and optionally caches the build artifacts.
 
 inputs:
   JAVA_DISTRIBUTION:
