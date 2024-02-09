@@ -46,17 +46,10 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
-      - name: Setup JDK 17
-        uses: actions/setup-java@v3
+      - uses: ./.github/actions/setup-java-maven
         with:
-          distribution: 'zulu'
-          java-version: 17
-          cache: 'maven'
-      - name: Cache target/artifacts
-        uses: actions/cache@v3
-        with:
-          path: target/artifacts
-          key: ${{ runner.os }}-target/artifacts-${{ github.run_number }}
+          JAVA_CACHE: 'maven'
+          MAVEN_TARGET_DIR: 'target/artifacts'
       - uses: ./.github/actions/replace-code-variables
         with:
           VERSION: ${{ env.VERSION }}
@@ -138,17 +131,10 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
-      - name: Setup JDK 17
-        uses: actions/setup-java@v3
+      - uses: ./.github/actions/setup-java-maven
         with:
-          distribution: 'zulu'
-          java-version: 17
-          cache: 'maven'
-      - name: Cache target/artifacts
-        uses: actions/cache@v3
-        with:
-          path: target/artifacts
-          key: ${{ runner.os }}-target/artifacts-${{ github.run_number }}
+          JAVA_CACHE: 'maven'
+          MAVEN_TARGET_DIR: 'target/artifacts'
       - name: Load patch file
         run: |
           git apply target/artifacts/changes.patch
@@ -265,16 +251,12 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
-      - name: Cache target/artifacts
-        uses: actions/cache@v3
+      - uses: ./.github/actions/setup-java-maven/cache
         with:
-          path: target/artifacts
-          key: ${{ runner.os }}-target/artifacts-${{ github.run_number }}
-      - name: Cache target/docs
-        uses: actions/cache@v3
+          MAVEN_TARGET_DIR: 'target/artifacts'
+      - uses: ./.github/actions/setup-mkdocs-material/cache
         with:
-          path: target/docs
-          key: ${{ runner.os }}-target/docs-${{ github.run_number }}
+          MKDOCS_SITE_DIR: 'target/docs'
       - name: Zip Docs
         run: |
           zip -r target/docs/Docs.zip target/docs/

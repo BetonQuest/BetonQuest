@@ -12,12 +12,9 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
+      - uses: ./.github/actions/setup-java-maven
         with:
-          distribution: 'zulu'
-          java-version: 17
-          overwrite-settings: false
+          JAVA_OVERRIDE_SETTINGS: 'false'
       - name: Build with Maven
         run: |
           mvn -P Test-All -B package -DskipProjectSettings=true

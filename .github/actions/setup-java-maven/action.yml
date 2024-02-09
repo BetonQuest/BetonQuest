@@ -1,0 +1,42 @@
+name: Setup Java and Maven
+description: |
+  This action setups Java and Maven and optionally caches the build artifacts.
+
+inputs:
+  JAVA_DISTRIBUTION:
+    description: |
+      The distribution of the JDK to use.
+    required: false
+    default: 'zulu'
+  JAVA_VERSION:
+    description: |
+      The version of the JDK to use.
+    required: false
+    default: '17'
+  JAVA_CACHE:
+    description: |
+      The name of the Java cache to use.
+    required: false
+  JAVA_OVERRIDE_SETTINGS:
+    description: |
+      Whether to override the settings.xml file.
+    required: false
+    default: 'true'
+  MAVEN_TARGET_DIR:
+    description: |
+      The path to the artifacts target directory for caching.
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Setup JDK 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: ${{ inputs.JAVA_DISTRIBUTION }}
+        java-version: ${{ inputs.JAVA_VERSION }}
+        cache: ${{ inputs.JAVA_CACHE }}
+        overwrite-settings: ${{ inputs.JAVA_OVERRIDE_SETTINGS }}
+    - uses: ./.github/actions/setup-java-maven/cache
+      with:
+        MAVEN_TARGET_DIR: ${{ inputs.MAVEN_TARGET_DIR }}

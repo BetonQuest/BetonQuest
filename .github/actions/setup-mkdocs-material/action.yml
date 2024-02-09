@@ -35,12 +35,9 @@ runs:
         python-version: ${{ inputs.PYTHON_VERSION }}
         cache: ${{ inputs.PYTHON_CACHE }}
         cache-dependency-path: ${{ inputs.PYTHON_CACHE_DEPENDENCY_PATH }}
-    - name: Cache MkDocs site directory
-      if: ${{ inputs.MKDOCS_SITE_DIR != '' }}
-      uses: actions/cache@v3
+    - uses: ./.github/actions/setup-mkdocs-material/cache
       with:
-        path: ${{ inputs.MKDOCS_SITE_DIR }}
-        key: ${{ runner.os }}-${{ inputs.MKDOCS_SITE_DIR }}-${{ github.run_number }}
+        MKDOCS_SITE_DIR: ${{ inputs.MKDOCS_SITE_DIR }}
     - name: Cache MkDocs site directory /.cache/plugins/optimize
       if: ${{ inputs.MKDOCS_SITE_DIR != '' }}
       uses: actions/cache@v3
