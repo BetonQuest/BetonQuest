@@ -297,12 +297,20 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
+      - name: Set NEEDED_JOB_STATES
+        if: always() && !cancelled()
+        run: |
+          if [[ "${{ needs.prepare.result }}" == "failure" || "${{ needs.deploy-code.result }}" == "failure" || "${{ needs.deploy-docs.result }}" == "failure" || "${{ needs.create-release.result }}" == "failure" ]]; then
+            echo "NEEDED_JOB_STATES=failure" >> $GITHUB_ENV
+          else
+            echo "NEEDED_JOB_STATES=success" >> $GITHUB_ENV
+          fi
       - name: Publish to Discord
         if: "always() && !cancelled()"
         run: |
           bash .github/scripts/discord.sh
         env:
-          JOB_STATUS: ${{ job.status }}
+          JOB_STATUS: ${{ env.NEEDED_JOB_STATES }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
           DOCS_URL: ${{ vars.DOCS_URL }}
           UPLOAD_PATH: ${{ needs.deploy-code.outputs.UPLOAD_PATH }}
