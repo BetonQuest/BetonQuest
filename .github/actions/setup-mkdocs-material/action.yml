@@ -40,7 +40,7 @@ runs:
         MKDOCS_SITE_DIR: ${{ inputs.MKDOCS_SITE_DIR }}
     - name: Cache MkDocs site directory /.cache/plugins/optimize
       if: ${{ inputs.MKDOCS_SITE_DIR != '' }}
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ${{ inputs.MKDOCS_SITE_DIR }}/.cache/plugins/optimize
         key: ${{ runner.os }}-hardcoded-media-cache

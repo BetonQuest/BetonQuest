@@ -60,7 +60,7 @@ jobs:
           mvn $CHANGELIST -P Test-All -B verify
           git diff > target/artifacts/changes.patch
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: BetonQuest-Artifacts
           path: |
@@ -105,7 +105,7 @@ jobs:
           MKDOCS_MATERIAL_INSIDERS_ENABLED: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
           MKDOCS_MATERIAL_INSIDERS_ENABLED_CI: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
       - name: Upload Docs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: BetonQuest-Docs
           path: |
