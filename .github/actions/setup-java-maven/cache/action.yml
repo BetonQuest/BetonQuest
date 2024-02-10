@@ -13,7 +13,7 @@ runs:
   steps:
     - name: Cache target/artifacts
       if: ${{ inputs.MAVEN_TARGET_DIR != '' }}
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ${{ inputs.MAVEN_TARGET_DIR }}
         key: ${{ runner.os }}-${{ inputs.MAVEN_TARGET_DIR }}-${{ github.run_number }}

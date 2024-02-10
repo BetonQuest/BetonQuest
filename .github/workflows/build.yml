@@ -28,8 +28,8 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
           echo "version_maven=$VERSION_MAVEN" >> $GITHUB_OUTPUT
-          echo "previous_version_tag=$PREVIOUS_VERSION_TAG" >> $GITHUB_OUTPUT
-          echo "changes_in_docs_only=$CHANGES_IN_DOCS_ONLY" >> $GITHUB_OUTPUT
+          echo "previous_version_tag=$VERSION_PREVIOUS_TAG" >> $GITHUB_OUTPUT
+          echo "changes_in_docs_only=$VERSION_CHANGES_IN_DOCS_ONLY" >> $GITHUB_OUTPUT
 
   build-code:
     name: Build Code
@@ -60,7 +60,7 @@ jobs:
           mvn $CHANGELIST -P Test-All -B verify
           git diff > target/artifacts/changes.patch
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: BetonQuest-Artifacts
           path: |
@@ -105,7 +105,7 @@ jobs:
           MKDOCS_MATERIAL_INSIDERS_ENABLED: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
           MKDOCS_MATERIAL_INSIDERS_ENABLED_CI: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
       - name: Upload Docs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: BetonQuest-Docs
           path: |
