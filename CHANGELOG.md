@@ -10,6 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `time` event now supports variables and new `ticks` argument
 ### Changed
 - Quests by PikaMug got updated from version 4.X to 5.X
+- The ProtocolLib dependency was downgraded from 5.2.0-SNAPSHOT-679 to 5.0.0-SNAPSHOT-636
 ### Deprecated
 ### Removed
 ### Fixed

@@ -6,8 +6,8 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
-import com.comphenix.protocol.utility.MinecraftVersion;
 import com.comphenix.protocol.wrappers.EnumWrappers;
+import io.papermc.lib.PaperLib;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.ArrayUtils;
@@ -24,13 +24,14 @@ import java.util.List;
 
 
 /**
- * Provide a packet interceptor to get all chat packets to player
+ * Provides a packet interceptor that catches all chat packets sent to a player.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class PacketInterceptor implements Interceptor, Listener {
+
     /**
      * A prefix that marks messages to be ignored by this interceptor.
-     * To be invisible if the interceptor was closed before the message was sent the tag is a color code.
+     * To be invisible if the interceptor was closed before the message was sent, the tag is a color code.
      * The actual tags colors are the hex-representation of the ASCII representing the string '_bq_'.
      */
     private static final String MESSAGE_PASSTHROUGH_TAG = "§5§f§6§2§7§1§5§f";
@@ -59,9 +60,9 @@ public class PacketInterceptor implements Interceptor, Listener {
                 }
                 final PacketContainer packet = event.getPacket();
                 final PacketType packetType = packet.getType();
-                if (MinecraftVersion.WILD_UPDATE.atOrAbove()) {
+                if (PaperLib.isVersion(19, 0)) {
                     if (packetType.equals(PacketType.Play.Server.SYSTEM_CHAT)) {
-                        if (MinecraftVersion.v1_20_4.atOrAbove()) {
+                        if (PaperLib.isVersion(20, 4)) {
                             final String message = packet.getChatComponents().read(0).getJson();
                             if (message != null && message.contains("{\"text\":\"\",\"extra\":[\"" + MESSAGE_PASSTHROUGH_TAG + "\"")) {
                                 return;
@@ -101,17 +102,17 @@ public class PacketInterceptor implements Interceptor, Listener {
     private static List<PacketType> getPacketTypes() {
         final List<PacketType> packets = new ArrayList<>();
         packets.add(PacketType.Play.Server.CHAT);
-        if (MinecraftVersion.WILD_UPDATE.atOrAbove()) {
+        if (PaperLib.isVersion(19, 0)) {
             packets.add(PacketType.Play.Server.SYSTEM_CHAT);
         }
-        if (MinecraftVersion.FEATURE_PREVIEW_UPDATE.atOrAbove()) {
+        if (PaperLib.isVersion(19, 3)) {
             packets.add(PacketType.Play.Server.DISGUISED_CHAT);
         }
         return packets;
     }
 
     /**
-     * Send message, bypassing Interceptor
+     * Sends a message that bypasses the interceptor.
      */
     @Override
     public void sendMessage(final String message) {
