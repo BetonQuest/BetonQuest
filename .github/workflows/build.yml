@@ -24,6 +24,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Save version to output variable
         id: version
+        shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
@@ -55,6 +56,7 @@ jobs:
           VERSION: ${{ env.VERSION }}
           VERSION_TYPE: ${{ env.VERSION_TYPE }}
       - name: Build with Maven. Phase 'verify'
+        shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           if [ $VERSION_TYPE == 'release' ]; then CHANGELIST=-Dchangelist=; fi
           mvn $CHANGELIST -P Test-All -B verify
@@ -98,6 +100,7 @@ jobs:
           VERSION_MAVEN: ${{ env.VERSION_MAVEN }}
           REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
       - name: Build with mkdocs
+        shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           mkdocs build --strict 
           git diff > target/docs/changes.patch
@@ -136,6 +139,7 @@ jobs:
           JAVA_CACHE: 'maven'
           MAVEN_TARGET_DIR: 'target/artifacts'
       - name: Load patch file
+        shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           git apply target/artifacts/changes.patch
           rm target/artifacts/changes.patch
@@ -145,6 +149,7 @@ jobs:
           REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
           REPOSITORY_PASS: ${{ secrets.REPOSITORY_PASS }}
       - name: Publish to Maven Repository
+        shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           if [ $VERSION_TYPE == 'release' ]; then CHANGELIST=-Dchangelist=; fi
           mvn $CHANGELIST -P Skip-Verification,Test-None -B deploy | tee maven-deploy.log
@@ -154,6 +159,7 @@ jobs:
           REPOSITORY_PASS: ${{ secrets.REPOSITORY_PASS }}
       - name: Get upload URL from deploy log
         id: save_upload_path
+        shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           UPLOAD_PATH="$(grep -oP "(?<=Uploading to betonquest: $REPOSITORY_URL).*-shaded.jar" maven-deploy.log)"
           echo "upload_path=$UPLOAD_PATH" >> $GITHUB_OUTPUT
@@ -189,11 +195,13 @@ jobs:
           PYTHON_CACHE: 'pip'
           PYTHON_CACHE_DEPENDENCY_PATH: 'config/setup-docs-dependencies.py'
       - name: Load patch file
+        shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           git apply target/docs/changes.patch
           rm target/docs/changes.patch
       - name: Deploy to Github Pages
         if: "env.VERSION_TYPE == 'release' || env.VERSION_TYPE == 'development'"
+        shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           git config --global user.name "BetonQuest-Bot"
           git config --global user.email "contact@betonquest.org"
@@ -227,6 +235,7 @@ jobs:
           MKDOCS_MATERIAL_INSIDERS_ENABLED_CI: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
       - name: Set version Tag for Quest-Tutorials submodule
         if: "env.VERSION_TYPE == 'release'"
+        shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           git config --global user.name "BetonQuest-Bot"
           git config --global user.email "contact@betonquest.org"
@@ -258,9 +267,11 @@ jobs:
         with:
           MKDOCS_SITE_DIR: 'target/docs'
       - name: Zip Docs
+        shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           zip -r target/docs/Docs.zip target/docs/
       - name: Set CHANGELOG.md version
+        shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
           DATE="$(date +%Y-%m-%d)"
@@ -278,6 +289,7 @@ jobs:
             target/artifacts/BetonQuest.jar
             target/docs/Docs.zip
       - name: Delete obsolete git tag
+        shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           git push origin :${PREVIOUS_VERSION_TAG}
 
@@ -299,6 +311,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Set NEEDED_JOB_STATES
         if: always() && !cancelled()
+        shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           if [[ "${{ needs.prepare.result }}" == "failure" || "${{ needs.deploy-code.result }}" == "failure" || "${{ needs.deploy-docs.result }}" == "failure" || "${{ needs.create-release.result }}" == "failure" ]]; then
             echo "NEEDED_JOB_STATES=failure" >> $GITHUB_ENV
@@ -307,6 +320,7 @@ jobs:
           fi
       - name: Publish to Discord
         if: "always() && !cancelled()"
+        shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           bash .github/scripts/discord.sh
         env:
