@@ -269,3 +269,13 @@ nav:
       - Misc:
           - 'Versioning & Releasing': Participate/Misc/Versioning-and-Releasing.md
   - 'Downloads': Downloads/index.md
+
+validation:
+  nav:
+    omitted_files: warn
+    not_found: warn
+    absolute_links: warn
+  links:
+    not_found: warn
+    absolute_links: warn
+    unrecognized_links: warn

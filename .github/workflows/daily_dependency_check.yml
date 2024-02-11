@@ -33,7 +33,7 @@ jobs:
           MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
       - name: Build with mkdocs
         run: |
-          mkdocs build
+          mkdocs build --strict
         env:
           MKDOCS_MATERIAL_INSIDERS_ENABLED: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
           MKDOCS_MATERIAL_INSIDERS_ENABLED_CI: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
