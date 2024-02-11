@@ -99,7 +99,7 @@ jobs:
           REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
       - name: Build with mkdocs
         run: |
-          mkdocs build 
+          mkdocs build --strict 
           git diff > target/docs/changes.patch
         env:
           MKDOCS_MATERIAL_INSIDERS_ENABLED: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
