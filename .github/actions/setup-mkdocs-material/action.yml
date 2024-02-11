@@ -50,13 +50,13 @@ runs:
         packages: pngquant
     - name: Update python pip
       id: setup-dependencies
+      shell: bash --noprofile --norc -euo pipefail {0}
       run: |
         python3 -m pip install --upgrade pip
-      shell: bash
     - name: Install dependencies with config/setup-docs-dependencies.py
+      shell: bash --noprofile --norc -euo pipefail {0}
       run: |
         python config/setup-docs-dependencies.py
-      shell: bash
       env:
         MKDOCS_MATERIAL_INSIDERS: ${{ inputs.MKDOCS_MATERIAL_INSIDERS }}
         MKDOCS_MATERIAL_INSIDERS_ENABLED: ${{ inputs.MKDOCS_MATERIAL_INSIDERS != '' }}

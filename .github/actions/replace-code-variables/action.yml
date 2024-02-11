@@ -15,26 +15,26 @@ runs:
   using: composite
   steps:
     - name: Set CHANGELOG.md version
+      shell: bash --noprofile --norc -euo pipefail {0}
       run: |
         sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
       env:
         VERSION: ${{ inputs.VERSION }}
-      shell: bash
     - name: Set plugin version
+      shell: bash --noprofile --norc -euo pipefail {0}
       run: |
         sed -i "s~\${betonquest\.version}~${VERSION}~g" ./src/main/resources/plugin.yml
-      shell: bash
       env:
         VERSION: ${{ inputs.VERSION }}
     - name: Set pom.xml BetonQuest version
       if: "env.VERSION_TYPE == 'development'"
+      shell: bash --noprofile --norc -euo pipefail {0}
       run: |
         mvn versions:set-property -DgenerateBackupPoms=false -Dproperty=betonquest.version -DnewVersion="$VERSION"
       env:
         VERSION: ${{ inputs.VERSION }}
         VERSION_TYPE: ${{ inputs.VERSION_TYPE }}
-      shell: bash
     - name: Activate lf line ending check in editorconfig
+      shell: bash --noprofile --norc -euo pipefail {0}
       run: |
         sed -i "s~#end_of_line = ~end_of_line = ~g" ./.editorconfig
-      shell: bash
