@@ -68,7 +68,7 @@ runs:
       shell: bash
     - name: Generate build number for Development Build
       if: "github.repository == inputs.ROOT_REPOSITORY && ( github.ref == 'refs/heads/main' || startsWith(github.ref,'refs/heads/main_v') ) && env.VERSION_CHANGES_IN_DOCS_ONLY == 'false'"
-      uses: onyxmueller/build-tag-number@v1
+      uses: onyxmueller/build-tag-number@v1.0.3
       with:
         token: ${{ inputs.GITHUB_TOKEN }}
         prefix: ${{ env.MAVEN_POM_REVISION_VERSION }}
