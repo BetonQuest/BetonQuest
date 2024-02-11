@@ -13,6 +13,10 @@ In this tutorial, you will be introduced to Visual Studio Code (VSCode), the mos
 
 In this tutorial, you will learn how to install and use it to your advantage!
 
+_Note: If you are already more familiar to another IDE or text editor (for
+example IntelliJ or Vim), do not hesitate to use it for Questwriting, too. Using
+VSCode is just an advise from us based on our experience._
+
 <div class="grid" markdown>
 !!! danger "Requirements"
     * [Installing BetonQuest](./Installing-BetonQuest.md)
