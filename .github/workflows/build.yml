@@ -29,8 +29,8 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
           echo "version_maven=$VERSION_MAVEN" >> $GITHUB_OUTPUT
-          echo "previous_version_tag=$VERSION_PREVIOUS_TAG" >> $GITHUB_OUTPUT
-          echo "changes_in_docs_only=$VERSION_CHANGES_IN_DOCS_ONLY" >> $GITHUB_OUTPUT
+          echo "previous_version_tag=${VERSION_PREVIOUS_TAG-}" >> $GITHUB_OUTPUT
+          echo "changes_in_docs_only=${VERSION_CHANGES_IN_DOCS_ONLY-}" >> $GITHUB_OUTPUT
 
   build-code:
     name: Build Code
@@ -59,7 +59,7 @@ jobs:
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           if [ $VERSION_TYPE == 'release' ]; then CHANGELIST=-Dchangelist=; fi
-          mvn $CHANGELIST -P Test-All -B verify
+          mvn ${CHANGELIST-} -P Test-All -B verify
           git diff > target/artifacts/changes.patch
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
