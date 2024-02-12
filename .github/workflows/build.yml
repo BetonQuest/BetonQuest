@@ -152,7 +152,7 @@ jobs:
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           if [ $VERSION_TYPE == 'release' ]; then CHANGELIST=-Dchangelist=; fi
-          mvn $CHANGELIST -P Skip-Verification,Test-None -B deploy | tee maven-deploy.log
+          mvn ${CHANGELIST-} -P Skip-Verification,Test-None -B deploy | tee maven-deploy.log
         env:
           REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
           REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
@@ -211,7 +211,6 @@ jobs:
           
           FLAGS=(--push --update-aliases)
           VERSION=()
-          if [ "$TXT" = "docs-requirements-insiders.txt" ]; then FLAGS+=(--config-file mkdocs.insiders.yml); fi
           if [ "$VERSION_TYPE" = release ]; then
             VERSION+=("$TWO_DIGIT_VERSION" "$TWO_DIGIT_VERSION-DEV")
             if [ $(git branch --contains tags/v${VERSION} | grep '^\* main$') ] || { mike list --json "$TWO_DIGIT_VERSION" | grep -q '"aliases" *: *\[[^]]*"RELEASE"'; }; then
