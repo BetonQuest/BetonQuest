@@ -143,7 +143,7 @@ jobs:
         run: |
           git apply target/artifacts/changes.patch
           rm target/artifacts/changes.patch
-      - uses: ./.github/actions/maven-mirror
+      - uses: ./.github/actions/maven-server-authentication
         with:
           REPOSITORY_ID: betonquest
           REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
@@ -155,8 +155,6 @@ jobs:
           mvn ${CHANGELIST-} -P Skip-Verification,Test-None -B deploy | tee maven-deploy.log
         env:
           REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
-          REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
-          REPOSITORY_PASS: ${{ secrets.REPOSITORY_PASS }}
       - name: Get upload URL from deploy log
         id: save_upload_path
         shell: bash --noprofile --norc -euo pipefail {0}
