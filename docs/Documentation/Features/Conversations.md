@@ -90,6 +90,9 @@ npcs:
 The first part is the ID of the NPC. To acquire the NPCs ID select the NPC using `/npc select`, then run `/npc id`.
 The second part is the identifier of the corresponding conversation name as defined in the `conversations` section. 
 You can assign the same conversation to multiple NPCs.
+It is not possible to assign multiple conversations to one npc. For this
+purpose, have a look at 
+[cross-conversation-pointers](#cross-conversation-pointers) though.
 
 ## Conversation displaying
 
