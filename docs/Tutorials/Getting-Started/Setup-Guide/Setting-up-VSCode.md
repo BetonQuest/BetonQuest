@@ -13,9 +13,10 @@ In this tutorial, you will be introduced to Visual Studio Code (VSCode), the mos
 
 In this tutorial, you will learn how to install and use it to your advantage!
 
-_Note: If you are already more familiar to another IDE or text editor (for
-example IntelliJ or Vim), do not hesitate to use it for Questwriting, too. Using
-VSCode is just an advise from us based on our experience._
+!!! info "Alternative Editors"
+    If you are more familiar with another IDE or text editor (such as
+    IntelliJ or Vim), feel free to use it to write Quest.
+    The use of VSCode is only recommended by us based on our experience.
 
 <div class="grid" markdown>
 !!! danger "Requirements"
