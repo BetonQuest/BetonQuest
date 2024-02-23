@@ -5,4 +5,12 @@
 <a href="{{ '../' ~ base_url }}">
   <strong>Click here to go to the latest BetonQuest release.</strong>
 </a>
+<style>
+  :root {
+    --site-domain: '';
+  }
+</style>
+<script>
+  document.documentElement.style.setProperty("--site-domain", window.location.origin);
+</script>
 {% endblock %}

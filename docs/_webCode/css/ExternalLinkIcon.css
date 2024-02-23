@@ -13,3 +13,7 @@ body[data-md-color-scheme="slate"] .md-content__inner a[href^="http"]:not(.md-co
 body .md-content__inner a[href^="http"]:not(.md-content__button,.noExternalLinkIcon):hover {
   background-image: url(../../_media/content/linkExternalHover.svg);
 }
+
+body .md-content__inner a[href^="http://"]:not([href*="var(--site-domain)"]) {
+  background-image: none; /* Resetting background for internal links */
+}
