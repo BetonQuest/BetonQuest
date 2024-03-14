@@ -19,7 +19,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Set mirror for all repositories in settings.xml
+    - name: Setup repository authentication
       uses: whelk-io/maven-settings-xml-action@v21
       with:
         servers: |
