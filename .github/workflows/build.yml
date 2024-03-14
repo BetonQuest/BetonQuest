@@ -137,17 +137,15 @@ jobs:
       - uses: ./.github/actions/setup-java-maven
         with:
           JAVA_CACHE: 'maven'
+          JAVA_REPOSITORY_ID: 'betonquest'
+          JAVA_REPOSITORY_USER: ${{ secrets.MAVEN_SERVER_USERNAME }}
+          JAVA_REPOSITORY_PASS: ${{ secrets.MAVEN_SERVER_PASSWORD }}
           MAVEN_TARGET_DIR: 'target/artifacts'
       - name: Load patch file
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           git apply target/artifacts/changes.patch
           rm target/artifacts/changes.patch
-      - uses: ./.github/actions/maven-server-authentication
-        with:
-          REPOSITORY_ID: betonquest
-          REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
-          REPOSITORY_PASS: ${{ secrets.REPOSITORY_PASS }}
       - name: Publish to Maven Repository
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |

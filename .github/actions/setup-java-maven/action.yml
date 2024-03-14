@@ -17,11 +17,21 @@ inputs:
     description: |
       The name of the Java cache to use.
     required: false
-  JAVA_OVERRIDE_SETTINGS:
+  JAVA_REPOSITORY_ID:
     description: |
-      Whether to override the settings.xml file.
+      The id of the repository for authentication.
     required: false
-    default: 'true'
+    default: 'github'
+  JAVA_REPOSITORY_USER:
+    description: |
+      The username to use for the repository.
+    required: false
+    default: 'GITHUB_ACTOR'
+  JAVA_REPOSITORY_PASS:
+    description: |
+      The password to use for the repository.
+    required: false
+    default: 'GITHUB_TOKEN'
   MAVEN_TARGET_DIR:
     description: |
       The path to the artifacts target directory for caching.
@@ -36,7 +46,9 @@ runs:
         distribution: ${{ inputs.JAVA_DISTRIBUTION }}
         java-version: ${{ inputs.JAVA_VERSION }}
         cache: ${{ inputs.JAVA_CACHE }}
-        overwrite-settings: ${{ inputs.JAVA_OVERRIDE_SETTINGS }}
+        server-id: ${{ inputs.JAVA_REPOSITORY_ID }}
+        server-username: ${{ inputs.JAVA_REPOSITORY_USER }}
+        server-password: ${{ inputs.JAVA_REPOSITORY_PASS }}
     - uses: ./.github/actions/setup-java-maven/cache
       with:
         MAVEN_TARGET_DIR: ${{ inputs.MAVEN_TARGET_DIR }}
