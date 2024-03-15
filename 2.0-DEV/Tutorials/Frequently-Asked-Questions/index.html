@@ -5368,12 +5368,12 @@ Best practise is to define all options like this: <code>myOptionName: "myData"</
 <h2 id="random-daily-quests">Random daily quests<a class="headerlink" href="#random-daily-quests" title="Permanent link">🔗</a></h2>
 <p>Starting the random quest must be blocked with a special tag. If there is no such tag, the conversation option should appear. Create a few quests, each of them started with single <code>folder</code> event (they <strong>must</strong> be started by single event!). Now add those events to another <code>folder</code> event and make it <code>random:1</code>. At the end of every quest add <code>delay</code> which will reset the special blocking tag. Now add that <code>folder</code> event to the conversation option. When the player chooses it he will start one random quest, and the conversation option will become available after defined in <code>delay</code> objective time after completing the quest.</p>
 <h2 id="the-same-random-daily-quest-for-every-player">The same random daily quest for every player<a class="headerlink" href="#the-same-random-daily-quest-for-every-player" title="Permanent link">🔗</a></h2>
-<p>To do this use something called "<a href="../../Documentation/Scripting/Schedules/#static-events">Static event</a>
-Run a static <code>folder</code> event every day at some late hour (for example 4am).
+<p>To do this use something called "<a href="../../Documentation/Scripting/Schedules/">Schedules</a>
+Run a scheduled <code>folder</code> event every day at some late hour (for example 4am).
 The <code>folder</code> event should be <code>random:1</code> and contain several different <code>globaltag</code> events.
 These events will set a specific tag. Now when the player starts the conversation and asks about the daily quest the NPC
 should check (using the <code>globaltag</code> condition) which tag is currently set and give the player different quests based on that.
-Of course, the static folder event also needs to remove the the current tag before setting a new one.</p>
+Of course, the scheduled folder event also needs to remove the current tag before setting a new one.</p>
 <h2 id="global-quests-all-players-work-together">Global Quests (all players work together)<a class="headerlink" href="#global-quests-all-players-work-together" title="Permanent link">🔗</a></h2>
 <p>There is no easy way to do this (yet). Additionally, every use case differs. Let's assume you have some sort of event
 on your server where your player's need to fish 100 salmons. The quest package is only installed during the event.</p>
