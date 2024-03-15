@@ -157,12 +157,12 @@ Starting the random quest must be blocked with a special tag. If there is no suc
 
 ## The same random daily quest for every player
 
-To do this use something called "[Static event](../Documentation/Scripting/Schedules.md#static-events)
-Run a static `folder` event every day at some late hour (for example 4am).
+To do this use something called "[Schedules](../Documentation/Scripting/Schedules.md)
+Run a scheduled `folder` event every day at some late hour (for example 4am).
 The `folder` event should be `random:1` and contain several different `globaltag` events.
 These events will set a specific tag. Now when the player starts the conversation and asks about the daily quest the NPC
 should check (using the `globaltag` condition) which tag is currently set and give the player different quests based on that.
-Of course, the static folder event also needs to remove the the current tag before setting a new one.
+Of course, the scheduled folder event also needs to remove the current tag before setting a new one.
 
 ## Global Quests (all players work together)
 
