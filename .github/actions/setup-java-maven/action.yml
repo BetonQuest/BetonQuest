@@ -24,12 +24,12 @@ inputs:
     default: 'github'
   JAVA_REPOSITORY_USER:
     description: |
-      The username to use for the repository.
+      The variable name for the username to use for the repository.
     required: false
     default: 'GITHUB_ACTOR'
   JAVA_REPOSITORY_PASS:
     description: |
-      The password to use for the repository.
+      The variable name for the password to use for the repository.
     required: false
     default: 'GITHUB_TOKEN'
   MAVEN_TARGET_DIR:
