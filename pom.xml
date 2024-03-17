@@ -251,7 +251,7 @@
     <dependency>
       <groupId>com.github.Emibergo02</groupId>
       <artifactId>RedisChat</artifactId>
-      <version>4.1.1</version>
+      <version>4.4.4b</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
