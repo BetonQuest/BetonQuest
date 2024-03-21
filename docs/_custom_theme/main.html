@@ -11,6 +11,9 @@
   }
 </style>
 <script>
-  document.documentElement.style.setProperty("--site-domain", window.location.origin);
+  //mkdocs instant loading hook
+  document$.subscribe(function () {
+    document.documentElement.style.setProperty("--site-domain", window.location.origin);
+  });
 </script>
 {% endblock %}
