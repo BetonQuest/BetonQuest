@@ -137,17 +137,15 @@ jobs:
       - uses: ./.github/actions/setup-java-maven
         with:
           JAVA_CACHE: 'maven'
+          JAVA_REPOSITORY_ID: 'betonquest'
+          JAVA_REPOSITORY_USER: MAVEN_SERVER_USERNAME
+          JAVA_REPOSITORY_PASS: MAVEN_SERVER_PASSWORD
           MAVEN_TARGET_DIR: 'target/artifacts'
       - name: Load patch file
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           git apply target/artifacts/changes.patch
           rm target/artifacts/changes.patch
-      - uses: ./.github/actions/maven-server-authentication
-        with:
-          REPOSITORY_ID: betonquest
-          REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
-          REPOSITORY_PASS: ${{ secrets.REPOSITORY_PASS }}
       - name: Publish to Maven Repository
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
@@ -155,6 +153,8 @@ jobs:
           mvn ${CHANGELIST-} -P Skip-Verification,Test-None -B deploy | tee maven-deploy.log
         env:
           REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
+          MAVEN_SERVER_USERNAME: ${{ secrets.MAVEN_SERVER_USERNAME }}
+          MAVEN_SERVER_PASSWORD: ${{ secrets.MAVEN_SERVER_PASSWORD }}
       - name: Get upload URL from deploy log
         id: save_upload_path
         shell: bash --noprofile --norc -euo pipefail {0}
