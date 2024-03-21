@@ -114,6 +114,17 @@
 <a href="../.">
   <strong>Click here to go to the latest BetonQuest release.</strong>
 </a>
+<style>
+  :root {
+    --site-domain: '';
+  }
+</style>
+<script>
+  //mkdocs instant loading hook
+  document$.subscribe(function () {
+    document.documentElement.style.setProperty("--site-domain", window.location.origin);
+  });
+</script>
 
             </div>
             <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
