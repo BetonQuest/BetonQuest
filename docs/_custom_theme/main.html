@@ -5,15 +5,27 @@
 <a href="{{ '../' ~ base_url }}">
   <strong>Click here to go to the latest BetonQuest release.</strong>
 </a>
-<style>
-  :root {
-    --site-domain: '';
+<style class="externalLinkIcon">
+  body .md-content__inner a[href^="http"]:not([href^="SITE_DOMAIN"]):not(.md-content__button,.noExternalLinkIcon) {
+    background-image: url(/_media/content/linkExternalWhite.svg);
+    background-repeat: no-repeat;
+    background-position: top right;
+    padding-right: 0.7em;
+    background-size: 0.6em;
+  }
+
+  body[data-md-color-scheme="slate"] .md-content__inner a[href^="http"]:not([href^="SITE_DOMAIN"]):not(.md-content__button,.noExternalLinkIcon) {
+    background-image: url(/_media/content/linkExternalDark.svg);
+  }
+
+  body .md-content__inner a[href^="http"]:not([href^="SITE_DOMAIN"]):not(.md-content__button,.noExternalLinkIcon):hover {
+    background-image: url(/_media/content/linkExternalHover.svg);
   }
 </style>
 <script>
-  //mkdocs instant loading hook
-  document$.subscribe(function () {
-    document.documentElement.style.setProperty("--site-domain", window.location.origin);
-  });
+  const externalLinkIconElement = document.querySelector(".externalLinkIcon");
+  const currentHTML = externalLinkIconElement.innerHTML;
+  const updatedHTML = currentHTML.replaceAll("SITE_DOMAIN", window.location.origin);
+  externalLinkIconElement.innerHTML = updatedHTML;
 </script>
 {% endblock %}
