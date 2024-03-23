@@ -67,8 +67,6 @@
     
       <link rel="stylesheet" href="../_webCode/css/coloredIcons.css">
     
-      <link rel="stylesheet" href="../_webCode/css/ExternalLinkIcon.css">
-    
       <link rel="stylesheet" href="../_webCode/css/mermaidCentered.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
@@ -114,16 +112,28 @@
 <a href="../..">
   <strong>Click here to go to the latest BetonQuest release.</strong>
 </a>
-<style>
-  :root {
-    --site-domain: '';
+<style class="externalLinkIcon">
+  body .md-content__inner a[href^="http"]:not([href^="SITE_DOMAIN"]):not(.md-content__button,.noExternalLinkIcon) {
+    background-image: url(/_media/content/linkExternalWhite.svg);
+    background-repeat: no-repeat;
+    background-position: top right;
+    padding-right: 0.7em;
+    background-size: 0.6em;
+  }
+
+  body[data-md-color-scheme="slate"] .md-content__inner a[href^="http"]:not([href^="SITE_DOMAIN"]):not(.md-content__button,.noExternalLinkIcon) {
+    background-image: url(/_media/content/linkExternalDark.svg);
+  }
+
+  body .md-content__inner a[href^="http"]:not([href^="SITE_DOMAIN"]):not(.md-content__button,.noExternalLinkIcon):hover {
+    background-image: url(/_media/content/linkExternalHover.svg);
   }
 </style>
 <script>
-  //mkdocs instant loading hook
-  document$.subscribe(function () {
-    document.documentElement.style.setProperty("--site-domain", window.location.origin);
-  });
+  const externalLinkIconElement = document.querySelector(".externalLinkIcon");
+  const currentHTML = externalLinkIconElement.innerHTML;
+  const updatedHTML = currentHTML.replaceAll("SITE_DOMAIN", window.location.origin);
+  externalLinkIconElement.innerHTML = updatedHTML;
 </script>
 
             </div>
