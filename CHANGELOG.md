@@ -6,6 +6,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [2.0.1] - 2024-03-24
+### Added
 - `hunger` event now supports variables
 - `time` event now supports variables and new `ticks` argument
 ### Changed
