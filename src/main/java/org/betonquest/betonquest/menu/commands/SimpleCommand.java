@@ -26,8 +26,11 @@ import java.util.List;
 /**
  * Abstract class to simplify creation of commands and implementation of tab complete
  */
-@SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.AvoidUncheckedExceptionsInSignatures", "PMD.CommentRequired"})
+@SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.AvoidUncheckedExceptionsInSignatures",
+        "PMD.CommentRequired", "PMD.TooManyMethods"})
 public abstract class SimpleCommand extends Command implements PluginIdentifiableCommand {
+    private static final String CRAFTBUKKIT_PACKAGE = Bukkit.getServer().getClass().getPackage().getName();
+
     public final int minimalArgs;
 
     /**
@@ -53,6 +56,10 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
         this.log = log;
         this.minimalArgs = minimalArgs;
         this.perimssion = reqPermission;
+    }
+
+    private static String cbClass(final String className) {
+        return CRAFTBUKKIT_PACKAGE + "." + className;
     }
 
     /**
@@ -190,13 +197,9 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     }
 
     private void syncCraftBukkitCommands() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        final Class<?> craftServer = Class.forName("org.bukkit.craftbukkit." + getServerVersion() + ".CraftServer");
+        final Class<?> craftServer = Class.forName(cbClass("CraftServer"));
         final Method method = craftServer.getDeclaredMethod("syncCommands");
         method.invoke(Bukkit.getServer());
-    }
-
-    private String getServerVersion() {
-        return Bukkit.getServer().getClass().getPackage().getName().substring("org.bukkit.craftbukkit.".length());
     }
 
     @Override

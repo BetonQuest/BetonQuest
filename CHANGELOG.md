@@ -16,6 +16,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 - `weather` event did not use `duration`
 - `lever` event does not work with redstone
+- papers future remove of CB package relocation
 ### Security
 
 ## [2.0.0] - 2023-12-31
