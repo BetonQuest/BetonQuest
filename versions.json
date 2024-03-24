@@ -7,13 +7,6 @@
     ]
   },
   {
-    "version": "2.0-DEV",
-    "title": "2.0-DEV",
-    "aliases": [
-      "DEV"
-    ]
-  },
-  {
     "version": "1.12",
     "title": "1.12",
     "aliases": []
