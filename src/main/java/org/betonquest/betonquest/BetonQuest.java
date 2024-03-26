@@ -1,5 +1,6 @@
 package org.betonquest.betonquest;
 
+import com.google.common.collect.ImmutableList;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.papermc.lib.PaperLib;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -535,6 +536,15 @@ public class BetonQuest extends JavaPlugin {
             getInstance().log.warn(eventID.getPackage(), "Error while firing '" + eventID + "' event: " + e.getMessage(), e);
             return true;
         }
+    }
+
+    /**
+     * Return the events have been registered into BetonQuest
+     *
+     * @return the events
+     */
+    public static ImmutableList<QuestEvent> getEvents() {
+        return ImmutableList.copyOf(EVENTS.values());
     }
 
     /**
