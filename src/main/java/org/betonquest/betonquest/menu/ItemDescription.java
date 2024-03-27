@@ -55,7 +55,7 @@ public class ItemDescription {
         }
         final List<String> lore = new ArrayList<>(lines.size());
         for (final Line line : lines) {
-            lore.addAll(Arrays.asList(line.resolve(profile).split("\n")));
+            lore.addAll(Arrays.asList(line.resolve(profile).split("\n|\\\\n")));
         }
         return lore;
     }
