@@ -207,12 +207,14 @@ If you want to add a font style (bold, italic etc.) do so after placing a comma.
   * `number` is the option number
   * `option` is the text of an option
 
-### Conversation Settings: ChestIO
+### Conversation Settings: ChestIO & SlowTellrawIO
 
 * `conversation_IO_config` manages settings for individual conversation IO's:
   - `chest` manages settings for the chest conversation IO
     - `show_number` will show the player number option if true (default: true)
     - `show_npc_text` will show the npc text in every player option if true (default: true)
+  - `slowtellraw` manages settings for the slowtellraw conversation IO
+    - `message_delay` is the delay ticks between each message (default: 2)
 
 ### Quest downloader
 

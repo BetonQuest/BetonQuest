@@ -6,6 +6,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
+- config option `conversation_IO_config.slowtellraw.message_delay` to set the delay between messages in the SlowTellRaw conversation IO
 ### Changed
 ### Deprecated
 ### Removed
