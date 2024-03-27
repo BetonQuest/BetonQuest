@@ -34,6 +34,9 @@ public class SlowTellrawConvIO extends TellrawConvIO {
         // Load config
         if (BetonQuest.getInstance().getPluginConfig().contains("conversation_IO_config.slowtellraw")) {
             final ConfigurationSection config = BetonQuest.getInstance().getPluginConfig().getConfigurationSection("conversation_IO_config.slowtellraw");
+            if (config == null) {
+                return;
+            }
             this.messageDelay = config.getInt("message_delay", messageDelay);
             if (this.messageDelay <= 0) {
                 BetonQuest.getInstance().getLogger().warning("Invalid message delay for SlowTellrawConvIO, using default value of 2");
