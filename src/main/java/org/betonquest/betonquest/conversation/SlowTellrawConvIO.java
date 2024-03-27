@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -21,6 +22,8 @@ public class SlowTellrawConvIO extends TellrawConvIO {
 
     private List<String> endLines;
 
+    private int messageDelay = 2;
+
     public SlowTellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         super(conv, onlineProfile);
         final StringBuilder string = new StringBuilder();
@@ -28,7 +31,15 @@ public class SlowTellrawConvIO extends TellrawConvIO {
             string.append(color);
         }
         this.npcTextColor = string.toString();
-
+        // Load config
+        if (BetonQuest.getInstance().getPluginConfig().contains("conversation_IO_config.slowtellraw")) {
+            final ConfigurationSection config = BetonQuest.getInstance().getPluginConfig().getConfigurationSection("conversation_IO_config.slowtellraw");
+            this.messageDelay = config.getInt("message_delay", messageDelay);
+            if (this.messageDelay <= 0) {
+                BetonQuest.getInstance().getLogger().warning("Invalid message delay for SlowTellrawConvIO, using default value of 2");
+                this.messageDelay = 2;
+            }
+        }
     }
 
     @Override
@@ -80,7 +91,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
                 }
                 conv.sendMessage(lines[lineCount++]);
             }
-        }.runTaskTimer(BetonQuest.getInstance(), 0, 2);
+        }.runTaskTimer(BetonQuest.getInstance(), 0, messageDelay);
     }
 
     @Override
