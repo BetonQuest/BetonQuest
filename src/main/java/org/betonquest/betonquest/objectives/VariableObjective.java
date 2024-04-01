@@ -130,7 +130,7 @@ public class VariableObjective extends Objective implements Listener {
             return part
                     .replace("\\", "\\\\")
                     .replace(":", "\\:")
-                    .replace("\n", "\\n");
+                    .replace("\n", "\\\\n");
         }
 
         public static Map<String, String> deserializeData(final String data) {
