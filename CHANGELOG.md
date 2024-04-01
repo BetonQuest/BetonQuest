@@ -10,6 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Deprecated
 ### Removed
 ### Fixed
+- objectives' vars now behave correctly after reload/logout
 ### Security
 
 ## [2.0.1] - 2024-03-24
