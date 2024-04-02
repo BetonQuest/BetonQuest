@@ -63,9 +63,9 @@ class VariableObjectiveTest {
                 Arguments.of(Collections.emptyMap(), ""),
                 Arguments.of(Collections.singletonMap("test", "data"), "test:data"),
                 Arguments.of(linkedMapOf("one", "1", "two", "22", "three", "333"), "one:1\ntwo:22\nthree:333"),
-                Arguments.of(Collections.singletonMap("newline", "This is a\nnewline test!"), "newline:This is a\\\\nnewline test!"),
-                Arguments.of(Collections.singletonMap("multi-newline", "This\nis\na\nmulti\nnewline\ntest!"), "multi-newline:This\\\\nis\\\\na\\\\nmulti\\\\nnewline\\\\ntest!"),
-                Arguments.of(linkedMapOf("first-newliner", "This is a\nnewline test!", "second-newliner", "This also\ncontains a newline!"), "first-newliner:This is a\\\\nnewline test!\nsecond-newliner:This also\\\\ncontains a newline!"),
+                Arguments.of(Collections.singletonMap("newline", "This is a\nnewline test!"), "newline:This is a\\nnewline test!"),
+                Arguments.of(Collections.singletonMap("multi-newline", "This\nis\na\nmulti\nnewline\ntest!"), "multi-newline:This\\nis\\na\\nmulti\\nnewline\\ntest!"),
+                Arguments.of(linkedMapOf("first-newliner", "This is a\nnewline test!", "second-newliner", "This also\ncontains a newline!"), "first-newliner:This is a\\nnewline test!\nsecond-newliner:This also\\ncontains a newline!"),
                 Arguments.of(Collections.singletonMap("contains_colon", "This: Is a test."), "contains_colon:This\\: Is a test."),
                 Arguments.of(Collections.singletonMap("rouge", "back\\slash"), "rouge:back\\\\slash"),
                 Arguments.of(Collections.singletonMap("rou\\ge", "backslash"), "rou\\\\ge:backslash"),
@@ -75,8 +75,8 @@ class VariableObjectiveTest {
                 Arguments.of(Collections.singletonMap("ending:", ":beginning"), "ending\\::\\:beginning"),
                 Arguments.of(Collections.singletonMap("escaped_escape\\", "does_not_escape"), "escaped_escape\\\\:does_not_escape"),
                 Arguments.of(Collections.singletonMap(" starts_with_space ", " ends with space "), " starts_with_space : ends with space "),
-                Arguments.of(Collections.singletonMap("newline\nin_key?", "That's fancy!"), "newline\\\\nin_key?:That's fancy!"),
-                Arguments.of(linkedMapOf("test", "works", "newline_in\nsecond_key?", "That's fancy!"), "test:works\nnewline_in\\\\nsecond_key?:That's fancy!"),
+                Arguments.of(Collections.singletonMap("newline\nin_key?", "That's fancy!"), "newline\\nin_key?:That's fancy!"),
+                Arguments.of(linkedMapOf("test", "works", "newline_in\nsecond_key?", "That's fancy!"), "test:works\nnewline_in\\nsecond_key?:That's fancy!"),
                 Arguments.of(linkedMapOf("test", "works", "\\", "Only backslash key!"), "test:works\n\\\\:Only backslash key!"),
                 Arguments.of(linkedMapOf("test", "works", "\\\\\\", "Multi backslash key!"), "test:works\n\\\\\\\\\\\\:Multi backslash key!")
         );
