@@ -82,6 +82,31 @@ class VariableObjectiveTest {
         );
     }
 
+    public static Stream<Map<String, String>> variableObjectiveData() {
+        return Stream.of(
+                Collections.emptyMap(),
+                Collections.singletonMap("test", "data"),
+                linkedMapOf("one", "1", "two", "22", "three", "333"),
+                Collections.singletonMap("newline", "This is a\nnewline test!"),
+                Collections.singletonMap("multi-newline", "This\nis\na\nmulti\nnewline\ntest!"),
+                linkedMapOf("first-newliner", "This is a\nnewline test!", "second-newliner", "This also\ncontains a newline!"),
+                Collections.singletonMap("contains_colon", "This: Is a test."),
+                Collections.singletonMap("rouge", "back\\slash"),
+                Collections.singletonMap("rou\\ge", "backslash"),
+                Collections.singletonMap("evil:key", "Should still work correctly."),
+                Collections.singletonMap("space in key", "Whyyouask?WhynotIanswer!"),
+                linkedMapOf("test", "works", "space in second key", "Whyyouask?WhynotIanswer!"),
+                Collections.singletonMap("ending:", ":beginning"),
+                Collections.singletonMap("escaped_escape\\", "does_not_escape"),
+                Collections.singletonMap(" starts_with_space ", " ends with space "),
+                Collections.singletonMap("newline\nin_key?", "That's fancy!"),
+                linkedMapOf("test", "works", "newline_in\nsecond_key?", "That's fancy!"),
+                linkedMapOf("test", "works", "\\", "Only backslash key!"),
+                linkedMapOf("test", "works", "\\\\\\", "Multi backslash key!"),
+                Collections.singletonMap("test", "double-escaped\\\\newline?")
+        );
+    }
+
     private static Map<String, String> linkedMapOf(final String... values) {
         final Map<String, String> map = new LinkedHashMap<>();
         for (int index = 0; index < values.length - 1; index += 2) {
@@ -103,5 +128,13 @@ class VariableObjectiveTest {
     void storing_variables_as_serialized_data(final Map<String, String> variables, final String expectedData) {
         final String serialized = VariableObjective.VariableData.serializeData(variables);
         assertEquals(expectedData, serialized, "Serialized variable objective data instruction should be correct.");
+    }
+
+    @ParameterizedTest
+    @MethodSource("variableObjectiveData")
+    void cycling_variables_through_serialization(final Map<String, String> variables) {
+        final String serialized = VariableObjective.VariableData.serializeData(variables);
+        final Map<String, String> deserialized = VariableObjective.VariableData.deserializeData(serialized);
+        assertEquals(variables, deserialized, "Variables should be the same after going through serialization.");
     }
 }
