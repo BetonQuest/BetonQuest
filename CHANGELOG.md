@@ -10,6 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Deprecated
 ### Removed
 ### Fixed
+- `variable` objective loads newlines correctly
 ### Security
 
 ## [2.0.1] - 2024-03-24
