@@ -104,6 +104,8 @@ public class VariableObjective extends Objective implements Listener {
 
         private static final Pattern KEY_VALUE_PATTERN = Pattern.compile("^(?<key>(?:[^\n]*?[^\\\\\n])?(?:\\\\\\\\)+?|[^\n]*?[^\\\\\n]):(?<value>.*)$", Pattern.DOTALL);
 
+        private static final Pattern DESERIALIZE_PATTERN = Pattern.compile("\\\\(?<escaped>.)");
+
         private final Map<String, String> variables;
 
         public VariableData(final String instruction, final Profile profile, final String objID) {
@@ -130,7 +132,7 @@ public class VariableObjective extends Objective implements Listener {
             return part
                     .replace("\\", "\\\\")
                     .replace(":", "\\:")
-                    .replace("\n", "\\\\n");
+                    .replace("\n", "\\n");
         }
 
         public static Map<String, String> deserializeData(final String data) {
@@ -148,10 +150,16 @@ public class VariableObjective extends Objective implements Listener {
         }
 
         private static String deserializePart(final String part) {
-            return part
-                    .replace("\\\\n", "\n")
-                    .replace("\\:", ":")
-                    .replace("\\\\", "\\");
+            final Matcher matcher = DESERIALIZE_PATTERN.matcher(part);
+            final StringBuilder deserialized = new StringBuilder(part.length());
+            while (matcher.find()) {
+                switch (matcher.group("escaped")) {
+                    case "n" -> matcher.appendReplacement(deserialized, "\n");
+                    case ":", "\\" -> matcher.appendReplacement(deserialized, "${escaped}");
+                    default -> matcher.appendReplacement(deserialized, "\\\\${escaped}");
+                }
+            }
+            return matcher.appendTail(deserialized).toString();
         }
 
         public String get(final String key) {
