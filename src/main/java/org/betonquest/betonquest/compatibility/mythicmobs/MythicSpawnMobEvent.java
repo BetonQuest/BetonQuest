@@ -8,6 +8,7 @@ import io.lumine.mythic.core.mobs.ActiveMob;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.compatibility.Compatibility;
@@ -39,7 +40,7 @@ public class MythicSpawnMobEvent extends QuestEvent {
 
     private final boolean targetPlayer;
 
-    private final String marked;
+    private final VariableString marked;
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public MythicSpawnMobEvent(final Instruction instruction) throws InstructionParseException {
@@ -59,7 +60,10 @@ public class MythicSpawnMobEvent extends QuestEvent {
         }
         targetPlayer = instruction.hasArgument("target");
         final String markedString = instruction.getOptional("marked");
-        marked = markedString == null ? null : Utils.addPackage(instruction.getPackage(), markedString);
+        marked = markedString == null ? null : new VariableString(
+                instruction.getPackage(),
+                Utils.addPackage(instruction.getPackage(), markedString)
+        );
 
     }
 
@@ -81,7 +85,7 @@ public class MythicSpawnMobEvent extends QuestEvent {
                     Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> targetMob.setTarget(BukkitAdapter.adapt(player)), 20L);
                 }
                 if (marked != null) {
-                    entity.setMetadata("betonquest-marked", new FixedMetadataValue(BetonQuest.getInstance(), marked.replace("%player%", profile.getProfileUUID().toString())));
+                    entity.setMetadata("betonquest-marked", new FixedMetadataValue(BetonQuest.getInstance(), marked.getString(profile)));
                 }
             } catch (final InvalidMobTypeException e) {
                 throw new QuestRuntimeException("MythicMob type " + mob + " is invalid.", e);

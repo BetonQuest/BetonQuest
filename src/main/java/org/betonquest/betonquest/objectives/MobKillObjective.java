@@ -3,6 +3,7 @@ package org.betonquest.betonquest.objectives;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
@@ -28,7 +29,7 @@ public class MobKillObjective extends CountingObjective implements Listener {
 
     protected String name;
 
-    protected String marked;
+    protected VariableString marked;
 
     public MobKillObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "mobs_to_kill");
@@ -39,10 +40,11 @@ public class MobKillObjective extends CountingObjective implements Listener {
         if (name != null) {
             name = Utils.format(name, true, false).replace('_', ' ');
         }
-        marked = instruction.getOptional("marked");
-        if (marked != null) {
-            marked = Utils.addPackage(instruction.getPackage(), marked);
-        }
+        final String markedString = instruction.getOptional("marked");
+        marked = markedString == null ? null : new VariableString(
+                instruction.getPackage(),
+                Utils.addPackage(instruction.getPackage(), markedString)
+        );
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
@@ -62,7 +64,7 @@ public class MobKillObjective extends CountingObjective implements Listener {
             }
             final List<MetadataValue> meta = event.getEntity().getMetadata("betonquest-marked");
             for (final MetadataValue m : meta) {
-                if (!m.asString().equals(marked.replace("%player%", event.getProfile().getProfileUUID().toString()))) {
+                if (!m.asString().equals(marked.getString(onlineProfile))) {
                     return;
                 }
             }
