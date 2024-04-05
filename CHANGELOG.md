@@ -8,6 +8,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 - `block` objective now supports parameters `loc` and `region` to limit the area
 - `block` objective now supports the parameter `ignorecancel` allow counting breaking / placing blocks in protected regions
+- command `variable` to list and modify variables on a variable objective
 ### Changed
 ### Deprecated
 ### Removed

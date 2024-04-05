@@ -41,6 +41,7 @@ import org.betonquest.betonquest.modules.logger.handler.history.LogPublishingCon
 import org.betonquest.betonquest.modules.web.downloader.DownloadFailedException;
 import org.betonquest.betonquest.modules.web.downloader.Downloader;
 import org.betonquest.betonquest.modules.web.updater.Updater;
+import org.betonquest.betonquest.objectives.VariableObjective;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NoNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
@@ -282,6 +283,17 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         }
                     }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
+                case "variable":
+                case "var":
+                    log.debug("Loading data asynchronously");
+                    new BukkitRunnable() {
+
+                        @Override
+                        public void run() {
+                            handleVariables(sender, args);
+                        }
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    break;
                 case "version":
                 case "ver":
                 case "v":
@@ -344,7 +356,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (args.length == 1) {
             return Optional.of(Arrays.asList("condition", "event", "item", "give", "objective", "globaltag",
                     "globalpoint", "tag", "point", "journal", "delete", "rename", "version", "purge",
-                    "update", "reload", "backup", "debug", "download"));
+                    "update", "reload", "backup", "debug", "download", "variable"));
         }
         switch (args[0].toLowerCase(Locale.ROOT)) {
             case "conditions":
@@ -406,6 +418,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 return completeDebug(args);
             case "download":
                 return completeDownload(args);
+            case "variable":
+            case "var":
+                return completeVariables(args);
             case "version":
             case "ver":
             case "v":
@@ -1561,6 +1576,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         cmds.put("event", "event <player> <event>");
         cmds.put("item", "item <name>");
         cmds.put("give", "give <name>");
+        cmds.put("variable", "variable <player> <variable> [list/set]");
         cmds.put("rename", "rename <tag/point/globalpoint/objective/journal> <old> <new>");
         cmds.put("delete", "delete <tag/point/objective/journal> <name>");
         cmds.put("config", "config <read/set/add> <path> [string]");
@@ -1811,6 +1827,135 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     Optional.of(Stream.of("overwrite", "recursive").filter(tag -> !Arrays.asList(args).contains(tag)).toList());
             default -> Optional.of(List.of());
         };
+    }
+
+    /**
+     * Variables stuff.
+     */
+    @SuppressWarnings("PMD.NcssCount")
+    private void handleVariables(final CommandSender sender, final String... args) {
+        final Profile profile = getTargetProfile(sender, args);
+        if (profile == null) {
+            return;
+        }
+
+        final boolean isOnline = profile.getOnlineProfile().isPresent();
+        if (!isOnline) {
+            log.debug("Can't access variable data on offline player");
+            sendMessage(sender, "offline_invalid");
+            return;
+        }
+
+        if (args.length == 2) {
+            log.debug("Missing objective instruction string");
+            sendMessage(sender, "specify_objective");
+            return;
+        }
+
+        // get the objective
+        final ObjectiveID objectiveID;
+        try {
+            objectiveID = new ObjectiveID(null, args[2]);
+        } catch (final ObjectNotFoundException e) {
+            sendMessage(sender, "error", e.getMessage());
+            log.warn("Could not find objective: " + e.getMessage(), e);
+            return;
+        }
+        final Objective tmp = BetonQuest.getInstance().getObjective(objectiveID);
+        if (!(tmp instanceof final VariableObjective variableObjective)) {
+            if (tmp == null) {
+                log.debug("Missing objective instruction string");
+            } else {
+                log.debug(tmp.getLabel() + " is not a variable objective");
+            }
+            sendMessage(sender, "specify_objective");
+            return;
+        }
+        log.debug("Using variable objective " + variableObjective.getLabel());
+
+        // if there are no arguments then list player's objective's entries
+        if (args.length < 4 || "list".equalsIgnoreCase(args[3]) || "l".equalsIgnoreCase(args[3])) {
+            // check for actual values
+            final Map<String, String> properties = variableObjective.getProperties(profile);
+            if (properties == null) {
+                log.debug("No property for profile");
+                sendMessage(sender, "player_no_property");
+                return;
+            }
+            // display variable objective keys and values
+            log.debug("Listing keys and values");
+            final Predicate<String> shouldDisplay = createListFilter(args, 4, Function.identity());
+            sendMessage(sender, "player_variables", variableObjective.getLabel());
+            properties.entrySet().stream()
+                    .filter(entry -> shouldDisplay.test(entry.getKey()))
+                    .sorted((o1, o2) -> o1.getKey().compareToIgnoreCase(o2.getKey()))
+                    .forEach(entry -> sender.sendMessage("§b- " + entry.getKey() + "§e: §a" + entry.getValue()));
+            return;
+        }
+        switch (args[3].toLowerCase(Locale.ROOT)) {
+            case "set":
+            case "s":
+                if (args.length == 4) {
+                    log.debug("Missing amount");
+                    sendMessage(sender, "arguments");
+                    return;
+                }
+                final String value;
+                if (args.length == 5) {
+                    value = null;
+                } else {
+                    value = String.join(" ", Arrays.copyOfRange(args, 5, args.length));
+                }
+                log.debug("Setting value " + value + " for key " + args[4] + " for " + profile + " in " + variableObjective.getLabel());
+                variableObjective.store(profile, args[4], value);
+                sendMessage(sender, "value_set", value, args[4]);
+                break;
+            default:
+                // if there was something else, display error message
+                log.debug("The argument was unknown");
+                sendMessage(sender, "unknown_argument");
+                break;
+        }
+    }
+
+    /**
+     * Returns a list including all possible options for tab complete of the
+     * /betonquest variables command
+     *
+     * @param args
+     * @return
+     */
+    private Optional<List<String>> completeVariables(final String... args) {
+        if (args.length == 2) {
+            return Optional.empty();
+        }
+        if (args.length == 3) {
+            final String last = args[args.length - 1];
+            if (last == null || !last.contains(".")) {
+                return completePackage();
+            } else {
+                final String pack = last.substring(0, last.indexOf('.'));
+                final QuestPackage configPack = Config.getPackages().get(pack);
+                if (configPack == null) {
+                    return Optional.of(new ArrayList<>(0));
+                }
+                final ConfigurationSection configuration = configPack.getConfig().getConfigurationSection("objectives");
+                final List<String> completions = new ArrayList<>();
+                if (configuration != null) {
+                    for (final String key : configuration.getKeys(false)) {
+                        final String rawObjectiveInstruction = configuration.getString(key);
+                        if (rawObjectiveInstruction != null && rawObjectiveInstruction.stripIndent().startsWith("variable")) {
+                            completions.add(pack + '.' + key);
+                        }
+                    }
+                }
+                return Optional.of(completions);
+            }
+        }
+        if (args.length == 4) {
+            return Optional.of(Arrays.asList("list", "set"));
+        }
+        return Optional.of(new ArrayList<>());
     }
 
     private Level getLogLevel(final String arg) {
