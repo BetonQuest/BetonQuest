@@ -22,9 +22,8 @@ Optional arguments are displayed as such: `[argument]`.
 * `/q event <playerName> <package.eventID>` - Fires an event for the player
 * `/q condition <playerName> <package.conditionID>` - Shows if the player meet specified condition or not
 * `/q item <package.itemID>` - Creates an item based on what you're holding in hand
-* `/q variable <playerName> <package.objectiveID> <list/set> [key] [value] [filter]` - Lists or sets online player's 
-active variable objective's values, similar to the 
-[variable event](../Scripting/Building-Blocks/Events-List.md#variable-variable)
+* `/q variable <playerName> <package.objectiveID> <list/set> [key/filter] [value]` - Lists or sets online player's 
+active variable objective's values, similar to the [variable event](../Scripting/Building-Blocks/Events-List.md#variable-variable)
 * `/q give <package.itemID>` - Gives you an item defined in the configuration
 * `/q purge <playerName>` - Deletes all player's data from the database
 * `/q rename <tag/point/globalpoint/objective/entry> <oldName> <newName>` - Renames all specified things in the database
