@@ -204,10 +204,14 @@ If the player is not in a conversation, the variable is empty.
 
 ### Player Name Variable
 
-This variable will be replaced with the name of the player. If you add `display` argument, it will use display name instead of real name.
+The variable `%player%` is the same as `%player.name%` and will display the name of the player.
+`Display` will use the display name used in chat and `uuid` will display the UUID of the player.
 
 ```
+%player%
+%player.name%
 %player.display%
+%player.uuid%
 ```
 
 ### Random Number Variable
