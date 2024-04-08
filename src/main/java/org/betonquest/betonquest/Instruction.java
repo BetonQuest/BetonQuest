@@ -381,7 +381,7 @@ public class Instruction {
     }
 
     public BlockSelector getBlockSelector(final String string) throws InstructionParseException {
-        return new BlockSelector(string);
+        return string == null ? null : new BlockSelector(string);
     }
 
     public EntityType getEntity() throws InstructionParseException {
