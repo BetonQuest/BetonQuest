@@ -6,8 +6,10 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.betonquest.betonquest.utils.PlayerConverter;
+import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -28,12 +30,23 @@ public class BlockObjective extends CountingObjective implements Listener {
 
     private final boolean noSafety;
 
+    private final CompoundLocation location;
+
+    private final boolean hasLocation;
+
+    private final boolean ignorecancel;
+
     public BlockObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         selector = instruction.getBlockSelector();
         exactMatch = instruction.hasArgument("exactMatch");
         targetAmount = instruction.getVarNum();
         noSafety = instruction.hasArgument("noSafety");
+        final String stringlocation = instruction.getOptional("loc", "false");
+        location = "false".equalsIgnoreCase(stringlocation) ? null : new CompoundLocation(instruction.getPackage(), stringlocation);
+        hasLocation = !"false".equalsIgnoreCase(stringlocation);
+        ignorecancel = instruction.hasArgument("ignorecancel");
+
     }
 
     @Override
@@ -41,29 +54,40 @@ public class BlockObjective extends CountingObjective implements Listener {
         return String.valueOf(targetAmount.getInt(profile));
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void onBlockPlace(final BlockPlaceEvent event) {
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onBlockPlace(final BlockPlaceEvent event) throws QuestRuntimeException {
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(onlineProfile) && selector.match(event.getBlock(), exactMatch) && checkConditions(onlineProfile)) {
+            if (hasLocation && !event.getBlock().getLocation().equals(location.getLocation(onlineProfile))) {
+                return;
+            }
             if (getCountingData(onlineProfile).getDirectionFactor() < 0 && noSafety) {
                 return;
             }
-            handleDataChange(onlineProfile, getCountingData(onlineProfile).add());
+            handleDataChange(onlineProfile, getCountingData(onlineProfile).add(), event.isCancelled());
         }
+
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void onBlockBreak(final BlockBreakEvent event) {
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onBlockBreak(final BlockBreakEvent event) throws QuestRuntimeException {
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(onlineProfile) && selector.match(event.getBlock(), exactMatch) && checkConditions(onlineProfile)) {
+            if (hasLocation && !event.getBlock().getLocation().equals(location.getLocation(onlineProfile))) {
+                return;
+            }
             if (getCountingData(onlineProfile).getDirectionFactor() > 0 && noSafety) {
                 return;
             }
-            handleDataChange(onlineProfile, getCountingData(onlineProfile).subtract());
+            handleDataChange(onlineProfile, getCountingData(onlineProfile).subtract(), event.isCancelled());
+
         }
     }
 
-    private void handleDataChange(final OnlineProfile onlineProfile, final CountingData data) {
+    private void handleDataChange(final OnlineProfile onlineProfile, final CountingData data, final boolean cancel) {
+        if (cancel && !ignorecancel) {
+            return;
+        }
         final String message = data.getDirectionFactor() > 0 ? "blocks_to_place" : "blocks_to_break";
         completeIfDoneOrNotify(onlineProfile, message);
     }
