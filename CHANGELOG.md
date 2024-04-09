@@ -11,6 +11,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Removed
 ### Fixed
 - `variable` objective loads newlines correctly
+- exception in `lookAtBlock` condition when omitting the type
 ### Security
 
 ## [2.0.1] - 2024-03-24
