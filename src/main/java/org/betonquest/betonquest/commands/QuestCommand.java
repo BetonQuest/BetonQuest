@@ -1853,12 +1853,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
 
-        if (args.length == 3) {
-            log.debug("Missing argument");
-            sendMessage(sender, "arguments");
-            return;
-        }
-
         // get the objective
         final ObjectiveID objectiveID;
         try {
@@ -1880,7 +1874,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         log.debug("Using variable objective " + variableObjective.getLabel());
 
-        switch (args[3].toLowerCase(Locale.ROOT)) {
+        final String subCommand = args.length == 3 ? "list" : args[3].toLowerCase(Locale.ROOT);
+        switch (subCommand) {
             case "list":
             case "l":
                 // check for actual values
