@@ -5551,6 +5551,24 @@ give accurate results. Experiment with this objective a bit to make sure you've 
 <td>Disabled</td>
 <td>Displays messages to the player each time they progress the objective. Optionally with the notification interval after colon.</td>
 </tr>
+<tr>
+<td><em>Location</em></td>
+<td>loc:location</td>
+<td>Optional. Default: none</td>
+<td>Adds an optional location to the objective, only counting blocks broken/placed at the specific location.</td>
+</tr>
+<tr>
+<td><em>Region definer</em></td>
+<td>region:location</td>
+<td>Optional. Default: none</td>
+<td>Adds an optional second location to only count blocks broken/placed in a rectangle between the specified location and this location. This won't have an effect if parameter location isn't set.</td>
+</tr>
+<tr>
+<td><em>ignorecancel</em></td>
+<td>Keyword (<code>ignorecancel</code>)</td>
+<td>Protected blocks will not affect the objective</td>
+<td>Allows the objective to progress, even if the event is cancelled by the Server. For example if the player is not allowed to build.</td>
+</tr>
 </tbody>
 </table>
 <div class="highlight"><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
