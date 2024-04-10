@@ -20,6 +20,7 @@ en:
   config_set_error: '&cCould not set specified path.'
   item_created: '&2Item saved to configuration as {1}.'
   value_set: '&aValue {1} set for key {2}.'
+  key_remove: '&aRemoved key {1}.'
   player_variables: '&aPlayer''s variables in &b{1}&a:'
   player_no_property: '&cNo property stored for Player.'
   player_objectives: '&aPlayer''s objectives:'

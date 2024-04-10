@@ -69,6 +69,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -1576,7 +1577,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         cmds.put("event", "event <player> <event>");
         cmds.put("item", "item <name>");
         cmds.put("give", "give <name>");
-        cmds.put("variable", "variable <player> <variable> [list/set]");
+        cmds.put("variable", "variable <player> <variable> [list/set/del]");
         cmds.put("rename", "rename <tag/point/globalpoint/objective/journal> <old> <new>");
         cmds.put("delete", "delete <tag/point/objective/journal> <name>");
         cmds.put("config", "config <read/set/add> <path> [string]");
@@ -1852,6 +1853,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
 
+        if (args.length == 3) {
+            log.debug("Missing argument");
+            sendMessage(sender, "arguments");
+            return;
+        }
+
         // get the objective
         final ObjectiveID objectiveID;
         try {
@@ -1873,42 +1880,47 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         log.debug("Using variable objective " + variableObjective.getLabel());
 
-        // if there are no arguments then list player's objective's entries
-        if (args.length < 4 || "list".equalsIgnoreCase(args[3]) || "l".equalsIgnoreCase(args[3])) {
-            // check for actual values
-            final Map<String, String> properties = variableObjective.getProperties(profile);
-            if (properties == null) {
-                log.debug("No property for profile");
-                sendMessage(sender, "player_no_property");
-                return;
-            }
-            // display variable objective keys and values
-            log.debug("Listing keys and values");
-            final Predicate<String> shouldDisplay = createListFilter(args, 4, Function.identity());
-            sendMessage(sender, "player_variables", variableObjective.getLabel());
-            properties.entrySet().stream()
-                    .filter(entry -> shouldDisplay.test(entry.getKey()))
-                    .sorted((o1, o2) -> o1.getKey().compareToIgnoreCase(o2.getKey()))
-                    .forEach(entry -> sender.sendMessage("§b- " + entry.getKey() + "§e: §a" + entry.getValue()));
-            return;
-        }
         switch (args[3].toLowerCase(Locale.ROOT)) {
+            case "list":
+            case "l":
+                // check for actual values
+                final Map<String, String> properties = variableObjective.getProperties(profile);
+                if (properties == null) {
+                    log.debug("No property for profile");
+                    sendMessage(sender, "player_no_property");
+                    return;
+                }
+                // display variable objective keys and values
+                log.debug("Listing keys and values");
+                final Predicate<String> shouldDisplay = createListFilter(args, 4, Function.identity());
+                sendMessage(sender, "player_variables", variableObjective.getLabel());
+                properties.entrySet().stream()
+                        .filter(entry -> shouldDisplay.test(entry.getKey()))
+                        .sorted((o1, o2) -> o1.getKey().compareToIgnoreCase(o2.getKey()))
+                        .forEach(entry -> sender.sendMessage("§b- " + entry.getKey() + "§e: §a" + entry.getValue()));
+                break;
             case "set":
             case "s":
-                if (args.length == 4) {
+                if (args.length < 6) {
                     log.debug("Missing amount");
                     sendMessage(sender, "arguments");
                     return;
                 }
-                final String value;
-                if (args.length == 5) {
-                    value = null;
-                } else {
-                    value = String.join(" ", Arrays.copyOfRange(args, 5, args.length));
-                }
+                final String value = String.join(" ", Arrays.copyOfRange(args, 5, args.length));
                 log.debug("Setting value " + value + " for key " + args[4] + " for " + profile + " in " + variableObjective.getLabel());
                 variableObjective.store(profile, args[4], value);
                 sendMessage(sender, "value_set", value, args[4]);
+                break;
+            case "del":
+            case "d":
+                if (args.length < 5) {
+                    log.debug("Missing amount");
+                    sendMessage(sender, "arguments");
+                    return;
+                }
+                log.debug("Removing key " + args[4] + " for " + profile + " in " + variableObjective.getLabel());
+                variableObjective.store(profile, args[4], null);
+                sendMessage(sender, "key_remove", args[4]);
                 break;
             default:
                 // if there was something else, display error message
@@ -1937,7 +1949,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 final String pack = last.substring(0, last.indexOf('.'));
                 final QuestPackage configPack = Config.getPackages().get(pack);
                 if (configPack == null) {
-                    return Optional.of(new ArrayList<>(0));
+                    return Optional.of(Collections.emptyList());
                 }
                 final ConfigurationSection configuration = configPack.getConfig().getConfigurationSection("objectives");
                 final List<String> completions = new ArrayList<>();
@@ -1953,9 +1965,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             }
         }
         if (args.length == 4) {
-            return Optional.of(Arrays.asList("list", "set"));
+            return Optional.of(Arrays.asList("list", "set", "del"));
         }
-        return Optional.of(new ArrayList<>());
+        return Optional.of(Collections.emptyList());
     }
 
     private Level getLogLevel(final String arg) {

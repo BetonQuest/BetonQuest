@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -103,11 +104,11 @@ public class VariableObjective extends Objective implements Listener {
      * Gets the currently stored variables.
      *
      * @param profile the {@link Profile} of the player
-     * @return an unmodifiable copy of the active variable values
+     * @return the profile's variables as unmodifiable map; or null if the objective is not active for the profile
      */
     public @Nullable Map<String, String> getProperties(final Profile profile) {
         final VariableData profileData = (VariableData) dataMap.get(profile);
-        return profileData == null ? null : Map.copyOf(profileData.variables);
+        return profileData == null ? null : Collections.unmodifiableMap(profileData.variables);
     }
 
     public static class VariableData extends ObjectiveData {
