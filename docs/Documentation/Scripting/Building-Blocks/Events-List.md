@@ -360,10 +360,32 @@ Works the same way as a normal tag event, but instead of setting a tag for one p
     ```YAML
     globaltag add global_areNPCsAgressive
     ```
+## Glowing Blocks: `glow`
+
+**requires a server running the PaperMC server software**
+
+This event makes a specified block or a cuboid region of blocks glow. The first argument is whether to add or remove a glow.
+There are `add` and `delete`. The second argument is the location. If you want to specify multiple blocks to glow or not glow, you can use the `region` parameter.
+If `add` is specified, an optional color can be defined using the `color` parameter.
+
+_Note: try not to define air as glowing, as the glow effect is achieved through invisible shulker boxes. The inner 
+shulker is still visible._
+
+| Parameter | Syntax            | Default Value | Explanation                                                                                                                                                                                                                   |
+|-----------|-------------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| _region_  | `region:location` | not defined   | A second location to specify a cuboid region between the first defined location and this.                                                                                                                                     |
+| _color_   | `color:color`     | `WHITE`       | Color of the glow effect. Possible values are: `AQUA`, `BLACK`, `BLUE`, `DARK_AQUA`, `DARK_BLUE`, `DARK_GRAY`, `DARK_GREEN`, `DARK_PURPLE`, `DARK_RED`, `GOLD`, `GRAY`, `GREEN`, `LIGHT_PURPLE`, `RED`, `WHITE` and `YELLOW`. |
+
+!!! example
+    ```YAML
+    glow add 100;200;300;world
+    glow add 100;200;300;world region:105;205;305;world color:GOLD
+    glow delete 100;200;300;world
+    ```
 
 ## Hunger: `hunger`
 
-This event changes the food level of the player. The second argument is the modification type.
+This event changes the food level of the player. The first argument is the modification type.
 There are `give`, `take` and `set`. The second argument is the amount. With `set` can the food level be anything.
 If `give` or `take` is specified the final amount won't be more than 20 or less than 0.
 If the hunger level is below 7, the player cannot sprint.

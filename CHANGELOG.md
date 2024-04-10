@@ -6,8 +6,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
-- `block` objective now supports parameters `loc` and `region` to limit the area
-- `block` objective now supports the parameter `ignorecancel` allow counting breaking / placing blocks in protected regions
+- `glow` event allowing players to make specific blocks glow for a player (requires PaperMC server software)
 ### Changed
 ### Deprecated
 ### Removed

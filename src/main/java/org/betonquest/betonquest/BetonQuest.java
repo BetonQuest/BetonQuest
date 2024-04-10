@@ -1,6 +1,7 @@
 package org.betonquest.betonquest;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import fr.skytasul.glowingentities.GlowingBlocks;
 import io.papermc.lib.PaperLib;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.apache.logging.log4j.LogManager;
@@ -222,6 +223,7 @@ import org.betonquest.betonquest.quest.event.entity.RemoveEntityEventFactory;
 import org.betonquest.betonquest.quest.event.experience.ExperienceEventFactory;
 import org.betonquest.betonquest.quest.event.explosion.ExplosionEventFactory;
 import org.betonquest.betonquest.quest.event.give.GiveEventFactory;
+import org.betonquest.betonquest.quest.event.glow.GlowEventFactory;
 import org.betonquest.betonquest.quest.event.hunger.HungerEventFactory;
 import org.betonquest.betonquest.quest.event.item.ItemDurabilityEventFactory;
 import org.betonquest.betonquest.quest.event.journal.GiveJournalEventFactory;
@@ -1005,6 +1007,8 @@ public class BetonQuest extends JavaPlugin {
         if (PaperLib.isPaper()) {
             registerObjectives("jump", JumpObjective.class);
             registerObjectives("equip", EquipItemObjective.class);
+            final GlowingBlocks glowingBlocks = new GlowingBlocks(this);
+            registerNonStaticEvent("glow", new GlowEventFactory(glowingBlocks));
         }
 
         registerConversationIO("simple", SimpleConvIO.class);
