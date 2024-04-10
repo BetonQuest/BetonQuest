@@ -48,7 +48,7 @@ public class BlockObjective extends CountingObjective implements Listener {
         targetAmount = instruction.getVarNum();
         noSafety = instruction.hasArgument("noSafety");
         location = instruction.getLocation(instruction.getOptional("loc"));
-        location2 = instruction.getLocation(instruction.getOptional("loc2"));
+        location2 = instruction.getLocation(instruction.getOptional("region"));
         ignorecancel = instruction.hasArgument("ignorecancel");
     }
 
@@ -112,7 +112,7 @@ public class BlockObjective extends CountingObjective implements Listener {
                 if (location2 != null) {
                     return isInRange(loc, profile);
                 }
-                return loc.equals(location.getLocation(profile));
+                return loc.getBlock().getLocation().equals(location.getLocation(profile));
             }
         } catch (QuestRuntimeException e) {
             logger.error(instruction.getPackage(), e.getMessage());
@@ -126,11 +126,15 @@ public class BlockObjective extends CountingObjective implements Listener {
         return inBetween(loc1, loc2, loc);
     }
 
+    private boolean inBetween(final int range1, final int range2, final int pos) {
+        return Integer.min(range1, range2) <= pos && pos <= Integer.max(range1, range2);
+    }
+
+    private boolean inWorld(final Location range1, final Location range2, final Location pos) {
+        return range1.getWorld().equals(range2.getWorld()) && range2.getWorld().equals(pos.getWorld());
+    }
+
     private boolean inBetween(final Location range1, final Location range2, final Location pos) {
-        final boolean inX = Integer.min(range1.getBlockX(), range2.getBlockX()) <= pos.getBlockX() && pos.getBlockX() <= Integer.max(range1.getBlockX(), range2.getBlockX());
-        final boolean inY = Integer.min(range1.getBlockY(), range2.getBlockY()) <= pos.getBlockY() && pos.getBlockY() <= Integer.max(range1.getBlockY(), range2.getBlockY());
-        final boolean inZ = Integer.min(range1.getBlockZ(), range2.getBlockZ()) <= pos.getBlockZ() && pos.getBlockZ() <= Integer.max(range1.getBlockZ(), range2.getBlockZ());
-        final boolean inWorld = range1.getWorld().equals(range2.getWorld()) && range2.getWorld().equals(pos.getWorld());
-        return inX && inY && inZ && inWorld;
+        return inBetween(range1.getBlockX(), range2.getBlockX(), pos.getBlockX()) && inBetween(range1.getBlockY(), range2.getBlockY(), pos.getBlockY()) && inBetween(range1.getBlockZ(), range2.getBlockZ(), pos.getBlockZ()) && inWorld(range1, range2, pos);
     }
 }
