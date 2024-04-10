@@ -26,18 +26,39 @@ import org.bukkit.event.block.BlockPlaceEvent;
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public class BlockObjective extends CountingObjective implements Listener {
+    /**
+     * Blockselector parameter.
+     */
     private final BlockSelector selector;
 
+    /**
+     * Optional exactMatch parameter.
+     */
     private final boolean exactMatch;
 
+    /**
+     * Optional noSafety parameter.
+     */
     private final boolean noSafety;
 
+    /**
+     * Optional location parameter.
+     */
     private final CompoundLocation location;
 
-    private final CompoundLocation location2;
+    /**
+     * Optional region parameter. Used together with {@link #location} to form a cuboid region.
+     */
+    private final CompoundLocation region;
 
+    /**
+     * Optional ignorecancel parameter.
+     */
     private final boolean ignorecancel;
 
+    /**
+     * Logger for exception handling.
+     */
     private final BetonQuestLogger logger;
 
     public BlockObjective(final Instruction instruction) throws InstructionParseException {
@@ -48,7 +69,7 @@ public class BlockObjective extends CountingObjective implements Listener {
         targetAmount = instruction.getVarNum();
         noSafety = instruction.hasArgument("noSafety");
         location = instruction.getLocation(instruction.getOptional("loc"));
-        location2 = instruction.getLocation(instruction.getOptional("region"));
+        region = instruction.getLocation(instruction.getOptional("region"));
         ignorecancel = instruction.hasArgument("ignorecancel");
     }
 
@@ -109,32 +130,36 @@ public class BlockObjective extends CountingObjective implements Listener {
     private boolean checkLocation(final Location loc, final Profile profile) {
         try {
             if (location != null) {
-                if (location2 != null) {
+                if (region != null) {
                     return isInRange(loc, profile);
                 }
                 return loc.getBlock().getLocation().equals(location.getLocation(profile));
             }
         } catch (QuestRuntimeException e) {
             logger.error(instruction.getPackage(), e.getMessage());
+            return false;
         }
-        return false;
+        return true;
     }
 
     private boolean isInRange(final Location loc, final Profile profile) throws QuestRuntimeException {
         final Location loc1 = location.getLocation(profile);
-        final Location loc2 = location2.getLocation(profile);
+        final Location loc2 = region.getLocation(profile);
         return inBetween(loc1, loc2, loc);
     }
 
-    private boolean inBetween(final int range1, final int range2, final int pos) {
+    private boolean inBetween(final Location range1, final Location range2, final Location pos) {
+        return inWorld(range1, range2, pos)
+                && betweenCoordinates(range1.getBlockY(), range2.getBlockY(), pos.getBlockY())
+                && betweenCoordinates(range1.getBlockZ(), range2.getBlockZ(), pos.getBlockZ())
+                && betweenCoordinates(range1.getBlockX(), range2.getBlockX(), pos.getBlockX());
+    }
+
+    private boolean betweenCoordinates(final int range1, final int range2, final int pos) {
         return Integer.min(range1, range2) <= pos && pos <= Integer.max(range1, range2);
     }
 
     private boolean inWorld(final Location range1, final Location range2, final Location pos) {
         return range1.getWorld().equals(range2.getWorld()) && range2.getWorld().equals(pos.getWorld());
-    }
-
-    private boolean inBetween(final Location range1, final Location range2, final Location pos) {
-        return inBetween(range1.getBlockX(), range2.getBlockX(), pos.getBlockX()) && inBetween(range1.getBlockY(), range2.getBlockY(), pos.getBlockY()) && inBetween(range1.getBlockZ(), range2.getBlockZ(), pos.getBlockZ()) && inWorld(range1, range2, pos);
     }
 }
