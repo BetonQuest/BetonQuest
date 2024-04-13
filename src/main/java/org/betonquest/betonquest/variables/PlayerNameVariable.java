@@ -40,11 +40,11 @@ public class PlayerNameVariable extends Variable {
         if (instruction.hasNext()) {
             try {
                 final String next = instruction.next();
-                if (next.equalsIgnoreCase("name")) {
+                if ("name".equalsIgnoreCase(next)) {
                     return Type.NAME;
-                } else if (next.equalsIgnoreCase("display")) {
+                } else if ("display".equalsIgnoreCase(next)) {
                     return Type.DISPLAY;
-                } else if (next.equalsIgnoreCase("uuid")) {
+                } else if ("uuid".equalsIgnoreCase(next)) {
                     return Type.UUID;
                 }
                 log.warn(instruction.getPackage(), "Unknown type specified: " + next + ", defaulting to NAME.");
@@ -71,9 +71,21 @@ public class PlayerNameVariable extends Variable {
         };
     }
 
+    /**
+     * The type of the variable.
+     */
     private enum Type {
+        /**
+         * The player's name.
+         */
         NAME,
+        /**
+         * The player's display name.
+         */
         DISPLAY,
+        /**
+         * The player's UUID.
+         */
         UUID
     }
 }
