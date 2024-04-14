@@ -8,9 +8,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 
 /**
- * The VariableID class extends the ID class.
- * It represents a specific type of identifier that deals with variables.
- * This class is part of the BetonQuest's ID system and is used to process variable-related identifiers.
+ * This class represents variable-related identifiers in BetonQuest.
  */
 public class VariableID extends ID {
     /**
