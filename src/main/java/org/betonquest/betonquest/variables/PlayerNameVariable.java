@@ -4,11 +4,10 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.bukkit.entity.Player;
+import org.betonquest.betonquest.exceptions.InstructionParseException;
 
-import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * This variable resolves into the player's name. It can has optional "display"
@@ -22,9 +21,9 @@ public class PlayerNameVariable extends Variable {
     private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
     /**
-     * Whether to resolve to the display name (see {@link Player#getDisplayName()}.
+     * The type of the variable.
      */
-    private final boolean display;
+    private final Type type;
 
     /**
      * Creates a new PlayerNameVariable from the given instruction.
@@ -33,21 +32,65 @@ public class PlayerNameVariable extends Variable {
      */
     public PlayerNameVariable(final Instruction instruction) {
         super(instruction);
-        display = instruction.hasArgument("display");
+        this.type = getType(instruction);
+    }
+
+    private Type getType(final Instruction instruction) {
+        if (instruction.hasNext()) {
+            try {
+                final String next = instruction.next();
+                if ("name".equalsIgnoreCase(next)) {
+                    return Type.NAME;
+                } else if ("display".equalsIgnoreCase(next)) {
+                    return Type.DISPLAY;
+                } else if ("uuid".equalsIgnoreCase(next)) {
+                    return Type.UUID;
+                }
+                log.warn(instruction.getPackage(), "Unknown type specified: " + next + ", defaulting to NAME.");
+            } catch (final InstructionParseException e) {
+                log.debug(instruction.getPackage(), "No type specified, defaulting to NAME.", e);
+            }
+        }
+        return Type.NAME;
     }
 
     @Override
     public String getValue(final Profile profile) {
-        if (display) {
-            final Optional<OnlineProfile> onlineProfile = profile.getOnlineProfile();
-            if (onlineProfile.isEmpty()) {
-                log.warn(instruction.getPackage(), profile.getPlayer().getName() + " is offline, cannot get display name.");
-                return "";
-            }
-            return onlineProfile.get().getPlayer().getDisplayName();
-        } else {
-            return profile.getPlayer().getName();
+        try {
+            return type.extractValue(profile);
+        } catch (final IllegalStateException e) {
+            log.warn(instruction.getPackage(), e.getMessage(), e);
+            return "";
         }
     }
 
+    /**
+     * The type of the variable.
+     */
+    private enum Type {
+        /**
+         * The player's name.
+         */
+        NAME(profile -> profile.getPlayer().getName()),
+        /**
+         * The player's display name.
+         */
+        DISPLAY(profile -> profile.getOnlineProfile()
+                .map(online -> online.getPlayer().getDisplayName())
+                .orElseThrow(() -> new IllegalStateException(profile.getPlayer().getName() + " is offline, cannot get display name."))),
+        /**
+         * The player's UUID.
+         */
+        UUID(profile -> profile.getPlayer().getUniqueId().toString());
+
+        private final Function<Profile, String> valueExtractor;
+
+        Type(final Function<Profile, String> valueExtractor) {
+            this.valueExtractor = valueExtractor;
+        }
+
+        String extractValue(final Profile profile) {
+            return valueExtractor.apply(profile);
+        }
+    }
 }

@@ -595,7 +595,7 @@ public class BetonQuest extends JavaPlugin {
             throws InstructionParseException {
         final VariableID variableID;
         try {
-            variableID = new VariableID(pack, instruction);
+            variableID = new VariableID(getInstance().loggerFactory, pack, instruction);
         } catch (final ObjectNotFoundException e) {
             throw new InstructionParseException("Could not load variable: " + e.getMessage(), e);
         }
@@ -605,15 +605,14 @@ public class BetonQuest extends JavaPlugin {
             return existingVariable;
         }
         final Instruction instructionVar = variableID.generateInstruction();
-        final Class<? extends Variable> variableClass = VARIABLE_TYPES.get(instructionVar.getPart(0));
+        final Class<? extends Variable> variableClass = VARIABLE_TYPES.get(instructionVar.current());
         // if it's null then there is no such type registered, log an error
         if (variableClass == null) {
-            throw new InstructionParseException("Variable type " + instructionVar.getPart(0) + " is not registered");
+            throw new InstructionParseException("Variable type " + instructionVar.current() + " is not registered");
         }
 
         try {
-            final Variable variable = variableClass.getConstructor(Instruction.class)
-                    .newInstance(new VariableInstruction(variableID.getPackage(), null, "%" + instructionVar.getInstruction() + "%"));
+            final Variable variable = variableClass.getConstructor(Instruction.class).newInstance(instructionVar);
             VARIABLES.put(variableID, variable);
             getInstance().log.debug(pack, "Variable " + variableID + " loaded");
             return variable;

@@ -98,7 +98,7 @@ public class Instruction {
         return new Instruction(log, pack, identifier, instruction);
     }
 
-    public Instruction copy(final ObjectiveID newID) {
+    public Instruction copy(final ID newID) {
         return new Instruction(log, pack, newID, instruction);
     }
 
