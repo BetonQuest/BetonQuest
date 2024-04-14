@@ -19,6 +19,8 @@ import java.util.List;
 public class SlowTellrawConvIO extends TellrawConvIO {
     private final String npcTextColor;
 
+    private final int messageDelay;
+
     private List<String> endLines;
 
     public SlowTellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
@@ -28,7 +30,12 @@ public class SlowTellrawConvIO extends TellrawConvIO {
             string.append(color);
         }
         this.npcTextColor = string.toString();
-
+        int delay = BetonQuest.getInstance().getPluginConfig().getInt("conversation_IO_config.slowtellraw.message_delay", 10);
+        if (delay <= 0) {
+            BetonQuest.getInstance().getLogger().warning("Invalid message delay of " + delay + " for SlowTellraw Conversation IO, using default value of 10 ticks");
+            delay = 10;
+        }
+        this.messageDelay = delay;
     }
 
     @Override
@@ -80,7 +87,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
                 }
                 conv.sendMessage(lines[lineCount++]);
             }
-        }.runTaskTimer(BetonQuest.getInstance(), 0, 2);
+        }.runTaskTimer(BetonQuest.getInstance(), 0, messageDelay);
     }
 
     @Override

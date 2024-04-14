@@ -202,6 +202,8 @@ In both cases, you can choose from the following conversation styles:
         The same as tellraw style but the NPC's text is printed line by line, delayed by 0.5 seconds.
         ??? "Customizing the Simple Style"
             The colors of this style can be configured with the [`conversation_colors` config option](../Configuration/Configuration.md#conversation-colors).
+            
+            The delay between lines (in ticks) can be configured with the [`conversation_IO_config.slowtellraw` config option](../Configuration/Configuration.md#conversation-settings-chestio-slowtellrawio).
         ![SimpleIO](../../_media/content/Documentation/Conversations/SimpleIO.png)
 
 
