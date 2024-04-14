@@ -7,6 +7,7 @@ import io.lumine.mythic.core.mobs.ActiveMob;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
@@ -59,7 +60,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
     /**
      * The text with which the mob must have been marked to count.
      */
-    protected String marked;
+    protected VariableString marked;
 
     /**
      * Creates a new MythicMobKillObjective.
@@ -85,10 +86,11 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
 
         minMobLevel = unsafeMinMobLevel == null ? new VariableNumber(Double.NEGATIVE_INFINITY) : new VariableNumber(pack, unsafeMinMobLevel);
         maxMobLevel = unsafeMaxMobLevel == null ? new VariableNumber(Double.POSITIVE_INFINITY) : new VariableNumber(pack, unsafeMaxMobLevel);
-        marked = instruction.getOptional("marked");
-        if (marked != null) {
-            marked = Utils.addPackage(instruction.getPackage(), marked);
-        }
+        final String markedString = instruction.getOptional("marked");
+        marked = markedString == null ? null : new VariableString(
+                instruction.getPackage(),
+                Utils.addPackage(instruction.getPackage(), markedString)
+        );
     }
 
     /**
@@ -126,7 +128,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
         if (marked != null) {
             final List<MetadataValue> meta = event.getEntity().getMetadata("betonquest-marked");
             for (final MetadataValue m : meta) {
-                if (!m.asString().equals(marked.replace("%player%", onlineProfile.getProfileUUID().toString()))) {
+                if (!m.asString().equals(marked.getString(onlineProfile))) {
                     return;
                 }
             }

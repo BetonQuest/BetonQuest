@@ -16,6 +16,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - `%player.name%` will display the name of the player
   - `%player.display%` will use the display name used in chat
   - `%player.uuid%` will display the UUID of the player
+- marking of mobs now uses variables in all contexts of spawning killing and removing
 ### Deprecated
 ### Removed
 ### Fixed
