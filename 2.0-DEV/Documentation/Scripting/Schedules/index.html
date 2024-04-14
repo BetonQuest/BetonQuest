@@ -4341,6 +4341,9 @@ The same applies to the conditions used by these events.</p>
 <ol>
 <li>This flag states that <code>setblock</code> can be used player independent.</li>
 </ol>
+<p>Some events behave differently when called from a schedule in independent mode.
+For example, <code>tag delete</code> will include offline players.
+A list of all events that act differently can be found in the <a href="../Building-Blocks/Events-List/#run-events-player-independent-runindependent"><code>runIndependent</code></a> docs.</p>
 <p>But sometimes you might want your schedule to run a player dependent event, like <code>message</code> or <code>give</code> for all players on the server.
 To do this you can use the <a href="../Building-Blocks/Events-List/#run-events-for-all-online-players-runforall"><code>runforall</code></a> event. It will run the given events for all players on the server. 
 You can even use conditions to filter out players.</p>
