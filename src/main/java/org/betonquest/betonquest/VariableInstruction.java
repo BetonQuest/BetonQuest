@@ -5,9 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.id.ID;
 
 /**
- * The VariableInstruction class extends the Instruction class.
- * It represents a specific type of instruction that deals with variables.
- * This class is part of the BetonQuest's instruction system and is used to process variable-related instructions.
+ * This class represents the variable-related instructions in BetonQuest.
  */
 public class VariableInstruction extends Instruction {
 
