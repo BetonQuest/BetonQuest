@@ -6649,8 +6649,7 @@ within the defined radius when the mob is killed by any non-player source.
 Alternatively, you could use the <code>deathRadiusAllPlayers</code> argument to count all deaths of the specified mythic mob(s),
 no matter if it was killed by a non-player source or not.
 You can add a <code>notify</code> keyword if you want to send a notification to players whenever the objective progresses.
-You can also add an optional <code>marked</code> argument to only count kills marked with the <code>mspawn</code> event.
-The only supported variable for the marked argument is <code>%player%</code>.</p>
+You can also add an optional <code>marked</code> argument to only count kills marked with the <code>mspawn</code> event. Variables are supported.</p>
 <p>This objective has three properties: <code>amount</code>, <code>left</code> and <code>total</code>. <code>amount</code> is the amount of mythic mobs already killed,
 <code>left</code> is the amount of mythic mobs still needed to kill and <code>total</code> is the amount of mythic mobs initially required.</p>
 <div class="admonition example">
@@ -6715,7 +6714,7 @@ The only supported variable for the marked argument is <code>%player%</code>.</p
 <td><em>marked</em></td>
 <td>marked:text</td>
 <td>None</td>
-<td>Marks the mob. You can check for marked mobs in mmobkill objective.</td>
+<td>Marks the mob, supporting variables. You can check for marked mobs in mmobkill objective.</td>
 </tr>
 </tbody>
 </table>
