@@ -4,11 +4,10 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
-import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * This variable resolves into the player's name. It can has optional "display"
@@ -57,18 +56,12 @@ public class PlayerNameVariable extends Variable {
 
     @Override
     public String getValue(final Profile profile) {
-        return switch (type) {
-            case NAME -> profile.getPlayer().getName();
-            case DISPLAY -> {
-                final Optional<OnlineProfile> onlineProfile = profile.getOnlineProfile();
-                if (onlineProfile.isEmpty()) {
-                    log.warn(instruction.getPackage(), profile.getPlayer().getName() + " is offline, cannot get display name.");
-                    yield "";
-                }
-                yield onlineProfile.get().getPlayer().getDisplayName();
-            }
-            case UUID -> profile.getPlayer().getUniqueId().toString();
-        };
+        try {
+            return type.extractValue(profile);
+        } catch (final IllegalStateException e) {
+            log.warn(instruction.getPackage(), e.getMessage(), e);
+            return "";
+        }
     }
 
     /**
@@ -78,14 +71,26 @@ public class PlayerNameVariable extends Variable {
         /**
          * The player's name.
          */
-        NAME,
+        NAME(profile -> profile.getPlayer().getName()),
         /**
          * The player's display name.
          */
-        DISPLAY,
+        DISPLAY(profile -> profile.getOnlineProfile()
+                .map(online -> online.getPlayer().getDisplayName())
+                .orElseThrow(() -> new IllegalStateException(profile.getPlayer().getName() + " is offline, cannot get display name."))),
         /**
          * The player's UUID.
          */
-        UUID
+        UUID(profile -> profile.getPlayer().getUniqueId().toString());
+
+        private final Function<Profile, String> valueExtractor;
+
+        Type(final Function<Profile, String> valueExtractor) {
+            this.valueExtractor = valueExtractor;
+        }
+
+        String extractValue(final Profile profile) {
+            return valueExtractor.apply(profile);
+        }
     }
 }
