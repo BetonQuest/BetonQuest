@@ -32,8 +32,8 @@ public class SlowTellrawConvIO extends TellrawConvIO {
         this.npcTextColor = string.toString();
         int delay = BetonQuest.getInstance().getPluginConfig().getInt("conversation_IO_config.slowtellraw.message_delay", 10);
         if (delay <= 0) {
-            BetonQuest.getInstance().getLogger().warning("Invalid message delay for SlowTellraw Conversation IO, using default value of 10");
-            delay = 2;
+            BetonQuest.getInstance().getLogger().warning("Invalid message delay of " + delay + " for SlowTellraw Conversation IO, using default value of 10 ticks");
+            delay = 10;
         }
         this.messageDelay = delay;
     }
