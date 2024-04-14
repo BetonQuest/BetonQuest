@@ -5117,8 +5117,12 @@ If the player is not in a conversation, the variable is empty.</p>
 <div class="highlight"><pre><span></span><code>%npc%
 </code></pre></div>
 <h3 id="player-name-variable">Player Name Variable<a class="headerlink" href="#player-name-variable" title="Permanent link">🔗</a></h3>
-<p>This variable will be replaced with the name of the player. If you add <code>display</code> argument, it will use display name instead of real name.</p>
-<div class="highlight"><pre><span></span><code>%player.display%
+<p>The variable <code>%player%</code> is the same as <code>%player.name%</code> and will display the name of the player.
+<code>%player.display%</code> will use the display name used in chat and <code>%player.uuid%</code> will display the UUID of the player.</p>
+<div class="highlight"><pre><span></span><code>%player%
+%player.name%
+%player.display%
+%player.uuid%
 </code></pre></div>
 <h3 id="random-number-variable">Random Number Variable<a class="headerlink" href="#random-number-variable" title="Permanent link">🔗</a></h3>
 <p><strong>static</strong></p>
