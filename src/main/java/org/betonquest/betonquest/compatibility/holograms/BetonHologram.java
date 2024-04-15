@@ -79,6 +79,18 @@ public interface BetonHologram {
     void move(Location location);
 
     /**
+     * Sets the maximum range for the hologram display.
+     * <p>
+     * Changes the range of visibility of the hologram,
+     * when the player moves away more than the specified distance,
+     * the hologram becomes invisible to the player.
+     * <p>
+     * The method does not work with HolographicDisplays, but is safe to call.
+     * @param maxRange The maximum range to set
+     */
+    void setMaxRange(int maxRange);
+
+    /**
      * Show this hologram to all players
      */
     void showAll();

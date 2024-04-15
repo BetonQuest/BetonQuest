@@ -28,10 +28,12 @@ import java.util.List;
  * @param cleanedLines  List of validated lines. Used by {@link #updateContent()} to update content without
  *                      revalidating content and dealing with potential errors.
  * @param questPackage  {@link QuestPackage} in which the hologram is specified in.
+ * @param maxRange      The maximum range in which the hologram is visible.
  */
 public record HologramWrapper(int interval, List<BetonHologram> holograms, boolean staticContent,
                               ConditionID[] conditionList,
-                              List<AbstractLine> cleanedLines, QuestPackage questPackage) {
+                              List<AbstractLine> cleanedLines, QuestPackage questPackage,
+                              int maxRange) {
     /**
      * Checks whether all conditions are met by a players and displays or hides the hologram.
      */
@@ -103,6 +105,15 @@ public record HologramWrapper(int interval, List<BetonHologram> holograms, boole
                 }
             }
             index += line.getLinesAdded();
+        }
+    }
+
+    /**
+     Sets the maximum visibility range for hologram.
+     */
+    public void setMaxRange() {
+        for (final BetonHologram betonHologram : holograms) {
+            betonHologram.setMaxRange(maxRange);
         }
     }
 }

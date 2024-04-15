@@ -41,6 +41,7 @@ public final class HologramRunner {
                 for (final HologramWrapper h : holograms) {
                     h.updateContent();
                     h.updateVisibility();
+                    h.setMaxRange();
                 }
             }
         };

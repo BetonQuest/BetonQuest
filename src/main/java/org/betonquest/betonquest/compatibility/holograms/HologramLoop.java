@@ -90,6 +90,10 @@ public abstract class HologramLoop {
         } catch (final NumberFormatException e) {
             throw new InstructionParseException("Could not parse check interval", e);
         }
+        final String maxRangeString = section.getString("max_range");
+        final int maxRange = maxRangeString != null ? Integer.parseInt(maxRangeString) : 0;
+        validateMaxRange(maxRange);
+
         final List<String> lines = GlobalVariableResolver.resolve(pack, section.getStringList("lines"));
         final String rawConditions = GlobalVariableResolver.resolve(pack, section.getString("conditions"));
 
@@ -115,9 +119,17 @@ public abstract class HologramLoop {
                 isStaticHologram(cleanedLines),
                 conditions,
                 cleanedLines,
-                pack);
+                pack,
+                maxRange);
         HologramRunner.addHologram(hologramWrapper);
         return hologramWrapper;
+    }
+
+    private void validateMaxRange(final int maxRange) throws InstructionParseException {
+        final boolean isHolographic = "HolographicDisplays".equals(HologramProvider.getInstance().integrator.getPluginName());
+        if (isHolographic && maxRange > 0) {
+            throw new InstructionParseException("Changing the 'max_range' of visibility of a hologram is not possible with HolographicDisplays");
+        }
     }
 
     /**
