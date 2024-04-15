@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.modules.config.patcher.migration;
 
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +20,7 @@ public class FileConfigurationProvider {
     /**
      * All configs.
      */
+    @Nullable
     private Map<File, YamlConfiguration> allConfigs;
 
     /**

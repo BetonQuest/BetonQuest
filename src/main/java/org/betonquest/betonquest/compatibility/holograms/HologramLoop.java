@@ -20,6 +20,7 @@ import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -137,7 +138,7 @@ public abstract class HologramLoop {
     protected abstract List<BetonHologram> getHologramsFor(QuestPackage pack, ConfigurationSection section) throws InstructionParseException;
 
     @NotNull
-    private ConditionID[] parseConditions(final QuestPackage pack, final String rawConditions) throws InstructionParseException {
+    private ConditionID[] parseConditions(final QuestPackage pack, @Nullable final String rawConditions) throws InstructionParseException {
         ConditionID[] conditions = {};
         if (rawConditions != null) {
             final String[] parts = rawConditions.split(",");

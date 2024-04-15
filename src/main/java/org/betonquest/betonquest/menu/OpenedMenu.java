@@ -16,6 +16,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +41,7 @@ public class OpenedMenu implements Listener {
 
     private final Menu data;
 
+    @SuppressWarnings("NotNullFieldNotInitialized")
     private MenuItem[] items;
 
     private boolean closed;
@@ -68,6 +70,7 @@ public class OpenedMenu implements Listener {
      * @param onlineProfile the player of the {@link OnlineProfile} to check for
      * @return the menu the player has opened or null if he has no open menus
      */
+    @Nullable
     public static OpenedMenu getMenu(final OnlineProfile onlineProfile) {
         return OPENED_MENUS.get(onlineProfile.getProfileUUID());
     }
@@ -76,7 +79,7 @@ public class OpenedMenu implements Listener {
      * Closes the players menu from the {@link OnlineProfile} if he has one open
      */
     protected static void closeMenu(final OnlineProfile onlineProfile) {
-        final OpenedMenu menu = OPENED_MENUS.get(onlineProfile.getProfileUUID());
+        final OpenedMenu menu = getMenu(onlineProfile);
         if (menu == null) {
             return;
         }

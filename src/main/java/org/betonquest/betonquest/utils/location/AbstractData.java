@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ abstract class AbstractData<T extends Cloneable> {
     /**
      * This object is used if the input string does not contain any {@link Variable}s.
      */
+    @Nullable
     private final T object;
 
     /**
@@ -110,11 +112,11 @@ abstract class AbstractData<T extends Cloneable> {
      * @throws QuestRuntimeException Is thrown when the objectString is not in the right format or if
      *                               the values couldn't be parsed.
      */
-    public T get(final Profile profile) throws QuestRuntimeException {
+    public T get(@Nullable final Profile profile) throws QuestRuntimeException {
         return object == null ? parseVariableObject(profile) : clone(object);
     }
 
-    private T parseVariableObject(final Profile profile) throws QuestRuntimeException {
+    private T parseVariableObject(@Nullable final Profile profile) throws QuestRuntimeException {
         final String[] variables = new String[this.objectVariables.size()];
         for (int i = 0; i < this.objectVariables.size(); i++) {
             final Variable var = this.objectVariables.get(i);

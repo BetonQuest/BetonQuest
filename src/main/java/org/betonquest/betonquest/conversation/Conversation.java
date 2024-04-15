@@ -122,6 +122,7 @@ public class Conversation implements Listener {
     /**
      * The next NPC option that will be printed. Set by {@link #selectOption(List, boolean)}.
      */
+    @Nullable
     protected ResolvedOption nextNPCOption;
 
     /**
@@ -132,11 +133,13 @@ public class Conversation implements Listener {
     /**
      * The {@link ConversationIO} used to display this conversation.
      */
+    @Nullable
     private ConversationIO inOut;
 
     /**
      * The {@link Interceptor} used to hide unrelated messages while the player is in this conversation.
      */
+    @Nullable
     private Interceptor interceptor;
 
     /**
@@ -218,6 +221,7 @@ public class Conversation implements Listener {
      * @param profile the {@link Profile} of the player
      * @return player's active conversation or null if there is no conversation
      */
+    @Nullable
     public static Conversation getConversation(final Profile profile) {
         return ACTIVE_CONVERSATIONS.get(profile);
     }
@@ -581,6 +585,7 @@ public class Conversation implements Listener {
     /**
      * @return the interceptor of the conversation
      */
+    @Nullable
     public Interceptor getInterceptor() {
         return interceptor;
     }

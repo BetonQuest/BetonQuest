@@ -10,6 +10,7 @@ import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Locale;
@@ -105,7 +106,7 @@ public class ItemVariable extends Variable {
         return itemAmount;
     }
 
-    private String conditionalRaw(final String string) {
+    private String conditionalRaw(@Nullable final String string) {
         if (string == null) {
             return "";
         }

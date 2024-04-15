@@ -7,9 +7,11 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class VaultIntegrator implements Integrator {
+    @SuppressWarnings("NotNullFieldNotInitialized")
     private static VaultIntegrator instance;
 
     /**
@@ -19,8 +21,10 @@ public class VaultIntegrator implements Integrator {
 
     private final BetonQuest plugin;
 
+    @Nullable
     private Permission permission;
 
+    @Nullable
     private Economy economy;
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")

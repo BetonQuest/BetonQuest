@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
@@ -14,6 +15,7 @@ public class RideCondition extends Condition {
 
     private final boolean any;
 
+    @Nullable
     private EntityType vehicle;
 
     public RideCondition(final Instruction instruction) throws InstructionParseException {

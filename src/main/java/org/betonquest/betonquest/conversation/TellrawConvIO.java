@@ -33,6 +33,7 @@ public class TellrawConvIO extends ChatConvIO {
 
     protected Map<Integer, String> hashes;
 
+    @SuppressWarnings("NotNullFieldNotInitialized")
     protected ChatColor color;
 
     protected boolean italic;

@@ -13,6 +13,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ public class NPCRangeObjective extends Objective {
 
     private final VariableNumber radius;
 
+    @Nullable
     private final Map<UUID, Boolean> playersInRange;
 
     private int npcMoveTask;
@@ -98,6 +100,7 @@ public class NPCRangeObjective extends Objective {
         if (trigger == Trigger.INSIDE && !inside || trigger == Trigger.OUTSIDE && inside) {
             return;
         } else if (trigger == Trigger.ENTER || trigger == Trigger.LEAVE) {
+            assert playersInRange != null;
             if (playersInRange.containsKey(uuid)) {
                 if (trigger == Trigger.ENTER && (playersInRange.get(uuid) || !inside)
                         || trigger == Trigger.LEAVE && (!playersInRange.get(uuid) || inside)) {

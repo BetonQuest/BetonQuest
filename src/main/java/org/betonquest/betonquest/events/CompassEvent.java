@@ -41,18 +41,18 @@ public class CompassEvent extends QuestEvent {
 
         action = instruction.getEnum(Action.class);
         compass = instruction.next();
+        compassLocation = getCompassLocation();
+    }
 
+    private CompoundLocation getCompassLocation() throws InstructionParseException {
         // Check if compass is valid
         for (final QuestPackage pack : Config.getPackages().values()) {
             final ConfigurationSection section = pack.getConfig().getConfigurationSection("compass");
             if (section != null && section.contains(compass)) {
-                compassLocation = new CompoundLocation(pack, pack.getString("compass." + compass + ".location"));
-                break;
+                return new CompoundLocation(pack, pack.getString("compass." + compass + ".location"));
             }
         }
-        if (compassLocation == null) {
-            throw new InstructionParseException("Invalid compass location: " + compass);
-        }
+        throw new InstructionParseException("Invalid compass location: " + compass);
     }
 
     @Override

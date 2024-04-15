@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.exceptions.HookException;
 
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "NotNullFieldNotInitialized"})
 public class EffectLibIntegrator implements Integrator {
     private static EffectLibIntegrator instance;
 
@@ -48,6 +48,7 @@ public class EffectLibIntegrator implements Integrator {
 
     @Override
     public void close() {
+        //noinspection ConstantValue
         if (manager != null) {
             manager.dispose();
         }

@@ -31,6 +31,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.InventoryHolder;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -47,6 +48,7 @@ public class ChestPutObjective extends Objective implements Listener {
 
     private final Condition chestItemCondition;
 
+    @Nullable
     private final Event chestTakeEvent;
 
     private final CompoundLocation loc;

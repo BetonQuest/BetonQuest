@@ -18,6 +18,7 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -56,6 +57,7 @@ public class PlayerData implements TagData {
 
     private final Map<String, String> objectives = new ConcurrentHashMap<>();
 
+    @Nullable
     private Journal journal;
 
     private List<ItemStack> backpack = new CopyOnWriteArrayList<>();
@@ -63,8 +65,10 @@ public class PlayerData implements TagData {
     /**
      * The state of a conversation the player is in.
      */
+    @Nullable
     private PlayerConversationState activeConversation;
 
+    @SuppressWarnings("NotNullFieldNotInitialized")
     private String profileLanguage;
 
     /**
@@ -531,6 +535,7 @@ public class PlayerData implements TagData {
      * @return the id of a conversation if the profile has an active one or
      * null.
      */
+    @Nullable
     public PlayerConversationState getActiveConversation() {
         return activeConversation;
     }

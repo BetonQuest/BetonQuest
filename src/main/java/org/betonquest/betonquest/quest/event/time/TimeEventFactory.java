@@ -20,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Factory to create time events from {@link Instruction}s.
@@ -91,7 +92,7 @@ public class TimeEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @NotNull
-    private Selector<World> parseWorld(final String worldName) {
+    private Selector<World> parseWorld(@Nullable final String worldName) {
         if (worldName == null) {
             return Selectors.fromPlayer(Player::getWorld);
         } else {

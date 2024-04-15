@@ -23,6 +23,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.jetbrains.annotations.Nullable;
 
 import static org.bukkit.event.block.Action.LEFT_CLICK_AIR;
 import static org.bukkit.event.block.Action.LEFT_CLICK_BLOCK;
@@ -42,10 +43,12 @@ public class ActionObjective extends Objective implements Listener {
 
     private final Click action;
 
+    @Nullable
     private final BlockSelector selector;
 
     private final boolean exactMatch;
 
+    @Nullable
     private final CompoundLocation loc;
 
     private final VariableNumber range;

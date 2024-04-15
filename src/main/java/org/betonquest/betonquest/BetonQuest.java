@@ -310,7 +310,7 @@ import java.util.regex.Pattern;
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods",
         "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidFieldNameMatchingMethodName",
-        "PMD.AtLeastOneConstructor", "PMD.ExcessivePublicCount", "PMD.TooManyFields"})
+        "PMD.AtLeastOneConstructor", "PMD.ExcessivePublicCount", "PMD.TooManyFields", "NotNullFieldNotInitialized"})
 public class BetonQuest extends JavaPlugin {
     private static final int BSTATS_METRICS_ID = 551;
 
@@ -423,7 +423,7 @@ public class BetonQuest extends JavaPlugin {
     }
 
     @SuppressWarnings("PMD.CognitiveComplexity")
-    public static boolean conditions(final Profile profile, final ConditionID... conditionIDs) {
+    public static boolean conditions(@Nullable final Profile profile, final ConditionID... conditionIDs) {
         if (Bukkit.isPrimaryThread()) {
             for (final ConditionID id : conditionIDs) {
                 if (!condition(profile, id)) {
@@ -473,7 +473,8 @@ public class BetonQuest extends JavaPlugin {
      * @return if the condition is met
      */
     @SuppressWarnings("PMD.NPathComplexity")
-    public static boolean condition(final Profile profile, final ConditionID conditionID) {
+    public static boolean condition(@Nullable final Profile profile, final ConditionID conditionID) {
+        //noinspection ConstantValue
         if (conditionID == null) {
             getInstance().log.debug("Null condition ID!");
             return false;
@@ -515,6 +516,7 @@ public class BetonQuest extends JavaPlugin {
      * @return true if the event was run even if there was an exception during execution
      */
     public static boolean event(@Nullable final Profile profile, final EventID eventID) {
+        //noinspection ConstantValue
         if (eventID == null) {
             getInstance().log.debug("Null event ID!");
             return false;
@@ -546,6 +548,7 @@ public class BetonQuest extends JavaPlugin {
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     public static void newObjective(final Profile profile, final ObjectiveID objectiveID) {
+        //noinspection ConstantValue
         if (profile == null || objectiveID == null) {
             getInstance().log.debug(objectiveID.getPackage(), "Null arguments for the objective!");
             return;
@@ -566,6 +569,7 @@ public class BetonQuest extends JavaPlugin {
      * @param instruction data instruction string
      */
     public static void resumeObjective(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
+        //noinspection ConstantValue
         if (profile == null || objectiveID == null || instruction == null) {
             getInstance().log.debug("Null arguments for the objective!");
             return;
@@ -592,6 +596,7 @@ public class BetonQuest extends JavaPlugin {
      * @return the Variable instance
      * @throws InstructionParseException when the variable parsing fails
      */
+    @Nullable
     public static Variable createVariable(final QuestPackage pack, final String instruction)
             throws InstructionParseException {
         final VariableID variableID;
@@ -658,6 +663,7 @@ public class BetonQuest extends JavaPlugin {
      * @param name name of the notify IO type
      * @return the class object for this notify IO type
      */
+    @Nullable
     public static Class<? extends NotifyIO> getNotifyIO(final String name) {
         return NOTIFY_IO_TYPES.get(name);
     }
@@ -807,6 +813,7 @@ public class BetonQuest extends JavaPlugin {
                     config.getString("mysql.base"),
                     config.getString("mysql.user"),
                     config.getString("mysql.pass"));
+            //noinspection ConstantValue
             if (database.getConnection() != null) {
                 isMySQLUsed = true;
                 getInstance().log.info("Successfully connected to MySQL database!");
@@ -1366,6 +1373,7 @@ public class BetonQuest extends JavaPlugin {
             final Journal journal = playerData.getJournal();
             journal.update();
         }
+        //noinspection ConstantValue
         if (playerHider != null) {
             playerHider.stop();
         }
@@ -1376,7 +1384,7 @@ public class BetonQuest extends JavaPlugin {
         }
     }
 
-    @SuppressWarnings("PMD.DoNotUseThreads")
+    @SuppressWarnings({"PMD.DoNotUseThreads", "ConstantValue"})
     @Override
     public void onDisable() {
         //stop all schedules
@@ -1468,6 +1476,7 @@ public class BetonQuest extends JavaPlugin {
      * @param profile the {@link Profile} of the player
      * @return PlayerData object for the player
      */
+    @Nullable // TODO really nullable? - not with online players
     public PlayerData getPlayerData(final Profile profile) {
         PlayerData playerData = playerDataMap.get(profile);
         if (playerData == null && profile.getOnlineProfile().isPresent()) {
@@ -1659,6 +1668,7 @@ public class BetonQuest extends JavaPlugin {
      * @param objectiveID package name, dot and ID of the objective
      * @return Objective object or null if it does not exist
      */
+    @Nullable
     public Objective getObjective(final ObjectiveID objectiveID) {
         return OBJECTIVES.get(objectiveID);
     }
@@ -1668,6 +1678,7 @@ public class BetonQuest extends JavaPlugin {
      *
      * @return the database saver
      */
+    @Nullable
     public Saver getSaver() {
         return saver;
     }
@@ -1676,6 +1687,7 @@ public class BetonQuest extends JavaPlugin {
      * @param name name of the conversation IO type
      * @return the class object for this conversation IO type
      */
+    @Nullable
     public Class<? extends ConversationIO> getConvIO(final String name) {
         return CONVERSATION_IO_TYPES.get(name);
     }
@@ -1684,6 +1696,7 @@ public class BetonQuest extends JavaPlugin {
      * @param name name of the interceptor type
      * @return the class object for this interceptor type
      */
+    @Nullable
     public Class<? extends Interceptor> getInterceptor(final String name) {
         return INTERCEPTOR_TYPES.get(name);
     }
@@ -1697,7 +1710,7 @@ public class BetonQuest extends JavaPlugin {
      * @param profile  the {@link Profile} of the player
      * @return the value of this variable for given player
      */
-    public String getVariableValue(final String packName, final String name, final Profile profile) {
+    public String getVariableValue(final String packName, final String name, @Nullable final Profile profile) {
         if (!Config.getPackages().containsKey(packName)) {
             getInstance().log.warn("Variable '" + name + "' contains the non-existent package '" + packName + "' !");
             return "";
@@ -1726,6 +1739,7 @@ public class BetonQuest extends JavaPlugin {
      * @param name the name of the event
      * @return a factory to create the event
      */
+    @Nullable
     public QuestEventFactory getEventFactory(final String name) {
         return eventTypes.get(name);
     }
@@ -1734,6 +1748,7 @@ public class BetonQuest extends JavaPlugin {
      * @param name the name of the condition class, as previously registered
      * @return the class of the event
      */
+    @Nullable
     public Class<? extends Condition> getConditionClass(final String name) {
         return CONDITION_TYPES.get(name);
     }

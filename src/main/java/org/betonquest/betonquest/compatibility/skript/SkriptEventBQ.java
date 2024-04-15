@@ -9,7 +9,7 @@ import org.bukkit.event.Event;
 /**
  * Skript event, which listens to custom event fired by BetonQuest's event
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "NotNullFieldNotInitialized"})
 public class SkriptEventBQ extends SkriptEvent {
 
     private Literal<?> literal;

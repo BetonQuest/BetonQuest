@@ -223,7 +223,8 @@ public final class Utils {
      */
     @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity"})
     public static Color getColor(final String string) throws InstructionParseException {
-        if (string.isEmpty()) {
+        //noinspection ConstantValue
+        if (string == null || string.isEmpty()) {
             throw new InstructionParseException("Color is not specified");
         }
         try {

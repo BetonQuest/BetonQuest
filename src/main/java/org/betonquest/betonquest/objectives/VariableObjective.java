@@ -175,11 +175,12 @@ public class VariableObjective extends Objective implements Listener {
             return matcher.appendTail(deserialized).toString();
         }
 
+        @Nullable
         public String get(final String key) {
             return variables.get(key);
         }
 
-        public void add(final String key, final String value) {
+        public void add(final String key, @Nullable final String value) {
             if (value == null || value.isEmpty()) {
                 variables.remove(key);
             } else {

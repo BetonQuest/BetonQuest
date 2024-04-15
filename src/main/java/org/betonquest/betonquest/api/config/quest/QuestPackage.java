@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -79,12 +80,14 @@ public interface QuestPackage {
     @Deprecated
     String subst(String input);
 
+    @Nullable
     @Deprecated
     String getString(String address);
 
     @Deprecated
     String getString(String address, String def);
 
+    @Nullable
     @Deprecated
     String getFormattedString(String address);
 }

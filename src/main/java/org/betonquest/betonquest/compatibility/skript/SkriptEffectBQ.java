@@ -17,7 +17,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 /**
  * Skript effect, which fires specified BetonQuest's event
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "NotNullFieldNotInitialized"})
 public class SkriptEffectBQ extends Effect {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.

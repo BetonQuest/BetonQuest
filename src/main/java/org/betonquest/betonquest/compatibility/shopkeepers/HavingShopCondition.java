@@ -32,6 +32,7 @@ public class HavingShopCondition extends Condition {
                 continue;
             }
             final PlayerShopkeeper shopkeeper = (PlayerShopkeeper) s;
+            //noinspection ConstantValue
             if (shopkeeper.getOwnerUUID() == null || !shopkeeper.getOwnerUUID().equals(profile.getProfileUUID())) {
                 continue;
             }

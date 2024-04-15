@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class CheckCondition extends Condition {
     /**
      * Constructs a condition with given instruction and returns it.
      */
+    @Nullable
     private Condition createCondition(final String instruction) throws InstructionParseException {
         final String[] parts = instruction.split(" ");
         if (parts.length <= 0) {

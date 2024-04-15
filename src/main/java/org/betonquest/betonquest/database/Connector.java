@@ -3,6 +3,7 @@ package org.betonquest.betonquest.database;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,6 +32,7 @@ public class Connector {
     /**
      * Permanently active connection to the database.
      */
+    @Nullable
     private Connection connection;
 
     /**
@@ -90,6 +92,7 @@ public class Connector {
     public ResultSet querySQL(final QueryType type, final VariableResolver variableResolver) {
         final String sql = type.createSql(prefix);
         try {
+            assert connection != null;
             final PreparedStatement statement = connection.prepareStatement(sql);
             variableResolver.resolve(statement);
             return statement.executeQuery();
@@ -107,6 +110,7 @@ public class Connector {
      */
     public void updateSQL(final UpdateType type, final String... args) {
         final String sql = type.createSql(prefix);
+        assert connection != null;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             for (int i = 0; i < args.length; i++) {
                 statement.setString(i + 1, args[i]);

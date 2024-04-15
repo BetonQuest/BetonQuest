@@ -26,6 +26,7 @@ public class BetonQuestLogRecord extends LogRecord {
      * The fully qualified name of the quest package that this log record is
      * about or null if the record is not specific to a quest package.
      */
+    @Nullable
     private final String pack;
 
     /**

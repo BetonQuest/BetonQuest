@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.modules.logger.handler;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
@@ -34,6 +36,7 @@ public class LazyHandler extends Handler {
     /**
      * Lazily created internal {@link Handler}.
      */
+    @Nullable
     private Handler internalHandler;
 
     /**

@@ -25,6 +25,7 @@ public final class ChatFormatter extends Formatter {
     /**
      * The name of the plugin that is the source of this formatter.
      */
+    @Nullable
     private final String pluginName;
 
     /**
@@ -35,6 +36,7 @@ public final class ChatFormatter extends Formatter {
     /**
      * The short name or tag of this plugin or null.
      */
+    @Nullable
     private final String shortName;
 
     /**
@@ -158,6 +160,7 @@ public final class ChatFormatter extends Formatter {
             this.producer = producer;
         }
 
+        @Nullable
         private static String getPluginNameOrShortName(final Parameters params) {
             return params.shortName == null ? params.pluginName : params.shortName;
         }
@@ -170,7 +173,7 @@ public final class ChatFormatter extends Formatter {
          * @param shortName       The short tag of the pluginName
          * @return the processed plugin tag
          */
-        public String getPluginTag(final String pluginName, final String otherPluginName, final String shortName) {
+        public String getPluginTag(@Nullable final String pluginName, @Nullable final String otherPluginName, @Nullable final String shortName) {
             final boolean match = pluginName != null && pluginName.equals(otherPluginName);
             final Pair<String, String> tagParts = producer.apply(new Parameters(pluginName, otherPluginName, shortName, match));
             if (tagParts == null) {
@@ -188,7 +191,8 @@ public final class ChatFormatter extends Formatter {
          * @param shortName       A short tag for the own plugin
          * @param match           true when pluginName and otherPluginName do match
          */
-        private record Parameters(String pluginName, String otherPluginName, String shortName, boolean match) {
+        private record Parameters(@Nullable String pluginName, @Nullable String otherPluginName,
+                                  @Nullable String shortName, boolean match) {
         }
     }
 }

@@ -20,6 +20,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serial;
 import java.util.ArrayList;
@@ -45,15 +47,17 @@ public class Instruction {
 
     protected String[] parts;
 
+    @SuppressWarnings("NotNullFieldNotInitialized")
     private ID identifier;
 
     private int nextIndex = 1;
 
     private int currentIndex = 1;
 
+    @Nullable
     private String lastOptional;
 
-    public Instruction(final BetonQuestLogger log, final QuestPackage pack, final ID identifier, final String instruction) {
+    public Instruction(final BetonQuestLogger log, final QuestPackage pack, @Nullable final ID identifier, final String instruction) {
         this.log = log;
         this.pack = pack;
         try {
@@ -106,7 +110,7 @@ public class Instruction {
         return copy(identifier);
     }
 
-    public Instruction copy(final ID newID) {
+    public Instruction copy(@Nullable final ID newID) {
         return new Instruction(log, pack, newID, getInstruction());
     }
 
@@ -145,6 +149,7 @@ public class Instruction {
      * @param prefix the prefix of the optional value without ":"
      * @return the value or null
      */
+    @Nullable
     public String getOptional(final String prefix) {
         return getOptional(prefix, null);
     }
@@ -156,7 +161,9 @@ public class Instruction {
      * @param defaultString the default value
      * @return the value or the default value
      */
-    public String getOptional(final String prefix, final String defaultString) {
+    @Nullable
+    @Contract("_, !null -> !null")
+    public String getOptional(final String prefix, @Nullable final String defaultString) {
         return getOptionalArgument(prefix).orElse(defaultString);
     }
 
@@ -209,7 +216,9 @@ public class Instruction {
         return Optional.empty();
     }
 
-    public CompoundLocation getLocation(final String string) throws InstructionParseException {
+    @Nullable
+    @Contract("null -> null; !null -> !null")
+    public CompoundLocation getLocation(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }
@@ -224,7 +233,9 @@ public class Instruction {
         return getVarNum(next());
     }
 
-    public VariableNumber getVarNum(final String string) throws InstructionParseException {
+    @Nullable
+    @Contract("null -> null; !null -> !null")
+    public VariableNumber getVarNum(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }
@@ -239,7 +250,9 @@ public class Instruction {
         return getQuestItem(next());
     }
 
-    public QuestItem getQuestItem(final String string) throws InstructionParseException {
+    @Nullable
+    @Contract("null -> null; !null -> !null")
+    public QuestItem getQuestItem(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }
@@ -266,7 +279,7 @@ public class Instruction {
         return getItemList(getOptionalArgument(prefix).orElse(null));
     }
 
-    public Item[] getItemList(final String string) throws InstructionParseException {
+    public Item[] getItemList(@Nullable final String string) throws InstructionParseException {
         final String[] array = getArray(string);
         final Item[] items = new Item[array.length];
         for (int i = 0; i < items.length; i++) {
@@ -294,7 +307,9 @@ public class Instruction {
     }
 
     @SuppressWarnings({"deprecation", "PMD.ReturnEmptyCollectionRatherThanNull"})
-    public Map<Enchantment, Integer> getEnchantments(final String string) throws InstructionParseException {
+    @Nullable
+    @Contract("null -> null; !null -> !null")
+    public Map<Enchantment, Integer> getEnchantments(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }
@@ -325,7 +340,9 @@ public class Instruction {
     }
 
     @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
-    public List<PotionEffect> getEffects(final String string) throws InstructionParseException {
+    @Nullable
+    @Contract("null -> null; !null -> !null")
+    public List<PotionEffect> getEffects(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }
@@ -358,11 +375,15 @@ public class Instruction {
         return getEnum(next(), clazz);
     }
 
-    public <T extends Enum<T>> T getEnum(final String string, final Class<T> clazz) throws InstructionParseException {
+    @Nullable
+    @Contract("null, _ -> null; !null, _ -> !null")
+    public <T extends Enum<T>> T getEnum(@Nullable final String string, final Class<T> clazz) throws InstructionParseException {
         return getEnum(string, clazz, null);
     }
 
-    public <T extends Enum<T>> T getEnum(final String string, final Class<T> clazz, final T defaultValue) throws InstructionParseException {
+    @Nullable
+    @Contract("_, _, !null -> !null")
+    public <T extends Enum<T>> T getEnum(@Nullable final String string, final Class<T> clazz, @Nullable final T defaultValue) throws InstructionParseException {
         if (string == null) {
             return defaultValue;
         }
@@ -377,7 +398,9 @@ public class Instruction {
         return getMaterial(next());
     }
 
-    public Material getMaterial(final String string) {
+    @Nullable
+    @Contract("null -> null; !null -> !null")
+    public Material getMaterial(@Nullable final String string) {
         if (string == null) {
             return null;
         }
@@ -388,7 +411,9 @@ public class Instruction {
         return getBlockSelector(next());
     }
 
-    public BlockSelector getBlockSelector(final String string) throws InstructionParseException {
+    @Nullable
+    @Contract("null -> null; !null -> !null")
+    public BlockSelector getBlockSelector(@Nullable final String string) throws InstructionParseException {
         return string == null ? null : new BlockSelector(string);
     }
 
@@ -416,7 +441,9 @@ public class Instruction {
         return getEvent(next());
     }
 
-    public EventID getEvent(final String string) throws InstructionParseException {
+    @Nullable
+    @Contract("null -> null; !null -> !null")
+    public EventID getEvent(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }
@@ -431,7 +458,9 @@ public class Instruction {
         return getCondition(next());
     }
 
-    public ConditionID getCondition(final String string) throws InstructionParseException {
+    @Nullable
+    @Contract("null -> null; !null -> !null")
+    public ConditionID getCondition(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }
@@ -446,7 +475,9 @@ public class Instruction {
         return getObjective(next());
     }
 
-    public ObjectiveID getObjective(final String string) throws InstructionParseException {
+    @Nullable
+    @Contract("null -> null; !null -> !null")
+    public ObjectiveID getObjective(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }
@@ -461,7 +492,9 @@ public class Instruction {
         return getItem(next());
     }
 
-    public ItemID getItem(final String string) throws InstructionParseException {
+    @Nullable
+    @Contract("null -> null; !null -> !null")
+    public ItemID getItem(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }
@@ -480,7 +513,7 @@ public class Instruction {
         return getByte(next(), (byte) 0);
     }
 
-    public byte getByte(final String string, final byte def) throws InstructionParseException {
+    public byte getByte(@Nullable final String string, final byte def) throws InstructionParseException {
         if (string == null) {
             return def;
         }
@@ -495,7 +528,7 @@ public class Instruction {
         return getPositive(next(), 0);
     }
 
-    public int getPositive(final String string, final int def) throws InstructionParseException {
+    public int getPositive(@Nullable final String string, final int def) throws InstructionParseException {
         final int number = getInt(string, def);
         if (number <= 0) {
             throw new InstructionParseException("Number cannot be less than 1");
@@ -507,7 +540,7 @@ public class Instruction {
         return getInt(next(), 0);
     }
 
-    public int getInt(final String string, final int def) throws InstructionParseException {
+    public int getInt(@Nullable final String string, final int def) throws InstructionParseException {
         if (string == null) {
             return def;
         }
@@ -522,7 +555,7 @@ public class Instruction {
         return getLong(next(), 0);
     }
 
-    public long getLong(final String string, final long def) throws InstructionParseException {
+    public long getLong(@Nullable final String string, final long def) throws InstructionParseException {
         if (string == null) {
             return def;
         }
@@ -537,7 +570,7 @@ public class Instruction {
         return getDouble(next(), 0.0);
     }
 
-    public double getDouble(final String string, final double def) throws InstructionParseException {
+    public double getDouble(@Nullable final String string, final double def) throws InstructionParseException {
         if (string == null) {
             return def;
         }
@@ -556,7 +589,7 @@ public class Instruction {
         return getArray(next());
     }
 
-    public String[] getArray(final String string) {
+    public String[] getArray(@Nullable final String string) {
         if (string == null) {
             return new String[0];
         }
@@ -567,7 +600,7 @@ public class Instruction {
         return getList(next(), converter);
     }
 
-    public <T> List<T> getList(final String string, final Converter<T> converter) throws InstructionParseException {
+    public <T> List<T> getList(@Nullable final String string, final Converter<T> converter) throws InstructionParseException {
         if (string == null) {
             return new ArrayList<>(0);
         }

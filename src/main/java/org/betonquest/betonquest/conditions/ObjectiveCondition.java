@@ -18,6 +18,7 @@ public class ObjectiveCondition extends Condition {
     public ObjectiveCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         objective = instruction.getObjective();
+        //noinspection ConstantValue
         if (objective == null) {
             throw new InstructionParseException("Objective does not exist");
         }

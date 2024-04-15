@@ -16,7 +16,7 @@ import org.bukkit.event.Event;
 /**
  * Skript condition, which checks specified BetonQuest's condition
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "NotNullFieldNotInitialized"})
 public class SkriptConditionBQ extends Condition {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.

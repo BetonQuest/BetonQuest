@@ -16,6 +16,7 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.bukkit.Server;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -420,6 +421,7 @@ public abstract class Objective {
      * @param profile the {@link Profile} to get the data for
      * @return the data string for this objective
      */
+    @Nullable
     public final String getData(final Profile profile) {
         final ObjectiveData data = dataMap.get(profile);
         if (data == null) {

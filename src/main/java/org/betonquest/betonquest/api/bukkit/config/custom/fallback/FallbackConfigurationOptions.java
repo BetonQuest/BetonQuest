@@ -19,6 +19,7 @@ public class FallbackConfigurationOptions extends ConfigurationOptions {
     /**
      * The fallback {@link ConfigurationOptions} hidden behind this decorator.
      */
+    @Nullable
     private final ConfigurationOptions fallback;
 
     /**

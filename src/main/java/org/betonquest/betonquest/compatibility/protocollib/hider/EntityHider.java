@@ -22,6 +22,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,6 +88,7 @@ public class EntityHider implements Listener {
 
     protected Table<Integer, Integer, Boolean> observerEntityMap = HashBasedTable.create();
 
+    @Nullable
     private ProtocolManager manager;
 
     /**

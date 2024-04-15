@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Support for Hologram plugins should come from implementation this abstract class. There may be multiple
@@ -36,6 +37,7 @@ public abstract class HologramIntegrator implements Integrator, Comparable<Holog
     /**
      * The plugin hooked by this integrator
      */
+    @Nullable
     private Plugin plugin;
 
     /**
@@ -55,6 +57,7 @@ public abstract class HologramIntegrator implements Integrator, Comparable<Holog
         return pluginName;
     }
 
+    @Nullable
     public Plugin getPlugin() {
         return plugin;
     }

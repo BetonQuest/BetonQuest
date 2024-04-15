@@ -10,6 +10,7 @@ import org.betonquest.betonquest.utils.LocalChatPaginator;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +22,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
 
     private final int messageDelay;
 
+    @Nullable
     private List<String> endLines;
 
     public SlowTellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
@@ -91,7 +93,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
     }
 
     @Override
-    public void print(final String message) {
+    public void print(@Nullable final String message) {
         if (endLines == null) {
             super.print(message);
             return;

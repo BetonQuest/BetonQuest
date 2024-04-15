@@ -11,6 +11,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -37,8 +38,9 @@ public class DelayObjective extends Objective {
 
     private final int interval;
 
-    private VariableNumber delay;
+    private final VariableNumber delay;
 
+    @Nullable
     private BukkitTask runnable;
 
     public DelayObjective(final Instruction instruction) throws InstructionParseException {
@@ -46,23 +48,23 @@ public class DelayObjective extends Objective {
         log = BetonQuest.getInstance().getLoggerFactory().create(this.getClass());
         template = DelayData.class;
 
-        parseDelay();
+        delay = parseDelay();
         interval = instruction.getInt(instruction.getOptional("interval"), 20 * 10);
         if (interval <= 0) {
             throw new InstructionParseException("Interval cannot be less than 1 tick");
         }
     }
 
-    private void parseDelay() throws InstructionParseException {
+    private VariableNumber parseDelay() throws InstructionParseException {
         final String doubleOrVar = instruction.next();
         if (doubleOrVar.startsWith("%")) {
-            delay = new VariableNumber(instruction.getPackage(), doubleOrVar);
+            return new VariableNumber(instruction.getPackage(), doubleOrVar);
         } else {
             final double time = Double.parseDouble(doubleOrVar);
             if (time < 0) {
                 throw new InstructionParseException("Error in delay objective '" + instruction.getID() + "': Delay cannot be less than 0");
             }
-            delay = new VariableNumber(time);
+            return new VariableNumber(time);
         }
     }
 

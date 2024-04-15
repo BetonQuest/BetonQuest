@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerShearEntityEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.Pattern;
 
@@ -22,12 +23,14 @@ import java.util.regex.Pattern;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class ShearObjective extends CountingObjective implements Listener {
+    @Nullable
     private final String color;
 
     private final Pattern underscore = Pattern.compile("(?<!\\\\)_");
 
     private final Pattern escapedUnderscore = Pattern.compile("(\\\\)_");
 
+    @Nullable
     private final String name;
 
     public ShearObjective(final Instruction instruction) throws InstructionParseException {

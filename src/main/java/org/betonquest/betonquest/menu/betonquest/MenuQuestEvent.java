@@ -9,6 +9,7 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Event to open or close menus
@@ -17,6 +18,7 @@ import org.betonquest.betonquest.menu.RPGMenu;
 public class MenuQuestEvent extends QuestEvent {
     private final Operation operation;
 
+    @Nullable
     private MenuID menu;
 
     public MenuQuestEvent(final Instruction instruction) throws InstructionParseException {
@@ -34,6 +36,7 @@ public class MenuQuestEvent extends QuestEvent {
     @Override
     public Void execute(final Profile profile) throws QuestRuntimeException {
         if (operation == Operation.OPEN) {
+            assert menu != null;
             BetonQuest.getInstance().getRpgMenu().openMenu(profile.getOnlineProfile().get(), menu);
         } else {
             RPGMenu.closeMenu(profile.getOnlineProfile().get());

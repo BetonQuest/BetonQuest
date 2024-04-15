@@ -23,6 +23,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Player needs to die. Death can be canceled, also respawn location can be set
@@ -36,6 +37,7 @@ public class DieObjective extends Objective implements Listener {
 
     private final boolean cancel;
 
+    @Nullable
     private final CompoundLocation location;
 
     public DieObjective(final Instruction instruction) throws InstructionParseException {

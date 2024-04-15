@@ -25,6 +25,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerFishEvent.State;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Requires the player to catch the fish.
@@ -38,8 +39,10 @@ public class FishObjective extends CountingObjective implements Listener {
 
     private final BlockSelector blockSelector;
 
+    @Nullable
     private final CompoundLocation hookTargetLocation;
 
+    @Nullable
     private final VariableNumber rangeVar;
 
     public FishObjective(final Instruction instruction) throws InstructionParseException {

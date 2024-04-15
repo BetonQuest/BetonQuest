@@ -91,7 +91,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
             }
 
             @Override
-            public void setComment(@NotNull final String path, final List<String> comments) {
+            public void setComment(@NotNull final String path, @Nullable final List<String> comments) {
                 if (keyIndex.containsKey(path)) {
                     final ConfigurationSection config = keyIndex.get(path).get(0);
                     if (config != null && config.isSet(path)) {
@@ -102,7 +102,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
             }
 
             @Override
-            public void setInlineComment(@NotNull final String path, final List<String> comments) {
+            public void setInlineComment(@NotNull final String path, @Nullable final List<String> comments) {
                 if (keyIndex.containsKey(path)) {
                     final ConfigurationSection config = keyIndex.get(path).get(0);
                     if (config != null && config.isSet(path)) {
@@ -218,6 +218,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
 
     @Override
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
+    @Nullable
     public ConfigurationSection getSourceConfigurationSection(final String path) throws InvalidConfigurationException {
         if (!original.isSet(path)) {
             return null;
@@ -352,7 +353,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
          * @param path     the absolut path to the comments
          * @param comments the comments to set
          */
-        void setComment(@NotNull String path, List<String> comments);
+        void setComment(@NotNull String path, @Nullable List<String> comments);
 
         /**
          * Consumer for a call of the setInlineComment method.
@@ -360,7 +361,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
          * @param path     the absolut path to the comments
          * @param comments the comments to set
          */
-        void setInlineComment(@NotNull String path, List<String> comments);
+        void setInlineComment(@NotNull String path, @Nullable List<String> comments);
     }
 
     /**
@@ -370,6 +371,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
         /**
          * The consumer to call if the set method was called
          */
+        @Nullable
         private SetConsumer consumer;
 
         /**

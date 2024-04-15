@@ -12,6 +12,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -29,8 +30,10 @@ public class WandCondition extends Condition {
 
     private final Map<String, VariableNumber> spells = new HashMap<>();
 
+    @Nullable
     private final String name;
 
+    @Nullable
     private final VariableNumber amount;
 
     @SuppressWarnings("PMD.CyclomaticComplexity")

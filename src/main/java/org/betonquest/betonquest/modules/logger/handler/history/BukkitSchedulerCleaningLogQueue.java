@@ -3,6 +3,7 @@ package org.betonquest.betonquest.modules.logger.handler.history;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
 import java.time.InstantSource;
@@ -55,7 +56,7 @@ public class BukkitSchedulerCleaningLogQueue extends QueueBackedLogRecordQueue i
         }, delay, period);
     }
 
-    private boolean isExpired(final LogRecord record) {
+    private boolean isExpired(@Nullable final LogRecord record) {
         return record != null && record.getInstant().isBefore(instantSource.instant().minus(validFor));
     }
 }

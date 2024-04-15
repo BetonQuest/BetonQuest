@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.URI;
@@ -33,7 +34,7 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
      * @param relativeRoot the root to relativize the config accessors to for logging
      * @throws InvalidConfigurationException if patch modifications couldn't be saved
      */
-    public ConfigurationFileImpl(final BetonQuestLogger log, final ConfigAccessor accessor, final Patcher patcher, final URI relativeRoot) throws InvalidConfigurationException {
+    public ConfigurationFileImpl(final BetonQuestLogger log, final ConfigAccessor accessor, @Nullable final Patcher patcher, final URI relativeRoot) throws InvalidConfigurationException {
         super(accessor.getConfig());
         this.log = log;
         this.accessor = accessor;

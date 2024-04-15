@@ -20,6 +20,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
@@ -34,22 +35,30 @@ public class SpawnMobEvent extends QuestEvent {
 
     private final VariableNumber amount;
 
+    @Nullable
     private final QuestItem helmet;
 
+    @Nullable
     private final QuestItem chestplate;
 
+    @Nullable
     private final QuestItem leggings;
 
+    @Nullable
     private final QuestItem boots;
 
+    @Nullable
     private final QuestItem mainHand;
 
+    @Nullable
     private final QuestItem offHand;
 
     private final Item[] drops;
 
+    @Nullable
     private final String name;
 
+    @Nullable
     private final VariableString marked;
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})

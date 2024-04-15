@@ -10,6 +10,7 @@ import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Displays an effect.
@@ -18,8 +19,10 @@ import org.bukkit.entity.Player;
 public class ParticleEvent extends QuestEvent {
     private final String effectClass;
 
+    @Nullable
     private final ConfigurationSection parameters;
 
+    @Nullable
     private final CompoundLocation loc;
 
     private final boolean privateParticle;
@@ -31,6 +34,7 @@ public class ParticleEvent extends QuestEvent {
         if (parameters == null) {
             throw new InstructionParseException("Effect '" + string + "' does not exist!");
         }
+        //noinspection DataFlowIssue
         effectClass = parameters.getString("class");
         if (effectClass == null) {
             throw new InstructionParseException("Effect '" + string + "' is incorrectly defined");

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.conversation;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represent a reference from one conversation to another.
@@ -11,6 +12,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
  * @param sourceOption the referring option
  * @param resolver     the resolver that will be used to resolve the conversation option
  */
-public record CrossConversationReference(QuestPackage sourcePack, String sourceConv, String sourceOption,
+public record CrossConversationReference(QuestPackage sourcePack, String sourceConv, @Nullable String sourceOption,
                                          ConversationOptionResolver resolver) {
 }

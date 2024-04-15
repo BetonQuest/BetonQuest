@@ -22,6 +22,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ import java.util.Set;
 
 @SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
 public final class NPCHider extends BukkitRunnable implements Listener {
+    @Nullable
     private static NPCHider instance;
 
     /**
@@ -67,6 +69,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
     /**
      * @return the currently used NPCHider instance
      */
+    @Nullable
     public static NPCHider getInstance() {
         return instance;
     }
@@ -77,6 +80,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
 
         for (final QuestPackage cfgPackage : Config.getPackages().values()) {
             final ConfigurationSection custom = cfgPackage.getConfig();
+            //noinspection ConstantValue
             if (custom == null) {
                 continue;
             }

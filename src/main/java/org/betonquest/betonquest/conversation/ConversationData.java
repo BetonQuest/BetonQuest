@@ -31,7 +31,7 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
 /**
  * Represents the data of the conversation.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.CommentRequired", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals"})
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.CommentRequired", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals", "NotNullFieldNotInitialized"})
 public class ConversationData {
 
     /**
@@ -118,11 +118,11 @@ public class ConversationData {
      * @param conversationID the {@link ConversationID} of the conversation holding this data
      * @param convSection    the configuration section of the conversation
      * @throws InstructionParseException when there is a syntax error in the defined conversation
-     * @throws ObjectNotFoundException   when conversation options cannot be resolved
+     * @throws ObjectNotFoundException   when conversation options cannot be resolved or {@code convSection} is null
      */
     @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public ConversationData(final BetonQuest plugin, final ConversationID conversationID, final ConfigurationSection convSection) throws InstructionParseException, ObjectNotFoundException {
+    public ConversationData(final BetonQuest plugin, final ConversationID conversationID, @Nullable final ConfigurationSection convSection) throws InstructionParseException, ObjectNotFoundException {
         this.plugin = plugin;
         this.conversationID = conversationID;
         this.pack = conversationID.getPackage();
@@ -393,7 +393,7 @@ public class ConversationData {
      *               conversation
      * @return the conversation prefix, or null if not defined
      */
-    public String getPrefix(final String lang, final ResolvedOption option) {
+    public String getPrefix(final String lang, @Nullable final ResolvedOption option) {
         // get prefix from an option
         if (option != null) {
             String pref = option.conversationData().npcOptions.get(option.name()).getInlinePrefix(lang);
@@ -487,6 +487,7 @@ public class ConversationData {
      * @param option the option
      * @return the text of the specified option in the specified language
      */
+    @Nullable
     public String getText(final String lang, final ResolvedOption option) {
         return getText(null, lang, option);
     }
@@ -500,7 +501,8 @@ public class ConversationData {
      * @param option  the option
      * @return the text of the specified option in the specified language
      */
-    public String getText(final Profile profile, final String lang, final ResolvedOption option) {
+    @Nullable
+    public String getText(@Nullable final Profile profile, final String lang, final ResolvedOption option) {
         final ConversationOption opt;
         if (option.type() == NPC) {
             opt = option.conversationData().npcOptions.get(option.name());
@@ -556,7 +558,7 @@ public class ConversationData {
         }
     }
 
-    private ConversationOption getOption(final String option, final OptionType type) {
+    private ConversationOption getOption(@Nullable final String option, final OptionType type) {
         return type == NPC ? npcOptions.get(option) : playerOptions.get(option);
     }
 
@@ -820,6 +822,7 @@ public class ConversationData {
             return optionName;
         }
 
+        @Nullable
         public String getInlinePrefix(final String lang) {
             String thePrefix = inlinePrefix.get(lang);
             if (thePrefix == null) {
@@ -835,11 +838,11 @@ public class ConversationData {
          * @param lang    the language to get the text in
          * @return the text of this option in the given language
          */
-        public String getText(final Profile profile, final String lang) {
+        public String getText(@Nullable final Profile profile, final String lang) {
             return getText(profile, lang, new ArrayList<>());
         }
 
-        private String getText(final Profile profile, final String lang, final List<String> optionPath) {
+        private String getText(@Nullable final Profile profile, final String lang, final List<String> optionPath) {
             // Prevent infinite loops
             if (optionPath.contains(getName())) {
                 return "";
@@ -911,7 +914,7 @@ public class ConversationData {
             return getPointers(profile, new ArrayList<>());
         }
 
-        private List<String> getPointers(final Profile profile, final List<String> optionPath) {
+        private List<String> getPointers(@Nullable final Profile profile, final List<String> optionPath) {
             // Prevent infinite loops
             if (optionPath.contains(getName())) {
                 return Collections.emptyList();

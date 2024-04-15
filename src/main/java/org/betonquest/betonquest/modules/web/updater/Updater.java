@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.jetbrains.annotations.Nullable;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -85,11 +86,13 @@ public class Updater {
     /**
      * The last timestamp, when an update was searched.
      */
+    @Nullable
     private Instant lastCheck;
 
     /**
      * The update notification.
      */
+    @Nullable
     private String updateNotification;
 
     /**

@@ -9,6 +9,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+import org.checkerframework.framework.qual.DefaultQualifier;
+import org.checkerframework.framework.qual.TypeUseLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,6 +26,7 @@ import java.util.function.Function;
  * as if it were the original {@link ConfigurationSection}, except for missing key, then the fallback is used.
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount", "PMD.TooManyMethods"})
+@DefaultQualifier(value = Nullable.class, locations = TypeUseLocation.LOCAL_VARIABLE)
 public class FallbackConfigurationSection implements ConfigurationSection {
     /**
      * Manager holing the original and the fallback {@link ConfigurationSection} instances.
@@ -33,6 +36,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     /**
      * The parent {@link FallbackConfigurationSection}.
      */
+    @Nullable
     protected FallbackConfigurationSection parent;
 
     /**
@@ -61,6 +65,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         this.manager = new ConfigManager(sectionName, original, fallback);
     }
 
+    @Nullable
     private FallbackConfigurationSection getFallbackConfigurationSection(final String path) {
         final char separator = root.options().pathSeparator();
         final int separatorIndex = path.indexOf(separator);
@@ -658,16 +663,19 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         /**
          * Name of the current {@link ConfigurationSection}
          */
+        @Nullable
         private final String sectionName;
 
         /**
          * The original {@link ConfigurationSection}.
          */
+        @Nullable
         private ConfigurationSection original;
 
         /**
          * The fallback {@link ConfigurationSection}.
          */
+        @Nullable
         private ConfigurationSection fallback;
 
         /**
@@ -696,7 +704,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
             }
         }
 
-        private boolean hasValidName(final ConfigurationSection section) {
+        private boolean hasValidName(@Nullable final ConfigurationSection section) {
             if (section == null) {
                 return true;
             }
@@ -709,6 +717,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
          *
          * @return The original {@link ConfigurationSection}
          */
+        @Nullable
         protected ConfigurationSection getOriginal() {
             if (sectionName != null && !checkIsOrphaned()) {
                 final ConfigurationSection parentOriginal = parent.manager.getOriginal();
@@ -731,6 +740,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
          *
          * @return The fallback {@link ConfigurationSection}
          */
+        @Nullable
         protected ConfigurationSection getFallback() {
             if (sectionName != null) {
                 final ConfigurationSection parentFallback = parent.manager.getFallback();

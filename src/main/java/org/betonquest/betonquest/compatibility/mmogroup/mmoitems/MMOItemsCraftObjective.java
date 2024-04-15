@@ -25,6 +25,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import static net.Indyuce.mmoitems.api.event.PlayerUseCraftingStationEvent.StationAction;
 
@@ -116,10 +117,11 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
      *
      * @return {@code true} if the item matches the requirements; {@code false} otherwise
      */
-    private boolean isValidItem(final ItemStack itemStack) {
+    private boolean isValidItem(@Nullable final ItemStack itemStack) {
         if (itemStack == null) {
             return false;
         }
+        // TODO "does the same thing"
         final NBTItem realItemNBT = NBTItem.get(itemStack);
         final String realItemType = realItemNBT.getString("MMOITEMS_ITEM_TYPE");
         final String realItemID = realItemNBT.getString("MMOITEMS_ITEM_ID");

@@ -19,6 +19,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Player has to break/place specified amount of blocks. Doing opposite thing
@@ -44,11 +45,13 @@ public class BlockObjective extends CountingObjective implements Listener {
     /**
      * Optional location parameter.
      */
+    @Nullable
     private final CompoundLocation location;
 
     /**
      * Optional region parameter. Used together with {@link #location} to form a cuboid region.
      */
+    @Nullable
     private final CompoundLocation region;
 
     /**
@@ -143,6 +146,7 @@ public class BlockObjective extends CountingObjective implements Listener {
     }
 
     private boolean isInRange(final Location loc, final Profile profile) throws QuestRuntimeException {
+        assert location != null && region != null;
         final Location loc1 = location.getLocation(profile);
         final Location loc2 = region.getLocation(profile);
         return inBetween(loc1, loc2, loc);

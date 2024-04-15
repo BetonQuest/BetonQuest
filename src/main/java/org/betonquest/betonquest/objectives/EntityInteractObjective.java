@@ -25,6 +25,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.metadata.MetadataValue;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -47,24 +48,30 @@ public class EntityInteractObjective extends CountingObjective {
      */
     private final BetonQuestLogger log;
 
+    @Nullable
     private final CompoundLocation loc;
 
     private final VariableNumber range;
 
+    @Nullable
     private final String customName;
 
+    @Nullable
     private final String realName;
 
     protected EntityType mobType;
 
+    @Nullable
     protected String marked;
 
     protected Interaction interaction;
 
     protected boolean cancel;
 
+    @Nullable
     private RightClickListener rightClickListener;
 
+    @Nullable
     private LeftClickListener leftClickListener;
 
     public EntityInteractObjective(final Instruction instruction) throws InstructionParseException {
@@ -87,7 +94,8 @@ public class EntityInteractObjective extends CountingObjective {
         range = instruction.getVarNum(stringRange == null ? "1" : stringRange);
     }
 
-    private String parseName(final String rawName) {
+    @Nullable
+    private String parseName(@Nullable final String rawName) {
         if (rawName != null) {
             return ChatColor.translateAlternateColorCodes('&', rawName.replace('_', ' '));
         }

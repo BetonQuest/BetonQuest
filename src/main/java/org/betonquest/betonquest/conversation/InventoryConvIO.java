@@ -9,7 +9,11 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,6 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +47,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
      */
     private final BetonQuestLogger log;
 
+    @Nullable
     protected String response;
 
     protected Map<Integer, String> options = new HashMap<>();
@@ -400,6 +406,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
      * @return true if the inventory must be closed
      */
     private boolean mustBeClosed() {
+        //noinspection ConstantValue
         return inv != null && conv.nextNPCOption == null;
     }
 

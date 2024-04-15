@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
@@ -30,10 +31,13 @@ public abstract class ID {
 
     protected String identifier;
 
+    @SuppressWarnings("NotNullFieldNotInitialized")
     protected QuestPackage pack;
 
+    @Nullable
     protected Instruction instruction;
 
+    @Nullable
     protected String rawInstruction;
 
     /**
@@ -45,8 +49,9 @@ public abstract class ID {
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity",
             "PMD.AvoidLiteralsInIfCondition", "PMD.NcssCount"})
-    protected ID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
+    protected ID(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         // id must be specified
+        //noinspection ConstantValue
         if (identifier == null || identifier.isEmpty()) {
             throw new ObjectNotFoundException("ID is null");
         }
@@ -212,7 +217,7 @@ public abstract class ID {
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(@Nullable final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -229,6 +234,7 @@ public abstract class ID {
         return Objects.hash(identifier, pack.getQuestPath());
     }
 
+    @Nullable
     public Instruction generateInstruction() {
         if (rawInstruction == null) {
             return null;

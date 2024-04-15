@@ -68,9 +68,11 @@ public class QuestCanceler {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public QuestCanceler(final QuestPackage pack, final String cancelerID) throws InstructionParseException {
+        //noinspection ConstantValue
         if (cancelerID == null) {
             throw new InstructionParseException("Name is null");
         }
+        //noinspection ConstantValue
         if (pack == null) {
             throw new InstructionParseException("Package does not exist");
         }

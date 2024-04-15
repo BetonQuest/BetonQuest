@@ -36,11 +36,13 @@ public class RemoveEntityEvent implements Event {
     /**
      * The name of the mob.
      */
+    @Nullable
     private final String name;
 
     /**
      * The mark of the mob.
      */
+    @Nullable
     private final VariableString marked;
 
     /**

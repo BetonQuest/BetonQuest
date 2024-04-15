@@ -2,6 +2,7 @@ package org.betonquest.betonquest.modules.schedule;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -23,6 +24,7 @@ public class LastExecutionCache {
     /**
      * Config accessor for the cache.
      */
+    @Nullable
     private final ConfigAccessor cache;
 
     /**

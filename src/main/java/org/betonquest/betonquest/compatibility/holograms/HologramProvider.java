@@ -14,6 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,6 +43,7 @@ public class HologramProvider implements Integrator {
     /**
      * Singleton instance of this HologramProvider, only ever null if not initialised.
      */
+    @Nullable
     private static HologramProvider instance;
 
     /**
@@ -52,11 +54,13 @@ public class HologramProvider implements Integrator {
     /**
      * The current {@link LocationHologramLoop}.
      */
+    @Nullable
     private LocationHologramLoop locationHologramLoop;
 
     /**
      * The current {@link CitizensHologramLoop}.
      */
+    @Nullable
     private CitizensHologramLoop citizensHologramLoop;
 
 
@@ -121,6 +125,7 @@ public class HologramProvider implements Integrator {
      * @throws IllegalStateException Thrown if this method has been used at the incorrect time
      */
     public boolean isHooked(final String pluginName) {
+        //noinspection ConstantValue
         if (this.integrator == null) {
             throw new IllegalStateException("Cannot isHooked() when HologramProvider has not been fully initialised yet!");
         }
@@ -162,6 +167,7 @@ public class HologramProvider implements Integrator {
     @Override
     public void reload() {
         synchronized (HologramProvider.class) {
+            assert instance != null;
             if (instance.locationHologramLoop != null) {
                 HologramRunner.cancel();
 
@@ -171,6 +177,7 @@ public class HologramProvider implements Integrator {
                 final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
                 instance.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class));
                 if (instance.citizensHologramLoop != null) {
+                    // TODO this should be instance's?
                     this.citizensHologramLoop.close();
                     this.citizensHologramLoop = new CitizensHologramLoop(loggerFactory, loggerFactory.create(CitizensHologramLoop.class));
                 }
@@ -181,6 +188,7 @@ public class HologramProvider implements Integrator {
     @Override
     public void close() {
         synchronized (HologramProvider.class) {
+            assert instance != null;
             if (instance.locationHologramLoop != null) {
                 HologramRunner.cancel();
                 instance.locationHologramLoop = null;

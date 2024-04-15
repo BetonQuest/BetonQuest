@@ -45,6 +45,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BoundingBox;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,7 +62,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Stream;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods",
-        "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
+        "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "NotNullFieldNotInitialized"})
 public class MenuConvIO extends ChatConvIO {
     /**
      * Thread safety
@@ -88,6 +89,7 @@ public class MenuConvIO extends ChatConvIO {
 
     protected PacketAdapter packetAdapter;
 
+    @Nullable
     protected BukkitRunnable displayRunnable;
 
     protected boolean debounce;
@@ -558,6 +560,7 @@ public class MenuConvIO extends ChatConvIO {
      * Ends the work of this conversation IO. Should be called when the
      * conversation ends.
      */
+    @SuppressWarnings("ConstantValue")
     @Override
     public void end() {
         if (state.isEnded()) {

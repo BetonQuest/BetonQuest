@@ -10,6 +10,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>
@@ -88,7 +89,7 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
      *                               numeric variable resolved to a string)
      */
     @Override
-    protected abstract Void execute(Profile profile) throws QuestRuntimeException;
+    protected abstract Void execute(@Nullable Profile profile) throws QuestRuntimeException;
 
     /**
      * Returns the full id of this event. This includes the package path and the event name, seperated by a dot.
@@ -107,7 +108,7 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
      * @return whether the event was successfully handled or not.
      * @throws QuestRuntimeException passes the exception from the event up the stack
      */
-    public final boolean fire(final Profile profile) throws QuestRuntimeException {
+    public final boolean fire(@Nullable final Profile profile) throws QuestRuntimeException {
         if (profile == null) {
             return handleNullProfile();
         } else if (profile.getOnlineProfile().isEmpty()) {

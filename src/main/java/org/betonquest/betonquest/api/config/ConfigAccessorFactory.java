@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api.config;
 import org.betonquest.betonquest.modules.config.ConfigAccessorImpl;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -50,5 +51,5 @@ public interface ConfigAccessorFactory {
      * @throws FileNotFoundException         thrown if the {@code configurationFile} or the {@code resourceFile}
      *                                       could not be found
      */
-    ConfigAccessor create(File configurationFile, Plugin plugin, String resourceFile) throws InvalidConfigurationException, FileNotFoundException;
+    ConfigAccessor create(@Nullable File configurationFile, @Nullable Plugin plugin, @Nullable String resourceFile) throws InvalidConfigurationException, FileNotFoundException;
 }

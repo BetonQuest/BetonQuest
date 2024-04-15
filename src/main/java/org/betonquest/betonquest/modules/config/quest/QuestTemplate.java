@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,6 +32,7 @@ public class QuestTemplate extends Quest {
     /**
      * The final {@link MultiConfiguration} that represents this {@link QuestTemplate}.
      */
+    @Nullable
     private MultiConfiguration templateConfig;
 
     /**

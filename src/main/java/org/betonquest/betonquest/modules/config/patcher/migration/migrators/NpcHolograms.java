@@ -4,6 +4,7 @@ import org.betonquest.betonquest.modules.config.patcher.migration.FileConfigurat
 import org.betonquest.betonquest.modules.config.patcher.migration.Migration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,7 +62,7 @@ public class NpcHolograms implements Migration {
         }
     }
 
-    private void migrateFollow(final ConfigurationSection npcHolograms) {
+    private void migrateFollow(@Nullable final ConfigurationSection npcHolograms) {
         if (npcHolograms == null) {
             return;
         }
@@ -76,7 +77,7 @@ public class NpcHolograms implements Migration {
                 .forEach(subConfig -> subConfig.set("follow", true));
     }
 
-    private void migrateCheckInterval(final ConfigurationSection npcHolograms) {
+    private void migrateCheckInterval(@Nullable final ConfigurationSection npcHolograms) {
         if (npcHolograms == null) {
             return;
         }
@@ -91,7 +92,7 @@ public class NpcHolograms implements Migration {
                 .forEach(subConfig -> subConfig.set("check_interval", checkInterval));
     }
 
-    private void migrateVector(final ConfigurationSection npcHolograms) {
+    private void migrateVector(@Nullable final ConfigurationSection npcHolograms) {
         if (npcHolograms == null) {
             return;
         }

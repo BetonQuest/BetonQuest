@@ -8,6 +8,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class parses various location related strings with or without {@link Variable}s.
@@ -16,6 +17,7 @@ import org.bukkit.util.Vector;
 public class CompoundLocation {
     private final LocationData locationData;
 
+    @Nullable
     private final VectorData vectorData;
 
     /**
@@ -63,7 +65,7 @@ public class CompoundLocation {
      * @throws QuestRuntimeException Is thrown when the player cannot be accessed or the resolved location is in
      *                               the wrong format.
      */
-    public Location getLocation(final Profile profile) throws QuestRuntimeException {
+    public Location getLocation(@Nullable final Profile profile) throws QuestRuntimeException {
         final Location loc = locationData.get(profile);
         final Vector vec = vectorData == null ? new Vector() : vectorData.get(profile);
         return loc.clone().add(vec);
@@ -73,6 +75,7 @@ public class CompoundLocation {
         return locationData;
     }
 
+    @Nullable
     public VectorData getVectorData() {
         return vectorData;
     }

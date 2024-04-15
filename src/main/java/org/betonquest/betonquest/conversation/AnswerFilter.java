@@ -6,18 +6,19 @@ import org.apache.logging.log4j.core.Filter;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.message.Message;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Filters /betonquestanswer commands
  */
-@SuppressWarnings({"PMD.ExcessiveParameterList", "PMD.TooManyMethods", "PMD.CommentRequired"})
+@SuppressWarnings({"PMD.ExcessiveParameterList", "PMD.TooManyMethods", "PMD.CommentRequired", "DataFlowIssue"})
 public class AnswerFilter implements Filter {
 
     public AnswerFilter() {
     }
 
     @Override
-    public Result filter(final LogEvent record) {
+    public Result filter(@Nullable final LogEvent record) {
         if (record != null && record.getMessage() != null && record.getMessage().getFormattedMessage() != null
                 && record.getMessage().getFormattedMessage().contains(" issued server command: /betonquestanswer ")) {
             return Result.DENY;

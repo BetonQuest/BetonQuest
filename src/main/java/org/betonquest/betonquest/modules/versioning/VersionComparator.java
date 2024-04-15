@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.modules.versioning;
 
 import com.google.common.collect.Lists;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -78,7 +79,7 @@ public class VersionComparator implements Comparator<Version>, Serializable {
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @Override
-    public int compare(final Version current, final Version other) {
+    public int compare(@Nullable final Version current, @Nullable final Version other) {
         if (current == null && other == null) {
             return 0;
         }

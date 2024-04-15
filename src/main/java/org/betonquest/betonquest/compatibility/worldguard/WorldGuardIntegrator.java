@@ -10,6 +10,7 @@ import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.citizens.NPCRegionCondition;
 import org.bukkit.Location;
+import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class WorldGuardIntegrator implements Integrator {
@@ -27,7 +28,7 @@ public class WorldGuardIntegrator implements Integrator {
      * @param regionName The name of the region
      * @return boolean True if in region
      */
-    public static boolean isInsideRegion(final Location loc, final String regionName) {
+    public static boolean isInsideRegion(@Nullable final Location loc, final String regionName) {
         if (loc == null || loc.getWorld() == null) {
             return false;
         }

@@ -10,6 +10,7 @@ import org.betonquest.betonquest.quest.event.NotificationSender;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -119,6 +120,7 @@ public class GiveEvent implements Event {
      * @param itemStack the items to give
      * @return the items that could not be given
      */
+    @Nullable
     private ItemStack giveToInventory(final Player player, final ItemStack itemStack) {
         return player.getInventory().addItem(itemStack).values().stream().findAny().orElse(null);
     }

@@ -5,6 +5,7 @@ import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -22,6 +23,7 @@ public class PickRandomEvent implements Event {
     /**
      * The amount of events to fire.
      */
+    @Nullable
     private final VariableNumber amount;
 
     /**

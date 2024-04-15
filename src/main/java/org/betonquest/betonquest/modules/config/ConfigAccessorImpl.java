@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,6 +24,7 @@ public class ConfigAccessorImpl implements ConfigAccessor {
     /**
      * The file from which the {@link ConfigAccessorImpl#configuration} was loaded and will be saved to.
      */
+    @Nullable
     private final File configurationFile;
 
     /**
@@ -42,12 +44,13 @@ public class ConfigAccessorImpl implements ConfigAccessor {
      * @throws FileNotFoundException         thrown if the {@code configurationFile} or the {@code resourceFile}
      *                                       could not be found
      */
-    public ConfigAccessorImpl(final File configurationFile, final Plugin plugin, final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
+    public ConfigAccessorImpl(@Nullable final File configurationFile, @Nullable final Plugin plugin, @Nullable final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
         checkValidParams(configurationFile, plugin, resourceFile);
         this.configurationFile = configurationFile;
         if (configurationFile != null && configurationFile.exists()) {
             this.configuration = readFromFile();
         } else {
+            assert plugin != null && resourceFile != null;
             this.configuration = readFromResource(plugin, resourceFile);
             try {
                 this.save();
@@ -58,7 +61,7 @@ public class ConfigAccessorImpl implements ConfigAccessor {
         }
     }
 
-    private void checkValidParams(final File configurationFile, final Plugin plugin, final String resourceFile) {
+    private void checkValidParams(@Nullable final File configurationFile, @Nullable final Plugin plugin, @Nullable final String resourceFile) {
         if (configurationFile == null && plugin == null && resourceFile == null) {
             throw new IllegalArgumentException("The configurationsFile, plugin and resourceFile are null. Pass either a configurationFile or a plugin and a resourceFile.");
         }
@@ -88,7 +91,7 @@ public class ConfigAccessorImpl implements ConfigAccessor {
     }
 
     @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.AvoidThrowingNewInstanceOfSameException"})
-    private YamlConfiguration load(final Object input, final boolean isResource, final String sourcePath) throws InvalidConfigurationException, FileNotFoundException {
+    private YamlConfiguration load(@Nullable final Object input, final boolean isResource, final String sourcePath) throws InvalidConfigurationException, FileNotFoundException {
         try {
             final YamlConfiguration config = new YamlConfiguration();
             loadFromObject(input, config);
@@ -105,7 +108,7 @@ public class ConfigAccessorImpl implements ConfigAccessor {
         }
     }
 
-    private void loadFromObject(final Object input, final YamlConfiguration config) throws IOException, InvalidConfigurationException {
+    private void loadFromObject(@Nullable final Object input, final YamlConfiguration config) throws IOException, InvalidConfigurationException {
         if (input instanceof final File file) {
             config.load(file);
         } else if (input instanceof final Reader reader) {
@@ -163,6 +166,7 @@ public class ConfigAccessorImpl implements ConfigAccessor {
     }
 
     @Override
+    @Nullable
     public File getConfigurationFile() {
         return configurationFile;
     }

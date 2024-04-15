@@ -43,6 +43,7 @@ public final class DefaultPacketHandler implements PacketHandler {
      */
     protected DefaultPacketHandler(final PacketContainer handle) {
         // Make sure we're given a valid packet
+        //noinspection ConstantValue
         if (handle == null) {
             throw new IllegalArgumentException("Packet handle cannot be NULL.");
         }

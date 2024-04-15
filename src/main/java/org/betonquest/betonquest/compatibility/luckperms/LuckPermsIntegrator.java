@@ -8,7 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AtLeastOneConstructor"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.AtLeastOneConstructor", "NotNullFieldNotInitialized"})
 public class LuckPermsIntegrator implements Integrator {
     private LuckPerms api;
 

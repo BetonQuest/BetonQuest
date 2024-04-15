@@ -18,6 +18,7 @@ public class FallbackConfiguration extends FallbackConfigurationSection implemen
     /**
      * Holds the defaults of this {@link FallbackConfiguration}.
      */
+    @Nullable
     private FallbackConfiguration defaults;
 
     /**

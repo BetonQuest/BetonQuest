@@ -12,6 +12,7 @@ import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -67,7 +68,7 @@ class NotifySound {
         soundPlayer = getSoundPlayer(sound, soundString, compoundLocation, playerOffset, playerOffsetDistance, soundCategory, volume, pitch);
     }
 
-    private SoundPlayer getSoundPlayer(final Sound sound, final String soundString, final CompoundLocation compoundLocation, final VectorData playerOffset, final Float playerOffsetDistance, final SoundCategory soundCategory, final float volume, final float pitch) {
+    private SoundPlayer getSoundPlayer(@Nullable final Sound sound, final String soundString, final CompoundLocation compoundLocation, @Nullable final VectorData playerOffset, @Nullable final Float playerOffsetDistance, final SoundCategory soundCategory, final float volume, final float pitch) {
         return (onlineProfile) -> {
             final Location finalLocation = getLocation(onlineProfile, compoundLocation, playerOffset, playerOffsetDistance);
             final Player player = onlineProfile.getPlayer();
@@ -79,7 +80,7 @@ class NotifySound {
         };
     }
 
-    private Location getLocation(final OnlineProfile onlineProfile, final CompoundLocation compoundLocation, final VectorData playerOffset, final Float playerOffsetDistance) throws QuestRuntimeException {
+    private Location getLocation(final OnlineProfile onlineProfile, @Nullable final CompoundLocation compoundLocation, @Nullable final VectorData playerOffset, @Nullable final Float playerOffsetDistance) throws QuestRuntimeException {
         final Location location = compoundLocation == null ? onlineProfile.getPlayer().getLocation() : compoundLocation.getLocation(onlineProfile);
 
         if (playerOffsetDistance != null && onlineProfile.getPlayer().getLocation().distance(location) > playerOffsetDistance) {
@@ -109,6 +110,7 @@ class NotifySound {
         return location.add(relative);
     }
 
+    @Nullable
     private SoundPlayer checkInput(final Map<String, String> data) throws InstructionParseException {
         if (!data.containsKey(KEY_SOUND)) {
             if (Arrays.stream(SOUND_OPTIONS).anyMatch(data::containsKey)) {
@@ -134,7 +136,8 @@ class NotifySound {
         }
     }
 
-    private VectorData getPlayerOffset(final String playerOffsetString) throws InstructionParseException {
+    @Nullable
+    private VectorData getPlayerOffset(@Nullable final String playerOffsetString) throws InstructionParseException {
         if (playerOffsetString != null) {
             try {
                 return new VectorData((QuestPackage) null, playerOffsetString);
@@ -145,7 +148,8 @@ class NotifySound {
         return null;
     }
 
-    private Float getPlayerOffsetDistance(final String playerOffsetString) throws InstructionParseException {
+    @Nullable
+    private Float getPlayerOffsetDistance(@Nullable final String playerOffsetString) throws InstructionParseException {
         if (playerOffsetString != null) {
             try {
                 return Float.parseFloat(playerOffsetString);
@@ -156,6 +160,7 @@ class NotifySound {
         return null;
     }
 
+    @Nullable
     private Sound getSound(final String soundString) {
         try {
             return Sound.valueOf(soundString);

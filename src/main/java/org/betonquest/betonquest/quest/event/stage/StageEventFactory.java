@@ -71,7 +71,7 @@ public class StageEventFactory implements EventFactory {
         return null;
     }
 
-    private int getAmount(final Profile profile, final VariableNumber amount) throws QuestRuntimeException {
+    private int getAmount(final Profile profile, @Nullable final VariableNumber amount) throws QuestRuntimeException {
         if (amount == null) {
             return 1;
         }

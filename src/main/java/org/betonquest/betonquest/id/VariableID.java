@@ -6,6 +6,8 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class represents variable-related identifiers in BetonQuest.
@@ -24,7 +26,7 @@ public class VariableID extends ID {
      * @param identifier    The identifier string. It should start and end with '%' character.
      * @throws ObjectNotFoundException if the identifier string does not start and end with '%' character.
      */
-    public VariableID(final BetonQuestLoggerFactory loggerFactory, final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
+    public VariableID(final BetonQuestLoggerFactory loggerFactory, @Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         super(pack, identifier.replaceAll("%", ""));
         this.loggerFactory = loggerFactory;
         if (!super.identifier.isEmpty() && identifier.charAt(0) != '%' && !identifier.endsWith("%")) {
@@ -34,6 +36,7 @@ public class VariableID extends ID {
         super.identifier = "%" + super.identifier + "%";
     }
 
+    @NotNull
     @Override
     public Instruction generateInstruction() {
         return new VariableInstruction(loggerFactory.create(VariableInstruction.class), super.pack, this, super.identifier);
@@ -41,6 +44,7 @@ public class VariableID extends ID {
 
     @Override
     public String getBaseID() {
+        assert rawInstruction != null;
         return rawInstruction;
     }
 

@@ -27,6 +27,7 @@ public final class Notify {
 
     private static final Map<String, Map<String, String>> CATEGORY_SETTINGS = new HashMap<>();
 
+    @Nullable
     private static String defaultNotifyIO;
 
     private Notify() {

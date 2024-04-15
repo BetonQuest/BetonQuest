@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -80,7 +81,7 @@ public class RPGMenuConfig extends SimpleYMLSection {
      * @param replace arguments in the message that should be replaced
      * @return the predefined message with all args replaced
      */
-    public static String getMessage(final String lang, final String key, final String... replace) {
+    public static String getMessage(@Nullable final String lang, final String key, final String... replace) {
         final RPGMenuConfig instance = BetonQuest.getInstance().getRpgMenu().getConfiguration();
         if (instance == null) {
             return "null";

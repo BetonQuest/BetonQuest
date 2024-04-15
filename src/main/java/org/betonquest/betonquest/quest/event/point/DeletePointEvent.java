@@ -7,6 +7,7 @@ import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Deletes all points of a category.
@@ -28,7 +29,7 @@ public class DeletePointEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         final BetonQuest betonQuest = BetonQuest.getInstance();
         if (profile == null) {
             PlayerConverter.getOnlineProfiles().forEach(onlineProfile -> betonQuest.getPlayerData(onlineProfile).removePointsCategory(category));

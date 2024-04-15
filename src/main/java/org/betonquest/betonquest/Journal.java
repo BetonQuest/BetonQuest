@@ -26,6 +26,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,6 +59,7 @@ public class Journal {
 
     private String lang;
 
+    @Nullable
     private String mainPage;
 
     /**
@@ -84,7 +86,7 @@ public class Journal {
      * @return true if the ItemStack is the journal, false otherwise
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public static boolean isJournal(final OnlineProfile onlineProfile, final ItemStack item) {
+    public static boolean isJournal(final OnlineProfile onlineProfile, @Nullable final ItemStack item) {
         // if there is no item then it's not a journal
         if (item == null) {
             return false;
@@ -268,6 +270,7 @@ public class Journal {
      * @return the main page string or null, if there is no main page
      */
     @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+    @Nullable
     private String generateMainPage() {
         final HashMap<Integer, ArrayList<String>> lines = new HashMap<>(); // holds text lines with their priority
         final HashSet<Integer> numbers = new HashSet<>(); // stores numbers that are used, so there's no need to search them

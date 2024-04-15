@@ -60,6 +60,7 @@ public class VectorData extends AbstractData<Vector> {
      *                                   the values couldn't be parsed into double values.
      */
     public static Vector parseVector(final String vector) throws InstructionParseException {
+        //noinspection ConstantValue
         if (vector == null || !PATTERN_VECTOR.matcher(vector).find()) {
             throw new InstructionParseException(
                     "Incorrect vector format '" + vector + "'. A vector has to be in the format '(x;y;z)'");

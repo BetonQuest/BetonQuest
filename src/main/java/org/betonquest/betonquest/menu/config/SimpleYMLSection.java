@@ -33,6 +33,7 @@ public abstract class SimpleYMLSection {
         this.pack = pack;
         this.config = config;
         this.name = name;
+        //noinspection ConstantValue
         if (config == null || config.getKeys(false).size() == 0) {
             throw new InvalidSimpleConfigException("RPGMenuConfig is invalid or empty!");
         }

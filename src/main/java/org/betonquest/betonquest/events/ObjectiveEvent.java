@@ -13,6 +13,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -65,7 +66,7 @@ public class ObjectiveEvent extends QuestEvent {
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     @Override
-    protected Void execute(final Profile profile) throws QuestRuntimeException {
+    protected Void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         for (final ObjectiveID objective : objectives) {
             if (betonQuest.getObjective(objective) == null) {
                 throw new QuestRuntimeException("Objective '" + objective + "' is not defined, cannot run objective event");
