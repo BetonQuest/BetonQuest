@@ -50,6 +50,13 @@ public class DecentHologramsHologram implements BetonHologram {
     }
 
     @Override
+    public void setMaxRange(final int index) {
+        if (index != 0) {
+            hologram.setDisplayRange(index);
+        }
+    }
+
+    @Override
     public void createLines(final int startingIndex, final int linesAdded) {
         final HologramPage page = DHAPI.getHologramPage(hologram, 0);
         if (page == null) {

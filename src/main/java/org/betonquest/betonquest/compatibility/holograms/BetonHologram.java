@@ -42,6 +42,13 @@ public interface BetonHologram {
     void setLine(int index, String text);
 
     /**
+     * Sets the maximum range for the hologram display.
+     *
+     * @param index The maximum range to set
+     */
+    void setMaxRange(int index);
+
+    /**
      * Creates multiple lines from the starting index and adding a specified amount of lines. If a line at an index
      * already exists, then a line will not be created.
      *
