@@ -6,6 +6,7 @@ import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.manager.TypeManager;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -20,7 +21,7 @@ public class MMOItemsItemCondition extends Condition {
 
     private final String itemID;
 
-    private int amount = 1;
+    private final VariableNumber amount;
 
     public MMOItemsItemCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -33,10 +34,7 @@ public class MMOItemsItemCondition extends Condition {
         }
         itemID = instruction.next();
 
-        final List<Integer> potentialAmount = instruction.getAllNumbers();
-        if (!potentialAmount.isEmpty()) {
-            amount = potentialAmount.get(0);
-        }
+        amount = instruction.hasNext() ? instruction.getVarNum() : new VariableNumber(1);
     }
 
     @Override
@@ -58,6 +56,6 @@ public class MMOItemsItemCondition extends Condition {
             }
         }
 
-        return counter >= amount;
+        return counter >= amount.getInt(profile);
     }
 }

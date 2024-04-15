@@ -31,11 +31,11 @@ public class MMOItemsGiveEvent extends QuestEvent {
 
     private final String itemID;
 
-    private final boolean scale;
+    private boolean scale;
 
-    private final boolean notify;
+    private boolean notify;
 
-    private final boolean singleStack;
+    private boolean singleStack;
 
     private VariableNumber amountVar = new VariableNumber(1);
 
@@ -48,13 +48,15 @@ public class MMOItemsGiveEvent extends QuestEvent {
         itemType = mmoPlugin.getTypes().get(instruction.next());
         itemID = instruction.next();
 
-        if (instruction.getInstruction().contains("%") || !instruction.getAllNumbers().isEmpty()) {
-            amountVar = instruction.getVarNum();
+        while (instruction.hasNext()) {
+            final String next = instruction.next();
+            switch (next) {
+                case "scale" -> this.scale = true;
+                case "singleStack" -> this.singleStack = true;
+                case "notify" -> this.notify = true;
+                default -> this.amountVar = instruction.getVarNum(next);
+            }
         }
-
-        scale = instruction.hasArgument("scale");
-        singleStack = instruction.hasArgument("singleStack");
-        notify = instruction.hasArgument("notify");
 
         mmoItem = mmoPlugin.getItem(itemType, itemID);
 
