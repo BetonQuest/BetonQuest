@@ -90,8 +90,6 @@ public abstract class HologramLoop {
         } catch (final NumberFormatException e) {
             throw new InstructionParseException("Could not parse check interval", e);
         }
-        final String maxRangeString = section.getString("max_range");
-        final int maxRange = maxRangeString != null ? Integer.parseInt(maxRangeString) : 0;
         final List<String> lines = GlobalVariableResolver.resolve(pack, section.getStringList("lines"));
         final String rawConditions = GlobalVariableResolver.resolve(pack, section.getString("conditions"));
 
@@ -117,8 +115,7 @@ public abstract class HologramLoop {
                 isStaticHologram(cleanedLines),
                 conditions,
                 cleanedLines,
-                pack,
-                maxRange);
+                pack);
         HologramRunner.addHologram(hologramWrapper);
         return hologramWrapper;
     }
