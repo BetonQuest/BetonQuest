@@ -15,8 +15,6 @@ import java.util.Arrays;
 
 /**
  * Removes all entities of given type at location.
- * <p>
- * Created on 29.06.2018.
  */
 public class RemoveEntityEvent implements Event {
 
