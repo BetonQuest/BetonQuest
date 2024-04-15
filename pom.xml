@@ -175,6 +175,7 @@
       <groupId>me.filoghost.holographicdisplays</groupId>
       <artifactId>holographicdisplays-api</artifactId>
       <version>3.0.3</version>
+      <scope>provided</scope>
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -306,6 +307,7 @@
       <groupId>com.github.Archy-X</groupId>
       <artifactId>AureliumSkills</artifactId>
       <version>Beta1.3.23</version>
+      <scope>provided</scope>
       <optional>true</optional>
     </dependency>
     <dependency>
