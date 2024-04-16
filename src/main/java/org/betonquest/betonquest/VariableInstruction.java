@@ -38,7 +38,12 @@ public class VariableInstruction extends Instruction {
     }
 
     @Override
-    public Instruction copy(final ID newID) {
+    public VariableInstruction copy() {
+        return copy(getID());
+    }
+
+    @Override
+    public VariableInstruction copy(final ID newID) {
         return new VariableInstruction(log, getPackage(), newID, "%" + getInstruction() + "%");
     }
 }
