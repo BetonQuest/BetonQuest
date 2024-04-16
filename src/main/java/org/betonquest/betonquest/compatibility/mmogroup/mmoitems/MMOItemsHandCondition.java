@@ -32,7 +32,7 @@ public class MMOItemsHandCondition extends Condition {
 
         while (instruction.hasNext()) {
             final String next = instruction.next();
-            if (next.equals("offhand")) {
+            if ("offhand".equals(next)) {
                 offhand = true;
             } else {
                 amount = instruction.getVarNum(next);

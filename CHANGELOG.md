@@ -22,6 +22,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 - `variable` objective loads newlines correctly
 - exception in `lookAtBlock` condition when omitting the type
+- MMOCoreClassCondition, MMOItemsGiveEvent, MMOItemsHandCondition and MMOItemsItemCondition now work with numeric identifiers
 ### Security
 
 ## [2.0.1] - 2024-03-24
