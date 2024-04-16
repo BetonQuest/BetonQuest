@@ -19,6 +19,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - marking of mobs now uses variables in all contexts of spawning killing and removing
 ### Deprecated
 ### Removed
+- undocumented quoting in instructions
 ### Fixed
 - `variable` objective loads newlines correctly
 - exception in `lookAtBlock` condition when omitting the type
