@@ -3,6 +3,7 @@ package org.betonquest.betonquest.database;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -243,7 +244,7 @@ public class MySQL extends Database {
     }
 
     @SuppressFBWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE")
-    private void deleteDuplicates(final Statement statement, final String table, final String groupBy) throws SQLException {
+    private void deleteDuplicates(final Statement statement, final String table, @Nullable final String groupBy) throws SQLException {
         final String groupByClause = groupBy == null ? "" : ", " + groupBy;
         statement.executeUpdate("DELETE FROM " + prefix + table + " "
                 + "WHERE id NOT IN (SELECT t.min_id FROM ("

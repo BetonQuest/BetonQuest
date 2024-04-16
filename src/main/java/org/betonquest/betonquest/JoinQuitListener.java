@@ -60,6 +60,7 @@ public class JoinQuitListener implements Listener {
         PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
         // if the data still isn't loaded, force loading (this happens sometimes
         // probably because AsyncPlayerPreLoginEvent does not fire)
+        //noinspection ConstantValue
         if (playerData == null) {
             playerData = new PlayerData(onlineProfile);
             BetonQuest.getInstance().putPlayerData(onlineProfile, playerData);

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api.bukkit.config.custom.multi;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serial;
 import java.util.List;
@@ -47,7 +48,7 @@ public class KeyConflictException extends InvalidConfigurationException {
      * @param duplicates       the map of duplicated keys
      * @param conflictingPaths the list of all conflicting paths
      */
-    public KeyConflictException(final String msg, final Map<String, List<ConfigurationSection>> duplicates,
+    public KeyConflictException(@Nullable final String msg, final Map<String, List<ConfigurationSection>> duplicates,
                                 final List<List<Pair<String, ConfigurationSection>>> conflictingPaths) {
         super(msg);
         this.conflictingKeys = duplicates;

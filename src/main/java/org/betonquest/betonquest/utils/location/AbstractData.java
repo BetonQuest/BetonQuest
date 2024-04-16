@@ -42,12 +42,14 @@ abstract class AbstractData<T extends Cloneable> {
      * A list of all {@link Variable}s in the formatted object string.
      * This attribute is only used when {@link Variable}s exist in the input string.
      */
+    @Nullable
     private final List<Variable> objectVariables;
 
     /**
      * A formatted object string in which all {@link Variable}s have been replaced with string formatting specifiers.
      * This attribute is only used when {@link Variable}s exist in the input string.
      */
+    @Nullable
     private final String objectFormatted;
 
     /**
@@ -59,7 +61,7 @@ abstract class AbstractData<T extends Cloneable> {
      * @param data string containing raw object in the defined format
      * @throws InstructionParseException Is thrown when an error appears while parsing the {@link Variable}s or the object
      */
-    public AbstractData(final QuestPackage pack, final String data) throws InstructionParseException {
+    public AbstractData(@Nullable final QuestPackage pack, final String data) throws InstructionParseException {
         final Matcher variableMatcher = PATTERN_VARIABLE.matcher(data);
         if (variableMatcher.find()) {
             objectVariables = new ArrayList<>();
@@ -117,6 +119,7 @@ abstract class AbstractData<T extends Cloneable> {
     }
 
     private T parseVariableObject(@Nullable final Profile profile) throws QuestRuntimeException {
+        assert objectVariables != null && objectFormatted != null;
         final String[] variables = new String[this.objectVariables.size()];
         for (int i = 0; i < this.objectVariables.size(); i++) {
             final Variable var = this.objectVariables.get(i);

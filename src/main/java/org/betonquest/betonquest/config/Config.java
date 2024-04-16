@@ -95,7 +95,7 @@ public final class Config {
      * @return message in that language, or message in English, or null if it
      * does not exist
      */
-    public static String getMessage(final String lang, final String message, final String... variables) {
+    public static String getMessage(final String lang, final String message, @Nullable final String... variables) {
         String result = messages.getString(lang + "." + message);
         if (result == null) {
             result = messages.getString(Config.getLanguage() + "." + message);
@@ -147,7 +147,7 @@ public final class Config {
      * @param address address of the string
      * @return the requested string
      */
-    @Nullable
+    // @Nullable TODO check
     public static String getString(@Nullable final String address) {
         if (address == null) {
             return null;
@@ -238,8 +238,8 @@ public final class Config {
      * @param prefixName      ID of the prefix
      * @param prefixVariables array of variables which will be inserted into the prefix
      */
-    public static void sendMessage(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, final String[] variables, final String soundName,
-                                   final String prefixName, final String... prefixVariables) {
+    public static void sendMessage(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String soundName,
+                                   @Nullable final String prefixName, @Nullable final String... prefixVariables) {
         final String message = parseMessage(packName, onlineProfile, messageName, variables, prefixName, prefixVariables);
         if (message == null || message.length() == 0) {
             return;
@@ -256,7 +256,7 @@ public final class Config {
         sendNotify(packName, onlineProfile, messageName, null, category);
     }
 
-    public static void sendNotify(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, final String[] variables, @Nullable final String category) throws QuestRuntimeException {
+    public static void sendNotify(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String category) throws QuestRuntimeException {
         sendNotify(packName, onlineProfile, messageName, variables, category, null);
     }
 
@@ -273,7 +273,7 @@ public final class Config {
      * @param data          custom notifyIO data
      * @throws QuestRuntimeException thrown if it is not possible to send the notification
      */
-    public static void sendNotify(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, final String[] variables, final String category, final Map<String, String> data) throws QuestRuntimeException {
+    public static void sendNotify(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String category, @Nullable final Map<String, String> data) throws QuestRuntimeException {
         final String message = parseMessage(packName, onlineProfile, messageName, variables);
         if (message == null || message.length() == 0) {
             return;
@@ -283,7 +283,7 @@ public final class Config {
     }
 
     @Nullable
-    public static String parseMessage(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, final String... variables) {
+    public static String parseMessage(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, @Nullable final String... variables) {
         return parseMessage(packName, onlineProfile, messageName, variables, null, (String) null);
     }
 
@@ -298,8 +298,9 @@ public final class Config {
      * @param prefixVariables array of variables which will be inserted into the prefix
      * @return The parsed message.
      */
-    public static String parseMessage(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, final String[] variables, final String prefixName,
-                                      final String... prefixVariables) {
+    @Nullable
+    public static String parseMessage(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String prefixName,
+                                      @Nullable final String... prefixVariables) {
         final PlayerData playerData = plugin.getPlayerData(onlineProfile);
         if (playerData == null) {
             return null;

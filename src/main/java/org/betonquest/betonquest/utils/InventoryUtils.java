@@ -105,7 +105,7 @@ public final class InventoryUtils {
      * @param swapped the item in the target fast-swap slot
      * @return either 0 or the amount of the result
      */
-    public static int calculateSwapCraftAmount(final ItemStack result, final ItemStack swapped) {
+    public static int calculateSwapCraftAmount(final ItemStack result, @Nullable final ItemStack swapped) {
         return isEmptySlot(swapped) ? result.getAmount() : 0;
     }
 
@@ -117,7 +117,7 @@ public final class InventoryUtils {
      * @param cursor the item currently held in the cursor
      * @return either 0 or the amount of the result
      */
-    public static int calculateSimpleCraftAmount(final ItemStack result, final ItemStack cursor) {
+    public static int calculateSimpleCraftAmount(final ItemStack result, @Nullable final ItemStack cursor) {
         if (isEmptySlot(cursor)
                 || cursor.isSimilar(result) && cursor.getAmount() + result.getAmount() <= cursor.getMaxStackSize()) {
             return result.getAmount();

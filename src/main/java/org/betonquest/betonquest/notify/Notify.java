@@ -50,7 +50,7 @@ public final class Notify {
         return get(pack, null, data);
     }
 
-    public static NotifyIO get(final QuestPackage pack, final String category, @Nullable final Map<String, String> data) {
+    public static NotifyIO get(final QuestPackage pack, @Nullable final String category, @Nullable final Map<String, String> data) {
         final SortedSet<String> categories = getCategories(category);
 
         final Map<String, String> categoryData = getCategorySettings(categories);
@@ -80,7 +80,7 @@ public final class Notify {
         }
     }
 
-    private static SortedSet<String> getCategories(final String category) {
+    private static SortedSet<String> getCategories(@Nullable final String category) {
         final SortedSet<String> categories = new TreeSet<>();
         if (category != null) {
             categories.addAll(Arrays.asList(category.split(",")));

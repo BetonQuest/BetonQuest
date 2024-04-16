@@ -50,7 +50,7 @@ public class PartyEvent implements Event {
      * @param conditions the conditions that must be met by the party members
      * @param events     the events to fire
      */
-    public PartyEvent(final VariableNumber range, final VariableNumber amount, final ConditionID[] conditions, final EventID... events) {
+    public PartyEvent(final VariableNumber range, @Nullable final VariableNumber amount, final ConditionID[] conditions, final EventID... events) {
         this.range = range;
         this.amount = amount;
         this.conditions = conditions.clone();

@@ -54,20 +54,18 @@ public class WandCondition extends Condition {
                 throw new InstructionParseException("Unknown check type '" + string + "'");
         }
         final String[] array = instruction.getArray(instruction.getOptional("spells"));
-        if (array != null) {
-            for (final String spell : array) {
-                if (spell.contains(":")) {
-                    final VariableNumber level;
-                    final String[] spellParts = spell.split(":");
-                    try {
-                        level = new VariableNumber(instruction.getPackage(), spellParts[1]);
-                    } catch (final InstructionParseException e) {
-                        throw new InstructionParseException("Could not parse spell level", e);
-                    }
-                    this.spells.put(spellParts[0], level);
-                } else {
-                    throw new InstructionParseException("Incorrect spell format");
+        for (final String spell : array) {
+            if (spell.contains(":")) {
+                final VariableNumber level;
+                final String[] spellParts = spell.split(":");
+                try {
+                    level = new VariableNumber(instruction.getPackage(), spellParts[1]);
+                } catch (final InstructionParseException e) {
+                    throw new InstructionParseException("Could not parse spell level", e);
                 }
+                this.spells.put(spellParts[0], level);
+            } else {
+                throw new InstructionParseException("Incorrect spell format");
             }
         }
         name = instruction.getOptional("name");

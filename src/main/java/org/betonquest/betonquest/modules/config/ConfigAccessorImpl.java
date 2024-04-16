@@ -71,6 +71,7 @@ public class ConfigAccessorImpl implements ConfigAccessor {
     }
 
     private YamlConfiguration readFromFile() throws InvalidConfigurationException, FileNotFoundException {
+        assert configurationFile != null;
         return load(configurationFile, false, configurationFile.getPath());
     }
 

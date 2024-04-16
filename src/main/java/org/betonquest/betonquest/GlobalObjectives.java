@@ -1,6 +1,7 @@
 package org.betonquest.betonquest;
 
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.id.ObjectiveID;
@@ -43,7 +44,7 @@ public class GlobalObjectives {
      *
      * @param profile the {@link Profile} of the player
      */
-    public static void startAll(final Profile profile) {
+    public static void startAll(final OnlineProfile profile) {
         final PlayerData data = BetonQuest.getInstance().getPlayerData(profile);
         for (final ObjectiveID id : instance.globalObjectiveIds) {
             final Objective objective = BetonQuest.getInstance().getObjective(id);

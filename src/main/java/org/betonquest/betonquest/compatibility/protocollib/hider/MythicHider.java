@@ -143,7 +143,7 @@ public final class MythicHider extends BukkitRunnable implements Listener {
      * @param mythicMob     ID of the NPC
      * @return true if the NPC is visible to that player, false otherwise
      */
-    public boolean isInvisible(final OnlineProfile onlineProfile, final Entity mythicMob) {
+    public boolean isInvisible(final OnlineProfile onlineProfile, @Nullable final Entity mythicMob) {
         if (mythicMob == null) {
             return false;
         }

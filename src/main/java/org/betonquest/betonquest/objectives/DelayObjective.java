@@ -114,7 +114,7 @@ public class DelayObjective extends Objective {
     @Override
     public String getDefaultDataInstruction() {
         //Empty to satisfy bad API needs
-        return null;
+        return "";
     }
 
     @Override

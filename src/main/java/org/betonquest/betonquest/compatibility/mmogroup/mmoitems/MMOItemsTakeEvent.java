@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
-import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
@@ -35,7 +34,7 @@ public class MMOItemsTakeEvent extends AbstractTakeEvent {
 
     public MMOItemsTakeEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        itemType = MMOItems.plugin.getTypes().get(instruction.next());
+        itemType = MMOItemsUtils.getMMOItemType(instruction.next());
         itemID = instruction.next();
 
         final String amount = instruction.getOptional("amount");

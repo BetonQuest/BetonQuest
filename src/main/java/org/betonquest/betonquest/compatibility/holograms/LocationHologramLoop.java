@@ -9,7 +9,6 @@ import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +33,6 @@ public class LocationHologramLoop extends HologramLoop {
         return holograms;
     }
 
-    @Nullable
     private Location getParsedLocation(final QuestPackage pack, final ConfigurationSection section) throws InstructionParseException {
         final String rawLocation = section.getString("location");
         if (rawLocation == null) {

@@ -40,6 +40,7 @@ public abstract class SimpleYMLSection {
     }
 
     private String resolveGlobalVariable(final String string) {
+        //noinspection ConstantValue
         if (pack == null) {
             return string;
         }

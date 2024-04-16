@@ -37,7 +37,7 @@ import java.util.Map;
 /**
  * Inventory GUI for conversations.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidFieldNameMatchingMethodName", "PMD.AvoidLiteralsInIfCondition", "PMD.NPathComplexity"})
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidFieldNameMatchingMethodName", "PMD.AvoidLiteralsInIfCondition", "PMD.NPathComplexity", "NotNullFieldNotInitialized"})
 public class InventoryConvIO implements Listener, ConversationIO {
 
     private static final Map<String, ItemStack> SKULL_CACHE = new HashMap<>();
@@ -128,6 +128,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         // Load config
         if (BetonQuest.getInstance().getPluginConfig().contains("conversation_IO_config.chest")) {
             final ConfigurationSection config = BetonQuest.getInstance().getPluginConfig().getConfigurationSection("conversation_IO_config.chest");
+            assert config != null;
             showNumber = config.getBoolean("show_number", true);
             showNPCText = config.getBoolean("show_npc_text", true);
         }

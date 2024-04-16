@@ -83,9 +83,6 @@ public class RPGMenuConfig extends SimpleYMLSection {
      */
     public static String getMessage(@Nullable final String lang, final String key, final String... replace) {
         final RPGMenuConfig instance = BetonQuest.getInstance().getRpgMenu().getConfiguration();
-        if (instance == null) {
-            return "null";
-        }
         String message = Optional.ofNullable(lang)
                 .map(instance.messages::get).map(translations -> translations.get(key))
                 .or(() -> Optional.ofNullable(Config.getLanguage())
@@ -94,10 +91,8 @@ public class RPGMenuConfig extends SimpleYMLSection {
                         .map(instance.messages::get).map(translations -> translations.get(key)))
                 .orElse("null");
 
-        if (replace != null) {
-            for (int i = 1; i <= replace.length; i++) {
-                message = message.replace("{" + i + "}", replace[i - 1]);
-            }
+        for (int i = 1; i <= replace.length; i++) {
+            message = message.replace("{" + i + "}", replace[i - 1]);
         }
         return message;
     }

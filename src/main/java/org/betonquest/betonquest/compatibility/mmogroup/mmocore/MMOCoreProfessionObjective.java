@@ -14,9 +14,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOCoreProfessionObjective extends Objective implements Listener {
+    @Nullable
     private final String professionName;
 
     private final VariableNumber targetLevel;

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api.config;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegisterer;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -60,5 +61,5 @@ public interface ConfigurationFileFactory {
      * @throws InvalidConfigurationException if the configuration is invalid or could not be saved
      * @throws FileNotFoundException         if the {@code configurationFile} or {@code resourceFile} could not be found
      */
-    ConfigurationFile create(File configurationFile, Plugin plugin, String resourceFile, PatchTransformerRegisterer patchTransformerRegisterer) throws InvalidConfigurationException, FileNotFoundException;
+    ConfigurationFile create(File configurationFile, Plugin plugin, String resourceFile, @Nullable PatchTransformerRegisterer patchTransformerRegisterer) throws InvalidConfigurationException, FileNotFoundException;
 }

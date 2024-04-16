@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api.logger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginLogger;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.logging.Level;
 
@@ -55,7 +56,7 @@ public interface BetonQuestLogger {
      * @param pack The related {@link QuestPackage} or null.
      * @param msg  The message to log.
      */
-    void debug(QuestPackage pack, String msg);
+    void debug(@Nullable QuestPackage pack, String msg);
 
     /**
      * Logs a debug message with the {@link Level#FINE} level to the log.
@@ -69,7 +70,7 @@ public interface BetonQuestLogger {
      * @param msg    The message to log.
      * @param thrown The throwable to log.
      */
-    void debug(QuestPackage pack, String msg, Throwable thrown);
+    void debug(@Nullable QuestPackage pack, String msg, Throwable thrown);
 
     /**
      * Logs a normal message with the {@link Level#INFO} level to the log.
@@ -91,7 +92,7 @@ public interface BetonQuestLogger {
      * @param pack The related {@link QuestPackage} or null.
      * @param msg  The message to log.
      */
-    void info(QuestPackage pack, String msg);
+    void info(@Nullable QuestPackage pack, String msg);
 
     /**
      * Logs a warning message with the {@link Level#WARNING} level to the log.
@@ -133,7 +134,7 @@ public interface BetonQuestLogger {
      * @param pack The related {@link QuestPackage} or null.
      * @param msg  The message to log.
      */
-    void warn(QuestPackage pack, String msg);
+    void warn(@Nullable QuestPackage pack, String msg);
 
     /**
      * Logs a warning message with the {@link Level#WARNING} level to the log.
@@ -147,7 +148,7 @@ public interface BetonQuestLogger {
      * @param msg    The message to log.
      * @param thrown The throwable to log.
      */
-    void warn(QuestPackage pack, String msg, Throwable thrown);
+    void warn(@Nullable QuestPackage pack, String msg, Throwable thrown);
 
     /**
      * Logs an error message with the {@link Level#SEVERE} level to the log.
@@ -192,7 +193,7 @@ public interface BetonQuestLogger {
      * @param pack The related {@link QuestPackage} or null.
      * @param msg  The message to log.
      */
-    void error(QuestPackage pack, String msg);
+    void error(@Nullable QuestPackage pack, String msg);
 
     /**
      * Logs an error message with the {@link Level#SEVERE} level to the log.
@@ -207,7 +208,7 @@ public interface BetonQuestLogger {
      * @param msg    The message to log.
      * @param thrown The throwable to log.
      */
-    void error(QuestPackage pack, String msg, Throwable thrown);
+    void error(@Nullable QuestPackage pack, String msg, Throwable thrown);
 
     /**
      * Logs a {@link Throwable} with the {@link Level#SEVERE} level to the log.
@@ -233,5 +234,5 @@ public interface BetonQuestLogger {
      * @param pack   The related {@link QuestPackage} or null.
      * @param thrown The throwable to log.
      */
-    void reportException(QuestPackage pack, Throwable thrown);
+    void reportException(@Nullable QuestPackage pack, Throwable thrown);
 }

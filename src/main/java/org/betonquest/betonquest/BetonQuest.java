@@ -597,7 +597,7 @@ public class BetonQuest extends JavaPlugin {
      * @throws InstructionParseException when the variable parsing fails
      */
     @Nullable
-    public static Variable createVariable(final QuestPackage pack, final String instruction)
+    public static Variable createVariable(@Nullable final QuestPackage pack, final String instruction)
             throws InstructionParseException {
         final VariableID variableID;
         try {
@@ -1366,7 +1366,7 @@ public class BetonQuest extends JavaPlugin {
         // load all events, conditions, objectives, conversations etc.
         loadData();
         // start objectives and update journals for every online profiles
-        for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
             getInstance().log.debug("Updating journal for player " + onlineProfile);
             final PlayerData playerData = instance.getPlayerData(onlineProfile);
             GlobalObjectives.startAll(onlineProfile);
@@ -1416,6 +1416,7 @@ public class BetonQuest extends JavaPlugin {
 
         if (this.adventure != null) {
             this.adventure.close();
+            //noinspection DataFlowIssue
             this.adventure = null;
         }
 
@@ -1470,13 +1471,25 @@ public class BetonQuest extends JavaPlugin {
 
     /**
      * Retrieves PlayerData object for specified profile. If the playerData does
+     * not exist it will create new playerData on the main thread and put it
+     * into the map.
+     *
+     * @param profile the {@link OnlineProfile} of the player
+     * @return PlayerData object for the player
+     */
+    public PlayerData getPlayerData(final OnlineProfile profile) {
+        return getPlayerData((Profile) profile);
+    }
+
+    /**
+     * Retrieves PlayerData object for specified profile. If the playerData does
      * not exist but the profile is online, it will create new playerData on the
      * main thread and put it into the map.
      *
      * @param profile the {@link Profile} of the player
      * @return PlayerData object for the player
      */
-    @Nullable // TODO really nullable? - not with online players
+    @Nullable
     public PlayerData getPlayerData(final Profile profile) {
         PlayerData playerData = playerDataMap.get(profile);
         if (playerData == null && profile.getOnlineProfile().isPresent()) {
@@ -1678,7 +1691,6 @@ public class BetonQuest extends JavaPlugin {
      *
      * @return the database saver
      */
-    @Nullable
     public Saver getSaver() {
         return saver;
     }

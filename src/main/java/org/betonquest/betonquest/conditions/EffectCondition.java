@@ -4,6 +4,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.potion.PotionEffectType;
 
 /**
@@ -17,10 +18,7 @@ public class EffectCondition extends Condition {
     public EffectCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         final String string = instruction.next();
-        type = PotionEffectType.getByName(string);
-        if (type == null) {
-            throw new InstructionParseException("Effect " + string + " does not exist");
-        }
+        type = Utils.getNN(PotionEffectType.getByName(string), "Effect " + string + " does not exist");
     }
 
     @Override

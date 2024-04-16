@@ -68,7 +68,7 @@ class NotifySound {
         soundPlayer = getSoundPlayer(sound, soundString, compoundLocation, playerOffset, playerOffsetDistance, soundCategory, volume, pitch);
     }
 
-    private SoundPlayer getSoundPlayer(@Nullable final Sound sound, final String soundString, final CompoundLocation compoundLocation, @Nullable final VectorData playerOffset, @Nullable final Float playerOffsetDistance, final SoundCategory soundCategory, final float volume, final float pitch) {
+    private SoundPlayer getSoundPlayer(@Nullable final Sound sound, final String soundString, @Nullable final CompoundLocation compoundLocation, @Nullable final VectorData playerOffset, @Nullable final Float playerOffsetDistance, final SoundCategory soundCategory, final float volume, final float pitch) {
         return (onlineProfile) -> {
             final Location finalLocation = getLocation(onlineProfile, compoundLocation, playerOffset, playerOffsetDistance);
             final Player player = onlineProfile.getPlayer();
@@ -122,6 +122,7 @@ class NotifySound {
         return null;
     }
 
+    @Nullable
     private CompoundLocation getCompoundLocation(final Map<String, String> data) throws InstructionParseException {
         final String locationString = data.get(KEY_SOUND_LOCATION);
         return locationString == null ? null : new CompoundLocation((QuestPackage) null, locationString);

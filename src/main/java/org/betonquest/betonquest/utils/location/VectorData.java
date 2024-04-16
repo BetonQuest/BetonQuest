@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.Pattern;
 
@@ -31,7 +32,7 @@ public class VectorData extends AbstractData<Vector> {
      * @param data string containing raw {@link Vector} in the defined format
      * @throws InstructionParseException Is thrown when an error appears while parsing the {@link Variable}s or {@link Vector}
      */
-    public VectorData(final QuestPackage pack, final String data) throws InstructionParseException {
+    public VectorData(@Nullable final QuestPackage pack, final String data) throws InstructionParseException {
         super(pack, data);
     }
 

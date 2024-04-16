@@ -113,7 +113,7 @@ public abstract class AbstractTakeEvent extends QuestEvent {
         player.getInventory().setItemInOffHand(newOffhand[0]);
     }
 
-    protected void checkBackpack(final Profile profile) {
+    protected void checkBackpack(final OnlineProfile profile) {
         final List<ItemStack> backpack = BetonQuest.getInstance().getPlayerData(profile).getBackpack();
         final List<ItemStack> newBackpack = removeDesiredAmount(profile, backpack);
         BetonQuest.getInstance().getPlayerData(profile).setBackpack(newBackpack);

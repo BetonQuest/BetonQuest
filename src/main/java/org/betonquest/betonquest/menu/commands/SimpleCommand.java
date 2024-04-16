@@ -120,9 +120,6 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     @NotNull
     @Override
     public List<String> tabComplete(final CommandSender sender, final String alias, final String[] args) throws IllegalArgumentException {
-        if (sender == null || alias == null || args == null) {
-            return super.tabComplete(sender, alias, args);
-        }
         final List<String> completions = this.simpleTabComplete(sender, alias, args);
         final List<String> out = new ArrayList<>();
         final String lastArg = args[args.length - 1];
@@ -169,6 +166,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
      */
     @SuppressWarnings({"unchecked", "PMD.AvoidLiteralsInIfCondition", "PMD.AvoidAccessibilityAlteration"})
     public boolean unregister() {
+        //noinspection ConstantValue
         if (this.commandMap == null) {
             return false;
         }

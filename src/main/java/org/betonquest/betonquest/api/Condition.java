@@ -4,6 +4,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>
@@ -86,5 +87,5 @@ public abstract class Condition extends ForceSyncHandler<Boolean> {
      *                               variable resolves to a string)
      */
     @Override
-    protected abstract Boolean execute(Profile profile) throws QuestRuntimeException;
+    protected abstract Boolean execute(@Nullable Profile profile) throws QuestRuntimeException;
 }

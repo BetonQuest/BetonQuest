@@ -45,7 +45,7 @@ public class MMOItemsGiveEvent extends QuestEvent {
         super(instruction, true);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
-        itemType = mmoPlugin.getTypes().get(instruction.next());
+        itemType = MMOItemsUtils.getMMOItemType(instruction.next());
         itemID = instruction.next();
 
         while (instruction.hasNext()) {

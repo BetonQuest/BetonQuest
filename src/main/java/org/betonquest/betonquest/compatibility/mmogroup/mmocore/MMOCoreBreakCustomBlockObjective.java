@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOCoreBreakCustomBlockObjective extends CountingObjective implements Listener {
@@ -23,7 +24,8 @@ public class MMOCoreBreakCustomBlockObjective extends CountingObjective implemen
 
     public MMOCoreBreakCustomBlockObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "blocks_to_break");
-        desiredBlockId = instruction.getOptional("block");
+        desiredBlockId = instruction.getOptionalArgument("block")
+                .orElseThrow(() -> new InstructionParseException("Missing required argument: block"));
         targetAmount = instruction.getVarNum();
         preCheckAmountNotLessThanOne(targetAmount);
     }
@@ -33,13 +35,14 @@ public class MMOCoreBreakCustomBlockObjective extends CountingObjective implemen
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
             final String blockId = getBlockId(event.getBlockInfo().getBlock());
-            if (blockId.equals(desiredBlockId)) {
+            if (desiredBlockId.equals(blockId)) {
                 getCountingData(onlineProfile).progress();
                 completeIfDoneOrNotify(onlineProfile);
             }
         }
     }
 
+    @Nullable
     private String getBlockId(final BlockType blockType) {
         String actualBlockId = null;
 

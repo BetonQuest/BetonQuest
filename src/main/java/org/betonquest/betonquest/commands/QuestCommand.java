@@ -451,7 +451,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      *             null for unspecific
      * @return
      */
-    private Optional<List<String>> completeId(final String[] args, final AccessorType type) {
+    private Optional<List<String>> completeId(final String[] args, @Nullable final AccessorType type) {
         final String last = args[args.length - 1];
         if (last == null || !last.contains(".")) {
             return completePackage();

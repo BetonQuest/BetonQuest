@@ -1,9 +1,7 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
-import net.Indyuce.mmoitems.manager.TypeManager;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
@@ -26,12 +24,7 @@ public class MMOItemsItemCondition extends Condition {
     public MMOItemsItemCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
-        final TypeManager typeManager = MMOItems.plugin.getTypes();
-        final String type = instruction.next();
-        itemType = typeManager.get(type);
-        if (itemType == null) {
-            throw new InstructionParseException("The item type '%s' does not exist.".formatted(type));
-        }
+        itemType = MMOItemsUtils.getMMOItemType(instruction.next());
         itemID = instruction.next();
 
         amount = instruction.hasNext() ? instruction.getVarNum() : new VariableNumber(1);

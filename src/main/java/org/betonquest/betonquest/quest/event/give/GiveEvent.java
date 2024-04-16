@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.give;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction.Item;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -64,11 +65,12 @@ public class GiveEvent implements Event {
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getOnlineProfile().get().getPlayer();
+        final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
+        final Player player = onlineProfile.getPlayer();
         for (final Item item : questItems) {
             final QuestItem questItem = item.getItem();
             final int amount = item.getAmount().getInt(profile);
-            giveItems(profile, player, questItem, amount);
+            giveItems(onlineProfile, player, questItem, amount);
             final String questItemName = questItem.getName() == null
                     ? questItem.getMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " ")
                     : questItem.getName();
@@ -77,7 +79,7 @@ public class GiveEvent implements Event {
     }
 
     @SuppressWarnings("PMD.CognitiveComplexity")
-    private void giveItems(final Profile profile, final Player player, final QuestItem questItem, final int totalAmount)
+    private void giveItems(final OnlineProfile profile, final Player player, final QuestItem questItem, final int totalAmount)
             throws QuestRuntimeException {
         int amount = totalAmount;
         while (amount > 0) {
@@ -131,7 +133,7 @@ public class GiveEvent implements Event {
      * @param profile   the player to give the item to
      * @param itemStack the item to give
      */
-    private void giveToBackpack(final Profile profile, final ItemStack itemStack) {
+    private void giveToBackpack(final OnlineProfile profile, final ItemStack itemStack) {
         BetonQuest.getInstance().getPlayerData(profile).addItem(itemStack, itemStack.getAmount());
     }
 

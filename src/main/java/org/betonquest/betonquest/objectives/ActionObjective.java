@@ -104,6 +104,7 @@ public class ActionObjective extends Objective implements Listener {
     }
 
     private boolean checkBlock(final Block clickedBlock, final BlockFace blockFace) {
+        assert selector != null;
         return (selector.match(Material.WATER) || selector.match(Material.LAVA))
                 && selector.match(clickedBlock.getRelative(blockFace), exactMatch) || selector.match(clickedBlock, exactMatch);
     }

@@ -11,6 +11,7 @@ import org.betonquest.betonquest.utils.math.tokens.Parenthesis;
 import org.betonquest.betonquest.utils.math.tokens.Token;
 import org.betonquest.betonquest.utils.math.tokens.Variable;
 import org.betonquest.betonquest.variables.MathVariable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -78,7 +79,7 @@ public class Tokenizer {
      */
     @SuppressWarnings({"PMD.AssignmentInOperand", "PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition",
             "PMD.NcssCount", "PMD.CognitiveComplexity"})
-    private Token tokenize(final Token val1, final Operator operator, final String val2) throws InstructionParseException {
+    private Token tokenize(@Nullable final Token val1, @Nullable final Operator operator, final String val2) throws InstructionParseException {
         if (val2.isEmpty()) {
             if (operator != null) {
                 throw new InstructionParseException("invalid calculation (operator missing second value)");
@@ -166,6 +167,7 @@ public class Tokenizer {
             nextInLine = new Negation(nextInLine);
         }
 
+        assert val1 != null;
         if (index < val2.length() - 1) {
             chr = val2.charAt(++index);
             if (!Operator.isOperator(chr)) {

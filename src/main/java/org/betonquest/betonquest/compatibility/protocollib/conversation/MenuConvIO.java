@@ -94,6 +94,7 @@ public class MenuConvIO extends ChatConvIO {
 
     protected boolean debounce;
 
+    @Nullable
     protected BaseComponent[] displayOutput;
 
     protected String formattedNpcName;
@@ -138,6 +139,7 @@ public class MenuConvIO extends ChatConvIO {
      */
     private int configSelectionCooldown = 10;
 
+    @Nullable
     private ArmorStand stand;
 
     @SuppressWarnings("PMD.CognitiveComplexity")

@@ -217,7 +217,7 @@ public class OpenedMenu implements Listener {
                 return;
             }
 
-            if (getMenu(onlineProfile).equals(this)) {
+            if (this.equals(getMenu(onlineProfile))) {
                 //if close was set close the menu
                 if (close) {
                     this.close();

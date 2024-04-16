@@ -66,6 +66,7 @@ public interface QuestPackage {
      */
     ConfigAccessor getOrCreateConfigAccessor(String relativePath) throws InvalidConfigurationException, FileNotFoundException;
 
+    @Nullable
     @Deprecated
     String getRawString(String address);
 
@@ -84,8 +85,9 @@ public interface QuestPackage {
     @Deprecated
     String getString(String address);
 
+    @Nullable
     @Deprecated
-    String getString(String address, String def);
+    String getString(String address, @Nullable String def);
 
     @Nullable
     @Deprecated

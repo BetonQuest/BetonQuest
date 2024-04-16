@@ -37,9 +37,6 @@ public class StageCondition extends BaseNumberCompareCondition {
     public StageCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         objectiveID = instruction.getObjective();
-        if (objectiveID == null) {
-            throw new InstructionParseException("Objective does not exist");
-        }
         operation = fromSymbol(instruction.next());
         targetStage = new VariableString(instruction.getPackage(), instruction.next());
     }

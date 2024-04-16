@@ -17,12 +17,14 @@ import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.item.QuestItem;
+import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,16 +39,22 @@ public class QuestCanceler {
      */
     private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
+    @Nullable
     private final String[] tags;
 
+    @Nullable
     private final String[] points;
 
+    @Nullable
     private final String[] journal;
 
+    @Nullable
     private final ConditionID[] conditions;
 
+    @Nullable
     private final EventID[] events;
 
+    @Nullable
     private final ObjectiveID[] objectives;
 
     private final Map<String, String> name = new HashMap<>();
@@ -55,8 +63,10 @@ public class QuestCanceler {
 
     private final String cancelerID;
 
+    @Nullable
     private final String item;
 
+    @Nullable
     private final Location loc;
 
     /**
@@ -68,16 +78,8 @@ public class QuestCanceler {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public QuestCanceler(final QuestPackage pack, final String cancelerID) throws InstructionParseException {
-        //noinspection ConstantValue
-        if (cancelerID == null) {
-            throw new InstructionParseException("Name is null");
-        }
-        //noinspection ConstantValue
-        if (pack == null) {
-            throw new InstructionParseException("Package does not exist");
-        }
-        this.pack = pack;
-        this.cancelerID = cancelerID;
+        this.cancelerID = Utils.getNN(cancelerID, "Name is null");
+        this.pack = Utils.getNN(pack, "Package does not exist");
         final String rawEvents = pack.getString("cancel." + cancelerID + ".events");
         // get the name
         if (pack.getConfig().isConfigurationSection("cancel." + cancelerID + ".name")) {
@@ -93,7 +95,7 @@ public class QuestCanceler {
         item = itemString == null ? Config.getString(pack.getQuestPath() + ".items.cancel_button") : itemString;
         // parse it to get the data
         if (rawEvents == null) {
-            events = new EventID[0];
+            events = null;
         } else {
             final String[] arr = rawEvents.split(",");
             events = new EventID[arr.length];
@@ -107,7 +109,7 @@ public class QuestCanceler {
         }
         final String rawConditions = pack.getString("cancel." + cancelerID + ".conditions");
         if (rawConditions == null) {
-            conditions = new ConditionID[0];
+            conditions = null;
         } else {
             final String[] arr = rawConditions.split(",");
             conditions = new ConditionID[arr.length];
@@ -121,7 +123,7 @@ public class QuestCanceler {
         }
         final String rawObjectives = pack.getString("cancel." + cancelerID + ".objectives");
         if (rawObjectives == null) {
-            objectives = new ObjectiveID[0];
+            objectives = null;
         } else {
             final String[] arr = rawObjectives.split(",");
             objectives = new ObjectiveID[arr.length];

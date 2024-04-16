@@ -12,6 +12,7 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Factory for {@link ConversationEvent}.
@@ -76,6 +77,7 @@ public class ConversationEventFactory implements EventFactory {
      * @return null if no option argument is given, otherwise the option name
      * @throws InstructionParseException if no NPC option with the given name is present
      */
+    @Nullable
     private String getStartOption(final Instruction instruction, final ConversationID conversationID) throws InstructionParseException {
         final String targetOptionName = instruction.getOptional("option");
         if (targetOptionName == null) {
@@ -92,4 +94,3 @@ public class ConversationEventFactory implements EventFactory {
     }
 
 }
-

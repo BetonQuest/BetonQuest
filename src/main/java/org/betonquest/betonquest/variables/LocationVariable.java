@@ -88,6 +88,7 @@ public class LocationVariable extends Variable {
 
     @Override
     public String getValue(final Profile profile) {
+        // TODO this should also not null?
         return profile.getOnlineProfile()
                 .map(onlineProfile -> getForLocation(onlineProfile.getPlayer().getLocation()))
                 .orElse(DEFAULT_VALUE);

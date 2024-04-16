@@ -234,7 +234,7 @@ public abstract class ID {
         return Objects.hash(identifier, pack.getQuestPath());
     }
 
-    @Nullable
+    // @Nullable TODO check
     public Instruction generateInstruction() {
         if (rawInstruction == null) {
             return null;

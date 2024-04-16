@@ -31,7 +31,7 @@ public class CompoundLocation {
      * @throws InstructionParseException Is thrown when an error appears while parsing {@link LocationData}
      *                                   or {@link VectorData}
      */
-    public CompoundLocation(final QuestPackage pack, final String data) throws InstructionParseException {
+    public CompoundLocation(@Nullable final QuestPackage pack, final String data) throws InstructionParseException {
         if (data.contains("->")) {
             final String[] parts = data.split("->");
             locationData = new LocationData(pack, parts[0]);

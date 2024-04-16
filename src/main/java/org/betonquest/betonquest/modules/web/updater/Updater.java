@@ -214,7 +214,7 @@ public class Updater {
      *
      * @param sender The {@link CommandSender} that should receive the update related messages.
      */
-    public void update(final CommandSender sender) {
+    public void update(@Nullable final CommandSender sender) {
         scheduler.runTaskAsynchronously(plugin, () -> {
             try {
                 checkUpdateRequirements();
@@ -258,7 +258,7 @@ public class Updater {
         }
     }
 
-    private void sendMessage(final CommandSender sender, final String message) {
+    private void sendMessage(@Nullable final CommandSender sender, final String message) {
         log.info(ChatColor.stripColor(message));
         if (sender != null && !(sender instanceof ConsoleCommandSender)) {
             sender.sendMessage(plugin.getPluginTag() + message);
