@@ -40,8 +40,6 @@ public class Instruction {
 
     private final QuestPackage pack;
 
-    protected String instruction;
-
     protected String[] parts;
 
     private ID identifier;
@@ -60,17 +58,16 @@ public class Instruction {
         } catch (final ObjectNotFoundException e) {
             this.log.warn(pack, "Could not find instruction: " + e.getMessage(), e);
         }
-        this.instruction = instruction;
         this.parts = Utils.split(instruction);
     }
 
     @Override
     public String toString() {
-        return instruction;
+        return getInstruction();
     }
 
     public String getInstruction() {
-        return instruction;
+        return String.join(" ", parts);
     }
 
     public int size() {
@@ -91,11 +88,11 @@ public class Instruction {
      * @return a new instruction
      */
     public Instruction copy() {
-        return new Instruction(log, pack, identifier, instruction);
+        return copy(identifier);
     }
 
     public Instruction copy(final ID newID) {
-        return new Instruction(log, pack, newID, instruction);
+        return new Instruction(log, pack, newID, getInstruction());
     }
 
     /////////////////////
