@@ -185,6 +185,7 @@ public class Updater {
      *
      * @return The version string or null if there is no newer version.
      */
+    @Nullable
     public String getUpdateVersion() {
         if (latest.getValue() != null) {
             return latest.getKey().getVersion();

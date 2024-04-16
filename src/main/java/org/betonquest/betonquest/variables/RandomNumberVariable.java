@@ -65,6 +65,7 @@ public class RandomNumberVariable extends Variable {
         this.high = parseSecond(instruction);
     }
 
+    @Nullable
     private DecimalFormat getFormat(final String type) throws InstructionParseException {
         if (type.length() > DECIMAL_LENGTH) {
             try {

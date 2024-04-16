@@ -79,7 +79,7 @@ public class VariableObjective extends Objective implements Listener {
      * @return true if it was stored, false if the player doesn't have this
      * objective
      */
-    public boolean store(final Profile profile, final String key, final String value) {
+    public boolean store(final Profile profile, final String key, @Nullable final String value) {
         final VariableData data = (VariableData) dataMap.get(profile);
         if (data == null) {
             return false;

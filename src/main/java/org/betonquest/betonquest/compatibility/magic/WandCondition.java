@@ -9,6 +9,7 @@ import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -69,7 +70,7 @@ public class WandCondition extends Condition {
             }
         }
         name = instruction.getOptional("name");
-        api = (MagicAPI) Bukkit.getPluginManager().getPlugin("Magic");
+        api = Utils.getNN((MagicAPI) Bukkit.getPluginManager().getPlugin("Magic"), "Magic plugin not found!");
         amount = instruction.getVarNum(instruction.getOptional("amount"));
     }
 

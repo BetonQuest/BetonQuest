@@ -71,10 +71,9 @@ public class StageCondition extends BaseNumberCompareCondition {
     }
 
     private StageObjective getStageObjective() throws QuestRuntimeException {
-        try {
-            return (StageObjective) BetonQuest.getInstance().getObjective(objectiveID);
-        } catch (final ClassCastException e) {
-            throw new QuestRuntimeException("Objective '" + objectiveID.getFullID() + "' is not a stage objective", e);
+        if (BetonQuest.getInstance().getObjective(objectiveID) instanceof final StageObjective stageObjective) {
+            return stageObjective;
         }
+        throw new QuestRuntimeException("Objective '" + objectiveID.getFullID() + "' is not a stage objective");
     }
 }

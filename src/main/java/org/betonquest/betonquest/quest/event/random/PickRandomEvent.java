@@ -32,7 +32,7 @@ public class PickRandomEvent implements Event {
      * @param events the events with there chance
      * @param amount the amount of events to fire
      */
-    public PickRandomEvent(final List<RandomEvent> events, final VariableNumber amount) {
+    public PickRandomEvent(final List<RandomEvent> events, @Nullable final VariableNumber amount) {
         this.events = events;
         this.amount = amount;
     }

@@ -27,6 +27,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -326,6 +327,7 @@ public class Menu extends SimpleYMLSection implements Listener {
      * @param slot    for which the item should be get
      * @return menu item for that slot or null if none is specified
      */
+    @Nullable
     public MenuItem getItem(final Profile profile, final int slot) {
         for (final Slots slots : this.slots) {
             if (slots.containsSlot(slot)) {

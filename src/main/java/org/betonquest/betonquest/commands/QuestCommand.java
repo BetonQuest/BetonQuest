@@ -18,6 +18,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.compatibility.Compatibility;
@@ -1297,7 +1298,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "tag":
             case "t":
                 updateType = UpdateType.RENAME_ALL_TAGS;
-                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                     final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
                     playerData.removeTag(name);
                     playerData.addTag(rename);
@@ -1307,7 +1308,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "point":
             case "p":
                 updateType = UpdateType.RENAME_ALL_POINTS;
-                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                     final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
                     int points = 0;
                     for (final Point point : playerData.getPoints()) {
@@ -1372,7 +1373,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 BetonQuest.getInstance().renameObjective(nameID, renameID);
                 BetonQuest.getInstance().getObjective(renameID).setLabel(renameID);
                 // renaming an active objective probably isn't needed
-                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                     boolean found = false;
                     String data = null;
                     for (final Objective obj : BetonQuest.getInstance().getPlayerObjectives(onlineProfile)) {
@@ -1409,7 +1410,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "entry":
             case "e":
                 updateType = UpdateType.RENAME_ALL_ENTRIES;
-                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                     final Journal journal = BetonQuest.getInstance().getPlayerData(onlineProfile).getJournal();
                     Pointer journalPointer = null;
                     for (final Pointer pointer : journal.getPointers()) {
@@ -1468,7 +1469,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "tag":
             case "t":
                 updateType = UpdateType.REMOVE_ALL_TAGS;
-                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                     final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
                     playerData.removeTag(name);
                 }
@@ -1477,7 +1478,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "point":
             case "p":
                 updateType = UpdateType.REMOVE_ALL_POINTS;
-                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                     final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
                     playerData.removePointsCategory(name);
                 }
@@ -1494,7 +1495,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     log.warn("Could not find objective: " + e.getMessage(), e);
                     return;
                 }
-                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                     final Objective objective = BetonQuest.getInstance().getObjective(objectiveID);
                     objective.cancelObjectiveForPlayer(onlineProfile);
                     BetonQuest.getInstance().getPlayerData(onlineProfile).removeRawObjective(objectiveID);
@@ -1507,7 +1508,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "entry":
             case "e":
                 updateType = UpdateType.REMOVE_ALL_ENTRIES;
-                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                     final Journal journal = BetonQuest.getInstance().getPlayerData(onlineProfile).getJournal();
                     journal.removePointer(name);
                     journal.update();
@@ -1965,7 +1966,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         return Optional.of(Collections.emptyList());
     }
 
-    private Level getLogLevel(final String arg) {
+    private Level getLogLevel(@Nullable final String arg) {
         if ("info".equalsIgnoreCase(arg)) {
             return Level.INFO;
         }

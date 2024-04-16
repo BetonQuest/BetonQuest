@@ -88,6 +88,7 @@ public final class Utils {
         final List<String> pages = new ArrayList<>();
         final String[] bigPages = string.split("\\|");
         for (final String bigPage : bigPages) {
+            //noinspection ConstantValue
             if (Config.getString("config.journal.lines_per_page") == null) {
                 final int charsPerPage = Integer.parseInt(Config.getString("config.journal.chars_per_page"));
                 StringBuilder page = new StringBuilder();
