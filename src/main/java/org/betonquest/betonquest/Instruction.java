@@ -12,7 +12,6 @@ import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.BlockSelector;
-import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -29,10 +28,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount", "PMD.GodClass", "PMD.CommentRequired",
         "PMD.AvoidFieldNameMatchingTypeName", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods"})
 public class Instruction {
+    private static final Pattern WORDPATTERN = Pattern.compile("\\S+");
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -58,7 +61,22 @@ public class Instruction {
         } catch (final ObjectNotFoundException e) {
             this.log.warn(pack, "Could not find instruction: " + e.getMessage(), e);
         }
-        this.parts = Utils.split(instruction);
+        this.parts = split(instruction);
+    }
+
+    /**
+     * Split a string by white space, except if between quotes
+     *
+     * @param string the input string.
+     * @return the split string.
+     */
+    protected static String[] split(final String string) {
+        final List<String> list = new ArrayList<>();
+        final Matcher matcher = WORDPATTERN.matcher(string);
+        while (matcher.find()) {
+            list.add(matcher.group());
+        }
+        return list.toArray(new String[0]);
     }
 
     @Override
