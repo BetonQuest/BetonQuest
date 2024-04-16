@@ -28,13 +28,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.regex.Matcher;
+import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount", "PMD.GodClass", "PMD.CommentRequired",
         "PMD.AvoidFieldNameMatchingTypeName", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods"})
 public class Instruction {
-    private static final Pattern WORDPATTERN = Pattern.compile("\\S+");
+    private static final Pattern WORD_PATTERN = Pattern.compile("\\S+");
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -65,18 +65,15 @@ public class Instruction {
     }
 
     /**
-     * Split a string by white space, except if between quotes
+     * Split a string on white space.
      *
      * @param string the input string.
-     * @return the split string.
+     * @return the split strings
      */
     protected static String[] split(final String string) {
-        final List<String> list = new ArrayList<>();
-        final Matcher matcher = WORDPATTERN.matcher(string);
-        while (matcher.find()) {
-            list.add(matcher.group());
-        }
-        return list.toArray(new String[0]);
+        return WORD_PATTERN.matcher(string).results()
+                .map(MatchResult::group)
+                .toArray(String[]::new);
     }
 
     @Override
