@@ -167,7 +167,6 @@ public class Tokenizer {
             nextInLine = new Negation(nextInLine);
         }
 
-        assert val1 != null;
         if (index < val2.length() - 1) {
             chr = val2.charAt(++index);
             if (!Operator.isOperator(chr)) {
@@ -186,6 +185,7 @@ public class Tokenizer {
             if (operator == null) {
                 return tokenize(nextInLine, nextOperator, newVal);
             }
+            assert val1 != null;
 
             //next operation has higher priority, tokenize it first
             if (nextOperator.getPriority() > operator.getPriority()) {
@@ -198,6 +198,7 @@ public class Tokenizer {
             if (operator == null) {
                 return nextInLine;
             } else {
+                assert val1 != null;
                 return new Operation(val1, operator, nextInLine);
             }
         }
