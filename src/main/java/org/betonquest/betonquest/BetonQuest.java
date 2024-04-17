@@ -193,6 +193,7 @@ import org.betonquest.betonquest.objectives.LogoutObjective;
 import org.betonquest.betonquest.objectives.MobKillObjective;
 import org.betonquest.betonquest.objectives.PasswordObjective;
 import org.betonquest.betonquest.objectives.PickupObjective;
+import org.betonquest.betonquest.objectives.ResourcePackObjective;
 import org.betonquest.betonquest.objectives.RespawnObjective;
 import org.betonquest.betonquest.objectives.RideObjective;
 import org.betonquest.betonquest.objectives.ShearObjective;
@@ -998,6 +999,7 @@ public class BetonQuest extends JavaPlugin {
         registerObjectives("variable", VariableObjective.class);
         registerObjectives("kill", KillPlayerObjective.class);
         registerObjectives("interact", EntityInteractObjective.class);
+        registerObjectives("resourcepack", ResourcePackObjective.class);
         registerObjectives("respawn", RespawnObjective.class);
         registerObjectives("breed", BreedObjective.class);
         registerObjectives("command", CommandObjective.class);

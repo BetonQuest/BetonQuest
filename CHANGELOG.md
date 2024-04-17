@@ -10,6 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `block` objective now supports the parameter `ignorecancel` allow counting breaking / placing blocks in protected regions
 - command `variable` to list and modify variables on a variable objective
 - config option `conversation_IO_config.slowtellraw.message_delay` to set the delay between messages in the SlowTellRaw conversation IO
+- `resourcepack` objective - to allow checking when the player accepts, denies, downloads, or fails to download a resource pack 
 ### Changed
 - player variable
   - `%player%` is now the same as `%player.name%`
