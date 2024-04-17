@@ -2,12 +2,11 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 
 import net.Indyuce.mmocore.api.player.PlayerData;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-
-import java.util.List;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOCoreClassCondition extends Condition {
@@ -15,17 +14,12 @@ public class MMOCoreClassCondition extends Condition {
 
     private final boolean mustBeEqual;
 
-    private int targetClassLevel = -1;
+    private final VariableNumber targetClassLevel;
 
     public MMOCoreClassCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         targetClassName = instruction.next();
-
-        final List<Integer> potentialLevel = instruction.getAllNumbers();
-        if (!potentialLevel.isEmpty()) {
-            targetClassLevel = potentialLevel.get(0);
-        }
-
+        targetClassLevel = instruction.hasNext() ? instruction.getVarNum() : null;
         mustBeEqual = instruction.hasArgument("equal");
     }
 
@@ -37,10 +31,11 @@ public class MMOCoreClassCondition extends Condition {
         final int actualClassLevel = data.getLevel();
 
         if (actualClassName.equalsIgnoreCase(targetClassName) || "*".equals(targetClassName) && !"HUMAN".equalsIgnoreCase(actualClassName)) {
-            if (targetClassLevel == -1) {
+            if (targetClassLevel == null) {
                 return true;
             }
-            return mustBeEqual ? actualClassLevel == targetClassLevel : actualClassLevel >= targetClassLevel;
+            final int level = targetClassLevel.getInt(profile);
+            return mustBeEqual ? actualClassLevel == level : actualClassLevel >= level;
         }
         return false;
     }

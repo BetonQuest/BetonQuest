@@ -29,14 +29,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount", "PMD.GodClass", "PMD.CommentRequired",
         "PMD.AvoidFieldNameMatchingTypeName", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods"})
 public class Instruction {
-    private static final Pattern NUMBER_PATTERN = Pattern.compile("(?:\\s|\\G|^)(([+\\-])?\\d+)(?:\\s|$)");
-
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -538,16 +534,6 @@ public class Instruction {
         } catch (final NumberFormatException e) {
             throw new PartParseException("Could not parse decimal value: " + string, e);
         }
-    }
-
-    public List<Integer> getAllNumbers() {
-        final Matcher matcher = NUMBER_PATTERN.matcher(instruction);
-
-        final ArrayList<Integer> result = new ArrayList<>();
-        while (matcher.find()) {
-            result.add(Integer.parseInt(matcher.group(1)));
-        }
-        return result;
     }
 
     ////////////////////
