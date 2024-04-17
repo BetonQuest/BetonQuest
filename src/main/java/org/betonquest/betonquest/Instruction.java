@@ -12,7 +12,6 @@ import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.BlockSelector;
-import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -29,18 +28,20 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.MatchResult;
+import java.util.regex.Pattern;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount", "PMD.GodClass", "PMD.CommentRequired",
         "PMD.AvoidFieldNameMatchingTypeName", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods"})
 public class Instruction {
+    private static final Pattern WORD_PATTERN = Pattern.compile("\\S+");
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
     private final QuestPackage pack;
-
-    protected String instruction;
 
     protected String[] parts;
 
@@ -60,17 +61,28 @@ public class Instruction {
         } catch (final ObjectNotFoundException e) {
             this.log.warn(pack, "Could not find instruction: " + e.getMessage(), e);
         }
-        this.instruction = instruction;
-        this.parts = Utils.split(instruction);
+        this.parts = split(instruction);
+    }
+
+    /**
+     * Split a string on white space.
+     *
+     * @param string the input string.
+     * @return the split strings
+     */
+    protected static String[] split(final String string) {
+        return WORD_PATTERN.matcher(string).results()
+                .map(MatchResult::group)
+                .toArray(String[]::new);
     }
 
     @Override
     public String toString() {
-        return instruction;
+        return getInstruction();
     }
 
     public String getInstruction() {
-        return instruction;
+        return String.join(" ", parts);
     }
 
     public int size() {
@@ -91,11 +103,11 @@ public class Instruction {
      * @return a new instruction
      */
     public Instruction copy() {
-        return new Instruction(log, pack, identifier, instruction);
+        return copy(identifier);
     }
 
     public Instruction copy(final ID newID) {
-        return new Instruction(log, pack, newID, instruction);
+        return new Instruction(log, pack, newID, getInstruction());
     }
 
     /////////////////////

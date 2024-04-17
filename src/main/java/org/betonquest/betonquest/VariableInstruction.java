@@ -29,17 +29,21 @@ public class VariableInstruction extends Instruction {
         if (!instruction.isEmpty() && instruction.charAt(0) != '%' && !instruction.endsWith("%")) {
             throw new IllegalArgumentException("Variable instruction does not start and end with '%' character");
         }
-        super.instruction = instruction.substring(1, instruction.length() - 1);
-        super.parts = super.instruction.split("\\.");
+        super.parts = instruction.substring(1, instruction.length() - 1).split("\\.");
+    }
+
+    @Override
+    public String getInstruction() {
+        return String.join(".", super.parts);
     }
 
     @Override
     public VariableInstruction copy() {
-        return new VariableInstruction(log, getPackage(), getID(), "%" + instruction + "%");
+        return copy(getID());
     }
 
     @Override
-    public Instruction copy(final ID newID) {
-        return new VariableInstruction(log, getPackage(), newID, "%" + instruction + "%");
+    public VariableInstruction copy(final ID newID) {
+        return new VariableInstruction(log, getPackage(), newID, "%" + getInstruction() + "%");
     }
 }
