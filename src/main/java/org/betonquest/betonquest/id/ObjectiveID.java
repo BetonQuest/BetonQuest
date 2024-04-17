@@ -9,10 +9,7 @@ public class ObjectiveID extends ID {
 
     public ObjectiveID(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         super(pack, identifier);
-        rawInstruction = super.pack.getString("objectives." + super.identifier);
-        if (rawInstruction == null) {
-            throw new ObjectNotFoundException("Objective '" + getFullID() + "' is not defined");
-        }
+        setRawInstructionOrThrow("objectives", "Objective");
     }
 
 }

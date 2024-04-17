@@ -7,9 +7,6 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 public class GlobalVariableID extends ID {
     public GlobalVariableID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         super(pack, identifier);
-        rawInstruction = super.pack.getString("variables." + super.identifier);
-        if (rawInstruction == null) {
-            throw new ObjectNotFoundException("Global variable '" + getFullID() + "' is not defined");
-        }
+        setRawInstructionOrThrow("variables", "Global variable");
     }
 }

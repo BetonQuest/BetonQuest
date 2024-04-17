@@ -244,4 +244,18 @@ public abstract class ID {
         }
         return instruction;
     }
+
+    /**
+     * Sets the raw instruction to the string this ID represents in the package.
+     *
+     * @param section  the name of the section
+     * @param readable the section name used in the exception
+     * @throws ObjectNotFoundException if the id does not exist in the package
+     */
+    protected void setRawInstructionOrThrow(final String section, final String readable) throws ObjectNotFoundException {
+        rawInstruction = this.pack.getString(section + "." + this.identifier);
+        if (rawInstruction == null) {
+            throw new ObjectNotFoundException(readable + " '" + getFullID() + "' is not defined");
+        }
+    }
 }

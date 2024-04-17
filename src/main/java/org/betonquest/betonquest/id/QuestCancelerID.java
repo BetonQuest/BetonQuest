@@ -17,9 +17,6 @@ public class QuestCancelerID extends ID {
      */
     public QuestCancelerID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         super(pack, identifier);
-        rawInstruction = super.pack.getConfig().getString("cancel." + super.identifier);
-        if (rawInstruction == null) {
-            throw new ObjectNotFoundException("Quest Canceler '" + getFullID() + "' is not defined");
-        }
+        setRawInstructionOrThrow("cancel", "Quest Canceler");
     }
 }

@@ -43,12 +43,6 @@ public class VariableID extends ID {
     }
 
     @Override
-    public String getBaseID() {
-        assert rawInstruction != null;
-        return rawInstruction;
-    }
-
-    @Override
     public String getFullID() {
         return pack.getQuestPath() + "-" + getBaseID();
     }

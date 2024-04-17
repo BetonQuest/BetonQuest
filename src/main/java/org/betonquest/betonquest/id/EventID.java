@@ -9,10 +9,7 @@ public class EventID extends ID {
 
     public EventID(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         super(pack, identifier);
-        rawInstruction = super.pack.getString("events." + super.identifier);
-        if (rawInstruction == null) {
-            throw new ObjectNotFoundException("Event '" + getFullID() + "' is not defined");
-        }
+        setRawInstructionOrThrow("events", "Event");
     }
 
 }

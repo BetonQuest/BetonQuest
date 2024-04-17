@@ -12,10 +12,7 @@ public class ConditionID extends ID {
     public ConditionID(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         super(pack, removeExclamationMark(identifier));
         this.inverted = !identifier.isEmpty() && identifier.charAt(0) == '!';
-        rawInstruction = super.pack.getString("conditions." + super.identifier);
-        if (rawInstruction == null) {
-            throw new ObjectNotFoundException("Condition '" + getFullID() + "' is not defined");
-        }
+        setRawInstructionOrThrow("conditions", "Condition");
     }
 
     private static String removeExclamationMark(final String identifier) {
