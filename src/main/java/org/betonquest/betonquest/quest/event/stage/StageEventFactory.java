@@ -83,7 +83,7 @@ public class StageEventFactory implements EventFactory {
     }
 
     private StageObjective getStageObjective(final ObjectiveID objectiveID) throws QuestRuntimeException {
-        if (BetonQuest.getInstance().getObjective(objectiveID) instanceof final StageObjective stageObjective) {
+        if (betonQuest.getObjective(objectiveID) instanceof final StageObjective stageObjective) {
             return stageObjective;
         }
         throw new QuestRuntimeException("Objective '" + objectiveID.getFullID() + "' is not a stage objective");

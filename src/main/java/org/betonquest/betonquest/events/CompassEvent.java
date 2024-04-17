@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -32,7 +33,7 @@ public class CompassEvent extends QuestEvent {
 
     private final String compass;
 
-    private CompoundLocation compassLocation;
+    private final CompoundLocation compassLocation;
 
     public CompassEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -49,7 +50,8 @@ public class CompassEvent extends QuestEvent {
         for (final QuestPackage pack : Config.getPackages().values()) {
             final ConfigurationSection section = pack.getConfig().getConfigurationSection("compass");
             if (section != null && section.contains(compass)) {
-                return new CompoundLocation(pack, pack.getString("compass." + compass + ".location"));
+                return new CompoundLocation(pack, Utils.getNN(pack.getString("compass." + compass + ".location"),
+                        "Missing location in compass section"));
             }
         }
         throw new InstructionParseException("Invalid compass location: " + compass);

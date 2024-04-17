@@ -39,6 +39,11 @@ public class Instruction {
     private static final Pattern WORD_PATTERN = Pattern.compile("\\S+");
 
     /**
+     * Contract: Returns null when the parameter is null, otherwise the expected object.
+     */
+    private static final String NULL_NOT_NULL_CONTRACT = "null -> null; !null -> !null";
+
+    /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
@@ -217,7 +222,7 @@ public class Instruction {
     }
 
     @Nullable
-    @Contract("null -> null; !null -> !null")
+    @Contract(NULL_NOT_NULL_CONTRACT)
     public CompoundLocation getLocation(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
@@ -234,7 +239,7 @@ public class Instruction {
     }
 
     @Nullable
-    @Contract("null -> null; !null -> !null")
+    @Contract(NULL_NOT_NULL_CONTRACT)
     public VariableNumber getVarNum(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
@@ -251,7 +256,7 @@ public class Instruction {
     }
 
     @Nullable
-    @Contract("null -> null; !null -> !null")
+    @Contract(NULL_NOT_NULL_CONTRACT)
     public QuestItem getQuestItem(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
@@ -308,7 +313,7 @@ public class Instruction {
 
     @SuppressWarnings({"deprecation", "PMD.ReturnEmptyCollectionRatherThanNull"})
     @Nullable
-    @Contract("null -> null; !null -> !null")
+    @Contract(NULL_NOT_NULL_CONTRACT)
     public Map<Enchantment, Integer> getEnchantments(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
@@ -341,7 +346,7 @@ public class Instruction {
 
     @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
     @Nullable
-    @Contract("null -> null; !null -> !null")
+    @Contract(NULL_NOT_NULL_CONTRACT)
     public List<PotionEffect> getEffects(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
@@ -399,7 +404,7 @@ public class Instruction {
     }
 
     @Nullable
-    @Contract("null -> null; !null -> !null")
+    @Contract(NULL_NOT_NULL_CONTRACT)
     public Material getMaterial(@Nullable final String string) {
         if (string == null) {
             return null;
@@ -412,7 +417,7 @@ public class Instruction {
     }
 
     @Nullable
-    @Contract("null -> null; !null -> !null")
+    @Contract(NULL_NOT_NULL_CONTRACT)
     public BlockSelector getBlockSelector(@Nullable final String string) throws InstructionParseException {
         return string == null ? null : new BlockSelector(string);
     }
@@ -442,7 +447,7 @@ public class Instruction {
     }
 
     @Nullable
-    @Contract("null -> null; !null -> !null")
+    @Contract(NULL_NOT_NULL_CONTRACT)
     public EventID getEvent(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
@@ -459,7 +464,7 @@ public class Instruction {
     }
 
     @Nullable
-    @Contract("null -> null; !null -> !null")
+    @Contract(NULL_NOT_NULL_CONTRACT)
     public ConditionID getCondition(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
@@ -476,7 +481,7 @@ public class Instruction {
     }
 
     @Nullable
-    @Contract("null -> null; !null -> !null")
+    @Contract(NULL_NOT_NULL_CONTRACT)
     public ObjectiveID getObjective(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
@@ -493,7 +498,7 @@ public class Instruction {
     }
 
     @Nullable
-    @Contract("null -> null; !null -> !null")
+    @Contract(NULL_NOT_NULL_CONTRACT)
     public ItemID getItem(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
