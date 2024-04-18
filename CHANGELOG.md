@@ -26,6 +26,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - exception in `lookAtBlock` condition when omitting the type
 - MMOCoreClassCondition, MMOItemsGiveEvent, MMOItemsHandCondition and MMOItemsItemCondition now work with numeric identifiers
 - yaml multiline instructions could lead to partly working events, conditions and objectives
+- creation of advancement tab when an advancement NotifyIO is sent
 ### Security
 
 ## [2.0.1] - 2024-03-24
