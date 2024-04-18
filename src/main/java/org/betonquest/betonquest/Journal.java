@@ -112,7 +112,6 @@ public class Journal {
      * @param onlineProfile the {@link OnlineProfile} of the player
      * @return true if the player has his journal, false otherwise
      */
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static boolean hasJournal(final OnlineProfile onlineProfile) {
         final Player player = onlineProfile.getPlayer();
         for (final ItemStack item : player.getInventory().getContents()) {

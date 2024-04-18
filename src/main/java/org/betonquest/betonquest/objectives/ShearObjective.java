@@ -56,6 +56,7 @@ public class ShearObjective extends CountingObjective implements Listener {
         if (name != null && (event.getEntity().getCustomName() == null || !event.getEntity().getCustomName().equals(name))) {
             return;
         }
+        // TODO check for NPE
         if (color != null && !((Sheep) event.getEntity()).getColor().toString().equalsIgnoreCase(color)) {
             return;
         }

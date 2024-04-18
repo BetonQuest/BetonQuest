@@ -60,7 +60,7 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
  * Handles the conversation flow based on {@link ConversationData}.
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired",
-        "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.AvoidDuplicateLiterals"})
+        "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.AvoidDuplicateLiterals", "DataFlowIssue"})
 public class Conversation implements Listener {
 
     /**

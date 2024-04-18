@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOCoreClassCondition extends Condition {
@@ -14,6 +15,7 @@ public class MMOCoreClassCondition extends Condition {
 
     private final boolean mustBeEqual;
 
+    @Nullable
     private final VariableNumber targetClassLevel;
 
     public MMOCoreClassCondition(final Instruction instruction) throws InstructionParseException {

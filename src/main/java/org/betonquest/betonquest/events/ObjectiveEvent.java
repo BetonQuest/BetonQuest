@@ -22,7 +22,7 @@ import java.util.Locale;
 /**
  * Starts an objective for the player.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
+@SuppressWarnings({"PMD.AvoidDuplicateLiterals"})
 public class ObjectiveEvent extends QuestEvent {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -94,7 +94,8 @@ public class ObjectiveEvent extends QuestEvent {
                 switch (action.toLowerCase(Locale.ROOT)) {
                     case "start", "add" -> BetonQuest.newObjective(profile, objective);
                     case "delete", "remove" -> cancelObjectiveForOnlinePlayer(profile, objective);
-                    case "complete", "finish" -> betonQuest.getObjective(objective).completeObjective(profile);
+                    case "complete", "finish" -> //noinspection DataFlowIssue
+                            betonQuest.getObjective(objective).completeObjective(profile);
                     default -> {
                     }
                 }
@@ -103,6 +104,7 @@ public class ObjectiveEvent extends QuestEvent {
         return null;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private void cancelObjectiveForOnlinePlayer(final Profile profile, final ObjectiveID objective) {
         betonQuest.getObjective(objective).cancelObjectiveForPlayer(profile);
         betonQuest.getPlayerData(profile).removeRawObjective(objective);

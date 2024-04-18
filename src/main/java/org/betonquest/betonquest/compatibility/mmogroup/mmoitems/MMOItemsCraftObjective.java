@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
 import io.lumine.mythic.lib.api.crafting.event.MythicCraftItemEvent;
-import io.lumine.mythic.lib.api.item.NBTItem;
 import io.lumine.mythic.lib.api.util.ui.FriendlyFeedbackProvider;
 import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.api.crafting.recipe.CraftingRecipe;
@@ -115,15 +114,7 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
      * @return {@code true} if the item matches the requirements; {@code false} otherwise
      */
     private boolean isValidItem(@Nullable final ItemStack itemStack) {
-        if (itemStack == null) {
-            return false;
-        }
-        // TODO "does the same thing"
-        final NBTItem realItemNBT = NBTItem.get(itemStack);
-        final String realItemType = realItemNBT.getString("MMOITEMS_ITEM_TYPE");
-        final String realItemID = realItemNBT.getString("MMOITEMS_ITEM_ID");
-
-        return realItemID.equalsIgnoreCase(itemId) && realItemType.equalsIgnoreCase(itemType.getId());
+        return MMOItemsUtils.equalsMMOItem(itemStack, itemType, itemId);
     }
 
     @Override

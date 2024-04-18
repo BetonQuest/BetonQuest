@@ -177,9 +177,8 @@ public class HologramProvider implements Integrator {
                 final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
                 instance.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class));
                 if (instance.citizensHologramLoop != null) {
-                    // TODO this should be instance's?
-                    this.citizensHologramLoop.close();
-                    this.citizensHologramLoop = new CitizensHologramLoop(loggerFactory, loggerFactory.create(CitizensHologramLoop.class));
+                    instance.citizensHologramLoop.close();
+                    instance.citizensHologramLoop = new CitizensHologramLoop(loggerFactory, loggerFactory.create(CitizensHologramLoop.class));
                 }
             }
         }

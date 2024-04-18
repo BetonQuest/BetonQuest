@@ -35,7 +35,6 @@ public final class MMOItemsUtils {
         if (item == null) {
             return false;
         }
-        // TODO "does the same thing"
         final NBTItem realItemNBT = NBTItem.get(item);
         final String realItemType = realItemNBT.getString("MMOITEMS_ITEM_TYPE");
         final String realItemID = realItemNBT.getString("MMOITEMS_ITEM_ID");

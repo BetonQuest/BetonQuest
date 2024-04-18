@@ -1683,6 +1683,7 @@ public class BetonQuest extends JavaPlugin {
      */
     @Nullable
     public Objective getObjective(final ObjectiveID objectiveID) {
+        // TODO Should all objectives exist? since it is an objective id with existence check
         return OBJECTIVES.get(objectiveID);
     }
 

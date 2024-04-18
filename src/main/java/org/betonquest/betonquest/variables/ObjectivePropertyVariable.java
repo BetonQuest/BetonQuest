@@ -34,13 +34,14 @@ public class ObjectivePropertyVariable extends Variable {
             objectiveID = parts[1] + "." + parts[2];
             propertyName = parts[3];
         } else {
-            propertyName = null;
+            propertyName = "";
         }
 
         ObjectiveID tempObjective = null;
         try {
             tempObjective = new ObjectiveID(instruction.getPackage(), objectiveID);
         } catch (final ObjectNotFoundException e) {
+            // TODO should this throw?
             log.warn(instruction.getPackage(), "Error in objective property variable '" + instruction + "' " + e.getMessage());
         }
         objective = tempObjective;

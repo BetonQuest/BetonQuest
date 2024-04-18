@@ -296,6 +296,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
 
         final SkullMeta npcMeta = (SkullMeta) npcHead.getItemMeta();
+        assert response != null;
         npcMeta.setLore(Arrays.asList(LocalChatPaginator.wordWrap(
                 Utils.replaceReset(response, npcTextColor), 45)));
         npcHead.setItemMeta(npcMeta);

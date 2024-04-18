@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.brewery;
 
 import com.dre.brewery.Brew;
 import com.dre.brewery.recipe.BRecipe;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -10,6 +9,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class TakeBrewEvent extends QuestEvent {
@@ -43,24 +43,28 @@ public class TakeBrewEvent extends QuestEvent {
     }
 
     @Override
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
+    @SuppressWarnings("PMD.CognitiveComplexity")
     protected Void execute(final Profile profile) throws QuestRuntimeException {
         final Player player = profile.getOnlineProfile().get().getPlayer();
 
         int remaining = count;
 
-        for (int i = 0; i < player.getInventory().getSize(); i++) {
-            final ItemStack item = player.getInventory().getItem(i);
-            if (item != null && Brew.get(item) != null && Brew.get(item).getCurrentRecipe().equals(brew)) {
-                if (item.getAmount() - remaining <= 0) {
-                    remaining -= item.getAmount();
-                    player.getInventory().setItem(i, null);
-                } else {
-                    item.setAmount(item.getAmount() - remaining);
-                    remaining = 0;
-                }
-                if (remaining <= 0) {
-                    break;
+        final PlayerInventory inventory = player.getInventory();
+        for (int i = 0; i < inventory.getSize(); i++) {
+            final ItemStack item = inventory.getItem(i);
+            if (item != null) {
+                final Brew brewItem = Brew.get(item);
+                if (brewItem != null && brewItem.getCurrentRecipe().equals(brew)) {
+                    if (item.getAmount() - remaining <= 0) {
+                        remaining -= item.getAmount();
+                        inventory.setItem(i, null);
+                    } else {
+                        item.setAmount(item.getAmount() - remaining);
+                        remaining = 0;
+                    }
+                    if (remaining <= 0) {
+                        break;
+                    }
                 }
             }
         }

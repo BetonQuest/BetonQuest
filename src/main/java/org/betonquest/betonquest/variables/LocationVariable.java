@@ -45,7 +45,7 @@ public class LocationVariable extends Variable {
     /**
      * The default String value to return if the Player Profile cannot be resolved.
      */
-    private static final String DEFAULT_VALUE = null;
+    private static final String DEFAULT_VALUE = "";
 
     /**
      * The mode of the location response required. Provides multiple output formats.
@@ -88,7 +88,6 @@ public class LocationVariable extends Variable {
 
     @Override
     public String getValue(final Profile profile) {
-        // TODO this should also not null?
         return profile.getOnlineProfile()
                 .map(onlineProfile -> getForLocation(onlineProfile.getPlayer().getLocation()))
                 .orElse(DEFAULT_VALUE);
