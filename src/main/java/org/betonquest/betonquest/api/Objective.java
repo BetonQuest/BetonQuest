@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.GlobalObjectives;
 import org.betonquest.betonquest.Instruction;
@@ -7,6 +8,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -35,6 +37,7 @@ import java.util.Optional;
  * registerObjectives()} method.
  * </p>
  */
+@SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods", "PMD.GodClass"})
 public abstract class Objective {
     protected final int notifyInterval;
@@ -196,9 +199,10 @@ public abstract class Objective {
      */
     public final void completeObjective(final Profile profile) {
         completeObjectiveForPlayer(profile);
-        BetonQuest.getInstance().getPlayerData(profile).removeRawObjective((ObjectiveID) instruction.getID());
+        final PlayerData playerData = BetonQuest.getInstance().getPlayerData(profile);
+        playerData.removeRawObjective((ObjectiveID) instruction.getID());
         if (persistent) {
-            BetonQuest.getInstance().getPlayerData(profile).addNewRawObjective((ObjectiveID) instruction.getID());
+            playerData.addNewRawObjective((ObjectiveID) instruction.getID());
             createObjectiveForPlayer(profile, getDefaultDataInstruction(profile));
         }
         log.debug(instruction.getPackage(),

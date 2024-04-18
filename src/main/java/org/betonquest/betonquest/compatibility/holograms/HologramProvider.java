@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -44,6 +45,7 @@ public class HologramProvider implements Integrator {
      * Singleton instance of this HologramProvider, only ever null if not initialised.
      */
     @Nullable
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     private static HologramProvider instance;
 
     /**

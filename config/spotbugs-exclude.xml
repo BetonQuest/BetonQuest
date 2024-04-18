@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<FindBugsFilter xmlns="http://findbugs.sourceforge.net/filter/3.0.0"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<FindBugsFilter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns="http://findbugs.sourceforge.net/filter/3.0.0"
                 xsi:schemaLocation="http://findbugs.sourceforge.net/filter/3.0.0 https://findbugs.googlecode.com/git/findbugs/etc/findbugsfilter.xsd">
 
   <!-- Disabled rules, that we do not want -->
   <Match>
     <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2,MS_EXPOSE_REP,ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
+  </Match>
+
+  <Match>
+    <!-- Reports irrelevant because of architecture -->
+    <Bug pattern="NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE"/>
+  </Match>
+
+  <Match>
+    <!-- This is a valid fix for ths rule, I am sure -->
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- Disabled rules, that have to many false positives or cause other problems -->

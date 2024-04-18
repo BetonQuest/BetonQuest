@@ -720,6 +720,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         @Nullable
         protected ConfigurationSection getOriginal() {
             if (sectionName != null && !checkIsOrphaned()) {
+                assert parent != null;
                 final ConfigurationSection parentOriginal = parent.manager.getOriginal();
                 original = parentOriginal == null ? null : parentOriginal.getConfigurationSection(sectionName);
             }
@@ -743,6 +744,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         @Nullable
         protected ConfigurationSection getFallback() {
             if (sectionName != null) {
+                assert parent != null;
                 final ConfigurationSection parentFallback = parent.manager.getFallback();
                 fallback = parentFallback == null ? null : parentFallback.getConfigurationSection(sectionName);
             }
@@ -751,6 +753,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
 
         @SuppressWarnings("PMD.CompareObjectsWithEquals")
         private boolean checkIsOrphaned() {
+            assert sectionName != null;
             if (original != null && original != original.getRoot()) {
                 final ConfigurationSection parent = original.getParent();
                 return parent != null && original != parent.getConfigurationSection(sectionName);

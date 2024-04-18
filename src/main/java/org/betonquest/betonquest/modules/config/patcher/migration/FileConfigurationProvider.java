@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.modules.config.patcher.migration;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,6 +34,7 @@ public class FileConfigurationProvider {
      * @return All configs
      * @throws IOException If an I/O error occurs
      */
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     public Map<File, YamlConfiguration> getAllConfigs() throws IOException {
         if (allConfigs == null) {
             allConfigs = new LinkedHashMap<>();

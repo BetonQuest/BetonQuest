@@ -4,6 +4,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.StringUtils;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
@@ -56,6 +57,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
             private int lineCount;
 
             @Override
+            @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
             public void run() {
                 if (lineCount == lines.length) {
                     for (int j = 1; j <= options.size(); j++) {
