@@ -55,9 +55,21 @@ public class ResourcePackObjective extends Objective implements Listener {
     @EventHandler
     public void onResourcePackReceived(final PlayerResourcePackStatusEvent event) {
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        processObjective(onlineProfile, event.getStatus());
+    }
+
+    /**
+     * Processes the objective. This is needed if the resource pack is received before the objective is started.
+     * If a plugin handles the resource pack normally the PlayerResourcePackStatusEvent
+     * is called after the objective is started.
+     *
+     * @param onlineProfile The online profile.
+     * @param status        The status of the received resource pack.
+     */
+    public void processObjective(final OnlineProfile onlineProfile, final PlayerResourcePackStatusEvent.Status status) {
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-            final PlayerResourcePackStatusEvent.Status status = PlayerResourcePackStatusEvent.Status.valueOf(targetStatus.getString(onlineProfile).toUpperCase(Locale.ROOT));
-            if (status.equals(event.getStatus())) {
+            final PlayerResourcePackStatusEvent.Status expectedStatus = PlayerResourcePackStatusEvent.Status.valueOf(targetStatus.getString(onlineProfile).toUpperCase(Locale.ROOT));
+            if (expectedStatus.equals(status)) {
                 completeObjective(onlineProfile);
             }
         }
