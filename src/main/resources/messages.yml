@@ -13,7 +13,6 @@ pl:
   next: '&2Nastepna strona'
   inventory_full_backpack: '&e*&bTwoj ekwipunek jest pelny! The item was moved to your backpack.&e*' # TODO: missing translation
   inventory_full_drop: '&e*&bTwoj ekwipunek jest pelny! The item was dropped on the ground.&e*' # TODO: missing translation
-  changelog: '&f[BetonQuest]: &e*&bNowy changelog jest dostepny w folderze pluginu! Zapoznaj sie ze zmianami i usun lub zmien nazwe pliku, aby wylaczyc ten komunikat!&e*'
   pullback: '&cMusisz dokonczyc swoja rozmowe!'
   items_given: '&2Otrzymano {1}&2 x{2}'
   items_taken: '&2Utracono {1}&2 x{2}'
@@ -73,7 +72,6 @@ en:
   next: '&2Next'
   inventory_full_backpack: '&e*&bYour inventory is full! The item was moved to your backpack.&e*'
   inventory_full_drop: '&e*&bYour inventory is full! The item was dropped on the ground.&e*'
-  changelog: '&f[BetonQuest]: &e*&bNew changelog is available in the plugin''s directory. Read the changes and delete or rename the file to dismiss this message!&e*'
   pullback: '&cYou must finish your conversation!'
   items_given: '&2Received {1}&2 x{2}'
   items_taken: '&2Lost {1}&2 x{2}'
@@ -133,7 +131,6 @@ de:
   next: '&2Vor'
   inventory_full_backpack: '&e*&bDein Inventar ist voll! Das Item wurde in deinen Rucksack gelegt.&e*'
   inventory_full_drop: '&e*&bDein Inventar ist voll! Das Item wurde auf den Boden gelegt.&e*'
-  changelog: '&f[BetonQuest]: &e*&bEin neuer Changelog ist im Ordner des Plugins. Schaue dir die Änderungen an und/oder lösche/benenne die Datei um, um diese Meldung zu entfernen!&e*'
   pullback: '&cDu musst das Gespräch erst beenden!'
   items_given: '&2{1}&2 x{2} erhalten.'
   items_taken: '&2{1}&2 x{2} weggenommen.'
@@ -193,7 +190,6 @@ fr:
   next: '&2Suivant'
   inventory_full_backpack: '&e*&bVotre inventaire est plein! L''objet a été placé dans votre sac á dos.&e*'
   inventory_full_drop: '&e*&bVotre inventaire est plein! L''objet a été déposé au sol.&e*'
-  changelog: '&f[BetonQuest]: &e*&bLa liste des modifications est dans le repertoire du plugin. Lisez bien ce fichier des changements puis supprimez le pour masquer ce message!&e*'
   pullback: '&cVous devez terminer la conversation!'
   items_given: '&2Vous recevez {1}&2 x{2}'
   items_taken: '&2Vous redonnez {1}&2 x{2}'
@@ -253,7 +249,6 @@ cn:
   next: '&2下一个'
   inventory_full_backpack: '&e*&b你的仓库满了!这个物品放到了你的背包里&e*'
   inventory_full_drop: '&e*&b你的仓库满了!这个物品掉落在地上。&e*'
-  changelog: '&f[BetonQuest]: &e*&b新版本的更新内容已经生成在插件文件夹下!将它删除就不会再看到这个信息了&e*'
   pullback: '&c你还在对话中!&a(输入1看看聊天栏有没有反应吧)'
   items_given: '&2你获得了 {2}个{1}'
   items_taken: '&2你失去了 {2}个{1}'
@@ -313,7 +308,6 @@ es:
   next: '&2Siguiente'
   inventory_full_backpack: '&e*&bTu inventario esta lleno! The item was moved to your backpack.&e*' # TODO: missing translation
   inventory_full_drop: '&e*&bTu inventario esta lleno! The item was dropped on the ground.&e*' # TODO: missing translation
-  changelog: '&f[BetonQuest]: &e*&bNuevo directorio de cambios disponible en la carpeta del plugin. Borra o cambia el archivo para quitar este mensaje&e*'
   pullback: '&cDebes finalizar la conversacion.'
   items_given: '&2Recibido {1}&2 x{2}'
   items_taken: '&2Perdido {1}&2 x{2}'
@@ -373,7 +367,6 @@ nl:
   next: '&2Volgende'
   inventory_full_backpack: '&e*&bJe inventaris is vol! Het item is in je rugzak geplaatst.&e*'
   inventory_full_drop: '&e*&bJe inventaris is vol! Het item is op de grond gedropt.&e*'
-  changelog: '&f[BetonQuest]: &e*&bEr is een nieuw wijzigingslog beschikbaar in de plugin''s folder. Lees de wijzigingen en verwijder of hernoem het bestand om dit bericht te voorkomen!&e*'
   pullback: '&cRond eerst je gesprek af!'
   items_given: '&2Ontvangen {1}&2 x{2}'
   items_taken: '&2Afgegeven {1}&2 x{2}'
@@ -433,7 +426,6 @@ it:
   next: '&2Successivo'
   inventory_full_backpack: '&e*&bIl tuo inventario è pieno! L''oggetto è stato spostato nel tuo zaino.&e*'
   inventory_full_drop: '&e*&bIl tuo inventario è pieno! L''oggetto è caduto per terra.&e*'
-  changelog: '&f[BetonQuest]: &e*&bLa lista dei cambiamenti è disponibile nella cartella del plugin. Leggi i cambiamenti, elimina o rinomina il file per disabilitare questo messaggio!&e*'
   pullback: '&cDevi finire la conversazione!'
   items_given: '&2Hai ricevuto {1}&2 x{2}'
   items_taken: '&2Hai perso {1}&2 x{2}'
@@ -493,7 +485,6 @@ hu:
   next: '&2Következő'
   inventory_full_backpack: '&e*&bAz eszköztárad tele van! The item was moved to your backpack.&e*' # TODO: missing translation
   inventory_full_drop: '&e*&bAz eszköztárad tele van! The item was dropped on the ground.&e*' # TODO: missing translation
-  changelog: '&f[BetonQuest]: &e*&bAz új changelog elérhető a plugin könyvtárában. Olvassa el a változtatásokat, és törölje vagy nevezze át a fájlt, hogy elutasítsa ezt az üzenetet!&e*'
   pullback: '&cBe kell fejeznie a beszélgetést!'
   items_given: '&2Kapott {1}&2 x{2}'
   items_taken: '&2Veszített {1}&2 x{2}'
@@ -553,7 +544,6 @@ vi:
   next: '&2Sau'
   inventory_full_backpack: '&e*&bTúi đồ của bạn đã đầy! The item was moved to your backpack.&e*' # TODO: missing translation
   inventory_full_drop: '&e*&bTúi đồ của bạn đã đầy! The item was dropped on the ground.&e*' # TODO: missing translation
-  changelog: '&f[BetonQuest]: &e*&bChi tiết các cập nhật về phiên bản mới đã có trong thư mục của plugin. Đọc nó sau đó đổi tên hoặc xoá đi để ẩn thông báo này!&e*'
   pullback: '&cBạn phải hoàn thành cuộc đối thoại trước!'
   items_given: '&2Đã nhận {1}&2 x{2}'
   items_taken: '&2Đã mất {1}&2 x{2}'
@@ -612,7 +602,6 @@ pt-br:
   previous: '&2Anterior'
   next: '&2Próximo'
   inventory_full: '&e*&bSeu inventário está cheio!&e*'
-  changelog: '&f[BetonQuest]: &e*&bNovo changelog disponível no diretório do plugin. Leia as mudanças e delete ou renomeie o arquivo para remover esta mensagem!&e*'
   pullback: '&cVocê deve terminar esta conversa!'
   items_given: '&2Recebeu {1}&2 x{2}'
   items_taken: '&2Perdeu {1}&2 x{2}'
@@ -668,7 +657,6 @@ pt-pt:
   previous: '&2Anterior'
   next: '&2Seguinte'
   inventory_full: '&e*&bO teu inventario está cheio.&e*'
-  changelog: '&f[BetonQuest]: &e*&bNovo changelog disponivel na pasta do plugin plugin. Leia as mudanças e apague ou renomeie o ficheiro para remover esta mensagem!&e*'
   pullback: '&cDeves terminar a conversa.'
   items_given: '&2Recebido {1}&2 x{2}'
   items_taken: '&2Perdido {1}&2 x{2}'
@@ -725,7 +713,6 @@ ru:
   next: '&2Вперёд'
   inventory_full_backpack: '&e*&bВаш инвентарь заполнен! Предмет был перемещён в рюкзак&e*'
   inventory_full_drop: '&e*&bВаш инвентарь заполнен! Предмет был дропнут на землю&e*'
-  changelog: '&f[BetonQuest]: &e*&bНовый changelog доступин в директории плагина. Прочитайте изменения и удалите или переименуйте файл чтобы отключить это сообщение!&e*'
   pullback: '&cВы должны закончить ваш диалог!'
   items_given: '&2Получено {1}&2 x{2}'
   items_taken: '&2Забрано {1}&2 x{2}'
