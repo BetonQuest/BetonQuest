@@ -9,8 +9,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-import org.checkerframework.framework.qual.DefaultQualifier;
-import org.checkerframework.framework.qual.TypeUseLocation;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 
@@ -26,7 +24,6 @@ import java.util.function.Function;
  * as if it were the original {@link ConfigurationSection}, except for missing key, then the fallback is used.
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount", "PMD.TooManyMethods"})
-@DefaultQualifier(value = Nullable.class, locations = TypeUseLocation.LOCAL_VARIABLE)
 public class FallbackConfigurationSection implements ConfigurationSection {
     /**
      * Manager holing the original and the fallback {@link ConfigurationSection} instances.

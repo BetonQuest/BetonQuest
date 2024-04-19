@@ -56,7 +56,6 @@ public interface ConfigurationSectionModificationHandler {
      * @param path    The path to the section
      * @return The created section
      */
-
     ConfigurationSection createSection(ConfigurationSection section, String path);
 
     /**
@@ -67,7 +66,6 @@ public interface ConfigurationSectionModificationHandler {
      * @param map     The values to set
      * @return The created section
      */
-
     ConfigurationSection createSection(ConfigurationSection section, String path, Map<?, ?> map);
 
     /**

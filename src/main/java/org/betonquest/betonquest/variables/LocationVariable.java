@@ -99,7 +99,6 @@ public class LocationVariable extends Variable {
      * @return The value for the given location.
      */
     @SuppressWarnings("PMD.CyclomaticComplexity")
-
     public String getForLocation(final Location location) {
         return switch (mode) {
             case XYZ -> buildFormattedLocation(location, buildPart(1) + " " + buildPart(2) + " " + buildPart(3));

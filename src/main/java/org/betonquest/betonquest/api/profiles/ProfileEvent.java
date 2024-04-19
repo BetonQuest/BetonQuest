@@ -37,7 +37,6 @@ public abstract class ProfileEvent extends Event {
     /**
      * @return the profile
      */
-
     public final Profile getProfile() {
         return profile;
     }

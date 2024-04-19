@@ -9,7 +9,7 @@ import org.apache.logging.log4j.message.Message;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Filters /betonquestanswer commands
+ * Filters /betonquestanswer commands.
  */
 @SuppressWarnings({"PMD.ExcessiveParameterList", "PMD.TooManyMethods", "PMD.CommentRequired", "DataFlowIssue"})
 public class AnswerFilter implements Filter {

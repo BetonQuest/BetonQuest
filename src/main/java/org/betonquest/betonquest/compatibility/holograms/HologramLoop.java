@@ -173,7 +173,6 @@ public abstract class HologramLoop {
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
-
     private TopLine parseTopLine(final QuestPackage pack, final String line) throws InstructionParseException {
         final Matcher validator = TOP_LINE_VALIDATOR.matcher(line);
         if (!validator.matches()) {

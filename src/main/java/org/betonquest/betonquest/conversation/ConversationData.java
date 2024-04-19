@@ -16,6 +16,7 @@ import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -122,7 +123,7 @@ public class ConversationData {
      */
     @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "DataFlowIssue"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public ConversationData(final BetonQuest plugin, final ConversationID conversationID, @Nullable final ConfigurationSection convSection) throws InstructionParseException, ObjectNotFoundException {
+    public ConversationData(final BetonQuest plugin, final ConversationID conversationID, @UnknownNullability final ConfigurationSection convSection) throws InstructionParseException, ObjectNotFoundException {
         this.plugin = plugin;
         this.conversationID = conversationID;
         this.pack = conversationID.getPackage();

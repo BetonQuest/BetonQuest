@@ -31,7 +31,6 @@ public class HandleConfigurationOptions extends ConfigurationOptions {
     }
 
     @Override
-
     public ConfigurationOptions pathSeparator(final char value) {
         original.pathSeparator(value);
         return this;
@@ -43,7 +42,6 @@ public class HandleConfigurationOptions extends ConfigurationOptions {
     }
 
     @Override
-
     public ConfigurationOptions copyDefaults(final boolean value) {
         original.copyDefaults(value);
         return this;

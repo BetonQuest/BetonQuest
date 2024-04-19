@@ -562,7 +562,6 @@ public class MenuConvIO extends ChatConvIO {
      * Ends the work of this conversation IO. Should be called when the
      * conversation ends.
      */
-    @SuppressWarnings("ConstantValue")
     @Override
     public void end() {
         if (state.isEnded()) {
@@ -575,6 +574,7 @@ public class MenuConvIO extends ChatConvIO {
             }
             state = ConversationState.ENDED;
 
+            //noinspection ConstantValue
             if (packetAdapter != null) {
                 ProtocolLibrary.getProtocolManager().removePacketListener(packetAdapter);
             }

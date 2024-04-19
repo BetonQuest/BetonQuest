@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.api;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.GlobalObjectives;
 import org.betonquest.betonquest.Instruction;
@@ -37,7 +36,6 @@ import java.util.Optional;
  * registerObjectives()} method.
  * </p>
  */
-@SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods", "PMD.GodClass"})
 public abstract class Objective {
     protected final int notifyInterval;

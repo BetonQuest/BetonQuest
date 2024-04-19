@@ -205,7 +205,6 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
          * @param args The map of arguments
          * @return The created {@link TestObject}
          */
-
         @SuppressWarnings("unused")
         public static TestObject deserialize(final Map<String, Object> args) {
             return new TestObject((String) args.get("name"), (int) args.get("amount"), (int) args.get("sum"));

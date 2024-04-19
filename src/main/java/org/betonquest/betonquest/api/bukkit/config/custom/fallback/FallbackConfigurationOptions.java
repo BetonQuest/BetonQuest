@@ -40,7 +40,6 @@ public class FallbackConfigurationOptions extends ConfigurationOptions {
     }
 
     @Override
-
     public ConfigurationOptions pathSeparator(final char value) {
         original.pathSeparator(value);
         if (fallback != null) {
@@ -55,7 +54,6 @@ public class FallbackConfigurationOptions extends ConfigurationOptions {
     }
 
     @Override
-
     public ConfigurationOptions copyDefaults(final boolean value) {
         original.copyDefaults(value);
         if (fallback != null) {

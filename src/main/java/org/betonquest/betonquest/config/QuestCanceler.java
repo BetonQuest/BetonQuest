@@ -234,7 +234,6 @@ public class QuestCanceler {
             for (final ObjectiveID objectiveID : objectives) {
                 log.debug(objectiveID.getPackage(), "  Removing objective " + objectiveID);
                 final Objective objective = BetonQuest.getInstance().getObjective(objectiveID);
-                assert objective != null;
                 objective.cancelObjectiveForPlayer(onlineProfile);
                 playerData.removeRawObjective(objectiveID);
             }

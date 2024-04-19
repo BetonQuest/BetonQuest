@@ -75,7 +75,6 @@ public final class ChatFormatter extends Formatter {
      * @param record The record to format
      * @return The formatted component
      */
-
     public TextComponent formatTextComponent(final LogRecord record) {
         final String color = formatColor(record.getLevel());
         final Optional<BetonQuestLogRecord> betonRecord = BetonQuestLogRecord.safeCast(record);
