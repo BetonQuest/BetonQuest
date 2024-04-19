@@ -1,11 +1,9 @@
 package org.betonquest.betonquest.notify;
 
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.Bukkit;
@@ -14,6 +12,7 @@ import org.bukkit.advancement.Advancement;
 import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 import java.util.Map;
@@ -21,10 +20,6 @@ import java.util.UUID;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class AdvancementNotifyIO extends NotifyIO {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     private final String frame;
 
@@ -32,41 +27,35 @@ public class AdvancementNotifyIO extends NotifyIO {
 
     public AdvancementNotifyIO(final QuestPackage pack, final Map<String, String> data) throws InstructionParseException {
         super(pack, data);
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-
         frame = data.getOrDefault("frame", "challenge").toLowerCase(Locale.ROOT);
         icon = data.getOrDefault("icon", "minecraft:map").toLowerCase(Locale.ROOT);
     }
 
     @Override
     protected void notifyPlayer(final String message, final OnlineProfile onlineProfile) {
-        final NamespacedKey key = loadAdvancement(message);
+        final UUID uuid = UUID.randomUUID();
+        final NamespacedKey rootKey = new NamespacedKey(BetonQuest.getInstance(), "notify/" + uuid + "-root");
+        final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "notify/" + uuid + "-message");
+        loadAdvancement(message, rootKey, key);
+
         Bukkit.getScheduler().runTask(BetonQuest.getInstance(), run -> grant(key, onlineProfile.getPlayer()));
         new BukkitRunnable() {
             @Override
             public void run() {
                 revoke(key, onlineProfile.getPlayer());
                 remove(key);
+                remove(rootKey);
             }
         }.runTaskLater(BetonQuest.getInstance(), 10);
     }
 
-    private NamespacedKey loadAdvancement(final String message) {
-        final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "notify/" + UUID.randomUUID());
-        try {
-            add(key, message);
-        } catch (final JsonIOException e) {
-            log.warn("Failed to create notification with text: '" + message + "'! Cause: " + e.getMessage(), e);
-        }
-        return key;
-    }
-
     @SuppressWarnings("deprecation")
-    private void add(final NamespacedKey key, final String message) {
+    private void loadAdvancement(final String message, final NamespacedKey rootKey, final NamespacedKey key) {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Bukkit.getUnsafe().loadAdvancement(key, generateJson(message));
+                Bukkit.getUnsafe().loadAdvancement(rootKey, generateJson(null, null));
+                Bukkit.getUnsafe().loadAdvancement(key, generateJson(message, rootKey));
             }
         }.runTask(BetonQuest.getInstance());
     }
@@ -105,34 +94,43 @@ public class AdvancementNotifyIO extends NotifyIO {
         }
     }
 
-    private String generateJson(final String message) {
+    private String generateJson(final String message, final NamespacedKey root) {
         final JsonObject json = new JsonObject();
+        json.add("criteria", getCriteria());
+        if (root != null) {
+            json.addProperty("parent", root.toString());
+            json.add("display", getDisplay(message));
+        }
+        return new GsonBuilder().setPrettyPrinting().create().toJson(json);
+    }
 
-        final JsonObject icon = new JsonObject();
-        icon.addProperty("item", this.icon);
+    private @NotNull JsonObject getCriteria() {
+        final JsonObject criteria = new JsonObject();
+        criteria.add("impossible", getTrigger());
+        return criteria;
+    }
 
+    private @NotNull JsonObject getTrigger() {
+        final JsonObject trigger = new JsonObject();
+        trigger.addProperty("trigger", "minecraft:impossible");
+        return trigger;
+    }
+
+    private @NotNull JsonObject getDisplay(final String message) {
         final JsonObject display = new JsonObject();
-        display.add("icon", icon);
+        display.add("icon", getIcon());
         display.addProperty("title", message);
-
         display.addProperty("description", "");
-        display.addProperty("background", "minecraft:textures/gui/advancements/backgrounds/adventure.png");
-
         display.addProperty("frame", this.frame);
-
         display.addProperty("announce_to_chat", false);
         display.addProperty("show_toast", true);
         display.addProperty("hidden", true);
+        return display;
+    }
 
-        final JsonObject criteria = new JsonObject();
-        final JsonObject trigger = new JsonObject();
-
-        trigger.addProperty("trigger", "minecraft:impossible");
-        criteria.add("impossible", trigger);
-
-        json.add("criteria", criteria);
-        json.add("display", display);
-
-        return new GsonBuilder().setPrettyPrinting().create().toJson(json);
+    private @NotNull JsonObject getIcon() {
+        final JsonObject icon = new JsonObject();
+        icon.addProperty("item", this.icon);
+        return icon;
     }
 }
