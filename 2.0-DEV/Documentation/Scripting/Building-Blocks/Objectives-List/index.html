@@ -6062,14 +6062,69 @@ already killed players and <code>total</code> is the initially required amount t
 </code></pre></div>
 </div>
 <h2 id="location-location">Location: <code>location</code><a class="headerlink" href="#location-location" title="Permanent link">🔗</a></h2>
-<p>This objective completes when player moves in specified range of specified location and meets all conditions. The first
-argument after objective's name must be location, the second - radius around the location. It can be a variable.</p>
-<p>Location objective contains one property, <code>location</code>. It's a string formatted like <code>X: 100, Y: 200, Z:300</code>.</p>
+<p>The specified location where the player needs to be.
+It is not required to specify <code>entry</code> or <code>exit</code> then the objective also completes
+if the player just moves inside the location's range.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Syntax</th>
+<th>Default Value</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>location</em></td>
+<td><a href="../../Data-Formats/#unified-location-formating">ULF</a></td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343h-.001a8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746Zm1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275ZM6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L6.94 8 4.97 6.03a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018Z"/></svg></span></td>
+<td>The location to go to</td>
+</tr>
+<tr>
+<td><em>range</em></td>
+<td>range:number</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343h-.001a8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746Zm1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275ZM6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L6.94 8 4.97 6.03a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018Z"/></svg></span></td>
+<td>The range arround the location where the player must be.</td>
+</tr>
+<tr>
+<td><em>entry</em></td>
+<td>entry:keyword</td>
+<td>Disabled</td>
+<td>The player must enter (go from outside to inside) the location to complete the objective.</td>
+</tr>
+<tr>
+<td><em>exit</em></td>
+<td>exit:keyword</td>
+<td>Disabled</td>
+<td>The player must exit (go from inside to outside) the location to complete the objective.</td>
+</tr>
+</tbody>
+</table>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">location 100;200;300;world 5 condition:test1,!test2 events:test1,test2</span>
+<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">location 100;200;300;world 5 condition:started events:notifyWelcome,start</span>
+<span class="l l-Scalar l-Scalar-Plain">location 100;200;300;world 5 exit conditions:started events:notifyBye</span>
 </code></pre></div>
 </div>
+<h5> Variable Properties </h5>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Example Output</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>location</em></td>
+<td>X: 100, Y: 200, Z:300</td>
+<td>The target location of this objective</td>
+</tr>
+</tbody>
+</table>
 <h2 id="login-login">Login: <code>login</code><a class="headerlink" href="#login-login" title="Permanent link">🔗</a></h2>
 <p>To complete this objective the player simply needs to login to the server.
 If you use <code>global</code> this objective will be also completed directly when a new player joins for the first time.
