@@ -28,7 +28,7 @@ public class RegionObjective extends AbstractLocationObjective {
      */
     public RegionObjective(final Instruction instruction) throws InstructionParseException {
         super(BetonQuest.getInstance().getLoggerFactory().create(RegionObjective.class), instruction);
-        name = instruction.next() == null ? null : new VariableString(instruction.getPackage(), instruction.current());
+        name = new VariableString(instruction.getPackage(), instruction.next());
     }
 
     @Override
