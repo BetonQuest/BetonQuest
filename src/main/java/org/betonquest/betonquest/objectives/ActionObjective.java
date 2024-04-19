@@ -55,7 +55,6 @@ public class ActionObjective extends Objective implements Listener {
     public ActionObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        template = ObjectiveData.class;
 
         action = instruction.getEnum(Click.class);
         if ("any".equalsIgnoreCase(instruction.next())) {

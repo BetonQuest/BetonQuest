@@ -40,7 +40,6 @@ public class ArrowShootObjective extends Objective implements Listener {
     public ArrowShootObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        template = ObjectiveData.class;
         loc = instruction.getLocation();
         range = instruction.getVarNum();
     }

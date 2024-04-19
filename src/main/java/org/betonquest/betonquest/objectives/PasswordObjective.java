@@ -35,7 +35,6 @@ public class PasswordObjective extends Objective implements Listener {
 
     public PasswordObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        template = ObjectiveData.class;
         final String pattern = instruction.next().replace('_', ' ');
         final int regexFlags = instruction.hasArgument("ignoreCase") ? Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE : 0;
         regex = Pattern.compile(pattern, regexFlags);

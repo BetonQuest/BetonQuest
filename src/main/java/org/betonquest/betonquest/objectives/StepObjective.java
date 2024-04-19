@@ -36,7 +36,6 @@ public class StepObjective extends Objective implements Listener {
 
     public StepObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        template = ObjectiveData.class;
         loc = instruction.getLocation();
     }
 

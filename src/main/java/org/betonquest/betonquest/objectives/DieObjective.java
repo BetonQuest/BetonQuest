@@ -41,7 +41,6 @@ public class DieObjective extends Objective implements Listener {
     public DieObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        template = ObjectiveData.class;
         cancel = instruction.hasArgument("cancel");
         location = instruction.getLocation(instruction.getOptional("respawn"));
     }

@@ -34,7 +34,6 @@ public class NPCRangeObjective extends Objective {
 
     public NPCRangeObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        super.template = ObjectiveData.class;
         this.npcIds = new ArrayList<>();
         for (final String npcIdString : instruction.getArray()) {
             try {
