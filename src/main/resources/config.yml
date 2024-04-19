@@ -47,7 +47,6 @@ sounds:
   start: ENTITY_VILLAGER_AMBIENT
   end: ENTITY_VILLAGER_YES
   journal: ENTITY_BAT_TAKEOFF
-  update: false
   full: false
 cmd_blacklist:
   - spawn

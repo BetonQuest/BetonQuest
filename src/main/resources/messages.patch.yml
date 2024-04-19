@@ -44,3 +44,30 @@
     key: fr.chest_occupied
     oldValueRegex: "This chest is already in use"
     newValue: "Ce coffre est déjà en cours d''utilisation"
+2.0.2.1:
+  - type: REMOVE
+    key: pl.changelog
+  - type: REMOVE
+    key: en.changelog
+  - type: REMOVE
+    key: de.changelog
+  - type: REMOVE
+    key: fr.changelog
+  - type: REMOVE
+    key: cn.changelog
+  - type: REMOVE
+    key: es.changelog
+  - type: REMOVE
+    key: nl.changelog
+  - type: REMOVE
+    key: it.changelog
+  - type: REMOVE
+    key: hu.changelog
+  - type: REMOVE
+    key: vi.changelog
+  - type: REMOVE
+    key: pt-br.changelog
+  - type: REMOVE
+    key: pt-pt.changelog
+  - type: REMOVE
+    key: ru.changelog

@@ -154,7 +154,6 @@ This section defines what sounds will be played on these occasions:
 
   * `start` and `end` refer to start and end points of conversations.
   * `journal` is played upon updating the journal.
-  * `update` is played when there is a changelog file, used to draw your attention.
   * `full` is played when the player executes `/journal` but his inventory is full.
   
   
