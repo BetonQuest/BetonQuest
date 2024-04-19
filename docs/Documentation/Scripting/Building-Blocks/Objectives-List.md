@@ -285,6 +285,18 @@ initially required.
     ```YAML
     interact right creeper 1 marked:sick condition:syringeInHand cancel
     ```
+    
+## Resource pack state: `resourcepack`
+
+To complete this objective the player must have the specified resource pack state.
+The first argument is the state of the resource pack.
+It can be `successfully_loaded`, `declined`, `failed_download` and `accepted`.
+
+!!! example
+    ```YAML
+    resourcepack successfully_loaded events:reward
+    resourcepack declined events:declined
+    ```
 
 ## Kill player: `kill`
 

@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.conversation.ConversationResumer;
 import org.betonquest.betonquest.database.PlayerData;
+import org.betonquest.betonquest.objectives.ResourcePackObjective;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -16,6 +17,7 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 
 /**
  * Listener which handles data loadin/saving when players are joining/quitting
@@ -65,6 +67,13 @@ public class JoinQuitListener implements Listener {
         }
         playerData.startObjectives();
         GlobalObjectives.startAll(onlineProfile);
+        final PlayerResourcePackStatusEvent.Status resourcePackStatus = event.getPlayer().getResourcePackStatus();
+        if (resourcePackStatus != null) {
+            BetonQuest.getInstance().getPlayerObjectives(onlineProfile).stream()
+                    .filter(objective -> objective instanceof ResourcePackObjective)
+                    .map(objective -> (ResourcePackObjective) objective)
+                    .forEach(objective -> objective.processObjective(onlineProfile, resourcePackStatus));
+        }
 
         if (Journal.hasJournal(onlineProfile)) {
             playerData.getJournal().update();
