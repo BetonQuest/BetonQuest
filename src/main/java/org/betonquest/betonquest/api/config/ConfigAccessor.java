@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.config;
 
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnknownNullability;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,6 +51,7 @@ public interface ConfigAccessor {
      *
      * @return the {@link File} if it exists
      */
-    @Nullable
+    //@Nullable
+    @UnknownNullability
     File getConfigurationFile();
 }

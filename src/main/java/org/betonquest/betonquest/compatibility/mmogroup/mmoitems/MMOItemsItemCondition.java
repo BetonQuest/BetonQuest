@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.Indyuce.mmoitems.api.Type;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
@@ -31,6 +32,7 @@ public class MMOItemsItemCondition extends Condition {
     }
 
     @Override
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         int counter = 0;
 

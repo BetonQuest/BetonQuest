@@ -141,8 +141,8 @@ public class VariableNumber {
     /**
      * To check if a value will be guarantied not zero or less
      *
-     * @return true if a variable is set or the constant value is greater zero,
-     * false if no variable is set and the constant value is zero or less
+     * @return false if a variable is set or the constant value is greater zero,
+     * true if no variable is set and the constant value is zero or less
      */
     public boolean isExplicitLessThanOne() {
         return variable == null && number < 1;

@@ -22,6 +22,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnknownNullability;
 
 import java.io.Serial;
 import java.util.ArrayList;
@@ -166,7 +167,8 @@ public class Instruction {
      * @param defaultString the default value
      * @return the value or the default value
      */
-    @Nullable
+    //@Nullable
+    @UnknownNullability
     @Contract("_, !null -> !null")
     public String getOptional(final String prefix, @Nullable final String defaultString) {
         return getOptionalArgument(prefix).orElse(defaultString);
@@ -238,7 +240,8 @@ public class Instruction {
         return getVarNum(next());
     }
 
-    @Nullable
+    //@Nullable
+    @UnknownNullability
     @Contract(NULL_NOT_NULL_CONTRACT)
     public VariableNumber getVarNum(@Nullable final String string) throws InstructionParseException {
         if (string == null) {

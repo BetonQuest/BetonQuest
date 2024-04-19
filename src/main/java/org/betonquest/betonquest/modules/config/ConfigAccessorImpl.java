@@ -5,6 +5,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnknownNullability;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -167,7 +168,8 @@ public class ConfigAccessorImpl implements ConfigAccessor {
     }
 
     @Override
-    @Nullable
+    //@Nullable
+    @UnknownNullability
     public File getConfigurationFile() {
         return configurationFile;
     }

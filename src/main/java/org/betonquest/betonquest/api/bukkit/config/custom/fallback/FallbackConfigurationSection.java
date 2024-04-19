@@ -13,6 +13,7 @@ import org.checkerframework.framework.qual.DefaultQualifier;
 import org.checkerframework.framework.qual.TypeUseLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -717,7 +718,8 @@ public class FallbackConfigurationSection implements ConfigurationSection {
          *
          * @return The original {@link ConfigurationSection}
          */
-        @Nullable
+        //@Nullable
+        @UnknownNullability
         protected ConfigurationSection getOriginal() {
             if (sectionName != null && !checkIsOrphaned()) {
                 assert parent != null;

@@ -1371,7 +1371,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     return;
                 }
                 BetonQuest.getInstance().renameObjective(nameID, renameID);
-                BetonQuest.getInstance().getObjective(renameID).setLabel(renameID);
+                final Objective renamed = BetonQuest.getInstance().getObjective(renameID);
+                assert renamed != null;
+                renamed.setLabel(renameID);
                 // renaming an active objective probably isn't needed
                 for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                     boolean found = false;
@@ -1391,6 +1393,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         data = "";
                     }
                     final Objective objective = BetonQuest.getInstance().getObjective(nameID);
+                    assert objective != null;
                     objective.pauseObjectiveForPlayer(onlineProfile);
                     BetonQuest.getInstance().getPlayerData(onlineProfile).removeRawObjective(nameID);
                     BetonQuest.resumeObjective(onlineProfile, renameID, data);
@@ -1497,6 +1500,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 }
                 for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                     final Objective objective = BetonQuest.getInstance().getObjective(objectiveID);
+                    if (objective == null) {
+                        break;
+                    }
                     objective.cancelObjectiveForPlayer(onlineProfile);
                     BetonQuest.getInstance().getPlayerData(onlineProfile).removeRawObjective(objectiveID);
                 }
