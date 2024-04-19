@@ -25,7 +25,6 @@ public class RideObjective extends Objective implements Listener {
 
     public RideObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        template = ObjectiveData.class;
         final String name = instruction.next();
         if ("any".equalsIgnoreCase(name)) {
             any = true;

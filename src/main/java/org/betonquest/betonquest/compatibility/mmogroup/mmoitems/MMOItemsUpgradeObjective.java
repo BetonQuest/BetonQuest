@@ -25,7 +25,6 @@ public class MMOItemsUpgradeObjective extends Objective implements Listener {
 
         itemType = instruction.next();
         itemID = instruction.next();
-        template = ObjectiveData.class;
     }
 
     @EventHandler(ignoreCancelled = true)

@@ -43,8 +43,6 @@ public class MythicLibSkillObjective extends Objective implements Listener {
      */
     public MythicLibSkillObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-
-        template = ObjectiveData.class;
         skillId = instruction.next();
         final String triggerTypesString = instruction.getOptional("trigger");
         if (triggerTypesString == null) {

@@ -24,8 +24,6 @@ public class MMOItemsApplyGemObjective extends Objective implements Listener {
 
     public MMOItemsApplyGemObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        template = ObjectiveData.class;
-
         itemType = instruction.next();
         itemID = instruction.next();
         gemID = instruction.next();

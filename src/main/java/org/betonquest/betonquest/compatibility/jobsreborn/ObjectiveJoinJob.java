@@ -23,7 +23,6 @@ public class ObjectiveJoinJob extends Objective implements Listener {
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public ObjectiveJoinJob(final Instruction instructions) throws InstructionParseException {
         super(instructions);
-        template = ObjectiveData.class;
         if (instructions.size() < 2) {
             throw new InstructionParseException("Not enough arguments");
         }

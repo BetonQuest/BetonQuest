@@ -29,7 +29,6 @@ public class RespawnObjective extends Objective implements Listener {
     public RespawnObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        template = ObjectiveData.class;
         location = instruction.getLocation(instruction.getOptional("location"));
     }
 

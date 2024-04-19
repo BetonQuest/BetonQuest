@@ -22,7 +22,6 @@ public class ObjectiveLevelUpEvent extends Objective implements Listener {
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public ObjectiveLevelUpEvent(final Instruction instructions) throws InstructionParseException {
         super(instructions);
-        template = ObjectiveData.class;
         if (instructions.size() < 2) {
             throw new InstructionParseException("Not enough arguments");
         }

@@ -61,7 +61,6 @@ public class ChestPutObjective extends Objective implements Listener {
         super(instruction);
         final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
         this.log = loggerFactory.create(getClass());
-        template = ObjectiveData.class;
         // extract location
         loc = instruction.getLocation();
         final String location = instruction.current();

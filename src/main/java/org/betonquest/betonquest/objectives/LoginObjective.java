@@ -22,7 +22,6 @@ public class LoginObjective extends Objective implements Listener {
 
     public LoginObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        template = ObjectiveData.class;
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
