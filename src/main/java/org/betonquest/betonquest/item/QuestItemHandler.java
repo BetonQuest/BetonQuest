@@ -265,7 +265,7 @@ public class QuestItemHandler implements Listener {
     }
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    @EventHandler()
+    @EventHandler
     public void onInteractEvent(final PlayerInteractEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE || event.useInteractedBlock() == Event.Result.DENY && event.useItemInHand() == Event.Result.DENY) {
             return;

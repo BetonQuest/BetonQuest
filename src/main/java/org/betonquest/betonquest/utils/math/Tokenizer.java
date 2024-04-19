@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
  * https://github.com/fasseg/exp4j
  */
 @Deprecated
-@SuppressWarnings({"PMD.GodClass"})
+@SuppressWarnings("PMD.GodClass")
 public class Tokenizer {
 
     /**

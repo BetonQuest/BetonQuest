@@ -7,7 +7,7 @@ import org.bukkit.event.HandlerList;
 /**
  * Fired when a tag is added to a profile.
  */
-@SuppressWarnings({"PMD.DataClass"})
+@SuppressWarnings("PMD.DataClass")
 public class PlayerTagAddEvent extends ProfileEvent {
 
     /**

@@ -22,7 +22,7 @@ import java.util.Locale;
 /**
  * Starts an objective for the player.
  */
-@SuppressWarnings({"PMD.AvoidDuplicateLiterals"})
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class ObjectiveEvent extends QuestEvent {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.

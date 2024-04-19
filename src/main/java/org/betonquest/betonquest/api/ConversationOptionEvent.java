@@ -9,7 +9,7 @@ import org.bukkit.event.HandlerList;
 /**
  * Signals that a player has selected an option in a conversation.
  */
-@SuppressWarnings({"PMD.DataClass"})
+@SuppressWarnings("PMD.DataClass")
 public class ConversationOptionEvent extends ProfileEvent {
     /**
      * A list of all handlers for this event.

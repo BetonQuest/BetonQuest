@@ -21,7 +21,7 @@ import org.bukkit.inventory.PlayerInventory;
 /**
  * Player has to craft specified amount of items.
  */
-@SuppressWarnings({"PMD.CommentRequired"})
+@SuppressWarnings("PMD.CommentRequired")
 public class CraftingObjective extends CountingObjective implements Listener {
 
     private final QuestItem item;

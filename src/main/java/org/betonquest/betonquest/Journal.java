@@ -193,7 +193,7 @@ public class Journal {
      *
      * @param lang the language to use while generating text
      */
-    @SuppressWarnings({"PMD.CognitiveComplexity"})
+    @SuppressWarnings("PMD.CognitiveComplexity")
     public void generateTexts(final String lang) {
         // remove previous texts
         texts.clear();
@@ -412,7 +412,7 @@ public class Journal {
      *
      * @return the journal ItemStack
      */
-    @SuppressWarnings({"PMD.CognitiveComplexity"})
+    @SuppressWarnings("PMD.CognitiveComplexity")
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public ItemStack getAsItem() {
         final ItemStack item = new ItemStack(Material.WRITTEN_BOOK);

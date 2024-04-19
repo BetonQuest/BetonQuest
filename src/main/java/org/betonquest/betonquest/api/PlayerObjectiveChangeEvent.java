@@ -8,7 +8,7 @@ import org.bukkit.event.HandlerList;
 /**
  * Fires when a profile's objectives change.
  */
-@SuppressWarnings({"PMD.DataClass"})
+@SuppressWarnings("PMD.DataClass")
 public class PlayerObjectiveChangeEvent extends ProfileEvent {
 
     /**

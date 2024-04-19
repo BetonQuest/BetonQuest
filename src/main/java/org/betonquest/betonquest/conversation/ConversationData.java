@@ -747,7 +747,7 @@ public class ConversationData {
         }
 
         //TODO: Consider removing this undocumented feature.
-        @SuppressWarnings({"PMD.CognitiveComplexity"})
+        @SuppressWarnings("PMD.CognitiveComplexity")
         @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         private void parsePrefix(final String name, final OptionType type, final ConfigurationSection conv, final String defaultLang) throws InstructionParseException {
             if (conv.contains("prefix")) {
@@ -771,7 +771,7 @@ public class ConversationData {
             }
         }
 
-        @SuppressWarnings({"PMD.CognitiveComplexity"})
+        @SuppressWarnings("PMD.CognitiveComplexity")
         @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         private void parseText(final String name, final OptionType type, final ConfigurationSection conv, final String defaultLang) throws InstructionParseException {
             if (conv.contains("text")) {

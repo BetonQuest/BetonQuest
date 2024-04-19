@@ -741,7 +741,7 @@ public class Conversation implements Listener {
             }
         }
 
-        @SuppressWarnings({"PMD.AvoidThrowingRawExceptionTypes"})
+        @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
         private List<ResolvedOption> resolveOptions(final List<String> startingOptions) {
             final List<ResolvedOption> resolvedOptions = new ArrayList<>();
             for (final String startingOption : startingOptions) {
