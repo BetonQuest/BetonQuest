@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.api.profiles;
 
 import org.bukkit.event.Event;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a profile related event.
@@ -19,7 +18,7 @@ public abstract class ProfileEvent extends Event {
      *
      * @param who the profile
      */
-    public ProfileEvent(@NotNull final Profile who) {
+    public ProfileEvent(final Profile who) {
         super();
         this.profile = who;
     }
@@ -30,7 +29,7 @@ public abstract class ProfileEvent extends Event {
      * @param who     the profile
      * @param isAsync whether the event is async
      */
-    public ProfileEvent(@NotNull final Profile who, final boolean isAsync) {
+    public ProfileEvent(final Profile who, final boolean isAsync) {
         super(isAsync);
         this.profile = who;
     }
@@ -38,7 +37,7 @@ public abstract class ProfileEvent extends Event {
     /**
      * @return the profile
      */
-    @NotNull
+
     public final Profile getProfile() {
         return profile;
     }

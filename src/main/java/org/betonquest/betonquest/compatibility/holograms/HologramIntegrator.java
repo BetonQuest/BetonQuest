@@ -11,7 +11,6 @@ import org.betonquest.betonquest.modules.versioning.VersionComparator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -130,7 +129,7 @@ public abstract class HologramIntegrator implements Integrator, Comparable<Holog
     public abstract String parseVariable(QuestPackage pack, String text);
 
     @Override
-    public int compareTo(@NotNull final HologramIntegrator integrator) {
+    public int compareTo(final HologramIntegrator integrator) {
         return Integer.compare(integrator.getPriority(), this.getPriority());
     }
 }

@@ -10,7 +10,6 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.SimpleDateFormat;
@@ -140,7 +139,6 @@ public class DelayObjective extends Objective {
         };
     }
 
-    @NotNull
     private String parseVariableLeft(final Profile profile) {
         final String lang = BetonQuest.getInstance().getPlayerData(profile).getLanguage();
         final String daysWord = Config.getMessage(lang, "days");

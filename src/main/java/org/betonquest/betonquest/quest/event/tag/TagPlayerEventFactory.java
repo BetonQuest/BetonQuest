@@ -15,7 +15,6 @@ import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapte
 import org.betonquest.betonquest.quest.event.SequentialStaticEvent;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +67,6 @@ public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
         };
     }
 
-    @NotNull
     private String[] getTags(final Instruction instruction) throws InstructionParseException {
         final String[] tags;
         tags = instruction.getArray();
@@ -78,19 +76,16 @@ public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
         return tags;
     }
 
-    @NotNull
     private TagEvent createAddTagEvent(final String... tags) {
         final TagChanger tagChanger = new AddTagChanger(tags);
         return new TagEvent(betonQuest::getOfflinePlayerData, tagChanger);
     }
 
-    @NotNull
     private TagEvent createDeleteTagEvent(final String... tags) {
         final TagChanger tagChanger = new DeleteTagChanger(tags);
         return new TagEvent(betonQuest::getOfflinePlayerData, tagChanger);
     }
 
-    @NotNull
     private StaticEvent createStaticDeleteTagEvent(final String... tags) {
         final TagEvent deleteTagEvent = createDeleteTagEvent(tags);
         final List<StaticEvent> staticEvents = new ArrayList<>(tags.length + 1);

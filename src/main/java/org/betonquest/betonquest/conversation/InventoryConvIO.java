@@ -26,7 +26,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -269,7 +268,6 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
     }
 
-    @NotNull
     private ItemStack createNpcHead() {
         final ItemStack npcHead;
         if (SKULL_CACHE.containsKey(npcName)) {

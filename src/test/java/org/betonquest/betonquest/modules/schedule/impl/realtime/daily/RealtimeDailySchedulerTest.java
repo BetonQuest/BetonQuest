@@ -4,7 +4,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.modules.schedule.LastExecutionCache;
 import org.betonquest.betonquest.modules.schedule.ScheduleID;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -16,9 +15,7 @@ import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -39,7 +36,6 @@ class RealtimeDailySchedulerTest {
     @Mock
     private BetonQuestLogger logger;
 
-    @NotNull
     private static RealtimeDailySchedule getSchedule(final CatchupStrategy catchupStrategy) {
         final RealtimeDailySchedule schedule = mock(RealtimeDailySchedule.class);
 

@@ -13,7 +13,6 @@ import org.bukkit.command.PluginIdentifiableCommand;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
@@ -117,7 +116,6 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
         return simpleCommand(sender, label, args);
     }
 
-    @NotNull
     @Override
     public List<String> tabComplete(final CommandSender sender, final String alias, final String[] args) throws IllegalArgumentException {
         final List<String> completions = this.simpleTabComplete(sender, alias, args);

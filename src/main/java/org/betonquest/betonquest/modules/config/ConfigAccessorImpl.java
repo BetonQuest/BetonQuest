@@ -168,7 +168,6 @@ public class ConfigAccessorImpl implements ConfigAccessor {
     }
 
     @Override
-    //@Nullable
     @UnknownNullability
     public File getConfigurationFile() {
         return configurationFile;

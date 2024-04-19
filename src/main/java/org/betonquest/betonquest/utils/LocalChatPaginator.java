@@ -2,7 +2,6 @@ package org.betonquest.betonquest.utils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -27,6 +26,11 @@ public final class LocalChatPaginator {
      */
     public static final int DEFAULT_CHAR_WIDTH = 6;
 
+    /**
+     * Pixel-length of a space character.
+     */
+    public static final int SPACE_WIDTH;
+
     static {
         FONT_SIZES = Stream.of(new Object[][]{
                 {' ', 4}, {'!', 2}, {'"', 5}, {'#', 6}, {'$', 6}, {'%', 6}, {'&', 6}, {'\'', 3},
@@ -42,12 +46,8 @@ public final class LocalChatPaginator {
                 {'p', 6}, {'q', 6}, {'r', 6}, {'s', 6}, {'t', 4}, {'u', 6}, {'v', 6}, {'w', 6},
                 {'x', 6}, {'y', 6}, {'z', 6}, {'{', 5}, {'|', 2}, {'}', 5}, {'~', 7},
         }).collect(Collectors.toMap(data -> (Character) data[0], data -> (Integer) data[1]));
+        SPACE_WIDTH = FONT_SIZES.get(' ');
     }
-
-    /**
-     * Pixel-length of a space character.
-     */
-    public static final int SPACE_WIDTH = FONT_SIZES.get(' ');
 
     private LocalChatPaginator() {
     }
@@ -62,8 +62,8 @@ public final class LocalChatPaginator {
      * @param lineLength expected line length in characters to aim for
      * @return array containing lines
      */
-    @NotNull
-    public static String[] wordWrap(@NotNull final String rawString, final int lineLength) {
+
+    public static String[] wordWrap(final String rawString, final int lineLength) {
         return wordWrap(rawString, lineLength, "");
     }
 
@@ -77,8 +77,8 @@ public final class LocalChatPaginator {
      * @return An array of word-wrapped lines.
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.NcssCount"})
-    @NotNull
-    public static String[] wordWrap(@NotNull final String rawString, final int lineLength, @NotNull final String wrapPrefix) {
+
+    public static String[] wordWrap(final String rawString, final int lineLength, final String wrapPrefix) {
         final int maxWidth = lineLength * DEFAULT_CHAR_WIDTH;
         if (!rawString.contains("\n")) {
             final String strippedRawString = StringUtils.stripEnd(rawString, null);

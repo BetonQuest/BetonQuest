@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -151,7 +150,6 @@ public abstract class Quest {
         return createConfigAccessor(relativePath, root);
     }
 
-    @NotNull
     private ConfigAccessor createConfigAccessor(final String relativePath, final File root) throws InvalidConfigurationException, FileNotFoundException {
         final File newConfig = new File(root, relativePath);
         final File newConfigParent = newConfig.getParentFile();

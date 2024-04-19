@@ -106,7 +106,8 @@ public class VariableObjective extends Objective implements Listener {
      * @param profile the {@link Profile} of the player
      * @return the profile's variables as unmodifiable map; or null if the objective is not active for the profile
      */
-    public @Nullable Map<String, String> getProperties(final Profile profile) {
+    @Nullable
+    public Map<String, String> getProperties(final Profile profile) {
         final VariableData profileData = (VariableData) dataMap.get(profile);
         return profileData == null ? null : Collections.unmodifiableMap(profileData.variables);
     }

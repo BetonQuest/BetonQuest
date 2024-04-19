@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.api.profiles;
 
 import org.bukkit.event.HandlerList;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,16 +41,16 @@ class ProfileEventTest {
     @SuppressWarnings("PMD.CommentRequired")
     private static class ProfileEventMock extends ProfileEvent {
 
-        public ProfileEventMock(@NotNull final Profile who) {
+        public ProfileEventMock(final Profile who) {
             super(who);
         }
 
-        public ProfileEventMock(@NotNull final Profile who, final boolean isAsync) {
+        public ProfileEventMock(final Profile who, final boolean isAsync) {
             super(who, isAsync);
         }
 
         @Override
-        public @NotNull HandlerList getHandlers() {
+        public HandlerList getHandlers() {
             return new HandlerList();
         }
     }

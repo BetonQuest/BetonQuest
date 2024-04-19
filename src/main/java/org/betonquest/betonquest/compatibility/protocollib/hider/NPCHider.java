@@ -71,7 +71,6 @@ public final class NPCHider extends BukkitRunnable implements Listener {
      * @return the currently used NPCHider instance
      */
     @UnknownNullability
-    //@Nullable
     public static NPCHider getInstance() {
         return instance;
     }
@@ -82,10 +81,6 @@ public final class NPCHider extends BukkitRunnable implements Listener {
 
         for (final QuestPackage cfgPackage : Config.getPackages().values()) {
             final ConfigurationSection custom = cfgPackage.getConfig();
-            //noinspection ConstantValue
-            if (custom == null) {
-                continue;
-            }
             final ConfigurationSection section = custom.getConfigurationSection("hide_npcs");
             if (section == null) {
                 continue;

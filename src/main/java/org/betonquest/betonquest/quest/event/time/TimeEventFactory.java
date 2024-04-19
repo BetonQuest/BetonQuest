@@ -19,7 +19,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -91,7 +90,6 @@ public class TimeEventFactory implements EventFactory, StaticEventFactory {
         return new VariableNumber(questPackage, rawTime);
     }
 
-    @NotNull
     private Selector<World> parseWorld(@Nullable final String worldName) {
         if (worldName == null) {
             return Selectors.fromPlayer(Player::getWorld);

@@ -17,11 +17,9 @@ import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.Interceptor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * Provides a packet interceptor that catches all chat packets sent to a player.
@@ -98,7 +96,6 @@ public class PacketInterceptor implements Interceptor, Listener {
         ProtocolLibrary.getProtocolManager().addPacketListener(packetAdapter);
     }
 
-    @NotNull
     private static List<PacketType> getPacketTypes() {
         final List<PacketType> packets = new ArrayList<>();
         packets.add(PacketType.Play.Server.CHAT);

@@ -2,7 +2,6 @@ package org.betonquest.betonquest.api.bukkit.config.custom.handle;
 
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -20,7 +19,7 @@ public interface ConfigurationSectionModificationHandler {
      * @param path    the target path
      * @return the concatenated absolut path
      */
-    static String getAbsolutePath(@NotNull final ConfigurationSection section, final String path) {
+    static String getAbsolutePath(final ConfigurationSection section, final String path) {
         final String currentPath = section.getCurrentPath();
         if (currentPath == null || currentPath.isEmpty()) {
             return path;
@@ -39,7 +38,7 @@ public interface ConfigurationSectionModificationHandler {
      * @param path    The path of the value
      * @param value   The value to set
      */
-    void set(@NotNull ConfigurationSection section, @NotNull String path, @Nullable Object value);
+    void set(ConfigurationSection section, String path, @Nullable Object value);
 
     /**
      * Handles the {@link ConfigurationSection#addDefault(String, Object)} method.
@@ -48,7 +47,7 @@ public interface ConfigurationSectionModificationHandler {
      * @param path    The path of the value
      * @param value   The value to add
      */
-    void addDefault(@NotNull ConfigurationSection section, @NotNull String path, @Nullable Object value);
+    void addDefault(ConfigurationSection section, String path, @Nullable Object value);
 
     /**
      * Handles the {@link ConfigurationSection#createSection(String)} method.
@@ -57,8 +56,8 @@ public interface ConfigurationSectionModificationHandler {
      * @param path    The path to the section
      * @return The created section
      */
-    @NotNull
-    ConfigurationSection createSection(@NotNull ConfigurationSection section, @NotNull String path);
+
+    ConfigurationSection createSection(ConfigurationSection section, String path);
 
     /**
      * Handles the {@link ConfigurationSection#set(String, Object)} method.
@@ -68,8 +67,8 @@ public interface ConfigurationSectionModificationHandler {
      * @param map     The values to set
      * @return The created section
      */
-    @NotNull
-    ConfigurationSection createSection(@NotNull ConfigurationSection section, @NotNull String path, @NotNull Map<?, ?> map);
+
+    ConfigurationSection createSection(ConfigurationSection section, String path, Map<?, ?> map);
 
     /**
      * Handles the {@link ConfigurationSection#setComments(String, List)} method.
@@ -78,7 +77,7 @@ public interface ConfigurationSectionModificationHandler {
      * @param path     The path to the section
      * @param comments The comments to set
      */
-    void setComments(@NotNull ConfigurationSection section, @NotNull String path, @Nullable List<String> comments);
+    void setComments(ConfigurationSection section, String path, @Nullable List<String> comments);
 
     /**
      * Handles the {@link ConfigurationSection#setInlineComments(String, List)} method.
@@ -87,5 +86,5 @@ public interface ConfigurationSectionModificationHandler {
      * @param path     The path to the section
      * @param comments The comments to set
      */
-    void setInlineComments(@NotNull ConfigurationSection section, @NotNull String path, @Nullable List<String> comments);
+    void setInlineComments(ConfigurationSection section, String path, @Nullable List<String> comments);
 }

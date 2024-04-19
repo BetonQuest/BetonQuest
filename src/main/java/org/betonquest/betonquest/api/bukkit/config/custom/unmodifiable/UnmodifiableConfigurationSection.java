@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.bukkit.config.custom.handle.ConfigurationSe
 import org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfigurationSection;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -25,34 +24,32 @@ public class UnmodifiableConfigurationSection extends HandleModificationConfigur
     public UnmodifiableConfigurationSection(final ConfigurationSection original) {
         super(original, new ConfigurationSectionModificationHandler() {
             @Override
-            public void addDefault(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final Object value) {
+            public void addDefault(final ConfigurationSection section, final String path, @Nullable final Object value) {
                 throw new UnsupportedOperationException(UnmodifiableConfiguration.UNMODIFIABLE_MESSAGE);
             }
 
             @Override
-            public void set(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final Object value) {
-                throw new UnsupportedOperationException(UnmodifiableConfiguration.UNMODIFIABLE_MESSAGE);
-            }
-
-            @NotNull
-            @Override
-            public ConfigurationSection createSection(@NotNull final ConfigurationSection section, @NotNull final String path) {
-                throw new UnsupportedOperationException(UnmodifiableConfiguration.UNMODIFIABLE_MESSAGE);
-            }
-
-            @NotNull
-            @Override
-            public ConfigurationSection createSection(@NotNull final ConfigurationSection section, @NotNull final String path, @NotNull final Map<?, ?> map) {
+            public void set(final ConfigurationSection section, final String path, @Nullable final Object value) {
                 throw new UnsupportedOperationException(UnmodifiableConfiguration.UNMODIFIABLE_MESSAGE);
             }
 
             @Override
-            public void setComments(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final List<String> comments) {
+            public ConfigurationSection createSection(final ConfigurationSection section, final String path) {
                 throw new UnsupportedOperationException(UnmodifiableConfiguration.UNMODIFIABLE_MESSAGE);
             }
 
             @Override
-            public void setInlineComments(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final List<String> comments) {
+            public ConfigurationSection createSection(final ConfigurationSection section, final String path, final Map<?, ?> map) {
+                throw new UnsupportedOperationException(UnmodifiableConfiguration.UNMODIFIABLE_MESSAGE);
+            }
+
+            @Override
+            public void setComments(final ConfigurationSection section, final String path, @Nullable final List<String> comments) {
+                throw new UnsupportedOperationException(UnmodifiableConfiguration.UNMODIFIABLE_MESSAGE);
+            }
+
+            @Override
+            public void setInlineComments(final ConfigurationSection section, final String path, @Nullable final List<String> comments) {
                 throw new UnsupportedOperationException(UnmodifiableConfiguration.UNMODIFIABLE_MESSAGE);
             }
         });

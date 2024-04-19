@@ -34,7 +34,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 
@@ -587,13 +586,11 @@ public class Conversation implements Listener {
     /**
      * @return the interceptor of the conversation
      */
-    //@Nullable
     @UnknownNullability
     public Interceptor getInterceptor() {
         return interceptor;
     }
 
-    @NotNull
     private List<ResolvedOption> resolvePointers(final ResolvedOption option) throws ObjectNotFoundException, InstructionParseException {
         final ConversationData nextConvData = option.conversationData();
         final List<String> rawPointers = nextConvData.getPointers(onlineProfile, option);
@@ -621,7 +618,7 @@ public class Conversation implements Listener {
          *
          * @param startingOption the name of the option to start at
          */
-        public Starter(@NotNull final String startingOption) {
+        public Starter(final String startingOption) {
             super();
             startingOptions.add(startingOption);
         }
@@ -744,7 +741,6 @@ public class Conversation implements Listener {
             }
         }
 
-        @NotNull
         @SuppressWarnings({"PMD.AvoidThrowingRawExceptionTypes"})
         private List<ResolvedOption> resolveOptions(final List<String> startingOptions) {
             final List<ResolvedOption> resolvedOptions = new ArrayList<>();

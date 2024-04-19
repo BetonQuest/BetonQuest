@@ -2,7 +2,6 @@ package org.betonquest.betonquest.modules.logger;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serial;
@@ -36,7 +35,7 @@ public class BetonQuestLogRecord extends LogRecord {
      * @param message raw non-localized logging message (may be null)
      * @param plugin  plugin that logged this LogRecord
      */
-    public BetonQuestLogRecord(final Level level, final String message, @NotNull final Plugin plugin) {
+    public BetonQuestLogRecord(final Level level, final String message, final Plugin plugin) {
         this(level, message, plugin, null);
     }
 
@@ -48,7 +47,7 @@ public class BetonQuestLogRecord extends LogRecord {
      * @param plugin  plugin that logged this LogRecord
      * @param pack    quest package this LogRecord is about; or null if it is not about any specific package
      */
-    public BetonQuestLogRecord(final Level level, final String message, @NotNull final Plugin plugin, @Nullable final QuestPackage pack) {
+    public BetonQuestLogRecord(final Level level, final String message, final Plugin plugin, @Nullable final QuestPackage pack) {
         this(level, message, plugin.getName(), pack == null ? null : pack.getQuestPath());
     }
 
@@ -61,7 +60,7 @@ public class BetonQuestLogRecord extends LogRecord {
      * @param packageName fully qualified name of the quest package this LogRecord is about;
      *                    or null if it is not about any specific package
      */
-    public BetonQuestLogRecord(final Level level, final String message, @NotNull final String pluginName, @Nullable final String packageName) {
+    public BetonQuestLogRecord(final Level level, final String message, final String pluginName, @Nullable final String packageName) {
         super(level, message);
         this.plugin = pluginName;
         this.pack = packageName;
@@ -96,8 +95,7 @@ public class BetonQuestLogRecord extends LogRecord {
      *
      * @return The plugin.
      */
-    public @NotNull
-    String getPlugin() {
+    public String getPlugin() {
         return plugin;
     }
 }

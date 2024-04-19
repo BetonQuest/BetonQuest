@@ -2,7 +2,6 @@ package org.betonquest.betonquest.modules.logger.handler.chat;
 
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.Set;
@@ -35,8 +34,8 @@ public class PlayerPackageReceiverSelector implements RecordReceiverSelector {
     /**
      * Create a selector for the given set of players, filtering by the given minimum level and the package filter.
      *
-     * @param receivers players to select on match
-     * @param minimumLevel minimum level required for a match
+     * @param receivers     players to select on match
+     * @param minimumLevel  minimum level required for a match
      * @param packageFilter package filter to match
      */
     public PlayerPackageReceiverSelector(final Set<UUID> receivers, final Level minimumLevel, final Predicate<String> packageFilter) {
@@ -64,15 +63,14 @@ public class PlayerPackageReceiverSelector implements RecordReceiverSelector {
      * </ol>
      * A)
      *
-     * @param receivers players to select on match
-     * @param minimumLevel minimum level required for a match
+     * @param receivers      players to select on match
+     * @param minimumLevel   minimum level required for a match
      * @param packagePattern package pattern to match
      */
     public PlayerPackageReceiverSelector(final Set<UUID> receivers, final Level minimumLevel, final String packagePattern) {
         this(receivers, minimumLevel, createPackageFilter(packagePattern));
     }
 
-    @NotNull
     private static Predicate<String> createPackageFilter(final String packagePattern) {
         if ("*".equals(packagePattern)) {
             return pack -> true;

@@ -9,7 +9,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -55,7 +54,7 @@ public final class ChatFormatter extends Formatter {
      * @param plugin        the base {@link Plugin} for this formatter
      * @param shortName     the short name of the plugin or null
      */
-    public ChatFormatter(@NotNull final PluginDisplayMethod displayMethod, @Nullable final Plugin plugin, @Nullable final String shortName) {
+    public ChatFormatter(final PluginDisplayMethod displayMethod, @Nullable final Plugin plugin, @Nullable final String shortName) {
         super();
         if (displayMethod != PluginDisplayMethod.NONE && plugin == null) {
             throw new IllegalArgumentException("Plugin must be non null if displayMethod is not NONE");
@@ -76,7 +75,7 @@ public final class ChatFormatter extends Formatter {
      * @param record The record to format
      * @return The formatted component
      */
-    @NotNull
+
     public TextComponent formatTextComponent(final LogRecord record) {
         final String color = formatColor(record.getLevel());
         final Optional<BetonQuestLogRecord> betonRecord = BetonQuestLogRecord.safeCast(record);

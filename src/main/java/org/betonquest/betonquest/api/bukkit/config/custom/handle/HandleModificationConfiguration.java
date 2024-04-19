@@ -3,7 +3,6 @@ package org.betonquest.betonquest.api.bukkit.config.custom.handle;
 import org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDecorator;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationOptions;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -36,34 +35,33 @@ public class HandleModificationConfiguration extends HandleModificationConfigura
     }
 
     @Override
-    public void addDefault(@NotNull final String path, @Nullable final Object value) {
+    public void addDefault(final String path, @Nullable final Object value) {
         handler.addDefault(original, path, value);
     }
 
     @Override
-    public void addDefaults(@NotNull final Map<String, Object> defaults) {
+    public void addDefaults(final Map<String, Object> defaults) {
         handler.addDefaults(original, defaults);
     }
 
     @Override
-    public void addDefaults(@NotNull final Configuration defaults) {
+    public void addDefaults(final Configuration defaults) {
         handler.addDefaults(original, defaults);
     }
 
     @Override
-    public @Nullable
-    Configuration getDefaults() {
+    @Nullable
+    public Configuration getDefaults() {
         return (Configuration) wrapModifiable(original.getDefaults());
     }
 
     @Override
-    public void setDefaults(@NotNull final Configuration defaults) {
+    public void setDefaults(final Configuration defaults) {
         handler.setDefaults(original, defaults);
     }
 
     @Override
-    public @NotNull
-    ConfigurationOptions options() {
+    public ConfigurationOptions options() {
         return new HandleConfigurationOptions(this, original.options());
     }
 }

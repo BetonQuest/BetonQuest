@@ -2,7 +2,6 @@ package org.betonquest.betonquest.util.scheduler;
 
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -134,7 +133,6 @@ public class ScheduledTask implements BukkitTask {
         return taskId;
     }
 
-    @NotNull
     @Override
     public Plugin getOwner() {
         return plugin;

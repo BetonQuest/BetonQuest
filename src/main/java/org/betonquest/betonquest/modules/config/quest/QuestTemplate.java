@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -110,7 +109,6 @@ public class QuestTemplate extends Quest {
         templateConfig = new MultiFallbackConfiguration(config, mergedTemplates);
     }
 
-    @NotNull
     private List<QuestTemplate> getOrderedQuestTemplates(final Map<String, QuestTemplate> questTemplates, final List<String> templatePaths) throws InvalidConfigurationException {
         Collections.reverse(templatePaths);
         final List<QuestTemplate> templateConfigs = new ArrayList<>();

@@ -61,7 +61,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
@@ -136,7 +135,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     @SuppressWarnings("PMD.NcssCount")
     @Override
-    public boolean onCommand(@NotNull final CommandSender sender, final Command cmd, @NotNull final String alias, @NotNull final String... args) {
+    public boolean onCommand(final CommandSender sender, final Command cmd, final String alias, final String... args) {
 
         if ("betonquest".equalsIgnoreCase(cmd.getName())) {
             log.debug("Executing /betonquest command for user " + sender.getName()

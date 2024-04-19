@@ -281,7 +281,6 @@ import org.bukkit.event.Event;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 
@@ -729,7 +728,6 @@ public class BetonQuest extends JavaPlugin {
         return rpgMenu;
     }
 
-    @NotNull
     public ConfigurationFile getPluginConfig() {
         return config;
     }
@@ -1490,7 +1488,6 @@ public class BetonQuest extends JavaPlugin {
      * @param profile the {@link Profile} of the player
      * @return PlayerData object for the player
      */
-    //@Nullable
     @UnknownNullability
     public PlayerData getPlayerData(final Profile profile) {
         PlayerData playerData = playerDataMap.get(profile);
@@ -1684,9 +1681,7 @@ public class BetonQuest extends JavaPlugin {
      * @return Objective object or null if it does not exist
      */
     @UnknownNullability
-    //@Nullable
     public Objective getObjective(final ObjectiveID objectiveID) {
-        // TODO Should all objectives exist? since it is an objective id with existence check
         return OBJECTIVES.get(objectiveID);
     }
 

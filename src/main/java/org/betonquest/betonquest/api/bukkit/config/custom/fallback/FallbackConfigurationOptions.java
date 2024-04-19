@@ -3,7 +3,6 @@ package org.betonquest.betonquest.api.bukkit.config.custom.fallback;
 import org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfiguration;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationOptions;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -29,7 +28,7 @@ public class FallbackConfigurationOptions extends ConfigurationOptions {
      * @param original      The original {@link Configuration}, to apply the options to
      * @param fallback      The fallback {@link Configuration}, to apply the options to
      */
-    protected FallbackConfigurationOptions(@NotNull final Configuration configuration, @NotNull final ConfigurationOptions original, @Nullable final ConfigurationOptions fallback) {
+    protected FallbackConfigurationOptions(final Configuration configuration, final ConfigurationOptions original, @Nullable final ConfigurationOptions fallback) {
         super(configuration);
         this.original = original;
         this.fallback = fallback;
@@ -41,7 +40,7 @@ public class FallbackConfigurationOptions extends ConfigurationOptions {
     }
 
     @Override
-    @NotNull
+
     public ConfigurationOptions pathSeparator(final char value) {
         original.pathSeparator(value);
         if (fallback != null) {
@@ -56,7 +55,7 @@ public class FallbackConfigurationOptions extends ConfigurationOptions {
     }
 
     @Override
-    @NotNull
+
     public ConfigurationOptions copyDefaults(final boolean value) {
         original.copyDefaults(value);
         if (fallback != null) {

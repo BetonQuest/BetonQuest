@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.Utils;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
@@ -52,7 +51,6 @@ public class TagGlobalEventFactory implements EventFactory, StaticEventFactory {
         };
     }
 
-    @NotNull
     private String[] getTags(final Instruction instruction) throws InstructionParseException {
         final String[] tags;
         tags = instruction.getArray();
@@ -62,25 +60,21 @@ public class TagGlobalEventFactory implements EventFactory, StaticEventFactory {
         return tags;
     }
 
-    @NotNull
     private StaticEvent createStaticAddTagEvent(final String... tags) {
         final TagChanger tagChanger = new AddTagChanger(tags);
         return new StaticTagEvent(betonQuest.getGlobalData(), tagChanger);
     }
 
-    @NotNull
     private StaticEvent createStaticDeleteTagEvent(final String... tags) {
         final TagChanger tagChanger = new DeleteTagChanger(tags);
         return new StaticTagEvent(betonQuest.getGlobalData(), tagChanger);
     }
 
-    @NotNull
     private Event createAddTagEvent(final String... tags) {
         final TagChanger tagChanger = new AddTagChanger(tags);
         return new TagEvent(profile -> betonQuest.getGlobalData(), tagChanger);
     }
 
-    @NotNull
     private Event createDeleteTagEvent(final String... tags) {
         final TagChanger tagChanger = new DeleteTagChanger(tags);
         return new TagEvent(profile -> betonQuest.getGlobalData(), tagChanger);

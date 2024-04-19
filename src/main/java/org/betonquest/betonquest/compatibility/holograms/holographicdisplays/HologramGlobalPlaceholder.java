@@ -27,8 +27,8 @@ public class HologramGlobalPlaceholder implements GlobalPlaceholder {
     }
 
     @Override
-    public @Nullable
-    String getReplacement(@Nullable final String arguments) {
+    @Nullable
+    public String getReplacement(@Nullable final String arguments) {
         if (arguments == null) {
             return "";
         }

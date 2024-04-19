@@ -4,7 +4,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -19,7 +18,7 @@ public class DefaultBetonQuestLoggerFactory implements BetonQuestLoggerFactory {
 
     @Override
     @SuppressWarnings("PMD.UseProperClassLoader")
-    public BetonQuestLogger create(@NotNull final Class<?> clazz, @Nullable final String topic) {
+    public BetonQuestLogger create(final Class<?> clazz, @Nullable final String topic) {
         if (Plugin.class.isAssignableFrom(clazz)) {
             throw new IllegalArgumentException("It is not allowed to use this create method from the class '"
                     + clazz.getName() + "' which directly or indirectly extends 'org.bukkit.plugin.Plugin'!");
@@ -35,7 +34,7 @@ public class DefaultBetonQuestLoggerFactory implements BetonQuestLoggerFactory {
     }
 
     @Override
-    public BetonQuestLogger create(@NotNull final Plugin plugin, @Nullable final String topic) {
+    public BetonQuestLogger create(final Plugin plugin, @Nullable final String topic) {
         return new DefaultBetonQuestLogger(plugin, plugin.getLogger(), plugin.getClass(), topic);
     }
 }

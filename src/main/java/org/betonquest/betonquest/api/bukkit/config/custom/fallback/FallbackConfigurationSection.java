@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.checkerframework.framework.qual.DefaultQualifier;
 import org.checkerframework.framework.qual.TypeUseLocation;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 
@@ -51,7 +50,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
      * @param original The original {@link ConfigurationSection} that should be used.
      * @param fallback The fallback {@link ConfigurationSection} that should be used.
      */
-    public FallbackConfigurationSection(@NotNull final ConfigurationSection original, @Nullable final ConfigurationSection fallback) {
+    public FallbackConfigurationSection(final ConfigurationSection original, @Nullable final ConfigurationSection fallback) {
         if (!(this instanceof FallbackConfiguration)) {
             throw new IllegalStateException("Cannot construct a root FallbackConfigurationSection when not a Configuration");
         }
@@ -60,7 +59,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         this.manager = new ConfigManager(null, original, fallback);
     }
 
-    private FallbackConfigurationSection(@NotNull final FallbackConfigurationSection parent, @NotNull final String sectionName, @Nullable final ConfigurationSection original, @Nullable final ConfigurationSection fallback) {
+    private FallbackConfigurationSection(final FallbackConfigurationSection parent, final String sectionName, @Nullable final ConfigurationSection original, @Nullable final ConfigurationSection fallback) {
         this.parent = parent;
         this.root = parent.root;
         this.manager = new ConfigManager(sectionName, original, fallback);
@@ -93,8 +92,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     }
 
     @Override
-    public @NotNull
-    Set<String> getKeys(final boolean deep) {
+    public Set<String> getKeys(final boolean deep) {
         final ConfigurationSection original = manager.getOriginal();
         final ConfigurationSection fallback = manager.getFallback();
         final Set<String> keys = new HashSet<>();
@@ -108,8 +106,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     }
 
     @Override
-    public @NotNull
-    Map<String, Object> getValues(final boolean deep) {
+    public Map<String, Object> getValues(final boolean deep) {
         final ConfigurationSection original = manager.getOriginal();
         final ConfigurationSection fallback = manager.getFallback();
         final Map<String, Object> values = new LinkedHashMap<>();
@@ -144,21 +141,21 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     }
 
     @Override
-    public boolean contains(@NotNull final String path) {
+    public boolean contains(final String path) {
         final ConfigurationSection original = manager.getOriginal();
         final ConfigurationSection fallback = manager.getFallback();
         return original != null && original.contains(path) || fallback != null && fallback.contains(path);
     }
 
     @Override
-    public boolean contains(@NotNull final String path, final boolean ignoreDefault) {
+    public boolean contains(final String path, final boolean ignoreDefault) {
         final ConfigurationSection original = manager.getOriginal();
         final ConfigurationSection fallback = manager.getFallback();
         return original != null && original.contains(path, ignoreDefault) || fallback != null && fallback.contains(path, ignoreDefault);
     }
 
     @Override
-    public boolean isSet(@NotNull final String path) {
+    public boolean isSet(final String path) {
         final ConfigurationSection original = manager.getOriginal();
         final ConfigurationSection fallback = manager.getFallback();
         return original != null && original.isSet(path) || fallback != null && fallback.isSet(path);
@@ -166,8 +163,8 @@ public class FallbackConfigurationSection implements ConfigurationSection {
 
     @Override
     @SuppressWarnings("PMD.CompareObjectsWithEquals")
-    public @Nullable
-    String getCurrentPath() {
+    @Nullable
+    public String getCurrentPath() {
         if (this == root) {
             return "";
         }
@@ -178,28 +175,27 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     }
 
     @Override
-    public @NotNull
-    String getName() {
+    public String getName() {
         final ConfigurationSection original = manager.getOriginal();
         final ConfigurationSection fallback = manager.getFallback();
         return original == null ? fallback.getName() : original.getName();
     }
 
     @Override
-    public @Nullable
-    Configuration getRoot() {
+    @Nullable
+    public Configuration getRoot() {
         return root;
     }
 
     @Override
-    public @Nullable
-    ConfigurationSection getParent() {
+    @Nullable
+    public ConfigurationSection getParent() {
         return parent;
     }
 
     @Override
-    public @Nullable
-    Object get(@NotNull final String path) {
+    @Nullable
+    public Object get(final String path) {
         if (isConfigurationSection(path)) {
             return getFallbackConfigurationSection(path);
         }
@@ -207,8 +203,8 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     }
 
     @Override
-    public @Nullable
-    Object get(@NotNull final String path, @Nullable final Object def) {
+    @Nullable
+    public Object get(final String path, @Nullable final Object def) {
         if (isConfigurationSection(path)) {
             return getFallbackConfigurationSection(path);
         }
@@ -216,13 +212,12 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     }
 
     @Override
-    public void set(@NotNull final String path, @Nullable final Object value) {
+    public void set(final String path, @Nullable final Object value) {
         manager.getOriginal().set(path, value);
     }
 
     @Override
-    public @NotNull
-    ConfigurationSection createSection(@NotNull final String path) {
+    public ConfigurationSection createSection(final String path) {
         final ConfigurationSection original = manager.getOriginal();
         if (original != null) {
             original.createSection(path);
@@ -235,8 +230,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     }
 
     @Override
-    public @NotNull
-    ConfigurationSection createSection(@NotNull final String path, @NotNull final Map<?, ?> map) {
+    public ConfigurationSection createSection(final String path, final Map<?, ?> map) {
         final ConfigurationSection original = manager.getOriginal();
         if (original != null) {
             original.createSection(path, map);
@@ -249,161 +243,151 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     }
 
     @Override
-    public @Nullable
-    String getString(@NotNull final String path) {
+    @Nullable
+    public String getString(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getString);
     }
 
     @Override
-    public @Nullable
-    String getString(@NotNull final String path, @Nullable final String def) {
+    @Nullable
+    public String getString(final String path, @Nullable final String def) {
         return getOriginalOrFallback(path, ConfigurationSection::getString, def);
     }
 
     @Override
-    public boolean isString(@NotNull final String path) {
+    public boolean isString(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::isString);
     }
 
     @Override
-    public int getInt(@NotNull final String path) {
+    public int getInt(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getInt);
     }
 
     @Override
-    public int getInt(@NotNull final String path, final int def) {
+    public int getInt(final String path, final int def) {
         return getOriginalOrFallback(path, ConfigurationSection::getInt, def);
     }
 
     @Override
-    public boolean isInt(@NotNull final String path) {
+    public boolean isInt(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::isInt);
     }
 
     @Override
-    public boolean getBoolean(@NotNull final String path) {
+    public boolean getBoolean(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getBoolean);
     }
 
     @Override
-    public boolean getBoolean(@NotNull final String path, final boolean def) {
+    public boolean getBoolean(final String path, final boolean def) {
         return getOriginalOrFallback(path, ConfigurationSection::getBoolean, def);
     }
 
     @Override
-    public boolean isBoolean(@NotNull final String path) {
+    public boolean isBoolean(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::isBoolean);
     }
 
     @Override
-    public double getDouble(@NotNull final String path) {
+    public double getDouble(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getDouble);
     }
 
     @Override
-    public double getDouble(@NotNull final String path, final double def) {
+    public double getDouble(final String path, final double def) {
         return getOriginalOrFallback(path, ConfigurationSection::getDouble, def);
     }
 
     @Override
-    public boolean isDouble(@NotNull final String path) {
+    public boolean isDouble(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::isDouble);
     }
 
     @Override
-    public long getLong(@NotNull final String path) {
+    public long getLong(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getLong);
     }
 
     @Override
-    public long getLong(@NotNull final String path, final long def) {
+    public long getLong(final String path, final long def) {
         return getOriginalOrFallback(path, ConfigurationSection::getLong, def);
     }
 
     @Override
-    public boolean isLong(@NotNull final String path) {
+    public boolean isLong(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::isLong);
     }
 
     @Override
-    public @Nullable
-    List<?> getList(@NotNull final String path) {
+    @Nullable
+    public List<?> getList(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getList);
     }
 
     @Override
-    public @Nullable
-    List<?> getList(@NotNull final String path, @Nullable final List<?> def) {
+    @Nullable
+    public List<?> getList(final String path, @Nullable final List<?> def) {
         return getOriginalOrFallback(path, ConfigurationSection::getList, def);
     }
 
     @Override
-    public boolean isList(@NotNull final String path) {
+    public boolean isList(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::isList);
     }
 
     @Override
-    public @NotNull
-    List<String> getStringList(@NotNull final String path) {
+    public List<String> getStringList(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getStringList);
     }
 
     @Override
-    public @NotNull
-    List<Integer> getIntegerList(@NotNull final String path) {
+    public List<Integer> getIntegerList(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getIntegerList);
     }
 
     @Override
-    public @NotNull
-    List<Boolean> getBooleanList(@NotNull final String path) {
+    public List<Boolean> getBooleanList(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getBooleanList);
     }
 
     @Override
-    public @NotNull
-    List<Double> getDoubleList(@NotNull final String path) {
+    public List<Double> getDoubleList(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getDoubleList);
     }
 
     @Override
-    public @NotNull
-    List<Float> getFloatList(@NotNull final String path) {
+    public List<Float> getFloatList(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getFloatList);
     }
 
     @Override
-    public @NotNull
-    List<Long> getLongList(@NotNull final String path) {
+    public List<Long> getLongList(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getLongList);
     }
 
     @Override
-    public @NotNull
-    List<Byte> getByteList(@NotNull final String path) {
+    public List<Byte> getByteList(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getByteList);
     }
 
     @Override
-    public @NotNull
-    List<Character> getCharacterList(@NotNull final String path) {
+    public List<Character> getCharacterList(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getCharacterList);
     }
 
     @Override
-    public @NotNull
-    List<Short> getShortList(@NotNull final String path) {
+    public List<Short> getShortList(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getShortList);
     }
 
     @Override
-    public @NotNull
-    List<Map<?, ?>> getMapList(@NotNull final String path) {
+    public List<Map<?, ?>> getMapList(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getMapList);
     }
 
     @Override
-    public <T> T getObject(@NotNull final String path, @NotNull final Class<T> clazz) {
+    public <T> T getObject(final String path, final Class<T> clazz) {
         if (isConfigurationSection(path)) {
             final ConfigurationSection config = getFallbackConfigurationSection(path);
             return clazz.isInstance(config) ? clazz.cast(config) : null;
@@ -412,7 +396,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     }
 
     @Override
-    public <T> T getObject(@NotNull final String path, @NotNull final Class<T> clazz, @Nullable final T def) {
+    public <T> T getObject(final String path, final Class<T> clazz, @Nullable final T def) {
         if (isConfigurationSection(path)) {
             final ConfigurationSection config = getFallbackConfigurationSection(path);
             return clazz.isInstance(config) ? clazz.cast(config) : def;
@@ -421,114 +405,114 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     }
 
     @Override
-    public <T extends ConfigurationSerializable> T getSerializable(@NotNull final String path, @NotNull final Class<T> clazz) {
+    public <T extends ConfigurationSerializable> T getSerializable(final String path, final Class<T> clazz) {
         return getOriginalOrFallback(path, (section, sectionPath) -> section.getSerializable(sectionPath, clazz));
     }
 
     @Override
-    public <T extends ConfigurationSerializable> T getSerializable(@NotNull final String path, @NotNull final Class<T> clazz, @Nullable final T def) {
+    public <T extends ConfigurationSerializable> T getSerializable(final String path, final Class<T> clazz, @Nullable final T def) {
         return getOriginalOrFallback(path, (section, sectionPath) -> section.getSerializable(sectionPath, clazz), def);
     }
 
     @Override
-    public @Nullable
-    Vector getVector(@NotNull final String path) {
+    @Nullable
+    public Vector getVector(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getVector);
     }
 
     @Override
-    public @Nullable
-    Vector getVector(@NotNull final String path, @Nullable final Vector def) {
+    @Nullable
+    public Vector getVector(final String path, @Nullable final Vector def) {
         return getOriginalOrFallback(path, ConfigurationSection::getVector, def);
     }
 
     @Override
-    public boolean isVector(@NotNull final String path) {
+    public boolean isVector(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::isVector);
     }
 
     @Override
-    public @Nullable
-    OfflinePlayer getOfflinePlayer(@NotNull final String path) {
+    @Nullable
+    public OfflinePlayer getOfflinePlayer(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getOfflinePlayer);
     }
 
     @Override
-    public @Nullable
-    OfflinePlayer getOfflinePlayer(@NotNull final String path, @Nullable final OfflinePlayer def) {
+    @Nullable
+    public OfflinePlayer getOfflinePlayer(final String path, @Nullable final OfflinePlayer def) {
         return getOriginalOrFallback(path, ConfigurationSection::getOfflinePlayer, def);
     }
 
     @Override
-    public boolean isOfflinePlayer(@NotNull final String path) {
+    public boolean isOfflinePlayer(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::isOfflinePlayer);
     }
 
     @Override
-    public @Nullable
-    ItemStack getItemStack(@NotNull final String path) {
+    @Nullable
+    public ItemStack getItemStack(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getItemStack);
     }
 
     @Override
-    public @Nullable
-    ItemStack getItemStack(@NotNull final String path, @Nullable final ItemStack def) {
+    @Nullable
+    public ItemStack getItemStack(final String path, @Nullable final ItemStack def) {
         return getOriginalOrFallback(path, ConfigurationSection::getItemStack, def);
     }
 
     @Override
-    public boolean isItemStack(@NotNull final String path) {
+    public boolean isItemStack(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::isItemStack);
     }
 
     @Override
-    public @Nullable
-    Color getColor(@NotNull final String path) {
+    @Nullable
+    public Color getColor(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getColor);
     }
 
     @Override
-    public @Nullable
-    Color getColor(@NotNull final String path, @Nullable final Color def) {
+    @Nullable
+    public Color getColor(final String path, @Nullable final Color def) {
         return getOriginalOrFallback(path, ConfigurationSection::getColor, def);
     }
 
     @Override
-    public boolean isColor(@NotNull final String path) {
+    public boolean isColor(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::isColor);
     }
 
     @Override
-    public @Nullable
-    Location getLocation(@NotNull final String path) {
+    @Nullable
+    public Location getLocation(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getLocation);
     }
 
     @Override
-    public @Nullable
-    Location getLocation(@NotNull final String path, @Nullable final Location def) {
+    @Nullable
+    public Location getLocation(final String path, @Nullable final Location def) {
         return getOriginalOrFallback(path, ConfigurationSection::getLocation, def);
     }
 
     @Override
-    public boolean isLocation(@NotNull final String path) {
+    public boolean isLocation(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::isLocation);
     }
 
     @Override
-    public @Nullable
-    ConfigurationSection getConfigurationSection(@NotNull final String path) {
+    @Nullable
+    public ConfigurationSection getConfigurationSection(final String path) {
         return getFallbackConfigurationSection(path);
     }
 
     @Override
-    public boolean isConfigurationSection(@NotNull final String path) {
+    public boolean isConfigurationSection(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::isConfigurationSection);
     }
 
     @Override
-    public @Nullable
-    ConfigurationSection getDefaultSection() {
+    @Nullable
+    public ConfigurationSection getDefaultSection() {
         final Configuration defaults = root.getDefaults();
         if (defaults == null) {
             return null;
@@ -544,29 +528,27 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     }
 
     @Override
-    public void addDefault(@NotNull final String path, @Nullable final Object value) {
+    public void addDefault(final String path, @Nullable final Object value) {
         manager.getOriginal().addDefault(path, value);
     }
 
     @Override
-    public @NotNull
-    List<String> getComments(@NotNull final String path) {
+    public List<String> getComments(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getComments);
     }
 
     @Override
-    public @NotNull
-    List<String> getInlineComments(@NotNull final String path) {
+    public List<String> getInlineComments(final String path) {
         return getOriginalOrFallback(path, ConfigurationSection::getInlineComments);
     }
 
     @Override
-    public void setComments(@NotNull final String path, @Nullable final List<String> comments) {
+    public void setComments(final String path, @Nullable final List<String> comments) {
         manager.getOriginal().setComments(path, comments);
     }
 
     @Override
-    public void setInlineComments(@NotNull final String path, @Nullable final List<String> comments) {
+    public void setInlineComments(final String path, @Nullable final List<String> comments) {
         manager.getOriginal().setInlineComments(path, comments);
     }
 
@@ -718,7 +700,6 @@ public class FallbackConfigurationSection implements ConfigurationSection {
          *
          * @return The original {@link ConfigurationSection}
          */
-        //@Nullable
         @UnknownNullability
         protected ConfigurationSection getOriginal() {
             if (sectionName != null && !checkIsOrphaned()) {

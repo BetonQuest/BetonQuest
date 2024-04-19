@@ -8,7 +8,6 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -206,15 +205,14 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
          * @param args The map of arguments
          * @return The created {@link TestObject}
          */
-        @NotNull
+
         @SuppressWarnings("unused")
-        public static TestObject deserialize(@NotNull final Map<String, Object> args) {
+        public static TestObject deserialize(final Map<String, Object> args) {
             return new TestObject((String) args.get("name"), (int) args.get("amount"), (int) args.get("sum"));
         }
 
         @Override
-        public @NotNull
-        Map<String, Object> serialize() {
+        public Map<String, Object> serialize() {
             final Map<String, Object> map = new LinkedHashMap<>();
             map.put("name", name);
             map.put("amount", amount);

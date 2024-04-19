@@ -12,7 +12,6 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -137,7 +136,6 @@ public class EffectLibParticleManager {
         return locations;
     }
 
-    @NotNull
     private List<ConditionID> loadConditions(final QuestPackage pack, final String key, final ConfigurationSection settings) {
         final List<ConditionID> conditions = new ArrayList<>();
         for (final String conditionID : settings.getStringList("conditions")) {
@@ -150,7 +148,6 @@ public class EffectLibParticleManager {
         return conditions;
     }
 
-    @NotNull
     private Set<Integer> loadNpcs(final ConfigurationSection settings) {
         final Set<Integer> npcs = new HashSet<>();
         if (settings.isList(NPCS_CONFIG_SECTION)) {

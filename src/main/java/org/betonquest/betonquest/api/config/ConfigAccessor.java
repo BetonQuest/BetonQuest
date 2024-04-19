@@ -51,7 +51,6 @@ public interface ConfigAccessor {
      *
      * @return the {@link File} if it exists
      */
-    //@Nullable
     @UnknownNullability
     File getConfigurationFile();
 }

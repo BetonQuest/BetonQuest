@@ -4,7 +4,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
@@ -126,7 +125,7 @@ public class UpdaterConfig {
     /**
      * @return the {@link UpdateStrategy}
      */
-    public @NotNull UpdateStrategy getStrategy() {
+    public UpdateStrategy getStrategy() {
         return strategy;
     }
 

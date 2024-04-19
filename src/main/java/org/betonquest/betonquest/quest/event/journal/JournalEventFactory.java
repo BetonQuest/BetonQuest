@@ -20,7 +20,6 @@ import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapte
 import org.betonquest.betonquest.quest.event.SequentialStaticEvent;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
-import org.jetbrains.annotations.NotNull;
 
 import java.time.InstantSource;
 import java.util.Locale;
@@ -85,7 +84,6 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
         };
     }
 
-    @NotNull
     private JournalEvent createJournalDeleteEvent(final Instruction instruction) throws InstructionParseException {
         final String entryName = Utils.addPackage(instruction.getPackage(), instruction.getPart(2));
         final JournalChanger journalChanger = new RemoveEntryJournalChanger(entryName);
@@ -93,7 +91,6 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
         return new JournalEvent(betonQuest, journalChanger, notificationSender);
     }
 
-    @NotNull
     private JournalEvent createJournalAddEvent(final Instruction instruction) throws InstructionParseException {
         final String entryName = Utils.addPackage(instruction.getPackage(), instruction.getPart(2));
         final JournalChanger journalChanger = new AddEntryJournalChanger(instantSource, entryName);
@@ -101,14 +98,12 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
         return new JournalEvent(betonQuest, journalChanger, notificationSender);
     }
 
-    @NotNull
     private JournalEvent createJournalUpdateEvent() {
         final JournalChanger journalChanger = new NoActionJournalChanger();
         final NotificationSender notificationSender = new NoNotificationSender();
         return new JournalEvent(betonQuest, journalChanger, notificationSender);
     }
 
-    @NotNull
     private StaticEvent createStaticJournalDeleteEvent(final Instruction instruction) throws InstructionParseException {
         final JournalEvent journalDeleteEvent = createJournalDeleteEvent(instruction.copy());
         final String entryName = Utils.addPackage(instruction.getPackage(), instruction.getPart(2));

@@ -19,7 +19,6 @@ import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -137,7 +136,6 @@ public abstract class HologramLoop {
      */
     protected abstract List<BetonHologram> getHologramsFor(QuestPackage pack, ConfigurationSection section) throws InstructionParseException;
 
-    @NotNull
     private ConditionID[] parseConditions(final QuestPackage pack, @Nullable final String rawConditions) throws InstructionParseException {
         ConditionID[] conditions = {};
         if (rawConditions != null) {
@@ -158,7 +156,6 @@ public abstract class HologramLoop {
         return lines.stream().noneMatch(AbstractLine::isNotStaticText);
     }
 
-    @NotNull
     private ItemLine parseItemLine(final QuestPackage pack, final String line) throws InstructionParseException {
         try {
             final String[] args = line.substring(5).split(":");
@@ -176,7 +173,7 @@ public abstract class HologramLoop {
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    @NotNull
+
     private TopLine parseTopLine(final QuestPackage pack, final String line) throws InstructionParseException {
         final Matcher validator = TOP_LINE_VALIDATOR.matcher(line);
         if (!validator.matches()) {
@@ -220,7 +217,6 @@ public abstract class HologramLoop {
         return new TopLine(loggerFactory, pointName, orderType, limit, colorCodes.toString().toCharArray());
     }
 
-    @NotNull
     private TextLine parseTextLine(final QuestPackage pack, final String line) {
         final Matcher matcher = HologramProvider.VARIABLE_VALIDATOR.matcher(line);
         return new TextLine(matcher.find()

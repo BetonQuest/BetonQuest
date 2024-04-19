@@ -7,7 +7,6 @@ import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * HolographicDisplays specific implementation of BetonHologram
@@ -29,7 +28,7 @@ public class HolographicDisplaysHologram implements BetonHologram {
      *
      * @param hologram The hologram object to wrap
      */
-    public HolographicDisplaysHologram(@NotNull final Hologram hologram) {
+    public HolographicDisplaysHologram(final Hologram hologram) {
         this.hologram = hologram;
     }
 

@@ -5,7 +5,6 @@ import org.betonquest.betonquest.modules.web.ContentSource;
 import org.betonquest.betonquest.modules.web.WebContentSource;
 import org.betonquest.betonquest.modules.web.updater.source.DevelopmentUpdateSource;
 import org.betonquest.betonquest.modules.web.updater.source.ReleaseUpdateSource;
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -96,7 +95,6 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
         });
     }
 
-    @NotNull
     private Map<Version, String> getVersions(final VersionConsumer consumer) throws IOException {
         final Map<Version, String> versions = new HashMap<>();
 

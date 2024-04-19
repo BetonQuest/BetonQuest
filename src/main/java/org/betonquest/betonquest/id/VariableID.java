@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -36,7 +35,6 @@ public class VariableID extends ID {
         super.identifier = "%" + super.identifier + "%";
     }
 
-    @NotNull
     @Override
     public Instruction generateInstruction() {
         return new VariableInstruction(loggerFactory.create(VariableInstruction.class), super.pack, this, super.identifier);

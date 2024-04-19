@@ -25,7 +25,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.SimpleDateFormat;
@@ -100,7 +99,6 @@ public class Journal {
                 && Objects.equals(item.getItemMeta().getLore(), getJournalLore(playerLang));
     }
 
-    @NotNull
     private static List<String> getJournalLore(final String lang) {
         return Arrays.asList(Utils.format(Config.getMessage(lang, "journal_lore")).split("\n"));
     }
