@@ -109,7 +109,7 @@ public record HologramWrapper(int interval, List<BetonHologram> holograms, boole
     }
 
     /**
-     Sets the maximum visibility range for hologram.
+     Sets the maximum visibility range for the hologram.
      */
     public void setMaxRange() {
         for (final BetonHologram betonHologram : holograms) {
