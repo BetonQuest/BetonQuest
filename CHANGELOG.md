@@ -30,6 +30,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - yaml multiline instructions could lead to partly working events, conditions and objectives
 - creation of advancement tab when an advancement NotifyIO is sent
 - `burn` event throwing unexpected error when omitting duration
+- added missing firework meta to string representation of QuestItem
 ### Security
 
 ## [2.0.1] - 2024-03-24
