@@ -5,10 +5,9 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.ConversationResumer;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.objectives.ResourcePackObjective;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -18,8 +17,7 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-
-import java.io.File;
+import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 
 /**
  * Listener which handles data loadin/saving when players are joining/quitting
@@ -69,16 +67,12 @@ public class JoinQuitListener implements Listener {
         }
         playerData.startObjectives();
         GlobalObjectives.startAll(onlineProfile);
-        // display changelog message to the admins
-        if (event.getPlayer().hasPermission("betonquest.admin")) {
-            BetonQuest.getInstance().getUpdater().sendUpdateNotification(event.getPlayer());
-            if (new File(BetonQuest.getInstance().getDataFolder(), "CHANGELOG.md").exists()) {
-                try {
-                    Config.sendNotify(null, PlayerConverter.getID(event.getPlayer()), "changelog", null, "changelog,info");
-                } catch (final QuestRuntimeException e) {
-                    log.warn("The notify system was unable to play a sound for the 'changelog' category. Error was: '" + e.getMessage() + "'", e);
-                }
-            }
+        final PlayerResourcePackStatusEvent.Status resourcePackStatus = event.getPlayer().getResourcePackStatus();
+        if (resourcePackStatus != null) {
+            BetonQuest.getInstance().getPlayerObjectives(onlineProfile).stream()
+                    .filter(objective -> objective instanceof ResourcePackObjective)
+                    .map(objective -> (ResourcePackObjective) objective)
+                    .forEach(objective -> objective.processObjective(onlineProfile, resourcePackStatus));
         }
 
         if (Journal.hasJournal(onlineProfile)) {

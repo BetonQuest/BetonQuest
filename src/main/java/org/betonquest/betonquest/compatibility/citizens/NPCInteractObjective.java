@@ -50,7 +50,6 @@ public class NPCInteractObjective extends Objective implements Listener {
      */
     public NPCInteractObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        template = ObjectiveData.class;
         npcId = instruction.getInt();
         if (npcId < 0) {
             throw new InstructionParseException("ID cannot be negative");

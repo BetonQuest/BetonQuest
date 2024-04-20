@@ -285,6 +285,18 @@ initially required.
     ```YAML
     interact right creeper 1 marked:sick condition:syringeInHand cancel
     ```
+    
+## Resource pack state: `resourcepack`
+
+To complete this objective the player must have the specified resource pack state.
+The first argument is the state of the resource pack.
+It can be `successfully_loaded`, `declined`, `failed_download` and `accepted`.
+
+!!! example
+    ```YAML
+    resourcepack successfully_loaded events:reward
+    resourcepack declined events:declined
+    ```
 
 ## Kill player: `kill`
 
@@ -303,15 +315,27 @@ already killed players and `total` is the initially required amount to kill.
 
 ## Location: `location`
 
-This objective completes when player moves in specified range of specified location and meets all conditions. The first
-argument after objective's name must be location, the second - radius around the location. It can be a variable.
+The specified location where the player needs to be.
+It is not required to specify `entry` or `exit` then the objective also completes
+if the player just moves inside the location's range.
 
-Location objective contains one property, `location`. It's a string formatted like `X: 100, Y: 200, Z:300`.
+| Parameter  | Syntax                                               | Default Value          | Explanation                                                                                                             |
+|------------|------------------------------------------------------|------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| _location_ | [ULF](../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to go to                                                                                                   |
+| _range_    | range:number                                         | :octicons-x-circle-16: | The range arround the location where the player must be.                                                                |
+| _entry_    | entry:keyword                                        | Disabled               | The player must enter (go from outside to inside) the location to complete the objective.                               |
+| _exit_     | exit:keyword                                         | Disabled               | The player must exit (go from inside to outside) the location to complete the objective.                                |
 
 !!! example
     ```YAML
-    location 100;200;300;world 5 condition:test1,!test2 events:test1,test2
+    location 100;200;300;world 5 condition:started events:notifyWelcome,start
+    location 100;200;300;world 5 exit conditions:started events:notifyBye
     ```
+<h5> Variable Properties </h5> 
+
+| Name       | Example Output        | Explanation                              |
+|------------|-----------------------|------------------------------------------|
+| _location_ | X: 100, Y: 200, Z:300 | The target location of this objective    |
 
 ## Login: `login`
 

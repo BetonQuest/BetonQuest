@@ -165,3 +165,6 @@
   - type: TYPE_TRANSFORM
     key: journal.full_main_page
     newType: boolean
+2.0.2.1:
+  - type: REMOVE
+    key: sound.update

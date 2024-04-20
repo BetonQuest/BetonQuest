@@ -3,78 +3,49 @@ package org.betonquest.betonquest.objectives;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.vehicle.VehicleMoveEvent;
-
-import java.util.List;
 
 /**
  * Player has to reach certain radius around the specified location
  */
-@SuppressWarnings("PMD.CommentRequired")
-public class LocationObjective extends Objective implements Listener {
+public class LocationObjective extends AbstractLocationObjective {
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
+     * The location to reach
      */
-    private final BetonQuestLogger log;
-
     private final CompoundLocation loc;
 
+    /**
+     * The range around the location
+     */
     private final VariableNumber range;
 
+    /**
+     * The constructor takes an Instruction object as a parameter and throws an InstructionParseException.
+     *
+     * @param instruction the Instruction object to be used in the constructor
+     * @throws InstructionParseException if there is an error while parsing the instruction
+     */
     public LocationObjective(final Instruction instruction) throws InstructionParseException {
-        super(instruction);
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        template = ObjectiveData.class;
+        super(BetonQuest.getInstance().getLoggerFactory().create(LocationObjective.class), instruction);
         loc = instruction.getLocation();
         range = instruction.getVarNum();
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onMove(final PlayerMoveEvent event) {
-        qreHandler.handle(() -> {
-            checkLocation(event.getTo(), PlayerConverter.getID(event.getPlayer()));
-        });
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onRide(final VehicleMoveEvent event) {
-        qreHandler.handle(() -> {
-            final List<Entity> passengers = event.getVehicle().getPassengers();
-            for (final Entity passenger : passengers) {
-                if (passenger instanceof final Player player) {
-                    checkLocation(event.getTo(), PlayerConverter.getID(player));
-                }
-            }
-        });
-    }
-
-    private void checkLocation(final Location toLocation, final Profile profile) throws QuestRuntimeException {
-        if (!containsPlayer(profile)) {
-            return;
+    @Override
+    protected boolean isInside(final OnlineProfile onlineProfile, final Location location) throws QuestRuntimeException {
+        final Location targetLocation = loc.getLocation(onlineProfile);
+        if (!location.getWorld().equals(targetLocation.getWorld())) {
+            return false;
         }
-        final Location location = loc.getLocation(profile);
-        if (!toLocation.getWorld().equals(location.getWorld())) {
-            return;
-        }
-        final double pRange = range.getDouble(profile);
-        if (toLocation.distanceSquared(location) <= pRange * pRange && super.checkConditions(profile)) {
-            completeObjective(profile);
-        }
+        final double pRange = range.getDouble(onlineProfile);
+        return location.distanceSquared(targetLocation) <= pRange * pRange;
     }
 
     @Override

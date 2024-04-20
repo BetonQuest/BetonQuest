@@ -10,6 +10,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `block` objective now supports the parameter `ignorecancel` allow counting breaking / placing blocks in protected regions
 - command `variable` to list and modify variables on a variable objective
 - config option `conversation_IO_config.slowtellraw.message_delay` to set the delay between messages in the SlowTellRaw conversation IO
+- `resourcepack` objective - to allow checking when the player accepts, denies, downloads, or fails to download a resource pack 
+- `region` objective now supports variables as region name
+- `location` objective now allows `entry` and `exit` keywords to track entering and leaving the location
 ### Changed
 - player variable
   - `%player%` is now the same as `%player.name%`
@@ -19,9 +22,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - marking of mobs now uses variables in all contexts of spawning killing and removing
 ### Deprecated
 ### Removed
+- undocumented quoting in instructions
 ### Fixed
 - `variable` objective loads newlines correctly
 - exception in `lookAtBlock` condition when omitting the type
+- MMOCoreClassCondition, MMOItemsGiveEvent, MMOItemsHandCondition and MMOItemsItemCondition now work with numeric identifiers
+- yaml multiline instructions could lead to partly working events, conditions and objectives
+- creation of advancement tab when an advancement NotifyIO is sent
 ### Security
 
 ## [2.0.1] - 2024-03-24

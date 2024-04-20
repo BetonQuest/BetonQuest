@@ -22,7 +22,6 @@ public class LogoutObjective extends Objective implements Listener {
 
     public LogoutObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        template = ObjectiveData.class;
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)

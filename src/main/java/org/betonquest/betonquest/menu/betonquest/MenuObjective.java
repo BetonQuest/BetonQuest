@@ -30,7 +30,6 @@ public class MenuObjective extends Objective implements Listener {
     public MenuObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        template = ObjectiveData.class;
         try {
             this.menuID = new MenuID(instruction.getPackage(), instruction.next());
         } catch (final ObjectNotFoundException e) {

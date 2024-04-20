@@ -23,8 +23,6 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
 
     public MMOCoreProfessionObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-
-        template = ObjectiveData.class;
         final String profession = instruction.next();
         professionName = "MAIN".equalsIgnoreCase(profession) ? null : profession;
         targetLevel = instruction.getVarNum();

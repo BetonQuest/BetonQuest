@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -70,7 +68,7 @@ public final class Utils {
         final String outputPath = backupFolder.getAbsolutePath() + File.separator + "backup-"
                 + instance.getPluginConfig().getString("version", null);
 
-        Zipper.zip(instance.getDataFolder(), outputPath, "^backup.*", "^database\\.db$", "^changelog\\.txt$", "^logs$");
+        Zipper.zip(instance.getDataFolder(), outputPath, "^backup.*", "^database\\.db$", "^logs$");
         // delete database backup so it doesn't make a mess later on
         new File(instance.getDataFolder(), "database-backup.yml").delete();
         // done
@@ -311,24 +309,5 @@ public final class Utils {
      */
     public static String format(final String string) {
         return format(string, true, true);
-    }
-
-    /**
-     * Split a string by white space, except if between quotes
-     *
-     * @param string the input string.
-     * @return the split string.
-     */
-    public static String[] split(final String string) {
-        final List<String> list = new ArrayList<>();
-        final Matcher matcher = Pattern.compile("(?:(?:(\\S*)(?:\")([^\"]*?)(?:\"))|(\\S+))\\s*").matcher(string);
-        while (matcher.find()) {
-            if (matcher.group(3) == null) {
-                list.add(matcher.group(1) + matcher.group(2));
-            } else {
-                list.add(matcher.group(3));
-            }
-        }
-        return list.toArray(new String[0]);
     }
 }
