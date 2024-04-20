@@ -5,7 +5,18 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.ItemID;
-import org.betonquest.betonquest.item.typehandler.*;
+import org.betonquest.betonquest.item.typehandler.BookHandler;
+import org.betonquest.betonquest.item.typehandler.ColorHandler;
+import org.betonquest.betonquest.item.typehandler.CustomModelDataHandler;
+import org.betonquest.betonquest.item.typehandler.DurabilityHandler;
+import org.betonquest.betonquest.item.typehandler.EnchantmentsHandler;
+import org.betonquest.betonquest.item.typehandler.FireworkHandler;
+import org.betonquest.betonquest.item.typehandler.FlagHandler;
+import org.betonquest.betonquest.item.typehandler.HeadHandler;
+import org.betonquest.betonquest.item.typehandler.LoreHandler;
+import org.betonquest.betonquest.item.typehandler.NameHandler;
+import org.betonquest.betonquest.item.typehandler.PotionHandler;
+import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -27,8 +38,13 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * Represents an item handled by the configuration.
@@ -258,60 +274,49 @@ public class QuestItem {
             if (meta instanceof SkullMeta) {
                 skull = HeadHandler.serializeSkullMeta((SkullMeta) meta);
             }
-            if (meta instanceof FireworkMeta) {
-                final FireworkMeta fireworkMeta = (FireworkMeta) meta;
-                if (fireworkMeta.hasEffects()) {
-                    final StringBuilder builder = new StringBuilder();
-                    builder.append(" firework:");
-                    for (final FireworkEffect effect : fireworkMeta.getEffects()) {
-                        builder.append(effect.getType()).append(':');
-                        for (final Color c : effect.getColors()) {
-                            final DyeColor dye = DyeColor.getByFireworkColor(c);
-                            builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(';');
-                        }
-                        // remove last semicolon
-                        builder.setLength(Math.max(builder.length() - 1, 0));
-                        builder.append(':');
-                        for (final Color c : effect.getFadeColors()) {
-                            final DyeColor dye = DyeColor.getByFireworkColor(c);
-                            builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(';');
-                        }
-                        builder.setLength(Math.max(builder.length() - 1, 0));
-                        builder.append(':').append(effect.hasTrail()).append(':').append(effect.hasFlicker()).append(',');
-                    }
-                    builder.setLength(Math.max(builder.length() - 1, 0));
-                    builder.append(" power:").append(fireworkMeta.getPower());
-                    firework = builder.toString();
+            if (meta instanceof final FireworkMeta fireworkMeta && fireworkMeta.hasEffects()) {
+                final StringBuilder builder = new StringBuilder();
+                builder.append(" firework:");
+                for (final FireworkEffect effect : fireworkMeta.getEffects()) {
+                    appendFireworkEffect(builder, effect);
+                    builder.append(',');
                 }
+                builder.setLength(Math.max(builder.length() - 1, 0));
+                builder.append(" power:").append(fireworkMeta.getPower());
+                firework = builder.toString();
             }
-            if (meta instanceof FireworkEffectMeta) {
-                final FireworkEffectMeta fireworkMeta = (FireworkEffectMeta) meta;
-                if (fireworkMeta.hasEffect()) {
-                    final FireworkEffect effect = fireworkMeta.getEffect();
-                    final StringBuilder builder = new StringBuilder();
-                    builder.append(" firework:").append(effect.getType()).append(':');
-                    for (final Color c : effect.getColors()) {
-                        final DyeColor dye = DyeColor.getByFireworkColor(c);
-                        builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(';');
-                    }
-                    // remove last semicolon
-                    builder.setLength(Math.max(builder.length() - 1, 0));
-                    builder.append(':');
-                    for (final Color c : effect.getFadeColors()) {
-                        final DyeColor dye = DyeColor.getByFireworkColor(c);
-                        builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(';');
-                    }
-                    builder.setLength(Math.max(builder.length() - 1, 0));
-                    builder.append(':').append(effect.hasTrail()).append(':').append(effect.hasFlicker());
-                }
+            if (meta instanceof final FireworkEffectMeta fireworkMeta && fireworkMeta.hasEffect()) {
+                final FireworkEffect effect = fireworkMeta.getEffect();
+                assert effect != null;
+                final StringBuilder builder = new StringBuilder();
+                appendFireworkEffect(builder, effect);
+                builder.append(" firework:");
+                firework = builder.toString();
             }
-            if (meta.getItemFlags().size() > 0) {
+            if (!meta.getItemFlags().isEmpty()) {
                 flags = " flags:" + String.join(",", meta.getItemFlags().stream().map(ItemFlag::name).sorted().toList());
             }
         }
         // put it all together in a single string
         return item.getType() + durability + name + lore + enchants + title + author + text
                 + effects + color + skull + firework + unbreakable + customModelData + flags;
+    }
+
+    private static void appendFireworkEffect(final StringBuilder builder, final FireworkEffect effect) {
+        builder.append(effect.getType()).append(':');
+        for (final Color c : effect.getColors()) {
+            final DyeColor dye = DyeColor.getByFireworkColor(c);
+            builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(';');
+        }
+        // remove last semicolon
+        builder.setLength(Math.max(builder.length() - 1, 0));
+        builder.append(':');
+        for (final Color c : effect.getFadeColors()) {
+            final DyeColor dye = DyeColor.getByFireworkColor(c);
+            builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(';');
+        }
+        builder.setLength(Math.max(builder.length() - 1, 0));
+        builder.append(':').append(effect.hasTrail()).append(':').append(effect.hasFlicker());
     }
 
     /**
@@ -528,13 +533,11 @@ public class QuestItem {
         if (meta instanceof final LeatherArmorMeta armorMeta) {
             armorMeta.setColor(color.get());
         }
-        if (meta instanceof FireworkMeta) {
-            final FireworkMeta fireworkMeta = (FireworkMeta) meta;
+        if (meta instanceof final FireworkMeta fireworkMeta) {
             fireworkMeta.addEffects(firework.getEffects());
             fireworkMeta.setPower(firework.getPower());
         }
-        if (meta instanceof FireworkEffectMeta) {
-            final FireworkEffectMeta fireworkMeta = (FireworkEffectMeta) meta;
+        if (meta instanceof final FireworkEffectMeta fireworkMeta) {
             final List<FireworkEffect> list = firework.getEffects();
             fireworkMeta.setEffect(list.isEmpty() ? null : list.get(0));
         }
