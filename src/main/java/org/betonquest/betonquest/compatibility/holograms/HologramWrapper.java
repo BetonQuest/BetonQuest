@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
+import org.bukkit.Location;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public record HologramWrapper(int interval, List<BetonHologram> holograms, boole
      * Checks whether all conditions are met by a players and displays or hides the hologram.
      */
     public void updateVisibility() {
-        if (conditionList.length == 0) {
+        if (conditionList.length == 0 && maxRange <= 0) {
             for (final BetonHologram hologram : holograms) {
                 hologram.showAll();
             }
@@ -56,15 +57,34 @@ public record HologramWrapper(int interval, List<BetonHologram> holograms, boole
      * @param profile The online player's profile
      */
     public void updateVisibilityForPlayer(final OnlineProfile profile) {
-        if (BetonQuest.conditions(profile, conditionList)) {
-            for (final BetonHologram hologram : holograms) {
+        final boolean conditionsMet = BetonQuest.conditions(profile, conditionList);
+
+        for (final BetonHologram hologram : holograms) {
+            final boolean playerOutOfRange = isPlayerOutOfRange(profile, hologram);
+
+            if (conditionsMet && !playerOutOfRange) {
                 hologram.show(profile.getPlayer());
-            }
-        } else {
-            for (final BetonHologram hologram : holograms) {
+            } else {
                 hologram.hide(profile.getPlayer());
             }
         }
+    }
+
+    /**
+     * Checks if the player is out of range from the specified hologram.
+     *
+     * @param profile  The online profile of the player
+     * @param hologram The hologram to check the distance from
+     * @return {@code true} if the player is out of range, {@code false} otherwise
+     */
+    public boolean isPlayerOutOfRange(final OnlineProfile profile, final BetonHologram hologram) {
+        if (maxRange > 0) {
+            final Location playerLocation = profile.getPlayer().getLocation();
+            final double distanceSquared = playerLocation.distanceSquared(hologram.getLocation());
+            final double maxRangeSquared = maxRange * maxRange;
+            return distanceSquared > maxRangeSquared;
+        }
+        return false;
     }
 
     /**
@@ -105,15 +125,6 @@ public record HologramWrapper(int interval, List<BetonHologram> holograms, boole
                 }
             }
             index += line.getLinesAdded();
-        }
-    }
-
-    /**
-     Sets the maximum visibility range for the hologram.
-     */
-    public void setMaxRange() {
-        for (final BetonHologram betonHologram : holograms) {
-            betonHologram.setMaxRange(maxRange);
         }
     }
 }

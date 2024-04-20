@@ -90,9 +90,7 @@ public abstract class HologramLoop {
         } catch (final NumberFormatException e) {
             throw new InstructionParseException("Could not parse check interval", e);
         }
-        final String maxRangeString = section.getString("max_range");
-        final int maxRange = maxRangeString != null ? Integer.parseInt(maxRangeString) : 0;
-        validateMaxRange(maxRange);
+        final int maxRange = parseMaxRange(section.getString("max_range"));
 
         final List<String> lines = GlobalVariableResolver.resolve(pack, section.getStringList("lines"));
         final String rawConditions = GlobalVariableResolver.resolve(pack, section.getString("conditions"));
@@ -123,13 +121,6 @@ public abstract class HologramLoop {
                 maxRange);
         HologramRunner.addHologram(hologramWrapper);
         return hologramWrapper;
-    }
-
-    private void validateMaxRange(final int maxRange) throws InstructionParseException {
-        final boolean isHolographic = "HolographicDisplays".equals(HologramProvider.getInstance().integrator.getPluginName());
-        if (isHolographic && maxRange > 0) {
-            throw new InstructionParseException("Changing the 'max_range' of visibility of a hologram is not possible with HolographicDisplays");
-        }
     }
 
     /**
@@ -231,5 +222,20 @@ public abstract class HologramLoop {
         return new TextLine(matcher.find()
                 ? HologramProvider.getInstance().parseVariable(pack, line)
                 : line);
+    }
+
+    private int parseMaxRange(final String maxRangeString) throws InstructionParseException {
+        if (maxRangeString != null) {
+            try {
+                final int maxRange = Integer.parseInt(maxRangeString);
+                if (maxRange < 0) {
+                    throw new InstructionParseException("Max range cannot be negative");
+                }
+                return maxRange;
+            } catch (final NumberFormatException e) {
+                throw new InstructionParseException("Max range must be a valid integer", e);
+            }
+        }
+        return 0;
     }
 }

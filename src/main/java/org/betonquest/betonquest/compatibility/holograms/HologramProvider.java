@@ -47,7 +47,7 @@ public class HologramProvider implements Integrator {
     /**
      * The currently hooked integrator, this may change during runtime during a reload
      */
-    public HologramIntegrator integrator;
+    private HologramIntegrator integrator;
 
     /**
      * The current {@link LocationHologramLoop}.

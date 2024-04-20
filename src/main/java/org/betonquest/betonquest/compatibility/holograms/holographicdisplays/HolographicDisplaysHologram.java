@@ -145,11 +145,8 @@ public class HolographicDisplaysHologram implements BetonHologram {
         hologram.getLines().clear();
     }
 
-    /**
-     * Unable to change the range of visibility in HolographicDisplay
-     */
     @Override
-    public void setMaxRange(final int index) {
-        // Empty
+    public Location getLocation() {
+        return hologram.getPosition().toLocation();
     }
 }

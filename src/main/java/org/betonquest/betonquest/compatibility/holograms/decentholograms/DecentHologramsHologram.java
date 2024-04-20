@@ -50,13 +50,6 @@ public class DecentHologramsHologram implements BetonHologram {
     }
 
     @Override
-    public void setMaxRange(final int index) {
-        if (index != 0) {
-            hologram.setDisplayRange(index);
-        }
-    }
-
-    @Override
     public void createLines(final int startingIndex, final int linesAdded) {
         final HologramPage page = DHAPI.getHologramPage(hologram, 0);
         if (page == null) {
@@ -147,5 +140,10 @@ public class DecentHologramsHologram implements BetonHologram {
         for (int i = page.size() - 1; i >= 0; i--) {
             page.removeLine(i);
         }
+    }
+
+    @Override
+    public Location getLocation() {
+        return hologram.getLocation();
     }
 }
