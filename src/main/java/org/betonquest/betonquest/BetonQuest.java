@@ -812,7 +812,7 @@ public class BetonQuest extends JavaPlugin {
         saver.start();
         Backup.loadDatabaseFromBackup(configAccessorFactory);
 
-        new JoinQuitListener(loggerFactory, loggerFactory.create(JoinQuitListener.class));
+        new JoinQuitListener(loggerFactory);
 
         new QuestItemHandler();
 
