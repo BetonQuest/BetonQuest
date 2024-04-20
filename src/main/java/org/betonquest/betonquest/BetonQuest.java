@@ -474,11 +474,6 @@ public class BetonQuest extends JavaPlugin {
      */
     @SuppressWarnings("PMD.NPathComplexity")
     public static boolean condition(@Nullable final Profile profile, final ConditionID conditionID) {
-        //noinspection ConstantValue
-        if (conditionID == null) {
-            getInstance().log.debug("Null condition ID!");
-            return false;
-        }
         final Condition condition = CONDITIONS.get(conditionID);
         if (condition == null) {
             getInstance().log.warn(conditionID.getPackage(), "The condition " + conditionID + " is not defined!");
@@ -516,11 +511,6 @@ public class BetonQuest extends JavaPlugin {
      * @return true if the event was run even if there was an exception during execution
      */
     public static boolean event(@Nullable final Profile profile, final EventID eventID) {
-        //noinspection ConstantValue
-        if (eventID == null) {
-            getInstance().log.debug("Null event ID!");
-            return false;
-        }
         final QuestEvent event = EVENTS.get(eventID);
         if (event == null) {
             getInstance().log.warn(eventID.getPackage(), "Event " + eventID + " is not defined");
@@ -548,11 +538,6 @@ public class BetonQuest extends JavaPlugin {
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     public static void newObjective(final Profile profile, final ObjectiveID objectiveID) {
-        //noinspection ConstantValue
-        if (profile == null || objectiveID == null) {
-            getInstance().log.debug(objectiveID.getPackage(), "Null arguments for the objective!");
-            return;
-        }
         final Objective objective = OBJECTIVES.get(objectiveID);
         if (objective.containsPlayer(profile)) {
             getInstance().log.debug(objectiveID.getPackage(), profile + " already has the " + objectiveID + " objective");
@@ -569,11 +554,6 @@ public class BetonQuest extends JavaPlugin {
      * @param instruction data instruction string
      */
     public static void resumeObjective(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
-        //noinspection ConstantValue
-        if (profile == null || objectiveID == null || instruction == null) {
-            getInstance().log.debug("Null arguments for the objective!");
-            return;
-        }
         final Objective objective = OBJECTIVES.get(objectiveID);
         if (objective == null) {
             getInstance().log.warn(objectiveID.getPackage(), "Objective " + objectiveID + " does not exist");
@@ -812,7 +792,6 @@ public class BetonQuest extends JavaPlugin {
                     config.getString("mysql.base"),
                     config.getString("mysql.user"),
                     config.getString("mysql.pass"));
-            //noinspection ConstantValue
             if (database.getConnection() != null) {
                 isMySQLUsed = true;
                 getInstance().log.info("Successfully connected to MySQL database!");
@@ -1372,7 +1351,6 @@ public class BetonQuest extends JavaPlugin {
             final Journal journal = playerData.getJournal();
             journal.update();
         }
-        //noinspection ConstantValue
         if (playerHider != null) {
             playerHider.stop();
         }
@@ -1383,7 +1361,7 @@ public class BetonQuest extends JavaPlugin {
         }
     }
 
-    @SuppressWarnings({"PMD.DoNotUseThreads", "ConstantValue"})
+    @SuppressWarnings("PMD.DoNotUseThreads")
     @Override
     public void onDisable() {
         //stop all schedules
@@ -1415,7 +1393,6 @@ public class BetonQuest extends JavaPlugin {
 
         if (this.adventure != null) {
             this.adventure.close();
-            //noinspection DataFlowIssue
             this.adventure = null;
         }
 

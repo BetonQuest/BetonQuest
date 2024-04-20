@@ -65,7 +65,6 @@ public class HologramProvider implements Integrator {
     @Nullable
     private CitizensHologramLoop citizensHologramLoop;
 
-
     /**
      * Creates a new HologramProvider object and assigns it to singleton instance if not already
      *
@@ -127,7 +126,6 @@ public class HologramProvider implements Integrator {
      * @throws IllegalStateException Thrown if this method has been used at the incorrect time
      */
     public boolean isHooked(final String pluginName) {
-        //noinspection ConstantValue
         if (this.integrator == null) {
             throw new IllegalStateException("Cannot isHooked() when HologramProvider has not been fully initialised yet!");
         }

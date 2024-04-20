@@ -68,8 +68,7 @@ public class LocationData extends AbstractData<Location> {
      */
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public static Location parseLocation(final String loc) throws InstructionParseException {
-        //noinspection ConstantValue
-        if (loc == null || !PATTERN_LOCATION.matcher(loc).find()) {
+        if (!PATTERN_LOCATION.matcher(loc).find()) {
             throw new InstructionParseException("Incorrect location format '" + loc
                     + "'. A location has to be in the format 'x;y;z;world[;yaw;pitch]'");
         }

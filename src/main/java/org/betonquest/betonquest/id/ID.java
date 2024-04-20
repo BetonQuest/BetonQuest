@@ -50,8 +50,7 @@ public abstract class ID {
             "PMD.AvoidLiteralsInIfCondition", "PMD.NcssCount"})
     protected ID(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         // id must be specified
-        //noinspection ConstantValue
-        if (identifier == null || identifier.isEmpty()) {
+        if (identifier.isEmpty()) {
             throw new ObjectNotFoundException("ID is null");
         }
         // resolve package name

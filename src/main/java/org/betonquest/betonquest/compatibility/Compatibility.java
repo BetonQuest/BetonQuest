@@ -139,7 +139,6 @@ public class Compatibility implements Listener {
      * Disables all loaded integrators.
      */
     public static void disable() {
-        //noinspection ConstantValue
         if (instance != null) {
             instance.integrators.values().stream()
                     .map(Pair::getRight)

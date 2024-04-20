@@ -406,7 +406,6 @@ public class InventoryConvIO implements Listener, ConversationIO {
      * @return true if the inventory must be closed
      */
     private boolean mustBeClosed() {
-        //noinspection ConstantValue
         return inv != null && conv.nextNPCOption == null;
     }
 

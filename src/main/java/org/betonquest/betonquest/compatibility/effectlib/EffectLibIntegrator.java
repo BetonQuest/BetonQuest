@@ -48,7 +48,6 @@ public class EffectLibIntegrator implements Integrator {
 
     @Override
     public void close() {
-        //noinspection ConstantValue
         if (manager != null) {
             manager.dispose();
         }

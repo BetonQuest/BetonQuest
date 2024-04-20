@@ -163,7 +163,6 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
      */
     @SuppressWarnings({"unchecked", "PMD.AvoidLiteralsInIfCondition", "PMD.AvoidAccessibilityAlteration"})
     public boolean unregister() {
-        //noinspection ConstantValue
         if (this.commandMap == null) {
             return false;
         }

@@ -51,11 +51,6 @@ public class DefaultConfigurationFileFactory implements ConfigurationFileFactory
 
     @Override
     public ConfigurationFile create(final File configurationFile, final Plugin plugin, final String resourceFile, @Nullable final PatchTransformerRegisterer patchTransformerRegisterer) throws InvalidConfigurationException, FileNotFoundException {
-        //noinspection ConstantValue
-        if (configurationFile == null || plugin == null || resourceFile == null) {
-            throw new IllegalArgumentException("The configurationFile, plugin and resourceFile must be defined but were null.");
-        }
-
         final ConfigAccessor accessor = configAccessorFactory.create(configurationFile, plugin, resourceFile);
         final ConfigAccessor resourceAccessor = configAccessorFactory.create(plugin, resourceFile);
         accessor.getConfig().setDefaults(resourceAccessor.getConfig());

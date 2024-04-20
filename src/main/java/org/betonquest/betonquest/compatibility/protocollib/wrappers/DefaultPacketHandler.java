@@ -18,7 +18,7 @@ public final class DefaultPacketHandler implements PacketHandler {
      *
      * @param type - the packet type.
      */
-    protected DefaultPacketHandler(final PacketType type) {
+    private DefaultPacketHandler(final PacketType type) {
         this(new PacketContainer(type), type);
         handle.getModifier().writeDefaults();
     }
@@ -29,7 +29,7 @@ public final class DefaultPacketHandler implements PacketHandler {
      * @param handle - handle to the raw packet data.
      * @param type   - the packet type.
      */
-    protected DefaultPacketHandler(final PacketContainer handle, final PacketType type) {
+    private DefaultPacketHandler(final PacketContainer handle, final PacketType type) {
         this(handle);
         if (!Objects.equal(handle.getType(), type)) {
             throw new IllegalArgumentException(handle.getHandle() + " is not a packet of type " + type);
@@ -41,13 +41,7 @@ public final class DefaultPacketHandler implements PacketHandler {
      *
      * @param handle - handle to the raw packet data.
      */
-    protected DefaultPacketHandler(final PacketContainer handle) {
-        // Make sure we're given a valid packet
-        //noinspection ConstantValue
-        if (handle == null) {
-            throw new IllegalArgumentException("Packet handle cannot be NULL.");
-        }
-
+    private DefaultPacketHandler(final PacketContainer handle) {
         this.handle = handle;
         this.type = handle.getType();
     }

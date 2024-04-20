@@ -574,7 +574,6 @@ public class MenuConvIO extends ChatConvIO {
             }
             state = ConversationState.ENDED;
 
-            //noinspection ConstantValue
             if (packetAdapter != null) {
                 ProtocolLibrary.getProtocolManager().removePacketListener(packetAdapter);
             }
