@@ -25,7 +25,6 @@ public abstract class CountingObjective extends Objective {
     /**
      * The amount of units required for completion.
      */
-    @SuppressWarnings("NotNullFieldNotInitialized")
     protected VariableNumber targetAmount;
 
     /**

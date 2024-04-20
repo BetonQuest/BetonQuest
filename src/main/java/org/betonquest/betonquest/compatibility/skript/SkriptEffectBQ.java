@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Skript effect, which fires specified BetonQuest's event
  */
-@SuppressWarnings({"PMD.CommentRequired", "NotNullFieldNotInitialized"})
+@SuppressWarnings("PMD.CommentRequired")
 public class SkriptEffectBQ extends Effect {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -45,7 +45,7 @@ public class SkriptEffectBQ extends Effect {
     @Override
     @SuppressFBWarnings({"NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE", "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"})
     public String toString(@Nullable final Event event, final boolean debug) {
-        return "fire " + this.event.toString() + " for " + player.getSingle(event).getName();
+        return "fire " + this.event + " for " + player.getSingle(event).getName();
     }
 
     @Override

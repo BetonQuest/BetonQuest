@@ -32,7 +32,7 @@ import java.util.Set;
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods", "PMD.UseObjectForClearerAPI",
         "PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.AvoidFieldNameMatchingTypeName",
-        "PMD.ClassNamingConventions", "NotNullFieldNotInitialized"})
+        "PMD.ClassNamingConventions"})
 public final class Config {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.

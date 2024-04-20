@@ -123,7 +123,6 @@ public class Downloader implements Callable<Boolean> {
      * SHA Hash of the commit to which the ref points.
      * Is null before {@link #requestCommitSHA()} has been called.
      */
-    @SuppressWarnings("NotNullFieldNotInitialized")
     private String sha;
 
     /**

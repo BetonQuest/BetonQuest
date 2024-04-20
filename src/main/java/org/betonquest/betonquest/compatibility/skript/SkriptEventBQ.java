@@ -9,7 +9,7 @@ import org.bukkit.event.Event;
 /**
  * Skript event, which listens to custom event fired by BetonQuest's event
  */
-@SuppressWarnings({"PMD.CommentRequired", "NotNullFieldNotInitialized"})
+@SuppressWarnings("PMD.CommentRequired")
 public class SkriptEventBQ extends SkriptEvent {
 
     private Literal<?> literal;
@@ -31,13 +31,11 @@ public class SkriptEventBQ extends SkriptEvent {
 
     @Override
     public boolean check(final Event event) {
-        if (event instanceof BQEventSkript.CustomEventForSkript) {
-            final BQEventSkript.CustomEventForSkript scriptEvent = (BQEventSkript.CustomEventForSkript) event;
+        if (event instanceof final BQEventSkript.CustomEventForSkript scriptEvent) {
             return literal.check(event, new Checker<Object>() {
                 @Override
                 public boolean check(final Object other) {
-                    if (other instanceof String) {
-                        final String identifier = (String) other;
+                    if (other instanceof final String identifier) {
                         return scriptEvent.getID().equals(identifier);
                     }
                     return false;

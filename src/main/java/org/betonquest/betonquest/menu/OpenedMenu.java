@@ -41,7 +41,6 @@ public class OpenedMenu implements Listener {
 
     private final Menu data;
 
-    @SuppressWarnings("NotNullFieldNotInitialized")
     private MenuItem[] items;
 
     private boolean closed;

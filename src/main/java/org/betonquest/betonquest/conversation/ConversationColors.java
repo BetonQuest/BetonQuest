@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Holds the colors of the conversations
  */
-@SuppressWarnings({"PMD.ClassNamingConventions", "PMD.CommentRequired", "NotNullFieldNotInitialized"})
+@SuppressWarnings({"PMD.ClassNamingConventions", "PMD.CommentRequired"})
 public final class ConversationColors {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.

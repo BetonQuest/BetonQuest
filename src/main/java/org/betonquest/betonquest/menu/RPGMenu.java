@@ -31,7 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings({"PMD.CommentRequired", "NotNullFieldNotInitialized"})
+@SuppressWarnings("PMD.CommentRequired")
 public class RPGMenu {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.

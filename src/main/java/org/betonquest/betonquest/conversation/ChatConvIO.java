@@ -46,7 +46,6 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     @Nullable
     protected String npcText;
 
-    @SuppressWarnings("NotNullFieldNotInitialized")
     protected String npcName;
 
     protected String answerFormat;

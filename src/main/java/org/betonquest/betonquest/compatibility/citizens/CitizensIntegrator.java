@@ -11,7 +11,6 @@ import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilit
 public class CitizensIntegrator implements Integrator {
     private final BetonQuest plugin;
 
-    @SuppressWarnings("NotNullFieldNotInitialized")
     private CitizensListener citizensListener;
 
     public CitizensIntegrator() {

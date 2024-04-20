@@ -310,7 +310,7 @@ import java.util.regex.Pattern;
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods",
         "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidFieldNameMatchingMethodName",
-        "PMD.AtLeastOneConstructor", "PMD.ExcessivePublicCount", "PMD.TooManyFields", "NotNullFieldNotInitialized"})
+        "PMD.AtLeastOneConstructor", "PMD.ExcessivePublicCount", "PMD.TooManyFields"})
 public class BetonQuest extends JavaPlugin {
     private static final int BSTATS_METRICS_ID = 551;
 

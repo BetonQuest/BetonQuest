@@ -37,7 +37,7 @@ import java.util.Map;
 /**
  * Represents a chest GUI for the backpack displayed to the player.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition", "NotNullFieldNotInitialized"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition"})
 public class Backpack implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.

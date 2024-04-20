@@ -41,7 +41,6 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     @Nullable
     private final Permission perimssion;
 
-    @SuppressWarnings("NotNullFieldNotInitialized")
     private CommandMap commandMap;
 
     private String usage = "null";

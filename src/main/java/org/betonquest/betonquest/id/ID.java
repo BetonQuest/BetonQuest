@@ -31,7 +31,6 @@ public abstract class ID {
 
     protected String identifier;
 
-    @SuppressWarnings("NotNullFieldNotInitialized")
     protected QuestPackage pack;
 
     @Nullable

@@ -53,7 +53,6 @@ public class Instruction {
 
     protected String[] parts;
 
-    @SuppressWarnings("NotNullFieldNotInitialized")
     private ID identifier;
 
     private int nextIndex = 1;

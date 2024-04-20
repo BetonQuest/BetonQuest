@@ -36,7 +36,7 @@ import java.util.Map;
 /**
  * Inventory GUI for conversations.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidFieldNameMatchingMethodName", "PMD.AvoidLiteralsInIfCondition", "PMD.NPathComplexity", "NotNullFieldNotInitialized"})
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidFieldNameMatchingMethodName", "PMD.AvoidLiteralsInIfCondition", "PMD.NPathComplexity"})
 public class InventoryConvIO implements Listener, ConversationIO {
 
     private static final Map<String, ItemStack> SKULL_CACHE = new HashMap<>();

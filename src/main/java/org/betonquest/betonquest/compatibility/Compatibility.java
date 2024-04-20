@@ -60,7 +60,6 @@ public class Compatibility implements Listener {
     /**
      * An instance of this class.
      */
-    @SuppressWarnings("NotNullFieldNotInitialized")
     private static Compatibility instance;
 
     /**

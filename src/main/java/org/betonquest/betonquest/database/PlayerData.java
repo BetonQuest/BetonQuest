@@ -68,7 +68,6 @@ public class PlayerData implements TagData {
     @Nullable
     private PlayerConversationState activeConversation;
 
-    @SuppressWarnings("NotNullFieldNotInitialized")
     private String profileLanguage;
 
     /**

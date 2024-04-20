@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Skript condition, which checks specified BetonQuest's condition
  */
-@SuppressWarnings({"PMD.CommentRequired", "NotNullFieldNotInitialized"})
+@SuppressWarnings("PMD.CommentRequired")
 public class SkriptConditionBQ extends Condition {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -44,7 +44,7 @@ public class SkriptConditionBQ extends Condition {
     @Override
     @SuppressFBWarnings({"NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE", "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"})
     public String toString(@Nullable final Event event, final boolean debug) {
-        return player.getSingle(event).getName() + " meets " + condition.toString();
+        return player.getSingle(event).getName() + " meets " + condition;
     }
 
     @Override

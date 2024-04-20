@@ -32,7 +32,7 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
 /**
  * Represents the data of the conversation.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.CommentRequired", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals", "NotNullFieldNotInitialized"})
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.CommentRequired", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals"})
 public class ConversationData {
 
     /**

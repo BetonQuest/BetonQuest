@@ -17,7 +17,6 @@ import java.util.Set;
 @SuppressWarnings("PMD.CommentRequired")
 public class GlobalObjectives {
 
-    @SuppressWarnings("NotNullFieldNotInitialized")
     private static GlobalObjectives instance;
 
     private final Set<ObjectiveID> globalObjectiveIds;

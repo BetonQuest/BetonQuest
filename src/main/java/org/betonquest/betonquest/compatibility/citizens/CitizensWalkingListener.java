@@ -23,7 +23,6 @@ import java.util.Map;
 @SuppressWarnings("PMD.CommentRequired")
 public class CitizensWalkingListener implements Listener {
 
-    @SuppressWarnings("NotNullFieldNotInitialized")
     private static CitizensWalkingListener instance;
 
     private final Map<NPC, Pair<Integer, Location>> npcs = new HashMap<>();

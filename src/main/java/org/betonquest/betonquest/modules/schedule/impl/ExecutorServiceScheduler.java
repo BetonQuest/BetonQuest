@@ -42,7 +42,6 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
     /**
      * Executor service that can be used to run code at a specific time in the future.
      */
-    @SuppressWarnings("NotNullFieldNotInitialized")
     protected ScheduledExecutorService executor;
 
     /**

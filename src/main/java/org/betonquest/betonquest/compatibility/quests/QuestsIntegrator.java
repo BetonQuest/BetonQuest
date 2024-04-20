@@ -9,7 +9,6 @@ import org.bukkit.Bukkit;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class QuestsIntegrator implements Integrator {
-    @SuppressWarnings("NotNullFieldNotInitialized")
     private static Quests questsInstance;
 
     private final BetonQuest plugin;
