@@ -150,7 +150,6 @@ public class HolographicDisplaysHologram implements BetonHologram {
      */
     @Override
     public void setMaxRange(final int index) {
-        // Don`t throw InstructionParseException because of calling this method in timer task
-        // *Log message with information about this is sent in HologramLoop#validateMaxRange
+        // Empty
     }
 }
