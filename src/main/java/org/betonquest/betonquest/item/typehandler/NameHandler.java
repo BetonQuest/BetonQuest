@@ -34,10 +34,7 @@ public class NameHandler {
     public boolean check(@Nullable final String name) {
         return switch (existence) {
             case WHATEVER -> true;
-            case REQUIRED -> {
-                assert this.name != null;
-                yield this.name.equals(name);
-            }
+            case REQUIRED -> name != null && name.equals(this.name);
             case FORBIDDEN -> name == null;
         };
     }

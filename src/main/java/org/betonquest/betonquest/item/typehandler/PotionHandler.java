@@ -80,7 +80,7 @@ public class PotionHandler {
     }
 
     public void setCustom(final String custom) throws InstructionParseException {
-        final String[] parts = Utils.getNNSplit(custom, "Potion is null!", ",");
+        final String[] parts = HandlerUtil.getNNSplit(custom, "Potion is null!", ",");
         if ("none".equalsIgnoreCase(parts[0])) {
             customE = Existence.FORBIDDEN;
             return;
@@ -162,7 +162,7 @@ public class PotionHandler {
 
         @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
         public CustomEffectHandler(final String custom) throws InstructionParseException {
-            final String[] parts = Utils.getNNSplit(custom, "Potion is null!", ":");
+            final String[] parts = HandlerUtil.getNNSplit(custom, "Potion is null!", ":");
             if (parts[0].startsWith("none-")) {
                 customTypeE = Existence.FORBIDDEN;
                 customType = getType(parts[0].substring("none-".length()));
@@ -177,13 +177,13 @@ public class PotionHandler {
             if (parts.length != INSTRUCTION_FORMAT_LENGTH) {
                 throw new InstructionParseException("Wrong effect format");
             }
-            final Map.Entry<Number, Integer> effectPower = Utils.getNumberValue(parts[1], "effect power");
+            final Map.Entry<Number, Integer> effectPower = HandlerUtil.getNumberValue(parts[1], "effect power");
             powerE = effectPower.getKey();
             power = effectPower.getValue() - 1;
             if (power < 0) {
                 throw new InstructionParseException("Effect power must be a positive integer");
             }
-            final Map.Entry<Number, Integer> effectDuration = Utils.getNumberValue(parts[2], "effect duration");
+            final Map.Entry<Number, Integer> effectDuration = HandlerUtil.getNumberValue(parts[2], "effect duration");
             durationE = effectDuration.getKey();
             duration = effectDuration.getValue() * 20;
         }

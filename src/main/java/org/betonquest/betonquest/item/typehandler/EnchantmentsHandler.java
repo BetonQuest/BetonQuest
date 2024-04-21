@@ -25,7 +25,7 @@ public class EnchantmentsHandler {
     }
 
     public void set(final String enchants) throws InstructionParseException {
-        final String[] parts = Utils.getNNSplit(enchants, "Enchantment is null!", ",");
+        final String[] parts = HandlerUtil.getNNSplit(enchants, "Enchantment is null!", ",");
         if ("none".equalsIgnoreCase(parts[0])) {
             checkersE = Existence.FORBIDDEN;
             return;
@@ -89,7 +89,7 @@ public class EnchantmentsHandler {
 
         @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
         private SingleEnchantmentHandler(final String enchant) throws InstructionParseException {
-            final String[] parts = Utils.getNNSplit(enchant, "", ":");
+            final String[] parts = HandlerUtil.getNNSplit(enchant, "", ":");
             if (parts[0].startsWith("none-")) {
                 existence = Existence.FORBIDDEN;
                 type = getType(parts[0].substring("none-".length()));
@@ -102,7 +102,7 @@ public class EnchantmentsHandler {
             if (parts.length != INSTRUCTION_FORMAT_LENGTH) {
                 throw new InstructionParseException("Wrong enchantment format");
             }
-            final Map.Entry<Number, Integer> enchantmentLevel = Utils.getNumberValue(parts[1], "enchantment level");
+            final Map.Entry<Number, Integer> enchantmentLevel = HandlerUtil.getNumberValue(parts[1], "enchantment level");
             number = enchantmentLevel.getKey();
             level = enchantmentLevel.getValue();
         }

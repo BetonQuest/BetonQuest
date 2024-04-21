@@ -12,13 +12,13 @@ import org.betonquest.betonquest.item.typehandler.DurabilityHandler;
 import org.betonquest.betonquest.item.typehandler.EnchantmentsHandler;
 import org.betonquest.betonquest.item.typehandler.FireworkHandler;
 import org.betonquest.betonquest.item.typehandler.FlagHandler;
+import org.betonquest.betonquest.item.typehandler.HandlerUtil;
 import org.betonquest.betonquest.item.typehandler.HeadHandler;
 import org.betonquest.betonquest.item.typehandler.LoreHandler;
 import org.betonquest.betonquest.item.typehandler.NameHandler;
 import org.betonquest.betonquest.item.typehandler.PotionHandler;
 import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
 import org.betonquest.betonquest.utils.BlockSelector;
-import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -107,7 +107,7 @@ public class QuestItem {
      */
     @SuppressWarnings("PMD.NcssCount")
     public QuestItem(final String instruction) throws InstructionParseException {
-        final String[] parts = Utils.getNNSplit(instruction, "Item instruction is null", " ");
+        final String[] parts = HandlerUtil.getNNSplit(instruction, "Item instruction is null", " ");
         selector = new BlockSelector(parts[0]);
 
         // Skip the block selector part to process remaining arguments

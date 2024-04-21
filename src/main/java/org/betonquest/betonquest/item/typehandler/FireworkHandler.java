@@ -3,7 +3,6 @@ package org.betonquest.betonquest.item.typehandler;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem.Existence;
 import org.betonquest.betonquest.item.QuestItem.Number;
-import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.FireworkEffect;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,7 +39,7 @@ public class FireworkHandler {
     }
 
     public void setEffects(final String string) throws InstructionParseException {
-        final String[] parts = Utils.getNNSplit(string, "Firework effects missing", ",");
+        final String[] parts = HandlerUtil.getNNSplit(string, "Firework effects missing", ",");
         if ("none".equalsIgnoreCase(parts[0])) {
             effectsE = Existence.FORBIDDEN;
             return;
@@ -58,7 +57,7 @@ public class FireworkHandler {
     }
 
     public void setPower(final String string) throws InstructionParseException {
-        final Map.Entry<Number, Integer> fireworkPower = Utils.getNumberValue(string, "firework power");
+        final Map.Entry<Number, Integer> fireworkPower = HandlerUtil.getNumberValue(string, "firework power");
         powerN = fireworkPower.getKey();
         power = fireworkPower.getValue();
     }

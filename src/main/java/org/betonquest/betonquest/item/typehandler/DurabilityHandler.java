@@ -2,7 +2,6 @@ package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem.Number;
-import org.betonquest.betonquest.utils.Utils;
 
 import java.util.Map;
 
@@ -16,7 +15,7 @@ public class DurabilityHandler {
     }
 
     public void set(final String durability) throws InstructionParseException {
-        final Map.Entry<Number, Integer> itemDurability = Utils.getNumberValue(durability, "item durability");
+        final Map.Entry<Number, Integer> itemDurability = HandlerUtil.getNumberValue(durability, "item durability");
         this.number = itemDurability.getKey();
         this.durability = itemDurability.getValue();
     }

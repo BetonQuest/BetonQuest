@@ -11,7 +11,6 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Backup;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.modules.config.Zipper;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -19,7 +18,6 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
-import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -332,66 +330,4 @@ public final class Utils {
         return argument;
     }
 
-    /**
-     * Checks the argument for null and throws when it is actual not present.
-     * <p>
-     * Primary used in handlers to check against empty parameters splits.
-     *
-     * @param argument    to check for null and split
-     * @param message     of the exception when the argument is null
-     * @param splitSymbol regex to split
-     * @return non empty string array
-     * @throws InstructionParseException if the argument is null or
-     */
-    public static String[] getNNSplit(@Nullable final String argument, final String message, @Language("RegExp") final String splitSymbol) throws InstructionParseException {
-        final String[] split = getNN(argument, message).split(splitSymbol);
-        if (split.length == 0) {
-            throw new InstructionParseException("Missing values!");
-        }
-        return split;
-    }
-
-    /**
-     * Parses a string into non-negative int, using the given message part inside the exception message.
-     *
-     * @param number      the string to parse
-     * @param messagePart to put into exceptions to identify what is parsed
-     * @return zero or a positive number
-     * @throws InstructionParseException if {@code number} can't be parsed or is negative
-     */
-    public static int getNotBelowZero(final String number, final String messagePart) throws InstructionParseException {
-        try {
-            final int parsed = Integer.parseInt(number);
-            if (parsed < 0) {
-                throw new InstructionParseException(messagePart + " must be a positive integer");
-            }
-            return parsed;
-        } catch (final NumberFormatException exception) {
-            throw new InstructionParseException("Could not parse " + messagePart + ": " + number, exception);
-        }
-    }
-
-    /**
-     * Gets a pair of Number requirement and its non-negative int.
-     * <p>
-     * The value will be one in the {@link QuestItem.Number#WHATEVER} case.
-     *
-     * @param part        to parse into one pair
-     * @param messagePart to put into exceptions to identify what is parsed
-     * @return the requirement type and the parsed value
-     * @throws InstructionParseException if {@code part} can't be parsed or is negative
-     */
-    public static Map.Entry<QuestItem.Number, Integer> getNumberValue(final String part, final String messagePart) throws InstructionParseException {
-        final QuestItem.Number number;
-        if ("?".equals(part)) {
-            return Map.entry(QuestItem.Number.WHATEVER, 1);
-        } else if (part.endsWith("-")) {
-            number = QuestItem.Number.LESS;
-        } else if (part.endsWith("+")) {
-            number = QuestItem.Number.MORE;
-        } else {
-            return Map.entry(QuestItem.Number.EQUAL, getNotBelowZero(part, messagePart));
-        }
-        return Map.entry(number, getNotBelowZero(part.substring(0, part.length() - 1), messagePart));
-    }
 }
