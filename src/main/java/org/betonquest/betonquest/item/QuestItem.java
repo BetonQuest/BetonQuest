@@ -191,11 +191,11 @@ public class QuestItem {
         String unbreakable = "";
         String customModelData = "";
         String flags = "";
-        if (item.getDurability() != 0) {
-            durability = " durability:" + item.getDurability();
-        }
         final ItemMeta meta = item.getItemMeta();
         if (meta != null) {
+            if (meta instanceof final Damageable damageable) {
+                durability = " durability:" + damageable.getDamage();
+            }
             if (meta.hasDisplayName()) {
                 name = " name:" + meta.getDisplayName().replace(" ", "_");
             }
@@ -381,12 +381,12 @@ public class QuestItem {
             return false;
         }
         // basic meta checks
-        if (!durability.check(item.getDurability())) {
-            return false;
-        }
         final ItemMeta meta = item.getItemMeta();
         if (meta == null) {
             return true;
+        }
+        if (!durability.check(meta instanceof Damageable ? ((Damageable) meta).getDamage() : 0)) {
+            return false;
         }
         final String displayName = meta.hasDisplayName() ? meta.getDisplayName() : null;
         if (!name.check(displayName)) {
@@ -553,7 +553,7 @@ public class QuestItem {
     /**
      * @return the durability value
      */
-    public short getDurability() {
+    public int getDurability() {
         return durability.get();
     }
 

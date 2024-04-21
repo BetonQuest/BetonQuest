@@ -2,10 +2,13 @@ package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem.Number;
+import org.betonquest.betonquest.utils.Utils;
+
+import java.util.Map;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class DurabilityHandler {
-    private short durability;
+    private int durability;
 
     private Number number = Number.WHATEVER;
 
@@ -13,24 +16,12 @@ public class DurabilityHandler {
     }
 
     public void set(final String durability) throws InstructionParseException {
-        String inputDurability = durability;
-        if (inputDurability.endsWith("-")) {
-            number = Number.LESS;
-            inputDurability = inputDurability.substring(0, inputDurability.length() - 1);
-        } else if (inputDurability.endsWith("+")) {
-            number = Number.MORE;
-            inputDurability = inputDurability.substring(0, inputDurability.length() - 1);
-        } else {
-            number = Number.EQUAL;
-        }
-        try {
-            this.durability = Short.valueOf(inputDurability);
-        } catch (final NumberFormatException e) {
-            throw new InstructionParseException("Could not parse item durability value", e);
-        }
+        final Map.Entry<Number, Integer> itemDurability = Utils.getNumberValue(durability, "item durability");
+        this.number = itemDurability.getKey();
+        this.durability = itemDurability.getValue();
     }
 
-    public short get() {
+    public int get() {
         return durability;
     }
 
