@@ -4,6 +4,7 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.item.QuestItem.Existence;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.ChatColor;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,41 +63,30 @@ public class BookHandler {
             textE = Existence.FORBIDDEN;
         } else {
             text = Utils.pagesFromString(string.replace("_", " "));
-            for (int i = 0; i < text.size(); i++) {
-                text.set(i, ChatColor.translateAlternateColorCodes('&', text.get(i)));
-            }
+            text.replaceAll(textToTranslate -> ChatColor.translateAlternateColorCodes('&', textToTranslate));
             textE = Existence.REQUIRED;
         }
     }
 
-    @SuppressWarnings("PMD.InefficientEmptyStringCheck")
-    public boolean checkTitle(final String string) {
-        switch (titleE) {
-            case WHATEVER:
-                return true;
-            case REQUIRED:
-                return string != null && string.equals(title);
-            case FORBIDDEN:
-                return string == null || string.trim().isEmpty();
-        }
-        return true;
+    public boolean checkTitle(@Nullable final String string) {
+        return checkExistence(titleE, string);
+    }
+
+    public boolean checkAuthor(@Nullable final String string) {
+        return checkExistence(authorE, string);
     }
 
     @SuppressWarnings("PMD.InefficientEmptyStringCheck")
-    public boolean checkAuthor(final String string) {
-        switch (authorE) {
-            case WHATEVER:
-                return true;
-            case REQUIRED:
-                return string != null && string.equals(author);
-            case FORBIDDEN:
-                return string == null || string.trim().isEmpty();
-        }
-        return true;
+    private boolean checkExistence(final Existence existence, @Nullable final String string) {
+        return switch (existence) {
+            case WHATEVER -> true;
+            case REQUIRED -> string != null && string.equals(author);
+            case FORBIDDEN -> string == null || string.trim().isEmpty();
+        };
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
-    public boolean checkText(final List<String> list) {
+    public boolean checkText(@Nullable final List<String> list) {
         switch (textE) {
             case WHATEVER:
                 return true;

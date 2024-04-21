@@ -3,15 +3,18 @@ package org.betonquest.betonquest.item.typehandler;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem.Existence;
 import org.betonquest.betonquest.item.QuestItem.Number;
+import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class PotionHandler {
@@ -77,21 +80,14 @@ public class PotionHandler {
     }
 
     public void setCustom(final String custom) throws InstructionParseException {
-        if (custom == null) {
-            throw new InstructionParseException("Potion is null!");
-        }
-        final String[] parts = custom.split(",");
-        if (parts.length == 0) {
-            throw new InstructionParseException("Missing values!");
-        }
-        if ("none".equalsIgnoreCase(custom)) {
+        final String[] parts = Utils.getNNSplit(custom, "Potion is null!", ",");
+        if ("none".equalsIgnoreCase(parts[0])) {
             customE = Existence.FORBIDDEN;
             return;
         }
         this.custom = new ArrayList<>(parts.length);
         for (final String part : parts) {
-            final CustomEffectHandler checker = new CustomEffectHandler();
-            checker.set(part);
+            final CustomEffectHandler checker = new CustomEffectHandler(part);
             this.custom.add(checker);
         }
         customE = Existence.REQUIRED;
@@ -119,7 +115,7 @@ public class PotionHandler {
         if (customE == Existence.WHATEVER) {
             return true;
         }
-        if (custom == null || custom.isEmpty()) {
+        if (custom.isEmpty()) {
             return customE == Existence.FORBIDDEN;
         }
         if (exact && custom.size() != this.custom.size()) {
@@ -141,88 +137,59 @@ public class PotionHandler {
     }
 
     private static class CustomEffectHandler {
-        private PotionEffectType customType;
+        /**
+         * The expected argument count of the formatted effect.
+         */
+        private static final int INSTRUCTION_FORMAT_LENGTH = 3;
 
-        private Existence customTypeE = Existence.WHATEVER;
+        private final PotionEffectType customType;
 
-        private int duration = 60 * 20;
+        private final Existence customTypeE;
 
-        private Number durationE = Number.WHATEVER;
+        private final Number durationE;
 
-        private int power = 1;
+        /**
+         * The effect duration, in ticks.
+         */
+        private final int duration;
 
-        private Number powerE = Number.WHATEVER;
+        /**
+         * The effect amplifier, starting at 0.
+         */
+        private final int power;
 
-        public CustomEffectHandler() {
-        }
+        private final Number powerE;
 
-        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
-        private void set(final String custom) throws InstructionParseException {
-            if (custom == null) {
-                throw new InstructionParseException("Potion is null!");
-            }
-            final String[] parts = custom.split(":");
-            if (parts.length == 0) {
-                throw new InstructionParseException("Missing values!");
-            }
+        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+        public CustomEffectHandler(final String custom) throws InstructionParseException {
+            final String[] parts = Utils.getNNSplit(custom, "Potion is null!", ":");
             if (parts[0].startsWith("none-")) {
-                parts[0] = parts[0].substring(5);
                 customTypeE = Existence.FORBIDDEN;
-            }
-            customType = PotionEffectType.getByName(parts[0]);
-            if (customType == null) {
-                throw new InstructionParseException("Unknown effect type: " + parts[0]);
-            }
-            if (customTypeE == Existence.FORBIDDEN) {
+                customType = getType(parts[0].substring("none-".length()));
+                powerE = Number.WHATEVER;
+                power = 1;
+                durationE = Number.WHATEVER;
+                duration = 60 * 20;
                 return;
             }
+            customType = getType(parts[0]);
             customTypeE = Existence.REQUIRED;
-            if (parts.length == 3) {
-                // first number is a duration of the potion
-                if (duration < 0) {
-                    throw new InstructionParseException("Efect duration must be a positive integer");
-                }
-                // second number is the power of the potion
-                if ("?".equals(parts[1])) {
-                    powerE = Number.WHATEVER;
-                    parts[1] = String.valueOf(power);
-                } else if (parts[1].endsWith("-")) {
-                    powerE = Number.LESS;
-                    parts[1] = parts[1].substring(0, parts[1].length() - 1);
-                } else if (parts[1].endsWith("+")) {
-                    powerE = Number.MORE;
-                    parts[1] = parts[1].substring(0, parts[1].length() - 1);
-                } else {
-                    powerE = Number.EQUAL;
-                }
-                try {
-                    power = Integer.parseInt(parts[1]) - 1;
-                } catch (final NumberFormatException e) {
-                    throw new InstructionParseException("Could not parse effect power: " + parts[1], e);
-                }
-                if (power < 0) {
-                    throw new InstructionParseException("Effect power must be a positive integer");
-                }
-                if ("?".equals(parts[2])) {
-                    durationE = Number.WHATEVER;
-                    parts[2] = String.valueOf(duration);
-                } else if (parts[2].endsWith("-")) {
-                    durationE = Number.LESS;
-                    parts[2] = parts[2].substring(0, parts[2].length() - 1);
-                } else if (parts[2].endsWith("+")) {
-                    durationE = Number.MORE;
-                    parts[2] = parts[2].substring(0, parts[2].length() - 1);
-                } else {
-                    durationE = Number.EQUAL;
-                }
-                try {
-                    duration = Integer.parseInt(parts[2]) * 20;
-                } catch (final NumberFormatException e) {
-                    throw new InstructionParseException("Could not parse effect duration: " + parts[2], e);
-                }
-            } else {
+            if (parts.length != INSTRUCTION_FORMAT_LENGTH) {
                 throw new InstructionParseException("Wrong effect format");
             }
+            final Map.Entry<Number, Integer> effectPower = Utils.getNumberValue(parts[1], "effect power");
+            powerE = effectPower.getKey();
+            power = effectPower.getValue() - 1;
+            if (power < 0) {
+                throw new InstructionParseException("Effect power must be a positive integer");
+            }
+            final Map.Entry<Number, Integer> effectDuration = Utils.getNumberValue(parts[2], "effect duration");
+            durationE = effectDuration.getKey();
+            duration = effectDuration.getValue() * 20;
+        }
+
+        private PotionEffectType getType(final String name) throws InstructionParseException {
+            return Utils.getNN(PotionEffectType.getByName(name), "Unknown effect type: " + name);
         }
 
         private PotionEffect get() {
@@ -230,12 +197,12 @@ public class PotionHandler {
         }
 
         @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
-        private boolean check(final PotionEffect effect) {
+        private boolean check(@Nullable final PotionEffect effect) {
             switch (customTypeE) {
                 case WHATEVER:
                     return true;
                 case REQUIRED:
-                    if (!effect.getType().equals(customType)) {
+                    if (effect == null || !effect.getType().equals(customType)) {
                         return false;
                     }
                     switch (durationE) {

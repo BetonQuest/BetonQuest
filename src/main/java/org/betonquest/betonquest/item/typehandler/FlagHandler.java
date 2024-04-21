@@ -4,6 +4,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -15,19 +16,20 @@ import java.util.stream.Collectors;
  */
 public class FlagHandler {
     /**
-     * Set of ItemFlags on the ItemStack.
-     */
-    private Set<ItemFlag> itemFlags;
-
-    /**
      * Existence of the flags.
      */
     private final QuestItem.Existence existence = QuestItem.Existence.WHATEVER;
 
     /**
+     * Set of ItemFlags on the ItemStack.
+     */
+    private Set<ItemFlag> itemFlags;
+
+    /**
      * Construct a new FlagHandler.
      */
     public FlagHandler() {
+        itemFlags = Set.of();
     }
 
     /**
@@ -46,7 +48,7 @@ public class FlagHandler {
      * @param itemFlags The ItemFlags, or null if not set.
      * @throws InstructionParseException If there is an error setting the flags.
      */
-    public void set(final Set<ItemFlag> itemFlags) throws InstructionParseException {
+    public void set(@Nullable final Set<ItemFlag> itemFlags) throws InstructionParseException {
         if (itemFlags == null || itemFlags.isEmpty()) {
             this.itemFlags = Set.of();
         } else {
@@ -72,7 +74,7 @@ public class FlagHandler {
     public boolean check(final ItemMeta data) {
         return existence == QuestItem.Existence.WHATEVER
                 || existence == QuestItem.Existence.FORBIDDEN && data.getItemFlags().isEmpty()
-                || existence == QuestItem.Existence.REQUIRED && (data.getItemFlags().size() > 0) && itemFlags.equals(data.getItemFlags());
+                || existence == QuestItem.Existence.REQUIRED && (!data.getItemFlags().isEmpty()) && itemFlags.equals(data.getItemFlags());
     }
 
 }

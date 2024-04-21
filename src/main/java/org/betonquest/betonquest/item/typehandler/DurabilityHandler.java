@@ -35,18 +35,12 @@ public class DurabilityHandler {
     }
 
     public boolean check(final int durability) {
-        switch (number) {
-            case WHATEVER:
-                return true;
-            case EQUAL:
-                return this.durability == durability;
-            case MORE:
-                return this.durability <= durability;
-            case LESS:
-                return this.durability >= durability;
-            default:
-                return false;
-        }
+        return switch (number) {
+            case WHATEVER -> true;
+            case EQUAL -> this.durability == durability;
+            case MORE -> this.durability <= durability;
+            case LESS -> this.durability >= durability;
+        };
     }
 
     /**

@@ -23,16 +23,11 @@ public class UnbreakableHandler {
     }
 
     public boolean check(final boolean bool) {
-        switch (unbreakable) {
-            case WHATEVER:
-                return true;
-            case REQUIRED:
-                return bool;
-            case FORBIDDEN:
-                return !bool;
-            default:
-                return false;
-        }
+        return switch (unbreakable) {
+            case WHATEVER -> true;
+            case REQUIRED -> bool;
+            case FORBIDDEN -> !bool;
+        };
     }
 
 }

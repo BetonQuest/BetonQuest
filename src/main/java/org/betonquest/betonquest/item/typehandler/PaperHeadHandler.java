@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +51,7 @@ public class PaperHeadHandler extends HeadHandler {
         return parsedValues;
     }
 
+    @Nullable
     private static String encodeSkin(final PlayerProfile playerProfile) {
         return playerProfile.getProperties().stream()
                 .filter(it -> "textures".equals(it.getName()))
