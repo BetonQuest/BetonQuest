@@ -53,7 +53,8 @@ public class BurnEventFactory implements EventFactory {
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        final VariableNumber duration = instruction.getVarNum(instruction.getOptional("duration"));
+        final VariableNumber duration = instruction.getVarNum(instruction.getOptionalArgument("duration")
+                .orElseThrow(() -> new InstructionParseException("Missing duration!")));
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
                         loggerFactory.create(BurnEvent.class), new BurnEvent(duration), instruction.getPackage()),
