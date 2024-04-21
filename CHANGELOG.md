@@ -13,6 +13,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `resourcepack` objective - to allow checking when the player accepts, denies, downloads, or fails to download a resource pack 
 - `region` objective now supports variables as region name
 - `location` objective now allows `entry` and `exit` keywords to track entering and leaving the location
+- new feature allowing adjustment of maximum hologram display radius
 ### Changed
 - player variable
   - `%player%` is now the same as `%player.name%`
@@ -29,6 +30,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - MMOCoreClassCondition, MMOItemsGiveEvent, MMOItemsHandCondition and MMOItemsItemCondition now work with numeric identifiers
 - yaml multiline instructions could lead to partly working events, conditions and objectives
 - creation of advancement tab when an advancement NotifyIO is sent
+- `burn` event throwing unexpected error when omitting duration
+- added missing firework meta to string representation of QuestItem
 ### Security
 
 ## [2.0.1] - 2024-03-24
