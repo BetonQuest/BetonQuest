@@ -96,18 +96,18 @@ public class BookHandler {
                 }
                 for (int i = 0; i < text.size(); i++) {
                     // this removes black color codes, bukkit adds them for some reason
-                    String line = list.get(i).replaceAll("(§0)?\\n(§0)?", "\\n");
+                    String line = list.get(i).replaceAll("(§0)?\\n(§0)?", "\n");
                     while (line.startsWith("\"")) {
                         line = line.substring(1);
                     }
-                    while (line.endsWith("\"") && line.length() > 0) {
+                    while (line.endsWith("\"")) {
                         line = line.substring(0, line.length() - 1);
                     }
-                    String pattern = text.get(i).replaceAll("(§0)?\\n(§0)?", "\\n");
+                    String pattern = text.get(i).replaceAll("(§0)?\\n(§0)?", "\n");
                     while (pattern.startsWith("\"")) {
                         pattern = pattern.substring(1);
                     }
-                    while (list.get(i).endsWith("\"")) {
+                    while (pattern.endsWith("\"")) {
                         pattern = pattern.substring(0, pattern.length() - 1);
                     }
                     if (!line.equals(pattern)) {
