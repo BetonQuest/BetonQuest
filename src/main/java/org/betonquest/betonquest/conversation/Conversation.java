@@ -35,7 +35,6 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.UnknownNullability;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -586,7 +585,6 @@ public class Conversation implements Listener {
     /**
      * @return the interceptor of the conversation
      */
-    @UnknownNullability
     public Interceptor getInterceptor() {
         return interceptor;
     }

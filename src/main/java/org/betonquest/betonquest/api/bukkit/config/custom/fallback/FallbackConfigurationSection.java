@@ -10,7 +10,6 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -697,7 +696,6 @@ public class FallbackConfigurationSection implements ConfigurationSection {
          *
          * @return The original {@link ConfigurationSection}
          */
-        @UnknownNullability
         protected ConfigurationSection getOriginal() {
             if (sectionName != null && !checkIsOrphaned()) {
                 assert parent != null;

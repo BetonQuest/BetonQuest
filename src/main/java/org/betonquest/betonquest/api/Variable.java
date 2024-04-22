@@ -3,7 +3,6 @@ package org.betonquest.betonquest.api;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.jetbrains.annotations.UnknownNullability;
 
 /**
  * Represents a variable in conversations.
@@ -59,7 +58,7 @@ public abstract class Variable {
      * @param profile the {@link Profile} to get the value for
      * @return the value of this variable
      */
-    public abstract String getValue(@UnknownNullability Profile profile);
+    public abstract String getValue(Profile profile);
 
     @Override
     public String toString() {

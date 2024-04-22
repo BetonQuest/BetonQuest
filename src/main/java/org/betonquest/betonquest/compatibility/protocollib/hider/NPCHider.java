@@ -23,7 +23,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,7 +69,6 @@ public final class NPCHider extends BukkitRunnable implements Listener {
     /**
      * @return the currently used NPCHider instance
      */
-    @UnknownNullability
     public static NPCHider getInstance() {
         return instance;
     }

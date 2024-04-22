@@ -19,7 +19,6 @@ import org.bukkit.Sound;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.UnknownNullability;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -148,8 +147,7 @@ public final class Config {
      * @param address address of the string
      * @return the requested string
      */
-    @UnknownNullability
-    public static String getString(@Nullable final String address) {
+    public static String getString(final String address) {
         if (address == null) {
             return null;
         }

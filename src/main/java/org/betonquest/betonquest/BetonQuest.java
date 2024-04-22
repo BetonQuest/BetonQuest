@@ -282,7 +282,6 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.UnknownNullability;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -1465,7 +1464,6 @@ public class BetonQuest extends JavaPlugin {
      * @param profile the {@link Profile} of the player
      * @return PlayerData object for the player
      */
-    @UnknownNullability
     public PlayerData getPlayerData(final Profile profile) {
         PlayerData playerData = playerDataMap.get(profile);
         if (playerData == null && profile.getOnlineProfile().isPresent()) {
@@ -1657,7 +1655,6 @@ public class BetonQuest extends JavaPlugin {
      * @param objectiveID package name, dot and ID of the objective
      * @return Objective object or null if it does not exist
      */
-    @UnknownNullability
     public Objective getObjective(final ObjectiveID objectiveID) {
         return OBJECTIVES.get(objectiveID);
     }
