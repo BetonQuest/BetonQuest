@@ -12,6 +12,7 @@ import org.betonquest.betonquest.item.typehandler.DurabilityHandler;
 import org.betonquest.betonquest.item.typehandler.EnchantmentsHandler;
 import org.betonquest.betonquest.item.typehandler.FireworkHandler;
 import org.betonquest.betonquest.item.typehandler.FlagHandler;
+import org.betonquest.betonquest.item.typehandler.HandlerUtil;
 import org.betonquest.betonquest.item.typehandler.HeadHandler;
 import org.betonquest.betonquest.item.typehandler.LoreHandler;
 import org.betonquest.betonquest.item.typehandler.NameHandler;
@@ -37,6 +38,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Locale;
@@ -105,14 +107,7 @@ public class QuestItem {
      */
     @SuppressWarnings("PMD.NcssCount")
     public QuestItem(final String instruction) throws InstructionParseException {
-        if (instruction == null) {
-            throw new InstructionParseException("Item instruction is null");
-        }
-        final String[] parts = instruction.split(" ");
-        if (parts.length == 0) {
-            throw new InstructionParseException("Not enough arguments");
-        }
-
+        final String[] parts = HandlerUtil.getNNSplit(instruction, "Item instruction is null", " ");
         selector = new BlockSelector(parts[0]);
 
         // Skip the block selector part to process remaining arguments
@@ -196,11 +191,11 @@ public class QuestItem {
         String unbreakable = "";
         String customModelData = "";
         String flags = "";
-        if (item.getDurability() != 0) {
-            durability = " durability:" + item.getDurability();
-        }
         final ItemMeta meta = item.getItemMeta();
         if (meta != null) {
+            if (meta instanceof final Damageable damageable) {
+                durability = " durability:" + damageable.getDamage();
+            }
             if (meta.hasDisplayName()) {
                 name = " name:" + meta.getDisplayName().replace(" ", "_");
             }
@@ -345,7 +340,7 @@ public class QuestItem {
     }
 
     @Override
-    public boolean equals(final Object other) {
+    public boolean equals(@Nullable final Object other) {
         if (!(other instanceof final QuestItem item)) {
             return false;
         }
@@ -377,7 +372,7 @@ public class QuestItem {
      */
     @SuppressWarnings("PMD.NPathComplexity")
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public boolean compare(final ItemStack item) {
+    public boolean compare(@Nullable final ItemStack item) {
         // basic item checks
         if (item == null) {
             return false;
@@ -386,12 +381,12 @@ public class QuestItem {
             return false;
         }
         // basic meta checks
-        if (!durability.check(item.getDurability())) {
-            return false;
-        }
         final ItemMeta meta = item.getItemMeta();
         if (meta == null) {
             return true;
+        }
+        if (!durability.check(meta instanceof Damageable ? ((Damageable) meta).getDamage() : 0)) {
+            return false;
         }
         final String displayName = meta.hasDisplayName() ? meta.getDisplayName() : null;
         if (!name.check(displayName)) {
@@ -558,7 +553,7 @@ public class QuestItem {
     /**
      * @return the durability value
      */
-    public short getDurability() {
+    public int getDurability() {
         return durability.get();
     }
 
@@ -572,6 +567,7 @@ public class QuestItem {
     /**
      * @return the display name or null if there is no name
      */
+    @Nullable
     public String getName() {
         return name.get();
     }
@@ -621,6 +617,7 @@ public class QuestItem {
     /**
      * @return owner of the head, used independently of player ID and texture
      */
+    @Nullable
     public Profile getOwner() {
         return head.getOwner(null);
     }
@@ -628,6 +625,7 @@ public class QuestItem {
     /**
      * @return playerId of the head, used in combination with the texture
      */
+    @Nullable
     public UUID getPlayerId() {
         return head.getPlayerId();
     }
@@ -635,6 +633,7 @@ public class QuestItem {
     /**
      * @return texture URL of the head, used in combination with the player ID
      */
+    @Nullable
     public String getTexture() {
         return head.getTexture();
     }
@@ -684,6 +683,7 @@ public class QuestItem {
     /**
      * @return the set of ItemFlags
      */
+    @Nullable
     public Set<ItemFlag> getFlags() {
         return flags.get();
     }

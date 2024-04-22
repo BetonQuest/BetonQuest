@@ -7,6 +7,7 @@ import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -35,10 +36,7 @@ public class FireworkEffectHandler {
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     public void set(final String string) throws InstructionParseException {
-        if (string == null || string.isEmpty()) {
-            throw new InstructionParseException("Effect is missing");
-        }
-        final String[] parts = string.split(":");
+        final String[] parts = HandlerUtil.getNNSplit(string, "Effect is missing", ":");
         // if "whatever" then all type checking is unnecessary
         if (!"?".equals(parts[0])) {
             if (parts[0].toLowerCase(Locale.ROOT).startsWith("none-")) {
@@ -109,7 +107,7 @@ public class FireworkEffectHandler {
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.SwitchDensity", "PMD.CognitiveComplexity"})
-    public boolean check(final FireworkEffect effect) {
+    public boolean check(@Nullable final FireworkEffect effect) {
         switch (typeE) {
             case WHATEVER:
                 return true;
@@ -185,7 +183,7 @@ public class FireworkEffectHandler {
                 }
                 return true;
             case FORBIDDEN:
-                return effect.getType() != type;
+                return effect == null || effect.getType() != type;
             default:
                 return false;
         }

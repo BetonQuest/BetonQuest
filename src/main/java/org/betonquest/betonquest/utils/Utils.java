@@ -18,6 +18,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -157,7 +158,7 @@ public final class Utils {
      * @return true if the supplied ItemStack is a quest item, false otherwise
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public static boolean isQuestItem(final ItemStack item) {
+    public static boolean isQuestItem(@Nullable final ItemStack item) {
         if (item == null) {
             return false;
         }
@@ -222,7 +223,7 @@ public final class Utils {
      */
     @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity"})
     public static Color getColor(final String string) throws InstructionParseException {
-        if (string == null || string.isEmpty()) {
+        if (string.isEmpty()) {
             throw new InstructionParseException("Color is not specified");
         }
         try {
@@ -310,4 +311,23 @@ public final class Utils {
     public static String format(final String string) {
         return format(string, true, true);
     }
+
+    /**
+     * Checks the argument for null and throws when it is actual not present.
+     * <p>
+     * Primary used in constructors to check against nullable values.
+     *
+     * @param argument to check for null
+     * @param message  of the exception when the argument is null
+     * @param <A>      type of the argument
+     * @return the argument, if not null
+     * @throws InstructionParseException if the argument is null
+     */
+    public static <A> A getNN(@Nullable final A argument, final String message) throws InstructionParseException {
+        if (argument == null) {
+            throw new InstructionParseException(message);
+        }
+        return argument;
+    }
+
 }

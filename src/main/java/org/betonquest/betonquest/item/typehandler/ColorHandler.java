@@ -29,14 +29,10 @@ public class ColorHandler {
     }
 
     public boolean check(final Color color) {
-        switch (colorE) {
-            case WHATEVER:
-                return true;
-            case REQUIRED:
-            case FORBIDDEN: // if it's forbidden, this.color is default leather color (undyed)
-                return color.equals(this.color);
-            default:
-                return false;
-        }
+        return switch (colorE) {
+            case WHATEVER -> true;
+            case REQUIRED, FORBIDDEN -> // if it's forbidden, this.color is default leather color (undyed)
+                    color.equals(this.color);
+        };
     }
 }

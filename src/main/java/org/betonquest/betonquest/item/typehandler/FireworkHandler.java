@@ -4,10 +4,12 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem.Existence;
 import org.betonquest.betonquest.item.QuestItem.Number;
 import org.bukkit.FireworkEffect;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class FireworkHandler {
@@ -37,15 +39,12 @@ public class FireworkHandler {
     }
 
     public void setEffects(final String string) throws InstructionParseException {
-        if (string == null || string.isEmpty()) {
-            throw new InstructionParseException("Firework effects missing");
-        }
-        if ("none".equalsIgnoreCase(string)) {
+        final String[] parts = HandlerUtil.getNNSplit(string, "Firework effects missing", ",");
+        if ("none".equalsIgnoreCase(parts[0])) {
             effectsE = Existence.FORBIDDEN;
             return;
         }
         effectsE = Existence.REQUIRED;
-        final String[] parts = string.split(",");
         for (final String part : parts) {
             final FireworkEffectHandler effect = new FireworkEffectHandler();
             effect.set(part);
@@ -58,27 +57,9 @@ public class FireworkHandler {
     }
 
     public void setPower(final String string) throws InstructionParseException {
-        String power = string;
-        if ("?".equals(power)) {
-            powerN = Number.WHATEVER;
-            power = "1";
-        } else if (power.endsWith("-")) {
-            powerN = Number.LESS;
-            power = power.substring(0, power.length() - 1);
-        } else if (power.endsWith("+")) {
-            powerN = Number.MORE;
-            power = power.substring(0, power.length() - 1);
-        } else {
-            powerN = Number.EQUAL;
-        }
-        try {
-            this.power = Integer.parseInt(power);
-        } catch (final NumberFormatException e) {
-            throw new InstructionParseException("Could not parse power: " + power, e);
-        }
-        if (this.power < 0) {
-            throw new InstructionParseException("Firework power must be a positive number");
-        }
+        final Map.Entry<Number, Integer> fireworkPower = HandlerUtil.getNumberValue(string, "firework power");
+        powerN = fireworkPower.getKey();
+        power = fireworkPower.getValue();
     }
 
     public int getSize() {
@@ -108,38 +89,27 @@ public class FireworkHandler {
                 }
                 return true;
             case FORBIDDEN:
-                return list == null || list.isEmpty();
+                return list.isEmpty();
             default:
                 return false;
         }
     }
 
-    public boolean checkSingleEffect(final FireworkEffect single) {
-        switch (effectsE) {
-            case WHATEVER:
-                return true;
-            case REQUIRED:
-                return single != null && !effects.isEmpty() && effects.get(0).check(single);
-            case FORBIDDEN:
-                return single == null;
-            default:
-                return false;
-        }
+    public boolean checkSingleEffect(@Nullable final FireworkEffect single) {
+        return switch (effectsE) {
+            case WHATEVER -> true;
+            case REQUIRED -> single != null && !effects.isEmpty() && effects.get(0).check(single);
+            case FORBIDDEN -> single == null;
+        };
     }
 
     public boolean checkPower(final int powerLevel) {
-        switch (powerN) {
-            case WHATEVER:
-                return true;
-            case EQUAL:
-                return powerLevel == power;
-            case MORE:
-                return powerLevel >= power;
-            case LESS:
-                return powerLevel <= power;
-            default:
-                return false;
-        }
+        return switch (powerN) {
+            case WHATEVER -> true;
+            case EQUAL -> powerLevel == power;
+            case MORE -> powerLevel >= power;
+            case LESS -> powerLevel <= power;
+        };
     }
 
 }
