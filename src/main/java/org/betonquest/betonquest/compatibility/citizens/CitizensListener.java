@@ -101,12 +101,10 @@ public class CitizensListener implements Listener {
         final BetonQuest plugin = BetonQuest.getInstance();
 
         rightClick = new RightClickListener();
-        assert rightClick != null;
         Bukkit.getPluginManager().registerEvents(rightClick, plugin);
 
         if (plugin.getPluginConfig().getBoolean("acceptNPCLeftClick")) {
             leftClick = new LeftClickListener();
-            assert leftClick != null;
             Bukkit.getPluginManager().registerEvents(leftClick, plugin);
         }
         interactionLimit = plugin.getPluginConfig().getInt("npcInteractionLimit", 500);
