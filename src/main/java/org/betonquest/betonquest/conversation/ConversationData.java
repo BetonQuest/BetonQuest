@@ -259,7 +259,7 @@ public class ConversationData {
      * @return a {@link CrossConversationReference} pointing to the option
      * @throws InstructionParseException when the conversation could not be resolved
      */
-    private CrossConversationReference resolvePointer(final QuestPackage pack, final String currentConversationName, final String currentOptionName, final OptionType optionType, final String option) throws InstructionParseException, ObjectNotFoundException {
+    private CrossConversationReference resolvePointer(final QuestPackage pack, final String currentConversationName, @Nullable final String currentOptionName, final OptionType optionType, final String option) throws InstructionParseException, ObjectNotFoundException {
         final ConversationOptionResolver resolver = new ConversationOptionResolver(plugin, pack, currentConversationName, optionType, option);
         return new CrossConversationReference(pack, currentConversationName, currentOptionName, resolver);
     }

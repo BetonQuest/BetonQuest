@@ -12,7 +12,7 @@ import org.bukkit.advancement.Advancement;
 import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 import java.util.Map;
@@ -94,7 +94,7 @@ public class AdvancementNotifyIO extends NotifyIO {
         }
     }
 
-    private String generateJson(final String message, final NamespacedKey root) {
+    private String generateJson(@Nullable final String message, @Nullable final NamespacedKey root) {
         final JsonObject json = new JsonObject();
         json.add("criteria", getCriteria());
         if (root != null) {
@@ -104,19 +104,19 @@ public class AdvancementNotifyIO extends NotifyIO {
         return new GsonBuilder().setPrettyPrinting().create().toJson(json);
     }
 
-    private @NotNull JsonObject getCriteria() {
+    private JsonObject getCriteria() {
         final JsonObject criteria = new JsonObject();
         criteria.add("impossible", getTrigger());
         return criteria;
     }
 
-    private @NotNull JsonObject getTrigger() {
+    private JsonObject getTrigger() {
         final JsonObject trigger = new JsonObject();
         trigger.addProperty("trigger", "minecraft:impossible");
         return trigger;
     }
 
-    private @NotNull JsonObject getDisplay(final String message) {
+    private JsonObject getDisplay(@Nullable final String message) {
         final JsonObject display = new JsonObject();
         display.add("icon", getIcon());
         display.addProperty("title", message);
@@ -128,7 +128,7 @@ public class AdvancementNotifyIO extends NotifyIO {
         return display;
     }
 
-    private @NotNull JsonObject getIcon() {
+    private JsonObject getIcon() {
         final JsonObject icon = new JsonObject();
         icon.addProperty("item", this.icon);
         return icon;

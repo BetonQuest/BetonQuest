@@ -481,7 +481,7 @@ public class QuestItem {
      */
     @SuppressWarnings("PMD.NPathComplexity")
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public ItemStack generate(final int stackSize, final Profile profile) {
+    public ItemStack generate(final int stackSize, @Nullable final Profile profile) {
         // Try resolve material directly
         final Material material = selector.getRandomMaterial();
 
@@ -493,9 +493,7 @@ public class QuestItem {
         meta.setDisplayName(name.get());
         meta.setLore(lore.get());
         meta.setUnbreakable(unbreakable.isUnbreakable());
-        if (flags.get() != null) {
-            flags.get().forEach(meta::addItemFlags);
-        }
+        flags.get().forEach(meta::addItemFlags);
         if (customModelData.getExistence() == Existence.REQUIRED) {
             meta.setCustomModelData(customModelData.get());
         }
@@ -683,7 +681,6 @@ public class QuestItem {
     /**
      * @return the set of ItemFlags
      */
-    @Nullable
     public Set<ItemFlag> getFlags() {
         return flags.get();
     }

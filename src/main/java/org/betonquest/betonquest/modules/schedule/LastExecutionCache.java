@@ -2,7 +2,6 @@ package org.betonquest.betonquest.modules.schedule;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -24,7 +23,6 @@ public class LastExecutionCache {
     /**
      * Config accessor for the cache.
      */
-    @Nullable
     private final ConfigAccessor cache;
 
     /**
@@ -43,12 +41,8 @@ public class LastExecutionCache {
      */
     public void reload() {
         try {
-            if (cache == null) {
-                log.error("Schedule cache not present!");
-            } else {
-                cache.reload();
-                log.debug("Successfully reloaded schedule cache.");
-            }
+            cache.reload();
+            log.debug("Successfully reloaded schedule cache.");
         } catch (final IOException e) {
             log.error("Could not reload schedule cache: " + e.getMessage(), e);
         }

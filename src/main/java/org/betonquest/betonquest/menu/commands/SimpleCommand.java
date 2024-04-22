@@ -132,7 +132,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     public List<String> tabComplete(final CommandSender sender,
                                     final String alias,
                                     final String[] args,
-                                    final Location location) throws IllegalArgumentException {
+                                    @Nullable final Location location) throws IllegalArgumentException {
         return this.tabComplete(sender, alias, args);
     }
 

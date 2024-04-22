@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api.bukkit.config.custom.handle;
 import org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDecorator;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -119,7 +120,8 @@ public class HandleModificationConfigurationSection extends ConfigurationSection
      * @param obj the raw object
      * @return the wrapped object
      */
-    protected Object wrapModifiable(final Object obj) {
+    @Contract("null -> null; !null -> !null")
+    protected Object wrapModifiable(@Nullable final Object obj) {
         if (obj instanceof HandleModificationConfigurationSection) {
             return obj;
         }

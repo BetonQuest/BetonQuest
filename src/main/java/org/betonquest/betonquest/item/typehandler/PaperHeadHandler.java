@@ -61,7 +61,7 @@ public class PaperHeadHandler extends HeadHandler {
     }
 
     @Override
-    public void populate(final SkullMeta skullMeta, final Profile profile) {
+    public void populate(final SkullMeta skullMeta, @Nullable final Profile profile) {
         final Profile owner = getOwner(profile);
         final UUID playerId = getPlayerId();
         final String texture = getTexture();
