@@ -29,12 +29,13 @@ public class VariableInstruction extends Instruction {
         if (!instruction.isEmpty() && instruction.charAt(0) != '%' && !instruction.endsWith("%")) {
             throw new IllegalArgumentException("Variable instruction does not start and end with '%' character");
         }
-        super.parts = instruction.substring(1, instruction.length() - 1).split("\\.");
+        final String rawInstruction = instruction.substring(1, instruction.length() - 1);
+        super.data = new Data(rawInstruction, rawInstruction.split("\\."));
     }
 
     @Override
     public String getInstruction() {
-        return String.join(".", super.parts);
+        return data.getInput();
     }
 
     @Override

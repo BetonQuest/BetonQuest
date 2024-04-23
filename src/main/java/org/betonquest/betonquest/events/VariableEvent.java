@@ -10,7 +10,9 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.objectives.VariableObjective;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class VariableEvent extends QuestEvent {
@@ -29,8 +31,9 @@ public class VariableEvent extends QuestEvent {
         objectiveID = instruction.getObjective();
         key = instruction.next();
         keyVariables = BetonQuest.resolveVariables(key);
-        value = instruction.next();
-        valueVariables = BetonQuest.resolveVariables(value);
+        this.value = Arrays.stream(instruction.getRequiredArguments()).skip(3)
+                .collect(Collectors.joining(" "));
+        valueVariables = BetonQuest.resolveVariables(this.value);
     }
 
     @Override

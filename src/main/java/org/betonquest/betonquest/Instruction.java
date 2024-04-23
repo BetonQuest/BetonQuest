@@ -22,28 +22,26 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 import java.io.Serial;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.regex.MatchResult;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount", "PMD.GodClass", "PMD.CommentRequired",
         "PMD.AvoidFieldNameMatchingTypeName", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods"})
 public class Instruction {
-    private static final Pattern WORD_PATTERN = Pattern.compile("\\S+");
-
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
     private final QuestPackage pack;
-
-    protected String[] parts;
 
     private ID identifier;
 
@@ -53,6 +51,8 @@ public class Instruction {
 
     private String lastOptional;
 
+    protected Data data;
+
     public Instruction(final BetonQuestLogger log, final QuestPackage pack, final ID identifier, final String instruction) {
         this.log = log;
         this.pack = pack;
@@ -61,19 +61,7 @@ public class Instruction {
         } catch (final ObjectNotFoundException e) {
             this.log.warn(pack, "Could not find instruction: " + e.getMessage(), e);
         }
-        this.parts = split(instruction);
-    }
-
-    /**
-     * Split a string on white space.
-     *
-     * @param string the input string.
-     * @return the split strings
-     */
-    protected static String[] split(final String string) {
-        return WORD_PATTERN.matcher(string).results()
-                .map(MatchResult::group)
-                .toArray(String[]::new);
+        this.data = new Parser(instruction).parse();
     }
 
     @Override
@@ -82,11 +70,11 @@ public class Instruction {
     }
 
     public String getInstruction() {
-        return String.join(" ", parts);
+        return data.getInput();
     }
 
     public int size() {
-        return parts.length;
+        return data.requiredArguments.size() + data.optionalArguments.size();
     }
 
     public QuestPackage getPackage() {
@@ -115,7 +103,7 @@ public class Instruction {
     /////////////////////
 
     public boolean hasNext() {
-        return currentIndex < parts.length - 1;
+        return currentIndex < data.requiredArguments.size() - 1;
     }
 
     public String next() throws InstructionParseException {
@@ -131,12 +119,19 @@ public class Instruction {
     }
 
     public String getPart(final int index) throws InstructionParseException {
-        if (parts.length <= index) {
+        if (data.requiredArguments.size() <= index) {
             throw new InstructionParseException("Not enough arguments");
         }
         lastOptional = null;
         currentIndex = index;
-        return parts[index];
+        return data.requiredArguments.get(index);
+    }
+
+    /**
+     * @return copy of required arguments
+     */
+    public String[] getRequiredArguments() {
+        return data.getRequiredArguments();
     }
 
     /**
@@ -167,18 +162,22 @@ public class Instruction {
      * @return an {@link Optional} containing the value or an empty {@link Optional} if the value is not present
      */
     public Optional<String> getOptionalArgument(final String prefix) {
-        for (final String part : parts) {
-            if (part.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT) + ":")) {
-                lastOptional = prefix;
-                currentIndex = -1;
-                return Optional.of(part.substring(prefix.length() + 1));
-            }
-        }
-        return Optional.empty();
+        final String value = data.optionalArguments.get(prefix);
+        if (value == null) return Optional.empty();
+        lastOptional = prefix;
+        currentIndex = -1;
+        return Optional.of(value);
+    }
+
+    /**
+     * @return copy of optional arguments
+     */
+    public Map<String, String> getOptionalArguments() {
+        return data.getOptionalArguments();
     }
 
     public boolean hasArgument(final String argument) {
-        for (final String part : parts) {
+        for (final String part : data.requiredArguments) {
             if (part.equalsIgnoreCase(argument)) {
                 return true;
             }
@@ -637,6 +636,129 @@ public class Instruction {
          */
         public PartParseException(final String message, final Throwable cause) {
             super("Error while parsing " + (lastOptional == null ? currentIndex : lastOptional + " optional") + " argument: " + message, cause);
+        }
+    }
+
+    /**
+     * Instruction parser to handle whitespaces using delimiters.
+     * It will generate an instance of {@link Data} holding its arguments
+     */
+    public static class Parser {
+
+        private final Set<Character> STRING_DELIMITERS = Set.of('"','\'', '`');
+        private static final Pattern KEY_PATTERN = Pattern.compile("^[a-zA-Z]+$");
+        private static final Pattern ESCAPE_PATTERN = Pattern.compile("\\\\(.)");
+        private final Deque<ArrayList<String>> arguments = new ArrayDeque<>();
+        private final StringBuilder sequence = new StringBuilder();
+        private boolean insideQuotes = false;
+        private final String input;
+
+        public Parser(final String input) {
+            this.input = input.trim();
+        }
+
+        public Data parse() {
+            arguments.push(new ArrayList<>());
+            for (final char character : input.toCharArray()) {
+                sequence.append(character);
+                if (STRING_DELIMITERS.contains(character)) {
+                    handleQuote(character);
+                }
+                if (insideQuotes) continue;
+                if (character == ':') {
+                    handleColon();
+                    continue;
+                }
+                if (!Character.isWhitespace(character)) continue;
+                sequence.setLength(sequence.length() - 1);
+                processSequence(true);
+            }
+            processSequence(false);
+            return new Data(input, arguments);
+        }
+
+        private void handleColon() {
+            if (sequence.isEmpty() || !arguments.getLast().isEmpty()) return;
+            final String key = sequence.substring(0, sequence.length() - 1);
+            if (!KEY_PATTERN.matcher(key).matches()) return;
+            arguments.getLast().add(ESCAPE_PATTERN.matcher(key).replaceAll("$1"));
+            sequence.setLength(0);
+        }
+
+        private void handleQuote(final char character) {
+            final char firstChar = sequence.charAt(0);
+            if (sequence.length() == 1 && STRING_DELIMITERS.contains(firstChar)) {
+                insideQuotes = true;
+                return;
+            }
+            if (!STRING_DELIMITERS.contains(firstChar) || firstChar != character) return;
+            int backlashCount = 0;
+            for (int i = sequence.length() - 2; i >= 0; i--) {
+                if (sequence.charAt(i) != '\\') break;
+                backlashCount++;
+            }
+            if (backlashCount % 2 == 0) insideQuotes = false;
+        }
+
+        private void processSequence(final boolean addListAtTail) {
+            if (sequence.isEmpty()) return;
+            final char firstChar = sequence.charAt(0);
+            if (STRING_DELIMITERS.contains(firstChar) && firstChar == sequence.charAt(sequence.length() - 1)) {
+                sequence.deleteCharAt(sequence.length() - 1).deleteCharAt(0);
+            }
+            final String sequenceString = sequence.toString();
+            final ArrayList<String> last = arguments.getLast();
+            last.add(ESCAPE_PATTERN.matcher(sequenceString).replaceAll("$1"));
+            if (addListAtTail) arguments.addLast(new ArrayList<>());
+            sequence.setLength(0);
+        }
+    }
+
+    /**
+     * Object holding arguments for a particular instruction.
+     */
+    public static class Data {
+
+        private final List<String> requiredArguments = new ArrayList<>();
+        private final Map<String, String> optionalArguments = new HashMap<>();
+        private final String input;
+
+        /**
+         * @param input instruction input
+         * @param arguments required arguments array
+         */
+        public Data(final String input, final String[] arguments) {
+            this.requiredArguments.addAll(List.of(arguments));
+            this.input = input;
+        }
+
+        private Data(final String instruction, final Deque<ArrayList<String>> arguments) {
+            this.input = instruction;
+            arguments.forEach(list -> {
+                if(list.size() == 2) optionalArguments.put(list.get(0), list.get(1));
+                else this.requiredArguments.add(list.get(0));
+            });
+        }
+
+        /**
+         * @return copy of non key-value arguments
+         */
+        public String[] getRequiredArguments() {
+            return requiredArguments.toArray(new String[0]);
+        }
+
+        /**
+         * @return copy of optional arguments
+         */
+        public Map<String, String> getOptionalArguments() {
+            return new HashMap<>(optionalArguments);
+        }
+
+        /**
+         * @return instruction input
+         */
+        public String getInput() {
+            return input;
         }
     }
 }

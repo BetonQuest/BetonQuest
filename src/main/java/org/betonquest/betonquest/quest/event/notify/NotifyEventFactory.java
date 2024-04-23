@@ -16,20 +16,17 @@ import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Factory for {@link NotifyEvent}.
  */
 public class NotifyEventFactory implements EventFactory {
-    /**
-     * A pattern for the notation of notifyIO options.
-     */
-    private static final Pattern KEY_VALUE_PATTERN = Pattern.compile("(?<key>[a-zA-Z]+?):(?<value>\\S+)");
-
     /**
      * A pattern for the notation of multiple translations in a single event.
      */
@@ -91,23 +88,13 @@ public class NotifyEventFactory implements EventFactory {
      * @throws InstructionParseException if the instruction is invalid
      */
     protected NotifyIO processInstruction(final Instruction instruction, final Map<String, VariableString> translations) throws InstructionParseException {
-        final HashMap<String, String> data = new HashMap<>();
-        final String rawInstruction = instruction.getInstruction();
-        final int indexStart = rawInstruction.indexOf(' ');
-
-        if (indexStart != -1) {
-            final Matcher keyValueMatcher = KEY_VALUE_PATTERN.matcher(rawInstruction);
-            final int indexEnd = keyValueMatcher.find() ? keyValueMatcher.start() : rawInstruction.length();
-            keyValueMatcher.reset();
-
-            final String langMessages = rawInstruction.substring(indexStart + 1, indexEnd);
-
-            translations.putAll(getLanguages(instruction.getPackage(), langMessages));
-            data.putAll(getData(keyValueMatcher));
-        }
-
-        final String category = data.remove("category");
-        return Notify.get(instruction.getPackage(), category, data);
+        final String langMessage = Arrays.stream(instruction.getRequiredArguments())
+                .skip(1).collect(Collectors.joining(" "));
+        translations.putAll(getLanguages(instruction.getPackage(), langMessage));
+        final Map<String, String> data = instruction.getOptionalArguments();
+        data.remove("events");
+        data.remove("conditions");
+        return Notify.get(instruction.getPackage(), data.remove("category"), data);
     }
 
     private Map<String, VariableString> getLanguages(final QuestPackage pack, final String messages) throws InstructionParseException {
@@ -135,18 +122,4 @@ public class NotifyEventFactory implements EventFactory {
         return translations;
     }
 
-    private Map<String, String> getData(final Matcher keyValueMatcher) {
-        final HashMap<String, String> data = new HashMap<>();
-
-        while (keyValueMatcher.find()) {
-            final String key = keyValueMatcher.group("key");
-            final String value = keyValueMatcher.group("value");
-            data.put(key, value);
-        }
-
-        data.remove("events");
-        data.remove("conditions");
-
-        return data;
-    }
 }
