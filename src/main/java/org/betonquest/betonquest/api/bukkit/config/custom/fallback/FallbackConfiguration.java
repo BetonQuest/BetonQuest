@@ -64,7 +64,9 @@ public class FallbackConfiguration extends FallbackConfigurationSection implemen
         }
         originalRoot.setDefaults(defaults);
         if (!createDefaults(true)) {
-            assert this.defaults != null;
+            if (this.defaults == null) {
+                throw new IllegalArgumentException("There are no defaults");
+            }
             this.defaults.manager.setOriginal(defaults);
         }
     }

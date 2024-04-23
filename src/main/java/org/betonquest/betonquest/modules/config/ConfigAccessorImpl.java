@@ -50,7 +50,6 @@ public class ConfigAccessorImpl implements ConfigAccessor {
         if (configurationFile != null && configurationFile.exists()) {
             this.configuration = readFromFile();
         } else {
-            assert plugin != null && resourceFile != null;
             this.configuration = readFromResource(plugin, resourceFile);
             try {
                 this.save();
@@ -71,7 +70,9 @@ public class ConfigAccessorImpl implements ConfigAccessor {
     }
 
     private YamlConfiguration readFromFile() throws InvalidConfigurationException, FileNotFoundException {
-        assert configurationFile != null;
+        if (configurationFile == null) {
+            throw new InvalidConfigurationException("Configuration file is null!");
+        }
         return load(configurationFile, false, configurationFile.getPath());
     }
 

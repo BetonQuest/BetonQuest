@@ -1,7 +1,5 @@
 package org.betonquest.betonquest.database;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Arrays;
 
 /**
@@ -24,7 +22,7 @@ public interface Saver {
     /**
      * Holds the data and the method of saving them to the database.
      */
-    record Record(UpdateType type, @Nullable String... args) {
+    record Record(UpdateType type, String... args) {
         /**
          * Creates new Record, which can be saved to the database using
          * {@code Saver.add()}.
@@ -32,9 +30,9 @@ public interface Saver {
          * @param type method used for saving the data
          * @param args list of Strings which will be saved to the database
          */
-        public Record(final UpdateType type, @Nullable final String... args) {
+        public Record(final UpdateType type, final String... args) {
             this.type = type;
-            this.args = args == null ? null : Arrays.copyOf(args, args.length);
+            this.args = Arrays.copyOf(args, args.length);
         }
     }
 }

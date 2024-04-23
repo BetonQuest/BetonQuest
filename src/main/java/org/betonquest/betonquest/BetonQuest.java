@@ -731,9 +731,7 @@ public class BetonQuest extends JavaPlugin {
     private <T> T registerAndGetService(final Class<T> clazz, final T service) {
         final ServicesManager servicesManager = getServer().getServicesManager();
         servicesManager.register(clazz, service, this, ServicePriority.Lowest);
-        final T loaded = servicesManager.load(clazz);
-        assert loaded != null;
-        return loaded;
+        return servicesManager.load(clazz);
     }
 
     @SuppressWarnings({"PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})

@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 
 /**
  * Connects to the database and queries it.
@@ -92,7 +93,7 @@ public class Connector {
     public ResultSet querySQL(final QueryType type, final VariableResolver variableResolver) {
         final String sql = type.createSql(prefix);
         try {
-            assert connection != null;
+            Objects.requireNonNull(connection);
             final PreparedStatement statement = connection.prepareStatement(sql);
             variableResolver.resolve(statement);
             return statement.executeQuery();
@@ -110,7 +111,7 @@ public class Connector {
      */
     public void updateSQL(final UpdateType type, final String... args) {
         final String sql = type.createSql(prefix);
-        assert connection != null;
+        Objects.requireNonNull(connection);
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             for (int i = 0; i < args.length; i++) {
                 statement.setString(i + 1, args[i]);

@@ -95,7 +95,7 @@ public class ActionObjective extends Objective implements Listener {
             }
         }
 
-        if ((selector == null || clickedBlock != null && (checkBlock(clickedBlock, event.getBlockFace()))) && checkConditions(onlineProfile)) {
+        if (checkBlock(clickedBlock, event.getBlockFace()) && checkConditions(onlineProfile)) {
             if (cancel) {
                 event.setCancelled(true);
             }
@@ -103,8 +103,13 @@ public class ActionObjective extends Objective implements Listener {
         }
     }
 
-    private boolean checkBlock(final Block clickedBlock, final BlockFace blockFace) {
-        assert selector != null;
+    private boolean checkBlock(@Nullable final Block clickedBlock, final BlockFace blockFace) {
+        if (selector == null) {
+            return true;
+        }
+        if (clickedBlock == null) {
+            return false;
+        }
         return (selector.match(Material.WATER) || selector.match(Material.LAVA))
                 && selector.match(clickedBlock.getRelative(blockFace), exactMatch) || selector.match(clickedBlock, exactMatch);
     }

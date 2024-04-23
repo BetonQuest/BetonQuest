@@ -282,7 +282,6 @@ public class QuestItem {
             }
             if (meta instanceof final FireworkEffectMeta fireworkMeta && fireworkMeta.hasEffect()) {
                 final FireworkEffect effect = fireworkMeta.getEffect();
-                assert effect != null;
                 final StringBuilder builder = new StringBuilder();
                 appendFireworkEffect(builder, effect);
                 builder.append(" firework:");

@@ -9,6 +9,8 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 /**
  * Adapter for {@link Event} and {@link StaticEvent} to fit the old convention of {@link QuestEvent}.
  */
@@ -45,7 +47,7 @@ public class QuestEventAdapter extends QuestEvent {
     @Override
     protected Void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         if (profile == null) {
-            assert staticEvent != null;
+            Objects.requireNonNull(staticEvent);
             staticEvent.execute();
         } else {
             event.execute(profile);

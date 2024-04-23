@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -119,7 +120,8 @@ abstract class AbstractData<T extends Cloneable> {
     }
 
     private T parseVariableObject(@Nullable final Profile profile) throws QuestRuntimeException {
-        assert objectVariables != null && objectFormatted != null;
+        Objects.requireNonNull(objectVariables);
+        Objects.requireNonNull(objectFormatted);
         final String[] variables = new String[this.objectVariables.size()];
         for (int i = 0; i < this.objectVariables.size(); i++) {
             final Variable var = this.objectVariables.get(i);

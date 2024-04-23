@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Inventory GUI for conversations.
@@ -127,9 +128,10 @@ public class InventoryConvIO implements Listener, ConversationIO {
         // Load config
         if (BetonQuest.getInstance().getPluginConfig().contains("conversation_IO_config.chest")) {
             final ConfigurationSection config = BetonQuest.getInstance().getPluginConfig().getConfigurationSection("conversation_IO_config.chest");
-            assert config != null;
-            showNumber = config.getBoolean("show_number", true);
-            showNPCText = config.getBoolean("show_npc_text", true);
+            if (config != null) {
+                showNumber = config.getBoolean("show_number", true);
+                showNPCText = config.getBoolean("show_npc_text", true);
+            }
         }
 
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
@@ -294,7 +296,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
 
         final SkullMeta npcMeta = (SkullMeta) npcHead.getItemMeta();
-        assert response != null;
+        Objects.requireNonNull(response);
         npcMeta.setLore(Arrays.asList(LocalChatPaginator.wordWrap(
                 Utils.replaceReset(response, npcTextColor), 45)));
         npcHead.setItemMeta(npcMeta);
