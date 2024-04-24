@@ -48,7 +48,7 @@ public class ConfigAccessorImpl implements ConfigAccessor {
         checkValidParams(configurationFile, plugin, resourceFile);
         this.configurationFile = configurationFile;
         if (configurationFile != null && configurationFile.exists()) {
-            this.configuration = readFromFile();
+            this.configuration = readFromFile(configurationFile);
         } else {
             this.configuration = readFromResource(plugin, resourceFile);
             try {
@@ -69,10 +69,7 @@ public class ConfigAccessorImpl implements ConfigAccessor {
         }
     }
 
-    private YamlConfiguration readFromFile() throws InvalidConfigurationException, FileNotFoundException {
-        if (configurationFile == null) {
-            throw new InvalidConfigurationException("Configuration file is null!");
-        }
+    private YamlConfiguration readFromFile(final File configurationFile) throws InvalidConfigurationException, FileNotFoundException {
         return load(configurationFile, false, configurationFile.getPath());
     }
 
@@ -159,7 +156,7 @@ public class ConfigAccessorImpl implements ConfigAccessor {
             return false;
         }
         try {
-            this.configuration = readFromFile();
+            this.configuration = readFromFile(configurationFile);
             return true;
         } catch (InvalidConfigurationException | FileNotFoundException e) {
             throw new IOException(buildExceptionMessage(false, configurationFile.getPath(),

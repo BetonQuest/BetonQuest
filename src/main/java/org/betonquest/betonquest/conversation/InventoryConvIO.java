@@ -3,6 +3,7 @@ package org.betonquest.betonquest.conversation;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
@@ -14,7 +15,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -41,6 +41,10 @@ import java.util.Objects;
 public class InventoryConvIO implements Listener, ConversationIO {
 
     private static final Map<String, ItemStack> SKULL_CACHE = new HashMap<>();
+
+    protected final boolean showNumber;
+
+    protected final boolean showNPCText;
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -82,11 +86,6 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
     protected boolean printMessages;
 
-    // Config
-    protected boolean showNumber = true;
-
-    protected boolean showNPCText = true;
-
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public InventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
@@ -125,14 +124,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
         answerPrefix = string.toString();
         loc = player.getLocation();
 
-        // Load config
-        if (BetonQuest.getInstance().getPluginConfig().contains("conversation_IO_config.chest")) {
-            final ConfigurationSection config = BetonQuest.getInstance().getPluginConfig().getConfigurationSection("conversation_IO_config.chest");
-            if (config != null) {
-                showNumber = config.getBoolean("show_number", true);
-                showNPCText = config.getBoolean("show_npc_text", true);
-            }
-        }
+        final ConfigurationFile pluginConfig = BetonQuest.getInstance().getPluginConfig();
+        showNumber = pluginConfig.getBoolean("conversation_IO_config.chest.show_number", true);
+        showNPCText = pluginConfig.getBoolean("conversation_IO_config.chest.show_npc_text", true);
 
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }

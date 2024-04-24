@@ -1,8 +1,6 @@
 package org.betonquest.betonquest.modules.config.patcher.migration;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,30 +15,26 @@ import java.util.stream.Stream;
  * Produces all config files.
  */
 public class FileConfigurationProvider {
-
     /**
      * All configs.
      */
-    @Nullable
-    private Map<File, YamlConfiguration> allConfigs;
+    private final Map<File, YamlConfiguration> allConfigs;
 
     /**
      * Creates a new file producer.
+     *
+     * @throws IOException If an I/O error occurs
      */
-    public FileConfigurationProvider() {
+    public FileConfigurationProvider() throws IOException {
+        allConfigs = new LinkedHashMap<>();
+        allConfigs.putAll(getAllQuestPackagesConfigs());
+        allConfigs.putAll(getAllQuestTemplatesConfigs());
     }
 
     /**
      * @return All configs
-     * @throws IOException If an I/O error occurs
      */
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
-    public Map<File, YamlConfiguration> getAllConfigs() throws IOException {
-        if (allConfigs == null) {
-            allConfigs = new LinkedHashMap<>();
-            allConfigs.putAll(getAllQuestPackagesConfigs());
-            allConfigs.putAll(getAllQuestTemplatesConfigs());
-        }
+    public Map<File, YamlConfiguration> getAllConfigs() {
         return allConfigs;
     }
 

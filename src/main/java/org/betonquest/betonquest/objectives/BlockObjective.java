@@ -21,8 +21,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
-
 /**
  * Player has to break/place specified amount of blocks. Doing opposite thing
  * (breaking when should be placing) will reverse the progress.
@@ -136,7 +134,7 @@ public class BlockObjective extends CountingObjective implements Listener {
         try {
             if (location != null) {
                 if (region != null) {
-                    return isInRange(loc, profile);
+                    return isInRange(loc, profile, location, region);
                 }
                 return loc.getBlock().getLocation().equals(location.getLocation(profile));
             }
@@ -147,9 +145,7 @@ public class BlockObjective extends CountingObjective implements Listener {
         return true;
     }
 
-    private boolean isInRange(final Location loc, final Profile profile) throws QuestRuntimeException {
-        Objects.requireNonNull(location);
-        Objects.requireNonNull(region);
+    private boolean isInRange(final Location loc, final Profile profile, final CompoundLocation location, final CompoundLocation region) throws QuestRuntimeException {
         final Location loc1 = location.getLocation(profile);
         final Location loc2 = region.getLocation(profile);
         return inBetween(loc1, loc2, loc);

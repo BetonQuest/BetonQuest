@@ -4,7 +4,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.Variable;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -22,8 +21,6 @@ public class ObjectivePropertyVariable extends Variable {
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public ObjectivePropertyVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(this.getClass());
-
         final String rawInstruction = instruction.getInstruction();
         final String[] parts = rawInstruction.split("\\.");
         String objectiveID = "";
@@ -37,12 +34,11 @@ public class ObjectivePropertyVariable extends Variable {
             propertyName = "";
         }
 
-        ObjectiveID tempObjective = null;
+        final ObjectiveID tempObjective;
         try {
             tempObjective = new ObjectiveID(instruction.getPackage(), objectiveID);
         } catch (final ObjectNotFoundException e) {
-            // TODO should this throw?
-            log.warn(instruction.getPackage(), "Error in objective property variable '" + instruction + "' " + e.getMessage());
+            throw new InstructionParseException("Error in objective property variable '" + instruction + "' " + e.getMessage(), e);
         }
         objective = tempObjective;
     }

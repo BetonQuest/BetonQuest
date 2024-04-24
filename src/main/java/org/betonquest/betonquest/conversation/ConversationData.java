@@ -120,7 +120,7 @@ public class ConversationData {
      * @throws InstructionParseException when there is a syntax error in the defined conversation
      * @throws ObjectNotFoundException   when conversation options cannot be resolved or {@code convSection} is null
      */
-    @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "DataFlowIssue"})
+    @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public ConversationData(final BetonQuest plugin, final ConversationID conversationID, final ConfigurationSection convSection) throws InstructionParseException, ObjectNotFoundException {
         this.plugin = plugin;

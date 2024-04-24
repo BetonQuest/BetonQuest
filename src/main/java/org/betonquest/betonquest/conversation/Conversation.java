@@ -60,7 +60,7 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
  */
 @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired",
-        "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.AvoidDuplicateLiterals", "DataFlowIssue"})
+        "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.AvoidDuplicateLiterals"})
 public class Conversation implements Listener {
 
     /**

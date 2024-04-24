@@ -27,7 +27,6 @@ public class PermissionEvent extends QuestEvent {
         add = "add".equalsIgnoreCase(instruction.next());
         perm = "perm".equalsIgnoreCase(instruction.next());
         permission = instruction.next();
-        // TODO fix problem with additional condition argument
         if (instruction.size() >= 5) {
             world = instruction.next();
         } else {
