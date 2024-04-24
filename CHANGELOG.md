@@ -13,7 +13,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `resourcepack` objective - to allow checking when the player accepts, denies, downloads, or fails to download a resource pack 
 - `region` objective now supports variables as region name
 - `location` objective now allows `entry` and `exit` keywords to track entering and leaving the location
-- new feature allowing adjustment of maximum hologram display radius
+- allowing adjustment of maximum hologram display radius
 ### Changed
 - player variable
   - `%player%` is now the same as `%player.name%`
