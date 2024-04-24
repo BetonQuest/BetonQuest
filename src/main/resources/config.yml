@@ -19,7 +19,7 @@ max_npc_distance: 5.3
 citizens_npcs_by_name: false
 acceptNPCLeftClick: false
 npcInteractionLimit: 500
-default_conversation_IO: menu,chest
+default_conversation_IO: menu,tellraw
 conversation_colors:
   npc: dark_red
   player: dark_green
