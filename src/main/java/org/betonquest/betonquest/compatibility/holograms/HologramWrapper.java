@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
@@ -29,16 +30,18 @@ import java.util.List;
  * @param cleanedLines  List of validated lines. Used by {@link #updateContent()} to update content without
  *                      revalidating content and dealing with potential errors.
  * @param questPackage  {@link QuestPackage} in which the hologram is specified in.
- * @param maxRange      The maximum range in which the hologram is visible.
+ * @param varMaxRange   The maximum range in which the hologram is visible.
+ *                      {@link VariableNumber} represents this range.
  */
 public record HologramWrapper(int interval, List<BetonHologram> holograms, boolean staticContent,
                               ConditionID[] conditionList,
                               List<AbstractLine> cleanedLines, QuestPackage questPackage,
-                              int maxRange) {
+                              VariableNumber varMaxRange) {
     /**
      * Checks whether all conditions are met by a players and displays or hides the hologram.
      */
     public void updateVisibility() {
+        final int maxRange = varMaxRange.getInt(null);
         if (conditionList.length == 0 && maxRange <= 0) {
             for (final BetonHologram hologram : holograms) {
                 hologram.showAll();
@@ -78,6 +81,7 @@ public record HologramWrapper(int interval, List<BetonHologram> holograms, boole
      * @return {@code true} if the player is out of range, {@code false} otherwise
      */
     public boolean isPlayerOutOfRange(final OnlineProfile profile, final BetonHologram hologram) {
+        final int maxRange = varMaxRange.getInt(null);
         if (maxRange > 0) {
             final Location playerLocation = profile.getPlayer().getLocation();
             final double distanceSquared = playerLocation.distanceSquared(hologram.getLocation());

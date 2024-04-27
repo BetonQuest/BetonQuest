@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -82,6 +84,7 @@ public abstract class HologramLoop {
         return holograms;
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private HologramWrapper initializeHolograms(final int defaultInterval, final QuestPackage pack, final ConfigurationSection section) throws InstructionParseException {
         final String checkIntervalString = GlobalVariableResolver.resolve(pack, section.getString("check_interval"));
         final int checkInterval;
@@ -90,7 +93,7 @@ public abstract class HologramLoop {
         } catch (final NumberFormatException e) {
             throw new InstructionParseException("Could not parse check interval", e);
         }
-        final int maxRange = parseMaxRange(section.getString("max_range"));
+        final VariableNumber maxRange = new VariableNumber(pack, section.getString("max_range", "0"));
 
         final List<String> lines = GlobalVariableResolver.resolve(pack, section.getStringList("lines"));
         final String rawConditions = GlobalVariableResolver.resolve(pack, section.getString("conditions"));
@@ -222,20 +225,5 @@ public abstract class HologramLoop {
         return new TextLine(matcher.find()
                 ? HologramProvider.getInstance().parseVariable(pack, line)
                 : line);
-    }
-
-    private int parseMaxRange(final String maxRangeString) throws InstructionParseException {
-        if (maxRangeString != null) {
-            try {
-                final int maxRange = Integer.parseInt(maxRangeString);
-                if (maxRange < 0) {
-                    throw new InstructionParseException("Max range cannot be negative");
-                }
-                return maxRange;
-            } catch (final NumberFormatException e) {
-                throw new InstructionParseException("Max range must be a valid integer", e);
-            }
-        }
-        return 0;
     }
 }
