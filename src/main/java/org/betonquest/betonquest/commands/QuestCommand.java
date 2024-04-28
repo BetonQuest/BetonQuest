@@ -542,14 +542,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (profile == null) {
             return;
         }
-        PlayerData playerData = instance.getPlayerData(profile);
-        // if the player is offline then get his PlayerData outside of the
-        // list
-        if (playerData == null) {
+        final PlayerData playerData;
+        if (profile.isOnlineProfilePresent()) {
+            playerData = instance.getPlayerData(profile);
+        } else {
             log.debug("Profile is offline, loading his data");
             playerData = new PlayerData(profile);
         }
-        // purge the player
         log.debug("Purging player " + args[1]);
         playerData.purgePlayer();
         // done
@@ -574,10 +573,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (profile == null) {
             return;
         }
-        PlayerData playerData = instance.getPlayerData(profile);
-        // if the player is offline then get his PlayerData outside of the
-        // list
-        if (playerData == null) {
+        final PlayerData playerData;
+        if (profile.isOnlineProfilePresent()) {
+            playerData = instance.getPlayerData(profile);
+        } else {
             log.debug("Profile is offline, loading his data");
             playerData = new PlayerData(profile);
         }
@@ -679,10 +678,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (profile == null) {
             return;
         }
-        PlayerData playerData = instance.getPlayerData(profile);
-        // if the player is offline then get his PlayerData outside of the
-        // list
-        if (playerData == null) {
+        final PlayerData playerData;
+        if (profile.isOnlineProfilePresent()) {
+            playerData = instance.getPlayerData(profile);
+        } else {
             log.debug("Profile is offline, loading his data");
             playerData = new PlayerData(profile);
         }
@@ -1010,10 +1009,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (profile == null) {
             return;
         }
-        PlayerData playerData = instance.getPlayerData(profile);
-        // if the player is offline then get his PlayerData outside of the
-        // list
-        if (playerData == null) {
+        final PlayerData playerData;
+        if (profile.isOnlineProfilePresent()) {
+            playerData = instance.getPlayerData(profile);
+        } else {
             log.debug("Profile is offline, loading his data");
             playerData = new PlayerData(profile);
         }
@@ -1167,10 +1166,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (profile == null) {
             return;
         }
-        final boolean isOnline = profile.getOnlineProfile().isPresent();
-        PlayerData playerData = instance.getPlayerData(profile);
-        // if the player is offline then get his PlayerData outside the list
-        if (playerData == null) {
+        final boolean isOnline = profile.isOnlineProfilePresent();
+        final PlayerData playerData;
+        if (isOnline) {
+            playerData = instance.getPlayerData(profile);
+        } else {
             log.debug("Profile is offline, loading his data");
             playerData = new PlayerData(profile);
         }
@@ -1370,30 +1370,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     return;
                 }
                 BetonQuest.getInstance().renameObjective(nameID, renameID);
-                BetonQuest.getInstance().getObjective(renameID).setLabel(renameID);
-                // renaming an active objective probably isn't needed
-                for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
-                    boolean found = false;
-                    String data = null;
-                    for (final Objective obj : BetonQuest.getInstance().getPlayerObjectives(onlineProfile)) {
-                        if (obj.getLabel().equals(name)) {
-                            found = true;
-                            data = obj.getData(onlineProfile);
-                            break;
-                        }
-                    }
-                    // skip the player if he does not have this objective
-                    if (!found) {
-                        continue;
-                    }
-                    if (data == null) {
-                        data = "";
-                    }
-                    final Objective objective = BetonQuest.getInstance().getObjective(nameID);
-                    objective.pauseObjectiveForPlayer(onlineProfile);
-                    BetonQuest.getInstance().getPlayerData(onlineProfile).removeRawObjective(nameID);
-                    BetonQuest.resumeObjective(onlineProfile, renameID, data);
-                }
                 nameID.getPackage().getConfig().set(nameID.getBaseID(), null);
                 try {
                     nameID.getPackage().saveAll();
@@ -1843,7 +1819,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
 
-        final boolean isOnline = profile.getOnlineProfile().isPresent();
+        final boolean isOnline = profile.isOnlineProfilePresent();
         if (!isOnline) {
             log.debug("Can't access variable data on offline player");
             sendMessage(sender, "offline_invalid");

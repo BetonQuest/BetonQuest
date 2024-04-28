@@ -86,7 +86,6 @@ public class PointVariable extends Variable {
         return switch (type) {
             case AMOUNT -> Integer.toString(count);
             case LEFT -> Integer.toString(amount - count);
-            default -> "";
         };
     }
 

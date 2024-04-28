@@ -234,7 +234,11 @@ public class QuestCanceler {
             for (final ObjectiveID objectiveID : objectives) {
                 log.debug(objectiveID.getPackage(), "  Removing objective " + objectiveID);
                 final Objective objective = BetonQuest.getInstance().getObjective(objectiveID);
-                objective.cancelObjectiveForPlayer(onlineProfile);
+                if (objective == null) {
+                    log.warn("Could not find objective " + objectiveID + " in QuestCanceler " + name);
+                } else {
+                    objective.cancelObjectiveForPlayer(onlineProfile);
+                }
                 playerData.removeRawObjective(objectiveID);
             }
         }

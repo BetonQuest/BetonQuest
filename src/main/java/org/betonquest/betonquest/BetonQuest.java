@@ -1461,22 +1461,26 @@ public class BetonQuest extends JavaPlugin {
      *
      * @param profile the {@link Profile} of the player
      * @return PlayerData object for the player
+     * @throws IllegalArgumentException when there is no data and the player is offline
      */
     public PlayerData getPlayerData(final Profile profile) {
         PlayerData playerData = playerDataMap.get(profile);
-        if (playerData == null && profile.getOnlineProfile().isPresent()) {
-            playerData = new PlayerData(profile);
-            putPlayerData(profile, playerData);
+        if (playerData == null) {
+            if (profile.isOnlineProfilePresent()) {
+                playerData = new PlayerData(profile);
+                putPlayerData(profile, playerData);
+            } else {
+                throw new IllegalArgumentException("The profile has no online player!");
+            }
         }
         return playerData;
     }
 
     public PlayerData getOfflinePlayerData(final Profile profile) {
-        final PlayerData playerData = getPlayerData(profile);
-        if (playerData == null) {
-            return new PlayerData(profile);
+        if (profile.isOnlineProfilePresent()) {
+            return getPlayerData(profile);
         }
-        return playerData;
+        return new PlayerData(profile);
     }
 
     /**
@@ -1653,6 +1657,7 @@ public class BetonQuest extends JavaPlugin {
      * @param objectiveID package name, dot and ID of the objective
      * @return Objective object or null if it does not exist
      */
+    @Nullable
     public Objective getObjective(final ObjectiveID objectiveID) {
         return OBJECTIVES.get(objectiveID);
     }
@@ -1743,7 +1748,11 @@ public class BetonQuest extends JavaPlugin {
      * @param rename the name it should have now
      */
     public void renameObjective(final ObjectiveID name, final ObjectiveID rename) {
-        OBJECTIVES.put(rename, OBJECTIVES.remove(name));
+        final Objective objective = OBJECTIVES.remove(name);
+        OBJECTIVES.put(rename, objective);
+        if (objective != null) {
+            objective.setLabel(rename);
+        }
     }
 
     /**

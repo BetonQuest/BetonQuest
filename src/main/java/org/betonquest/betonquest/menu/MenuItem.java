@@ -23,6 +23,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -355,7 +356,7 @@ public class MenuItem extends SimpleYMLSection {
             return questItem;
         }
 
-        public boolean isItemEqual(final ItemStack item) {
+        public boolean isItemEqual(@Nullable final ItemStack item) {
             return questItem.compare(item);
         }
 
