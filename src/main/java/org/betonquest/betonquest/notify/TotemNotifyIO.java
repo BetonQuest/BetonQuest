@@ -12,6 +12,7 @@ import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Map;
 
@@ -46,7 +47,12 @@ public class TotemNotifyIO extends NotifyIO {
 
     private ItemStack buildFakeTotem() {
         final ItemStack fakeTotem = new ItemStack(Material.TOTEM_OF_UNDYING);
-        fakeTotem.editMeta(meta -> meta.setCustomModelData(customModelData));
+        final ItemMeta totemMeta = fakeTotem.getItemMeta();
+        if (totemMeta == null) {
+            throw new IllegalStateException("ItemMeta for TotemIO ItemStack is null.");
+        }
+        totemMeta.setCustomModelData(customModelData);
+        fakeTotem.setItemMeta(totemMeta);
         return fakeTotem;
     }
 
