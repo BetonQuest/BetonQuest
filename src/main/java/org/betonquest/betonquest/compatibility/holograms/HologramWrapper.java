@@ -81,7 +81,7 @@ public record HologramWrapper(int interval, List<BetonHologram> holograms, boole
      * @return {@code true} if the player is out of range, {@code false} otherwise
      */
     public boolean isPlayerOutOfRange(final OnlineProfile profile, final BetonHologram hologram) {
-        final int maxRange = varMaxRange.getInt(null);
+        final int maxRange = varMaxRange.getInt(profile);
         if (maxRange > 0) {
             final Location playerLocation = profile.getPlayer().getLocation();
             final double distanceSquared = playerLocation.distanceSquared(hologram.getLocation());
