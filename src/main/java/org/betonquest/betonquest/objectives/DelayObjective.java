@@ -112,7 +112,6 @@ public class DelayObjective extends Objective {
 
     @Override
     public String getDefaultDataInstruction() {
-        //Empty to satisfy bad API needs
         return "";
     }
 
@@ -128,7 +127,6 @@ public class DelayObjective extends Objective {
         return Double.toString(new Date().getTime() + millis);
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @Override
     public String getProperty(final String name, final Profile profile) {
         return switch (name.toLowerCase(Locale.ROOT)) {
