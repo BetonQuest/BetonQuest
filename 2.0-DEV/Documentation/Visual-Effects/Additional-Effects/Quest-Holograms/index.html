@@ -4333,7 +4333,8 @@ with custom model data instead of the BetonQuest syntax.</p>
 <p>In order to create a hologram, you have to add a <code>holograms</code> section. Add a node named as your hologram to this section
 and define <code>lines</code>, <code>conditions</code> and <code>location</code> subnodes. The first one should be a list of texts - these will be the lines
 of a hologram. Color codes are supported. Second is a list of conditions separated by commas. Third is a location in a standard
-format, like in <code>teleport</code> event. An example of such hologram definition:</p>
+format, like in <code>teleport</code> event. If <code>max_range</code> is specified, the hologram will only be visible in this range, if not, the default value from the connected hologram plugin will be used. 
+An example of such hologram definition:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">holograms</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">beton</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">lines</span><span class="p">:</span>
@@ -4346,6 +4347,8 @@ format, like in <code>teleport</code> event. An example of such hologram definit
 <span class="w">    </span><span class="nt">location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100;200;300;world</span>
 <span class="w">    </span><span class="c1"># How often to check conditions (optional)</span>
 <span class="w">    </span><span class="nt">check_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
+<span class="w">    </span><span class="c1"># Maximum hologram display distance (optional)</span>
+<span class="w">    </span><span class="nt">max_range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">40</span>
 </code></pre></div>
 <h4 id="item-lines">Item Lines<a class="headerlink" href="#item-lines" title="Permanent link">🔗</a></h4>
 <p>A line can also represent a floating item. To do so enter the line as 'item:<code>custom_item</code>'. It will be replaced with the
