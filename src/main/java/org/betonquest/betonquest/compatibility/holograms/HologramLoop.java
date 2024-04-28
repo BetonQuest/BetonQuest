@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -82,6 +84,7 @@ public abstract class HologramLoop {
         return holograms;
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private HologramWrapper initializeHolograms(final int defaultInterval, final QuestPackage pack, final ConfigurationSection section) throws InstructionParseException {
         final String checkIntervalString = GlobalVariableResolver.resolve(pack, section.getString("check_interval"));
         final int checkInterval;
@@ -90,6 +93,8 @@ public abstract class HologramLoop {
         } catch (final NumberFormatException e) {
             throw new InstructionParseException("Could not parse check interval", e);
         }
+        final VariableNumber maxRange = new VariableNumber(pack, section.getString("max_range", "0"));
+
         final List<String> lines = GlobalVariableResolver.resolve(pack, section.getStringList("lines"));
         final String rawConditions = GlobalVariableResolver.resolve(pack, section.getString("conditions"));
 
@@ -115,7 +120,8 @@ public abstract class HologramLoop {
                 isStaticHologram(cleanedLines),
                 conditions,
                 cleanedLines,
-                pack);
+                pack,
+                maxRange);
         HologramRunner.addHologram(hologramWrapper);
         return hologramWrapper;
     }

@@ -1,11 +1,13 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
+import org.bukkit.Location;
 
 import java.util.List;
 
@@ -28,15 +30,19 @@ import java.util.List;
  * @param cleanedLines  List of validated lines. Used by {@link #updateContent()} to update content without
  *                      revalidating content and dealing with potential errors.
  * @param questPackage  {@link QuestPackage} in which the hologram is specified in.
+ * @param varMaxRange   The maximum range in which the hologram is visible.
+ *                      {@link VariableNumber} represents this range.
  */
 public record HologramWrapper(int interval, List<BetonHologram> holograms, boolean staticContent,
                               ConditionID[] conditionList,
-                              List<AbstractLine> cleanedLines, QuestPackage questPackage) {
+                              List<AbstractLine> cleanedLines, QuestPackage questPackage,
+                              VariableNumber varMaxRange) {
     /**
      * Checks whether all conditions are met by a players and displays or hides the hologram.
      */
     public void updateVisibility() {
-        if (conditionList.length == 0) {
+        final int maxRange = varMaxRange.getInt(null);
+        if (conditionList.length == 0 && maxRange <= 0) {
             for (final BetonHologram hologram : holograms) {
                 hologram.showAll();
             }
@@ -54,15 +60,35 @@ public record HologramWrapper(int interval, List<BetonHologram> holograms, boole
      * @param profile The online player's profile
      */
     public void updateVisibilityForPlayer(final OnlineProfile profile) {
-        if (BetonQuest.conditions(profile, conditionList)) {
-            for (final BetonHologram hologram : holograms) {
+        final boolean conditionsMet = BetonQuest.conditions(profile, conditionList);
+
+        for (final BetonHologram hologram : holograms) {
+            final boolean playerOutOfRange = isPlayerOutOfRange(profile, hologram);
+
+            if (conditionsMet && !playerOutOfRange) {
                 hologram.show(profile.getPlayer());
-            }
-        } else {
-            for (final BetonHologram hologram : holograms) {
+            } else {
                 hologram.hide(profile.getPlayer());
             }
         }
+    }
+
+    /**
+     * Checks if the player is out of range from the specified hologram.
+     *
+     * @param profile  The online profile of the player
+     * @param hologram The hologram to check the distance from
+     * @return {@code true} if the player is out of range, {@code false} otherwise
+     */
+    public boolean isPlayerOutOfRange(final OnlineProfile profile, final BetonHologram hologram) {
+        final int maxRange = varMaxRange.getInt(profile);
+        if (maxRange > 0) {
+            final Location playerLocation = profile.getPlayer().getLocation();
+            final double distanceSquared = playerLocation.distanceSquared(hologram.getLocation());
+            final double maxRangeSquared = maxRange * maxRange;
+            return distanceSquared > maxRangeSquared;
+        }
+        return false;
     }
 
     /**

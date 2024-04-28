@@ -118,6 +118,13 @@ public interface BetonHologram {
     int size();
 
     /**
+     * Retrieves the location of the hologram.
+     *
+     * @return the location of the hologram
+     */
+    Location getLocation();
+
+    /**
      * Clear all lines from this hologram
      */
     void clear();

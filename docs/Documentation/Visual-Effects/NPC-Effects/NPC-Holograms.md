@@ -20,6 +20,7 @@ npc_holograms: #(7)!
     npcs: #(6)!
       - 0
       - 22
+    max_range: 40 #(9)!
 ```
 
 1. The lines of the hologram.
@@ -30,6 +31,7 @@ npc_holograms: #(7)!
 6. A list of NPC IDs that the hologram is attached to. 
 7. The section that all holograms must be placed in.
 8. The identifier of the hologram. Must be unique.
+9. Maximum hologram display distance. Optional.
 
 All other [hologram features](../Additional-Effects/Quest-Holograms.md) are also supported.
 

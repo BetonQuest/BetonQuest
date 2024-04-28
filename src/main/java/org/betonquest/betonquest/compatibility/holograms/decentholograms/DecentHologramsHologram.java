@@ -141,4 +141,9 @@ public class DecentHologramsHologram implements BetonHologram {
             page.removeLine(i);
         }
     }
+
+    @Override
+    public Location getLocation() {
+        return hologram.getLocation();
+    }
 }

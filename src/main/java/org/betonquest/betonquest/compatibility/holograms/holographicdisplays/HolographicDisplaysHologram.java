@@ -144,4 +144,9 @@ public class HolographicDisplaysHologram implements BetonHologram {
     public void clear() {
         hologram.getLines().clear();
     }
+
+    @Override
+    public Location getLocation() {
+        return hologram.getPosition().toLocation();
+    }
 }
