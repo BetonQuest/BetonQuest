@@ -2,9 +2,11 @@ package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem.Existence;
+import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class NameHandler {
+    @Nullable
     private String name;
 
     private Existence existence = Existence.WHATEVER;
@@ -13,7 +15,7 @@ public class NameHandler {
     }
 
     public void set(final String name) throws InstructionParseException {
-        if (name == null || name.isEmpty()) {
+        if (name.isEmpty()) {
             throw new InstructionParseException("Name cannot be empty");
         }
         if ("none".equalsIgnoreCase(name)) {
@@ -24,21 +26,17 @@ public class NameHandler {
         }
     }
 
+    @Nullable
     public String get() {
         return name;
     }
 
-    public boolean check(final String name) {
-        switch (existence) {
-            case WHATEVER:
-                return true;
-            case REQUIRED:
-                return this.name.equals(name);
-            case FORBIDDEN:
-                return name == null;
-            default:
-                return false;
-        }
+    public boolean check(@Nullable final String name) {
+        return switch (existence) {
+            case WHATEVER -> true;
+            case REQUIRED -> name != null && name.equals(this.name);
+            case FORBIDDEN -> name == null;
+        };
     }
 
 }

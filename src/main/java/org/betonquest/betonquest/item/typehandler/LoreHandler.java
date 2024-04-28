@@ -2,6 +2,7 @@ package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem.Existence;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class LoreHandler {
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
-    public boolean check(final List<String> lore) {
+    public boolean check(@Nullable final List<String> lore) {
         switch (existence) {
             case WHATEVER:
                 return true;

@@ -158,22 +158,25 @@ public class ConversationData {
         }
         final String stop = pack.getString("conversations." + convName + ".stop");
         blockMovement = stop != null && stop.equalsIgnoreCase("true");
-        final String rawConvIO = pack.getString("conversations." + convName + ".conversationIO", BetonQuest.getInstance().getPluginConfig().getString("default_conversation_IO", "menu,chest"));
+        final String rawConvIOs = pack.getString("conversations." + convName + ".conversationIO", plugin.getPluginConfig().getString("default_conversation_IO", "menu,tellraw"));
 
         // check if all data is valid (or at least exist)
-        for (final String s : rawConvIO.split(",")) {
-            if (BetonQuest.getInstance().getConvIO(s.trim()) != null) {
-                convIO = s.trim();
+        for (final String rawConvIOPart : rawConvIOs.split(",")) {
+            final String rawConvIO = rawConvIOPart.trim();
+            if (plugin.getConvIO(rawConvIO) != null) {
+                convIO = rawConvIO;
                 break;
+            } else {
+                log.debug(pack, "Conversation IO '" + rawConvIO + "' not found. Trying next one...");
             }
         }
         if (convIO == null) {
-            throw new InstructionParseException("No registered conversation IO found: " + rawConvIO);
+            throw new InstructionParseException("No registered conversation IO found: " + rawConvIOs);
         }
 
-        final String rawInterceptor = pack.getString("conversations." + convName + ".interceptor", BetonQuest.getInstance().getPluginConfig().getString("default_interceptor", "simple"));
+        final String rawInterceptor = pack.getString("conversations." + convName + ".interceptor", plugin.getPluginConfig().getString("default_interceptor", "simple"));
         for (final String s : rawInterceptor.split(",")) {
-            if (BetonQuest.getInstance().getInterceptor(s.trim()) != null) {
+            if (plugin.getInterceptor(s.trim()) != null) {
                 interceptor = s.trim();
                 break;
             }
@@ -223,11 +226,11 @@ public class ConversationData {
 
             final ConversationData conv;
             try {
-                conv = BetonQuest.getInstance().getConversation(new ConversationID(targetPack, targetConvName));
+                conv = plugin.getConversation(new ConversationID(targetPack, targetConvName));
             } catch (final ObjectNotFoundException e) {
                 log.warn("Cross-conversation pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
                         + sourceOption + " points to the '" + targetConvName
-                        + "' conversation in the package '" + targetPack.getQuestPath() + "' but that conversation does not exist. Check your spelling!");
+                        + "' conversation in the package '" + targetPack.getQuestPath() + "' but that conversation does not exist. Check your spelling!", e);
                 continue;
             }
 

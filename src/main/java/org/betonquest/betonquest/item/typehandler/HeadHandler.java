@@ -51,16 +51,19 @@ public abstract class HeadHandler {
     /**
      * An optional player name owner of the skull.
      */
+    @Nullable
     private String owner;
 
     /**
      * An optional player ID owner of the skull, used in conjunction with the encoded texture.
      */
+    @Nullable
     private UUID playerId;
 
     /**
      * An optional encoded texture URL of the skull, used in conjunction with the player UUID.
      */
+    @Nullable
     private String texture;
 
     /**
@@ -126,7 +129,8 @@ public abstract class HeadHandler {
      * @param profile The Profile that the item is made for
      * @return The profile of the skull's owner.
      */
-    public @Nullable Profile getOwner(final Profile profile) {
+    @Nullable
+    public Profile getOwner(@Nullable final Profile profile) {
         if (profile != null && VARIABLE_PLAYER_NAME.equals(owner)) {
             return profile;
         }
@@ -142,6 +146,7 @@ public abstract class HeadHandler {
      *
      * @return The player ID.
      */
+    @Nullable
     public UUID getPlayerId() {
         return playerId;
     }
@@ -160,6 +165,7 @@ public abstract class HeadHandler {
      *
      * @return The encoded texture.
      */
+    @Nullable
     public String getTexture() {
         return texture;
     }
@@ -169,7 +175,7 @@ public abstract class HeadHandler {
      *
      * @param texture The new encoded texture.
      */
-    public void setTexture(final String texture) {
+    public void setTexture(@Nullable final String texture) {
         this.texture = texture;
     }
 
@@ -179,7 +185,7 @@ public abstract class HeadHandler {
      * @param string The owner to check.
      * @return True if this metadata is required and matches, false otherwise.
      */
-    public boolean checkOwner(final String string) {
+    public boolean checkOwner(@Nullable final String string) {
         return switch (ownerE) {
             case WHATEVER -> true;
             case REQUIRED -> string != null && string.equals(owner);
@@ -193,7 +199,7 @@ public abstract class HeadHandler {
      * @param playerId The player UUID to check.
      * @return True if this metadata is required and matches, false otherwise.
      */
-    public boolean checkPlayerId(final UUID playerId) {
+    public boolean checkPlayerId(@Nullable final UUID playerId) {
         return switch (playerIdE) {
             case WHATEVER -> true;
             case REQUIRED -> playerId != null && playerId.equals(this.playerId);
@@ -207,7 +213,7 @@ public abstract class HeadHandler {
      * @param string The encoded texture to check.
      * @return True if this metadata is required and matches, false otherwise.
      */
-    public boolean checkTexture(final String string) {
+    public boolean checkTexture(@Nullable final String string) {
         return switch (textureE) {
             case WHATEVER -> true;
             case REQUIRED -> string != null && string.equals(texture);

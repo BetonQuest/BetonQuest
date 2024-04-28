@@ -3,9 +3,11 @@ package org.betonquest.betonquest.item.typehandler;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem.Number;
 
+import java.util.Map;
+
 @SuppressWarnings("PMD.CommentRequired")
 public class DurabilityHandler {
-    private short durability;
+    private int durability;
 
     private Number number = Number.WHATEVER;
 
@@ -13,40 +15,22 @@ public class DurabilityHandler {
     }
 
     public void set(final String durability) throws InstructionParseException {
-        String inputDurability = durability;
-        if (inputDurability.endsWith("-")) {
-            number = Number.LESS;
-            inputDurability = inputDurability.substring(0, inputDurability.length() - 1);
-        } else if (inputDurability.endsWith("+")) {
-            number = Number.MORE;
-            inputDurability = inputDurability.substring(0, inputDurability.length() - 1);
-        } else {
-            number = Number.EQUAL;
-        }
-        try {
-            this.durability = Short.valueOf(inputDurability);
-        } catch (final NumberFormatException e) {
-            throw new InstructionParseException("Could not parse item durability value", e);
-        }
+        final Map.Entry<Number, Integer> itemDurability = HandlerUtil.getNumberValue(durability, "item durability");
+        this.number = itemDurability.getKey();
+        this.durability = itemDurability.getValue();
     }
 
-    public short get() {
+    public int get() {
         return durability;
     }
 
     public boolean check(final int durability) {
-        switch (number) {
-            case WHATEVER:
-                return true;
-            case EQUAL:
-                return this.durability == durability;
-            case MORE:
-                return this.durability <= durability;
-            case LESS:
-                return this.durability >= durability;
-            default:
-                return false;
-        }
+        return switch (number) {
+            case WHATEVER -> true;
+            case EQUAL -> this.durability == durability;
+            case MORE -> this.durability <= durability;
+            case LESS -> this.durability >= durability;
+        };
     }
 
     /**

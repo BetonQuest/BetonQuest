@@ -21,6 +21,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - `%player.display%` will use the display name used in chat
   - `%player.uuid%` will display the UUID of the player
 - marking of mobs now uses variables in all contexts of spawning killing and removing
+- default `default_conversation_IO` in config from `menu,chest` to `menu,tellraw`
 ### Deprecated
 ### Removed
 - undocumented quoting in instructions
@@ -32,6 +33,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - creation of advancement tab when an advancement NotifyIO is sent
 - `burn` event throwing unexpected error when omitting duration
 - added missing firework meta to string representation of QuestItem
+- required flags in `QuestItem` were not relevant in equals check
 ### Security
 
 ## [2.0.1] - 2024-03-24
