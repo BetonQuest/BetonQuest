@@ -10,6 +10,9 @@ import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.id.ObjectiveID;
+import org.betonquest.betonquest.instruction.QuotingTokenizer;
+import org.betonquest.betonquest.instruction.Tokenizer;
+import org.betonquest.betonquest.instruction.TokenizerException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
@@ -30,13 +33,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.regex.MatchResult;
-import java.util.regex.Pattern;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount", "PMD.GodClass", "PMD.CommentRequired",
         "PMD.AvoidFieldNameMatchingTypeName", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods"})
 public class Instruction {
-    private static final Pattern WORD_PATTERN = Pattern.compile("\\S+");
+    /**
+     * Tokenizer that can split on spaces but interpret quotes and escapes.
+     */
+    private static final Tokenizer TOKENIZER = new QuotingTokenizer();
 
     /**
      * Contract: Returns null when the parameter is null, otherwise the expected object.
@@ -46,7 +50,7 @@ public class Instruction {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private final BetonQuestLogger log;
+    protected final BetonQuestLogger log;
 
     private final QuestPackage pack;
 
@@ -69,19 +73,20 @@ public class Instruction {
         } catch (final ObjectNotFoundException e) {
             this.log.warn(pack, "Could not find instruction: " + e.getMessage(), e);
         }
-        this.parts = split(instruction);
+        try {
+            this.parts = getTokenizer().tokens(instruction);
+        } catch (TokenizerException e) {
+            this.log.warn(pack, "Could not parse instruction: " + e.getMessage(), e);
+        }
     }
 
     /**
-     * Split a string on white space.
+     * Get a tokenizer to split the instruction string into parts.
      *
-     * @param string the input string.
-     * @return the split strings
+     * @return a tokenizer
      */
-    protected static String[] split(final String string) {
-        return WORD_PATTERN.matcher(string).results()
-                .map(MatchResult::group)
-                .toArray(String[]::new);
+    protected Tokenizer getTokenizer() {
+        return TOKENIZER;
     }
 
     @Override
@@ -90,7 +95,28 @@ public class Instruction {
     }
 
     public String getInstruction() {
-        return String.join(" ", parts);
+        final StringBuilder instruction = new StringBuilder();
+        for (final String part : parts) {
+            final StringBuilder escapedPart = new StringBuilder();
+            boolean needsQuotes = false;
+            for (final int codePoint : part.codePoints().toArray()) {
+                if (codePoint == '"' || codePoint == '\\') {
+                    escapedPart.append('\\');
+                } else if (Character.isWhitespace(codePoint)) {
+                    needsQuotes = true;
+                }
+                escapedPart.appendCodePoint(codePoint);
+            }
+            if (!instruction.isEmpty()) {
+                instruction.append(' ');
+            }
+            if (needsQuotes) {
+                instruction.append('"');
+                escapedPart.append('"');
+            }
+            instruction.append(escapedPart);
+        }
+        return instruction.toString();
     }
 
     public int size() {
