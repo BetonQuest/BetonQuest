@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.EventID;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -21,7 +22,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 /**
- * Folder event is a collection of other events, that can be run after a delay and the events can be randomly chosen to
+ * Folder event is a collection of other events, that can be run after a delay, and the events can be randomly chosen to
  * run or not.
  */
 public class FolderEvent extends QuestEvent {
@@ -117,7 +118,7 @@ public class FolderEvent extends QuestEvent {
             }
         } else if (execPeriod == null) {
             final FolderEventCanceller eventCanceller = createFolderEventCanceller(profile);
-            new BukkitRunnable() {
+            callSameSyncAsyncContext(new BukkitRunnable() {
                 @Override
                 public void run() {
                     eventCanceller.destroy();
@@ -128,7 +129,7 @@ public class FolderEvent extends QuestEvent {
                         BetonQuest.event(profile, event);
                     }
                 }
-            }.runTaskLater(BetonQuest.getInstance(), execDelay);
+            }, execDelay, -1);
         } else {
             if (execDelay == null && !chosenList.isEmpty()) {
                 final EventID event = chosenList.removeFirst();
@@ -136,7 +137,7 @@ public class FolderEvent extends QuestEvent {
             }
             if (!chosenList.isEmpty()) {
                 final FolderEventCanceller eventCanceller = createFolderEventCanceller(profile);
-                new BukkitRunnable() {
+                callSameSyncAsyncContext(new BukkitRunnable() {
                     @Override
                     public void run() {
                         final EventID event = chosenList.pollFirst();
@@ -147,7 +148,7 @@ public class FolderEvent extends QuestEvent {
                         }
                         BetonQuest.event(profile, event);
                     }
-                }.runTaskTimer(BetonQuest.getInstance(), execDelay == null ? execPeriod : execDelay, execPeriod);
+                }, execDelay == null ? execPeriod : execDelay, execPeriod);
             }
         }
         return null;
@@ -177,6 +178,23 @@ public class FolderEvent extends QuestEvent {
             time *= 20;
         }
         return time;
+    }
+
+    private void callSameSyncAsyncContext(final BukkitRunnable runnable, final long delay, final long period) {
+        final BetonQuest instance = BetonQuest.getInstance();
+        if (Bukkit.getServer().isPrimaryThread()) {
+            if (period == -1) {
+                runnable.runTaskLater(instance, delay);
+            } else {
+                runnable.runTaskTimer(instance, delay, period);
+            }
+        } else {
+            if (period == -1) {
+                runnable.runTaskLaterAsynchronously(instance, delay);
+            } else {
+                runnable.runTaskTimerAsynchronously(instance, delay, period);
+            }
+        }
     }
 
     /**

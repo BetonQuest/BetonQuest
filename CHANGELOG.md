@@ -34,6 +34,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `burn` event throwing unexpected error when omitting duration
 - added missing firework meta to string representation of QuestItem
 - required flags in `QuestItem` were not relevant in equals check
+- `folder` event did not respect the sync / async context that it is executed in
 ### Security
 
 ## [2.0.1] - 2024-03-24
