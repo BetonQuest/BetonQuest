@@ -22,6 +22,7 @@ Some plugins also hook into BetonQuest and provide support by themselves:
 [NotQuests](https://www.spigotmc.org/resources/95872/),
 [HonnyCompass](https://github.com/honnisha/HonnyCompass)
 [MythicDungeons](https://www.spigotmc.org/resources/102699/)
+[JourneyBetonQuest](https://modrinth.com/plugin/journeybetonquest)
 
 There are also plugins that hook into BetonQuest that require a clientside mod:  
 [BetonQuestGUI](https://github.com/giovanni-bozzano/betonquest-gui-plugin),
