@@ -87,7 +87,7 @@ public class ItemVariable extends Variable {
         };
     }
 
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
+    @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", justification = "false positive on Inventory#getContents")
     private int itemAmount(final Profile profile) {
         final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
         final Player player = onlineProfile.getPlayer();
