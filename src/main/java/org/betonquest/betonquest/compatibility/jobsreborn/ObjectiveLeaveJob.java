@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.jobsreborn;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.api.JobsLeaveEvent;
 import com.gamingmesh.jobs.container.Job;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
@@ -35,7 +34,6 @@ public class ObjectiveLeaveJob extends Objective implements Listener {
         throw new InstructionParseException("Jobs Reborn job " + instructions.getPart(1) + " does not exist");
     }
 
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onJobsLeaveEvent(final JobsLeaveEvent event) {
         if (event.getJob().getName().equalsIgnoreCase(this.sJobName)) {

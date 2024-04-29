@@ -408,7 +408,7 @@ public class MenuConvIO extends ChatConvIO {
         }
 
         // Add space for the up/down arrows
-        if (options.size() > 0) {
+        if (!options.isEmpty()) {
             linesAvailable = Math.max(1, linesAvailable - 2);
         }
 
@@ -482,15 +482,11 @@ public class MenuConvIO extends ChatConvIO {
         if ("chat".equals(configNpcNameType)) {
             switch (configNpcNameAlign) {
                 case "right":
-                    for (int i = 0; i < Math.max(0, configLineLength - npcName.length()); i++) {
-                        displayBuilder.append(' ');
-                    }
+                    displayBuilder.append(" ".repeat(Math.max(0, configLineLength - npcName.length())));
                     break;
                 case "center":
                 case "middle":
-                    for (int i = 0; i < Math.max(0, configLineLength / 2 - npcName.length() / 2); i++) {
-                        displayBuilder.append(' ');
-                    }
+                    displayBuilder.append(" ".repeat(Math.max(0, configLineLength / 2 - npcName.length() / 2)));
                     break;
                 default:
                     break;
@@ -504,14 +500,11 @@ public class MenuConvIO extends ChatConvIO {
             linesAvailable--;
         }
 
-        displayBuilder.append(String.join("\n", npcLines)).append('\n');
+        displayBuilder.append(String.join("\n", npcLines)).append("\n"
+                // Put clear lines between NPC text and Options
+                + " \n".repeat(linesAvailable));
 
-        // Put clear lines between NPC text and Options
-        for (int i = 0; i < linesAvailable; i++) {
-            displayBuilder.append(" \n");
-        }
-
-        if (options.size() > 0) {
+        if (!options.isEmpty()) {
             // Show up arrow if options exist above our view
             if (topOption > 0) {
                 for (int i = 0; i < 8; i++) {
@@ -523,7 +516,7 @@ public class MenuConvIO extends ChatConvIO {
             }
 
             // Display Options
-            displayBuilder.append(String.join("\n", optionsSelected)).append('\n');
+            displayBuilder.append(String.join("\n", optionsSelected) + 'n');
 
             // Show down arrow if options exist below our view
             if (topOption + optionsSelected.size() < options.size()) {
@@ -616,7 +609,7 @@ public class MenuConvIO extends ChatConvIO {
 
             @Override
             public void onPacketReceiving(final PacketEvent event) {
-                if (!event.getPlayer().equals(player) || options.size() == 0) {
+                if (!event.getPlayer().equals(player) || options.isEmpty()) {
                     return;
                 }
                 if (!event.getPacketType().equals(PacketType.Play.Client.STEER_VEHICLE)) {

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 /**
  * Checks the class of the player and the level.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.CyclomaticComplexity"})
+@SuppressWarnings("PMD.CommentRequired")
 public class HeroesClassCondition extends Condition {
     private final boolean primary;
 

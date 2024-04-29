@@ -13,7 +13,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.entity.Player;
 
-@SuppressWarnings({"PMD.CommentRequired", "PMD.PreserveStackTrace"})
+@SuppressWarnings("PMD.CommentRequired")
 public class AureliumSkillsExperienceEvent extends QuestEvent {
 
     private final AureliumSkills aureliumSkills = AureliumAPI.getPlugin();

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.mythicmobs;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.bukkit.events.MythicMobDeathEvent;
 import io.lumine.mythic.core.mobs.ActiveMob;
@@ -100,8 +99,6 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      *
      * @param event the MythicMobDeathEvent
      */
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @EventHandler(ignoreCancelled = true)
     public void onBossKill(final MythicMobDeathEvent event) {
         if (!names.contains(event.getMobType().getInternalName())

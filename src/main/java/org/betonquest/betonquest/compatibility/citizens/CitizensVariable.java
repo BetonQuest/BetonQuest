@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.citizens;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
@@ -83,7 +82,6 @@ public class CitizensVariable extends Variable {
     }
 
     @Override
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public String getValue(final Profile profile) {
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
         if (npc == null) {

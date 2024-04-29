@@ -18,12 +18,13 @@ public class MoneyVariable extends Variable {
 
     public MoneyVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        if ("amount".equalsIgnoreCase(instruction.next())) {
+        final String instructionString = instruction.next();
+        if ("amount".equalsIgnoreCase(instructionString)) {
             type = Type.AMOUNT;
-        } else if (instruction.current().toLowerCase(Locale.ROOT).startsWith("left:")) {
+        } else if (instructionString.toLowerCase(Locale.ROOT).startsWith("left:")) {
             type = Type.LEFT;
             try {
-                amount = Integer.parseInt(instruction.current().substring(5));
+                amount = Integer.parseInt(instructionString.substring(5));
             } catch (final NumberFormatException e) {
                 throw new InstructionParseException("Could not parse money amount", e);
             }
@@ -34,14 +35,10 @@ public class MoneyVariable extends Variable {
 
     @Override
     public String getValue(final Profile profile) {
-        switch (type) {
-            case AMOUNT:
-                return String.valueOf(VaultIntegrator.getEconomy().getBalance(profile.getPlayer()));
-            case LEFT:
-                return String.valueOf(amount - VaultIntegrator.getEconomy().getBalance(profile.getPlayer()));
-            default:
-                return "";
-        }
+        return switch (type) {
+            case AMOUNT -> String.valueOf(VaultIntegrator.getEconomy().getBalance(profile.getPlayer()));
+            case LEFT -> String.valueOf(amount - VaultIntegrator.getEconomy().getBalance(profile.getPlayer()));
+        };
     }
 
     private enum Type {

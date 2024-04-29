@@ -46,10 +46,6 @@ public class CitizensWalkingListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onConversationStart(final PlayerConversationStartEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-
         if (event.getConversation() instanceof CitizensConversation) {
             new BukkitRunnable() {
 
@@ -58,8 +54,7 @@ public class CitizensWalkingListener implements Listener {
                     final CitizensConversation conv = (CitizensConversation) event.getConversation();
                     final NPC npc = conv.getNPC();
                     if (npcs.containsKey(npc)) {
-                        final Pair<Integer, Location> pair = npcs.get(npc);
-                        npcs.put(npc, Pair.of(pair.getKey() + 1, pair.getValue()));
+                        npcs.computeIfPresent(npc, (k, pair) -> Pair.of(pair.getKey() + 1, pair.getValue()));
                     } else {
                         final Navigator nav = npc.getNavigator();
                         if (nav.isNavigating()) {
@@ -124,8 +119,7 @@ public class CitizensWalkingListener implements Listener {
      * @param location the location to which the npc should move
      */
     public void setNewTargetLocation(final NPC npc, final Location location) {
-        final Pair<Integer, Location> pair = npcs.get(npc);
-        npcs.put(npc, Pair.of(pair.getKey(), location));
+        npcs.computeIfPresent(npc, (k, pair) -> Pair.of(pair.getKey(), location));
     }
 
 }

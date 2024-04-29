@@ -53,8 +53,7 @@ public final class HologramRunner {
      *
      * @param hologram Hologram to be added
      */
-    @SuppressWarnings("PMD.CommentDefaultAccessModifier")
-    static void addHologram(final HologramWrapper hologram) {
+    static /* default */ void addHologram(final HologramWrapper hologram) {
         RUNNERS.computeIfAbsent(hologram.interval(),
                         k -> new HologramRunner(hologram.interval()))
                 .addRunnerHologram(hologram);

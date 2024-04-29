@@ -207,7 +207,7 @@ public abstract class HologramLoop {
                 code = validator.group(i).toLowerCase(Locale.ROOT);
             }
 
-            if ("".equals(code)) {
+            if (code.isEmpty()) {
                 colorCodes.append('f');
             } else {
                 colorCodes.append(code);

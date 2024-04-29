@@ -17,13 +17,15 @@ public final class HandlerUtil {
     }
 
     /**
-     * Checks the argument for null and throws when it is actual not present.
+     * Splits the argument by the given regex.
+     * <p>
+     * Throws if the argument is null or the created array empty.
      *
      * @param argument    to check for null and split
      * @param message     of the exception when the argument is null
      * @param splitSymbol regex to split
      * @return non empty string array
-     * @throws InstructionParseException if the argument is null or
+     * @throws InstructionParseException if the argument is null or empty
      */
     public static String[] getNNSplit(@Nullable final String argument, final String message, @Language("RegExp") final String splitSymbol) throws InstructionParseException {
         final String[] split = Utils.getNN(argument, message).split(splitSymbol);

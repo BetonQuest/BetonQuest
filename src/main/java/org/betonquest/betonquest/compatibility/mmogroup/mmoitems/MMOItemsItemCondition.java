@@ -32,7 +32,7 @@ public class MMOItemsItemCondition extends Condition {
     }
 
     @Override
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
+    @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", justification = "false positive on Inventory#getContents")
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         int counter = 0;
 
