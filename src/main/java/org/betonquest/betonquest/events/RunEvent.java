@@ -6,7 +6,9 @@ import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.item.typehandler.HandlerUtil;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +25,12 @@ public class RunEvent extends QuestEvent {
         super(instruction, false);
         staticness = true;
         persistent = true;
-        final String[] parts = instruction.getInstruction().substring(3).trim().split(" ");
-        if (parts.length <= 0) {
-            throw new InstructionParseException("Not enough arguments");
-        }
+        final String[] parts = HandlerUtil.getNNSplit(instruction.getInstruction().substring(3).trim(),
+                "Not enough arguments", " ");
         StringBuilder builder = new StringBuilder();
         for (final String part : parts) {
             if (!part.isEmpty() && part.charAt(0) == '^') {
-                if (builder.length() != 0) {
+                if (!builder.isEmpty()) {
                     internalEvents.add(createEvent(builder.toString().trim()));
                     builder = new StringBuilder();
                 }
@@ -46,10 +46,7 @@ public class RunEvent extends QuestEvent {
      * Constructs an event with given instruction and returns it.
      */
     private QuestEvent createEvent(final String instruction) throws InstructionParseException {
-        final String[] parts = instruction.split(" ");
-        if (parts.length <= 0) {
-            throw new InstructionParseException("Not enough arguments in internal event");
-        }
+        final String[] parts = HandlerUtil.getNNSplit(instruction, "Not enough arguments in internal event", " ");
         final QuestEventFactory eventFactory = BetonQuest.getInstance().getEventFactory(parts[0]);
         if (eventFactory == null) {
             // if it's null then there is no such type registered, log an error
@@ -61,7 +58,7 @@ public class RunEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final Profile profile) throws QuestRuntimeException {
+    protected Void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         for (final QuestEvent event : internalEvents) {
             event.fire(profile);
         }
