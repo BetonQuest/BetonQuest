@@ -36,14 +36,19 @@ class TokenizerTest {
                 Arguments.of("\"quoted\nnewline\"", new String[]{"quoted\nnewline"}),
                 Arguments.of("\"more quotes\" \"in\ninstruction\"\nstrings", new String[]{"more quotes", "in\ninstruction", "strings"}),
                 Arguments.of("  \"surrounding space\"   ", new String[]{"surrounding space"}),
-                Arguments.of("random esc\\ape", new String[]{"random", "escape"}),
-                Arguments.of("escaped\\ space", new String[]{"escaped space"}),
-                Arguments.of("\\start escaped", new String[]{"start", "escaped"}),
-                Arguments.of("\\ start with\\  space", new String[]{" start", "with ", "space"}),
-                Arguments.of("escaped\\\nnewline", new String[]{"escaped\nnewline"}),
+                Arguments.of("random esc\\ape", new String[]{"random", "esc\\ape"}),
+                Arguments.of("escaped\\ space", new String[]{"escaped\\", "space"}),
+                Arguments.of("\\start escaped", new String[]{"\\start", "escaped"}),
+                Arguments.of("\\ start with\\  space", new String[]{"\\", "start", "with\\", "space"}),
+                Arguments.of("escaped\\\nnewline", new String[]{"escaped\\", "newline"}),
                 Arguments.of("\"escaped quote\\\" works\"", new String[]{"escaped quote\" works"}),
                 Arguments.of("empty \"\" word", new String[]{"empty", "", "word"}),
-                Arguments.of("\\ ", new String[]{" "})
+                Arguments.of("\\ ", new String[]{"\\"}),
+                Arguments.of("inn\"er\" quote", new String[]{"inn\"er\"", "quote"}),
+                Arguments.of("string\"", new String[]{"string\""}),
+                Arguments.of("str\"ing", new String[]{"str\"ing"}),
+                Arguments.of("\\", new String[]{"\\"}),
+                Arguments.of("trailing escape\\", new String[]{"trailing", "escape\\"})
         );
     }
 
@@ -59,12 +64,7 @@ class TokenizerTest {
                 "\"",
                 "\"string",
                 "my \"string",
-                "inn\"er\" quote",
-                "inner \"quo\"te",
-                "string\"",
-                "str\"ing",
-                "\\",
-                "trailing escape\\"
+                "inner \"quo\"te"
         );
     }
 }

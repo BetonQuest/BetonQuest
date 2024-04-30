@@ -19,9 +19,6 @@ public class NoWordState implements TokenizerState {
         if (codePoint == QuotingTokenizer.QUOTE) {
             return new QuotedWordState();
         }
-        if (codePoint == QuotingTokenizer.ESCAPE) {
-            return new EscapeState(new PureWordState());
-        }
         ctx.appendCodePoint(codePoint);
         return new PureWordState();
     }

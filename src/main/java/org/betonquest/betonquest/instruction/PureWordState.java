@@ -16,12 +16,6 @@ public class PureWordState implements TokenizerState {
             ctx.endWord();
             return new NoWordState();
         }
-        if (codePoint == QuotingTokenizer.QUOTE) {
-            throw new TokenizerException("Expected any character for escape sequence but reached end of data.");
-        }
-        if (codePoint == QuotingTokenizer.ESCAPE) {
-            return new EscapeState(this);
-        }
         ctx.appendCodePoint(codePoint);
         return this;
     }
