@@ -383,7 +383,7 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
-    @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.ConsecutiveLiteralAppends"})
     protected void updateDisplay() {
         if (npcText == null) {
             displayOutput = null;
@@ -500,9 +500,9 @@ public class MenuConvIO extends ChatConvIO {
             linesAvailable--;
         }
 
-        displayBuilder.append(String.join("\n", npcLines)).append("\n"
+        displayBuilder.append(String.join("\n", npcLines)).append('\n')
                 // Put clear lines between NPC text and Options
-                + " \n".repeat(linesAvailable));
+                .append(" \n".repeat(linesAvailable));
 
         if (!options.isEmpty()) {
             // Show up arrow if options exist above our view
@@ -516,7 +516,7 @@ public class MenuConvIO extends ChatConvIO {
             }
 
             // Display Options
-            displayBuilder.append(String.join("\n", optionsSelected) + 'n');
+            displayBuilder.append(String.join("\n", optionsSelected)).append('n');
 
             // Show down arrow if options exist below our view
             if (topOption + optionsSelected.size() < options.size()) {
