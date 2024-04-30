@@ -37,24 +37,16 @@ public class CraftingObjective extends CountingObjective implements Listener {
         final ItemStack result = event.getRecipe().getResult();
         final PlayerInventory inventory = event.getWhoClicked().getInventory();
         final ItemStack[] ingredients = event.getInventory().getMatrix();
-        switch (event.getClick()) {
-            case SHIFT_LEFT:
-            case SHIFT_RIGHT:
-                return InventoryUtils.calculateShiftCraftAmount(result, inventory, ingredients);
-            case CONTROL_DROP:
-                return InventoryUtils.calculateMaximumCraftAmount(result, ingredients);
-            case NUMBER_KEY:
-                return InventoryUtils.calculateSwapCraftAmount(result, inventory.getItem(event.getHotbarButton()));
-            case SWAP_OFFHAND:
-                return InventoryUtils.calculateSwapCraftAmount(result, inventory.getItemInOffHand());
-            case DROP:
-                return InventoryUtils.calculateDropCraftAmount(result, event.getCursor());
-            case LEFT:
-            case RIGHT:
-                return InventoryUtils.calculateSimpleCraftAmount(result, event.getCursor());
-            default:
-                return 0;
-        }
+        return switch (event.getClick()) {
+            case SHIFT_LEFT, SHIFT_RIGHT -> InventoryUtils.calculateShiftCraftAmount(result, inventory, ingredients);
+            case CONTROL_DROP -> InventoryUtils.calculateMaximumCraftAmount(result, ingredients);
+            case NUMBER_KEY ->
+                    InventoryUtils.calculateSwapCraftAmount(result, inventory.getItem(event.getHotbarButton()));
+            case SWAP_OFFHAND -> InventoryUtils.calculateSwapCraftAmount(result, inventory.getItemInOffHand());
+            case DROP -> InventoryUtils.calculateDropCraftAmount(result, event.getCursor());
+            case LEFT, RIGHT -> InventoryUtils.calculateSimpleCraftAmount(result, event.getCursor());
+            default -> 0;
+        };
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

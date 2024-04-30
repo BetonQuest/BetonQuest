@@ -59,27 +59,23 @@ public class SmeltingObjective extends CountingObjective implements Listener {
     private int calculateTakeAmount(final InventoryClickEvent event) {
         final ItemStack result = event.getCurrentItem();
         final PlayerInventory inventory = event.getWhoClicked().getInventory();
-        switch (event.getClick()) {
-            case SHIFT_LEFT:
-            case SHIFT_RIGHT:
-                return Math.min(InventoryUtils.calculateSpaceForItem(inventory, result), result.getAmount());
-            case CONTROL_DROP:
-                return InventoryUtils.calculateSpaceForItem(inventory, result);
-            case NUMBER_KEY:
-                return InventoryUtils.calculateSwapCraftAmount(result, inventory.getItem(event.getHotbarButton()));
-            case SWAP_OFFHAND:
-                return InventoryUtils.calculateSwapCraftAmount(result, inventory.getItemInOffHand());
-            case DROP:
-                return 1;
-            case RIGHT:
+        return switch (event.getClick()) {
+            case SHIFT_LEFT, SHIFT_RIGHT ->
+                    Math.min(InventoryUtils.calculateSpaceForItem(inventory, result), result.getAmount());
+            case CONTROL_DROP -> InventoryUtils.calculateSpaceForItem(inventory, result);
+            case NUMBER_KEY ->
+                    InventoryUtils.calculateSwapCraftAmount(result, inventory.getItem(event.getHotbarButton()));
+            case SWAP_OFFHAND -> InventoryUtils.calculateSwapCraftAmount(result, inventory.getItemInOffHand());
+            case DROP -> 1;
+            case RIGHT -> {
                 if (InventoryUtils.isEmptySlot(event.getCursor())) {
-                    return (result.getAmount() + 1) / 2;
+                    yield (result.getAmount() + 1) / 2;
                 }
-            case LEFT:
-                return InventoryUtils.calculateSimpleCraftAmount(result, event.getCursor());
-            default:
-                return 0;
-        }
+                yield InventoryUtils.calculateSimpleCraftAmount(result, event.getCursor());
+            }
+            case LEFT -> InventoryUtils.calculateSimpleCraftAmount(result, event.getCursor());
+            default -> 0;
+        };
     }
 
     @Override
