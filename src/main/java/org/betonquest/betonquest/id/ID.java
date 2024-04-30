@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
@@ -32,8 +33,10 @@ public abstract class ID {
 
     protected QuestPackage pack;
 
+    @Nullable
     protected Instruction instruction;
 
+    @Nullable
     protected String rawInstruction;
 
     /**
@@ -45,9 +48,9 @@ public abstract class ID {
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity",
             "PMD.AvoidLiteralsInIfCondition", "PMD.NcssCount"})
-    protected ID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
+    protected ID(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         // id must be specified
-        if (identifier == null || identifier.isEmpty()) {
+        if (identifier.isEmpty()) {
             throw new ObjectNotFoundException("ID is null");
         }
         // resolve package name
@@ -212,7 +215,7 @@ public abstract class ID {
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(@Nullable final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -237,5 +240,19 @@ public abstract class ID {
             instruction = new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), pack, this, rawInstruction);
         }
         return instruction;
+    }
+
+    /**
+     * Sets the raw instruction to the string this ID represents in the package.
+     *
+     * @param section  the name of the section
+     * @param readable the section name used in the exception
+     * @throws ObjectNotFoundException if the id does not exist in the package
+     */
+    protected void setRawInstructionOrThrow(final String section, final String readable) throws ObjectNotFoundException {
+        rawInstruction = this.pack.getString(section + "." + this.identifier);
+        if (rawInstruction == null) {
+            throw new ObjectNotFoundException(readable + " '" + getFullID() + "' is not defined");
+        }
     }
 }

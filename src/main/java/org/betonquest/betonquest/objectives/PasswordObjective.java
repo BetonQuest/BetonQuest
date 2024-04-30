@@ -17,6 +17,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -29,6 +30,7 @@ public class PasswordObjective extends Objective implements Listener {
 
     private final Pattern regex;
 
+    @Nullable
     private final String passwordPrefix;
 
     private final EventID[] failEvents;

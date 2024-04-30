@@ -6,6 +6,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.utils.Utils;
 
 import java.util.UUID;
 
@@ -21,12 +22,10 @@ public class OpenShopEvent extends QuestEvent {
         super(instruction, true);
         final String string = instruction.next();
         try {
-            shopkeeper = ShopkeepersAPI.getShopkeeperRegistry().getShopkeeperByUniqueId(UUID.fromString(string));
+            shopkeeper = Utils.getNN(ShopkeepersAPI.getShopkeeperRegistry().getShopkeeperByUniqueId(UUID.fromString(string)),
+                    "Shopkeeper with this UUID does not exist: '" + string + "'");
         } catch (final IllegalArgumentException e) {
             throw new InstructionParseException("Could not parse UUID: '" + string + "'", e);
-        }
-        if (shopkeeper == null) {
-            throw new InstructionParseException("Shopkeeper with this UUID does not exist: '" + string + "'");
         }
     }
 

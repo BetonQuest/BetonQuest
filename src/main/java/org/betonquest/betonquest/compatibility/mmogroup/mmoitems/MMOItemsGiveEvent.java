@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.api.player.PlayerData;
@@ -13,6 +12,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -31,6 +31,8 @@ public class MMOItemsGiveEvent extends QuestEvent {
 
     private final String itemID;
 
+    private final ItemStack mmoItem;
+
     private boolean scale;
 
     private boolean notify;
@@ -39,13 +41,11 @@ public class MMOItemsGiveEvent extends QuestEvent {
 
     private VariableNumber amountVar = new VariableNumber(1);
 
-    private ItemStack mmoItem;
-
     public MMOItemsGiveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
-        itemType = mmoPlugin.getTypes().get(instruction.next());
+        itemType = MMOItemsUtils.getMMOItemType(instruction.next());
         itemID = instruction.next();
 
         while (instruction.hasNext()) {
@@ -58,23 +58,27 @@ public class MMOItemsGiveEvent extends QuestEvent {
             }
         }
 
-        mmoItem = mmoPlugin.getItem(itemType, itemID);
-
-        if (mmoItem == null) {
-            throw new InstructionParseException("Item with type '" + itemType + "' and ID '" + itemID + "' does not exist.");
-        }
+        mmoItem = Utils.getNN(mmoPlugin.getItem(itemType, itemID),
+                "Item with type '" + itemType + "' and ID '" + itemID + "' does not exist.");
     }
 
     @SuppressWarnings("PMD.PreserveStackTrace")
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
         final Player player = profile.getOnlineProfile().get().getPlayer();
-        int amount = amountVar.getInt(profile);
 
+        final ItemStack mmoItem;
         if (scale) {
             mmoItem = mmoPlugin.getItem(itemType, itemID, PlayerData.get(profile.getPlayerUUID()));
+            if (mmoItem == null) {
+                throw new QuestRuntimeException("Item with type '" + itemType + "' and ID '" + itemID + "' does not exist for player '"
+                        + player.getName() + "'.");
+            }
+        } else {
+            mmoItem = this.mmoItem;
         }
+
+        int amount = amountVar.getInt(profile);
 
         if (notify) {
             try {
@@ -82,7 +86,8 @@ public class MMOItemsGiveEvent extends QuestEvent {
                         new String[]{mmoItem.getItemMeta().getDisplayName(), String.valueOf(amount)},
                         "items_given,info");
             } catch (final QuestRuntimeException e) {
-                log.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'items_given' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
+                log.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'items_given' category in '"
+                        + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
             }
         }
 

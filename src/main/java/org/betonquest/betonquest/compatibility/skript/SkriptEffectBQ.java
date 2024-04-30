@@ -13,6 +13,7 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Skript effect, which fires specified BetonQuest's event
@@ -43,8 +44,8 @@ public class SkriptEffectBQ extends Effect {
 
     @Override
     @SuppressFBWarnings({"NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE", "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"})
-    public String toString(final Event event, final boolean debug) {
-        return "fire " + this.event.toString() + " for " + player.getSingle(event).getName();
+    public String toString(@Nullable final Event event, final boolean debug) {
+        return "fire " + this.event + " for " + player.getSingle(event).getName();
     }
 
     @Override

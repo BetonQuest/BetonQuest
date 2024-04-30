@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("PMD.CommentRequired")
@@ -81,7 +80,7 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
      * @return possibly-null String of the requested identifier.
      */
     @Override
-    public @NotNull String onPlaceholderRequest(@Nullable final Player player, @NotNull final String identifier) {
+    public String onPlaceholderRequest(@Nullable final Player player, final String identifier) {
         final String pack;
         final String placeholderIdentifier;
         final int index = identifier.indexOf(':');

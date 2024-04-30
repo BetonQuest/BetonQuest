@@ -20,7 +20,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 
 /**
- * Listener which handles data loadin/saving when players are joining/quitting
+ * Listener which handles data loading/saving when players are joining/quitting.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class JoinQuitListener implements Listener {
@@ -30,16 +30,12 @@ public class JoinQuitListener implements Listener {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
+     * Creates new listener, which will handle the data loading/saving.
+     *
+     * @param loggerFactory used for logger creation in ConversationResumer
      */
-    private final BetonQuestLogger log;
-
-    /**
-     * Creates new listener, which will handle the data loading/saving
-     */
-    public JoinQuitListener(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
+    public JoinQuitListener(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;
-        this.log = log;
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
@@ -56,15 +52,7 @@ public class JoinQuitListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
-        // start objectives when the data is loaded
-        PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
-        // if the data still isn't loaded, force loading (this happens sometimes
-        // probably because AsyncPlayerPreLoginEvent does not fire)
-        if (playerData == null) {
-            playerData = new PlayerData(onlineProfile);
-            BetonQuest.getInstance().putPlayerData(onlineProfile, playerData);
-            log.warn("Failed to load data for " + onlineProfile + ", forcing.");
-        }
+        final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
         playerData.startObjectives();
         GlobalObjectives.startAll(onlineProfile);
         final PlayerResourcePackStatusEvent.Status resourcePackStatus = event.getPlayer().getResourcePackStatus();

@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -16,6 +17,7 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.bukkit.Server;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -195,9 +197,10 @@ public abstract class Objective {
      */
     public final void completeObjective(final Profile profile) {
         completeObjectiveForPlayer(profile);
-        BetonQuest.getInstance().getPlayerData(profile).removeRawObjective((ObjectiveID) instruction.getID());
+        final PlayerData playerData = BetonQuest.getInstance().getPlayerData(profile);
+        playerData.removeRawObjective((ObjectiveID) instruction.getID());
         if (persistent) {
-            BetonQuest.getInstance().getPlayerData(profile).addNewRawObjective((ObjectiveID) instruction.getID());
+            playerData.addNewRawObjective((ObjectiveID) instruction.getID());
             createObjectiveForPlayer(profile, getDefaultDataInstruction(profile));
         }
         log.debug(instruction.getPackage(),
@@ -420,6 +423,7 @@ public abstract class Objective {
      * @param profile the {@link Profile} to get the data for
      * @return the data string for this objective
      */
+    @Nullable
     public final String getData(final Profile profile) {
         final ObjectiveData data = dataMap.get(profile);
         if (data == null) {
@@ -564,7 +568,6 @@ public abstract class Objective {
          * will have to start this objective from scratch.
          * </p>
          */
-        @SuppressWarnings("PMD.DoNotUseThreads")
         protected void update() {
             final Saver saver = BetonQuest.getInstance().getSaver();
             saver.add(new Saver.Record(UpdateType.REMOVE_OBJECTIVES, profile.getProfileUUID().toString(), objID));

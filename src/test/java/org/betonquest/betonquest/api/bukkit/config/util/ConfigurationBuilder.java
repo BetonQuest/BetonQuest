@@ -9,7 +9,6 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
@@ -40,7 +39,7 @@ public class ConfigurationBuilder {
      * @param uuid The {@link UUID} of the {@link OfflinePlayer}
      * @return The mocked {@link OfflinePlayer}
      */
-    public static @NotNull OfflinePlayer getMockedOfflinePlayer(final UUID uuid) {
+    public static OfflinePlayer getMockedOfflinePlayer(final UUID uuid) {
         final OfflinePlayer offlinePlayer = mock(OfflinePlayer.class);
         when(offlinePlayer.getUniqueId()).thenReturn(uuid);
         return offlinePlayer;

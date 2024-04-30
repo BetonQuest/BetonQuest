@@ -79,7 +79,7 @@ public class RPGMenuCommand extends SimpleCommand {
     @SuppressWarnings({"PMD.SwitchDensity", "PMD.NPathComplexity", "PMD.CyclomaticComplexity", "PMD.NcssCount",
             "PMD.SwitchStmtsShouldHaveDefault", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     public boolean simpleCommand(final CommandSender sender, final String alias, final String[] args) {
-        if (args == null || args.length == 0) {
+        if (args.length == 0) {
             //display command help
             showHelp(sender);
             return false;

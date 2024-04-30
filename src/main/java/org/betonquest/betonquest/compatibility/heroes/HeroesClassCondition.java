@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
@@ -21,8 +22,10 @@ public class HeroesClassCondition extends Condition {
 
     private final boolean mastered;
 
+    @Nullable
     private final VariableNumber level;
 
+    @Nullable
     private final HeroClass heroClass;
 
     private final boolean any;

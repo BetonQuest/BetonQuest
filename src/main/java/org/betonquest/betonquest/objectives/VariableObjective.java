@@ -79,7 +79,7 @@ public class VariableObjective extends Objective implements Listener {
      * @return true if it was stored, false if the player doesn't have this
      * objective
      */
-    public boolean store(final Profile profile, final String key, final String value) {
+    public boolean store(final Profile profile, final String key, @Nullable final String value) {
         final VariableData data = (VariableData) dataMap.get(profile);
         if (data == null) {
             return false;
@@ -106,7 +106,8 @@ public class VariableObjective extends Objective implements Listener {
      * @param profile the {@link Profile} of the player
      * @return the profile's variables as unmodifiable map; or null if the objective is not active for the profile
      */
-    public @Nullable Map<String, String> getProperties(final Profile profile) {
+    @Nullable
+    public Map<String, String> getProperties(final Profile profile) {
         final VariableData profileData = (VariableData) dataMap.get(profile);
         return profileData == null ? null : Collections.unmodifiableMap(profileData.variables);
     }
@@ -175,11 +176,12 @@ public class VariableObjective extends Objective implements Listener {
             return matcher.appendTail(deserialized).toString();
         }
 
+        @Nullable
         public String get(final String key) {
             return variables.get(key);
         }
 
-        public void add(final String key, final String value) {
+        public void add(final String key, @Nullable final String value) {
             if (value == null || value.isEmpty()) {
                 variables.remove(key);
             } else {

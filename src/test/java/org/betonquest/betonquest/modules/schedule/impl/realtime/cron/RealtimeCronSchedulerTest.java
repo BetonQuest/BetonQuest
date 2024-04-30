@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.modules.schedule.LastExecutionCache;
 import org.betonquest.betonquest.modules.schedule.ScheduleID;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -38,7 +37,6 @@ class RealtimeCronSchedulerTest {
     @Mock
     private BetonQuestLogger logger;
 
-    @NotNull
     private static RealtimeCronSchedule getSchedule(final CatchupStrategy catchupStrategy, final boolean shouldRunOnReboot) {
         final RealtimeCronSchedule schedule = mock(RealtimeCronSchedule.class);
         when(schedule.shouldRunOnReboot()).thenReturn(shouldRunOnReboot);

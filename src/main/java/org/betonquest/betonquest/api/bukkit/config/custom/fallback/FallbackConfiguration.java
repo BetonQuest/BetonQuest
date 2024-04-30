@@ -4,7 +4,6 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationOptions;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -18,6 +17,7 @@ public class FallbackConfiguration extends FallbackConfigurationSection implemen
     /**
      * Holds the defaults of this {@link FallbackConfiguration}.
      */
+    @Nullable
     private FallbackConfiguration defaults;
 
     /**
@@ -27,12 +27,12 @@ public class FallbackConfiguration extends FallbackConfigurationSection implemen
      * @param fallback The fallback {@link ConfigurationSection} that should be used
      *                 when there is no value in the  original {@link ConfigurationSection}.
      */
-    public FallbackConfiguration(@NotNull final ConfigurationSection original, @Nullable final ConfigurationSection fallback) {
+    public FallbackConfiguration(final ConfigurationSection original, @Nullable final ConfigurationSection fallback) {
         super(original, fallback);
     }
 
     @Override
-    public void addDefaults(@NotNull final Map<String, Object> defaults) {
+    public void addDefaults(final Map<String, Object> defaults) {
         final Configuration originalRoot = manager.getOriginal().getRoot();
         if (originalRoot == null) {
             throw new IllegalStateException("Cannot add defaults, because the original configuration does not have a root");
@@ -41,7 +41,7 @@ public class FallbackConfiguration extends FallbackConfigurationSection implemen
     }
 
     @Override
-    public void addDefaults(@NotNull final Configuration defaults) {
+    public void addDefaults(final Configuration defaults) {
         final Configuration originalRoot = manager.getOriginal().getRoot();
         if (originalRoot == null) {
             throw new IllegalStateException("Cannot add defaults, because the original configuration does not have a root");
@@ -50,25 +50,29 @@ public class FallbackConfiguration extends FallbackConfigurationSection implemen
     }
 
     @Override
-    public @Nullable Configuration getDefaults() {
+    @Nullable
+    public Configuration getDefaults() {
         createDefaults(false);
         return defaults;
     }
 
     @Override
-    public void setDefaults(@NotNull final Configuration defaults) {
+    public void setDefaults(final Configuration defaults) {
         final Configuration originalRoot = manager.getOriginal().getRoot();
         if (originalRoot == null) {
             throw new IllegalStateException("Cannot add defaults, because the original configuration does not have a root");
         }
         originalRoot.setDefaults(defaults);
         if (!createDefaults(true)) {
+            if (this.defaults == null) {
+                throw new IllegalArgumentException("There are no defaults");
+            }
             this.defaults.manager.setOriginal(defaults);
         }
     }
 
     @Override
-    public @NotNull ConfigurationOptions options() {
+    public ConfigurationOptions options() {
         final Configuration originalRoot = manager.getOriginal().getRoot();
         final ConfigurationSection fallback = manager.getFallback();
         final Configuration fallbackRoot = fallback == null ? null : fallback.getRoot();

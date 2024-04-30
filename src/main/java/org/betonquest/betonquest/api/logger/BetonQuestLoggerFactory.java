@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.api.logger;
 
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -17,7 +16,7 @@ public interface BetonQuestLoggerFactory {
      * @return A {@link BetonQuestLogger} implementation.
      * @throws IllegalStateException Thrown if this is called from a class, that extends {@link Plugin}
      */
-    default BetonQuestLogger create(@NotNull final Class<?> clazz) {
+    default BetonQuestLogger create(final Class<?> clazz) {
         return create(clazz, null);
     }
 
@@ -31,7 +30,7 @@ public interface BetonQuestLoggerFactory {
      * @return A {@link BetonQuestLogger} implementation.
      * @throws IllegalStateException Thrown if this is called from a class, that extends {@link Plugin}
      */
-    BetonQuestLogger create(@NotNull Class<?> clazz, @Nullable String topic);
+    BetonQuestLogger create(Class<?> clazz, @Nullable String topic);
 
     /**
      * Creates a logger.
@@ -43,7 +42,7 @@ public interface BetonQuestLoggerFactory {
      * @param plugin The plugin which is used for logging.
      * @return A {@link BetonQuestLogger} implementation.
      */
-    default BetonQuestLogger create(@NotNull final Plugin plugin) {
+    default BetonQuestLogger create(final Plugin plugin) {
         return create(plugin, null);
     }
 
@@ -58,5 +57,5 @@ public interface BetonQuestLoggerFactory {
      * @param topic  The optional topic of the logger.
      * @return A {@link BetonQuestLogger} implementation.
      */
-    BetonQuestLogger create(@NotNull Plugin plugin, @Nullable String topic);
+    BetonQuestLogger create(Plugin plugin, @Nullable String topic);
 }

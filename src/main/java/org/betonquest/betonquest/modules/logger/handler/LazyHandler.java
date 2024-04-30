@@ -1,5 +1,8 @@
 package org.betonquest.betonquest.modules.logger.handler;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
@@ -34,6 +37,7 @@ public class LazyHandler extends Handler {
     /**
      * Lazily created internal {@link Handler}.
      */
+    @Nullable
     private Handler internalHandler;
 
     /**
@@ -49,6 +53,7 @@ public class LazyHandler extends Handler {
     }
 
     @Override
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     public void publish(final LogRecord record) {
         requireNotClosed();
         if (internalHandler == null) {

@@ -6,6 +6,7 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConversationID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -34,7 +35,7 @@ public record PlayerConversationState(ConversationID currentConversation, String
      * @return the conversation state represented by the string
      * @throws ObjectNotFoundException if the conversation ID is invalid
      */
-    public static Optional<PlayerConversationState> fromString(final String string) throws ObjectNotFoundException {
+    public static Optional<PlayerConversationState> fromString(@Nullable final String string) throws ObjectNotFoundException {
         if (string == null || string.isEmpty()) {
             return Optional.empty();
         }

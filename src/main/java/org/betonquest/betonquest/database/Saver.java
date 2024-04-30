@@ -32,7 +32,7 @@ public interface Saver {
          */
         public Record(final UpdateType type, final String... args) {
             this.type = type;
-            this.args = args == null ? null : Arrays.copyOf(args, args.length);
+            this.args = Arrays.copyOf(args, args.length);
         }
     }
 }

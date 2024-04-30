@@ -4,7 +4,6 @@ import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfi
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public class MultiFallbackConfiguration extends FallbackConfiguration implements
      * @param fallback The fallback {@link ConfigurationSection} that should be used
      *                 when there is no value in the original {@link ConfigurationSection}.
      */
-    public MultiFallbackConfiguration(@NotNull final MultiConfiguration original, @Nullable final ConfigurationSection fallback) {
+    public MultiFallbackConfiguration(final MultiConfiguration original, @Nullable final ConfigurationSection fallback) {
         super(original, fallback);
         this.original = original;
     }

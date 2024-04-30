@@ -31,13 +31,8 @@ public class ConversationCondition extends Condition {
      */
     public ConversationCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
-
-        if (instruction.next() == null) {
-            throw new InstructionParseException("Missing conversation parameter.");
-        }
-
         try {
-            conversationID = new ConversationID(instruction.getPackage(), instruction.current());
+            conversationID = new ConversationID(instruction.getPackage(), instruction.next());
         } catch (final ObjectNotFoundException e) {
             throw new InstructionParseException(e.getMessage(), e);
         }

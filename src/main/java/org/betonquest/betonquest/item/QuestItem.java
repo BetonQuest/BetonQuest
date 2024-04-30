@@ -282,7 +282,6 @@ public class QuestItem {
             }
             if (meta instanceof final FireworkEffectMeta fireworkMeta && fireworkMeta.hasEffect()) {
                 final FireworkEffect effect = fireworkMeta.getEffect();
-                assert effect != null;
                 final StringBuilder builder = new StringBuilder();
                 appendFireworkEffect(builder, effect);
                 builder.append(" firework:");
@@ -371,7 +370,6 @@ public class QuestItem {
      * @return true if the item matches
      */
     @SuppressWarnings("PMD.NPathComplexity")
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public boolean compare(@Nullable final ItemStack item) {
         // basic item checks
         if (item == null) {
@@ -422,8 +420,7 @@ public class QuestItem {
                 return false;
             }
         }
-        if (meta instanceof BookMeta) {
-            final BookMeta bookMeta = (BookMeta) item.getItemMeta();
+        if (meta instanceof final BookMeta bookMeta) {
             if (!book.checkTitle(bookMeta.getTitle())) {
                 return false;
             }
@@ -434,20 +431,13 @@ public class QuestItem {
                 return false;
             }
         }
-        if (meta instanceof SkullMeta) {
-            final SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
-            if (!head.check(skullMeta)) {
-                return false;
-            }
+        if (meta instanceof final SkullMeta skullMeta && !head.check(skullMeta)) {
+            return false;
         }
-        if (meta instanceof LeatherArmorMeta) {
-            final LeatherArmorMeta armorMeta = (LeatherArmorMeta) item.getItemMeta();
-            if (!color.check(armorMeta.getColor())) {
-                return false;
-            }
+        if (meta instanceof final LeatherArmorMeta armorMeta && !color.check(armorMeta.getColor())) {
+            return false;
         }
-        if (meta instanceof FireworkMeta) {
-            final FireworkMeta fireworkMeta = (FireworkMeta) item.getItemMeta();
+        if (meta instanceof final FireworkMeta fireworkMeta) {
             if (!firework.checkEffects(fireworkMeta.getEffects())) {
                 return false;
             }
@@ -455,8 +445,7 @@ public class QuestItem {
                 return false;
             }
         }
-        if (meta instanceof FireworkEffectMeta) {
-            final FireworkEffectMeta fireworkMeta = (FireworkEffectMeta) item.getItemMeta();
+        if (meta instanceof final FireworkEffectMeta fireworkMeta) {
             return firework.checkSingleEffect(fireworkMeta.getEffect());
         }
         return true;
@@ -480,8 +469,7 @@ public class QuestItem {
      * @return the ItemStack equal to this quest item
      */
     @SuppressWarnings("PMD.NPathComplexity")
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public ItemStack generate(final int stackSize, final Profile profile) {
+    public ItemStack generate(final int stackSize, @Nullable final Profile profile) {
         // Try resolve material directly
         final Material material = selector.getRandomMaterial();
 
@@ -493,9 +481,7 @@ public class QuestItem {
         meta.setDisplayName(name.get());
         meta.setLore(lore.get());
         meta.setUnbreakable(unbreakable.isUnbreakable());
-        if (flags.get() != null) {
-            flags.get().forEach(meta::addItemFlags);
-        }
+        flags.get().forEach(meta::addItemFlags);
         if (customModelData.getExistence() == Existence.REQUIRED) {
             meta.setCustomModelData(customModelData.get());
         }
@@ -683,7 +669,6 @@ public class QuestItem {
     /**
      * @return the set of ItemFlags
      */
-    @Nullable
     public Set<ItemFlag> getFlags() {
         return flags.get();
     }

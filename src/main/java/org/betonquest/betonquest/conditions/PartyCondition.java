@@ -11,6 +11,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -30,6 +31,7 @@ public class PartyCondition extends Condition {
 
     private final ConditionID[] anyone;
 
+    @Nullable
     private final VariableNumber count;
 
     public PartyCondition(final Instruction instruction) throws InstructionParseException {

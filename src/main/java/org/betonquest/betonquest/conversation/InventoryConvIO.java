@@ -3,14 +3,18 @@ package org.betonquest.betonquest.conversation;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -22,12 +26,13 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Inventory GUI for conversations.
@@ -37,11 +42,16 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
     private static final Map<String, ItemStack> SKULL_CACHE = new HashMap<>();
 
+    protected final boolean showNumber;
+
+    protected final boolean showNPCText;
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
+    @Nullable
     protected String response;
 
     protected Map<Integer, String> options = new HashMap<>();
@@ -75,11 +85,6 @@ public class InventoryConvIO implements Listener, ConversationIO {
     protected Location loc;
 
     protected boolean printMessages;
-
-    // Config
-    protected boolean showNumber = true;
-
-    protected boolean showNPCText = true;
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public InventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
@@ -119,12 +124,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
         answerPrefix = string.toString();
         loc = player.getLocation();
 
-        // Load config
-        if (BetonQuest.getInstance().getPluginConfig().contains("conversation_IO_config.chest")) {
-            final ConfigurationSection config = BetonQuest.getInstance().getPluginConfig().getConfigurationSection("conversation_IO_config.chest");
-            showNumber = config.getBoolean("show_number", true);
-            showNPCText = config.getBoolean("show_npc_text", true);
-        }
+        final ConfigurationFile pluginConfig = BetonQuest.getInstance().getPluginConfig();
+        showNumber = pluginConfig.getBoolean("conversation_IO_config.chest.show_number", true);
+        showNPCText = pluginConfig.getBoolean("conversation_IO_config.chest.show_npc_text", true);
 
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
@@ -262,7 +264,6 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
     }
 
-    @NotNull
     private ItemStack createNpcHead() {
         final ItemStack npcHead;
         if (SKULL_CACHE.containsKey(npcName)) {
@@ -289,6 +290,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
 
         final SkullMeta npcMeta = (SkullMeta) npcHead.getItemMeta();
+        Objects.requireNonNull(response);
         npcMeta.setLore(Arrays.asList(LocalChatPaginator.wordWrap(
                 Utils.replaceReset(response, npcTextColor), 45)));
         npcHead.setItemMeta(npcMeta);

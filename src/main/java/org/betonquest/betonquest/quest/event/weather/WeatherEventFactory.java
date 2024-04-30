@@ -20,7 +20,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
@@ -83,7 +83,6 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
         }
     }
 
-    @NotNull
     private Weather parseWeather(final String weatherName) throws InstructionParseException {
         return switch (weatherName.toLowerCase(Locale.ROOT)) {
             case "sun", "clear" -> Weather.SUN;
@@ -94,8 +93,7 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
         };
     }
 
-    @NotNull
-    private Selector<World> parseWorld(final String worldName) {
+    private Selector<World> parseWorld(@Nullable final String worldName) {
         if (worldName == null) {
             return Selectors.fromPlayer(Player::getWorld);
         } else {

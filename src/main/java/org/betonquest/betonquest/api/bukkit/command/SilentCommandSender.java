@@ -8,7 +8,6 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -41,87 +40,89 @@ public class SilentCommandSender implements CommandSender {
     }
 
     @Override
-    public void sendMessage(@NotNull final String message) {
+    public void sendMessage(final String message) {
         log.debug("Silently sending message to console: " + message);
     }
 
     @Override
-    public void sendMessage(@NotNull final String... messages) {
+    public void sendMessage(final String... messages) {
         log.debug("Silently sending messages to console: " + String.join(", ", messages));
     }
 
     @Override
-    public void sendMessage(@Nullable final UUID sender, @NotNull final String message) {
+    public void sendMessage(@Nullable final UUID sender, final String message) {
         log.debug("Silently sending message to console: " + message);
     }
 
     @Override
-    public void sendMessage(@Nullable final UUID sender, @NotNull final String... messages) {
+    public void sendMessage(@Nullable final UUID sender, final String... messages) {
         log.debug("Silently sending messages to console: " + String.join(", ", messages));
     }
 
     @Override
-    public @NotNull Server getServer() {
+    public Server getServer() {
         return sender.getServer();
     }
 
     @Override
-    public @NotNull String getName() {
+    public String getName() {
         return sender.getName();
     }
 
     @Override
-    public @NotNull Spigot spigot() {
+    public Spigot spigot() {
         return sender.spigot();
     }
 
     @Override
-    public @NotNull Component name() {
+    public Component name() {
         return sender.name();
     }
 
     @Override
-    public boolean isPermissionSet(@NotNull final String name) {
+    public boolean isPermissionSet(final String name) {
         return sender.isPermissionSet(name);
     }
 
     @Override
-    public boolean isPermissionSet(@NotNull final Permission perm) {
+    public boolean isPermissionSet(final Permission perm) {
         return sender.isPermissionSet(perm);
     }
 
     @Override
-    public boolean hasPermission(@NotNull final String name) {
+    public boolean hasPermission(final String name) {
         return sender.hasPermission(name);
     }
 
     @Override
-    public boolean hasPermission(@NotNull final Permission perm) {
+    public boolean hasPermission(final Permission perm) {
         return sender.hasPermission(perm);
     }
 
     @Override
-    public @NotNull PermissionAttachment addAttachment(@NotNull final Plugin plugin, @NotNull final String name, final boolean value) {
+    public PermissionAttachment addAttachment(final Plugin plugin, final String name, final boolean value) {
         return sender.addAttachment(plugin, name, value);
     }
 
     @Override
-    public @NotNull PermissionAttachment addAttachment(@NotNull final Plugin plugin) {
+    public PermissionAttachment addAttachment(final Plugin plugin) {
         return sender.addAttachment(plugin);
     }
 
     @Override
-    public @Nullable PermissionAttachment addAttachment(@NotNull final Plugin plugin, @NotNull final String name, final boolean value, final int ticks) {
+    @Nullable
+    public PermissionAttachment addAttachment(final Plugin plugin, final String name, final boolean value, final int ticks) {
         return sender.addAttachment(plugin, name, value, ticks);
     }
 
     @Override
-    public @Nullable PermissionAttachment addAttachment(@NotNull final Plugin plugin, final int ticks) {
+    @Nullable
+    public PermissionAttachment addAttachment(final Plugin plugin, final int ticks) {
         return sender.addAttachment(plugin, ticks);
     }
 
     @Override
-    public void removeAttachment(@NotNull final PermissionAttachment attachment) {
+    public void removeAttachment(final PermissionAttachment attachment) {
         sender.removeAttachment(attachment);
     }
 
@@ -131,7 +132,7 @@ public class SilentCommandSender implements CommandSender {
     }
 
     @Override
-    public @NotNull Set<PermissionAttachmentInfo> getEffectivePermissions() {
+    public Set<PermissionAttachmentInfo> getEffectivePermissions() {
         return sender.getEffectivePermissions();
     }
 

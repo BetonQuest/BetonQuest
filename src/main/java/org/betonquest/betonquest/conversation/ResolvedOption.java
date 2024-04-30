@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.conversation;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * Simple record that represents one option inside a conversation.
  *
@@ -8,5 +10,5 @@ package org.betonquest.betonquest.conversation;
  * @param name             the name of the option as defined in the conversation config
  */
 public record ResolvedOption(ConversationData conversationData, ConversationData.OptionType type,
-                             String name) {
+                             @Nullable String name) {
 }

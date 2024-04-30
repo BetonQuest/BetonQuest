@@ -6,6 +6,7 @@ import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -18,6 +19,7 @@ public abstract class CountingObjective extends Objective {
     /**
      * The message name for notification messages used by default.
      */
+    @Nullable
     private final String defaultNotifyMessageName;
 
     /**
@@ -42,7 +44,7 @@ public abstract class CountingObjective extends Objective {
      * @param notifyMessageName the message name used for notifying by default
      * @throws InstructionParseException if the syntax is wrong or any error happens while parsing
      */
-    public CountingObjective(final Instruction instruction, final String notifyMessageName) throws InstructionParseException {
+    public CountingObjective(final Instruction instruction, @Nullable final String notifyMessageName) throws InstructionParseException {
         super(instruction);
         template = CountingData.class;
         defaultNotifyMessageName = notifyMessageName;
@@ -117,7 +119,7 @@ public abstract class CountingObjective extends Objective {
      * @param notifyMessageName message name for notification message
      * @return {@code true} if the objective is completed; {@code false} otherwise
      */
-    protected final boolean completeIfDoneOrNotify(final Profile profile, final String notifyMessageName) {
+    protected final boolean completeIfDoneOrNotify(final Profile profile, @Nullable final String notifyMessageName) {
         final CountingData data = getCountingData(profile);
         if (data.isComplete()) {
             completeObjective(profile);
@@ -379,4 +381,3 @@ public abstract class CountingObjective extends Objective {
         }
     }
 }
-

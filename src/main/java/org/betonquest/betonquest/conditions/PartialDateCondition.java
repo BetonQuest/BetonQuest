@@ -4,6 +4,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,10 +18,13 @@ import java.util.Objects;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class PartialDateCondition extends Condition {
+    @Nullable
     private final List<TimeInterval> dayOfMonth;
 
+    @Nullable
     private final List<TimeInterval> month;
 
+    @Nullable
     private final List<TimeInterval> year;
 
     public PartialDateCondition(final Instruction instruction) throws InstructionParseException {
@@ -158,7 +162,7 @@ public class PartialDateCondition extends Condition {
         }
 
         @Override
-        public boolean equals(final Object other) {
+        public boolean equals(@Nullable final Object other) {
             if (this == other) {
                 return true;
             }

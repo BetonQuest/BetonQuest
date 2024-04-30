@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.profile.PlayerProfile;
+import org.jetbrains.annotations.Nullable;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -64,7 +65,7 @@ public class SpigotHeadHandler extends HeadHandler {
 
     private String encodeSkin(final URL skinUrl) {
         return Base64.getEncoder()
-                .encodeToString((TEXTURE_PREFIX + skinUrl.toString() + TEXTURE_SUFFIX)
+                .encodeToString((TEXTURE_PREFIX + skinUrl + TEXTURE_SUFFIX)
                         .getBytes(Charset.defaultCharset()));
     }
 
@@ -82,7 +83,7 @@ public class SpigotHeadHandler extends HeadHandler {
     }
 
     @Override
-    public void populate(final SkullMeta skullMeta, final Profile profile) {
+    public void populate(final SkullMeta skullMeta, @Nullable final Profile profile) {
         final Profile owner = getOwner(profile);
         final UUID playerId = getPlayerId();
         final String texture = getTexture();

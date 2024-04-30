@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.entity.Player;
 
 /**
@@ -31,10 +32,7 @@ public class AureliumSkillsLevelCondition extends Condition {
         mustBeEqual = instruction.hasArgument("equal");
 
         final AureliumSkills aureliumSkills = AureliumAPI.getPlugin();
-        skill = aureliumSkills.getSkillRegistry().getSkill(skillName);
-        if (skill == null) {
-            throw new InstructionParseException("Invalid skill name");
-        }
+        skill = Utils.getNN(aureliumSkills.getSkillRegistry().getSkill(skillName), "Invalid skill name");
     }
 
     @Override

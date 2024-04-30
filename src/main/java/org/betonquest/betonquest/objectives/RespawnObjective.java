@@ -16,6 +16,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class RespawnObjective extends Objective implements Listener {
@@ -24,6 +25,7 @@ public class RespawnObjective extends Objective implements Listener {
      */
     private final BetonQuestLogger log;
 
+    @Nullable
     private final CompoundLocation location;
 
     public RespawnObjective(final Instruction instruction) throws InstructionParseException {

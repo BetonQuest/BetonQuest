@@ -7,6 +7,7 @@ import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConversationID;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Checks if the player is in a conversation or, if specified, in the specified conversation
@@ -16,6 +17,7 @@ public class InConversationCondition extends Condition {
     /**
      * Identifier of the conversation
      */
+    @Nullable
     private final ConversationID conversationID;
 
     /**

@@ -15,28 +15,26 @@ import java.util.stream.Stream;
  * Produces all config files.
  */
 public class FileConfigurationProvider {
-
     /**
      * All configs.
      */
-    private Map<File, YamlConfiguration> allConfigs;
+    private final Map<File, YamlConfiguration> allConfigs;
 
     /**
      * Creates a new file producer.
+     *
+     * @throws IOException If an I/O error occurs
      */
-    public FileConfigurationProvider() {
+    public FileConfigurationProvider() throws IOException {
+        allConfigs = new LinkedHashMap<>();
+        allConfigs.putAll(getAllQuestPackagesConfigs());
+        allConfigs.putAll(getAllQuestTemplatesConfigs());
     }
 
     /**
      * @return All configs
-     * @throws IOException If an I/O error occurs
      */
-    public Map<File, YamlConfiguration> getAllConfigs() throws IOException {
-        if (allConfigs == null) {
-            allConfigs = new LinkedHashMap<>();
-            allConfigs.putAll(getAllQuestPackagesConfigs());
-            allConfigs.putAll(getAllQuestTemplatesConfigs());
-        }
+    public Map<File, YamlConfiguration> getAllConfigs() {
         return allConfigs;
     }
 

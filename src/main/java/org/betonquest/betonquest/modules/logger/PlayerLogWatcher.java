@@ -5,6 +5,7 @@ import com.google.common.collect.Table;
 import org.betonquest.betonquest.modules.logger.handler.chat.PlayerPackageReceiverSelector;
 import org.betonquest.betonquest.modules.logger.handler.chat.ReceiverSelectorRegistry;
 import org.betonquest.betonquest.modules.logger.handler.chat.RecordReceiverSelector;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Set;
@@ -100,7 +101,7 @@ public class PlayerLogWatcher {
         unregisterSelector(oldSelector);
     }
 
-    private void unregisterSelector(final RecordReceiverSelector oldSelector) {
+    private void unregisterSelector(@Nullable final RecordReceiverSelector oldSelector) {
         if (oldSelector != null) {
             selectorRegistry.removeSelector(oldSelector);
         }

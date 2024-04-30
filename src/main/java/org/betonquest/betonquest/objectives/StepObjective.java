@@ -19,6 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The player must step on the pressure plate
@@ -30,6 +31,7 @@ public class StepObjective extends Objective implements Listener {
      */
     private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(StepObjective.class);
 
+    @Nullable
     private static final BlockSelector PRESSURE_PLATE_SELECTOR = getPressurePlateSelector();
 
     private final CompoundLocation loc;
@@ -39,6 +41,7 @@ public class StepObjective extends Objective implements Listener {
         loc = instruction.getLocation();
     }
 
+    @Nullable
     private static BlockSelector getPressurePlateSelector() {
         try {
             return new BlockSelector(".*_PRESSURE_PLATE");

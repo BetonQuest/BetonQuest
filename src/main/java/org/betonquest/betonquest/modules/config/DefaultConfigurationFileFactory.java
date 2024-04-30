@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.modules.config.patcher.DefaultPatchTransformerRegisterer;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,11 +50,7 @@ public class DefaultConfigurationFileFactory implements ConfigurationFileFactory
     }
 
     @Override
-    public ConfigurationFile create(final File configurationFile, final Plugin plugin, final String resourceFile, final PatchTransformerRegisterer patchTransformerRegisterer) throws InvalidConfigurationException, FileNotFoundException {
-        if (configurationFile == null || plugin == null || resourceFile == null) {
-            throw new IllegalArgumentException("The configurationFile, plugin and resourceFile must be defined but were null.");
-        }
-
+    public ConfigurationFile create(final File configurationFile, final Plugin plugin, final String resourceFile, @Nullable final PatchTransformerRegisterer patchTransformerRegisterer) throws InvalidConfigurationException, FileNotFoundException {
         final ConfigAccessor accessor = configAccessorFactory.create(configurationFile, plugin, resourceFile);
         final ConfigAccessor resourceAccessor = configAccessorFactory.create(plugin, resourceFile);
         accessor.getConfig().setDefaults(resourceAccessor.getConfig());
@@ -76,6 +73,7 @@ public class DefaultConfigurationFileFactory implements ConfigurationFileFactory
         return new ConfigurationFileImpl(logger, accessor, patcher, plugin.getDataFolder().getParentFile().toURI());
     }
 
+    @Nullable
     private ConfigAccessor createPatchAccessor(final Plugin plugin, final String resourceFile) throws InvalidConfigurationException {
         int index = resourceFile.lastIndexOf('.');
         final int separatorIndex = resourceFile.lastIndexOf(File.pathSeparator);

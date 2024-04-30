@@ -2,6 +2,7 @@ package org.betonquest.betonquest.modules.logger.handler.chat;
 
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 import java.util.UUID;
@@ -63,6 +64,7 @@ public class ChatHandler extends Handler {
     }
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
+    @Nullable
     private String format(final LogRecord record) {
         try {
             return getFormatter().format(record);

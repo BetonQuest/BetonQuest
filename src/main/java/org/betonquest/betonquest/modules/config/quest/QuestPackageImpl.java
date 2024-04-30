@@ -9,6 +9,7 @@ import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -81,7 +82,7 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
     }
 
     @Override
-    public String getString(final String address, final String def) {
+    public String getString(final String address, @Nullable final String def) {
         final String value = getRawString(address);
         if (value == null) {
             return def;
@@ -95,7 +96,8 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
 
     @Override
     public String getFormattedString(final String address) {
-        return Utils.format(getString(address));
+        final String string = getString(address);
+        return string == null ? null : Utils.format(string);
     }
 
 }

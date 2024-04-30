@@ -9,6 +9,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.utils.Utils;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Set;
@@ -27,6 +28,7 @@ public class PartyEvent implements Event {
     /**
      * The optional maximum amount of players affected by this party event.
      */
+    @Nullable
     private final VariableNumber amount;
 
     /**
@@ -48,7 +50,7 @@ public class PartyEvent implements Event {
      * @param conditions the conditions that must be met by the party members
      * @param events     the events to fire
      */
-    public PartyEvent(final VariableNumber range, final VariableNumber amount, final ConditionID[] conditions, final EventID... events) {
+    public PartyEvent(final VariableNumber range, @Nullable final VariableNumber amount, final ConditionID[] conditions, final EventID... events) {
         this.range = range;
         this.amount = amount;
         this.conditions = conditions.clone();

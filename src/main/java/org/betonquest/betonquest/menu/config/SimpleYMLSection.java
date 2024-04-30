@@ -33,15 +33,12 @@ public abstract class SimpleYMLSection {
         this.pack = pack;
         this.config = config;
         this.name = name;
-        if (config == null || config.getKeys(false).size() == 0) {
+        if (config.getKeys(false).isEmpty()) {
             throw new InvalidSimpleConfigException("RPGMenuConfig is invalid or empty!");
         }
     }
 
     private String resolveGlobalVariable(final String string) {
-        if (pack == null) {
-            return string;
-        }
         return GlobalVariableResolver.resolve(pack, string);
     }
 

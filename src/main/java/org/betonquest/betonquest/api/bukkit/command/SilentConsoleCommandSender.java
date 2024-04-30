@@ -4,7 +4,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -41,32 +40,32 @@ public class SilentConsoleCommandSender extends SilentCommandSender implements C
     }
 
     @Override
-    public void acceptConversationInput(@NotNull final String input) {
+    public void acceptConversationInput(final String input) {
         sender.acceptConversationInput(input);
     }
 
     @Override
-    public boolean beginConversation(@NotNull final Conversation conversation) {
+    public boolean beginConversation(final Conversation conversation) {
         return sender.beginConversation(conversation);
     }
 
     @Override
-    public void abandonConversation(@NotNull final Conversation conversation) {
+    public void abandonConversation(final Conversation conversation) {
         sender.abandonConversation(conversation);
     }
 
     @Override
-    public void abandonConversation(@NotNull final Conversation conversation, @NotNull final ConversationAbandonedEvent details) {
+    public void abandonConversation(final Conversation conversation, final ConversationAbandonedEvent details) {
         sender.abandonConversation(conversation, details);
     }
 
     @Override
-    public void sendRawMessage(@NotNull final String message) {
+    public void sendRawMessage(final String message) {
         log.debug("Silently sending message to console: " + message);
     }
 
     @Override
-    public void sendRawMessage(@Nullable final UUID sender, @NotNull final String message) {
+    public void sendRawMessage(@Nullable final UUID sender, final String message) {
         log.debug("Silently sending message to console: " + message);
     }
 }

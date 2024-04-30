@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -52,7 +53,7 @@ public abstract class ForceSyncHandler<T> {
      *                               or from {@link ForceSyncHandler#handle(Profile)}'s
      *                               {@link org.bukkit.scheduler.BukkitScheduler#callSyncMethod(Plugin, Callable)} call.
      */
-    public T handle(final Profile profile) throws QuestRuntimeException {
+    public T handle(@Nullable final Profile profile) throws QuestRuntimeException {
         if (forceSync && !Bukkit.isPrimaryThread()) {
             final Future<T> returnFuture = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> execute(profile));
             try {

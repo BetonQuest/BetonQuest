@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.jetbrains.annotations.Nullable;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -85,11 +86,13 @@ public class Updater {
     /**
      * The last timestamp, when an update was searched.
      */
+    @Nullable
     private Instant lastCheck;
 
     /**
      * The update notification.
      */
+    @Nullable
     private String updateNotification;
 
     /**
@@ -182,6 +185,7 @@ public class Updater {
      *
      * @return The version string or null if there is no newer version.
      */
+    @Nullable
     public String getUpdateVersion() {
         if (latest.getValue() != null) {
             return latest.getKey().getVersion();
@@ -211,7 +215,7 @@ public class Updater {
      *
      * @param sender The {@link CommandSender} that should receive the update related messages.
      */
-    public void update(final CommandSender sender) {
+    public void update(@Nullable final CommandSender sender) {
         scheduler.runTaskAsynchronously(plugin, () -> {
             try {
                 checkUpdateRequirements();
@@ -255,7 +259,7 @@ public class Updater {
         }
     }
 
-    private void sendMessage(final CommandSender sender, final String message) {
+    private void sendMessage(@Nullable final CommandSender sender, final String message) {
         log.info(ChatColor.stripColor(message));
         if (sender != null && !(sender instanceof ConsoleCommandSender)) {
             sender.sendMessage(plugin.getPluginTag() + message);

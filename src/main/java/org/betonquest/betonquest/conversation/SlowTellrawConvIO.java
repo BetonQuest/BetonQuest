@@ -1,18 +1,15 @@
 package org.betonquest.betonquest.conversation;
 
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.apache.commons.lang3.StringUtils;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("PMD.CommentRequired")
@@ -21,6 +18,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
 
     private final int messageDelay;
 
+    @Nullable
     private List<String> endLines;
 
     public SlowTellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
@@ -54,26 +52,10 @@ public class SlowTellrawConvIO extends TellrawConvIO {
             private int lineCount;
 
             @Override
+            @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
             public void run() {
                 if (lineCount == lines.length) {
-                    for (int j = 1; j <= options.size(); j++) {
-                        // Build ColorString
-                        final TextComponent colorComponent = new TextComponent();
-                        colorComponent.setBold(bold);
-                        colorComponent.setStrikethrough(strikethrough);
-                        colorComponent.setObfuscated(magic);
-                        colorComponent.setColor(color.asBungee());
-                        final String colorString = colorComponent.toLegacyText();
-
-                        // We avoid ComponentBuilder as it's not available pre 1.9
-                        final List<BaseComponent> parts = new ArrayList<>(Arrays.asList(TextComponent.fromLegacyText(number.replace("%number%", Integer.toString(j)))));
-                        parts.addAll(Arrays.asList(TextComponent.fromLegacyText(colorString + Utils.replaceReset(StringUtils.stripEnd(options.get(j), "\n"), colorString))));
-                        for (final BaseComponent component : parts) {
-                            component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/betonquestanswer " + hashes.get(j)));
-                        }
-
-                        conv.sendMessage(parts.toArray(new BaseComponent[0]));
-                    }
+                    displayText();
 
                     // Display endLines
                     for (final String message : endLines) {
@@ -91,7 +73,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
     }
 
     @Override
-    public void print(final String message) {
+    public void print(@Nullable final String message) {
         if (endLines == null) {
             super.print(message);
             return;

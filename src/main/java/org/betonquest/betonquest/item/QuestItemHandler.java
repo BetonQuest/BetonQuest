@@ -166,7 +166,7 @@ public class QuestItemHandler implements Listener {
         }
         final ItemStack item = event.getPlayerItem();
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
-        if (item != null && (Journal.isJournal(onlineProfile, item) || Utils.isQuestItem(item))) {
+        if (Journal.isJournal(onlineProfile, item) || Utils.isQuestItem(item)) {
             event.setCancelled(true);
         }
     }
@@ -178,7 +178,7 @@ public class QuestItemHandler implements Listener {
         }
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getEntity());
         // check if there is data for this player; NPCs don't have data
-        if (BetonQuest.getInstance().getPlayerData(onlineProfile) == null) {
+        if (onlineProfile.getOnlineProfile().isEmpty()) {
             return;
         }
         // this prevents the journal from dropping on death by removing it from
@@ -265,7 +265,7 @@ public class QuestItemHandler implements Listener {
     }
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    @EventHandler()
+    @EventHandler
     public void onInteractEvent(final PlayerInteractEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE || event.useInteractedBlock() == Event.Result.DENY && event.useItemInHand() == Event.Result.DENY) {
             return;

@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
@@ -21,6 +22,7 @@ import java.util.Locale;
 public class RideObjective extends Objective implements Listener {
     private final boolean any;
 
+    @Nullable
     private EntityType vehicle;
 
     public RideObjective(final Instruction instruction) throws InstructionParseException {

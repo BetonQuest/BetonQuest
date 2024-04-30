@@ -6,18 +6,21 @@ import org.apache.logging.log4j.core.Filter;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.message.Message;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * Filters /betonquestanswer commands
+ * Filters /betonquestanswer commands.
  */
-@SuppressWarnings({"PMD.ExcessiveParameterList", "PMD.TooManyMethods", "PMD.CommentRequired"})
+@SuppressWarnings({"PMD.ExcessiveParameterList", "PMD.TooManyMethods"})
 public class AnswerFilter implements Filter {
-
+    /**
+     * Constructs the /betonquestanswer filter.
+     */
     public AnswerFilter() {
     }
 
     @Override
-    public Result filter(final LogEvent record) {
+    public Result filter(@Nullable final LogEvent record) {
         if (record != null && record.getMessage() != null && record.getMessage().getFormattedMessage() != null
                 && record.getMessage().getFormattedMessage().contains(" issued server command: /betonquestanswer ")) {
             return Result.DENY;
@@ -27,82 +30,82 @@ public class AnswerFilter implements Filter {
 
     @Override
     public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object... objects) {
-        return null;
+        return Result.NEUTRAL;
     }
 
     @Override
     public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object obj) {
-        return null;
+        return Result.NEUTRAL;
     }
 
     @Override
     public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object obj, final Object obj1) {
-        return null;
+        return Result.NEUTRAL;
     }
 
     @Override
     public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object obj, final Object obj1, final Object obj2) {
-        return null;
+        return Result.NEUTRAL;
     }
 
     @Override
     public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object obj, final Object obj1, final Object obj2, final Object obj3) {
-        return null;
+        return Result.NEUTRAL;
     }
 
     @Override
     public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object obj, final Object obj1, final Object obj2, final Object obj3, final Object obj4) {
-        return null;
+        return Result.NEUTRAL;
     }
 
     @Override
     public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object obj, final Object obj1, final Object obj2, final Object obj3, final Object obj4, final Object obj5) {
-        return null;
+        return Result.NEUTRAL;
     }
 
     @Override
     public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object obj, final Object obj1, final Object obj2, final Object obj3, final Object obj4, final Object obj5, final Object obj6) {
-        return null;
+        return Result.NEUTRAL;
     }
 
     @Override
     public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object obj, final Object obj1, final Object obj2, final Object obj3, final Object obj4, final Object obj5, final Object obj6, final Object obj7) {
-        return null;
+        return Result.NEUTRAL;
     }
 
     @Override
     public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object obj, final Object obj1, final Object obj2, final Object obj3, final Object obj4, final Object obj5, final Object obj6, final Object obj7, final Object obj8) {
-        return null;
+        return Result.NEUTRAL;
     }
 
     @Override
     public Result filter(final Logger logger, final Level level, final Marker marker, final String str, final Object obj, final Object obj1, final Object obj2, final Object obj3, final Object obj4, final Object obj5, final Object obj6, final Object obj7, final Object obj8, final Object obj9) {
-        return null;
+        return Result.NEUTRAL;
     }
 
     @Override
     public Result filter(final Logger logger, final Level level, final Marker marker, final Object obj, final Throwable throwable) {
-        return null;
+        return Result.NEUTRAL;
     }
 
     @Override
     public Result filter(final Logger logger, final Level level, final Marker marker, final Message message, final Throwable throwable) {
-        return null;
+        return Result.NEUTRAL;
     }
 
     @Override
     public Result getOnMatch() {
-        return null;
+        return Result.NEUTRAL;
     }
 
     @Override
     public Result getOnMismatch() {
-        return null;
+        return Result.NEUTRAL;
     }
 
     @Override
     public State getState() {
-        return null;
+        return State.STARTED;
     }
 
     @Override
@@ -122,7 +125,7 @@ public class AnswerFilter implements Filter {
 
     @Override
     public boolean isStarted() {
-        return false;
+        return true;
     }
 
     @Override

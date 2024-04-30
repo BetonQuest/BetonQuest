@@ -2,7 +2,6 @@ package org.betonquest.betonquest.api.bukkit.config.custom.handle;
 
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -19,7 +18,7 @@ public interface ConfigurationModificationHandler extends ConfigurationSectionMo
      * @param value   The value to add
      */
     @Override
-    void addDefault(@NotNull ConfigurationSection section, @NotNull String path, @Nullable Object value);
+    void addDefault(ConfigurationSection section, String path, @Nullable Object value);
 
     /**
      * Handles the {@link Configuration#addDefaults(Map)} method.
@@ -27,7 +26,7 @@ public interface ConfigurationModificationHandler extends ConfigurationSectionMo
      * @param section  The {@link Configuration} from which the method was called
      * @param defaults The values to add
      */
-    void addDefaults(@NotNull Configuration section, @NotNull Map<String, Object> defaults);
+    void addDefaults(Configuration section, Map<String, Object> defaults);
 
     /**
      * Handles the {@link Configuration#addDefaults(Configuration)} method.
@@ -35,7 +34,7 @@ public interface ConfigurationModificationHandler extends ConfigurationSectionMo
      * @param section  The {@link Configuration} from which the method was called
      * @param defaults The values to add
      */
-    void addDefaults(@NotNull Configuration section, @NotNull Configuration defaults);
+    void addDefaults(Configuration section, Configuration defaults);
 
     /**
      * Handles the {@link Configuration#setDefaults(Configuration)} method.
@@ -43,5 +42,5 @@ public interface ConfigurationModificationHandler extends ConfigurationSectionMo
      * @param section  The {@link Configuration} from which the method was called
      * @param defaults The values to set
      */
-    void setDefaults(@NotNull Configuration section, @NotNull Configuration defaults);
+    void setDefaults(Configuration section, Configuration defaults);
 }

@@ -12,6 +12,7 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Skript condition, which checks specified BetonQuest's condition
@@ -42,8 +43,8 @@ public class SkriptConditionBQ extends Condition {
 
     @Override
     @SuppressFBWarnings({"NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE", "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"})
-    public String toString(final Event event, final boolean debug) {
-        return player.getSingle(event).getName() + " meets " + condition.toString();
+    public String toString(@Nullable final Event event, final boolean debug) {
+        return player.getSingle(event).getName() + " meets " + condition;
     }
 
     @Override

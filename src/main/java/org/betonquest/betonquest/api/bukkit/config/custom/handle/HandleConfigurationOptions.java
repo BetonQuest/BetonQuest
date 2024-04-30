@@ -2,7 +2,6 @@ package org.betonquest.betonquest.api.bukkit.config.custom.handle;
 
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationOptions;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * This {@link ConfigurationOptions} implementation guarantees that it is not possible to break out of the
@@ -21,7 +20,7 @@ public class HandleConfigurationOptions extends ConfigurationOptions {
      * @param configuration The {@link Configuration} instance that should be returned by the configuration method
      * @param original      The original {@link Configuration}, to apply the options to
      */
-    protected HandleConfigurationOptions(@NotNull final Configuration configuration, final ConfigurationOptions original) {
+    protected HandleConfigurationOptions(final Configuration configuration, final ConfigurationOptions original) {
         super(configuration);
         this.original = original;
     }
@@ -32,7 +31,6 @@ public class HandleConfigurationOptions extends ConfigurationOptions {
     }
 
     @Override
-    @NotNull
     public ConfigurationOptions pathSeparator(final char value) {
         original.pathSeparator(value);
         return this;
@@ -44,7 +42,6 @@ public class HandleConfigurationOptions extends ConfigurationOptions {
     }
 
     @Override
-    @NotNull
     public ConfigurationOptions copyDefaults(final boolean value) {
         original.copyDefaults(value);
         return this;

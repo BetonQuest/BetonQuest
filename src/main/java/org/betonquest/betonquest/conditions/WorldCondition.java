@@ -15,18 +15,22 @@ import org.bukkit.World;
 @SuppressWarnings("PMD.CommentRequired")
 public class WorldCondition extends Condition {
 
-    private World world;
+    private final World world;
 
     public WorldCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        final String name = instruction.next();
-        world = Bukkit.getWorld(name);
-        if (world == null) {
-            try {
-                world = new CompoundLocation(instruction.getPackage(), name).getLocation(null).getWorld();
-            } catch (InstructionParseException | QuestRuntimeException e) {
-                throw new InstructionParseException("There is no such world: " + name, e);
-            }
+        world = getWorld(instruction.next());
+    }
+
+    private World getWorld(final String name) throws InstructionParseException {
+        final World world = Bukkit.getWorld(name);
+        if (world != null) {
+            return world;
+        }
+        try {
+            return new CompoundLocation(instruction.getPackage(), name).getLocation(null).getWorld();
+        } catch (InstructionParseException | QuestRuntimeException e) {
+            throw new InstructionParseException("There is no such world: " + name, e);
         }
     }
 

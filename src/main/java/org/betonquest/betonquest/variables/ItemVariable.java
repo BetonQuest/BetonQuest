@@ -4,12 +4,14 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Locale;
@@ -87,7 +89,8 @@ public class ItemVariable extends Variable {
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private int itemAmount(final Profile profile) {
-        final Player player = profile.getOnlineProfile().get().getPlayer();
+        final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
+        final Player player = onlineProfile.getPlayer();
         int itemAmount = 0;
         for (final ItemStack item : player.getInventory().getContents()) {
             if (item == null || !questItem.compare(item)) {
@@ -95,7 +98,7 @@ public class ItemVariable extends Variable {
             }
             itemAmount += item.getAmount();
         }
-        final List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerData(profile).getBackpack();
+        final List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerData(onlineProfile).getBackpack();
         for (final ItemStack item : backpackItems) {
             if (item == null || !questItem.compare(item)) {
                 continue;
@@ -105,7 +108,7 @@ public class ItemVariable extends Variable {
         return itemAmount;
     }
 
-    private String conditionalRaw(final String string) {
+    private String conditionalRaw(@Nullable final String string) {
         if (string == null) {
             return "";
         }

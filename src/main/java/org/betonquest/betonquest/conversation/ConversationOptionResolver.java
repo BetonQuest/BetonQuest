@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConversationID;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Resolves a string to a {@link ConversationData} instance and the name of the option.
@@ -29,6 +30,7 @@ public class ConversationOptionResolver {
     /**
      * The name of the option that is searched.
      */
+    @Nullable
     private final String optionName;
 
     /**

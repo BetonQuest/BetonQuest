@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.ChatColor;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +35,7 @@ public class ItemDescription {
      * @param profile the {@link Profile} of the player
      * @return the item's display name for the specified player.
      */
+    @Nullable
     public String getDisplayName(final Profile profile) {
         final Line displayName = this.lines.get(0);
         if (displayName == null) {

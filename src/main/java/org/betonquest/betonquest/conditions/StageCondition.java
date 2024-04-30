@@ -37,9 +37,6 @@ public class StageCondition extends BaseNumberCompareCondition {
     public StageCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         objectiveID = instruction.getObjective();
-        if (objectiveID == null) {
-            throw new InstructionParseException("Objective does not exist");
-        }
         operation = fromSymbol(instruction.next());
         targetStage = new VariableString(instruction.getPackage(), instruction.next());
     }
@@ -74,10 +71,9 @@ public class StageCondition extends BaseNumberCompareCondition {
     }
 
     private StageObjective getStageObjective() throws QuestRuntimeException {
-        try {
-            return (StageObjective) BetonQuest.getInstance().getObjective(objectiveID);
-        } catch (final ClassCastException e) {
-            throw new QuestRuntimeException("Objective '" + objectiveID.getFullID() + "' is not a stage objective", e);
+        if (BetonQuest.getInstance().getObjective(objectiveID) instanceof final StageObjective stageObjective) {
+            return stageObjective;
         }
+        throw new QuestRuntimeException("Objective '" + objectiveID.getFullID() + "' is not a stage objective");
     }
 }

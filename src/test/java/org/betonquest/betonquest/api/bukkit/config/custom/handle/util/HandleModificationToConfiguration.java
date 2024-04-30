@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificat
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -43,51 +42,49 @@ public class HandleModificationToConfiguration implements ConfigurationModificat
     }
 
     @Override
-    public void set(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final Object value) {
+    public void set(final ConfigurationSection section, final String path, @Nullable final Object value) {
         this.section.set(getAbsolutePath(section, path), value);
         section.set(path, value);
     }
 
     @Override
-    public void addDefault(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final Object value) {
+    public void addDefault(final ConfigurationSection section, final String path, @Nullable final Object value) {
         this.section.addDefault(getAbsolutePath(section, path), value);
         section.addDefault(path, value);
     }
 
     @Override
-    public void addDefaults(@NotNull final Configuration section, @NotNull final Map<String, Object> defaults) {
+    public void addDefaults(final Configuration section, final Map<String, Object> defaults) {
         this.section.addDefaults(defaults);
         section.addDefaults(defaults);
     }
 
     @Override
-    public void addDefaults(@NotNull final Configuration section, @NotNull final Configuration defaults) {
+    public void addDefaults(final Configuration section, final Configuration defaults) {
         this.section.addDefaults(defaults);
         section.addDefaults(defaults);
     }
 
     @Override
-    public void setDefaults(@NotNull final Configuration section, @NotNull final Configuration defaults) {
+    public void setDefaults(final Configuration section, final Configuration defaults) {
         this.section.setDefaults(defaults);
         section.setDefaults(defaults);
     }
 
-    @NotNull
     @Override
-    public ConfigurationSection createSection(@NotNull final ConfigurationSection section, @NotNull final String path) {
+    public ConfigurationSection createSection(final ConfigurationSection section, final String path) {
         this.section.createSection(getAbsolutePath(section, path));
         return new HandleModificationConfigurationSection(section.createSection(path), this);
     }
 
-    @NotNull
     @Override
-    public ConfigurationSection createSection(@NotNull final ConfigurationSection section, @NotNull final String path, @NotNull final Map<?, ?> map) {
+    public ConfigurationSection createSection(final ConfigurationSection section, final String path, final Map<?, ?> map) {
         this.section.createSection(getAbsolutePath(section, path), map);
         return new HandleModificationConfigurationSection(section.createSection(path, map), this);
     }
 
     @Override
-    public void setComments(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final List<String> comments) {
+    public void setComments(final ConfigurationSection section, final String path, @Nullable final List<String> comments) {
         if (comments == null) {
             this.comments.remove(path);
         } else {
@@ -97,7 +94,7 @@ public class HandleModificationToConfiguration implements ConfigurationModificat
     }
 
     @Override
-    public void setInlineComments(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final List<String> comments) {
+    public void setInlineComments(final ConfigurationSection section, final String path, @Nullable final List<String> comments) {
         if (comments == null) {
             this.inlineComments.remove(path);
         } else {

@@ -6,10 +6,12 @@ import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Displays an effect.
@@ -20,6 +22,7 @@ public class ParticleEvent extends QuestEvent {
 
     private final ConfigurationSection parameters;
 
+    @Nullable
     private final CompoundLocation loc;
 
     private final boolean privateParticle;
@@ -27,17 +30,11 @@ public class ParticleEvent extends QuestEvent {
     public ParticleEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         final String string = instruction.next();
-        parameters = instruction.getPackage().getConfig().getConfigurationSection("effects." + string);
-        if (parameters == null) {
-            throw new InstructionParseException("Effect '" + string + "' does not exist!");
-        }
-        effectClass = parameters.getString("class");
-        if (effectClass == null) {
-            throw new InstructionParseException("Effect '" + string + "' is incorrectly defined");
-        }
+        parameters = Utils.getNN(instruction.getPackage().getConfig().getConfigurationSection("effects." + string),
+                "Effect '" + string + "' does not exist!");
+        effectClass = Utils.getNN(parameters.getString("class"), "Effect '" + string + "' is incorrectly defined");
         loc = instruction.getLocation(instruction.getOptional("loc"));
         privateParticle = instruction.hasArgument("private");
-
     }
 
     @Override

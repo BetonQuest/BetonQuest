@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.modules.logger;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.logging.Level;
@@ -23,7 +22,7 @@ public class TopicLogger extends Logger {
      * @param clazz        The calling class.
      * @param topic        The topic to add or null.
      */
-    public TopicLogger(@NotNull final Logger parentLogger, @NotNull final Class<?> clazz, @Nullable final String topic) {
+    public TopicLogger(final Logger parentLogger, final Class<?> clazz, @Nullable final String topic) {
         super(clazz.getCanonicalName(), null);
         setParent(parentLogger);
         setLevel(Level.ALL);
@@ -36,7 +35,7 @@ public class TopicLogger extends Logger {
      * @param logRecord The record to log.
      */
     @Override
-    public void log(@NotNull final LogRecord logRecord) {
+    public void log(final LogRecord logRecord) {
         logRecord.setMessage(topic + logRecord.getMessage());
         logRecord.setLoggerName(getParent().getName());
         super.log(logRecord);

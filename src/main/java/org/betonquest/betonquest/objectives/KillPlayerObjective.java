@@ -13,9 +13,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class KillPlayerObjective extends CountingObjective implements Listener {
+    @Nullable
     private final String name;
 
     private final ConditionID[] required;

@@ -227,7 +227,7 @@ public abstract class HeadHandler {
      * @param skullMeta The SkullMeta object to populate.
      * @param profile   An optional Profile.
      */
-    public abstract void populate(SkullMeta skullMeta, Profile profile);
+    public abstract void populate(SkullMeta skullMeta, @Nullable Profile profile);
 
     /**
      * Check to see if the specified SkullMeta matches this HeadHandler metadata.

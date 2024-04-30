@@ -27,6 +27,7 @@ public class ConversationEvent implements Event {
     /**
      * The optional NPC option to start at.
      */
+    @Nullable
     private final String startOption;
 
     /**

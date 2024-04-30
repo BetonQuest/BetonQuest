@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.notify;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableString;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.config.Config;
@@ -37,12 +38,13 @@ public class NotifyEvent implements Event {
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
-        final String playerLanguageKey = BetonQuest.getInstance().getPlayerData(profile).getLanguage();
+        final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
+        final String playerLanguageKey = BetonQuest.getInstance().getPlayerData(onlineProfile).getLanguage();
         final String defaultLanguageKey = Config.getLanguage();
 
         final VariableString message = translations.containsKey(playerLanguageKey)
                 ? translations.get(playerLanguageKey)
                 : translations.get(defaultLanguageKey);
-        notifyIO.sendNotify(message.getString(profile), profile.getOnlineProfile().get());
+        notifyIO.sendNotify(message.getString(profile), onlineProfile);
     }
 }

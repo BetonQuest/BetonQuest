@@ -28,7 +28,7 @@ public class MoneyVariable extends Variable {
                 throw new InstructionParseException("Could not parse money amount", e);
             }
         } else {
-            type = null;
+            throw new InstructionParseException("No type specified");
         }
     }
 

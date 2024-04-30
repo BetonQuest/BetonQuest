@@ -7,6 +7,9 @@ import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 /**
  * Adapter for {@link Event} and {@link StaticEvent} to fit the old convention of {@link QuestEvent}.
@@ -21,6 +24,7 @@ public class QuestEventAdapter extends QuestEvent {
     /**
      * The "static" event to be adapted if present. May be {@code null}!
      */
+    @Nullable
     private final StaticEvent staticEvent;
 
     /**
@@ -32,7 +36,7 @@ public class QuestEventAdapter extends QuestEvent {
      * @param staticEvent static event to use or null if no static execution is supported
      * @throws InstructionParseException if the instruction contains errors
      */
-    public QuestEventAdapter(final Instruction instruction, final Event event, final StaticEvent staticEvent) throws InstructionParseException {
+    public QuestEventAdapter(final Instruction instruction, final Event event, @Nullable final StaticEvent staticEvent) throws InstructionParseException {
         super(instruction, false);
         this.event = event;
         this.staticEvent = staticEvent;
@@ -41,8 +45,9 @@ public class QuestEventAdapter extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final Profile profile) throws QuestRuntimeException {
+    protected Void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         if (profile == null) {
+            Objects.requireNonNull(staticEvent);
             staticEvent.execute();
         } else {
             event.execute(profile);

@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a number which might also be a variable.
@@ -25,6 +26,7 @@ public class VariableNumber {
      * The variable to parse to get the value of the variable number.
      * If {@code null} then {@link #number} will be used.
      */
+    @Nullable
     private final Variable variable;
 
     /**
@@ -105,7 +107,7 @@ public class VariableNumber {
      * @param profile the {@link Profile} of the player for variable resolving
      * @return the integer represented by this variable number
      */
-    public int getInt(final Profile profile) {
+    public int getInt(@Nullable final Profile profile) {
         return (int) Math.floor(resolveVariable(profile));
     }
 
@@ -115,11 +117,11 @@ public class VariableNumber {
      * @param profile the {@link Profile} of the player for variable resolving
      * @return the double represented by this variable number
      */
-    public double getDouble(final Profile profile) {
+    public double getDouble(@Nullable final Profile profile) {
         return resolveVariable(profile);
     }
 
-    private double resolveVariable(final Profile profile) {
+    private double resolveVariable(@Nullable final Profile profile) {
         if (variable == null) {
             return number;
         } else if (profile == null && !variable.isStaticness()) {
@@ -139,8 +141,8 @@ public class VariableNumber {
     /**
      * To check if a value will be guarantied not zero or less
      *
-     * @return true if a variable is set or the constant value is greater zero,
-     * false if no variable is set and the constant value is zero or less
+     * @return false if a variable is set or the constant value is greater zero,
+     * true if no variable is set and the constant value is zero or less
      */
     public boolean isExplicitLessThanOne() {
         return variable == null && number < 1;

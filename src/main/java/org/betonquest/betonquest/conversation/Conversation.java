@@ -34,7 +34,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
@@ -59,6 +58,7 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
  * Manages an active conversation between a player and a NPC.
  * Handles the conversation flow based on {@link ConversationData}.
  */
+@SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired",
         "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.AvoidDuplicateLiterals"})
 public class Conversation implements Listener {
@@ -122,6 +122,7 @@ public class Conversation implements Listener {
     /**
      * The next NPC option that will be printed. Set by {@link #selectOption(List, boolean)}.
      */
+    @Nullable
     protected ResolvedOption nextNPCOption;
 
     /**
@@ -132,11 +133,13 @@ public class Conversation implements Listener {
     /**
      * The {@link ConversationIO} used to display this conversation.
      */
+    @Nullable
     private ConversationIO inOut;
 
     /**
      * The {@link Interceptor} used to hide unrelated messages while the player is in this conversation.
      */
+    @Nullable
     private Interceptor interceptor;
 
     /**
@@ -218,6 +221,7 @@ public class Conversation implements Listener {
      * @param profile the {@link Profile} of the player
      * @return player's active conversation or null if there is no conversation
      */
+    @Nullable
     public static Conversation getConversation(final Profile profile) {
         return ACTIVE_CONVERSATIONS.get(profile);
     }
@@ -585,7 +589,6 @@ public class Conversation implements Listener {
         return interceptor;
     }
 
-    @NotNull
     private List<ResolvedOption> resolvePointers(final ResolvedOption option) throws ObjectNotFoundException, InstructionParseException {
         final ConversationData nextConvData = option.conversationData();
         final List<String> rawPointers = nextConvData.getPointers(onlineProfile, option);
@@ -613,7 +616,7 @@ public class Conversation implements Listener {
          *
          * @param startingOption the name of the option to start at
          */
-        public Starter(@NotNull final String startingOption) {
+        public Starter(final String startingOption) {
             super();
             startingOptions.add(startingOption);
         }
@@ -736,8 +739,7 @@ public class Conversation implements Listener {
             }
         }
 
-        @NotNull
-        @SuppressWarnings({"PMD.AvoidThrowingRawExceptionTypes"})
+        @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
         private List<ResolvedOption> resolveOptions(final List<String> startingOptions) {
             final List<ResolvedOption> resolvedOptions = new ArrayList<>();
             for (final String startingOption : startingOptions) {

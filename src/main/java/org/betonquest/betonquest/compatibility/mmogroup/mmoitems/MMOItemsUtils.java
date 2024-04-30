@@ -5,7 +5,10 @@ import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.api.item.mmoitem.MMOItem;
 import net.Indyuce.mmoitems.manager.ItemManager;
+import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
@@ -28,7 +31,7 @@ public final class MMOItemsUtils {
      * @param itemID the itemID of the MMOItem that shall be checked for
      * @return whether the input item matches the defined MMOItems
      */
-    public static boolean equalsMMOItem(final ItemStack item, final Type type, final String itemID) {
+    public static boolean equalsMMOItem(@Nullable final ItemStack item, final Type type, final String itemID) {
         if (item == null) {
             return false;
         }
@@ -51,5 +54,16 @@ public final class MMOItemsUtils {
         final ItemManager itemManager = MMOItems.plugin.getItems();
         final MMOItem mmoitem = itemManager.getMMOItem(type, mmoItemId.toUpperCase(Locale.ROOT));
         return mmoitem.newBuilder().build();
+    }
+
+    /**
+     * Gets a mmo item type by string or throws.
+     *
+     * @param itemType to parse
+     * @return the item type
+     * @throws InstructionParseException if no item type with that id is present
+     */
+    public static Type getMMOItemType(final String itemType) throws InstructionParseException {
+        return Utils.getNN(MMOItems.plugin.getTypes().get(itemType), "The item type '" + itemType + "' does not exist.");
     }
 }

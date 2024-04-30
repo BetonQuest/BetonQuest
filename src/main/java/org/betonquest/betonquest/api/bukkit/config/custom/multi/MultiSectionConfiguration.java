@@ -10,7 +10,6 @@ import org.bukkit.configuration.ConfigurationOptions;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -86,12 +85,12 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
     private SetConsumer getSetConsumer() {
         return new SetConsumer() {
             @Override
-            public void set(@NotNull final String path, @Nullable final Object value) {
+            public void set(final String path, @Nullable final Object value) {
                 checkConflictAndSet(path, value);
             }
 
             @Override
-            public void setComment(@NotNull final String path, final List<String> comments) {
+            public void setComment(final String path, @Nullable final List<String> comments) {
                 if (keyIndex.containsKey(path)) {
                     final ConfigurationSection config = keyIndex.get(path).get(0);
                     if (config != null && config.isSet(path)) {
@@ -102,7 +101,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
             }
 
             @Override
-            public void setInlineComment(@NotNull final String path, final List<String> comments) {
+            public void setInlineComment(final String path, @Nullable final List<String> comments) {
                 if (keyIndex.containsKey(path)) {
                     final ConfigurationSection config = keyIndex.get(path).get(0);
                     if (config != null && config.isSet(path)) {
@@ -139,14 +138,12 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
         }
     }
 
-    @NotNull
     private Map<String, List<ConfigurationSection>> validateKeyIndexKeys() {
         return keyIndex.entrySet().parallelStream()
                 .filter(entry -> entry.getValue().size() > 1)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    @NotNull
     private List<List<Pair<String, ConfigurationSection>>> validateKeyIndexPaths() {
         final List<List<Pair<String, ConfigurationSection>>> conflictingPaths = new ArrayList<>();
         final SortedSet<String> index = new TreeSet<>(keyIndex.keySet());
@@ -164,7 +161,6 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
         return conflictingPaths;
     }
 
-    @NotNull
     private List<Pair<String, ConfigurationSection>> validateKeyIndexPathsConflicts(final SortedSet<String> index, final String currentKey) {
         final List<Pair<String, ConfigurationSection>> conflict = new ArrayList<>();
         for (final String targetKey : index) {
@@ -218,6 +214,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
 
     @Override
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
+    @Nullable
     public ConfigurationSection getSourceConfigurationSection(final String path) throws InvalidConfigurationException {
         if (!original.isSet(path)) {
             return null;
@@ -284,7 +281,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
         unsavedConfigs.add(targetConfig);
     }
 
-    private void checkConflictAndSet(@NotNull final String path, @Nullable final Object value) {
+    private void checkConflictAndSet(final String path, @Nullable final Object value) {
         if (value == null || value instanceof ConfigurationSection) {
             deletePath(path);
             if (value == null) {
@@ -317,7 +314,6 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
         }
     }
 
-    @NotNull
     private String getReplacedPath(final String path, final ConfigurationSection config) {
         final Configuration root = config.getRoot();
         if (root == null) {
@@ -327,8 +323,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
     }
 
     @Override
-    public @NotNull
-    ConfigurationOptions options() {
+    public ConfigurationOptions options() {
         return new MultiConfigurationOptions(this, original.options());
     }
 
@@ -344,7 +339,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
          * @param path  the absolut path to the value
          * @param value the value to set
          */
-        void set(@NotNull String path, @Nullable Object value);
+        void set(String path, @Nullable Object value);
 
         /**
          * Consumer for a call of the setComment method.
@@ -352,7 +347,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
          * @param path     the absolut path to the comments
          * @param comments the comments to set
          */
-        void setComment(@NotNull String path, List<String> comments);
+        void setComment(String path, @Nullable List<String> comments);
 
         /**
          * Consumer for a call of the setInlineComment method.
@@ -360,7 +355,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
          * @param path     the absolut path to the comments
          * @param comments the comments to set
          */
-        void setInlineComment(@NotNull String path, List<String> comments);
+        void setInlineComment(String path, @Nullable List<String> comments);
     }
 
     /**
@@ -370,6 +365,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
         /**
          * The consumer to call if the set method was called
          */
+        @Nullable
         private SetConsumer consumer;
 
         /**
@@ -383,27 +379,25 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
         }
 
         @Override
-        public void set(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final Object value) {
+        public void set(final ConfigurationSection section, final String path, @Nullable final Object value) {
             if (consumer != null) {
                 consumer.set(getAbsolutePath(section, path), value);
             }
             section.set(path, value);
         }
 
-        @NotNull
         @Override
-        public ConfigurationSection createSection(@NotNull final ConfigurationSection section, @NotNull final String path) {
+        public ConfigurationSection createSection(final ConfigurationSection section, final String path) {
             return new HandleModificationConfigurationSection(section.createSection(path), this);
         }
 
-        @NotNull
         @Override
-        public ConfigurationSection createSection(@NotNull final ConfigurationSection section, @NotNull final String path, @NotNull final Map<?, ?> map) {
+        public ConfigurationSection createSection(final ConfigurationSection section, final String path, final Map<?, ?> map) {
             return new HandleModificationConfigurationSection(section.createSection(path, map), this);
         }
 
         @Override
-        public void setComments(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final List<String> comments) {
+        public void setComments(final ConfigurationSection section, final String path, @Nullable final List<String> comments) {
             if (consumer != null) {
                 consumer.setComment(getAbsolutePath(section, path), comments);
             }
@@ -411,7 +405,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
         }
 
         @Override
-        public void setInlineComments(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final List<String> comments) {
+        public void setInlineComments(final ConfigurationSection section, final String path, @Nullable final List<String> comments) {
             if (consumer != null) {
                 consumer.setInlineComment(getAbsolutePath(section, path), comments);
             }
@@ -419,22 +413,22 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
         }
 
         @Override
-        public void addDefault(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final Object value) {
+        public void addDefault(final ConfigurationSection section, final String path, @Nullable final Object value) {
             section.addDefault(path, value);
         }
 
         @Override
-        public void addDefaults(@NotNull final Configuration section, @NotNull final Map<String, Object> defaults) {
+        public void addDefaults(final Configuration section, final Map<String, Object> defaults) {
             section.addDefaults(defaults);
         }
 
         @Override
-        public void addDefaults(@NotNull final Configuration section, @NotNull final Configuration defaults) {
+        public void addDefaults(final Configuration section, final Configuration defaults) {
             section.addDefaults(defaults);
         }
 
         @Override
-        public void setDefaults(@NotNull final Configuration section, @NotNull final Configuration defaults) {
+        public void setDefaults(final Configuration section, final Configuration defaults) {
             section.setDefaults(defaults);
         }
     }
@@ -451,11 +445,10 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
          * @param configuration The {@link Configuration} instance that should be returned by the configuration method
          * @param original      The original {@link Configuration}, to apply the options to
          */
-        protected MultiConfigurationOptions(@NotNull final Configuration configuration, final ConfigurationOptions original) {
+        protected MultiConfigurationOptions(final Configuration configuration, final ConfigurationOptions original) {
             super(configuration, original);
         }
 
-        @NotNull
         @Override
         public ConfigurationOptions pathSeparator(final char value) {
             final Map<String, List<ConfigurationSection>> newKeyIndex = new ConcurrentHashMap<>();

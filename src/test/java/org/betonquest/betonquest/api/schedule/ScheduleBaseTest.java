@@ -10,7 +10,7 @@ import static org.mockito.Mockito.*;
 /**
  * These tests should ensure that the basic parsing of schedules works properly.
  */
-@SuppressWarnings({"PMD.JUnit5TestShouldBePackagePrivate"})
+@SuppressWarnings("PMD.JUnit5TestShouldBePackagePrivate")
 public class ScheduleBaseTest extends AbstractScheduleTest {
 
     @Override

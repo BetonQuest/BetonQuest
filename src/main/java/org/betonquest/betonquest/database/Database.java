@@ -3,6 +3,7 @@ package org.betonquest.betonquest.database;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -26,6 +27,7 @@ public abstract class Database {
      */
     private final BetonQuestLogger log;
 
+    @Nullable
     protected Connection con;
 
     protected Database(final BetonQuestLogger log, final BetonQuest plugin) {

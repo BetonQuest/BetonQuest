@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -14,6 +15,7 @@ import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,6 +44,8 @@ public class HologramProvider implements Integrator {
     /**
      * Singleton instance of this HologramProvider, only ever null if not initialised.
      */
+    @Nullable
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     private static HologramProvider instance;
 
     /**
@@ -52,13 +56,14 @@ public class HologramProvider implements Integrator {
     /**
      * The current {@link LocationHologramLoop}.
      */
+    @Nullable
     private LocationHologramLoop locationHologramLoop;
 
     /**
      * The current {@link CitizensHologramLoop}.
      */
+    @Nullable
     private CitizensHologramLoop citizensHologramLoop;
-
 
     /**
      * Creates a new HologramProvider object and assigns it to singleton instance if not already
@@ -171,8 +176,8 @@ public class HologramProvider implements Integrator {
                 final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
                 instance.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class));
                 if (instance.citizensHologramLoop != null) {
-                    this.citizensHologramLoop.close();
-                    this.citizensHologramLoop = new CitizensHologramLoop(loggerFactory, loggerFactory.create(CitizensHologramLoop.class));
+                    instance.citizensHologramLoop.close();
+                    instance.citizensHologramLoop = new CitizensHologramLoop(loggerFactory, loggerFactory.create(CitizensHologramLoop.class));
                 }
             }
         }

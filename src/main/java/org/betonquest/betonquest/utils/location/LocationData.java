@@ -7,6 +7,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.Pattern;
 
@@ -35,7 +36,7 @@ public class LocationData extends AbstractData<Location> {
      * @throws InstructionParseException Is thrown when an error appears while parsing the {@link Variable}s or
      *                                   {@link Location}
      */
-    public LocationData(final QuestPackage pack, final String data) throws InstructionParseException {
+    public LocationData(@Nullable final QuestPackage pack, final String data) throws InstructionParseException {
         super(pack, data);
     }
 
@@ -67,7 +68,7 @@ public class LocationData extends AbstractData<Location> {
      */
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public static Location parseLocation(final String loc) throws InstructionParseException {
-        if (loc == null || !PATTERN_LOCATION.matcher(loc).find()) {
+        if (!PATTERN_LOCATION.matcher(loc).find()) {
             throw new InstructionParseException("Incorrect location format '" + loc
                     + "'. A location has to be in the format 'x;y;z;world[;yaw;pitch]'");
         }

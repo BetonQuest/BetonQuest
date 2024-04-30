@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings({"PMD.CommentRequired", "PMD.PreserveStackTrace"})
@@ -27,10 +28,7 @@ public class AureliumSkillsStatsCondition extends Condition {
         targetLevelVar = instruction.getVarNum();
 
         final AureliumSkills aureliumSkills = AureliumAPI.getPlugin();
-        stat = aureliumSkills.getStatRegistry().getStat(statName);
-        if (stat == null) {
-            throw new InstructionParseException("Invalid stat name");
-        }
+        stat = Utils.getNN(aureliumSkills.getStatRegistry().getStat(statName), "Invalid stat name");
 
         mustBeEqual = instruction.hasArgument("equal");
     }

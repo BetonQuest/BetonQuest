@@ -25,8 +25,10 @@ public class Migrator {
 
     /**
      * Creates a new migration process.
+     *
+     * @throws IOException If an I/O error occurs
      */
-    public Migrator() {
+    public Migrator() throws IOException {
         this.migrations = new LinkedList<>();
         final FileConfigurationProvider provider = new FileConfigurationProvider();
 

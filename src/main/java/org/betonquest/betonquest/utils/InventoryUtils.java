@@ -4,6 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.function.Predicate;
@@ -23,7 +24,7 @@ public final class InventoryUtils {
      * @param slotItem item to check
      * @return true if the slot is empty
      */
-    public static boolean isEmptySlot(final ItemStack slotItem) {
+    public static boolean isEmptySlot(@Nullable final ItemStack slotItem) {
         return slotItem == null || slotItem.getType().equals(Material.AIR);
     }
 
@@ -104,7 +105,7 @@ public final class InventoryUtils {
      * @param swapped the item in the target fast-swap slot
      * @return either 0 or the amount of the result
      */
-    public static int calculateSwapCraftAmount(final ItemStack result, final ItemStack swapped) {
+    public static int calculateSwapCraftAmount(final ItemStack result, @Nullable final ItemStack swapped) {
         return isEmptySlot(swapped) ? result.getAmount() : 0;
     }
 
@@ -116,7 +117,7 @@ public final class InventoryUtils {
      * @param cursor the item currently held in the cursor
      * @return either 0 or the amount of the result
      */
-    public static int calculateSimpleCraftAmount(final ItemStack result, final ItemStack cursor) {
+    public static int calculateSimpleCraftAmount(final ItemStack result, @Nullable final ItemStack cursor) {
         if (isEmptySlot(cursor)
                 || cursor.isSimilar(result) && cursor.getAmount() + result.getAmount() <= cursor.getMaxStackSize()) {
             return result.getAmount();
@@ -132,7 +133,7 @@ public final class InventoryUtils {
      * @param cursor the item currently held in the cursor
      * @return either 0 or the amount of the result
      */
-    public static int calculateDropCraftAmount(final ItemStack result, final ItemStack cursor) {
+    public static int calculateDropCraftAmount(final ItemStack result, @Nullable final ItemStack cursor) {
         if (cursor != null && cursor.getType().equals(Material.AIR)) {
             return result.getAmount();
         }

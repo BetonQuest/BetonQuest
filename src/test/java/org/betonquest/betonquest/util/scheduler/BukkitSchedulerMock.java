@@ -5,7 +5,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scheduler.BukkitWorker;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 
 import java.io.Closeable;
@@ -194,87 +193,81 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
     }
 
     @Override
-    public @NotNull
-    BukkitTask runTask(@NotNull final Plugin plugin, @NotNull final Runnable task) {
+    public BukkitTask runTask(final Plugin plugin, final Runnable task) {
         return runTaskLater(plugin, task, 1L);
     }
 
     @Override
-    public @NotNull
-    BukkitTask runTask(@NotNull final Plugin plugin, @NotNull final BukkitRunnable task) {
+    public BukkitTask runTask(final Plugin plugin, final BukkitRunnable task) {
         throw new UnsupportedOperationException(MESSAGE_DEPRECATED);
     }
 
     @Override
-    public @NotNull
-    BukkitTask runTaskLater(@NotNull final Plugin plugin, @NotNull final Runnable task, final long delay) {
+    public BukkitTask runTaskLater(final Plugin plugin, final Runnable task, final long delay) {
         final ScheduledTask scheduledTask = new ScheduledTask(taskId++, plugin, true, currentTick + Math.max(delay, 1), task);
         scheduledTasks.addTask(scheduledTask);
         return scheduledTask;
     }
 
     @Override
-    public @NotNull
-    BukkitTask runTaskTimer(@NotNull final Plugin plugin, @NotNull final Runnable task, final long delay, final long period) {
+    public BukkitTask runTaskTimer(final Plugin plugin, final Runnable task, final long delay, final long period) {
         final RepeatingTask repeatingTask = new RepeatingTask(taskId++, plugin, true, currentTick + Math.max(delay, 1), period, task);
         scheduledTasks.addTask(repeatingTask);
         return repeatingTask;
     }
 
     @Override
-    public @NotNull
-    BukkitTask runTaskTimer(@NotNull final Plugin plugin, @NotNull final BukkitRunnable task, final long delay, final long period) {
+    public BukkitTask runTaskTimer(final Plugin plugin, final BukkitRunnable task, final long delay, final long period) {
         throw new UnsupportedOperationException(MESSAGE_DEPRECATED);
     }
 
     @Override
-    public int scheduleSyncDelayedTask(@NotNull final Plugin plugin, @NotNull final Runnable task, final long delay) {
+    public int scheduleSyncDelayedTask(final Plugin plugin, final Runnable task, final long delay) {
         throw new UnsupportedOperationException(MESSAGE_UNWANTED + "runTaskLater");
     }
 
     @Override
-    public int scheduleSyncDelayedTask(@NotNull final Plugin plugin, @NotNull final BukkitRunnable task, final long delay) {
+    public int scheduleSyncDelayedTask(final Plugin plugin, final BukkitRunnable task, final long delay) {
         throw new UnsupportedOperationException(MESSAGE_DEPRECATED);
     }
 
     @Override
-    public int scheduleSyncDelayedTask(@NotNull final Plugin plugin, @NotNull final Runnable task) {
+    public int scheduleSyncDelayedTask(final Plugin plugin, final Runnable task) {
         throw new UnsupportedOperationException(MESSAGE_UNWANTED + "runTask");
     }
 
     @Override
-    public int scheduleSyncDelayedTask(@NotNull final Plugin plugin, @NotNull final BukkitRunnable task) {
+    public int scheduleSyncDelayedTask(final Plugin plugin, final BukkitRunnable task) {
         throw new UnsupportedOperationException(MESSAGE_DEPRECATED);
     }
 
     @Override
-    public int scheduleSyncRepeatingTask(@NotNull final Plugin plugin, @NotNull final Runnable task, final long delay, final long period) {
+    public int scheduleSyncRepeatingTask(final Plugin plugin, final Runnable task, final long delay, final long period) {
         throw new UnsupportedOperationException(MESSAGE_UNWANTED + "runTaskTimer");
     }
 
     @Override
-    public int scheduleSyncRepeatingTask(@NotNull final Plugin plugin, @NotNull final BukkitRunnable task, final long delay, final long period) {
+    public int scheduleSyncRepeatingTask(final Plugin plugin, final BukkitRunnable task, final long delay, final long period) {
         throw new UnsupportedOperationException(MESSAGE_DEPRECATED);
     }
 
     @Override
-    public int scheduleAsyncDelayedTask(@NotNull final Plugin plugin, @NotNull final Runnable task, final long delay) {
+    public int scheduleAsyncDelayedTask(final Plugin plugin, final Runnable task, final long delay) {
         throw new UnsupportedOperationException(MESSAGE_DEPRECATED);
     }
 
     @Override
-    public int scheduleAsyncDelayedTask(@NotNull final Plugin plugin, @NotNull final Runnable task) {
+    public int scheduleAsyncDelayedTask(final Plugin plugin, final Runnable task) {
         throw new UnsupportedOperationException(MESSAGE_DEPRECATED);
     }
 
     @Override
-    public int scheduleAsyncRepeatingTask(@NotNull final Plugin plugin, @NotNull final Runnable task, final long delay, final long period) {
+    public int scheduleAsyncRepeatingTask(final Plugin plugin, final Runnable task, final long delay, final long period) {
         throw new UnsupportedOperationException(MESSAGE_DEPRECATED);
     }
 
-    @NotNull
     @Override
-    public <T> Future<T> callSyncMethod(@NotNull final Plugin plugin, @NotNull final Callable<T> task) {
+    public <T> Future<T> callSyncMethod(final Plugin plugin, final Callable<T> task) {
         throw new UnsupportedOperationException(MESSAGE_UNUSED);
     }
 
@@ -284,7 +277,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
     }
 
     @Override
-    public void cancelTasks(@NotNull final Plugin plugin) {
+    public void cancelTasks(final Plugin plugin) {
         for (final ScheduledTask task : scheduledTasks.getCurrentTaskList()) {
             if (plugin.equals(task.getOwner())) {
                 task.cancel();
@@ -308,98 +301,88 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
     }
 
     @Override
-    public @NotNull
-    List<BukkitWorker> getActiveWorkers() {
+    public List<BukkitWorker> getActiveWorkers() {
         throw new UnsupportedOperationException(MESSAGE_UNUSED);
     }
 
     @Override
-    public @NotNull
-    List<BukkitTask> getPendingTasks() {
+    public List<BukkitTask> getPendingTasks() {
         throw new UnsupportedOperationException(MESSAGE_UNUSED);
     }
 
     @Override
-    public @NotNull
-    BukkitTask runTaskAsynchronously(@NotNull final Plugin plugin, @NotNull final Runnable task) {
+    public BukkitTask runTaskAsynchronously(final Plugin plugin, final Runnable task) {
         final ScheduledTask scheduledTask = new ScheduledTask(taskId++, plugin, false, currentTick, task);
         asyncTasks.add(pool.submit(wrapTask(scheduledTask)));
         return scheduledTask;
     }
 
     @Override
-    public @NotNull
-    BukkitTask runTaskAsynchronously(@NotNull final Plugin plugin, @NotNull final BukkitRunnable task) {
+    public BukkitTask runTaskAsynchronously(final Plugin plugin, final BukkitRunnable task) {
         throw new UnsupportedOperationException(MESSAGE_DEPRECATED);
     }
 
     @Override
-    public @NotNull
-    BukkitTask runTaskLater(@NotNull final Plugin plugin, @NotNull final BukkitRunnable task, final long delay) {
+    public BukkitTask runTaskLater(final Plugin plugin, final BukkitRunnable task, final long delay) {
         throw new UnsupportedOperationException(MESSAGE_DEPRECATED);
     }
 
     @Override
-    public @NotNull
-    BukkitTask runTaskLaterAsynchronously(@NotNull final Plugin plugin, @NotNull final Runnable task, final long delay) {
+    public BukkitTask runTaskLaterAsynchronously(final Plugin plugin, final Runnable task, final long delay) {
         final ScheduledTask scheduledTask = new ScheduledTask(taskId++, plugin, false, currentTick + delay, task);
         scheduledTasks.addTask(scheduledTask);
         return scheduledTask;
     }
 
     @Override
-    public @NotNull
-    BukkitTask runTaskLaterAsynchronously(@NotNull final Plugin plugin, @NotNull final BukkitRunnable task, final long delay) {
+    public BukkitTask runTaskLaterAsynchronously(final Plugin plugin, final BukkitRunnable task, final long delay) {
         throw new UnsupportedOperationException(MESSAGE_DEPRECATED);
     }
 
     @Override
-    public @NotNull
-    BukkitTask runTaskTimerAsynchronously(@NotNull final Plugin plugin, @NotNull final Runnable task, final long delay, final long period) {
+    public BukkitTask runTaskTimerAsynchronously(final Plugin plugin, final Runnable task, final long delay, final long period) {
         final RepeatingTask scheduledTask = new RepeatingTask(taskId++, plugin, false, currentTick + delay, period, task);
         scheduledTasks.addTask(scheduledTask);
         return scheduledTask;
     }
 
     @Override
-    public @NotNull
-    BukkitTask runTaskTimerAsynchronously(@NotNull final Plugin plugin, @NotNull final BukkitRunnable task, final long delay, final long period) {
+    public BukkitTask runTaskTimerAsynchronously(final Plugin plugin, final BukkitRunnable task, final long delay, final long period) {
         throw new UnsupportedOperationException(MESSAGE_DEPRECATED);
     }
 
     @Override
-    public @NotNull
-    Executor getMainThreadExecutor(@NotNull final Plugin plugin) {
+    public Executor getMainThreadExecutor(final Plugin plugin) {
         throw new UnsupportedOperationException(MESSAGE_UNUSED);
     }
 
     @Override
-    public void runTask(@NotNull final Plugin plugin, @NotNull final Consumer<BukkitTask> task) {
+    public void runTask(final Plugin plugin, final Consumer<BukkitTask> task) {
         throw new UnsupportedOperationException(MESSAGE_UNUSED);
     }
 
     @Override
-    public void runTaskAsynchronously(@NotNull final Plugin plugin, @NotNull final Consumer<BukkitTask> task) {
+    public void runTaskAsynchronously(final Plugin plugin, final Consumer<BukkitTask> task) {
         throw new UnsupportedOperationException(MESSAGE_UNUSED);
     }
 
     @Override
-    public void runTaskLater(@NotNull final Plugin plugin, @NotNull final Consumer<BukkitTask> task, final long delay) {
+    public void runTaskLater(final Plugin plugin, final Consumer<BukkitTask> task, final long delay) {
         throw new UnsupportedOperationException(MESSAGE_UNUSED);
     }
 
     @Override
-    public void runTaskLaterAsynchronously(@NotNull final Plugin plugin, @NotNull final Consumer<BukkitTask> task, final long delay) {
+    public void runTaskLaterAsynchronously(final Plugin plugin, final Consumer<BukkitTask> task, final long delay) {
         throw new UnsupportedOperationException(MESSAGE_UNUSED);
     }
 
     @Override
-    public void runTaskTimer(@NotNull final Plugin plugin, @NotNull final Consumer<BukkitTask> task, final long delay, final long period) {
+    public void runTaskTimer(final Plugin plugin, final Consumer<BukkitTask> task, final long delay, final long period) {
         throw new UnsupportedOperationException(MESSAGE_UNUSED);
     }
 
     @Override
-    public void runTaskTimerAsynchronously(@NotNull final Plugin plugin, @NotNull final Consumer<BukkitTask> task, final long delay, final long period) {
+    public void runTaskTimerAsynchronously(final Plugin plugin, final Consumer<BukkitTask> task, final long delay, final long period) {
         throw new UnsupportedOperationException(MESSAGE_UNUSED);
     }
 
@@ -454,7 +437,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
          *
          * @param task the task to remove.
          */
-        private void addTask(@NotNull final ScheduledTask task) {
+        private void addTask(final ScheduledTask task) {
             tasks.put(task.getTaskId(), task);
         }
 

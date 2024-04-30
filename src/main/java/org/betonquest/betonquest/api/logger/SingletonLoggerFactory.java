@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.api.logger;
 
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -23,12 +22,12 @@ public class SingletonLoggerFactory implements BetonQuestLoggerFactory {
     }
 
     @Override
-    public BetonQuestLogger create(@NotNull final Class<?> clazz, @Nullable final String topic) {
+    public BetonQuestLogger create(final Class<?> clazz, @Nullable final String topic) {
         return logger;
     }
 
     @Override
-    public BetonQuestLogger create(@NotNull final Plugin plugin, @Nullable final String topic) {
+    public BetonQuestLogger create(final Plugin plugin, @Nullable final String topic) {
         return logger;
     }
 }

@@ -1,9 +1,7 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
 import io.lumine.mythic.lib.api.item.NBTItem;
-import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
-import net.Indyuce.mmoitems.manager.TypeManager;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
@@ -26,8 +24,7 @@ public class MMOItemsHandCondition extends Condition {
     public MMOItemsHandCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
-        final TypeManager typeManager = MMOItems.plugin.getTypes();
-        itemType = typeManager.get(instruction.next());
+        itemType = MMOItemsUtils.getMMOItemType(instruction.next());
         itemID = instruction.next();
 
         while (instruction.hasNext()) {

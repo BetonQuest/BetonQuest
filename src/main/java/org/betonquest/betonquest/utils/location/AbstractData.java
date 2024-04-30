@@ -6,9 +6,11 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,18 +36,21 @@ abstract class AbstractData<T extends Cloneable> {
     /**
      * This object is used if the input string does not contain any {@link Variable}s.
      */
+    @Nullable
     private final T object;
 
     /**
      * A list of all {@link Variable}s in the formatted object string.
      * This attribute is only used when {@link Variable}s exist in the input string.
      */
+    @Nullable
     private final List<Variable> objectVariables;
 
     /**
      * A formatted object string in which all {@link Variable}s have been replaced with string formatting specifiers.
      * This attribute is only used when {@link Variable}s exist in the input string.
      */
+    @Nullable
     private final String objectFormatted;
 
     /**
@@ -57,7 +62,7 @@ abstract class AbstractData<T extends Cloneable> {
      * @param data string containing raw object in the defined format
      * @throws InstructionParseException Is thrown when an error appears while parsing the {@link Variable}s or the object
      */
-    public AbstractData(final QuestPackage pack, final String data) throws InstructionParseException {
+    public AbstractData(@Nullable final QuestPackage pack, final String data) throws InstructionParseException {
         final Matcher variableMatcher = PATTERN_VARIABLE.matcher(data);
         if (variableMatcher.find()) {
             objectVariables = new ArrayList<>();
@@ -110,11 +115,13 @@ abstract class AbstractData<T extends Cloneable> {
      * @throws QuestRuntimeException Is thrown when the objectString is not in the right format or if
      *                               the values couldn't be parsed.
      */
-    public T get(final Profile profile) throws QuestRuntimeException {
+    public T get(@Nullable final Profile profile) throws QuestRuntimeException {
         return object == null ? parseVariableObject(profile) : clone(object);
     }
 
-    private T parseVariableObject(final Profile profile) throws QuestRuntimeException {
+    private T parseVariableObject(@Nullable final Profile profile) throws QuestRuntimeException {
+        Objects.requireNonNull(objectVariables);
+        Objects.requireNonNull(objectFormatted);
         final String[] variables = new String[this.objectVariables.size()];
         for (int i = 0; i < this.objectVariables.size(); i++) {
             final Variable var = this.objectVariables.get(i);

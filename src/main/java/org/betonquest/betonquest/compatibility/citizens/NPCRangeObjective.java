@@ -19,16 +19,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.BiPredicate;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class NPCRangeObjective extends Objective {
     private final List<Integer> npcIds;
 
-    private final Trigger trigger;
-
     private final VariableNumber radius;
 
     private final Map<UUID, Boolean> playersInRange;
+
+    private final BiPredicate<UUID, Boolean> checkStuff;
 
     private int npcMoveTask;
 
@@ -46,9 +47,41 @@ public class NPCRangeObjective extends Objective {
                 throw new InstructionParseException("NPC ID cannot be parsed to a Number", exception);
             }
         }
-        trigger = instruction.getEnum(Trigger.class);
+        final Trigger trigger = instruction.getEnum(Trigger.class);
+        playersInRange = new HashMap<>();
+        checkStuff = getStuff(trigger);
         radius = instruction.getVarNum();
-        playersInRange = trigger == Trigger.ENTER || trigger == Trigger.LEAVE ? new HashMap<>() : null;
+    }
+
+    private BiPredicate<UUID, Boolean> getStuff(final Trigger trigger) {
+        return (uuid, inside) -> switch (trigger) {
+            case INSIDE -> !inside;
+            case OUTSIDE -> inside;
+            case ENTER -> {
+                if (playersInRange.containsKey(uuid)) {
+                    if (playersInRange.get(uuid) || !inside) {
+                        playersInRange.put(uuid, inside);
+                        yield true;
+                    }
+                } else {
+                    playersInRange.put(uuid, inside);
+                    yield true;
+                }
+                yield false;
+            }
+            case LEAVE -> {
+                if (playersInRange.containsKey(uuid)) {
+                    if (!playersInRange.get(uuid) || inside) {
+                        playersInRange.put(uuid, inside);
+                        yield true;
+                    }
+                } else {
+                    playersInRange.put(uuid, inside);
+                    yield true;
+                }
+                yield false;
+            }
+        };
     }
 
     @Override
@@ -59,9 +92,7 @@ public class NPCRangeObjective extends Objective {
     @Override
     public void stop() {
         Bukkit.getScheduler().cancelTask(npcMoveTask);
-        if (playersInRange != null) {
-            playersInRange.clear();
-        }
+        playersInRange.clear();
     }
 
     private void loop() throws QuestRuntimeException {
@@ -95,25 +126,12 @@ public class NPCRangeObjective extends Objective {
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     private void checkPlayer(final UUID uuid, final Profile profile, final boolean inside) {
-        if (trigger == Trigger.INSIDE && !inside || trigger == Trigger.OUTSIDE && inside) {
+        if (checkStuff.test(uuid, inside)) {
             return;
-        } else if (trigger == Trigger.ENTER || trigger == Trigger.LEAVE) {
-            if (playersInRange.containsKey(uuid)) {
-                if (trigger == Trigger.ENTER && (playersInRange.get(uuid) || !inside)
-                        || trigger == Trigger.LEAVE && (!playersInRange.get(uuid) || inside)) {
-                    playersInRange.put(uuid, inside);
-                    return;
-                }
-            } else {
-                playersInRange.put(uuid, inside);
-                return;
-            }
         }
 
         if (checkConditions(profile)) {
-            if (playersInRange != null) {
-                playersInRange.remove(uuid);
-            }
+            playersInRange.remove(uuid);
             completeObjective(profile);
         }
     }

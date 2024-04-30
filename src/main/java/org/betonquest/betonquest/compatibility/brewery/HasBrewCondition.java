@@ -51,11 +51,13 @@ public class HasBrewCondition extends Condition {
 
         for (int i = 0; i < player.getInventory().getSize(); i++) {
             final ItemStack item = player.getInventory().getItem(i);
-            if (item != null && Brew.get(item) != null && Brew.get(item).getCurrentRecipe().equals(brew)) {
-
-                remaining -= item.getAmount();
-                if (remaining <= 0) {
-                    return true;
+            if (item != null) {
+                final Brew brewItem = Brew.get(item);
+                if (brewItem != null && brewItem.getCurrentRecipe().equals(brew)) {
+                    remaining -= item.getAmount();
+                    if (remaining <= 0) {
+                        return true;
+                    }
                 }
             }
         }

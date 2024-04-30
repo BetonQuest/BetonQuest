@@ -6,7 +6,6 @@ import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.web.updater.source.DevelopmentUpdateSource;
 import org.betonquest.betonquest.modules.web.updater.source.ReleaseUpdateSource;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -271,7 +270,6 @@ class UpdateSourceHandlerTest {
         verifyNoMoreInteractions(logger);
     }
 
-    @NotNull
     private UpdaterConfig getUpdaterConfig(final UpdateStrategy strategy, final boolean devDownloadEnabled) {
         final UpdaterConfig config = mock(UpdaterConfig.class);
         when(config.getStrategy()).thenReturn(strategy);
@@ -279,7 +277,6 @@ class UpdateSourceHandlerTest {
         return config;
     }
 
-    @NotNull
     private List<ReleaseUpdateSource> getUpdateSourceRelease() throws IOException {
         final List<ReleaseUpdateSource> handlerList = new ArrayList<>();
 
@@ -292,7 +289,6 @@ class UpdateSourceHandlerTest {
         return handlerList;
     }
 
-    @NotNull
     private List<DevelopmentUpdateSource> getUpdateSourceDevelopment(final String version) throws IOException {
         final List<DevelopmentUpdateSource> handlerList = new ArrayList<>();
 

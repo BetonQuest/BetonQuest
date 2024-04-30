@@ -45,6 +45,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BoundingBox;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,10 +89,12 @@ public class MenuConvIO extends ChatConvIO {
 
     protected PacketAdapter packetAdapter;
 
+    @Nullable
     protected BukkitRunnable displayRunnable;
 
     protected boolean debounce;
 
+    @Nullable
     protected BaseComponent[] displayOutput;
 
     protected String formattedNpcName;
@@ -136,6 +139,7 @@ public class MenuConvIO extends ChatConvIO {
      */
     private int configSelectionCooldown = 10;
 
+    @Nullable
     private ArmorStand stand;
 
     @SuppressWarnings("PMD.CognitiveComplexity")

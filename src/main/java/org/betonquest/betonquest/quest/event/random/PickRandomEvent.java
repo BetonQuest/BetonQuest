@@ -5,6 +5,7 @@ import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -22,6 +23,7 @@ public class PickRandomEvent implements Event {
     /**
      * The amount of events to fire.
      */
+    @Nullable
     private final VariableNumber amount;
 
     /**
@@ -30,7 +32,7 @@ public class PickRandomEvent implements Event {
      * @param events the events with there chance
      * @param amount the amount of events to fire
      */
-    public PickRandomEvent(final List<RandomEvent> events, final VariableNumber amount) {
+    public PickRandomEvent(final List<RandomEvent> events, @Nullable final VariableNumber amount) {
         this.events = events;
         this.amount = amount;
     }

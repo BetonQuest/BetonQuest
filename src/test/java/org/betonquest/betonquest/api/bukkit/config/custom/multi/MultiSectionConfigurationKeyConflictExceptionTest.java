@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * This is a test for the {@link MultiSectionConfiguration} and it's thrown {@link KeyConflictException}s.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage"})
+@SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
 class MultiSectionConfigurationKeyConflictExceptionTest {
     /**
      * Config with key3 as value

@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.HandlerList;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class MobKillNotifier {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
+    @Nullable
     private static MobKillNotifier instance;
 
     private final List<Entity> entities = new ArrayList<>();

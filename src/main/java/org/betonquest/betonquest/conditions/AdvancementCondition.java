@@ -4,6 +4,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.advancement.Advancement;
@@ -25,10 +26,8 @@ public class AdvancementCondition extends Condition {
             throw new InstructionParseException("The advancement '" + advancementString + "' is missing a namespace!");
         }
         final String[] split = advancementString.split(":");
-        advancement = Bukkit.getServer().getAdvancement(new NamespacedKey(split[0], split[1]));
-        if (advancement == null) {
-            throw new InstructionParseException("No such advancement: " + advancementString);
-        }
+        advancement = Utils.getNN(Bukkit.getServer().getAdvancement(new NamespacedKey(split[0], split[1])),
+                "No such advancement: " + advancementString);
     }
 
     @Override

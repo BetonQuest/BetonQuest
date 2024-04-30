@@ -5,6 +5,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
@@ -24,10 +25,8 @@ public class VersionVariable extends Variable {
             plugin = BetonQuest.getInstance();
         } else {
             final String pluginName = instruction.getInstruction().substring(pointIndex + 1);
-            plugin = Bukkit.getPluginManager().getPlugin(pluginName);
-            if (plugin == null) {
-                throw new InstructionParseException("Plugin " + pluginName + "does not exist!");
-            }
+            plugin = Utils.getNN(Bukkit.getPluginManager().getPlugin(pluginName),
+                    "Plugin " + pluginName + "does not exist!");
         }
     }
 

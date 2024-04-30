@@ -10,6 +10,7 @@ import org.betonquest.betonquest.modules.config.quest.Quest;
 import org.betonquest.betonquest.modules.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.modules.config.quest.QuestTemplate;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -128,6 +129,7 @@ public class QuestManager {
         return files;
     }
 
+    @Nullable
     private File searchQuestFile(final File root, final String fileNameIndicator, final String fileTypeIndicator, final QuestCreator creator, final File[] fileArray, final List<File> files) {
         File questFile = null;
         for (final File subFile : fileArray) {

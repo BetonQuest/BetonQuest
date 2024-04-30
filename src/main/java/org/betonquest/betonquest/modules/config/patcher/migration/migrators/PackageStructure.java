@@ -2,7 +2,6 @@ package org.betonquest.betonquest.modules.config.patcher.migration.migrators;
 
 import org.betonquest.betonquest.modules.config.patcher.migration.Migration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -50,7 +49,6 @@ public class PackageStructure implements Migration {
         }
     }
 
-    @NotNull
     private List<Path> getOldQuestFolders() throws IOException {
         if (!Files.exists(BETONQUEST)) {
             return List.of();

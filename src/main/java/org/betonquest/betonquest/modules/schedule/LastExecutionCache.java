@@ -41,12 +41,8 @@ public class LastExecutionCache {
      */
     public void reload() {
         try {
-            if (cache == null) {
-                log.error("Schedule cache not present!");
-            } else {
-                cache.reload();
-                log.debug("Successfully reloaded schedule cache.");
-            }
+            cache.reload();
+            log.debug("Successfully reloaded schedule cache.");
         } catch (final IOException e) {
             log.error("Could not reload schedule cache: " + e.getMessage(), e);
         }
@@ -59,10 +55,6 @@ public class LastExecutionCache {
      * @param rawTime  raw string to cache
      */
     public void cacheRawExecutionTime(final ScheduleID schedule, final String rawTime) {
-        if (cache == null) {
-            log.error("Schedule cache not present!");
-            return;
-        }
         cache.getConfig().set(schedule.getFullID(), rawTime);
         try {
             cache.save();
@@ -89,10 +81,6 @@ public class LastExecutionCache {
      * @return optional containing the cached string, empty if nothing was cached
      */
     public Optional<String> getRawLastExecutionTime(final ScheduleID schedule) {
-        if (cache == null) {
-            log.error("Schedule cache not present!");
-            return Optional.empty();
-        }
         return Optional.ofNullable(cache.getConfig().getString(schedule.getFullID()));
     }
 

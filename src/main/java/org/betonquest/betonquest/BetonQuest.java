@@ -281,7 +281,6 @@ import org.bukkit.event.Event;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -423,7 +422,7 @@ public class BetonQuest extends JavaPlugin {
     }
 
     @SuppressWarnings("PMD.CognitiveComplexity")
-    public static boolean conditions(final Profile profile, final ConditionID... conditionIDs) {
+    public static boolean conditions(@Nullable final Profile profile, final ConditionID... conditionIDs) {
         if (Bukkit.isPrimaryThread()) {
             for (final ConditionID id : conditionIDs) {
                 if (!condition(profile, id)) {
@@ -473,11 +472,7 @@ public class BetonQuest extends JavaPlugin {
      * @return if the condition is met
      */
     @SuppressWarnings("PMD.NPathComplexity")
-    public static boolean condition(final Profile profile, final ConditionID conditionID) {
-        if (conditionID == null) {
-            getInstance().log.debug("Null condition ID!");
-            return false;
-        }
+    public static boolean condition(@Nullable final Profile profile, final ConditionID conditionID) {
         final Condition condition = CONDITIONS.get(conditionID);
         if (condition == null) {
             getInstance().log.warn(conditionID.getPackage(), "The condition " + conditionID + " is not defined!");
@@ -515,10 +510,6 @@ public class BetonQuest extends JavaPlugin {
      * @return true if the event was run even if there was an exception during execution
      */
     public static boolean event(@Nullable final Profile profile, final EventID eventID) {
-        if (eventID == null) {
-            getInstance().log.debug("Null event ID!");
-            return false;
-        }
         final QuestEvent event = EVENTS.get(eventID);
         if (event == null) {
             getInstance().log.warn(eventID.getPackage(), "Event " + eventID + " is not defined");
@@ -546,10 +537,6 @@ public class BetonQuest extends JavaPlugin {
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     public static void newObjective(final Profile profile, final ObjectiveID objectiveID) {
-        if (profile == null || objectiveID == null) {
-            getInstance().log.debug(objectiveID.getPackage(), "Null arguments for the objective!");
-            return;
-        }
         final Objective objective = OBJECTIVES.get(objectiveID);
         if (objective.containsPlayer(profile)) {
             getInstance().log.debug(objectiveID.getPackage(), profile + " already has the " + objectiveID + " objective");
@@ -566,10 +553,6 @@ public class BetonQuest extends JavaPlugin {
      * @param instruction data instruction string
      */
     public static void resumeObjective(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
-        if (profile == null || objectiveID == null || instruction == null) {
-            getInstance().log.debug("Null arguments for the objective!");
-            return;
-        }
         final Objective objective = OBJECTIVES.get(objectiveID);
         if (objective == null) {
             getInstance().log.warn(objectiveID.getPackage(), "Objective " + objectiveID + " does not exist");
@@ -592,7 +575,8 @@ public class BetonQuest extends JavaPlugin {
      * @return the Variable instance
      * @throws InstructionParseException when the variable parsing fails
      */
-    public static Variable createVariable(final QuestPackage pack, final String instruction)
+    @Nullable
+    public static Variable createVariable(@Nullable final QuestPackage pack, final String instruction)
             throws InstructionParseException {
         final VariableID variableID;
         try {
@@ -658,6 +642,7 @@ public class BetonQuest extends JavaPlugin {
      * @param name name of the notify IO type
      * @return the class object for this notify IO type
      */
+    @Nullable
     public static Class<? extends NotifyIO> getNotifyIO(final String name) {
         return NOTIFY_IO_TYPES.get(name);
     }
@@ -722,7 +707,6 @@ public class BetonQuest extends JavaPlugin {
         return rpgMenu;
     }
 
-    @NotNull
     public ConfigurationFile getPluginConfig() {
         return config;
     }
@@ -747,9 +731,7 @@ public class BetonQuest extends JavaPlugin {
     private <T> T registerAndGetService(final Class<T> clazz, final T service) {
         final ServicesManager servicesManager = getServer().getServicesManager();
         servicesManager.register(clazz, service, this, ServicePriority.Lowest);
-        final T loaded = servicesManager.load(clazz);
-        assert loaded != null;
-        return loaded;
+        return servicesManager.load(clazz);
     }
 
     @SuppressWarnings({"PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
@@ -827,7 +809,7 @@ public class BetonQuest extends JavaPlugin {
         saver.start();
         Backup.loadDatabaseFromBackup(configAccessorFactory);
 
-        new JoinQuitListener(loggerFactory, loggerFactory.create(JoinQuitListener.class));
+        new JoinQuitListener(loggerFactory);
 
         new QuestItemHandler();
 
@@ -1359,7 +1341,7 @@ public class BetonQuest extends JavaPlugin {
         // load all events, conditions, objectives, conversations etc.
         loadData();
         // start objectives and update journals for every online profiles
-        for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
             getInstance().log.debug("Updating journal for player " + onlineProfile);
             final PlayerData playerData = instance.getPlayerData(onlineProfile);
             GlobalObjectives.startAll(onlineProfile);
@@ -1462,27 +1444,43 @@ public class BetonQuest extends JavaPlugin {
 
     /**
      * Retrieves PlayerData object for specified profile. If the playerData does
+     * not exist it will create new playerData on the main thread and put it
+     * into the map.
+     *
+     * @param profile the {@link OnlineProfile} of the player
+     * @return PlayerData object for the player
+     */
+    public PlayerData getPlayerData(final OnlineProfile profile) {
+        return getPlayerData((Profile) profile);
+    }
+
+    /**
+     * Retrieves PlayerData object for specified profile. If the playerData does
      * not exist but the profile is online, it will create new playerData on the
      * main thread and put it into the map.
      *
      * @param profile the {@link Profile} of the player
      * @return PlayerData object for the player
+     * @throws IllegalArgumentException when there is no data and the player is offline
      */
     public PlayerData getPlayerData(final Profile profile) {
         PlayerData playerData = playerDataMap.get(profile);
-        if (playerData == null && profile.getOnlineProfile().isPresent()) {
-            playerData = new PlayerData(profile);
-            putPlayerData(profile, playerData);
+        if (playerData == null) {
+            if (profile.getOnlineProfile().isPresent()) {
+                playerData = new PlayerData(profile);
+                putPlayerData(profile, playerData);
+            } else {
+                throw new IllegalArgumentException("The profile has no online player!");
+            }
         }
         return playerData;
     }
 
     public PlayerData getOfflinePlayerData(final Profile profile) {
-        final PlayerData playerData = getPlayerData(profile);
-        if (playerData == null) {
-            return new PlayerData(profile);
+        if (profile.getOnlineProfile().isPresent()) {
+            return getPlayerData(profile);
         }
-        return playerData;
+        return new PlayerData(profile);
     }
 
     /**
@@ -1659,6 +1657,7 @@ public class BetonQuest extends JavaPlugin {
      * @param objectiveID package name, dot and ID of the objective
      * @return Objective object or null if it does not exist
      */
+    @Nullable
     public Objective getObjective(final ObjectiveID objectiveID) {
         return OBJECTIVES.get(objectiveID);
     }
@@ -1676,6 +1675,7 @@ public class BetonQuest extends JavaPlugin {
      * @param name name of the conversation IO type
      * @return the class object for this conversation IO type
      */
+    @Nullable
     public Class<? extends ConversationIO> getConvIO(final String name) {
         return CONVERSATION_IO_TYPES.get(name);
     }
@@ -1684,6 +1684,7 @@ public class BetonQuest extends JavaPlugin {
      * @param name name of the interceptor type
      * @return the class object for this interceptor type
      */
+    @Nullable
     public Class<? extends Interceptor> getInterceptor(final String name) {
         return INTERCEPTOR_TYPES.get(name);
     }
@@ -1697,7 +1698,7 @@ public class BetonQuest extends JavaPlugin {
      * @param profile  the {@link Profile} of the player
      * @return the value of this variable for given player
      */
-    public String getVariableValue(final String packName, final String name, final Profile profile) {
+    public String getVariableValue(final String packName, final String name, @Nullable final Profile profile) {
         if (!Config.getPackages().containsKey(packName)) {
             getInstance().log.warn("Variable '" + name + "' contains the non-existent package '" + packName + "' !");
             return "";
@@ -1726,6 +1727,7 @@ public class BetonQuest extends JavaPlugin {
      * @param name the name of the event
      * @return a factory to create the event
      */
+    @Nullable
     public QuestEventFactory getEventFactory(final String name) {
         return eventTypes.get(name);
     }
@@ -1734,6 +1736,7 @@ public class BetonQuest extends JavaPlugin {
      * @param name the name of the condition class, as previously registered
      * @return the class of the event
      */
+    @Nullable
     public Class<? extends Condition> getConditionClass(final String name) {
         return CONDITION_TYPES.get(name);
     }
@@ -1745,7 +1748,11 @@ public class BetonQuest extends JavaPlugin {
      * @param rename the name it should have now
      */
     public void renameObjective(final ObjectiveID name, final ObjectiveID rename) {
-        OBJECTIVES.put(rename, OBJECTIVES.remove(name));
+        final Objective objective = OBJECTIVES.remove(name);
+        OBJECTIVES.put(rename, objective);
+        if (objective != null) {
+            objective.setLabel(rename);
+        }
     }
 
     /**

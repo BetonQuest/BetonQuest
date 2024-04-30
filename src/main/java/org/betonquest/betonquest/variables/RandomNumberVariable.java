@@ -5,6 +5,7 @@ import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
 import java.util.concurrent.ThreadLocalRandom;
@@ -37,6 +38,7 @@ public class RandomNumberVariable extends Variable {
     /**
      * The digit amount to round to in fractional mode stored in pattern
      */
+    @Nullable
     private final DecimalFormat format;
 
     /**
@@ -63,6 +65,7 @@ public class RandomNumberVariable extends Variable {
         this.high = parseSecond(instruction);
     }
 
+    @Nullable
     private DecimalFormat getFormat(final String type) throws InstructionParseException {
         if (type.length() > DECIMAL_LENGTH) {
             try {

@@ -21,6 +21,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -77,7 +78,7 @@ public class RPGMenu {
      *                      null will return true if the player has any menu opened
      * @return true if the player has opened the specified menu, false otherwise
      */
-    public static boolean hasOpenedMenu(final OnlineProfile onlineProfile, final MenuID menuID) {
+    public static boolean hasOpenedMenu(final OnlineProfile onlineProfile, @Nullable final MenuID menuID) {
         final OpenedMenu menu = OpenedMenu.getMenu(onlineProfile);
         if (menu == null) {
             return false;
@@ -234,6 +235,7 @@ public class RPGMenu {
      * @param menuID menuID of the menu
      * @return menu with the given menuID
      */
+    @Nullable
     public Menu getMenu(final MenuID menuID) {
         return menus.get(menuID);
     }

@@ -1,15 +1,12 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
 import io.lumine.mythic.lib.api.crafting.event.MythicCraftItemEvent;
-import io.lumine.mythic.lib.api.item.NBTItem;
 import io.lumine.mythic.lib.api.util.ui.FriendlyFeedbackProvider;
-import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.api.crafting.recipe.CraftingRecipe;
 import net.Indyuce.mmoitems.api.crafting.recipe.Recipe;
 import net.Indyuce.mmoitems.api.event.PlayerUseCraftingStationEvent;
 import net.Indyuce.mmoitems.api.util.message.FFPMMOItems;
-import net.Indyuce.mmoitems.manager.TypeManager;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
@@ -25,6 +22,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import static net.Indyuce.mmoitems.api.event.PlayerUseCraftingStationEvent.StationAction;
 
@@ -37,8 +35,7 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
     public MMOItemsCraftObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "items_to_craft");
 
-        final TypeManager typeManager = MMOItems.plugin.getTypes();
-        itemType = typeManager.get(instruction.next());
+        itemType = MMOItemsUtils.getMMOItemType(instruction.next());
         itemId = instruction.next();
 
         targetAmount = instruction.getVarNum(instruction.getOptional("amount", "1"));
@@ -116,15 +113,8 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
      *
      * @return {@code true} if the item matches the requirements; {@code false} otherwise
      */
-    private boolean isValidItem(final ItemStack itemStack) {
-        if (itemStack == null) {
-            return false;
-        }
-        final NBTItem realItemNBT = NBTItem.get(itemStack);
-        final String realItemType = realItemNBT.getString("MMOITEMS_ITEM_TYPE");
-        final String realItemID = realItemNBT.getString("MMOITEMS_ITEM_ID");
-
-        return realItemID.equalsIgnoreCase(itemId) && realItemType.equalsIgnoreCase(itemType.getId());
+    private boolean isValidItem(@Nullable final ItemStack itemStack) {
+        return MMOItemsUtils.equalsMMOItem(itemStack, itemType, itemId);
     }
 
     @Override

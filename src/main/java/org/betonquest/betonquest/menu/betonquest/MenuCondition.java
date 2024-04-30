@@ -7,6 +7,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Checks if a player has opened a menu
@@ -14,6 +15,7 @@ import org.betonquest.betonquest.menu.RPGMenu;
 @SuppressWarnings("PMD.CommentRequired")
 public class MenuCondition extends Condition {
 
+    @Nullable
     private final MenuID menu;
 
     public MenuCondition(final Instruction instruction) throws InstructionParseException {

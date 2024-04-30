@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serial;
 import java.util.ArrayList;
@@ -173,6 +174,7 @@ public class Slots {
      * @return the menu item which should be displayed in the given slot to the player
      */
     @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
+    @Nullable
     public MenuItem getItem(final Profile profile, final int slot) {
         final int index = this.getIndex(slot);
         if (index == -1) {

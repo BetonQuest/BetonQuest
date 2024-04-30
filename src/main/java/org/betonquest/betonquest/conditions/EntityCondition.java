@@ -13,6 +13,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.metadata.MetadataValue;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,8 +32,10 @@ public class EntityCondition extends Condition {
 
     private final VariableNumber range;
 
+    @Nullable
     private final String name;
 
+    @Nullable
     private final String marked;
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition"})

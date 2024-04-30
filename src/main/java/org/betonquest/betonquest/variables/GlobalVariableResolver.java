@@ -5,6 +5,8 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.GlobalVariableID;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -42,7 +44,8 @@ public final class GlobalVariableResolver {
      * @param input the input string
      * @return the string with all global variables resolved
      */
-    public static String resolve(final QuestPackage pack, final String input) {
+    @Contract("_, null -> null; _, !null -> !null")
+    public static String resolve(final QuestPackage pack, @Nullable final String input) {
         if (input == null) {
             return null;
         }

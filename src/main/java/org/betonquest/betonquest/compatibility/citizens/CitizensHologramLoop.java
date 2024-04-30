@@ -26,7 +26,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -103,7 +102,6 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
         return holograms;
     }
 
-    @NotNull
     private List<Integer> getNPCs(final QuestPackage pack, final ConfigurationSection section) throws InstructionParseException {
         final List<Integer> npcIDs = new ArrayList<>();
         for (final String stringID : section.getStringList("npcs")) {

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.modules.versioning;
 
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -28,11 +29,13 @@ public class Version {
     /**
      * The qualifier if existent.
      */
+    @Nullable
     private final String qualifier;
 
     /**
      * Null if no build number could be parsed.
      */
+    @Nullable
     private final Integer buildNumber;
 
     /**
@@ -135,7 +138,7 @@ public class Version {
     }
 
     @Override
-    public boolean equals(final Object other) {
+    public boolean equals(@Nullable final Object other) {
         if (this == other) {
             return true;
         }

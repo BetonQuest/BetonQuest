@@ -101,6 +101,10 @@ public class TellrawConvIO extends ChatConvIO {
     @Override
     public void display() {
         super.display();
+        displayText();
+    }
+
+    protected void displayText() {
         for (int j = 1; j <= options.size(); j++) {
             // Build ColorString
             final TextComponent colorComponent = new TextComponent();

@@ -13,6 +13,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,6 +24,7 @@ import java.util.UUID;
 @SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
 public final class MythicHider extends BukkitRunnable implements Listener {
 
+    @Nullable
     private static MythicHider instance;
 
     private final EntityHider hider;
@@ -51,6 +53,7 @@ public final class MythicHider extends BukkitRunnable implements Listener {
     /**
      * @return the currently used NPCHider instance
      */
+    @Nullable
     public static MythicHider getInstance() {
         return instance;
     }
@@ -140,7 +143,7 @@ public final class MythicHider extends BukkitRunnable implements Listener {
      * @param mythicMob     ID of the NPC
      * @return true if the NPC is visible to that player, false otherwise
      */
-    public boolean isInvisible(final OnlineProfile onlineProfile, final Entity mythicMob) {
+    public boolean isInvisible(final OnlineProfile onlineProfile, @Nullable final Entity mythicMob) {
         if (mythicMob == null) {
             return false;
         }

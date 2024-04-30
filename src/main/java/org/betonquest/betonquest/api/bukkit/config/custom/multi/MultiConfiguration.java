@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api.bukkit.config.custom.multi;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Set;
@@ -49,6 +50,7 @@ public interface MultiConfiguration extends Configuration {
      * @return The clearly {@link ConfigurationSection} of the given path
      * @throws InvalidConfigurationException is thrown, if the given path is defined in multiple configuration
      */
+    @Nullable
     ConfigurationSection getSourceConfigurationSection(String path) throws InvalidConfigurationException;
 
     /**

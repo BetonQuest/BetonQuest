@@ -22,6 +22,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.BrewerInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -135,7 +136,7 @@ BrewObjective extends CountingObjective implements Listener {
     /**
      * Check if the {@link ItemStack} matches the potion defined in the objective.
      */
-    private boolean checkPotion(final ItemStack item) {
+    private boolean checkPotion(@Nullable final ItemStack item) {
         return item != null && potion.compare(item);
     }
 

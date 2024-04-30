@@ -14,6 +14,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
@@ -148,7 +149,7 @@ public class ItemDurabilityEvent implements Event {
         player.playSound(player, Sound.ENTITY_ITEM_BREAK, 1, 1);
     }
 
-    private boolean isArmor(final ItemStack itemStack) {
+    private boolean isArmor(@Nullable final ItemStack itemStack) {
         if (itemStack == null) {
             return false;
         }

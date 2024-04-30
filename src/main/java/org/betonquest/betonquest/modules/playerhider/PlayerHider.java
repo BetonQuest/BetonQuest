@@ -12,6 +12,7 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -65,7 +66,7 @@ public class PlayerHider {
         bukkitTask.cancel();
     }
 
-    private ConditionID[] getConditions(final QuestPackage pack, final String key, final String rawConditions) throws InstructionParseException {
+    private ConditionID[] getConditions(final QuestPackage pack, final String key, @Nullable final String rawConditions) throws InstructionParseException {
         if (rawConditions == null) {
             return new ConditionID[0];
         }
@@ -93,7 +94,7 @@ public class PlayerHider {
         }
     }
 
-    private void updateVisibilityForProfiles(final Collection<? extends OnlineProfile> onlineProfiles, final OnlineProfile source, final List<OnlineProfile> profilesToHide) {
+    private void updateVisibilityForProfiles(final Collection<? extends OnlineProfile> onlineProfiles, final OnlineProfile source, @Nullable final List<OnlineProfile> profilesToHide) {
         if (profilesToHide == null) {
             for (final OnlineProfile target : onlineProfiles) {
                 source.getPlayer().showPlayer(BetonQuest.getInstance(), target.getPlayer());

@@ -21,6 +21,7 @@ import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -51,8 +52,10 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 
     private final boolean blockConversations;
 
+    @Nullable
     private ListIterator<CompoundLocation> locationsIterator;
 
+    @Nullable
     private Profile currentProfile;
 
     public NPCMoveEvent(final Instruction instruction) throws InstructionParseException {

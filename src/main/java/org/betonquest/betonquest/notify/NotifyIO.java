@@ -8,7 +8,6 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,13 +36,13 @@ public abstract class NotifyIO {
         sound = new NotifySound(this);
     }
 
-    public void sendNotify(@NotNull final String message) throws QuestRuntimeException {
+    public void sendNotify(final String message) throws QuestRuntimeException {
         for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
             sendNotify(message, onlineProfile);
         }
     }
 
-    public void sendNotify(@NotNull final String message, @NotNull final OnlineProfile onlineProfile) throws QuestRuntimeException {
+    public void sendNotify(final String message, final OnlineProfile onlineProfile) throws QuestRuntimeException {
         notifyPlayer(Utils.format(message), onlineProfile);
         sound.sendSound(onlineProfile);
     }

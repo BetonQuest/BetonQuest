@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,16 +40,19 @@ public class FolderEvent extends QuestEvent {
     /**
      * The delay to apply before running the events.
      */
+    @Nullable
     private final VariableNumber delay;
 
     /**
      * The delay to apply between each event.
      */
+    @Nullable
     private final VariableNumber period;
 
     /**
      * The number of events to run.
      */
+    @Nullable
     private final VariableNumber random;
 
     /**
@@ -92,7 +96,7 @@ public class FolderEvent extends QuestEvent {
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @Override
-    protected Void execute(final Profile profile) throws QuestRuntimeException {
+    protected Void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         final Deque<EventID> chosenList = new LinkedList<>();
         // choose randomly which events should be fired
         final int randomInt = random == null ? 0 : random.getInt(profile);
@@ -154,15 +158,16 @@ public class FolderEvent extends QuestEvent {
         return null;
     }
 
-    private FolderEventCanceller createFolderEventCanceller(final Profile profile) {
-        if (cancelOnLogout) {
+    private FolderEventCanceller createFolderEventCanceller(@Nullable final Profile profile) {
+        if (cancelOnLogout && profile != null) {
             return new QuitListener(log, profile);
         } else {
             return () -> false;
         }
     }
 
-    private Long getInTicks(final VariableNumber timeVariable, final Profile profile) {
+    @Nullable
+    private Long getInTicks(@Nullable final VariableNumber timeVariable, @Nullable final Profile profile) {
         if (timeVariable == null) {
             return null;
         }

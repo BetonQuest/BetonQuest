@@ -5,6 +5,7 @@ import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Checker;
 import org.bukkit.event.Event;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Skript event, which listens to custom event fired by BetonQuest's event
@@ -19,7 +20,7 @@ public class SkriptEventBQ extends SkriptEvent {
     }
 
     @Override
-    public String toString(final Event event, final boolean debug) {
+    public String toString(@Nullable final Event event, final boolean debug) {
         return "on betonquest event";
     }
 
@@ -31,19 +32,9 @@ public class SkriptEventBQ extends SkriptEvent {
 
     @Override
     public boolean check(final Event event) {
-        if (event instanceof BQEventSkript.CustomEventForSkript) {
-            final BQEventSkript.CustomEventForSkript scriptEvent = (BQEventSkript.CustomEventForSkript) event;
-            return literal.check(event, new Checker<Object>() {
-                @Override
-                public boolean check(final Object other) {
-                    if (other instanceof String) {
-                        final String identifier = (String) other;
-                        return scriptEvent.getID().equals(identifier);
-                    }
-                    return false;
-                }
-
-            });
+        if (event instanceof final BQEventSkript.CustomEventForSkript scriptEvent) {
+            return literal.check(event, (Checker<Object>) other ->
+                    other instanceof final String identifier && scriptEvent.getID().equals(identifier));
         }
         return false;
     }

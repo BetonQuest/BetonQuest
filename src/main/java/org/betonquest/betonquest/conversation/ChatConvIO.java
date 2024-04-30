@@ -17,6 +17,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +43,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
     protected Map<Integer, String> options;
 
+    @Nullable
     protected String npcText;
 
     protected String npcName;
@@ -193,7 +195,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     }
 
     @Override
-    public void print(final String message) {
+    public void print(@Nullable final String message) {
         if (message != null && message.length() > 0) {
             conv.sendMessage(message);
         }

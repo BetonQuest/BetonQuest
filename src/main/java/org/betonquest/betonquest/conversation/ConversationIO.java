@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.conversation;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * Used to display messages in conversation
  */
@@ -52,7 +54,7 @@ public interface ConversationIO {
      *
      * @param message The message to send
      */
-    default void print(final String message) {
+    default void print(@Nullable final String message) {
         // Empty
     }
 }

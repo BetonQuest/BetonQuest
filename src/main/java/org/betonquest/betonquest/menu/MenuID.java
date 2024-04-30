@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ID;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Id of a menu
@@ -13,7 +14,7 @@ public class MenuID extends ID {
 
     private final ConfigurationSection config;
 
-    public MenuID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
+    public MenuID(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         super(pack, identifier);
         super.rawInstruction = null;
         //find file

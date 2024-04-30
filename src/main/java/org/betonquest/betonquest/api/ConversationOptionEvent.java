@@ -5,12 +5,11 @@ import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ResolvedOption;
 import org.bukkit.event.HandlerList;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Signals that a player has selected an option in a conversation.
  */
-@SuppressWarnings({"PMD.DataClass"})
+@SuppressWarnings("PMD.DataClass")
 public class ConversationOptionEvent extends ProfileEvent {
     /**
      * A list of all handlers for this event.
@@ -80,7 +79,6 @@ public class ConversationOptionEvent extends ProfileEvent {
     /**
      * @return a list of all handlers for this event
      */
-    @NotNull
     @Override
     public HandlerList getHandlers() {
         return HANDLERS;

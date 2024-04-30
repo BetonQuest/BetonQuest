@@ -9,6 +9,7 @@ import org.bstats.charts.AdvancedPie;
 import org.bstats.charts.DrilldownPie;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -82,6 +83,7 @@ public class BStatsMetrics {
                 .collect(Collectors.toMap(Function.identity(), key -> 1, Integer::sum));
     }
 
+    @Nullable
     private String typeFromId(final ID identifier) {
         try {
             return identifier.generateInstruction().getPart(0);

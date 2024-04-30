@@ -22,6 +22,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Spawns MythicMobs mobs
@@ -40,6 +41,7 @@ public class MythicSpawnMobEvent extends QuestEvent {
 
     private final boolean targetPlayer;
 
+    @Nullable
     private final VariableString marked;
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")

@@ -44,7 +44,7 @@ public final class Backup {
      * @return true if the backup was successful, false if there was an error
      */
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
-    @SuppressWarnings({"PMD.CognitiveComplexity"})
+    @SuppressWarnings("PMD.CognitiveComplexity")
     public static boolean backupDatabase(final ConfigAccessorFactory configAccessorFactory, final File databaseBackupFile) {
         final BetonQuest instance = BetonQuest.getInstance();
         try {

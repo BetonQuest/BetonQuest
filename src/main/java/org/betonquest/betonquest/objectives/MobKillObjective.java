@@ -15,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.metadata.MetadataValue;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -27,8 +28,10 @@ import java.util.List;
 public class MobKillObjective extends CountingObjective implements Listener {
     private final List<EntityType> entities;
 
+    @Nullable
     protected String name;
 
+    @Nullable
     protected VariableString marked;
 
     public MobKillObjective(final Instruction instruction) throws InstructionParseException {

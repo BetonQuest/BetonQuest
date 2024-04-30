@@ -10,6 +10,7 @@ import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Checks if a player is looking at a specific block
@@ -18,8 +19,10 @@ import org.bukkit.entity.Player;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class LookingAtCondition extends Condition {
+    @Nullable
     private final CompoundLocation loc;
 
+    @Nullable
     private final BlockSelector selector;
 
     private final boolean exactMatch;

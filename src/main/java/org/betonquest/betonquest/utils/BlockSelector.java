@@ -10,6 +10,7 @@ import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -285,7 +286,7 @@ public class BlockSelector {
         return materials;
     }
 
-    private Map<String, String> getStates(final String statesString) {
+    private Map<String, String> getStates(@Nullable final String statesString) {
         final Map<String, String> states = new HashMap<>();
         if (statesString == null || statesString.isEmpty()) {
             return states;

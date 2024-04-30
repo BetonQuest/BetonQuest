@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.api.logger;
 
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -32,12 +31,12 @@ public class CachingBetonQuestLoggerFactory implements BetonQuestLoggerFactory {
     }
 
     @Override
-    public BetonQuestLogger create(@NotNull final Class<?> clazz, @Nullable final String topic) {
+    public BetonQuestLogger create(final Class<?> clazz, @Nullable final String topic) {
         return loggers.computeIfAbsent(clazz, k -> new HashMap<>()).computeIfAbsent(topic, t -> factory.create(clazz, t));
     }
 
     @Override
-    public BetonQuestLogger create(@NotNull final Plugin plugin, @Nullable final String topic) {
+    public BetonQuestLogger create(final Plugin plugin, @Nullable final String topic) {
         return loggers.computeIfAbsent(plugin.getClass(), k -> new HashMap<>()).computeIfAbsent(topic, t -> factory.create(plugin, t));
     }
 }

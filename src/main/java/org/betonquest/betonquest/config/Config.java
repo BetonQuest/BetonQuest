@@ -18,6 +18,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -94,7 +95,7 @@ public final class Config {
      * @return message in that language, or message in English, or null if it
      * does not exist
      */
-    public static String getMessage(final String lang, final String message, final String... variables) {
+    public static String getMessage(final String lang, final String message, @Nullable final String... variables) {
         String result = messages.getString(lang + "." + message);
         if (result == null) {
             result = messages.getString(Config.getLanguage() + "." + message);
@@ -190,7 +191,7 @@ public final class Config {
      * @param onlineProfile the {@link OnlineProfile} of the player
      * @param messageName   ID of the message
      */
-    public static void sendMessage(final String packName, final OnlineProfile onlineProfile, final String messageName) {
+    public static void sendMessage(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName) {
         sendMessage(packName, onlineProfile, messageName, (String[]) null, null, null);
     }
 
@@ -204,7 +205,7 @@ public final class Config {
      * @param messageName   ID of the message
      * @param variables     array of variables which will be inserted into the string
      */
-    public static void sendMessage(final String packName, final OnlineProfile onlineProfile, final String messageName, final String... variables) {
+    public static void sendMessage(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, final String... variables) {
         sendMessage(packName, onlineProfile, messageName, variables, null, null, (String) null);
     }
 
@@ -219,7 +220,7 @@ public final class Config {
      * @param variables     array of variables which will be inserted into the string
      * @param soundName     name of the sound to play to the player
      */
-    public static void sendMessage(final String packName, final OnlineProfile onlineProfile, final String messageName, final String[] variables, final String soundName) {
+    public static void sendMessage(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, final String[] variables, final String soundName) {
         sendMessage(packName, onlineProfile, messageName, variables, soundName, null, (String) null);
     }
 
@@ -236,8 +237,8 @@ public final class Config {
      * @param prefixName      ID of the prefix
      * @param prefixVariables array of variables which will be inserted into the prefix
      */
-    public static void sendMessage(final String packName, final OnlineProfile onlineProfile, final String messageName, final String[] variables, final String soundName,
-                                   final String prefixName, final String... prefixVariables) {
+    public static void sendMessage(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String soundName,
+                                   @Nullable final String prefixName, @Nullable final String... prefixVariables) {
         final String message = parseMessage(packName, onlineProfile, messageName, variables, prefixName, prefixVariables);
         if (message == null || message.length() == 0) {
             return;
@@ -250,11 +251,11 @@ public final class Config {
         }
     }
 
-    public static void sendNotify(final String packName, final OnlineProfile onlineProfile, final String messageName, final String category) throws QuestRuntimeException {
+    public static void sendNotify(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, @Nullable final String category) throws QuestRuntimeException {
         sendNotify(packName, onlineProfile, messageName, null, category);
     }
 
-    public static void sendNotify(final String packName, final OnlineProfile onlineProfile, final String messageName, final String[] variables, final String category) throws QuestRuntimeException {
+    public static void sendNotify(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String category) throws QuestRuntimeException {
         sendNotify(packName, onlineProfile, messageName, variables, category, null);
     }
 
@@ -271,7 +272,7 @@ public final class Config {
      * @param data          custom notifyIO data
      * @throws QuestRuntimeException thrown if it is not possible to send the notification
      */
-    public static void sendNotify(final String packName, final OnlineProfile onlineProfile, final String messageName, final String[] variables, final String category, final Map<String, String> data) throws QuestRuntimeException {
+    public static void sendNotify(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String category, @Nullable final Map<String, String> data) throws QuestRuntimeException {
         final String message = parseMessage(packName, onlineProfile, messageName, variables);
         if (message == null || message.length() == 0) {
             return;
@@ -280,7 +281,8 @@ public final class Config {
         Notify.get(Config.getPackages().get(packName), category, data).sendNotify(message, onlineProfile);
     }
 
-    public static String parseMessage(final String packName, final OnlineProfile onlineProfile, final String messageName, final String... variables) {
+    @Nullable
+    public static String parseMessage(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, @Nullable final String... variables) {
         return parseMessage(packName, onlineProfile, messageName, variables, null, (String) null);
     }
 
@@ -295,8 +297,9 @@ public final class Config {
      * @param prefixVariables array of variables which will be inserted into the prefix
      * @return The parsed message.
      */
-    public static String parseMessage(final String packName, final OnlineProfile onlineProfile, final String messageName, final String[] variables, final String prefixName,
-                                      final String... prefixVariables) {
+    @Nullable
+    public static String parseMessage(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String prefixName,
+                                      @Nullable final String... prefixVariables) {
         final PlayerData playerData = plugin.getPlayerData(onlineProfile);
         if (playerData == null) {
             return null;
