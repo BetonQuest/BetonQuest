@@ -45,13 +45,4 @@ public interface Profile {
      */
     @Override
     String toString();
-
-    /**
-     * Checks if {@link #getOnlineProfile()} will provide a value.
-     *
-     * @return true if {@link #getOnlineProfile()} is present
-     */
-    default boolean isOnlineProfilePresent() {
-        return getOnlineProfile().isPresent();
-    }
 }

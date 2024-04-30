@@ -561,7 +561,7 @@ public class PlayerData implements TagData {
         saver.add(new Record(UpdateType.DELETE_BACKPACK, profileID));
         saver.add(new Record(UpdateType.UPDATE_CONVERSATION, "null", profileID));
         // update the journal so it's empty
-        if (profile.isOnlineProfilePresent()) {
+        if (profile.getOnlineProfile().isPresent()) {
             getJournal().update();
         }
     }

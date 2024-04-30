@@ -543,7 +543,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         final PlayerData playerData;
-        if (profile.isOnlineProfilePresent()) {
+        if (profile.getOnlineProfile().isPresent()) {
             playerData = instance.getPlayerData(profile);
         } else {
             log.debug("Profile is offline, loading his data");
@@ -574,7 +574,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         final PlayerData playerData;
-        if (profile.isOnlineProfilePresent()) {
+        if (profile.getOnlineProfile().isPresent()) {
             playerData = instance.getPlayerData(profile);
         } else {
             log.debug("Profile is offline, loading his data");
@@ -679,7 +679,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         final PlayerData playerData;
-        if (profile.isOnlineProfilePresent()) {
+        if (profile.getOnlineProfile().isPresent()) {
             playerData = instance.getPlayerData(profile);
         } else {
             log.debug("Profile is offline, loading his data");
@@ -1010,7 +1010,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         final PlayerData playerData;
-        if (profile.isOnlineProfilePresent()) {
+        if (profile.getOnlineProfile().isPresent()) {
             playerData = instance.getPlayerData(profile);
         } else {
             log.debug("Profile is offline, loading his data");
@@ -1166,7 +1166,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (profile == null) {
             return;
         }
-        final boolean isOnline = profile.isOnlineProfilePresent();
+        final boolean isOnline = profile.getOnlineProfile().isPresent();
         final PlayerData playerData;
         if (isOnline) {
             playerData = instance.getPlayerData(profile);
@@ -1819,7 +1819,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
 
-        final boolean isOnline = profile.isOnlineProfilePresent();
+        final boolean isOnline = profile.getOnlineProfile().isPresent();
         if (!isOnline) {
             log.debug("Can't access variable data on offline player");
             sendMessage(sender, "offline_invalid");

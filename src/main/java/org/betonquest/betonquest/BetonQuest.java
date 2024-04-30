@@ -1466,7 +1466,7 @@ public class BetonQuest extends JavaPlugin {
     public PlayerData getPlayerData(final Profile profile) {
         PlayerData playerData = playerDataMap.get(profile);
         if (playerData == null) {
-            if (profile.isOnlineProfilePresent()) {
+            if (profile.getOnlineProfile().isPresent()) {
                 playerData = new PlayerData(profile);
                 putPlayerData(profile, playerData);
             } else {
@@ -1477,7 +1477,7 @@ public class BetonQuest extends JavaPlugin {
     }
 
     public PlayerData getOfflinePlayerData(final Profile profile) {
-        if (profile.isOnlineProfilePresent()) {
+        if (profile.getOnlineProfile().isPresent()) {
             return getPlayerData(profile);
         }
         return new PlayerData(profile);
