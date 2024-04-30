@@ -210,6 +210,7 @@ nav:
               - 'Schedules': Documentation/Scripting/Schedules.md
               - 'Parties': Documentation/Scripting/Parties.md
               - 'Data Formats': Documentation/Scripting/Data-Formats.md
+              - 'Quoting & advanced YAML': Documentation/Scripting/Quoting-&-YAML.md
 
       - 'Features':
           - 'Conversations': Documentation/Features/Conversations.md

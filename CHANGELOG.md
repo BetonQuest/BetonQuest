@@ -39,7 +39,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `folder` event did not respect the sync / async context that it is executed in
 - incorrectly measuring the distance between player and hologram if they are in different worlds
 - incorrect calculation of the width of strings when using some special characters when doing pagination 
-- quoting in instructions
+- previously undocumented quoting in instructions
 ### Security
 
 ## [2.0.1] - 2024-03-24
