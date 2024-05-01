@@ -51,7 +51,6 @@ public class Instruction {
 
     protected final String[] parts;
 
-    @Nullable
     private final ID identifier;
 
     private int nextIndex = 1;
@@ -81,13 +80,14 @@ public class Instruction {
         this.parts = tokenizeInstruction(tokenizer, pack, instruction);
     }
 
-    @Nullable
     private ID useFallbackIdIfNecessary(final QuestPackage pack, @Nullable final ID identifier) {
+        if (identifier != null) {
+            return identifier;
+        }
         try {
-            return identifier == null ? new NoID(pack) : identifier;
+            return new NoID(pack);
         } catch (final ObjectNotFoundException e) {
-            this.log.warn(pack, "Could not find instruction: " + e.getMessage(), e);
-            return null;
+            throw new IllegalStateException("Could not find instruction: " + e.getMessage(), e);
         }
     }
 
@@ -113,6 +113,7 @@ public class Instruction {
             for (final int codePoint : part.codePoints().toArray()) {
                 if (codePoint == '"' || codePoint == '\\') {
                     escapedPart.append('\\');
+                    needsQuotes = true;
                 } else if (Character.isWhitespace(codePoint)) {
                     needsQuotes = true;
                 }
