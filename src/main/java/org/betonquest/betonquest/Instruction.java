@@ -38,11 +38,6 @@ import java.util.Optional;
         "PMD.AvoidFieldNameMatchingTypeName", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods"})
 public class Instruction {
     /**
-     * Tokenizer that can split on spaces but interpret quotes and escapes.
-     */
-    private static final Tokenizer TOKENIZER = new QuotingTokenizer();
-
-    /**
      * Contract: Returns null when the parameter is null, otherwise the expected object.
      */
     private static final String NULL_NOT_NULL_CONTRACT = "null -> null; !null -> !null";
@@ -54,9 +49,10 @@ public class Instruction {
 
     private final QuestPackage pack;
 
-    protected String[] parts;
+    protected final String[] parts;
 
-    private ID identifier;
+    @Nullable
+    private final ID identifier;
 
     private int nextIndex = 1;
 
@@ -66,27 +62,42 @@ public class Instruction {
     private String lastOptional;
 
     public Instruction(final BetonQuestLogger log, final QuestPackage pack, @Nullable final ID identifier, final String instruction) {
-        this.log = log;
-        this.pack = pack;
-        try {
-            this.identifier = identifier == null ? new NoID(pack) : identifier;
-        } catch (final ObjectNotFoundException e) {
-            this.log.warn(pack, "Could not find instruction: " + e.getMessage(), e);
-        }
-        try {
-            this.parts = getTokenizer().tokens(instruction);
-        } catch (TokenizerException e) {
-            this.log.warn(pack, "Could not parse instruction: " + e.getMessage(), e);
-        }
+        this(new QuotingTokenizer(), log, pack, identifier, instruction);
     }
 
     /**
-     * Get a tokenizer to split the instruction string into parts.
+     * Create an instruction using the given tokenizer.
      *
-     * @return a tokenizer
+     * @param tokenizer   Tokenizer that can split on spaces but interpret quotes and escapes.
+     * @param log         logger to log failures when parsing the instruction string
+     * @param pack        quest package the instruction belongs to
+     * @param identifier  identifier of the instruction
+     * @param instruction instruction string to parse
      */
-    protected Tokenizer getTokenizer() {
-        return TOKENIZER;
+    public Instruction(final Tokenizer tokenizer, final BetonQuestLogger log, final QuestPackage pack, @Nullable final ID identifier, final String instruction) {
+        this.log = log;
+        this.pack = pack;
+        this.identifier = useFallbackIdIfNecessary(pack, identifier);
+        this.parts = tokenizeInstruction(tokenizer, pack, instruction);
+    }
+
+    @Nullable
+    private ID useFallbackIdIfNecessary(final QuestPackage pack, @Nullable final ID identifier) {
+        try {
+            return identifier == null ? new NoID(pack) : identifier;
+        } catch (final ObjectNotFoundException e) {
+            this.log.warn(pack, "Could not find instruction: " + e.getMessage(), e);
+            return null;
+        }
+    }
+
+    private String[] tokenizeInstruction(final Tokenizer tokenizer, final QuestPackage pack, final String instruction) {
+        try {
+            return tokenizer.tokens(instruction);
+        } catch (TokenizerException e) {
+            this.log.warn(pack, "Could not parse instruction '" + instruction + "': " + e.getMessage(), e);
+            return new String[0];
+        }
     }
 
     @Override

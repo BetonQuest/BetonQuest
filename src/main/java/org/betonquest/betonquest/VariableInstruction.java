@@ -3,13 +3,19 @@ package org.betonquest.betonquest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.id.ID;
-import org.betonquest.betonquest.instruction.Tokenizer;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.regex.Pattern;
 
 /**
  * This class represents the variable-related instructions in BetonQuest.
  */
 public class VariableInstruction extends Instruction {
+    /**
+     * Regular expression that can be used to split variables correctly.
+     */
+    private static final Pattern DOT_PATTERN = Pattern.compile("\\.");
+
     /**
      * Constructs a new VariableInstruction with the given logger, quest package, variable identifier, and instruction.
      *
@@ -20,7 +26,7 @@ public class VariableInstruction extends Instruction {
      * @throws IllegalArgumentException if the instruction string does not start and end with '%' character.
      */
     public VariableInstruction(final BetonQuestLogger log, final QuestPackage pack, @Nullable final ID variableIdentifier, final String instruction) {
-        super(log, pack, variableIdentifier, cleanInstruction(instruction));
+        super(DOT_PATTERN::split, log, pack, variableIdentifier, cleanInstruction(instruction));
     }
 
     private static String cleanInstruction(final String instruction) {
@@ -28,11 +34,6 @@ public class VariableInstruction extends Instruction {
             throw new IllegalArgumentException("Variable instruction does not start and end with '%' character");
         }
         return instruction.substring(1, instruction.length() - 1);
-    }
-
-    @Override
-    protected Tokenizer getTokenizer() {
-        return instruction -> instruction.split("\\.");
     }
 
     @Override
