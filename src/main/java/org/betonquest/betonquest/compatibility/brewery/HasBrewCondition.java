@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.brewery;
 
 import com.dre.brewery.Brew;
 import com.dre.brewery.recipe.BRecipe;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -43,7 +42,6 @@ public class HasBrewCondition extends Condition {
     }
 
     @Override
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         final Player player = profile.getOnlineProfile().get().getPlayer();
 

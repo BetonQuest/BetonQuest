@@ -47,7 +47,7 @@ public class MoneyEvent extends QuestEvent {
         notify = instruction.hasArgument("notify");
     }
 
-    @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
         final OfflinePlayer player = profile.getPlayer();

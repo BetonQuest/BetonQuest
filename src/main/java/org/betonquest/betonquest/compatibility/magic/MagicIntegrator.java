@@ -38,7 +38,7 @@ public class MagicIntegrator implements Integrator, Listener {
     public void onSpellInventoryEvent(final SpellInventoryEvent event) {
         if (!event.isOpening()) {
             final OnlineProfile onlineProfile = PlayerConverter.getID(event.getMage().getPlayer());
-            BetonQuest.getInstance().getPlayerData(onlineProfile).getJournal().update();
+            plugin.getPlayerData(onlineProfile).getJournal().update();
         }
     }
 }

@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.compatibility.brewery;
 
 import com.dre.brewery.BPlayer;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -24,9 +23,8 @@ public class DrunkQualityCondition extends Condition {
     }
 
     @Override
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         final BPlayer bPlayer = BPlayer.get(profile.getOnlineProfile().get().getPlayer());
-        return bPlayer.getQuality() >= quality;
+        return bPlayer != null && bPlayer.getQuality() >= quality;
     }
 }

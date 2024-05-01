@@ -121,15 +121,12 @@ public class EntityHider implements Listener {
      */
     @SuppressWarnings("PMD.LinguisticNaming")
     protected boolean setVisibility(final OnlineProfile observer, final int entityID, final boolean visible) {
-        switch (policy) {
-            case BLACKLIST:
+        return switch (policy) {
+            case BLACKLIST ->
                 // Non-membership means they are visible
-                return !setMembership(observer, entityID, !visible);
-            case WHITELIST:
-                return setMembership(observer, entityID, visible);
-            default:
-                throw new IllegalArgumentException("Unknown policy: " + policy);
-        }
+                    !setMembership(observer, entityID, !visible);
+            case WHITELIST -> setMembership(observer, entityID, visible);
+        };
     }
 
     /**
@@ -294,7 +291,6 @@ public class EntityHider implements Listener {
      * @param entity   - the entity to hide.
      * @return TRUE if the entity was previously visible, FALSE otherwise.
      */
-    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
     public final boolean hideEntity(final OnlineProfile observer, final Entity entity) {
         validate(observer, entity);
         final boolean visibleBefore = setVisibility(observer, entity.getEntityId(), false);

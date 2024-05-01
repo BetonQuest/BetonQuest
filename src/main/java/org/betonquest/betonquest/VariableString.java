@@ -3,6 +3,7 @@ package org.betonquest.betonquest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +79,7 @@ public class VariableString {
      * @param profile the profile of the player to resolve the variables for
      * @return the string with all variables resolved
      */
-    public String getString(final Profile profile) {
+    public String getString(@Nullable final Profile profile) {
         String resolvedString = string;
         for (final String variable : variables) {
             final String resolvedVariable = BetonQuest.getInstance().getVariableValue(questPackage.getQuestPath(), variable, profile);

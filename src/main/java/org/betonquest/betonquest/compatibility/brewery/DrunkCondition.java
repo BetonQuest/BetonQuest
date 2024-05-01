@@ -10,21 +10,21 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 @SuppressWarnings("PMD.CommentRequired")
 public class DrunkCondition extends Condition {
 
-    private final Integer drunkness;
+    private final int drunkenness;
 
     public DrunkCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
-        drunkness = instruction.getInt();
+        drunkenness = instruction.getInt();
 
-        if (drunkness < 0 || drunkness > 100) {
-            throw new InstructionParseException("Drunkness can only be between 0 and 100!");
+        if (drunkenness < 0 || drunkenness > 100) {
+            throw new InstructionParseException("Drunkenness can only be between 0 and 100!");
         }
     }
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         final BPlayer bPlayer = BPlayer.get(profile.getOnlineProfile().get().getPlayer());
-        return bPlayer != null && bPlayer.getDrunkeness() >= drunkness;
+        return bPlayer != null && bPlayer.getDrunkeness() >= drunkenness;
     }
 }

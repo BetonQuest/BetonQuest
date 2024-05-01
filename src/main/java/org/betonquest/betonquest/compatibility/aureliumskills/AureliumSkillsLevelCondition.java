@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 /**
  * Checks whether a player has the required skill level.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.PreserveStackTrace"})
+@SuppressWarnings("PMD.CommentRequired")
 public class AureliumSkillsLevelCondition extends Condition {
 
     private final VariableNumber targetLevelVar;

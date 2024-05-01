@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.variables;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -110,7 +109,6 @@ public class LocationVariable extends Variable {
         };
     }
 
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private String buildFormattedLocation(final Location playerLocation, final String format) {
         final double posX = playerLocation.getX();
         final double posY = playerLocation.getY();
