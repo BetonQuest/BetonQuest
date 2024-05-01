@@ -28,11 +28,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.Serial;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount", "PMD.GodClass", "PMD.CommentRequired",
         "PMD.AvoidFieldNameMatchingTypeName", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods"})
@@ -106,29 +108,34 @@ public class Instruction {
     }
 
     public String getInstruction() {
-        final StringBuilder instruction = new StringBuilder();
-        for (final String part : parts) {
-            final StringBuilder escapedPart = new StringBuilder();
-            boolean needsQuotes = false;
-            for (final int codePoint : part.codePoints().toArray()) {
-                if (codePoint == '"' || codePoint == '\\') {
-                    escapedPart.append('\\');
-                    needsQuotes = true;
-                } else if (Character.isWhitespace(codePoint)) {
-                    needsQuotes = true;
-                }
-                escapedPart.appendCodePoint(codePoint);
+        return Arrays.stream(parts)
+                .map(Instruction::quotePartIfNecessary)
+                .collect(Collectors.joining(" "));
+    }
+
+    private static StringBuilder quotePartIfNecessary(final String part) {
+        final StringBuilder quotedPart = new StringBuilder().append('"');
+        final StringBuilder literalPart = new StringBuilder();
+        boolean needsQuotes = false;
+        for (final int codePoint : part.codePoints().toArray()) {
+            if (codePoint == '\\') {
+                quotedPart.append('\\');
             }
-            if (!instruction.isEmpty()) {
-                instruction.append(' ');
+            if (codePoint == '"') {
+                quotedPart.append('\\');
+                needsQuotes = true;
+            } else if (Character.isWhitespace(codePoint)) {
+                needsQuotes = true;
             }
-            if (needsQuotes) {
-                instruction.append('"');
-                escapedPart.append('"');
-            }
-            instruction.append(escapedPart);
+            quotedPart.appendCodePoint(codePoint);
+            literalPart.appendCodePoint(codePoint);
         }
-        return instruction.toString();
+        quotedPart.append('"');
+        if (needsQuotes) {
+            return quotedPart;
+        } else {
+            return literalPart;
+        }
     }
 
     public int size() {
