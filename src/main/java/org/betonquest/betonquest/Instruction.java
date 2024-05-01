@@ -42,11 +42,25 @@ public class Instruction {
      */
     private static final String NULL_NOT_NULL_CONTRACT = "null -> null; !null -> !null";
 
+    /**
+     * The quest package that this instruction belongs to.
+     */
     private final QuestPackage pack;
 
+    /**
+     * The identifier for this instruction.
+     */
     private final ID identifier;
 
-    protected final String[] parts;
+    /**
+     * The raw instruction string.
+     */
+    private final String instruction;
+
+    /**
+     * The parts of the instruction. This is the result after tokenizing the raw instruction string.
+     */
+    private final String[] parts;
 
     private int nextIndex = 1;
 
@@ -71,19 +85,22 @@ public class Instruction {
     public Instruction(final Tokenizer tokenizer, final BetonQuestLogger log, final QuestPackage pack, final ID identifier, final String instruction) {
         this.pack = pack;
         this.identifier = identifier;
+        this.instruction = instruction;
         this.parts = tokenizeInstruction(tokenizer, pack, instruction, log);
     }
 
     /**
      * Create an instruction using the given tokenizer.
      *
-     * @param pack       quest package the instruction belongs to
-     * @param identifier identifier of the instruction
-     * @param parts      parts that the instruction consists of
+     * @param pack        quest package the instruction belongs to
+     * @param identifier  identifier of the instruction
+     * @param instruction raw instruction string
+     * @param parts       parts that the instruction consists of
      */
-    public Instruction(final QuestPackage pack, final ID identifier, final String... parts) {
+    public Instruction(final QuestPackage pack, final ID identifier, final String instruction, final String... parts) {
         this.pack = pack;
         this.identifier = identifier;
+        this.instruction = instruction;
         this.parts = Arrays.copyOf(parts, parts.length);
     }
 
@@ -102,7 +119,7 @@ public class Instruction {
     }
 
     public String getInstruction() {
-        return String.join(" ", parts);
+        return instruction;
     }
 
     public int size() {
@@ -117,6 +134,10 @@ public class Instruction {
         return identifier;
     }
 
+    protected String[] getParts() {
+        return Arrays.copyOf(parts, parts.length);
+    }
+
     /**
      * Copy the instruction. The copy has no consumed arguments.
      *
@@ -127,7 +148,7 @@ public class Instruction {
     }
 
     public Instruction copy(final ID newID) {
-        return new Instruction(pack, newID, parts);
+        return new Instruction(getPackage(), newID, getInstruction(), getParts());
     }
 
     /////////////////////

@@ -33,10 +33,11 @@ public class VariableInstruction extends Instruction {
      *
      * @param pack               The quest package that this instruction belongs to.
      * @param variableIdentifier The identifier of the variable.
-     * @param parts              The variable identifier parts.
+     * @param instruction        The raw instruction string for this variable.
+     * @param parts              The variable instruction parts.
      */
-    public VariableInstruction(final QuestPackage pack, final ID variableIdentifier, final String... parts) {
-        super(pack, variableIdentifier, parts);
+    public VariableInstruction(final QuestPackage pack, final ID variableIdentifier, final String instruction, final String... parts) {
+        super(pack, variableIdentifier, instruction, parts);
     }
 
     private static String cleanInstruction(final String instruction) {
@@ -47,17 +48,12 @@ public class VariableInstruction extends Instruction {
     }
 
     @Override
-    public String getInstruction() {
-        return String.join(".", super.parts);
-    }
-
-    @Override
     public VariableInstruction copy() {
         return copy(getID());
     }
 
     @Override
     public VariableInstruction copy(final ID newID) {
-        return new VariableInstruction(getPackage(), newID, parts);
+        return new VariableInstruction(getPackage(), newID, getInstruction(), getParts());
     }
 }
