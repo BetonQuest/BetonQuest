@@ -52,8 +52,7 @@ public class ChatEventFactory implements EventFactory {
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        final String string = instruction.getInstruction().trim();
-        final String[] messages = string.substring(string.indexOf(' ') + 1).split("\\|");
+        final String[] messages = String.join(" ", instruction.getAllParts()).split("\\|");
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
                         loggerFactory.create(ChatEvent.class), new ChatEvent(messages), instruction.getPackage()),

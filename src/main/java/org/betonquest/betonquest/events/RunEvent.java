@@ -16,17 +16,23 @@ import java.util.List;
 /**
  * Allows for running multiple events with one instruction string.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class RunEvent extends QuestEvent {
-
+    /**
+     * Events that the run event will execute.
+     */
     private final List<QuestEvent> internalEvents = new ArrayList<>();
 
+    /**
+     * Create a run event from the given instruction.
+     *
+     * @param instruction instruction defining the run event
+     * @throws InstructionParseException if the instruction is invalid
+     */
     public RunEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         staticness = true;
         persistent = true;
-        final String[] parts = HandlerUtil.getNNSplit(instruction.getInstruction().substring(3).trim(),
-                "Not enough arguments", " ");
+        final String[] parts = instruction.getAllParts();
         StringBuilder builder = new StringBuilder();
         for (final String part : parts) {
             if (!part.isEmpty() && part.charAt(0) == '^') {

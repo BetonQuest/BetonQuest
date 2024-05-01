@@ -8,6 +8,7 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ItemID;
+import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.QuotingTokenizer;
 import org.betonquest.betonquest.instruction.Tokenizer;
@@ -55,7 +56,7 @@ public class Instruction {
     /**
      * The raw instruction string.
      */
-    private final String instruction;
+    protected final String instruction;
 
     /**
      * The parts of the instruction. This is the result after tokenizing the raw instruction string.
@@ -69,8 +70,8 @@ public class Instruction {
     @Nullable
     private String lastOptional;
 
-    public Instruction(final BetonQuestLogger log, final QuestPackage pack, final ID identifier, final String instruction) {
-        this(new QuotingTokenizer(), log, pack, identifier, instruction);
+    public Instruction(final BetonQuestLogger log, final QuestPackage pack, @Nullable final ID identifier, final String instruction) {
+        this(new QuotingTokenizer(), log, pack, useFallbackIdIfNecessary(pack, identifier), instruction);
     }
 
     /**
@@ -104,6 +105,17 @@ public class Instruction {
         this.parts = Arrays.copyOf(parts, parts.length);
     }
 
+    private static ID useFallbackIdIfNecessary(final QuestPackage pack, @Nullable final ID identifier) {
+        if (identifier != null) {
+            return identifier;
+        }
+        try {
+            return new NoID(pack);
+        } catch (final ObjectNotFoundException e) {
+            throw new IllegalStateException("Could not find instruction: " + e.getMessage(), e);
+        }
+    }
+
     private String[] tokenizeInstruction(final Tokenizer tokenizer, final QuestPackage pack, final String instruction, final BetonQuestLogger log) {
         try {
             return tokenizer.tokens(instruction);
@@ -115,11 +127,39 @@ public class Instruction {
 
     @Override
     public String toString() {
-        return getInstruction();
+        return instruction;
     }
 
+    /**
+     * Get the original raw instruction string that was used to tokenize the parts of this instruction.
+     *
+     * @return the raw instruction string that defined this instruction
+     * @deprecated try not to implement your own parsing and use other API of this class instead if possible
+     */
+    @Deprecated
     public String getInstruction() {
-        return instruction;
+        return toString();
+    }
+
+    /**
+     * Get all parts of the instruction. The instruction type is omitted.
+     *
+     * @return all arguments
+     */
+    public String[] getAllParts() {
+        return Arrays.copyOfRange(parts, 1, parts.length);
+    }
+
+    /**
+     * Get remaining parts of the instruction. The instruction type is omitted, even if no parts have been consumed yet.
+     *
+     * @return all arguments joined together
+     */
+    public String[] getRemainingParts() {
+        final String[] remainingParts = Arrays.copyOfRange(parts, nextIndex, parts.length);
+        nextIndex = parts.length;
+        currentIndex = parts.length - 1;
+        return remainingParts;
     }
 
     public int size() {
@@ -139,16 +179,22 @@ public class Instruction {
     }
 
     /**
-     * Copy the instruction. The copy has no consumed arguments.
+     * Copy this instruction. The copy has no consumed arguments.
      *
-     * @return a new instruction
+     * @return a copy of this instruction
      */
     public Instruction copy() {
         return copy(identifier);
     }
 
+    /**
+     * Copy this instruction but overwrite the ID of the copy. The copy has no consumed arguments.
+     *
+     * @param newID the ID to identify the copied instruction with
+     * @return copy of this instruction with the new ID
+     */
     public Instruction copy(final ID newID) {
-        return new Instruction(getPackage(), newID, getInstruction(), getParts());
+        return new Instruction(getPackage(), newID, instruction, getParts());
     }
 
     /////////////////////

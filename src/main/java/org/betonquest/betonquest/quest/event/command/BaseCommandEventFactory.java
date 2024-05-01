@@ -76,7 +76,7 @@ public abstract class BaseCommandEventFactory implements EventFactory {
      */
     public List<VariableString> parseCommands(final Instruction instruction) throws InstructionParseException {
         final List<VariableString> commands = new ArrayList<>();
-        final String string = instruction.getInstruction().trim();
+        final String string = String.join(" ", instruction.getAllParts());
         final Matcher conditionsMatcher = CONDITIONS_REGEX.matcher(string);
         final int end = conditionsMatcher.find() ? conditionsMatcher.start() : string.length();
         final String command = (String) string.subSequence(0, end);

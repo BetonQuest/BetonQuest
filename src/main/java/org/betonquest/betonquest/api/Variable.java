@@ -62,6 +62,6 @@ public abstract class Variable {
 
     @Override
     public String toString() {
-        return instruction.getInstruction();
+        return instruction.toString();
     }
 }

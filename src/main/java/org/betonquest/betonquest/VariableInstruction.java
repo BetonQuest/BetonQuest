@@ -54,6 +54,6 @@ public class VariableInstruction extends Instruction {
 
     @Override
     public VariableInstruction copy(final ID newID) {
-        return new VariableInstruction(getPackage(), newID, getInstruction(), getParts());
+        return new VariableInstruction(getPackage(), newID, instruction, getParts());
     }
 }

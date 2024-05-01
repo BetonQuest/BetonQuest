@@ -847,7 +847,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // fire the event
         final Profile profile = "-".equals(args[1]) ? null : PlayerConverter.getID(Bukkit.getOfflinePlayer(args[1]));
         BetonQuest.event(profile, eventID);
-        sendMessage(sender, "player_event", eventID.generateInstruction().getInstruction());
+        sendMessage(sender, "player_event", eventID.generateInstruction().toString());
     }
 
     /**
@@ -893,7 +893,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         // display message about condition
         final Profile profile = "-".equals(args[1]) ? null : PlayerConverter.getID(Bukkit.getOfflinePlayer(args[1]));
-        sendMessage(sender, "player_condition", (conditionID.inverted() ? "! " : "") + conditionID.generateInstruction().getInstruction(),
+        sendMessage(sender, "player_condition", (conditionID.inverted() ? "! " : "") + conditionID.generateInstruction(),
                 Boolean.toString(BetonQuest.condition(profile, conditionID)));
     }
 

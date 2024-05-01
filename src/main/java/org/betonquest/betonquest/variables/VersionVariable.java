@@ -20,13 +20,12 @@ public class VersionVariable extends Variable {
     public VersionVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         staticness = true;
-        final int pointIndex = instruction.getInstruction().indexOf("\\.");
-        if (pointIndex == -1) {
-            plugin = BetonQuest.getInstance();
-        } else {
-            final String pluginName = instruction.getInstruction().substring(pointIndex + 1);
+        if (instruction.hasNext()) {
+            final String pluginName = String.join(".", instruction.getAllParts());
             plugin = Utils.getNN(Bukkit.getPluginManager().getPlugin(pluginName),
                     "Plugin " + pluginName + "does not exist!");
+        } else {
+            plugin = BetonQuest.getInstance();
         }
     }
 

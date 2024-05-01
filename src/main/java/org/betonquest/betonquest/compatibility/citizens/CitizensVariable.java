@@ -7,10 +7,13 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.variables.LocationVariable;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.Locale;
+import java.util.function.BiFunction;
 
 /**
  * Provides information about a citizen npc.
@@ -28,11 +31,6 @@ import java.util.Locale;
  */
 public class CitizensVariable extends Variable {
     /**
-     * The minimum number of required arguments when using a CitizensVariable through an Instruction.
-     */
-    private static final int MINIMUM_INSTRUCTION_ARGUMENTS = 3;
-
-    /**
      * The integer ID of the NPC.
      */
     private final int npcId;
@@ -45,6 +43,7 @@ public class CitizensVariable extends Variable {
     /**
      * A wrapper for the location property of the NPC.
      */
+    @Nullable
     private final LocationVariable location;
 
     /**
@@ -56,29 +55,32 @@ public class CitizensVariable extends Variable {
     public CitizensVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
 
-        final String[] splitInstruction = instruction.getInstruction().split("\\.");
-        if (splitInstruction.length < MINIMUM_INSTRUCTION_ARGUMENTS) {
-            throw new InstructionParseException("Not enough arguments, must have at least " + MINIMUM_INSTRUCTION_ARGUMENTS);
-        } else {
-            try {
-                npcId = Integer.parseInt(splitInstruction[1]);
-                if (npcId < 0) {
-                    throw new InstructionParseException("The specified NPC ID was not a positive or zero integer");
-                }
-            } catch (final NumberFormatException e) {
-                throw new InstructionParseException("The specified NPC ID was not a valid integer", e);
-            }
-
-            final String argument = splitInstruction[2].toUpperCase(Locale.ROOT);
-            try {
-                key = ARGUMENT.valueOf(argument);
-            } catch (final IllegalArgumentException e) {
-                throw new InstructionParseException("Specified CitizenVariable argument was not recognized: '" + argument + "'", e);
-            }
+        npcId = instruction.getInt();
+        if (npcId < 0) {
+            throw new InstructionParseException("The specified NPC ID was not a positive or zero integer");
         }
 
-        final String newInstruction = String.join(".", Arrays.copyOfRange(splitInstruction, 2, splitInstruction.length));
-        location = new LocationVariable(new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), instruction.getPackage(), null, newInstruction));
+        final String argument = instruction.next();
+        try {
+            key = ARGUMENT.valueOf(argument.toUpperCase(Locale.ROOT));
+        } catch (final IllegalArgumentException e) {
+            throw new InstructionParseException("Specified CitizenVariable argument was not recognized: '" + argument + "'", e);
+        }
+
+        if (key == ARGUMENT.LOCATION) {
+            try {
+                location = new LocationVariable(new Instruction(
+                        BetonQuest.getInstance().getLoggerFactory().create(Instruction.class),
+                        instruction.getPackage(),
+                        new NoID(instruction.getPackage()),
+                        "location." + String.join(".", instruction.getRemainingParts())
+                ));
+            } catch (ObjectNotFoundException e) {
+                throw new InstructionParseException("Could not generate dynamic location variable", e);
+            }
+        } else {
+            location = null;
+        }
     }
 
     @Override
@@ -88,11 +90,7 @@ public class CitizensVariable extends Variable {
             return "";
         }
 
-        return switch (key) {
-            case NAME -> npc.getName();
-            case FULL_NAME -> npc.getFullName();
-            case LOCATION -> location.getForLocation(npc.getStoredLocation());
-        };
+        return key.resolve(npc, location);
     }
 
     /**
@@ -102,17 +100,36 @@ public class CitizensVariable extends Variable {
         /**
          * Retrieve the name of the NPC.
          */
-        NAME,
+        NAME((npc, loc) -> npc.getName()),
 
         /**
          * Retrieve the full name of the NPC.
          */
-        FULL_NAME,
+        FULL_NAME((npc, loc) -> npc.getFullName()),
 
         /**
          * Retrieve the location of the NPC.
          */
-        LOCATION
-    }
+        LOCATION((npc, loc) -> loc.getForLocation(npc.getStoredLocation()));
 
+        /**
+         * Function to resolve this argument from an NPC instance and optional {@link LocationVariable}.
+         */
+        private final BiFunction<NPC, LocationVariable, String> resolveFunction;
+
+        ARGUMENT(final BiFunction<NPC, LocationVariable, String> resolve) {
+            this.resolveFunction = resolve;
+        }
+
+        /**
+         * Resolve this argument from the given NPC. The location variable is optional.
+         *
+         * @param npc      NPC to resolve from
+         * @param location location variable to use for resolving
+         * @return the value that the variable resolved to
+         */
+        public String resolve(final NPC npc, @Nullable final LocationVariable location) {
+            return resolveFunction.apply(npc, location);
+        }
+    }
 }

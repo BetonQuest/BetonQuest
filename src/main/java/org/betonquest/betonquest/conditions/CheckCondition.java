@@ -6,7 +6,9 @@ import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.id.NoID;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
@@ -16,28 +18,36 @@ import java.util.List;
 /**
  * Allows for checking multiple conditions with one instruction string.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class CheckCondition extends Condition {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
+    /**
+     * Conditions that will be checked by this condition. All must be true for this condition to be true as well.
+     */
     private final List<Condition> internalConditions = new ArrayList<>();
 
+    /**
+     * Create a check condition for the given instruction.
+     *
+     * @param instruction instruction defining this condition
+     * @throws InstructionParseException if the instruction is not a valid check condition
+     */
     public CheckCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         staticness = true;
         persistent = true;
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        final String[] parts = instruction.getInstruction().substring(5).trim().split(" ");
-        if (parts.length <= 0) {
+        final String[] parts = instruction.getAllParts();
+        if (parts.length == 0) {
             throw new InstructionParseException("Not enough arguments");
         }
         StringBuilder builder = new StringBuilder();
         for (final String part : parts) {
             if (!part.isEmpty() && part.charAt(0) == '^') {
-                if (builder.length() != 0) {
+                if (!builder.isEmpty()) {
                     internalConditions.add(createCondition(builder.toString().trim()));
                     builder = new StringBuilder();
                 }
@@ -55,7 +65,7 @@ public class CheckCondition extends Condition {
     @Nullable
     private Condition createCondition(final String instruction) throws InstructionParseException {
         final String[] parts = instruction.split(" ");
-        if (parts.length <= 0) {
+        if (parts.length == 0) {
             throw new InstructionParseException("Not enough arguments in internal condition");
         }
         final Class<? extends Condition> conditionClass = BetonQuest.getInstance().getConditionClass(parts[0]);
@@ -65,10 +75,10 @@ public class CheckCondition extends Condition {
                     + " spelled correctly in internal condition");
         }
         try {
-            final Instruction innerInstruction = new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), this.instruction.getPackage(), null, instruction);
+            final Instruction innerInstruction = new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), this.instruction.getPackage(), new NoID(this.instruction.getPackage()), instruction);
             return conditionClass.getConstructor(Instruction.class).newInstance(innerInstruction);
         } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException
-                       | InvocationTargetException e) {
+                       | InvocationTargetException | ObjectNotFoundException e) {
             if (e.getCause() instanceof InstructionParseException) {
                 throw new InstructionParseException("Error in internal condition: " + e.getCause().getMessage(), e);
             } else {
