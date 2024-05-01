@@ -3,7 +3,6 @@ package org.betonquest.betonquest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.id.ID;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.Pattern;
 
@@ -25,8 +24,19 @@ public class VariableInstruction extends Instruction {
      * @param instruction        The instruction string. It should start and end with '%' character.
      * @throws IllegalArgumentException if the instruction string does not start and end with '%' character.
      */
-    public VariableInstruction(final BetonQuestLogger log, final QuestPackage pack, @Nullable final ID variableIdentifier, final String instruction) {
+    public VariableInstruction(final BetonQuestLogger log, final QuestPackage pack, final ID variableIdentifier, final String instruction) {
         super(DOT_PATTERN::split, log, pack, variableIdentifier, cleanInstruction(instruction));
+    }
+
+    /**
+     * Constructs a new VariableInstruction with the given logger, quest package, variable identifier, and instruction.
+     *
+     * @param pack               The quest package that this instruction belongs to.
+     * @param variableIdentifier The identifier of the variable.
+     * @param parts              The variable identifier parts.
+     */
+    public VariableInstruction(final QuestPackage pack, final ID variableIdentifier, final String... parts) {
+        super(pack, variableIdentifier, parts);
     }
 
     private static String cleanInstruction(final String instruction) {
@@ -47,7 +57,7 @@ public class VariableInstruction extends Instruction {
     }
 
     @Override
-    public VariableInstruction copy(@Nullable final ID newID) {
-        return new VariableInstruction(log, getPackage(), newID, "%" + getInstruction() + "%");
+    public VariableInstruction copy(final ID newID) {
+        return new VariableInstruction(getPackage(), newID, parts);
     }
 }

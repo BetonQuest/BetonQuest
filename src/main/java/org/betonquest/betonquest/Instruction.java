@@ -8,7 +8,6 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ItemID;
-import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.QuotingTokenizer;
 import org.betonquest.betonquest.instruction.Tokenizer;
@@ -34,7 +33,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount", "PMD.GodClass", "PMD.CommentRequired",
         "PMD.AvoidFieldNameMatchingTypeName", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods"})
@@ -44,16 +42,11 @@ public class Instruction {
      */
     private static final String NULL_NOT_NULL_CONTRACT = "null -> null; !null -> !null";
 
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    protected final BetonQuestLogger log;
-
     private final QuestPackage pack;
 
-    protected final String[] parts;
-
     private final ID identifier;
+
+    protected final String[] parts;
 
     private int nextIndex = 1;
 
@@ -62,7 +55,7 @@ public class Instruction {
     @Nullable
     private String lastOptional;
 
-    public Instruction(final BetonQuestLogger log, final QuestPackage pack, @Nullable final ID identifier, final String instruction) {
+    public Instruction(final BetonQuestLogger log, final QuestPackage pack, final ID identifier, final String instruction) {
         this(new QuotingTokenizer(), log, pack, identifier, instruction);
     }
 
@@ -75,29 +68,30 @@ public class Instruction {
      * @param identifier  identifier of the instruction
      * @param instruction instruction string to parse
      */
-    public Instruction(final Tokenizer tokenizer, final BetonQuestLogger log, final QuestPackage pack, @Nullable final ID identifier, final String instruction) {
-        this.log = log;
+    public Instruction(final Tokenizer tokenizer, final BetonQuestLogger log, final QuestPackage pack, final ID identifier, final String instruction) {
         this.pack = pack;
-        this.identifier = useFallbackIdIfNecessary(pack, identifier);
-        this.parts = tokenizeInstruction(tokenizer, pack, instruction);
+        this.identifier = identifier;
+        this.parts = tokenizeInstruction(tokenizer, pack, instruction, log);
     }
 
-    private ID useFallbackIdIfNecessary(final QuestPackage pack, @Nullable final ID identifier) {
-        if (identifier != null) {
-            return identifier;
-        }
-        try {
-            return new NoID(pack);
-        } catch (final ObjectNotFoundException e) {
-            throw new IllegalStateException("Could not find instruction: " + e.getMessage(), e);
-        }
+    /**
+     * Create an instruction using the given tokenizer.
+     *
+     * @param pack       quest package the instruction belongs to
+     * @param identifier identifier of the instruction
+     * @param parts      parts that the instruction consists of
+     */
+    public Instruction(final QuestPackage pack, final ID identifier, final String... parts) {
+        this.pack = pack;
+        this.identifier = identifier;
+        this.parts = Arrays.copyOf(parts, parts.length);
     }
 
-    private String[] tokenizeInstruction(final Tokenizer tokenizer, final QuestPackage pack, final String instruction) {
+    private String[] tokenizeInstruction(final Tokenizer tokenizer, final QuestPackage pack, final String instruction, final BetonQuestLogger log) {
         try {
             return tokenizer.tokens(instruction);
         } catch (TokenizerException e) {
-            this.log.warn(pack, "Could not parse instruction '" + instruction + "': " + e.getMessage(), e);
+            log.warn(pack, "Could not tokenize instruction '" + instruction + "': " + e.getMessage(), e);
             return new String[0];
         }
     }
@@ -108,34 +102,7 @@ public class Instruction {
     }
 
     public String getInstruction() {
-        return Arrays.stream(parts)
-                .map(Instruction::quotePartIfNecessary)
-                .collect(Collectors.joining(" "));
-    }
-
-    private static StringBuilder quotePartIfNecessary(final String part) {
-        final StringBuilder quotedPart = new StringBuilder().append('"');
-        final StringBuilder literalPart = new StringBuilder();
-        boolean needsQuotes = false;
-        for (final int codePoint : part.codePoints().toArray()) {
-            if (codePoint == '\\') {
-                quotedPart.append('\\');
-            }
-            if (codePoint == '"') {
-                quotedPart.append('\\');
-                needsQuotes = true;
-            } else if (Character.isWhitespace(codePoint)) {
-                needsQuotes = true;
-            }
-            quotedPart.appendCodePoint(codePoint);
-            literalPart.appendCodePoint(codePoint);
-        }
-        quotedPart.append('"');
-        if (needsQuotes) {
-            return quotedPart;
-        } else {
-            return literalPart;
-        }
+        return String.join(" ", parts);
     }
 
     public int size() {
@@ -159,8 +126,8 @@ public class Instruction {
         return copy(identifier);
     }
 
-    public Instruction copy(@Nullable final ID newID) {
-        return new Instruction(log, pack, newID, getInstruction());
+    public Instruction copy(final ID newID) {
+        return new Instruction(pack, newID, parts);
     }
 
     /////////////////////
