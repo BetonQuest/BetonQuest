@@ -84,8 +84,14 @@ public record HologramWrapper(int interval, List<BetonHologram> holograms, boole
         final int maxRange = varMaxRange.getInt(profile);
         if (maxRange > 0) {
             final Location playerLocation = profile.getPlayer().getLocation();
-            final double distanceSquared = playerLocation.distanceSquared(hologram.getLocation());
+            final Location hologramLocation = hologram.getLocation();
+
+            if (!playerLocation.getWorld().equals(hologramLocation.getWorld())) {
+                return true;
+            }
+            final double distanceSquared = playerLocation.distanceSquared(hologramLocation);
             final double maxRangeSquared = maxRange * maxRange;
+
             return distanceSquared > maxRangeSquared;
         }
         return false;
