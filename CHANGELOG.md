@@ -14,6 +14,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `region` objective now supports variables as region name
 - `location` objective now allows `entry` and `exit` keywords to track entering and leaving the location
 - allowing adjustment of maximum hologram display radius
+- support to execute BetonQuest commands from command blocks
 ### Changed
 - player variable
   - `%player%` is now the same as `%player.name%`

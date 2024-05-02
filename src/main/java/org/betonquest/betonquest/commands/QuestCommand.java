@@ -60,7 +60,6 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
@@ -151,28 +150,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "conditions":
                 case "condition":
                 case "c":
-                    // conditions are only possible for online players, so no
-                    // MySQL async
-                    // access is required
-                    new BukkitRunnable() {
-
-                        @Override
-                        public void run() {
-                            handleConditions(sender, args);
-                        }
-                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    handleConditions(sender, args);
                     break;
                 case "events":
                 case "event":
                 case "e":
-                    // the same goes for events
-                    new BukkitRunnable() {
-
-                        @Override
-                        public void run() {
-                            handleEvents(sender, args);
-                        }
-                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    handleEvents(sender, args);
                     break;
                 case "items":
                 case "item":
@@ -188,112 +171,49 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "objectives":
                 case "objective":
                 case "o":
-                    log.debug("Loading data asynchronously");
-                    new BukkitRunnable() {
-
-                        @Override
-                        public void run() {
-                            handleObjectives(sender, args);
-                        }
-                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    handleObjectives(sender, args);
                     break;
                 case "globaltags":
                 case "globaltag":
                 case "gtag":
                 case "gtags":
                 case "gt":
-                    log.debug("Loading data asynchronously");
-                    new BukkitRunnable() {
-
-                        @Override
-                        public void run() {
-                            handleGlobalTags(sender, args);
-                        }
-                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    handleGlobalTags(sender, args);
                     break;
                 case "globalpoints":
                 case "globalpoint":
                 case "gpoints":
                 case "gpoint":
                 case "gp":
-                    log.debug("Loading data asynchronously");
-                    new BukkitRunnable() {
-
-                        @Override
-                        public void run() {
-                            handleGlobalPoints(sender, args);
-                        }
-                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    handleGlobalPoints(sender, args);
                     break;
                 case "tags":
                 case "tag":
                 case "t":
-                    log.debug("Loading data asynchronously");
-                    new BukkitRunnable() {
-
-                        @Override
-                        public void run() {
-                            handleTags(sender, args);
-                        }
-                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    handleTags(sender, args);
                     break;
                 case "points":
                 case "point":
                 case "p":
-                    log.debug("Loading data asynchronously");
-                    new BukkitRunnable() {
-
-                        @Override
-                        public void run() {
-                            handlePoints(sender, args);
-                        }
-                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    handlePoints(sender, args);
                     break;
                 case "journals":
                 case "journal":
                 case "j":
-                    log.debug("Loading data asynchronously");
-                    new BukkitRunnable() {
-
-                        @Override
-                        public void run() {
-                            handleJournals(sender, args);
-                        }
-                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    handleJournals(sender, args);
                     break;
                 case "delete":
                 case "del":
                 case "d":
-                    log.debug("Loading data asynchronously");
-                    new BukkitRunnable() {
-
-                        @Override
-                        public void run() {
-                            handleDeleting(sender, args);
-                        }
-                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    handleDeleting(sender, args);
                     break;
                 case "rename":
                 case "r":
-                    log.debug("Loading data asynchronously");
-                    new BukkitRunnable() {
-
-                        @Override
-                        public void run() {
-                            handleRenaming(sender, args);
-                        }
-                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    handleRenaming(sender, args);
                     break;
                 case "variable":
                 case "var":
-                    log.debug("Loading data asynchronously");
-                    new BukkitRunnable() {
-
-                        @Override
-                        public void run() {
-                            handleVariables(sender, args);
-                        }
-                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    handleVariables(sender, args);
                     break;
                 case "version":
                 case "ver":
@@ -301,14 +221,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     displayVersionInfo(sender, alias);
                     break;
                 case "purge":
-                    log.debug("Loading data asynchronously");
-                    new BukkitRunnable() {
-
-                        @Override
-                        public void run() {
-                            purgePlayer(sender, args);
-                        }
-                    }.runTaskAsynchronously(BetonQuest.getInstance());
+                    purgePlayer(sender, args);
                     break;
                 case "update":
                     BetonQuest.getInstance().getUpdater().update(sender);
@@ -1778,12 +1691,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
             try {
                 downloader.call();
-                sendMessage(sender, "download_success");
+                sendMessageSync(sender, "download_success");
             } catch (final DownloadFailedException | SecurityException | FileNotFoundException e) {
-                sendMessage(sender, "download_failed", e.getMessage());
+                sendMessageSync(sender, "download_failed", e.getMessage());
                 log.debug(errSummary, e);
             } catch (final Exception e) {
-                sendMessage(sender, "download_failed", e.getClass().getSimpleName() + ": " + e.getMessage());
+                sendMessageSync(sender, "download_failed", e.getClass().getSimpleName() + ": " + e.getMessage());
                 if (sender instanceof final Player player) {
                     final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, "", instance);
                     record.setThrown(e);
@@ -1967,8 +1880,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         return Optional.of(new ArrayList<>());
     }
 
-    private void sendMessage(final CommandSender sender, final String messageName) {
-        sendMessage(sender, messageName, new String[0]);
+    private void sendMessageSync(final CommandSender sender, final String messageName, final String... variables) {
+        Bukkit.getScheduler().runTask(instance, () -> {
+            sendMessage(sender, messageName, variables);
+        });
     }
 
     private void sendMessage(final CommandSender sender, final String messageName, final String... variables) {
