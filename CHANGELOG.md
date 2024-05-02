@@ -22,6 +22,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - `%player.uuid%` will display the UUID of the player
 - marking of mobs now uses variables in all contexts of spawning killing and removing
 - default `default_conversation_IO` in config from `menu,chest` to `menu,tellraw`
+- and corrected Russian messages in `messages.yml` file
 ### Deprecated
 ### Removed
 - undocumented quoting in instructions
