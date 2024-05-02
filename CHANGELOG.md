@@ -35,6 +35,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - added missing firework meta to string representation of QuestItem
 - required flags in `QuestItem` were not relevant in equals check
 - `folder` event did not respect the sync / async context that it is executed in
+- incorrectly measuring the distance between player and hologram if they are in different worlds
 ### Security
 
 ## [2.0.1] - 2024-03-24
