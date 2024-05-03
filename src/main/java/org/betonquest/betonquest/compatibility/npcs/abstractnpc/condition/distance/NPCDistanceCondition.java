@@ -1,12 +1,14 @@
-package org.betonquest.betonquest.compatibility.npcs.citizens.condition.distance;
+package org.betonquest.betonquest.compatibility.npcs.abstractnpc.condition.distance;
 
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.BQNPCAdapter;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
+
+import java.util.function.Supplier;
 
 /**
  * Checks if the player is close to a npc.
@@ -15,7 +17,12 @@ public class NPCDistanceCondition implements PlayerCondition {
     /**
      * The NPC id.
      */
-    private final int npcId;
+    private final String npcId;
+
+    /**
+     * Supplier for the NPC Adapter
+     */
+    private final Supplier<BQNPCAdapter> npcSupplier;
 
     /**
      * The maximal distance between player and NPC.
@@ -25,25 +32,28 @@ public class NPCDistanceCondition implements PlayerCondition {
     /**
      * Create a new NPCDistanceCondition.
      *
-     * @param npcId    the npc id
-     * @param distance the maximal distance between player and npc
+     * @param npcId       the npc id
+     * @param npcSupplier the supplier for the npc adapter
+     * @param distance    the maximal distance between player and npc
      */
-    public NPCDistanceCondition(final int npcId, final VariableNumber distance) {
+    public NPCDistanceCondition(final String npcId, final Supplier<BQNPCAdapter> npcSupplier, final VariableNumber distance) {
         this.npcId = npcId;
+        this.npcSupplier = npcSupplier;
         this.distance = distance;
     }
 
     @Override
     public boolean check(final Profile profile) throws QuestRuntimeException {
-        final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
+        final BQNPCAdapter npc = npcSupplier.get();
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
         }
         final Player player = profile.getOnlineProfile().get().getPlayer();
-        if (!player.getWorld().equals(npc.getStoredLocation().getWorld())) {
+        final Location npcLocation = npc.getLocation();
+        if (!player.getWorld().equals(npcLocation.getWorld())) {
             return false;
         }
         final double distance = this.distance.getValue(profile).doubleValue();
-        return npc.getStoredLocation().distanceSquared(player.getLocation()) <= distance * distance;
+        return npcLocation.distanceSquared(player.getLocation()) <= distance * distance;
     }
 }
