@@ -4,9 +4,9 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.compatibility.npcs.citizens.condition.distance.NPCDistanceConditionFactory;
-import org.betonquest.betonquest.compatibility.npcs.citizens.condition.location.NPCLocationConditionFactory;
-import org.betonquest.betonquest.compatibility.npcs.citizens.condition.region.NPCRegionConditionFactory;
+import org.betonquest.betonquest.compatibility.npcs.citizens.condition.CitizensDistanceConditionFactory;
+import org.betonquest.betonquest.compatibility.npcs.citizens.condition.CitizensLocationConditionFactory;
+import org.betonquest.betonquest.compatibility.npcs.citizens.condition.CitizensRegionConditionFactory;
 import org.betonquest.betonquest.compatibility.npcs.citizens.event.move.CitizensMoveController;
 import org.betonquest.betonquest.compatibility.npcs.citizens.event.move.CitizensMoveEvent;
 import org.betonquest.betonquest.compatibility.npcs.citizens.event.move.CitizensMoveEventFactory;
@@ -103,8 +103,8 @@ public class CitizensIntegrator implements Integrator {
         questRegistries.getVariableTypes().register("citizen", new CitizensVariableFactory(loggerFactory));
 
         final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
-        conditionTypes.register("npcdistance", new NPCDistanceConditionFactory(data, loggerFactory));
-        conditionTypes.registerCombined("npclocation", new NPCLocationConditionFactory(data));
+        conditionTypes.register("npcdistance", new CitizensDistanceConditionFactory(data, loggerFactory));
+        conditionTypes.registerCombined("npclocation", new CitizensLocationConditionFactory(data));
     }
 
     @Override
@@ -112,7 +112,7 @@ public class CitizensIntegrator implements Integrator {
         if (Compatibility.getHooked().contains("WorldGuard")) {
             final Server server = plugin.getServer();
             final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
-            plugin.getQuestRegistries().getConditionTypes().register("npcregion", new NPCRegionConditionFactory(data));
+            plugin.getQuestRegistries().getConditionTypes().register("npcregion", new CitizensRegionConditionFactory(data));
         }
     }
 
