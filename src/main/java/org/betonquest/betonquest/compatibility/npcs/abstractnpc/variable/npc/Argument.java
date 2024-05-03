@@ -1,6 +1,6 @@
-package org.betonquest.betonquest.compatibility.npcs.citizens.variable.npc;
+package org.betonquest.betonquest.compatibility.npcs.abstractnpc.variable.npc;
 
-import net.citizensnpcs.api.npc.NPC;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.BQNPCAdapter;
 import org.betonquest.betonquest.variables.LocationVariable;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,14 +23,14 @@ public enum Argument {
     /**
      * Retrieve the location of the NPC.
      */
-    LOCATION((npc, loc) -> loc.getForLocation(npc.getStoredLocation()));
+    LOCATION((npc, loc) -> loc.getForLocation(npc.getLocation()));
 
     /**
      * Function to resolve this argument from an NPC instance and optional {@link LocationVariable}.
      */
-    private final BiFunction<NPC, LocationVariable, String> resolveFunction;
+    private final BiFunction<BQNPCAdapter, LocationVariable, String> resolveFunction;
 
-    Argument(final BiFunction<NPC, LocationVariable, String> resolve) {
+    Argument(final BiFunction<BQNPCAdapter, LocationVariable, String> resolve) {
         this.resolveFunction = resolve;
     }
 
@@ -41,7 +41,7 @@ public enum Argument {
      * @param location location variable to use for resolving
      * @return the value that the variable resolved to
      */
-    public String resolve(final NPC npc, @Nullable final LocationVariable location) {
+    public String resolve(final BQNPCAdapter npc, @Nullable final LocationVariable location) {
         return resolveFunction.apply(npc, location);
     }
 }
