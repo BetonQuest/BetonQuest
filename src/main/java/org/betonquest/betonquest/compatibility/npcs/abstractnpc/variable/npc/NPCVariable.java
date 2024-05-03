@@ -1,19 +1,20 @@
-package org.betonquest.betonquest.compatibility.npcs.citizens.variable.npc;
+package org.betonquest.betonquest.compatibility.npcs.abstractnpc.variable.npc;
 
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.BQNPCAdapter;
 import org.betonquest.betonquest.variables.LocationVariable;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Supplier;
 
 /**
  * Provides information about a npc.
  */
-public class CitizensVariable implements PlayerlessVariable {
+public class NPCVariable implements PlayerlessVariable {
     /**
-     * The integer ID of the NPC.
+     * The Supplier for the NPC.
      */
-    private final int npcId;
+    private final Supplier<BQNPCAdapter> npcSupplier;
 
     /**
      * The type of information to retrieve for the NPC: name, full_name, or location.
@@ -27,15 +28,15 @@ public class CitizensVariable implements PlayerlessVariable {
     private final LocationVariable location;
 
     /**
-     * Construct a new Citizens NPC Variable that allows for resolution of information about a NPC.
+     * Construct a new NPCVariable that allows for resolution of information about a NPC.
      *
-     * @param npcId    the id of the npc
-     * @param key      the argument defining the value
-     * @param location the location to provide when
+     * @param npcSupplier the supplier for the npc
+     * @param key         the argument defining the value
+     * @param location    the location to provide when
      * @throws IllegalArgumentException when location argument is given without location variable
      */
-    public CitizensVariable(final int npcId, final Argument key, @Nullable final LocationVariable location) {
-        this.npcId = npcId;
+    public NPCVariable(final Supplier<BQNPCAdapter> npcSupplier, final Argument key, @Nullable final LocationVariable location) {
+        this.npcSupplier = npcSupplier;
         this.key = key;
         this.location = location;
         if (key == Argument.LOCATION && location == null) {
@@ -45,7 +46,7 @@ public class CitizensVariable implements PlayerlessVariable {
 
     @Override
     public String getValue() {
-        final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
+        final BQNPCAdapter npc = npcSupplier.get();
         if (npc == null) {
             return "";
         }
