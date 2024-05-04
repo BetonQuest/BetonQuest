@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.quest.event.tag.AddTagChanger;
 import org.betonquest.betonquest.quest.event.tag.DeleteTagChanger;
+import org.betonquest.betonquest.quest.event.tag.TagChanger;
 import org.betonquest.betonquest.quest.event.tag.TagEvent;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
@@ -19,7 +20,6 @@ import org.bukkit.plugin.PluginManager;
  * Event to set a compass target and manage compass points.
  */
 public class CompassEvent implements Event {
-
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -81,17 +81,9 @@ public class CompassEvent implements Event {
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
         switch (action) {
-            case ADD:
-                final AddTagChanger addTagChanger = new AddTagChanger(Utils.addPackage(questPackage, "compass-" + compass));
-                final TagEvent tagEvent = new TagEvent(betonQuest::getOfflinePlayerData, addTagChanger);
-                tagEvent.execute(profile);
-                break;
-            case DEL:
-                final DeleteTagChanger delTagChanger = new DeleteTagChanger(Utils.addPackage(questPackage, "compass-" + compass));
-                final TagEvent delTagEvent = new TagEvent(betonQuest::getOfflinePlayerData, delTagChanger);
-                delTagEvent.execute(profile);
-                break;
-            case SET:
+            case ADD -> changeTag(new AddTagChanger(getPackagedCompass()), profile);
+            case DEL -> changeTag(new DeleteTagChanger(getPackagedCompass()), profile);
+            case SET -> {
                 try {
                     final Location location = compassLocation.getLocation(profile);
                     if (profile.getOnlineProfile().isPresent()) {
@@ -104,7 +96,15 @@ public class CompassEvent implements Event {
                 } catch (final QuestRuntimeException e) {
                     log.warn(questPackage, "Failed to set compass: " + compass, e);
                 }
-                break;
+            }
         }
+    }
+
+    private String getPackagedCompass() {
+        return Utils.addPackage(questPackage, "compass-" + compass);
+    }
+
+    private void changeTag(final TagChanger tagChanger, final Profile profile) {
+        new TagEvent(betonQuest::getOfflinePlayerData, tagChanger).execute(profile);
     }
 }
