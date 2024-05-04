@@ -7,11 +7,11 @@ import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.npcs.citizens.condition.CitizensDistanceConditionFactory;
 import org.betonquest.betonquest.compatibility.npcs.citizens.condition.CitizensLocationConditionFactory;
 import org.betonquest.betonquest.compatibility.npcs.citizens.condition.CitizensRegionConditionFactory;
+import org.betonquest.betonquest.compatibility.npcs.citizens.event.CitizensNPCTeleportEventFactory;
 import org.betonquest.betonquest.compatibility.npcs.citizens.event.move.CitizensMoveController;
 import org.betonquest.betonquest.compatibility.npcs.citizens.event.move.CitizensMoveEvent;
 import org.betonquest.betonquest.compatibility.npcs.citizens.event.move.CitizensMoveEventFactory;
 import org.betonquest.betonquest.compatibility.npcs.citizens.event.move.CitizensStopEventFactory;
-import org.betonquest.betonquest.compatibility.npcs.citizens.event.teleport.NPCTeleportEventFactory;
 import org.betonquest.betonquest.compatibility.npcs.citizens.objective.NPCInteractObjective;
 import org.betonquest.betonquest.compatibility.npcs.citizens.objective.NPCKillObjective;
 import org.betonquest.betonquest.compatibility.npcs.citizens.objective.NPCRangeObjective;
@@ -95,7 +95,7 @@ public class CitizensIntegrator implements Integrator {
         final EventTypeRegistry eventTypes = questRegistries.getEventTypes();
         eventTypes.register("movenpc", new CitizensMoveEventFactory(data, citizensMoveController));
         eventTypes.register("stopnpc", new CitizensStopEventFactory(data, citizensMoveController));
-        eventTypes.registerCombined("teleportnpc", new NPCTeleportEventFactory(data));
+        eventTypes.registerCombined("teleportnpc", new CitizensNPCTeleportEventFactory(data));
 
         plugin.registerConversationIO("chest", CitizensInventoryConvIO.class);
         plugin.registerConversationIO("combined", CitizensInventoryConvIO.CitizensCombined.class);
