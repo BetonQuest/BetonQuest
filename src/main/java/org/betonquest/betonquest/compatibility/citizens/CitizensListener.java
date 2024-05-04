@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.compatibility.citizens.events.move.CitizensMoveListener;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -131,7 +132,7 @@ public class CitizensListener implements Listener {
 
         final NPC npc = event.getNPC();
 
-        if (NPCMoveEvent.blocksTalking(npc)) {
+        if (CitizensMoveListener.blocksTalking(npc)) {
             return;
         }
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getClicker());
