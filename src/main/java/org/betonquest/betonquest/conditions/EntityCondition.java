@@ -1,8 +1,10 @@
 package org.betonquest.betonquest.conditions;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -10,13 +12,13 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.metadata.MetadataValue;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -36,7 +38,7 @@ public class EntityCondition extends Condition {
     private final String name;
 
     @Nullable
-    private final String marked;
+    private final VariableString marked;
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition"})
     public EntityCondition(final Instruction instruction) throws InstructionParseException {
@@ -71,7 +73,10 @@ public class EntityCondition extends Condition {
         range = instruction.getVarNum();
         name = instruction.getOptional("name");
         final String markedString = instruction.getOptional("marked");
-        marked = markedString == null ? null : Utils.addPackage(instruction.getPackage(), markedString);
+        marked = markedString == null ? null : new VariableString(
+                instruction.getPackage(),
+                Utils.addPackage(instruction.getPackage(), markedString)
+        );
     }
 
     private VariableNumber getAmount(final String typePart) throws InstructionParseException {
@@ -92,20 +97,16 @@ public class EntityCondition extends Condition {
             neededAmounts[i] = 0;
         }
         final Collection<Entity> entities = location.getWorld().getEntities();
-        loop:
         for (final Entity entity : entities) {
             if (name != null && (entity.getCustomName() == null || !entity.getCustomName().equals(name))) {
                 continue;
             }
             if (marked != null) {
-                if (!entity.hasMetadata("betonquest-marked")) {
+                final String value = marked.getString(profile);
+                final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
+                final String dataContainerValue = entity.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+                if (dataContainerValue == null || !dataContainerValue.equals(value)) {
                     continue;
-                }
-                final List<MetadataValue> meta = entity.getMetadata("betonquest-marked");
-                for (final MetadataValue m : meta) {
-                    if (!m.asString().equals(marked.replace("%player%", profile.getProfileUUID().toString()))) {
-                        continue loop;
-                    }
                 }
             }
             final double pRange = range.getDouble(profile);

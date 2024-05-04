@@ -14,11 +14,12 @@ import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
-import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
@@ -122,16 +123,17 @@ public class SpawnMobEvent extends QuestEvent {
             }
             int dropIndex = 0;
             for (final Item item : drops) {
-                entity.setMetadata("betonquest-drops-" + dropIndex,
-                        new FixedMetadataValue(BetonQuest.getInstance(), item.getID().getFullID() + ":"
-                                + item.getAmount().getInt(profile)));
+                final String value = item.getID().getFullID() + ":" + item.getAmount().getInt(profile);
+                final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-drops-" + dropIndex);
+                entity.getPersistentDataContainer().set(key, PersistentDataType.STRING, value);
                 dropIndex++;
             }
             if (name != null && entity instanceof final LivingEntity livingEntity) {
                 livingEntity.setCustomName(name);
             }
             if (marked != null) {
-                entity.setMetadata("betonquest-marked", new FixedMetadataValue(BetonQuest.getInstance(), marked.getString(profile)));
+                final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
+                entity.getPersistentDataContainer().set(key, PersistentDataType.STRING, marked.getString(profile));
             }
         }
         return null;

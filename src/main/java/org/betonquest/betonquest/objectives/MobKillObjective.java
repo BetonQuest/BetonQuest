@@ -10,11 +10,12 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.metadata.MetadataValue;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -62,14 +63,11 @@ public class MobKillObjective extends CountingObjective implements Listener {
             return;
         }
         if (marked != null) {
-            if (!event.getEntity().hasMetadata("betonquest-marked")) {
+            final String value = marked.getString(onlineProfile);
+            final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
+            final String dataContainerValue = event.getEntity().getPersistentDataContainer().get(key, PersistentDataType.STRING);
+            if (dataContainerValue == null || !dataContainerValue.equals(value)) {
                 return;
-            }
-            final List<MetadataValue> meta = event.getEntity().getMetadata("betonquest-marked");
-            for (final MetadataValue m : meta) {
-                if (!m.asString().equals(marked.getString(onlineProfile))) {
-                    return;
-                }
             }
         }
 
