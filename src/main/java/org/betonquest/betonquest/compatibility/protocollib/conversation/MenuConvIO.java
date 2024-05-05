@@ -456,7 +456,6 @@ public class MenuConvIO extends ChatConvIO {
                 optionLines = Arrays.stream(LocalChatPaginator.wordWrap(
                         Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), configOptionTextReset),
                         configLineLength, configOptionWrap)).toList();
-
             }
 
             if (linesAvailable < optionLines.size()) {
@@ -516,7 +515,7 @@ public class MenuConvIO extends ChatConvIO {
             }
 
             // Display Options
-            displayBuilder.append(String.join("\n", optionsSelected)).append('n');
+            displayBuilder.append(String.join("\n", optionsSelected)).append('\n');
 
             // Show down arrow if options exist below our view
             if (topOption + optionsSelected.size() < options.size()) {
