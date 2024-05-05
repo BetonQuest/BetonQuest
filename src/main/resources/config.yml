@@ -46,8 +46,6 @@ hologram_update_interval: 200
 sounds:
   start: ENTITY_VILLAGER_AMBIENT
   end: ENTITY_VILLAGER_YES
-  journal: ENTITY_BAT_TAKEOFF
-  full: false
 cmd_blacklist:
   - spawn
 hook:

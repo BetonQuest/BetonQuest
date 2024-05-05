@@ -1,4 +1,12 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/ConfigPatcher.md
+2.0.2.2:
+  - type: REMOVE
+    key: sound.journal
+  - type: REMOVE
+    key: sound.full
+2.0.2.1:
+  - type: REMOVE
+    key: sound.update
 2.0.0.6:
   - type: VALUE_RENAME
     key: default_interceptor
@@ -165,6 +173,3 @@
   - type: TYPE_TRANSFORM
     key: journal.full_main_page
     newType: boolean
-2.0.2.1:
-  - type: REMOVE
-    key: sound.update
