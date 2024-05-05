@@ -19,9 +19,10 @@ import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -87,7 +88,8 @@ public class MythicSpawnMobEvent extends QuestEvent {
                     Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> targetMob.setTarget(BukkitAdapter.adapt(player)), 20L);
                 }
                 if (marked != null) {
-                    entity.setMetadata("betonquest-marked", new FixedMetadataValue(BetonQuest.getInstance(), marked.getString(profile)));
+                    final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
+                    entity.getPersistentDataContainer().set(key, PersistentDataType.STRING, marked.getString(profile));
                 }
             } catch (final InvalidMobTypeException e) {
                 throw new QuestRuntimeException("MythicMob type " + mob + " is invalid.", e);

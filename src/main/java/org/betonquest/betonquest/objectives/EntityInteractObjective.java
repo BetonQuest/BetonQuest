@@ -4,6 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
@@ -16,6 +17,7 @@ import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -24,12 +26,11 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.metadata.MetadataValue;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -62,7 +63,7 @@ public class EntityInteractObjective extends CountingObjective {
     protected EntityType mobType;
 
     @Nullable
-    protected String marked;
+    protected VariableString marked;
 
     protected Interaction interaction;
 
@@ -84,10 +85,11 @@ public class EntityInteractObjective extends CountingObjective {
         preCheckAmountNotLessThanOne(targetAmount);
         customName = parseName(instruction.getOptional("name"));
         realName = parseName(instruction.getOptional("realname"));
-        marked = instruction.getOptional("marked");
-        if (marked != null) {
-            marked = Utils.addPackage(instruction.getPackage(), marked);
-        }
+        final String markedString = instruction.getOptional("marked");
+        marked = markedString == null ? null : new VariableString(
+                instruction.getPackage(),
+                Utils.addPackage(instruction.getPackage(), markedString)
+        );
         cancel = instruction.hasArgument("cancel");
         loc = instruction.getLocation(instruction.getOptional("loc"));
         final String stringRange = instruction.getOptional("range");
@@ -133,14 +135,11 @@ public class EntityInteractObjective extends CountingObjective {
         }
         // check if the entity is correctly marked
         if (marked != null) {
-            if (!entity.hasMetadata("betonquest-marked")) {
+            final String value = marked.getString(PlayerConverter.getID(player));
+            final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
+            final String dataContainerValue = entity.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+            if (dataContainerValue == null || !dataContainerValue.equals(value)) {
                 return false;
-            }
-            final List<MetadataValue> meta = entity.getMetadata("betonquest-marked");
-            for (final MetadataValue m : meta) {
-                if (!m.asString().equals(marked.replace("%player%", PlayerConverter.getID(player).getProfileUUID().toString()))) {
-                    return false;
-                }
             }
         }
         // check if the profile has this objective

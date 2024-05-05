@@ -15,16 +15,16 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.metadata.MetadataValue;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -101,35 +101,35 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      */
     @EventHandler(ignoreCancelled = true)
     public void onBossKill(final MythicMobDeathEvent event) {
+        final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
         if (!names.contains(event.getMobType().getInternalName())
-                || marked != null && !event.getEntity().hasMetadata("betonquest-marked")) {
+                || marked != null && !event.getEntity().getPersistentDataContainer().has(key)) {
             return;
         }
         if (deathRadiusAllPlayers > 0) {
-            executeForEveryoneInRange(event, deathRadiusAllPlayers);
+            executeForEveryoneInRange(event, deathRadiusAllPlayers, key);
         } else if (event.getKiller() instanceof Player) {
-            checkKill(event, PlayerConverter.getID((Player) event.getKiller()));
+            checkKill(event, PlayerConverter.getID((Player) event.getKiller()), key);
         } else if (neutralDeathRadiusAllPlayers > 0) {
-            executeForEveryoneInRange(event, neutralDeathRadiusAllPlayers);
+            executeForEveryoneInRange(event, neutralDeathRadiusAllPlayers, key);
         }
     }
 
-    private void executeForEveryoneInRange(final MythicMobDeathEvent event, final double range) {
+    private void executeForEveryoneInRange(final MythicMobDeathEvent event, final double range, final NamespacedKey key) {
         final Location center = BukkitAdapter.adapt(event.getMob().getLocation());
         for (final Player player : center.getWorld().getPlayers()) {
             if (isValidPlayer(player) && player.getLocation().distanceSquared(center) <= range) {
-                checkKill(event, PlayerConverter.getID(player));
+                checkKill(event, PlayerConverter.getID(player), key);
             }
         }
     }
 
-    private void checkKill(final MythicMobDeathEvent event, final OnlineProfile onlineProfile) {
+    private void checkKill(final MythicMobDeathEvent event, final OnlineProfile onlineProfile, final NamespacedKey key) {
         if (marked != null) {
-            final List<MetadataValue> meta = event.getEntity().getMetadata("betonquest-marked");
-            for (final MetadataValue m : meta) {
-                if (!m.asString().equals(marked.getString(onlineProfile))) {
-                    return;
-                }
+            final String value = marked.getString(onlineProfile);
+            final String dataContainerValue = event.getEntity().getPersistentDataContainer().get(key, PersistentDataType.STRING);
+            if (dataContainerValue == null || !dataContainerValue.equals(value)) {
+                return;
             }
         }
         handlePlayerKill(onlineProfile, event.getMob());

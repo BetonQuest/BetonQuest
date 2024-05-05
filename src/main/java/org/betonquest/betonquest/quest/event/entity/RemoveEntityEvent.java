@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.entity;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -7,8 +8,10 @@ import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -86,10 +89,10 @@ public class RemoveEntityEvent implements Event {
                         if (marked == null) {
                             return true;
                         }
-                        return entity
-                                .getMetadata("betonquest-marked")
-                                .stream()
-                                .anyMatch(metadataValue -> metadataValue.asString().equals(marked.getString(profile)));
+                        final String value = marked.getString(profile);
+                        final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
+                        final String dataContainerValue = entity.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+                        return dataContainerValue != null && dataContainerValue.equals(value);
                     })
                     .forEach(entity -> {
                                 if (kill && entity instanceof final LivingEntity mob) {
