@@ -12,9 +12,9 @@ import org.betonquest.betonquest.compatibility.npcs.citizens.event.move.Citizens
 import org.betonquest.betonquest.compatibility.npcs.citizens.event.move.CitizensMoveEvent;
 import org.betonquest.betonquest.compatibility.npcs.citizens.event.move.CitizensMoveEventFactory;
 import org.betonquest.betonquest.compatibility.npcs.citizens.event.move.CitizensStopEventFactory;
-import org.betonquest.betonquest.compatibility.npcs.citizens.objective.NPCInteractObjective;
+import org.betonquest.betonquest.compatibility.npcs.citizens.objective.CitizensInteractObjective;
+import org.betonquest.betonquest.compatibility.npcs.citizens.objective.CitizensRangeObjective;
 import org.betonquest.betonquest.compatibility.npcs.citizens.objective.NPCKillObjective;
-import org.betonquest.betonquest.compatibility.npcs.citizens.objective.NPCRangeObjective;
 import org.betonquest.betonquest.compatibility.npcs.citizens.variable.npc.CitizensVariableFactory;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
@@ -82,8 +82,8 @@ public class CitizensIntegrator implements Integrator {
             plugin.registerEvents("updatevisibility", UpdateVisibilityNowEvent.class);
         }
         plugin.registerObjectives("npckill", NPCKillObjective.class);
-        plugin.registerObjectives("npcinteract", NPCInteractObjective.class);
-        plugin.registerObjectives("npcrange", NPCRangeObjective.class);
+        plugin.registerObjectives("npcinteract", CitizensInteractObjective.class);
+        plugin.registerObjectives("npcrange", CitizensRangeObjective.class);
 
         final Server server = plugin.getServer();
         final BukkitScheduler scheduler = server.getScheduler();
