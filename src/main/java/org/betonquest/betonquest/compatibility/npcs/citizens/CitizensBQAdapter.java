@@ -24,6 +24,20 @@ public class CitizensBQAdapter implements BQNPCAdapter {
         this.npc = npc;
     }
 
+    /**
+     * Gets the real Citizens NPC.
+     *
+     * @return the adapted Citizens NPC
+     */
+    public final NPC getCitizensNPC() {
+        return npc;
+    }
+
+    @Override
+    public String getId() {
+        return String.valueOf(npc.getId());
+    }
+
     @Override
     public String getName() {
         return npc.getName();
@@ -36,7 +50,7 @@ public class CitizensBQAdapter implements BQNPCAdapter {
 
     @Override
     public Location getLocation() {
-        return npc.getStoredLocation();
+        return npc.getEntity().getLocation();
     }
 
     @Override

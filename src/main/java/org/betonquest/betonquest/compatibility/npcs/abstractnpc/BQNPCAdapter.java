@@ -7,6 +7,13 @@ import org.bukkit.Location;
  */
 public interface BQNPCAdapter {
     /**
+     * Gets the ID of the NPC.
+     *
+     * @return the identifier used by the NPC plugin
+     */
+    String getId();
+
+    /**
      * Gets the name of the NPC.
      *
      * @return the name without formatting

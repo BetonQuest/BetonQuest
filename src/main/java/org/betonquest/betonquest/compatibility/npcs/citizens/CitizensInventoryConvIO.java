@@ -56,7 +56,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
             }
 
             try {
-                final SkinTrait skinTrait = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> citizensConv.getNPC().getOrAddTrait(SkinTrait.class)).get();
+                final SkinTrait skinTrait = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> citizensConv.getCitizensNPC().getOrAddTrait(SkinTrait.class)).get();
                 final String texture = skinTrait.getTexture();
                 if (texture != null) {
 
