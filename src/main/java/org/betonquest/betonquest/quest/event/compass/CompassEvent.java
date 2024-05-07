@@ -1,0 +1,110 @@
+package org.betonquest.betonquest.quest.event.compass;
+
+import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.QuestCompassTargetChangeEvent;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.quest.event.tag.AddTagChanger;
+import org.betonquest.betonquest.quest.event.tag.DeleteTagChanger;
+import org.betonquest.betonquest.quest.event.tag.TagChanger;
+import org.betonquest.betonquest.quest.event.tag.TagEvent;
+import org.betonquest.betonquest.utils.Utils;
+import org.betonquest.betonquest.utils.location.CompoundLocation;
+import org.bukkit.Location;
+import org.bukkit.plugin.PluginManager;
+
+/**
+ * Event to set a compass target and manage compass points.
+ */
+public class CompassEvent implements Event {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
+     * BetonQuest instance to use to get the event factory.
+     */
+    private final BetonQuest betonQuest;
+
+    /**
+     * Plugin manager to use to call the event.
+     */
+    private final PluginManager pluginManager;
+
+    /**
+     * The action to perform on the compass.
+     */
+    private final CompassTargetAction action;
+
+    /**
+     * The compass point to set.
+     */
+    private final String compass;
+
+    /**
+     * The location to set the compass to.
+     */
+    private final CompoundLocation compassLocation;
+
+    /**
+     * The quest package to use for logging.
+     */
+    private final QuestPackage questPackage;
+
+    /**
+     * Create the compass event.
+     *
+     * @param log             the logger
+     * @param betonQuest      the BetonQuest instance
+     * @param pluginManager   the plugin manager
+     * @param action          the action to perform
+     * @param compass         the compass point
+     * @param compassLocation the location to set the compass to
+     * @param questPackage    the quest package
+     */
+    public CompassEvent(final BetonQuestLogger log, final BetonQuest betonQuest, final PluginManager pluginManager,
+                        final CompassTargetAction action, final String compass, final CompoundLocation compassLocation,
+                        final QuestPackage questPackage) {
+        this.log = log;
+        this.betonQuest = betonQuest;
+        this.pluginManager = pluginManager;
+        this.action = action;
+        this.compass = compass;
+        this.compassLocation = compassLocation;
+        this.questPackage = questPackage;
+    }
+
+    @Override
+    public void execute(final Profile profile) throws QuestRuntimeException {
+        switch (action) {
+            case ADD -> changeTag(new AddTagChanger(getPackagedCompass()), profile);
+            case DEL -> changeTag(new DeleteTagChanger(getPackagedCompass()), profile);
+            case SET -> {
+                try {
+                    final Location location = compassLocation.getLocation(profile);
+                    if (profile.getOnlineProfile().isPresent()) {
+                        final QuestCompassTargetChangeEvent event = new QuestCompassTargetChangeEvent(profile, location);
+                        pluginManager.callEvent(event);
+                        if (!event.isCancelled()) {
+                            profile.getOnlineProfile().get().getPlayer().setCompassTarget(location);
+                        }
+                    }
+                } catch (final QuestRuntimeException e) {
+                    log.warn(questPackage, "Failed to set compass: " + compass, e);
+                }
+            }
+        }
+    }
+
+    private String getPackagedCompass() {
+        return Utils.addPackage(questPackage, "compass-" + compass);
+    }
+
+    private void changeTag(final TagChanger tagChanger, final Profile profile) {
+        new TagEvent(betonQuest::getOfflinePlayerData, tagChanger).execute(profile);
+    }
+}

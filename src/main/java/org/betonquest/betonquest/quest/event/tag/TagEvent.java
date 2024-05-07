@@ -27,7 +27,6 @@ public class TagEvent implements Event {
      * @param tagChanger changes the defined tags
      */
     public TagEvent(final Function<Profile, TagData> getTagData, final TagChanger tagChanger) {
-
         this.getTagData = getTagData;
         this.tagChanger = tagChanger;
     }
