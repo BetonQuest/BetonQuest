@@ -8,6 +8,8 @@ import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.message.Message;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Filters /betonquestanswer commands.
  */
@@ -131,5 +133,10 @@ public class AnswerFilter implements Filter {
     @Override
     public boolean isStopped() {
         return false;
+    }
+
+    @Override
+    public boolean stop(final long timeout, final TimeUnit timeUnit) {
+        return true;
     }
 }
