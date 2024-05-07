@@ -1,8 +1,9 @@
-package org.betonquest.betonquest.compatibility.aureliumskills;
+package org.betonquest.betonquest.compatibility.auraskills;
 
-import com.archyx.aureliumskills.AureliumSkills;
-import com.archyx.aureliumskills.api.AureliumAPI;
-import com.archyx.aureliumskills.skills.Skill;
+import dev.aurelium.auraskills.api.AuraSkillsApi;
+import dev.aurelium.auraskills.api.registry.NamespacedId;
+import dev.aurelium.auraskills.api.skill.Skill;
+import dev.aurelium.auraskills.api.user.SkillsUser;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
@@ -10,13 +11,14 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.Utils;
-import org.bukkit.entity.Player;
 
 /**
  * Checks whether a player has the required skill level.
  */
 @SuppressWarnings("PMD.CommentRequired")
-public class AureliumSkillsLevelCondition extends Condition {
+public class AuraSkillsLevelCondition extends Condition {
+
+    private final AuraSkillsApi auraSkills = AuraSkillsApi.get();
 
     private final VariableNumber targetLevelVar;
 
@@ -24,22 +26,26 @@ public class AureliumSkillsLevelCondition extends Condition {
 
     private final boolean mustBeEqual;
 
-    public AureliumSkillsLevelCondition(final Instruction instruction) throws InstructionParseException {
+    public AuraSkillsLevelCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
         final String skillName = instruction.next();
         targetLevelVar = instruction.getVarNum();
         mustBeEqual = instruction.hasArgument("equal");
 
-        final AureliumSkills aureliumSkills = AureliumAPI.getPlugin();
-        skill = Utils.getNN(aureliumSkills.getSkillRegistry().getSkill(skillName), "Invalid skill name");
+        final NamespacedId namespacedId = NamespacedId.fromDefault(skillName);
+        skill = Utils.getNN(auraSkills.getGlobalRegistry().getSkill(namespacedId), "Invalid skill name");
     }
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getOnlineProfile().get().getPlayer();
+        final SkillsUser user = auraSkills.getUser(profile.getPlayerUUID());
 
-        final int actualLevel = AureliumAPI.getSkillLevel(player, skill);
+        if (user == null) {
+            return false;
+        }
+
+        final int actualLevel = user.getSkillLevel(skill);
         final int targetLevel = targetLevelVar.getInt(profile);
 
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
