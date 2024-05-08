@@ -39,6 +39,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - required flags in `QuestItem` were not relevant in equals check
 - `folder` event did not respect the sync / async context that it is executed in
 - incorrectly measuring the distance between player and hologram if they are in different worlds
+- incorrect calculation of the width of strings when using some special characters when doing pagination 
 ### Security
 
 ## [2.0.1] - 2024-03-24
