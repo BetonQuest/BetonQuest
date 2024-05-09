@@ -31,7 +31,7 @@ public interface Migration {
             return false;
         }
         final String valueStartOldSpace = valueStartOld + " ";
-        final String valueStartNewSpace = valueStartOld + " ";
+        final String valueStartNewSpace = valueStartNew + " ";
         boolean replaced = false;
         for (final String key : section.getKeys(false)) {
             final String value = section.getString(key);

@@ -549,31 +549,23 @@ conditions:
 </div>
 
 ### 2.1.1-DEV-2 - Rename AuraSkills :gear:
-AureliumSkills was renamed to AuraSkills. So all conditions and events where renamed as well.
+AureliumSkills was renamed to AuraSkills, so all conditions and events where renamed as well.
 
 <div class="grid" markdown>
 
 ```YAML title="Old Syntax"
 conditions:
-  skillLevel: aureliumskillslevel fighting 5 #(1)!
-  statLevel: aureliumstatslevel luck 5 #(2)!
+  skillLevel: aureliumskillslevel fighting 5
+  statLevel: aureliumstatslevel luck 5
 events:
-  giveSkillXP: aureliumskillsxp farming 5 #(3)!
+  giveSkillXP: aureliumskillsxp farming 5
 ```
-
-1. Old condition name `aureliumskillslevel` 
-2. Old condition name `aureliumstatslevel` 
-3. Old event name `aureliumskillsxp`
 
 ```YAML title="New Syntax"
 conditions:
-  skillLevel: auraskillslevel fighting 5 #(1)!
-  statLevel: auraskillsstatslevel luck 5 #(2)!
+  skillLevel: auraskillslevel fighting 5
+  statLevel: auraskillsstatslevel luck 5
 events:
-  giveSkillXP: auraskillsxp farming 5 #(3)!
+  giveSkillXP: auraskillsxp farming 5
 ```
-
-1. New condition name `auraskillslevel`
-2. New condition name `auraskillsstatslevel`
-3. New event name `auraskillsxp`
 </div>
