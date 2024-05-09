@@ -3186,6 +3186,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#211-dev-2-rename-auraskills">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          2.1.1-DEV-2 - Rename AuraSkills <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -4696,6 +4719,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#211-dev-2-rename-auraskills">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          2.1.1-DEV-2 - Rename AuraSkills <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -4836,6 +4882,7 @@ QuestPackages folder to the new 2.0 syntax. This way the migration works for bot
 <li><a href="#200-dev-749-static-event-rework">2.0.0-DEV-749 - Static Event Rework</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /></li>
 <li><a href="#200-dev-769-removeentity-event">2.0.0-DEV-769 - RemoveEntity-Event</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /></li>
 <li><a href="#210-dev-1-instruction-quoting">2.1.0-DEV-1 - Instruction Quoting</a> <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2757.svg" title=":exclamation:" /></li>
+<li><a href="#211-dev-2-rename-auraskills">2.1.1-DEV-2 - Rename AuraSkills</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /></li>
 </ul>
 <h3 id="200-dev-87-rename-to-ride">2.0.0-DEV-87 - Rename to <code>ride</code> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /><a class="headerlink" href="#200-dev-87-rename-to-ride" title="Permanent link">🔗</a></h3>
 <details class="info">
@@ -5301,6 +5348,22 @@ while keeping the syntax more or less the same.</p>
 <li>Do not quote only a part of a message, but instead the full message.</li>
 <li>Move the quote before the parameter name.</li>
 </ol>
+</div>
+<h3 id="211-dev-2-rename-auraskills">2.1.1-DEV-2 - Rename AuraSkills <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /><a class="headerlink" href="#211-dev-2-rename-auraskills" title="Permanent link">🔗</a></h3>
+<p>AureliumSkills was renamed to AuraSkills, so all conditions and events where renamed as well.</p>
+<div class="grid">
+<div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">skillLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aureliumskillslevel fighting 5</span>
+<span class="w">  </span><span class="nt">statLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aureliumstatslevel luck 5</span>
+<span class="nt">events</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">giveSkillXP</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aureliumskillsxp farming 5</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New Syntax</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">skillLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auraskillslevel fighting 5</span>
+<span class="w">  </span><span class="nt">statLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auraskillsstatslevel luck 5</span>
+<span class="nt">events</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">giveSkillXP</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auraskillsxp farming 5</span>
+</code></pre></div>
 </div>
 
 
