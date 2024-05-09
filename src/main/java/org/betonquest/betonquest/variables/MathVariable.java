@@ -47,8 +47,8 @@ public class MathVariable extends Variable {
         super(instruction);
         staticness = true;
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        final Matcher expressionMatcher = CALC_REGEX.matcher(instruction.next());
-        if (instruction.hasNext() || !expressionMatcher.matches()) {
+        final Matcher expressionMatcher = CALC_REGEX.matcher(String.join(".", instruction.getAllParts()));
+        if (!expressionMatcher.matches()) {
             throw new InstructionParseException("invalid format");
         }
         final String expression = expressionMatcher.group("expression");
