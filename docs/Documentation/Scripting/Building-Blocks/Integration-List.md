@@ -10,7 +10,7 @@ In total @snippet:constants:totalIntegratedPluginsNumber@ plugins have dedicated
 ## Provided by BetonQuest
 
 BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features.  
-_AureliumSkills, Brewery, Citizens, DecentHolograms, Denizen, EffectLib, FakeBlock, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
+_AuraSkills, Brewery, Citizens, DecentHolograms, Denizen, EffectLib, FakeBlock, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
 mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests, RedisChat, Shopkeepers, ProSkillAPI,
 Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard._
 
@@ -29,36 +29,36 @@ There are also plugins that hook into BetonQuest that require a clientside mod:
 [NGVexJournal](https://www.spigotmc.org/resources/76938/)
 
 
-## AureliumSkills[](https://www.spigotmc.org/resources/81069/)
+## AuraSkills[](https://www.spigotmc.org/resources/81069/)
 
 ### Conditions
 
-#### Skill level: `aureliumskillslevel`
+#### Skill level: `auraskillslevel`
 Checks if the player has the specified skill level. The amount can be a variable or a number.
 The player needs to be on that level or higher to meet the condition.
 You can disable this behaviour by adding the `equal` argument, then the player must match the specified level exactly.
 ```YAML linenums="1"
-aureliumskillslevel fighting 5
-aureliumskillslevel farming 10 equal
+auraskillslevel fighting 5
+auraskillslevel farming 10 equal
 ```
 
-#### Stat level: `aureliumstatslevel`
+#### Stat level: `auraskillslevel`
 Checks if the player has the specified stat level. The amount can be a variable or a number.
 The player needs to be on that level or higher to meet the condition.
 You can disable this behaviour by adding the `equal` argument, then the player must match the specified level exactly.
 ```YAML linenums="1"
-aureliumstatslevel luck 5
-aureliumstatslevel luck 10 equal
+auraskillslevel luck 5
+auraskillslevel luck 10 equal
 ```
 
 ### Events
 
-### Give Skill Xp : `aureliumskillsxp`
+### Give Skill Xp : `auraskillsxp`
 Adds experience to the players skill. The amount can be a variable or a number.
 The `level` argument is optional and would convert the amount to levels instead of XP points.
 ```YAML linenums="1"
-aureliumskillsxp farming 5
-aureliumskillsxp farming 10 level
+auraskillsxp farming 5
+auraskillsxp farming 10 level
 ```
 
 

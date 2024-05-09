@@ -1,4 +1,8 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/ConfigPatcher.md
+2.1.0.1:
+  - type: KEY_RENAME
+    oldKey: hooks.aureliumskills
+    newKey: hooks.auraskills
 2.0.2.2:
   - type: REMOVE
     key: sound.journal

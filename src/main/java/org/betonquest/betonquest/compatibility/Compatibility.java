@@ -239,7 +239,7 @@ public class Compatibility implements Listener {
         register("Brewery", BreweryIntegrator.class);
         register("Jobs", JobsRebornIntegrator.class);
         register("LuckPerms", LuckPermsIntegrator.class);
-        register("AureliumSkills", AuraSkillsIntegrator.class);
+        register("AuraSkills", AuraSkillsIntegrator.class);
         register("DecentHolograms", DecentHologramsIntegrator.class);
         register("HolographicDisplays", HolographicDisplaysIntegrator.class);
         register("fake-block", FakeBlockIntegrator.class);
