@@ -31,7 +31,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
 - [2.0.0-DEV-674 - MMO Updates](#200-dev-674-mmo-updates) :gear:
 - [2.0.0-DEV-749 - Static Event Rework](#200-dev-749-static-event-rework) :gear:
 - [2.0.0-DEV-769 - RemoveEntity-Event](#200-dev-769-removeentity-event) :gear:
-- [2.1.0 - Instruction Quoting](#210-instruction-quoting) :exclamation:
+- [2.1.0-DEV-1 - Instruction Quoting](#210-dev-1-instruction-quoting) :exclamation:
 
 ### 2.0.0-DEV-87 - Rename to `ride` :gear:
 
@@ -510,22 +510,39 @@ npc_holograms:
     
     </div>
 
-### 2.1.0 - Instruction Quoting :exclamation:
+### 2.1.0-DEV-1 - Instruction Quoting :exclamation:
 
 BetonQuest had quoting support since November 2018, but unfortunately it was broken from the very start and also never properly documented.
 
+You probably don't need to change anything, but it is recommended to read how
+[quoting](../../Scripting/Quoting-&-YAML.md#Quoting) works.
+
 If you are facing errors for instructions containing the double quote character `"` then you might need to escape them:
 
-```YAML title="Example"
+<div class="grid" markdown>
+
+```YAML title="Old Syntax"
 events:
-  # previously valid string that breaks now
-  literal_broken: notify "special\secret"message #(1)!
-  literal_fixed: notify "\"special\\secret\"message"
-  
-  # previously valid quoting that breaks now
-  quoting_broken: notify this" was quoted" previously #(2)!
-  quoting_fixed: notify "this was quoted previously"
+  literal: notify "special\secret"message #(1)!
+  quoted: notify this" was quoted" previously #(2)!
+  parameter: tag add x condition:"with space"
+conditions:
+  "with space": tag "other tag"
 ```
 
-1. Output was: "special\secret"message
-2. Output was: this was quoted previously
+1. Output: "special\secret"message
+2. Output: this was quoted previously
+
+```YAML title="New Syntax"
+events:
+  literal: notify "\"special\\secret\"message" #(1)!
+  quoted: notify "this was quoted previously" #(2)!
+  parameter: tag add x "condition:with space" #(3)!
+conditions:
+  "with space": tag "other tag"
+```
+
+1. When quoting add `\` before every `"` and already existing `\`.
+2. Do not quote only a part of a message, but instead the full message.
+3. Move the quote before the parameter name.
+</div>
