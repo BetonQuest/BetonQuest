@@ -3163,6 +3163,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#210-dev-1-instruction-quoting">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          2.1.0-DEV-1 - Instruction Quoting <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2757.svg" title=":exclamation:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -4650,6 +4673,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#210-dev-1-instruction-quoting">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          2.1.0-DEV-1 - Instruction Quoting <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2757.svg" title=":exclamation:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -4789,6 +4835,7 @@ QuestPackages folder to the new 2.0 syntax. This way the migration works for bot
 <li><a href="#200-dev-674-mmo-updates">2.0.0-DEV-674 - MMO Updates</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /></li>
 <li><a href="#200-dev-749-static-event-rework">2.0.0-DEV-749 - Static Event Rework</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /></li>
 <li><a href="#200-dev-769-removeentity-event">2.0.0-DEV-769 - RemoveEntity-Event</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /></li>
+<li><a href="#210-dev-1-instruction-quoting">2.1.0-DEV-1 - Instruction Quoting</a> <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2757.svg" title=":exclamation:" /></li>
 </ul>
 <h3 id="200-dev-87-rename-to-ride">2.0.0-DEV-87 - Rename to <code>ride</code> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /><a class="headerlink" href="#200-dev-87-rename-to-ride" title="Permanent link">🔗</a></h3>
 <details class="info">
@@ -5225,6 +5272,36 @@ while keeping the syntax more or less the same.</p>
 </code></pre></div>
 </div>
 </details>
+<h3 id="210-dev-1-instruction-quoting">2.1.0-DEV-1 - Instruction Quoting <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2757.svg" title=":exclamation:" /><a class="headerlink" href="#210-dev-1-instruction-quoting" title="Permanent link">🔗</a></h3>
+<p>BetonQuest had quoting support since November 2018, but unfortunately it was broken from the very start and also never properly documented.</p>
+<p>You probably don't need to change anything, but it is recommended to read how
+<a href="../../../Scripting/Quoting-%26-YAML/#Quoting">quoting</a> works.</p>
+<p>If you are facing errors for instructions containing the double quote character <code>"</code> then you might need to escape them:</p>
+<div class="grid">
+<div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">literal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notify &quot;special\secret&quot;message</span><span class="w"> </span><span class="c1">#(1)!</span>
+<span class="w">  </span><span class="nt">quoted</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notify this&quot; was quoted&quot; previously</span><span class="w"> </span><span class="c1">#(2)!</span>
+<span class="w">  </span><span class="nt">parameter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tag add x condition:&quot;with space&quot;</span>
+<span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="s">&quot;with</span><span class="nv"> </span><span class="s">space&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tag &quot;other tag&quot;</span>
+</code></pre></div>
+<ol>
+<li>Output: "special\secret"message</li>
+<li>Output: this was quoted previously</li>
+</ol>
+<div class="highlight"><span class="filename">New Syntax</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">literal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notify &quot;\&quot;special\\secret\&quot;message&quot;</span><span class="w"> </span><span class="c1">#(1)!</span>
+<span class="w">  </span><span class="nt">quoted</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notify &quot;this was quoted previously&quot;</span><span class="w"> </span><span class="c1">#(2)!</span>
+<span class="w">  </span><span class="nt">parameter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tag add x &quot;condition:with space&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
+<span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="s">&quot;with</span><span class="nv"> </span><span class="s">space&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tag &quot;other tag&quot;</span>
+</code></pre></div>
+<ol>
+<li>When quoting add <code>\</code> before every <code>"</code> and already existing <code>\</code>.</li>
+<li>Do not quote only a part of a message, but instead the full message.</li>
+<li>Move the quote before the parameter name.</li>
+</ol>
+</div>
 
 
 
