@@ -31,6 +31,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
 - [2.0.0-DEV-674 - MMO Updates](#200-dev-674-mmo-updates) :gear:
 - [2.0.0-DEV-749 - Static Event Rework](#200-dev-749-static-event-rework) :gear:
 - [2.0.0-DEV-769 - RemoveEntity-Event](#200-dev-769-removeentity-event) :gear:
+- [2.1.0 - Instruction Quoting](#210-instruction-quoting) :exclamation:
 
 ### 2.0.0-DEV-87 - Rename to `ride` :gear:
 
@@ -508,3 +509,23 @@ npc_holograms:
     
     
     </div>
+
+### 2.1.0 - Instruction Quoting :exclamation:
+
+BetonQuest had quoting support since November 2018, but unfortunately it was broken from the very start and also never properly documented.
+
+If you are facing errors for instructions containing the double quote character `"` then you might need to escape them:
+
+```YAML title="Example"
+events:
+  # previously valid string that breaks now
+  literal_broken: notify "special\secret"message #(1)!
+  literal_fixed: notify "\"special\\secret\"message"
+  
+  # previously valid quoting that breaks now
+  quoting_broken: notify this" was quoted" previously #(2)!
+  quoting_fixed: notify "this was quoted previously"
+```
+
+1. Output was: "special\secret"message
+2. Output was: this was quoted previously
