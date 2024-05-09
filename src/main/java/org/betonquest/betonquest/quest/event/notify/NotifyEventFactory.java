@@ -33,7 +33,7 @@ public class NotifyEventFactory implements EventFactory {
     /**
      * A pattern for the notation of multiple translations in a single event.
      */
-    private static final Pattern LANGUAGE_PATTERN = Pattern.compile("\\{(?<lang>[a-z-]{2,5})} (?<message>.*?)(?= \\{[a-z-]{2,5}} |$)");
+    private static final Pattern LANGUAGE_PATTERN = Pattern.compile("\\{(?<lang>[a-z-]{2,5})}\\s(?<message>.*?)(?=\\s+\\{[a-z-]{2,5}}\\s|$)");
 
     /**
      * Logger factory to create a logger for events.
