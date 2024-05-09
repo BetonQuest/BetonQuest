@@ -10,6 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Deprecated
 ### Removed
 ### Fixed
+- math variable with dots (since 2.1.0)
 ### Security
 
 ## [2.1.0] - 2024-05-09
