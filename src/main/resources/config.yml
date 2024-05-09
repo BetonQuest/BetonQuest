@@ -75,7 +75,7 @@ hook:
   mmocore: true
   mmoitems: true
   luckperms: true
-  aureliumskills: true
+  auraskills: true
   fake-block: true
   redischat: true
 journal:

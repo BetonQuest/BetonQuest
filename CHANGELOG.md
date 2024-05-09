@@ -7,6 +7,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
 ### Changed
+- `AureliumSkills` was renamed to `AuraSkills` the following was changed in BQ
+  - `aureliumskillslevel` condition was renamed to `auraskillslevel`
+  - `aureliumstatslevel` condition was renamed to `auraskillsstatslevel`
+  - `aureliumskillsxp` event was renamed to `auraskillsxp`
 ### Deprecated
 ### Removed
 ### Fixed

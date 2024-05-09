@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Handles the mmo_updates migration.
+ * Handles the MmoUpdates migration.
  */
 public class MmoUpdates implements Migration {
 

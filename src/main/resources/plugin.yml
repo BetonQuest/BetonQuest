@@ -33,7 +33,7 @@ softdepend:
   - Brewery
   - Jobs
   - LuckPerms
-  - AureliumSkills
+  - AuraSkills
   - fake-block
   - RedisChat
 commands:

@@ -4,7 +4,7 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.compatibility.aureliumskills.AureliumSkillsIntegrator;
+import org.betonquest.betonquest.compatibility.auraskills.AuraSkillsIntegrator;
 import org.betonquest.betonquest.compatibility.brewery.BreweryIntegrator;
 import org.betonquest.betonquest.compatibility.citizens.CitizensIntegrator;
 import org.betonquest.betonquest.compatibility.denizen.DenizenIntegrator;
@@ -239,7 +239,7 @@ public class Compatibility implements Listener {
         register("Brewery", BreweryIntegrator.class);
         register("Jobs", JobsRebornIntegrator.class);
         register("LuckPerms", LuckPermsIntegrator.class);
-        register("AureliumSkills", AureliumSkillsIntegrator.class);
+        register("AuraSkills", AuraSkillsIntegrator.class);
         register("DecentHolograms", DecentHologramsIntegrator.class);
         register("HolographicDisplays", HolographicDisplaysIntegrator.class);
         register("fake-block", FakeBlockIntegrator.class);

@@ -2,7 +2,6 @@ package org.betonquest.betonquest.modules.config.patcher.migration.migrators;
 
 import org.betonquest.betonquest.modules.config.patcher.migration.FileConfigurationProvider;
 import org.betonquest.betonquest.modules.config.patcher.migration.Migration;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -34,22 +33,10 @@ public class RemoveEntity implements Migration {
         for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
             final File file = entry.getKey();
             final YamlConfiguration config = entry.getValue();
-            final ConfigurationSection events = config.getConfigurationSection("events");
-            if (events == null) {
-                continue;
-            }
-            for (final String key : events.getKeys(false)) {
-                final String value = events.getString(key);
-                if (value == null) {
-                    continue;
-                }
-                if (value.startsWith("clear ")) {
-                    events.set(key, "removeentity " + value.substring("clear ".length()));
-                    config.save(file);
-                } else if (value.startsWith("killmob ")) {
-                    events.set(key, "removeentity " + value.substring("killmob ".length()) + " kill");
-                    config.save(file);
-                }
+            final boolean event1Replaced = replaceStartValueInSection(config, "events", "clear", "removeentity");
+            final boolean event2Replaced = replaceStartValueInSection(config, "events", "killmob", "removeentity");
+            if (event1Replaced || event2Replaced) {
+                config.save(file);
             }
         }
     }

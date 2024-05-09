@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Handles the effect_lib migration.
+ * Handles the EffectLib migration.
  */
 public class EffectLib implements Migration {
 
