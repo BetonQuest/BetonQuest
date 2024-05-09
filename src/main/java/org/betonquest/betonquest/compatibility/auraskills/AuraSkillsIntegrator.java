@@ -13,7 +13,7 @@ public class AuraSkillsIntegrator implements Integrator {
     @Override
     public void hook() throws HookException {
         BetonQuest.getInstance().registerConditions("auraskillslevel", AuraSkillsLevelCondition.class);
-        BetonQuest.getInstance().registerConditions("auraskillslevel", AuraSkillsStatsCondition.class);
+        BetonQuest.getInstance().registerConditions("auraskillsstatslevel", AuraSkillsStatsCondition.class);
 
         BetonQuest.getInstance().registerEvents("auraskillsxp", AuraSkillsExperienceEvent.class);
     }

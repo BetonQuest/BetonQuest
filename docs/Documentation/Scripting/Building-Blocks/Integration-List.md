@@ -42,13 +42,13 @@ auraskillslevel fighting 5
 auraskillslevel farming 10 equal
 ```
 
-#### Stat level: `auraskillslevel`
+#### Stat level: `auraskillsstatslevel`
 Checks if the player has the specified stat level. The amount can be a variable or a number.
 The player needs to be on that level or higher to meet the condition.
 You can disable this behaviour by adding the `equal` argument, then the player must match the specified level exactly.
 ```YAML linenums="1"
-auraskillslevel luck 5
-auraskillslevel luck 10 equal
+auraskillsstatslevel luck 5
+auraskillsstatslevel luck 10 equal
 ```
 
 ### Events

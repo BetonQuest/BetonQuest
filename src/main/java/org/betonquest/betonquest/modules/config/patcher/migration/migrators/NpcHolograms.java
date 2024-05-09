@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Handles the npc_holograms migration.
+ * Handles the NpcHolograms migration.
  */
 public class NpcHolograms implements Migration {
 

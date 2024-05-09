@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.modules.config.patcher.migration;
 
+import org.betonquest.betonquest.modules.config.patcher.migration.migrators.AuraSkillsRename;
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.EffectLib;
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.EventScheduling;
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.MmoUpdates;
@@ -41,6 +42,7 @@ public class Migrator {
         migrations.add(new MmoUpdates(provider));
         migrations.add(new RemoveEntity(provider));
         migrations.add(new RideUpdates(provider));
+        migrations.add(new AuraSkillsRename(provider));
     }
 
     /**

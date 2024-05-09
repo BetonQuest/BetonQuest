@@ -32,6 +32,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
 - [2.0.0-DEV-749 - Static Event Rework](#200-dev-749-static-event-rework) :gear:
 - [2.0.0-DEV-769 - RemoveEntity-Event](#200-dev-769-removeentity-event) :gear:
 - [2.1.0-DEV-1 - Instruction Quoting](#210-dev-1-instruction-quoting) :exclamation:
+- [2.1.1-DEV-2 - Rename AuraSkills](#211-dev-2-rename-auraskills) :gear:
 
 ### 2.0.0-DEV-87 - Rename to `ride` :gear:
 
@@ -545,4 +546,34 @@ conditions:
 1. When quoting add `\` before every `"` and already existing `\`.
 2. Do not quote only a part of a message, but instead the full message.
 3. Move the quote before the parameter name.
+</div>
+
+### 2.1.1-DEV-2 - Rename AuraSkills :gear:
+AureliumSkills was renamed to AuraSkills. So all conditions and events where renamed as well.
+
+<div class="grid" markdown>
+
+```YAML title="Old Syntax"
+conditions:
+  skillLevel: aureliumskillslevel fighting 5 #(1)!
+  statLevel: aureliumstatslevel luck 5 #(2)!
+events:
+  giveSkillXP: aureliumskillsxp farming 5 #(3)!
+```
+
+1. Old condition name `aureliumskillslevel` 
+2. Old condition name `aureliumstatslevel` 
+3. Old event name `aureliumskillsxp`
+
+```YAML title="New Syntax"
+conditions:
+  skillLevel: auraskillslevel fighting 5 #(1)!
+  statLevel: auraskillsstatslevel luck 5 #(2)!
+events:
+  giveSkillXP: auraskillsxp farming 5 #(3)!
+```
+
+1. New condition name `auraskillslevel`
+2. New condition name `auraskillsstatslevel`
+3. New event name `auraskillsxp`
 </div>
