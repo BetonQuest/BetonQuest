@@ -44,6 +44,11 @@ public class CitizensListener implements Listener {
     private final BetonQuestLogger log;
 
     /**
+     * MoveListener to check if the NPC blocks conversations while moving.
+     */
+    private final CitizensMoveListener citizensMoveListener;
+
+    /**
      * Stores the last time the player interacted with an NPC.
      */
     private final Map<UUID, Long> npcInteractionLimiter = new HashMap<>();
@@ -79,9 +84,11 @@ public class CitizensListener implements Listener {
     /**
      * Initializes the listener
      */
-    public CitizensListener(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
+    public CitizensListener(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
+                            final CitizensMoveListener citizensMoveListener) {
         this.loggerFactory = loggerFactory;
         this.log = log;
+        this.citizensMoveListener = citizensMoveListener;
         reload();
     }
 
@@ -132,7 +139,7 @@ public class CitizensListener implements Listener {
 
         final NPC npc = event.getNPC();
 
-        if (CitizensMoveListener.blocksTalking(npc)) {
+        if (citizensMoveListener.blocksTalking(npc)) {
             return;
         }
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getClicker());

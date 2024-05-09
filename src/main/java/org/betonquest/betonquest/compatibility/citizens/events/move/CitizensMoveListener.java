@@ -31,7 +31,7 @@ public class CitizensMoveListener implements Listener {
     /**
      * Citizens NPC ID and their active move instance.
      */
-    private static final Map<Integer, MoveInstance> MOVING_NPCS = new HashMap<>();
+    private final Map<Integer, MoveInstance> movingNpcs = new HashMap<>();
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -54,8 +54,8 @@ public class CitizensMoveListener implements Listener {
      * @return true if the NPC is moving because of 'move' event, false if it's
      * standing or moving because other reasons
      */
-    public static boolean isNPCMoving(final NPC npc) {
-        return MOVING_NPCS.containsKey(npc.getId()) && !MOVING_NPCS.get(npc.getId()).stopped;
+    public boolean isNPCMoving(final NPC npc) {
+        return movingNpcs.containsKey(npc.getId()) && !movingNpcs.get(npc.getId()).stopped;
     }
 
     /**
@@ -63,9 +63,9 @@ public class CitizensMoveListener implements Listener {
      *
      * @param npc the npc to stop its current move control
      */
-    public static void stopNPCMoving(final NPC npc) {
-        if (MOVING_NPCS.containsKey(npc.getId())) {
-            MOVING_NPCS.get(npc.getId()).stop();
+    public void stopNPCMoving(final NPC npc) {
+        if (movingNpcs.containsKey(npc.getId())) {
+            movingNpcs.get(npc.getId()).stop();
         }
     }
 
@@ -75,11 +75,11 @@ public class CitizensMoveListener implements Listener {
      * @param npc NPC to check
      * @return false if you can talk to the npc true if not
      */
-    public static boolean blocksTalking(final NPC npc) {
+    public boolean blocksTalking(final NPC npc) {
         if (!isNPCMoving(npc)) {
             return false;
         }
-        return MOVING_NPCS.get(npc.getId()).moveData.blockConversations;
+        return movingNpcs.get(npc.getId()).moveData.blockConversations;
     }
 
     /**
@@ -94,7 +94,7 @@ public class CitizensMoveListener implements Listener {
      * @throws QuestRuntimeException if there was an error getting the first location
      */
     public void startNew(final NPC npc, final Profile profile, final MoveData moveData) throws QuestRuntimeException {
-        final MoveInstance oldMoveInstance = MOVING_NPCS.get(npc.getId());
+        final MoveInstance oldMoveInstance = movingNpcs.get(npc.getId());
         if (oldMoveInstance != null && !oldMoveInstance.stopped) {
             for (final EventID event : oldMoveInstance.moveData.failEvents()) {
                 BetonQuest.event(profile, event);
@@ -102,7 +102,7 @@ public class CitizensMoveListener implements Listener {
             return;
         }
         final MoveInstance moveInstance = new MoveInstance(moveData, profile, npc);
-        MOVING_NPCS.put(npc.getId(), moveInstance);
+        movingNpcs.put(npc.getId(), moveInstance);
     }
 
     /**
@@ -142,8 +142,8 @@ public class CitizensMoveListener implements Listener {
      */
     public void onContinue(final NavigationEvent event) {
         final int npcId = event.getNPC().getId();
-        if (MOVING_NPCS.containsKey(npcId)) {
-            MOVING_NPCS.get(npcId).onContinue(event);
+        if (movingNpcs.containsKey(npcId)) {
+            movingNpcs.get(npcId).onContinue(event);
         }
     }
 

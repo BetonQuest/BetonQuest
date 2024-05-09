@@ -46,7 +46,7 @@ public class CitizensMoveEvent implements Event {
             throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
         }
         if (profile.getOnlineProfile().isEmpty()) {
-            CitizensMoveListener.stopNPCMoving(npc);
+            citizensMoveListener.stopNPCMoving(npc);
             return;
         }
         citizensMoveListener.startNew(npc, profile, moveData);

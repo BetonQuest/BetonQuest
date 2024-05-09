@@ -32,22 +32,29 @@ public class CitizensStopEventFactory implements EventFactory, StaticEventFactor
     private final Plugin plugin;
 
     /**
+     * MoveListener where to stop the NPC movement.
+     */
+    private final CitizensMoveListener citizensMoveListener;
+
+    /**
      * Create a new NPCTeleportEventFactory.
      *
-     * @param server    the server to use for syncing to the primary server thread
-     * @param scheduler the scheduler to use for syncing to the primary server thread
-     * @param plugin    the plugin to use for syncing to the primary server thread
+     * @param server               the server to use for syncing to the primary server thread
+     * @param scheduler            the scheduler to use for syncing to the primary server thread
+     * @param plugin               the plugin to use for syncing to the primary server thread
+     * @param citizensMoveListener the move listener where to stop the NPC movement
      */
-    public CitizensStopEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+    public CitizensStopEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin, final CitizensMoveListener citizensMoveListener) {
         this.server = server;
         this.scheduler = scheduler;
         this.plugin = plugin;
+        this.citizensMoveListener = citizensMoveListener;
     }
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final int npcId = instruction.getInt();
-        return new PrimaryServerThreadEvent(new CitizensStopEvent(npcId), server, scheduler, plugin);
+        return new PrimaryServerThreadEvent(new CitizensStopEvent(npcId, citizensMoveListener), server, scheduler, plugin);
     }
 
     @Override

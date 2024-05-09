@@ -6,7 +6,6 @@ import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.compatibility.citizens.events.move.CitizensMoveListener;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
@@ -39,7 +38,7 @@ public class NPCTeleportEvent extends QuestEvent implements Listener {
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
         }
-        CitizensMoveListener.stopNPCMoving(npc);
+        CitizensIntegrator.getCitizensMoveInstance().stopNPCMoving(npc);
         npc.getNavigator().cancelNavigation();
         if (npc.isSpawned()) {
             npc.teleport(location.getLocation(profile), PlayerTeleportEvent.TeleportCause.PLUGIN);

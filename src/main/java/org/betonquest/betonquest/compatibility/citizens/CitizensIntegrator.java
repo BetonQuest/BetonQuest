@@ -16,6 +16,11 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class CitizensIntegrator implements Integrator {
+    /**
+     * The active integrator instance.
+     */
+    private static CitizensIntegrator instance;
+
     private final BetonQuest plugin;
 
     private CitizensListener citizensListener;
@@ -25,14 +30,26 @@ public class CitizensIntegrator implements Integrator {
      */
     private CitizensMoveListener citizensMoveListener;
 
+    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public CitizensIntegrator() {
+        instance = this;
         plugin = BetonQuest.getInstance();
+    }
+
+    /**
+     * Gets the move controller used to start and stop NPC movement.
+     *
+     * @return the move controller of this NPC integration
+     */
+    public static CitizensMoveListener getCitizensMoveInstance() {
+        return instance.citizensMoveListener;
     }
 
     @Override
     public void hook() {
         final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
-        citizensListener = new CitizensListener(loggerFactory, loggerFactory.create(CitizensListener.class));
+        citizensMoveListener = new CitizensMoveListener(loggerFactory.create(CitizensMoveListener.class));
+        citizensListener = new CitizensListener(loggerFactory, loggerFactory.create(CitizensListener.class), citizensMoveListener);
         new CitizensWalkingListener();
 
         // if ProtocolLib is hooked, start NPCHider
@@ -45,11 +62,10 @@ public class CitizensIntegrator implements Integrator {
         plugin.registerObjectives("npcrange", NPCRangeObjective.class);
         final Server server = plugin.getServer();
         final BukkitScheduler scheduler = server.getScheduler();
-        citizensMoveListener = new CitizensMoveListener(loggerFactory.create(CitizensMoveListener.class));
         server.getPluginManager().registerEvents(citizensMoveListener, plugin);
         plugin.registerNonStaticEvent("movenpc", new CitizensMoveEventFactory(server, scheduler, plugin, citizensMoveListener));
         plugin.registerEvents("teleportnpc", NPCTeleportEvent.class);
-        plugin.registerEvent("stopnpc", new CitizensStopEventFactory(server, scheduler, plugin));
+        plugin.registerEvent("stopnpc", new CitizensStopEventFactory(server, scheduler, plugin, citizensMoveListener));
         plugin.registerConversationIO("chest", CitizensInventoryConvIO.class);
         plugin.registerConversationIO("combined", CitizensInventoryConvIO.CitizensCombined.class);
         plugin.registerVariable("citizen", CitizensVariable.class);
