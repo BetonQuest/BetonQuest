@@ -30,17 +30,6 @@ import java.util.Locale;
  */
 public class LocationVariable extends Variable {
     /**
-     * The minimum number of required arguments when using a LocationVariable through an Instruction.
-     */
-    private static final int MINIMUM_INSTRUCTION_ARGUMENTS = 2;
-
-    /**
-     * The minimum number of required arguments when using a LocationVariable through an Instruction and including an
-     * optional precision number of decimals.
-     */
-    private static final int MINIMUM_INSTRUCTION_ARGUMENTS_WITH_OPTIONAL_PRECISION = 3;
-
-    /**
      * The mode of the location response required. Provides multiple output formats.
      *
      * @see MODE
@@ -61,19 +50,14 @@ public class LocationVariable extends Variable {
     public LocationVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
 
-        final String[] splitInstruction = instruction.getInstruction().split("\\.");
-        if (splitInstruction.length >= MINIMUM_INSTRUCTION_ARGUMENTS) {
-            mode = MODE.getMode(splitInstruction[1]);
+        if (instruction.hasNext()) {
+            mode = MODE.getMode(instruction.next());
         } else {
             mode = MODE.ULF_LONG;
         }
 
-        if (splitInstruction.length >= MINIMUM_INSTRUCTION_ARGUMENTS_WITH_OPTIONAL_PRECISION) {
-            try {
-                decimalPlaces = Integer.parseInt(splitInstruction[2]);
-            } catch (final NumberFormatException exception) {
-                throw new InstructionParseException(exception);
-            }
+        if (instruction.hasNext()) {
+            decimalPlaces = instruction.getInt();
         } else {
             decimalPlaces = 0;
         }

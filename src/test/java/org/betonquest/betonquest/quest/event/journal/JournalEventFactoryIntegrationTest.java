@@ -7,6 +7,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.SingletonLoggerFactory;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.modules.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.modules.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
@@ -75,56 +77,56 @@ class JournalEventFactoryIntegrationTest {
     }
 
     @Test
-    void constructJournalUpdateEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void constructJournalUpdateEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(logger, questPackage, null, "journal update");
+        final Instruction instruction = new Instruction(logger, questPackage, new NoID(questPackage), "journal update");
         assertDoesNotThrow(() -> journalFactory.parseEventInstruction(instruction), "journal event update action could not be created");
     }
 
     @Test
-    void constructJournalAddEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void constructJournalAddEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(logger, questPackage, null, "journal add quest_started");
+        final Instruction instruction = new Instruction(logger, questPackage, new NoID(questPackage), "journal add quest_started");
         assertDoesNotThrow(() -> journalFactory.parseEventInstruction(instruction), "journal event add action could not be created");
     }
 
     @Test
-    void constructJournalAddEventWithoutPageReference(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void constructJournalAddEventWithoutPageReference(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(logger, questPackage, null, "journal add");
+        final Instruction instruction = new Instruction(logger, questPackage, new NoID(questPackage), "journal add");
         assertThrows(InstructionParseException.class, () -> journalFactory.parseEventInstruction(instruction), "journal event add action without page reference should throw an exception when created");
     }
 
     @Test
-    void constructJournalDeleteEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void constructJournalDeleteEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(logger, questPackage, null, "journal delete quest_available");
+        final Instruction instruction = new Instruction(logger, questPackage, new NoID(questPackage), "journal delete quest_available");
         assertDoesNotThrow(() -> journalFactory.parseEventInstruction(instruction), "journal event delete action could not be created");
     }
 
     @Test
-    void constructJournalDeleteEventWithoutPageReference(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void constructJournalDeleteEventWithoutPageReference(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(logger, questPackage, null, "journal delete");
+        final Instruction instruction = new Instruction(logger, questPackage, new NoID(questPackage), "journal delete");
         assertThrows(InstructionParseException.class, () -> journalFactory.parseEventInstruction(instruction), "journal event delete action without page reference should throw an exception when created");
     }
 
     @Test
-    void constructInvalidJournalEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void constructInvalidJournalEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(logger, questPackage, null, "journal invalid");
+        final Instruction instruction = new Instruction(logger, questPackage, new NoID(questPackage), "journal invalid");
         assertThrows(InstructionParseException.class, () -> journalFactory.parseEventInstruction(instruction), "invalid action of journal event should throw an exception when created");
     }
 }

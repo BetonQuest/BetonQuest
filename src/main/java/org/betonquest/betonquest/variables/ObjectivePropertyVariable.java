@@ -21,22 +21,21 @@ public class ObjectivePropertyVariable extends Variable {
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public ObjectivePropertyVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        final String rawInstruction = instruction.getInstruction();
-        final String[] parts = rawInstruction.split("\\.");
-        String objectiveID = "";
-        if (parts.length == 3) {
-            objectiveID = parts[1];
-            propertyName = parts[2];
-        } else if (parts.length == 4) {
-            objectiveID = parts[1] + "." + parts[2];
-            propertyName = parts[3];
-        } else {
-            propertyName = "";
+
+        final StringBuilder objectiveID = new StringBuilder();
+        String next = "";
+        while (instruction.hasNext()) {
+            if (!objectiveID.isEmpty()) {
+                objectiveID.append('.');
+            }
+            objectiveID.append(next);
+            next = instruction.next();
         }
+        this.propertyName = next;
 
         final ObjectiveID tempObjective;
         try {
-            tempObjective = new ObjectiveID(instruction.getPackage(), objectiveID);
+            tempObjective = new ObjectiveID(instruction.getPackage(), objectiveID.toString());
         } catch (final ObjectNotFoundException e) {
             throw new InstructionParseException("Error in objective property variable '" + instruction + "' " + e.getMessage(), e);
         }

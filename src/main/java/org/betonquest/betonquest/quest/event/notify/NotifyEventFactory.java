@@ -33,7 +33,7 @@ public class NotifyEventFactory implements EventFactory {
     /**
      * A pattern for the notation of multiple translations in a single event.
      */
-    private static final Pattern LANGUAGE_PATTERN = Pattern.compile("\\{(?<lang>[a-z-]{2,5})} (?<message>.*?)(?= \\{[a-z-]{2,5}} |$)");
+    private static final Pattern LANGUAGE_PATTERN = Pattern.compile("\\{(?<lang>[a-z-]{2,5})}\\s(?<message>.*?)(?=\\s+\\{[a-z-]{2,5}}\\s|$)");
 
     /**
      * Logger factory to create a logger for events.
@@ -91,20 +91,16 @@ public class NotifyEventFactory implements EventFactory {
      * @throws InstructionParseException if the instruction is invalid
      */
     protected NotifyIO processInstruction(final Instruction instruction, final Map<String, VariableString> translations) throws InstructionParseException {
-        final HashMap<String, String> data = new HashMap<>();
-        final String rawInstruction = instruction.getInstruction();
-        final int indexStart = rawInstruction.indexOf(' ');
+        final String rawInstruction = String.join(" ", instruction.getAllParts());
 
-        if (indexStart != -1) {
-            final Matcher keyValueMatcher = KEY_VALUE_PATTERN.matcher(rawInstruction);
-            final int indexEnd = keyValueMatcher.find() ? keyValueMatcher.start() : rawInstruction.length();
-            keyValueMatcher.reset();
+        final Matcher keyValueMatcher = KEY_VALUE_PATTERN.matcher(rawInstruction);
+        final int indexEnd = keyValueMatcher.find() ? keyValueMatcher.start() : rawInstruction.length();
+        keyValueMatcher.reset();
 
-            final String langMessages = rawInstruction.substring(indexStart + 1, indexEnd);
+        final String langMessages = rawInstruction.substring(0, indexEnd);
 
-            translations.putAll(getLanguages(instruction.getPackage(), langMessages));
-            data.putAll(getData(keyValueMatcher));
-        }
+        translations.putAll(getLanguages(instruction.getPackage(), langMessages));
+        final Map<String, String> data = getData(keyValueMatcher);
 
         final String category = data.remove("category");
         return Notify.get(instruction.getPackage(), category, data);

@@ -11,28 +11,47 @@ import org.betonquest.betonquest.utils.math.Tokenizer;
 import org.betonquest.betonquest.utils.math.tokens.Token;
 
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This variable evaluates the given calculation and returns the result.
  */
-@SuppressWarnings({"PMD.CommentRequired", "deprecation"})
 public class MathVariable extends Variable {
+
+    /**
+     * Regular expression that matches calculation expressions.
+     * The regex has a named group 'expression' that contains only the math part without the identifier.
+     */
+    public static final Pattern CALC_REGEX = Pattern.compile("calc:(?<expression>.+)");
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
+    /**
+     * The full calculation token.
+     */
+    @SuppressWarnings("deprecation")
     private final Token calculation;
 
+    /**
+     * Create a math variable from the given instruction.
+     *
+     * @param instruction instruction to parse
+     * @throws InstructionParseException if the instruction is not a valid math variable
+     */
+    @SuppressWarnings("deprecation")
     public MathVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         staticness = true;
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        final String instructionString = instruction.getInstruction();
-        if (!instructionString.matches("math\\.calc:.+")) {
+        final Matcher expressionMatcher = CALC_REGEX.matcher(instruction.next());
+        if (instruction.hasNext() || !expressionMatcher.matches()) {
             throw new InstructionParseException("invalid format");
         }
-        final String expression = instructionString.substring("math.calc:".length());
+        final String expression = expressionMatcher.group("expression");
         this.calculation = new Tokenizer(instruction.getPackage()).tokenize(expression);
     }
 

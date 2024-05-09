@@ -10,6 +10,9 @@ import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.id.ObjectiveID;
+import org.betonquest.betonquest.instruction.QuotingTokenizer;
+import org.betonquest.betonquest.instruction.Tokenizer;
+import org.betonquest.betonquest.instruction.TokenizerException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
@@ -25,34 +28,40 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.Serial;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.regex.MatchResult;
-import java.util.regex.Pattern;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount", "PMD.GodClass", "PMD.CommentRequired",
         "PMD.AvoidFieldNameMatchingTypeName", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods"})
 public class Instruction {
-    private static final Pattern WORD_PATTERN = Pattern.compile("\\S+");
-
     /**
      * Contract: Returns null when the parameter is null, otherwise the expected object.
      */
     private static final String NULL_NOT_NULL_CONTRACT = "null -> null; !null -> !null";
 
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
+     * The quest package that this instruction belongs to.
      */
-    private final BetonQuestLogger log;
-
     private final QuestPackage pack;
 
-    protected String[] parts;
+    /**
+     * The identifier for this instruction.
+     */
+    private final ID identifier;
 
-    private ID identifier;
+    /**
+     * The raw instruction string.
+     */
+    protected final String instruction;
+
+    /**
+     * The parts of the instruction. This is the result after tokenizing the raw instruction string.
+     */
+    private final String[] parts;
 
     private int nextIndex = 1;
 
@@ -62,35 +71,95 @@ public class Instruction {
     private String lastOptional;
 
     public Instruction(final BetonQuestLogger log, final QuestPackage pack, @Nullable final ID identifier, final String instruction) {
-        this.log = log;
-        this.pack = pack;
-        try {
-            this.identifier = identifier == null ? new NoID(pack) : identifier;
-        } catch (final ObjectNotFoundException e) {
-            this.log.warn(pack, "Could not find instruction: " + e.getMessage(), e);
-        }
-        this.parts = split(instruction);
+        this(new QuotingTokenizer(), log, pack, useFallbackIdIfNecessary(pack, identifier), instruction);
     }
 
     /**
-     * Split a string on white space.
+     * Create an instruction using the given tokenizer.
      *
-     * @param string the input string.
-     * @return the split strings
+     * @param tokenizer   Tokenizer that can split on spaces but interpret quotes and escapes.
+     * @param log         logger to log failures when parsing the instruction string
+     * @param pack        quest package the instruction belongs to
+     * @param identifier  identifier of the instruction
+     * @param instruction instruction string to parse
      */
-    protected static String[] split(final String string) {
-        return WORD_PATTERN.matcher(string).results()
-                .map(MatchResult::group)
-                .toArray(String[]::new);
+    public Instruction(final Tokenizer tokenizer, final BetonQuestLogger log, final QuestPackage pack, final ID identifier, final String instruction) {
+        this.pack = pack;
+        this.identifier = identifier;
+        this.instruction = instruction;
+        this.parts = tokenizeInstruction(tokenizer, pack, instruction, log);
+    }
+
+    /**
+     * Create an instruction using the given tokenizer.
+     *
+     * @param pack        quest package the instruction belongs to
+     * @param identifier  identifier of the instruction
+     * @param instruction raw instruction string
+     * @param parts       parts that the instruction consists of
+     */
+    public Instruction(final QuestPackage pack, final ID identifier, final String instruction, final String... parts) {
+        this.pack = pack;
+        this.identifier = identifier;
+        this.instruction = instruction;
+        this.parts = Arrays.copyOf(parts, parts.length);
+    }
+
+    private static ID useFallbackIdIfNecessary(final QuestPackage pack, @Nullable final ID identifier) {
+        if (identifier != null) {
+            return identifier;
+        }
+        try {
+            return new NoID(pack);
+        } catch (final ObjectNotFoundException e) {
+            throw new IllegalStateException("Could not find instruction: " + e.getMessage(), e);
+        }
+    }
+
+    private String[] tokenizeInstruction(final Tokenizer tokenizer, final QuestPackage pack, final String instruction, final BetonQuestLogger log) {
+        try {
+            return tokenizer.tokens(instruction);
+        } catch (TokenizerException e) {
+            log.warn(pack, "Could not tokenize instruction '" + instruction + "': " + e.getMessage(), e);
+            return new String[0];
+        }
     }
 
     @Override
     public String toString() {
-        return getInstruction();
+        return instruction;
     }
 
+    /**
+     * Get the original raw instruction string that was used to tokenize the parts of this instruction.
+     *
+     * @return the raw instruction string that defined this instruction
+     * @deprecated try not to implement your own parsing and use other API of this class instead if possible
+     */
+    @Deprecated
     public String getInstruction() {
-        return String.join(" ", parts);
+        return toString();
+    }
+
+    /**
+     * Get all parts of the instruction. The instruction type is omitted.
+     *
+     * @return all arguments
+     */
+    public String[] getAllParts() {
+        return Arrays.copyOfRange(parts, 1, parts.length);
+    }
+
+    /**
+     * Get remaining parts of the instruction. The instruction type is omitted, even if no parts have been consumed yet.
+     *
+     * @return all arguments joined together
+     */
+    public String[] getRemainingParts() {
+        final String[] remainingParts = Arrays.copyOfRange(parts, nextIndex, parts.length);
+        nextIndex = parts.length;
+        currentIndex = parts.length - 1;
+        return remainingParts;
     }
 
     public int size() {
@@ -105,17 +174,27 @@ public class Instruction {
         return identifier;
     }
 
+    protected String[] getParts() {
+        return Arrays.copyOf(parts, parts.length);
+    }
+
     /**
-     * Copy the instruction. The copy has no consumed arguments.
+     * Copy this instruction. The copy has no consumed arguments.
      *
-     * @return a new instruction
+     * @return a copy of this instruction
      */
     public Instruction copy() {
         return copy(identifier);
     }
 
-    public Instruction copy(@Nullable final ID newID) {
-        return new Instruction(log, pack, newID, getInstruction());
+    /**
+     * Copy this instruction but overwrite the ID of the copy. The copy has no consumed arguments.
+     *
+     * @param newID the ID to identify the copied instruction with
+     * @return copy of this instruction with the new ID
+     */
+    public Instruction copy(final ID newID) {
+        return new Instruction(getPackage(), newID, instruction, getParts());
     }
 
     /////////////////////

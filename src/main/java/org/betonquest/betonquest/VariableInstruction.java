@@ -3,17 +3,17 @@ package org.betonquest.betonquest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.id.ID;
-import org.jetbrains.annotations.Nullable;
+
+import java.util.regex.Pattern;
 
 /**
  * This class represents the variable-related instructions in BetonQuest.
  */
 public class VariableInstruction extends Instruction {
-
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
+     * Regular expression that can be used to split variables correctly.
      */
-    private final BetonQuestLogger log;
+    private static final Pattern DOT_PATTERN = Pattern.compile("\\.");
 
     /**
      * Constructs a new VariableInstruction with the given logger, quest package, variable identifier, and instruction.
@@ -24,18 +24,27 @@ public class VariableInstruction extends Instruction {
      * @param instruction        The instruction string. It should start and end with '%' character.
      * @throws IllegalArgumentException if the instruction string does not start and end with '%' character.
      */
-    public VariableInstruction(final BetonQuestLogger log, final QuestPackage pack, @Nullable final ID variableIdentifier, final String instruction) {
-        super(log, pack, variableIdentifier, instruction);
-        this.log = log;
+    public VariableInstruction(final BetonQuestLogger log, final QuestPackage pack, final ID variableIdentifier, final String instruction) {
+        super(DOT_PATTERN::split, log, pack, variableIdentifier, cleanInstruction(instruction));
+    }
+
+    /**
+     * Constructs a new VariableInstruction with the given logger, quest package, variable identifier, and instruction.
+     *
+     * @param pack               The quest package that this instruction belongs to.
+     * @param variableIdentifier The identifier of the variable.
+     * @param instruction        The raw instruction string for this variable.
+     * @param parts              The variable instruction parts.
+     */
+    public VariableInstruction(final QuestPackage pack, final ID variableIdentifier, final String instruction, final String... parts) {
+        super(pack, variableIdentifier, instruction, parts);
+    }
+
+    private static String cleanInstruction(final String instruction) {
         if (!instruction.isEmpty() && instruction.charAt(0) != '%' && !instruction.endsWith("%")) {
             throw new IllegalArgumentException("Variable instruction does not start and end with '%' character");
         }
-        super.parts = instruction.substring(1, instruction.length() - 1).split("\\.");
-    }
-
-    @Override
-    public String getInstruction() {
-        return String.join(".", super.parts);
+        return instruction.substring(1, instruction.length() - 1);
     }
 
     @Override
@@ -44,7 +53,7 @@ public class VariableInstruction extends Instruction {
     }
 
     @Override
-    public VariableInstruction copy(@Nullable final ID newID) {
-        return new VariableInstruction(log, getPackage(), newID, "%" + getInstruction() + "%");
+    public VariableInstruction copy(final ID newID) {
+        return new VariableInstruction(getPackage(), newID, instruction, getParts());
     }
 }
