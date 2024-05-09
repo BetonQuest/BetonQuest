@@ -35,7 +35,7 @@ public class RunEvent extends QuestEvent {
         final String[] parts = instruction.getAllParts();
         StringBuilder builder = new StringBuilder();
         for (final String part : parts) {
-            if (!part.isEmpty() && part.charAt(0) == '^') {
+            if (part.startsWith("^")) {
                 if (!builder.isEmpty()) {
                     internalEvents.add(createEvent(builder.toString().trim()));
                     builder = new StringBuilder();
@@ -45,7 +45,9 @@ public class RunEvent extends QuestEvent {
                 builder.append(part).append(' ');
             }
         }
-        internalEvents.add(createEvent(builder.toString().trim()));
+        if (!builder.isEmpty()) {
+            internalEvents.add(createEvent(builder.toString().trim()));
+        }
     }
 
     /**
