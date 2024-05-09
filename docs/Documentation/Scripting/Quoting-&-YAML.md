@@ -8,7 +8,7 @@ For those cases you can use quotes.
 
 ```YAML title="Quoting examples"
 events:
-  multiline: notify "This is the first line.\nAnd here is the second line!" #(1)!
+  multiline: "notify \"This is the first line.\nAnd here is the second line!\"" #(1)!
   quotes_in_quotes: 'notify "And he said: \"I have to tell you something!\""' #(2)!
   backslash: notify "\\o/" #(3)!
 ```
