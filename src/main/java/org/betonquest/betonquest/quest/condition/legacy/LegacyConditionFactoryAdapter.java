@@ -1,10 +1,11 @@
 package org.betonquest.betonquest.quest.condition.legacy;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.quest.QuestFactory;
+import org.betonquest.betonquest.api.quest.StaticQuestFactory;
 import org.betonquest.betonquest.api.quest.condition.Condition;
 import org.betonquest.betonquest.api.quest.condition.ConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.StaticCondition;
-import org.betonquest.betonquest.api.quest.condition.StaticConditionFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
 /**
@@ -16,12 +17,12 @@ public class LegacyConditionFactoryAdapter implements LegacyConditionFactory {
     /**
      * The condition factory to be adapted.
      */
-    private final ConditionFactory factory;
+    private final QuestFactory<Condition> factory;
 
     /**
      * The static condition factory to be adapted.
      */
-    private final StaticConditionFactory staticFactory;
+    private final StaticQuestFactory<StaticCondition> staticFactory;
 
     /**
      * Create the factory from an {@link ConditionFactory}.
@@ -29,7 +30,7 @@ public class LegacyConditionFactoryAdapter implements LegacyConditionFactory {
      * @param factory       the factory to use
      * @param staticFactory static event factory to use
      */
-    public LegacyConditionFactoryAdapter(final ConditionFactory factory, final StaticConditionFactory staticFactory) {
+    public LegacyConditionFactoryAdapter(final QuestFactory<Condition> factory, final StaticQuestFactory<StaticCondition> staticFactory) {
         this.factory = factory;
         this.staticFactory = staticFactory;
     }

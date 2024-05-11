@@ -854,7 +854,7 @@ public class BetonQuest extends JavaPlugin {
      */
     @Deprecated
     public void registerEvents(final String name, final Class<? extends QuestEvent> eventClass) {
-        eventTypes.registerEvents(name, eventClass);
+        eventTypes.registerLegacy(name, eventClass);
     }
 
     /**
@@ -865,7 +865,7 @@ public class BetonQuest extends JavaPlugin {
      * @param eventFactory factory to create the event
      */
     public void registerNonStaticEvent(final String name, final EventFactory eventFactory) {
-        eventTypes.registerNonStaticEvent(name, eventFactory);
+        eventTypes.registerNonStatic(name, eventFactory);
     }
 
     /**
@@ -877,7 +877,7 @@ public class BetonQuest extends JavaPlugin {
      * @param <T>          type of factory that creates both normal and static instances of the event.
      */
     public <T extends EventFactory & StaticEventFactory> void registerEvent(final String name, final T eventFactory) {
-        eventTypes.registerEvent(name, eventFactory);
+        eventTypes.register(name, eventFactory);
     }
 
     /**
@@ -889,7 +889,7 @@ public class BetonQuest extends JavaPlugin {
      * @param staticEventFactory factory to create the static event
      */
     public void registerEvent(final String name, final EventFactory eventFactory, final StaticEventFactory staticEventFactory) {
-        eventTypes.registerEvent(name, eventFactory, staticEventFactory);
+        eventTypes.register(name, eventFactory, staticEventFactory);
     }
 
     /**
@@ -1051,7 +1051,7 @@ public class BetonQuest extends JavaPlugin {
      */
     @Nullable
     public QuestEventFactory getEventFactory(final String name) {
-        return eventTypes.getEventFactory(name);
+        return eventTypes.getFactory(name);
     }
 
     /**

@@ -70,7 +70,7 @@ public class EventProcessor extends QuestProcessor<EventID, QuestEvent> {
                     log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
                     continue;
                 }
-                final QuestEventFactory eventFactory = types.getEventFactory(type);
+                final QuestEventFactory eventFactory = types.getFactory(type);
                 if (eventFactory == null) {
                     log.warn(pack, "Event type " + type + " is not registered, check if it's"
                             + " spelled correctly in '" + identifier + "' event.");
