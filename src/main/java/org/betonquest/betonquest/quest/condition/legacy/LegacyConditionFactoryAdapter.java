@@ -36,8 +36,8 @@ public class LegacyConditionFactoryAdapter implements LegacyConditionFactory {
 
     @Override
     public LegacyConditionAdapter parseConditionInstruction(final Instruction instruction) throws InstructionParseException {
-        final Condition condition = factory.parseCondition(instruction.copy());
-        final StaticCondition staticCondition = staticFactory.parseStaticCondition(instruction.copy());
+        final Condition condition = factory.parse(instruction.copy());
+        final StaticCondition staticCondition = staticFactory.parseStatic(instruction.copy());
         return new LegacyConditionAdapter(instruction, condition, staticCondition);
     }
 }
