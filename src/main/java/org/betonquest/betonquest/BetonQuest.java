@@ -19,6 +19,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.CachingBetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.quest.EventTypeRegistry;
 import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
@@ -107,10 +108,7 @@ import org.betonquest.betonquest.notify.SuppressNotifyIO;
 import org.betonquest.betonquest.notify.TitleNotifyIO;
 import org.betonquest.betonquest.notify.TotemNotifyIO;
 import org.betonquest.betonquest.quest.event.ComposedEventFactoryAdapter;
-import org.betonquest.betonquest.quest.event.NullStaticEventFactory;
-import org.betonquest.betonquest.quest.event.legacy.FromClassQuestEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
-import org.betonquest.betonquest.quest.event.legacy.QuestEventFactoryAdapter;
 import org.betonquest.betonquest.quest.registry.CoreQuestTypes;
 import org.betonquest.betonquest.quest.registry.QuestRegistry;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -177,17 +175,17 @@ public class BetonQuest extends JavaPlugin {
      */
     private static BetonQuest instance;
 
-    /**
-     * Map of registered events.
-     */
-    private final Map<String, QuestEventFactory> eventTypes = new HashMap<>();
-
     private final Map<Profile, PlayerData> playerDataMap = new ConcurrentHashMap<>();
 
     /**
      * Stores Conditions, Events, Objectives, Variables, Conversations and Cancelers.
      */
     private QuestRegistry questRegistry;
+
+    /**
+     * Registry of registered events.
+     */
+    private EventTypeRegistry eventTypes;
 
     private BetonQuestLoggerFactory loggerFactory;
 
@@ -519,6 +517,8 @@ public class BetonQuest extends JavaPlugin {
         new CancelQuestCommand();
         new CompassCommand();
         new LangCommand(loggerFactory.create(LangCommand.class));
+
+        eventTypes = new EventTypeRegistry(loggerFactory.create(EventTypeRegistry.class), loggerFactory);
 
         questRegistry = new QuestRegistry(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
                 SCHEDULE_TYPES, CONDITION_TYPES, eventTypes, OBJECTIVE_TYPES, VARIABLE_TYPES);
@@ -854,8 +854,7 @@ public class BetonQuest extends JavaPlugin {
      */
     @Deprecated
     public void registerEvents(final String name, final Class<? extends QuestEvent> eventClass) {
-        getInstance().log.debug("Registering " + name + " event type");
-        eventTypes.put(name, new FromClassQuestEventFactory<>(loggerFactory.create(eventClass), eventClass));
+        eventTypes.registerEvents(name, eventClass);
     }
 
     /**
@@ -866,7 +865,7 @@ public class BetonQuest extends JavaPlugin {
      * @param eventFactory factory to create the event
      */
     public void registerNonStaticEvent(final String name, final EventFactory eventFactory) {
-        registerEvent(name, eventFactory, new NullStaticEventFactory());
+        eventTypes.registerNonStaticEvent(name, eventFactory);
     }
 
     /**
@@ -878,7 +877,7 @@ public class BetonQuest extends JavaPlugin {
      * @param <T>          type of factory that creates both normal and static instances of the event.
      */
     public <T extends EventFactory & StaticEventFactory> void registerEvent(final String name, final T eventFactory) {
-        registerEvent(name, eventFactory, eventFactory);
+        eventTypes.registerEvent(name, eventFactory);
     }
 
     /**
@@ -890,8 +889,7 @@ public class BetonQuest extends JavaPlugin {
      * @param staticEventFactory factory to create the static event
      */
     public void registerEvent(final String name, final EventFactory eventFactory, final StaticEventFactory staticEventFactory) {
-        getInstance().log.debug("Registering " + name + " event type");
-        eventTypes.put(name, new QuestEventFactoryAdapter(eventFactory, staticEventFactory));
+        eventTypes.registerEvent(name, eventFactory, staticEventFactory);
     }
 
     /**
@@ -903,8 +901,7 @@ public class BetonQuest extends JavaPlugin {
      */
     public void registerEvent(final String name, final ComposedEventFactory eventFactory) {
         final ComposedEventFactoryAdapter adapter = new ComposedEventFactoryAdapter(eventFactory);
-        getInstance().log.debug("Registering " + name + " event type");
-        eventTypes.put(name, new QuestEventFactoryAdapter(adapter, adapter));
+        registerEvent(name, adapter, adapter);
     }
 
     /**
@@ -1054,7 +1051,7 @@ public class BetonQuest extends JavaPlugin {
      */
     @Nullable
     public QuestEventFactory getEventFactory(final String name) {
-        return eventTypes.get(name);
+        return eventTypes.getEventFactory(name);
     }
 
     /**

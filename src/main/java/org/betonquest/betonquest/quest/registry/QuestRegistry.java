@@ -7,10 +7,10 @@ import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.quest.EventTypeRegistry;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.modules.schedule.EventScheduling;
-import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
 import org.betonquest.betonquest.quest.registry.processor.CancellerProcessor;
 import org.betonquest.betonquest.quest.registry.processor.ConditionProcessor;
 import org.betonquest.betonquest.quest.registry.processor.ConversationProcessor;
@@ -80,7 +80,7 @@ public class QuestRegistry {
      */
     public QuestRegistry(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuest plugin,
                          final Map<String, EventScheduling.ScheduleType<?>> scheduleTypes,
-                         final Map<String, Class<? extends Condition>> conditionTypes, final Map<String, QuestEventFactory> eventTypes,
+                         final Map<String, Class<? extends Condition>> conditionTypes, final EventTypeRegistry eventTypes,
                          final Map<String, Class<? extends Objective>> objectiveTypes, final Map<String, Class<? extends Variable>> variableTypes) {
         this.log = log;
         this.eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), scheduleTypes);
