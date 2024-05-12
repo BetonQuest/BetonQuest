@@ -6,8 +6,7 @@ import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.ConditionTypeRegistry;
-import org.betonquest.betonquest.api.quest.EventTypeRegistry;
+import org.betonquest.betonquest.api.quest.registry.QuestTypeRegistries;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.modules.schedule.EventScheduling;
@@ -69,23 +68,22 @@ public class QuestRegistry {
      * Create a new Registry for storing and using Conditions, Events, Objectives, Variables,
      * Conversations and Quest canceller.
      *
-     * @param log            the custom logger for this registry
-     * @param loggerFactory  the logger factory used for new custom logger instances
-     * @param plugin         the plugin used to create new conversation data
-     * @param scheduleTypes  the available schedule types
-     * @param conditionTypes the available condition types
-     * @param eventTypes     the available event types
-     * @param objectiveTypes the available objective types
-     * @param variableTypes  the available variable types
+     * @param log                 the custom logger for this registry
+     * @param loggerFactory       the logger factory used for new custom logger instances
+     * @param plugin              the plugin used to create new conversation data
+     * @param scheduleTypes       the available schedule types
+     * @param questTypeRegistries the available quest types
+     * @param objectiveTypes      the available objective types
+     * @param variableTypes       the available variable types
      */
     public QuestRegistry(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuest plugin,
                          final Map<String, EventScheduling.ScheduleType<?>> scheduleTypes,
-                         final ConditionTypeRegistry conditionTypes, final EventTypeRegistry eventTypes,
+                         final QuestTypeRegistries questTypeRegistries,
                          final Map<String, Class<? extends Objective>> objectiveTypes, final Map<String, Class<? extends Variable>> variableTypes) {
         this.log = log;
         this.eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), scheduleTypes);
-        this.conditionProcessor = new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), conditionTypes);
-        this.eventProcessor = new EventProcessor(loggerFactory.create(EventProcessor.class), eventTypes);
+        this.conditionProcessor = new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), questTypeRegistries.getConditionTypes());
+        this.eventProcessor = new EventProcessor(loggerFactory.create(EventProcessor.class), questTypeRegistries.getEventTypes());
         this.objectiveProcessor = new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), objectiveTypes);
         this.variableProcessor = new VariableProcessor(loggerFactory.create(VariableProcessor.class), variableTypes, loggerFactory);
         this.cancellerProcessor = new CancellerProcessor(loggerFactory.create(CancellerProcessor.class));

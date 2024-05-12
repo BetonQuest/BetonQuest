@@ -68,7 +68,7 @@ public class CheckCondition extends Condition {
         if (parts.length == 0) {
             throw new InstructionParseException("Not enough arguments in internal condition");
         }
-        final LegacyConditionFactory conditionFactory = BetonQuest.getInstance().getConditionTypeRegistry().getFactory(parts[0]);
+        final LegacyConditionFactory conditionFactory = BetonQuest.getInstance().getQuestRegistries().getConditionTypes().getFactory(parts[0]);
         if (conditionFactory == null) {
             // if it's null then there is no such type registered, log an error
             throw new InstructionParseException("Condition type " + parts[0] + " is not registered, check if it's"

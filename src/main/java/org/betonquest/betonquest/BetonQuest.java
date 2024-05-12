@@ -19,14 +19,13 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.CachingBetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.ConditionTypeRegistry;
-import org.betonquest.betonquest.api.quest.EventTypeRegistry;
 import org.betonquest.betonquest.api.quest.QuestFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistry;
 import org.betonquest.betonquest.api.quest.StaticQuestFactory;
 import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.registry.QuestTypeRegistries;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.bstats.BStatsMetrics;
@@ -185,14 +184,9 @@ public class BetonQuest extends JavaPlugin {
     private QuestRegistry questRegistry;
 
     /**
-     * Registry of registered conditions.
+     * Registry for quest core elements.
      */
-    private ConditionTypeRegistry conditionTypes;
-
-    /**
-     * Registry of registered events.
-     */
-    private EventTypeRegistry eventTypes;
+    private QuestTypeRegistries questTypeRegistries;
 
     private BetonQuestLoggerFactory loggerFactory;
 
@@ -525,11 +519,10 @@ public class BetonQuest extends JavaPlugin {
         new CompassCommand();
         new LangCommand(loggerFactory.create(LangCommand.class));
 
-        conditionTypes = new ConditionTypeRegistry(loggerFactory.create(ConditionTypeRegistry.class), loggerFactory);
-        eventTypes = new EventTypeRegistry(loggerFactory.create(EventTypeRegistry.class), loggerFactory);
+        questTypeRegistries = new QuestTypeRegistries(loggerFactory);
 
         questRegistry = new QuestRegistry(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
-                SCHEDULE_TYPES, conditionTypes, eventTypes, OBJECTIVE_TYPES, VARIABLE_TYPES);
+                SCHEDULE_TYPES, questTypeRegistries, OBJECTIVE_TYPES, VARIABLE_TYPES);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this).register();
 
@@ -847,12 +840,13 @@ public class BetonQuest extends JavaPlugin {
      *
      * @param name           name of the condition type
      * @param conditionClass class object for the condition
-     * @deprecated replaced by {@link #getConditionTypeRegistry()} further
-     * {@link QuestTypeRegistry#register(String, QuestFactory, StaticQuestFactory)}
+     * @deprecated replaced by {@link #getQuestRegistries()}
+     * further {@link QuestTypeRegistries#getConditionTypes()}
+     * further {@linkplain QuestTypeRegistry#register} or {@linkplain QuestTypeRegistry#registerNonStatic}
      */
     @Deprecated
     public void registerConditions(final String name, final Class<? extends Condition> conditionClass) {
-        conditionTypes.registerLegacy(name, conditionClass);
+        questTypeRegistries.getConditionTypes().registerLegacy(name, conditionClass);
     }
 
     /**
@@ -864,7 +858,7 @@ public class BetonQuest extends JavaPlugin {
      */
     @Deprecated
     public void registerEvents(final String name, final Class<? extends QuestEvent> eventClass) {
-        eventTypes.registerLegacy(name, eventClass);
+        questTypeRegistries.getEventTypes().registerLegacy(name, eventClass);
     }
 
     /**
@@ -873,12 +867,13 @@ public class BetonQuest extends JavaPlugin {
      *
      * @param name         name of the event
      * @param eventFactory factory to create the event
-     * @deprecated in favor of direct usage of {@link #getEventTypeRegistry()} further
-     * {@link QuestTypeRegistry#registerNonStatic(String, QuestFactory)}
+     * @deprecated in favor of direct usage of {@link #getQuestRegistries()}
+     * further {@link QuestTypeRegistries#getEventTypes()}
+     * further {@link QuestTypeRegistry#registerNonStatic(String, QuestFactory)}
      */
     @Deprecated
     public void registerNonStaticEvent(final String name, final EventFactory eventFactory) {
-        eventTypes.registerNonStatic(name, eventFactory);
+        questTypeRegistries.getEventTypes().registerNonStatic(name, eventFactory);
     }
 
     /**
@@ -888,12 +883,13 @@ public class BetonQuest extends JavaPlugin {
      * @param name         name of the event
      * @param eventFactory factory to create the event and the static event
      * @param <T>          type of factory that creates both normal and static instances of the event.
-     * @deprecated in favor of direct usage of {@link #getEventTypeRegistry()} further
-     * {@link QuestTypeRegistry#register(String, QuestFactory)}
+     * @deprecated in favor of direct usage of {@link #getQuestRegistries()}
+     * further {@link QuestTypeRegistries#getEventTypes()}
+     * further {@link QuestTypeRegistry#register(String, QuestFactory)}
      */
     @Deprecated
     public <T extends EventFactory & StaticEventFactory> void registerEvent(final String name, final T eventFactory) {
-        eventTypes.register(name, eventFactory);
+        questTypeRegistries.getEventTypes().register(name, eventFactory);
     }
 
     /**
@@ -903,11 +899,13 @@ public class BetonQuest extends JavaPlugin {
      * @param name               name of the event
      * @param eventFactory       factory to create the event
      * @param staticEventFactory factory to create the static event
-     * @deprecated in favor of direct usage of {@link #getEventTypeRegistry()} further
-     * {@link QuestTypeRegistry#register(String, QuestFactory, StaticQuestFactory)}
+     * @deprecated in favor of direct usage of {@link #getQuestRegistries()}
+     * further {@link QuestTypeRegistries#getEventTypes()}
+     * further {@link QuestTypeRegistry#register(String, QuestFactory, StaticQuestFactory)}
      */
+    @Deprecated
     public void registerEvent(final String name, final EventFactory eventFactory, final StaticEventFactory staticEventFactory) {
-        eventTypes.register(name, eventFactory, staticEventFactory);
+        questTypeRegistries.getEventTypes().register(name, eventFactory, staticEventFactory);
     }
 
     /**
@@ -1066,31 +1064,23 @@ public class BetonQuest extends JavaPlugin {
      *
      * @param name the name of the event
      * @return a factory to create the event
-     * @deprecated in favor of direct usage of {@link #getEventTypeRegistry()} further
-     * {@link QuestTypeRegistry#getFactory(String)}
+     * @deprecated in favor of direct usage of {@link #getQuestRegistries()}
+     * further {@link QuestTypeRegistries#getEventTypes()}
+     * further {@link QuestTypeRegistry#getFactory(String)}
      */
     @Deprecated
     @Nullable
     public QuestEventFactory getEventFactory(final String name) {
-        return eventTypes.getFactory(name);
+        return questTypeRegistries.getEventTypes().getFactory(name);
     }
 
     /**
-     * Gets the {@link QuestTypeRegistry QuestTypeRegistry} holding registered condition types.
+     * Gets the QuestRegistry holding the core Quest types.
      *
-     * @return registry containing usable condition types
+     * @return registry holding Conditions and Events
      */
-    public ConditionTypeRegistry getConditionTypeRegistry() {
-        return conditionTypes;
-    }
-
-    /**
-     * Gets the {@link QuestTypeRegistry QuestTypeRegistry} holding registered event types.
-     *
-     * @return registry containing usable event types
-     */
-    public EventTypeRegistry getEventTypeRegistry() {
-        return eventTypes;
+    public QuestTypeRegistries getQuestRegistries() {
+        return questTypeRegistries;
     }
 
     /**
