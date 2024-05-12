@@ -19,7 +19,11 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.CachingBetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.quest.ConditionTypeRegistry;
 import org.betonquest.betonquest.api.quest.EventTypeRegistry;
+import org.betonquest.betonquest.api.quest.QuestFactory;
+import org.betonquest.betonquest.api.quest.QuestTypeRegistry;
+import org.betonquest.betonquest.api.quest.StaticQuestFactory;
 import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
@@ -146,8 +150,6 @@ import java.util.logging.Handler;
 public class BetonQuest extends JavaPlugin {
     private static final int BSTATS_METRICS_ID = 551;
 
-    private static final Map<String, Class<? extends Condition>> CONDITION_TYPES = new HashMap<>();
-
     private static final Map<String, Class<? extends Objective>> OBJECTIVE_TYPES = new HashMap<>();
 
     private static final Map<String, Class<? extends ConversationIO>> CONVERSATION_IO_TYPES = new HashMap<>();
@@ -181,6 +183,11 @@ public class BetonQuest extends JavaPlugin {
      * Stores Conditions, Events, Objectives, Variables, Conversations and Cancelers.
      */
     private QuestRegistry questRegistry;
+
+    /**
+     * Registry of registered conditions.
+     */
+    private ConditionTypeRegistry conditionTypes;
 
     /**
      * Registry of registered events.
@@ -518,10 +525,11 @@ public class BetonQuest extends JavaPlugin {
         new CompassCommand();
         new LangCommand(loggerFactory.create(LangCommand.class));
 
+        conditionTypes = new ConditionTypeRegistry(loggerFactory.create(ConditionTypeRegistry.class), loggerFactory);
         eventTypes = new EventTypeRegistry(loggerFactory.create(EventTypeRegistry.class), loggerFactory);
 
         questRegistry = new QuestRegistry(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
-                SCHEDULE_TYPES, CONDITION_TYPES, eventTypes, OBJECTIVE_TYPES, VARIABLE_TYPES);
+                SCHEDULE_TYPES, conditionTypes, eventTypes, OBJECTIVE_TYPES, VARIABLE_TYPES);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this).register();
 
@@ -839,10 +847,12 @@ public class BetonQuest extends JavaPlugin {
      *
      * @param name           name of the condition type
      * @param conditionClass class object for the condition
+     * @deprecated replaced by {@link #getConditionTypeRegistry()} further
+     * {@link QuestTypeRegistry#register(String, QuestFactory, StaticQuestFactory)}
      */
+    @Deprecated
     public void registerConditions(final String name, final Class<? extends Condition> conditionClass) {
-        getInstance().log.debug("Registering " + name + " condition type");
-        CONDITION_TYPES.put(name, conditionClass);
+        conditionTypes.registerLegacy(name, conditionClass);
     }
 
     /**
@@ -1055,12 +1065,13 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * @param name the name of the condition class, as previously registered
-     * @return the class of the event
+     * Gets the {@link QuestTypeRegistry QuestTypeRegistry} holding registered
+     * condition types.
+     *
+     * @return registry containing usable condition types
      */
-    @Nullable
-    public Class<? extends Condition> getConditionClass(final String name) {
-        return CONDITION_TYPES.get(name);
+    public ConditionTypeRegistry getConditionTypeRegistry() {
+        return conditionTypes;
     }
 
     /**
@@ -1071,13 +1082,6 @@ public class BetonQuest extends JavaPlugin {
      */
     public void renameObjective(final ObjectiveID name, final ObjectiveID rename) {
         questRegistry.objectives().renameObjective(name, rename);
-    }
-
-    /**
-     * @return the condition types map
-     */
-    public Map<String, Class<? extends Condition>> getConditionTypes() {
-        return new HashMap<>(CONDITION_TYPES);
     }
 
     /**

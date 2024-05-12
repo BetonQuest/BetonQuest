@@ -9,9 +9,9 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.NoID;
+import org.betonquest.betonquest.quest.condition.legacy.LegacyConditionFactory;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,17 +68,16 @@ public class CheckCondition extends Condition {
         if (parts.length == 0) {
             throw new InstructionParseException("Not enough arguments in internal condition");
         }
-        final Class<? extends Condition> conditionClass = BetonQuest.getInstance().getConditionClass(parts[0]);
-        if (conditionClass == null) {
+        final LegacyConditionFactory conditionFactory = BetonQuest.getInstance().getConditionTypeRegistry().getFactory(parts[0]);
+        if (conditionFactory == null) {
             // if it's null then there is no such type registered, log an error
             throw new InstructionParseException("Condition type " + parts[0] + " is not registered, check if it's"
                     + " spelled correctly in internal condition");
         }
         try {
             final Instruction innerInstruction = new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), this.instruction.getPackage(), new NoID(this.instruction.getPackage()), instruction);
-            return conditionClass.getConstructor(Instruction.class).newInstance(innerInstruction);
-        } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException
-                       | InvocationTargetException | ObjectNotFoundException e) {
+            return conditionFactory.parseConditionInstruction(innerInstruction);
+        } catch (final ObjectNotFoundException e) {
             if (e.getCause() instanceof InstructionParseException) {
                 throw new InstructionParseException("Error in internal condition: " + e.getCause().getMessage(), e);
             } else {
@@ -86,7 +85,6 @@ public class CheckCondition extends Condition {
             }
         }
         return null;
-
     }
 
     @Override
