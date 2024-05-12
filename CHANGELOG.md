@@ -16,6 +16,16 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 ### Security
 
+## [2.1.1-DEV1] - 2024-05-12
+### Added
+### Changed
+- prevent reply when the text is not completely displayed for the SlowTellRaw conversation IO
+### Deprecated
+### Removed
+### Fixed
+- NPE if a player replies to a SlowTellRaw conversation IO when the text is not completely displayed
+### Security
+
 ## [2.1.1] - 2024-05-09
 ### Added
 ### Changed

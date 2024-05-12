@@ -6,6 +6,9 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.ChatColor;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,6 +24,8 @@ public class SlowTellrawConvIO extends TellrawConvIO {
     @Nullable
     private List<String> endLines;
 
+    private boolean canReply;
+
     public SlowTellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         super(conv, onlineProfile);
         final StringBuilder string = new StringBuilder();
@@ -34,6 +39,16 @@ public class SlowTellrawConvIO extends TellrawConvIO {
             delay = 10;
         }
         this.messageDelay = delay;
+        this.canReply = false;
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @Override
+    public void onReply(final AsyncPlayerChatEvent event) {
+        if (!canReply) {
+            return;
+        }
+        super.onReply(event);
     }
 
     @Override
@@ -42,6 +57,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
             end();
             return;
         }
+        canReply = false;
 
         // NPC Text
         final String[] lines = LocalChatPaginator.wordWrap(
@@ -58,11 +74,14 @@ public class SlowTellrawConvIO extends TellrawConvIO {
                     displayText();
 
                     // Display endLines
-                    for (final String message : endLines) {
-                        SlowTellrawConvIO.super.print(message);
+                    if (endLines != null) {
+                        for (final String message : endLines) {
+                            SlowTellrawConvIO.super.print(message);
+                        }
                     }
 
                     endLines = null;
+                    canReply = true;
 
                     this.cancel();
                     return;
