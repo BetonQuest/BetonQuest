@@ -55,7 +55,7 @@ public class RunEvent extends QuestEvent {
      */
     private QuestEvent createEvent(final String instruction) throws InstructionParseException {
         final String[] parts = HandlerUtil.getNNSplit(instruction, "Not enough arguments in internal event", " ");
-        final QuestEventFactory eventFactory = BetonQuest.getInstance().getEventFactory(parts[0]);
+        final QuestEventFactory eventFactory = BetonQuest.getInstance().getEventTypeRegistry().getFactory(parts[0]);
         if (eventFactory == null) {
             // if it's null then there is no such type registered, log an error
             throw new InstructionParseException("Event type " + parts[0] + " is not registered, check if it's"

@@ -873,7 +873,10 @@ public class BetonQuest extends JavaPlugin {
      *
      * @param name         name of the event
      * @param eventFactory factory to create the event
+     * @deprecated in favor of direct usage of {@link #getEventTypeRegistry()} further
+     * {@link QuestTypeRegistry#registerNonStatic(String, QuestFactory)}
      */
+    @Deprecated
     public void registerNonStaticEvent(final String name, final EventFactory eventFactory) {
         eventTypes.registerNonStatic(name, eventFactory);
     }
@@ -885,7 +888,10 @@ public class BetonQuest extends JavaPlugin {
      * @param name         name of the event
      * @param eventFactory factory to create the event and the static event
      * @param <T>          type of factory that creates both normal and static instances of the event.
+     * @deprecated in favor of direct usage of {@link #getEventTypeRegistry()} further
+     * {@link QuestTypeRegistry#register(String, QuestFactory)}
      */
+    @Deprecated
     public <T extends EventFactory & StaticEventFactory> void registerEvent(final String name, final T eventFactory) {
         eventTypes.register(name, eventFactory);
     }
@@ -897,6 +903,8 @@ public class BetonQuest extends JavaPlugin {
      * @param name               name of the event
      * @param eventFactory       factory to create the event
      * @param staticEventFactory factory to create the static event
+     * @deprecated in favor of direct usage of {@link #getEventTypeRegistry()} further
+     * {@link QuestTypeRegistry#register(String, QuestFactory, StaticQuestFactory)}
      */
     public void registerEvent(final String name, final EventFactory eventFactory, final StaticEventFactory staticEventFactory) {
         eventTypes.register(name, eventFactory, staticEventFactory);
@@ -1058,20 +1066,31 @@ public class BetonQuest extends JavaPlugin {
      *
      * @param name the name of the event
      * @return a factory to create the event
+     * @deprecated in favor of direct usage of {@link #getEventTypeRegistry()} further
+     * {@link QuestTypeRegistry#getFactory(String)}
      */
+    @Deprecated
     @Nullable
     public QuestEventFactory getEventFactory(final String name) {
         return eventTypes.getFactory(name);
     }
 
     /**
-     * Gets the {@link QuestTypeRegistry QuestTypeRegistry} holding registered
-     * condition types.
+     * Gets the {@link QuestTypeRegistry QuestTypeRegistry} holding registered condition types.
      *
      * @return registry containing usable condition types
      */
     public ConditionTypeRegistry getConditionTypeRegistry() {
         return conditionTypes;
+    }
+
+    /**
+     * Gets the {@link QuestTypeRegistry QuestTypeRegistry} holding registered event types.
+     *
+     * @return registry containing usable event types
+     */
+    public EventTypeRegistry getEventTypeRegistry() {
+        return eventTypes;
     }
 
     /**
