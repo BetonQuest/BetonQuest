@@ -24,6 +24,9 @@ public class SlowTellrawConvIO extends TellrawConvIO {
     @Nullable
     private List<String> endLines;
 
+    /**
+     * Whether the player can reply to the conversation, disabled while the NPC is talking, enabled when options are displayed
+     */
     private boolean canReply;
 
     public SlowTellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
@@ -42,6 +45,9 @@ public class SlowTellrawConvIO extends TellrawConvIO {
         this.canReply = false;
     }
 
+    /**
+     * if canReply is false, we ignore the event, otherwise handle it as normal
+     */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     @Override
     public void onReply(final AsyncPlayerChatEvent event) {
