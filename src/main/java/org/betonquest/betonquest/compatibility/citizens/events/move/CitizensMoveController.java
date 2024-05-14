@@ -55,7 +55,7 @@ public class CitizensMoveController implements Listener {
      * standing or moving because other reasons
      */
     public boolean isNPCMoving(final NPC npc) {
-        return movingNpcs.containsKey(npc.getId()) && !movingNpcs.get(npc.getId()).stopped;
+        return movingNpcs.containsKey(npc.getId());
     }
 
     /**
@@ -64,9 +64,7 @@ public class CitizensMoveController implements Listener {
      * @param npc the npc to stop its current move control
      */
     public void stopNPCMoving(final NPC npc) {
-        if (movingNpcs.containsKey(npc.getId())) {
-            movingNpcs.get(npc.getId()).stop();
-        }
+        movingNpcs.remove(npc.getId());
     }
 
     /**
@@ -95,7 +93,7 @@ public class CitizensMoveController implements Listener {
      */
     public void startNew(final NPC npc, final Profile profile, final MoveData moveData) throws QuestRuntimeException {
         final MoveInstance oldMoveInstance = movingNpcs.get(npc.getId());
-        if (oldMoveInstance != null && !oldMoveInstance.stopped) {
+        if (oldMoveInstance != null) {
             for (final EventID event : oldMoveInstance.moveData.failEvents()) {
                 BetonQuest.event(profile, event);
             }
@@ -185,11 +183,6 @@ public class CitizensMoveController implements Listener {
          */
         private final ListIterator<CompoundLocation> locationsIterator;
 
-        /**
-         * If this movement has been stopped.
-         */
-        private boolean stopped;
-
         private MoveInstance(final MoveData moveData, final Profile profile, final NPC npc) throws QuestRuntimeException {
             this.moveData = moveData;
             this.npcId = npc.getId();
@@ -209,13 +202,6 @@ public class CitizensMoveController implements Listener {
         }
 
         /**
-         * Stops this move instance. The NPC will still move to its current target.
-         */
-        public void stop() {
-            stopped = true;
-        }
-
-        /**
          * Moves the NPC to the next location, or the previous when it was the last.
          *
          * @param event the navigation event to handle
@@ -225,7 +211,7 @@ public class CitizensMoveController implements Listener {
             if (npc.getId() != npcId) {
                 return;
             }
-            if (stopped || CitizensWalkingListener.getInstance().isMovementPaused(npc)) {
+            if (CitizensWalkingListener.getInstance().isMovementPaused(npc)) {
                 return;
             }
             if (event instanceof NavigationStuckEvent || event instanceof NavigationCancelEvent) {
@@ -264,7 +250,7 @@ public class CitizensMoveController implements Listener {
                     for (final EventID event : moveData.doneEvents()) {
                         BetonQuest.event(currentProfile, event);
                     }
-                    stop();
+                    movingNpcs.remove(npcId);
                 }
             }.runTaskLater(BetonQuest.getInstance(), moveData.waitTicks());
         }
