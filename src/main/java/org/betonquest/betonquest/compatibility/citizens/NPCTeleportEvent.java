@@ -38,7 +38,7 @@ public class NPCTeleportEvent extends QuestEvent implements Listener {
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
         }
-        NPCMoveEvent.stopNPCMoving(npc);
+        CitizensIntegrator.getCitizensMoveInstance().stopNPCMoving(npc);
         npc.getNavigator().cancelNavigation();
         if (npc.isSpawned()) {
             npc.teleport(location.getLocation(profile), PlayerTeleportEvent.TeleportCause.PLUGIN);
