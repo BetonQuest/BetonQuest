@@ -18,23 +18,23 @@ public class CitizensMoveEvent implements Event {
     /**
      * Move Instance which handles the NPC movement.
      */
-    private final CitizensMoveListener citizensMoveListener;
+    private final CitizensMoveController citizensMoveController;
 
     /**
      * Parsed data for the NPC movement.
      */
-    private final CitizensMoveListener.MoveData moveData;
+    private final CitizensMoveController.MoveData moveData;
 
     /**
      * Create a new CitizensMoveEvent.
      *
-     * @param npcId                the ID of the NPC to move
-     * @param citizensMoveListener the move instance which handles the NPC movement
-     * @param moveData             the parsed data for the NPC movement
+     * @param npcId                  the ID of the NPC to move
+     * @param citizensMoveController the move instance which handles the NPC movement
+     * @param moveData               the parsed data for the NPC movement
      */
-    public CitizensMoveEvent(final int npcId, final CitizensMoveListener citizensMoveListener, final CitizensMoveListener.MoveData moveData) {
+    public CitizensMoveEvent(final int npcId, final CitizensMoveController citizensMoveController, final CitizensMoveController.MoveData moveData) {
         this.npcId = npcId;
-        this.citizensMoveListener = citizensMoveListener;
+        this.citizensMoveController = citizensMoveController;
         this.moveData = moveData;
     }
 
@@ -46,9 +46,9 @@ public class CitizensMoveEvent implements Event {
             throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
         }
         if (profile.getOnlineProfile().isEmpty()) {
-            citizensMoveListener.stopNPCMoving(npc);
+            citizensMoveController.stopNPCMoving(npc);
             return;
         }
-        citizensMoveListener.startNew(npc, profile, moveData);
+        citizensMoveController.startNew(npc, profile, moveData);
     }
 }

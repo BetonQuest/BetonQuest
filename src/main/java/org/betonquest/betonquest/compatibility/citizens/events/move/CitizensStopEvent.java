@@ -16,19 +16,19 @@ public class CitizensStopEvent implements Event {
     private final int npcId;
 
     /**
-     * MoveListener where to stop NPC movement.
+     * Move Controller where to stop NPC movement.
      */
-    private final CitizensMoveListener citizensMoveListener;
+    private final CitizensMoveController citizensMoveController;
 
     /**
      * Create a new CitizensStopEvent.
      *
-     * @param npcId                the id of the NPC to stop
-     * @param citizensMoveListener the move listener where to stop NPC movement
+     * @param npcId                  the id of the NPC to stop
+     * @param citizensMoveController the move controller where to stop NPC movement
      */
-    public CitizensStopEvent(final int npcId, final CitizensMoveListener citizensMoveListener) {
+    public CitizensStopEvent(final int npcId, final CitizensMoveController citizensMoveController) {
         this.npcId = npcId;
-        this.citizensMoveListener = citizensMoveListener;
+        this.citizensMoveController = citizensMoveController;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class CitizensStopEvent implements Event {
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
         }
-        citizensMoveListener.stopNPCMoving(npc);
+        citizensMoveController.stopNPCMoving(npc);
         npc.getNavigator().cancelNavigation();
     }
 }

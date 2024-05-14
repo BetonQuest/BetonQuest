@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.compatibility.citizens.events.move.CitizensMoveListener;
+import org.betonquest.betonquest.compatibility.citizens.events.move.CitizensMoveController;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -44,9 +44,9 @@ public class CitizensListener implements Listener {
     private final BetonQuestLogger log;
 
     /**
-     * MoveListener to check if the NPC blocks conversations while moving.
+     * Move Controller to check if the NPC blocks conversations while moving.
      */
-    private final CitizensMoveListener citizensMoveListener;
+    private final CitizensMoveController citizensMoveController;
 
     /**
      * Stores the last time the player interacted with an NPC.
@@ -83,12 +83,16 @@ public class CitizensListener implements Listener {
 
     /**
      * Initializes the listener
+     *
+     * @param loggerFactory          the logger factory to create new class specific logger
+     * @param log                    the custom logger for this class
+     * @param citizensMoveController the move controller to check if the NPC currently blocks conversations
      */
     public CitizensListener(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                            final CitizensMoveListener citizensMoveListener) {
+                            final CitizensMoveController citizensMoveController) {
         this.loggerFactory = loggerFactory;
         this.log = log;
-        this.citizensMoveListener = citizensMoveListener;
+        this.citizensMoveController = citizensMoveController;
         reload();
     }
 
@@ -139,7 +143,7 @@ public class CitizensListener implements Listener {
 
         final NPC npc = event.getNPC();
 
-        if (citizensMoveListener.blocksTalking(npc)) {
+        if (citizensMoveController.blocksTalking(npc)) {
             return;
         }
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getClicker());

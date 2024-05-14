@@ -4,9 +4,9 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.compatibility.citizens.events.move.CitizensMoveController;
 import org.betonquest.betonquest.compatibility.citizens.events.move.CitizensMoveEvent;
 import org.betonquest.betonquest.compatibility.citizens.events.move.CitizensMoveEventFactory;
-import org.betonquest.betonquest.compatibility.citizens.events.move.CitizensMoveListener;
 import org.betonquest.betonquest.compatibility.citizens.events.move.CitizensStopEventFactory;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
@@ -28,7 +28,7 @@ public class CitizensIntegrator implements Integrator {
     /**
      * Handles NPC movement of the {@link CitizensMoveEvent}.
      */
-    private CitizensMoveListener citizensMoveListener;
+    private CitizensMoveController citizensMoveController;
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public CitizensIntegrator() {
@@ -41,15 +41,15 @@ public class CitizensIntegrator implements Integrator {
      *
      * @return the move controller of this NPC integration
      */
-    public static CitizensMoveListener getCitizensMoveInstance() {
-        return instance.citizensMoveListener;
+    public static CitizensMoveController getCitizensMoveInstance() {
+        return instance.citizensMoveController;
     }
 
     @Override
     public void hook() {
         final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
-        citizensMoveListener = new CitizensMoveListener(loggerFactory.create(CitizensMoveListener.class));
-        citizensListener = new CitizensListener(loggerFactory, loggerFactory.create(CitizensListener.class), citizensMoveListener);
+        citizensMoveController = new CitizensMoveController(loggerFactory.create(CitizensMoveController.class));
+        citizensListener = new CitizensListener(loggerFactory, loggerFactory.create(CitizensListener.class), citizensMoveController);
         new CitizensWalkingListener();
 
         // if ProtocolLib is hooked, start NPCHider
@@ -62,10 +62,10 @@ public class CitizensIntegrator implements Integrator {
         plugin.registerObjectives("npcrange", NPCRangeObjective.class);
         final Server server = plugin.getServer();
         final BukkitScheduler scheduler = server.getScheduler();
-        server.getPluginManager().registerEvents(citizensMoveListener, plugin);
-        plugin.registerNonStaticEvent("movenpc", new CitizensMoveEventFactory(server, scheduler, plugin, citizensMoveListener));
+        server.getPluginManager().registerEvents(citizensMoveController, plugin);
+        plugin.registerNonStaticEvent("movenpc", new CitizensMoveEventFactory(server, scheduler, plugin, citizensMoveController));
         plugin.registerEvents("teleportnpc", NPCTeleportEvent.class);
-        plugin.registerEvent("stopnpc", new CitizensStopEventFactory(server, scheduler, plugin, citizensMoveListener));
+        plugin.registerEvent("stopnpc", new CitizensStopEventFactory(server, scheduler, plugin, citizensMoveController));
         plugin.registerConversationIO("chest", CitizensInventoryConvIO.class);
         plugin.registerConversationIO("combined", CitizensInventoryConvIO.CitizensCombined.class);
         plugin.registerVariable("citizen", CitizensVariable.class);
@@ -83,6 +83,6 @@ public class CitizensIntegrator implements Integrator {
 
     @Override
     public void close() {
-        HandlerList.unregisterAll(citizensMoveListener);
+        HandlerList.unregisterAll(citizensMoveController);
     }
 }

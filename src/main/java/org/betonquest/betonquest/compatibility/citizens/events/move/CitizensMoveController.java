@@ -25,9 +25,9 @@ import java.util.ListIterator;
 import java.util.Map;
 
 /**
- * Controls a Citizens NPC movement.
+ * Controls a Citizens-NPC movement.
  */
-public class CitizensMoveListener implements Listener {
+public class CitizensMoveController implements Listener {
     /**
      * Citizens NPC ID and their active move instance.
      */
@@ -39,11 +39,11 @@ public class CitizensMoveListener implements Listener {
     private final BetonQuestLogger log;
 
     /**
-     * Creates a new Citizens Mover.
+     * Creates a new Citizens Move Controller.
      *
      * @param log logger instance for this class
      */
-    public CitizensMoveListener(final BetonQuestLogger log) {
+    public CitizensMoveController(final BetonQuestLogger log) {
         this.log = log;
     }
 
@@ -147,6 +147,16 @@ public class CitizensMoveListener implements Listener {
         }
     }
 
+    /**
+     * All data required for the movement of an NPC.
+     *
+     * @param locations          the target location of the movement
+     * @param waitTicks          the amount of ticks the NPC will wait before moving to the next location
+     * @param doneEvents         the events to execute when the NPC reaches the last destination
+     * @param failEvents         the events to execute when the NPC can't reach the last destination
+     * @param blockConversations if the NPC will block conversation interaction while moving (includes wait time)
+     * @param sourcePackage      the quest package that started the movement, used for debug logging
+     */
     public record MoveData(List<CompoundLocation> locations, int waitTicks, EventID[] doneEvents,
                            EventID[] failEvents, boolean blockConversations, QuestPackage sourcePackage) {
     }

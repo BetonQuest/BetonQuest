@@ -35,21 +35,21 @@ public class CitizensMoveEventFactory implements EventFactory {
     /**
      * Move instance to handle movement of Citizens NPCs.
      */
-    private final CitizensMoveListener citizensMoveListener;
+    private final CitizensMoveController citizensMoveController;
 
     /**
      * Create a new NPCTeleportEventFactory.
      *
-     * @param server               the server to use for syncing to the primary server thread
-     * @param scheduler            the scheduler to use for syncing to the primary server thread
-     * @param plugin               the plugin to use for syncing to the primary server thread
-     * @param citizensMoveListener the move instance to handle movement of Citizens NPCs
+     * @param server                 the server to use for syncing to the primary server thread
+     * @param scheduler              the scheduler to use for syncing to the primary server thread
+     * @param plugin                 the plugin to use for syncing to the primary server thread
+     * @param citizensMoveController the move instance to handle movement of Citizens NPCs
      */
-    public CitizensMoveEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin, final CitizensMoveListener citizensMoveListener) {
+    public CitizensMoveEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin, final CitizensMoveController citizensMoveController) {
         this.server = server;
         this.scheduler = scheduler;
         this.plugin = plugin;
-        this.citizensMoveListener = citizensMoveListener;
+        this.citizensMoveController = citizensMoveController;
     }
 
     @Override
@@ -64,8 +64,8 @@ public class CitizensMoveEventFactory implements EventFactory {
         final EventID[] doneEvents = instruction.getList(instruction.getOptional("done"), instruction::getEvent).toArray(new EventID[0]);
         final EventID[] failEvents = instruction.getList(instruction.getOptional("fail"), instruction::getEvent).toArray(new EventID[0]);
         final boolean blockConversations = instruction.hasArgument("block");
-        final CitizensMoveListener.MoveData moveAction = new CitizensMoveListener.MoveData(locations, waitTicks, doneEvents, failEvents, blockConversations, instruction.getPackage());
-        return new PrimaryServerThreadEvent(new CitizensMoveEvent(npcId, citizensMoveListener, moveAction),
+        final CitizensMoveController.MoveData moveAction = new CitizensMoveController.MoveData(locations, waitTicks, doneEvents, failEvents, blockConversations, instruction.getPackage());
+        return new PrimaryServerThreadEvent(new CitizensMoveEvent(npcId, citizensMoveController, moveAction),
                 server, scheduler, plugin);
     }
 }
