@@ -25,6 +25,7 @@ public class CitizensNPCTeleportEventFactory extends NPCTeleportEventFactory imp
      * @param data the data to use for syncing to the primary server thread
      */
     public CitizensNPCTeleportEventFactory(final PrimaryServerThreadData data) {
+        super();
         this.data = data;
     }
 

@@ -58,6 +58,7 @@ public abstract class NPCRangeObjective extends Objective implements NPCSupplier
      * @param instruction the user-provided instruction
      * @throws InstructionParseException if the instruction is invalid
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public NPCRangeObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         final String[] rawIds = instruction.getArray();
@@ -152,11 +153,13 @@ public abstract class NPCRangeObjective extends Objective implements NPCSupplier
     }
 
     @Override
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
     public String getDefaultDataInstruction() {
         return "";
     }
 
     @Override
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
     public String getProperty(final String name, final Profile profile) {
         return "";
     }

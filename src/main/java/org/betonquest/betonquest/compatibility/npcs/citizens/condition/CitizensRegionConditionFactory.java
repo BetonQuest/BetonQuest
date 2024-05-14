@@ -24,6 +24,7 @@ public class CitizensRegionConditionFactory extends NPCRegionConditionFactory im
      * @param data the data used for primary server thread access
      */
     public CitizensRegionConditionFactory(final PrimaryServerThreadData data) {
+        super();
         this.data = data;
     }
 

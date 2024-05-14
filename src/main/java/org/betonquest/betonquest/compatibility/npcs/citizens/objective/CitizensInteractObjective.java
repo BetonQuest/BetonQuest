@@ -1,15 +1,14 @@
 package org.betonquest.betonquest.compatibility.npcs.citizens.objective;
 
+import net.citizensnpcs.api.event.NPCClickEvent;
 import net.citizensnpcs.api.event.NPCLeftClickEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.objective.NPCInteractObjective;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.objectives.EntityInteractObjective.Interaction;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-
-import static org.betonquest.betonquest.objectives.EntityInteractObjective.Interaction.LEFT;
-import static org.betonquest.betonquest.objectives.EntityInteractObjective.Interaction.RIGHT;
 
 /**
  * Citizens implementation of {@link NPCInteractObjective}.
@@ -40,10 +39,7 @@ public class CitizensInteractObjective extends NPCInteractObjective {
      */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onNPCRightClick(final NPCRightClickEvent event) {
-        final boolean cancel = onNPCClick(String.valueOf(event.getNPC().getId()), RIGHT, event.getClicker());
-        if (cancel) {
-            event.setCancelled(true);
-        }
+        process(event, Interaction.RIGHT);
     }
 
     /**
@@ -53,7 +49,11 @@ public class CitizensInteractObjective extends NPCInteractObjective {
      */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onNPCLeftClick(final NPCLeftClickEvent event) {
-        final boolean cancel = onNPCClick(String.valueOf(event.getNPC().getId()), LEFT, event.getClicker());
+        process(event, Interaction.LEFT);
+    }
+
+    private void process(final NPCClickEvent event, final Interaction interaction) {
+        final boolean cancel = onNPCClick(String.valueOf(event.getNPC().getId()), interaction, event.getClicker());
         if (cancel) {
             event.setCancelled(true);
         }
