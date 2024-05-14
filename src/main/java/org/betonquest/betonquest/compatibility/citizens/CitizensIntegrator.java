@@ -23,7 +23,7 @@ public class CitizensIntegrator implements Integrator {
 
     private final BetonQuest plugin;
 
-    private CitizensListener citizensListener;
+    private CitizensConversationStarter citizensConversationStarter;
 
     /**
      * Handles NPC movement of the {@link CitizensMoveEvent}.
@@ -49,7 +49,7 @@ public class CitizensIntegrator implements Integrator {
     public void hook() {
         final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
         citizensMoveController = new CitizensMoveController(loggerFactory.create(CitizensMoveController.class));
-        citizensListener = new CitizensListener(loggerFactory, loggerFactory.create(CitizensListener.class), citizensMoveController);
+        citizensConversationStarter = new CitizensConversationStarter(loggerFactory, loggerFactory.create(CitizensConversationStarter.class), citizensMoveController);
         new CitizensWalkingListener();
 
         // if ProtocolLib is hooked, start NPCHider
@@ -78,7 +78,7 @@ public class CitizensIntegrator implements Integrator {
 
     @Override
     public void reload() {
-        citizensListener.reload();
+        citizensConversationStarter.reload();
     }
 
     @Override

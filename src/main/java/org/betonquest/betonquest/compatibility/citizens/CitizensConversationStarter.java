@@ -32,7 +32,7 @@ import java.util.UUID;
 /**
  * Starts new conversations with Citizen NPCs.
  */
-public class CitizensListener implements Listener {
+public class CitizensConversationStarter {
     /**
      * The section in which the assignments from NPCs to conversations are stored.
      */
@@ -88,8 +88,8 @@ public class CitizensListener implements Listener {
      * @param log                    the custom logger for this class
      * @param citizensMoveController the move controller to check if the NPC currently blocks conversations
      */
-    public CitizensListener(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                            final CitizensMoveController citizensMoveController) {
+    public CitizensConversationStarter(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
+                                       final CitizensMoveController citizensMoveController) {
         this.loggerFactory = loggerFactory;
         this.log = log;
         this.citizensMoveController = citizensMoveController;
