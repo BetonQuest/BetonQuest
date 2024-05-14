@@ -30,7 +30,7 @@ public class CitizensBQAdapter implements BQNPCAdapter {
     }
 
     @Override
-    public String getFullName() {
+    public String getFormattedName() {
         return npc.getFullName();
     }
 

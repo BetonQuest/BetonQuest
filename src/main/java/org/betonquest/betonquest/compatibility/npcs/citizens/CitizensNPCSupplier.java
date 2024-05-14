@@ -8,20 +8,23 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 
 import java.util.function.Supplier;
 
+/**
+ * Citizens supplier for the {@link BQNPCAdapter}.
+ */
 public interface CitizensNPCSupplier extends NPCSupplierStandard {
     @Override
-    default Supplier<BQNPCAdapter> getSupplierByID(final String id) throws InstructionParseException {
-        final int npcId;
+    default Supplier<BQNPCAdapter> getSupplierByID(final String npcId) throws InstructionParseException {
+        final int parsedId;
         try {
-            npcId = Integer.parseInt(id);
-            if (npcId < 0) {
-                throw new InstructionParseException("The specified NPC ID was not a positive or zero integer");
+            parsedId = Integer.parseInt(npcId);
+            if (parsedId < 0) {
+                throw new InstructionParseException("The NPC ID '" + npcId + "' is not a positive or zero integer");
             }
         } catch (final NumberFormatException e) {
-            throw new InstructionParseException("The specified NPC ID was not a valid integer", e);
+            throw new InstructionParseException("The NPC ID '" + npcId + "' is not a valid integer", e);
         }
         return () -> {
-            final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
+            final NPC npc = CitizensAPI.getNPCRegistry().getById(parsedId);
             return npc == null ? null : new CitizensBQAdapter(npc);
         };
     }

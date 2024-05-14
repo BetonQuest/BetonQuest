@@ -18,7 +18,7 @@ public enum Argument {
     /**
      * Retrieve the full name of the NPC.
      */
-    FULL_NAME((npc, loc) -> npc.getFullName()),
+    FULL_NAME((npc, loc) -> npc.getFormattedName()),
 
     /**
      * Retrieve the location of the NPC.
