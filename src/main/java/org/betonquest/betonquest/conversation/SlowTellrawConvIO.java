@@ -80,10 +80,8 @@ public class SlowTellrawConvIO extends TellrawConvIO {
                     displayText();
 
                     // Display endLines
-                    if (endLines != null) {
-                        for (final String message : endLines) {
-                            SlowTellrawConvIO.super.print(message);
-                        }
+                    for (final String message : endLines) {
+                        SlowTellrawConvIO.super.print(message);
                     }
 
                     endLines = null;
