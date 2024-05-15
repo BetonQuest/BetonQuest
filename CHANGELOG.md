@@ -11,9 +11,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - `aureliumskillslevel` condition was renamed to `auraskillslevel`
   - `aureliumstatslevel` condition was renamed to `auraskillsstatslevel`
   - `aureliumskillsxp` event was renamed to `auraskillsxp`
+- prevent reply when the text is not completely displayed for the SlowTellRaw conversation IO
 ### Deprecated
 ### Removed
 ### Fixed
+- NPE if a player replies to a SlowTellRaw conversation IO when the text is not completely displayed
 ### Security
 
 ## [2.1.1] - 2024-05-09
