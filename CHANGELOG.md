@@ -6,6 +6,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
+- LuckPerms permission events
+  - `addPermission` event adds a permission to a player
+  - `removePermission` event removes a permission from a player
 ### Changed
 - `AureliumSkills` was renamed to `AuraSkills` the following was changed in BQ
   - `aureliumskillslevel` condition was renamed to `auraskillslevel`
