@@ -1,63 +1,63 @@
 2.0.2.2:
   - type: VALUE_RENAME
     key: ru.inventory_full_drop
-    oldValueRegex: "&e*&bВаш инвентарь заполнен! Предмет был дропнут на землю&e*"
+    oldValueRegex: "&e\\*&bВаш инвентарь заполнен! Предмет был дропнут на землю&e\\*"
     newValue: "&e*&bВаш инвентарь заполнен! Предмет был выброшен на землю&e*"
   - type: VALUE_RENAME
     key: ru.blocks_to_break
-    oldValueRegex: "&2{1} блоков осталось сломать"
+    oldValueRegex: "&2\\{1} блоков осталось сломать"
     newValue: "&2Осталось сломать {1} блоков"
   - type: VALUE_RENAME
     key: ru.blocks_to_place
-    oldValueRegex: "&2{1} блоков осталось поставить"
+    oldValueRegex: "&2\\{1} блоков осталось поставить"
     newValue: "&2Осталось поставить {1} блоков"
   - type: VALUE_RENAME
     key: ru.mobs_to_kill
-    oldValueRegex: "&2{1} мобов осталось убить"
+    oldValueRegex: "&2\\{1} мобов осталось убить"
     newValue: "&2Осталось убить {1} мобов"
   - type: VALUE_RENAME
     key: ru.mobs_to_click
-    oldValueRegex: "&2Осталось {1} мобов, на которые нужно нажать"
+    oldValueRegex: "&2Осталось \\{1} мобов, на которые нужно нажать"
     newValue: "&2Осталось кликнуть по {1} мобам"
   - type: VALUE_RENAME
     key: ru.players_to_kill
-    oldValueRegex: "&2{1} игроков осталось убить"
+    oldValueRegex: "&2\\{1} игроков осталось убить"
     newValue: "&2Осталось убить {1} игроков"
   - type: VALUE_RENAME
     key: ru.fish_to_catch
-    oldValueRegex: "&2{1} рыбы осталось поймать"
+    oldValueRegex: "&2\\{1} рыбы осталось поймать"
     newValue: "&2Осталось поймать {1} рыб"
   - type: VALUE_RENAME
     key: ru.sheep_to_shear
-    oldValueRegex: "&2{1} овец осталось подстричь"
+    oldValueRegex: "&2\\{1} овец осталось подстричь"
     newValue: "&2Осталось постричь {1} овец"
   - type: VALUE_RENAME
     key: ru.potions_to_brew
-    oldValueRegex: "2{1} зелий осталось сварить"
+    oldValueRegex: "&2\\{1} зелий осталось сварить"
     newValue: "&2Осталось приготовить {1} зелий"
   - type: VALUE_RENAME
     key: ru.animals_to_breed
-    oldValueRegex: "&2{1} животных осталось развести"
+    oldValueRegex: "&2\\{1} животных осталось развести"
     newValue: "&2Осталось развести {1} животных"
   - type: VALUE_RENAME
     key: ru.items_to_pickup
-    oldValueRegex: "&2{1} предметов осталось поднять"
+    oldValueRegex: "&2\\{1} предметов осталось поднять"
     newValue: "&2Осталось подобрать {1} предметов"
   - type: VALUE_RENAME
     key: ru.items_to_smelt
-    oldValueRegex: "&2{1} предметов осталось переплавить"
+    oldValueRegex: "&2\\{1} предметов осталось переплавить"
     newValue: "&2Осталось переплавить {1} предметов"
   - type: VALUE_RENAME
     key: ru.items_to_craft
-    oldValueRegex: "&2{1} предметов осталось скрафтить"
+    oldValueRegex: "&2\\{1} предметов осталось скрафтить"
     newValue: "&2Осталось скрафтить {1} предметов"
   - type: VALUE_RENAME
     key: ru.items_to_enchant
-    oldValueRegex: "&2{1} предметов осталось зачаровать"
+    oldValueRegex: "&2\\{1} предметов осталось зачаровать"
     newValue: "&2Осталось зачаровать {1} предметов"
   - type: VALUE_RENAME
     key: ru.level_to_gain
-    oldValueRegex: "&2{1} уровней осталось набрать"
+    oldValueRegex: "&2\\{1} уровней осталось набрать"
     newValue: "&2Осталось получить {1} уровней"
   - type: VALUE_RENAME
     key: ru.busy
@@ -103,19 +103,19 @@
 2.0.0.2:
   - type: VALUE_RENAME
     key: fr.inventory_full_backpack
-    oldValueRegex: "&e*&bVotre inventaire est plein! L''objet était posé dans votre sac á dos.&e*"
+    oldValueRegex: "&e\\*&bVotre inventaire est plein! L''objet était posé dans votre sac á dos\\.&e\\*"
     newValue: "&e*&bVotre inventaire est plein! L''objet a été placé dans votre sac á dos.&e*"
   - type: VALUE_RENAME
     key: fr.inventory_full_drop
-    oldValueRegex: "&e*&bVotre inventaire est plein! L''objet était posé au plancher.&e*"
+    oldValueRegex: "&e\\*&bVotre inventaire est plein! L''objet était posé au plancher\\.&e\\*"
     newValue: "&e*&bVotre inventaire est plein! L''objet a été déposé au sol.&e*"
   - type: VALUE_RENAME
     key: fr.items_to_enchant
-    oldValueRegex: "&2{1} items left to enchant"
+    oldValueRegex: "&2\\{1} items left to enchant"
     newValue: "&2{1} objets restant à enchanter"
   - type: VALUE_RENAME
     key: fr.level_to_gain
-    oldValueRegex: "&2{1} levels left to gain"
+    oldValueRegex: "&2\\{1} levels left to gain"
     newValue: "&2{1} niveaux restant à gagner"
   - type: VALUE_RENAME
     key: fr.chest_occupied
