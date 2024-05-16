@@ -6,6 +6,8 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
 import java.util.SortedMap;
@@ -39,13 +41,24 @@ public abstract class Database {
 
     public Connection getConnection() {
         try {
-            if (con == null || con.isClosed()) {
+            if (con == null || con.isClosed() || isConnectionBroken(con)) {
                 con = openConnection();
             }
         } catch (final SQLException e) {
             log.error("Failed opening database connection!", e);
         }
         return con;
+    }
+
+    private boolean isConnectionBroken(final Connection connection) throws SQLException {
+        try {
+            try (PreparedStatement stmnt = connection.prepareStatement("SELECT 1");
+                 ResultSet result = stmnt.executeQuery()) {
+                return !result.next();
+            }
+        } catch (final SQLException e) {
+            return true;
+        }
     }
 
     protected abstract Connection openConnection() throws SQLException;
