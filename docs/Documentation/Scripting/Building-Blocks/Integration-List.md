@@ -531,9 +531,8 @@ Check the [Luck Perms documentation](https://luckperms.net/wiki/Context)
 for an in-depth explanation on what contexts are and how to add them to permissions.
 
 ### Permissions
-In case you still want to add and remove permissions directly and don't want to have the LuckPerms changelog chat spam 
-when executing the LuckPerms command via the Server or a player with enough permissions you can use the `luckperms 
-addPermission` and `luckperms removePermission` events.
+If you prefer to directly add or remove permissions without triggering the LuckPerms changelog chat notifications,
+you can utilize the `luckperms addPermission` and `luckperms removePermission` events. 
 
  ```YAML title="Example"
  events:

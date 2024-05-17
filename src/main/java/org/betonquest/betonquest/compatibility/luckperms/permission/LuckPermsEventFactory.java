@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.luckperms.permission;
 
 import net.luckperms.api.LuckPerms;
+import net.luckperms.api.model.data.NodeMap;
 import net.luckperms.api.node.types.PermissionNode;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
@@ -35,22 +36,23 @@ public class LuckPermsEventFactory implements EventFactory {
         final String action = instruction.next();
 
         return switch (action.toLowerCase(Locale.ROOT)) {
-            case "addpermission" -> new LuckPermsAddPermissionEvent(getPermissionNodes(instruction), luckPermsAPI);
+            case "addpermission" ->
+                    new LuckPermsPermissionEvent(getPermissionNodes(instruction), luckPermsAPI, NodeMap::add);
             case "removepermission" ->
-                    new LuckPermsRemovePermissionEvent(getPermissionNodes(instruction), luckPermsAPI);
+                    new LuckPermsPermissionEvent(getPermissionNodes(instruction), luckPermsAPI, NodeMap::remove);
             default ->
                     throw new InstructionParseException("Unknown action: " + action + ". Expected addPermission or removePermission.");
         };
     }
 
     private List<PermissionNode> getPermissionNodes(final Instruction instruction) throws InstructionParseException {
-        final String unparsedPermissions = instruction.getOptional("permission", null);
+        final String unparsedPermissions = instruction.getOptional("permission", "");
         if (unparsedPermissions.isEmpty()) {
             throw new InstructionParseException("Missing permissions argument. Expected permissions:permission1,"
                     + "permission2,permission3,...");
         }
         final List<String> permissions = parseList(unparsedPermissions);
-        final List<String> contexts = parseList(instruction.getOptional("context", null));
+        final List<String> contexts = parseList(instruction.getOptional("context", ""));
         final String value = instruction.getOptional("value", "");
         final long expiry = instruction.getLong(instruction.getOptional("expiry"), 0L);
         final TimeUnit timeUnit = instruction.getEnum(instruction.getOptional("unit"), TimeUnit.class, TimeUnit.DAYS);

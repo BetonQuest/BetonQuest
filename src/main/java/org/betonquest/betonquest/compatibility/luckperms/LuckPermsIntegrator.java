@@ -10,15 +10,29 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Integrates LuckPerms to BetonQuest.
+ */
 public class LuckPermsIntegrator implements Integrator {
 
+    /**
+     * The {@link BetonQuest} instance.
+     */
     private final BetonQuest instance;
 
+    /**
+     * The {@link LuckPerms} API.
+     */
     private LuckPerms luckPermsAPI;
 
+    /**
+     * The {@link ContextCalculator} for tags.
+     */
     private ContextCalculator<Player> tagCalculator;
 
+    /**
+     * Creates the {@link LuckPermsIntegrator} instance.
+     */
     public LuckPermsIntegrator() {
         instance = BetonQuest.getInstance();
     }
