@@ -1,8 +1,9 @@
 package org.betonquest.betonquest.quest.event.chest;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.HybridEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
@@ -18,7 +19,7 @@ import java.util.Map;
 /**
  * Puts the items in the inventory of a block or drops them if the inventory is full.
  */
-public class ChestGiveEvent implements Event {
+public class ChestGiveEvent implements HybridEvent {
     /**
      * The items to put in the blocks inventory.
      */
@@ -41,7 +42,7 @@ public class ChestGiveEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         final Block block = location.getLocation(profile).getBlock();
         final InventoryHolder chest;
         try {

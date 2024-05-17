@@ -5,6 +5,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.InventoryHolder;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Abstract class for chest events.
@@ -32,7 +33,7 @@ public class AbstractChestEvent {
      * @return the chest {@link InventoryHolder} at the specified location
      * @throws QuestRuntimeException if there is no chest at the specified location
      */
-    protected InventoryHolder getChest(final Profile profile) throws QuestRuntimeException {
+    protected InventoryHolder getChest(@Nullable final Profile profile) throws QuestRuntimeException {
         final Block block = compoundLocation.getLocation(profile).getBlock();
         try {
             return (InventoryHolder) block.getState();

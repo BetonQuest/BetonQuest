@@ -2,13 +2,10 @@ package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.HybridEvent;
+import org.betonquest.betonquest.api.quest.event.HybridEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.quest.event.NullStaticEventAdapter;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadHybridEvent;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
@@ -17,7 +14,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 /**
  * Factory to create chest events from {@link Instruction}s.
  */
-public class ChestTakeEventFactory implements EventFactory, StaticEventFactory {
+public class ChestTakeEventFactory implements HybridEventFactory {
     /**
      * Server to use for syncing to the primary server thread.
      */
@@ -47,16 +44,11 @@ public class ChestTakeEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public HybridEvent parseHybridEvent(final Instruction instruction) throws InstructionParseException {
         final CompoundLocation compoundLocation = instruction.getLocation();
         final Item[] item = instruction.getItemList();
-        return new PrimaryServerThreadEvent(
+        return new PrimaryServerThreadHybridEvent(
                 new ChestTakeEvent(compoundLocation, item), server, scheduler, plugin
         );
-    }
-
-    @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
-        return new NullStaticEventAdapter(parseEvent(instruction));
     }
 }
