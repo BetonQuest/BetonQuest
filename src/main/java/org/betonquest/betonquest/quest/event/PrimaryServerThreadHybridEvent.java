@@ -1,18 +1,19 @@
 package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.HybridEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * Wrapper for {@link Event}s to be executed on the primary server thread.
+ * Wrapper for {@link HybridEvent}s to be executed on the primary server thread.
  */
-public class PrimaryServerThreadEvent extends PrimaryServerThreadEventFrame<Event> implements Event {
+public class PrimaryServerThreadHybridEvent extends PrimaryServerThreadEventFrame<HybridEvent> implements HybridEvent {
     /**
-     * Wrap the given {@link Event} for execution on the primary server thread.
+     * Wrap the given {@link HybridEvent} for execution on the primary server thread.
      * The {@link Server}, {@link BukkitScheduler} and {@link Plugin} are used to
      * determine if the current thread is the primary server thread and to
      * schedule the execution onto it in case it isn't.
@@ -22,18 +23,30 @@ public class PrimaryServerThreadEvent extends PrimaryServerThreadEventFrame<Even
      * @param scheduler   scheduler for primary thread scheduling
      * @param plugin      plugin to associate with the scheduled task
      */
-    public PrimaryServerThreadEvent(final Event syncedEvent, final Server server,
-                                    final BukkitScheduler scheduler, final Plugin plugin) {
+    public PrimaryServerThreadHybridEvent(final HybridEvent syncedEvent, final Server server,
+                                          final BukkitScheduler scheduler, final Plugin plugin) {
         super(syncedEvent, server, scheduler, plugin);
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         if (server.isPrimaryThread()) {
             syncedEvent.execute(profile);
         } else {
             executeOnPrimaryThread(() -> {
                 syncedEvent.execute(profile);
+                return null;
+            });
+        }
+    }
+
+    @Override
+    public void execute() throws QuestRuntimeException {
+        if (server.isPrimaryThread()) {
+            syncedEvent.execute();
+        } else {
+            executeOnPrimaryThread(() -> {
+                syncedEvent.execute();
                 return null;
             });
         }
