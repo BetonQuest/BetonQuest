@@ -4,12 +4,10 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.bukkit.command.SilentCommandSender;
 import org.betonquest.betonquest.api.bukkit.command.SilentConsoleCommandSender;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.HybridEvent;
+import org.betonquest.betonquest.api.quest.event.HybridEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.quest.event.NullStaticEventAdapter;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadHybridEvent;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -18,7 +16,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 /**
  * Creates a new CommandEvent from an {@link Instruction}.
  */
-public class CommandEventFactory extends BaseCommandEventFactory implements StaticEventFactory {
+public class CommandEventFactory extends BaseCommandEventFactory implements HybridEventFactory {
 
     /**
      * Command sender to run the commands as.
@@ -43,13 +41,8 @@ public class CommandEventFactory extends BaseCommandEventFactory implements Stat
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        return new PrimaryServerThreadEvent(
+    public HybridEvent parseHybridEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadHybridEvent(
                 new CommandEvent(parseCommands(instruction), silentSender, server), server, scheduler, plugin);
-    }
-
-    @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
-        return new NullStaticEventAdapter(parseEvent(instruction));
     }
 }

@@ -4,6 +4,7 @@ import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.EventID;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents an event with its chance.
@@ -20,7 +21,7 @@ record RandomEvent(EventID eventID, VariableNumber chance) {
      * @return the resolved chance for the event
      * @throws QuestRuntimeException if there is an error while resolving the chance
      */
-    /* default */ ResolvedRandomEvent resolveFor(final Profile profile) throws QuestRuntimeException {
+    /* default */ ResolvedRandomEvent resolveFor(@Nullable final Profile profile) throws QuestRuntimeException {
         return new ResolvedRandomEvent(eventID, chance.getDouble(profile));
     }
 }

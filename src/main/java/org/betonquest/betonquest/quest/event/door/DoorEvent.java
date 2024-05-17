@@ -1,7 +1,8 @@
 package org.betonquest.betonquest.quest.event.door;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.HybridEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
@@ -15,7 +16,7 @@ import java.util.function.Consumer;
  * The door event. It applies an action to the {@link Openable} block meta if it could be found at the location.
  * It fails when no {@link Openable} block is found at the location.
  */
-public class DoorEvent implements Event {
+public class DoorEvent implements HybridEvent {
 
     /**
      * The {@link Openable}'s location.
@@ -31,7 +32,7 @@ public class DoorEvent implements Event {
      * Create the event to change the {@link Openable} at the given location with the given action.
      *
      * @param location location to act on
-     * @param action action to do
+     * @param action   action to do
      */
     public DoorEvent(final CompoundLocation location, final Consumer<Openable> action) {
         this.location = location;
@@ -39,8 +40,8 @@ public class DoorEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile playerId) throws QuestRuntimeException {
-        final Location resolvedLocation = location.getLocation(playerId);
+    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
+        final Location resolvedLocation = location.getLocation(profile);
         final Block block = resolvedLocation.getBlock();
         final BlockData blockData = block.getBlockData();
 

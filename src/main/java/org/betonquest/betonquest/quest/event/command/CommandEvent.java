@@ -1,9 +1,10 @@
 package org.betonquest.betonquest.quest.event.command;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.bukkit.command.SilentConsoleCommandSender;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.HybridEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Event that runs given commands in the server console.
  */
-public class CommandEvent implements Event {
+public class CommandEvent implements HybridEvent {
 
     /**
      * Command sender to run the commands as.
@@ -47,7 +48,7 @@ public class CommandEvent implements Event {
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         try {
             commands.forEach(command -> server.dispatchCommand(silentSender, command.getString(profile)));
         } catch (final RuntimeException exception) {

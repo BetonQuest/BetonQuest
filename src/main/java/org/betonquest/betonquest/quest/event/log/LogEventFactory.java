@@ -4,12 +4,9 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.HybridEvent;
+import org.betonquest.betonquest.api.quest.event.HybridEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.quest.event.NullStaticEventAdapter;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,7 +14,7 @@ import java.util.regex.Pattern;
 /**
  * Factory to parse new {@link LogEvent}s.
  */
-public class LogEventFactory implements EventFactory, StaticEventFactory {
+public class LogEventFactory implements HybridEventFactory {
 
     /**
      * Regex used to detect a conditions statement at the end of the instruction.
@@ -44,7 +41,7 @@ public class LogEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public HybridEvent parseHybridEvent(final Instruction instruction) throws InstructionParseException {
         final LogEventLevel level = instruction.getEnum(instruction.getOptional("level"), LogEventLevel.class, LogEventLevel.INFO);
         final String raw = String.join(" ", instruction.getAllParts());
         final Matcher conditionsMatcher = CONDITIONS_REGEX.matcher(raw);
@@ -53,10 +50,5 @@ public class LogEventFactory implements EventFactory, StaticEventFactory {
         final int msgEnd = conditionsMatcher.find() ? conditionsMatcher.start() : raw.length();
         final VariableString message = new VariableString(instruction.getPackage(), raw.substring(msgStart, msgEnd));
         return new LogEvent(loggerFactory.create(LogEvent.class), level, message);
-    }
-
-    @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
-        return new NullStaticEventAdapter(parseEvent(instruction));
     }
 }
