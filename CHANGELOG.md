@@ -23,6 +23,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - NPE if a player replies to a SlowTellRaw conversation IO when the text is not completely displayed
 - head `QuestItem` matches even if they are distinct 
 - modulo operator in math variable can now be used by escaping the percent sign
+- `weather` event not static callable even when providing a world
 ### Security
 
 ## [2.1.1] - 2024-05-09
