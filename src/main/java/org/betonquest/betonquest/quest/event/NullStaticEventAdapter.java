@@ -6,7 +6,11 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 /**
  * Adapt a normal event as a "static" event by executing it with null as player.
+ *
+ * @deprecated use {@link org.betonquest.betonquest.api.quest.event.HybridEvent HybridEvents}s instead of passing null
+ * as NotNull annotated profile parameter
  */
+@Deprecated
 public class NullStaticEventAdapter implements StaticEvent {
 
     /**
