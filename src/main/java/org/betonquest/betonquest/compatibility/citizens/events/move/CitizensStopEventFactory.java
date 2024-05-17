@@ -6,8 +6,8 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.quest.event.NullStaticEventAdapter;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
+import org.betonquest.betonquest.quest.event.CallStaticEventAdapter;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -52,13 +52,13 @@ public class CitizensStopEventFactory implements EventFactory, StaticEventFactor
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
         final int npcId = instruction.getInt();
-        return new PrimaryServerThreadEvent(new CitizensStopEvent(npcId, citizensMoveController), server, scheduler, plugin);
+        return new PrimaryServerThreadStaticEvent(new CitizensStopEvent(npcId, citizensMoveController), server, scheduler, plugin);
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
-        return new NullStaticEventAdapter(parseEvent(instruction));
+    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+        return new CallStaticEventAdapter(parseStaticEvent(instruction));
     }
 }
