@@ -501,13 +501,13 @@ This condition checks if a variable value matches given [regular expression](../
 conditions:
   anyNumber: "variable %objective.var.price% -?\d+" #(1)!
   isPlayer: "variable %ph.parties_members_1% %player%" #(2)!
-  denizenVariable: "variable ph.denizen_<server.match_player[SomeName].has_flag[flag_name]> true forceSync" #(3)!
+  denizenVariable: "variable %ph.denizen_<server.match_player[SomeName].has_flag[flag_name]>% true forceSync" #(3)!
 ```
 
 1. Returns true if the variable `%objective.var.price%` contains any number.
 2. Returns true if the `parties_members_1` variable contains the player's name.
-3. Returns true if the `denizen_<server.match_player[SomeName].has_flag[flag_name]>` Denizen variable contains `true`
-   . This variable is resolved on the main thread.
+3. Returns true if the `denizen_<server.match_player[SomeName].has_flag[flag_name]>` Denizen variable contains `true`.
+   This variable is resolved on the main thread.
 
 ## Weather: `weather`
 
