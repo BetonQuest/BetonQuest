@@ -3,14 +3,15 @@ package org.betonquest.betonquest.quest.event.time;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.HybridEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.World;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The time event, changing the time on the server.
  */
-public class TimeEvent implements Event {
+public class TimeEvent implements HybridEvent {
     /**
      * The type of time that will be applied.
      */
@@ -47,7 +48,7 @@ public class TimeEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         final World world = worldSelector.selectFor(profile);
         final double timeValue = rawTime.getDouble(profile);
         final long actualTime = (long) Math.abs(hourFormat ? timeValue * 1000 : timeValue);

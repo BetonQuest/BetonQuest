@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.common.function;
 
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Selector that always selects a fixed target.
@@ -23,7 +24,7 @@ public class ConstantSelector<T> implements Selector<T> {
     }
 
     @Override
-    public T selectFor(final Profile profile) {
+    public T selectFor(@Nullable final Profile profile) {
         return target;
     }
 }
