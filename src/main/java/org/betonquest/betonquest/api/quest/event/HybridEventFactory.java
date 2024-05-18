@@ -5,11 +5,8 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 
 /**
  * Factory to create a specific {@link HybridEvent} from {@link Instruction}s.
- * <p>
- * This factory will provide by default both {@link Event} and {@link StaticEvent} implementations
- * from the created {@link HybridEvent}.
  */
-public interface HybridEventFactory extends EventFactory, StaticEventFactory {
+public interface HybridEventFactory {
     /**
      * Parses an instruction to create a {@link HybridEvent}.
      *
@@ -18,14 +15,4 @@ public interface HybridEventFactory extends EventFactory, StaticEventFactory {
      * @throws InstructionParseException when the instruction cannot be parsed
      */
     HybridEvent parseHybridEvent(Instruction instruction) throws InstructionParseException;
-
-    @Override
-    default Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        return parseHybridEvent(instruction);
-    }
-
-    @Override
-    default StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
-        return parseHybridEvent(instruction);
-    }
 }

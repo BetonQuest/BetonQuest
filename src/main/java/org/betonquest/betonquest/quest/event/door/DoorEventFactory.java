@@ -2,9 +2,9 @@ package org.betonquest.betonquest.quest.event.door;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.HybridEvent;
-import org.betonquest.betonquest.api.quest.event.HybridEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadHybridEvent;
+import org.betonquest.betonquest.quest.event.StandardHybridEventFactory;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
@@ -15,7 +15,7 @@ import java.util.Locale;
 /**
  * Factory to create door events from {@link Instruction}s.
  */
-public class DoorEventFactory implements HybridEventFactory {
+public class DoorEventFactory extends StandardHybridEventFactory {
     /**
      * Server to use for syncing to the primary server thread.
      */

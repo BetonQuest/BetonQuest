@@ -5,8 +5,8 @@ import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.HybridEvent;
-import org.betonquest.betonquest.api.quest.event.HybridEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.quest.event.StandardHybridEventFactory;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 /**
  * Factory to parse new {@link LogEvent}s.
  */
-public class LogEventFactory implements HybridEventFactory {
+public class LogEventFactory extends StandardHybridEventFactory {
 
     /**
      * Regex used to detect a conditions statement at the end of the instruction.

@@ -3,17 +3,17 @@ package org.betonquest.betonquest.quest.event.random;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.quest.event.HybridEvent;
-import org.betonquest.betonquest.api.quest.event.HybridEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.quest.event.StandardHybridEventFactory;
 
 import java.util.List;
 
 /**
  * Creates new {@link PickRandomEvent} instances from an {@link Instruction}.
  */
-public class PickRandomEventFactory implements HybridEventFactory {
+public class PickRandomEventFactory extends StandardHybridEventFactory {
     /**
      * The percentage character.
      */

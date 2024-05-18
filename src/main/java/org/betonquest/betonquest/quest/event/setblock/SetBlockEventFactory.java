@@ -2,9 +2,9 @@ package org.betonquest.betonquest.quest.event.setblock;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.HybridEvent;
-import org.betonquest.betonquest.api.quest.event.HybridEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadHybridEvent;
+import org.betonquest.betonquest.quest.event.StandardHybridEventFactory;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Server;
@@ -14,7 +14,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 /**
  * Factory to create setblock events from {@link Instruction}s.
  */
-public class SetBlockEventFactory implements HybridEventFactory {
+public class SetBlockEventFactory extends StandardHybridEventFactory {
     /**
      * Server to use for syncing to the primary server thread.
      */

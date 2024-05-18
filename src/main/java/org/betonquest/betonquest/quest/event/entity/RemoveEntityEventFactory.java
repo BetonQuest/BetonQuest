@@ -4,9 +4,9 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.quest.event.HybridEvent;
-import org.betonquest.betonquest.api.quest.event.HybridEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadHybridEvent;
+import org.betonquest.betonquest.quest.event.StandardHybridEventFactory;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Server;
@@ -21,7 +21,7 @@ import java.util.Locale;
  * <p>
  * Created on 29.06.2018.
  */
-public class RemoveEntityEventFactory implements HybridEventFactory {
+public class RemoveEntityEventFactory extends StandardHybridEventFactory {
 
     /**
      * Server to use for syncing to the primary server thread.

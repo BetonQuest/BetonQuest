@@ -2,15 +2,15 @@ package org.betonquest.betonquest.quest.event.logic;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.HybridEvent;
-import org.betonquest.betonquest.api.quest.event.HybridEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.quest.event.StandardHybridEventFactory;
 
 /**
  * Factory to create ifelse events from {@link Instruction}s.
  */
-public class IfElseEventFactory implements HybridEventFactory {
+public class IfElseEventFactory extends StandardHybridEventFactory {
 
     /**
      * The empty constructor
