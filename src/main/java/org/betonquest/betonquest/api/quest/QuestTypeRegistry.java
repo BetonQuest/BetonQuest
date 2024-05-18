@@ -16,8 +16,9 @@ import java.util.Set;
  * @param <L>  the legacy structure based on the {@link org.betonquest.betonquest.Instruction Instruction}
  *             as defined in the {@link org.betonquest.betonquest.api API package}
  * @param <LF> the legacy factory stored creating new {@link L}
+ * @param <H>  the composed type extending {@link T} and {@link ST}
  */
-public abstract class QuestTypeRegistry<T, ST, L, LF> {
+public abstract class QuestTypeRegistry<T, ST, L, LF, H> {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -83,6 +84,26 @@ public abstract class QuestTypeRegistry<T, ST, L, LF> {
     public void registerNonStatic(final String name, final QuestFactory<T> factory) {
         registerInternal(name, factory, null);
     }
+
+    /**
+     * Registers a type with its name and a composed factory to create normal and
+     * static instances of the type.
+     *
+     * @param name            name of the {@link T}
+     * @param composedFactory factory to create the normal and static {@link T}
+     */
+    public void registerComposed(final String name, final ComposedQuestFactory<H> composedFactory) {
+        final ComposedQuestTypeAdapter<H, T, ST> composedAdapter = getComposedAdapter(composedFactory);
+        register(name, composedAdapter, composedAdapter);
+    }
+
+    /**
+     * Get a new adapter of {@link QuestFactory} and {@link StaticQuestFactory}s from the {@link ComposedQuestFactory}.
+     *
+     * @param composedFactory the composed factory to adapt
+     * @return the adapter to store
+     */
+    protected abstract ComposedQuestTypeAdapter<H, T, ST> getComposedAdapter(ComposedQuestFactory<H> composedFactory);
 
     /**
      * Registers a {@link T} with its name and a single factory to create both normal and

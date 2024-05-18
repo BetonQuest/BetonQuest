@@ -3,7 +3,9 @@ package org.betonquest.betonquest.api.quest;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.quest.condition.ComposedCondition;
 import org.betonquest.betonquest.api.quest.condition.StaticCondition;
+import org.betonquest.betonquest.quest.condition.ComposedConditionFactoryAdapter;
 import org.betonquest.betonquest.quest.condition.legacy.FromClassLegacyConditionFactory;
 import org.betonquest.betonquest.quest.condition.legacy.LegacyConditionFactory;
 import org.betonquest.betonquest.quest.condition.legacy.LegacyConditionFactoryAdapter;
@@ -11,7 +13,7 @@ import org.betonquest.betonquest.quest.condition.legacy.LegacyConditionFactoryAd
 /**
  * Stores the condition types that can be used in BetonQuest.
  */
-public class ConditionTypeRegistry extends QuestTypeRegistry<org.betonquest.betonquest.api.quest.condition.Condition, StaticCondition, Condition, LegacyConditionFactory> {
+public class ConditionTypeRegistry extends QuestTypeRegistry<org.betonquest.betonquest.api.quest.condition.Condition, StaticCondition, Condition, LegacyConditionFactory, ComposedCondition> {
     /**
      * Create a new event type registry.
      *
@@ -30,5 +32,10 @@ public class ConditionTypeRegistry extends QuestTypeRegistry<org.betonquest.beto
     @Override
     protected LegacyConditionFactory getLegacyFactoryAdapter(final QuestFactory<org.betonquest.betonquest.api.quest.condition.Condition> eventFactory, final StaticQuestFactory<StaticCondition> staticEventFactory) {
         return new LegacyConditionFactoryAdapter(eventFactory, staticEventFactory);
+    }
+
+    @Override
+    protected ComposedQuestTypeAdapter<ComposedCondition, org.betonquest.betonquest.api.quest.condition.Condition, StaticCondition> getComposedAdapter(final ComposedQuestFactory<ComposedCondition> composedFactory) {
+        return new ComposedConditionFactoryAdapter(composedFactory);
     }
 }

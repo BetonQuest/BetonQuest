@@ -110,7 +110,6 @@ import org.betonquest.betonquest.notify.SubTitleNotifyIO;
 import org.betonquest.betonquest.notify.SuppressNotifyIO;
 import org.betonquest.betonquest.notify.TitleNotifyIO;
 import org.betonquest.betonquest.notify.TotemNotifyIO;
-import org.betonquest.betonquest.quest.event.ComposedEventFactoryAdapter;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
 import org.betonquest.betonquest.quest.registry.CoreQuestTypes;
 import org.betonquest.betonquest.quest.registry.QuestRegistry;
@@ -914,10 +913,12 @@ public class BetonQuest extends JavaPlugin {
      *
      * @param name         name of the event
      * @param eventFactory factory to create the event and the static event
+     * @deprecated in favor of direct usage of {@link #getQuestRegistries()}
+     * further {@link QuestTypeRegistries#getEventTypes()}
+     * further {@link QuestTypeRegistry#registerComposed(String, ComposedQuestFactory)}
      */
     public void registerEvent(final String name, final ComposedEventFactory eventFactory) {
-        final ComposedEventFactoryAdapter adapter = new ComposedEventFactoryAdapter(eventFactory);
-        registerEvent(name, adapter, adapter);
+        questTypeRegistries.getEventTypes().registerComposed(name, eventFactory);
     }
 
     /**
