@@ -30,25 +30,11 @@ public class PrimaryServerThreadHybridEvent extends PrimaryServerThreadEventFram
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
-        if (server.isPrimaryThread()) {
-            syncedEvent.execute(profile);
-        } else {
-            executeOnPrimaryThread(() -> {
-                syncedEvent.execute(profile);
-                return null;
-            });
-        }
+        execute(() -> syncedEvent.execute(profile));
     }
 
     @Override
     public void execute() throws QuestRuntimeException {
-        if (server.isPrimaryThread()) {
-            syncedEvent.execute();
-        } else {
-            executeOnPrimaryThread(() -> {
-                syncedEvent.execute();
-                return null;
-            });
-        }
+        execute(syncedEvent::execute);
     }
 }

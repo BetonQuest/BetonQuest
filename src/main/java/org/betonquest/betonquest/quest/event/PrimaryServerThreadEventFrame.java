@@ -15,7 +15,6 @@ import java.util.concurrent.Future;
  *
  * @param <T> the event category
  */
-
 public class PrimaryServerThreadEventFrame<T> {
     /**
      * Event to be executed on the primary server thread.
@@ -57,6 +56,23 @@ public class PrimaryServerThreadEventFrame<T> {
     }
 
     /**
+     * Executes an event on the main thread.
+     *
+     * @param questEventExecutor the wrapped event execution call
+     * @throws QuestRuntimeException when a QuestRuntimeException is thrown during event execution
+     */
+    protected void execute(final QuestEventExecutor questEventExecutor) throws QuestRuntimeException {
+        if (server.isPrimaryThread()) {
+            questEventExecutor.execute();
+        } else {
+            executeOnPrimaryThread(() -> {
+                questEventExecutor.execute();
+                return null;
+            });
+        }
+    }
+
+    /**
      * Calls the event on the main thread.
      *
      * @param callable the event execution method
@@ -64,7 +80,7 @@ public class PrimaryServerThreadEventFrame<T> {
      * @throws QuestRuntimeException when a QuestRuntimeException is thrown during event execution
      */
     @SuppressWarnings("PMD.PreserveStackTrace")
-    protected void executeOnPrimaryThread(final Callable<Void> callable) throws QuestRuntimeException {
+    private void executeOnPrimaryThread(final Callable<Void> callable) throws QuestRuntimeException {
         final Future<Void> executingEventFuture = scheduler.callSyncMethod(plugin, callable);
         try {
             executingEventFuture.get();
@@ -77,5 +93,17 @@ public class PrimaryServerThreadEventFrame<T> {
             }
             throw new QuestRuntimeException(e);
         }
+    }
+
+    /**
+     * Calls the execute method that may throw a {@link QuestRuntimeException}.
+     */
+    protected interface QuestEventExecutor {
+        /**
+         * Executes the event.
+         *
+         * @throws QuestRuntimeException when a QuestRuntimeException is thrown during event execution
+         */
+        void execute() throws QuestRuntimeException;
     }
 }

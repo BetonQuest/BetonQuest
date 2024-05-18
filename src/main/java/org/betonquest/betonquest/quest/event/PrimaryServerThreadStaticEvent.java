@@ -28,13 +28,6 @@ public class PrimaryServerThreadStaticEvent extends PrimaryServerThreadEventFram
 
     @Override
     public void execute() throws QuestRuntimeException {
-        if (server.isPrimaryThread()) {
-            syncedEvent.execute();
-        } else {
-            executeOnPrimaryThread(() -> {
-                syncedEvent.execute();
-                return null;
-            });
-        }
+        execute(syncedEvent::execute);
     }
 }

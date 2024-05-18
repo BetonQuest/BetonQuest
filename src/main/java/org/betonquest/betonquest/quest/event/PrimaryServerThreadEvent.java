@@ -29,13 +29,6 @@ public class PrimaryServerThreadEvent extends PrimaryServerThreadEventFrame<Even
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
-        if (server.isPrimaryThread()) {
-            syncedEvent.execute(profile);
-        } else {
-            executeOnPrimaryThread(() -> {
-                syncedEvent.execute(profile);
-                return null;
-            });
-        }
+        execute(() -> syncedEvent.execute(profile));
     }
 }
