@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.event.command;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
 import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.bukkit.command.SilentConsoleCommandSender;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -8,6 +7,7 @@ import org.betonquest.betonquest.api.quest.event.HybridEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 

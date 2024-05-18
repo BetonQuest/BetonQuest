@@ -3,8 +3,8 @@ package org.betonquest.betonquest.quest.event.point;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.quest.event.HybridEvent;
+import org.betonquest.betonquest.api.quest.event.HybridEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.quest.event.StandardHybridEventFactory;
 import org.betonquest.betonquest.utils.Utils;
 
 import java.util.Locale;
@@ -12,7 +12,7 @@ import java.util.Locale;
 /**
  * Factory to create global points events from {@link Instruction}s.
  */
-public class GlobalPointEventFactory extends StandardHybridEventFactory {
+public class GlobalPointEventFactory implements HybridEventFactory {
 
     /**
      * Create the global points event factory.

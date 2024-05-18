@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.event.explosion;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.HybridEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Spawns an explosion in a given location and with given stats.

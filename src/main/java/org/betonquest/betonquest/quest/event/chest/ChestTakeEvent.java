@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.event.chest;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -10,6 +9,7 @@ import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Removes items from a chest.

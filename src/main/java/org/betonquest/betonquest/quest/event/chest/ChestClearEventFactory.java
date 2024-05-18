@@ -2,9 +2,9 @@ package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.HybridEvent;
+import org.betonquest.betonquest.api.quest.event.HybridEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadHybridEvent;
-import org.betonquest.betonquest.quest.event.StandardHybridEventFactory;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
@@ -13,7 +13,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 /**
  * Factory to create chest events from {@link Instruction}s.
  */
-public class ChestClearEventFactory extends StandardHybridEventFactory {
+public class ChestClearEventFactory implements HybridEventFactory {
     /**
      * Server to use for syncing to the primary server thread.
      */

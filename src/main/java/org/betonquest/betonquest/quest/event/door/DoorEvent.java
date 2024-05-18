@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.event.door;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.HybridEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -9,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Openable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
