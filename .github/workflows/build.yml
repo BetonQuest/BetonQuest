@@ -208,25 +208,32 @@ jobs:
           TWO_DIGIT_VERSION="$major.$minor"
           
           FLAGS=(--push --update-aliases)
-          VERSION=()
+          VERSIONS=()
           if [ "$VERSION_TYPE" = release ]; then
-            VERSION+=("$TWO_DIGIT_VERSION" "$TWO_DIGIT_VERSION-DEV")
-            if [ $(git branch --contains tags/v${VERSION} | grep '^\* main$') ] || { mike list --json "$TWO_DIGIT_VERSION" | grep -q '"aliases" *: *\[[^]]*"RELEASE"'; }; then
-              VERSION+=(RELEASE)
+            VERSIONS+=("$TWO_DIGIT_VERSION" "$TWO_DIGIT_VERSION-DEV")
+            if { git branch --contains tags/v${VERSION} | grep -q '^. main$'; }; then
+              VERSIONS+=(RELEASE DEV)
+            elif { mike list --json "$TWO_DIGIT_VERSION" | grep -q '"aliases" *: *\[[^]]*"RELEASE"'; }; then
+              VERSIONS+=(RELEASE)
             fi
-          elif [ "$VERSION_TYPE" = development ]; then
-            VERSION+=("$TWO_DIGIT_VERSION-DEV")
-            if ! { mike list --json | grep -q "\"version\" *: *\"$TWO_DIGIT_VERSION\""; }; then
-              VERSION+=("$TWO_DIGIT_VERSION")
-            fi
-          fi
-          
-          if [ ${{ github.ref }} == 'refs/heads/main' ]; then VERSION+=(DEV); fi
-          
-          if [ "$VERSION_TYPE" = release ]; then
             mike delete "$TWO_DIGIT_VERSION-DEV"
+          elif [ "$VERSION_TYPE" = development ]; then
+            VERSIONS+=("$TWO_DIGIT_VERSION-DEV")
+            if ! { mike list --json | grep -q "\"version\" *: *\"$TWO_DIGIT_VERSION\""; }; then
+              VERSIONS+=("$TWO_DIGIT_VERSION")
+            fi
+            if [ ${{ github.ref }} == 'refs/heads/main' ]; then 
+              VERSIONS+=(DEV);
+          
+              OLD_DEV_VERSION=$(mike list --json DEV | awk -F\" '/version/{print $4}')
+              if [ "$TWO_DIGIT_VERSION" != "$OLD_DEV_VERSION" ] && [[ "$OLD_DEV_VERSION" == *"-DEV" ]]; then
+                mike delete "$OLD_DEV_VERSION"
+                mike alias ${OLD_DEV_VERSION%-DEV} $OLD_DEV_VERSION
+              fi
+            fi
           fi
-          mike deploy "${FLAGS[@]}" "${VERSION[@]}"
+          
+          mike deploy "${FLAGS[@]}" "${VERSIONS[@]}"
         env:
           MKDOCS_MATERIAL_INSIDERS_ENABLED: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
           MKDOCS_MATERIAL_INSIDERS_ENABLED_CI: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
