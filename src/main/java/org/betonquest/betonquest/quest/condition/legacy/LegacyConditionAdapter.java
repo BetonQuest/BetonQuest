@@ -18,10 +18,11 @@ public class LegacyConditionAdapter extends org.betonquest.betonquest.api.Condit
     /**
      * The normal condition to be adapted.
      */
+    @Nullable
     private final Condition condition;
 
     /**
-     * The "static" condition to be adapted if present. May be {@code null}!
+     * The "static" condition to be adapted.
      */
     @Nullable
     private final StaticCondition staticCondition;
@@ -29,13 +30,19 @@ public class LegacyConditionAdapter extends org.betonquest.betonquest.api.Condit
     /**
      * Create a legacy condition from an {@link Event} and a {@link StaticCondition}. If the condition does not support
      * "static" execution ({@code staticness = false}) then no {@link StaticCondition} instance must be provided.
+     * <p>
+     * When no normal condition is given the static condition is required.
      *
      * @param instruction     instruction used to create the conditions
      * @param condition       condition to use
      * @param staticCondition static condition to use or null if no static execution is supported
      */
-    public LegacyConditionAdapter(final Instruction instruction, final Condition condition, @Nullable final StaticCondition staticCondition) {
+    public LegacyConditionAdapter(final Instruction instruction, @Nullable final Condition condition,
+                                  @Nullable final StaticCondition staticCondition) {
         super(instruction, false);
+        if (condition == null && staticCondition == null) {
+            throw new IllegalArgumentException("Either the normal or static factory must be present!");
+        }
         this.condition = condition;
         this.staticCondition = staticCondition;
         staticness = staticCondition != null;
@@ -44,7 +51,7 @@ public class LegacyConditionAdapter extends org.betonquest.betonquest.api.Condit
 
     @Override
     protected Boolean execute(@Nullable final Profile profile) throws QuestRuntimeException {
-        if (profile == null) {
+        if (condition == null || profile == null) {
             Objects.requireNonNull(staticCondition);
             return staticCondition.check();
         } else {

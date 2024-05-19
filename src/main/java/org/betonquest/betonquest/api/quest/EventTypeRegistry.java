@@ -10,6 +10,7 @@ import org.betonquest.betonquest.quest.event.ComposedEventFactoryAdapter;
 import org.betonquest.betonquest.quest.event.legacy.FromClassQuestEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactoryAdapter;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Stores the event types that can be used in BetonQuest.
@@ -31,7 +32,8 @@ public class EventTypeRegistry extends QuestTypeRegistry<Event, StaticEvent, Que
     }
 
     @Override
-    protected QuestEventFactory getLegacyFactoryAdapter(final QuestFactory<Event> eventFactory, final StaticQuestFactory<StaticEvent> staticEventFactory) {
+    protected QuestEventFactory getLegacyFactoryAdapter(@Nullable final QuestFactory<Event> eventFactory,
+                                                        @Nullable final StaticQuestFactory<StaticEvent> staticEventFactory) {
         return new QuestEventFactoryAdapter(eventFactory, staticEventFactory);
     }
 

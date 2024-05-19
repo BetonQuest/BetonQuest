@@ -15,14 +15,14 @@ import java.util.Objects;
  * Adapter for {@link Event} and {@link StaticEvent} to fit the old convention of {@link QuestEvent}.
  */
 public class QuestEventAdapter extends QuestEvent {
-
     /**
      * The normal event to be adapted.
      */
+    @Nullable
     private final Event event;
 
     /**
-     * The "static" event to be adapted if present. May be {@code null}!
+     * The "static" event to be adapted.
      */
     @Nullable
     private final StaticEvent staticEvent;
@@ -30,14 +30,19 @@ public class QuestEventAdapter extends QuestEvent {
     /**
      * Create a quest event from an {@link Event} and a {@link StaticEvent}. If the event does not support "static"
      * execution ({@code staticness = false}) then no {@link StaticEvent} instance must be provided.
+     * <p>
+     * When no normal event is given the static event is required.
      *
      * @param instruction instruction used to create the events
      * @param event       event to use
      * @param staticEvent static event to use or null if no static execution is supported
      * @throws InstructionParseException if the instruction contains errors
      */
-    public QuestEventAdapter(final Instruction instruction, final Event event, @Nullable final StaticEvent staticEvent) throws InstructionParseException {
+    public QuestEventAdapter(final Instruction instruction, @Nullable final Event event, @Nullable final StaticEvent staticEvent) throws InstructionParseException {
         super(instruction, false);
+        if (event == null && staticEvent == null) {
+            throw new IllegalArgumentException("Either the normal or static factory must be present!");
+        }
         this.event = event;
         this.staticEvent = staticEvent;
         staticness = staticEvent != null;
@@ -46,7 +51,7 @@ public class QuestEventAdapter extends QuestEvent {
 
     @Override
     protected Void execute(@Nullable final Profile profile) throws QuestRuntimeException {
-        if (profile == null) {
+        if (event == null || profile == null) {
             Objects.requireNonNull(staticEvent);
             staticEvent.execute();
         } else {

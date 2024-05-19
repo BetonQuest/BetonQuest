@@ -86,6 +86,16 @@ public abstract class QuestTypeRegistry<T, ST, L, LF, H> {
     }
 
     /**
+     * Registers an {@link T} and a factory to create new static instances of the {@link T}.
+     *
+     * @param name          name of the {@link T}
+     * @param staticFactory static factory to create the {@link T}
+     */
+    public void register(final String name, final StaticQuestFactory<ST> staticFactory) {
+        registerInternal(name, null, staticFactory);
+    }
+
+    /**
      * Registers a type with its name and a composed factory to create normal and
      * static instances of the type.
      *
@@ -142,12 +152,14 @@ public abstract class QuestTypeRegistry<T, ST, L, LF, H> {
 
     /**
      * Get a new adapter to the legacy factory from the new type format.
+     * <p>
+     * Either the factory or the static factory has to be present.
      *
      * @param factory       factory to create the {@link T}
      * @param staticFactory factory to create the static {@link T}
      * @return the legacy factory to store
      */
-    protected abstract LF getLegacyFactoryAdapter(QuestFactory<T> factory, StaticQuestFactory<ST> staticFactory);
+    protected abstract LF getLegacyFactoryAdapter(@Nullable QuestFactory<T> factory, @Nullable StaticQuestFactory<ST> staticFactory);
 
     /**
      * Fetches the factory to create the type registered with the given name.

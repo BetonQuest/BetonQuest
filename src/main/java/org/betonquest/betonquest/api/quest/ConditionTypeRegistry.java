@@ -9,6 +9,7 @@ import org.betonquest.betonquest.quest.condition.ComposedConditionFactoryAdapter
 import org.betonquest.betonquest.quest.condition.legacy.FromClassLegacyConditionFactory;
 import org.betonquest.betonquest.quest.condition.legacy.LegacyConditionFactory;
 import org.betonquest.betonquest.quest.condition.legacy.LegacyConditionFactoryAdapter;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Stores the condition types that can be used in BetonQuest.
@@ -30,7 +31,8 @@ public class ConditionTypeRegistry extends QuestTypeRegistry<org.betonquest.beto
     }
 
     @Override
-    protected LegacyConditionFactory getLegacyFactoryAdapter(final QuestFactory<org.betonquest.betonquest.api.quest.condition.Condition> eventFactory, final StaticQuestFactory<StaticCondition> staticEventFactory) {
+    protected LegacyConditionFactory getLegacyFactoryAdapter(@Nullable final QuestFactory<org.betonquest.betonquest.api.quest.condition.Condition> eventFactory,
+                                                             @Nullable final StaticQuestFactory<StaticCondition> staticEventFactory) {
         return new LegacyConditionFactoryAdapter(eventFactory, staticEventFactory);
     }
 
