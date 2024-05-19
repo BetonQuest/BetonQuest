@@ -4,14 +4,14 @@ import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 
 /**
- * Factory adapter for that will provide both {@link T} and {@link ST Static T} implementations
+ * Factory adapter for that will provide both {@link T} and {@link S Static T} implementations
  * from the supplied {@link ComposedQuestFactory}.
  *
- * @param <H>  the composed type extending {@link T} and {@link ST}
- * @param <T>  the quest type
- * @param <ST> the static variant of {@link T}
+ * @param <H> the composed type extending {@link T} and {@link S}
+ * @param <T> the quest type
+ * @param <S> the static variant of {@link T}
  */
-public abstract class ComposedQuestTypeAdapter<H, T, ST> implements QuestFactory<T>, StaticQuestFactory<ST> {
+public abstract class ComposedQuestTypeAdapter<H, T, S> implements QuestFactory<T>, StaticQuestFactory<S> {
     /**
      * Composed factory used to create new {@link T} and static T.
      */

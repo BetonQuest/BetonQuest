@@ -55,6 +55,21 @@ public class PrimaryServerThreadType<T, R> {
     }
 
     /**
+     * Calls the quest type on the main thread.
+     *
+     * @param execute the wrapped quest type method call
+     * @return result of the call
+     * @throws QuestRuntimeException when a QuestRuntimeException is thrown during event execution
+     */
+    protected R call(final QuestCallable<R> execute) throws QuestRuntimeException {
+        if (server.isPrimaryThread()) {
+            return execute.call();
+        } else {
+            return executeOnPrimaryThread(execute::call);
+        }
+    }
+
+    /**
      * Executes the {@link T} on the primary thread and gets it return value {@link R}.
      *
      * @param callable the method of {@link T}
@@ -62,7 +77,7 @@ public class PrimaryServerThreadType<T, R> {
      * @throws QuestRuntimeException when the callable gets interrupted or another exception occurs during the execution
      */
     @SuppressWarnings("PMD.PreserveStackTrace")
-    protected R executeOnPrimaryThread(final Callable<R> callable) throws QuestRuntimeException {
+    private R executeOnPrimaryThread(final Callable<R> callable) throws QuestRuntimeException {
         final Future<R> executingEventFuture = scheduler.callSyncMethod(plugin, callable);
         try {
             return executingEventFuture.get();
@@ -75,5 +90,18 @@ public class PrimaryServerThreadType<T, R> {
             }
             throw new QuestRuntimeException(e);
         }
+    }
+
+    /**
+     * Calls the quest method that may throw a {@link QuestRuntimeException}.
+     */
+    protected interface QuestCallable<R> {
+        /**
+         * Calls the method and gets the result.
+         *
+         * @return result of the check
+         * @throws QuestRuntimeException when a QuestRuntimeException is thrown during method execution
+         */
+        R call() throws QuestRuntimeException;
     }
 }

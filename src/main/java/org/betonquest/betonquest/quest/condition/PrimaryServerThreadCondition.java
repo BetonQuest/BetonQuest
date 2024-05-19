@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.Condition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.quest.PrimaryServerThreadType;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -10,7 +11,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 /**
  * Wrapper for {@link Condition}s to be checked on the primary server thread.
  */
-public class PrimaryServerThreadCondition extends PrimaryServerThreadConditionFrame<Condition> implements Condition {
+public class PrimaryServerThreadCondition extends PrimaryServerThreadType<Condition, Boolean> implements Condition {
     /**
      * Wrap the given {@link Condition} for check on the primary server thread.
      * The {@link Server}, {@link BukkitScheduler} and {@link Plugin} are used to
@@ -29,6 +30,6 @@ public class PrimaryServerThreadCondition extends PrimaryServerThreadConditionFr
 
     @Override
     public boolean check(final Profile profile) throws QuestRuntimeException {
-        return check(() -> synced.check(profile));
+        return call(() -> synced.check(profile));
     }
 }

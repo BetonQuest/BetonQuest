@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.event;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.quest.PrimaryServerThreadType;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -10,7 +11,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 /**
  * Wrapper for {@link Event}s to be executed on the primary server thread.
  */
-public class PrimaryServerThreadEvent extends PrimaryServerThreadEventFrame<Event> implements Event {
+public class PrimaryServerThreadEvent extends PrimaryServerThreadType<Event, Void> implements Event {
     /**
      * Wrap the given {@link Event} for execution on the primary server thread.
      * The {@link Server}, {@link BukkitScheduler} and {@link Plugin} are used to
@@ -29,6 +30,9 @@ public class PrimaryServerThreadEvent extends PrimaryServerThreadEventFrame<Even
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
-        execute(() -> synced.execute(profile));
+        call(() -> {
+            synced.execute(profile);
+            return null;
+        });
     }
 }

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.condition;
 
 import org.betonquest.betonquest.api.quest.condition.StaticCondition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.quest.PrimaryServerThreadType;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -9,7 +10,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 /**
  * Wrapper for {@link StaticCondition}s to be checked on the primary server thread.
  */
-public class PrimaryServerThreadStaticCondition extends PrimaryServerThreadConditionFrame<StaticCondition> implements StaticCondition {
+public class PrimaryServerThreadStaticCondition extends PrimaryServerThreadType<StaticCondition, Boolean> implements StaticCondition {
     /**
      * Wrap the given {@link StaticCondition} for action on the primary server thread.
      * The {@link Server}, {@link BukkitScheduler} and {@link Plugin} are used to
@@ -27,6 +28,6 @@ public class PrimaryServerThreadStaticCondition extends PrimaryServerThreadCondi
 
     @Override
     public boolean check() throws QuestRuntimeException {
-        return check(synced::check);
+        return call(synced::check);
     }
 }

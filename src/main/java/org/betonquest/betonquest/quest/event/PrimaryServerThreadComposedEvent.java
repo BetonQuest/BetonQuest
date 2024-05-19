@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.event;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.quest.PrimaryServerThreadType;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -11,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Wrapper for {@link ComposedEvent}s to be executed on the primary server thread.
  */
-public class PrimaryServerThreadComposedEvent extends PrimaryServerThreadEventFrame<ComposedEvent> implements ComposedEvent {
+public class PrimaryServerThreadComposedEvent extends PrimaryServerThreadType<ComposedEvent, Void> implements ComposedEvent {
     /**
      * Wrap the given {@link ComposedEvent} for execution on the primary server thread.
      * The {@link Server}, {@link BukkitScheduler} and {@link Plugin} are used to
@@ -30,11 +31,17 @@ public class PrimaryServerThreadComposedEvent extends PrimaryServerThreadEventFr
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
-        execute(() -> synced.execute(profile));
+        call(() -> {
+            synced.execute(profile);
+            return null;
+        });
     }
 
     @Override
     public void execute() throws QuestRuntimeException {
-        execute(synced::execute);
+        call(() -> {
+            synced.execute();
+            return null;
+        });
     }
 }
