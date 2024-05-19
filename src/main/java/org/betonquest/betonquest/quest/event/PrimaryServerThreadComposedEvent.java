@@ -30,11 +30,11 @@ public class PrimaryServerThreadComposedEvent extends PrimaryServerThreadEventFr
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
-        execute(() -> syncedEvent.execute(profile));
+        execute(() -> synced.execute(profile));
     }
 
     @Override
     public void execute() throws QuestRuntimeException {
-        execute(syncedEvent::execute);
+        execute(synced::execute);
     }
 }

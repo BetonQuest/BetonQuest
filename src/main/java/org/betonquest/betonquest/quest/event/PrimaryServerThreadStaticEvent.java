@@ -28,6 +28,6 @@ public class PrimaryServerThreadStaticEvent extends PrimaryServerThreadEventFram
 
     @Override
     public void execute() throws QuestRuntimeException {
-        execute(syncedEvent::execute);
+        execute(synced::execute);
     }
 }
