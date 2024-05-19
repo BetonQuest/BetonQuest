@@ -287,6 +287,7 @@ initially required.
     ```
     
 ## Resource pack state: `resourcepack`
+**:fontawesome-solid-list-check:{.task} Objective  ·  :fontawesome-solid-paper-plane: Requires [Paper](https://papermc.io)**
 
 To complete this objective the player must have the specified resource pack state.
 The first argument is the state of the resource pack.

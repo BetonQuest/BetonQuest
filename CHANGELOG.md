@@ -12,6 +12,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - `aureliumstatslevel` condition was renamed to `auraskillsstatslevel`
   - `aureliumskillsxp` event was renamed to `auraskillsxp`
 - prevent reply when the text is not completely displayed for the SlowTellRaw conversation IO
+- `resourcepack` objective is now paper only 
 ### Deprecated
 ### Removed
 ### Fixed

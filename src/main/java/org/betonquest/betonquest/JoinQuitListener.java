@@ -1,5 +1,6 @@
 package org.betonquest.betonquest;
 
+import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -55,19 +56,26 @@ public class JoinQuitListener implements Listener {
         final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
         playerData.startObjectives();
         GlobalObjectives.startAll(onlineProfile);
-        final PlayerResourcePackStatusEvent.Status resourcePackStatus = event.getPlayer().getResourcePackStatus();
-        if (resourcePackStatus != null) {
-            BetonQuest.getInstance().getPlayerObjectives(onlineProfile).stream()
-                    .filter(objective -> objective instanceof ResourcePackObjective)
-                    .map(objective -> (ResourcePackObjective) objective)
-                    .forEach(objective -> objective.processObjective(onlineProfile, resourcePackStatus));
-        }
+        checkResourcepack(event, onlineProfile);
 
         if (Journal.hasJournal(onlineProfile)) {
             playerData.getJournal().update();
         }
         if (playerData.getActiveConversation() != null) {
             new ConversationResumer(loggerFactory, onlineProfile, playerData.getActiveConversation());
+        }
+    }
+
+    private void checkResourcepack(final PlayerJoinEvent event, final OnlineProfile onlineProfile) {
+        if (!PaperLib.isPaper()) {
+            return;
+        }
+        final PlayerResourcePackStatusEvent.Status resourcePackStatus = event.getPlayer().getResourcePackStatus();
+        if (resourcePackStatus != null) {
+            BetonQuest.getInstance().getPlayerObjectives(onlineProfile).stream()
+                    .filter(objective -> objective instanceof ResourcePackObjective)
+                    .map(objective -> (ResourcePackObjective) objective)
+                    .forEach(objective -> objective.processObjective(onlineProfile, resourcePackStatus));
         }
     }
 
