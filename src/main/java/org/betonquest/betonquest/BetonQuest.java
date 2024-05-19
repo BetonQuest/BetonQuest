@@ -981,13 +981,13 @@ public class BetonQuest extends JavaPlugin {
         registerObjectives("variable", VariableObjective.class);
         registerObjectives("kill", KillPlayerObjective.class);
         registerObjectives("interact", EntityInteractObjective.class);
-        registerObjectives("resourcepack", ResourcePackObjective.class);
         registerObjectives("respawn", RespawnObjective.class);
         registerObjectives("breed", BreedObjective.class);
         registerObjectives("command", CommandObjective.class);
         if (PaperLib.isPaper()) {
-            registerObjectives("jump", JumpObjective.class);
             registerObjectives("equip", EquipItemObjective.class);
+            registerObjectives("jump", JumpObjective.class);
+            registerObjectives("resourcepack", ResourcePackObjective.class);
         }
 
         registerConversationIO("simple", SimpleConvIO.class);
