@@ -24,7 +24,9 @@ public class PrimaryServerThreadComposedEvent extends PrimaryServerThreadType<Co
      * @param server      server for primary thread identification
      * @param scheduler   scheduler for primary thread scheduling
      * @param plugin      plugin to associate with the scheduled task
+     * @deprecated use constructor with {@link PrimaryServerThreadData}
      */
+    @Deprecated
     public PrimaryServerThreadComposedEvent(final ComposedEvent syncedEvent, final Server server,
                                             final BukkitScheduler scheduler, final Plugin plugin) {
         super(syncedEvent, server, scheduler, plugin);

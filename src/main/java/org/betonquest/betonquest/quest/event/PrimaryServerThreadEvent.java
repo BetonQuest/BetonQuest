@@ -23,7 +23,9 @@ public class PrimaryServerThreadEvent extends PrimaryServerThreadType<Event, Voi
      * @param server      server for primary thread identification
      * @param scheduler   scheduler for primary thread scheduling
      * @param plugin      plugin to associate with the scheduled task
+     * @deprecated use constructor with {@link PrimaryServerThreadData}
      */
+    @Deprecated
     public PrimaryServerThreadEvent(final Event syncedEvent, final Server server,
                                     final BukkitScheduler scheduler, final Plugin plugin) {
         super(syncedEvent, server, scheduler, plugin);

@@ -18,22 +18,6 @@ public class PrimaryServerThreadStaticEvent extends PrimaryServerThreadType<Stat
      * determine if the current thread is the primary server thread and to
      * schedule the execution onto it in case it isn't.
      *
-     * @param syncedEvent event to synchronize
-     * @param server      server for primary thread identification
-     * @param scheduler   scheduler for primary thread scheduling
-     * @param plugin      plugin to associate with the scheduled task
-     */
-    public PrimaryServerThreadStaticEvent(final StaticEvent syncedEvent, final Server server,
-                                          final BukkitScheduler scheduler, final Plugin plugin) {
-        super(syncedEvent, server, scheduler, plugin);
-    }
-
-    /**
-     * Wrap the given {@link StaticEvent} for execution on the primary server thread.
-     * The {@link Server}, {@link BukkitScheduler} and {@link Plugin} are used to
-     * determine if the current thread is the primary server thread and to
-     * schedule the execution onto it in case it isn't.
-     *
      * @param synced event to synchronize
      * @param data   the data containing server, scheduler and plugin used for primary thread access
      */
