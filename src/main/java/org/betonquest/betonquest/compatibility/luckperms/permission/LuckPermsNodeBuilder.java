@@ -2,46 +2,72 @@ package org.betonquest.betonquest.compatibility.luckperms.permission;
 
 import net.luckperms.api.context.MutableContextSet;
 import net.luckperms.api.node.types.PermissionNode;
+import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.VariableString;
+import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Builder class for LuckPerms {@link PermissionNode}s.
+ * <p>
+ * Data class for the permissions.
+ *
+ * @param permissions A list of permissions to add or remove.
+ * @param value       The value of the permission. Either true or false.
+ * @param contexts    The contexts for the permission.
+ * @param expiry      The expiry time for the permission.
+ * @param timeUnit    The {@link TimeUnit} for the expiry time.
  */
-public class LuckPermsNodeBuilder {
+public record LuckPermsNodeBuilder(List<VariableString> permissions, VariableString value,
+                                   List<VariableString> contexts,
+                                   VariableNumber expiry, VariableString timeUnit) {
 
     /**
-     * Default constructor.
-     */
-    public LuckPermsNodeBuilder() {
-        // Empty
-    }
-
-    /**
-     * Builds a list of {@link PermissionNode}s from the given {@link PermissionData}.
+     * Builds a list of {@link PermissionNode}s.
      *
-     * @param data The {@link PermissionData} to build the {@link PermissionNode}s from.
+     * @param profile The {@link Profile} to get the data from.
      * @return A list of {@link PermissionNode}s.
+     * @throws QuestRuntimeException If an error occurs while building the nodes.
      */
-    public List<PermissionNode> getNodes(final PermissionData data) {
+    public List<PermissionNode> getNodes(final Profile profile) throws QuestRuntimeException {
         final List<PermissionNode> buildNodes = new ArrayList<>();
-        for (final String permission : data.permissions) {
-            PermissionNode.Builder builder = nodeBuilder(permission);
-            if (!data.value.isEmpty()) {
-                builder = addValue(builder, Boolean.parseBoolean(data.value));
+        final String resolvedValue = value.getString(profile);
+        final MutableContextSet contextSet = parseContextSet(contexts, profile);
+        final long resolvedExpiry = (long) expiry.getDouble(profile);
+        final TimeUnit resolvedTimeUnit = getTimeUnit(timeUnit, profile);
+        for (final VariableString permission : permissions) {
+            PermissionNode.Builder builder = nodeBuilder(permission.getString(profile));
+            if (!resolvedValue.isEmpty()) {
+                builder = addValue(builder, Boolean.parseBoolean(resolvedValue));
             }
-            if (!data.contexts.isEmpty()) {
-                builder = addContextSet(builder, parseContextSet(data.contexts));
+            if (!contextSet.isEmpty()) {
+                builder = addContextSet(builder, contextSet);
             }
-            if (data.expiry > 0) {
-                builder = addExpiry(builder, data.expiry, data.timeUnit);
+            if (resolvedExpiry > 0) {
+                builder = addExpiry(builder, resolvedExpiry, resolvedTimeUnit);
             }
 
             buildNodes.add(buildNode(builder));
         }
         return buildNodes;
+    }
+
+    private @NotNull TimeUnit getTimeUnit(final VariableString data, final Profile profile) throws QuestRuntimeException {
+        final String time = data.getString(profile);
+        TimeUnit unit;
+        try {
+            unit = TimeUnit.valueOf(time.toUpperCase(Locale.ROOT));
+        } catch (final IllegalArgumentException e) {
+            unit = TimeUnit.DAYS;
+            throw new QuestRuntimeException("Invalid time unit: " + time + ". Setting default to + '" + unit.name() + "'.", e);
+        }
+        return unit;
     }
 
     private PermissionNode.Builder nodeBuilder(final String permission) {
@@ -57,10 +83,10 @@ public class LuckPermsNodeBuilder {
         return builder.context(contextSet);
     }
 
-    private MutableContextSet parseContextSet(final List<String> contexts) {
+    private MutableContextSet parseContextSet(final List<VariableString> contexts, final Profile profile) {
         final MutableContextSet contextSet = MutableContextSet.create();
-        for (final String context : contexts) {
-            final String[] split = context.split(";");
+        for (final VariableString context : contexts) {
+            final String[] split = context.getString(profile).split(";");
             contextSet.add(split[0], split[1]);
         }
         return contextSet;
@@ -73,18 +99,5 @@ public class LuckPermsNodeBuilder {
 
     private PermissionNode buildNode(final PermissionNode.Builder builder) {
         return builder.build();
-    }
-
-    /**
-     * Data class for the permissions.
-     *
-     * @param permissions A list of permissions to add or remove.
-     * @param value       The value of the permission. Either true or false.
-     * @param contexts    The contexts for the permission.
-     * @param expiry      The expiry time for the permission.
-     * @param timeUnit    The {@link TimeUnit} for the expiry time.
-     */
-    public record PermissionData(List<String> permissions, String value, List<String> contexts, long expiry,
-                                 TimeUnit timeUnit) {
     }
 }

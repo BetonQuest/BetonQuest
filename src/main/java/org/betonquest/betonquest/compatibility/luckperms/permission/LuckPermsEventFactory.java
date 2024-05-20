@@ -2,12 +2,15 @@ package org.betonquest.betonquest.compatibility.luckperms.permission;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.data.NodeMap;
-import net.luckperms.api.node.types.PermissionNode;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.VariableString;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -37,34 +40,38 @@ public class LuckPermsEventFactory implements EventFactory {
 
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "addpermission" ->
-                    new LuckPermsPermissionEvent(getPermissionNodes(instruction), luckPermsAPI, NodeMap::add);
+                    new LuckPermsPermissionEvent(getPermissionNodeBuilder(instruction), luckPermsAPI, NodeMap::add);
             case "removepermission" ->
-                    new LuckPermsPermissionEvent(getPermissionNodes(instruction), luckPermsAPI, NodeMap::remove);
+                    new LuckPermsPermissionEvent(getPermissionNodeBuilder(instruction), luckPermsAPI, NodeMap::remove);
             default ->
                     throw new InstructionParseException("Unknown action: " + action + ". Expected addPermission or removePermission.");
         };
     }
 
-    private List<PermissionNode> getPermissionNodes(final Instruction instruction) throws InstructionParseException {
+    private LuckPermsNodeBuilder getPermissionNodeBuilder(final Instruction instruction) throws InstructionParseException {
         final String unparsedPermissions = instruction.getOptional("permission", "");
         if (unparsedPermissions.isEmpty()) {
             throw new InstructionParseException("Missing permissions argument. Expected permissions:permission1,"
                     + "permission2,permission3,...");
         }
-        final List<String> permissions = parseList(unparsedPermissions);
-        final List<String> contexts = parseList(instruction.getOptional("context", ""));
-        final String value = instruction.getOptional("value", "");
-        final long expiry = instruction.getLong(instruction.getOptional("expiry"), 0L);
-        final TimeUnit timeUnit = instruction.getEnum(instruction.getOptional("unit"), TimeUnit.class, TimeUnit.DAYS);
+        final QuestPackage pack = instruction.getPackage();
+        final List<VariableString> permissions = parseList(pack, unparsedPermissions);
+        final List<VariableString> contexts = parseList(pack, instruction.getOptional("context", ""));
+        final VariableString value = new VariableString(pack, instruction.getOptional("value", ""));
+        final VariableNumber expiry = instruction.getVarNum(instruction.getOptional("expiry", "0"));
+        final VariableString timeUnit = new VariableString(pack, instruction.getOptional("unit", TimeUnit.DAYS.name()));
 
-        final LuckPermsNodeBuilder luckPermsNodeBuilder = new LuckPermsNodeBuilder();
-        return luckPermsNodeBuilder.getNodes(new LuckPermsNodeBuilder.PermissionData(permissions, value, contexts, expiry, timeUnit));
+        return new LuckPermsNodeBuilder(permissions, value, contexts, expiry, timeUnit);
     }
 
-    private List<String> parseList(final String unparsed) {
+    private List<VariableString> parseList(final QuestPackage pack, final String unparsed) throws InstructionParseException {
         if (unparsed.isEmpty()) {
             return List.of();
         }
-        return List.of(unparsed.split(","));
+        final List<VariableString> list = new ArrayList<>();
+        for (final String input : unparsed.split(",")) {
+            list.add(new VariableString(pack, input));
+        }
+        return list;
     }
 }

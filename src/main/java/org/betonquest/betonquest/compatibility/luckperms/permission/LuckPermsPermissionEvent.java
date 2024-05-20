@@ -12,6 +12,7 @@ import org.bukkit.OfflinePlayer;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Event to add permissions to a player using LuckPerms
@@ -31,17 +32,17 @@ public class LuckPermsPermissionEvent implements Event {
     /**
      * The list of {@link PermissionNode}s to add.
      */
-    private final List<PermissionNode> permissionNodes;
+    private final LuckPermsNodeBuilder permissionNodeBuilder;
 
     /**
      * The Constructor for the {@link LuckPermsPermissionEvent}.
      *
-     * @param permissionNodes The list of {@link PermissionNode}s to add.
-     * @param luckPermsAPI    The {@link LuckPerms} API.
-     * @param permissionApply The {@link PermissionApply} to apply the permissions.
+     * @param permissionNodeBuilder The list of {@link PermissionNode}s to add.
+     * @param luckPermsAPI          The {@link LuckPerms} API.
+     * @param permissionApply       The {@link PermissionApply} to apply the permissions.
      */
-    public LuckPermsPermissionEvent(final List<PermissionNode> permissionNodes, final LuckPerms luckPermsAPI, final PermissionApply permissionApply) {
-        this.permissionNodes = permissionNodes;
+    public LuckPermsPermissionEvent(final LuckPermsNodeBuilder permissionNodeBuilder, final LuckPerms luckPermsAPI, final PermissionApply permissionApply) {
+        this.permissionNodeBuilder = permissionNodeBuilder;
         this.luckPermsAPI = luckPermsAPI;
         this.permissionApply = permissionApply;
     }
@@ -51,13 +52,22 @@ public class LuckPermsPermissionEvent implements Event {
         final OfflinePlayer offlinePlayer = profile.getPlayer();
         final UserManager userManager = luckPermsAPI.getUserManager();
         final CompletableFuture<User> userFuture = userManager.loadUser(offlinePlayer.getUniqueId());
-        userFuture.thenAcceptAsync(user -> {
-            final NodeMap data = user.data();
-            for (final PermissionNode permission : permissionNodes) {
-                permissionApply.apply(data, permission);
-            }
-            userManager.saveUser(user);
-        });
+        final User user = getUser(userFuture);
+
+        final NodeMap data = user.data();
+        final List<PermissionNode> nodes = permissionNodeBuilder.getNodes(profile);
+        for (final PermissionNode permission : nodes) {
+            permissionApply.apply(data, permission);
+        }
+        userManager.saveUser(user);
+    }
+
+    private User getUser(final CompletableFuture<User> userFuture) throws QuestRuntimeException {
+        try {
+            return userFuture.get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new QuestRuntimeException("Failed to load user from LuckPerms", e);
+        }
     }
 
     /**

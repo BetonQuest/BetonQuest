@@ -546,8 +546,7 @@ you can utilize the `luckperms addPermission` and `luckperms removePermission` e
 
 1. You can define single or multiple permissions with the `permission` key. You need to separate them with a comma.
 2. You can define Permissions with a optional `value` of `false` to negate them and give them to the player. If you want to override the value of the permission, you can use the `value` argument and set it to `true`.
-3. You can also add optional `context`s to the permissions like `server;lobby`. Read more about contexts [here]
-(https://luckperms.net/wiki/Context). You can define multiple contexts by separating them with a comma.
+3. You can also add optional `context`s to the permissions like `server;lobby`. Read more about contexts [here](https://luckperms.net/wiki/Context). You can define multiple contexts by separating them with a comma.
 4. With the key `expiry` you can define the time until the permission expires. There can only be one expiry argument. If you dont use the `unit` parameter, it defaults do DAYS. Other units can be found [here](https://help.intrexx.com/apidocs/jdk17/api/java.base/java/util/concurrent/TimeUnit.html).
 5. You can remove multiple permissions at once by separating them with a comma.
 
