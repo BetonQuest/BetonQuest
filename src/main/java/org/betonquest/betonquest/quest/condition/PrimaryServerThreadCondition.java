@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.Condition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.PrimaryServerThreadType;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
@@ -27,6 +28,19 @@ public class PrimaryServerThreadCondition extends PrimaryServerThreadType<Condit
     public PrimaryServerThreadCondition(final Condition synced, final Server server,
                                         final BukkitScheduler scheduler, final Plugin plugin) {
         super(synced, server, scheduler, plugin);
+    }
+
+    /**
+     * Wrap the given {@link Condition} for check on the primary server thread.
+     * The {@link Server}, {@link BukkitScheduler} and {@link Plugin} are used to
+     * determine if the current thread is the primary server thread and to
+     * schedule the execution onto it in case it isn't.
+     *
+     * @param synced condition to synchronize
+     * @param data   the data containing server, scheduler and plugin used for primary thread access
+     */
+    public PrimaryServerThreadCondition(final Condition synced, final PrimaryServerThreadData data) {
+        super(synced, data);
     }
 
     @Override
