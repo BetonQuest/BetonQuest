@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.api.quest;
 
-import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.ComposedCondition;
+import org.betonquest.betonquest.api.quest.condition.Condition;
 import org.betonquest.betonquest.api.quest.condition.StaticCondition;
 import org.betonquest.betonquest.quest.condition.ComposedConditionFactoryAdapter;
 import org.betonquest.betonquest.quest.condition.legacy.FromClassLegacyConditionFactory;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Stores the condition types that can be used in BetonQuest.
  */
-public class ConditionTypeRegistry extends QuestTypeRegistry<org.betonquest.betonquest.api.quest.condition.Condition, StaticCondition, Condition, LegacyConditionFactory, ComposedCondition> {
+public class ConditionTypeRegistry extends QuestTypeRegistry<Condition, StaticCondition, ComposedCondition, org.betonquest.betonquest.api.Condition, LegacyConditionFactory> {
     /**
      * Create a new event type registry.
      *
@@ -26,18 +26,18 @@ public class ConditionTypeRegistry extends QuestTypeRegistry<org.betonquest.beto
     }
 
     @Override
-    protected LegacyConditionFactory getFromClassLegacyTypeFactory(final BetonQuestLogger log, final Class<? extends Condition> conditionClass) {
+    protected LegacyConditionFactory getFromClassLegacyTypeFactory(final BetonQuestLogger log, final Class<? extends org.betonquest.betonquest.api.Condition> conditionClass) {
         return new FromClassLegacyConditionFactory<>(log, conditionClass);
     }
 
     @Override
-    protected LegacyConditionFactory getLegacyFactoryAdapter(@Nullable final QuestFactory<org.betonquest.betonquest.api.quest.condition.Condition> eventFactory,
+    protected LegacyConditionFactory getLegacyFactoryAdapter(@Nullable final QuestFactory<Condition> eventFactory,
                                                              @Nullable final StaticQuestFactory<StaticCondition> staticEventFactory) {
         return new LegacyConditionFactoryAdapter(eventFactory, staticEventFactory);
     }
 
     @Override
-    protected ComposedQuestTypeAdapter<ComposedCondition, org.betonquest.betonquest.api.quest.condition.Condition, StaticCondition> getComposedAdapter(final ComposedQuestFactory<ComposedCondition> composedFactory) {
+    protected ComposedQuestTypeAdapter<ComposedCondition, Condition, StaticCondition> getComposedAdapter(final ComposedQuestFactory<ComposedCondition> composedFactory) {
         return new ComposedConditionFactoryAdapter(composedFactory);
     }
 }

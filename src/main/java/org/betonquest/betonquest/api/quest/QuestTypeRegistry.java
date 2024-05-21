@@ -11,14 +11,14 @@ import java.util.Set;
 /**
  * Stores the {@link T Types} that can be used in BetonQuest.
  *
- * @param <T>  the stored type as defined in {@link QuestFactory}
- * @param <ST> the static variant of {@link T} - also named {@code static T}
- * @param <L>  the legacy structure based on the {@link org.betonquest.betonquest.Instruction Instruction}
- *             as defined in the {@link org.betonquest.betonquest.api API package}
- * @param <LF> the legacy factory stored creating new {@link L}
- * @param <H>  the composed type extending {@link T} and {@link ST}
+ * @param <T> the stored type as defined in {@link QuestFactory}
+ * @param <S> the static variant of {@link T} - also named {@code static T}
+ * @param <H> the composed type extending {@link T} and {@link S}
+ * @param <L> the legacy structure based on the {@link org.betonquest.betonquest.Instruction Instruction}
+ *            as defined in the {@link org.betonquest.betonquest.api API package}
+ * @param <F> the legacy factory stored creating new {@link L}
  */
-public abstract class QuestTypeRegistry<T, ST, L, LF, H> {
+public abstract class QuestTypeRegistry<T, S, H, L, F> {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -72,7 +72,7 @@ public abstract class QuestTypeRegistry<T, ST, L, LF, H> {
      * @param lClass the class object for the {@link T}
      * @return the legacy factory to store
      */
-    protected abstract LF getFromClassLegacyTypeFactory(BetonQuestLogger log, Class<? extends L> lClass);
+    protected abstract F getFromClassLegacyTypeFactory(BetonQuestLogger log, Class<? extends L> lClass);
 
     /**
      * Registers an {@link T} that does not support static execution with its name
@@ -91,7 +91,7 @@ public abstract class QuestTypeRegistry<T, ST, L, LF, H> {
      * @param name          name of the {@link T}
      * @param staticFactory static factory to create the {@link T}
      */
-    public void register(final String name, final StaticQuestFactory<ST> staticFactory) {
+    public void registerStatic(final String name, final StaticQuestFactory<ST> staticFactory) {
         registerInternal(name, null, staticFactory);
     }
 
@@ -103,7 +103,7 @@ public abstract class QuestTypeRegistry<T, ST, L, LF, H> {
      * @param composedFactory factory to create the normal and static {@link T}
      */
     public void registerComposed(final String name, final ComposedQuestFactory<H> composedFactory) {
-        final ComposedQuestTypeAdapter<H, T, ST> composedAdapter = getComposedAdapter(composedFactory);
+        final ComposedQuestTypeAdapter<H, T, S> composedAdapter = getComposedAdapter(composedFactory);
         register(name, composedAdapter, composedAdapter);
     }
 
@@ -113,7 +113,7 @@ public abstract class QuestTypeRegistry<T, ST, L, LF, H> {
      * @param composedFactory the composed factory to adapt
      * @return the adapter to store
      */
-    protected abstract ComposedQuestTypeAdapter<H, T, ST> getComposedAdapter(ComposedQuestFactory<H> composedFactory);
+    protected abstract ComposedQuestTypeAdapter<H, T, S> getComposedAdapter(ComposedQuestFactory<H> composedFactory);
 
     /**
      * Registers a {@link T} with its name and a single factory to create both normal and
@@ -121,9 +121,9 @@ public abstract class QuestTypeRegistry<T, ST, L, LF, H> {
      *
      * @param name    name of the {@link T}
      * @param factory factory to create the {@link T} and the static variant
-     * @param <F>     type of factory that creates both normal and static instances of the {@link T}
+     * @param <C>     type of factory that creates both normal and static instances of the {@link T}
      */
-    public <F extends QuestFactory<T> & StaticQuestFactory<ST>> void register(final String name, final F factory) {
+    public <C extends QuestFactory<T> & StaticQuestFactory<S>> void register(final String name, final C factory) {
         register(name, factory, factory);
     }
 
@@ -135,7 +135,7 @@ public abstract class QuestTypeRegistry<T, ST, L, LF, H> {
      * @param factory       factory to create the {@link T}
      * @param staticFactory factory to create the static {@link T}
      */
-    public void register(final String name, final QuestFactory<T> factory, final StaticQuestFactory<ST> staticFactory) {
+    public void register(final String name, final QuestFactory<T> factory, final StaticQuestFactory<S> staticFactory) {
         registerInternal(name, factory, staticFactory);
     }
 
@@ -145,7 +145,7 @@ public abstract class QuestTypeRegistry<T, ST, L, LF, H> {
      * @see #getLegacyFactoryAdapter(QuestFactory, StaticQuestFactory)
      */
     private void registerInternal(final String name, @Nullable final QuestFactory<T> factory,
-                                  @Nullable final StaticQuestFactory<ST> staticFactory) {
+                                  @Nullable final StaticQuestFactory<S> staticFactory) {
         log.debug("Registering " + name + " " + typeName + " type");
         types.put(name, getLegacyFactoryAdapter(factory, staticFactory));
     }
@@ -159,7 +159,7 @@ public abstract class QuestTypeRegistry<T, ST, L, LF, H> {
      * @param staticFactory factory to create the static {@link T}
      * @return the legacy factory to store
      */
-    protected abstract LF getLegacyFactoryAdapter(@Nullable QuestFactory<T> factory, @Nullable StaticQuestFactory<ST> staticFactory);
+    protected abstract F getLegacyFactoryAdapter(@Nullable QuestFactory<T> factory, @Nullable StaticQuestFactory<S> staticFactory);
 
     /**
      * Fetches the factory to create the type registered with the given name.
@@ -168,7 +168,7 @@ public abstract class QuestTypeRegistry<T, ST, L, LF, H> {
      * @return a factory to create the type
      */
     @Nullable
-    public LF getFactory(final String name) {
+    public F getFactory(final String name) {
         return types.get(name);
     }
 

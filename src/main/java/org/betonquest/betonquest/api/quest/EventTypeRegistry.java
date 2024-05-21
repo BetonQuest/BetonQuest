@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Stores the event types that can be used in BetonQuest.
  */
-public class EventTypeRegistry extends QuestTypeRegistry<Event, StaticEvent, QuestEvent, QuestEventFactory, ComposedEvent> {
+public class EventTypeRegistry extends QuestTypeRegistry<Event, StaticEvent, ComposedEvent, QuestEvent, QuestEventFactory> {
     /**
      * Create a new event type registry.
      *
