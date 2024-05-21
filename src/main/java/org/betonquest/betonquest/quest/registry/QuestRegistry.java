@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.registry;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -73,18 +72,17 @@ public class QuestRegistry {
      * @param scheduleTypes       the available schedule types
      * @param questTypeRegistries the available quest types
      * @param objectiveTypes      the available objective types
-     * @param variableTypes       the available variable types
      */
     public QuestRegistry(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuest plugin,
                          final Map<String, EventScheduling.ScheduleType<?>> scheduleTypes,
                          final QuestTypeRegistries questTypeRegistries,
-                         final Map<String, Class<? extends Objective>> objectiveTypes, final Map<String, Class<? extends Variable>> variableTypes) {
+                         final Map<String, Class<? extends Objective>> objectiveTypes) {
         this.log = log;
         this.eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), scheduleTypes);
         this.conditionProcessor = new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), questTypeRegistries.getConditionTypes());
         this.eventProcessor = new EventProcessor(loggerFactory.create(EventProcessor.class), questTypeRegistries.getEventTypes());
         this.objectiveProcessor = new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), objectiveTypes);
-        this.variableProcessor = new VariableProcessor(loggerFactory.create(VariableProcessor.class), variableTypes, loggerFactory);
+        this.variableProcessor = new VariableProcessor(loggerFactory.create(VariableProcessor.class), questTypeRegistries.getVariableTypes(), loggerFactory);
         this.cancellerProcessor = new CancellerProcessor(loggerFactory.create(CancellerProcessor.class));
         this.conversationProcessor = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), plugin);
     }
