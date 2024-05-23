@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.registry;
 import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.conditions.AdvancementCondition;
 import org.betonquest.betonquest.conditions.AlternativeCondition;
 import org.betonquest.betonquest.conditions.ArmorCondition;
 import org.betonquest.betonquest.conditions.ArmorRatingCondition;
@@ -89,6 +88,8 @@ import org.betonquest.betonquest.objectives.StageObjective;
 import org.betonquest.betonquest.objectives.StepObjective;
 import org.betonquest.betonquest.objectives.TameObjective;
 import org.betonquest.betonquest.objectives.VariableObjective;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
+import org.betonquest.betonquest.quest.condition.advancement.AdvancementConditionFactory;
 import org.betonquest.betonquest.quest.condition.realtime.DayOfWeekConditionFactory;
 import org.betonquest.betonquest.quest.condition.realtime.PartialDateConditionFactory;
 import org.betonquest.betonquest.quest.event.burn.BurnEventFactory;
@@ -188,6 +189,11 @@ public class CoreQuestTypes {
     private final BetonQuest betonQuest;
 
     /**
+     * Server, Scheduler and Plugin used for primary server thread access.
+     */
+    private final PrimaryServerThreadData data;
+
+    /**
      * Create a new Core Quest Types class for registering.
      *
      * @param loggerFactory used in event factories
@@ -201,6 +207,7 @@ public class CoreQuestTypes {
         this.server = server;
         this.scheduler = scheduler;
         this.betonQuest = betonQuest;
+        this.data = new PrimaryServerThreadData(server, scheduler, betonQuest);
     }
 
     /**
@@ -217,7 +224,7 @@ public class CoreQuestTypes {
     }
 
     private void registerConditions(final ConditionTypeRegistry conditionTypes) {
-        betonQuest.registerConditions("advancement", AdvancementCondition.class);
+        conditionTypes.register("advancement", new AdvancementConditionFactory(data));
         betonQuest.registerConditions("and", ConjunctionCondition.class);
         betonQuest.registerConditions("armor", ArmorCondition.class);
         betonQuest.registerConditions("biome", BiomeCondition.class);
