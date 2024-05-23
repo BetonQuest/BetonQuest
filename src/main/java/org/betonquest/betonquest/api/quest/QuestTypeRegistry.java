@@ -60,7 +60,7 @@ public abstract class QuestTypeRegistry<T, S, H, L, F> {
      * @deprecated replaced by {@link #register(String, QuestFactory, StaticQuestFactory)}
      */
     @Deprecated
-    public void registerLegacy(final String name, final Class<? extends L> lClass) {
+    public void register(final String name, final Class<? extends L> lClass) {
         log.debug("Registering " + name + " [legacy]" + typeName + " type");
         types.put(name, getFromClassLegacyTypeFactory(loggerFactory.create(lClass), lClass));
     }
@@ -81,7 +81,7 @@ public abstract class QuestTypeRegistry<T, S, H, L, F> {
      * @param name    name of the {@link T}
      * @param factory factory to create the {@link T}
      */
-    public void registerNonStatic(final String name, final QuestFactory<T> factory) {
+    public void register(final String name, final QuestFactory<T> factory) {
         registerInternal(name, factory, null);
     }
 
@@ -91,7 +91,7 @@ public abstract class QuestTypeRegistry<T, S, H, L, F> {
      * @param name          name of the {@link T}
      * @param staticFactory static factory to create the {@link T}
      */
-    public void registerStatic(final String name, final StaticQuestFactory<ST> staticFactory) {
+    public void register(final String name, final StaticQuestFactory<S> staticFactory) {
         registerInternal(name, null, staticFactory);
     }
 
@@ -102,7 +102,7 @@ public abstract class QuestTypeRegistry<T, S, H, L, F> {
      * @param name            name of the {@link T}
      * @param composedFactory factory to create the normal and static {@link T}
      */
-    public void registerComposed(final String name, final ComposedQuestFactory<H> composedFactory) {
+    public void register(final String name, final ComposedQuestFactory<H> composedFactory) {
         final ComposedQuestTypeAdapter<H, T, S> composedAdapter = getComposedAdapter(composedFactory);
         register(name, composedAdapter, composedAdapter);
     }
@@ -123,7 +123,7 @@ public abstract class QuestTypeRegistry<T, S, H, L, F> {
      * @param factory factory to create the {@link T} and the static variant
      * @param <C>     type of factory that creates both normal and static instances of the {@link T}
      */
-    public <C extends QuestFactory<T> & StaticQuestFactory<S>> void register(final String name, final C factory) {
+    public <C extends QuestFactory<T> & StaticQuestFactory<S>> void registerCombined(final String name, final C factory) {
         register(name, factory, factory);
     }
 
