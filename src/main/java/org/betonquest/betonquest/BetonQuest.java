@@ -524,7 +524,7 @@ public class BetonQuest extends JavaPlugin {
         questRegistry = new QuestRegistry(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
                 SCHEDULE_TYPES, questTypeRegistries, OBJECTIVE_TYPES, VARIABLE_TYPES);
 
-        new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this).register();
+        new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this).register(questTypeRegistries);
 
         registerConversationIO("simple", SimpleConvIO.class);
         registerConversationIO("tellraw", TellrawConvIO.class);

@@ -13,7 +13,6 @@ import org.betonquest.betonquest.conditions.CheckCondition;
 import org.betonquest.betonquest.conditions.ChestItemCondition;
 import org.betonquest.betonquest.conditions.ConjunctionCondition;
 import org.betonquest.betonquest.conditions.ConversationCondition;
-import org.betonquest.betonquest.conditions.DayOfWeekCondition;
 import org.betonquest.betonquest.conditions.EffectCondition;
 import org.betonquest.betonquest.conditions.EmptySlotsCondition;
 import org.betonquest.betonquest.conditions.EntityCondition;
@@ -37,7 +36,6 @@ import org.betonquest.betonquest.conditions.LookingAtCondition;
 import org.betonquest.betonquest.conditions.MooncycleCondition;
 import org.betonquest.betonquest.conditions.NumberCompareCondition;
 import org.betonquest.betonquest.conditions.ObjectiveCondition;
-import org.betonquest.betonquest.conditions.PartialDateCondition;
 import org.betonquest.betonquest.conditions.PartyCondition;
 import org.betonquest.betonquest.conditions.PermissionCondition;
 import org.betonquest.betonquest.conditions.PointCondition;
@@ -91,6 +89,8 @@ import org.betonquest.betonquest.objectives.StageObjective;
 import org.betonquest.betonquest.objectives.StepObjective;
 import org.betonquest.betonquest.objectives.TameObjective;
 import org.betonquest.betonquest.objectives.VariableObjective;
+import org.betonquest.betonquest.quest.condition.realtime.DayOfWeekConditionFactory;
+import org.betonquest.betonquest.quest.condition.realtime.PartialDateConditionFactory;
 import org.betonquest.betonquest.quest.event.burn.BurnEventFactory;
 import org.betonquest.betonquest.quest.event.cancel.CancelEventFactory;
 import org.betonquest.betonquest.quest.event.chat.ChatEventFactory;
@@ -142,6 +142,7 @@ import org.betonquest.betonquest.quest.event.teleport.TeleportEventFactory;
 import org.betonquest.betonquest.quest.event.time.TimeEventFactory;
 import org.betonquest.betonquest.quest.event.velocity.VelocityEventFactory;
 import org.betonquest.betonquest.quest.event.weather.WeatherEventFactory;
+import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.betonquest.betonquest.variables.ConditionVariable;
 import org.betonquest.betonquest.variables.GlobalPointVariable;
 import org.betonquest.betonquest.variables.GlobalTagVariable;
@@ -204,16 +205,18 @@ public class CoreQuestTypes {
 
     /**
      * Registers the Quest Types.
+     *
+     * @param questTypeRegistries the registry to register the types in
      */
-    public void register() {
+    public void register(final QuestTypeRegistries questTypeRegistries) {
         // When adding new types they need to be ordered by name in the corresponding method!
-        registerConditions();
+        registerConditions(questTypeRegistries.getConditionTypes());
         registerEvents();
         registerObjectives();
         registerVariables();
     }
 
-    private void registerConditions() {
+    private void registerConditions(final ConditionTypeRegistry conditionTypes) {
         betonQuest.registerConditions("advancement", AdvancementCondition.class);
         betonQuest.registerConditions("and", ConjunctionCondition.class);
         betonQuest.registerConditions("armor", ArmorCondition.class);
@@ -222,7 +225,7 @@ public class CoreQuestTypes {
         betonQuest.registerConditions("check", CheckCondition.class);
         betonQuest.registerConditions("chestitem", ChestItemCondition.class);
         betonQuest.registerConditions("conversation", ConversationCondition.class);
-        betonQuest.registerConditions("dayofweek", DayOfWeekCondition.class);
+        conditionTypes.register("dayofweek", new DayOfWeekConditionFactory(loggerFactory.create(DayOfWeekConditionFactory.class)));
         betonQuest.registerConditions("effect", EffectCondition.class);
         betonQuest.registerConditions("empty", EmptySlotsCondition.class);
         betonQuest.registerConditions("entities", EntityCondition.class);
@@ -247,7 +250,7 @@ public class CoreQuestTypes {
         betonQuest.registerConditions("numbercompare", NumberCompareCondition.class);
         betonQuest.registerConditions("objective", ObjectiveCondition.class);
         betonQuest.registerConditions("or", AlternativeCondition.class);
-        betonQuest.registerConditions("partialdate", PartialDateCondition.class);
+        conditionTypes.register("partialdate", new PartialDateConditionFactory());
         betonQuest.registerConditions("party", PartyCondition.class);
         betonQuest.registerConditions("permission", PermissionCondition.class);
         betonQuest.registerConditions("point", PointCondition.class);
