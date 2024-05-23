@@ -224,12 +224,12 @@ objectives:
 
 Death objective completes when the player dies meeting all conditions. You can optionally cancel death with `cancel`
 argument. It will heal player and optionally teleport him to respawn location. There can be two arguments: `cancel`,
-which is optional, and `respawn:`, which is also optional and only used if there is the `cancel` argument set. You can
-add them right after type of objective.
+which is optional, and `respawn:`, which is also optional. You can add them right after the type of objective.
 
 !!! example
     ```YAML
-    die cancel respawn:100;200;300;world;90;0 events:teleport
+    die respawn:100;200;300;world;90;0 events:respawned
+    die cancel respawn:100;200;300;world;90;0 events:respawned
     ```
 
 ## :fontawesome-solid-fish-fins: Fishing: `fish`
