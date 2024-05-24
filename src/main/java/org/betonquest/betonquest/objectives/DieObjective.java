@@ -21,9 +21,13 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Player needs to die. Death can be canceled, also respawn location can be set
@@ -49,14 +53,26 @@ public class DieObjective extends Objective implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDeath(final EntityDeathEvent event) {
-        if (cancel) {
+        if (cancel || location != null) {
             return;
         }
-        if (event.getEntity() instanceof Player) {
-            final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getEntity());
+        if (event.getEntity() instanceof final Player player) {
+            final OnlineProfile onlineProfile = PlayerConverter.getID(player);
             if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
                 completeObjective(onlineProfile);
             }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onRespawn(final PlayerRespawnEvent event) {
+        if (cancel || location == null) {
+            return;
+        }
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+            getLocation(onlineProfile).ifPresent(event::setRespawnLocation);
+            completeObjective(onlineProfile);
         }
     }
 
@@ -77,26 +93,25 @@ public class DieObjective extends Objective implements Listener {
             for (final PotionEffect effect : player.getActivePotionEffects()) {
                 player.removePotionEffect(effect.getType());
             }
-            Location targetLocation = null;
-            try {
-                if (location != null) {
-                    targetLocation = location.getLocation(onlineProfile);
-                }
-            } catch (final QuestRuntimeException e) {
-                log.warn(instruction.getPackage(), "Couldn't execute onLastDamage in DieObjective", e);
-            }
-            final Location finaltagetLocation = targetLocation;
+            final Optional<Location> targetLocation = getLocation(onlineProfile);
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (finaltagetLocation != null) {
-                        player.teleport(finaltagetLocation);
-                    }
+                    targetLocation.ifPresent(player::teleport);
                     player.setFireTicks(0);
 
                 }
             }.runTaskLater(BetonQuest.getInstance(), 1);
             completeObjective(onlineProfile);
+        }
+    }
+
+    private Optional<Location> getLocation(final OnlineProfile onlineProfile) {
+        try {
+            return Optional.of(Objects.requireNonNull(location).getLocation(onlineProfile));
+        } catch (final QuestRuntimeException e) {
+            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
+            return Optional.empty();
         }
     }
 
