@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.luckperms.permission;
 
 import net.luckperms.api.context.MutableContextSet;
-import net.luckperms.api.node.types.PermissionNode;
+import net.luckperms.api.node.Node;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -14,7 +14,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Builder class for LuckPerms {@link PermissionNode}s.
+ * Builder class for LuckPerms {@link Node}s.
  * <p>
  * Data class for the permissions.
  *
@@ -29,31 +29,31 @@ public record LuckPermsNodeBuilder(List<VariableString> permissions, VariableStr
                                    VariableNumber expiry, VariableString timeUnit) {
 
     /**
-     * Builds a list of {@link PermissionNode}s.
+     * Builds a list of {@link Node}s.
      *
      * @param profile The {@link Profile} to get the data from.
-     * @return A list of {@link PermissionNode}s.
+     * @return A list of {@link Node}s.
      * @throws QuestRuntimeException If an error occurs while building the nodes.
      */
-    public List<PermissionNode> getNodes(final Profile profile) throws QuestRuntimeException {
-        final List<PermissionNode> buildNodes = new ArrayList<>();
+    public List<Node> getNodes(final Profile profile) throws QuestRuntimeException {
+        final List<Node> buildNodes = new ArrayList<>();
         final String resolvedValue = value.getString(profile);
         final MutableContextSet contextSet = parseContextSet(contexts, profile);
         final long resolvedExpiry = (long) expiry.getDouble(profile);
         final TimeUnit resolvedTimeUnit = getTimeUnit(timeUnit, profile);
         for (final VariableString permission : permissions) {
-            PermissionNode.Builder builder = nodeBuilder(permission.getString(profile));
+            Node node = getNode(permission.getString(profile));
             if (!resolvedValue.isEmpty()) {
-                builder = addValue(builder, Boolean.parseBoolean(resolvedValue));
+                node = addValue(node, Boolean.parseBoolean(resolvedValue));
             }
             if (!contextSet.isEmpty()) {
-                builder = addContextSet(builder, contextSet);
+                node = addContextSet(node, contextSet);
             }
             if (resolvedExpiry > 0) {
-                builder = addExpiry(builder, resolvedExpiry, resolvedTimeUnit);
+                node = addExpiry(node, resolvedExpiry, resolvedTimeUnit);
             }
 
-            buildNodes.add(buildNode(builder));
+            buildNodes.add(node);
         }
         return buildNodes;
     }
@@ -70,17 +70,17 @@ public record LuckPermsNodeBuilder(List<VariableString> permissions, VariableStr
         return unit;
     }
 
-    private PermissionNode.Builder nodeBuilder(final String permission) {
-        return PermissionNode.builder(permission);
+    private Node getNode(final String permission) {
+        return Node.builder(permission).build();
     }
 
-    private PermissionNode.Builder addValue(final PermissionNode.Builder builder, final boolean value) {
-        return builder.value(value);
+    private Node addValue(final Node builder, final boolean value) {
+        return builder.toBuilder().value(value).build();
     }
 
-    private PermissionNode.Builder addContextSet(final PermissionNode.Builder builder,
-                                                 final MutableContextSet contextSet) {
-        return builder.context(contextSet);
+    private Node addContextSet(final Node builder,
+                               final MutableContextSet contextSet) {
+        return builder.toBuilder().context(contextSet).build();
     }
 
     private MutableContextSet parseContextSet(final List<VariableString> contexts, final Profile profile) {
@@ -92,12 +92,8 @@ public record LuckPermsNodeBuilder(List<VariableString> permissions, VariableStr
         return contextSet;
     }
 
-    private PermissionNode.Builder addExpiry(final PermissionNode.Builder builder, final long duration,
-                                             final TimeUnit unit) {
-        return builder.expiry(duration, unit);
-    }
-
-    private PermissionNode buildNode(final PermissionNode.Builder builder) {
-        return builder.build();
+    private Node addExpiry(final Node builder, final long duration,
+                           final TimeUnit unit) {
+        return builder.toBuilder().expiry(duration, unit).build();
     }
 }

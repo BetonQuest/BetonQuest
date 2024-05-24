@@ -40,15 +40,15 @@ public class LuckPermsEventFactory implements EventFactory {
 
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "addpermission" ->
-                    new LuckPermsPermissionEvent(getPermissionNodeBuilder(instruction), luckPermsAPI, NodeMap::add);
+                    new LuckPermsPermissionEvent(getNodeBuilder(instruction), luckPermsAPI, NodeMap::add);
             case "removepermission" ->
-                    new LuckPermsPermissionEvent(getPermissionNodeBuilder(instruction), luckPermsAPI, NodeMap::remove);
+                    new LuckPermsPermissionEvent(getNodeBuilder(instruction), luckPermsAPI, NodeMap::remove);
             default ->
                     throw new InstructionParseException("Unknown action: " + action + ". Expected addPermission or removePermission.");
         };
     }
 
-    private LuckPermsNodeBuilder getPermissionNodeBuilder(final Instruction instruction) throws InstructionParseException {
+    private LuckPermsNodeBuilder getNodeBuilder(final Instruction instruction) throws InstructionParseException {
         final String unparsedPermissions = instruction.getOptional("permission", "");
         if (unparsedPermissions.isEmpty()) {
             throw new InstructionParseException("Missing permissions argument. Expected permissions:permission1,"
