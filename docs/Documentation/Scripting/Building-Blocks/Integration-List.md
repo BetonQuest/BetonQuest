@@ -533,6 +533,7 @@ for an in-depth explanation on what contexts are and how to add them to permissi
 ### Permissions
 If you prefer to directly add or remove permissions without triggering the LuckPerms changelog chat notifications,
 you can utilize the `luckperms addPermission` and `luckperms removePermission` events. 
+You also have the possibility to assign groups to the player via the `group.<GroupName>` permission. 
 
  ```YAML title="Example"
  events:
