@@ -222,9 +222,13 @@ objectives:
 
 ## Death: `die`
 
-Death objective completes when the player dies meeting all conditions. You can optionally cancel death with `cancel`
-argument. It will heal player and optionally teleport him to respawn location. There can be two arguments: `cancel`,
-which is optional, and `respawn:`, which is also optional. You can add them right after the type of objective.
+The death objective is completed when a player dies while fulfilling all conditions.
+If you set the `respawn` location the player will spawn at that location, after pressing respawn,
+and the objective will be completed then, not immediately on death.
+
+Optionally you can also add the `cancel` argument to prevent the player from dying.
+In this case, the player will be healed and all status effects will be removed.
+You can also specify the `respawn` location to which the player will be teleported to.
 
 !!! example
     ```YAML
