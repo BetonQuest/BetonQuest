@@ -58,6 +58,22 @@ import org.betonquest.betonquest.events.RunEvent;
 import org.betonquest.betonquest.events.SpawnMobEvent;
 import org.betonquest.betonquest.events.TakeEvent;
 import org.betonquest.betonquest.events.VariableEvent;
+import org.betonquest.betonquest.objectives.ActionObjective;
+import org.betonquest.betonquest.objectives.ArrowShootObjective;
+import org.betonquest.betonquest.objectives.BlockObjective;
+import org.betonquest.betonquest.objectives.BreedObjective;
+import org.betonquest.betonquest.objectives.BrewObjective;
+import org.betonquest.betonquest.objectives.ChestPutObjective;
+import org.betonquest.betonquest.objectives.CommandObjective;
+import org.betonquest.betonquest.objectives.ConsumeObjective;
+import org.betonquest.betonquest.objectives.CraftingObjective;
+import org.betonquest.betonquest.objectives.DelayObjective;
+import org.betonquest.betonquest.objectives.DieObjective;
+import org.betonquest.betonquest.objectives.EnchantObjective;
+import org.betonquest.betonquest.objectives.EntityInteractObjective;
+import org.betonquest.betonquest.objectives.ExperienceObjective;
+import org.betonquest.betonquest.objectives.FishObjective;
+import org.betonquest.betonquest.objectives.KillPlayerObjective;
 import org.betonquest.betonquest.quest.event.burn.BurnEventFactory;
 import org.betonquest.betonquest.quest.event.cancel.CancelEventFactory;
 import org.betonquest.betonquest.quest.event.chat.ChatEventFactory;
@@ -279,6 +295,22 @@ public class CoreQuestTypes {
     }
 
     private void registerObjectives() {
+        plugin.registerObjectives("action", ActionObjective.class);
+        plugin.registerObjectives("arrow", ArrowShootObjective.class);
+        plugin.registerObjectives("block", BlockObjective.class);
+        plugin.registerObjectives("breed", BreedObjective.class);
+        plugin.registerObjectives("brew", BrewObjective.class);
+        plugin.registerObjectives("chestput", ChestPutObjective.class);
+        plugin.registerObjectives("command", CommandObjective.class);
+        plugin.registerObjectives("consume", ConsumeObjective.class);
+        plugin.registerObjectives("craft", CraftingObjective.class);
+        plugin.registerObjectives("delay", DelayObjective.class);
+        plugin.registerObjectives("die", DieObjective.class);
+        plugin.registerObjectives("enchant", EnchantObjective.class);
+        plugin.registerObjectives("experience", ExperienceObjective.class);
+        plugin.registerObjectives("fish", FishObjective.class);
+        plugin.registerObjectives("interact", EntityInteractObjective.class);
+        plugin.registerObjectives("kill", KillPlayerObjective.class);
     }
 
     private void registerVariables() {
