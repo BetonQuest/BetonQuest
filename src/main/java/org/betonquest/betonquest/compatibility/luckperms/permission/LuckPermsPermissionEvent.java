@@ -4,6 +4,7 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.data.NodeMap;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.model.user.UserManager;
+import net.luckperms.api.node.Node;
 import net.luckperms.api.node.types.PermissionNode;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
@@ -25,26 +26,26 @@ public class LuckPermsPermissionEvent implements Event {
     private final LuckPerms luckPermsAPI;
 
     /**
-     * The {@link PermissionApply} to apply the permissions.
+     * The {@link NodeApply} to apply the permissions.
      */
-    private final PermissionApply permissionApply;
+    private final NodeApply nodeApply;
 
     /**
      * The list of {@link PermissionNode}s to add.
      */
-    private final LuckPermsNodeBuilder permissionNodeBuilder;
+    private final LuckPermsNodeBuilder nodeBuilder;
 
     /**
      * The Constructor for the {@link LuckPermsPermissionEvent}.
      *
-     * @param permissionNodeBuilder The list of {@link PermissionNode}s to add.
-     * @param luckPermsAPI          The {@link LuckPerms} API.
-     * @param permissionApply       The {@link PermissionApply} to apply the permissions.
+     * @param nodeBuilder  The list of {@link PermissionNode}s to add.
+     * @param luckPermsAPI The {@link LuckPerms} API.
+     * @param nodeApply    The {@link NodeApply} to apply the permissions.
      */
-    public LuckPermsPermissionEvent(final LuckPermsNodeBuilder permissionNodeBuilder, final LuckPerms luckPermsAPI, final PermissionApply permissionApply) {
-        this.permissionNodeBuilder = permissionNodeBuilder;
+    public LuckPermsPermissionEvent(final LuckPermsNodeBuilder nodeBuilder, final LuckPerms luckPermsAPI, final NodeApply nodeApply) {
+        this.nodeBuilder = nodeBuilder;
         this.luckPermsAPI = luckPermsAPI;
-        this.permissionApply = permissionApply;
+        this.nodeApply = nodeApply;
     }
 
     @Override
@@ -55,9 +56,9 @@ public class LuckPermsPermissionEvent implements Event {
         final User user = getUser(userFuture);
 
         final NodeMap data = user.data();
-        final List<PermissionNode> nodes = permissionNodeBuilder.getNodes(profile);
-        for (final PermissionNode permission : nodes) {
-            permissionApply.apply(data, permission);
+        final List<Node> buildNodes = nodeBuilder.getNodes(profile);
+        for (final Node node : buildNodes) {
+            nodeApply.apply(data, node);
         }
         userManager.saveUser(user);
     }
@@ -74,13 +75,13 @@ public class LuckPermsPermissionEvent implements Event {
      * Functional interface to apply a {@link PermissionNode} to a {@link NodeMap}.
      */
     @FunctionalInterface
-    public interface PermissionApply {
+    public interface NodeApply {
         /**
          * Applies the {@link PermissionNode} to the {@link NodeMap}.
          *
-         * @param nodeMap    The {@link NodeMap} to apply the {@link PermissionNode} to.
-         * @param permission The {@link PermissionNode} to apply.
+         * @param nodeMap The {@link NodeMap} to apply the {@link PermissionNode} to.
+         * @param node    The {@link PermissionNode} to apply.
          */
-        void apply(NodeMap nodeMap, PermissionNode permission);
+        void apply(NodeMap nodeMap, Node node);
     }
 }
