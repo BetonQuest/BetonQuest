@@ -52,6 +52,7 @@ import org.betonquest.betonquest.conditions.TimeCondition;
 import org.betonquest.betonquest.conditions.VariableCondition;
 import org.betonquest.betonquest.conditions.WeatherCondition;
 import org.betonquest.betonquest.conditions.WorldCondition;
+import org.betonquest.betonquest.events.FolderEvent;
 import org.betonquest.betonquest.quest.event.burn.BurnEventFactory;
 import org.betonquest.betonquest.quest.event.cancel.CancelEventFactory;
 import org.betonquest.betonquest.quest.event.chat.ChatEventFactory;
@@ -66,10 +67,29 @@ import org.betonquest.betonquest.quest.event.damage.DamageEventFactory;
 import org.betonquest.betonquest.quest.event.door.DoorEventFactory;
 import org.betonquest.betonquest.quest.event.drop.DropEventFactory;
 import org.betonquest.betonquest.quest.event.effect.DeleteEffectEventFactory;
+import org.betonquest.betonquest.quest.event.effect.EffectEventFactory;
+import org.betonquest.betonquest.quest.event.experience.ExperienceEventFactory;
+import org.betonquest.betonquest.quest.event.explosion.ExplosionEventFactory;
+import org.betonquest.betonquest.quest.event.give.GiveEventFactory;
+import org.betonquest.betonquest.quest.event.hunger.HungerEventFactory;
+import org.betonquest.betonquest.quest.event.item.ItemDurabilityEventFactory;
+import org.betonquest.betonquest.quest.event.journal.GiveJournalEventFactory;
+import org.betonquest.betonquest.quest.event.journal.JournalEventFactory;
+import org.betonquest.betonquest.quest.event.kill.KillEventFactory;
+import org.betonquest.betonquest.quest.event.language.LanguageEventFactory;
+import org.betonquest.betonquest.quest.event.lever.LeverEventFactory;
+import org.betonquest.betonquest.quest.event.lightning.LightningEventFactory;
+import org.betonquest.betonquest.quest.event.log.LogEventFactory;
+import org.betonquest.betonquest.quest.event.logic.FirstEventFactory;
+import org.betonquest.betonquest.quest.event.logic.IfElseEventFactory;
 import org.betonquest.betonquest.quest.event.point.DeleteGlobalPointEventFactory;
 import org.betonquest.betonquest.quest.event.point.DeletePointEventFactory;
+import org.betonquest.betonquest.quest.event.point.GlobalPointEventFactory;
+import org.betonquest.betonquest.quest.event.tag.TagGlobalEventFactory;
 import org.bukkit.Server;
 import org.bukkit.scheduler.BukkitScheduler;
+
+import java.time.InstantSource;
 
 /**
  * Registers the Conditions, Events, Objectives and Variables that come with BetonQuest.
@@ -192,6 +212,24 @@ public class CoreQuestTypes {
         plugin.registerEvent("deletepoint", new DeletePointEventFactory());
         plugin.registerEvent("door", new DoorEventFactory(server, scheduler, plugin));
         plugin.registerEvent("drop", new DropEventFactory(server, scheduler, plugin));
+        plugin.registerNonStaticEvent("effect", new EffectEventFactory(loggerFactory, server, scheduler, plugin));
+        plugin.registerNonStaticEvent("experience", new ExperienceEventFactory(loggerFactory, server, scheduler, plugin));
+        plugin.registerEvent("explosion", new ExplosionEventFactory(server, scheduler, plugin));
+        plugin.registerEvents("folder", FolderEvent.class);
+        plugin.registerEvent("first", new FirstEventFactory());
+        plugin.registerNonStaticEvent("give", new GiveEventFactory(loggerFactory, server, scheduler, plugin));
+        plugin.registerNonStaticEvent("givejournal", new GiveJournalEventFactory(loggerFactory, server, scheduler, plugin));
+        plugin.registerEvent("globaltag", new TagGlobalEventFactory(plugin));
+        plugin.registerEvent("globalpoint", new GlobalPointEventFactory());
+        plugin.registerNonStaticEvent("hunger", new HungerEventFactory(loggerFactory, server, scheduler, plugin));
+        plugin.registerEvent("if", new IfElseEventFactory());
+        plugin.registerNonStaticEvent("itemdurability", new ItemDurabilityEventFactory(loggerFactory, server, scheduler, plugin));
+        plugin.registerEvent("journal", new JournalEventFactory(loggerFactory, plugin, InstantSource.system(), plugin.getSaver()));
+        plugin.registerNonStaticEvent("kill", new KillEventFactory(loggerFactory, server, scheduler, plugin));
+        plugin.registerNonStaticEvent("language", new LanguageEventFactory(plugin));
+        plugin.registerEvent("lever", new LeverEventFactory(server, scheduler, plugin));
+        plugin.registerEvent("lightning", new LightningEventFactory(server, scheduler, plugin));
+        plugin.registerEvent("log", new LogEventFactory(loggerFactory));
     }
 
     private void registerObjectives() {
