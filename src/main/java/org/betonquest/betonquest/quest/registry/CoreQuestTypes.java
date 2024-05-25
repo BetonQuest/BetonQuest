@@ -142,6 +142,20 @@ import org.betonquest.betonquest.quest.event.teleport.TeleportEventFactory;
 import org.betonquest.betonquest.quest.event.time.TimeEventFactory;
 import org.betonquest.betonquest.quest.event.velocity.VelocityEventFactory;
 import org.betonquest.betonquest.quest.event.weather.WeatherEventFactory;
+import org.betonquest.betonquest.variables.ConditionVariable;
+import org.betonquest.betonquest.variables.GlobalPointVariable;
+import org.betonquest.betonquest.variables.GlobalTagVariable;
+import org.betonquest.betonquest.variables.ItemDurabilityVariable;
+import org.betonquest.betonquest.variables.ItemVariable;
+import org.betonquest.betonquest.variables.LocationVariable;
+import org.betonquest.betonquest.variables.MathVariable;
+import org.betonquest.betonquest.variables.NpcNameVariable;
+import org.betonquest.betonquest.variables.ObjectivePropertyVariable;
+import org.betonquest.betonquest.variables.PlayerNameVariable;
+import org.betonquest.betonquest.variables.PointVariable;
+import org.betonquest.betonquest.variables.RandomNumberVariable;
+import org.betonquest.betonquest.variables.TagVariable;
+import org.betonquest.betonquest.variables.VersionVariable;
 import org.bukkit.Server;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -349,5 +363,19 @@ public class CoreQuestTypes {
     }
 
     private void registerVariables() {
+        plugin.registerVariable("condition", ConditionVariable.class);
+        plugin.registerVariable("globalpoint", GlobalPointVariable.class);
+        plugin.registerVariable("globaltag", GlobalTagVariable.class);
+        plugin.registerVariable("item", ItemVariable.class);
+        plugin.registerVariable("itemdurability", ItemDurabilityVariable.class);
+        plugin.registerVariable("location", LocationVariable.class);
+        plugin.registerVariable("math", MathVariable.class);
+        plugin.registerVariable("npc", NpcNameVariable.class);
+        plugin.registerVariable("objective", ObjectivePropertyVariable.class);
+        plugin.registerVariable("point", PointVariable.class);
+        plugin.registerVariable("player", PlayerNameVariable.class);
+        plugin.registerVariable("randomnumber", RandomNumberVariable.class);
+        plugin.registerVariable("tag", TagVariable.class);
+        plugin.registerVariable("version", VersionVariable.class);
     }
 }
