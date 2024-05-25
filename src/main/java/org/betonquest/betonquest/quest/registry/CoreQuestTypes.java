@@ -52,6 +52,22 @@ import org.betonquest.betonquest.conditions.TimeCondition;
 import org.betonquest.betonquest.conditions.VariableCondition;
 import org.betonquest.betonquest.conditions.WeatherCondition;
 import org.betonquest.betonquest.conditions.WorldCondition;
+import org.betonquest.betonquest.quest.event.burn.BurnEventFactory;
+import org.betonquest.betonquest.quest.event.cancel.CancelEventFactory;
+import org.betonquest.betonquest.quest.event.chat.ChatEventFactory;
+import org.betonquest.betonquest.quest.event.chest.ChestClearEventFactory;
+import org.betonquest.betonquest.quest.event.chest.ChestGiveEventFactory;
+import org.betonquest.betonquest.quest.event.chest.ChestTakeEventFactory;
+import org.betonquest.betonquest.quest.event.command.CommandEventFactory;
+import org.betonquest.betonquest.quest.event.compass.CompassEventFactory;
+import org.betonquest.betonquest.quest.event.conversation.CancelConversationEventFactory;
+import org.betonquest.betonquest.quest.event.conversation.ConversationEventFactory;
+import org.betonquest.betonquest.quest.event.damage.DamageEventFactory;
+import org.betonquest.betonquest.quest.event.door.DoorEventFactory;
+import org.betonquest.betonquest.quest.event.drop.DropEventFactory;
+import org.betonquest.betonquest.quest.event.effect.DeleteEffectEventFactory;
+import org.betonquest.betonquest.quest.event.point.DeleteGlobalPointEventFactory;
+import org.betonquest.betonquest.quest.event.point.DeletePointEventFactory;
 import org.bukkit.Server;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -160,6 +176,22 @@ public class CoreQuestTypes {
     }
 
     private void registerEvents() {
+        plugin.registerNonStaticEvent("burn", new BurnEventFactory(loggerFactory, server, scheduler, plugin));
+        plugin.registerNonStaticEvent("cancel", new CancelEventFactory(loggerFactory));
+        plugin.registerNonStaticEvent("cancelconversation", new CancelConversationEventFactory(loggerFactory));
+        plugin.registerNonStaticEvent("chat", new ChatEventFactory(loggerFactory, server, scheduler, plugin));
+        plugin.registerEvent("chestclear", new ChestClearEventFactory(server, scheduler, plugin));
+        plugin.registerEvent("chestgive", new ChestGiveEventFactory(server, scheduler, plugin));
+        plugin.registerEvent("chesttake", new ChestTakeEventFactory(server, scheduler, plugin));
+        plugin.registerNonStaticEvent("compass", new CompassEventFactory(loggerFactory, plugin, server.getPluginManager(), server, scheduler));
+        plugin.registerEvent("command", new CommandEventFactory(loggerFactory, server, scheduler, plugin));
+        plugin.registerNonStaticEvent("conversation", new ConversationEventFactory(loggerFactory, server, scheduler, plugin));
+        plugin.registerNonStaticEvent("damage", new DamageEventFactory(loggerFactory, server, scheduler, plugin));
+        plugin.registerNonStaticEvent("deleffect", new DeleteEffectEventFactory(loggerFactory, server, scheduler, plugin));
+        plugin.registerEvent("deleteglobalpoint", new DeleteGlobalPointEventFactory());
+        plugin.registerEvent("deletepoint", new DeletePointEventFactory());
+        plugin.registerEvent("door", new DoorEventFactory(server, scheduler, plugin));
+        plugin.registerEvent("drop", new DropEventFactory(server, scheduler, plugin));
     }
 
     private void registerObjectives() {
