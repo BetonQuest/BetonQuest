@@ -184,22 +184,22 @@ public class CoreQuestTypes {
     /**
      * Plugin used for primary server thread access, type registration and general usage.
      */
-    private final BetonQuest plugin;
+    private final BetonQuest betonQuest;
 
     /**
      * Create a new Core Quest Types class for registering.
      *
      * @param loggerFactory used in event factories
      * @param server        the server used for primary server thread access.
-     * @param scheduler     used in event factories
-     * @param plugin        used in event factories and for objective type registration
+     * @param scheduler     the scheduler used for primary server thread access
+     * @param betonQuest    the plugin used for primary server access and type registration
      */
     public CoreQuestTypes(final BetonQuestLoggerFactory loggerFactory,
-                          final Server server, final BukkitScheduler scheduler, final BetonQuest plugin) {
+                          final Server server, final BukkitScheduler scheduler, final BetonQuest betonQuest) {
         this.loggerFactory = loggerFactory;
         this.server = server;
         this.scheduler = scheduler;
-        this.plugin = plugin;
+        this.betonQuest = betonQuest;
     }
 
     /**
@@ -214,169 +214,169 @@ public class CoreQuestTypes {
     }
 
     private void registerConditions() {
-        plugin.registerConditions("advancement", AdvancementCondition.class);
-        plugin.registerConditions("and", ConjunctionCondition.class);
-        plugin.registerConditions("armor", ArmorCondition.class);
-        plugin.registerConditions("biome", BiomeCondition.class);
-        plugin.registerConditions("burning", BurningCondition.class);
-        plugin.registerConditions("check", CheckCondition.class);
-        plugin.registerConditions("chestitem", ChestItemCondition.class);
-        plugin.registerConditions("conversation", ConversationCondition.class);
-        plugin.registerConditions("dayofweek", DayOfWeekCondition.class);
-        plugin.registerConditions("effect", EffectCondition.class);
-        plugin.registerConditions("empty", EmptySlotsCondition.class);
-        plugin.registerConditions("entities", EntityCondition.class);
-        plugin.registerConditions("experience", ExperienceCondition.class);
-        plugin.registerConditions("facing", FacingCondition.class);
-        plugin.registerConditions("fly", FlyingCondition.class);
-        plugin.registerConditions("gamemode", GameModeCondition.class);
-        plugin.registerConditions("globalpoint", GlobalPointCondition.class);
-        plugin.registerConditions("globaltag", GlobalTagCondition.class);
-        plugin.registerConditions("hand", HandCondition.class);
-        plugin.registerConditions("health", HealthCondition.class);
-        plugin.registerConditions("height", HeightCondition.class);
-        plugin.registerConditions("hunger", HungerCondition.class);
-        plugin.registerConditions("inconversation", InConversationCondition.class);
-        plugin.registerConditions("item", ItemCondition.class);
-        plugin.registerConditions("itemdurability", ItemDurabilityCondition.class);
-        plugin.registerConditions("journal", JournalCondition.class);
-        plugin.registerConditions("language", LanguageCondition.class);
-        plugin.registerConditions("location", LocationCondition.class);
-        plugin.registerConditions("looking", LookingAtCondition.class);
-        plugin.registerConditions("mooncycle", MooncycleCondition.class);
-        plugin.registerConditions("numbercompare", NumberCompareCondition.class);
-        plugin.registerConditions("objective", ObjectiveCondition.class);
-        plugin.registerConditions("or", AlternativeCondition.class);
-        plugin.registerConditions("partialdate", PartialDateCondition.class);
-        plugin.registerConditions("party", PartyCondition.class);
-        plugin.registerConditions("permission", PermissionCondition.class);
-        plugin.registerConditions("point", PointCondition.class);
-        plugin.registerConditions("random", RandomCondition.class);
-        plugin.registerConditions("rating", ArmorRatingCondition.class);
-        plugin.registerConditions("realtime", RealTimeCondition.class);
-        plugin.registerConditions("ride", RideCondition.class);
-        plugin.registerConditions("score", ScoreboardCondition.class);
-        plugin.registerConditions("sneak", SneakCondition.class);
-        plugin.registerConditions("stage", StageCondition.class);
-        plugin.registerConditions("tag", TagCondition.class);
-        plugin.registerConditions("testforblock", TestForBlockCondition.class);
-        plugin.registerConditions("time", TimeCondition.class);
-        plugin.registerConditions("variable", VariableCondition.class);
-        plugin.registerConditions("weather", WeatherCondition.class);
-        plugin.registerConditions("world", WorldCondition.class);
+        betonQuest.registerConditions("advancement", AdvancementCondition.class);
+        betonQuest.registerConditions("and", ConjunctionCondition.class);
+        betonQuest.registerConditions("armor", ArmorCondition.class);
+        betonQuest.registerConditions("biome", BiomeCondition.class);
+        betonQuest.registerConditions("burning", BurningCondition.class);
+        betonQuest.registerConditions("check", CheckCondition.class);
+        betonQuest.registerConditions("chestitem", ChestItemCondition.class);
+        betonQuest.registerConditions("conversation", ConversationCondition.class);
+        betonQuest.registerConditions("dayofweek", DayOfWeekCondition.class);
+        betonQuest.registerConditions("effect", EffectCondition.class);
+        betonQuest.registerConditions("empty", EmptySlotsCondition.class);
+        betonQuest.registerConditions("entities", EntityCondition.class);
+        betonQuest.registerConditions("experience", ExperienceCondition.class);
+        betonQuest.registerConditions("facing", FacingCondition.class);
+        betonQuest.registerConditions("fly", FlyingCondition.class);
+        betonQuest.registerConditions("gamemode", GameModeCondition.class);
+        betonQuest.registerConditions("globalpoint", GlobalPointCondition.class);
+        betonQuest.registerConditions("globaltag", GlobalTagCondition.class);
+        betonQuest.registerConditions("hand", HandCondition.class);
+        betonQuest.registerConditions("health", HealthCondition.class);
+        betonQuest.registerConditions("height", HeightCondition.class);
+        betonQuest.registerConditions("hunger", HungerCondition.class);
+        betonQuest.registerConditions("inconversation", InConversationCondition.class);
+        betonQuest.registerConditions("item", ItemCondition.class);
+        betonQuest.registerConditions("itemdurability", ItemDurabilityCondition.class);
+        betonQuest.registerConditions("journal", JournalCondition.class);
+        betonQuest.registerConditions("language", LanguageCondition.class);
+        betonQuest.registerConditions("location", LocationCondition.class);
+        betonQuest.registerConditions("looking", LookingAtCondition.class);
+        betonQuest.registerConditions("mooncycle", MooncycleCondition.class);
+        betonQuest.registerConditions("numbercompare", NumberCompareCondition.class);
+        betonQuest.registerConditions("objective", ObjectiveCondition.class);
+        betonQuest.registerConditions("or", AlternativeCondition.class);
+        betonQuest.registerConditions("partialdate", PartialDateCondition.class);
+        betonQuest.registerConditions("party", PartyCondition.class);
+        betonQuest.registerConditions("permission", PermissionCondition.class);
+        betonQuest.registerConditions("point", PointCondition.class);
+        betonQuest.registerConditions("random", RandomCondition.class);
+        betonQuest.registerConditions("rating", ArmorRatingCondition.class);
+        betonQuest.registerConditions("realtime", RealTimeCondition.class);
+        betonQuest.registerConditions("ride", RideCondition.class);
+        betonQuest.registerConditions("score", ScoreboardCondition.class);
+        betonQuest.registerConditions("sneak", SneakCondition.class);
+        betonQuest.registerConditions("stage", StageCondition.class);
+        betonQuest.registerConditions("tag", TagCondition.class);
+        betonQuest.registerConditions("testforblock", TestForBlockCondition.class);
+        betonQuest.registerConditions("time", TimeCondition.class);
+        betonQuest.registerConditions("variable", VariableCondition.class);
+        betonQuest.registerConditions("weather", WeatherCondition.class);
+        betonQuest.registerConditions("world", WorldCondition.class);
     }
 
     private void registerEvents() {
-        plugin.registerNonStaticEvent("burn", new BurnEventFactory(loggerFactory, server, scheduler, plugin));
-        plugin.registerNonStaticEvent("cancel", new CancelEventFactory(loggerFactory));
-        plugin.registerNonStaticEvent("cancelconversation", new CancelConversationEventFactory(loggerFactory));
-        plugin.registerNonStaticEvent("chat", new ChatEventFactory(loggerFactory, server, scheduler, plugin));
-        plugin.registerEvent("chestclear", new ChestClearEventFactory(server, scheduler, plugin));
-        plugin.registerEvent("chestgive", new ChestGiveEventFactory(server, scheduler, plugin));
-        plugin.registerEvent("chesttake", new ChestTakeEventFactory(server, scheduler, plugin));
-        plugin.registerNonStaticEvent("compass", new CompassEventFactory(loggerFactory, plugin, server.getPluginManager(), server, scheduler));
-        plugin.registerEvent("command", new CommandEventFactory(loggerFactory, server, scheduler, plugin));
-        plugin.registerNonStaticEvent("conversation", new ConversationEventFactory(loggerFactory, server, scheduler, plugin));
-        plugin.registerNonStaticEvent("damage", new DamageEventFactory(loggerFactory, server, scheduler, plugin));
-        plugin.registerNonStaticEvent("deleffect", new DeleteEffectEventFactory(loggerFactory, server, scheduler, plugin));
-        plugin.registerEvent("deleteglobalpoint", new DeleteGlobalPointEventFactory());
-        plugin.registerEvent("deletepoint", new DeletePointEventFactory());
-        plugin.registerEvent("door", new DoorEventFactory(server, scheduler, plugin));
-        plugin.registerEvent("drop", new DropEventFactory(server, scheduler, plugin));
-        plugin.registerNonStaticEvent("effect", new EffectEventFactory(loggerFactory, server, scheduler, plugin));
-        plugin.registerNonStaticEvent("experience", new ExperienceEventFactory(loggerFactory, server, scheduler, plugin));
-        plugin.registerEvent("explosion", new ExplosionEventFactory(server, scheduler, plugin));
-        plugin.registerEvents("folder", FolderEvent.class);
-        plugin.registerEvent("first", new FirstEventFactory());
-        plugin.registerNonStaticEvent("give", new GiveEventFactory(loggerFactory, server, scheduler, plugin));
-        plugin.registerNonStaticEvent("givejournal", new GiveJournalEventFactory(loggerFactory, server, scheduler, plugin));
-        plugin.registerEvent("globaltag", new TagGlobalEventFactory(plugin));
-        plugin.registerEvent("globalpoint", new GlobalPointEventFactory());
-        plugin.registerNonStaticEvent("hunger", new HungerEventFactory(loggerFactory, server, scheduler, plugin));
-        plugin.registerEvent("if", new IfElseEventFactory());
-        plugin.registerNonStaticEvent("itemdurability", new ItemDurabilityEventFactory(loggerFactory, server, scheduler, plugin));
-        plugin.registerEvent("journal", new JournalEventFactory(loggerFactory, plugin, InstantSource.system(), plugin.getSaver()));
-        plugin.registerNonStaticEvent("kill", new KillEventFactory(loggerFactory, server, scheduler, plugin));
-        plugin.registerNonStaticEvent("language", new LanguageEventFactory(plugin));
-        plugin.registerEvent("lever", new LeverEventFactory(server, scheduler, plugin));
-        plugin.registerEvent("lightning", new LightningEventFactory(server, scheduler, plugin));
-        plugin.registerEvent("log", new LogEventFactory(loggerFactory));
-        plugin.registerNonStaticEvent("notify", new NotifyEventFactory(loggerFactory, server, scheduler, plugin));
-        plugin.registerEvent("notifyall", new NotifyAllEventFactory(loggerFactory, server, scheduler, plugin));
-        plugin.registerEvents("objective", ObjectiveEvent.class);
-        plugin.registerNonStaticEvent("opsudo", new OpSudoEventFactory(loggerFactory, server, scheduler, plugin));
-        plugin.registerNonStaticEvent("party", new PartyEventFactory(loggerFactory));
-        plugin.registerEvent("pickrandom", new PickRandomEventFactory());
-        plugin.registerNonStaticEvent("point", new PointEventFactory(loggerFactory));
-        plugin.registerEvent("removeentity", new RemoveEntityEventFactory(server, scheduler, plugin));
-        plugin.registerEvents("run", RunEvent.class);
-        plugin.registerEvent("runForAll", new RunForAllEventFactory());
-        plugin.registerEvent("runIndependent", new RunIndependentEventFactory());
-        plugin.registerEvent("setblock", new SetBlockEventFactory(server, scheduler, plugin));
-        plugin.registerNonStaticEvent("score", new ScoreboardEventFactory(server, scheduler, plugin));
-        plugin.registerEvents("spawn", SpawnMobEvent.class);
-        plugin.registerNonStaticEvent("stage", new StageEventFactory(plugin));
-        plugin.registerNonStaticEvent("sudo", new SudoEventFactory(loggerFactory, server, scheduler, plugin));
-        plugin.registerEvent("tag", new TagPlayerEventFactory(plugin, plugin.getSaver()));
-        plugin.registerEvents("take", TakeEvent.class);
-        plugin.registerNonStaticEvent("teleport", new TeleportEventFactory(loggerFactory, server, scheduler, plugin));
-        plugin.registerEvent("time", new TimeEventFactory(server, scheduler, plugin));
-        plugin.registerEvents("variable", VariableEvent.class);
-        plugin.registerNonStaticEvent("velocity", new VelocityEventFactory(loggerFactory, server, scheduler, plugin));
-        plugin.registerNonStaticEvent("weather", new WeatherEventFactory(loggerFactory, server, scheduler, plugin));
+        betonQuest.registerNonStaticEvent("burn", new BurnEventFactory(loggerFactory, server, scheduler, betonQuest));
+        betonQuest.registerNonStaticEvent("cancel", new CancelEventFactory(loggerFactory));
+        betonQuest.registerNonStaticEvent("cancelconversation", new CancelConversationEventFactory(loggerFactory));
+        betonQuest.registerNonStaticEvent("chat", new ChatEventFactory(loggerFactory, server, scheduler, betonQuest));
+        betonQuest.registerEvent("chestclear", new ChestClearEventFactory(server, scheduler, betonQuest));
+        betonQuest.registerEvent("chestgive", new ChestGiveEventFactory(server, scheduler, betonQuest));
+        betonQuest.registerEvent("chesttake", new ChestTakeEventFactory(server, scheduler, betonQuest));
+        betonQuest.registerNonStaticEvent("compass", new CompassEventFactory(loggerFactory, betonQuest, server.getPluginManager(), server, scheduler));
+        betonQuest.registerEvent("command", new CommandEventFactory(loggerFactory, server, scheduler, betonQuest));
+        betonQuest.registerNonStaticEvent("conversation", new ConversationEventFactory(loggerFactory, server, scheduler, betonQuest));
+        betonQuest.registerNonStaticEvent("damage", new DamageEventFactory(loggerFactory, server, scheduler, betonQuest));
+        betonQuest.registerNonStaticEvent("deleffect", new DeleteEffectEventFactory(loggerFactory, server, scheduler, betonQuest));
+        betonQuest.registerEvent("deleteglobalpoint", new DeleteGlobalPointEventFactory());
+        betonQuest.registerEvent("deletepoint", new DeletePointEventFactory());
+        betonQuest.registerEvent("door", new DoorEventFactory(server, scheduler, betonQuest));
+        betonQuest.registerEvent("drop", new DropEventFactory(server, scheduler, betonQuest));
+        betonQuest.registerNonStaticEvent("effect", new EffectEventFactory(loggerFactory, server, scheduler, betonQuest));
+        betonQuest.registerNonStaticEvent("experience", new ExperienceEventFactory(loggerFactory, server, scheduler, betonQuest));
+        betonQuest.registerEvent("explosion", new ExplosionEventFactory(server, scheduler, betonQuest));
+        betonQuest.registerEvents("folder", FolderEvent.class);
+        betonQuest.registerEvent("first", new FirstEventFactory());
+        betonQuest.registerNonStaticEvent("give", new GiveEventFactory(loggerFactory, server, scheduler, betonQuest));
+        betonQuest.registerNonStaticEvent("givejournal", new GiveJournalEventFactory(loggerFactory, server, scheduler, betonQuest));
+        betonQuest.registerEvent("globaltag", new TagGlobalEventFactory(betonQuest));
+        betonQuest.registerEvent("globalpoint", new GlobalPointEventFactory());
+        betonQuest.registerNonStaticEvent("hunger", new HungerEventFactory(loggerFactory, server, scheduler, betonQuest));
+        betonQuest.registerEvent("if", new IfElseEventFactory());
+        betonQuest.registerNonStaticEvent("itemdurability", new ItemDurabilityEventFactory(loggerFactory, server, scheduler, betonQuest));
+        betonQuest.registerEvent("journal", new JournalEventFactory(loggerFactory, betonQuest, InstantSource.system(), betonQuest.getSaver()));
+        betonQuest.registerNonStaticEvent("kill", new KillEventFactory(loggerFactory, server, scheduler, betonQuest));
+        betonQuest.registerNonStaticEvent("language", new LanguageEventFactory(betonQuest));
+        betonQuest.registerEvent("lever", new LeverEventFactory(server, scheduler, betonQuest));
+        betonQuest.registerEvent("lightning", new LightningEventFactory(server, scheduler, betonQuest));
+        betonQuest.registerEvent("log", new LogEventFactory(loggerFactory));
+        betonQuest.registerNonStaticEvent("notify", new NotifyEventFactory(loggerFactory, server, scheduler, betonQuest));
+        betonQuest.registerEvent("notifyall", new NotifyAllEventFactory(loggerFactory, server, scheduler, betonQuest));
+        betonQuest.registerEvents("objective", ObjectiveEvent.class);
+        betonQuest.registerNonStaticEvent("opsudo", new OpSudoEventFactory(loggerFactory, server, scheduler, betonQuest));
+        betonQuest.registerNonStaticEvent("party", new PartyEventFactory(loggerFactory));
+        betonQuest.registerEvent("pickrandom", new PickRandomEventFactory());
+        betonQuest.registerNonStaticEvent("point", new PointEventFactory(loggerFactory));
+        betonQuest.registerEvent("removeentity", new RemoveEntityEventFactory(server, scheduler, betonQuest));
+        betonQuest.registerEvents("run", RunEvent.class);
+        betonQuest.registerEvent("runForAll", new RunForAllEventFactory());
+        betonQuest.registerEvent("runIndependent", new RunIndependentEventFactory());
+        betonQuest.registerEvent("setblock", new SetBlockEventFactory(server, scheduler, betonQuest));
+        betonQuest.registerNonStaticEvent("score", new ScoreboardEventFactory(server, scheduler, betonQuest));
+        betonQuest.registerEvents("spawn", SpawnMobEvent.class);
+        betonQuest.registerNonStaticEvent("stage", new StageEventFactory(betonQuest));
+        betonQuest.registerNonStaticEvent("sudo", new SudoEventFactory(loggerFactory, server, scheduler, betonQuest));
+        betonQuest.registerEvent("tag", new TagPlayerEventFactory(betonQuest, betonQuest.getSaver()));
+        betonQuest.registerEvents("take", TakeEvent.class);
+        betonQuest.registerNonStaticEvent("teleport", new TeleportEventFactory(loggerFactory, server, scheduler, betonQuest));
+        betonQuest.registerEvent("time", new TimeEventFactory(server, scheduler, betonQuest));
+        betonQuest.registerEvents("variable", VariableEvent.class);
+        betonQuest.registerNonStaticEvent("velocity", new VelocityEventFactory(loggerFactory, server, scheduler, betonQuest));
+        betonQuest.registerNonStaticEvent("weather", new WeatherEventFactory(loggerFactory, server, scheduler, betonQuest));
     }
 
     private void registerObjectives() {
-        plugin.registerObjectives("action", ActionObjective.class);
-        plugin.registerObjectives("arrow", ArrowShootObjective.class);
-        plugin.registerObjectives("block", BlockObjective.class);
-        plugin.registerObjectives("breed", BreedObjective.class);
-        plugin.registerObjectives("brew", BrewObjective.class);
-        plugin.registerObjectives("chestput", ChestPutObjective.class);
-        plugin.registerObjectives("command", CommandObjective.class);
-        plugin.registerObjectives("consume", ConsumeObjective.class);
-        plugin.registerObjectives("craft", CraftingObjective.class);
-        plugin.registerObjectives("delay", DelayObjective.class);
-        plugin.registerObjectives("die", DieObjective.class);
-        plugin.registerObjectives("enchant", EnchantObjective.class);
-        plugin.registerObjectives("experience", ExperienceObjective.class);
-        plugin.registerObjectives("fish", FishObjective.class);
-        plugin.registerObjectives("interact", EntityInteractObjective.class);
-        plugin.registerObjectives("kill", KillPlayerObjective.class);
-        plugin.registerObjectives("location", LocationObjective.class);
-        plugin.registerObjectives("login", LoginObjective.class);
-        plugin.registerObjectives("logout", LogoutObjective.class);
-        plugin.registerObjectives("mobkill", MobKillObjective.class);
-        plugin.registerObjectives("password", PasswordObjective.class);
-        plugin.registerObjectives("pickup", PickupObjective.class);
-        plugin.registerObjectives("ride", RideObjective.class);
-        plugin.registerObjectives("shear", ShearObjective.class);
-        plugin.registerObjectives("smelt", SmeltingObjective.class);
-        plugin.registerObjectives("stage", StageObjective.class);
-        plugin.registerObjectives("step", StepObjective.class);
-        plugin.registerObjectives("tame", TameObjective.class);
-        plugin.registerObjectives("variable", VariableObjective.class);
+        betonQuest.registerObjectives("action", ActionObjective.class);
+        betonQuest.registerObjectives("arrow", ArrowShootObjective.class);
+        betonQuest.registerObjectives("block", BlockObjective.class);
+        betonQuest.registerObjectives("breed", BreedObjective.class);
+        betonQuest.registerObjectives("brew", BrewObjective.class);
+        betonQuest.registerObjectives("chestput", ChestPutObjective.class);
+        betonQuest.registerObjectives("command", CommandObjective.class);
+        betonQuest.registerObjectives("consume", ConsumeObjective.class);
+        betonQuest.registerObjectives("craft", CraftingObjective.class);
+        betonQuest.registerObjectives("delay", DelayObjective.class);
+        betonQuest.registerObjectives("die", DieObjective.class);
+        betonQuest.registerObjectives("enchant", EnchantObjective.class);
+        betonQuest.registerObjectives("experience", ExperienceObjective.class);
+        betonQuest.registerObjectives("fish", FishObjective.class);
+        betonQuest.registerObjectives("interact", EntityInteractObjective.class);
+        betonQuest.registerObjectives("kill", KillPlayerObjective.class);
+        betonQuest.registerObjectives("location", LocationObjective.class);
+        betonQuest.registerObjectives("login", LoginObjective.class);
+        betonQuest.registerObjectives("logout", LogoutObjective.class);
+        betonQuest.registerObjectives("mobkill", MobKillObjective.class);
+        betonQuest.registerObjectives("password", PasswordObjective.class);
+        betonQuest.registerObjectives("pickup", PickupObjective.class);
+        betonQuest.registerObjectives("ride", RideObjective.class);
+        betonQuest.registerObjectives("shear", ShearObjective.class);
+        betonQuest.registerObjectives("smelt", SmeltingObjective.class);
+        betonQuest.registerObjectives("stage", StageObjective.class);
+        betonQuest.registerObjectives("step", StepObjective.class);
+        betonQuest.registerObjectives("tame", TameObjective.class);
+        betonQuest.registerObjectives("variable", VariableObjective.class);
         if (PaperLib.isPaper()) {
-            plugin.registerObjectives("equip", EquipItemObjective.class);
-            plugin.registerObjectives("jump", JumpObjective.class);
-            plugin.registerObjectives("resourcepack", ResourcePackObjective.class);
+            betonQuest.registerObjectives("equip", EquipItemObjective.class);
+            betonQuest.registerObjectives("jump", JumpObjective.class);
+            betonQuest.registerObjectives("resourcepack", ResourcePackObjective.class);
         }
     }
 
     private void registerVariables() {
-        plugin.registerVariable("condition", ConditionVariable.class);
-        plugin.registerVariable("globalpoint", GlobalPointVariable.class);
-        plugin.registerVariable("globaltag", GlobalTagVariable.class);
-        plugin.registerVariable("item", ItemVariable.class);
-        plugin.registerVariable("itemdurability", ItemDurabilityVariable.class);
-        plugin.registerVariable("location", LocationVariable.class);
-        plugin.registerVariable("math", MathVariable.class);
-        plugin.registerVariable("npc", NpcNameVariable.class);
-        plugin.registerVariable("objective", ObjectivePropertyVariable.class);
-        plugin.registerVariable("point", PointVariable.class);
-        plugin.registerVariable("player", PlayerNameVariable.class);
-        plugin.registerVariable("randomnumber", RandomNumberVariable.class);
-        plugin.registerVariable("tag", TagVariable.class);
-        plugin.registerVariable("version", VersionVariable.class);
+        betonQuest.registerVariable("condition", ConditionVariable.class);
+        betonQuest.registerVariable("globalpoint", GlobalPointVariable.class);
+        betonQuest.registerVariable("globaltag", GlobalTagVariable.class);
+        betonQuest.registerVariable("item", ItemVariable.class);
+        betonQuest.registerVariable("itemdurability", ItemDurabilityVariable.class);
+        betonQuest.registerVariable("location", LocationVariable.class);
+        betonQuest.registerVariable("math", MathVariable.class);
+        betonQuest.registerVariable("npc", NpcNameVariable.class);
+        betonQuest.registerVariable("objective", ObjectivePropertyVariable.class);
+        betonQuest.registerVariable("point", PointVariable.class);
+        betonQuest.registerVariable("player", PlayerNameVariable.class);
+        betonQuest.registerVariable("randomnumber", RandomNumberVariable.class);
+        betonQuest.registerVariable("tag", TagVariable.class);
+        betonQuest.registerVariable("version", VersionVariable.class);
     }
 }
