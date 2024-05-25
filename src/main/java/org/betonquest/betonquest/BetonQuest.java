@@ -35,19 +35,6 @@ import org.betonquest.betonquest.commands.LangCommand;
 import org.betonquest.betonquest.commands.QuestCommand;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.protocollib.FreezeEvent;
-import org.betonquest.betonquest.conditions.ArmorRatingCondition;
-import org.betonquest.betonquest.conditions.RandomCondition;
-import org.betonquest.betonquest.conditions.RealTimeCondition;
-import org.betonquest.betonquest.conditions.RideCondition;
-import org.betonquest.betonquest.conditions.ScoreboardCondition;
-import org.betonquest.betonquest.conditions.SneakCondition;
-import org.betonquest.betonquest.conditions.StageCondition;
-import org.betonquest.betonquest.conditions.TagCondition;
-import org.betonquest.betonquest.conditions.TestForBlockCondition;
-import org.betonquest.betonquest.conditions.TimeCondition;
-import org.betonquest.betonquest.conditions.VariableCondition;
-import org.betonquest.betonquest.conditions.WeatherCondition;
-import org.betonquest.betonquest.conditions.WorldCondition;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.conversation.AnswerFilter;
@@ -809,20 +796,6 @@ public class BetonQuest extends JavaPlugin {
         new LangCommand(loggerFactory.create(LangCommand.class));
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this).register();
-
-        registerConditions("tag", TagCondition.class);
-        registerConditions("time", TimeCondition.class);
-        registerConditions("weather", WeatherCondition.class);
-        registerConditions("rating", ArmorRatingCondition.class);
-        registerConditions("sneak", SneakCondition.class);
-        registerConditions("stage", StageCondition.class);
-        registerConditions("random", RandomCondition.class);
-        registerConditions("testforblock", TestForBlockCondition.class);
-        registerConditions("score", ScoreboardCondition.class);
-        registerConditions("ride", RideCondition.class);
-        registerConditions("world", WorldCondition.class);
-        registerConditions("variable", VariableCondition.class);
-        registerConditions("realtime", RealTimeCondition.class);
 
         registerEvents("objective", ObjectiveEvent.class);
         registerEvent("command", new CommandEventFactory(loggerFactory, getServer(), getServer().getScheduler(), this));

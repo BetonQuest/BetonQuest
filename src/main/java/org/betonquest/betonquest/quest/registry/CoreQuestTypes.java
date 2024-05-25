@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.conditions.AdvancementCondition;
 import org.betonquest.betonquest.conditions.AlternativeCondition;
 import org.betonquest.betonquest.conditions.ArmorCondition;
+import org.betonquest.betonquest.conditions.ArmorRatingCondition;
 import org.betonquest.betonquest.conditions.BiomeCondition;
 import org.betonquest.betonquest.conditions.BurningCondition;
 import org.betonquest.betonquest.conditions.CheckCondition;
@@ -39,6 +40,18 @@ import org.betonquest.betonquest.conditions.PartialDateCondition;
 import org.betonquest.betonquest.conditions.PartyCondition;
 import org.betonquest.betonquest.conditions.PermissionCondition;
 import org.betonquest.betonquest.conditions.PointCondition;
+import org.betonquest.betonquest.conditions.RandomCondition;
+import org.betonquest.betonquest.conditions.RealTimeCondition;
+import org.betonquest.betonquest.conditions.RideCondition;
+import org.betonquest.betonquest.conditions.ScoreboardCondition;
+import org.betonquest.betonquest.conditions.SneakCondition;
+import org.betonquest.betonquest.conditions.StageCondition;
+import org.betonquest.betonquest.conditions.TagCondition;
+import org.betonquest.betonquest.conditions.TestForBlockCondition;
+import org.betonquest.betonquest.conditions.TimeCondition;
+import org.betonquest.betonquest.conditions.VariableCondition;
+import org.betonquest.betonquest.conditions.WeatherCondition;
+import org.betonquest.betonquest.conditions.WorldCondition;
 import org.bukkit.Server;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -131,6 +144,19 @@ public class CoreQuestTypes {
         plugin.registerConditions("party", PartyCondition.class);
         plugin.registerConditions("permission", PermissionCondition.class);
         plugin.registerConditions("point", PointCondition.class);
+        plugin.registerConditions("random", RandomCondition.class);
+        plugin.registerConditions("rating", ArmorRatingCondition.class);
+        plugin.registerConditions("realtime", RealTimeCondition.class);
+        plugin.registerConditions("ride", RideCondition.class);
+        plugin.registerConditions("score", ScoreboardCondition.class);
+        plugin.registerConditions("sneak", SneakCondition.class);
+        plugin.registerConditions("stage", StageCondition.class);
+        plugin.registerConditions("tag", TagCondition.class);
+        plugin.registerConditions("testforblock", TestForBlockCondition.class);
+        plugin.registerConditions("time", TimeCondition.class);
+        plugin.registerConditions("variable", VariableCondition.class);
+        plugin.registerConditions("weather", WeatherCondition.class);
+        plugin.registerConditions("world", WorldCondition.class);
     }
 
     private void registerEvents() {
