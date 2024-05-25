@@ -197,7 +197,7 @@
     <dependency>
       <groupId>me.clip</groupId>
       <artifactId>placeholderapi</artifactId>
-      <version>2.11.5</version>
+      <version>2.11.6</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
@@ -252,7 +252,7 @@
     <dependency>
       <groupId>com.github.Emibergo02</groupId>
       <artifactId>RedisChat</artifactId>
-      <version>4.4.4b</version>
+      <version>4.5.3</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
@@ -306,7 +306,7 @@
     <dependency>
       <groupId>com.github.decentsoftware-eu</groupId>
       <artifactId>decentholograms</artifactId>
-      <version>2.8.6</version>
+      <version>2.8.8</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
@@ -315,7 +315,7 @@
     <dependency>
       <groupId>net.kyori</groupId>
       <artifactId>adventure-api</artifactId>
-      <version>4.16.0</version>
+      <version>4.17.0</version>
     </dependency>
     <dependency>
       <groupId>net.kyori</groupId>
@@ -325,7 +325,7 @@
     <dependency>
       <groupId>net.kyori</groupId>
       <artifactId>adventure-text-serializer-plain</artifactId>
-      <version>4.16.0</version>
+      <version>4.17.0</version>
     </dependency>
 
     <!-- from minecraft repository -->
@@ -457,14 +457,14 @@
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>5.11.0-M1</version>
+        <version>5.11.0-M2</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-bom</artifactId>
-        <version>5.11.0</version>
+        <version>5.12.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -999,6 +999,38 @@
               <version>1.2.1</version>
             </dependency>
           </dependencies>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>versions-maven-plugin</artifactId>
+          <version>2.16.2</version>
+          <configuration>
+            <excludeProperties>changelist</excludeProperties>
+            <ruleSet>
+              <rules>
+                <rule>
+                  <!-- more recent versions build against Java 21 and break compiling -->
+                  <groupId>com.sk89q.worldedit</groupId>
+                  <ignoreVersions>
+                    <ignoreVersion>
+                      <type>regex</type>
+                      <version>7.*</version>
+                    </ignoreVersion>
+                  </ignoreVersions>
+                </rule>
+                <rule>
+                  <!-- more recent versions build against Java 21 and break compiling -->
+                  <groupId>com.sk89q.worldguard</groupId>
+                  <ignoreVersions>
+                    <ignoreVersion>
+                      <type>regex</type>
+                      <version>7.*</version>
+                    </ignoreVersion>
+                  </ignoreVersions>
+                </rule>
+              </rules>
+            </ruleSet>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
