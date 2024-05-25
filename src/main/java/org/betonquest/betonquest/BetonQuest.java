@@ -255,6 +255,7 @@ import org.betonquest.betonquest.quest.event.teleport.TeleportEventFactory;
 import org.betonquest.betonquest.quest.event.time.TimeEventFactory;
 import org.betonquest.betonquest.quest.event.velocity.VelocityEventFactory;
 import org.betonquest.betonquest.quest.event.weather.WeatherEventFactory;
+import org.betonquest.betonquest.quest.registry.CoreQuestTypes;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.variables.ConditionVariable;
 import org.betonquest.betonquest.variables.GlobalPointVariable;
@@ -843,6 +844,8 @@ public class BetonQuest extends JavaPlugin {
         new CancelQuestCommand();
         new CompassCommand();
         new LangCommand(loggerFactory.create(LangCommand.class));
+
+        new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this).register();
 
         registerConditions("health", HealthCondition.class);
         registerConditions("permission", PermissionCondition.class);
