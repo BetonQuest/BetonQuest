@@ -112,22 +112,6 @@ import org.betonquest.betonquest.notify.SubTitleNotifyIO;
 import org.betonquest.betonquest.notify.SuppressNotifyIO;
 import org.betonquest.betonquest.notify.TitleNotifyIO;
 import org.betonquest.betonquest.notify.TotemNotifyIO;
-import org.betonquest.betonquest.objectives.EquipItemObjective;
-import org.betonquest.betonquest.objectives.JumpObjective;
-import org.betonquest.betonquest.objectives.LocationObjective;
-import org.betonquest.betonquest.objectives.LoginObjective;
-import org.betonquest.betonquest.objectives.LogoutObjective;
-import org.betonquest.betonquest.objectives.MobKillObjective;
-import org.betonquest.betonquest.objectives.PasswordObjective;
-import org.betonquest.betonquest.objectives.PickupObjective;
-import org.betonquest.betonquest.objectives.ResourcePackObjective;
-import org.betonquest.betonquest.objectives.RideObjective;
-import org.betonquest.betonquest.objectives.ShearObjective;
-import org.betonquest.betonquest.objectives.SmeltingObjective;
-import org.betonquest.betonquest.objectives.StageObjective;
-import org.betonquest.betonquest.objectives.StepObjective;
-import org.betonquest.betonquest.objectives.TameObjective;
-import org.betonquest.betonquest.objectives.VariableObjective;
 import org.betonquest.betonquest.quest.event.NullStaticEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.FromClassQuestEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
@@ -723,25 +707,6 @@ public class BetonQuest extends JavaPlugin {
         new LangCommand(loggerFactory.create(LangCommand.class));
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this).register();
-
-        registerObjectives("location", LocationObjective.class);
-        registerObjectives("mobkill", MobKillObjective.class);
-        registerObjectives("smelt", SmeltingObjective.class);
-        registerObjectives("tame", TameObjective.class);
-        registerObjectives("step", StepObjective.class);
-        registerObjectives("stage", StageObjective.class);
-        registerObjectives("logout", LogoutObjective.class);
-        registerObjectives("login", LoginObjective.class);
-        registerObjectives("password", PasswordObjective.class);
-        registerObjectives("pickup", PickupObjective.class);
-        registerObjectives("shear", ShearObjective.class);
-        registerObjectives("ride", RideObjective.class);
-        registerObjectives("variable", VariableObjective.class);
-        if (PaperLib.isPaper()) {
-            registerObjectives("equip", EquipItemObjective.class);
-            registerObjectives("jump", JumpObjective.class);
-            registerObjectives("resourcepack", ResourcePackObjective.class);
-        }
 
         registerConversationIO("simple", SimpleConvIO.class);
         registerConversationIO("tellraw", TellrawConvIO.class);

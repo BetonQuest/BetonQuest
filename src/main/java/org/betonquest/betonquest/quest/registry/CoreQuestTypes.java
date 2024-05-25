@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.registry;
 
+import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.conditions.AdvancementCondition;
@@ -71,9 +72,25 @@ import org.betonquest.betonquest.objectives.DelayObjective;
 import org.betonquest.betonquest.objectives.DieObjective;
 import org.betonquest.betonquest.objectives.EnchantObjective;
 import org.betonquest.betonquest.objectives.EntityInteractObjective;
+import org.betonquest.betonquest.objectives.EquipItemObjective;
 import org.betonquest.betonquest.objectives.ExperienceObjective;
 import org.betonquest.betonquest.objectives.FishObjective;
+import org.betonquest.betonquest.objectives.JumpObjective;
 import org.betonquest.betonquest.objectives.KillPlayerObjective;
+import org.betonquest.betonquest.objectives.LocationObjective;
+import org.betonquest.betonquest.objectives.LoginObjective;
+import org.betonquest.betonquest.objectives.LogoutObjective;
+import org.betonquest.betonquest.objectives.MobKillObjective;
+import org.betonquest.betonquest.objectives.PasswordObjective;
+import org.betonquest.betonquest.objectives.PickupObjective;
+import org.betonquest.betonquest.objectives.ResourcePackObjective;
+import org.betonquest.betonquest.objectives.RideObjective;
+import org.betonquest.betonquest.objectives.ShearObjective;
+import org.betonquest.betonquest.objectives.SmeltingObjective;
+import org.betonquest.betonquest.objectives.StageObjective;
+import org.betonquest.betonquest.objectives.StepObjective;
+import org.betonquest.betonquest.objectives.TameObjective;
+import org.betonquest.betonquest.objectives.VariableObjective;
 import org.betonquest.betonquest.quest.event.burn.BurnEventFactory;
 import org.betonquest.betonquest.quest.event.cancel.CancelEventFactory;
 import org.betonquest.betonquest.quest.event.chat.ChatEventFactory;
@@ -311,6 +328,24 @@ public class CoreQuestTypes {
         plugin.registerObjectives("fish", FishObjective.class);
         plugin.registerObjectives("interact", EntityInteractObjective.class);
         plugin.registerObjectives("kill", KillPlayerObjective.class);
+        plugin.registerObjectives("location", LocationObjective.class);
+        plugin.registerObjectives("login", LoginObjective.class);
+        plugin.registerObjectives("logout", LogoutObjective.class);
+        plugin.registerObjectives("mobkill", MobKillObjective.class);
+        plugin.registerObjectives("password", PasswordObjective.class);
+        plugin.registerObjectives("pickup", PickupObjective.class);
+        plugin.registerObjectives("ride", RideObjective.class);
+        plugin.registerObjectives("shear", ShearObjective.class);
+        plugin.registerObjectives("smelt", SmeltingObjective.class);
+        plugin.registerObjectives("stage", StageObjective.class);
+        plugin.registerObjectives("step", StepObjective.class);
+        plugin.registerObjectives("tame", TameObjective.class);
+        plugin.registerObjectives("variable", VariableObjective.class);
+        if (PaperLib.isPaper()) {
+            plugin.registerObjectives("equip", EquipItemObjective.class);
+            plugin.registerObjectives("jump", JumpObjective.class);
+            plugin.registerObjectives("resourcepack", ResourcePackObjective.class);
+        }
     }
 
     private void registerVariables() {
