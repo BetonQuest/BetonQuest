@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.registry;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.conditions.AdvancementCondition;
+import org.betonquest.betonquest.conditions.AlternativeCondition;
 import org.betonquest.betonquest.conditions.ArmorCondition;
 import org.betonquest.betonquest.conditions.BiomeCondition;
 import org.betonquest.betonquest.conditions.BurningCondition;
@@ -24,6 +25,20 @@ import org.betonquest.betonquest.conditions.HandCondition;
 import org.betonquest.betonquest.conditions.HealthCondition;
 import org.betonquest.betonquest.conditions.HeightCondition;
 import org.betonquest.betonquest.conditions.HungerCondition;
+import org.betonquest.betonquest.conditions.InConversationCondition;
+import org.betonquest.betonquest.conditions.ItemCondition;
+import org.betonquest.betonquest.conditions.ItemDurabilityCondition;
+import org.betonquest.betonquest.conditions.JournalCondition;
+import org.betonquest.betonquest.conditions.LanguageCondition;
+import org.betonquest.betonquest.conditions.LocationCondition;
+import org.betonquest.betonquest.conditions.LookingAtCondition;
+import org.betonquest.betonquest.conditions.MooncycleCondition;
+import org.betonquest.betonquest.conditions.NumberCompareCondition;
+import org.betonquest.betonquest.conditions.ObjectiveCondition;
+import org.betonquest.betonquest.conditions.PartialDateCondition;
+import org.betonquest.betonquest.conditions.PartyCondition;
+import org.betonquest.betonquest.conditions.PermissionCondition;
+import org.betonquest.betonquest.conditions.PointCondition;
 import org.bukkit.Server;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -101,6 +116,21 @@ public class CoreQuestTypes {
         plugin.registerConditions("health", HealthCondition.class);
         plugin.registerConditions("height", HeightCondition.class);
         plugin.registerConditions("hunger", HungerCondition.class);
+        plugin.registerConditions("inconversation", InConversationCondition.class);
+        plugin.registerConditions("item", ItemCondition.class);
+        plugin.registerConditions("itemdurability", ItemDurabilityCondition.class);
+        plugin.registerConditions("journal", JournalCondition.class);
+        plugin.registerConditions("language", LanguageCondition.class);
+        plugin.registerConditions("location", LocationCondition.class);
+        plugin.registerConditions("looking", LookingAtCondition.class);
+        plugin.registerConditions("mooncycle", MooncycleCondition.class);
+        plugin.registerConditions("numbercompare", NumberCompareCondition.class);
+        plugin.registerConditions("objective", ObjectiveCondition.class);
+        plugin.registerConditions("or", AlternativeCondition.class);
+        plugin.registerConditions("partialdate", PartialDateCondition.class);
+        plugin.registerConditions("party", PartyCondition.class);
+        plugin.registerConditions("permission", PermissionCondition.class);
+        plugin.registerConditions("point", PointCondition.class);
     }
 
     private void registerEvents() {
