@@ -86,7 +86,7 @@ public class QuestRegistry {
         this.eventTypes = eventTypes;
         this.objectiveTypes = objectiveTypes;
         this.variableTypes = variableTypes;
-        this.conditionProcessor = new ConditionProcessor(log, conditionTypes, new HashMap<>());
+        this.conditionProcessor = new ConditionProcessor(log, conditionTypes);
     }
 
     /**
@@ -125,7 +125,7 @@ public class QuestRegistry {
      *
      * @return condition logic
      */
-    public ConditionProcessor getConditionProcessor() {
+    public ConditionProcessor conditions() {
         return conditionProcessor;
     }
 }

@@ -25,44 +25,23 @@ import java.util.concurrent.ExecutionException;
 /**
  * Does the logic around Conditions.
  */
-public class ConditionProcessor {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
-
+public class ConditionProcessor extends QuestProcessor<Condition, ConditionID> {
     /**
      * Available Condition types.
      */
     private final Map<String, Class<? extends Condition>> conditionTypes;
 
     /**
-     * Loaded Conditions.
-     */
-    private final Map<ConditionID, Condition> conditions;
-
-    /**
      * @param log            the custom logger for this class
      * @param conditionTypes the available condition types
-     * @param conditions     the loaded conditions
      */
-    public ConditionProcessor(final BetonQuestLogger log, final Map<String, Class<? extends Condition>> conditionTypes,
-                              final Map<ConditionID, Condition> conditions) {
-        this.log = log;
+    public ConditionProcessor(final BetonQuestLogger log, final Map<String, Class<? extends Condition>> conditionTypes) {
+        super(log);
         this.conditionTypes = conditionTypes;
-        this.conditions = conditions;
     }
 
     /* default */ CompositeInstructionMetricsSupplier<ConditionID> metricsSupplier() {
-        return new CompositeInstructionMetricsSupplier<>(conditions::keySet, conditionTypes::keySet);
-    }
-
-    /* default */ void clear() {
-        conditions.clear();
-    }
-    
-    public int size() {
-        return conditions.size();
+        return new CompositeInstructionMetricsSupplier<>(values::keySet, conditionTypes::keySet);
     }
 
     /**
@@ -70,6 +49,7 @@ public class ConditionProcessor {
      *
      * @param pack to load the conditions from
      */
+    @Override
     public void load(final QuestPackage pack) {
         final ConfigurationSection cConfig = pack.getConfig().getConfigurationSection("conditions");
         final String packName = pack.getQuestPath();
@@ -105,7 +85,7 @@ public class ConditionProcessor {
                 try {
                     final Condition condition = conditionClass.getConstructor(Instruction.class)
                             .newInstance(identifier.generateInstruction());
-                    conditions.put(identifier, condition);
+                    values.put(identifier, condition);
                     log.debug(pack, "  Condition '" + identifier + "' loaded");
                 } catch (final InvocationTargetException e) {
                     if (e.getCause() instanceof InstructionParseException) {
@@ -179,7 +159,7 @@ public class ConditionProcessor {
      */
     @SuppressWarnings("PMD.NPathComplexity")
     public boolean condition(@Nullable final Profile profile, final ConditionID conditionID) {
-        final Condition condition = conditions.get(conditionID);
+        final Condition condition = values.get(conditionID);
         if (condition == null) {
             log.warn(conditionID.getPackage(), "The condition " + conditionID + " is not defined!");
             return false;

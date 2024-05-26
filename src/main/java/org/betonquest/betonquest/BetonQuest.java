@@ -272,7 +272,7 @@ public class BetonQuest extends JavaPlugin {
      * @return if all conditions are met
      */
     public static boolean conditions(@Nullable final Profile profile, final ConditionID... conditionIDs) {
-        return instance.questRegistry.getConditionProcessor().conditions(profile, conditionIDs);
+        return instance.questRegistry.conditions().conditions(profile, conditionIDs);
     }
 
     /**
@@ -283,7 +283,7 @@ public class BetonQuest extends JavaPlugin {
      * @return if the condition is met
      */
     public static boolean condition(@Nullable final Profile profile, final ConditionID conditionID) {
-        return instance.questRegistry.getConditionProcessor().condition(profile, conditionID);
+        return instance.questRegistry.conditions().condition(profile, conditionID);
     }
 
     /**
@@ -798,7 +798,7 @@ public class BetonQuest extends JavaPlugin {
                     }
                 }
             }
-            questRegistry.getConditionProcessor().load(pack);
+            questRegistry.conditions().load(pack);
             final ConfigurationSection oConfig = pack.getConfig().getConfigurationSection("objectives");
             if (oConfig != null) {
                 for (final String key : oConfig.getKeys(false)) {
