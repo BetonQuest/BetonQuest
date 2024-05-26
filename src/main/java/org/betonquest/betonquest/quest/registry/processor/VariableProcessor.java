@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest;
+package org.betonquest.betonquest.quest.registry.processor;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 /**
  * Stores Variables and resolve them.
  */
-public class VariableProcessor extends QuestProcessor<Variable, VariableID> {
+public class VariableProcessor extends QuestProcessor<Variable, VariableID> implements MetricSupplying {
     /**
      * Available Variable types.
      */
@@ -69,7 +69,8 @@ public class VariableProcessor extends QuestProcessor<Variable, VariableID> {
         return variables;
     }
 
-    /* default */ CompositeInstructionMetricsSupplier<VariableID> metricsSupplier() {
+    @Override
+    public CompositeInstructionMetricsSupplier<VariableID> metricsSupplier() {
         return new CompositeInstructionMetricsSupplier<>(values::keySet, variableTypes::keySet);
     }
 

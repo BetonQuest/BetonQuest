@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest;
+package org.betonquest.betonquest.quest.registry;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Condition;
@@ -11,6 +11,12 @@ import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.modules.schedule.EventScheduling;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
+import org.betonquest.betonquest.quest.registry.processor.CancellerProcessor;
+import org.betonquest.betonquest.quest.registry.processor.ConditionProcessor;
+import org.betonquest.betonquest.quest.registry.processor.ConversationProcessor;
+import org.betonquest.betonquest.quest.registry.processor.EventProcessor;
+import org.betonquest.betonquest.quest.registry.processor.ObjectiveProcessor;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 
 import java.util.Collection;
 import java.util.HashMap;

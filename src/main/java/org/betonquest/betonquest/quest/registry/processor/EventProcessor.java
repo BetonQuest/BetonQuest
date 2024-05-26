@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest;
+package org.betonquest.betonquest.quest.registry.processor;
 
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * Stores Events and execute them.
  */
-public class EventProcessor extends QuestProcessor<QuestEvent, EventID> {
+public class EventProcessor extends QuestProcessor<QuestEvent, EventID> implements MetricSupplying {
     /**
      * Available Event types.
      */
@@ -35,7 +35,8 @@ public class EventProcessor extends QuestProcessor<QuestEvent, EventID> {
         this.eventTypes = eventTypes;
     }
 
-    /* default */ CompositeInstructionMetricsSupplier<EventID> metricsSupplier() {
+    @Override
+    public CompositeInstructionMetricsSupplier<EventID> metricsSupplier() {
         return new CompositeInstructionMetricsSupplier<>(values::keySet, eventTypes::keySet);
     }
 

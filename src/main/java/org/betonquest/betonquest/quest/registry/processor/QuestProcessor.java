@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest;
+package org.betonquest.betonquest.quest.registry.processor;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -37,7 +37,7 @@ public abstract class QuestProcessor<T, I extends ID> {
     /**
      * Clears the values. Used before reloading all QuestPackages.
      */
-    /* default */ void clear() {
+    public void clear() {
         values.clear();
     }
 

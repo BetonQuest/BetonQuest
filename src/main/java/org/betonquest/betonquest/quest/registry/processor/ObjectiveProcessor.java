@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest;
+package org.betonquest.betonquest.quest.registry.processor;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * Stores Objectives and starts/stops/resumes them.
  */
-public class ObjectiveProcessor extends QuestProcessor<Objective, ObjectiveID> {
+public class ObjectiveProcessor extends QuestProcessor<Objective, ObjectiveID> implements MetricSupplying {
     /**
      * Available Objective types
      */
@@ -38,7 +38,7 @@ public class ObjectiveProcessor extends QuestProcessor<Objective, ObjectiveID> {
     }
 
     @Override
-        /* default */ void clear() {
+    public void clear() {
         // save data of all objectives to the players
         for (final Objective objective : values.values()) {
             objective.close();
@@ -46,7 +46,8 @@ public class ObjectiveProcessor extends QuestProcessor<Objective, ObjectiveID> {
         super.clear();
     }
 
-    /* default */ CompositeInstructionMetricsSupplier<ObjectiveID> metricsSupplier() {
+    @Override
+    public CompositeInstructionMetricsSupplier<ObjectiveID> metricsSupplier() {
         return new CompositeInstructionMetricsSupplier<>(values::keySet, objectiveTypes::keySet);
     }
 

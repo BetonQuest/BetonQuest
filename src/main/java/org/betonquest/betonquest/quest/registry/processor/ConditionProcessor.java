@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest;
+package org.betonquest.betonquest.quest.registry.processor;
 
 import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.Instruction;
@@ -25,7 +25,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * Does the logic around Conditions.
  */
-public class ConditionProcessor extends QuestProcessor<Condition, ConditionID> {
+public class ConditionProcessor extends QuestProcessor<Condition, ConditionID> implements MetricSupplying {
     /**
      * Available Condition types.
      */
@@ -40,7 +40,8 @@ public class ConditionProcessor extends QuestProcessor<Condition, ConditionID> {
         this.conditionTypes = conditionTypes;
     }
 
-    /* default */ CompositeInstructionMetricsSupplier<ConditionID> metricsSupplier() {
+    @Override
+    public CompositeInstructionMetricsSupplier<ConditionID> metricsSupplier() {
         return new CompositeInstructionMetricsSupplier<>(values::keySet, conditionTypes::keySet);
     }
 
