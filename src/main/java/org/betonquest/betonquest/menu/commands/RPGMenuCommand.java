@@ -34,6 +34,7 @@ public class RPGMenuCommand extends SimpleCommand {
 
     private final RPGMenu menu = BetonQuest.getInstance().getRpgMenu();
 
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public RPGMenuCommand(final BetonQuestLogger log) {
         super(log, "rpgmenu", new Permission("betonquest.admin"), 0, "qm", "menu", "menus", "rpgmenus", "rpgm");
         setDescription("Core command of the RPGMenu addon for BetonQuest");

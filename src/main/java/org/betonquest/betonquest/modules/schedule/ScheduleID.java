@@ -18,6 +18,7 @@ public class ScheduleID extends ID {
      * @param identifier string that defines the id
      * @throws ObjectNotFoundException if no schedule with this id exists
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public ScheduleID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         super(pack, identifier);
         if (!getPackage().getConfig().isConfigurationSection("schedules." + getBaseID())) {

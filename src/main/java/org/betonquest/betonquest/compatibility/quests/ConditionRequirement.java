@@ -15,7 +15,7 @@ import java.util.UUID;
 /**
  * Requires the player to meet specified condition.
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "PMD.ConstructorCallsOverridableMethod"})
 public class ConditionRequirement extends BukkitCustomRequirement {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.

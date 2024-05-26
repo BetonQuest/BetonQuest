@@ -49,7 +49,7 @@ public abstract class NotifyIO {
 
     protected abstract void notifyPlayer(String message, OnlineProfile onlineProfile);
 
-    protected float getFloatData(final String dataKey, final float defaultData) throws InstructionParseException {
+    protected final float getFloatData(final String dataKey, final float defaultData) throws InstructionParseException {
         final String dataString = data.get(dataKey);
 
         if (dataString == null || dataString.startsWith("%")) {

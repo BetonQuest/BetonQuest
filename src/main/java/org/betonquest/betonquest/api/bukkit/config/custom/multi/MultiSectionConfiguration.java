@@ -54,6 +54,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
      * @throws KeyConflictException             is thrown, if two or more configs define conflicting entries
      * @throws InvalidSubConfigurationException is thrown, if a source configuration is invalid in some way
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public MultiSectionConfiguration(final List<ConfigurationSection> sourceConfigs) throws KeyConflictException, InvalidSubConfigurationException {
         super(new MemoryConfiguration(), new MultiConfigurationHandler());
         checkSourceConfigs(sourceConfigs);

@@ -97,7 +97,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     }
 
     @Override
-    public Command setUsage(final String usage) {
+    public final Command setUsage(final String usage) {
         this.usage = usage;
         return this;
     }
@@ -141,7 +141,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
      *
      * @return Whether the command was successfully registered
      */
-    public boolean register() {
+    public final boolean register() {
         try {
             final PluginManager manager = Bukkit.getPluginManager();
             final Class<? extends PluginManager> managerClass = manager.getClass();

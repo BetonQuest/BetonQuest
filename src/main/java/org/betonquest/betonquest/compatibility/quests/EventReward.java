@@ -15,7 +15,7 @@ import java.util.UUID;
 /**
  * Fires a BetonQuest event as a quest reward.
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "PMD.ConstructorCallsOverridableMethod"})
 public class EventReward extends BukkitCustomReward {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.

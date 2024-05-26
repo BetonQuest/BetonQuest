@@ -186,7 +186,7 @@ public abstract class ID {
      *
      * @return the package
      */
-    public QuestPackage getPackage() {
+    public final QuestPackage getPackage() {
         return pack;
     }
 
@@ -195,7 +195,7 @@ public abstract class ID {
      *
      * @return the base ID
      */
-    public String getBaseID() {
+    public final String getBaseID() {
         return identifier;
     }
 
@@ -249,7 +249,7 @@ public abstract class ID {
      * @param readable the section name used in the exception
      * @throws ObjectNotFoundException if the id does not exist in the package
      */
-    protected void setRawInstructionOrThrow(final String section, final String readable) throws ObjectNotFoundException {
+    protected final void setRawInstructionOrThrow(final String section, final String readable) throws ObjectNotFoundException {
         rawInstruction = this.pack.getString(section + "." + this.identifier);
         if (rawInstruction == null) {
             throw new ObjectNotFoundException(readable + " '" + getFullID() + "' is not defined");
