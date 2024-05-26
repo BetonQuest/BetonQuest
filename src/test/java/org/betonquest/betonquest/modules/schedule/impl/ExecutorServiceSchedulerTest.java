@@ -49,7 +49,7 @@ class ExecutorServiceSchedulerTest {
 
     @BeforeEach
     void setUp() {
-        scheduler = spy(new ExecutorServiceScheduler<Schedule>(logger, this::newExecutor) {
+        scheduler = spy(new ExecutorServiceScheduler<>(logger, this::newExecutor) {
             @Override
             protected void schedule(final Schedule schedule) {
                 //mock, do nothing

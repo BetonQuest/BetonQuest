@@ -35,7 +35,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Represents player's journal.
@@ -270,8 +272,8 @@ public class Journal {
     @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @Nullable
     private String generateMainPage() {
-        final HashMap<Integer, ArrayList<String>> lines = new HashMap<>(); // holds text lines with their priority
-        final HashSet<Integer> numbers = new HashSet<>(); // stores numbers that are used, so there's no need to search them
+        final Map<Integer, List<String>> lines = new HashMap<>(); // holds text lines with their priority
+        final Set<Integer> numbers = new HashSet<>(); // stores numbers that are used, so there's no need to search them
         for (final QuestPackage pack : Config.getPackages().values()) {
             final String packName = pack.getQuestPath();
             final ConfigurationSection section = pack.getConfig().getConfigurationSection("journal_main_page");
@@ -328,7 +330,7 @@ public class Journal {
                     }
                     // add the text to HashMap
                     numbers.add(number);
-                    final ArrayList<String> linesOrder;
+                    final List<String> linesOrder;
                     if (lines.containsKey(number)) {
                         linesOrder = lines.get(number);
                     } else {
@@ -350,9 +352,9 @@ public class Journal {
         sorted = numbers.toArray(sorted);
         Arrays.sort(sorted);
         // build the string and return it
-        final ArrayList<String> sortedLines = new ArrayList<>();
+        final List<String> sortedLines = new ArrayList<>();
         for (final int i : sorted) {
-            final ArrayList<String> linesOrder = lines.get(i);
+            final List<String> linesOrder = lines.get(i);
             String[] sortedLinesOrder = new String[linesOrder.size()];
             sortedLinesOrder = linesOrder.toArray(sortedLinesOrder);
             Arrays.sort(sortedLinesOrder);

@@ -54,7 +54,7 @@ public final class Backup {
             final ConfigAccessor accessor = configAccessorFactory.create(databaseBackupFile);
             final FileConfiguration config = accessor.getConfig();
             // prepare the database and map
-            final HashMap<String, ResultSet> map = new HashMap<>();
+            final Map<String, ResultSet> map = new HashMap<>();
             final String[] tables = {"objectives", "tags", "points", "journals", "player", "backpack", "global_points",
                     "global_tags", "migration", "player_profile", "profile"};
             // open database connection

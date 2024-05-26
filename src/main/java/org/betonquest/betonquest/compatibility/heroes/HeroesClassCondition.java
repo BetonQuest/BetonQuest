@@ -12,6 +12,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Checks the class of the player and the level.
@@ -55,7 +56,7 @@ public class HeroesClassCondition extends Condition {
         if (hero == null) {
             return false;
         }
-        final ArrayList<HeroClass> heroClasses = new ArrayList<>();
+        final List<HeroClass> heroClasses = new ArrayList<>();
         if (mastered) {
             for (final String heroClass : hero.getMasteredClasses()) {
                 heroClasses.add(Heroes.getInstance().getClassManager().getClass(heroClass));

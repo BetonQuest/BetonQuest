@@ -37,6 +37,7 @@ public class PackageStructure implements Migration {
     public PackageStructure() {
     }
 
+    @SuppressWarnings("PMD.PreserveStackTrace")
     @Override
     public void migrate() throws IOException {
         try {

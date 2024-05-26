@@ -27,7 +27,8 @@ import java.util.function.Consumer;
 /**
  * A mock for {@link BukkitScheduler}.
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.DoNotUseThreads", "PMD.GodClass", "PMD.CyclomaticComplexity"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.DoNotUseThreads", "PMD.GodClass", "PMD.CyclomaticComplexity",
+        "PMD.ExcessivePublicCount"})
 public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Closeable {
     /**
      * Exception message for deprecated methods.
@@ -422,7 +423,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
     /**
      * A list of tasks to execute.
      */
-    private static class TaskList {
+    private static final class TaskList {
         /**
          * The list of all tasks.
          */
@@ -446,24 +447,8 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
          *
          * @return the task list
          */
-        protected final List<ScheduledTask> getCurrentTaskList() {
+        private List<ScheduledTask> getCurrentTaskList() {
             return new ArrayList<>(tasks.values());
-        }
-
-        /**
-         * Gets the amount of scheduled tasks
-         *
-         * @return the amount of scheduled tasks
-         */
-        protected int getScheduledTaskCount() {
-            int scheduled = 0;
-            for (final ScheduledTask task : tasks.values()) {
-                if (task.isCancelled() || task.isRunning()) {
-                    continue;
-                }
-                scheduled++;
-            }
-            return scheduled;
         }
 
         /**
@@ -471,7 +456,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
          *
          * @param taskID the task id to cancel
          */
-        protected void cancelTask(final int taskID) {
+        private void cancelTask(final int taskID) {
             if (tasks.containsKey(taskID)) {
                 final ScheduledTask task = tasks.get(taskID);
                 task.cancel();

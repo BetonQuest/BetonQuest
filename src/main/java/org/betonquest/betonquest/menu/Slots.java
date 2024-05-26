@@ -60,14 +60,14 @@ public class Slots {
      */
     @SuppressWarnings("PMD.PreserveStackTrace")
     public static void checkSlots(final Iterable<Slots> slots, final int inventorySize) throws SlotException {
-        final boolean[] isContained = new boolean[inventorySize]; //initialized with 'false'
+        final boolean[] contained = new boolean[inventorySize]; //initialized with 'false'
         for (final Slots s : slots) {
             for (final int slot : s.getSlots()) {
                 try {
-                    if (isContained[slot]) {
+                    if (contained[slot]) {
                         throw new SlotException(slot, s.toString(), "slot " + slot + " was already specified");
                     } else {
-                        isContained[slot] = true;
+                        contained[slot] = true;
                     }
                 } catch (final IndexOutOfBoundsException e) {
                     throw new SlotException(slot, s.toString(), "slot " + slot + " exceeds inventory size");

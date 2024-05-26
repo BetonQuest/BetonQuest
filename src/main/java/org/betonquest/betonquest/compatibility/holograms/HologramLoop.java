@@ -100,7 +100,7 @@ public abstract class HologramLoop {
 
         final ConditionID[] conditions = parseConditions(pack, rawConditions);
 
-        final ArrayList<AbstractLine> cleanedLines = new ArrayList<>();
+        final List<AbstractLine> cleanedLines = new ArrayList<>();
         for (final String line : lines) {
             if (line.startsWith("item:")) {
                 cleanedLines.add(parseItemLine(pack, line));

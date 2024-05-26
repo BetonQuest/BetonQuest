@@ -73,7 +73,7 @@ public class EnchantmentsHandler {
         return true;
     }
 
-    private static class SingleEnchantmentHandler {
+    private static final class SingleEnchantmentHandler {
         /**
          * The expected argument count of the formatted enchantment.
          */

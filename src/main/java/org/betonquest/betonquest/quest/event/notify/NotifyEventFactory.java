@@ -132,7 +132,7 @@ public class NotifyEventFactory implements EventFactory {
     }
 
     private Map<String, String> getData(final Matcher keyValueMatcher) {
-        final HashMap<String, String> data = new HashMap<>();
+        final Map<String, String> data = new HashMap<>();
 
         while (keyValueMatcher.find()) {
             final String key = keyValueMatcher.group("key");

@@ -107,6 +107,7 @@ public class ConfigAccessorImpl implements ConfigAccessor {
         }
     }
 
+    @SuppressWarnings("PMD.CloseResource")
     private void loadFromObject(@Nullable final Object input, final YamlConfiguration config) throws IOException, InvalidConfigurationException {
         if (input instanceof final File file) {
             config.load(file);

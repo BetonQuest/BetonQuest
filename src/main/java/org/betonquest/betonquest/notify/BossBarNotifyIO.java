@@ -95,7 +95,7 @@ public class BossBarNotifyIO extends NotifyIO {
         scheduleRemoval(bossBar, stay);
         if (countdown > 0) {
             final int interval = stay / countdown;
-            final double amount = progress / ((double) countdown);
+            final double amount = progress / countdown;
             scheduleAnimation(bossBar, interval, amount);
         }
     }
@@ -117,6 +117,7 @@ public class BossBarNotifyIO extends NotifyIO {
 
         new BukkitRunnable() {
             private int currentCountdown = countdown;
+
             private double currentProgress = progress;
 
             @Override

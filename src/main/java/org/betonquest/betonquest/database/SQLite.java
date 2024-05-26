@@ -48,7 +48,7 @@ public class SQLite extends Database {
             plugin.getDataFolder().mkdirs();
         }
         final File file = new File(plugin.getDataFolder(), dbLocation);
-        if (!(file.exists())) {
+        if (!file.exists()) {
             try {
                 file.createNewFile();
             } catch (final IOException e) {

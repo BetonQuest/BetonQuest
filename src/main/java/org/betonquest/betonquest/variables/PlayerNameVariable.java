@@ -83,13 +83,16 @@ public class PlayerNameVariable extends Variable {
          */
         UUID(profile -> profile.getPlayer().getUniqueId().toString());
 
+        /**
+         * The function to extract the name value from the profile.
+         */
         private final Function<Profile, String> valueExtractor;
 
         Type(final Function<Profile, String> valueExtractor) {
             this.valueExtractor = valueExtractor;
         }
 
-        String extractValue(final Profile profile) {
+        /* default */ String extractValue(final Profile profile) {
             return valueExtractor.apply(profile);
         }
     }

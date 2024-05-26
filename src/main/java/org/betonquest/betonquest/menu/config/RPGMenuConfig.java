@@ -32,7 +32,7 @@ public class RPGMenuConfig extends SimpleYMLSection {
     /**
      * Hashmap containing all messages for each language
      */
-    private final Map<String, HashMap<String, String>> messages;
+    private final Map<String, Map<String, String>> messages;
 
     /**
      * List containing all languages
@@ -110,7 +110,7 @@ public class RPGMenuConfig extends SimpleYMLSection {
         if (sender instanceof Player) {
             lang = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID((Player) sender)).getLanguage();
         }
-        return RPGMenuConfig.getMessage(lang, key, replace);
+        return getMessage(lang, key, replace);
     }
 
     /**
@@ -121,7 +121,7 @@ public class RPGMenuConfig extends SimpleYMLSection {
      * @param replace arguments in the message that should be replaced
      */
     public static void sendMessage(final CommandSender sender, final String key, final String... replace) {
-        sender.sendMessage(RPGMenuConfig.getMessage(sender, key, replace));
+        sender.sendMessage(getMessage(sender, key, replace));
     }
 
     /**
@@ -133,7 +133,7 @@ public class RPGMenuConfig extends SimpleYMLSection {
     private void loadMessage(final String key) throws Missing {
         for (final String lang : this.languages) {
             try {
-                HashMap<String, String> msgs = messages.get(lang);
+                Map<String, String> msgs = messages.get(lang);
                 if (msgs == null) {
                     msgs = new HashMap<>();
                 }

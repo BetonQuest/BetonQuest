@@ -56,6 +56,7 @@ public class FacingCondition extends Condition {
         EAST,
         SOUTH,
         WEST,
+        @SuppressWarnings("PMD.ShortVariable")
         UP,
         DOWN
     }

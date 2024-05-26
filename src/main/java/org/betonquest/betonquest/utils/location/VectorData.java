@@ -78,7 +78,7 @@ public class VectorData extends AbstractData<Vector> {
 
     @Override
     public Vector parse(final String objectString) throws InstructionParseException {
-        return VectorData.parseVector(objectString);
+        return parseVector(objectString);
     }
 
     @Override

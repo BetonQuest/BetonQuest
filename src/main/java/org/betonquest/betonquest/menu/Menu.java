@@ -32,13 +32,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
 /**
  * Class representing a menu
  */
-@SuppressWarnings({"PMD.GodClass", "PMD.ShortClassName", "PMD.CommentRequired"})
+@SuppressWarnings({"PMD.GodClass", "PMD.ShortClassName", "PMD.CommentRequired", "PMD.CouplingBetweenObjects"})
 public class Menu extends SimpleYMLSection implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -161,7 +162,7 @@ public class Menu extends SimpleYMLSection implements Listener {
         if (!config.isConfigurationSection("items")) {
             throw new Missing("items");
         }
-        final HashMap<String, MenuItem> itemsMap = new HashMap<>();
+        final Map<String, MenuItem> itemsMap = new HashMap<>();
         for (final String key : config.getConfigurationSection("items").getKeys(false)) {
             itemsMap.put(key, new MenuItem(loggerFactory.create(MenuItem.class), pack, menuID, key, config.getConfigurationSection("items." + key)));
         }

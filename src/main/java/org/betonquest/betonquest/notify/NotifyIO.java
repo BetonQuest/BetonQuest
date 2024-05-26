@@ -77,7 +77,7 @@ public abstract class NotifyIO {
         }
     }
 
-    protected int getIntegerData(final String dataKey, final int defaultData) throws InstructionParseException {
+    protected final int getIntegerData(final String dataKey, final int defaultData) throws InstructionParseException {
         final String dataString = data.get(dataKey);
         try {
             return dataString == null ? defaultData : Integer.parseInt(dataString);

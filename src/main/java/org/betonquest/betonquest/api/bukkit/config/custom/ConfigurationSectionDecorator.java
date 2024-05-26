@@ -23,7 +23,7 @@ import java.util.Set;
  * This class is necessary because multiple implementations of the Bukkit Configuration API may exist.
  * It enables the extending classes to work with all implementations.
  */
-@SuppressWarnings("PMD.ExcessivePublicCount")
+@SuppressWarnings({"PMD.ExcessivePublicCount", "PMD.CouplingBetweenObjects"})
 public class ConfigurationSectionDecorator implements ConfigurationSection {
     /**
      * The original {@link ConfigurationSection}.

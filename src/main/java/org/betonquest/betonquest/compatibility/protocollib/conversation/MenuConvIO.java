@@ -62,7 +62,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Stream;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods",
-        "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
+        "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.CouplingBetweenObjects"})
 public class MenuConvIO extends ChatConvIO {
     /**
      * Thread safety
@@ -149,7 +149,7 @@ public class MenuConvIO extends ChatConvIO {
         final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
         for (final QuestPackage pack : Stream.concat(
-                Config.getPackages().values().stream().filter(p -> p != conv.getPackage()),
+                Config.getPackages().values().stream().filter(p -> !p.equals(conv.getPackage())),
                 Stream.of(conv.getPackage())).toList()) {
             final ConfigurationSection section = pack.getConfig().getConfigurationSection("menu_conv_io");
             if (section == null) {
@@ -638,13 +638,13 @@ public class MenuConvIO extends ChatConvIO {
                     oldSelectedOption = selectedOption;
                     selectedOption++;
                     debounce = true;
-                    Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), () -> updateDisplay());
+                    Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), MenuConvIO.this::updateDisplay);
                 } else if (steerEvent.getForward() > 0 && selectedOption > 0 && controls.containsKey(CONTROL.MOVE) && !debounce) {
                     // Player moved Forwards
                     oldSelectedOption = selectedOption;
                     selectedOption--;
                     debounce = true;
-                    Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), () -> updateDisplay());
+                    Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), MenuConvIO.this::updateDisplay);
                 } else if (steerEvent.isUnmount() && controls.containsKey(CONTROL.SNEAK) && !debounce) {
                     // Player Dismounted
                     debounce = true;
@@ -872,6 +872,7 @@ public class MenuConvIO extends ChatConvIO {
     }
 
     public enum Direction {
+        @SuppressWarnings("PMD.ShortVariable")
         UP,
         DOWN
     }

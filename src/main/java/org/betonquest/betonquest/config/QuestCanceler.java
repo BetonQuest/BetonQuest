@@ -194,10 +194,7 @@ public class QuestCanceler {
      * @return true if all conditions are met, false otherwise
      */
     public boolean show(final Profile profile) {
-        if (conditions == null) {
-            return true;
-        }
-        return BetonQuest.conditions(profile, conditions);
+        return conditions == null || BetonQuest.conditions(profile, conditions);
     }
 
     /**

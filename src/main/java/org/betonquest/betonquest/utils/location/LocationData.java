@@ -99,7 +99,7 @@ public class LocationData extends AbstractData<Location> {
 
     @Override
     public Location parse(final String objectString) throws InstructionParseException {
-        return LocationData.parseLocation(objectString);
+        return parseLocation(objectString);
     }
 
     @Override

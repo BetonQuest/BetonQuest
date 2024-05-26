@@ -75,7 +75,7 @@ class SchedulerTest {
     /**
      * Class extending a scheduler without any changes.
      */
-    private static class MockedScheduler extends Scheduler<Schedule> {
+    private static final class MockedScheduler extends Scheduler<Schedule> {
         /**
          * Default constructor.
          *

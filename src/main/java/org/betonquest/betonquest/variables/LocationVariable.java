@@ -136,16 +136,19 @@ public class LocationVariable extends Variable {
         /**
          * The x location of the player
          */
+        @SuppressWarnings("PMD.ShortVariable")
         X("x"),
 
         /**
          * The y location of the player
          */
+        @SuppressWarnings("PMD.ShortVariable")
         Y("y"),
 
         /**
          * The z location of the player
          */
+        @SuppressWarnings("PMD.ShortVariable")
         Z("z"),
 
         /**
@@ -190,7 +193,7 @@ public class LocationVariable extends Variable {
          * @throws InstructionParseException If there is an error parsing the mode String.
          */
         public static MODE getMode(final String mode) throws InstructionParseException {
-            for (final MODE targetMode : MODE.values()) {
+            for (final MODE targetMode : values()) {
                 if (targetMode.name.equalsIgnoreCase(mode)) {
                     return targetMode;
                 }

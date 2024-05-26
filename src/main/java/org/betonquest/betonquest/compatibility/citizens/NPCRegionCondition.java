@@ -34,9 +34,6 @@ public class NPCRegionCondition extends Condition {
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
-        if (npc != null) {
-            return WorldGuardIntegrator.isInsideRegion(npc.getStoredLocation(), region);
-        }
-        return false;
+        return npc != null && WorldGuardIntegrator.isInsideRegion(npc.getStoredLocation(), region);
     }
 }

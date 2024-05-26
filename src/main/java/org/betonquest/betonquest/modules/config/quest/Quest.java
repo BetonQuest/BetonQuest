@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is a basic implementation for managing a quest's files.
@@ -74,7 +75,7 @@ public abstract class Quest {
         this.root = root;
         this.configs = new ArrayList<>();
 
-        final HashMap<ConfigurationSection, String> configurations = new HashMap<>();
+        final Map<ConfigurationSection, String> configurations = new HashMap<>();
         for (final File file : files) {
             final ConfigAccessor configAccessor = configAccessorFactory.create(file);
             configs.add(configAccessor);

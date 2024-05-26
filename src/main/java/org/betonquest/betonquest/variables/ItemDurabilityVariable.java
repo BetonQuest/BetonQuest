@@ -73,7 +73,7 @@ public class ItemDurabilityVariable extends Variable {
         final int durability = maxDurability - damageable.getDamage();
         if (relative && maxDurability != 0) {
             String format = "%." + digitsAfter + 'f';
-            double value = (double) durability / (double) maxDurability;
+            double value = (double) durability / maxDurability;
             if (inPercent) {
                 format += "%%";
                 value *= 100;

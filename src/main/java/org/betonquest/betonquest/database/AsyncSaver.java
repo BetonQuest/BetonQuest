@@ -7,6 +7,7 @@ import org.betonquest.betonquest.config.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
+import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
@@ -29,7 +30,7 @@ public class AsyncSaver extends Thread implements Listener, Saver {
     /**
      * The queue of records to be saved to the database.
      */
-    private final ConcurrentLinkedQueue<Record> queue;
+    private final Queue<Record> queue;
 
     /**
      * The amount of time, until the AsyncSaver tries to reconnect if there was an connection los

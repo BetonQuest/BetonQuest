@@ -72,16 +72,7 @@ public class PasteSchematicEvent extends QuestEvent {
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
         try {
-            final ClipboardFormat format = ClipboardFormats.findByFile(file);
-            if (format == null) {
-                throw new IOException("Unknown Schematic Format");
-            }
-
-            final Clipboard clipboard;
-            try (ClipboardReader reader = format.getReader(Files.newInputStream(file.toPath()))) {
-                clipboard = reader.read();
-            }
-
+            final Clipboard clipboard = getClipboard();
             final Location location = loc.getLocation(profile);
 
             try (EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder().maxBlocks(-1).world(BukkitAdapter.adapt(location.getWorld())).build()) {
@@ -97,6 +88,17 @@ public class PasteSchematicEvent extends QuestEvent {
             log.warn(instruction.getPackage(), "Error while pasting a schematic: " + e.getMessage(), e);
         }
         return null;
+    }
+
+    private Clipboard getClipboard() throws IOException {
+        final ClipboardFormat format = ClipboardFormats.findByFile(file);
+        if (format == null) {
+            throw new IOException("Unknown Schematic Format");
+        }
+
+        try (ClipboardReader reader = format.getReader(Files.newInputStream(file.toPath()))) {
+            return reader.read();
+        }
     }
 
 }

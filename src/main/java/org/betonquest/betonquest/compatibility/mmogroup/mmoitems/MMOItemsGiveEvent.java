@@ -16,16 +16,19 @@ import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOItemsGiveEvent extends QuestEvent {
     /**
+     * {@link MMOItems} plugin instance.
+     */
+    private static final MMOItems MMO_PLUGIN = MMOItems.plugin;
+
+    /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
-
-    private final MMOItems mmoPlugin = MMOItems.plugin;
 
     private final Type itemType;
 
@@ -58,7 +61,7 @@ public class MMOItemsGiveEvent extends QuestEvent {
             }
         }
 
-        mmoItem = Utils.getNN(mmoPlugin.getItem(itemType, itemID),
+        mmoItem = Utils.getNN(MMO_PLUGIN.getItem(itemType, itemID),
                 "Item with type '" + itemType + "' and ID '" + itemID + "' does not exist.");
     }
 
@@ -69,7 +72,7 @@ public class MMOItemsGiveEvent extends QuestEvent {
 
         final ItemStack mmoItem;
         if (scale) {
-            mmoItem = mmoPlugin.getItem(itemType, itemID, PlayerData.get(profile.getPlayerUUID()));
+            mmoItem = MMO_PLUGIN.getItem(itemType, itemID, PlayerData.get(profile.getPlayerUUID()));
             if (mmoItem == null) {
                 throw new QuestRuntimeException("Item with type '" + itemType + "' and ID '" + itemID + "' does not exist for player '"
                         + player.getName() + "'.");
@@ -101,7 +104,7 @@ public class MMOItemsGiveEvent extends QuestEvent {
             }
 
             mmoItem.setAmount(stackSize);
-            final HashMap<Integer, ItemStack> left = player.getInventory().addItem(mmoItem);
+            final Map<Integer, ItemStack> left = player.getInventory().addItem(mmoItem);
             for (final ItemStack itemStack : left.values()) {
                 player.getWorld().dropItem(player.getLocation(), itemStack);
             }

@@ -55,7 +55,7 @@ public class SmeltingObjective extends CountingObjective implements Listener {
                 && !InventoryUtils.isEmptySlot(event.getCurrentItem());
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ImplicitSwitchFallThrough"})
     private int calculateTakeAmount(final InventoryClickEvent event) {
         final ItemStack result = event.getCurrentItem();
         final PlayerInventory inventory = event.getWhoClicked().getInventory();

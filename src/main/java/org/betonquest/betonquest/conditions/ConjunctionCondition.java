@@ -19,7 +19,7 @@ public class ConjunctionCondition extends Condition {
 
     public ConjunctionCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
-        conditions = instruction.getList(e -> instruction.getCondition(e));
+        conditions = instruction.getList(instruction::getCondition);
     }
 
     @Override

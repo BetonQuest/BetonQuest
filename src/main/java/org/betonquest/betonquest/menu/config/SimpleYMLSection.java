@@ -263,14 +263,16 @@ public abstract class SimpleYMLSection {
      */
     protected abstract class DefaultSetting<T> {
 
-        private T value;
+        private final T value;
 
         public DefaultSetting(final T defaultValue) throws Invalid {
+            T configValue;
             try {
-                value = of();
+                configValue = of();
             } catch (final Missing missing) {
-                value = defaultValue;
+                configValue = defaultValue;
             }
+            value = configValue;
         }
 
         @SuppressWarnings("PMD.ShortMethodName")
@@ -288,14 +290,16 @@ public abstract class SimpleYMLSection {
      */
     protected abstract class OptionalSetting<T> {
 
-        private Optional<T> optional;
+        private final Optional<T> optional;
 
         public OptionalSetting() throws Invalid {
+            Optional<T> optionalSetting;
             try {
-                optional = Optional.of(of());
+                optionalSetting = Optional.of(of());
             } catch (final Missing missing) {
-                optional = Optional.empty();
+                optionalSetting = Optional.empty();
             }
+            optional = optionalSetting;
         }
 
         @SuppressWarnings("PMD.ShortMethodName")
