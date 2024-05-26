@@ -14,6 +14,11 @@ import org.bukkit.inventory.meta.Damageable;
  */
 public class ItemDurabilityVariable extends Variable {
     /**
+     * The key for digits
+     */
+    private static final String DIGITS_KEY = "digits";
+
+    /**
      * The default amount of digits after comma.
      */
     private static final int DEFAULT_DIGITS = 2;
@@ -51,10 +56,10 @@ public class ItemDurabilityVariable extends Variable {
     }
 
     private int digits(final Instruction instruction) throws InstructionParseException {
-        if (instruction.hasArgument("digits")) {
+        if (instruction.hasArgument(DIGITS_KEY)) {
             for (int i = instruction.size() - 2; i >= 0; i--) {
                 final String part = instruction.getPart(i);
-                if ("digits".equalsIgnoreCase(part)) {
+                if (DIGITS_KEY.equalsIgnoreCase(part)) {
                     return instruction.getInt(instruction.getPart(i + 1), DEFAULT_DIGITS);
                 }
             }

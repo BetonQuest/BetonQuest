@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.item.QuestItem.Existence;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.ChatColor;
@@ -31,7 +32,7 @@ public class BookHandler {
     }
 
     public void setTitle(final String string) {
-        if ("none".equalsIgnoreCase(string)) {
+        if (QuestItem.NONE_KEY.equalsIgnoreCase(string)) {
             titleE = Existence.FORBIDDEN;
         } else {
             title = string.replace('_', ' ');
@@ -45,7 +46,7 @@ public class BookHandler {
     }
 
     public void setAuthor(final String string) {
-        if ("none".equalsIgnoreCase(string)) {
+        if (QuestItem.NONE_KEY.equalsIgnoreCase(string)) {
             authorE = Existence.FORBIDDEN;
         } else {
             author = string.replace("_", " ");
@@ -58,7 +59,7 @@ public class BookHandler {
     }
 
     public void setText(final String string) {
-        if ("none".equalsIgnoreCase(string)) {
+        if (QuestItem.NONE_KEY.equalsIgnoreCase(string)) {
             text.add(""); // this will prevent "Invalid book tag" message in the empty book
             textE = Existence.FORBIDDEN;
         } else {

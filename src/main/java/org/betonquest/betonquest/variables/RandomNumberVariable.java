@@ -16,6 +16,11 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class RandomNumberVariable extends Variable {
     /**
+     * The argument for whole numbers
+     */
+    private static final String WHOLE_NUMBER = "whole";
+
+    /**
      * Used for check if fractional uses limited decimal places
      */
     private static final int DECIMAL_LENGTH = "decimal".length();
@@ -51,7 +56,7 @@ public class RandomNumberVariable extends Variable {
         super(instruction);
         staticness = true;
         final String type = instruction.next();
-        if ("whole".equalsIgnoreCase(type)) {
+        if (WHOLE_NUMBER.equalsIgnoreCase(type)) {
             this.fractional = false;
             this.format = null;
         } else if (type.startsWith("decimal")) {

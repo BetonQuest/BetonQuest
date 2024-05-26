@@ -15,6 +15,10 @@ import java.util.logging.LogRecord;
  * and are not below a certain logging level.
  */
 public class PlayerPackageReceiverSelector implements RecordReceiverSelector {
+    /**
+     * The simple regex 'all' selector.
+     */
+    private static final String ALL_SELECTOR = "*";
 
     /**
      * Players to select on a match.
@@ -72,10 +76,10 @@ public class PlayerPackageReceiverSelector implements RecordReceiverSelector {
     }
 
     private static Predicate<String> createPackageFilter(final String packagePattern) {
-        if ("*".equals(packagePattern)) {
+        if (ALL_SELECTOR.equals(packagePattern)) {
             return pack -> true;
         }
-        if (packagePattern.endsWith("*")) {
+        if (packagePattern.endsWith(ALL_SELECTOR)) {
             final String prefix = StringUtils.chop(packagePattern);
             return pack -> pack.startsWith(prefix);
         }

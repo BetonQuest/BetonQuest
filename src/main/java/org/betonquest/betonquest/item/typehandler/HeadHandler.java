@@ -114,7 +114,7 @@ public abstract class HeadHandler {
      * @param string The new String name for the owner.
      */
     public void setOwner(final String string) {
-        if ("none".equalsIgnoreCase(string)) {
+        if (QuestItem.NONE_KEY.equalsIgnoreCase(string)) {
             ownerE = QuestItem.Existence.FORBIDDEN;
         } else {
             owner = string;

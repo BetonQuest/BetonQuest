@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.item.QuestItem.Existence;
 import org.betonquest.betonquest.item.QuestItem.Number;
 import org.betonquest.betonquest.utils.Utils;
@@ -81,7 +82,7 @@ public class PotionHandler {
 
     public void setCustom(final String custom) throws InstructionParseException {
         final String[] parts = HandlerUtil.getNNSplit(custom, "Potion is null!", ",");
-        if ("none".equalsIgnoreCase(parts[0])) {
+        if (QuestItem.NONE_KEY.equalsIgnoreCase(parts[0])) {
             customE = Existence.FORBIDDEN;
             return;
         }

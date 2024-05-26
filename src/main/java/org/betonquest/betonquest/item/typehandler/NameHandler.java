@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.item.QuestItem.Existence;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,7 +19,7 @@ public class NameHandler {
         if (name.isEmpty()) {
             throw new InstructionParseException("Name cannot be empty");
         }
-        if ("none".equalsIgnoreCase(name)) {
+        if (QuestItem.NONE_KEY.equalsIgnoreCase(name)) {
             existence = Existence.FORBIDDEN;
         } else {
             this.name = name.replace('_', ' ').replace('&', '§');

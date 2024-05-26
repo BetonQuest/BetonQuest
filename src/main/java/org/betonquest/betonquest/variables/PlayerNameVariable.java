@@ -14,6 +14,20 @@ import java.util.function.Function;
  * argument, which will resolve it to the display name.
  */
 public class PlayerNameVariable extends Variable {
+    /**
+     * The property name for the name type.
+     */
+    private static final String NAME_PROPERTY = "name";
+
+    /**
+     * The property name for the display type.
+     */
+    private static final String DISPLAY_PROPERTY = "display";
+
+    /**
+     * The property name for the UUID type.
+     */
+    private static final String UUID_PROPERTY = "uuid";
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -39,11 +53,11 @@ public class PlayerNameVariable extends Variable {
         if (instruction.hasNext()) {
             try {
                 final String next = instruction.next();
-                if ("name".equalsIgnoreCase(next)) {
+                if (NAME_PROPERTY.equalsIgnoreCase(next)) {
                     return Type.NAME;
-                } else if ("display".equalsIgnoreCase(next)) {
+                } else if (DISPLAY_PROPERTY.equalsIgnoreCase(next)) {
                     return Type.DISPLAY;
-                } else if ("uuid".equalsIgnoreCase(next)) {
+                } else if (UUID_PROPERTY.equalsIgnoreCase(next)) {
                     return Type.UUID;
                 }
                 log.warn(instruction.getPackage(), "Unknown type specified: " + next + ", defaulting to NAME.");

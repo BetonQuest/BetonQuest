@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.item.QuestItem.Existence;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Color;
@@ -56,7 +57,7 @@ public class FireworkEffectHandler {
         if (parts.length != 5) {
             throw new InstructionParseException("Incorrect effect format: " + string);
         }
-        if ("none".equalsIgnoreCase(parts[1])) {
+        if (QuestItem.NONE_KEY.equalsIgnoreCase(parts[1])) {
             mainE = Existence.FORBIDDEN;
         } else if ("?".equals(parts[1])) {
             mainE = Existence.WHATEVER;
@@ -68,7 +69,7 @@ public class FireworkEffectHandler {
                 mainColors.add(fireworkColor == null ? regularColor : fireworkColor.getFireworkColor());
             }
         }
-        if ("none".equalsIgnoreCase(parts[2])) {
+        if (QuestItem.NONE_KEY.equalsIgnoreCase(parts[2])) {
             fadeE = Existence.FORBIDDEN;
         } else if ("?".equals(parts[2])) {
             fadeE = Existence.WHATEVER;

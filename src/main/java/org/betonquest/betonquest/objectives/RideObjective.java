@@ -20,6 +20,11 @@ import java.util.Locale;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class RideObjective extends Objective implements Listener {
+    /**
+     * Any property for the entity type.
+     */
+    private static final String ANY_PROPERTY = "any";
+
     private final boolean any;
 
     @Nullable
@@ -28,7 +33,7 @@ public class RideObjective extends Objective implements Listener {
     public RideObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         final String name = instruction.next();
-        if ("any".equalsIgnoreCase(name)) {
+        if (ANY_PROPERTY.equalsIgnoreCase(name)) {
             any = true;
         } else {
             any = false;

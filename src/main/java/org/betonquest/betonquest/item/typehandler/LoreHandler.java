@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.item.QuestItem.Existence;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,7 +20,7 @@ public class LoreHandler {
     }
 
     public void set(final String lore) throws InstructionParseException {
-        if ("none".equals(lore)) {
+        if (QuestItem.NONE_KEY.equalsIgnoreCase(lore)) {
             existence = Existence.FORBIDDEN;
             return;
         }
