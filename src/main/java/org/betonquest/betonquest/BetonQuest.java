@@ -221,11 +221,6 @@ public class BetonQuest extends JavaPlugin {
     private RPGMenu rpgMenu;
 
     /**
-     * Event scheduling module
-     */
-    private EventScheduling eventScheduling;
-
-    /**
      * Cache for event schedulers, holding the last execution of an event
      */
     private LastExecutionCache lastExecutionCache;
@@ -506,7 +501,6 @@ public class BetonQuest extends JavaPlugin {
 
         new QuestItemHandler();
 
-        eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), SCHEDULE_TYPES);
         final ConfigAccessor cache;
         try {
             final Path cacheFile = new File(getDataFolder(), CACHE_FILE).toPath();
@@ -538,7 +532,9 @@ public class BetonQuest extends JavaPlugin {
         new CompassCommand();
         new LangCommand(loggerFactory.create(LangCommand.class));
 
-        questRegistry = new QuestRegistry(log, loggerFactory, this, CONDITION_TYPES, eventTypes, OBJECTIVE_TYPES, VARIABLE_TYPES);
+        questRegistry = new QuestRegistry(log, loggerFactory, this,
+                new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), SCHEDULE_TYPES),
+                CONDITION_TYPES, eventTypes, OBJECTIVE_TYPES, VARIABLE_TYPES);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this).register();
 
@@ -648,39 +644,17 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Loads events and conditions to the maps
+     * Loads QuestPackages and refreshes player objectives.
+     *
+     * @see QuestRegistry#loadData(Collection)
      */
-    @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     public void loadData() {
-        eventScheduling.stopAll();
+        instance.questRegistry.loadData(Config.getPackages().values());
 
-        // clear previously loaded data
-        instance.questRegistry.clear();
-
-        // load new data
-        for (final QuestPackage pack : Config.getPackages().values()) {
-            final String packName = pack.getQuestPath();
-            getInstance().log.debug(pack, "Loading stuff in package " + packName);
-            questRegistry.questCanceller().load(pack);
-            questRegistry.events().load(pack);
-            questRegistry.conditions().load(pack);
-            questRegistry.objectives().load(pack);
-            questRegistry.conversations().load(pack);
-            // load schedules
-            eventScheduling.loadData(pack);
-
-            getInstance().log.debug(pack, "Everything in package " + packName + " loaded");
-        }
-
-        questRegistry.conversations().checkExternalPointers();
-
-        questRegistry.printSize(getInstance().log);
         // start those freshly loaded objectives for all players
         for (final PlayerData playerData : playerDataMap.values()) {
             playerData.startObjectives();
         }
-        //start all schedules
-        eventScheduling.startAll();
 
         rpgMenu.reloadData();
 
@@ -734,8 +708,8 @@ public class BetonQuest extends JavaPlugin {
     @Override
     public void onDisable() {
         //stop all schedules
-        if (eventScheduling != null) {
-            eventScheduling.stopAll();
+        if (questRegistry != null) {
+            questRegistry.stopAllEventSchedules();
         }
         // suspend all conversations
         for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
