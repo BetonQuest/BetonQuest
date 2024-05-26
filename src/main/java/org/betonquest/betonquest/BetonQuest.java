@@ -136,7 +136,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Handler;
@@ -354,24 +353,13 @@ public class BetonQuest extends JavaPlugin {
         return NOTIFY_IO_TYPES.get(name);
     }
 
-    private static void loadQuestCanceler() {
-        for (final Entry<String, QuestPackage> entry : Config.getPackages().entrySet()) {
-            final QuestPackage pack = entry.getValue();
-            final ConfigurationSection cancelSection = pack.getConfig().getConfigurationSection("cancel");
-            if (cancelSection != null) {
-                for (final String key : cancelSection.getKeys(false)) {
-                    try {
-                        instance.questRegistry.cancelers.put(new QuestCancelerID(pack, key), new QuestCanceler(pack, key));
-                    } catch (final InstructionParseException | ObjectNotFoundException e) {
-                        getInstance().log.warn(pack, "Could not load '" + pack.getQuestPath() + "." + key + "' quest canceler: " + e.getMessage(), e);
-                    }
-                }
-            }
-        }
-    }
-
+    /**
+     * Get the loaded Quest Canceller.
+     *
+     * @return quest cancellers in a new map
+     */
     public static Map<QuestCancelerID, QuestCanceler> getCanceler() {
-        return instance.questRegistry.cancelers;
+        return instance.questRegistry.questCanceller().getCanceler();
     }
 
     /**
@@ -671,12 +659,11 @@ public class BetonQuest extends JavaPlugin {
         // clear previously loaded data
         instance.questRegistry.clear();
 
-        loadQuestCanceler();
-
         // load new data
         for (final QuestPackage pack : Config.getPackages().values()) {
             final String packName = pack.getQuestPath();
             getInstance().log.debug(pack, "Loading stuff in package " + packName);
+            questRegistry.questCanceller().load(pack);
             questRegistry.events().load(pack);
             questRegistry.conditions().load(pack);
             questRegistry.objectives().load(pack);

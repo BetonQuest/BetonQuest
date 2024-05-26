@@ -7,11 +7,9 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.conversation.ConversationData;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.ID;
-import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
 
 import java.util.HashMap;
@@ -25,11 +23,6 @@ public class QuestRegistry {
      * Loaded Conversations.
      */
     public final Map<ConversationID, ConversationData> conversations = new HashMap<>();
-
-    /**
-     * Loaded Quest Canceller.
-     */
-    public final Map<QuestCancelerID, QuestCanceler> cancelers = new HashMap<>();
 
     /**
      * Condition logic.
@@ -52,6 +45,11 @@ public class QuestRegistry {
     private final VariableProcessor variableProcessor;
 
     /**
+     * Quest Canceller logic.
+     */
+    private final CancellerProcessor cancellerProcessor;
+
+    /**
      * Create a new Registry for storing and using Conditions, Events, Objectives, Variables,
      * Conversations and Quest canceller.
      *
@@ -69,6 +67,7 @@ public class QuestRegistry {
         this.eventProcessor = new EventProcessor(log, eventTypes);
         this.objectiveProcessor = new ObjectiveProcessor(log, objectiveTypes);
         this.variableProcessor = new VariableProcessor(log, variableTypes, loggerFactory);
+        this.cancellerProcessor = new CancellerProcessor(log);
     }
 
     /**
@@ -79,8 +78,8 @@ public class QuestRegistry {
         eventProcessor.clear();
         objectiveProcessor.clear();
         variableProcessor.clear();
+        cancellerProcessor.clear();
         conversations.clear();
-        cancelers.clear();
     }
 
     public void printSize(final BetonQuestLogger log) {
@@ -137,5 +136,14 @@ public class QuestRegistry {
      */
     public VariableProcessor variables() {
         return variableProcessor;
+    }
+
+    /**
+     * Gets the class processing quest canceller logic.
+     *
+     * @return canceller logic
+     */
+    public CancellerProcessor questCanceller() {
+        return cancellerProcessor;
     }
 }
