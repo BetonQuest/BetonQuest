@@ -159,7 +159,7 @@ public class CitizensConversationStarter {
         final String npcId = String.valueOf(npc.getId());
         final String npcName = npc.getName();
 
-        final boolean npcsByName = "true".equalsIgnoreCase(Config.getString("config.citizens_npcs_by_name"));
+        final boolean npcsByName = Boolean.parseBoolean(Config.getString("config.citizens_npcs_by_name"));
 
         final String selector = npcsByName ? npcName : npcId;
         final ConversationID conversationID = assignedConversations.get(selector);

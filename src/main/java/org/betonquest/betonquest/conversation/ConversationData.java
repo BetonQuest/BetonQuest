@@ -158,7 +158,7 @@ public class ConversationData {
             }
         }
         final String stop = pack.getString("conversations." + convName + ".stop");
-        blockMovement = "true".equalsIgnoreCase(stop);
+        blockMovement = Boolean.parseBoolean(stop);
         final String rawConvIOs = pack.getString("conversations." + convName + ".conversationIO", plugin.getPluginConfig().getString("default_conversation_IO", "menu,tellraw"));
 
         // check if all data is valid (or at least exist)

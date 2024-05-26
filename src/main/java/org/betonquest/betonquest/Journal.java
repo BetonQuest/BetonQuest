@@ -178,7 +178,7 @@ public class Journal {
      */
     public List<String> getText() {
         final List<String> list;
-        if ("true".equalsIgnoreCase(config.getString("journal.reversed_order"))) {
+        if (Boolean.parseBoolean(config.getString("journal.reversed_order"))) {
             list = Lists.reverse(texts);
         } else {
             list = new ArrayList<>(texts);

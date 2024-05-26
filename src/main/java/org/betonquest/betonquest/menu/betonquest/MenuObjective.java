@@ -21,6 +21,11 @@ import org.bukkit.event.Listener;
 @SuppressWarnings("PMD.CommentRequired")
 public class MenuObjective extends Objective implements Listener {
     /**
+     * The key for the menu property.
+     */
+    private static final String MENU_PROPERTY = "menu";
+
+    /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
@@ -69,7 +74,7 @@ public class MenuObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final Profile profile) {
-        if ("menu".equalsIgnoreCase(name)) {
+        if (MENU_PROPERTY.equalsIgnoreCase(name)) {
             final Menu menuData = BetonQuest.getInstance().getRpgMenu().getMenu(menuID);
             if (menuData == null) {
                 log.debug(instruction.getPackage(), "Error while getting menu property in '" + instruction.getID() + "' objective: "

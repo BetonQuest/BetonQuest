@@ -11,7 +11,7 @@ public class UnbreakableHandler {
     }
 
     public void set(final String string) {
-        if ("true".equalsIgnoreCase(string)) {
+        if (Boolean.parseBoolean(string)) {
             unbreakable = Existence.REQUIRED;
         } else {
             unbreakable = Existence.FORBIDDEN;

@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 /**
  * The backpack command. It opens profile's backpack.
  */
+@SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
 public class BackpackCommand implements CommandExecutor {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.

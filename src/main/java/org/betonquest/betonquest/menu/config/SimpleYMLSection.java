@@ -165,7 +165,7 @@ public abstract class SimpleYMLSection {
      */
     protected final boolean getBoolean(final String key) throws Missing, Invalid {
         final String stringBoolean = this.getString(key).trim();
-        if ("true".equalsIgnoreCase(stringBoolean)) {
+        if (Boolean.parseBoolean(stringBoolean)) {
             return true;
         } else if ("false".equalsIgnoreCase(stringBoolean)) {
             return false;

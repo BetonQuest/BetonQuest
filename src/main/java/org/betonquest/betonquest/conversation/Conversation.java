@@ -180,7 +180,7 @@ public class Conversation implements Listener {
         this.center = center;
         this.data = plugin.getConversation(conversationID);
         this.blacklist = plugin.getPluginConfig().getStringList("cmd_blacklist");
-        this.messagesDelaying = "true".equalsIgnoreCase(plugin.getPluginConfig().getString("display_chat_after_conversation"));
+        this.messagesDelaying = Boolean.parseBoolean(plugin.getPluginConfig().getString("display_chat_after_conversation"));
 
         if (data == null) {
             log.error(pack, "Tried to start conversation '" + conversationID.getFullID() + "' but it is not loaded! Check for errors on /bq reload!");
