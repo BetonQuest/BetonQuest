@@ -63,7 +63,6 @@ import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.id.QuestCancelerID;
-import org.betonquest.betonquest.id.VariableID;
 import org.betonquest.betonquest.item.QuestItemHandler;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.modules.config.DefaultConfigAccessorFactory;
@@ -108,6 +107,7 @@ import org.betonquest.betonquest.notify.SuppressNotifyIO;
 import org.betonquest.betonquest.notify.TitleNotifyIO;
 import org.betonquest.betonquest.notify.TotemNotifyIO;
 import org.betonquest.betonquest.quest.QuestRegistry;
+import org.betonquest.betonquest.quest.VariableProcessor;
 import org.betonquest.betonquest.quest.event.NullStaticEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.FromClassQuestEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
@@ -129,11 +129,9 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.InstantSource;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -142,8 +140,6 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Handler;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Represents BetonQuest plugin.
@@ -329,39 +325,7 @@ public class BetonQuest extends JavaPlugin {
     @Nullable
     public static Variable createVariable(@Nullable final QuestPackage pack, final String instruction)
             throws InstructionParseException {
-        final VariableID variableID;
-        try {
-            variableID = new VariableID(getInstance().loggerFactory, pack, instruction);
-        } catch (final ObjectNotFoundException e) {
-            throw new InstructionParseException("Could not load variable: " + e.getMessage(), e);
-        }
-        // no need to create duplicated variables
-        final Variable existingVariable = instance.questRegistry.variables.get(variableID);
-        if (existingVariable != null) {
-            return existingVariable;
-        }
-        final Instruction instructionVar = variableID.generateInstruction();
-        final Class<? extends Variable> variableClass = VARIABLE_TYPES.get(instructionVar.current());
-        // if it's null then there is no such type registered, log an error
-        if (variableClass == null) {
-            throw new InstructionParseException("Variable type " + instructionVar.current() + " is not registered");
-        }
-
-        try {
-            final Variable variable = variableClass.getConstructor(Instruction.class).newInstance(instructionVar);
-            instance.questRegistry.variables.put(variableID, variable);
-            getInstance().log.debug(pack, "Variable " + variableID + " loaded");
-            return variable;
-        } catch (final InvocationTargetException e) {
-            if (e.getCause() instanceof InstructionParseException) {
-                throw new InstructionParseException("Error in " + variableID + " variable: " + e.getCause().getMessage(), e);
-            } else {
-                getInstance().log.reportException(pack, e);
-            }
-        } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-            getInstance().log.reportException(pack, e);
-        }
-        return null;
+        return instance.questRegistry.variables().createVariable(pack, instruction);
     }
 
     public static boolean isVariableType(final String type) {
@@ -372,21 +336,13 @@ public class BetonQuest extends JavaPlugin {
      * Resolves variables in the supplied text and returns them as a list of
      * instruction strings, including % characters. Variables are unique, so if
      * the user uses the same variables multiple times, the list will contain
-     * only one occurence of this variable.
+     * only one occurrence of this variable.
      *
      * @param text text from which the variables will be resolved
      * @return the list of unique variable instructions
      */
     public static List<String> resolveVariables(final String text) {
-        final List<String> variables = new ArrayList<>();
-        final Matcher matcher = Pattern.compile("%[^ %\\s]+%").matcher(text);
-        while (matcher.find()) {
-            final String variable = matcher.group();
-            if (!variables.contains(variable)) {
-                variables.add(variable);
-            }
-        }
-        return variables;
+        return VariableProcessor.resolveVariables(text);
     }
 
     /**
@@ -596,7 +552,7 @@ public class BetonQuest extends JavaPlugin {
         new CompassCommand();
         new LangCommand(loggerFactory.create(LangCommand.class));
 
-        questRegistry = new QuestRegistry(log, CONDITION_TYPES, eventTypes, OBJECTIVE_TYPES, VARIABLE_TYPES);
+        questRegistry = new QuestRegistry(log, loggerFactory, CONDITION_TYPES, eventTypes, OBJECTIVE_TYPES, VARIABLE_TYPES);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this).register();
 
@@ -1135,7 +1091,7 @@ public class BetonQuest extends JavaPlugin {
 
     /**
      * Resoles the variable for specified player. If the variable is not loaded
-     * yet it will load it on the main thread.
+     * it will load it on the main thread.
      *
      * @param packName name of the package
      * @param name     name of the variable (instruction, with % characters)
@@ -1143,26 +1099,7 @@ public class BetonQuest extends JavaPlugin {
      * @return the value of this variable for given player
      */
     public String getVariableValue(final String packName, final String name, @Nullable final Profile profile) {
-        if (!Config.getPackages().containsKey(packName)) {
-            getInstance().log.warn("Variable '" + name + "' contains the non-existent package '" + packName + "' !");
-            return "";
-        }
-        final QuestPackage pack = Config.getPackages().get(packName);
-        try {
-            final Variable var = createVariable(pack, name);
-            if (var == null) {
-                getInstance().log.warn(pack, "Could not resolve variable '" + name + "'.");
-                return "";
-            }
-            if (profile == null && !var.isStaticness()) {
-                getInstance().log.warn(pack, "Variable '" + name + "' cannot be executed without a profile reference!");
-                return "";
-            }
-            return var.getValue(profile);
-        } catch (final InstructionParseException e) {
-            getInstance().log.warn(pack, "&cCould not create variable '" + name + "': " + e.getMessage(), e);
-            return "";
-        }
+        return questRegistry.variables().getVariableValue(packName, name, profile);
     }
 
     /**
