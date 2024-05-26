@@ -59,7 +59,6 @@ import org.betonquest.betonquest.database.SQLite;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
@@ -295,23 +294,7 @@ public class BetonQuest extends JavaPlugin {
      * @return true if the event was run even if there was an exception during execution
      */
     public static boolean event(@Nullable final Profile profile, final EventID eventID) {
-        final QuestEvent event = instance.questRegistry.events.get(eventID);
-        if (event == null) {
-            getInstance().log.warn(eventID.getPackage(), "Event " + eventID + " is not defined");
-            return false;
-        }
-        if (profile == null) {
-            getInstance().log.debug(eventID.getPackage(), "Firing event " + eventID + " player independent");
-        } else {
-            getInstance().log.debug(eventID.getPackage(),
-                    "Firing event " + eventID + " for " + profile);
-        }
-        try {
-            return event.fire(profile);
-        } catch (final QuestRuntimeException e) {
-            getInstance().log.warn(eventID.getPackage(), "Error while firing '" + eventID + "' event: " + e.getMessage(), e);
-            return true;
-        }
+        return instance.questRegistry.events().event(profile, eventID);
     }
 
     /**
@@ -759,45 +742,7 @@ public class BetonQuest extends JavaPlugin {
         for (final QuestPackage pack : Config.getPackages().values()) {
             final String packName = pack.getQuestPath();
             getInstance().log.debug(pack, "Loading stuff in package " + packName);
-            final ConfigurationSection eConfig = Config.getPackages().get(packName).getConfig().getConfigurationSection("events");
-            if (eConfig != null) {
-                for (final String key : eConfig.getKeys(false)) {
-                    if (key.contains(" ")) {
-                        getInstance().log.warn(pack,
-                                "Event name cannot contain spaces: '" + key + "' (in " + packName + " package)");
-                        continue;
-                    }
-                    final EventID identifier;
-                    try {
-                        identifier = new EventID(pack, key);
-                    } catch (final ObjectNotFoundException e) {
-                        getInstance().log.warn(pack, "Error while loading event '" + packName + "." + key + "': " + e.getMessage(), e);
-                        continue;
-                    }
-                    final String type;
-                    try {
-                        type = identifier.generateInstruction().getPart(0);
-                    } catch (final InstructionParseException e) {
-                        getInstance().log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
-                        continue;
-                    }
-                    final QuestEventFactory eventFactory = getEventFactory(type);
-                    if (eventFactory == null) {
-                        // if it's null then there is no such type registered, log an error
-                        getInstance().log.warn(pack, "Event type " + type + " is not registered, check if it's"
-                                + " spelled correctly in '" + identifier + "' event.");
-                        continue;
-                    }
-
-                    try {
-                        final QuestEvent event = eventFactory.parseEventInstruction(identifier.generateInstruction());
-                        instance.questRegistry.events.put(identifier, event);
-                        getInstance().log.debug(pack, "  Event '" + identifier + "' loaded");
-                    } catch (final InstructionParseException e) {
-                        getInstance().log.warn(pack, "Error in '" + identifier + "' event (" + type + "): " + e.getMessage(), e);
-                    }
-                }
-            }
+            questRegistry.events().load(pack);
             questRegistry.conditions().load(pack);
             final ConfigurationSection oConfig = pack.getConfig().getConfigurationSection("objectives");
             if (oConfig != null) {

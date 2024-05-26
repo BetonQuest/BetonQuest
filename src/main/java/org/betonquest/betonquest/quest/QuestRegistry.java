@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest;
 
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
@@ -11,7 +10,6 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.conversation.ConversationData;
 import org.betonquest.betonquest.id.ConversationID;
-import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.id.QuestCancelerID;
@@ -25,11 +23,6 @@ import java.util.Map;
  * Stores the active Quest Types, Conversations and Quest Canceller.
  */
 public class QuestRegistry {
-    /**
-     * Loaded Events.
-     */
-    public final Map<EventID, QuestEvent> events = new HashMap<>();
-
     /**
      * Loaded Objectives.
      */
@@ -51,11 +44,6 @@ public class QuestRegistry {
     public final Map<QuestCancelerID, QuestCanceler> cancelers = new HashMap<>();
 
     /**
-     * Available Event types.
-     */
-    private final Map<String, QuestEventFactory> eventTypes;
-
-    /**
      * Available Objective types.
      */
     private final Map<String, Class<? extends Objective>> objectiveTypes;
@@ -71,6 +59,11 @@ public class QuestRegistry {
     private final ConditionProcessor conditionProcessor;
 
     /**
+     * Event logic.
+     */
+    private final EventProcessor eventProcessor;
+
+    /**
      * Create a new Registry for storing and using Conditions, Events, Objectives, Variables,
      * Conversations and Quest canceller.
      *
@@ -83,10 +76,10 @@ public class QuestRegistry {
     public QuestRegistry(final BetonQuestLogger log,
                          final Map<String, Class<? extends Condition>> conditionTypes, final Map<String, QuestEventFactory> eventTypes,
                          final Map<String, Class<? extends Objective>> objectiveTypes, final Map<String, Class<? extends Variable>> variableTypes) {
-        this.eventTypes = eventTypes;
         this.objectiveTypes = objectiveTypes;
         this.variableTypes = variableTypes;
         this.conditionProcessor = new ConditionProcessor(log, conditionTypes);
+        this.eventProcessor = new EventProcessor(log, eventTypes);
     }
 
     /**
@@ -94,6 +87,7 @@ public class QuestRegistry {
      */
     public void clear() {
         conditionProcessor.clear();
+        eventProcessor.clear();
         conversations.clear();
         objectives.clear();
         variables.clear();
@@ -101,7 +95,7 @@ public class QuestRegistry {
     }
 
     public void printSize(final BetonQuestLogger log) {
-        log.info("There are " + conditionProcessor.size() + " conditions, " + events.size() + " events, "
+        log.info("There are " + conditionProcessor.size() + " conditions, " + eventProcessor.size() + " events, "
                 + objectives.size() + " objectives and " + conversations.size() + " conversations loaded from "
                 + Config.getPackages().size() + " packages.");
     }
@@ -114,7 +108,7 @@ public class QuestRegistry {
     public Map<String, InstructionMetricsSupplier<? extends ID>> metricsSupplier() {
         final Map<String, InstructionMetricsSupplier<? extends ID>> metricsSuppliers = new HashMap<>();
         metricsSuppliers.put("conditions", conditionProcessor.metricsSupplier());
-        metricsSuppliers.put("events", new CompositeInstructionMetricsSupplier<>(events::keySet, eventTypes::keySet));
+        metricsSuppliers.put("events", eventProcessor.metricsSupplier());
         metricsSuppliers.put("objectives", new CompositeInstructionMetricsSupplier<>(objectives::keySet, objectiveTypes::keySet));
         metricsSuppliers.put("variables", new CompositeInstructionMetricsSupplier<>(variables::keySet, variableTypes::keySet));
         return metricsSuppliers;
@@ -127,5 +121,14 @@ public class QuestRegistry {
      */
     public ConditionProcessor conditions() {
         return conditionProcessor;
+    }
+
+    /**
+     * Gets the class processing event logic.
+     *
+     * @return event logic
+     */
+    public EventProcessor events() {
+        return eventProcessor;
     }
 }
