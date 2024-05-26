@@ -131,9 +131,6 @@ public class ConversationData {
         log.debug(pack, String.format("Loading conversation '%s'.", convName));
 
         // get the main data
-        if (convSection == null) {
-            throw new InstructionParseException("The configuration is null!");
-        }
         if (convSection.get("quester") == null) {
             throw new InstructionParseException("The 'quester' name is missing in the conversation file!");
         }

@@ -57,7 +57,6 @@ import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.SQLite;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
@@ -118,7 +117,6 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.ServicePriority;
@@ -540,7 +538,7 @@ public class BetonQuest extends JavaPlugin {
         new CompassCommand();
         new LangCommand(loggerFactory.create(LangCommand.class));
 
-        questRegistry = new QuestRegistry(log, loggerFactory, CONDITION_TYPES, eventTypes, OBJECTIVE_TYPES, VARIABLE_TYPES);
+        questRegistry = new QuestRegistry(log, loggerFactory, this, CONDITION_TYPES, eventTypes, OBJECTIVE_TYPES, VARIABLE_TYPES);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this).register();
 
@@ -667,33 +665,14 @@ public class BetonQuest extends JavaPlugin {
             questRegistry.events().load(pack);
             questRegistry.conditions().load(pack);
             questRegistry.objectives().load(pack);
-            final ConfigurationSection conversationsConfig = pack.getConfig().getConfigurationSection("conversations");
-            if (conversationsConfig != null) {
-                for (final String convName : conversationsConfig.getKeys(false)) {
-                    try {
-                        final ConversationID convID = new ConversationID(pack, convName);
-                        instance.questRegistry.conversations.put(convID, new ConversationData(this, convID, conversationsConfig.getConfigurationSection(convName)));
-                    } catch (final InstructionParseException | ObjectNotFoundException e) {
-                        log.warn(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
-                    }
-                }
-            }
+            questRegistry.conversations().load(pack);
             // load schedules
             eventScheduling.loadData(pack);
 
             getInstance().log.debug(pack, "Everything in package " + packName + " loaded");
         }
 
-        instance.questRegistry.conversations.entrySet().removeIf(entry -> {
-            final ConversationData convData = entry.getValue();
-            try {
-                convData.checkExternalPointers();
-            } catch (final ObjectNotFoundException e) {
-                log.warn(convData.getPack(), "Error in '" + convData.getPack().getQuestPath() + "." + convData.getName() + "' conversation: " + e.getMessage(), e);
-                return true;
-            }
-            return false;
-        });
+        questRegistry.conversations().checkExternalPointers();
 
         questRegistry.printSize(getInstance().log);
         // start those freshly loaded objectives for all players
@@ -1032,12 +1011,16 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
+     * Gets stored Conversation Data.
+     * <p>
+     * The conversation data can be null if there was an error loading it.
+     *
      * @param conversationID package name, dot and name of the conversation
      * @return ConversationData object for this conversation or null if it does
      * not exist
      */
     public ConversationData getConversation(final ConversationID conversationID) {
-        return instance.questRegistry.conversations.get(conversationID);
+        return instance.questRegistry.conversations().getConversation(conversationID);
     }
 
     /**
