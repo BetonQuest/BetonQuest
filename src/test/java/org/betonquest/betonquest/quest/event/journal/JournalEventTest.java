@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class JournalEventTest {
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings({"PMD.JUnitTestsShouldIncludeAssert", "PMD.JUnitTestContainsTooManyAsserts"})
     void testJournalEventChangesUpdatesAndNotifiesInOrder(
             @Mock final BetonQuest betonQuest, @Mock final PlayerData data, @Mock final Journal journal,
             @Mock final JournalChanger changer, @Mock final NotificationSender sender) {

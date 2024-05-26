@@ -154,6 +154,7 @@ class PatcherTest {
         verifyNoMoreInteractions(logger);
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testUnknownTransformerType() throws InvalidConfigurationException {
         final String patch = """

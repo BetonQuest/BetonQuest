@@ -22,6 +22,7 @@ class WebContentSourceTest {
      */
     private static final int RESPONSE_CODE_403 = 403;
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testGet() throws IOException {
         final Path filePath = Path.of("src/test/resources/modules/web/updater/latest.json");
@@ -53,6 +54,7 @@ class WebContentSourceTest {
         verify(handler, times(1)).handle(RESPONSE_CODE_403);
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testGetThrowsException() throws IOException {
         final IOException ioException = new IOException("Test IOException");
