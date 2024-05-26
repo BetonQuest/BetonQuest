@@ -301,9 +301,6 @@ public final class Config {
     public static String parseMessage(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String prefixName,
                                       @Nullable final String... prefixVariables) {
         final PlayerData playerData = plugin.getPlayerData(onlineProfile);
-        if (playerData == null) {
-            return null;
-        }
         final String language = playerData.getLanguage();
         String message = getMessage(language, messageName, variables);
         if (message == null || message.length() == 0) {
