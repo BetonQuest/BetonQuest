@@ -11,7 +11,6 @@ import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.conversation.ConversationData;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.ID;
-import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.id.VariableID;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
@@ -23,11 +22,6 @@ import java.util.Map;
  * Stores the active Quest Types, Conversations and Quest Canceller.
  */
 public class QuestRegistry {
-    /**
-     * Loaded Objectives.
-     */
-    public final Map<ObjectiveID, Objective> objectives = new HashMap<>();
-
     /**
      * Loaded Variables.
      */
@@ -42,11 +36,6 @@ public class QuestRegistry {
      * Loaded Quest Canceller.
      */
     public final Map<QuestCancelerID, QuestCanceler> cancelers = new HashMap<>();
-
-    /**
-     * Available Objective types.
-     */
-    private final Map<String, Class<? extends Objective>> objectiveTypes;
 
     /**
      * Available Variable types.
@@ -64,6 +53,11 @@ public class QuestRegistry {
     private final EventProcessor eventProcessor;
 
     /**
+     * Objective logic.
+     */
+    private final ObjectiveProcessor objectiveProcessor;
+
+    /**
      * Create a new Registry for storing and using Conditions, Events, Objectives, Variables,
      * Conversations and Quest canceller.
      *
@@ -76,10 +70,10 @@ public class QuestRegistry {
     public QuestRegistry(final BetonQuestLogger log,
                          final Map<String, Class<? extends Condition>> conditionTypes, final Map<String, QuestEventFactory> eventTypes,
                          final Map<String, Class<? extends Objective>> objectiveTypes, final Map<String, Class<? extends Variable>> variableTypes) {
-        this.objectiveTypes = objectiveTypes;
         this.variableTypes = variableTypes;
         this.conditionProcessor = new ConditionProcessor(log, conditionTypes);
         this.eventProcessor = new EventProcessor(log, eventTypes);
+        this.objectiveProcessor = new ObjectiveProcessor(log, objectiveTypes);
     }
 
     /**
@@ -88,15 +82,15 @@ public class QuestRegistry {
     public void clear() {
         conditionProcessor.clear();
         eventProcessor.clear();
+        objectiveProcessor.clear();
         conversations.clear();
-        objectives.clear();
         variables.clear();
         cancelers.clear();
     }
 
     public void printSize(final BetonQuestLogger log) {
         log.info("There are " + conditionProcessor.size() + " conditions, " + eventProcessor.size() + " events, "
-                + objectives.size() + " objectives and " + conversations.size() + " conversations loaded from "
+                + objectiveProcessor.size() + " objectives and " + conversations.size() + " conversations loaded from "
                 + Config.getPackages().size() + " packages.");
     }
 
@@ -109,7 +103,7 @@ public class QuestRegistry {
         final Map<String, InstructionMetricsSupplier<? extends ID>> metricsSuppliers = new HashMap<>();
         metricsSuppliers.put("conditions", conditionProcessor.metricsSupplier());
         metricsSuppliers.put("events", eventProcessor.metricsSupplier());
-        metricsSuppliers.put("objectives", new CompositeInstructionMetricsSupplier<>(objectives::keySet, objectiveTypes::keySet));
+        metricsSuppliers.put("objectives", objectiveProcessor.metricsSupplier());
         metricsSuppliers.put("variables", new CompositeInstructionMetricsSupplier<>(variables::keySet, variableTypes::keySet));
         return metricsSuppliers;
     }
@@ -130,5 +124,14 @@ public class QuestRegistry {
      */
     public EventProcessor events() {
         return eventProcessor;
+    }
+
+    /**
+     * Gets the class processing objective logic.
+     *
+     * @return objective logic
+     */
+    public ObjectiveProcessor objectives() {
+        return objectiveProcessor;
     }
 }

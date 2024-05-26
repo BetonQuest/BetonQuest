@@ -1,6 +1,5 @@
 package org.betonquest.betonquest;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.papermc.lib.PaperLib;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.apache.logging.log4j.LogManager;
@@ -303,14 +302,8 @@ public class BetonQuest extends JavaPlugin {
      * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
      */
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     public static void newObjective(final Profile profile, final ObjectiveID objectiveID) {
-        final Objective objective = instance.questRegistry.objectives.get(objectiveID);
-        if (objective.containsPlayer(profile)) {
-            getInstance().log.debug(objectiveID.getPackage(), profile + " already has the " + objectiveID + " objective");
-            return;
-        }
-        objective.newPlayer(profile);
+        instance.questRegistry.objectives().newObjective(profile, objectiveID);
     }
 
     /**
@@ -321,17 +314,7 @@ public class BetonQuest extends JavaPlugin {
      * @param instruction data instruction string
      */
     public static void resumeObjective(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
-        final Objective objective = instance.questRegistry.objectives.get(objectiveID);
-        if (objective == null) {
-            getInstance().log.warn(objectiveID.getPackage(), "Objective " + objectiveID + " does not exist");
-            return;
-        }
-        if (objective.containsPlayer(profile)) {
-            getInstance().log.debug(objectiveID.getPackage(),
-                    profile + " already has the " + objectiveID + " objective!");
-            return;
-        }
-        objective.resumeObjectiveForPlayer(profile, instruction);
+        instance.questRegistry.objectives().resumeObjective(profile, objectiveID, instruction);
     }
 
     /**
@@ -729,10 +712,6 @@ public class BetonQuest extends JavaPlugin {
     public void loadData() {
         eventScheduling.stopAll();
 
-        // save data of all objectives to the players
-        for (final Objective objective : instance.questRegistry.objectives.values()) {
-            objective.close();
-        }
         // clear previously loaded data
         instance.questRegistry.clear();
 
@@ -744,53 +723,7 @@ public class BetonQuest extends JavaPlugin {
             getInstance().log.debug(pack, "Loading stuff in package " + packName);
             questRegistry.events().load(pack);
             questRegistry.conditions().load(pack);
-            final ConfigurationSection oConfig = pack.getConfig().getConfigurationSection("objectives");
-            if (oConfig != null) {
-                for (final String key : oConfig.getKeys(false)) {
-                    if (key.contains(" ")) {
-                        getInstance().log.warn(pack,
-                                "Objective name cannot contain spaces: '" + key + "' (in " + packName + " package)");
-                        continue;
-                    }
-                    final ObjectiveID identifier;
-                    try {
-                        identifier = new ObjectiveID(pack, key);
-                    } catch (final ObjectNotFoundException e) {
-                        getInstance().log.warn(pack, "Error while loading objective '" + packName + "." + key + "': " + e.getMessage(), e);
-                        continue;
-                    }
-                    final String type;
-                    try {
-                        type = identifier.generateInstruction().getPart(0);
-                    } catch (final InstructionParseException e) {
-                        getInstance().log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
-                        continue;
-                    }
-                    final Class<? extends Objective> objectiveClass = OBJECTIVE_TYPES.get(type);
-                    // if it's null then there is no such type registered, log an
-                    // error
-                    if (objectiveClass == null) {
-                        getInstance().log.warn(pack,
-                                "Objective type " + type + " is not registered, check if it's"
-                                        + " spelled correctly in '" + identifier + "' objective.");
-                        continue;
-                    }
-                    try {
-                        final Objective objective = objectiveClass.getConstructor(Instruction.class)
-                                .newInstance(identifier.generateInstruction());
-                        instance.questRegistry.objectives.put(identifier, objective);
-                        getInstance().log.debug(pack, "  Objective '" + identifier + "' loaded");
-                    } catch (final InvocationTargetException e) {
-                        if (e.getCause() instanceof InstructionParseException) {
-                            getInstance().log.warn(pack, "Error in '" + identifier + "' objective (" + type + "): " + e.getCause().getMessage(), e);
-                        } else {
-                            getInstance().log.reportException(pack, e);
-                        }
-                    } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-                        log.reportException(pack, e);
-                    }
-                }
-            }
+            questRegistry.objectives().load(pack);
             final ConfigurationSection conversationsConfig = pack.getConfig().getConfigurationSection("conversations");
             if (conversationsConfig != null) {
                 for (final String convName : conversationsConfig.getKeys(false)) {
@@ -1152,13 +1085,7 @@ public class BetonQuest extends JavaPlugin {
      * @return list of this player's active objectives
      */
     public List<Objective> getPlayerObjectives(final Profile profile) {
-        final List<Objective> list = new ArrayList<>();
-        for (final Objective objective : instance.questRegistry.objectives.values()) {
-            if (objective.containsPlayer(profile)) {
-                list.add(objective);
-            }
-        }
-        return list;
+        return questRegistry.objectives().getPlayerObjectives(profile);
     }
 
     /**
@@ -1176,7 +1103,7 @@ public class BetonQuest extends JavaPlugin {
      */
     @Nullable
     public Objective getObjective(final ObjectiveID objectiveID) {
-        return instance.questRegistry.objectives.get(objectiveID);
+        return instance.questRegistry.objectives().getObjective(objectiveID);
     }
 
     /**
@@ -1265,11 +1192,7 @@ public class BetonQuest extends JavaPlugin {
      * @param rename the name it should have now
      */
     public void renameObjective(final ObjectiveID name, final ObjectiveID rename) {
-        final Objective objective = instance.questRegistry.objectives.remove(name);
-        instance.questRegistry.objectives.put(rename, objective);
-        if (objective != null) {
-            objective.setLabel(rename);
-        }
+        questRegistry.objectives().renameObjective(name, rename);
     }
 
     /**
