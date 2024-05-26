@@ -25,8 +25,6 @@ import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.bstats.BStatsMetrics;
-import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
-import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.commands.BackpackCommand;
 import org.betonquest.betonquest.commands.CancelQuestCommand;
 import org.betonquest.betonquest.commands.CompassCommand;
@@ -65,7 +63,6 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.id.VariableID;
@@ -112,6 +109,7 @@ import org.betonquest.betonquest.notify.SubTitleNotifyIO;
 import org.betonquest.betonquest.notify.SuppressNotifyIO;
 import org.betonquest.betonquest.notify.TitleNotifyIO;
 import org.betonquest.betonquest.notify.TotemNotifyIO;
+import org.betonquest.betonquest.quest.QuestRegistry;
 import org.betonquest.betonquest.quest.event.NullStaticEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.FromClassQuestEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
@@ -174,18 +172,6 @@ public class BetonQuest extends JavaPlugin {
 
     private static final Map<String, EventScheduling.ScheduleType<?>> SCHEDULE_TYPES = new HashMap<>();
 
-    private static final Map<ConditionID, Condition> CONDITIONS = new HashMap<>();
-
-    private static final Map<EventID, QuestEvent> EVENTS = new HashMap<>();
-
-    private static final Map<ObjectiveID, Objective> OBJECTIVES = new HashMap<>();
-
-    private static final Map<ConversationID, ConversationData> CONVERSATIONS = new HashMap<>();
-
-    private static final Map<VariableID, Variable> VARIABLES = new HashMap<>();
-
-    private static final Map<QuestCancelerID, QuestCanceler> CANCELERS = new HashMap<>();
-
     /**
      * The indicator for dev versions.
      */
@@ -207,6 +193,11 @@ public class BetonQuest extends JavaPlugin {
     private final Map<String, QuestEventFactory> eventTypes = new HashMap<>();
 
     private final Map<Profile, PlayerData> playerDataMap = new ConcurrentHashMap<>();
+
+    /**
+     * Stores Conditions, Events, Objectives, Variables, Conversations and Cancelers.
+     */
+    private QuestRegistry questRegistry;
 
     private BetonQuestLoggerFactory loggerFactory;
 
@@ -320,7 +311,7 @@ public class BetonQuest extends JavaPlugin {
      */
     @SuppressWarnings("PMD.NPathComplexity")
     public static boolean condition(@Nullable final Profile profile, final ConditionID conditionID) {
-        final Condition condition = CONDITIONS.get(conditionID);
+        final Condition condition = instance.questRegistry.conditions.get(conditionID);
         if (condition == null) {
             getInstance().log.warn(conditionID.getPackage(), "The condition " + conditionID + " is not defined!");
             return false;
@@ -357,7 +348,7 @@ public class BetonQuest extends JavaPlugin {
      * @return true if the event was run even if there was an exception during execution
      */
     public static boolean event(@Nullable final Profile profile, final EventID eventID) {
-        final QuestEvent event = EVENTS.get(eventID);
+        final QuestEvent event = instance.questRegistry.events.get(eventID);
         if (event == null) {
             getInstance().log.warn(eventID.getPackage(), "Event " + eventID + " is not defined");
             return false;
@@ -384,7 +375,7 @@ public class BetonQuest extends JavaPlugin {
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     public static void newObjective(final Profile profile, final ObjectiveID objectiveID) {
-        final Objective objective = OBJECTIVES.get(objectiveID);
+        final Objective objective = instance.questRegistry.objectives.get(objectiveID);
         if (objective.containsPlayer(profile)) {
             getInstance().log.debug(objectiveID.getPackage(), profile + " already has the " + objectiveID + " objective");
             return;
@@ -400,7 +391,7 @@ public class BetonQuest extends JavaPlugin {
      * @param instruction data instruction string
      */
     public static void resumeObjective(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
-        final Objective objective = OBJECTIVES.get(objectiveID);
+        final Objective objective = instance.questRegistry.objectives.get(objectiveID);
         if (objective == null) {
             getInstance().log.warn(objectiveID.getPackage(), "Objective " + objectiveID + " does not exist");
             return;
@@ -432,7 +423,7 @@ public class BetonQuest extends JavaPlugin {
             throw new InstructionParseException("Could not load variable: " + e.getMessage(), e);
         }
         // no need to create duplicated variables
-        final Variable existingVariable = VARIABLES.get(variableID);
+        final Variable existingVariable = instance.questRegistry.variables.get(variableID);
         if (existingVariable != null) {
             return existingVariable;
         }
@@ -445,7 +436,7 @@ public class BetonQuest extends JavaPlugin {
 
         try {
             final Variable variable = variableClass.getConstructor(Instruction.class).newInstance(instructionVar);
-            VARIABLES.put(variableID, variable);
+            instance.questRegistry.variables.put(variableID, variable);
             getInstance().log.debug(pack, "Variable " + variableID + " loaded");
             return variable;
         } catch (final InvocationTargetException e) {
@@ -501,7 +492,7 @@ public class BetonQuest extends JavaPlugin {
             if (cancelSection != null) {
                 for (final String key : cancelSection.getKeys(false)) {
                     try {
-                        CANCELERS.put(new QuestCancelerID(pack, key), new QuestCanceler(pack, key));
+                        instance.questRegistry.cancelers.put(new QuestCancelerID(pack, key), new QuestCanceler(pack, key));
                     } catch (final InstructionParseException | ObjectNotFoundException e) {
                         getInstance().log.warn(pack, "Could not load '" + pack.getQuestPath() + "." + key + "' quest canceler: " + e.getMessage(), e);
                     }
@@ -511,7 +502,7 @@ public class BetonQuest extends JavaPlugin {
     }
 
     public static Map<QuestCancelerID, QuestCanceler> getCanceler() {
-        return CANCELERS;
+        return instance.questRegistry.cancelers;
     }
 
     /**
@@ -692,6 +683,8 @@ public class BetonQuest extends JavaPlugin {
         new CompassCommand();
         new LangCommand(loggerFactory.create(LangCommand.class));
 
+        questRegistry = new QuestRegistry(CONDITION_TYPES, eventTypes, OBJECTIVE_TYPES, VARIABLE_TYPES);
+
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this).register();
 
         registerConversationIO("simple", SimpleConvIO.class);
@@ -750,12 +743,7 @@ public class BetonQuest extends JavaPlugin {
             getInstance().log.warn("Could not disable /betonquestanswer logging", e);
         }
 
-        final Map<String, InstructionMetricsSupplier<? extends ID>> metricsSuppliers = new HashMap<>();
-        metricsSuppliers.put("conditions", new CompositeInstructionMetricsSupplier<>(CONDITIONS::keySet, CONDITION_TYPES::keySet));
-        metricsSuppliers.put("events", new CompositeInstructionMetricsSupplier<>(EVENTS::keySet, eventTypes::keySet));
-        metricsSuppliers.put("objectives", new CompositeInstructionMetricsSupplier<>(OBJECTIVES::keySet, OBJECTIVE_TYPES::keySet));
-        metricsSuppliers.put("variables", new CompositeInstructionMetricsSupplier<>(VARIABLES::keySet, VARIABLE_TYPES::keySet));
-        new BStatsMetrics(this, new Metrics(this, BSTATS_METRICS_ID), metricsSuppliers);
+        new BStatsMetrics(this, new Metrics(this, BSTATS_METRICS_ID), questRegistry.metricsSupplier());
 
         setupUpdater();
 
@@ -812,16 +800,11 @@ public class BetonQuest extends JavaPlugin {
         eventScheduling.stopAll();
 
         // save data of all objectives to the players
-        for (final Objective objective : OBJECTIVES.values()) {
+        for (final Objective objective : instance.questRegistry.objectives.values()) {
             objective.close();
         }
         // clear previously loaded data
-        EVENTS.clear();
-        CONDITIONS.clear();
-        CONVERSATIONS.clear();
-        OBJECTIVES.clear();
-        VARIABLES.clear();
-        CANCELERS.clear();
+        instance.questRegistry.clear();
 
         loadQuestCanceler();
 
@@ -861,7 +844,7 @@ public class BetonQuest extends JavaPlugin {
 
                     try {
                         final QuestEvent event = eventFactory.parseEventInstruction(identifier.generateInstruction());
-                        EVENTS.put(identifier, event);
+                        instance.questRegistry.events.put(identifier, event);
                         getInstance().log.debug(pack, "  Event '" + identifier + "' loaded");
                     } catch (final InstructionParseException e) {
                         getInstance().log.warn(pack, "Error in '" + identifier + "' event (" + type + "): " + e.getMessage(), e);
@@ -901,7 +884,7 @@ public class BetonQuest extends JavaPlugin {
                     try {
                         final Condition condition = conditionClass.getConstructor(Instruction.class)
                                 .newInstance(identifier.generateInstruction());
-                        CONDITIONS.put(identifier, condition);
+                        instance.questRegistry.conditions.put(identifier, condition);
                         getInstance().log.debug(pack, "  Condition '" + identifier + "' loaded");
                     } catch (final InvocationTargetException e) {
                         if (e.getCause() instanceof InstructionParseException) {
@@ -948,7 +931,7 @@ public class BetonQuest extends JavaPlugin {
                     try {
                         final Objective objective = objectiveClass.getConstructor(Instruction.class)
                                 .newInstance(identifier.generateInstruction());
-                        OBJECTIVES.put(identifier, objective);
+                        instance.questRegistry.objectives.put(identifier, objective);
                         getInstance().log.debug(pack, "  Objective '" + identifier + "' loaded");
                     } catch (final InvocationTargetException e) {
                         if (e.getCause() instanceof InstructionParseException) {
@@ -966,7 +949,7 @@ public class BetonQuest extends JavaPlugin {
                 for (final String convName : conversationsConfig.getKeys(false)) {
                     try {
                         final ConversationID convID = new ConversationID(pack, convName);
-                        CONVERSATIONS.put(convID, new ConversationData(this, convID, conversationsConfig.getConfigurationSection(convName)));
+                        instance.questRegistry.conversations.put(convID, new ConversationData(this, convID, conversationsConfig.getConfigurationSection(convName)));
                     } catch (final InstructionParseException | ObjectNotFoundException e) {
                         log.warn(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
                     }
@@ -978,7 +961,7 @@ public class BetonQuest extends JavaPlugin {
             getInstance().log.debug(pack, "Everything in package " + packName + " loaded");
         }
 
-        CONVERSATIONS.entrySet().removeIf(entry -> {
+        instance.questRegistry.conversations.entrySet().removeIf(entry -> {
             final ConversationData convData = entry.getValue();
             try {
                 convData.checkExternalPointers();
@@ -989,8 +972,8 @@ public class BetonQuest extends JavaPlugin {
             return false;
         });
 
-        getInstance().log.info("There are " + CONDITIONS.size() + " conditions, " + EVENTS.size() + " events, "
-                + OBJECTIVES.size() + " objectives and " + CONVERSATIONS.size() + " conversations loaded from "
+        getInstance().log.info("There are " + instance.questRegistry.conditions.size() + " conditions, " + instance.questRegistry.events.size() + " events, "
+                + instance.questRegistry.objectives.size() + " objectives and " + instance.questRegistry.conversations.size() + " conversations loaded from "
                 + Config.getPackages().size() + " packages.");
         // start those freshly loaded objectives for all players
         for (final PlayerData playerData : playerDataMap.values()) {
@@ -1325,7 +1308,7 @@ public class BetonQuest extends JavaPlugin {
      */
     public List<Objective> getPlayerObjectives(final Profile profile) {
         final List<Objective> list = new ArrayList<>();
-        for (final Objective objective : OBJECTIVES.values()) {
+        for (final Objective objective : instance.questRegistry.objectives.values()) {
             if (objective.containsPlayer(profile)) {
                 list.add(objective);
             }
@@ -1339,7 +1322,7 @@ public class BetonQuest extends JavaPlugin {
      * not exist
      */
     public ConversationData getConversation(final ConversationID conversationID) {
-        return CONVERSATIONS.get(conversationID);
+        return instance.questRegistry.conversations.get(conversationID);
     }
 
     /**
@@ -1348,7 +1331,7 @@ public class BetonQuest extends JavaPlugin {
      */
     @Nullable
     public Objective getObjective(final ObjectiveID objectiveID) {
-        return OBJECTIVES.get(objectiveID);
+        return instance.questRegistry.objectives.get(objectiveID);
     }
 
     /**
@@ -1437,8 +1420,8 @@ public class BetonQuest extends JavaPlugin {
      * @param rename the name it should have now
      */
     public void renameObjective(final ObjectiveID name, final ObjectiveID rename) {
-        final Objective objective = OBJECTIVES.remove(name);
-        OBJECTIVES.put(rename, objective);
+        final Objective objective = instance.questRegistry.objectives.remove(name);
+        instance.questRegistry.objectives.put(rename, objective);
         if (objective != null) {
             objective.setLabel(rename);
         }
