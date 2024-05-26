@@ -142,9 +142,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
 import java.util.logging.Handler;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -250,6 +248,13 @@ public class BetonQuest extends JavaPlugin {
         return instance;
     }
 
+    /**
+     * Checks if the conditions described by conditionID are met.
+     *
+     * @param profile      the {@link Profile} of the player which should be checked
+     * @param conditionIDs IDs of the conditions to check
+     * @return if all conditions are met
+     */
     public static boolean conditions(final Profile profile, final Collection<ConditionID> conditionIDs) {
         final ConditionID[] ids = new ConditionID[conditionIDs.size()];
         int index = 0;
@@ -259,47 +264,15 @@ public class BetonQuest extends JavaPlugin {
         return conditions(profile, ids);
     }
 
-    @SuppressWarnings("PMD.CognitiveComplexity")
+    /**
+     * Checks if the conditions described by conditionID are met.
+     *
+     * @param profile      the {@link Profile} of the player which should be checked
+     * @param conditionIDs IDs of the conditions to check
+     * @return if all conditions are met
+     */
     public static boolean conditions(@Nullable final Profile profile, final ConditionID... conditionIDs) {
-        if (Bukkit.isPrimaryThread()) {
-            for (final ConditionID id : conditionIDs) {
-                if (!condition(profile, id)) {
-                    return false;
-                }
-            }
-        } else {
-            final List<CompletableFuture<Boolean>> conditions = new ArrayList<>();
-            for (final ConditionID id : conditionIDs) {
-                final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
-                        () -> condition(profile, id));
-                conditions.add(future);
-            }
-            for (final CompletableFuture<Boolean> condition : conditions) {
-                try {
-                    if (!condition.get()) {
-                        return false;
-                    }
-                } catch (final InterruptedException | ExecutionException e) {
-                    // Currently conditions that are forced to be sync cause every CompletableFuture.get() call
-                    // to delay the check by one tick.
-                    // If this happens during a shutdown, the check will be delayed past the last tick.
-                    // This will throw a CancellationException and IllegalPluginAccessExceptions.
-                    // For Paper we can detect this and only log it to the debug getInstance().log.
-                    // When the conditions get reworked, this complete check can be removed including the Spigot message.
-                    if (PaperLib.isPaper() && Bukkit.getServer().isStopping()) {
-                        getInstance().log.debug("Exception during shutdown while checking conditions (expected):", e);
-                        return false;
-                    }
-                    if (PaperLib.isSpigot()) {
-                        getInstance().log.warn("The following exception is only ok when the server is currently stopping."
-                                + "Switch to papermc.io to fix this.");
-                    }
-                    getInstance().log.reportException(e);
-                    return false;
-                }
-            }
-        }
-        return true;
+        return instance.questRegistry.getConditionProcessor().conditions(profile, conditionIDs);
     }
 
     /**
@@ -309,34 +282,8 @@ public class BetonQuest extends JavaPlugin {
      * @param profile     the {@link Profile} of the player which should be checked
      * @return if the condition is met
      */
-    @SuppressWarnings("PMD.NPathComplexity")
     public static boolean condition(@Nullable final Profile profile, final ConditionID conditionID) {
-        final Condition condition = instance.questRegistry.conditions.get(conditionID);
-        if (condition == null) {
-            getInstance().log.warn(conditionID.getPackage(), "The condition " + conditionID + " is not defined!");
-            return false;
-        }
-        if (profile == null && !condition.isStatic()) {
-            getInstance().log.warn(conditionID.getPackage(),
-                    "Cannot check non-static condition '" + conditionID + "' without a player, returning false");
-            return false;
-        }
-        if (profile != null && profile.getOnlineProfile().isEmpty() && !condition.isPersistent()) {
-            getInstance().log.debug(conditionID.getPackage(), "Player was offline, condition is not persistent, returning false");
-            return false;
-        }
-        final boolean outcome;
-        try {
-            outcome = condition.handle(profile);
-        } catch (final QuestRuntimeException e) {
-            getInstance().log.warn(conditionID.getPackage(), "Error while checking '" + conditionID + "' condition: " + e.getMessage(), e);
-            return false;
-        }
-        final boolean isMet = outcome != conditionID.inverted();
-        getInstance().log.debug(conditionID.getPackage(),
-                (isMet ? "TRUE" : "FALSE") + ": " + (conditionID.inverted() ? "inverted" : "") + " condition "
-                        + conditionID + " for " + profile);
-        return isMet;
+        return instance.questRegistry.getConditionProcessor().condition(profile, conditionID);
     }
 
     /**
@@ -683,7 +630,7 @@ public class BetonQuest extends JavaPlugin {
         new CompassCommand();
         new LangCommand(loggerFactory.create(LangCommand.class));
 
-        questRegistry = new QuestRegistry(CONDITION_TYPES, eventTypes, OBJECTIVE_TYPES, VARIABLE_TYPES);
+        questRegistry = new QuestRegistry(log, CONDITION_TYPES, eventTypes, OBJECTIVE_TYPES, VARIABLE_TYPES);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this).register();
 
@@ -851,52 +798,7 @@ public class BetonQuest extends JavaPlugin {
                     }
                 }
             }
-            final ConfigurationSection cConfig = pack.getConfig().getConfigurationSection("conditions");
-            if (cConfig != null) {
-                for (final String key : cConfig.getKeys(false)) {
-                    if (key.contains(" ")) {
-                        getInstance().log.warn(pack,
-                                "Condition name cannot contain spaces: '" + key + "' (in " + packName + " package)");
-                        continue;
-                    }
-                    final ConditionID identifier;
-                    try {
-                        identifier = new ConditionID(pack, key);
-                    } catch (final ObjectNotFoundException e) {
-                        getInstance().log.warn(pack, "Error while loading condition '" + packName + "." + key + "': " + e.getMessage(), e);
-                        continue;
-                    }
-                    final String type;
-                    try {
-                        type = identifier.generateInstruction().getPart(0);
-                    } catch (final InstructionParseException e) {
-                        getInstance().log.warn(pack, "Condition type not defined in '" + packName + "." + key + "'", e);
-                        continue;
-                    }
-                    final Class<? extends Condition> conditionClass = CONDITION_TYPES.get(type);
-                    // if it's null then there is no such type registered, log an
-                    // error
-                    if (conditionClass == null) {
-                        getInstance().log.warn(pack, "Condition type " + type + " is not registered,"
-                                + " check if it's spelled correctly in '" + identifier + "' condition.");
-                        continue;
-                    }
-                    try {
-                        final Condition condition = conditionClass.getConstructor(Instruction.class)
-                                .newInstance(identifier.generateInstruction());
-                        instance.questRegistry.conditions.put(identifier, condition);
-                        getInstance().log.debug(pack, "  Condition '" + identifier + "' loaded");
-                    } catch (final InvocationTargetException e) {
-                        if (e.getCause() instanceof InstructionParseException) {
-                            getInstance().log.warn(pack, "Error in '" + identifier + "' condition (" + type + "): " + e.getCause().getMessage(), e);
-                        } else {
-                            getInstance().log.reportException(pack, e);
-                        }
-                    } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-                        getInstance().log.reportException(pack, e);
-                    }
-                }
-            }
+            questRegistry.getConditionProcessor().load(pack);
             final ConfigurationSection oConfig = pack.getConfig().getConfigurationSection("objectives");
             if (oConfig != null) {
                 for (final String key : oConfig.getKeys(false)) {
@@ -972,9 +874,7 @@ public class BetonQuest extends JavaPlugin {
             return false;
         });
 
-        getInstance().log.info("There are " + instance.questRegistry.conditions.size() + " conditions, " + instance.questRegistry.events.size() + " events, "
-                + instance.questRegistry.objectives.size() + " objectives and " + instance.questRegistry.conversations.size() + " conversations loaded from "
-                + Config.getPackages().size() + " packages.");
+        questRegistry.printSize(getInstance().log);
         // start those freshly loaded objectives for all players
         for (final PlayerData playerData : playerDataMap.values()) {
             playerData.startObjectives();

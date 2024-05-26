@@ -4,11 +4,12 @@ import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.Variable;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
+import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.conversation.ConversationData;
-import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
@@ -24,11 +25,6 @@ import java.util.Map;
  * Stores the active Quest Types, Conversations and Quest Canceller.
  */
 public class QuestRegistry {
-    /**
-     * Loaded Conditions.
-     */
-    public final Map<ConditionID, Condition> conditions = new HashMap<>();
-
     /**
      * Loaded Events.
      */
@@ -55,11 +51,6 @@ public class QuestRegistry {
     public final Map<QuestCancelerID, QuestCanceler> cancelers = new HashMap<>();
 
     /**
-     * Available Condition types.
-     */
-    private final Map<String, Class<? extends Condition>> conditionTypes;
-
-    /**
      * Available Event types.
      */
     private final Map<String, QuestEventFactory> eventTypes;
@@ -75,31 +66,44 @@ public class QuestRegistry {
     private final Map<String, Class<? extends Variable>> variableTypes;
 
     /**
+     * Condition logic.
+     */
+    private final ConditionProcessor conditionProcessor;
+
+    /**
      * Create a new Registry for storing and using Conditions, Events, Objectives, Variables,
      * Conversations and Quest canceller.
      *
+     * @param log            the custom logger for this registry and processors
      * @param conditionTypes the available condition types
      * @param eventTypes     the available event types
      * @param objectiveTypes the available objective types
      * @param variableTypes  the available variable types
      */
-    public QuestRegistry(final Map<String, Class<? extends Condition>> conditionTypes, final Map<String, QuestEventFactory> eventTypes,
+    public QuestRegistry(final BetonQuestLogger log,
+                         final Map<String, Class<? extends Condition>> conditionTypes, final Map<String, QuestEventFactory> eventTypes,
                          final Map<String, Class<? extends Objective>> objectiveTypes, final Map<String, Class<? extends Variable>> variableTypes) {
-        this.conditionTypes = conditionTypes;
         this.eventTypes = eventTypes;
         this.objectiveTypes = objectiveTypes;
         this.variableTypes = variableTypes;
+        this.conditionProcessor = new ConditionProcessor(log, conditionTypes, new HashMap<>());
     }
 
     /**
      * Clears the loaded data.
      */
     public void clear() {
-        conditions.clear();
+        conditionProcessor.clear();
         conversations.clear();
         objectives.clear();
         variables.clear();
         cancelers.clear();
+    }
+
+    public void printSize(final BetonQuestLogger log) {
+        log.info("There are " + conditionProcessor.size() + " conditions, " + events.size() + " events, "
+                + objectives.size() + " objectives and " + conversations.size() + " conversations loaded from "
+                + Config.getPackages().size() + " packages.");
     }
 
     /**
@@ -109,10 +113,19 @@ public class QuestRegistry {
      */
     public Map<String, InstructionMetricsSupplier<? extends ID>> metricsSupplier() {
         final Map<String, InstructionMetricsSupplier<? extends ID>> metricsSuppliers = new HashMap<>();
-        metricsSuppliers.put("conditions", new CompositeInstructionMetricsSupplier<>(conditions::keySet, conditionTypes::keySet));
+        metricsSuppliers.put("conditions", conditionProcessor.metricsSupplier());
         metricsSuppliers.put("events", new CompositeInstructionMetricsSupplier<>(events::keySet, eventTypes::keySet));
         metricsSuppliers.put("objectives", new CompositeInstructionMetricsSupplier<>(objectives::keySet, objectiveTypes::keySet));
         metricsSuppliers.put("variables", new CompositeInstructionMetricsSupplier<>(variables::keySet, variableTypes::keySet));
         return metricsSuppliers;
+    }
+
+    /**
+     * Gets the class processing condition logic.
+     *
+     * @return condition logic
+     */
+    public ConditionProcessor getConditionProcessor() {
+        return conditionProcessor;
     }
 }
