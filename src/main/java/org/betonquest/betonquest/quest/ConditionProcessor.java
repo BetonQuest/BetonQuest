@@ -49,15 +49,15 @@ public class ConditionProcessor extends QuestProcessor<Condition, ConditionID> {
      *
      * @param pack to load the conditions from
      */
+    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
     @Override
     public void load(final QuestPackage pack) {
         final ConfigurationSection cConfig = pack.getConfig().getConfigurationSection("conditions");
-        final String packName = pack.getQuestPath();
         if (cConfig != null) {
+            final String packName = pack.getQuestPath();
             for (final String key : cConfig.getKeys(false)) {
                 if (key.contains(" ")) {
-                    log.warn(pack,
-                            "Condition name cannot contain spaces: '" + key + "' (in " + packName + " package)");
+                    log.warn(pack, "Condition name cannot contain spaces: '" + key + "' (in " + packName + " package)");
                     continue;
                 }
                 final ConditionID identifier;
@@ -75,8 +75,7 @@ public class ConditionProcessor extends QuestProcessor<Condition, ConditionID> {
                     continue;
                 }
                 final Class<? extends Condition> conditionClass = conditionTypes.get(type);
-                // if it's null then there is no such type registered, log an
-                // error
+                // if it's null then there is no such type registered, log an error
                 if (conditionClass == null) {
                     log.warn(pack, "Condition type " + type + " is not registered,"
                             + " check if it's spelled correctly in '" + identifier + "' condition.");
@@ -107,7 +106,7 @@ public class ConditionProcessor extends QuestProcessor<Condition, ConditionID> {
      * @param conditionIDs IDs of the conditions to check
      * @return if all conditions are met
      */
-    @SuppressWarnings("PMD.CognitiveComplexity")
+    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
     public boolean conditions(@Nullable final Profile profile, final ConditionID... conditionIDs) {
         if (Bukkit.isPrimaryThread()) {
             for (final ConditionID id : conditionIDs) {
@@ -157,7 +156,7 @@ public class ConditionProcessor extends QuestProcessor<Condition, ConditionID> {
      * @param profile     the {@link Profile} of the player which should be checked
      * @return if the condition is met
      */
-    @SuppressWarnings("PMD.NPathComplexity")
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public boolean condition(@Nullable final Profile profile, final ConditionID conditionID) {
         final Condition condition = values.get(conditionID);
         if (condition == null) {
