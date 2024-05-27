@@ -93,6 +93,10 @@ public class StageObjective extends Objective {
      */
     public String getStage(final Profile profile) throws QuestRuntimeException {
         final StageData stageData = (StageObjective.StageData) dataMap.get(profile);
+        if (stageData == null) {
+            throw new QuestRuntimeException("No data found for profile '" + profile + "' for objective '" + instruction.getID() + "'."
+                    + " Make sure the objective is started before setting the stage.");
+        }
         final String stage = stageData.getStage();
         if (stageMap.isValidStage(stage)) {
             return stage;
@@ -109,6 +113,10 @@ public class StageObjective extends Objective {
      */
     public void setStage(final Profile profile, final String stage) throws QuestRuntimeException {
         final StageData stageData = (StageObjective.StageData) dataMap.get(profile);
+        if (stageData == null) {
+            throw new QuestRuntimeException("No data found for profile '" + profile + "' for objective '" + instruction.getID() + "'."
+                    + " Make sure the objective is started before setting the stage.");
+        }
         if (stageMap.isValidStage(stage)) {
             if (checkConditions(profile)) {
                 stageData.setStage(stage);
