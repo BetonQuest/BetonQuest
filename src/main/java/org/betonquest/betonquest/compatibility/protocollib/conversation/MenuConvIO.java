@@ -65,6 +65,11 @@ import java.util.stream.Stream;
         "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.CouplingBetweenObjects"})
 public class MenuConvIO extends ChatConvIO {
     /**
+     * The type of NPC name to display in the conversation.
+     */
+    private static final String NPC_NAME_TYPE_CHAT = "chat";
+
+    /**
      * Thread safety
      */
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
@@ -403,7 +408,7 @@ public class MenuConvIO extends ChatConvIO {
         // own to a minimum of 1.
         int linesAvailable = Math.max(1, 10 - npcLines.size());
 
-        if ("chat".equals(configNpcNameType)) {
+        if (NPC_NAME_TYPE_CHAT.equals(configNpcNameType)) {
             linesAvailable = Math.max(1, linesAvailable - 1);
         }
 
@@ -478,7 +483,7 @@ public class MenuConvIO extends ChatConvIO {
         final StringBuilder displayBuilder = new StringBuilder();
 
         // If NPC name type is chat_top, show it
-        if ("chat".equals(configNpcNameType)) {
+        if (NPC_NAME_TYPE_CHAT.equals(configNpcNameType)) {
             switch (configNpcNameAlign) {
                 case "right":
                     displayBuilder.append(" ".repeat(Math.max(0, configLineLength - npcName.length())));

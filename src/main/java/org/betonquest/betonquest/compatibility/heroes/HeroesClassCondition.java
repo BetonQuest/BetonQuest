@@ -19,6 +19,11 @@ import java.util.List;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class HeroesClassCondition extends Condition {
+    /**
+     * The string to match any class.
+     */
+    private static final String ANY_CLASS = "any";
+
     private final boolean primary;
 
     private final boolean mastered;
@@ -37,7 +42,7 @@ public class HeroesClassCondition extends Condition {
         primary = "primary".equalsIgnoreCase(string);
         mastered = "mastered".equals(string);
         string = instruction.next();
-        if ("any".equalsIgnoreCase(string)) {
+        if (ANY_CLASS.equalsIgnoreCase(string)) {
             any = true;
             heroClass = null;
         } else {

@@ -13,6 +13,11 @@ import org.bukkit.inventory.PlayerInventory;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOItemsHandCondition extends Condition {
+    /**
+     * The offhand key.
+     */
+    private static final String OFFHAND_KEY = "offhand";
+
     private final Type itemType;
 
     private final String itemID;
@@ -29,7 +34,7 @@ public class MMOItemsHandCondition extends Condition {
 
         while (instruction.hasNext()) {
             final String next = instruction.next();
-            if ("offhand".equals(next)) {
+            if (OFFHAND_KEY.equals(next)) {
                 offhand = true;
             } else {
                 amount = instruction.getVarNum(next);

@@ -67,7 +67,8 @@ public final class HandlerUtil {
      */
     public static Map.Entry<QuestItem.Number, Integer> getNumberValue(final String part, final String messagePart) throws InstructionParseException {
         final QuestItem.Number number;
-        if ("?".equals(part)) {
+        final String whatEver = "?";
+        if (whatEver.equals(part)) {
             return Map.entry(QuestItem.Number.WHATEVER, 1);
         } else if (part.endsWith("-")) {
             number = QuestItem.Number.LESS;

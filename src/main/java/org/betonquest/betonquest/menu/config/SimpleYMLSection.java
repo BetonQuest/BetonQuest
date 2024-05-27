@@ -163,9 +163,10 @@ public abstract class SimpleYMLSection {
      * @throws Missing if nothing is given
      * @throws Invalid if given string is not a boolean
      */
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     protected final boolean getBoolean(final String key) throws Missing, Invalid {
         final String stringBoolean = this.getString(key).trim();
-        if (Boolean.parseBoolean(stringBoolean)) {
+        if ("true".equalsIgnoreCase(stringBoolean)) {
             return true;
         } else if ("false".equalsIgnoreCase(stringBoolean)) {
             return false;

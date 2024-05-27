@@ -12,6 +12,11 @@ import java.util.Locale;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class MoneyVariable extends Variable {
+    /**
+     * The money amount key.
+     */
+    private static final String MONEY_AMOUNT = "amount";
+
     private final Type type;
 
     private int amount;
@@ -19,7 +24,7 @@ public class MoneyVariable extends Variable {
     public MoneyVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         final String instructionString = instruction.next();
-        if ("amount".equalsIgnoreCase(instructionString)) {
+        if (MONEY_AMOUNT.equalsIgnoreCase(instructionString)) {
             type = Type.AMOUNT;
         } else if (instructionString.toLowerCase(Locale.ROOT).startsWith("left:")) {
             type = Type.LEFT;

@@ -12,6 +12,10 @@ import java.util.Locale;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class RideCondition extends Condition {
+    /**
+     * The string to match any entity.
+     */
+    private static final String ANY_ENTITY = "any";
 
     private final boolean any;
 
@@ -21,7 +25,7 @@ public class RideCondition extends Condition {
     public RideCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         final String name = instruction.next();
-        if ("any".equalsIgnoreCase(name)) {
+        if (ANY_ENTITY.equalsIgnoreCase(name)) {
             any = true;
         } else {
             any = false;
