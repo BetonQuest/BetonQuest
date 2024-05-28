@@ -21,6 +21,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Removed
 ### Fixed
 - NPE if a player replies to a SlowTellRaw conversation IO when the text is not completely displayed
+- head `QuestItem` matches even if they are distinct 
 ### Security
 
 ## [2.1.1] - 2024-05-09
