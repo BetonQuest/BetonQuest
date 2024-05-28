@@ -62,10 +62,8 @@ public class ArmorRatingCondition extends Condition {
                 rating += 2;
             } else if (helmet.getType() == Material.DIAMOND_HELMET) {
                 rating += 3;
-            } else {
-                if (NETHERITE_HELMET.equals(helmet.getType().toString())) {
-                    rating += 3;
-                }
+            } else if (NETHERITE_HELMET.equals(helmet.getType().toString())) {
+                rating += 3;
             }
         }
         if (boots != null) {
@@ -79,10 +77,8 @@ public class ArmorRatingCondition extends Condition {
                 rating += 2;
             } else if (boots.getType() == Material.DIAMOND_BOOTS) {
                 rating += 3;
-            } else {
-                if (NETHERITE_BOOTS.equals(boots.getType().toString())) {
-                    rating += 3;
-                }
+            } else if (NETHERITE_BOOTS.equals(boots.getType().toString())) {
+                rating += 3;
             }
 
         }
@@ -97,10 +93,8 @@ public class ArmorRatingCondition extends Condition {
                 rating += 5;
             } else if (leggings.getType() == Material.DIAMOND_LEGGINGS) {
                 rating += 6;
-            } else {
-                if (NETHERITE_LEGGINGS.equals(leggings.getType().toString())) {
-                    rating += 6;
-                }
+            } else if (NETHERITE_LEGGINGS.equals(leggings.getType().toString())) {
+                rating += 6;
             }
         }
         if (chest != null) {
@@ -114,10 +108,8 @@ public class ArmorRatingCondition extends Condition {
                 rating += 6;
             } else if (chest.getType() == Material.DIAMOND_CHESTPLATE) {
                 rating += 8;
-            } else {
-                if (NETHERITE_CHESTPLATE.equals(chest.getType().toString())) {
-                    rating += 8;
-                }
+            } else if (NETHERITE_CHESTPLATE.equals(chest.getType().toString())) {
+                rating += 8;
             }
         }
         return rating >= required.getInt(profile);
