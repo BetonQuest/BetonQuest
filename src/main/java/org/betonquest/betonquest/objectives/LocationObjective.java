@@ -17,6 +17,11 @@ import org.bukkit.event.HandlerList;
  */
 public class LocationObjective extends AbstractLocationObjective {
     /**
+     * The key for the location property
+     */
+    private static final String LOCATION_PROPERTY = "location";
+
+    /**
      * The location to reach
      */
     private final CompoundLocation loc;
@@ -65,7 +70,7 @@ public class LocationObjective extends AbstractLocationObjective {
 
     @Override
     public String getProperty(final String name, final Profile profile) {
-        if ("location".equalsIgnoreCase(name)) {
+        if (LOCATION_PROPERTY.equalsIgnoreCase(name)) {
             final Location location;
             try {
                 location = loc.getLocation(profile);

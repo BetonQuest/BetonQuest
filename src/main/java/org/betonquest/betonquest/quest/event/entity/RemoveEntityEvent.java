@@ -79,12 +79,7 @@ public class RemoveEntityEvent implements Event {
         for (final EntityType type : types) {
             mobLocation.getNearbyEntitiesByType(type.getEntityClass(), radius.getDouble(profile))
                     .stream()
-                    .filter(entity -> {
-                        if (name == null) {
-                            return true;
-                        }
-                        return name.equals(entity.getName());
-                    })
+                    .filter(entity -> name == null || name.equals(entity.getName()))
                     .filter(entity -> {
                         if (marked == null) {
                             return true;

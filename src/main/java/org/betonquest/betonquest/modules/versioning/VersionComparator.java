@@ -119,7 +119,7 @@ public class VersionComparator implements Comparator<Version>, Serializable {
         return compareVersionDigits(majorVersion, minorVersion, patchVersion, qualifierVersion, buildNumberVersion);
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ImplicitSwitchFallThrough"})
     private int compareVersionDigits(final int majorVersion, final int minorVersion, final int patchVersion,
                                      final int qualifierVersion, final int buildNumberVersion) {
         switch (updateStrategy) {

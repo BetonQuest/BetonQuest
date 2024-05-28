@@ -74,12 +74,7 @@ public class PasswordObjective extends Objective implements Listener {
         if (checkConditions(onlineProfile)) {
             if (regex.matcher(password).matches()) {
                 Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> completeObjective(onlineProfile));
-
-                if (fromCommand) {
-                    return !prefix.isEmpty();
-                } else {
-                    return true;
-                }
+                return !fromCommand || !prefix.isEmpty();
             } else {
                 for (final EventID event : failEvents) {
                     BetonQuest.event(onlineProfile, event);

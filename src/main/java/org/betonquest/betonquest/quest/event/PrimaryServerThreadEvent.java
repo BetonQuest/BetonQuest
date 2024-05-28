@@ -66,6 +66,7 @@ public class PrimaryServerThreadEvent implements Event {
         }
     }
 
+    @SuppressWarnings("PMD.PreserveStackTrace")
     private void executeOnPrimaryThread(final Callable<Void> callable) throws QuestRuntimeException {
         final Future<Void> executingEventFuture = scheduler.callSyncMethod(plugin, callable);
         try {
@@ -74,7 +75,7 @@ public class PrimaryServerThreadEvent implements Event {
             executingEventFuture.cancel(true);
             throw new QuestRuntimeException("Thread was Interrupted!", e);
         } catch (final ExecutionException e) {
-            if (e.getCause() instanceof QuestRuntimeException cause) {
+            if (e.getCause() instanceof final QuestRuntimeException cause) {
                 throw cause;
             }
             throw new QuestRuntimeException(e);

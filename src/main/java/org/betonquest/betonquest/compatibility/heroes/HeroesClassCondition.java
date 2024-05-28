@@ -12,12 +12,18 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Checks the class of the player and the level.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class HeroesClassCondition extends Condition {
+    /**
+     * The string to match any class.
+     */
+    private static final String ANY_CLASS = "any";
+
     private final boolean primary;
 
     private final boolean mastered;
@@ -36,7 +42,7 @@ public class HeroesClassCondition extends Condition {
         primary = "primary".equalsIgnoreCase(string);
         mastered = "mastered".equals(string);
         string = instruction.next();
-        if ("any".equalsIgnoreCase(string)) {
+        if (ANY_CLASS.equalsIgnoreCase(string)) {
             any = true;
             heroClass = null;
         } else {
@@ -55,7 +61,7 @@ public class HeroesClassCondition extends Condition {
         if (hero == null) {
             return false;
         }
-        final ArrayList<HeroClass> heroClasses = new ArrayList<>();
+        final List<HeroClass> heroClasses = new ArrayList<>();
         if (mastered) {
             for (final String heroClass : hero.getMasteredClasses()) {
                 heroClasses.add(Heroes.getInstance().getClassManager().getClass(heroClass));

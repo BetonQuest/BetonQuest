@@ -103,8 +103,9 @@ public class NpcHolograms implements Migration {
     }
 
     private void migrateVectorValue(final ConfigurationSection subConfig) {
-        final String vector = subConfig.getString(VECTOR, "0;3;0");
-        if ("0;3;0".equals(vector)) {
+        final String oldVector = "0;3;0";
+        final String vector = subConfig.getString(VECTOR, oldVector);
+        if (oldVector.equals(vector)) {
             subConfig.set(VECTOR, null);
         } else {
             final String[] split = vector.split(";");

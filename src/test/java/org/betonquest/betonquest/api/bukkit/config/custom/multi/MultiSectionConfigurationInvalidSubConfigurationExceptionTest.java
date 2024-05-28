@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
 class MultiSectionConfigurationInvalidSubConfigurationExceptionTest {
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testInvalidPathSeparator() {
         final Configuration configuration = new MemoryConfiguration();
@@ -36,6 +37,7 @@ class MultiSectionConfigurationInvalidSubConfigurationExceptionTest {
         fail("Expected an Exception!");
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testNoRoot() {
         try {

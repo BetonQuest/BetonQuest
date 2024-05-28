@@ -50,10 +50,7 @@ public class LookingAtCondition extends Condition {
                 return false;
             }
         }
-        if (selector != null) {
-            return selector.match(lookingAt, exactMatch);
-        }
-        return true;
+        return selector == null || selector.match(lookingAt, exactMatch);
     }
 
 }

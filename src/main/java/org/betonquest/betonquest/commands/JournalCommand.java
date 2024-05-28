@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 /**
  * Gives the player his journal
  */
+@SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
 public class JournalCommand implements CommandExecutor {
 
     /**

@@ -96,7 +96,7 @@ public class NPCRangeObjective extends Objective {
     }
 
     private void loop() throws QuestRuntimeException {
-        final ArrayList<UUID> profilesInside = new ArrayList<>();
+        final List<UUID> profilesInside = new ArrayList<>();
         for (final int npcId : npcIds) {
             final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
             if (npc == null) {

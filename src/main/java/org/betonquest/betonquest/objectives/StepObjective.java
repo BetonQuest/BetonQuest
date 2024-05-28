@@ -31,6 +31,11 @@ public class StepObjective extends Objective implements Listener {
      */
     private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(StepObjective.class);
 
+    /**
+     * The key for the location property.
+     */
+    private static final String LOCATION_KEY = "location";
+
     @Nullable
     private static final BlockSelector PRESSURE_PLATE_SELECTOR = getPressurePlateSelector();
 
@@ -104,7 +109,7 @@ public class StepObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final Profile profile) {
-        if ("location".equalsIgnoreCase(name)) {
+        if (LOCATION_KEY.equalsIgnoreCase(name)) {
             final Block block;
             try {
                 block = loc.getLocation(profile).getBlock();

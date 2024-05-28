@@ -14,6 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
@@ -128,7 +129,7 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
     private List<RealtimeCronSchedule> listMissedSchedules() {
         final List<RealtimeCronSchedule> missed = new ArrayList<>();
 
-        final PriorityQueue<MissedRun> missedRuns = oldestMissedRuns();
+        final Queue<MissedRun> missedRuns = oldestMissedRuns();
 
         while (!missedRuns.isEmpty()) {
             final MissedRun earliest = missedRuns.poll();
@@ -159,8 +160,8 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
      *
      * @return priority que of missed runs, sorted from old to now
      */
-    private PriorityQueue<MissedRun> oldestMissedRuns() {
-        final PriorityQueue<MissedRun> missedRuns = new PriorityQueue<>(schedules.size() + 1, Comparator.comparing(MissedRun::runTime));
+    private Queue<MissedRun> oldestMissedRuns() {
+        final Queue<MissedRun> missedRuns = new PriorityQueue<>(schedules.size() + 1, Comparator.comparing(MissedRun::runTime));
         for (final RealtimeCronSchedule schedule : schedules.values()) {
             if (schedule.getCatchup() != CatchupStrategy.NONE) {
                 final Optional<ZonedDateTime> cachedExecutionTime = lastExecutionCache.getLastExecutionTime(schedule.getId())
@@ -191,6 +192,6 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
      * @param schedule the schedule to which the missed run belongs
      * @param runTime  the time when the missed run should have taken place.
      */
-    record MissedRun(RealtimeCronSchedule schedule, ZonedDateTime runTime) {
+    /* default */ record MissedRun(RealtimeCronSchedule schedule, ZonedDateTime runTime) {
     }
 }

@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
@@ -106,7 +107,7 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
      */
     private List<RealtimeDailySchedule> listMissedSchedules() {
         final List<RealtimeDailySchedule> missed = new ArrayList<>();
-        final PriorityQueue<MissedRun> missedRuns = oldestMissedRuns();
+        final Queue<MissedRun> missedRuns = oldestMissedRuns();
 
         while (!missedRuns.isEmpty()) {
             final MissedRun earliest = missedRuns.poll();
@@ -129,8 +130,8 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
      *
      * @return queue of missed runs, sorted from old to now
      */
-    private PriorityQueue<MissedRun> oldestMissedRuns() {
-        final PriorityQueue<MissedRun> missedRuns = new PriorityQueue<>(schedules.size() + 1, Comparator.comparing(MissedRun::runTime));
+    private Queue<MissedRun> oldestMissedRuns() {
+        final Queue<MissedRun> missedRuns = new PriorityQueue<>(schedules.size() + 1, Comparator.comparing(MissedRun::runTime));
         for (final RealtimeDailySchedule schedule : schedules.values()) {
             if (schedule.getCatchup() != CatchupStrategy.NONE) {
                 final Optional<Instant> lastExecutionTime = lastExecutionCache.getLastExecutionTime(schedule.getId());

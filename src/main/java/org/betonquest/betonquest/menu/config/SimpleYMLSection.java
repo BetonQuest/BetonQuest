@@ -48,7 +48,7 @@ public abstract class SimpleYMLSection {
      * @param key where to search
      * @throws Missing if string is not given
      */
-    protected String getString(final String key) throws Missing {
+    protected final String getString(final String key) throws Missing {
         final String string = config.getString(key);
         if (string == null) {
             throw new Missing(key);
@@ -69,7 +69,7 @@ public abstract class SimpleYMLSection {
      * @param key where to search
      * @throws Missing if no list is not given
      */
-    protected List<String> getStringList(final String key) throws Missing {
+    protected final List<String> getStringList(final String key) throws Missing {
         final List<String> list = config.getStringList(key);
         if (list.isEmpty()) {
             throw new Missing(key);
@@ -84,7 +84,7 @@ public abstract class SimpleYMLSection {
      * @param key where to search
      * @throws Missing if no strings are given
      */
-    protected List<String> getStrings(final String key) throws Missing {
+    protected final List<String> getStrings(final String key) throws Missing {
         final List<String> list = new ArrayList<>();
         final String[] args = getString(key).split(",");
         for (final String arg : args) {
@@ -109,7 +109,7 @@ public abstract class SimpleYMLSection {
      * @throws Missing if nothing is given
      * @throws Invalid if given string is not an integer
      */
-    protected int getInt(final String key) throws Missing, Invalid {
+    protected final int getInt(final String key) throws Missing, Invalid {
         final String stringInt = this.getString(key);
         try {
             return Integer.parseInt(stringInt);
@@ -163,7 +163,8 @@ public abstract class SimpleYMLSection {
      * @throws Missing if nothing is given
      * @throws Invalid if given string is not a boolean
      */
-    protected boolean getBoolean(final String key) throws Missing, Invalid {
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
+    protected final boolean getBoolean(final String key) throws Missing, Invalid {
         final String stringBoolean = this.getString(key).trim();
         if ("true".equalsIgnoreCase(stringBoolean)) {
             return true;
@@ -198,7 +199,7 @@ public abstract class SimpleYMLSection {
      * @throws Missing if nothing is given
      * @throws Invalid if given string is not a material
      */
-    protected Material getMaterial(final String key) throws Missing, Invalid {
+    protected final Material getMaterial(final String key) throws Missing, Invalid {
         if (key.trim().matches("\\d+")) {
             throw new Invalid(key, "Material numbers can no longer be supported! Please use the names instead.");
         }
@@ -222,7 +223,7 @@ public abstract class SimpleYMLSection {
      * @throws Missing if nothing is given
      * @throws Invalid if one of the events can't be found
      */
-    protected List<EventID> getEvents(final String key, final QuestPackage pack) throws Missing, Invalid {
+    protected final List<EventID> getEvents(final String key, final QuestPackage pack) throws Missing, Invalid {
         final List<String> strings = getStrings(key);
         final List<EventID> events = new ArrayList<>(strings.size());
         for (final String string : strings) {
@@ -243,7 +244,7 @@ public abstract class SimpleYMLSection {
      * @throws Missing if nothing is given
      * @throws Invalid if one of the conditions can't be found
      */
-    protected List<ConditionID> getConditions(final String key, final QuestPackage pack) throws Missing, Invalid {
+    protected final List<ConditionID> getConditions(final String key, final QuestPackage pack) throws Missing, Invalid {
         final List<String> strings = getStrings(key);
         final List<ConditionID> conditions = new ArrayList<>(strings.size());
         for (final String string : strings) {
@@ -263,14 +264,17 @@ public abstract class SimpleYMLSection {
      */
     protected abstract class DefaultSetting<T> {
 
-        private T value;
+        private final T value;
 
+        @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
         public DefaultSetting(final T defaultValue) throws Invalid {
+            T configValue;
             try {
-                value = of();
+                configValue = of();
             } catch (final Missing missing) {
-                value = defaultValue;
+                configValue = defaultValue;
             }
+            value = configValue;
         }
 
         @SuppressWarnings("PMD.ShortMethodName")
@@ -288,14 +292,17 @@ public abstract class SimpleYMLSection {
      */
     protected abstract class OptionalSetting<T> {
 
-        private Optional<T> optional;
+        private final Optional<T> optional;
 
+        @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
         public OptionalSetting() throws Invalid {
+            Optional<T> optionalSetting;
             try {
-                optional = Optional.of(of());
+                optionalSetting = Optional.of(of());
             } catch (final Missing missing) {
-                optional = Optional.empty();
+                optionalSetting = Optional.empty();
             }
+            optional = optionalSetting;
         }
 
         @SuppressWarnings("PMD.ShortMethodName")

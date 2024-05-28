@@ -45,18 +45,18 @@ public class QuotingTokenizer implements Tokenizer {
     /**
      * State machine context implementation of this tokenizer.
      */
-    private static class Context implements TokenizerContext {
+    private static final class Context implements TokenizerContext {
+
+        /**
+         * The list of already collected words.
+         */
+        private final List<String> words = new ArrayList<>();
 
         /**
          * The word that is currently being collected.
          */
         @SuppressWarnings("PMD.AvoidStringBufferField")
         private StringBuilder currentWord = new StringBuilder();
-
-        /**
-         * The list of already collected words.
-         */
-        private final List<String> words = new ArrayList<>();
 
         @Override
         public void endWord() {

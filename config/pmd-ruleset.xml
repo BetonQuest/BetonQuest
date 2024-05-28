@@ -57,6 +57,7 @@
   <rule ref="category/java/bestpractices.xml/SimplifiableTestAssertion"/>
   <rule ref="category/java/bestpractices.xml/SwitchStmtsShouldHaveDefault"/>
   <rule ref="category/java/bestpractices.xml/SystemPrintln"/>
+  <rule ref="category/java/bestpractices.xml/UnnecessaryVarargsArrayCreation"/>
   <rule ref="category/java/bestpractices.xml/UnusedAssignment"/>
   <rule ref="category/java/bestpractices.xml/UnusedFormalParameter"/>
   <rule ref="category/java/bestpractices.xml/UnusedLocalVariable"/>
@@ -71,7 +72,7 @@
   <rule ref="category/java/codestyle.xml/AtLeastOneConstructor">
     <properties>
       <property name="violationSuppressXPath"
-                value="//ClassOrInterfaceDeclaration[matches(@Image, '^.*(Test|Fixture)$')]"/>
+                value="//ancestor::ClassDeclaration[matches(@SimpleName, '^.*(Test|Fixture)$')]"/>
     </properties>
   </rule>
   <rule ref="category/java/codestyle.xml/AvoidDollarSigns"/>
@@ -83,25 +84,25 @@
   <rule ref="category/java/codestyle.xml/ClassNamingConventions">
     <properties>
       <property name="violationSuppressXPath"
-                value="//ClassOrInterfaceBodyDeclaration/Annotation/MarkerAnnotation//Name[@Image='Nested']"/>
+                value="//ancestor::ClassDeclaration[pmd-java:hasAnnotation('org.junit.jupiter.api.Nested')]"/>
     </properties>
   </rule>
   <rule ref="category/java/codestyle.xml/CommentDefaultAccessModifier">
     <properties>
-      <property name="ignoredAnnotations" value="com.google.common.annotations.VisibleForTesting
-			| android.support.annotation.VisibleForTesting
-			| org.junit.jupiter.api.Test
-			| org.junit.jupiter.api.ParameterizedTest
-			| org.junit.jupiter.api.RepeatedTest
-			| org.junit.jupiter.api.TestFactory
-			| org.junit.jupiter.api.TestTemplate
-			| org.junit.jupiter.api.BeforeEach
-			| org.junit.jupiter.api.BeforeAll
-			| org.junit.jupiter.api.AfterEach
-			| org.junit.jupiter.api.AfterAll
-			| org.junit.jupiter.api.Nested
-			| org.junit.jupiter.params.ParameterizedTest
-			| org.jetbrains.annotations.VisibleForTesting
+      <property name="ignoredAnnotations" value="com.google.common.annotations.VisibleForTesting,
+			android.support.annotation.VisibleForTesting,
+			org.junit.jupiter.api.Test,
+			org.junit.jupiter.api.ParameterizedTest,
+			org.junit.jupiter.api.RepeatedTest,
+			org.junit.jupiter.api.TestFactory,
+			org.junit.jupiter.api.TestTemplate,
+			org.junit.jupiter.api.BeforeEach,
+			org.junit.jupiter.api.BeforeAll,
+			org.junit.jupiter.api.AfterEach,
+			org.junit.jupiter.api.AfterAll,
+			org.junit.jupiter.api.Nested,
+			org.junit.jupiter.params.ParameterizedTest,
+			org.jetbrains.annotations.VisibleForTesting
 			"/>
     </properties>
   </rule>
@@ -121,9 +122,10 @@
   <rule ref="category/java/codestyle.xml/FormalParameterNamingConventions"/>
   <rule ref="category/java/codestyle.xml/GenericsNaming"/>
   <rule ref="category/java/codestyle.xml/IdenticalCatchBranches"/>
+  <rule ref="category/java/codestyle.xml/LambdaCanBeMethodReference"/>
   <rule ref="category/java/codestyle.xml/LinguisticNaming">
     <properties>
-      <property name="violationSuppressXPath" value="//ClassOrInterfaceDeclaration[matches(@Image, '^.*Test$')]"/>
+      <property name="violationSuppressXPath" value="//ancestor::ClassDeclaration[matches(@SimpleName, '^.*Test$')]"/>
     </properties>
   </rule>
   <rule ref="category/java/codestyle.xml/LocalHomeNamingConvention"/>
@@ -150,10 +152,11 @@
   <rule ref="category/java/codestyle.xml/TooManyStaticImports">
     <properties>
       <property name="violationSuppressXPath"
-                value="//ClassOrInterfaceDeclaration[matches(@Image, '^.*(Test|Fixture)$')]"/>
+                value="//ancestor::ClassDeclaration[matches(@SimpleName, '^.*(Test|Fixture)$')]"/>
     </properties>
   </rule>
   <rule ref="category/java/codestyle.xml/UnnecessaryAnnotationValueElement"/>
+  <rule ref="category/java/codestyle.xml/UnnecessaryBoxing"/>
   <rule ref="category/java/codestyle.xml/UnnecessaryCast"/>
   <!--<rule ref="category/java/codestyle.xml/UnnecessaryConstructor"/>-->
   <rule ref="category/java/codestyle.xml/UnnecessaryFullyQualifiedName"/>
@@ -163,6 +166,7 @@
   <rule ref="category/java/codestyle.xml/UnnecessaryReturn"/>
   <rule ref="category/java/codestyle.xml/UnnecessarySemicolon"/>
   <rule ref="category/java/codestyle.xml/UseDiamondOperator"/>
+  <rule ref="category/java/codestyle.xml/UseExplicitTypes"/>
   <rule ref="category/java/codestyle.xml/UselessParentheses"/>
   <rule ref="category/java/codestyle.xml/UselessQualifiedThis"/>
   <rule ref="category/java/codestyle.xml/UseShortArrayInitializer"/>
@@ -191,7 +195,11 @@
   <rule ref="category/java/design.xml/GodClass"/>
   <rule ref="category/java/design.xml/ImmutableField"/>
   <rule ref="category/java/design.xml/InvalidJavaBean"/>
-  <!--<rule ref="category/java/design.xml/LawOfDemeter"/>-->
+  <rule ref="category/java/design.xml/LawOfDemeter">
+    <properties>
+      <property name="trustRadius" value="4"/>
+    </properties>
+  </rule>
   <rule ref="category/java/design.xml/LogicInversion"/>
   <!--<rule ref="category/java/design.xml/LoosePackageCoupling"/>-->
   <rule ref="category/java/design.xml/MutableStaticState"/>
@@ -207,7 +215,7 @@
   <rule ref="category/java/design.xml/TooManyFields"/>
   <rule ref="category/java/design.xml/TooManyMethods">
     <properties>
-      <property name="violationSuppressXPath" value="//ClassOrInterfaceDeclaration[matches(@Image, '^.*Test$')]"/>
+      <property name="violationSuppressXPath" value="//ancestor::ClassDeclaration[matches(@SimpleName, '^.*Test$')]"/>
     </properties>
   </rule>
   <rule ref="category/java/design.xml/UselessOverridingMethod"/>
@@ -218,7 +226,7 @@
   <rule ref="category/java/documentation.xml/CommentRequired">
     <properties>
       <property name="violationSuppressXPath"
-                value="//ClassOrInterfaceDeclaration[matches(@Image, '^.*(Test|Fixture)$')]"/>
+                value="//ancestor::ClassDeclaration[matches(@SimpleName, '^.*(Test|Fixture)$')]"/>
     </properties>
   </rule>
   <rule ref="category/java/documentation.xml/CommentSize">
@@ -241,7 +249,7 @@
   <rule ref="category/java/errorprone.xml/AvoidDecimalLiteralsInBigDecimalConstructor"/>
   <rule ref="category/java/errorprone.xml/AvoidDuplicateLiterals">
     <properties>
-      <property name="violationSuppressXPath" value="//ClassOrInterfaceDeclaration[matches(@Image, '^.*Test$')]"/>
+      <property name="violationSuppressXPath" value="//ancestor::ClassDeclaration[matches(@SimpleName, '^.*Test$')]"/>
     </properties>
   </rule>
   <rule ref="category/java/errorprone.xml/AvoidEnumAsIdentifier"/>
@@ -263,6 +271,7 @@
   <rule ref="category/java/errorprone.xml/CloneMethodReturnTypeMustMatchClassName"/>
   <rule ref="category/java/errorprone.xml/CloseResource"/>
   <rule ref="category/java/errorprone.xml/CompareObjectsWithEquals"/>
+  <rule ref="category/java/errorprone.xml/ConfusingArgumentToVarargsMethod"/>
   <rule ref="category/java/errorprone.xml/ConstructorCallsOverridableMethod"/>
   <rule ref="category/java/errorprone.xml/DetachedTestCase"/>
   <rule ref="category/java/errorprone.xml/DoNotCallGarbageCollectionExplicitly"/>

@@ -37,6 +37,16 @@ public abstract class HologramLoop {
     protected static final Pattern TOP_LINE_VALIDATOR = Pattern.compile("^top:([\\w.]+);(\\w+);(\\d+);?[&§]?([\\da-f])?;?[&§]?([\\da-f])?;?[&§]?([\\da-f])?;?[&§]?([\\da-f])?$", Pattern.CASE_INSENSITIVE);
 
     /**
+     * The string to match the descending order.
+     */
+    private static final String ORDER_DESC = "desc";
+
+    /**
+     * The string to match the ascending order.
+     */
+    private static final String ORDER_ASC = "asc";
+
+    /**
      * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
      */
     private final BetonQuestLoggerFactory loggerFactory;
@@ -100,7 +110,7 @@ public abstract class HologramLoop {
 
         final ConditionID[] conditions = parseConditions(pack, rawConditions);
 
-        final ArrayList<AbstractLine> cleanedLines = new ArrayList<>();
+        final List<AbstractLine> cleanedLines = new ArrayList<>();
         for (final String line : lines) {
             if (line.startsWith("item:")) {
                 cleanedLines.add(parseItemLine(pack, line));
@@ -185,9 +195,9 @@ public abstract class HologramLoop {
         }
 
         final TopXObject.OrderType orderType;
-        if ("desc".equalsIgnoreCase(validator.group(2))) {
+        if (ORDER_DESC.equalsIgnoreCase(validator.group(2))) {
             orderType = TopXObject.OrderType.DESCENDING;
-        } else if ("asc".equalsIgnoreCase(validator.group(2))) {
+        } else if (ORDER_ASC.equalsIgnoreCase(validator.group(2))) {
             orderType = TopXObject.OrderType.ASCENDING;
         } else {
             throw new InstructionParseException("Top list order type '" + validator.group(2) + "' unknown! Expected 'asc' or 'desc'.");

@@ -6,8 +6,6 @@ import org.bukkit.ChatColor;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Provide a slightly more intelligent wordwrap that will return the last last space if required
@@ -32,35 +30,35 @@ public final class LocalChatPaginator {
     public static final int SPACE_WIDTH;
 
     static {
-        FONT_SIZES = Stream.of(new Object[][]{
-                {' ', 4},
-                {'!', 2},
-                {'"', 4},
-                {'\'', 2},
-                {'(', 4},
-                {')', 4},
-                {'*', 4},
-                {',', 2},
-                {'.', 2},
-                {':', 2},
-                {';', 2},
-                {'<', 5},
-                {'>', 5},
-                {'@', 7},
-                {'I', 4},
-                {'[', 4},
-                {']', 4},
-                {'`', 3},
-                {'f', 5},
-                {'i', 2},
-                {'k', 5},
-                {'l', 3},
-                {'t', 4},
-                {'{', 4},
-                {'|', 2},
-                {'}', 4},
-                {'~', 7},
-        }).collect(Collectors.toMap(data -> (Character) data[0], data -> (Integer) data[1]));
+        FONT_SIZES = Map.ofEntries(
+                Map.entry(' ', 4),
+                Map.entry('!', 2),
+                Map.entry('"', 4),
+                Map.entry('\'', 2),
+                Map.entry('(', 4),
+                Map.entry(')', 4),
+                Map.entry('*', 4),
+                Map.entry(',', 2),
+                Map.entry('.', 2),
+                Map.entry(':', 2),
+                Map.entry(';', 2),
+                Map.entry('<', 5),
+                Map.entry('>', 5),
+                Map.entry('@', 7),
+                Map.entry('I', 4),
+                Map.entry('[', 4),
+                Map.entry(']', 4),
+                Map.entry('`', 3),
+                Map.entry('f', 5),
+                Map.entry('i', 2),
+                Map.entry('k', 5),
+                Map.entry('l', 3),
+                Map.entry('t', 4),
+                Map.entry('{', 4),
+                Map.entry('|', 2),
+                Map.entry('}', 4),
+                Map.entry('~', 7)
+        );
         SPACE_WIDTH = FONT_SIZES.get(' ');
     }
 
@@ -91,7 +89,8 @@ public final class LocalChatPaginator {
      * @param wrapPrefix The string to prefix the wrapped line with
      * @return An array of word-wrapped lines.
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.NcssCount"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.NcssCount",
+            "PMD.SwitchDensity"})
     public static String[] wordWrap(final String rawString, final int lineLength, final String wrapPrefix) {
         final int maxWidth = lineLength * DEFAULT_CHAR_WIDTH;
         if (!rawString.contains("\n")) {

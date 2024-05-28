@@ -38,10 +38,7 @@ public class SkillAPILevelCondition extends Condition {
                 .stream()
                 .filter(c -> c.getData().getName().equalsIgnoreCase(className))
                 .findAny();
-        if (!playerClass.isPresent()) {
-            return false;
-        }
-        return level.getInt(profile) <= playerClass.get().getLevel();
+        return playerClass.filter(aClass -> level.getInt(profile) <= aClass.getLevel()).isPresent();
     }
 
 }

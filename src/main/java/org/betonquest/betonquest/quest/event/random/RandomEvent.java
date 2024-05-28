@@ -20,7 +20,7 @@ record RandomEvent(EventID eventID, VariableNumber chance) {
      * @return the resolved chance for the event
      * @throws QuestRuntimeException if there is an error while resolving the chance
      */
-    ResolvedRandomEvent resolveFor(final Profile profile) throws QuestRuntimeException {
+    /* default */ ResolvedRandomEvent resolveFor(final Profile profile) throws QuestRuntimeException {
         return new ResolvedRandomEvent(eventID, chance.getDouble(profile));
     }
 }

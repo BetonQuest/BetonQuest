@@ -36,12 +36,18 @@ import java.util.Map;
 import java.util.Optional;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount", "PMD.GodClass", "PMD.CommentRequired",
-        "PMD.AvoidFieldNameMatchingTypeName", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods"})
+        "PMD.AvoidFieldNameMatchingTypeName", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods",
+        "PMD.CouplingBetweenObjects"})
 public class Instruction {
     /**
      * Contract: Returns null when the parameter is null, otherwise the expected object.
      */
     private static final String NULL_NOT_NULL_CONTRACT = "null -> null; !null -> !null";
+
+    /**
+     * The raw instruction string.
+     */
+    protected final String instruction;
 
     /**
      * The quest package that this instruction belongs to.
@@ -52,11 +58,6 @@ public class Instruction {
      * The identifier for this instruction.
      */
     private final ID identifier;
-
-    /**
-     * The raw instruction string.
-     */
-    protected final String instruction;
 
     /**
      * The parts of the instruction. This is the result after tokenizing the raw instruction string.
@@ -119,7 +120,7 @@ public class Instruction {
     private String[] tokenizeInstruction(final Tokenizer tokenizer, final QuestPackage pack, final String instruction, final BetonQuestLogger log) {
         try {
             return tokenizer.tokens(instruction);
-        } catch (TokenizerException e) {
+        } catch (final TokenizerException e) {
             log.warn(pack, "Could not tokenize instruction '" + instruction + "': " + e.getMessage(), e);
             return new String[0];
         }

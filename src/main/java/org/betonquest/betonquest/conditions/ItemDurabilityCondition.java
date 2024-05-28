@@ -53,7 +53,7 @@ public class ItemDurabilityCondition extends Condition {
         final int actualDurability = maxDurability - damageable.getDamage();
         final double requiredAmount = amount.getDouble(profile);
         if (relative) {
-            final double relativeValue = (double) actualDurability / (double) maxDurability;
+            final double relativeValue = (double) actualDurability / maxDurability;
             return relativeValue >= requiredAmount;
         } else {
             return actualDurability >= requiredAmount;

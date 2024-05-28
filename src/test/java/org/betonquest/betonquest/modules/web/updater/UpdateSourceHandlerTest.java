@@ -161,6 +161,7 @@ class UpdateSourceHandlerTest {
         verifyNoMoreInteractions(logger);
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void release_throws_IOException() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MAJOR, false);
@@ -205,6 +206,7 @@ class UpdateSourceHandlerTest {
         verifyNoMoreInteractions(logger);
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void development_throws_UnknownHostException() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.PATCH, true);
@@ -226,6 +228,7 @@ class UpdateSourceHandlerTest {
         verifyNoMoreInteractions(logger);
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void development_throws_IOException() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MINOR, true);

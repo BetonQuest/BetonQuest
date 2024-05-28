@@ -108,6 +108,9 @@ public class TopXObject {
          */
         ASCENDING(QueryType.LOAD_TOP_X_POINTS_ASC);
 
+        /**
+         * The {@link QueryType} for descending or ascending order.
+         */
         private final QueryType type;
 
         OrderType(final QueryType type) {

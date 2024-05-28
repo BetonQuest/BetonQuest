@@ -38,6 +38,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @SuppressFBWarnings("JLM_JSR166_UTILCONCURRENT_MONITORENTER")
 public class PlayerData implements TagData {
     /**
+     * The default language key.
+     */
+    private static final String DEFAULT_LANGUAGE_KEY = "default";
+
+    /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
@@ -135,7 +140,7 @@ public class PlayerData implements TagData {
 
     private void loadLanguage(final ResultSet playerResult) throws SQLException {
         profileLanguage = playerResult.getString("language");
-        if ("default".equals(profileLanguage)) {
+        if (DEFAULT_LANGUAGE_KEY.equals(profileLanguage)) {
             profileLanguage = Config.getLanguage();
         }
     }
@@ -522,7 +527,7 @@ public class PlayerData implements TagData {
      * @param lang language to set
      */
     public void setLanguage(final String lang) {
-        if ("default".equalsIgnoreCase(lang)) {
+        if (DEFAULT_LANGUAGE_KEY.equalsIgnoreCase(lang)) {
             this.profileLanguage = Config.getLanguage();
         } else {
             this.profileLanguage = lang;

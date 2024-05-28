@@ -199,7 +199,7 @@ class EventSchedulingTest {
     /**
      * Class extending a schedule without any changes.
      */
-    private static class MockedSchedule extends Schedule {
+    private static final class MockedSchedule extends Schedule {
 
         private MockedSchedule(final ScheduleID scheduleID, final ConfigurationSection instruction) throws InstructionParseException {
             super(scheduleID, instruction);

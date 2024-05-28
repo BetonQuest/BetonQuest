@@ -51,7 +51,7 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
         final String path = parts[0];
         int startPath = 1;
         ConfigurationSection section = getConfig().getConfigurationSection(path);
-        if (section != null && path.equals("conversations")) {
+        if (section != null && "conversations".equals(path)) {
             if (parts.length < 3) {
                 return null;
             }

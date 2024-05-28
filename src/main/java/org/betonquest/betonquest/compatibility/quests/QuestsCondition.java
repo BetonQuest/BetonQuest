@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.Set;
 
 /**
  * Checks if the player has done specified quest before.
@@ -23,7 +23,7 @@ public class QuestsCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) {
-        final ConcurrentSkipListSet<Quest> completedQuests = QuestsIntegrator.getQuestsInstance().getQuester(profile.getProfileUUID()).getCompletedQuests();
+        final Set<Quest> completedQuests = QuestsIntegrator.getQuestsInstance().getQuester(profile.getProfileUUID()).getCompletedQuests();
         for (final Quest q : completedQuests) {
             if (q.getName().replace(' ', '_').equalsIgnoreCase(questName)) {
                 return true;

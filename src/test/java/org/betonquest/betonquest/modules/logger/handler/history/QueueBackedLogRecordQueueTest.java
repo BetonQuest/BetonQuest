@@ -19,6 +19,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class QueueBackedLogRecordQueueTest {
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testLogEntriesAreInOrder(@Mock final Handler handler) {
         final QueueBackedLogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
@@ -34,6 +35,7 @@ class QueueBackedLogRecordQueueTest {
         verify(handler).publish(secondRecord);
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testPublishAllEmptiesTheQueue(@Mock final Handler handler) {
         final QueueBackedLogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());

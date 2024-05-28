@@ -33,6 +33,11 @@ public class GitHubReleaseSource implements ReleaseUpdateSource {
     };
 
     /**
+     * The name of the jar.
+     */
+    private static final String JAR_NAME = "BetonQuest.jar";
+
+    /**
      * The path to the GitHub API for a specific repository.
      */
     private final String apiUrl;
@@ -65,7 +70,7 @@ public class GitHubReleaseSource implements ReleaseUpdateSource {
             final JSONArray assetsArray = release.getJSONArray("assets");
             for (int i = 0; i < assetsArray.length(); i++) {
                 final JSONObject asset = assetsArray.getJSONObject(i);
-                if ("BetonQuest.jar".equals(asset.getString("name"))) {
+                if (JAR_NAME.equals(asset.getString("name"))) {
                     final String url = asset.getString("browser_download_url");
                     versions.put(version, url);
                 }

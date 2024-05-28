@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -85,7 +86,7 @@ public class DelayObjective extends Objective {
         runnable = new BukkitRunnable() {
             @Override
             public void run() {
-                final LinkedList<Profile> players = new LinkedList<>();
+                final List<Profile> players = new LinkedList<>();
                 final long time = new Date().getTime();
                 for (final Entry<Profile, ObjectiveData> entry : dataMap.entrySet()) {
                     final Profile profile = entry.getKey();

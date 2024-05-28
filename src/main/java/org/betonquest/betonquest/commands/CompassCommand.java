@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 /**
  * The /compass command. It opens the list of quests.
  */
+@SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
 public class CompassCommand implements CommandExecutor {
 
     /**

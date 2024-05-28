@@ -51,6 +51,7 @@ class UpdaterTest {
         verifyNoMoreInteractions(logger);
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testNoUpdateAvailable() {
         final Version version = new Version("2.0.0-DEV-3");

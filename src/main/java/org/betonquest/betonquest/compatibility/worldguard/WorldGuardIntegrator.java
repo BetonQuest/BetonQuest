@@ -40,11 +40,8 @@ public class WorldGuardIntegrator implements Integrator {
         }
 
         final ProtectedRegion region = manager.getRegion(regionName);
-        if (region == null) {
-            return false;
-        }
+        return region != null && region.contains(BukkitAdapter.asBlockVector(loc));
 
-        return region.contains(BukkitAdapter.asBlockVector(loc));
     }
 
     @Override

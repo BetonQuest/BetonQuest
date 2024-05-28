@@ -31,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -143,8 +144,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
         options.put(playerOptionsCount, Utils.replaceReset(option, optionColor));
     }
 
-    @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity", "PMD.NcssCount",
-            "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity",
+            "PMD.CognitiveComplexity", "PMD.UnusedAssignment", "PMD.LambdaCanBeMethodReference"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
     public void display() {
@@ -244,7 +245,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                 meta.setDisplayName(" ");
             }
 
-            final ArrayList<String> lines = new ArrayList<>();
+            final List<String> lines = new ArrayList<>();
 
             if (showNPCText) {
                 // NPC Text
@@ -384,6 +385,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         playerOptionsCount = 0;
     }
 
+    @SuppressWarnings("PMD.LambdaCanBeMethodReference")
     @Override
     public void end() {
         allowListenerUnregister = true;

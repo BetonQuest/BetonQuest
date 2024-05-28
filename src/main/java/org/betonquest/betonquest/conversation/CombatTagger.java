@@ -16,6 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,7 +55,7 @@ public class CombatTagger implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDamage(final EntityDamageByEntityEvent event) {
-        final ArrayList<Profile> profiles = new ArrayList<>();
+        final List<Profile> profiles = new ArrayList<>();
         if (event.getEntity() instanceof Player) {
             profiles.add(PlayerConverter.getID((Player) event.getEntity()));
         }

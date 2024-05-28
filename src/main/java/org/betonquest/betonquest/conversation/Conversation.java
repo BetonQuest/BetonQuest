@@ -60,13 +60,14 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
  */
 @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired",
-        "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.AvoidDuplicateLiterals"})
+        "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.AvoidDuplicateLiterals",
+        "PMD.CouplingBetweenObjects"})
 public class Conversation implements Listener {
 
     /**
      * The map of all active conversations.
      */
-    private static final ConcurrentHashMap<Profile, Conversation> ACTIVE_CONVERSATIONS = new ConcurrentHashMap<>();
+    private static final Map<Profile, Conversation> ACTIVE_CONVERSATIONS = new ConcurrentHashMap<>();
 
     /**
      * The {@link BetonQuest} instance.
@@ -179,7 +180,7 @@ public class Conversation implements Listener {
         this.center = center;
         this.data = plugin.getConversation(conversationID);
         this.blacklist = plugin.getPluginConfig().getStringList("cmd_blacklist");
-        this.messagesDelaying = "true".equalsIgnoreCase(plugin.getPluginConfig().getString("display_chat_after_conversation"));
+        this.messagesDelaying = Boolean.parseBoolean(plugin.getPluginConfig().getString("display_chat_after_conversation"));
 
         if (data == null) {
             log.error(pack, "Tried to start conversation '" + conversationID.getFullID() + "' but it is not loaded! Check for errors on /bq reload!");

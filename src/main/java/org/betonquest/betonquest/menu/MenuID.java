@@ -14,6 +14,7 @@ public class MenuID extends ID {
 
     private final ConfigurationSection config;
 
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public MenuID(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         super(pack, identifier);
         super.rawInstruction = null;

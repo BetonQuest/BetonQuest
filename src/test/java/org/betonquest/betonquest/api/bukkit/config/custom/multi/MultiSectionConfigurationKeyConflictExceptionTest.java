@@ -50,6 +50,7 @@ class MultiSectionConfigurationKeyConflictExceptionTest {
                 key5: value5
             """;
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testKeyConflictException() {
         final Map<ConfigurationSection, String> configs = new HashMap<>();
@@ -71,6 +72,7 @@ class MultiSectionConfigurationKeyConflictExceptionTest {
         fail("Expected an Exception!");
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testPathConflictException() {
         final Map<ConfigurationSection, String> configs = new HashMap<>();
@@ -91,6 +93,7 @@ class MultiSectionConfigurationKeyConflictExceptionTest {
         fail("Expected an Exception!");
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testKeyPathConflictException() {
         final Map<ConfigurationSection, String> configs = new HashMap<>();

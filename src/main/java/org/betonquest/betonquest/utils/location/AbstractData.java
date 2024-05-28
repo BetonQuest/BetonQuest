@@ -62,6 +62,7 @@ abstract class AbstractData<T extends Cloneable> {
      * @param data string containing raw object in the defined format
      * @throws InstructionParseException Is thrown when an error appears while parsing the {@link Variable}s or the object
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public AbstractData(@Nullable final QuestPackage pack, final String data) throws InstructionParseException {
         final Matcher variableMatcher = PATTERN_VARIABLE.matcher(data);
         if (variableMatcher.find()) {

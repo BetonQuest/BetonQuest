@@ -5,7 +5,7 @@ import java.util.function.Function;
 /**
  * Type of the update.
  */
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
+@SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.ExcessivePublicCount"})
 public enum UpdateType {
 
     /**

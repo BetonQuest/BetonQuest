@@ -37,6 +37,16 @@ import static org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK;
 @SuppressWarnings({"PMD.GodClass", "PMD.CommentRequired"})
 public class ActionObjective extends Objective implements Listener {
     /**
+     * The key for the location property
+     */
+    private static final String LOCATION_PROPERTY = "location";
+
+    /**
+     * The key for any action
+     */
+    private static final String ANY = "any";
+
+    /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
@@ -60,7 +70,7 @@ public class ActionObjective extends Objective implements Listener {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
         action = instruction.getEnum(Click.class);
-        if ("any".equalsIgnoreCase(instruction.next())) {
+        if (ANY.equalsIgnoreCase(instruction.next())) {
             selector = null;
         } else {
             selector = instruction.getBlockSelector(instruction.current());
@@ -131,7 +141,7 @@ public class ActionObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final Profile profile) {
-        if ("location".equalsIgnoreCase(name)) {
+        if (LOCATION_PROPERTY.equalsIgnoreCase(name)) {
             if (loc == null) {
                 return "";
             }

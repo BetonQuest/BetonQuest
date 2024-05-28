@@ -22,6 +22,7 @@ public class TopicLogger extends Logger {
      * @param clazz        The calling class.
      * @param topic        The topic to add or null.
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public TopicLogger(final Logger parentLogger, final Class<?> clazz, @Nullable final String topic) {
         super(clazz.getCanonicalName(), null);
         setParent(parentLogger);

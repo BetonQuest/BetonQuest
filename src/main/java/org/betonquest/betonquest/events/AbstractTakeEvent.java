@@ -52,7 +52,7 @@ public abstract class AbstractTakeEvent extends QuestEvent {
             return Arrays.asList(CheckType.INVENTORY, CheckType.OFFHAND, CheckType.ARMOR, CheckType.BACKPACK);
         } else {
             final String[] enumNames = order.split(",");
-            final ArrayList<CheckType> checkOrder = new ArrayList<>();
+            final List<CheckType> checkOrder = new ArrayList<>();
             for (final String s : enumNames) {
                 try {
                     final CheckType checkType = CheckType.valueOf(s.toUpperCase(Locale.ROOT));

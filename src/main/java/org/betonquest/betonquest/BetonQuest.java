@@ -206,7 +206,7 @@ public class BetonQuest extends JavaPlugin {
      */
     private final Map<String, QuestEventFactory> eventTypes = new HashMap<>();
 
-    private final ConcurrentHashMap<Profile, PlayerData> playerDataMap = new ConcurrentHashMap<>();
+    private final Map<Profile, PlayerData> playerDataMap = new ConcurrentHashMap<>();
 
     private BetonQuestLoggerFactory loggerFactory;
 
@@ -571,7 +571,7 @@ public class BetonQuest extends JavaPlugin {
         if (getServer().isPrimaryThread()) {
             getServer().getPluginManager().callEvent(event);
         } else {
-            getServer().getScheduler().runTask(BetonQuest.getInstance(), () -> getServer().getPluginManager().callEvent(event));
+            getServer().getScheduler().runTask(getInstance(), () -> getServer().getPluginManager().callEvent(event));
         }
     }
 
@@ -1020,7 +1020,7 @@ public class BetonQuest extends JavaPlugin {
         lastExecutionCache.reload();
 
         // reload updater settings
-        BetonQuest.getInstance().getUpdater().search();
+        getInstance().getUpdater().search();
         // stop current global locations listener
         // and start new one with reloaded configs
         getInstance().log.debug("Restarting global locations");

@@ -33,7 +33,7 @@ import java.util.Map;
 /**
  * A Item which Is displayed as option in a menu and has some events that are fired when item is clicked
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "PMD.GodClass"})
 public class MenuItem extends SimpleYMLSection {
     /**
      * Text config property for Item lore

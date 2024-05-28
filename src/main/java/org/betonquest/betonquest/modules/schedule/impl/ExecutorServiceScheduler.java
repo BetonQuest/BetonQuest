@@ -116,16 +116,19 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
                     + " scheduler.");
             executor.shutdownNow();
             try {
-                final boolean terminated = executor.awaitTermination(TERMINATION_TIMEOUT_MS, TimeUnit.MILLISECONDS);
-                if (!terminated) {
-                    throw new TimeoutException("Not all schedules could be terminated within time constraints");
-                }
+                terminateExecutor();
                 log.debug("Successfully shut down executor service.");
             } catch (final InterruptedException | TimeoutException e) {
                 log.error("Error while stopping scheduler", e);
             }
             super.stop();
             log.debug("Stop complete.");
+        }
+    }
+
+    private void terminateExecutor() throws InterruptedException, TimeoutException {
+        if (!executor.awaitTermination(TERMINATION_TIMEOUT_MS, TimeUnit.MILLISECONDS)) {
+            throw new TimeoutException("Not all schedules could be terminated within time constraints");
         }
     }
 }

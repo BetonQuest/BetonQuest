@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -102,7 +103,7 @@ public class FolderEvent extends QuestEvent {
         final int randomInt = random == null ? 0 : random.getInt(profile);
         if (randomInt > 0 && randomInt <= events.length) {
             // copy events into the modifiable ArrayList
-            final ArrayList<EventID> eventsList = new ArrayList<>(Arrays.asList(events));
+            final List<EventID> eventsList = new ArrayList<>(Arrays.asList(events));
             // remove chosen events from that ArrayList and place them in a new
             // list
             for (int i = randomInt; i > 0; i--) {

@@ -12,8 +12,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Puts the items in the inventory of a block or drops them if the inventory is full.
@@ -50,7 +50,7 @@ public class ChestGiveEvent implements Event {
             throw new QuestRuntimeException("Trying to put items in chest, but there's no chest! Location: X"
                     + block.getX() + " Y" + block.getY() + " Z" + block.getZ(), e);
         }
-        final HashMap<Integer, ItemStack> left = chest.getInventory().addItem(getItemStacks(profile));
+        final Map<Integer, ItemStack> left = chest.getInventory().addItem(getItemStacks(profile));
         for (final ItemStack itemStack : left.values()) {
             block.getWorld().dropItem(block.getLocation(), itemStack);
         }

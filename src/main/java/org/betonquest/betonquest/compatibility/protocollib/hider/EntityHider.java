@@ -169,7 +169,7 @@ public class EntityHider implements Listener {
         // If we are using a whitelist, presence means visibility - if not, the opposite is the case
         final boolean presence = getMembership(observer, entityID);
 
-        return (policy == Policy.WHITELIST) == presence;
+        return policy == Policy.WHITELIST == presence;
     }
 
     /**

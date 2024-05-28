@@ -55,6 +55,7 @@ class SilentCommandSenderTest {
         return new SilentCommandSender(logger, sender);
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void sendMessage() {
         silentSender.sendMessage("test1");
@@ -63,6 +64,7 @@ class SilentCommandSenderTest {
         verifyNoMoreInteractions(logger);
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void sendMessage_multiple() {
         silentSender.sendMessage("test2", "test3");
@@ -71,6 +73,7 @@ class SilentCommandSenderTest {
         verifyNoMoreInteractions(logger);
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void sendMessage_Sender_null() {
         silentSender.sendMessage(null, "test4");
@@ -79,6 +82,7 @@ class SilentCommandSenderTest {
         verifyNoMoreInteractions(logger);
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void sendMessage_UUID_null() {
         silentSender.sendMessage((UUID) null, "test5", "test6");

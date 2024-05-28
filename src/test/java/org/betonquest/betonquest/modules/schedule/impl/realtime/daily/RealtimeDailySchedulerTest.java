@@ -45,6 +45,7 @@ class RealtimeDailySchedulerTest {
         return schedule;
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testStartWithoutSchedules() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
@@ -60,6 +61,7 @@ class RealtimeDailySchedulerTest {
         verify(scheduler, never()).schedule(any());
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testStartWithMissedSchedulesStrategyOne() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
@@ -85,6 +87,7 @@ class RealtimeDailySchedulerTest {
         verify(schedule, times(1)).getEvents();
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testStartWithMissedSchedulesStrategyAll() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
@@ -114,6 +117,7 @@ class RealtimeDailySchedulerTest {
         verify(schedule, times(3)).getEvents();
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testStartWithoutMissedSchedulesStrategyAll() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
@@ -136,6 +140,7 @@ class RealtimeDailySchedulerTest {
         verify(schedule, never()).getEvents();
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testStartWithIrregularLastExecution() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
@@ -161,6 +166,7 @@ class RealtimeDailySchedulerTest {
         verify(schedule, times(1)).getEvents();
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testStartSchedule() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);

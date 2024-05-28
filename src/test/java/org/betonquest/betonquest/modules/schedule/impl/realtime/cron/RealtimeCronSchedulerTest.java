@@ -45,6 +45,7 @@ class RealtimeCronSchedulerTest {
         return schedule;
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testStartWithoutSchedules() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
@@ -60,6 +61,7 @@ class RealtimeCronSchedulerTest {
         verify(scheduler, never()).schedule(any());
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testStartWithRebootSchedules() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
@@ -83,6 +85,7 @@ class RealtimeCronSchedulerTest {
         verify(schedule, times(1)).getEvents();
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testStartWithMissedSchedulesStrategyOne() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
@@ -110,6 +113,7 @@ class RealtimeCronSchedulerTest {
         verify(schedule, times(1)).getEvents();
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testStartWithMissedSchedulesStrategyAll() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
@@ -146,6 +150,7 @@ class RealtimeCronSchedulerTest {
         verify(schedule, times(3)).getEvents();
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testStartWithoutMissedSchedulesStrategyAll() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
@@ -171,7 +176,7 @@ class RealtimeCronSchedulerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.DoNotUseThreads")
+    @SuppressWarnings({"PMD.DoNotUseThreads", "PMD.JUnitTestContainsTooManyAsserts"})
     void testStartSchedule() {
         final Duration duration = Duration.ofSeconds(20);
         final LastExecutionCache cache = mock(LastExecutionCache.class);

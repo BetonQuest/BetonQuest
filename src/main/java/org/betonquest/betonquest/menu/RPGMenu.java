@@ -80,13 +80,7 @@ public class RPGMenu {
      */
     public static boolean hasOpenedMenu(final OnlineProfile onlineProfile, @Nullable final MenuID menuID) {
         final OpenedMenu menu = OpenedMenu.getMenu(onlineProfile);
-        if (menu == null) {
-            return false;
-        }
-        if (menuID == null) {
-            return true;
-        }
-        return menu.getId().equals(menuID);
+        return menu != null && (menuID == null || menu.getId().equals(menuID));
     }
 
     /**
@@ -96,7 +90,7 @@ public class RPGMenu {
      * @return true if player has opened a menu, false if not
      */
     public static boolean hasOpenedMenu(final OnlineProfile onlineProfile) {
-        return RPGMenu.hasOpenedMenu(onlineProfile, null);
+        return hasOpenedMenu(onlineProfile, null);
     }
 
     /**

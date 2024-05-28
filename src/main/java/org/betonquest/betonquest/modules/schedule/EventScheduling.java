@@ -119,8 +119,9 @@ public class EventScheduling {
      * @param scheduler     instance of the scheduler
      * @param <S>           type of the schedule.
      */
+    @SuppressWarnings("PMD.PreserveStackTrace")
     public record ScheduleType<S extends Schedule>(Class<S> scheduleClass, Scheduler<S> scheduler) {
-        S newScheduleInstance(final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
+        /* default */ S newScheduleInstance(final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
                 throws InstructionParseException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
             try {
                 return scheduleClass
@@ -135,7 +136,7 @@ public class EventScheduling {
             }
         }
 
-        void createAndScheduleNewInstance(final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
+        /* default */ void createAndScheduleNewInstance(final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
                 throws InstructionParseException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
             scheduler.addSchedule(newScheduleInstance(scheduleID, scheduleConfig));
         }

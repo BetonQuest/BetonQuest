@@ -51,8 +51,11 @@ import java.util.UUID;
 /**
  * Represents an item handled by the configuration.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.CommentRequired", "PMD.CognitiveComplexity"})
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.CommentRequired", "PMD.CognitiveComplexity",
+        "PMD.CouplingBetweenObjects"})
 public class QuestItem {
+    public static final String NONE_KEY = "none";
+
     private final BlockSelector selector;
 
     private final DurabilityHandler durability = new DurabilityHandler();
@@ -105,7 +108,7 @@ public class QuestItem {
      * @param instruction instruction String
      * @throws InstructionParseException when item parsing goes wrong
      */
-    @SuppressWarnings("PMD.NcssCount")
+    @SuppressWarnings({"PMD.NcssCount", "PMD.AvoidLiteralsInIfCondition"})
     public QuestItem(final String instruction) throws InstructionParseException {
         final String[] parts = HandlerUtil.getNNSplit(instruction, "Item instruction is null", " ");
         selector = new BlockSelector(parts[0]);
@@ -270,7 +273,7 @@ public class QuestItem {
                 skull = HeadHandler.serializeSkullMeta((SkullMeta) meta);
             }
             if (meta instanceof final FireworkMeta fireworkMeta && fireworkMeta.hasEffects()) {
-                final StringBuilder builder = new StringBuilder();
+                final StringBuilder builder = new StringBuilder(17);
                 builder.append(" firework:");
                 for (final FireworkEffect effect : fireworkMeta.getEffects()) {
                     appendFireworkEffect(builder, effect);

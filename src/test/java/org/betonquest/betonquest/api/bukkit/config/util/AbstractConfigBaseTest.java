@@ -41,6 +41,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
     /**
      * Empty constructor.
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public AbstractConfigBaseTest() {
         try {
             config = getConfig();

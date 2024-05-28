@@ -19,6 +19,7 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class AddEntryJournalChangerTest {
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testChangeJournalAddsPointer(@Mock final Journal journal) {
         final Instant now = Instant.now();

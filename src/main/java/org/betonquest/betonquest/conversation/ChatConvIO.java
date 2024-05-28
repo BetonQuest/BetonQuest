@@ -131,7 +131,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         newLocation.setPitch(pitch);
         newLocation.setYaw(yaw);
         event.getPlayer().teleport(newLocation);
-        if ("true".equalsIgnoreCase(Config.getString("config.notify_pullback"))) {
+        if (Boolean.parseBoolean(Config.getString("config.notify_pullback"))) {
             conv.sendMessage(Config.getMessage(Config.getLanguage(), "pullback"));
         }
     }

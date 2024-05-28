@@ -76,7 +76,7 @@ public final class InventoryUtils {
      * @return the exact amount of items that will be created by shift-crafting
      */
     public static int calculateShiftCraftAmount(final ItemStack result, final Inventory inventory, final ItemStack... ingredients) {
-        final int remainingSpace = InventoryUtils.calculateSpaceForItem(inventory, result);
+        final int remainingSpace = calculateSpaceForItem(inventory, result);
         final int itemsPerCraft = result.getAmount();
         final int spaceForCrafts = remainingSpace / itemsPerCraft;
         return Math.min(calculateMaximumCraftActions(ingredients), spaceForCrafts) * itemsPerCraft;
@@ -92,7 +92,7 @@ public final class InventoryUtils {
      * @see #calculateMaximumCraftActions(ItemStack...)
      */
     public static int calculateMaximumCraftAmount(final ItemStack result, final ItemStack... ingredients) {
-        return InventoryUtils.calculateMaximumCraftActions(ingredients) * result.getAmount();
+        return calculateMaximumCraftActions(ingredients) * result.getAmount();
     }
 
     /**

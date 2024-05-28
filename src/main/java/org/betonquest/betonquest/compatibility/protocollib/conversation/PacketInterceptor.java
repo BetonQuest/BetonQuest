@@ -51,6 +51,7 @@ public class PacketInterceptor implements Interceptor, Listener {
         this.messages = new ArrayList<>();
 
         packetAdapter = new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.LOWEST, getPacketTypes()) {
+            @SuppressWarnings("PMD.CyclomaticComplexity")
             @Override
             public void onPacketSending(final PacketEvent event) {
                 if (!event.getPlayer().equals(player)) {

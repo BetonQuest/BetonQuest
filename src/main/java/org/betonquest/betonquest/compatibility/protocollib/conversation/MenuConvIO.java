@@ -62,8 +62,13 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Stream;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods",
-        "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
+        "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.CouplingBetweenObjects"})
 public class MenuConvIO extends ChatConvIO {
+    /**
+     * The type of NPC name to display in the conversation.
+     */
+    private static final String NPC_NAME_TYPE_CHAT = "chat";
+
     /**
      * Thread safety
      */
@@ -149,7 +154,7 @@ public class MenuConvIO extends ChatConvIO {
         final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
         for (final QuestPackage pack : Stream.concat(
-                Config.getPackages().values().stream().filter(p -> p != conv.getPackage()),
+                Config.getPackages().values().stream().filter(p -> !p.equals(conv.getPackage())),
                 Stream.of(conv.getPackage())).toList()) {
             final ConfigurationSection section = pack.getConfig().getConfigurationSection("menu_conv_io");
             if (section == null) {
@@ -403,7 +408,7 @@ public class MenuConvIO extends ChatConvIO {
         // own to a minimum of 1.
         int linesAvailable = Math.max(1, 10 - npcLines.size());
 
-        if ("chat".equals(configNpcNameType)) {
+        if (NPC_NAME_TYPE_CHAT.equals(configNpcNameType)) {
             linesAvailable = Math.max(1, linesAvailable - 1);
         }
 
@@ -478,7 +483,7 @@ public class MenuConvIO extends ChatConvIO {
         final StringBuilder displayBuilder = new StringBuilder();
 
         // If NPC name type is chat_top, show it
-        if ("chat".equals(configNpcNameType)) {
+        if (NPC_NAME_TYPE_CHAT.equals(configNpcNameType)) {
             switch (configNpcNameAlign) {
                 case "right":
                     displayBuilder.append(" ".repeat(Math.max(0, configLineLength - npcName.length())));
@@ -638,13 +643,13 @@ public class MenuConvIO extends ChatConvIO {
                     oldSelectedOption = selectedOption;
                     selectedOption++;
                     debounce = true;
-                    Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), () -> updateDisplay());
+                    Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), MenuConvIO.this::updateDisplay);
                 } else if (steerEvent.getForward() > 0 && selectedOption > 0 && controls.containsKey(CONTROL.MOVE) && !debounce) {
                     // Player moved Forwards
                     oldSelectedOption = selectedOption;
                     selectedOption--;
                     debounce = true;
-                    Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), () -> updateDisplay());
+                    Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), MenuConvIO.this::updateDisplay);
                 } else if (steerEvent.isUnmount() && controls.containsKey(CONTROL.SNEAK) && !debounce) {
                     // Player Dismounted
                     debounce = true;
@@ -872,6 +877,7 @@ public class MenuConvIO extends ChatConvIO {
     }
 
     public enum Direction {
+        @SuppressWarnings("PMD.ShortVariable")
         UP,
         DOWN
     }

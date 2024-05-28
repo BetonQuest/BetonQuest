@@ -37,7 +37,8 @@ import java.util.Map;
 /**
  * Represents a chest GUI for the backpack displayed to the player.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition",
+        "PMD.CouplingBetweenObjects"})
 public class Backpack implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -145,7 +146,8 @@ public class Backpack implements Listener {
     /**
      * Standard page with quest items.
      */
-    @SuppressWarnings({"PMD.ShortClassName", "PMD.CyclomaticComplexity", "PMD.AvoidFieldNameMatchingTypeName"})
+    @SuppressWarnings({"PMD.ShortClassName", "PMD.CyclomaticComplexity", "PMD.AvoidFieldNameMatchingTypeName",
+            "PMD.GodClass"})
     private class Page extends Display {
         private final int page;
 
@@ -382,7 +384,7 @@ public class Backpack implements Listener {
          */
         public Cancelers() {
             super();
-            final ArrayList<QuestCanceler> cancelers = new ArrayList<>();
+            final List<QuestCanceler> cancelers = new ArrayList<>();
             // get all quest cancelers that can be shown to the player
             for (final QuestCanceler canceler : BetonQuest.getCanceler().values()) {
                 if (canceler.show(onlineProfile)) {

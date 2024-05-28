@@ -244,7 +244,7 @@ class TransformerIntegrationTest extends TransformersFixture {
                           key: section.invalidList
                           entry: removedEntry
                     """;
-            CONFIG.set("section.invalidList", new ArrayList<String>());
+            CONFIG.set("section.invalidList", new ArrayList<>());
             assertAfterPatch(patch);
         }
 
@@ -288,7 +288,7 @@ class TransformerIntegrationTest extends TransformersFixture {
                         oldEntryRegex: currentEntry
                         newEntry: newEntry
                     """;
-            CONFIG.set("section.invalidKey", new ArrayList<String>());
+            CONFIG.set("section.invalidKey", new ArrayList<>());
             assertAfterPatch(patch);
         }
 

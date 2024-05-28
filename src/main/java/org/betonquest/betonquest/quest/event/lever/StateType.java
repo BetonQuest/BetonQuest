@@ -7,6 +7,7 @@ public enum StateType {
     /**
      * Sets the lever to on
      */
+    @SuppressWarnings("PMD.ShortVariable")
     ON(power -> true),
     /**
      * Sets the lever to off

@@ -568,7 +568,7 @@ public abstract class Objective {
          * will have to start this objective from scratch.
          * </p>
          */
-        protected void update() {
+        protected final void update() {
             final Saver saver = BetonQuest.getInstance().getSaver();
             saver.add(new Saver.Record(UpdateType.REMOVE_OBJECTIVES, profile.getProfileUUID().toString(), objID));
             saver.add(new Saver.Record(UpdateType.ADD_OBJECTIVES, profile.getProfileUUID().toString(), objID, toString()));

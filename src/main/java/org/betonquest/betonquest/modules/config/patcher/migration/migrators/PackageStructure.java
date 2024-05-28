@@ -37,6 +37,7 @@ public class PackageStructure implements Migration {
     public PackageStructure() {
     }
 
+    @SuppressWarnings("PMD.PreserveStackTrace")
     @Override
     public void migrate() throws IOException {
         try {
@@ -86,7 +87,8 @@ public class PackageStructure implements Migration {
     private List<Path> renameMainToPackage(final List<Path> oldQuestFiles) {
         return oldQuestFiles.stream()
                 .map(path -> {
-                    if ("main.yml".equals(path.getFileName().toString())) {
+                    final String mainFile = "main.yml";
+                    if (mainFile.equals(path.getFileName().toString())) {
                         try {
                             final Path target = path.resolveSibling("package.yml");
                             Files.move(path, target);

@@ -98,7 +98,7 @@ public final class Config {
     public static String getMessage(final String lang, final String message, @Nullable final String... variables) {
         String result = messages.getString(lang + "." + message);
         if (result == null) {
-            result = messages.getString(Config.getLanguage() + "." + message);
+            result = messages.getString(getLanguage() + "." + message);
         }
         if (result == null) {
             result = messages.getString("en." + message);
@@ -278,7 +278,7 @@ public final class Config {
             return;
         }
 
-        Notify.get(Config.getPackages().get(packName), category, data).sendNotify(message, onlineProfile);
+        Notify.get(getPackages().get(packName), category, data).sendNotify(message, onlineProfile);
     }
 
     @Nullable

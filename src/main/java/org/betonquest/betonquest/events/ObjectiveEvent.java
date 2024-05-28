@@ -58,7 +58,7 @@ public class ObjectiveEvent extends QuestEvent {
         betonQuest = BetonQuest.getInstance();
 
         action = instruction.next().toLowerCase(Locale.ROOT);
-        if (!Arrays.asList(new String[]{"start", "add", "delete", "remove", "complete", "finish"}).contains(action)) {
+        if (!Arrays.asList("start", "add", "delete", "remove", "complete", "finish").contains(action)) {
             throw new InstructionParseException("Unknown action: " + action);
         }
         objectives = instruction.getList(instruction::getObjective);

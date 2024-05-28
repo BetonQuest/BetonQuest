@@ -72,7 +72,7 @@ public class WandCondition extends Condition {
         }
     }
 
-    @SuppressWarnings("PMD.CognitiveComplexity")
+    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.SwitchDensity"})
     private BiPredicate<Player, Profile> getCheck(final CheckType checkType) {
         return (player, profile) -> switch (checkType) {
             case IS_LOST -> {

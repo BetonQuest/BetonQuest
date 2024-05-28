@@ -52,13 +52,13 @@ public class GlobalObjectives {
             }
 
             //if player already has the tag skip
-            if (data.hasTag(GlobalObjectives.getTag(id))) {
+            if (data.hasTag(getTag(id))) {
                 continue;
             }
             //start the objective
             objective.newPlayer(profile);
             //add the tag
-            data.addTag(GlobalObjectives.getTag(id));
+            data.addTag(getTag(id));
         }
     }
 

@@ -148,6 +148,7 @@ class LastExecutionCacheTest {
         verify(cacheAccessor).reload();
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testCacheStartup() throws IOException {
         final Instant start = Instant.now();

@@ -89,7 +89,7 @@ import java.util.stream.Stream;
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.NPathComplexity", "PMD.TooManyMethods",
         "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition",
-        "PMD.CognitiveComplexity"})
+        "PMD.CognitiveComplexity", "PMD.CouplingBetweenObjects"})
 public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
@@ -826,7 +826,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      */
     private void handleEvents(final CommandSender sender, final String... args) {
         // the player has to be specified every time
-        if (args.length < 2 || Bukkit.getPlayer(args[1]) == null && !args[1].equals("-")) {
+        if (args.length < 2 || Bukkit.getPlayer(args[1]) == null && !"-".equals(args[1])) {
             log.debug("Player's name is missing or he's offline");
             sendMessage(sender, "specify_player");
             return;
@@ -872,7 +872,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      */
     private void handleConditions(final CommandSender sender, final String... args) {
         // the player has to be specified every time
-        if (args.length < 2 || Bukkit.getPlayer(args[1]) == null && !args[1].equals("-")) {
+        if (args.length < 2 || Bukkit.getPlayer(args[1]) == null && !"-".equals(args[1])) {
             log.debug("Player's name is missing or he's offline");
             sendMessage(sender, "specify_player");
             return;
@@ -1457,7 +1457,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private void displayHelp(final CommandSender sender, final String alias) {
         log.debug("Just displaying help");
         // specify all commands
-        final HashMap<String, String> cmds = new HashMap<>();
+        final Map<String, String> cmds = new HashMap<>();
         cmds.put("reload", "reload");
         cmds.put("objectives", "objective <player> [list/add/del] [objective]");
         cmds.put("globaltags", "globaltags [list/add/del/purge]");
@@ -1530,7 +1530,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 .hoverEvent(Component.text(clickToDownloadHint)).clickEvent(ClickEvent.runCommand(updateCommand))
                 : Component.empty();
 
-        final TreeMap<String, String> hookedTree = new TreeMap<>();
+        final Map<String, String> hookedTree = new TreeMap<>();
         for (final String plugin : Compatibility.getHooked()) {
             final Plugin plug = Bukkit.getPluginManager().getPlugin(plugin);
             if (plug != null) {

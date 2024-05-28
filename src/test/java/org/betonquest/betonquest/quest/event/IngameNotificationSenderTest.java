@@ -38,6 +38,7 @@ class IngameNotificationSenderTest {
         }
     }
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testSendNotifyHandlesError(final BetonQuestLogger logger, @Mock final QuestPackage questPackage) {
         when(questPackage.getQuestPath()).thenReturn("package.path");

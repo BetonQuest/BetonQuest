@@ -59,7 +59,7 @@ public abstract class BaseNumberCompareCondition extends Condition {
      * @return the operation
      * @throws InstructionParseException when the symbol is unknown
      */
-    protected Operation fromSymbol(final String symbol) throws InstructionParseException {
+    protected final Operation fromSymbol(final String symbol) throws InstructionParseException {
         return switch (symbol) {
             case "<" -> Operation.LESS;
             case "<=" -> Operation.LESS_EQUAL;
