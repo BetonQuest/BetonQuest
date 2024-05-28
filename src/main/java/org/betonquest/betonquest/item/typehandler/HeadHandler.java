@@ -41,12 +41,12 @@ public abstract class HeadHandler {
     /**
      * Existence of the player UUID.
      */
-    private final QuestItem.Existence playerIdE = QuestItem.Existence.WHATEVER;
+    private QuestItem.Existence playerIdE = QuestItem.Existence.WHATEVER;
 
     /**
      * Existence of the encoded texture.
      */
-    private final QuestItem.Existence textureE = QuestItem.Existence.WHATEVER;
+    private QuestItem.Existence textureE = QuestItem.Existence.WHATEVER;
 
     /**
      * An optional player name owner of the skull.
@@ -158,6 +158,7 @@ public abstract class HeadHandler {
      */
     public void setPlayerId(final String playerId) {
         this.playerId = UUID.fromString(playerId);
+        this.playerIdE = QuestItem.Existence.REQUIRED;
     }
 
     /**
@@ -175,8 +176,9 @@ public abstract class HeadHandler {
      *
      * @param texture The new encoded texture.
      */
-    public void setTexture(@Nullable final String texture) {
+    public void setTexture(final String texture) {
         this.texture = texture;
+        this.textureE = QuestItem.Existence.REQUIRED;
     }
 
     /**
