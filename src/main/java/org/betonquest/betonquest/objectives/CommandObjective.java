@@ -3,6 +3,7 @@ package org.betonquest.betonquest.objectives;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -16,17 +17,12 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Requires the player to execute a specific command.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class CommandObjective extends Objective implements Listener {
-    private final String command;
-
-    private final List<String> commandVariables;
+    private final VariableString command;
 
     private final boolean ignoreCase;
 
@@ -38,8 +34,7 @@ public class CommandObjective extends Objective implements Listener {
 
     public CommandObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        command = parseCommand(instruction.next());
-        commandVariables = loadVariables(command);
+        command = new VariableString(instruction.getPackage(), instruction.next(), true);
         ignoreCase = instruction.hasArgument("ignoreCase");
         exact = instruction.hasArgument("exact");
         cancel = instruction.hasArgument("cancel");
@@ -51,7 +46,7 @@ public class CommandObjective extends Objective implements Listener {
     public void onCommand(final PlayerCommandPreprocessEvent event) {
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-            final String replaceCommand = getCommandWithVariablesReplaced(onlineProfile);
+            final String replaceCommand = command.getString(onlineProfile);
             if (foundMatch(event.getMessage(), replaceCommand)) {
                 if (cancel) {
                     event.setCancelled(true);
@@ -83,39 +78,6 @@ public class CommandObjective extends Objective implements Listener {
     @Override
     public String getProperty(final String name, final Profile profile) {
         return "";
-    }
-
-    private String parseCommand(final String rawCommand) {
-        return rawCommand
-                .replaceAll("(?<!\\\\)_", " ")
-                .replaceAll("\\\\_", "_");
-    }
-
-    private List<String> loadVariables(final String message) throws InstructionParseException {
-        final List<String> variables = new ArrayList<>();
-        for (final String variable : BetonQuest.resolveVariables(message)) {
-            try {
-                BetonQuest.createVariable(instruction.getPackage(), variable);
-            } catch (final InstructionParseException exception) {
-                throw new InstructionParseException("Could not create '" + variable + "' variable: "
-                        + exception.getMessage(), exception);
-            }
-            if (!variables.contains(variable)) {
-                variables.add(variable);
-            }
-        }
-        return variables;
-    }
-
-    private String getCommandWithVariablesReplaced(final Profile profile) {
-        String replaceCommand = command;
-        for (final String variable : commandVariables) {
-            replaceCommand = replaceCommand.replace(
-                    variable,
-                    BetonQuest.getInstance().getVariableValue(instruction.getPackage().getQuestPath(), variable, profile)
-            );
-        }
-        return replaceCommand;
     }
 
     private boolean foundMatch(final String commandExecuted, final String commandRequired) {

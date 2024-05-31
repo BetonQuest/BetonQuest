@@ -2,6 +2,7 @@ package org.betonquest.betonquest.events;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -10,27 +11,19 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.objectives.VariableObjective;
 
-import java.util.List;
-
 @SuppressWarnings("PMD.CommentRequired")
 public class VariableEvent extends QuestEvent {
     private final ObjectiveID objectiveID;
 
-    private final String key;
+    private final VariableString key;
 
-    private final List<String> keyVariables;
-
-    private final String value;
-
-    private final List<String> valueVariables;
+    private final VariableString value;
 
     public VariableEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         objectiveID = instruction.getObjective();
-        key = instruction.next();
-        keyVariables = BetonQuest.resolveVariables(key);
-        value = instruction.next();
-        valueVariables = BetonQuest.resolveVariables(value);
+        key = new VariableString(instruction.getPackage(), instruction.next(), true);
+        value = new VariableString(instruction.getPackage(), instruction.next(), true);
     }
 
     @Override
@@ -39,17 +32,9 @@ public class VariableEvent extends QuestEvent {
         if (!(obj instanceof final VariableObjective objective)) {
             throw new QuestRuntimeException(objectiveID.getFullID() + " is not a variable objective");
         }
-        String keyReplaced = key;
-        for (final String v : keyVariables) {
-            keyReplaced = keyReplaced.replace(v, BetonQuest.getInstance().getVariableValue(
-                    instruction.getPackage().getQuestPath(), v, profile));
-        }
-        String valueReplaced = value;
-        for (final String v : valueVariables) {
-            valueReplaced = valueReplaced.replace(v, BetonQuest.getInstance().getVariableValue(
-                    instruction.getPackage().getQuestPath(), v, profile));
-        }
-        if (!objective.store(profile, keyReplaced.replace('_', ' '), valueReplaced.replace('_', ' '))) {
+        final String keyReplaced = key.getString(profile);
+        final String valueReplaced = value.getString(profile);
+        if (!objective.store(profile, keyReplaced, valueReplaced)) {
             throw new QuestRuntimeException("Player " + profile.getProfileName() + " does not have '"
                     + objectiveID.getFullID() + "' objective, cannot store a variable.");
         }

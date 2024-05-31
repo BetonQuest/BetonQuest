@@ -274,10 +274,6 @@ public class Conversation implements Listener {
         }
 
         String text = data.getText(onlineProfile, language, nextNPCOption);
-        // resolve variables
-        for (final String variable : BetonQuest.resolveVariables(text)) {
-            text = text.replace(variable, plugin.getVariableValue(data.getPack().getQuestPath(), variable, onlineProfile));
-        }
         text = ChatColor.translateAlternateColorCodes('&', text);
 
         // print option to the player
@@ -339,9 +335,6 @@ public class Conversation implements Listener {
 
             // replace variables with their values
             String text = data.getText(onlineProfile, language, option);
-            for (final String variable : BetonQuest.resolveVariables(text)) {
-                text = text.replace(variable, plugin.getVariableValue(data.getPack().getQuestPath(), variable, onlineProfile));
-            }
             text = ChatColor.translateAlternateColorCodes('&', text);
 
             inOut.addPlayerOption(text);

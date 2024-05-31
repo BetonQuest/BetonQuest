@@ -129,7 +129,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.InstantSource;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -137,8 +136,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Handler;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Represents BetonQuest plugin.
@@ -324,27 +321,6 @@ public class BetonQuest extends JavaPlugin {
 
     public static boolean isVariableType(final String type) {
         return VARIABLE_TYPES.get(type) != null;
-    }
-
-    /**
-     * Resolves variables in the supplied text and returns them as a list of
-     * instruction strings, including % characters. Variables are unique, so if
-     * the user uses the same variables multiple times, the list will contain
-     * only one occurrence of this variable.
-     *
-     * @param text text from which the variables will be resolved
-     * @return the list of unique variable instructions
-     */
-    public static List<String> resolveVariables(final String text) {
-        final List<String> variables = new ArrayList<>();
-        final Matcher matcher = Pattern.compile("%[^ %\\s]+%").matcher(text);
-        while (matcher.find()) {
-            final String variable = matcher.group();
-            if (!variables.contains(variable)) {
-                variables.add(variable);
-            }
-        }
-        return variables;
     }
 
     /**
