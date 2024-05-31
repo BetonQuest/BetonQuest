@@ -10,9 +10,8 @@ public class ConditionID extends ID {
     private final boolean inverted;
 
     public ConditionID(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
-        super(pack, removeExclamationMark(identifier));
+        super(pack, removeExclamationMark(identifier), "conditions", "Condition");
         this.inverted = !identifier.isEmpty() && identifier.charAt(0) == '!';
-        setRawInstructionOrThrow("conditions", "Condition");
     }
 
     private static String removeExclamationMark(final String identifier) {

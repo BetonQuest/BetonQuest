@@ -86,7 +86,7 @@ public class BStatsMetrics {
     @Nullable
     private String typeFromId(final ID identifier) {
         try {
-            return identifier.generateInstruction().getPart(0);
+            return identifier.getInstruction().getPart(0);
         } catch (final InstructionParseException ex) {
             // ignore broken instructions
             return null;

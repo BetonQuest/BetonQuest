@@ -134,7 +134,7 @@ class BStatsMetricsTest {
 
         final ID firstId = mock(ID.class);
         final Instruction firstInstruction = new Instruction(logger, questPackage, firstId, TEST_INSTRUCTION);
-        when(firstId.generateInstruction()).thenReturn(firstInstruction);
+        when(firstId.getInstruction()).thenReturn(firstInstruction);
 
         ids.put(firstId, null);
         final Map<String, Void> types = new HashMap<>();
@@ -159,7 +159,7 @@ class BStatsMetricsTest {
 
         final ID secondId = mock(ID.class);
         final Instruction secondInstruction = new Instruction(logger, questPackage, secondId, TEST_INSTRUCTION);
-        when(secondId.generateInstruction()).thenReturn(secondInstruction);
+        when(secondId.getInstruction()).thenReturn(secondInstruction);
         ids.put(secondId, null);
 
         assertCollectedChartData("{\"chartId\":\"idCount\",\"data\":{\"values\":{\"test\":2}}}", countChart);
@@ -167,7 +167,7 @@ class BStatsMetricsTest {
 
         final ID thirdId = mock(ID.class);
         final Instruction thirdInstruction = new Instruction(logger, questPackage, thirdId, OTHER_INSTRUCTION);
-        when(thirdId.generateInstruction()).thenReturn(thirdInstruction);
+        when(thirdId.getInstruction()).thenReturn(thirdInstruction);
         ids.put(thirdId, null);
 
         assertCollectedChartData("{\"chartId\":\"idCount\",\"data\":{\"values\":{\"other\":1,\"test\":2}}}", countChart);

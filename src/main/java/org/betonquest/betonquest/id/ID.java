@@ -36,9 +36,6 @@ public abstract class ID {
     @Nullable
     protected Instruction instruction;
 
-    @Nullable
-    protected String rawInstruction;
-
     /**
      * Creates a new ID. Handles relative and absolute paths and edge cases with special IDs like variables.
      *
@@ -94,6 +91,15 @@ public abstract class ID {
         if (this.pack == null) {
             throw new ObjectNotFoundException("Package in ID '" + identifier + "' does not exist");
         }
+    }
+
+    protected ID(@Nullable final QuestPackage pack, final String identifier, final String section, final String readable) throws ObjectNotFoundException {
+        this(pack, identifier);
+        final String rawInstruction = this.pack.getString(section + "." + this.identifier);
+        if (rawInstruction == null) {
+            throw new ObjectNotFoundException(readable + " '" + getFullID() + "' is not defined");
+        }
+        instruction = new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), this.pack, this, rawInstruction);
     }
 
     private void resolveRelativePathUp(final QuestPackage pack, final String identifier, final String packName) throws ObjectNotFoundException {
@@ -205,8 +211,21 @@ public abstract class ID {
      *
      * @return the full ID
      */
-    public String getFullID() {
+    public final String getFullID() {
         return pack.getQuestPath() + "." + getBaseID();
+    }
+
+    /**
+     * Returns the instruction of the object.
+     *
+     * @return the instruction
+     * @throws IllegalStateException if the instruction is not set
+     */
+    public Instruction getInstruction() {
+        if (instruction == null) {
+            throw new IllegalStateException("Instruction is not set for ID " + getFullID());
+        }
+        return instruction;
     }
 
     @Override
@@ -230,29 +249,5 @@ public abstract class ID {
     @Override
     public int hashCode() {
         return Objects.hash(identifier, pack.getQuestPath());
-    }
-
-    public Instruction generateInstruction() {
-        if (rawInstruction == null) {
-            return null;
-        }
-        if (instruction == null) {
-            instruction = new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), pack, this, rawInstruction);
-        }
-        return instruction;
-    }
-
-    /**
-     * Sets the raw instruction to the string this ID represents in the package.
-     *
-     * @param section  the name of the section
-     * @param readable the section name used in the exception
-     * @throws ObjectNotFoundException if the id does not exist in the package
-     */
-    protected final void setRawInstructionOrThrow(final String section, final String readable) throws ObjectNotFoundException {
-        rawInstruction = this.pack.getString(section + "." + this.identifier);
-        if (rawInstruction == null) {
-            throw new ObjectNotFoundException(readable + " '" + getFullID() + "' is not defined");
-        }
     }
 }
