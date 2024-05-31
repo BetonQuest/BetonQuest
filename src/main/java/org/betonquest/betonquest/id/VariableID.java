@@ -21,8 +21,8 @@ public class VariableID extends ID {
      * @throws ObjectNotFoundException if the identifier string does not start and end with '%' character.
      */
     public VariableID(final BetonQuestLoggerFactory loggerFactory, @Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
-        super(pack, identifier.replaceAll("%", ""));
-        if (!super.identifier.isEmpty() && identifier.charAt(0) != '%' && !identifier.endsWith("%")) {
+        super(pack, identifier.substring(1, identifier.length() - 1));
+        if (!identifier.startsWith("%") || !identifier.endsWith("%")) {
             throw new ObjectNotFoundException("Variable instruction has to start and end with '%' characters");
         }
         super.identifier = "%" + super.identifier + "%";

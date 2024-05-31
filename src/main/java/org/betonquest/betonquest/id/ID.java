@@ -15,7 +15,7 @@ import java.util.Objects;
  * Identifies any object(events, objectives, conversations etc.) of BetonQuest's scripting system via the path syntax.
  * Handles relative and absolute paths.
  */
-@SuppressWarnings({"PMD.ShortClassName", "PMD.AbstractClassWithoutAbstractMethod", "PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.AvoidReassigningParameters"})
+@SuppressWarnings({"PMD.ShortClassName", "PMD.AbstractClassWithoutAbstractMethod"})
 public abstract class ID {
 
     /**
@@ -29,10 +29,19 @@ public abstract class ID {
     public static final List<String> PATHS = List.of("events", "conditions", "objectives", "variables",
             "conversations", "cancel", "items");
 
+    /**
+     * The identifier of the object without the package name.
+     */
     protected String identifier;
 
+    /**
+     * The package the object is in.
+     */
     protected QuestPackage pack;
 
+    /**
+     * The created instruction of the object.
+     */
     @Nullable
     protected Instruction instruction;
 
@@ -43,16 +52,12 @@ public abstract class ID {
      * @param identifier the id instruction string
      * @throws ObjectNotFoundException if the ID could not be parsed
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity",
-            "PMD.AvoidLiteralsInIfCondition", "PMD.NcssCount"})
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     protected ID(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
-        // id must be specified
         if (identifier.isEmpty()) {
             throw new ObjectNotFoundException("ID is null");
         }
-        // resolve package name
         if (identifier.contains(".")) {
-            // id has specified a package, get it!
             int dotIndex = identifier.indexOf('.');
             final String packName = identifier.substring(0, dotIndex);
             if (pack != null && packName.startsWith(UP_STR + "-")) {
@@ -60,20 +65,7 @@ public abstract class ID {
             } else if (pack != null && packName.startsWith("-")) {
                 resolveRelativePathDown(pack, identifier, packName);
             } else {
-                // if no relative path is available, check if packName is a package or if it is an ID
-                // split at ':' first as to only consider the identifier before the ':' in the case of the math variable
-                final String[] parts = identifier.split(":")[0].split("\\.");
-                final QuestPackage potentialPack = Config.getPackages().get(packName);
-                if (potentialPack == null) {
-                    this.pack = pack;
-                    dotIndex = -1;
-                } else {
-                    if (BetonQuest.isVariableType(packName)) {
-                        dotIndex = resolveIdOfVariable(pack, parts, potentialPack, dotIndex);
-                    } else {
-                        this.pack = potentialPack;
-                    }
-                }
+                dotIndex = getDotIndex(pack, identifier, packName, dotIndex);
             }
             if (identifier.length() == dotIndex + 1) {
                 throw new ObjectNotFoundException("ID of the pack '" + this.pack + "' is null");
@@ -93,6 +85,15 @@ public abstract class ID {
         }
     }
 
+    /**
+     * Constructor of an id that also create an instruction.
+     *
+     * @param pack       the package the ID is in
+     * @param identifier the id instruction string
+     * @param section    the section of the config file
+     * @param readable   the readable name of the object
+     * @throws ObjectNotFoundException if the ID could not be parsed
+     */
     protected ID(@Nullable final QuestPackage pack, final String identifier, final String section, final String readable) throws ObjectNotFoundException {
         this(pack, identifier);
         final String rawInstruction = this.pack.getString(section + "." + this.identifier);
@@ -100,6 +101,20 @@ public abstract class ID {
             throw new ObjectNotFoundException(readable + " '" + getFullID() + "' is not defined");
         }
         instruction = new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), this.pack, this, rawInstruction);
+    }
+
+    private int getDotIndex(@Nullable final QuestPackage pack, final String identifier, final String packName, final int dotIndex) {
+        final String[] parts = identifier.split(":")[0].split("\\.");
+        final QuestPackage potentialPack = Config.getPackages().get(packName);
+        if (potentialPack == null) {
+            this.pack = pack;
+            return -1;
+        }
+        if (BetonQuest.isVariableType(packName)) {
+            return resolveIdOfVariable(pack, parts, potentialPack, dotIndex);
+        }
+        this.pack = potentialPack;
+        return dotIndex;
     }
 
     private void resolveRelativePathUp(final QuestPackage pack, final String identifier, final String packName) throws ObjectNotFoundException {
@@ -145,28 +160,25 @@ public abstract class ID {
         }
     }
 
-    private int resolveIdOfVariable(final QuestPackage pack, final String[] parts, final QuestPackage potentialPack, int dotIndex) {
-        // if first term shares the same name as a variable type
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
+    private int resolveIdOfVariable(final QuestPackage pack, final String[] parts, final QuestPackage potentialPack, final int dotIndex) {
+        int index = dotIndex;
         if (parts.length == 2 && isIdFromPack(potentialPack, parts[1])) {
             this.pack = potentialPack;
         } else if (parts.length > 2) {
             if (BetonQuest.isVariableType(parts[1]) && isIdFromPack(potentialPack, parts[2])) {
-                // if second term is a variable type and third term is an ID
-                // we can assume that the ID is in the form pack.variable.id.args
                 this.pack = potentialPack;
             } else if (isIdFromPack(potentialPack, parts[1])) {
-                // if second term is not a variable type, check if it's an ID. If it is an ID
-                // we can assume that the ID is in the form variable.id.args
                 this.pack = pack;
-                dotIndex = -1;
+                index = -1;
             } else {
                 this.pack = potentialPack;
             }
         } else {
             this.pack = pack;
-            dotIndex = -1;
+            index = -1;
         }
-        return dotIndex;
+        return index;
     }
 
     /**
