@@ -58,7 +58,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
                 }
                 final String type;
                 try {
-                    type = identifier.generateInstruction().getPart(0);
+                    type = identifier.getInstruction().getPart(0);
                 } catch (final InstructionParseException e) {
                     log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
                     continue;
@@ -72,7 +72,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
                 }
                 try {
                     final Objective objective = objectiveClass.getConstructor(Instruction.class)
-                            .newInstance(identifier.generateInstruction());
+                            .newInstance(identifier.getInstruction());
                     values.put(identifier, objective);
                     log.debug(pack, "  Objective '" + identifier + "' loaded");
                 } catch (final InvocationTargetException e) {
