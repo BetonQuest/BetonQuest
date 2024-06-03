@@ -7,6 +7,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Represents a string that can contain variables.
@@ -60,7 +62,7 @@ public class VariableString {
             this.string = string;
         }
 
-        for (final String variable : BetonQuest.resolveVariables(this.string)) {
+        for (final String variable : resolveVariables(this.string)) {
             try {
                 BetonQuest.createVariable(questPackage, variable);
             } catch (final InstructionParseException exception) {
@@ -71,6 +73,18 @@ public class VariableString {
                 variables.add(variable);
             }
         }
+    }
+
+    private List<String> resolveVariables(final String text) {
+        final List<String> variables = new ArrayList<>();
+        final Matcher matcher = Pattern.compile("%[^ %\\s]+%").matcher(text);
+        while (matcher.find()) {
+            final String variable = matcher.group();
+            if (!variables.contains(variable)) {
+                variables.add(variable);
+            }
+        }
+        return variables;
     }
 
     /**

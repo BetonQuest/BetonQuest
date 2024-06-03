@@ -2,6 +2,7 @@ package org.betonquest.betonquest.config;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
@@ -11,6 +12,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.database.PlayerData;
+import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.modules.config.QuestManager;
 import org.betonquest.betonquest.notify.Notify;
@@ -95,6 +97,7 @@ public final class Config {
      * @return message in that language, or message in English, or null if it
      * does not exist
      */
+    @Nullable
     public static String getMessage(final String lang, final String message, @Nullable final String... variables) {
         String result = messages.getString(lang + "." + message);
         if (result == null) {
@@ -303,19 +306,20 @@ public final class Config {
         final PlayerData playerData = plugin.getPlayerData(onlineProfile);
         final String language = playerData.getLanguage();
         String message = getMessage(language, messageName, variables);
-        if (message == null || message.length() == 0) {
+        if (message == null || message.isEmpty()) {
             return null;
         }
         if (prefixName != null) {
             final String prefix = getMessage(language, prefixName, prefixVariables);
-            if (prefix.length() > 0) {
+            if (prefix != null && !prefix.isEmpty()) {
                 message = prefix + message;
             }
         }
         if (packName != null) {
-            for (final String variable : BetonQuest.resolveVariables(message)) {
-                final String replacement = BetonQuest.getInstance().getVariableValue(packName, variable, onlineProfile);
-                message = message.replace(variable, replacement);
+            try {
+                message = new VariableString(getPackages().get(packName), message).getString(onlineProfile);
+            } catch (final InstructionParseException e) {
+                LOG.warn("Could not parse message: " + message, e);
             }
         }
         return message;

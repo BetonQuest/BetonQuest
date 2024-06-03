@@ -247,16 +247,11 @@ public class Journal {
                 text = "error";
             }
 
-            // resolve variables
-            for (final String variable : BetonQuest.resolveVariables(text)) {
-                try {
-                    BetonQuest.createVariable(pack, variable);
-                } catch (final InstructionParseException e) {
-                    log.warn(pack, "Error while creating variable '" + variable + "' on journal page '" + pointerName + "' in "
-                            + profile + " journal: " + e.getMessage(), e);
-                }
-                text = text.replace(variable,
-                        BetonQuest.getInstance().getVariableValue(packName, variable, profile));
+            try {
+                text = new VariableString(pack, text).getString(profile);
+            } catch (final InstructionParseException e) {
+                log.warn(pack, "Error while creating variable on journal page '" + pointerName + "' in "
+                        + profile + " journal: " + e.getMessage(), e);
             }
 
             // add the entry to the list
@@ -318,15 +313,11 @@ public class Journal {
                         continue;
                     }
                     text = GlobalVariableResolver.resolve(pack, text);
-                    for (final String variable : BetonQuest.resolveVariables(text)) {
-                        try {
-                            BetonQuest.createVariable(pack, variable);
-                        } catch (final InstructionParseException e) {
-                            log.warn(pack, "Error while creating variable '" + variable + "' on main page in "
-                                    + profile + " journal: " + e.getMessage(), e);
-                        }
-                        text = text.replace(variable,
-                                BetonQuest.getInstance().getVariableValue(packName, variable, profile));
+                    try {
+                        text = new VariableString(pack, text).getString(profile);
+                    } catch (final InstructionParseException e) {
+                        log.warn(pack, "Error while creating variable on main page in "
+                                + profile + " journal: " + e.getMessage(), e);
                     }
                     // add the text to HashMap
                     numbers.add(number);

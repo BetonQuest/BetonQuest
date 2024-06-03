@@ -3,6 +3,7 @@ package org.betonquest.betonquest.conversation;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -15,6 +16,7 @@ import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -654,7 +656,7 @@ public class ConversationData {
         /**
          * A map of the text of the option in different languages.
          */
-        private final Map<String, String> text = new HashMap<>();
+        private final Map<String, VariableString> text = new HashMap<>();
 
         /**
          * Conditions that must be met for the option to be available.
@@ -773,41 +775,23 @@ public class ConversationData {
             if (conv.contains("text")) {
                 if (conv.isConfigurationSection("text")) {
                     for (final String lang : conv.getConfigurationSection("text").getKeys(false)) {
-                        text.put(lang, pack.getFormattedString("conversations." + conversationName + "." + type.getIdentifier() + "." + name + ".text."
-                                + lang));
+                        addConversationText(name, type, defaultLang, "." + lang);
                     }
                     if (!text.containsKey(defaultLang)) {
                         throw new InstructionParseException("No default language for " + name + " " + type.getReadable());
                     }
                 } else {
-                    text.put(defaultLang, pack.getFormattedString("conversations." + conversationName + "." + type.getIdentifier() + "." + name + ".text"));
-                }
-
-                //Register Vars for every language
-                final List<String> variables = new ArrayList<>();
-                for (final String theText : text.values()) {
-                    if (theText == null || theText.isEmpty()) {
-                        throw new InstructionParseException("Text not defined in " + type.getReadable() + " " + name);
-                    }
-                    // variables are possibly duplicated because there probably is
-                    // the same variable in every language
-                    final List<String> possiblyDuplicatedVariables = BetonQuest.resolveVariables(theText);
-                    for (final String possiblyDuplicatedVariable : possiblyDuplicatedVariables) {
-                        if (variables.contains(possiblyDuplicatedVariable)) {
-                            continue;
-                        }
-                        variables.add(possiblyDuplicatedVariable);
-                    }
-                }
-                for (final String variable : variables) {
-                    try {
-                        BetonQuest.createVariable(pack, variable);
-                    } catch (final InstructionParseException e) {
-                        throw new InstructionParseException("Error while creating '" + variable + "' variable: "
-                                + e.getMessage(), e);
-                    }
+                    addConversationText(name, type, defaultLang, "");
                 }
             }
+        }
+
+        private void addConversationText(final String name, final OptionType type, final String defaultLang, final String suffix) throws InstructionParseException {
+            final String convText = pack.getFormattedString("conversations." + conversationName + "." + type.getIdentifier() + "." + name + ".text" + suffix);
+            if (convText == null) {
+                throw new InstructionParseException("No text for " + name + " " + type.getReadable());
+            }
+            text.put(defaultLang, new VariableString(pack, convText));
         }
 
         /**
@@ -846,7 +830,7 @@ public class ConversationData {
             }
             optionPath.add(getName());
 
-            final StringBuilder text = new StringBuilder(this.text.getOrDefault(lang, this.text.getOrDefault(Config.getLanguage(), "")));
+            final StringBuilder text = new StringBuilder(getText(lang, profile));
 
             if (profile != null) {
                 for (final String extend : extendLinks) {
@@ -858,6 +842,18 @@ public class ConversationData {
             }
 
             return text.toString();
+        }
+
+        private @NotNull String getText(final String lang, @Nullable final Profile profile) {
+            VariableString langText = this.text.get(lang);
+            if (langText != null) {
+                return langText.getString(profile);
+            }
+            langText = this.text.get(Config.getLanguage());
+            if (langText != null) {
+                return langText.getString(profile);
+            }
+            return "";
         }
 
         /**
