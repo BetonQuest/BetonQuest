@@ -70,8 +70,8 @@ public class VariableProcessor extends QuestProcessor<Variable, VariableID> impl
     }
 
     @Override
-    public CompositeInstructionMetricsSupplier<VariableID> metricsSupplier() {
-        return new CompositeInstructionMetricsSupplier<>(values::keySet, variableTypes::keySet);
+    public Map.Entry<String, CompositeInstructionMetricsSupplier<?>> metricsSupplier() {
+        return Map.entry("variables", new CompositeInstructionMetricsSupplier<>(values::keySet, variableTypes::keySet));
     }
 
     @Override

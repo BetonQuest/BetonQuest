@@ -2,6 +2,8 @@ package org.betonquest.betonquest.quest.registry.processor;
 
 import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 
+import java.util.Map;
+
 /**
  * A Processor supplying BStats Metrics.
  */
@@ -10,7 +12,7 @@ public interface MetricSupplying {
     /**
      * Gets the bstats metric supplier for registered and active types.
      *
-     * @return the metric
+     * @return the metric with its type identifier
      */
-    CompositeInstructionMetricsSupplier<?> metricsSupplier();
+    Map.Entry<String, CompositeInstructionMetricsSupplier<?>> metricsSupplier();
 }

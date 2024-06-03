@@ -41,8 +41,8 @@ public class ConditionProcessor extends QuestProcessor<Condition, ConditionID> i
     }
 
     @Override
-    public CompositeInstructionMetricsSupplier<ConditionID> metricsSupplier() {
-        return new CompositeInstructionMetricsSupplier<>(values::keySet, conditionTypes::keySet);
+    public Map.Entry<String, CompositeInstructionMetricsSupplier<?>> metricsSupplier() {
+        return Map.entry("conditions", new CompositeInstructionMetricsSupplier<>(values::keySet, conditionTypes::keySet));
     }
 
     /**

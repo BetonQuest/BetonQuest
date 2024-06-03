@@ -47,8 +47,8 @@ public class ObjectiveProcessor extends QuestProcessor<Objective, ObjectiveID> i
     }
 
     @Override
-    public CompositeInstructionMetricsSupplier<ObjectiveID> metricsSupplier() {
-        return new CompositeInstructionMetricsSupplier<>(values::keySet, objectiveTypes::keySet);
+    public Map.Entry<String, CompositeInstructionMetricsSupplier<?>> metricsSupplier() {
+        return Map.entry("objectives", new CompositeInstructionMetricsSupplier<>(values::keySet, objectiveTypes::keySet));
     }
 
     @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})

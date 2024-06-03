@@ -36,8 +36,8 @@ public class EventProcessor extends QuestProcessor<QuestEvent, EventID> implemen
     }
 
     @Override
-    public CompositeInstructionMetricsSupplier<EventID> metricsSupplier() {
-        return new CompositeInstructionMetricsSupplier<>(values::keySet, eventTypes::keySet);
+    public Map.Entry<String, CompositeInstructionMetricsSupplier<?>> metricsSupplier() {
+        return Map.entry("events", new CompositeInstructionMetricsSupplier<>(values::keySet, eventTypes::keySet));
     }
 
     @SuppressWarnings("PMD.CognitiveComplexity")

@@ -19,7 +19,6 @@ import org.betonquest.betonquest.quest.registry.processor.ObjectiveProcessor;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -140,12 +139,12 @@ public class QuestRegistry {
      * @return instruction metrics for conditions, events, objectives and variables
      */
     public Map<String, InstructionMetricsSupplier<? extends ID>> metricsSupplier() {
-        final Map<String, InstructionMetricsSupplier<? extends ID>> metricsSuppliers = new HashMap<>();
-        metricsSuppliers.put("conditions", conditionProcessor.metricsSupplier());
-        metricsSuppliers.put("events", eventProcessor.metricsSupplier());
-        metricsSuppliers.put("objectives", objectiveProcessor.metricsSupplier());
-        metricsSuppliers.put("variables", variableProcessor.metricsSupplier());
-        return metricsSuppliers;
+        return Map.ofEntries(
+                conditionProcessor.metricsSupplier(),
+                eventProcessor.metricsSupplier(),
+                objectiveProcessor.metricsSupplier(),
+                variableProcessor.metricsSupplier()
+        );
     }
 
     /**
