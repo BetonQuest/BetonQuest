@@ -79,7 +79,6 @@ public abstract class ID {
             this.identifier = identifier;
         }
 
-        // no package yet? this is an error
         if (this.pack == null) {
             throw new ObjectNotFoundException("Package in ID '" + identifier + "' does not exist");
         }
@@ -118,20 +117,16 @@ public abstract class ID {
     }
 
     private void resolveRelativePathUp(final QuestPackage pack, final String identifier, final String packName) throws ObjectNotFoundException {
-        // resolve relative name if we have a supplied package
         final String[] root = pack.getQuestPath().split("-");
         final String[] path = packName.split("-");
-        // count how many packages up we need to go
         int stepsUp = 0;
         while (stepsUp < path.length && UP_STR.equals(path[stepsUp])) {
             stepsUp++;
         }
-        // can't go out of BetonQuest folder of course
         if (stepsUp > root.length) {
             throw new ObjectNotFoundException("Relative path goes out of package scope! Consider removing a few '"
                     + UP_STR + "'s in ID " + identifier);
         }
-        // construct the final absolute path
         final StringBuilder builder = new StringBuilder();
         for (int i = 0; i < root.length - stepsUp; i++) {
             builder.append(root[i]).append('-');
@@ -141,7 +136,6 @@ public abstract class ID {
         }
         final String absolute = builder.substring(0, builder.length() - 1);
         this.pack = Config.getPackages().get(absolute);
-        // throw error earlier so it can have more information than default one at the bottom
         if (this.pack == null) {
             throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' resolved to '"
                     + absolute + "', but this package does not exist!");
@@ -153,7 +147,6 @@ public abstract class ID {
         final String fullPath = currentPath + packName;
 
         this.pack = Config.getPackages().get(fullPath);
-        // throw error earlier so it can have more information than default one at the bottom
         if (this.pack == null) {
             throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' resolved to '"
                     + fullPath + "', but this package does not exist!");
