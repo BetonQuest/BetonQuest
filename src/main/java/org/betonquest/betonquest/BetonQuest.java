@@ -319,7 +319,7 @@ public class BetonQuest extends JavaPlugin {
     @Nullable
     public static Variable createVariable(@Nullable final QuestPackage pack, final String instruction)
             throws InstructionParseException {
-        return instance.questRegistry.variables().createVariable(pack, instruction);
+        return instance.questRegistry.variables().create(pack, instruction);
     }
 
     public static boolean isVariableType(final String type) {
@@ -1052,7 +1052,7 @@ public class BetonQuest extends JavaPlugin {
      * @return the value of this variable for given player
      */
     public String getVariableValue(final String packName, final String name, @Nullable final Profile profile) {
-        return questRegistry.variables().getVariableValue(packName, name, profile);
+        return questRegistry.variables().getValue(packName, name, profile);
     }
 
     /**

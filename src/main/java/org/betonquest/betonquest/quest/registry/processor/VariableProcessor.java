@@ -53,7 +53,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable,
      */
     @SuppressWarnings("PMD.CyclomaticComplexity")
     @Nullable
-    public Variable createVariable(@Nullable final QuestPackage pack, final String instruction)
+    public Variable create(@Nullable final QuestPackage pack, final String instruction)
             throws InstructionParseException {
         final VariableID variableID;
         try {
@@ -98,14 +98,14 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable,
      * @return the value of this variable for given player
      */
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    public String getVariableValue(final String packName, final String name, @Nullable final Profile profile) {
+    public String getValue(final String packName, final String name, @Nullable final Profile profile) {
         if (!Config.getPackages().containsKey(packName)) {
             log.warn("Variable '" + name + "' contains the non-existent package '" + packName + "' !");
             return "";
         }
         final QuestPackage pack = Config.getPackages().get(packName);
         try {
-            final Variable var = createVariable(pack, name);
+            final Variable var = create(pack, name);
             if (var == null) {
                 log.warn(pack, "Could not resolve variable '" + name + "'.");
                 return "";

@@ -14,7 +14,7 @@ import java.util.Map;
  * @param <T> the quest type being processed
  * @param <U> the type of a {@link T}
  */
-public abstract class TypedQuestProcessor<I extends ID, T, U> extends QuestProcessor<I, T> implements MetricSupplying {
+public abstract class TypedQuestProcessor<I extends ID, T, U> extends QuestProcessor<I, T> {
     /**
      * Available types of the {@link T}.
      */
@@ -38,7 +38,11 @@ public abstract class TypedQuestProcessor<I extends ID, T, U> extends QuestProce
         this.metricTopic = metricTopic;
     }
 
-    @Override
+    /**
+     * Gets the bstats metric supplier for registered and active types.
+     *
+     * @return the metric with its type identifier
+     */
     public Map.Entry<String, CompositeInstructionMetricsSupplier<?>> metricsSupplier() {
         return Map.entry(metricTopic, new CompositeInstructionMetricsSupplier<>(values::keySet, types::keySet));
     }
