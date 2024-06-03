@@ -1,0 +1,74 @@
+@startuml "Schedule-dark"
+skinparam ArrowColor white
+skinparam BackgroundColor transparent
+skinparam class {
+    StereotypeFontColor white
+    FontColor white
+    BackgroundColor #293E4E
+    HeaderBackgroundColor #00B8D4
+    BorderColor black
+}
+skinparam note {
+    FontColor white
+    BackgroundColor #303952
+}
+skinparam package {
+    BorderColor black
+}
+
+package "org.betonquest.betonquest.api.schedule" <<Frame>> {
+    abstract class Schedule {
+        + Schedule(ScheduleID, ConfigurationSection)
+        ..
+        # scheduleId : ScheduleID
+        # time : String
+        # events : List<EventID>
+        # catchup : CatchupStrategy
+        ..
+        + getId() : ScheduleID
+        + getTime() : String
+        + getEvents() : List<EventID>
+        + getCatchup() : CatchupStrategy
+    }
+
+    enum CatchupStrategy {
+        NONE
+        ..
+        ONE
+        ..
+        ALL
+    }
+
+    abstract class CronSchedule extends Schedule {
+        + {static} DEFAULT_CRON_DEFINITION : CronDefinition
+        ..
+        # timeCron : Cron
+        # executionTime : ExecutionTime
+        # onReboot : boolean
+        ..
+        + getTimeCron() : Cron
+        + getExecutionTime() : ExecutionTime
+        + shouldRunOnReboot(): boolean
+        ..
+        + getNextExecution() : Optional<Instant>
+        + getLastExecution() : Optional<Instant>
+    }
+
+    abstract class Scheduler <S extends Schedule> {
+        # schedules : Map<ScheduleID, S>
+        # running : boolean
+        ..
+        + isRunning() : boolean
+        ..
+        + start() : void
+        + stop() : void
+        + addSchedule(S) : void
+        + executeEvents(S) : void
+    }
+
+    Schedule o-right- CatchupStrategy
+    Scheduler o-right- Schedule
+
+}
+
+@enduml
