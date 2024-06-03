@@ -69,7 +69,7 @@ public class QuestRegistry {
      * Create a new Registry for storing and using Conditions, Events, Objectives, Variables,
      * Conversations and Quest canceller.
      *
-     * @param log            the custom logger for this registry and processors
+     * @param log            the custom logger for this registry
      * @param loggerFactory  the logger factory used for new custom logger instances
      * @param plugin         the plugin used to create new conversation data
      * @param scheduleTypes  the available schedule types
@@ -84,12 +84,12 @@ public class QuestRegistry {
                          final Map<String, Class<? extends Objective>> objectiveTypes, final Map<String, Class<? extends Variable>> variableTypes) {
         this.log = log;
         this.eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), scheduleTypes);
-        this.conditionProcessor = new ConditionProcessor(log, conditionTypes);
-        this.eventProcessor = new EventProcessor(log, eventTypes);
-        this.objectiveProcessor = new ObjectiveProcessor(log, objectiveTypes);
-        this.variableProcessor = new VariableProcessor(log, variableTypes, loggerFactory);
-        this.cancellerProcessor = new CancellerProcessor(log);
-        this.conversationProcessor = new ConversationProcessor(log, plugin);
+        this.conditionProcessor = new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), conditionTypes);
+        this.eventProcessor = new EventProcessor(loggerFactory.create(EventProcessor.class), eventTypes);
+        this.objectiveProcessor = new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), objectiveTypes);
+        this.variableProcessor = new VariableProcessor(loggerFactory.create(VariableProcessor.class), variableTypes, loggerFactory);
+        this.cancellerProcessor = new CancellerProcessor(loggerFactory.create(CancellerProcessor.class));
+        this.conversationProcessor = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), plugin);
     }
 
     /**
