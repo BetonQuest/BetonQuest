@@ -48,7 +48,7 @@ public class EventProcessor extends TypedQuestProcessor<EventID, QuestEvent, Que
                 }
                 final String type;
                 try {
-                    type = identifier.generateInstruction().getPart(0);
+                    type = identifier.getInstruction().getPart(0);
                 } catch (final InstructionParseException e) {
                     log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
                     continue;
@@ -61,7 +61,7 @@ public class EventProcessor extends TypedQuestProcessor<EventID, QuestEvent, Que
                 }
 
                 try {
-                    final QuestEvent event = eventFactory.parseEventInstruction(identifier.generateInstruction());
+                    final QuestEvent event = eventFactory.parseEventInstruction(identifier.getInstruction());
                     values.put(identifier, event);
                     log.debug(pack, "  Event '" + identifier + "' loaded");
                 } catch (final InstructionParseException e) {

@@ -65,7 +65,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable,
         if (existingVariable != null) {
             return existingVariable;
         }
-        final Instruction instructionVar = variableID.generateInstruction();
+        final Instruction instructionVar = variableID.getInstruction();
         final Class<? extends Variable> variableClass = types.get(instructionVar.current());
         if (variableClass == null) {
             throw new InstructionParseException("Variable type " + instructionVar.current() + " is not registered");

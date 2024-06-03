@@ -8,8 +8,7 @@ import org.jetbrains.annotations.Nullable;
 public class ItemID extends ID {
 
     public ItemID(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
-        super(pack, identifier);
-        setRawInstructionOrThrow("items", "Item");
+        super(pack, identifier, "items", "Item");
     }
 
 }

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.modules.schedule;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -24,17 +23,5 @@ public class ScheduleID extends ID {
         if (!getPackage().getConfig().isConfigurationSection("schedules." + getBaseID())) {
             throw new ObjectNotFoundException("Schedule '" + getFullID() + "' is not defined");
         }
-    }
-
-    /**
-     * Schedules are defined as configuration section and therefore can't provide an instruction.
-     * Therefore, this method will always throw an UnsupportedOperationException.
-     *
-     * @return nothing
-     * @throws UnsupportedOperationException as described above
-     */
-    @Override
-    public Instruction generateInstruction() {
-        throw new UnsupportedOperationException("Schedules do not provide a single instruction string, instead they are defined as configuration section");
     }
 }

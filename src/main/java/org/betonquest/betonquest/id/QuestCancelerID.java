@@ -17,7 +17,6 @@ public class QuestCancelerID extends ID {
      * @throws ObjectNotFoundException when the quest canceler could not be resolved with the given identifier
      */
     public QuestCancelerID(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
-        super(pack, identifier);
-        setRawInstructionOrThrow("cancel", "Quest Canceler");
+        super(pack, identifier, "cancel", "Quest Canceler");
     }
 }

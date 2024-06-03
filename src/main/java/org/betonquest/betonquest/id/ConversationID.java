@@ -17,8 +17,7 @@ public class ConversationID extends ID {
      */
     public ConversationID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         super(pack, identifier);
-        rawInstruction = super.pack.getConfig().getString("conversations." + super.identifier);
-        if (rawInstruction == null) {
+        if (!super.pack.getConfig().contains("conversations." + super.identifier)) {
             throw new ObjectNotFoundException("Conversation '" + pack.getQuestPath() + "." + identifier + "' does not"
                     + " exist. Ensure it was loaded without errors.");
         }

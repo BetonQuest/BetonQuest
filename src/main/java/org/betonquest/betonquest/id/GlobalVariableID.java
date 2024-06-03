@@ -7,7 +7,6 @@ import org.jetbrains.annotations.Nullable;
 @SuppressWarnings("PMD.CommentRequired")
 public class GlobalVariableID extends ID {
     public GlobalVariableID(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
-        super(pack, identifier);
-        setRawInstructionOrThrow("variables", "Global variable");
+        super(pack, identifier, "variables", "Global variable");
     }
 }

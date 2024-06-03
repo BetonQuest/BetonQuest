@@ -60,7 +60,7 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
                 }
                 final String type;
                 try {
-                    type = identifier.generateInstruction().getPart(0);
+                    type = identifier.getInstruction().getPart(0);
                 } catch (final InstructionParseException e) {
                     log.warn(pack, "Condition type not defined in '" + packName + "." + key + "'", e);
                     continue;
@@ -73,7 +73,7 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
                 }
                 try {
                     final Condition condition = conditionClass.getConstructor(Instruction.class)
-                            .newInstance(identifier.generateInstruction());
+                            .newInstance(identifier.getInstruction());
                     values.put(identifier, condition);
                     log.debug(pack, "  Condition '" + identifier + "' loaded");
                 } catch (final InvocationTargetException e) {

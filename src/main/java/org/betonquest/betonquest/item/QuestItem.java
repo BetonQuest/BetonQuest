@@ -89,7 +89,7 @@ public class QuestItem {
      * @throws InstructionParseException when item parsing goes wrong
      */
     public QuestItem(final ItemID itemID) throws InstructionParseException {
-        this(itemID.generateInstruction());
+        this(itemID.getInstruction());
     }
 
     /**

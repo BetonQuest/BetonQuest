@@ -2,7 +2,9 @@ package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -11,6 +13,7 @@ import static org.mockito.Mockito.*;
  * These tests should ensure that the basic parsing of schedules works properly.
  */
 @SuppressWarnings("PMD.JUnit5TestShouldBePackagePrivate")
+@ExtendWith(BetonQuestLoggerService.class)
 public class ScheduleBaseTest extends AbstractScheduleTest {
 
     @Override
