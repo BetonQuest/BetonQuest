@@ -186,11 +186,16 @@ In cases where this doesn't work, e.g. if the variable contains mathematical ope
 braces `{ }`. Inside the curly braces you have to escape with `\`, so to have a `\` in your variable you need to write
 `\\`, to have a `}` inside your variable you need to write `\}`.
 
+!!! Warning
+    The modulo operator needs to be escaped with a backslash `\` to prevent it from being interpreted as a placeholder delimiter.
+    If you don't want to escape the percentage and actually want to write a backslash you can use `\\%`.
+    Don't forget to escape the backslash itself with another backslash if you are inside a double-quoted string `"`.
+
 ```
 %math.calc:100*(15-point.reputation.amount)%
 %math.calc:objective.kill_zombies.left/objective.kill_zombies.total*100~2%
 %math.calc:-{ph.myplugin_stragee+placeholder}%
-%math.calc:64%32%
+%math.calc:64\%32%
 ```
 
 ### NPC Name Variable
