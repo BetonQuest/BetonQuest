@@ -15,6 +15,11 @@ import java.util.regex.Pattern;
  * Makes handling instructions with variables easier.
  */
 public class VariableString {
+    /**
+     * The pattern to match variables in a string marked with percent signs.<br>
+     * The percentage can be escaped with a backslash, and the backslash can be escaped with another backslash.
+     */
+    private static final Pattern VARIABLE_PATTERN = Pattern.compile("(?<!\\\\)(?:\\\\\\\\)*%((?:[^%\\\\\\s]|\\\\.)*?)(?<!\\\\)(?:\\\\\\\\)*%");
 
     /**
      * The string that may contain variables.
@@ -77,7 +82,7 @@ public class VariableString {
 
     private List<String> resolveVariables(final String text) {
         final List<String> variables = new ArrayList<>();
-        final Matcher matcher = Pattern.compile("(?<!\\\\)(?:\\\\\\\\)*%((?:[^%\\\\\\s]|\\\\.)*?)(?<!\\\\)(?:\\\\\\\\)*%").matcher(text);
+        final Matcher matcher = VARIABLE_PATTERN.matcher(text);
         while (matcher.find()) {
             final String variable = matcher.group();
             if (!variables.contains(variable)) {
