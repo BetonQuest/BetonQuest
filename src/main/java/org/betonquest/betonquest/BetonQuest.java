@@ -111,7 +111,6 @@ import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactoryAdapter;
 import org.betonquest.betonquest.quest.registry.CoreQuestTypes;
 import org.betonquest.betonquest.quest.registry.QuestRegistry;
-import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -130,6 +129,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.InstantSource;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -137,6 +137,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Handler;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Represents BetonQuest plugin.
@@ -334,7 +336,15 @@ public class BetonQuest extends JavaPlugin {
      * @return the list of unique variable instructions
      */
     public static List<String> resolveVariables(final String text) {
-        return VariableProcessor.resolveVariables(text);
+        final List<String> variables = new ArrayList<>();
+        final Matcher matcher = Pattern.compile("%[^ %\\s]+%").matcher(text);
+        while (matcher.find()) {
+            final String variable = matcher.group();
+            if (!variables.contains(variable)) {
+                variables.add(variable);
+            }
+        }
+        return variables;
     }
 
     /**

@@ -13,11 +13,7 @@ import org.betonquest.betonquest.id.VariableID;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Stores Variables and resolve them.
@@ -39,27 +35,6 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable,
                              final BetonQuestLoggerFactory loggerFactory) {
         super(log, variableTypes, "variables");
         this.loggerFactory = loggerFactory;
-    }
-
-    /**
-     * Resolves variables in the supplied text and returns them as a list of
-     * instruction strings, including % characters. Variables are unique, so if
-     * the user uses the same variables multiple times, the list will contain
-     * only one occurrence of this variable.
-     *
-     * @param text text from which the variables will be resolved
-     * @return the list of unique variable instructions
-     */
-    public static List<String> resolveVariables(final String text) {
-        final List<String> variables = new ArrayList<>();
-        final Matcher matcher = Pattern.compile("%[^ %\\s]+%").matcher(text);
-        while (matcher.find()) {
-            final String variable = matcher.group();
-            if (!variables.contains(variable)) {
-                variables.add(variable);
-            }
-        }
-        return variables;
     }
 
     @Override
