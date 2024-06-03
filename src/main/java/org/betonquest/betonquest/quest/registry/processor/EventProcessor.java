@@ -31,10 +31,10 @@ public class EventProcessor extends TypedQuestProcessor<EventID, QuestEvent, Que
     @SuppressWarnings("PMD.CognitiveComplexity")
     @Override
     public void load(final QuestPackage pack) {
-        final ConfigurationSection eConfig = pack.getConfig().getConfigurationSection("events");
-        if (eConfig != null) {
+        final ConfigurationSection section = pack.getConfig().getConfigurationSection("events");
+        if (section != null) {
             final String packName = pack.getQuestPath();
-            for (final String key : eConfig.getKeys(false)) {
+            for (final String key : section.getKeys(false)) {
                 if (key.contains(" ")) {
                     log.warn(pack, "Event name cannot contain spaces: '" + key + "' (in " + packName + " package)");
                     continue;
@@ -79,7 +79,7 @@ public class EventProcessor extends TypedQuestProcessor<EventID, QuestEvent, Que
      * @param eventID ID of the event to fire
      * @return true if the event was run even if there was an exception during execution
      */
-    public boolean event(@Nullable final Profile profile, final EventID eventID) {
+    public boolean execute(@Nullable final Profile profile, final EventID eventID) {
         final QuestEvent event = values.get(eventID);
         if (event == null) {
             log.warn(eventID.getPackage(), "Event " + eventID + " is not defined");

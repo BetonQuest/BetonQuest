@@ -97,10 +97,10 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
      * @return if all conditions are met
      */
     @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
-    public boolean conditions(@Nullable final Profile profile, final ConditionID... conditionIDs) {
+    public boolean checks(@Nullable final Profile profile, final ConditionID... conditionIDs) {
         if (Bukkit.isPrimaryThread()) {
             for (final ConditionID id : conditionIDs) {
-                if (!condition(profile, id)) {
+                if (!check(profile, id)) {
                     return false;
                 }
             }
@@ -108,7 +108,7 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
             final List<CompletableFuture<Boolean>> conditions = new ArrayList<>();
             for (final ConditionID id : conditionIDs) {
                 final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
-                        () -> condition(profile, id));
+                        () -> check(profile, id));
                 conditions.add(future);
             }
             for (final CompletableFuture<Boolean> condition : conditions) {
@@ -147,7 +147,7 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
      * @return if the condition is met
      */
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    public boolean condition(@Nullable final Profile profile, final ConditionID conditionID) {
+    public boolean check(@Nullable final Profile profile, final ConditionID conditionID) {
         final Condition condition = values.get(conditionID);
         if (condition == null) {
             log.warn(conditionID.getPackage(), "The condition " + conditionID + " is not defined!");

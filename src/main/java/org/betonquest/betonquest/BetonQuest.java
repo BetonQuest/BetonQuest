@@ -260,7 +260,7 @@ public class BetonQuest extends JavaPlugin {
      * @return if all conditions are met
      */
     public static boolean conditions(@Nullable final Profile profile, final ConditionID... conditionIDs) {
-        return instance.questRegistry.conditions().conditions(profile, conditionIDs);
+        return instance.questRegistry.conditions().checks(profile, conditionIDs);
     }
 
     /**
@@ -271,7 +271,7 @@ public class BetonQuest extends JavaPlugin {
      * @return if the condition is met
      */
     public static boolean condition(@Nullable final Profile profile, final ConditionID conditionID) {
-        return instance.questRegistry.conditions().condition(profile, conditionID);
+        return instance.questRegistry.conditions().check(profile, conditionID);
     }
 
     /**
@@ -283,7 +283,7 @@ public class BetonQuest extends JavaPlugin {
      * @return true if the event was run even if there was an exception during execution
      */
     public static boolean event(@Nullable final Profile profile, final EventID eventID) {
-        return instance.questRegistry.events().event(profile, eventID);
+        return instance.questRegistry.events().execute(profile, eventID);
     }
 
     /**
@@ -293,7 +293,7 @@ public class BetonQuest extends JavaPlugin {
      * @param objectiveID ID of the objective
      */
     public static void newObjective(final Profile profile, final ObjectiveID objectiveID) {
-        instance.questRegistry.objectives().newObjective(profile, objectiveID);
+        instance.questRegistry.objectives().start(profile, objectiveID);
     }
 
     /**
@@ -304,7 +304,7 @@ public class BetonQuest extends JavaPlugin {
      * @param instruction data instruction string
      */
     public static void resumeObjective(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
-        instance.questRegistry.objectives().resumeObjective(profile, objectiveID, instruction);
+        instance.questRegistry.objectives().resume(profile, objectiveID, instruction);
     }
 
     /**
@@ -990,7 +990,7 @@ public class BetonQuest extends JavaPlugin {
      * @return list of this player's active objectives
      */
     public List<Objective> getPlayerObjectives(final Profile profile) {
-        return questRegistry.objectives().getPlayerObjectives(profile);
+        return questRegistry.objectives().getActive(profile);
     }
 
     /**

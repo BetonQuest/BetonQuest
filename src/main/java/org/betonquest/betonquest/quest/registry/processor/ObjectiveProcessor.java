@@ -94,7 +94,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
      * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
      */
-    public void newObjective(final Profile profile, final ObjectiveID objectiveID) {
+    public void start(final Profile profile, final ObjectiveID objectiveID) {
         final Objective objective = values.get(objectiveID);
         if (objective.containsPlayer(profile)) {
             log.debug(objectiveID.getPackage(), profile + " already has the " + objectiveID + " objective");
@@ -110,7 +110,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
      * @param objectiveID ID of the objective
      * @param instruction data instruction string
      */
-    public void resumeObjective(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
+    public void resume(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
         final Objective objective = values.get(objectiveID);
         if (objective == null) {
             log.warn(objectiveID.getPackage(), "Objective " + objectiveID + " does not exist");
@@ -124,21 +124,12 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
     }
 
     /**
-     * @param objectiveID package name, dot and ID of the objective
-     * @return Objective object or null if it does not exist
-     */
-    @Nullable
-    public Objective getObjective(final ObjectiveID objectiveID) {
-        return values.get(objectiveID);
-    }
-
-    /**
-     * Returns the list of objectives of this player
+     * Returns the list of objectives of this player.
      *
      * @param profile the {@link Profile} of the player
      * @return list of this player's active objectives
      */
-    public List<Objective> getPlayerObjectives(final Profile profile) {
+    public List<Objective> getActive(final Profile profile) {
         final List<Objective> list = new ArrayList<>();
         for (final Objective objective : values.values()) {
             if (objective.containsPlayer(profile)) {
@@ -146,6 +137,15 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
             }
         }
         return list;
+    }
+
+    /**
+     * @param objectiveID package name, dot and ID of the objective
+     * @return Objective object or null if it does not exist
+     */
+    @Nullable
+    public Objective getObjective(final ObjectiveID objectiveID) {
+        return values.get(objectiveID);
     }
 
     /**
