@@ -19,7 +19,7 @@ public class VariableString {
      * The pattern to match variables in a string marked with percent signs.<br>
      * The percentage can be escaped with a backslash, and the backslash can be escaped with another backslash.
      */
-    private static final Pattern VARIABLE_PATTERN = Pattern.compile("(?<!\\\\)(?:\\\\\\\\)*%((?:[^%\\\\\\s]|\\\\.)*?)(?<!\\\\)(?:\\\\\\\\)*%");
+    private static final Pattern VARIABLE_PATTERN = Pattern.compile("(?<!\\\\)(?:\\\\\\\\)*(%((?:[^%\\\\]|\\\\.)*?)%)(?<!\\\\)(?:\\\\\\\\)*");
 
     /**
      * The string that may contain variables.
