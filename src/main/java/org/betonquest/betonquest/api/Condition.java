@@ -44,7 +44,7 @@ public abstract class Condition extends ForceSyncHandler<Boolean> {
      * error message describing the problem.
      *
      * @param instruction the Instruction object; you can get one from ID instance with
-     *                    {@link ID#getInstruction()}  or create it from an instruction
+     *                    {@link ID#getInstruction()} or create it from an instruction
      *                    string
      * @param forceSync   If set to true this executes the condition on the servers main thread.
      *                    Otherwise it will just keep the current thread (which could also be the main thread!).
