@@ -362,7 +362,7 @@ public class BetonQuest extends JavaPlugin {
      * @return quest cancellers in a new map
      */
     public static Map<QuestCancelerID, QuestCanceler> getCanceler() {
-        return instance.questRegistry.questCanceller().getCanceler();
+        return instance.questRegistry.questCanceller().getCancelers();
     }
 
     /**

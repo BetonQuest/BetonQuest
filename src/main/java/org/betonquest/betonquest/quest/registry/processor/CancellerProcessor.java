@@ -43,7 +43,7 @@ public class CancellerProcessor extends QuestProcessor<QuestCancelerID, QuestCan
      *
      * @return quest cancellers in a new map
      */
-    public Map<QuestCancelerID, QuestCanceler> getCanceler() {
+    public Map<QuestCancelerID, QuestCanceler> getCancelers() {
         return new HashMap<>(values);
     }
 }
