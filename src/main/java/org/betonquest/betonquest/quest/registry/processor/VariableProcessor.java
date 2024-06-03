@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -23,12 +22,7 @@ import java.util.regex.Pattern;
 /**
  * Stores Variables and resolve them.
  */
-public class VariableProcessor extends QuestProcessor<VariableID, Variable> implements MetricSupplying {
-    /**
-     * Available Variable types.
-     */
-    private final Map<String, Class<? extends Variable>> variableTypes;
-
+public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable, Class<? extends Variable>> {
     /**
      * Logger Factory for new custom logger.
      */
@@ -43,8 +37,7 @@ public class VariableProcessor extends QuestProcessor<VariableID, Variable> impl
      */
     public VariableProcessor(final BetonQuestLogger log, final Map<String, Class<? extends Variable>> variableTypes,
                              final BetonQuestLoggerFactory loggerFactory) {
-        super(log);
-        this.variableTypes = variableTypes;
+        super(log, variableTypes, "variables");
         this.loggerFactory = loggerFactory;
     }
 
@@ -67,11 +60,6 @@ public class VariableProcessor extends QuestProcessor<VariableID, Variable> impl
             }
         }
         return variables;
-    }
-
-    @Override
-    public Map.Entry<String, CompositeInstructionMetricsSupplier<?>> metricsSupplier() {
-        return Map.entry("variables", new CompositeInstructionMetricsSupplier<>(values::keySet, variableTypes::keySet));
     }
 
     @Override
@@ -103,7 +91,7 @@ public class VariableProcessor extends QuestProcessor<VariableID, Variable> impl
             return existingVariable;
         }
         final Instruction instructionVar = variableID.generateInstruction();
-        final Class<? extends Variable> variableClass = variableTypes.get(instructionVar.current());
+        final Class<? extends Variable> variableClass = types.get(instructionVar.current());
         if (variableClass == null) {
             throw new InstructionParseException("Variable type " + instructionVar.current() + " is not registered");
         }

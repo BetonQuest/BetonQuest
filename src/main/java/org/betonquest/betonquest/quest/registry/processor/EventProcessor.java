@@ -4,7 +4,6 @@ import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -18,12 +17,7 @@ import java.util.Map;
 /**
  * Stores Events and execute them.
  */
-public class EventProcessor extends QuestProcessor<EventID, QuestEvent> implements MetricSupplying {
-    /**
-     * Available Event types.
-     */
-    private final Map<String, QuestEventFactory> eventTypes;
-
+public class EventProcessor extends TypedQuestProcessor<EventID, QuestEvent, QuestEventFactory> {
     /**
      * Create a new Event Processor to store events and execute them.
      *
@@ -31,13 +25,7 @@ public class EventProcessor extends QuestProcessor<EventID, QuestEvent> implemen
      * @param eventTypes the available event types
      */
     public EventProcessor(final BetonQuestLogger log, final Map<String, QuestEventFactory> eventTypes) {
-        super(log);
-        this.eventTypes = eventTypes;
-    }
-
-    @Override
-    public Map.Entry<String, CompositeInstructionMetricsSupplier<?>> metricsSupplier() {
-        return Map.entry("events", new CompositeInstructionMetricsSupplier<>(values::keySet, eventTypes::keySet));
+        super(log, eventTypes, "events");
     }
 
     @SuppressWarnings("PMD.CognitiveComplexity")
@@ -65,7 +53,7 @@ public class EventProcessor extends QuestProcessor<EventID, QuestEvent> implemen
                     log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
                     continue;
                 }
-                final QuestEventFactory eventFactory = eventTypes.get(type);
+                final QuestEventFactory eventFactory = types.get(type);
                 if (eventFactory == null) {
                     log.warn(pack, "Event type " + type + " is not registered, check if it's"
                             + " spelled correctly in '" + identifier + "' event.");

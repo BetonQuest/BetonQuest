@@ -10,8 +10,8 @@ import java.util.Map;
 /**
  * Does the logic around {@link T}.
  *
- * @param <T> the quest type being processed
  * @param <I> the {@link ID} identifying {@link T}
+ * @param <T> the quest type being processed
  */
 public abstract class QuestProcessor<I extends ID, T> {
     /**

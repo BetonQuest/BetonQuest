@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ObjectiveID;
@@ -20,12 +19,7 @@ import java.util.Map;
 /**
  * Stores Objectives and starts/stops/resumes them.
  */
-public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> implements MetricSupplying {
-    /**
-     * Available Objective types
-     */
-    private final Map<String, Class<? extends Objective>> objectiveTypes;
-
+public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objective, Class<? extends Objective>> {
     /**
      * Create a new Objective Processor to store Objectives and starts/stops/resumes them.
      *
@@ -33,8 +27,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> i
      * @param objectiveTypes the available objective types
      */
     public ObjectiveProcessor(final BetonQuestLogger log, final Map<String, Class<? extends Objective>> objectiveTypes) {
-        super(log);
-        this.objectiveTypes = objectiveTypes;
+        super(log, objectiveTypes, "objectives");
     }
 
     @Override
@@ -43,11 +36,6 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> i
             objective.close();
         }
         super.clear();
-    }
-
-    @Override
-    public Map.Entry<String, CompositeInstructionMetricsSupplier<?>> metricsSupplier() {
-        return Map.entry("objectives", new CompositeInstructionMetricsSupplier<>(values::keySet, objectiveTypes::keySet));
     }
 
     @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
@@ -75,7 +63,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> i
                     log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
                     continue;
                 }
-                final Class<? extends Objective> objectiveClass = objectiveTypes.get(type);
+                final Class<? extends Objective> objectiveClass = types.get(type);
                 if (objectiveClass == null) {
                     log.warn(pack,
                             "Objective type " + type + " is not registered, check if it's"

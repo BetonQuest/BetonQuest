@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -25,24 +24,15 @@ import java.util.concurrent.ExecutionException;
 /**
  * Does the logic around Conditions.
  */
-public class ConditionProcessor extends QuestProcessor<ConditionID, Condition> implements MetricSupplying {
+public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Condition, Class<? extends Condition>> {
     /**
-     * Available Condition types.
-     */
-    private final Map<String, Class<? extends Condition>> conditionTypes;
-
-    /**
+     * Create a new Condition Processor to store Conditions and checks them.
+     *
      * @param log            the custom logger for this class
      * @param conditionTypes the available condition types
      */
     public ConditionProcessor(final BetonQuestLogger log, final Map<String, Class<? extends Condition>> conditionTypes) {
-        super(log);
-        this.conditionTypes = conditionTypes;
-    }
-
-    @Override
-    public Map.Entry<String, CompositeInstructionMetricsSupplier<?>> metricsSupplier() {
-        return Map.entry("conditions", new CompositeInstructionMetricsSupplier<>(values::keySet, conditionTypes::keySet));
+        super(log, conditionTypes, "conditions");
     }
 
     /**
@@ -75,7 +65,7 @@ public class ConditionProcessor extends QuestProcessor<ConditionID, Condition> i
                     log.warn(pack, "Condition type not defined in '" + packName + "." + key + "'", e);
                     continue;
                 }
-                final Class<? extends Condition> conditionClass = conditionTypes.get(type);
+                final Class<? extends Condition> conditionClass = types.get(type);
                 if (conditionClass == null) {
                     log.warn(pack, "Condition type " + type + " is not registered,"
                             + " check if it's spelled correctly in '" + identifier + "' condition.");
