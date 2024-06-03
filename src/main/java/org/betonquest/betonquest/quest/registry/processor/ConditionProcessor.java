@@ -25,7 +25,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * Does the logic around Conditions.
  */
-public class ConditionProcessor extends QuestProcessor<Condition, ConditionID> implements MetricSupplying {
+public class ConditionProcessor extends QuestProcessor<ConditionID, Condition> implements MetricSupplying {
     /**
      * Available Condition types.
      */

@@ -12,7 +12,7 @@ import org.bukkit.configuration.ConfigurationSection;
 /**
  * Stores Conversation Data and validates it.
  */
-public class ConversationProcessor extends QuestProcessor<ConversationData, ConversationID> {
+public class ConversationProcessor extends QuestProcessor<ConversationID, ConversationData> {
     /**
      * Plugin instance used for new Conversation Data.
      */

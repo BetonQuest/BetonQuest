@@ -13,7 +13,7 @@ import java.util.Map;
  * @param <T> the quest type being processed
  * @param <I> the {@link ID} identifying {@link T}
  */
-public abstract class QuestProcessor<T, I extends ID> {
+public abstract class QuestProcessor<I extends ID, T> {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */

@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 /**
  * Stores Variables and resolve them.
  */
-public class VariableProcessor extends QuestProcessor<Variable, VariableID> implements MetricSupplying {
+public class VariableProcessor extends QuestProcessor<VariableID, Variable> implements MetricSupplying {
     /**
      * Available Variable types.
      */

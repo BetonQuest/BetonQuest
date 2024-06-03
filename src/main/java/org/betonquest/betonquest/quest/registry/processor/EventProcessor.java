@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * Stores Events and execute them.
  */
-public class EventProcessor extends QuestProcessor<QuestEvent, EventID> implements MetricSupplying {
+public class EventProcessor extends QuestProcessor<EventID, QuestEvent> implements MetricSupplying {
     /**
      * Available Event types.
      */

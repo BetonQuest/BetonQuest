@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * Stores Objectives and starts/stops/resumes them.
  */
-public class ObjectiveProcessor extends QuestProcessor<Objective, ObjectiveID> implements MetricSupplying {
+public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> implements MetricSupplying {
     /**
      * Available Objective types
      */

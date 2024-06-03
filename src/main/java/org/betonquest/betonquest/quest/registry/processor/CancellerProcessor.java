@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Stores Quest Canceller.
  */
-public class CancellerProcessor extends QuestProcessor<QuestCanceler, QuestCancelerID> {
+public class CancellerProcessor extends QuestProcessor<QuestCancelerID, QuestCanceler> {
     /**
      * Create a new Quest Canceller Processor to store them.
      *
