@@ -39,7 +39,6 @@ public class ObjectiveProcessor extends QuestProcessor<Objective, ObjectiveID> i
 
     @Override
     public void clear() {
-        // save data of all objectives to the players
         for (final Objective objective : values.values()) {
             objective.close();
         }
@@ -77,7 +76,6 @@ public class ObjectiveProcessor extends QuestProcessor<Objective, ObjectiveID> i
                     continue;
                 }
                 final Class<? extends Objective> objectiveClass = objectiveTypes.get(type);
-                // if it's null then there is no such type registered, log an error
                 if (objectiveClass == null) {
                     log.warn(pack,
                             "Objective type " + type + " is not registered, check if it's"

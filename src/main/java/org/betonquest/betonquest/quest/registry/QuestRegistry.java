@@ -72,17 +72,18 @@ public class QuestRegistry {
      * @param log            the custom logger for this registry and processors
      * @param loggerFactory  the logger factory used for new custom logger instances
      * @param plugin         the plugin used to create new conversation data
-     * @param schedules      the schedules module containing available schedule types
+     * @param scheduleTypes  the available schedule types
      * @param conditionTypes the available condition types
      * @param eventTypes     the available event types
      * @param objectiveTypes the available objective types
      * @param variableTypes  the available variable types
      */
-    public QuestRegistry(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuest plugin, final EventScheduling schedules,
+    public QuestRegistry(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuest plugin,
+                         final Map<String, EventScheduling.ScheduleType<?>> scheduleTypes,
                          final Map<String, Class<? extends Condition>> conditionTypes, final Map<String, QuestEventFactory> eventTypes,
                          final Map<String, Class<? extends Objective>> objectiveTypes, final Map<String, Class<? extends Variable>> variableTypes) {
         this.log = log;
-        this.eventScheduling = schedules;
+        this.eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), scheduleTypes);
         this.conditionProcessor = new ConditionProcessor(log, conditionTypes);
         this.eventProcessor = new EventProcessor(log, eventTypes);
         this.objectiveProcessor = new ObjectiveProcessor(log, objectiveTypes);
@@ -100,7 +101,6 @@ public class QuestRegistry {
      */
     public void loadData(final Collection<QuestPackage> packages) {
         eventScheduling.stopAll();
-        // clear previously loaded data
         conditionProcessor.clear();
         eventProcessor.clear();
         objectiveProcessor.clear();
@@ -108,7 +108,6 @@ public class QuestRegistry {
         cancellerProcessor.clear();
         conversationProcessor.clear();
 
-        // load new data
         for (final QuestPackage pack : packages) {
             final String packName = pack.getQuestPath();
             log.debug(pack, "Loading stuff in package " + packName);
@@ -117,7 +116,6 @@ public class QuestRegistry {
             conditionProcessor.load(pack);
             objectiveProcessor.load(pack);
             conversationProcessor.load(pack);
-            // load schedules
             eventScheduling.loadData(pack);
 
             log.debug(pack, "Everything in package " + packName + " loaded");
@@ -129,7 +127,6 @@ public class QuestRegistry {
                 + objectiveProcessor.size() + " objectives and " + conversationProcessor.size() + " conversations loaded from "
                 + packages.size() + " packages.");
 
-        //start all schedules
         eventScheduling.startAll();
     }
 

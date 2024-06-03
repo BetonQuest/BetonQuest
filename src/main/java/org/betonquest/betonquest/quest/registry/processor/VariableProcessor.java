@@ -98,14 +98,12 @@ public class VariableProcessor extends QuestProcessor<Variable, VariableID> impl
         } catch (final ObjectNotFoundException e) {
             throw new InstructionParseException("Could not load variable: " + e.getMessage(), e);
         }
-        // no need to create duplicated variables
         final Variable existingVariable = values.get(variableID);
         if (existingVariable != null) {
             return existingVariable;
         }
         final Instruction instructionVar = variableID.generateInstruction();
         final Class<? extends Variable> variableClass = variableTypes.get(instructionVar.current());
-        // if it's null then there is no such type registered, log an error
         if (variableClass == null) {
             throw new InstructionParseException("Variable type " + instructionVar.current() + " is not registered");
         }

@@ -532,8 +532,7 @@ public class BetonQuest extends JavaPlugin {
         new CompassCommand();
         new LangCommand(loggerFactory.create(LangCommand.class));
 
-        final EventScheduling eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), SCHEDULE_TYPES);
-        questRegistry = new QuestRegistry(log, loggerFactory, this, eventScheduling,
+        questRegistry = new QuestRegistry(log, loggerFactory, this, SCHEDULE_TYPES,
                 CONDITION_TYPES, eventTypes, OBJECTIVE_TYPES, VARIABLE_TYPES);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this).register();

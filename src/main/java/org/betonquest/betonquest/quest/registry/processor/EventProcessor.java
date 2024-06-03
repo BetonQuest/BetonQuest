@@ -67,7 +67,6 @@ public class EventProcessor extends QuestProcessor<QuestEvent, EventID> implemen
                 }
                 final QuestEventFactory eventFactory = eventTypes.get(type);
                 if (eventFactory == null) {
-                    // if it's null then there is no such type registered, log an error
                     log.warn(pack, "Event type " + type + " is not registered, check if it's"
                             + " spelled correctly in '" + identifier + "' event.");
                     continue;

@@ -76,7 +76,6 @@ public class ConditionProcessor extends QuestProcessor<Condition, ConditionID> i
                     continue;
                 }
                 final Class<? extends Condition> conditionClass = conditionTypes.get(type);
-                // if it's null then there is no such type registered, log an error
                 if (conditionClass == null) {
                     log.warn(pack, "Condition type " + type + " is not registered,"
                             + " check if it's spelled correctly in '" + identifier + "' condition.");
