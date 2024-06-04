@@ -1,16 +1,17 @@
 package org.betonquest.betonquest.quest.event.setblock;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Sets a block at specified location
  */
-public class SetBlockEvent implements Event {
+public class SetBlockEvent implements ComposedEvent {
     /**
      * The block selector
      */
@@ -40,7 +41,7 @@ public class SetBlockEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         final Location location = compoundLocation.getLocation(profile);
         selector.setToBlock(location.getBlock(), applyPhysics);
     }

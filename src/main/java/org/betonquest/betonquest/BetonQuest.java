@@ -19,6 +19,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.CachingBetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.schedule.Schedule;
@@ -105,6 +106,7 @@ import org.betonquest.betonquest.notify.SubTitleNotifyIO;
 import org.betonquest.betonquest.notify.SuppressNotifyIO;
 import org.betonquest.betonquest.notify.TitleNotifyIO;
 import org.betonquest.betonquest.notify.TotemNotifyIO;
+import org.betonquest.betonquest.quest.event.ComposedEventFactoryAdapter;
 import org.betonquest.betonquest.quest.event.NullStaticEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.FromClassQuestEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
@@ -890,6 +892,19 @@ public class BetonQuest extends JavaPlugin {
     public void registerEvent(final String name, final EventFactory eventFactory, final StaticEventFactory staticEventFactory) {
         getInstance().log.debug("Registering " + name + " event type");
         eventTypes.put(name, new QuestEventFactoryAdapter(eventFactory, staticEventFactory));
+    }
+
+    /**
+     * Registers an event with its name and a single factory to create both normal and
+     * static instances of the event.
+     *
+     * @param name         name of the event
+     * @param eventFactory factory to create the event and the static event
+     */
+    public void registerEvent(final String name, final ComposedEventFactory eventFactory) {
+        final ComposedEventFactoryAdapter adapter = new ComposedEventFactoryAdapter(eventFactory);
+        getInstance().log.debug("Registering " + name + " event type");
+        eventTypes.put(name, new QuestEventFactoryAdapter(adapter, adapter));
     }
 
     /**

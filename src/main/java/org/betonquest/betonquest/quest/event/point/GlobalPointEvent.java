@@ -3,16 +3,17 @@ package org.betonquest.betonquest.quest.event.point;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
 /**
  * Modifies global Points
  */
-public class GlobalPointEvent implements Event {
+public class GlobalPointEvent implements ComposedEvent {
     /**
      * The global data
      */
@@ -48,7 +49,7 @@ public class GlobalPointEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         final Optional<org.betonquest.betonquest.Point> globalPoint = globalData.getPoints().stream()
                 .filter(p -> p.getCategory().equalsIgnoreCase(category))
                 .findFirst();

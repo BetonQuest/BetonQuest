@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
@@ -19,7 +19,7 @@ import java.util.Arrays;
 /**
  * Removes all entities of given type at location.
  */
-public class RemoveEntityEvent implements Event {
+public class RemoveEntityEvent implements ComposedEvent {
 
     /**
      * The type of the mob.
@@ -74,7 +74,7 @@ public class RemoveEntityEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         final Location mobLocation = location.getLocation(profile);
         for (final EntityType type : types) {
             mobLocation.getNearbyEntitiesByType(type.getEntityClass(), radius.getDouble(profile))

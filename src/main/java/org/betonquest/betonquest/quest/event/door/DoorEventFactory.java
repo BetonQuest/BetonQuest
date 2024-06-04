@@ -1,13 +1,10 @@
 package org.betonquest.betonquest.quest.event.door;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.quest.event.NullStaticEventAdapter;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
@@ -18,7 +15,7 @@ import java.util.Locale;
 /**
  * Factory to create door events from {@link Instruction}s.
  */
-public class DoorEventFactory implements EventFactory, StaticEventFactory {
+public class DoorEventFactory implements ComposedEventFactory {
     /**
      * Server to use for syncing to the primary server thread.
      */
@@ -48,13 +45,8 @@ public class DoorEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        return new PrimaryServerThreadEvent(createDoorEvent(instruction), server, scheduler, plugin);
-    }
-
-    @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
-        return new NullStaticEventAdapter(parseEvent(instruction));
+    public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadComposedEvent(createDoorEvent(instruction), server, scheduler, plugin);
     }
 
     private DoorEvent createDoorEvent(final Instruction instruction) throws InstructionParseException {

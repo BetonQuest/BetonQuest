@@ -6,14 +6,13 @@ import org.betonquest.betonquest.api.common.function.ConstantSelector;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
-import org.betonquest.betonquest.quest.event.NullStaticEventAdapter;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -54,13 +53,13 @@ public class TimeEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public ComposedEvent parseEvent(final Instruction instruction) throws InstructionParseException {
         final String timeString = instruction.next();
         final Time time = parseTimeType(timeString);
         final VariableNumber rawTime = parseTime(instruction.getPackage(), timeString, time != Time.SET);
         final Selector<World> worldSelector = parseWorld(instruction.getOptional("world"));
         final boolean hourFormat = !instruction.hasArgument("ticks");
-        return new PrimaryServerThreadEvent(
+        return new PrimaryServerThreadComposedEvent(
                 new TimeEvent(time, rawTime, worldSelector, hourFormat),
                 server, scheduler, plugin);
     }
@@ -70,7 +69,7 @@ public class TimeEventFactory implements EventFactory, StaticEventFactory {
         if (instruction.copy().getOptional("world") == null) {
             return new DoNothingStaticEvent();
         } else {
-            return new NullStaticEventAdapter(parseEvent(instruction));
+            return parseEvent(instruction);
         }
     }
 

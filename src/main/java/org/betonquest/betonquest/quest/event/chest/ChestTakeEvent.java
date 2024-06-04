@@ -3,17 +3,18 @@ package org.betonquest.betonquest.quest.event.chest;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Removes items from a chest.
  */
-public class ChestTakeEvent extends AbstractChestEvent implements Event {
+public class ChestTakeEvent extends AbstractChestEvent implements ComposedEvent {
 
     /**
      * The items to take from the chest.
@@ -33,7 +34,7 @@ public class ChestTakeEvent extends AbstractChestEvent implements Event {
 
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         try {
             final Inventory inventory = getChest(profile).getInventory();
             for (final Item item : items) {
@@ -45,7 +46,6 @@ public class ChestTakeEvent extends AbstractChestEvent implements Event {
         } catch (final QuestRuntimeException e) {
             throw new QuestRuntimeException("Trying to take items from chest. " + e.getMessage(), e);
         }
-
     }
 
     private ItemStack[] removeItems(final ItemStack[] items, final QuestItem questItem, final int amount) {

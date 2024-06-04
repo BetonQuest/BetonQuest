@@ -2,21 +2,18 @@ package org.betonquest.betonquest.quest.event.random;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.quest.event.NullStaticEventAdapter;
 
 import java.util.List;
 
 /**
  * Creates new {@link PickRandomEvent} instances from an {@link Instruction}.
  */
-public class PickRandomEventFactory implements EventFactory, StaticEventFactory {
+public class PickRandomEventFactory implements ComposedEventFactory {
     /**
      * The percentage character.
      */
@@ -40,7 +37,7 @@ public class PickRandomEventFactory implements EventFactory, StaticEventFactory 
 
     @Override
     @SuppressWarnings("PMD.CognitiveComplexity")
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
         final List<RandomEvent> events = instruction.getList(string -> {
             if (!string.matches("(\\d+\\.?\\d?|%.*%)%.+")) {
                 throw new InstructionParseException("Percentage must be specified correctly: " + string);
@@ -80,10 +77,4 @@ public class PickRandomEventFactory implements EventFactory, StaticEventFactory 
         final VariableNumber amount = instruction.getVarNum(instruction.getOptional("amount"));
         return new PickRandomEvent(events, amount);
     }
-
-    @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
-        return new NullStaticEventAdapter(parseEvent(instruction));
-    }
-
 }

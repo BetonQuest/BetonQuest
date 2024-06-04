@@ -2,15 +2,16 @@ package org.betonquest.betonquest.quest.event.logic;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The if else event. Either execute the one or the other event, depending on the condition.
  */
-public class IfElseEvent implements Event {
+public class IfElseEvent implements ComposedEvent {
     /**
      * The condition to check.
      */
@@ -40,7 +41,7 @@ public class IfElseEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         if (BetonQuest.condition(profile, condition)) {
             BetonQuest.event(profile, event);
         } else {

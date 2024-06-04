@@ -1,15 +1,16 @@
 package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.inventory.InventoryHolder;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Clears a specified chest from all items inside.
  */
-public class ChestClearEvent extends AbstractChestEvent implements Event {
+public class ChestClearEvent extends AbstractChestEvent implements ComposedEvent {
 
     /**
      * Creates a new chest clear event.
@@ -21,7 +22,7 @@ public class ChestClearEvent extends AbstractChestEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         try {
             final InventoryHolder chest = getChest(profile);
             chest.getInventory().clear();

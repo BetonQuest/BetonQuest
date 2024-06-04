@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.lever;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Material;
@@ -10,11 +10,12 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
 import org.bukkit.block.data.type.Switch;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This event turns on, of or toggles levers.
  */
-public class LeverEvent implements Event {
+public class LeverEvent implements ComposedEvent {
 
     /**
      * The type of state to set the lever to.
@@ -38,7 +39,7 @@ public class LeverEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         final Block block = location.getLocation(profile).getBlock();
 
         if (!block.getType().equals(Material.LEVER)) {

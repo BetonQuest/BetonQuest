@@ -2,9 +2,10 @@ package org.betonquest.betonquest.quest.event.logic;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.EventID;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * The First event. Similar to the folder, except it runs linearly through a list of events and
  * stops after the first one succeeds. This is intended to be used with condition: syntax in events.
  */
-public class FirstEvent implements Event {
+public class FirstEvent implements ComposedEvent {
     /**
      * The events to run.
      */
@@ -28,7 +29,7 @@ public class FirstEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         for (final EventID event : events) {
             if (BetonQuest.event(profile, event)) {
                 break;
