@@ -4,6 +4,7 @@ import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.bukkit.ChatColor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -16,12 +17,9 @@ import java.util.List;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class ItemDescription {
-    private final QuestPackage pack;
-
     private final List<VariableString> lines;
 
     public ItemDescription(final QuestPackage pack, final Collection<String> content) throws InstructionParseException {
-        this.pack = pack;
         this.lines = new ArrayList<>();
         for (final String line : content) {
             this.lines.add(new VariableString(pack, line));
@@ -40,7 +38,7 @@ public class ItemDescription {
         if (displayName == null) {
             return null;
         }
-        return displayName.getString(profile);
+        return ChatColor.translateAlternateColorCodes('&', displayName.getString(profile));
     }
 
     /**
@@ -56,7 +54,7 @@ public class ItemDescription {
         }
         final List<String> lore = new ArrayList<>(lines.size());
         for (final VariableString line : lines) {
-            lore.addAll(Arrays.asList(line.getString(profile).split("\n")));
+            lore.addAll(Arrays.asList(ChatColor.translateAlternateColorCodes('&', line.getString(profile)).split("\n")));
         }
         return lore;
     }
