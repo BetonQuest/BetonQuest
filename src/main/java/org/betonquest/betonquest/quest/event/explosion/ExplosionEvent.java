@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.explosion;
 
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.HybridEvent;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Spawns an explosion in a given location and with given stats.
  */
-public class ExplosionEvent implements HybridEvent {
+public class ExplosionEvent implements ComposedEvent {
     /**
      * The location of the explosion.
      */

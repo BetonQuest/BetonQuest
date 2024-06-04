@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
  * Common usage is when containing {@link org.betonquest.betonquest.api.Variable Variable}s can require a
  * {@link org.betonquest.betonquest.api.profiles.Profile Profile}.
  */
-public interface HybridEvent extends Event, StaticEvent {
+public interface ComposedEvent extends Event, StaticEvent {
     @Override
     void execute(@Nullable Profile profile) throws QuestRuntimeException;
 

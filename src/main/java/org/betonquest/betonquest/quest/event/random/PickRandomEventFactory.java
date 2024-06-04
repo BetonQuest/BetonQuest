@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.event.random;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.api.quest.event.HybridEvent;
-import org.betonquest.betonquest.api.quest.event.HybridEventFactory;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.EventID;
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Creates new {@link PickRandomEvent} instances from an {@link Instruction}.
  */
-public class PickRandomEventFactory implements HybridEventFactory {
+public class PickRandomEventFactory implements ComposedEventFactory {
     /**
      * The percentage character.
      */
@@ -37,7 +37,7 @@ public class PickRandomEventFactory implements HybridEventFactory {
 
     @Override
     @SuppressWarnings("PMD.CognitiveComplexity")
-    public HybridEvent parseHybridEvent(final Instruction instruction) throws InstructionParseException {
+    public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
         final List<RandomEvent> events = instruction.getList(string -> {
             if (!string.matches("(\\d+\\.?\\d?|%.*%)%.+")) {
                 throw new InstructionParseException("Percentage must be specified correctly: " + string);

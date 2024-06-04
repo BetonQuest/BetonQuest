@@ -4,14 +4,14 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.api.quest.event.HybridEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadHybridEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Location;
 import org.bukkit.Server;
@@ -75,10 +75,10 @@ public class DropEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public HybridEvent parseEvent(final Instruction instruction) throws InstructionParseException {
+    public ComposedEvent parseEvent(final Instruction instruction) throws InstructionParseException {
         final Item[] items = parseItemList(instruction);
         final Selector<Location> location = parseLocationSelector(instruction);
 
-        return new PrimaryServerThreadHybridEvent(new DropEvent(items, location), server, scheduler, plugin);
+        return new PrimaryServerThreadComposedEvent(new DropEvent(items, location), server, scheduler, plugin);
     }
 }

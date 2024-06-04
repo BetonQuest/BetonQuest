@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.weather;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.HybridEvent;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * The weather event, changing the weather on the server.
  */
-public class WeatherEvent implements HybridEvent {
+public class WeatherEvent implements ComposedEvent {
 
     /**
      * The weather that will be set when the event is executed.

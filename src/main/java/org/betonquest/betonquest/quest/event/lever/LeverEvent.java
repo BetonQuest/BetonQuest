@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.lever;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.HybridEvent;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Material;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * This event turns on, of or toggles levers.
  */
-public class LeverEvent implements HybridEvent {
+public class LeverEvent implements ComposedEvent {
 
     /**
      * The type of state to set the lever to.

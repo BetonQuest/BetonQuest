@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.point;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.HybridEvent;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Deletes all points of a category.
  */
-public class DeletePointEvent implements HybridEvent {
+public class DeletePointEvent implements ComposedEvent {
 
     /**
      * The category to delete.

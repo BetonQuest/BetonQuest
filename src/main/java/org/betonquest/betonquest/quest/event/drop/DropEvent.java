@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.drop;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.HybridEvent;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Event that drops items at a location.
  */
-public class DropEvent implements HybridEvent {
+public class DropEvent implements ComposedEvent {
     /**
      * Items to be dropped.
      */

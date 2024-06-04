@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.event.door;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.quest.event.HybridEvent;
-import org.betonquest.betonquest.api.quest.event.HybridEventFactory;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadHybridEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
@@ -15,7 +15,7 @@ import java.util.Locale;
 /**
  * Factory to create door events from {@link Instruction}s.
  */
-public class DoorEventFactory implements HybridEventFactory {
+public class DoorEventFactory implements ComposedEventFactory {
     /**
      * Server to use for syncing to the primary server thread.
      */
@@ -45,8 +45,8 @@ public class DoorEventFactory implements HybridEventFactory {
     }
 
     @Override
-    public HybridEvent parseHybridEvent(final Instruction instruction) throws InstructionParseException {
-        return new PrimaryServerThreadHybridEvent(createDoorEvent(instruction), server, scheduler, plugin);
+    public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadComposedEvent(createDoorEvent(instruction), server, scheduler, plugin);
     }
 
     private DoorEvent createDoorEvent(final Instruction instruction) throws InstructionParseException {

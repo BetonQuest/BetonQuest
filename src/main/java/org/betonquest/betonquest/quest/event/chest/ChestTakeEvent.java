@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.chest;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.HybridEvent;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Removes items from a chest.
  */
-public class ChestTakeEvent extends AbstractChestEvent implements HybridEvent {
+public class ChestTakeEvent extends AbstractChestEvent implements ComposedEvent {
 
     /**
      * The items to take from the chest.
@@ -46,7 +46,6 @@ public class ChestTakeEvent extends AbstractChestEvent implements HybridEvent {
         } catch (final QuestRuntimeException e) {
             throw new QuestRuntimeException("Trying to take items from chest. " + e.getMessage(), e);
         }
-
     }
 
     private ItemStack[] removeItems(final ItemStack[] items, final QuestItem questItem, final int amount) {

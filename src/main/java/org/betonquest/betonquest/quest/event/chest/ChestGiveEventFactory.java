@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.quest.event.HybridEvent;
-import org.betonquest.betonquest.api.quest.event.HybridEventFactory;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadHybridEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -12,7 +12,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 /**
  * Factory to create chest events from {@link Instruction}s.
  */
-public class ChestGiveEventFactory implements HybridEventFactory {
+public class ChestGiveEventFactory implements ComposedEventFactory {
     /**
      * Server to use for syncing to the primary server thread.
      */
@@ -42,8 +42,8 @@ public class ChestGiveEventFactory implements HybridEventFactory {
     }
 
     @Override
-    public HybridEvent parseHybridEvent(final Instruction instruction) throws InstructionParseException {
-        return new PrimaryServerThreadHybridEvent(
+    public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadComposedEvent(
                 new ChestGiveEvent(instruction.getLocation(), instruction.getItemList()), server, scheduler, plugin);
     }
 }

@@ -4,12 +4,12 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.bukkit.command.SilentCommandSender;
 import org.betonquest.betonquest.api.bukkit.command.SilentConsoleCommandSender;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.HybridEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadHybridEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -42,18 +42,18 @@ public class CommandEventFactory extends BaseCommandEventFactory implements Stat
                 "CommandEvent"), server.getConsoleSender());
     }
 
-    private HybridEvent parseHybridEvent(final Instruction instruction) throws InstructionParseException {
-        return new PrimaryServerThreadHybridEvent(
+    private ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadComposedEvent(
                 new CommandEvent(parseCommands(instruction), silentSender, server), server, scheduler, plugin);
     }
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        return parseHybridEvent(instruction);
+        return parseComposedEvent(instruction);
     }
 
     @Override
     public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
-        return parseHybridEvent(instruction);
+        return parseComposedEvent(instruction);
     }
 }

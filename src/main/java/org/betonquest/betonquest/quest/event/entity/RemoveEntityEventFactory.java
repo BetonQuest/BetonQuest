@@ -3,10 +3,10 @@ package org.betonquest.betonquest.quest.event.entity;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.VariableString;
-import org.betonquest.betonquest.api.quest.event.HybridEvent;
-import org.betonquest.betonquest.api.quest.event.HybridEventFactory;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadHybridEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Server;
@@ -21,7 +21,7 @@ import java.util.Locale;
  * <p>
  * Created on 29.06.2018.
  */
-public class RemoveEntityEventFactory implements HybridEventFactory {
+public class RemoveEntityEventFactory implements ComposedEventFactory {
 
     /**
      * Server to use for syncing to the primary server thread.
@@ -52,7 +52,7 @@ public class RemoveEntityEventFactory implements HybridEventFactory {
     }
 
     @Override
-    public HybridEvent parseHybridEvent(final Instruction instruction) throws InstructionParseException {
+    public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
         final String[] entities = instruction.getArray();
         final EntityType[] types = new EntityType[entities.length];
         for (int i = 0; i < types.length; i++) {
@@ -68,7 +68,7 @@ public class RemoveEntityEventFactory implements HybridEventFactory {
         final boolean kill = instruction.hasArgument("kill");
         final String markedString = instruction.getOptional("marked");
         final VariableString marked = markedString == null ? null : new VariableString(instruction.getPackage(), Utils.addPackage(instruction.getPackage(), markedString));
-        return new PrimaryServerThreadHybridEvent(new RemoveEntityEvent(types, loc, range, name, marked, kill),
+        return new PrimaryServerThreadComposedEvent(new RemoveEntityEvent(types, loc, range, name, marked, kill),
                 server, scheduler, plugin);
     }
 }

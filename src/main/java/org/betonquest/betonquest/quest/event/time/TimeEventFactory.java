@@ -6,13 +6,13 @@ import org.betonquest.betonquest.api.common.function.ConstantSelector;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.api.quest.event.HybridEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadHybridEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -53,13 +53,13 @@ public class TimeEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public HybridEvent parseEvent(final Instruction instruction) throws InstructionParseException {
+    public ComposedEvent parseEvent(final Instruction instruction) throws InstructionParseException {
         final String timeString = instruction.next();
         final Time time = parseTimeType(timeString);
         final VariableNumber rawTime = parseTime(instruction.getPackage(), timeString, time != Time.SET);
         final Selector<World> worldSelector = parseWorld(instruction.getOptional("world"));
         final boolean hourFormat = !instruction.hasArgument("ticks");
-        return new PrimaryServerThreadHybridEvent(
+        return new PrimaryServerThreadComposedEvent(
                 new TimeEvent(time, rawTime, worldSelector, hourFormat),
                 server, scheduler, plugin);
     }

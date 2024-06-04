@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.HybridEvent;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
@@ -19,7 +19,7 @@ import java.util.Arrays;
 /**
  * Removes all entities of given type at location.
  */
-public class RemoveEntityEvent implements HybridEvent {
+public class RemoveEntityEvent implements ComposedEvent {
 
     /**
      * The type of the mob.

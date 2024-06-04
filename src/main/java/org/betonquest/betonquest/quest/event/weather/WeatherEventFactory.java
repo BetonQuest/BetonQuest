@@ -6,15 +6,15 @@ import org.betonquest.betonquest.api.common.function.ConstantSelector;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.api.quest.event.HybridEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
 import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadHybridEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -63,17 +63,17 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
         this.plugin = plugin;
     }
 
-    private HybridEvent parseHybridEvent(final Instruction instruction) throws InstructionParseException {
+    private ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
         final Weather weather = parseWeather(instruction.next());
         final Selector<World> worldSelector = parseWorld(instruction.getOptional("world"));
         final VariableNumber duration = instruction.getVarNum(instruction.getOptional("duration", "0"));
-        return new PrimaryServerThreadHybridEvent(new WeatherEvent(weather, worldSelector, duration),
+        return new PrimaryServerThreadComposedEvent(new WeatherEvent(weather, worldSelector, duration),
                 server, scheduler, plugin);
     }
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        return new OnlineProfileRequiredEvent(loggerFactory.create(WeatherEvent.class), parseHybridEvent(instruction), instruction.getPackage());
+        return new OnlineProfileRequiredEvent(loggerFactory.create(WeatherEvent.class), parseComposedEvent(instruction), instruction.getPackage());
     }
 
     @Override
@@ -81,7 +81,7 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
         if (instruction.copy().getOptional("world") == null) {
             return new DoNothingStaticEvent();
         } else {
-            return parseHybridEvent(instruction);
+            return parseComposedEvent(instruction);
         }
     }
 

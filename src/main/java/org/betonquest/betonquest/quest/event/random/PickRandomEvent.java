@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.random;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.HybridEvent;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Fires randomly events by chance and amount.
  */
-public class PickRandomEvent implements HybridEvent {
+public class PickRandomEvent implements ComposedEvent {
     /**
      * The events with there chance
      */

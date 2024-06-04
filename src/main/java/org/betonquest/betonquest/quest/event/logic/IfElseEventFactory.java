@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.logic;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.quest.event.HybridEvent;
-import org.betonquest.betonquest.api.quest.event.HybridEventFactory;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
@@ -10,7 +10,7 @@ import org.betonquest.betonquest.id.EventID;
 /**
  * Factory to create ifelse events from {@link Instruction}s.
  */
-public class IfElseEventFactory implements HybridEventFactory {
+public class IfElseEventFactory implements ComposedEventFactory {
 
     /**
      * The empty constructor
@@ -20,7 +20,7 @@ public class IfElseEventFactory implements HybridEventFactory {
 
     @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.PrematureDeclaration"})
     @Override
-    public HybridEvent parseHybridEvent(final Instruction instruction) throws InstructionParseException {
+    public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
         final ConditionID condition = instruction.getCondition();
         final EventID event = instruction.getEvent();
         if (!"else".equalsIgnoreCase(instruction.next())) {

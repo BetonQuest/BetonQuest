@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.event.setblock;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.quest.event.HybridEvent;
-import org.betonquest.betonquest.api.quest.event.HybridEventFactory;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadHybridEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Server;
@@ -14,7 +14,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 /**
  * Factory to create setblock events from {@link Instruction}s.
  */
-public class SetBlockEventFactory implements HybridEventFactory {
+public class SetBlockEventFactory implements ComposedEventFactory {
     /**
      * Server to use for syncing to the primary server thread.
      */
@@ -44,11 +44,11 @@ public class SetBlockEventFactory implements HybridEventFactory {
     }
 
     @Override
-    public HybridEvent parseHybridEvent(final Instruction instruction) throws InstructionParseException {
+    public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
         final BlockSelector blockSelector = instruction.getBlockSelector(instruction.next());
         final CompoundLocation compoundLocation = instruction.getLocation();
         final boolean applyPhysics = !instruction.hasArgument("ignorePhysics");
-        return new PrimaryServerThreadHybridEvent(
+        return new PrimaryServerThreadComposedEvent(
                 new SetBlockEvent(blockSelector, compoundLocation, applyPhysics),
                 server, scheduler, plugin
         );

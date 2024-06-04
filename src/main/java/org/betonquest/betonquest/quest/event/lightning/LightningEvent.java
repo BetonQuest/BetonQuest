@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.lightning;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.HybridEvent;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Strikes a lightning at specified location
  */
-public class LightningEvent implements HybridEvent {
+public class LightningEvent implements ComposedEvent {
     /**
      * The location to strike the lightning at.
      */

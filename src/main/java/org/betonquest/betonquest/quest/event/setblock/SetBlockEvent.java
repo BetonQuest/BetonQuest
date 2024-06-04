@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.setblock;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.HybridEvent;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Sets a block at specified location
  */
-public class SetBlockEvent implements HybridEvent {
+public class SetBlockEvent implements ComposedEvent {
     /**
      * The block selector
      */

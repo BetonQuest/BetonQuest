@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.logic;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.HybridEvent;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * The if else event. Either execute the one or the other event, depending on the condition.
  */
-public class IfElseEvent implements HybridEvent {
+public class IfElseEvent implements ComposedEvent {
     /**
      * The condition to check.
      */
