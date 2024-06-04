@@ -89,7 +89,7 @@ import org.betonquest.betonquest.objectives.TameObjective;
 import org.betonquest.betonquest.objectives.VariableObjective;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.advancement.AdvancementConditionFactory;
-import org.betonquest.betonquest.quest.condition.block.TestForBlockConditionFactory;
+import org.betonquest.betonquest.quest.condition.block.BlockConditionFactory;
 import org.betonquest.betonquest.quest.condition.realtime.DayOfWeekConditionFactory;
 import org.betonquest.betonquest.quest.condition.realtime.PartialDateConditionFactory;
 import org.betonquest.betonquest.quest.event.burn.BurnEventFactory;
@@ -269,7 +269,7 @@ public class CoreQuestTypes {
         betonQuest.registerConditions("sneak", SneakCondition.class);
         betonQuest.registerConditions("stage", StageCondition.class);
         betonQuest.registerConditions("tag", TagCondition.class);
-        conditionTypes.register("testforblock", new TestForBlockConditionFactory(data));
+        conditionTypes.register("testforblock", new BlockConditionFactory(data));
         betonQuest.registerConditions("time", TimeCondition.class);
         betonQuest.registerConditions("variable", VariableCondition.class);
         betonQuest.registerConditions("weather", WeatherCondition.class);

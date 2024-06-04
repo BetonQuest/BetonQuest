@@ -12,7 +12,7 @@ import org.betonquest.betonquest.utils.location.CompoundLocation;
 /**
  * Factory to create test for block conditions from {@link Instruction}s.
  */
-public class TestForBlockConditionFactory implements ConditionFactory {
+public class BlockConditionFactory implements ConditionFactory {
     /**
      * Data used for condition check on the primary server thread.
      */
@@ -23,7 +23,7 @@ public class TestForBlockConditionFactory implements ConditionFactory {
      *
      * @param data the data used for checking the condition on the main thread
      */
-    public TestForBlockConditionFactory(final PrimaryServerThreadData data) {
+    public BlockConditionFactory(final PrimaryServerThreadData data) {
         this.data = data;
     }
 
@@ -32,6 +32,6 @@ public class TestForBlockConditionFactory implements ConditionFactory {
         final CompoundLocation loc = instruction.getLocation();
         final BlockSelector selector = instruction.getBlockSelector();
         final boolean exactMatch = instruction.hasArgument("exactMatch");
-        return new PrimaryServerThreadCondition(new TestForBlockCondition(loc, selector, exactMatch), data);
+        return new PrimaryServerThreadCondition(new BlockCondition(loc, selector, exactMatch), data);
     }
 }

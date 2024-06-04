@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Checks block at specified location against specified {@link BlockSelector}.
  */
-public class TestForBlockCondition implements Condition {
+public class BlockCondition implements Condition {
     /**
      * Location to test for the block.
      */
@@ -34,7 +34,7 @@ public class TestForBlockCondition implements Condition {
      * @param selector   the selector to validate the block
      * @param exactMatch if the selector match has to be exact
      */
-    public TestForBlockCondition(final CompoundLocation loc, final BlockSelector selector, final boolean exactMatch) {
+    public BlockCondition(final CompoundLocation loc, final BlockSelector selector, final boolean exactMatch) {
         this.loc = loc;
         this.selector = selector;
         this.exactMatch = exactMatch;
