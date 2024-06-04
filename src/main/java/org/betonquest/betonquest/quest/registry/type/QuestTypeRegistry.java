@@ -1,7 +1,11 @@
-package org.betonquest.betonquest.api.quest;
+package org.betonquest.betonquest.quest.registry.type;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.quest.ComposedQuestFactory;
+import org.betonquest.betonquest.api.quest.QuestFactory;
+import org.betonquest.betonquest.api.quest.StaticQuestFactory;
+import org.betonquest.betonquest.quest.ComposedQuestTypeAdapter;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;

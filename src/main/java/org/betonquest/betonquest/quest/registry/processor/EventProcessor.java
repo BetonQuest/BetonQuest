@@ -4,13 +4,13 @@ import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.EventTypeRegistry;
 import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
+import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 

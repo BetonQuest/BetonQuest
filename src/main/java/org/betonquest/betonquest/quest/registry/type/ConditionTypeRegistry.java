@@ -1,10 +1,14 @@
-package org.betonquest.betonquest.api.quest;
+package org.betonquest.betonquest.quest.registry.type;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.quest.ComposedQuestFactory;
+import org.betonquest.betonquest.api.quest.QuestFactory;
+import org.betonquest.betonquest.api.quest.StaticQuestFactory;
 import org.betonquest.betonquest.api.quest.condition.ComposedCondition;
 import org.betonquest.betonquest.api.quest.condition.Condition;
 import org.betonquest.betonquest.api.quest.condition.StaticCondition;
+import org.betonquest.betonquest.quest.ComposedQuestTypeAdapter;
 import org.betonquest.betonquest.quest.condition.ComposedConditionFactoryAdapter;
 import org.betonquest.betonquest.quest.condition.legacy.FromClassLegacyConditionFactory;
 import org.betonquest.betonquest.quest.condition.legacy.LegacyConditionFactory;
@@ -16,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class ConditionTypeRegistry extends QuestTypeRegistry<Condition, StaticCondition, ComposedCondition, org.betonquest.betonquest.api.Condition, LegacyConditionFactory> {
     /**
-     * Create a new event type registry.
+     * Create a new condition type registry.
      *
      * @param log           the logger that will be used for logging
      * @param loggerFactory the logger factory to create a new logger for the legacy quest type factory created

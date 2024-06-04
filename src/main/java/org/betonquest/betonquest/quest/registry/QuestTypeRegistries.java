@@ -1,8 +1,8 @@
-package org.betonquest.betonquest.api.quest.registry;
+package org.betonquest.betonquest.quest.registry;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.ConditionTypeRegistry;
-import org.betonquest.betonquest.api.quest.EventTypeRegistry;
+import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
+import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
 
 /**
  * Registry for quest core elements.

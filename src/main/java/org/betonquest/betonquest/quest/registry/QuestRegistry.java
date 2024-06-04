@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.registry.QuestTypeRegistries;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.modules.schedule.EventScheduling;

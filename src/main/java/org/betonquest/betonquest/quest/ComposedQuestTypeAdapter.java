@@ -1,7 +1,8 @@
-package org.betonquest.betonquest.api.quest;
+package org.betonquest.betonquest.quest;
 
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.api.quest.ComposedQuestFactory;
+import org.betonquest.betonquest.api.quest.QuestFactory;
+import org.betonquest.betonquest.api.quest.StaticQuestFactory;
 
 /**
  * Factory adapter for that will provide both {@link T} and {@link S Static T} implementations
@@ -18,7 +19,7 @@ public abstract class ComposedQuestTypeAdapter<H, T, S> implements QuestFactory<
     protected final ComposedQuestFactory<H> composedFactory;
 
     /**
-     * Create a new ComposedEventFactoryAdapter to create {@link Event}s and {@link StaticEvent}s from it.
+     * Create a new ComposedEventFactoryAdapter to create {@link T}s and {@link S}' from it.
      *
      * @param composedFactory the factory used to parse the instruction.
      */

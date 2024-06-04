@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.ComposedQuestFactory;
-import org.betonquest.betonquest.api.quest.ComposedQuestTypeAdapter;
 import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
@@ -10,6 +9,7 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.quest.ComposedQuestTypeAdapter;
 
 /**
  * Factory adapter for that will provide both {@link Event} and {@link StaticEvent} implementations

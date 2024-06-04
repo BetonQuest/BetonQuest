@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.condition;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.ComposedQuestFactory;
-import org.betonquest.betonquest.api.quest.ComposedQuestTypeAdapter;
 import org.betonquest.betonquest.api.quest.condition.ComposedCondition;
 import org.betonquest.betonquest.api.quest.condition.ComposedConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.Condition;
@@ -10,6 +9,7 @@ import org.betonquest.betonquest.api.quest.condition.ConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.StaticCondition;
 import org.betonquest.betonquest.api.quest.condition.StaticConditionFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.quest.ComposedQuestTypeAdapter;
 
 /**
  * Factory adapter for that will provide both {@link Condition} and {@link StaticCondition} implementations
