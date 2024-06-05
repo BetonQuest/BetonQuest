@@ -152,12 +152,11 @@ Cannot be disabled currently. If you want this to be semi-disabled set a very hi
 ### Sounds
 This section defines what sounds will be played on these occasions:
 
-  * `start` and `end` refer to start and end points of conversations.
-  * `journal` is played upon updating the journal.
-  * `full` is played when the player executes `/journal` but his inventory is full.
-  
+  * `start` when a conversation starts
+  * `end` when a conversation ends
   
 A list of all possible sounds for the latest Minecraft version can be found [here](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html).
+And sounds can be disabled by setting them to `false`.
     
 ### Conversation Command Banlist
 `cmd_blacklist` is a list of commands that cannot be used during a conversation. Remember that you can only type single words (command names) here!
