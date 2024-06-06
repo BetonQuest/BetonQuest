@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -18,19 +17,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 /**
  * Does the logic around Conditions.
  */
-public class ConditionProcessor extends QuestProcessor<ConditionID, Condition> {
-    /**
-     * Available Condition types.
-     */
-    private final ConditionTypeRegistry types;
-
+public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Condition> {
     /**
      * Create a new Condition Processor to store Conditions and checks them.
      *
@@ -38,17 +31,7 @@ public class ConditionProcessor extends QuestProcessor<ConditionID, Condition> {
      * @param conditionTypes the available condition types
      */
     public ConditionProcessor(final BetonQuestLogger log, final ConditionTypeRegistry conditionTypes) {
-        super(log);
-        this.types = conditionTypes;
-    }
-
-    /**
-     * Gets the bstats metric supplier for registered and active types.
-     *
-     * @return the metric with its type identifier
-     */
-    public Map.Entry<String, CompositeInstructionMetricsSupplier<?>> metricsSupplier() {
-        return Map.entry("conditions", new CompositeInstructionMetricsSupplier<>(values::keySet, types::keySet));
+        super(log, conditionTypes, "conditions");
     }
 
     /**

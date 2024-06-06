@@ -4,7 +4,6 @@ import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -14,17 +13,10 @@ import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-
 /**
  * Stores Events and execute them.
  */
-public class EventProcessor extends QuestProcessor<EventID, QuestEvent> {
-    /**
-     * Available Event types.
-     */
-    private final EventTypeRegistry types;
-
+public class EventProcessor extends TypedQuestProcessor<EventID, QuestEvent> {
     /**
      * Create a new Event Processor to store events and execute them.
      *
@@ -32,17 +24,7 @@ public class EventProcessor extends QuestProcessor<EventID, QuestEvent> {
      * @param eventTypes the available event types
      */
     public EventProcessor(final BetonQuestLogger log, final EventTypeRegistry eventTypes) {
-        super(log);
-        this.types = eventTypes;
-    }
-
-    /**
-     * Gets the bstats metric supplier for registered and active types.
-     *
-     * @return the metric with its type identifier
-     */
-    public Map.Entry<String, CompositeInstructionMetricsSupplier<?>> metricsSupplier() {
-        return Map.entry("events", new CompositeInstructionMetricsSupplier<>(values::keySet, types::keySet));
+        super(log, eventTypes, "events");
     }
 
     @SuppressWarnings("PMD.CognitiveComplexity")

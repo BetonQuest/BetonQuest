@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ObjectiveID;
@@ -19,7 +20,12 @@ import java.util.Map;
 /**
  * Stores Objectives and starts/stops/resumes them.
  */
-public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objective, Class<? extends Objective>> {
+public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
+    /**
+     * Available Objective types.
+     */
+    private final Map<String, Class<? extends Objective>> types;
+
     /**
      * Create a new Objective Processor to store Objectives and starts/stops/resumes them.
      *
@@ -27,7 +33,17 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
      * @param objectiveTypes the available objective types
      */
     public ObjectiveProcessor(final BetonQuestLogger log, final Map<String, Class<? extends Objective>> objectiveTypes) {
-        super(log, objectiveTypes, "objectives");
+        super(log);
+        this.types = objectiveTypes;
+    }
+
+    /**
+     * Gets the bstats metric supplier for registered and active types.
+     *
+     * @return the metric with its type identifier
+     */
+    public Map.Entry<String, CompositeInstructionMetricsSupplier<?>> metricsSupplier() {
+        return Map.entry("objectives", new CompositeInstructionMetricsSupplier<>(values::keySet, types::keySet));
     }
 
     @Override
