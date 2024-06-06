@@ -52,7 +52,7 @@ To complete this objective the player must break or place the specified amount o
   
 ```YAML
 objectives:
-  breakLogs: "block LOG -16 events:reward notify"
+  breakLogs: "block .*_LOG -16 events:reward notify"
   placeBricks: "block BRICKS 64 events:epicReward notify:5"
   breakIron: "block IRON_ORE -16 noSafety notify events:dailyReward"
 ```
