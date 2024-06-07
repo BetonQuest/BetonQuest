@@ -11,15 +11,15 @@ import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.quest.ComposedQuestTypeAdapter;
 import org.betonquest.betonquest.quest.event.ComposedEventFactoryAdapter;
-import org.betonquest.betonquest.quest.event.legacy.FromClassQuestEventFactory;
-import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
-import org.betonquest.betonquest.quest.event.legacy.QuestEventFactoryAdapter;
+import org.betonquest.betonquest.quest.legacy.FromClassLegacyTypeFactory;
+import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
+import org.betonquest.betonquest.quest.legacy.QuestEventFactoryAdapter;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Stores the event types that can be used in BetonQuest.
  */
-public class EventTypeRegistry extends QuestTypeRegistry<Event, StaticEvent, ComposedEvent, QuestEvent, QuestEventFactory> {
+public class EventTypeRegistry extends QuestTypeRegistry<Event, StaticEvent, ComposedEvent, QuestEvent> {
     /**
      * Create a new event type registry.
      *
@@ -31,13 +31,13 @@ public class EventTypeRegistry extends QuestTypeRegistry<Event, StaticEvent, Com
     }
 
     @Override
-    protected QuestEventFactory getFromClassLegacyTypeFactory(final BetonQuestLogger log, final Class<? extends QuestEvent> questEventClass) {
-        return new FromClassQuestEventFactory<>(log, questEventClass);
+    protected LegacyTypeFactory<QuestEvent> getFromClassLegacyTypeFactory(final BetonQuestLogger log, final Class<? extends QuestEvent> questEventClass) {
+        return new FromClassLegacyTypeFactory<>(log, questEventClass, "event");
     }
 
     @Override
-    protected QuestEventFactory getLegacyFactoryAdapter(@Nullable final QuestFactory<Event> eventFactory,
-                                                        @Nullable final StaticQuestFactory<StaticEvent> staticEventFactory) {
+    protected LegacyTypeFactory<QuestEvent> getLegacyFactoryAdapter(@Nullable final QuestFactory<Event> eventFactory,
+                                                                    @Nullable final StaticQuestFactory<StaticEvent> staticEventFactory) {
         return new QuestEventFactoryAdapter(eventFactory, staticEventFactory);
     }
 

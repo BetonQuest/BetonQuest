@@ -10,15 +10,15 @@ import org.betonquest.betonquest.api.quest.condition.Condition;
 import org.betonquest.betonquest.api.quest.condition.StaticCondition;
 import org.betonquest.betonquest.quest.ComposedQuestTypeAdapter;
 import org.betonquest.betonquest.quest.condition.ComposedConditionFactoryAdapter;
-import org.betonquest.betonquest.quest.condition.legacy.FromClassLegacyConditionFactory;
-import org.betonquest.betonquest.quest.condition.legacy.LegacyConditionFactory;
-import org.betonquest.betonquest.quest.condition.legacy.LegacyConditionFactoryAdapter;
+import org.betonquest.betonquest.quest.legacy.FromClassLegacyTypeFactory;
+import org.betonquest.betonquest.quest.legacy.LegacyConditionFactoryAdapter;
+import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Stores the condition types that can be used in BetonQuest.
  */
-public class ConditionTypeRegistry extends QuestTypeRegistry<Condition, StaticCondition, ComposedCondition, org.betonquest.betonquest.api.Condition, LegacyConditionFactory> {
+public class ConditionTypeRegistry extends QuestTypeRegistry<Condition, StaticCondition, ComposedCondition, org.betonquest.betonquest.api.Condition> {
     /**
      * Create a new condition type registry.
      *
@@ -30,13 +30,13 @@ public class ConditionTypeRegistry extends QuestTypeRegistry<Condition, StaticCo
     }
 
     @Override
-    protected LegacyConditionFactory getFromClassLegacyTypeFactory(final BetonQuestLogger log, final Class<? extends org.betonquest.betonquest.api.Condition> conditionClass) {
-        return new FromClassLegacyConditionFactory<>(log, conditionClass);
+    protected LegacyTypeFactory<org.betonquest.betonquest.api.Condition> getFromClassLegacyTypeFactory(final BetonQuestLogger log, final Class<? extends org.betonquest.betonquest.api.Condition> conditionClass) {
+        return new FromClassLegacyTypeFactory<>(log, conditionClass, "condition");
     }
 
     @Override
-    protected LegacyConditionFactory getLegacyFactoryAdapter(@Nullable final QuestFactory<Condition> eventFactory,
-                                                             @Nullable final StaticQuestFactory<StaticCondition> staticEventFactory) {
+    protected LegacyTypeFactory<org.betonquest.betonquest.api.Condition> getLegacyFactoryAdapter(@Nullable final QuestFactory<Condition> eventFactory,
+                                                                                                 @Nullable final StaticQuestFactory<StaticCondition> staticEventFactory) {
         return new LegacyConditionFactoryAdapter(eventFactory, staticEventFactory);
     }
 

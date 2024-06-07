@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.item.typehandler.HandlerUtil;
-import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
+import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -55,14 +55,14 @@ public class RunEvent extends QuestEvent {
      */
     private QuestEvent createEvent(final String instruction) throws InstructionParseException {
         final String[] parts = HandlerUtil.getNNSplit(instruction, "Not enough arguments in internal event", " ");
-        final QuestEventFactory eventFactory = BetonQuest.getInstance().getQuestRegistries().getEventTypes().getFactory(parts[0]);
+        final LegacyTypeFactory<QuestEvent> eventFactory = BetonQuest.getInstance().getQuestRegistries().getEventTypes().getFactory(parts[0]);
         if (eventFactory == null) {
             // if it's null then there is no such type registered, log an error
             throw new InstructionParseException("Event type " + parts[0] + " is not registered, check if it's"
                     + " spelled correctly in internal event");
         }
         final Instruction eventInstruction = new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), this.instruction.getPackage(), null, instruction);
-        return eventFactory.parseEventInstruction(eventInstruction);
+        return eventFactory.parseInstruction(eventInstruction);
     }
 
     @Override

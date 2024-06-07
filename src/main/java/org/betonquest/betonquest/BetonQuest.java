@@ -109,7 +109,7 @@ import org.betonquest.betonquest.notify.SubTitleNotifyIO;
 import org.betonquest.betonquest.notify.SuppressNotifyIO;
 import org.betonquest.betonquest.notify.TitleNotifyIO;
 import org.betonquest.betonquest.notify.TotemNotifyIO;
-import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
+import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
 import org.betonquest.betonquest.quest.registry.CoreQuestTypes;
 import org.betonquest.betonquest.quest.registry.QuestRegistry;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
@@ -1073,7 +1073,7 @@ public class BetonQuest extends JavaPlugin {
      */
     @Deprecated
     @Nullable
-    public QuestEventFactory getEventFactory(final String name) {
+    public LegacyTypeFactory<QuestEvent> getEventFactory(final String name) {
         return questTypeRegistries.getEventTypes().getFactory(name);
     }
 

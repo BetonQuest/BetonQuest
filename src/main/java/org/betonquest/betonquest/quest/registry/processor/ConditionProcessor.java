@@ -10,7 +10,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.quest.condition.legacy.LegacyConditionFactory;
+import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -81,14 +81,14 @@ public class ConditionProcessor extends QuestProcessor<ConditionID, Condition> {
                     log.warn(pack, "Condition type not defined in '" + packName + "." + key + "'", e);
                     continue;
                 }
-                final LegacyConditionFactory factory = types.getFactory(type);
+                final LegacyTypeFactory<Condition> factory = types.getFactory(type);
                 if (factory == null) {
                     log.warn(pack, "Condition type " + type + " is not registered,"
                             + " check if it's spelled correctly in '" + identifier + "' condition.");
                     continue;
                 }
                 try {
-                    final Condition condition = factory.parseConditionInstruction(identifier.getInstruction());
+                    final Condition condition = factory.parseInstruction(identifier.getInstruction());
                     values.put(identifier, condition);
                     log.debug(pack, "  Condition '" + identifier + "' loaded");
                 } catch (final InstructionParseException e) {

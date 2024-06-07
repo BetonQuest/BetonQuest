@@ -9,7 +9,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
+import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
 import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
@@ -70,7 +70,7 @@ public class EventProcessor extends QuestProcessor<EventID, QuestEvent> {
                     log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
                     continue;
                 }
-                final QuestEventFactory eventFactory = types.getFactory(type);
+                final LegacyTypeFactory<QuestEvent> eventFactory = types.getFactory(type);
                 if (eventFactory == null) {
                     log.warn(pack, "Event type " + type + " is not registered, check if it's"
                             + " spelled correctly in '" + identifier + "' event.");
@@ -78,7 +78,7 @@ public class EventProcessor extends QuestProcessor<EventID, QuestEvent> {
                 }
 
                 try {
-                    final QuestEvent event = eventFactory.parseEventInstruction(identifier.getInstruction());
+                    final QuestEvent event = eventFactory.parseInstruction(identifier.getInstruction());
                     values.put(identifier, event);
                     log.debug(pack, "  Event '" + identifier + "' loaded");
                 } catch (final InstructionParseException e) {

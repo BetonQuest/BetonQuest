@@ -9,7 +9,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.NoID;
-import org.betonquest.betonquest.quest.condition.legacy.LegacyConditionFactory;
+import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -68,7 +68,7 @@ public class CheckCondition extends Condition {
         if (parts.length == 0) {
             throw new InstructionParseException("Not enough arguments in internal condition");
         }
-        final LegacyConditionFactory conditionFactory = BetonQuest.getInstance().getQuestRegistries().getConditionTypes().getFactory(parts[0]);
+        final LegacyTypeFactory<Condition> conditionFactory = BetonQuest.getInstance().getQuestRegistries().getConditionTypes().getFactory(parts[0]);
         if (conditionFactory == null) {
             // if it's null then there is no such type registered, log an error
             throw new InstructionParseException("Condition type " + parts[0] + " is not registered, check if it's"
@@ -76,7 +76,7 @@ public class CheckCondition extends Condition {
         }
         try {
             final Instruction innerInstruction = new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), this.instruction.getPackage(), new NoID(this.instruction.getPackage()), instruction);
-            return conditionFactory.parseConditionInstruction(innerInstruction);
+            return conditionFactory.parseInstruction(innerInstruction);
         } catch (final ObjectNotFoundException e) {
             if (e.getCause() instanceof InstructionParseException) {
                 throw new InstructionParseException("Error in internal condition: " + e.getCause().getMessage(), e);

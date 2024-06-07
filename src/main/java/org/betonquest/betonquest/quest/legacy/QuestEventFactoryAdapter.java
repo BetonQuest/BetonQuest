@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.event.legacy;
+package org.betonquest.betonquest.quest.legacy;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
@@ -14,19 +14,7 @@ import org.jetbrains.annotations.Nullable;
  * Adapter to let {@link EventFactory EventFactories} create {@link QuestEvent}s from the {@link Event}s and
  * {@link StaticEvent}s they create.
  */
-public class QuestEventFactoryAdapter implements QuestEventFactory {
-    /**
-     * The event factory to be adapted.
-     */
-    @Nullable
-    private final QuestFactory<Event> factory;
-
-    /**
-     * The static event factory to be adapted.
-     */
-    @Nullable
-    private final StaticQuestFactory<StaticEvent> staticFactory;
-
+public class QuestEventFactoryAdapter extends LegacyFactoryAdapter<Event, StaticEvent, QuestEvent> {
     /**
      * Create the factory from an {@link EventFactory}.
      * <p>
@@ -36,17 +24,12 @@ public class QuestEventFactoryAdapter implements QuestEventFactory {
      * @param staticFactory static event factory to use
      */
     public QuestEventFactoryAdapter(@Nullable final QuestFactory<Event> factory, @Nullable final StaticQuestFactory<StaticEvent> staticFactory) {
-        if (factory == null && staticFactory == null) {
-            throw new IllegalArgumentException("Either the normal or static factory must be present!");
-        }
-        this.factory = factory;
-        this.staticFactory = staticFactory;
+        super(factory, staticFactory);
     }
 
     @Override
-    public QuestEventAdapter parseEventInstruction(final Instruction instruction) throws InstructionParseException {
-        final Event event = factory == null ? null : factory.parse(instruction.copy());
-        final StaticEvent staticEvent = staticFactory == null ? null : staticFactory.parseStatic(instruction.copy());
-        return new QuestEventAdapter(instruction, event, staticEvent);
+    protected QuestEvent getAdapter(final Instruction instruction, @Nullable final Event type, @Nullable final StaticEvent staticType)
+            throws InstructionParseException {
+        return new QuestEventAdapter(instruction, type, staticType);
     }
 }

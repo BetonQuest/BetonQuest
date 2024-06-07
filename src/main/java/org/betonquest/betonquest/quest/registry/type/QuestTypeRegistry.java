@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.quest.ComposedQuestFactory;
 import org.betonquest.betonquest.api.quest.QuestFactory;
 import org.betonquest.betonquest.api.quest.StaticQuestFactory;
 import org.betonquest.betonquest.quest.ComposedQuestTypeAdapter;
+import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -20,9 +21,8 @@ import java.util.Set;
  * @param <C> the composed type extending {@link T} and {@link S}
  * @param <L> the legacy structure based on the {@link org.betonquest.betonquest.Instruction Instruction}
  *            as defined in the {@link org.betonquest.betonquest.api API package}
- * @param <F> the legacy factory stored creating new {@link L}
  */
-public abstract class QuestTypeRegistry<T, S, C, L, F> {
+public abstract class QuestTypeRegistry<T, S, C, L> {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -41,7 +41,7 @@ public abstract class QuestTypeRegistry<T, S, C, L, F> {
     /**
      * Map of registered legacy factories.
      */
-    private final Map<String, F> types = new HashMap<>();
+    private final Map<String, LegacyTypeFactory<L>> types = new HashMap<>();
 
     /**
      * Create a new type registry.
@@ -76,7 +76,7 @@ public abstract class QuestTypeRegistry<T, S, C, L, F> {
      * @param lClass the class object for the {@link T}
      * @return the legacy factory to store
      */
-    protected abstract F getFromClassLegacyTypeFactory(BetonQuestLogger log, Class<? extends L> lClass);
+    protected abstract LegacyTypeFactory<L> getFromClassLegacyTypeFactory(BetonQuestLogger log, Class<? extends L> lClass);
 
     /**
      * Registers an {@link T} that does not support static execution with its name
@@ -163,7 +163,7 @@ public abstract class QuestTypeRegistry<T, S, C, L, F> {
      * @param staticFactory factory to create the static {@link T}
      * @return the legacy factory to store
      */
-    protected abstract F getLegacyFactoryAdapter(@Nullable QuestFactory<T> factory, @Nullable StaticQuestFactory<S> staticFactory);
+    protected abstract LegacyTypeFactory<L> getLegacyFactoryAdapter(@Nullable QuestFactory<T> factory, @Nullable StaticQuestFactory<S> staticFactory);
 
     /**
      * Fetches the factory to create the type registered with the given name.
@@ -172,7 +172,7 @@ public abstract class QuestTypeRegistry<T, S, C, L, F> {
      * @return a factory to create the type
      */
     @Nullable
-    public F getFactory(final String name) {
+    public LegacyTypeFactory<L> getFactory(final String name) {
         return types.get(name);
     }
 

@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.condition.legacy;
+package org.betonquest.betonquest.quest.legacy;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
