@@ -5,14 +5,11 @@ import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -31,54 +28,12 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
      * @param conditionTypes the available condition types
      */
     public ConditionProcessor(final BetonQuestLogger log, final ConditionTypeRegistry conditionTypes) {
-        super(log, conditionTypes, "conditions");
+        super(log, conditionTypes, "Condition", "conditions");
     }
 
-    /**
-     * Load all Conditions from the QuestPackage.
-     *
-     * @param pack to load the conditions from
-     */
-    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
     @Override
-    public void load(final QuestPackage pack) {
-        final ConfigurationSection cConfig = pack.getConfig().getConfigurationSection("conditions");
-        if (cConfig != null) {
-            final String packName = pack.getQuestPath();
-            for (final String key : cConfig.getKeys(false)) {
-                if (key.contains(" ")) {
-                    log.warn(pack, "Condition name cannot contain spaces: '" + key + "' (in " + packName + " package)");
-                    continue;
-                }
-                final ConditionID identifier;
-                try {
-                    identifier = new ConditionID(pack, key);
-                } catch (final ObjectNotFoundException e) {
-                    log.warn(pack, "Error while loading condition '" + packName + "." + key + "': " + e.getMessage(), e);
-                    continue;
-                }
-                final String type;
-                try {
-                    type = identifier.getInstruction().getPart(0);
-                } catch (final InstructionParseException e) {
-                    log.warn(pack, "Condition type not defined in '" + packName + "." + key + "'", e);
-                    continue;
-                }
-                final LegacyTypeFactory<Condition> factory = types.getFactory(type);
-                if (factory == null) {
-                    log.warn(pack, "Condition type " + type + " is not registered,"
-                            + " check if it's spelled correctly in '" + identifier + "' condition.");
-                    continue;
-                }
-                try {
-                    final Condition condition = factory.parseInstruction(identifier.getInstruction());
-                    values.put(identifier, condition);
-                    log.debug(pack, "  Condition '" + identifier + "' loaded");
-                } catch (final InstructionParseException e) {
-                    log.warn(pack, "Error in '" + identifier + "' condition (" + type + "): " + e.getMessage(), e);
-                }
-            }
-        }
+    protected ConditionID getIdentifier(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
+        return new ConditionID(pack, identifier);
     }
 
     /**
@@ -147,7 +102,7 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
         }
         if (profile == null && !condition.isStatic()) {
             log.warn(conditionID.getPackage(),
-                    "Cannot check non- condition '" + conditionID + "' without a player, returning false");
+                    "Cannot check non-static condition '" + conditionID + "' without a player, returning false");
             return false;
         }
         if (profile != null && profile.getOnlineProfile().isEmpty() && !condition.isPersistent()) {

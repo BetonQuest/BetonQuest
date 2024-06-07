@@ -32,13 +32,18 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable>
      */
     public VariableProcessor(final BetonQuestLogger log, final VariableTypeRegistry variableTypes,
                              final BetonQuestLoggerFactory loggerFactory) {
-        super(log, variableTypes, "variables");
+        super(log, variableTypes, "Variable", "variables");
         this.loggerFactory = loggerFactory;
     }
 
     @Override
     public void load(final QuestPackage pack) {
         // Empty
+    }
+
+    @Override
+    protected VariableID getIdentifier(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
+        return new VariableID(loggerFactory, pack, identifier);
     }
 
     /**
@@ -99,7 +104,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable>
                 return "";
             }
             if (profile == null && !var.isStaticness()) {
-                log.warn(pack, "Variable '" + name + "' cannot be executed without a profile reference!");
+                log.warn(pack, "Non-static variable '" + name + "' cannot be executed without a profile reference!");
                 return "";
             }
             return var.getValue(profile);
