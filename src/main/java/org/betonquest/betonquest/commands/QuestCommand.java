@@ -804,7 +804,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         // done
         sendMessage(sender, "item_created", args[1]);
-
     }
 
     /**
@@ -1472,8 +1471,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         cmds.put("variable", "variable <player> <variable> [list/set/del]");
         cmds.put("rename", "rename <tag/point/globalpoint/objective/journal> <old> <new>");
         cmds.put("delete", "delete <tag/point/objective/journal> <name>");
-        cmds.put("config", "config <read/set/add> <path> [string]");
-        cmds.put("vector", "vector <pack.varname> <vectorname>");
         cmds.put("version", "version");
         cmds.put("purge", "purge <player>");
         cmds.put("debug", "debug [true/false/ingame]");
