@@ -86,46 +86,67 @@ The server must be restarted to unregister command tab completions.
 **Permission:** `betonquest.admin`
 
 ### Reload the plugin: `reload`
-Reloading loads all data from configuration, but not everything is updated. Player's data isn't touched to avoid lags made by database saving. The database is also the same, you will have to reload/restart the whole server for the database to change.
+Reloading loads all data from configuration, but not everything is updated. Player's data isn't touched to avoid lags made by database saving.
+The database is also the same, you will have to reload/restart the whole server for the database to change.
 
 ### Interact with quest primitives
 #### Manage objectives: `objective`
-Objective subcommand allows you to list all active objectives (shown as their labels) of the player. It can also directly add or cancel objectives using instruction strings. You can also complete the objective for the player using `complete` argument - it will run all events and remove the objective.
+Objective subcommand allows you to list all active objectives (shown as their labels) of the player.
+It can also directly add or cancel objectives using instruction strings.
+You can also complete the objective for the player using `complete` argument - it will run all events and remove the objective.
 
 #### Manage tags: `tag`
-Tags subcommand allows you to easily list and modify tags. '`/q tags Beton`' would list tags for player Beton. '`/q tags Beton add test`' would add "test" tag for that player, and '`/q tags Beton del test`' would remove it.
+Tags subcommand allows you to easily list and modify tags. '`/q tags Beton`' would list tags for player Beton.
+'`/q tags Beton add test`' would add "test" tag for that player, and '`/q tags Beton del test`' would remove it.
 
 #### Manage points: `point`
-Points subcommand is similar - listing points is done the same way. Adding points to a category looks like that: '`/q points Beton add reputation 20`' (adding 20 points to "reputation" category). You can also subtract points with negative amounts. Removing the whole point category can be achieved by '`/q points Beton del reputation`'.
+Points subcommand is similar - listing points is done the same way. Adding points to a category looks like that:
+'`/q points Beton add reputation 20`' (adding 20 points to "reputation" category). You can also subtract points with negative amounts.
+Removing the whole point category can be achieved by '`/q points Beton del reputation`'.
 
 #### Run events: `event`
-Running events for online players can be done with event argument: '`/q event Beton quest.give_emeralds`' would run `give_emeralds` for player Beton (if he's online) from the package `quest`. If you want to run a static event, replace player's name with `-`.
+Running events for online players can be done with event argument:
+'`/q event Beton quest.give_emeralds`' would run `give_emeralds` for player Beton (if he's online) from the package `quest`.
+If you want to run a static event, replace player's name with `-`.
 
 #### Check conditions: `condition`,
-There is also condition argument for checking conditions, for example '`/q condition Beton has_food`'. Events and conditions need to be defined in their files, this command doesn't accept raw instructions. If you want to check a static condition replace the player's name with `-`.
+There is also condition argument for checking conditions, for example '`/q condition Beton has_food`'.
+Events and conditions need to be defined in their files, this command doesn't accept raw instructions.
+If you want to check a static condition replace the player's name with `-`.
 
 #### Manage the journal: `journal`
-Journal subcommand works in the same way as those two above. Adding and removing looks like `/q journal Beton add quest.wood_started` (or `del`), and you can also specify the date of entry when adding it, by appending date written like this: `23.04.2014_16:52` at the end of the command. Note that there is `_` character instead of space!
+Journal subcommand works in the same way as those two above.
+Adding and removing looks like `/q journal Beton add quest.wood_started` (or `del`), and you can also specify the date
+of entry when adding it, by appending date written like this: `23.04.2014_16:52` at the end of the command.
+Note that there is `_` character instead of space!
 
 #### Manage items: `give` and `item`
-If you need to create for example "Nettlebane" quest item, just hold it in your hand and type '`/q item nettlebane`'. It will copy the item you're holding into the _items.yml_ file and save it there with the name you specified (in this case "nettlebane"). You can skip the package name here as well.
+If you need to create for example "Nettlebane" quest item, just hold it in your hand and type '`/q item nettlebane`'.
+It will copy the item you're holding into the _items.yml_ file and save it there with the name you specified (in this case "nettlebane").
+You can skip the package name here as well.
 
 The '`/q give package.item`' command will simply give you specified item.
 
 ### Purge player data: `purge`
-You can purge specific player with '`/q purge Beton`' command, where Beton is the name of the player. To purge the entire database at once simply change the prefix in _config.yml_ or delete _database.db_ file.
+You can purge specific player with '`/q purge Beton`' command, where Beton is the name of the player.
+To purge the entire database at once simply change the prefix in _config.yml_ or delete _database.db_ file.
 
 ### Delete data from the database: `delete`
 Delete command ('`/q delete`') allows you to delete from the database every tag, point, objective or journal entry with specified name.
 
 ### Rename a quest-primitive without loosing data: `rename`
-Rename command ('`/q rename`') allows you to rename every tag, point, globalpoint, objective or journal entry in the database. In case of an objective it will also rename the objective in _objectives_ section in the configuration file, so it continues to work correctly.
+Rename command ('`/q rename`') allows you to rename every tag, point, globalpoint, objective or journal entry in the database.
+In case of an objective it will also rename the objective in _objectives_ section in the configuration file, so it continues to work correctly.
 
 ### Create a backup: `backup`
-If you want to backup your configuration and database make sure that your server is empty (this process requires all data to be saved to database -> all players offline) and run '`/q backup`' command. You will get a zip file containing all your data, ready to be unzipped for restoring the plugin.
+If you want to backup your configuration and database make sure that your server is empty 
+(this process requires all data to be saved to database -> all players offline) and run '`/q backup`' command.
+You will get a zip file containing all your data, ready to be unzipped for restoring the plugin.
 
 ### Update the plugin: `update`
-Update command ('`/q update`') will try to download the newest version of the plugin and save it to the update folder. This folder is then handled by Spigot to update the plugin. If you accidentally use this command but do not wish to update the plugin, you should remove `BetonQuest.jar` file from the `plugins/update` folder before restarting/reloading the server.
+Update command ('`/q update`') will try to download the newest version of the plugin and save it to the update folder.
+This folder is then handled by Spigot to update the plugin. If you accidentally use this command but do not wish to update the plugin,
+you should remove `BetonQuest.jar` file from the `plugins/update` folder before restarting/reloading the server.
 
 ### Debug quests and BetonQuest: `debug`
 The debug command ('`/q debug`') allows you to enable or disable the debug mode. If the debug mode is enabled after
