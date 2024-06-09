@@ -63,6 +63,7 @@ The server must be restarted to unregister command tab completions.
     * `journal`: j, journals
     * `item`: i, items
     * `give`: g
+    * `variable`: var
     * `rename`: r
     * `delete`: d, del
     * `create`: package
@@ -126,6 +127,11 @@ It will copy the item you're holding into the _items.yml_ file and save it there
 You can skip the package name here as well.
 
 The '`/q give package.item`' command will simply give you specified item.
+
+#### Manage variables: `variable`
+This command relates to active [variable objectives](../Scripting/Building-Blocks/Objectives-List.md#variable-variable).
+You can list all `key-value` pairs with an optional objective filter.
+Further can such a value be set for a key with `set <key> <value>`or an existing pair removed by using `del <key>`.
 
 ### Purge player data: `purge`
 You can purge specific player with '`/q purge Beton`' command, where Beton is the name of the player.
