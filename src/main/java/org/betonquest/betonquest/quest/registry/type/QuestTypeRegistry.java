@@ -2,10 +2,10 @@ package org.betonquest.betonquest.quest.registry.type;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.ComposedQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
-import org.betonquest.betonquest.quest.ComposedQuestTypeAdapter;
+import org.betonquest.betonquest.api.quest.QuestFactory;
+import org.betonquest.betonquest.quest.QuestTypeAdapter;
 import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,11 +14,11 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Stores the {@link T Types} that can be used in BetonQuest.
+ * Stores the Types that can be used in BetonQuest.
  *
- * @param <T> the stored type as defined in {@link PlayerQuestFactory}
- * @param <S> the playerless variant of {@link T}
- * @param <C> the composed type extending {@link T} and {@link S}
+ * @param <T> the player variant of the type
+ * @param <S> the playerless variant of the type
+ * @param <C> the type extending {@link T} and {@link S}
  * @param <L> the legacy structure based on the {@link org.betonquest.betonquest.Instruction Instruction}
  *            as defined in the {@link org.betonquest.betonquest.api API package}
  */
@@ -59,8 +59,8 @@ public abstract class QuestTypeRegistry<T, S, C, L> {
     /**
      * Registers a type with its name and the class used to create instances of the type.
      *
-     * @param name   name of the {@link T} type
-     * @param lClass class object for the {@link T}
+     * @param name   the name of the type
+     * @param lClass the class object for the type
      * @deprecated replaced by {@link #register(String, PlayerQuestFactory, PlayerlessQuestFactory)}
      */
     @Deprecated
@@ -73,7 +73,7 @@ public abstract class QuestTypeRegistry<T, S, C, L> {
      * Create a new legacy type factory which will be used to create new instances of the {@link L}.
      *
      * @param log    the log to use in the factory
-     * @param lClass the class object for the {@link T}
+     * @param lClass the class object for the type
      * @return the legacy factory to store
      */
     protected abstract LegacyTypeFactory<L> getFromClassLegacyTypeFactory(BetonQuestLogger log, Class<? extends L> lClass);
@@ -83,7 +83,7 @@ public abstract class QuestTypeRegistry<T, S, C, L> {
      * and a player factory to create new player instances.
      *
      * @param name    the name of the type
-     * @param factory the player factory to create the {@link T}
+     * @param factory the player factory to create the type
      */
     public void register(final String name, final PlayerQuestFactory<T> factory) {
         registerInternal(name, factory, null);
@@ -93,37 +93,37 @@ public abstract class QuestTypeRegistry<T, S, C, L> {
      * Registers a type and a factory to create new playerless instances.
      *
      * @param name              the name of the type
-     * @param playerlessFactory the playerless factory to create the {@link S}
+     * @param playerlessFactory the playerless factory to create the type
      */
     public void register(final String name, final PlayerlessQuestFactory<S> playerlessFactory) {
         registerInternal(name, null, playerlessFactory);
     }
 
     /**
-     * Registers a type with its name and a composed factory to create player and playerless instances.
+     * Registers a type with its name and a factory to create player and playerless instances.
      *
-     * @param name            the name of the {@link T}
-     * @param composedFactory the factory to create the player and playerless type instances
+     * @param name    the name of the type
+     * @param factory the factory to create the player and playerless type instances
      */
-    public void register(final String name, final ComposedQuestFactory<C> composedFactory) {
-        final ComposedQuestTypeAdapter<C, T, S> composedAdapter = getComposedAdapter(composedFactory);
-        register(name, composedAdapter, composedAdapter);
+    public void register(final String name, final QuestFactory<C> factory) {
+        final QuestTypeAdapter<C, T, S> adapter = getAdapter(factory);
+        register(name, adapter, adapter);
     }
 
     /**
-     * Get a new adapter of {@link PlayerQuestFactory} and {@link PlayerlessQuestFactory}s from the {@link ComposedQuestFactory}.
+     * Get a new adapter of {@link PlayerQuestFactory} and {@link PlayerlessQuestFactory} from the {@link QuestFactory}.
      *
-     * @param composedFactory the composed factory to adapt
+     * @param factory the factory to adapt
      * @return the adapter to store
      */
-    protected abstract ComposedQuestTypeAdapter<C, T, S> getComposedAdapter(ComposedQuestFactory<C> composedFactory);
+    protected abstract QuestTypeAdapter<C, T, S> getAdapter(QuestFactory<C> factory);
 
     /**
      * Registers a type with its name and a single factory to create both player and playerless instances.
      *
-     * @param name    name of the type
-     * @param factory factory to create the player and playerless variant
-     * @param <Q>     type of factory that creates both normal and playerless instances of the type
+     * @param name    the name of the type
+     * @param factory the factory to create the player and playerless variant
+     * @param <Q>     the type of factory that creates both normal and playerless instances of the type
      */
     public <Q extends PlayerQuestFactory<T> & PlayerlessQuestFactory<S>> void registerCombined(final String name, final Q factory) {
         register(name, factory, factory);
@@ -132,9 +132,9 @@ public abstract class QuestTypeRegistry<T, S, C, L> {
     /**
      * Registers a type with its name and two factories to create player and playerless instances.
      *
-     * @param name              name of the type
-     * @param playerFactory     factory to create the {@link T}
-     * @param playerlessFactory factory to create the {@link S}
+     * @param name              the name of the type
+     * @param playerFactory     the player factory to create the type
+     * @param playerlessFactory the playerless factory to create the type
      */
     public void register(final String name, final PlayerQuestFactory<T> playerFactory, final PlayerlessQuestFactory<S> playerlessFactory) {
         registerInternal(name, playerFactory, playerlessFactory);
@@ -156,8 +156,8 @@ public abstract class QuestTypeRegistry<T, S, C, L> {
      * <p>
      * Either the player factory or the playerless factory has to be present.
      *
-     * @param playerFactory     player factory to create the {@link T}
-     * @param playerlessFactory playerless factory to create the {@link S}
+     * @param playerFactory     the player factory to create the type
+     * @param playerlessFactory the playerless factory to create the type
      * @return the legacy factory to store
      */
     protected abstract LegacyTypeFactory<L> getLegacyFactoryAdapter(

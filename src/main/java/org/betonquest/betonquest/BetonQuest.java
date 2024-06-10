@@ -19,9 +19,9 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.CachingBetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.ComposedQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
+import org.betonquest.betonquest.api.quest.QuestFactory;
 import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
@@ -916,7 +916,7 @@ public class BetonQuest extends JavaPlugin {
      * @param eventFactory factory to create the event and the static event
      * @deprecated in favor of direct usage of {@link #getQuestRegistries()}
      * further {@link QuestTypeRegistries#getEventTypes()}
-     * further {@link QuestTypeRegistry#register(String, ComposedQuestFactory)}
+     * further {@link QuestTypeRegistry#register(String, QuestFactory)}
      */
     @Deprecated
     public void registerEvent(final String name, final ComposedEventFactory eventFactory) {

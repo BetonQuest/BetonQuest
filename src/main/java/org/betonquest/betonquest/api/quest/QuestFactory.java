@@ -6,9 +6,9 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 /**
  * Factory to create a specific {@link T}.
  *
- * @param <T> {@literal PlayerCondition}, {@literal Event}, objective or variable
+ * @param <T> {@literal Condition}, {@literal ComposedEvent} or {@literal ComposedVariable}
  */
-public interface PlayerQuestFactory<T> {
+public interface QuestFactory<T> {
     /**
      * Parses an instruction to create a {@link T}.
      *
@@ -16,5 +16,5 @@ public interface PlayerQuestFactory<T> {
      * @return {@link T} represented by the instruction
      * @throws InstructionParseException when the instruction cannot be parsed
      */
-    T parsePlayer(Instruction instruction) throws InstructionParseException;
+    T parse(Instruction instruction) throws InstructionParseException;
 }

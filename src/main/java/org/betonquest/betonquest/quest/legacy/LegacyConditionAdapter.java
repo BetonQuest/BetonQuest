@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 public class LegacyConditionAdapter extends org.betonquest.betonquest.api.Condition {
     /**
-     * The normal condition to be adapted.
+     * The player condition to be adapted.
      */
     @Nullable
     private final PlayerCondition playerCondition;

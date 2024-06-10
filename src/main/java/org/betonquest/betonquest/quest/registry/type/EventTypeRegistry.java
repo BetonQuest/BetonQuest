@@ -3,13 +3,13 @@ package org.betonquest.betonquest.quest.registry.type;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.ComposedQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
+import org.betonquest.betonquest.api.quest.QuestFactory;
 import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.quest.ComposedQuestTypeAdapter;
+import org.betonquest.betonquest.quest.QuestTypeAdapter;
 import org.betonquest.betonquest.quest.event.ComposedEventFactoryAdapter;
 import org.betonquest.betonquest.quest.legacy.FromClassLegacyTypeFactory;
 import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
@@ -42,7 +42,7 @@ public class EventTypeRegistry extends QuestTypeRegistry<Event, StaticEvent, Com
     }
 
     @Override
-    protected ComposedQuestTypeAdapter<ComposedEvent, Event, StaticEvent> getComposedAdapter(final ComposedQuestFactory<ComposedEvent> composedFactory) {
-        return new ComposedEventFactoryAdapter(composedFactory);
+    protected QuestTypeAdapter<ComposedEvent, Event, StaticEvent> getAdapter(final QuestFactory<ComposedEvent> factory) {
+        return new ComposedEventFactoryAdapter(factory);
     }
 }

@@ -16,13 +16,13 @@ import java.util.Objects;
  */
 public class QuestEventAdapter extends QuestEvent {
     /**
-     * The normal event to be adapted.
+     * The player event to be adapted.
      */
     @Nullable
     private final Event event;
 
     /**
-     * The "static" event to be adapted.
+     * The "static"/playerless event to be adapted.
      */
     @Nullable
     private final StaticEvent staticEvent;
