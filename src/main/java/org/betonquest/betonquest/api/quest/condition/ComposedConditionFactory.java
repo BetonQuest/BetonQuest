@@ -9,7 +9,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
  */
 public interface ComposedConditionFactory extends ComposedQuestFactory<ComposedCondition> {
     /**
-     * Parses an instruction to create a composed {@link Condition}.
+     * Parses an instruction to create a {@link ComposedCondition}.
      *
      * @param instruction instruction to parse
      * @return composed condition represented by the instruction

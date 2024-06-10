@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.api.quest.event;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.quest.QuestFactory;
+import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
 /**
  * Factory to create a specific {@link Event} from {@link Instruction}s.
  */
-public interface EventFactory extends QuestFactory<Event> {
+public interface EventFactory extends PlayerQuestFactory<Event> {
     /**
      * Parses an instruction to create a normal {@link Event}.
      *
@@ -18,7 +18,7 @@ public interface EventFactory extends QuestFactory<Event> {
     Event parseEvent(Instruction instruction) throws InstructionParseException;
 
     @Override
-    default Event parse(final Instruction instruction) throws InstructionParseException {
+    default Event parsePlayer(final Instruction instruction) throws InstructionParseException {
         return parseEvent(instruction);
     }
 }

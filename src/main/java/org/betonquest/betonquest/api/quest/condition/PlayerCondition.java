@@ -7,7 +7,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
  * Interface for quest-conditions that are checked for a profile. It represents the normal condition as described in the
  * BetonQuest user documentation. It does not represent the "static" variant though, see {@link StaticCondition}.
  */
-public interface Condition {
+public interface PlayerCondition {
     /**
      * Checks the condition.
      *

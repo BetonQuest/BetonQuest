@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.legacy;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.condition.Condition;
+import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.StaticCondition;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 /**
- * Adapter for {@link Condition} and {@link StaticCondition} to fit the old convention of
+ * Adapter for {@link PlayerCondition} and {@link StaticCondition} to fit the old convention of
  * {@link org.betonquest.betonquest.api.Condition Legacy Condition}.
  */
 public class LegacyConditionAdapter extends org.betonquest.betonquest.api.Condition {
@@ -19,7 +19,7 @@ public class LegacyConditionAdapter extends org.betonquest.betonquest.api.Condit
      * The normal condition to be adapted.
      */
     @Nullable
-    private final Condition condition;
+    private final PlayerCondition playerCondition;
 
     /**
      * The "static" condition to be adapted.
@@ -34,16 +34,16 @@ public class LegacyConditionAdapter extends org.betonquest.betonquest.api.Condit
      * When no normal condition is given the static condition is required.
      *
      * @param instruction     instruction used to create the conditions
-     * @param condition       condition to use
+     * @param playerCondition condition to use
      * @param staticCondition static condition to use or null if no static execution is supported
      */
-    public LegacyConditionAdapter(final Instruction instruction, @Nullable final Condition condition,
+    public LegacyConditionAdapter(final Instruction instruction, @Nullable final PlayerCondition playerCondition,
                                   @Nullable final StaticCondition staticCondition) {
         super(instruction, false);
-        if (condition == null && staticCondition == null) {
+        if (playerCondition == null && staticCondition == null) {
             throw new IllegalArgumentException("Either the normal or static factory must be present!");
         }
-        this.condition = condition;
+        this.playerCondition = playerCondition;
         this.staticCondition = staticCondition;
         staticness = staticCondition != null;
         persistent = true;
@@ -51,11 +51,11 @@ public class LegacyConditionAdapter extends org.betonquest.betonquest.api.Condit
 
     @Override
     protected Boolean execute(@Nullable final Profile profile) throws QuestRuntimeException {
-        if (condition == null || profile == null) {
+        if (playerCondition == null || profile == null) {
             Objects.requireNonNull(staticCondition);
             return staticCondition.check();
         } else {
-            return condition.check(profile);
+            return playerCondition.check(profile);
         }
     }
 }

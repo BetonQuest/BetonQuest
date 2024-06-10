@@ -20,7 +20,7 @@ import org.betonquest.betonquest.api.logger.CachingBetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.ComposedQuestFactory;
-import org.betonquest.betonquest.api.quest.QuestFactory;
+import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.StaticQuestFactory;
 import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -869,7 +869,7 @@ public class BetonQuest extends JavaPlugin {
      * @param eventFactory factory to create the event
      * @deprecated in favor of direct usage of {@link #getQuestRegistries()}
      * further {@link QuestTypeRegistries#getEventTypes()}
-     * further {@link QuestTypeRegistry#register(String, QuestFactory)}
+     * further {@link QuestTypeRegistry#register(String, PlayerQuestFactory)}
      */
     @Deprecated
     public void registerNonStaticEvent(final String name, final EventFactory eventFactory) {
@@ -885,7 +885,7 @@ public class BetonQuest extends JavaPlugin {
      * @param <T>          type of factory that creates both normal and static instances of the event.
      * @deprecated in favor of direct usage of {@link #getQuestRegistries()}
      * further {@link QuestTypeRegistries#getEventTypes()}
-     * further {@link QuestTypeRegistry#registerCombined(String, QuestFactory)}
+     * further {@link QuestTypeRegistry#registerCombined(String, PlayerQuestFactory)}
      */
     @Deprecated
     public <T extends EventFactory & StaticEventFactory> void registerEvent(final String name, final T eventFactory) {
@@ -901,7 +901,7 @@ public class BetonQuest extends JavaPlugin {
      * @param staticEventFactory factory to create the static event
      * @deprecated in favor of direct usage of {@link #getQuestRegistries()}
      * further {@link QuestTypeRegistries#getEventTypes()}
-     * further {@link QuestTypeRegistry#register(String, QuestFactory, StaticQuestFactory)}
+     * further {@link QuestTypeRegistry#register(String, PlayerQuestFactory, StaticQuestFactory)}
      */
     @Deprecated
     public void registerEvent(final String name, final EventFactory eventFactory, final StaticEventFactory staticEventFactory) {

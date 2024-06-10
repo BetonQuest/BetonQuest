@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest;
 
 import org.betonquest.betonquest.api.quest.ComposedQuestFactory;
-import org.betonquest.betonquest.api.quest.QuestFactory;
+import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.StaticQuestFactory;
 
 /**
@@ -12,7 +12,7 @@ import org.betonquest.betonquest.api.quest.StaticQuestFactory;
  * @param <T> the quest type
  * @param <S> the static variant of {@link T}
  */
-public abstract class ComposedQuestTypeAdapter<C, T, S> implements QuestFactory<T>, StaticQuestFactory<S> {
+public abstract class ComposedQuestTypeAdapter<C, T, S> implements PlayerQuestFactory<T>, StaticQuestFactory<S> {
     /**
      * Composed factory used to create new {@link T} and static T.
      */

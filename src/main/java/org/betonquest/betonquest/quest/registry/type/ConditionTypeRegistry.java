@@ -3,10 +3,10 @@ package org.betonquest.betonquest.quest.registry.type;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.ComposedQuestFactory;
-import org.betonquest.betonquest.api.quest.QuestFactory;
+import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.StaticQuestFactory;
 import org.betonquest.betonquest.api.quest.condition.ComposedCondition;
-import org.betonquest.betonquest.api.quest.condition.Condition;
+import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.StaticCondition;
 import org.betonquest.betonquest.quest.ComposedQuestTypeAdapter;
 import org.betonquest.betonquest.quest.condition.ComposedConditionFactoryAdapter;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Stores the condition types that can be used in BetonQuest.
  */
-public class ConditionTypeRegistry extends QuestTypeRegistry<Condition, StaticCondition, ComposedCondition, org.betonquest.betonquest.api.Condition> {
+public class ConditionTypeRegistry extends QuestTypeRegistry<PlayerCondition, StaticCondition, ComposedCondition, org.betonquest.betonquest.api.Condition> {
     /**
      * Create a new condition type registry.
      *
@@ -35,13 +35,13 @@ public class ConditionTypeRegistry extends QuestTypeRegistry<Condition, StaticCo
     }
 
     @Override
-    protected LegacyTypeFactory<org.betonquest.betonquest.api.Condition> getLegacyFactoryAdapter(@Nullable final QuestFactory<Condition> eventFactory,
+    protected LegacyTypeFactory<org.betonquest.betonquest.api.Condition> getLegacyFactoryAdapter(@Nullable final PlayerQuestFactory<PlayerCondition> eventFactory,
                                                                                                  @Nullable final StaticQuestFactory<StaticCondition> staticEventFactory) {
         return new LegacyConditionFactoryAdapter(eventFactory, staticEventFactory);
     }
 
     @Override
-    protected ComposedQuestTypeAdapter<ComposedCondition, Condition, StaticCondition> getComposedAdapter(final ComposedQuestFactory<ComposedCondition> composedFactory) {
+    protected ComposedQuestTypeAdapter<ComposedCondition, PlayerCondition, StaticCondition> getComposedAdapter(final ComposedQuestFactory<ComposedCondition> composedFactory) {
         return new ComposedConditionFactoryAdapter(composedFactory);
     }
 }

@@ -8,7 +8,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 /**
  * Factory to create a specific {@link T}.
  * <p>
- * Opposed to the {@link QuestFactory QuestFactories'} {@code T} it is used without a
+ * Opposed to the {@link PlayerQuestFactory PlayerQuestFactories'} {@code T} it is used without a
  * {@link org.betonquest.betonquest.api.profiles.Profile Profile}.
  *
  * @param <T> {@link StaticCondition}, {@link StaticEvent} or static variable

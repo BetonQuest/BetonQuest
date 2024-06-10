@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.legacy;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
-import org.betonquest.betonquest.api.quest.QuestFactory;
+import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.StaticQuestFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -23,7 +23,7 @@ public class QuestEventFactoryAdapter extends LegacyFactoryAdapter<Event, Static
      * @param factory       event factory to use
      * @param staticFactory static event factory to use
      */
-    public QuestEventFactoryAdapter(@Nullable final QuestFactory<Event> factory, @Nullable final StaticQuestFactory<StaticEvent> staticFactory) {
+    public QuestEventFactoryAdapter(@Nullable final PlayerQuestFactory<Event> factory, @Nullable final StaticQuestFactory<StaticEvent> staticFactory) {
         super(factory, staticFactory);
     }
 

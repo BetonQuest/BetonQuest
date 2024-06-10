@@ -1,14 +1,14 @@
 package org.betonquest.betonquest.quest.legacy;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.quest.QuestFactory;
+import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.StaticQuestFactory;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Adapter to let {@link QuestFactory QuestFactories} create {@link L}s
+ * Adapter to let {@link PlayerQuestFactory QuestFactories} create {@link L}s
  * from the {@link T}s and {@link S}' they create.
  *
  * @param <T> quest type
@@ -20,7 +20,7 @@ public abstract class LegacyFactoryAdapter<T, S, L> implements LegacyTypeFactory
      * The event factory to be adapted.
      */
     @Nullable
-    private final QuestFactory<T> factory;
+    private final PlayerQuestFactory<T> factory;
 
     /**
      * The static event factory to be adapted.
@@ -36,7 +36,7 @@ public abstract class LegacyFactoryAdapter<T, S, L> implements LegacyTypeFactory
      * @param factory       event factory to use
      * @param staticFactory static event factory to use
      */
-    public LegacyFactoryAdapter(@Nullable final QuestFactory<T> factory, @Nullable final StaticQuestFactory<S> staticFactory) {
+    public LegacyFactoryAdapter(@Nullable final PlayerQuestFactory<T> factory, @Nullable final StaticQuestFactory<S> staticFactory) {
         if (factory == null && staticFactory == null) {
             throw new IllegalArgumentException("Either the normal or static factory must be present!");
         }
@@ -46,7 +46,7 @@ public abstract class LegacyFactoryAdapter<T, S, L> implements LegacyTypeFactory
 
     @Override
     public L parseInstruction(final Instruction instruction) throws InstructionParseException {
-        final T type = factory == null ? null : factory.parse(instruction.copy());
+        final T type = factory == null ? null : factory.parsePlayer(instruction.copy());
         final S staticType = staticFactory == null ? null : staticFactory.parseStatic(instruction.copy());
         return getAdapter(instruction, type, staticType);
     }
