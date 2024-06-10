@@ -75,9 +75,9 @@ public class CompoundLocation {
      *                               the wrong format.
      */
     public Location getLocation(@Nullable final Profile profile) throws QuestRuntimeException {
-        Location loc = locationData.get(profile).clone();
+        final Location loc = locationData.get(profile);
         for (final VectorData vecData : vectorData) {
-            loc = loc.add(vecData.get(profile));
+            loc.add(vecData.get(profile));
         }
         return loc;
     }
