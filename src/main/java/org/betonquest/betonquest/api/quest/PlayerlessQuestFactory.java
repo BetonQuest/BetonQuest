@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.quest;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.quest.condition.StaticCondition;
+import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
@@ -11,15 +11,15 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
  * Opposed to the {@link PlayerQuestFactory PlayerQuestFactories'} {@code T} it is used without a
  * {@link org.betonquest.betonquest.api.profiles.Profile Profile}.
  *
- * @param <T> {@link StaticCondition}, {@link StaticEvent} or static variable
+ * @param <T> {@link PlayerlessCondition}, {@link StaticEvent} or playerless variable
  */
-public interface StaticQuestFactory<T> {
+public interface PlayerlessQuestFactory<T> {
     /**
-     * Parses an instruction to create a static {@link T}.
+     * Parses an instruction to create a {@link T}.
      *
      * @param instruction instruction to parse
      * @return {@link T} represented by the instruction
      * @throws InstructionParseException when the instruction cannot be parsed
      */
-    T parseStatic(Instruction instruction) throws InstructionParseException;
+    T parsePlayerless(Instruction instruction) throws InstructionParseException;
 }

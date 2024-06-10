@@ -3,10 +3,11 @@ package org.betonquest.betonquest.quest.legacy;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
-import org.betonquest.betonquest.api.quest.StaticQuestFactory;
+import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,20 +17,21 @@ import org.jetbrains.annotations.Nullable;
  */
 public class QuestEventFactoryAdapter extends LegacyFactoryAdapter<Event, StaticEvent, QuestEvent> {
     /**
-     * Create the factory from an {@link EventFactory}.
+     * Create the factory from an {@link EventFactory} and/or {@link StaticEventFactory}.
      * <p>
-     * When no normal factory is given the static factory is required.
+     * When no player factory is given the static/playerless factory is required.
      *
-     * @param factory       event factory to use
-     * @param staticFactory static event factory to use
+     * @param playerFactory     player factory to use
+     * @param playerlessFactory playerless event factory to use
      */
-    public QuestEventFactoryAdapter(@Nullable final PlayerQuestFactory<Event> factory, @Nullable final StaticQuestFactory<StaticEvent> staticFactory) {
-        super(factory, staticFactory);
+    public QuestEventFactoryAdapter(@Nullable final PlayerQuestFactory<Event> playerFactory,
+                                    @Nullable final PlayerlessQuestFactory<StaticEvent> playerlessFactory) {
+        super(playerFactory, playerlessFactory);
     }
 
     @Override
-    protected QuestEvent getAdapter(final Instruction instruction, @Nullable final Event type, @Nullable final StaticEvent staticType)
+    protected QuestEvent getAdapter(final Instruction instruction, @Nullable final Event playerType, @Nullable final StaticEvent playerlessType)
             throws InstructionParseException {
-        return new QuestEventAdapter(instruction, type, staticType);
+        return new QuestEventAdapter(instruction, playerType, playerlessType);
     }
 }

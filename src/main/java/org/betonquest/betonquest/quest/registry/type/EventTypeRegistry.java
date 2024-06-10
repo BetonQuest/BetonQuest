@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.ComposedQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
-import org.betonquest.betonquest.api.quest.StaticQuestFactory;
+import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
 import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
@@ -36,9 +36,9 @@ public class EventTypeRegistry extends QuestTypeRegistry<Event, StaticEvent, Com
     }
 
     @Override
-    protected LegacyTypeFactory<QuestEvent> getLegacyFactoryAdapter(@Nullable final PlayerQuestFactory<Event> eventFactory,
-                                                                    @Nullable final StaticQuestFactory<StaticEvent> staticEventFactory) {
-        return new QuestEventFactoryAdapter(eventFactory, staticEventFactory);
+    protected LegacyTypeFactory<QuestEvent> getLegacyFactoryAdapter(@Nullable final PlayerQuestFactory<Event> playerFactory,
+                                                                    @Nullable final PlayerlessQuestFactory<StaticEvent> playerlessFactory) {
+        return new QuestEventFactoryAdapter(playerFactory, playerlessFactory);
     }
 
     @Override

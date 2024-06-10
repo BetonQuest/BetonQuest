@@ -4,10 +4,10 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.ComposedQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
-import org.betonquest.betonquest.api.quest.StaticQuestFactory;
+import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
 import org.betonquest.betonquest.api.quest.condition.ComposedCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.api.quest.condition.StaticCondition;
+import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.quest.ComposedQuestTypeAdapter;
 import org.betonquest.betonquest.quest.condition.ComposedConditionFactoryAdapter;
 import org.betonquest.betonquest.quest.legacy.FromClassLegacyTypeFactory;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Stores the condition types that can be used in BetonQuest.
  */
-public class ConditionTypeRegistry extends QuestTypeRegistry<PlayerCondition, StaticCondition, ComposedCondition, org.betonquest.betonquest.api.Condition> {
+public class ConditionTypeRegistry extends QuestTypeRegistry<PlayerCondition, PlayerlessCondition, ComposedCondition, org.betonquest.betonquest.api.Condition> {
     /**
      * Create a new condition type registry.
      *
@@ -30,18 +30,21 @@ public class ConditionTypeRegistry extends QuestTypeRegistry<PlayerCondition, St
     }
 
     @Override
-    protected LegacyTypeFactory<org.betonquest.betonquest.api.Condition> getFromClassLegacyTypeFactory(final BetonQuestLogger log, final Class<? extends org.betonquest.betonquest.api.Condition> conditionClass) {
+    protected LegacyTypeFactory<org.betonquest.betonquest.api.Condition> getFromClassLegacyTypeFactory(
+            final BetonQuestLogger log, final Class<? extends org.betonquest.betonquest.api.Condition> conditionClass) {
         return new FromClassLegacyTypeFactory<>(log, conditionClass, "condition");
     }
 
     @Override
-    protected LegacyTypeFactory<org.betonquest.betonquest.api.Condition> getLegacyFactoryAdapter(@Nullable final PlayerQuestFactory<PlayerCondition> eventFactory,
-                                                                                                 @Nullable final StaticQuestFactory<StaticCondition> staticEventFactory) {
-        return new LegacyConditionFactoryAdapter(eventFactory, staticEventFactory);
+    protected LegacyTypeFactory<org.betonquest.betonquest.api.Condition> getLegacyFactoryAdapter(
+            @Nullable final PlayerQuestFactory<PlayerCondition> playerFactory,
+            @Nullable final PlayerlessQuestFactory<PlayerlessCondition> playerlessFactory) {
+        return new LegacyConditionFactoryAdapter(playerFactory, playerlessFactory);
     }
 
     @Override
-    protected ComposedQuestTypeAdapter<ComposedCondition, PlayerCondition, StaticCondition> getComposedAdapter(final ComposedQuestFactory<ComposedCondition> composedFactory) {
+    protected ComposedQuestTypeAdapter<ComposedCondition, PlayerCondition, PlayerlessCondition> getComposedAdapter(
+            final ComposedQuestFactory<ComposedCondition> composedFactory) {
         return new ComposedConditionFactoryAdapter(composedFactory);
     }
 }
