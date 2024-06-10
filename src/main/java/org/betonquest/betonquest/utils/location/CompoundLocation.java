@@ -10,15 +10,22 @@ import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This class parses various location related strings with or without {@link Variable}s.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class CompoundLocation {
+    /**
+     * The location that will be used as a base.
+     */
     private final LocationData locationData;
 
-    @Nullable
-    private final VectorData vectorData;
+    /**
+     * The list of vectors that will be added to the location.
+     */
+    private final List<VectorData> vectorData;
 
     /**
      * This class parses a string into a {@link Location} and a {@link Vector}. The input string has
@@ -32,13 +39,15 @@ public class CompoundLocation {
      *                                   or {@link VectorData}
      */
     public CompoundLocation(@Nullable final QuestPackage pack, final String data) throws InstructionParseException {
+        vectorData = new ArrayList<>();
         if (data.contains("->")) {
             final String[] parts = data.split("->");
             locationData = new LocationData(pack, parts[0]);
-            vectorData = new VectorData(pack, parts[1]);
+            for (int i = 1; i < parts.length; i++) {
+                vectorData.add(new VectorData(pack, parts[i]));
+            }
         } else {
             locationData = new LocationData(pack, data);
-            vectorData = null;
         }
     }
 
@@ -67,16 +76,9 @@ public class CompoundLocation {
      */
     public Location getLocation(@Nullable final Profile profile) throws QuestRuntimeException {
         final Location loc = locationData.get(profile);
-        final Vector vec = vectorData == null ? new Vector() : vectorData.get(profile);
-        return loc.clone().add(vec);
-    }
-
-    public LocationData getLocationData() {
-        return locationData;
-    }
-
-    @Nullable
-    public VectorData getVectorData() {
-        return vectorData;
+        for (final VectorData vecData : vectorData) {
+            loc.add(vecData.get(profile));
+        }
+        return loc;
     }
 }
