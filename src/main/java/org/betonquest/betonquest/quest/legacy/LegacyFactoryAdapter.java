@@ -8,18 +8,18 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Adapter to let {@link PlayerQuestFactory QuestFactories} create {@link L}s
- * from the {@link T}s and {@link S}' they create.
+ * from the {@link P}s and {@link S}' they create.
  *
- * @param <T> player quest type
+ * @param <P> player quest type
  * @param <S> playerless quest type
  * @param <L> legacy quest type
  */
-public abstract class LegacyFactoryAdapter<T, S, L> implements LegacyTypeFactory<L> {
+public abstract class LegacyFactoryAdapter<P, S, L> implements LegacyTypeFactory<L> {
     /**
      * The player type factory to be adapted.
      */
     @Nullable
-    private final PlayerQuestFactory<T> playerFactory;
+    private final PlayerQuestFactory<P> playerFactory;
 
     /**
      * The playerless type factory to be adapted.
@@ -35,7 +35,7 @@ public abstract class LegacyFactoryAdapter<T, S, L> implements LegacyTypeFactory
      * @param playerFactory     the player factory to use
      * @param playerlessFactory the playerless factory to use
      */
-    public LegacyFactoryAdapter(@Nullable final PlayerQuestFactory<T> playerFactory,
+    public LegacyFactoryAdapter(@Nullable final PlayerQuestFactory<P> playerFactory,
                                 @Nullable final PlayerlessQuestFactory<S> playerlessFactory) {
         if (playerFactory == null && playerlessFactory == null) {
             throw new IllegalArgumentException("Either the player or playerless factory must be present!");
@@ -46,7 +46,7 @@ public abstract class LegacyFactoryAdapter<T, S, L> implements LegacyTypeFactory
 
     @Override
     public L parseInstruction(final Instruction instruction) throws InstructionParseException {
-        final T playerType = playerFactory == null ? null : playerFactory.parsePlayer(instruction.copy());
+        final P playerType = playerFactory == null ? null : playerFactory.parsePlayer(instruction.copy());
         final S playerlessType = playerlessFactory == null ? null : playerlessFactory.parsePlayerless(instruction.copy());
         return getAdapter(instruction, playerType, playerlessType);
     }
@@ -62,5 +62,5 @@ public abstract class LegacyFactoryAdapter<T, S, L> implements LegacyTypeFactory
      * @return the new adapter
      * @throws InstructionParseException when the instruction cannot be parsed
      */
-    protected abstract L getAdapter(Instruction instruction, @Nullable T playerType, @Nullable S playerlessType) throws InstructionParseException;
+    protected abstract L getAdapter(Instruction instruction, @Nullable P playerType, @Nullable S playerlessType) throws InstructionParseException;
 }
