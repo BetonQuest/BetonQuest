@@ -6,7 +6,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 /**
  * Factory to create a specific {@link T}.
  *
- * @param <T> {@literal PlayerCondition}, {@literal Event}, objective or variable
+ * @param <T> quest type requiring a player for execution
  */
 public interface PlayerQuestFactory<T> {
     /**

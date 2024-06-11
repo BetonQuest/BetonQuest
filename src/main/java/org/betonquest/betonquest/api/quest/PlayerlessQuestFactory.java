@@ -1,17 +1,15 @@
 package org.betonquest.betonquest.api.quest;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
 /**
  * Factory to create a specific {@link T}.
  * <p>
- * Opposed to the {@link PlayerQuestFactory PlayerQuestFactories'} {@code T} it is used without a
+ * Opposed to the {@link PlayerQuestFactory} it is used without a
  * {@link org.betonquest.betonquest.api.profiles.Profile Profile}.
  *
- * @param <T> {@link PlayerlessCondition}, {@link StaticEvent} or playerless variable
+ * @param <T> quest type executed without a player
  */
 public interface PlayerlessQuestFactory<T> {
     /**

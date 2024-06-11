@@ -6,7 +6,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 /**
  * Factory to create a specific {@link T}.
  *
- * @param <T> {@literal Condition}, {@literal ComposedEvent} or {@literal ComposedVariable}
+ * @param <T> quest type able to be executed with or without a player
  */
 public interface QuestFactory<T> {
     /**
