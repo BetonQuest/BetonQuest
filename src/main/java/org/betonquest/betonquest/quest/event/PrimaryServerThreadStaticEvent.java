@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.quest.PrimaryServerThreadType;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -9,7 +10,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 /**
  * Wrapper for {@link StaticEvent}s to be executed on the primary server thread.
  */
-public class PrimaryServerThreadStaticEvent extends PrimaryServerThreadEventFrame<StaticEvent> implements StaticEvent {
+public class PrimaryServerThreadStaticEvent extends PrimaryServerThreadType<StaticEvent, Void> implements StaticEvent {
     /**
      * Wrap the given {@link StaticEvent} for execution on the primary server thread.
      * The {@link Server}, {@link BukkitScheduler} and {@link Plugin} are used to
@@ -28,6 +29,9 @@ public class PrimaryServerThreadStaticEvent extends PrimaryServerThreadEventFram
 
     @Override
     public void execute() throws QuestRuntimeException {
-        execute(syncedEvent::execute);
+        call(() -> {
+            synced.execute();
+            return null;
+        });
     }
 }
