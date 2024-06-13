@@ -879,6 +879,8 @@ Testing your placeholder is easy using this command:
 
 ### Variable: `ph`
 
+**persistent**, **static**
+
 You can also use placeholders from other plugins in BetonQuest. Simply insert a variable starting with `ph`, the second argument should be the placeholder without percentage characters.
 
 !!! example

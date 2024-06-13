@@ -4,20 +4,32 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * A BetonQuest variable which delegates to PAPI.
+ */
 public class PlaceholderVariable extends Variable {
-
+    /**
+     * Placeholder to resolve without surrounding '%'.
+     */
     private final String placeholder;
 
+    /**
+     * Create a new Placeholder API variable.
+     *
+     * @param instruction the instruction to parse
+     */
     public PlaceholderVariable(final Instruction instruction) {
         super(instruction);
+        staticness = true;
         placeholder = String.join(".", instruction.getAllParts());
     }
 
     @Override
-    public String getValue(final Profile profile) {
-        return PlaceholderAPI.setPlaceholders(profile.getOnlineProfile().get().getPlayer(), '%' + placeholder + '%');
+    public String getValue(@Nullable final Profile profile) {
+        final OfflinePlayer player = profile == null ? null : profile.getPlayer();
+        return PlaceholderAPI.setPlaceholders(player, '%' + placeholder + '%');
     }
-
 }
