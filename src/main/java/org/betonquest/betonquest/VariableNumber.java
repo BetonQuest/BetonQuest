@@ -82,7 +82,7 @@ public class VariableNumber {
     private Variable parseAsVariable(final QuestPackage pack, final String variable) throws InstructionParseException {
         final Variable parsed;
         try {
-            parsed = BetonQuest.createVariable(pack, variable);
+            parsed = BetonQuest.createVariable(pack, replaceEscapedPercent(variable));
         } catch (final InstructionParseException e) {
             throw new InstructionParseException("Could not create variable: " + e.getMessage(), e);
         }
@@ -90,6 +90,10 @@ public class VariableNumber {
             throw new InstructionParseException("Could not create variable");
         }
         return parsed;
+    }
+
+    private String replaceEscapedPercent(final String input) {
+        return input.replaceAll("(?<!\\\\)\\\\%", "%");
     }
 
     private double parseAsNumber(final String variable) throws InstructionParseException {
