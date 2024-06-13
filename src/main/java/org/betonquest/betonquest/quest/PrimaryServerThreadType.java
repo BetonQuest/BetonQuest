@@ -8,6 +8,8 @@ import org.bukkit.scheduler.BukkitScheduler;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Quest type wrapper to execute the functionality on the server main thread.
@@ -80,8 +82,8 @@ public class PrimaryServerThreadType<T, R> {
     private R executeOnPrimaryThread(final Callable<R> callable) throws QuestRuntimeException {
         final Future<R> executingEventFuture = scheduler.callSyncMethod(plugin, callable);
         try {
-            return executingEventFuture.get();
-        } catch (final InterruptedException e) {
+            return executingEventFuture.get(10, TimeUnit.SECONDS);
+        } catch (final InterruptedException | TimeoutException e) {
             executingEventFuture.cancel(true);
             throw new QuestRuntimeException("Thread was Interrupted!", e);
         } catch (final ExecutionException e) {
