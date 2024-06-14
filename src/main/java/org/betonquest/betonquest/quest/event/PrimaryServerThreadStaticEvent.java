@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.PrimaryServerThreadType;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
@@ -17,14 +18,11 @@ public class PrimaryServerThreadStaticEvent extends PrimaryServerThreadType<Stat
      * determine if the current thread is the primary server thread and to
      * schedule the execution onto it in case it isn't.
      *
-     * @param syncedEvent event to synchronize
-     * @param server      server for primary thread identification
-     * @param scheduler   scheduler for primary thread scheduling
-     * @param plugin      plugin to associate with the scheduled task
+     * @param synced event to synchronize
+     * @param data   the data containing server, scheduler and plugin used for primary thread access
      */
-    public PrimaryServerThreadStaticEvent(final StaticEvent syncedEvent, final Server server,
-                                          final BukkitScheduler scheduler, final Plugin plugin) {
-        super(syncedEvent, server, scheduler, plugin);
+    public PrimaryServerThreadStaticEvent(final StaticEvent synced, final PrimaryServerThreadData data) {
+        super(synced, data);
     }
 
     @Override

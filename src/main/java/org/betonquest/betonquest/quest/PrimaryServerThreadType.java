@@ -24,19 +24,9 @@ public class PrimaryServerThreadType<T, R> {
     protected final T synced;
 
     /**
-     * Server to use to determine if currently on the primary server thread.
+     * Data wrapper containing server, scheduler and plugin for primary thread identification and access.
      */
-    protected final Server server;
-
-    /**
-     * Scheduler for scheduling the event to be executed on the primary server thread.
-     */
-    protected final BukkitScheduler scheduler;
-
-    /**
-     * Plugin to associate the scheduled task with.
-     */
-    protected final Plugin plugin;
+    protected final PrimaryServerThreadData data;
 
     /**
      * Wrap the given {@link T} for action on the primary server thread.
@@ -48,12 +38,25 @@ public class PrimaryServerThreadType<T, R> {
      * @param server    server for primary thread identification
      * @param scheduler scheduler for primary thread scheduling
      * @param plugin    plugin to associate with the scheduled task
+     * @deprecated use constructor with {@link PrimaryServerThreadData}
      */
+    @Deprecated
     public PrimaryServerThreadType(final T synced, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+        this(synced, new PrimaryServerThreadData(server, scheduler, plugin));
+    }
+
+    /**
+     * Wrap the given {@link T} for action on the primary server thread.
+     * The {@link Server}, {@link BukkitScheduler} and {@link Plugin} are used to
+     * determine if the current thread is the primary server thread and to
+     * schedule the execution onto it in case it isn't.
+     *
+     * @param synced {@link T} to synchronize
+     * @param data   the data containing server, scheduler and plugin used for primary thread access
+     */
+    public PrimaryServerThreadType(final T synced, final PrimaryServerThreadData data) {
         this.synced = synced;
-        this.server = server;
-        this.scheduler = scheduler;
-        this.plugin = plugin;
+        this.data = data;
     }
 
     /**
@@ -64,7 +67,7 @@ public class PrimaryServerThreadType<T, R> {
      * @throws QuestRuntimeException when a QuestRuntimeException is thrown during event execution
      */
     protected R call(final QuestCallable<R> execute) throws QuestRuntimeException {
-        if (server.isPrimaryThread()) {
+        if (data.server().isPrimaryThread()) {
             return execute.call();
         } else {
             return executeOnPrimaryThread(execute::call);
@@ -80,7 +83,7 @@ public class PrimaryServerThreadType<T, R> {
      */
     @SuppressWarnings("PMD.PreserveStackTrace")
     private R executeOnPrimaryThread(final Callable<R> callable) throws QuestRuntimeException {
-        final Future<R> executingEventFuture = scheduler.callSyncMethod(plugin, callable);
+        final Future<R> executingEventFuture = data.scheduler().callSyncMethod(data.plugin(), callable);
         try {
             return executingEventFuture.get(10, TimeUnit.SECONDS);
         } catch (final InterruptedException | TimeoutException e) {

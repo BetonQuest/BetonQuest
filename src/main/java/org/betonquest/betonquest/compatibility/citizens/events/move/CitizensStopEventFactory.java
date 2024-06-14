@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.CallStaticEventAdapter;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
 import org.bukkit.Server;
@@ -17,19 +18,9 @@ import org.bukkit.scheduler.BukkitScheduler;
  */
 public class CitizensStopEventFactory implements EventFactory, StaticEventFactory {
     /**
-     * Server to use for syncing to the primary server thread.
+     * Required data for executing on the main thread.
      */
-    private final Server server;
-
-    /**
-     * Scheduler to use for syncing to the primary server thread.
-     */
-    private final BukkitScheduler scheduler;
-
-    /**
-     * Plugin to use for syncing to the primary server thread.
-     */
-    private final Plugin plugin;
+    private final PrimaryServerThreadData primaryServerThreadData;
 
     /**
      * Move Controller where to stop the NPC movement.
@@ -45,16 +36,14 @@ public class CitizensStopEventFactory implements EventFactory, StaticEventFactor
      * @param citizensMoveController the move controller where to stop the NPC movement
      */
     public CitizensStopEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin, final CitizensMoveController citizensMoveController) {
-        this.server = server;
-        this.scheduler = scheduler;
-        this.plugin = plugin;
+        primaryServerThreadData = new PrimaryServerThreadData(server, scheduler, plugin);
         this.citizensMoveController = citizensMoveController;
     }
 
     @Override
     public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
         final int npcId = instruction.getInt();
-        return new PrimaryServerThreadStaticEvent(new CitizensStopEvent(npcId, citizensMoveController), server, scheduler, plugin);
+        return new PrimaryServerThreadStaticEvent(new CitizensStopEvent(npcId, citizensMoveController), primaryServerThreadData);
     }
 
     @Override
