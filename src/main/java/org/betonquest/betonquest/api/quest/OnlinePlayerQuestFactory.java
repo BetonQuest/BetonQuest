@@ -6,9 +6,9 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 /**
  * Factory to create a specific {@link T}.
  *
- * @param <T> quest type requiring an offline player for execution
+ * @param <T> quest type requiring an online player for execution
  */
-public interface PlayerQuestFactory<T> {
+public interface OnlinePlayerQuestFactory<T> {
     /**
      * Parses an instruction to create a {@link T}.
      *
@@ -16,5 +16,5 @@ public interface PlayerQuestFactory<T> {
      * @return {@link T} represented by the instruction
      * @throws InstructionParseException when the instruction cannot be parsed
      */
-    T parsePlayer(Instruction instruction) throws InstructionParseException;
+    T parseOnlinePlayer(Instruction instruction) throws InstructionParseException;
 }
