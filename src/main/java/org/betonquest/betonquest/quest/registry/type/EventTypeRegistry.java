@@ -3,11 +3,13 @@ package org.betonquest.betonquest.quest.registry.type;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.quest.OnlinePlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
 import org.betonquest.betonquest.api.quest.QuestFactory;
 import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.OnlinePlayerEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.quest.QuestTypeAdapter;
 import org.betonquest.betonquest.quest.event.ComposedEventFactoryAdapter;
@@ -19,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Stores the event types that can be used in BetonQuest.
  */
-public class EventTypeRegistry extends QuestTypeRegistry<Event, StaticEvent, ComposedEvent, QuestEvent> {
+public class EventTypeRegistry extends QuestTypeRegistry<Event, StaticEvent, ComposedEvent, OnlinePlayerEvent, QuestEvent> {
     /**
      * Create a new event type registry.
      *
@@ -31,14 +33,17 @@ public class EventTypeRegistry extends QuestTypeRegistry<Event, StaticEvent, Com
     }
 
     @Override
-    protected LegacyTypeFactory<QuestEvent> getFromClassLegacyTypeFactory(final BetonQuestLogger log, final Class<? extends QuestEvent> questEventClass) {
+    protected LegacyTypeFactory<QuestEvent> getFromClassLegacyTypeFactory(
+            final BetonQuestLogger log, final Class<? extends QuestEvent> questEventClass) {
         return new FromClassLegacyTypeFactory<>(log, questEventClass, "event");
     }
 
     @Override
-    protected LegacyTypeFactory<QuestEvent> getLegacyFactoryAdapter(@Nullable final PlayerQuestFactory<Event> playerFactory,
-                                                                    @Nullable final PlayerlessQuestFactory<StaticEvent> playerlessFactory) {
-        return new QuestEventFactoryAdapter(playerFactory, playerlessFactory);
+    protected LegacyTypeFactory<QuestEvent> getLegacyFactoryAdapter(
+            @Nullable final PlayerQuestFactory<Event> playerFactory,
+            @Nullable final PlayerlessQuestFactory<StaticEvent> playerlessFactory,
+            @Nullable final OnlinePlayerQuestFactory<OnlinePlayerEvent> onlinePlayerFactory) {
+        return new QuestEventFactoryAdapter(playerFactory, playerlessFactory, onlinePlayerFactory);
     }
 
     @Override
