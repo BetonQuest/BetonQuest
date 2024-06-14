@@ -10,6 +10,8 @@ import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 /**
  * Adapter for {@link PlayerCondition} and {@link PlayerlessCondition} to fit the old convention of
  * {@link org.betonquest.betonquest.api.Condition Legacy Condition}.
@@ -60,8 +62,11 @@ public class LegacyConditionAdapter extends org.betonquest.betonquest.api.Condit
 
     @Override
     protected Boolean execute(@Nullable final Profile profile) throws QuestRuntimeException {
-        if (onlinePlayerCondition != null && profile instanceof OnlineProfile) {
-            return onlinePlayerCondition.check((OnlineProfile) profile);
+        if (onlinePlayerCondition != null && profile != null) {
+            final Optional<OnlineProfile> optional = profile.getOnlineProfile();
+            if (optional.isPresent()) {
+                return onlinePlayerCondition.check(optional.get());
+            }
         }
         if (playerCondition != null && profile != null) {
             return playerCondition.check(profile);

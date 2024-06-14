@@ -11,6 +11,8 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 /**
  * Adapter for {@link Event} and {@link StaticEvent} to fit the old convention of {@link QuestEvent}.
  */
@@ -59,9 +61,12 @@ public class QuestEventAdapter extends QuestEvent {
 
     @Override
     protected Void execute(@Nullable final Profile profile) throws QuestRuntimeException {
-        if (onlinePlayerType != null && profile instanceof OnlineProfile) {
-            onlinePlayerType.execute((OnlineProfile) profile);
-            return null;
+        if (onlinePlayerType != null && profile != null) {
+            final Optional<OnlineProfile> optional = profile.getOnlineProfile();
+            if (optional.isPresent()) {
+                onlinePlayerType.execute(optional.get());
+                return null;
+            }
         }
         if (event != null && profile != null) {
             event.execute(profile);
