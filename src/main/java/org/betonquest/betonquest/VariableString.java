@@ -3,120 +3,85 @@ package org.betonquest.betonquest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 
 /**
  * Represents a string that can contain variables.
- * Makes handling instructions with variables easier.
  */
-public class VariableString {
+public class VariableString extends Variable<String> {
     /**
-     * The pattern to match variables in a string marked with percent signs.<br>
-     * The percentage can be escaped with a backslash, and the backslash can be escaped with another backslash.
-     */
-    private static final Pattern VARIABLE_PATTERN = Pattern.compile("(?<!\\\\)(?:\\\\\\\\)*(%((?:[^%\\\\]|\\\\.)*?)%)(?<!\\\\)(?:\\\\\\\\)*");
-
-    /**
-     * The string that may contain variables.
-     */
-    private final String string;
-
-    /**
-     * The list of variables in the string.
-     */
-    private final List<String> variables = new ArrayList<>();
-
-    /**
-     * The package in which the string is defined.
-     */
-    private final QuestPackage questPackage;
-
-    /**
-     * Creates a new VariableString.<br>
-     * Does not replace underscores.
+     * Resolves a string that may contain variables to a variable of the given type.
      *
-     * @param questPackage the package in which the string is used
-     * @param string       the string that may contain variables
-     * @throws InstructionParseException if the variables could not be created
-     * @see VariableString#VariableString(QuestPackage, String, boolean)
+     * @param questPackage the package in which the variable is used in
+     * @param input        the string that may contain variables
+     * @throws InstructionParseException if the variables could not be created or resolved to the given type
+     * @deprecated use {@link #VariableString(VariableProcessor, QuestPackage, String)} instead
      */
-    public VariableString(final QuestPackage questPackage, final String string) throws InstructionParseException {
-        this(questPackage, string, false);
+    @Deprecated
+    public VariableString(final QuestPackage questPackage, final String input) throws InstructionParseException {
+        this(BetonQuest.getInstance().getVariableProcessor(), questPackage, input);
     }
 
     /**
-     * Creates a new VariableString.<br>
-     * Replaces underscores with spaces except when they are escaped with a backslash.
+     * Resolves a string that may contain variables to a variable of the given type.
      *
-     * @param questPackage       the package in which the string is used
-     * @param string             the string that may contain variables
+     * @param variableProcessor the processor to create the variables
+     * @param questPackage      the package in which the variable is used in
+     * @param input             the string that may contain variables
+     * @throws InstructionParseException if the variables could not be created or resolved to the given type
+     */
+    public VariableString(final VariableProcessor variableProcessor, final QuestPackage questPackage, final String input) throws InstructionParseException {
+        this(variableProcessor, questPackage, input, false);
+    }
+
+    /**
+     * Resolves a string that may contain variables to a variable of the given type.
+     *
+     * @param questPackage       the package in which the variable is used in
+     * @param input              the string that may contain variables
      * @param replaceUnderscores whether underscores should be replaced
-     * @throws InstructionParseException if the variables could not be created
+     * @throws InstructionParseException if the variables could not be created or resolved to the given type
+     * @deprecated use {@link #VariableString(VariableProcessor, QuestPackage, String, boolean)} instead
      */
-    public VariableString(final QuestPackage questPackage, final String string, final boolean replaceUnderscores) throws InstructionParseException {
-        this.questPackage = questPackage;
+    @Deprecated
+    public VariableString(final QuestPackage questPackage, final String input, final boolean replaceUnderscores) throws InstructionParseException {
+        super(BetonQuest.getInstance().getVariableProcessor(), questPackage, replaceUnderscores(input, replaceUnderscores), (value) -> value);
+    }
 
+    /**
+     * Resolves a string that may contain variables to a variable of the given type.
+     *
+     * @param variableProcessor  the processor to create the variables
+     * @param questPackage       the package in which the variable is used in
+     * @param input              the string that may contain variables
+     * @param replaceUnderscores whether underscores should be replaced
+     * @throws InstructionParseException if the variables could not be created or resolved to the given type
+     */
+    public VariableString(final VariableProcessor variableProcessor, final QuestPackage questPackage, final String input, final boolean replaceUnderscores) throws InstructionParseException {
+        super(variableProcessor, questPackage, replaceUnderscores(input, replaceUnderscores), (value) -> value);
+    }
+
+    private static String replaceUnderscores(final String input, final boolean replaceUnderscores) {
         if (replaceUnderscores) {
-            this.string = string.replaceAll("(?<!\\\\)_", " ").replaceAll("\\\\_", "_");
-        } else {
-            this.string = string;
+            return input.replaceAll("(?<!\\\\)_", " ").replaceAll("\\\\_", "_");
         }
-
-        for (final String variable : resolveVariables(this.string)) {
-            try {
-                BetonQuest.createVariable(questPackage, replaceEscapedPercent(variable));
-            } catch (final InstructionParseException exception) {
-                throw new InstructionParseException("Could not create '" + variable + "' variable: "
-                        + exception.getMessage(), exception);
-            }
-            if (!variables.contains(variable)) {
-                variables.add(variable);
-            }
-        }
-    }
-
-    private List<String> resolveVariables(final String text) {
-        final List<String> variables = new ArrayList<>();
-        final Matcher matcher = VARIABLE_PATTERN.matcher(text);
-        while (matcher.find()) {
-            final String variable = matcher.group();
-            if (!variables.contains(variable)) {
-                variables.add(variable);
-            }
-        }
-        return variables;
+        return input;
     }
 
     /**
-     * Resolves all variables in the string and returns the result.
+     * Get the string value of the variable.
      *
-     * @param profile the profile of the player to resolve the variables for
-     * @return the string with all variables resolved
+     * @param profile the profile to get the value for
+     * @return the string value of the variable
+     * @deprecated use {@link #getValue(Profile)}} instead
      */
-    public String getString(@Nullable final Profile profile) {
-        String resolvedString = string;
-        for (final String variable : variables) {
-            final String resolvedVariable = BetonQuest.getInstance().getVariableValue(questPackage.getQuestPath(), replaceEscapedPercent(variable), profile);
-            resolvedString = resolvedString.replace(variable, resolvedVariable);
+    @Deprecated
+    public String getString(final Profile profile) {
+        try {
+            return getValue(profile);
+        } catch (final QuestRuntimeException e) {
+            return "";
         }
-        return resolvedString;
-    }
-
-    private String replaceEscapedPercent(final String input) {
-        return input.replaceAll("(?<!\\\\)\\\\%", "%");
-    }
-
-    /**
-     * Returns true if the string contains variables.
-     *
-     * @return true if the string contains variables
-     */
-    public boolean containsVariables() {
-        return !variables.isEmpty();
     }
 }

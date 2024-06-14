@@ -113,6 +113,7 @@ import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
 import org.betonquest.betonquest.quest.registry.CoreQuestTypes;
 import org.betonquest.betonquest.quest.registry.QuestRegistry;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.quest.registry.type.QuestTypeRegistry;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bstats.bukkit.Metrics;
@@ -1056,9 +1057,22 @@ public class BetonQuest extends JavaPlugin {
      * @param name     name of the variable (instruction, with % characters)
      * @param profile  the {@link Profile} of the player
      * @return the value of this variable for given player
+     * @deprecated use {@link #getVariableProcessor()} {@link VariableProcessor#getValue(QuestPackage, String, Profile)}
+     * instead
      */
+    @Deprecated
     public String getVariableValue(final String packName, final String name, @Nullable final Profile profile) {
-        return questRegistry.variables().getValue(packName, name, profile);
+        if (!Config.getPackages().containsKey(packName)) {
+            log.warn("The variable '" + name + "' reference the non-existent package '" + packName + "' !");
+            return "";
+        }
+        final QuestPackage pack = Config.getPackages().get(packName);
+        try {
+            return questRegistry.variables().getValue(pack, name, profile);
+        } catch (final InstructionParseException e) {
+            log.warn(e.getMessage(), e);
+            return "";
+        }
     }
 
     /**
@@ -1100,5 +1114,14 @@ public class BetonQuest extends JavaPlugin {
      */
     public Map<String, Class<? extends Objective>> getObjectiveTypes() {
         return new HashMap<>(OBJECTIVE_TYPES);
+    }
+
+    /**
+     * Get the VariableProcessor instance.
+     *
+     * @return the VariableProcessor to resolve variables
+     */
+    public VariableProcessor getVariableProcessor() {
+        return questRegistry.variables();
     }
 }

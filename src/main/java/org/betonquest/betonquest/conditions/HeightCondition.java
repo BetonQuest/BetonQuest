@@ -29,7 +29,7 @@ public class HeightCondition extends Condition {
             }
         } else {
             try {
-                height = new VariableNumber(new CompoundLocation(pack, string).getLocation(null).getY());
+                height = new VariableNumber(pack, String.valueOf(new CompoundLocation(pack, string).getLocation(null).getY()));
             } catch (final QuestRuntimeException e) {
                 throw new InstructionParseException("Could not parse height", e);
             }

@@ -56,14 +56,14 @@ public class EntityCondition extends Condition {
                         throw new InstructionParseException("Type not defined");
                     } else if (typeParts.length < 2) {
                         types[i] = EntityType.valueOf(typeParts[0].toUpperCase(Locale.ROOT));
-                        amounts[i] = new VariableNumber(1);
+                        amounts[i] = new VariableNumber(instruction.getPackage(), "1");
                     } else {
                         types[i] = EntityType.valueOf(typeParts[0].toUpperCase(Locale.ROOT));
                         amounts[i] = getAmount(typeParts[1]);
                     }
                 } else {
                     types[i] = EntityType.valueOf(rawTypes[i].toUpperCase(Locale.ROOT));
-                    amounts[i] = new VariableNumber(1);
+                    amounts[i] = new VariableNumber(instruction.getPackage(), "1");
                 }
             } catch (final IllegalArgumentException e) {
                 throw new InstructionParseException("Unknown entity type: " + rawTypes[i], e);

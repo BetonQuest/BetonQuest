@@ -28,7 +28,7 @@ public class MMOItemsItemCondition extends Condition {
         itemType = MMOItemsUtils.getMMOItemType(instruction.next());
         itemID = instruction.next();
 
-        amount = instruction.hasNext() ? instruction.getVarNum() : new VariableNumber(1);
+        amount = instruction.hasNext() ? instruction.getVarNum() : instruction.getVarNum("1");
     }
 
     @Override

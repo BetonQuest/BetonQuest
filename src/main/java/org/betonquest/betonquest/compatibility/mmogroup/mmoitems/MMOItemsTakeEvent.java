@@ -39,7 +39,7 @@ public class MMOItemsTakeEvent extends AbstractTakeEvent {
 
         final String amount = instruction.getOptional("amount");
         if (amount == null) {
-            deleteAmountVar = new VariableNumber(1);
+            deleteAmountVar = instruction.getVarNum("1");
         } else {
             deleteAmountVar = instruction.getVarNum(amount);
         }

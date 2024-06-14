@@ -312,16 +312,27 @@ public class Instruction {
     }
 
     public VariableNumber getVarNum() throws InstructionParseException {
-        return getVarNum(next());
+        return getVarNum(next(), (value) -> {
+        });
+    }
+
+    public VariableNumber getVarNum(final Variable.ValueChecker<Number> valueChecker) throws InstructionParseException {
+        return getVarNum(next(), valueChecker);
     }
 
     @Contract(NULL_NOT_NULL_CONTRACT)
     public VariableNumber getVarNum(@Nullable final String string) throws InstructionParseException {
+        return getVarNum(string, (value) -> {
+        });
+    }
+
+    @Contract("null, _ -> null; !null, _ -> !null")
+    public VariableNumber getVarNum(@Nullable final String string, final Variable.ValueChecker<Number> valueChecker) throws InstructionParseException {
         if (string == null) {
             return null;
         }
         try {
-            return new VariableNumber(pack, string);
+            return new VariableNumber(pack, string, valueChecker);
         } catch (final InstructionParseException e) {
             throw new PartParseException("Could not parse a number: " + e.getMessage(), e);
         }
@@ -372,7 +383,7 @@ public class Instruction {
                     number = getVarNum(parts[1]);
                 } else {
                     item = getItem(array[i]);
-                    number = new VariableNumber(1);
+                    number = getVarNum("1");
                 }
                 items[i] = new Item(item, number);
             } catch (final InstructionParseException | NumberFormatException e) {

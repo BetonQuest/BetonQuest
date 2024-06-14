@@ -7,6 +7,7 @@ import net.Indyuce.mmocore.api.event.CustomBlockMineEvent;
 import net.Indyuce.mmoitems.comp.mmocore.load.MMOItemsBlockType;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -26,8 +27,7 @@ public class MMOCoreBreakCustomBlockObjective extends CountingObjective implemen
         super(instruction, "blocks_to_break");
         desiredBlockId = instruction.getOptionalArgument("block")
                 .orElseThrow(() -> new InstructionParseException("Missing required argument: block"));
-        targetAmount = instruction.getVarNum();
-        preCheckAmountNotLessThanOne(targetAmount);
+        targetAmount = instruction.getVarNum(VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
     }
 
     @EventHandler(ignoreCancelled = true)

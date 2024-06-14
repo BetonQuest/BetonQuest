@@ -49,8 +49,7 @@ public class FishObjective extends CountingObjective implements Listener {
         super(instruction, "fish_to_catch");
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         blockSelector = new BlockSelector(instruction.next());
-        targetAmount = instruction.getVarNum();
-        preCheckAmountNotLessThanOne(targetAmount);
+        targetAmount = instruction.getVarNum(VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
 
         final QuestPackage pack = instruction.getPackage();
         final String loc = instruction.getOptional("hookLocation");

@@ -8,7 +8,6 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.CountingObjective;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -73,8 +72,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
         super(instruction, "mobs_to_kill");
 
         Collections.addAll(names, instruction.getArray());
-        targetAmount = instruction.getVarNum(instruction.getOptional("amount", "1"));
-        preCheckAmountNotLessThanOne(targetAmount);
+        targetAmount = instruction.getVarNum(instruction.getOptional("amount", "1"), VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
 
         final double deathRadiusAllPlayersTemp = instruction.getDouble(instruction.getOptional("deathRadiusAllPlayers"), 0);
         deathRadiusAllPlayers = Math.pow(deathRadiusAllPlayersTemp, 2);
@@ -83,10 +81,9 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
 
         final String unsafeMinMobLevel = instruction.getOptional("minLevel");
         final String unsafeMaxMobLevel = instruction.getOptional("maxLevel");
-        final QuestPackage pack = instruction.getPackage();
 
-        minMobLevel = unsafeMinMobLevel == null ? new VariableNumber(Double.NEGATIVE_INFINITY) : new VariableNumber(pack, unsafeMinMobLevel);
-        maxMobLevel = unsafeMaxMobLevel == null ? new VariableNumber(Double.POSITIVE_INFINITY) : new VariableNumber(pack, unsafeMaxMobLevel);
+        minMobLevel = instruction.getVarNum(unsafeMinMobLevel == null ? String.valueOf(Double.NEGATIVE_INFINITY) : unsafeMinMobLevel);
+        maxMobLevel = instruction.getVarNum(unsafeMaxMobLevel == null ? String.valueOf(Double.POSITIVE_INFINITY) : unsafeMaxMobLevel);
         final String markedString = instruction.getOptional("marked");
         marked = markedString == null ? null : new VariableString(
                 instruction.getPackage(),

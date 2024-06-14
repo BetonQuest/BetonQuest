@@ -24,7 +24,7 @@ public class MMOItemsHandCondition extends Condition {
 
     private boolean offhand;
 
-    private VariableNumber amount = new VariableNumber(1);
+    private VariableNumber amount;
 
     public MMOItemsHandCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -32,6 +32,7 @@ public class MMOItemsHandCondition extends Condition {
         itemType = MMOItemsUtils.getMMOItemType(instruction.next());
         itemID = instruction.next();
 
+        amount = instruction.getVarNum("1");
         while (instruction.hasNext()) {
             final String next = instruction.next();
             if (OFFHAND_KEY.equals(next)) {

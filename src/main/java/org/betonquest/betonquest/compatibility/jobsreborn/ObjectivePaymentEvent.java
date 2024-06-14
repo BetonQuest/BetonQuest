@@ -23,10 +23,7 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
     public ObjectivePaymentEvent(final Instruction instructions) throws InstructionParseException {
         super(instructions);
         template = PaymentData.class;
-        targetAmount = instructions.getVarNum();
-        if (targetAmount.isExplicitLessThanOne()) {
-            throw new InstructionParseException("Amount needs to be one or more");
-        }
+        targetAmount = instructions.getVarNum(VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
     }
 
     @EventHandler(ignoreCancelled = true)

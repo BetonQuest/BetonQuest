@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.Location;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -64,7 +65,10 @@ public class LocationVariable extends Variable {
     }
 
     @Override
-    public String getValue(final Profile profile) {
+    public String getValue(@Nullable final Profile profile) {
+        if (profile == null) {
+            return "";
+        }
         return profile.getOnlineProfile()
                 .map(onlineProfile -> getForLocation(onlineProfile.getPlayer().getLocation()))
                 .orElse("");

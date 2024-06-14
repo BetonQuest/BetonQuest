@@ -434,7 +434,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 return;
             }
             final Event give = new GiveEvent(
-                    new Instruction.Item[]{new Instruction.Item(itemID, new VariableNumber(1))},
+                    new Instruction.Item[]{new Instruction.Item(itemID, new VariableNumber(itemID.getPackage(), "1"))},
                     new NoNotificationSender(),
                     new IngameNotificationSender(log, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR, "inventory_full_backpack", "inventory_full"),
                     new IngameNotificationSender(log, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR, "inventory_full_drop", "inventory_full"),

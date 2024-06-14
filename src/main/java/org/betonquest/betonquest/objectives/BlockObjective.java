@@ -76,11 +76,6 @@ public class BlockObjective extends CountingObjective implements Listener {
         ignorecancel = instruction.hasArgument("ignorecancel");
     }
 
-    @Override
-    public String getDefaultDataInstruction(final Profile profile) {
-        return String.valueOf(targetAmount.getInt(profile));
-    }
-
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockPlace(final BlockPlaceEvent event) {
         if (event.isCancelled() && !ignorecancel) {

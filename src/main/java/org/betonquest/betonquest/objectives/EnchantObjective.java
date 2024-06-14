@@ -2,6 +2,7 @@ package org.betonquest.betonquest.objectives;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -33,8 +34,7 @@ public class EnchantObjective extends CountingObjective implements Listener {
 
     public EnchantObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "items_to_enchant");
-        targetAmount = instruction.getVarNum(instruction.getOptional("amount", "1"));
-        preCheckAmountNotLessThanOne(targetAmount);
+        targetAmount = instruction.getVarNum(instruction.getOptional("amount", "1"), VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
         item = instruction.getQuestItem();
         desiredEnchantments = instruction.getList(EnchantmentData::convert);
         if (desiredEnchantments.isEmpty()) {

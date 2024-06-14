@@ -3,6 +3,7 @@ package org.betonquest.betonquest.utils.math;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.utils.math.tokens.AbsoluteValue;
 import org.betonquest.betonquest.utils.math.tokens.Negation;
 import org.betonquest.betonquest.utils.math.tokens.Number;
@@ -39,6 +40,11 @@ public class Tokenizer {
     private static final Pattern ESCAPE_REGEX = Pattern.compile("\\\\(.)");
 
     /**
+     * {@link VariableProcessor} to resolve variables.
+     */
+    private final VariableProcessor variableProcessor;
+
+    /**
      * Name of the package in which the tokenizer is operating.
      */
     private final QuestPackage pack;
@@ -46,9 +52,11 @@ public class Tokenizer {
     /**
      * Create a new Tokenizer in given package.
      *
-     * @param pack name of the package
+     * @param variableProcessor processor to resolve variables
+     * @param pack              name of the package
      */
-    public Tokenizer(final QuestPackage pack) {
+    public Tokenizer(final VariableProcessor variableProcessor, final QuestPackage pack) {
+        this.variableProcessor = variableProcessor;
         this.pack = pack;
     }
 
@@ -110,7 +118,7 @@ public class Tokenizer {
             final String variableName = ESCAPE_REGEX.matcher(rawVariableName).replaceAll("$1");
 
             try {
-                nextInLine = new Variable(new VariableNumber(pack, "%" + variableName + "%"));
+                nextInLine = new Variable(new VariableNumber(variableProcessor, pack, "%" + variableName + "%"));
             } catch (final InstructionParseException e) {
                 throw new InstructionParseException("invalid calculation (" + e.getMessage() + ")", e);
             }
@@ -157,7 +165,7 @@ public class Tokenizer {
                 }
             }
             try {
-                nextInLine = new Variable(new VariableNumber(pack, "%" + val2.substring(start, index--) + "%"));
+                nextInLine = new Variable(new VariableNumber(variableProcessor, pack, "%" + val2.substring(start, index--) + "%"));
             } catch (final InstructionParseException e) {
                 throw new InstructionParseException("invalid calculation (" + e.getMessage() + ")", e);
             }

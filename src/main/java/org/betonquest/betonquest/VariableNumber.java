@@ -1,159 +1,126 @@
 package org.betonquest.betonquest;
 
-import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.jetbrains.annotations.Nullable;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 
 /**
- * Represents a number which might also be a variable.
+ * Represents a number that can contain variables.
  */
-public class VariableNumber {
+public class VariableNumber extends Variable<Number> {
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
+     * {@link org.betonquest.betonquest.Variable.ValueChecker} for numbers that must be greater than or equal to 0.
      */
-    private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-
-    /**
-     * The constant value of this variable number if no variable was set.
-     */
-    private final double number;
-
-    /**
-     * The variable to parse to get the value of the variable number.
-     * If {@code null} then {@link #number} will be used.
-     */
-    @Nullable
-    private final Variable variable;
-
-    /**
-     * Parses the string as a variable or as a number if it's not a variable.
-     *
-     * @param pack the package in which the variable is defined
-     * @param tmp  the string to parse
-     * @throws InstructionParseException If the variable could not be created.
-     */
-    public VariableNumber(final QuestPackage pack, final String tmp) throws InstructionParseException {
-        if (tmp.length() > 2 && tmp.charAt(0) == '%' && tmp.endsWith("%")) {
-            this.variable = parseAsVariable(pack, tmp);
-            this.number = 0.0;
-        } else {
-            this.variable = null;
-            this.number = parseAsNumber(tmp);
+    public static final ValueChecker<Number> NOT_LESS_THAN_ZERO_CHECKER = (value) -> {
+        if (value.doubleValue() < 0) {
+            throw new QuestRuntimeException("Value must be greater than or equal to 0: " + value);
         }
-    }
+    };
 
     /**
-     * Parses the string as a variable or as a number if it's not a variable.
+     * {@link org.betonquest.betonquest.Variable.ValueChecker} for numbers that must be greater than or equal to 1.
+     */
+    public static final ValueChecker<Number> NOT_LESS_THAN_ONE_CHECKER = (value) -> {
+        if (value.doubleValue() <= 0) {
+            throw new QuestRuntimeException("Value must be greater than or equal to 1: " + value);
+        }
+    };
+
+    /**
+     * Resolves a string that may contain variables to a variable of the given type.
      *
-     * @param packName the package in which the variable is defined
-     * @param tmp      the string to parse
-     * @throws InstructionParseException If the variable could not be created.
-     * @deprecated Use {@link #VariableNumber(QuestPackage, String)} instead.
+     * @param questPackage the package in which the variable is used in
+     * @param input        the string that may contain variables
+     * @throws InstructionParseException if the variables could not be created or resolved to the given type
+     * @deprecated use {@link #VariableNumber(VariableProcessor, QuestPackage, String)} instead
      */
     @Deprecated
-    public VariableNumber(final String packName, final String tmp) throws InstructionParseException {
-        this(Config.getPackages().get(packName), tmp);
+    public VariableNumber(final QuestPackage questPackage, final String input) throws InstructionParseException {
+        this(BetonQuest.getInstance().getVariableProcessor(), questPackage, input, (value) -> {
+        });
     }
 
     /**
-     * Creates the VariableNumber using specified number.
+     * Resolves a string that may contain variables to a variable of the given type.
      *
-     * @param number the number to use
+     * @param questPackage the package in which the variable is used in
+     * @param input        the string that may contain variables
+     * @param valueChecker the checker to verify valid values
+     * @throws InstructionParseException if the variables could not be created or resolved to the given type
+     * @deprecated use {@link #VariableNumber(VariableProcessor, QuestPackage, String, ValueChecker)} instead
      */
-    public VariableNumber(final int number) {
-        this.number = number;
-        this.variable = null;
+    @Deprecated
+    public VariableNumber(final QuestPackage questPackage, final String input, final ValueChecker<Number> valueChecker) throws InstructionParseException {
+        this(BetonQuest.getInstance().getVariableProcessor(), questPackage, input, valueChecker);
     }
 
     /**
-     * Creates the VariableNumber using specified number.
+     * Resolves a string that may contain variables to a variable of the given type.
      *
-     * @param number the number to use
+     * @param variableProcessor the processor to create the variables
+     * @param questPackage      the package in which the variable is used in
+     * @param input             the string that may contain variables
+     * @throws InstructionParseException if the variables could not be created or resolved to the given type
      */
-    public VariableNumber(final double number) {
-        this.number = number;
-        this.variable = null;
-    }
-
-    private Variable parseAsVariable(final QuestPackage pack, final String variable) throws InstructionParseException {
-        final Variable parsed;
-        try {
-            parsed = BetonQuest.createVariable(pack, replaceEscapedPercent(variable));
-        } catch (final InstructionParseException e) {
-            throw new InstructionParseException("Could not create variable: " + e.getMessage(), e);
-        }
-        if (parsed == null) {
-            throw new InstructionParseException("Could not create variable");
-        }
-        return parsed;
-    }
-
-    private String replaceEscapedPercent(final String input) {
-        return input.replaceAll("(?<!\\\\)\\\\%", "%");
-    }
-
-    private double parseAsNumber(final String variable) throws InstructionParseException {
-        try {
-            return Double.parseDouble(variable);
-        } catch (final NumberFormatException e) {
-            throw new InstructionParseException("Not a number: '" + variable + "'.", e);
-        }
+    public VariableNumber(final VariableProcessor variableProcessor, final QuestPackage questPackage, final String input)
+            throws InstructionParseException {
+        this(variableProcessor, questPackage, input, (value) -> {
+        });
     }
 
     /**
-     * Returns an integer represented by this variable. If it's a double, this
-     * method will return the floor of it.
+     * Resolves a string that may contain variables to a variable of the given type.
      *
-     * @param profile the {@link Profile} of the player for variable resolving
-     * @return the integer represented by this variable number
+     * @param variableProcessor the processor to create the variables
+     * @param questPackage      the package in which the variable is used in
+     * @param input             the string that may contain variables
+     * @param valueChecker      the checker to verify valid values
+     * @throws InstructionParseException if the variables could not be created or resolved to the given type
      */
-    public int getInt(@Nullable final Profile profile) {
-        return (int) Math.floor(resolveVariable(profile));
-    }
-
-    /**
-     * Returns a double represented by this variable.
-     *
-     * @param profile the {@link Profile} of the player for variable resolving
-     * @return the double represented by this variable number
-     */
-    public double getDouble(@Nullable final Profile profile) {
-        return resolveVariable(profile);
-    }
-
-    private double resolveVariable(@Nullable final Profile profile) {
-        if (variable == null) {
-            return number;
-        } else if (profile == null && !variable.isStaticness()) {
-            return 0;
-        } else {
-            final String resolved = variable.getValue(profile);
-            double parsed = 0;
+    public VariableNumber(final VariableProcessor variableProcessor, final QuestPackage questPackage, final String input,
+                          final ValueChecker<Number> valueChecker) throws InstructionParseException {
+        super(variableProcessor, questPackage, input, (value) -> {
             try {
-                parsed = Double.parseDouble(resolved);
+                final double parsedValue = Double.parseDouble(value);
+                valueChecker.check(parsedValue);
+                return parsedValue;
             } catch (final NumberFormatException e) {
-                log.debug("Could not parse the variable as a number, it's value is: '" + resolved + "'; returning 0.", e);
+                throw new QuestRuntimeException("Could not parse number: " + value, e);
             }
-            return parsed;
+        });
+    }
+
+    private Number getSaveValue(final Profile profile) {
+        try {
+            return getValue(profile);
+        } catch (final QuestRuntimeException e) {
+            return 0;
         }
     }
 
     /**
-     * To check if a value will be guarantied not zero or less
+     * Get the int value of the variable.
      *
-     * @return false if a variable is set or the constant value is greater zero,
-     * true if no variable is set and the constant value is zero or less
+     * @param profile the profile to get the value for
+     * @return the int value of the variable
+     * @deprecated use {@link #getValue(Profile)} and then {@link Number#intValue()} instead
      */
-    public boolean isExplicitLessThanOne() {
-        return variable == null && number < 1;
+    @Deprecated
+    public int getInt(final Profile profile) {
+        return getSaveValue(profile).intValue();
     }
 
-    @Override
-    public String toString() {
-        return variable == null ? String.valueOf(number) : variable.toString();
+    /**
+     * Get the double value of the variable.
+     *
+     * @param profile the profile to get the value for
+     * @return the double value of the variable
+     * @deprecated use {@link #getValue(Profile)} and then {@link Number#doubleValue()} instead
+     */
+    @Deprecated
+    public double getDouble(final Profile profile) {
+        return getSaveValue(profile).doubleValue();
     }
 }

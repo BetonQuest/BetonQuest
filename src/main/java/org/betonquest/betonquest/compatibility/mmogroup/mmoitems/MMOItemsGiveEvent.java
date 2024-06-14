@@ -42,7 +42,7 @@ public class MMOItemsGiveEvent extends QuestEvent {
 
     private boolean singleStack;
 
-    private VariableNumber amountVar = new VariableNumber(1);
+    private VariableNumber amountVar;
 
     public MMOItemsGiveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -51,6 +51,7 @@ public class MMOItemsGiveEvent extends QuestEvent {
         itemType = MMOItemsUtils.getMMOItemType(instruction.next());
         itemID = instruction.next();
 
+        amountVar = instruction.getVarNum("1");
         while (instruction.hasNext()) {
             final String next = instruction.next();
             switch (next) {
