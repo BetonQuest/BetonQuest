@@ -16,6 +16,11 @@ import org.bukkit.advancement.Advancement;
  */
 public class AdvancementConditionFactory implements PlayerConditionFactory {
     /**
+     * Amount of parts the advancement string is expected to have.
+     */
+    private static final int ADVANCEMENT_LENGTH = 2;
+
+    /**
      * Data used for condition check on the primary server thread.
      */
     private final PrimaryServerThreadData data;
@@ -32,10 +37,10 @@ public class AdvancementConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws InstructionParseException {
         final String advancementString = instruction.next();
-        if (!advancementString.contains(":")) {
+        final String[] split = advancementString.split(":");
+        if (split.length != ADVANCEMENT_LENGTH) {
             throw new InstructionParseException("The advancement '" + advancementString + "' is missing a namespace!");
         }
-        final String[] split = advancementString.split(":");
         final Advancement advancement = Utils.getNN(Bukkit.getServer().getAdvancement(new NamespacedKey(split[0], split[1])),
                 "No such advancement: " + advancementString);
         return new PrimaryServerThreadPlayerCondition(new AdvancementCondition(advancement), data);
