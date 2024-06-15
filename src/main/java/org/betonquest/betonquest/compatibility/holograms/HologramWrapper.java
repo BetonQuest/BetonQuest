@@ -60,15 +60,20 @@ public record HologramWrapper(int interval, List<BetonHologram> holograms, boole
      * @param profile The online player's profile
      */
     public void updateVisibilityForPlayer(final OnlineProfile profile) {
-        final boolean conditionsMet = BetonQuest.conditions(profile, conditionList);
-
+        Boolean conditionsMet = null;
         for (final BetonHologram hologram : holograms) {
             final boolean playerOutOfRange = isPlayerOutOfRange(profile, hologram);
-
-            if (conditionsMet && !playerOutOfRange) {
-                hologram.show(profile.getPlayer());
-            } else {
+            if (playerOutOfRange) {
                 hologram.hide(profile.getPlayer());
+            } else {
+                if (conditionsMet == null) {
+                    conditionsMet = BetonQuest.conditions(profile, conditionList);
+                }
+                if (conditionsMet) {
+                    hologram.show(profile.getPlayer());
+                } else {
+                    hologram.hide(profile.getPlayer());
+                }
             }
         }
     }
