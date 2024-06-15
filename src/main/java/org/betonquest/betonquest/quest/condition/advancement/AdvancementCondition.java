@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.condition.advancement;
 
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.advancement.Advancement;
@@ -25,8 +25,8 @@ public class AdvancementCondition implements PlayerCondition {
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestRuntimeException {
-        final AdvancementProgress progress = profile.getOnlineProfile().get().getPlayer().getAdvancementProgress(advancement);
+    public boolean check(final OnlineProfile profile) throws QuestRuntimeException {
+        final AdvancementProgress progress = profile.getPlayer().getAdvancementProgress(advancement);
         return progress.isDone();
     }
 }

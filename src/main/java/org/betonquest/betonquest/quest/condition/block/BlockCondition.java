@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.condition.block;
 
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.Condition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -38,6 +39,11 @@ public class BlockCondition implements Condition {
         this.loc = loc;
         this.selector = selector;
         this.exactMatch = exactMatch;
+    }
+
+    @Override
+    public boolean check(final OnlineProfile profile) throws QuestRuntimeException {
+        return check((Profile) profile);
     }
 
     @Override
