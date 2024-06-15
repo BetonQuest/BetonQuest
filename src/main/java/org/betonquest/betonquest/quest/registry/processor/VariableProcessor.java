@@ -10,15 +10,14 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.VariableID;
+import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
+import org.betonquest.betonquest.quest.registry.type.VariableTypeRegistry;
 import org.jetbrains.annotations.Nullable;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 
 /**
  * Stores Variables and resolve them.
  */
-public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable, Class<? extends Variable>> {
+public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable> {
     /**
      * Logger Factory for new custom logger.
      */
@@ -31,15 +30,20 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable,
      * @param variableTypes the available variable types
      * @param loggerFactory the logger factory used in variable ids
      */
-    public VariableProcessor(final BetonQuestLogger log, final Map<String, Class<? extends Variable>> variableTypes,
+    public VariableProcessor(final BetonQuestLogger log, final VariableTypeRegistry variableTypes,
                              final BetonQuestLoggerFactory loggerFactory) {
-        super(log, variableTypes, "variables");
+        super(log, variableTypes, "Variable", "variables");
         this.loggerFactory = loggerFactory;
     }
 
     @Override
     public void load(final QuestPackage pack) {
         // Empty
+    }
+
+    @Override
+    protected VariableID getIdentifier(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
+        return new VariableID(loggerFactory, pack, identifier);
     }
 
     /**
@@ -66,26 +70,15 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable,
             return existingVariable;
         }
         final Instruction instructionVar = variableID.getInstruction();
-        final Class<? extends Variable> variableClass = types.get(instructionVar.current());
-        if (variableClass == null) {
+        final LegacyTypeFactory<Variable> variableFactory = types.getFactory(instructionVar.current());
+        if (variableFactory == null) {
             throw new InstructionParseException("Variable type " + instructionVar.current() + " is not registered");
         }
 
-        try {
-            final Variable variable = variableClass.getConstructor(Instruction.class).newInstance(instructionVar);
-            values.put(variableID, variable);
-            log.debug(pack, "Variable " + variableID + " loaded");
-            return variable;
-        } catch (final InvocationTargetException e) {
-            if (e.getCause() instanceof InstructionParseException) {
-                throw new InstructionParseException("Error in " + variableID + " variable: " + e.getCause().getMessage(), e);
-            } else {
-                log.reportException(pack, e);
-            }
-        } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-            log.reportException(pack, e);
-        }
-        return null;
+        final Variable variable = variableFactory.parseInstruction(instructionVar);
+        values.put(variableID, variable);
+        log.debug(pack, "Variable " + variableID + " loaded");
+        return variable;
     }
 
     /**
@@ -111,7 +104,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable,
                 return "";
             }
             if (profile == null && !var.isStaticness()) {
-                log.warn(pack, "Variable '" + name + "' cannot be executed without a profile reference!");
+                log.warn(pack, "Non-static variable '" + name + "' cannot be executed without a profile reference!");
                 return "";
             }
             return var.getValue(profile);

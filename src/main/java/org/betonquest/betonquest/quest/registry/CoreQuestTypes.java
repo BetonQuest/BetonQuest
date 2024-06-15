@@ -144,16 +144,17 @@ import org.betonquest.betonquest.quest.event.time.TimeEventFactory;
 import org.betonquest.betonquest.quest.event.velocity.VelocityEventFactory;
 import org.betonquest.betonquest.quest.event.weather.WeatherEventFactory;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
-import org.betonquest.betonquest.variables.ConditionVariable;
+import org.betonquest.betonquest.quest.registry.type.VariableTypeRegistry;
+import org.betonquest.betonquest.quest.variable.condition.ConditionVariableFactory;
+import org.betonquest.betonquest.quest.variable.name.NpcNameVariableFactory;
+import org.betonquest.betonquest.quest.variable.name.PlayerNameVariableFactory;
 import org.betonquest.betonquest.variables.GlobalPointVariable;
 import org.betonquest.betonquest.variables.GlobalTagVariable;
 import org.betonquest.betonquest.variables.ItemDurabilityVariable;
 import org.betonquest.betonquest.variables.ItemVariable;
 import org.betonquest.betonquest.variables.LocationVariable;
 import org.betonquest.betonquest.variables.MathVariable;
-import org.betonquest.betonquest.variables.NpcNameVariable;
 import org.betonquest.betonquest.variables.ObjectivePropertyVariable;
-import org.betonquest.betonquest.variables.PlayerNameVariable;
 import org.betonquest.betonquest.variables.PointVariable;
 import org.betonquest.betonquest.variables.RandomNumberVariable;
 import org.betonquest.betonquest.variables.TagVariable;
@@ -220,7 +221,7 @@ public class CoreQuestTypes {
         registerConditions(questTypeRegistries.getConditionTypes());
         registerEvents();
         registerObjectives();
-        registerVariables();
+        registerVariables(questTypeRegistries.getVariableTypes());
     }
 
     private void registerConditions(final ConditionTypeRegistry conditionTypes) {
@@ -373,18 +374,18 @@ public class CoreQuestTypes {
         }
     }
 
-    private void registerVariables() {
-        betonQuest.registerVariable("condition", ConditionVariable.class);
+    private void registerVariables(final VariableTypeRegistry variables) {
+        variables.register("condition", new ConditionVariableFactory());
         betonQuest.registerVariable("globalpoint", GlobalPointVariable.class);
         betonQuest.registerVariable("globaltag", GlobalTagVariable.class);
         betonQuest.registerVariable("item", ItemVariable.class);
         betonQuest.registerVariable("itemdurability", ItemDurabilityVariable.class);
         betonQuest.registerVariable("location", LocationVariable.class);
         betonQuest.registerVariable("math", MathVariable.class);
-        betonQuest.registerVariable("npc", NpcNameVariable.class);
+        variables.register("npc", new NpcNameVariableFactory(betonQuest));
         betonQuest.registerVariable("objective", ObjectivePropertyVariable.class);
         betonQuest.registerVariable("point", PointVariable.class);
-        betonQuest.registerVariable("player", PlayerNameVariable.class);
+        variables.register("player", new PlayerNameVariableFactory(loggerFactory));
         betonQuest.registerVariable("randomnumber", RandomNumberVariable.class);
         betonQuest.registerVariable("tag", TagVariable.class);
         betonQuest.registerVariable("version", VersionVariable.class);

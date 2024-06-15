@@ -157,8 +157,6 @@ public class BetonQuest extends JavaPlugin {
 
     private static final Map<String, Class<? extends NotifyIO>> NOTIFY_IO_TYPES = new HashMap<>();
 
-    private static final Map<String, Class<? extends Variable>> VARIABLE_TYPES = new HashMap<>();
-
     private static final Map<String, EventScheduling.ScheduleType<?>> SCHEDULE_TYPES = new HashMap<>();
 
     /**
@@ -314,14 +312,13 @@ public class BetonQuest extends JavaPlugin {
      * @return the Variable instance
      * @throws InstructionParseException when the variable parsing fails
      */
-    @Nullable
     public static Variable createVariable(@Nullable final QuestPackage pack, final String instruction)
             throws InstructionParseException {
         return instance.questRegistry.variables().create(pack, instruction);
     }
 
     public static boolean isVariableType(final String type) {
-        return VARIABLE_TYPES.get(type) != null;
+        return instance.getQuestRegistries().getVariableTypes().getFactory(type) != null;
     }
 
     /**
@@ -522,7 +519,7 @@ public class BetonQuest extends JavaPlugin {
         questTypeRegistries = new QuestTypeRegistries(loggerFactory);
 
         questRegistry = new QuestRegistry(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
-                SCHEDULE_TYPES, questTypeRegistries, OBJECTIVE_TYPES, VARIABLE_TYPES);
+                SCHEDULE_TYPES, questTypeRegistries, OBJECTIVE_TYPES);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this).register(questTypeRegistries);
 
@@ -972,10 +969,12 @@ public class BetonQuest extends JavaPlugin {
      *
      * @param name     name of the variable type
      * @param variable class object of this type
+     * @deprecated in favor of direct usage of {@link #getQuestRegistries()}
+     * further {@link QuestTypeRegistries#getVariableTypes()}
      */
+    @Deprecated
     public void registerVariable(final String name, final Class<? extends Variable> variable) {
-        getInstance().log.debug("Registering " + name + " variable type");
-        VARIABLE_TYPES.put(name, variable);
+        getQuestRegistries().getVariableTypes().register(name, variable);
     }
 
     /**

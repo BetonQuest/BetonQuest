@@ -55,7 +55,7 @@ public abstract class QuestProcessor<I extends ID, T> {
      * <p>
      * Any errors will be logged.
      *
-     * @param pack to load the conditions from
+     * @param pack to load the {@link T} from
      */
     public abstract void load(QuestPackage pack);
 }
