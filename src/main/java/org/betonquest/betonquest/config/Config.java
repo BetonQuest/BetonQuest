@@ -151,9 +151,6 @@ public final class Config {
      * @return the requested string
      */
     public static String getString(final String address) {
-        if (address == null) {
-            return null;
-        }
         final String[] parts = address.split("\\.");
         if (parts.length < 2) {
             return null;
