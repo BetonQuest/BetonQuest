@@ -34,7 +34,7 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
  * Represents the data of the conversation.
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.CommentRequired", "PMD.TooManyFields",
-        "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals"})
+        "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals", "NullAway"})
 public class ConversationData {
 
     /**
@@ -124,7 +124,6 @@ public class ConversationData {
      * @throws ObjectNotFoundException   when conversation options cannot be resolved or {@code convSection} is null
      */
     @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public ConversationData(final BetonQuest plugin, final ConversationID conversationID, final ConfigurationSection convSection) throws InstructionParseException, ObjectNotFoundException {
         this.plugin = plugin;
         this.conversationID = conversationID;
