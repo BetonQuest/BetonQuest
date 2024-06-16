@@ -48,7 +48,7 @@ public class PrimaryServerThreadEvent extends PrimaryServerThreadType<Event, Voi
     public void execute(final Profile profile) throws QuestRuntimeException {
         call(() -> {
             synced.execute(profile);
-            return null;
+            return null; // TODO false positive: Void -> null
         });
     }
 }

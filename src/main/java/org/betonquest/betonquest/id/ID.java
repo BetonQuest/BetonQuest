@@ -68,7 +68,7 @@ public abstract class ID {
                 dotIndex = getDotIndex(pack, identifier, packName, dotIndex);
             }
             if (identifier.length() == dotIndex + 1) {
-                throw new ObjectNotFoundException("ID of the pack '" + this.pack + "' is null");
+                throw new ObjectNotFoundException("ID of the pack is null");
             }
             this.identifier = identifier.substring(dotIndex + 1);
         } else {
