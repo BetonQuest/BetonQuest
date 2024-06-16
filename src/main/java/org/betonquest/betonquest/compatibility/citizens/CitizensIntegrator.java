@@ -14,7 +14,7 @@ import org.bukkit.Server;
 import org.bukkit.event.HandlerList;
 import org.bukkit.scheduler.BukkitScheduler;
 
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "NullAway.Init"})
 public class CitizensIntegrator implements Integrator {
     /**
      * The active integrator instance.

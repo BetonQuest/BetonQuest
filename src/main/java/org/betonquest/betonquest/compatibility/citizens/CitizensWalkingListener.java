@@ -23,6 +23,7 @@ import java.util.Map;
 @SuppressWarnings("PMD.CommentRequired")
 public class CitizensWalkingListener implements Listener {
 
+    @SuppressWarnings("NullAway.Init")
     private static CitizensWalkingListener instance;
 
     private final Map<NPC, Pair<Integer, Location>> npcs = new HashMap<>();
@@ -121,5 +122,4 @@ public class CitizensWalkingListener implements Listener {
     public void setNewTargetLocation(final NPC npc, final Location location) {
         npcs.computeIfPresent(npc, (k, pair) -> Pair.of(pair.getKey(), location));
     }
-
 }

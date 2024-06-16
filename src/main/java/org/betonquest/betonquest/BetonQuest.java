@@ -146,7 +146,7 @@ import java.util.logging.Handler;
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods",
         "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidFieldNameMatchingMethodName",
-        "PMD.AtLeastOneConstructor", "PMD.ExcessivePublicCount", "PMD.TooManyFields"})
+        "PMD.AtLeastOneConstructor", "PMD.ExcessivePublicCount", "PMD.TooManyFields", "NullAway.Init"})
 public class BetonQuest extends JavaPlugin {
     private static final int BSTATS_METRICS_ID = 551;
 
@@ -721,7 +721,6 @@ public class BetonQuest extends JavaPlugin {
 
         if (this.adventure != null) {
             this.adventure.close();
-            this.adventure = null;
         }
 
         if (rpgMenu != null) {

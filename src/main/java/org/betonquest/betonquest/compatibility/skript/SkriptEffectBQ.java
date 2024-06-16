@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Skript effect, which fires specified BetonQuest's event
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "NullAway.Init"})
 public class SkriptEffectBQ extends Effect {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -60,9 +60,7 @@ public class SkriptEffectBQ extends Effect {
                 } catch (final ObjectNotFoundException e) {
                     log.warn("Error when running Skript event - could not load '" + eventID + "' event: " + e.getMessage(), e);
                 }
-
             }
         }.runTask(BetonQuest.getInstance());
     }
-
 }
