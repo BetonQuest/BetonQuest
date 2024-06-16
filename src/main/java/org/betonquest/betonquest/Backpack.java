@@ -43,7 +43,7 @@ public class Backpack implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
+    private final BetonQuestLogger log;
 
     /**
      * The {@link OnlineProfile} of the player
@@ -61,11 +61,6 @@ public class Backpack implements Listener {
     private final String lang;
 
     /**
-     * The inventory created by this object
-     */
-    private Inventory inv;
-
-    /**
      * Currently displayed page
      */
     private Display display;
@@ -77,26 +72,16 @@ public class Backpack implements Listener {
      * @param type          type of the display
      */
     public Backpack(final OnlineProfile onlineProfile, final DisplayType type) {
-        // fill required fields
-        this.onlineProfile = onlineProfile;
-        lang = BetonQuest.getInstance().getPlayerData(onlineProfile).getLanguage();
-        /**
-         * Instance of the BetonQuest plugin
-         */
         final BetonQuest instance = BetonQuest.getInstance();
-        playerData = instance.getPlayerData(onlineProfile);
-        // create display
-        switch (type) {
-            case DEFAULT:
-                display = new Page(1);
-                break;
-            case CANCEL:
-                display = new Cancelers();
-                break;
-            case COMPASS:
-                display = new Compass();
-                break;
-        }
+        this.log = instance.getLoggerFactory().create(getClass());
+        this.onlineProfile = onlineProfile;
+        this.playerData = instance.getPlayerData(onlineProfile);
+        this.lang = playerData.getLanguage();
+        this.display = switch (type) {
+            case DEFAULT -> new Page(1);
+            case CANCEL -> new Cancelers();
+            case COMPASS -> new Compass();
+        };
     }
 
     /**
@@ -113,7 +98,7 @@ public class Backpack implements Listener {
         if (event.getWhoClicked().equals(onlineProfile.getPlayer())) {
             // if the player clicked, then cancel this event
             event.setCancelled(true);
-            // if the click was outside of the inventory, do nothing
+            // if the click was outside the inventory, do nothing
             if (event.getRawSlot() < 0) {
                 return;
             }
@@ -182,7 +167,7 @@ public class Backpack implements Listener {
             this.pages = (int) Math.ceil(backpackItems.size() / 45F);
             this.pageOffset = (page - 1) * 45;
 
-            inv = Bukkit.createInventory(null, 54, Config.getMessage(lang, "backpack_title")
+            final Inventory inv = Bukkit.createInventory(null, 54, Config.getMessage(lang, "backpack_title")
                     + (pages == 0 || pages == 1 ? "" : " (" + page + "/" + pages + ")"));
             final ItemStack[] content = new ItemStack[54];
 
@@ -369,14 +354,12 @@ public class Backpack implements Listener {
                 display = new Compass();
             }
         }
-
     }
 
     /**
      * The page with quest cancelers.
      */
     private class Cancelers extends Display {
-
         private final Map<Integer, QuestCanceler> map = new HashMap<>();
 
         /**
@@ -399,7 +382,7 @@ public class Backpack implements Listener {
                 log.warn(onlineProfile + " has too many active quests, please"
                         + " don't allow for so many of them. It slows down your server!");
             }
-            inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "cancel_page"));
+            final Inventory inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "cancel_page"));
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int index = 0;
             for (final QuestCanceler canceler : cancelers) {
@@ -514,7 +497,7 @@ public class Backpack implements Listener {
                 onlineProfile.getPlayer().closeInventory();
                 return;
             }
-            inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "compass_page"));
+            final Inventory inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "compass_page"));
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int index = 0;
             for (final Integer slot : locations.keySet()) {
