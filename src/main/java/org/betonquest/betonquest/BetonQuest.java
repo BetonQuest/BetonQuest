@@ -585,7 +585,6 @@ public class BetonQuest extends JavaPlugin {
         setupUpdater();
 
         rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, menuConfigAccessor);
-        rpgMenu.onEnable();
 
         PaperLib.suggestPaper(this);
         getInstance().log.info("BetonQuest successfully enabled!");
