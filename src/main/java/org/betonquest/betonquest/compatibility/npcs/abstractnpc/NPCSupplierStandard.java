@@ -6,6 +6,8 @@ import java.util.function.Supplier;
 
 /**
  * Supplies a NPC in an easy usable way in Events, Objectives, Conditions and Variables.
+ * <p>
+ * This is just a function which can throw an {@link InstructionParseException}.
  */
 @FunctionalInterface
 public interface NPCSupplierStandard {

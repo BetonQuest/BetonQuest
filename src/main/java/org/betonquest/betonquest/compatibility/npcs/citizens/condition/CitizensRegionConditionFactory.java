@@ -12,7 +12,7 @@ import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCo
 /**
  * Citizens implementation of {@link NPCRegionCondition}.
  */
-public class CitizensRegionConditionFactory extends NPCRegionConditionFactory implements CitizensNPCSupplier {
+public class CitizensRegionConditionFactory extends NPCRegionConditionFactory {
     /**
      * Data used for primary server thread access.
      */
@@ -24,7 +24,7 @@ public class CitizensRegionConditionFactory extends NPCRegionConditionFactory im
      * @param data the data used for primary server thread access
      */
     public CitizensRegionConditionFactory(final PrimaryServerThreadData data) {
-        super();
+        super(() -> CitizensNPCSupplier::getSupplierByIDStatic);
         this.data = data;
     }
 
