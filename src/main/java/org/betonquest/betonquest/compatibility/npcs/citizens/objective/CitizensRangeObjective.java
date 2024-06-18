@@ -8,7 +8,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 /**
  * Citizens implementation of {@link NPCRangeObjective}.
  */
-public class CitizensRangeObjective extends NPCRangeObjective implements CitizensNPCSupplier {
+public class CitizensRangeObjective extends NPCRangeObjective {
     /**
      * Creates a new CitizensRangeObjective from the given instruction.
      *
@@ -16,6 +16,6 @@ public class CitizensRangeObjective extends NPCRangeObjective implements Citizen
      * @throws InstructionParseException if the instruction is invalid
      */
     public CitizensRangeObjective(final Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, () -> CitizensNPCSupplier::getSupplierByIDStatic);
     }
 }

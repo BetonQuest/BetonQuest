@@ -14,7 +14,7 @@ import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCo
 /**
  * Citizens implementation of {@link NPCLocationCondition}.
  */
-public class CitizensLocationConditionFactory extends NPCLocationConditionFactory implements CitizensNPCSupplier {
+public class CitizensLocationConditionFactory extends NPCLocationConditionFactory {
     /**
      * Data used for primary server thread access.
      */
@@ -26,7 +26,7 @@ public class CitizensLocationConditionFactory extends NPCLocationConditionFactor
      * @param data the data used for primary server thread access
      */
     public CitizensLocationConditionFactory(final PrimaryServerThreadData data) {
-        super();
+        super(() -> CitizensNPCSupplier::getSupplierByIDStatic);
         this.data = data;
     }
 

@@ -26,7 +26,7 @@ import java.util.function.Supplier;
 /**
  * The player has to reach certain radius around a specified NPC.
  */
-public abstract class NPCRangeObjective extends Objective implements NPCSupplierStandard {
+public abstract class NPCRangeObjective extends Objective {
     /**
      * Stores the relevant NPC ID and their supplier get their location.
      */
@@ -55,16 +55,17 @@ public abstract class NPCRangeObjective extends Objective implements NPCSupplier
     /**
      * Creates a new NPCRangeObjective from the given instruction.
      *
-     * @param instruction the user-provided instruction
+     * @param instruction      the user-provided instruction
+     * @param supplierSupplier the supplier providing the npc adapter supplier
      * @throws InstructionParseException if the instruction is invalid
      */
-    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
-    public NPCRangeObjective(final Instruction instruction) throws InstructionParseException {
+    public NPCRangeObjective(final Instruction instruction, final Supplier<NPCSupplierStandard> supplierSupplier) throws InstructionParseException {
         super(instruction);
         final String[] rawIds = instruction.getArray();
         this.npcIds = new HashMap<>(rawIds.length);
+        final NPCSupplierStandard npcSupplierStandard = supplierSupplier.get();
         for (final String rawId : rawIds) {
-            npcIds.put(rawId, getSupplierByID(rawId));
+            npcIds.put(rawId, npcSupplierStandard.getSupplierByID(rawId));
         }
         final Trigger trigger = instruction.getEnum(NPCRangeObjective.Trigger.class);
         playersInRange = new HashMap<>();

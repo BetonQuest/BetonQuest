@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.BQNPCAdapter;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCFactory;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCSupplierStandard;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -16,11 +17,14 @@ import java.util.function.Supplier;
 /**
  * Factory for {@link NPCTeleportEvent} from the {@link Instruction}.
  */
-public abstract class NPCTeleportEventFactory implements EventFactory, StaticEventFactory, NPCSupplierStandard {
+public abstract class NPCTeleportEventFactory extends NPCFactory implements EventFactory, StaticEventFactory, NPCSupplierStandard {
     /**
-     * Create a new NPCTeleportEventFactory.
+     * Create a new factory for NPC Teleport Events.
+     *
+     * @param supplierSupplier the supplier providing the npc adapter supplier
      */
-    public NPCTeleportEventFactory() {
+    public NPCTeleportEventFactory(final Supplier<NPCSupplierStandard> supplierSupplier) {
+        super(supplierSupplier);
     }
 
     @Override
