@@ -100,7 +100,7 @@ public class BStatsMetrics {
     private void hookedPlugins(final Compatibility compatibility) {
         metrics.addCustomChart(new DrilldownPie("hookedPlugins", () -> {
             final Map<String, Map<String, Integer>> map = new HashMap<>();
-            for (final String hook : compatibility.getHooked()) {
+            for (final String hook : compatibility.getPluginNames()) {
                 final Plugin plug = plugin.getServer().getPluginManager().getPlugin(hook);
                 final String hookVersion = plug == null ? "unknown" : plug.getDescription().getVersion();
 
