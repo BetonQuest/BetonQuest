@@ -842,10 +842,17 @@
           <configuration>
             <release>${java.api.version}</release>
             <compilerArgs>
+              <!--<arg>-Xlint:all</arg> May enable later when the most warnings and errors are solved-->
               <arg>-XDcompilePolicy=simple</arg>
-              <arg>-Xplugin:ErrorProne -Xep:NullAway:ERROR
-                -XepOpt:NullAway:AnnotatedPackages=org.betonquest.betonquest
+              <arg>-Xplugin:ErrorProne
+                -XepDisableAllWarnings
+                -Xep:NullAway:ERROR
+                -XepOpt:NullAway:AnnotatedPackages=${project.groupId}.${project.artifactId}
               </arg>
+              <arg>-Xmaxerrs</arg>
+              <arg>65536</arg>
+              <arg>-Xmaxwarns</arg>
+              <arg>65536</arg>
             </compilerArgs>
             <annotationProcessorPaths>
               <path>
@@ -950,6 +957,12 @@
             <failOnWarnings>false</failOnWarnings>
             <show>public</show>
             <quiet>true</quiet>
+            <additionalJOptions>
+              <additionalJOption>-Xmaxerrs</additionalJOption>
+              <additionalJOption>65536</additionalJOption>
+              <additionalJOption>-Xmaxwarns</additionalJOption>
+              <additionalJOption>65536</additionalJOption>
+            </additionalJOptions>
           </configuration>
         </plugin>
         <plugin>
