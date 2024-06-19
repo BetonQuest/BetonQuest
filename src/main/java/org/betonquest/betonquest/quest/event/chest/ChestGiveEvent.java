@@ -63,7 +63,7 @@ public class ChestGiveEvent implements ComposedEvent {
      * @param profile the profile of the player
      * @return the item stacks
      */
-    private ItemStack[] getItemStacks(final Profile profile) {
+    private ItemStack[] getItemStacks(@Nullable final Profile profile) {
         final List<ItemStack> itemStacks = new ArrayList<>();
         Arrays.stream(questItems).toList().forEach(item -> {
             final QuestItem questItem = item.getItem();

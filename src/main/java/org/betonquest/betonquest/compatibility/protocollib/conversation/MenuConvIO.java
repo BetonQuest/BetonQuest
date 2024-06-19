@@ -712,7 +712,7 @@ public class MenuConvIO extends ChatConvIO {
             final Action action = event.getAction();
             if (action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK) {
                 if (controls.containsKey(CONTROL.LEFT_CLICK)) {
-                    handleSteering();
+                    handleSteering(controls.get(CONTROL.LEFT_CLICK));
                 }
             }
         } finally {
@@ -743,7 +743,7 @@ public class MenuConvIO extends ChatConvIO {
             }
 
             if (controls.containsKey(CONTROL.LEFT_CLICK)) {
-                handleSteering();
+                handleSteering(controls.get(CONTROL.LEFT_CLICK));
             }
         } finally {
             lock.readLock().unlock();
@@ -773,15 +773,15 @@ public class MenuConvIO extends ChatConvIO {
             }
 
             if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK) && controls.containsKey(CONTROL.LEFT_CLICK)) {
-                handleSteering();
+                handleSteering(controls.get(CONTROL.LEFT_CLICK));
             }
         } finally {
             lock.readLock().unlock();
         }
     }
 
-    private void handleSteering() {
-        switch (controls.get(CONTROL.LEFT_CLICK)) {
+    private void handleSteering(final ACTION action) {
+        switch (action) {
             case CANCEL -> {
                 if (!conv.isMovementBlock()) {
                     conv.endConversation();

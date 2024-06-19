@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 @SuppressWarnings("PMD.CommentRequired")
 public class SkriptEventBQ extends SkriptEvent {
 
+    @SuppressWarnings("NullAway.Init")
     private Literal<?> literal;
 
     public SkriptEventBQ() {
@@ -35,5 +36,4 @@ public class SkriptEventBQ extends SkriptEvent {
         return event instanceof final BQEventSkript.CustomEventForSkript scriptEvent && literal.check(event, (Checker<Object>) other ->
                 other instanceof final String identifier && scriptEvent.getID().equals(identifier));
     }
-
 }

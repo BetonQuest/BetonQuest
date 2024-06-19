@@ -252,8 +252,6 @@ public class MenuItem extends SimpleYMLSection {
      * @param profile the player from the {@link Profile} this item will be displayed to
      * @return the item as a bukkit item stack
      */
-    @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.AvoidCatchingNPE"})
-    @SuppressFBWarnings("DCN_NULLPOINTER_EXCEPTION")
     public ItemStack generateItem(final Profile profile) {
         try {
             final String lang = BetonQuest.getInstance().getPlayerData(profile).getLanguage();
@@ -264,13 +262,13 @@ public class MenuItem extends SimpleYMLSection {
                 if (description == null) {
                     description = this.descriptions.get(Config.getLanguage());
                 }
-                try {
+                if (description == null) {
+                    log.error(pack, "Couldn't add custom text to '" + name + "': No text for language '"
+                            + Config.getLanguage() + "' " + "specified");
+                } else {
                     meta.setDisplayName(description.getDisplayName(profile));
                     meta.setLore(description.getLore(profile));
                     item.setItemMeta(meta);
-                } catch (final NullPointerException npe) {
-                    log.error(pack, "Couldn't add custom text to '" + name + "': No text for language '"
-                            + Config.getLanguage() + "' " + "specified");
                 }
             }
             return item;

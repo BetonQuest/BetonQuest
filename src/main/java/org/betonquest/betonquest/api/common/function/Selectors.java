@@ -17,24 +17,24 @@ public final class Selectors {
     /**
      * Creates a selector that will select the target by calling the given function with the offline player.
      *
-     * @param <T> type of the target to be selected
+     * @param <T>                   type of the target to be selected
      * @param offlinePlayerToTarget function for obtaining the target from an offline player
      * @return the created selector
      */
     public static <T> Selector<T> fromOfflinePlayer(final Function<? super OfflinePlayer, ? extends T> offlinePlayerToTarget) {
-        return profile -> offlinePlayerToTarget.apply(profile.getPlayer());
+        return profile -> offlinePlayerToTarget.apply(profile == null ? null : profile.getPlayer());
     }
 
     /**
      * Creates a selector that will select the target by calling the given function with the online profile
      * or fail with a {@link QuestRuntimeException} if the player is not online.
      *
-     * @param <T> type of the target to be selected
+     * @param <T>                   type of the target to be selected
      * @param onlineProfileToTarget function for obtaining the target from an online profile
      * @return the created selector
      */
     public static <T> Selector<T> fromOnlineProfile(final Function<? super OnlineProfile, ? extends T> onlineProfileToTarget) {
-        return profile -> profile.getOnlineProfile()
+        return profile -> profile == null ? null : profile.getOnlineProfile()
                 .map(onlineProfileToTarget)
                 .orElseThrow(() -> new QuestRuntimeException("Player must be online."));
     }
@@ -43,7 +43,7 @@ public final class Selectors {
      * Creates a selector that will select the target by calling the given function with the player
      * or fail with a {@link QuestRuntimeException} if the player is not online.
      *
-     * @param <T> type of the target to be selected
+     * @param <T>            type of the target to be selected
      * @param playerToTarget function for obtaining the target from a player
      * @return the created selector
      */

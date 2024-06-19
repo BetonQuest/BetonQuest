@@ -73,7 +73,7 @@ public class PlayerData implements TagData {
     @Nullable
     private PlayerConversationState activeConversation;
 
-    private String profileLanguage;
+    private String profileLanguage = DEFAULT_LANGUAGE_KEY;
 
     /**
      * Loads the PlayerData of the given {@link Profile}.

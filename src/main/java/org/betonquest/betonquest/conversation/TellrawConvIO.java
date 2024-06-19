@@ -90,7 +90,7 @@ public class TellrawConvIO extends ChatConvIO {
         }
         final String hash = parts[1];
         for (int j = 1; j <= hashes.size(); j++) {
-            if (hashes.get(j).equals(hash)) {
+            if (hash.equals(hashes.get(j))) {
                 conv.sendMessage(answerFormat + options.get(j));
                 conv.passPlayerAnswer(j);
                 return;

@@ -502,6 +502,9 @@ public class Backpack implements Listener {
             int index = 0;
             for (final Integer slot : locations.keySet()) {
                 final Pair<QuestPackage, String> item = items.get(slot);
+                if (item == null) {
+                    continue;
+                }
                 ItemStack compass;
                 try {
                     compass = new QuestItem(new ItemID(item.getKey(), item.getValue())).generate(1);
