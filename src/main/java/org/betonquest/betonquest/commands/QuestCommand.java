@@ -89,7 +89,7 @@ import java.util.stream.Stream;
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.NPathComplexity", "PMD.TooManyMethods",
         "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition",
-        "PMD.CognitiveComplexity", "PMD.CouplingBetweenObjects"})
+        "PMD.CognitiveComplexity", "PMD.CouplingBetweenObjects", "NullAway"})
 public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
