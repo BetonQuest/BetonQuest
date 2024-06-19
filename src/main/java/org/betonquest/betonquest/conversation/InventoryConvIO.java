@@ -92,34 +92,34 @@ public class InventoryConvIO implements Listener, ConversationIO {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         this.conv = conv;
         this.player = onlineProfile.getPlayer();
-        final Map<String, ChatColor[]> colors = ConversationColors.getColors();
+        final ConversationColors.Colors colors = ConversationColors.getColors();
         StringBuilder string = new StringBuilder();
-        for (final ChatColor color : colors.get("npc")) {
+        for (final ChatColor color : colors.npc()) {
             string.append(color);
         }
         this.npcNameColor = string.toString();
         string = new StringBuilder();
-        for (final ChatColor color : colors.get("text")) {
+        for (final ChatColor color : colors.text()) {
             string.append(color);
         }
         this.npcTextColor = string.toString();
         string = new StringBuilder();
-        for (final ChatColor color : colors.get("number")) {
+        for (final ChatColor color : colors.number()) {
             string.append(color);
         }
         string.append("%number%.");
         this.numberFormat = string.toString();
         string = new StringBuilder();
-        for (final ChatColor color : colors.get("option")) {
+        for (final ChatColor color : colors.option()) {
             string.append(color);
         }
         this.optionColor = string.toString();
         string = new StringBuilder();
-        for (final ChatColor color : colors.get("player")) {
+        for (final ChatColor color : colors.player()) {
             string.append(color);
         }
         string.append(player.getName()).append(ChatColor.RESET).append(": ");
-        for (final ChatColor color : colors.get("answer")) {
+        for (final ChatColor color : colors.answer()) {
             string.append(color);
         }
         answerPrefix = string.toString();
@@ -235,7 +235,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             final ItemMeta meta = item.getItemMeta();
 
             final StringBuilder string = new StringBuilder();
-            for (final ChatColor color : ConversationColors.getColors().get("number")) {
+            for (final ChatColor color : ConversationColors.getColors().number()) {
                 string.append(color);
             }
 

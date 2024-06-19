@@ -33,7 +33,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
     protected final Player player;
 
-    protected final Map<String, ChatColor[]> colors;
+    protected final ConversationColors.Colors colors;
 
     private final String npcTextColor;
 
@@ -59,13 +59,13 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         this.name = player.getName();
         this.colors = ConversationColors.getColors();
         StringBuilder string = new StringBuilder();
-        for (final ChatColor color : colors.get("npc")) {
+        for (final ChatColor color : colors.npc()) {
             string.append(color);
         }
         string.append("%npc%").append(ChatColor.RESET).append(": ");
 
         final StringBuilder textColorBuilder = new StringBuilder();
-        for (final ChatColor color : colors.get("text")) {
+        for (final ChatColor color : colors.text()) {
             textColorBuilder.append(color);
         }
         npcTextColor = textColorBuilder.toString();
@@ -73,11 +73,11 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         string.append(npcTextColor);
         textFormat = string.toString();
         string = new StringBuilder();
-        for (final ChatColor color : colors.get("player")) {
+        for (final ChatColor color : colors.player()) {
             string.append(color);
         }
         string.append(name).append(ChatColor.RESET).append(": ");
-        for (final ChatColor color : colors.get("answer")) {
+        for (final ChatColor color : colors.answer()) {
             string.append(color);
         }
         answerFormat = string.toString();

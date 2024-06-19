@@ -52,7 +52,7 @@ public class TellrawConvIO extends ChatConvIO {
     public TellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         super(conv, onlineProfile);
         hashes = new HashMap<>();
-        for (final ChatColor color : colors.get("option")) {
+        for (final ChatColor color : colors.option()) {
             if (color == ChatColor.STRIKETHROUGH) {
                 strikethrough = true;
             } else if (color == ChatColor.MAGIC) {
@@ -68,7 +68,7 @@ public class TellrawConvIO extends ChatConvIO {
             }
         }
         final StringBuilder string = new StringBuilder();
-        for (final ChatColor color : colors.get("number")) {
+        for (final ChatColor color : colors.number()) {
             string.append(color);
         }
         string.append("%number%. ");

@@ -32,7 +32,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
     public SlowTellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         super(conv, onlineProfile);
         final StringBuilder string = new StringBuilder();
-        for (final ChatColor color : colors.get("text")) {
+        for (final ChatColor color : colors.text()) {
             string.append(color);
         }
         this.npcTextColor = string.toString();
