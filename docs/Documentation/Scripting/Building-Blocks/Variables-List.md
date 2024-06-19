@@ -110,6 +110,22 @@ variables:
 
 ## Other Variables
 
+### Eval Variable
+
+**static**
+
+This variable allows you to resolve an expression containing variables,
+and the result will then be interpreted again as a variable.
+You need to escape the `%` inside eval with a backslash `\` to prevent it from being interpreted as a delimiter.
+You can nest multiple evals, but this leads you to an escape hell.
+If you do so, you need to add one escape level with each nesting level,
+this means normally you write `\%` and in the next level you need to write `\\\%`.
+
+````
+%eval.player.\%objective.variableStore.displayType\%%
+%eval.player.\%eval.objective.\\\%objective.otherStore.targetStore\\\%.displayType\%%
+````
+
 ### Item Variable
 
 With this variable you can display different properties of a specific QuestItem.

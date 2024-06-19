@@ -116,6 +116,7 @@ public abstract class ID {
         return dotIndex;
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private void resolveRelativePathUp(final QuestPackage pack, final String identifier, final String packName) throws ObjectNotFoundException {
         final String[] root = pack.getQuestPath().split("-");
         final String[] path = packName.split("-");
@@ -134,11 +135,15 @@ public abstract class ID {
         for (int i = stepsUp; i < path.length; i++) {
             builder.append(path[i]).append('-');
         }
-        final String absolute = builder.substring(0, builder.length() - 1);
-        this.pack = Config.getPackages().get(absolute);
-        if (this.pack == null) {
-            throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' resolved to '"
-                    + absolute + "', but this package does not exist!");
+        try {
+            final String absolute = builder.substring(0, builder.length() - 1);
+            this.pack = Config.getPackages().get(absolute);
+            if (this.pack == null) {
+                throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' resolved to '"
+                        + absolute + "', but this package does not exist!");
+            }
+        } catch (final StringIndexOutOfBoundsException e) {
+            throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' is invalid!", e);
         }
     }
 
