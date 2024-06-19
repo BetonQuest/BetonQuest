@@ -146,6 +146,7 @@ import org.betonquest.betonquest.quest.event.weather.WeatherEventFactory;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.betonquest.betonquest.quest.registry.type.VariableTypeRegistry;
 import org.betonquest.betonquest.quest.variable.condition.ConditionVariableFactory;
+import org.betonquest.betonquest.quest.variable.eval.EvalVariableFactory;
 import org.betonquest.betonquest.quest.variable.name.NpcNameVariableFactory;
 import org.betonquest.betonquest.quest.variable.name.PlayerNameVariableFactory;
 import org.betonquest.betonquest.variables.GlobalPointVariable;
@@ -376,6 +377,7 @@ public class CoreQuestTypes {
 
     private void registerVariables(final VariableTypeRegistry variables) {
         variables.register("condition", new ConditionVariableFactory());
+        variables.register("eval", new EvalVariableFactory());
         betonQuest.registerVariable("globalpoint", GlobalPointVariable.class);
         betonQuest.registerVariable("globaltag", GlobalTagVariable.class);
         betonQuest.registerVariable("item", ItemVariable.class);
