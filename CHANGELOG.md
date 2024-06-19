@@ -10,6 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - `addPermission` event adds a permission to a player
   - `removePermission` event removes a permission from a player
 - Location Vectors can now be chained
+- `eval` variable to resolve a variable string as variable
 ### Changed
 - `AureliumSkills` was renamed to `AuraSkills` the following was changed in BQ
   - `aureliumskillslevel` condition was renamed to `auraskillslevel`
