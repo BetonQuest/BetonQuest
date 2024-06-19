@@ -122,7 +122,7 @@ public interface BetonQuestLogger {
      * @param msg    The message to log.
      * @param thrown The throwable to log.
      */
-    void warn(String msg, Throwable thrown);
+    void warn(@Nullable String msg, Throwable thrown);
 
     /**
      * Logs a warning message with the {@link Level#WARNING} level to the log.
@@ -134,7 +134,7 @@ public interface BetonQuestLogger {
      * @param pack The related {@link QuestPackage} or null.
      * @param msg  The message to log.
      */
-    void warn(@Nullable QuestPackage pack, String msg);
+    void warn(@Nullable QuestPackage pack, @Nullable String msg);
 
     /**
      * Logs a warning message with the {@link Level#WARNING} level to the log.

@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Skript condition, which checks specified BetonQuest's condition
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "NullAway.Init"})
 public class SkriptConditionBQ extends Condition {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -58,5 +58,4 @@ public class SkriptConditionBQ extends Condition {
             return false;
         }
     }
-
 }

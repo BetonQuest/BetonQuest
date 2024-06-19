@@ -45,11 +45,22 @@ public class ConfigAccessorImpl implements ConfigAccessor {
      *                                       could not be found
      */
     public ConfigAccessorImpl(@Nullable final File configurationFile, @Nullable final Plugin plugin, @Nullable final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
-        checkValidParams(configurationFile, plugin, resourceFile);
+        if (configurationFile == null && plugin == null && resourceFile == null) {
+            throw new IllegalArgumentException("The configurationsFile, plugin and resourceFile are null. Pass either a configurationFile or a plugin and a resourceFile.");
+        }
         this.configurationFile = configurationFile;
         if (configurationFile != null && configurationFile.exists()) {
             this.configuration = readFromFile(configurationFile);
         } else {
+            savePluginImpl(plugin, resourceFile);
+        }
+    }
+
+    private void savePluginImpl(@Nullable final Plugin plugin, @Nullable final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
+        if ((plugin != null) == (resourceFile == null)) {
+            throw new IllegalArgumentException("Both the plugin and the resourceFile must be defined or null!");
+        }
+        if (plugin != null) {
             this.configuration = readFromResource(plugin, resourceFile);
             try {
                 this.save();
@@ -57,15 +68,6 @@ public class ConfigAccessorImpl implements ConfigAccessor {
                 throw new InvalidConfigurationException(buildExceptionMessage(true, resourceFile,
                         "could not be saved to the representing file! Reason: " + e.getMessage()), e);
             }
-        }
-    }
-
-    private void checkValidParams(@Nullable final File configurationFile, @Nullable final Plugin plugin, @Nullable final String resourceFile) {
-        if (configurationFile == null && plugin == null && resourceFile == null) {
-            throw new IllegalArgumentException("The configurationsFile, plugin and resourceFile are null. Pass either a configurationFile or a plugin and a resourceFile.");
-        }
-        if ((plugin != null) == (resourceFile == null)) {
-            throw new IllegalArgumentException("Both the plugin and the resourceFile must be defined or null!");
         }
     }
 

@@ -48,8 +48,11 @@ public record PlayerConversationState(ConversationID currentConversation, String
         final String fullID = mainParts[0];
         final String[] splitID = fullID.split("\\.");
         final String packName = splitID[0];
-        final String identifier = splitID[1];
         final QuestPackage questPackage = Config.getPackages().get(packName);
+        if (questPackage == null) {
+            throw new ObjectNotFoundException("The package " + packName + " does not exist!");
+        }
+        final String identifier = splitID[1];
         final ConversationID currentConversation = new ConversationID(questPackage, identifier);
 
         final String optionName = mainParts[1];

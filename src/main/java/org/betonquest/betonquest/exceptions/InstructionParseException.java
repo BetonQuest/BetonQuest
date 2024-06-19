@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.exceptions;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.io.Serial;
 
 /**
@@ -24,7 +26,7 @@ public class InstructionParseException extends Exception {
      * @param message the exceptions message.
      * @param cause   the Throwable that caused this exception.
      */
-    public InstructionParseException(final String message, final Throwable cause) {
+    public InstructionParseException(@Nullable final String message, final Throwable cause) {
         super(message, cause);
     }
 

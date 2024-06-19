@@ -98,8 +98,7 @@ public class Connector {
             variableResolver.resolve(statement);
             return statement.executeQuery();
         } catch (final SQLException e) {
-            log.error("There was a exception with SQL", e);
-            return null;
+            throw new RuntimeException("There was a exception with SQL", e);
         }
     }
 

@@ -25,11 +25,12 @@ public class PrimaryServerThreadStaticEvent extends PrimaryServerThreadType<Stat
         super(synced, data);
     }
 
+    @SuppressWarnings("NullAway")
     @Override
     public void execute() throws QuestRuntimeException {
         call(() -> {
             synced.execute();
-            return null;
+            return null; // NullAway false positive: Void -> null
         });
     }
 }

@@ -168,7 +168,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         if (parent == root) {
             return manager.sectionName;
         }
-        return parent.getCurrentPath() + root.options().pathSeparator() + manager.sectionName;
+        return parent == null ? "" : parent.getCurrentPath() + root.options().pathSeparator() + manager.sectionName;
     }
 
     @Override

@@ -136,7 +136,6 @@ public class Tokenizer {
             }
 
             nextInLine = new Parenthesis(tokenize(null, null, val2.substring(start + 1, index)), opening, chr);
-
         } else if (chr == '|') { //tokenize absolute values
             index = findAbsoluteEnd(val2, index);
 
@@ -145,18 +144,15 @@ public class Tokenizer {
             }
 
             nextInLine = new AbsoluteValue(tokenize(null, null, val2.substring(start + 1, index)));
-
         } else if ((numberMatcher = FP_REGEX.matcher(val2)).find()) { //tokenize numbers
             isNegated = false;
             index = numberMatcher.end() - 1;
             nextInLine = new Number(Double.parseDouble(numberMatcher.group()));
-
         } else if (Operator.isOperator(chr)) { //error handling
             if (operator == null) {
                 throw new InstructionParseException("invalid calculation (operator missing first value)");
             }
             throw new InstructionParseException("invalid calculation (doubled operators)");
-
         } else { //tokenize variables
             for (; index < val2.length(); index++) {
                 chr = val2.charAt(index);

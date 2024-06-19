@@ -112,6 +112,10 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
      */
     public void start(final Profile profile, final ObjectiveID objectiveID) {
         final Objective objective = values.get(objectiveID);
+        if (objective == null) {
+            log.error("Tried to start objective '" + objectiveID.getFullID() + "' but it is not loaded! Check for errors on /bq reload!");
+            return;
+        }
         if (objective.containsPlayer(profile)) {
             log.debug(objectiveID.getPackage(), profile + " already has the " + objectiveID + " objective");
             return;

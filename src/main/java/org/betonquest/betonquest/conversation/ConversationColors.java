@@ -81,6 +81,7 @@ public final class ConversationColors {
      * @return the map of conversation colors
      */
     public static Map<String, ChatColor[]> getColors() {
+        // TODO make map to record? or something with fields
         final Map<String, ChatColor[]> map = new HashMap<>();
         map.put("text", textColors);
         map.put("option", optionColors);
@@ -90,5 +91,4 @@ public final class ConversationColors {
         map.put("player", playerColors);
         return map;
     }
-
 }

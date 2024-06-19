@@ -129,7 +129,7 @@ public class PackageStructure implements Migration {
 
     private void createNestedSectionInSubFolders(final List<Path> questFiles, final String identifier) {
         questFiles.stream()
-                .filter(file -> file.getParent().endsWith(identifier))
+                .filter(file -> file.getParent() != null && file.getParent().endsWith(identifier))
                 .forEach(file -> {
                     final YamlConfiguration oldConfig = YamlConfiguration.loadConfiguration(file.toFile());
                     final YamlConfiguration newConfig = new YamlConfiguration();

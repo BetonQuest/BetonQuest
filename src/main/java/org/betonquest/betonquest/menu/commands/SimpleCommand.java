@@ -41,6 +41,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     @Nullable
     private final Permission perimssion;
 
+    @Nullable
     private CommandMap commandMap;
 
     private String usage = "null";

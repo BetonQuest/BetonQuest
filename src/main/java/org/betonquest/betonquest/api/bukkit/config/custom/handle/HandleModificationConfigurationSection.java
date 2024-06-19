@@ -121,6 +121,7 @@ public class HandleModificationConfigurationSection extends ConfigurationSection
      * @return the wrapped object
      */
     @Contract("null -> null; !null -> !null")
+    @Nullable
     protected Object wrapModifiable(@Nullable final Object obj) {
         if (obj instanceof HandleModificationConfigurationSection) {
             return obj;

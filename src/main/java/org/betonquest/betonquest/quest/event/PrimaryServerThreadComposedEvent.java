@@ -45,19 +45,21 @@ public class PrimaryServerThreadComposedEvent extends PrimaryServerThreadType<Co
         super(synced, data);
     }
 
+    @SuppressWarnings("NullAway")
     @Override
     public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         call(() -> {
             synced.execute(profile);
-            return null;
+            return null; // NullAway false positive: Void -> null
         });
     }
 
+    @SuppressWarnings("NullAway")
     @Override
     public void execute() throws QuestRuntimeException {
         call(() -> {
             synced.execute();
-            return null;
+            return null; // NullAway false positive: Void -> null
         });
     }
 }

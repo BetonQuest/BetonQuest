@@ -45,6 +45,9 @@ public class NotifyEvent implements Event {
         final VariableString message = translations.containsKey(playerLanguageKey)
                 ? translations.get(playerLanguageKey)
                 : translations.get(defaultLanguageKey);
+        if (message == null) {
+            throw new QuestRuntimeException("Could not find a message!");
+        }
         notifyIO.sendNotify(message.getString(profile), onlineProfile);
     }
 }

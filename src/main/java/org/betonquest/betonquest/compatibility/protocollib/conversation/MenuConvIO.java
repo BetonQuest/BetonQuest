@@ -576,8 +576,10 @@ public class MenuConvIO extends ChatConvIO {
             }
             if (stand != null) {
                 Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
-                    stand.remove();
-                    stand = null;
+                    if (stand != null) {
+                        stand.remove();
+                        stand = null;
+                    }
                 });
             }
 
