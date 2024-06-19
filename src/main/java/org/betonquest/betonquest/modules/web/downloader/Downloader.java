@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -123,6 +124,7 @@ public class Downloader implements Callable<Boolean> {
      * SHA Hash of the commit to which the ref points.
      * Is null before {@link #requestCommitSHA()} has been called.
      */
+    @Nullable
     private String sha;
 
     /**
@@ -161,8 +163,9 @@ public class Downloader implements Callable<Boolean> {
     @Override
     public Boolean call() throws Exception {
         requestCommitSHA();
-        if (Files.exists(getCacheFile())) {
-            log.debug(getCacheFile() + " is already cached, reusing it");
+        final Path cacheFile = getCacheFile();
+        if (Files.exists(cacheFile)) {
+            log.debug(cacheFile + " is already cached, reusing it");
         } else {
             download();
             cleanupOld();
@@ -174,6 +177,7 @@ public class Downloader implements Callable<Boolean> {
     /**
      * Performs a get request to the GitHub RestAPI to retrieve the SHA hash of the latest commit on the branch.
      *
+     * @return the commit sha
      * @throws DownloadFailedException if the download fails due to any qualified error
      * @throws IOException             if any io error occurs during request or parsing
      */
@@ -254,7 +258,10 @@ public class Downloader implements Callable<Boolean> {
      *
      * @return zip file containing the repo data
      */
-    private Path getCacheFile() {
+    private Path getCacheFile() throws IOException {
+        if (sha == null) {
+            throw new IOException("Can't get a file without SHA!");
+        }
         final String filename = namespace + "-" + getShortRef() + "-" + sha.substring(0, 7) + ".zip";
         return dataFolder.resolve(CACHE_DIR).resolve(filename);
     }
@@ -265,7 +272,7 @@ public class Downloader implements Callable<Boolean> {
      * @param file any file to check
      * @return true if a cached file (maybe an old one), false otherwise
      */
-    private boolean isCacheFile(final Path file) {
+    private boolean isCacheFile(final Path file) throws IOException {
         if (file.toAbsolutePath().startsWith(getCacheFile().toAbsolutePath().getParent())) {
             final String fileIdentifier = namespace.substring(namespace.lastIndexOf('/') + 1) + "-" + getShortRef();
             return Optional.ofNullable(file.getFileName()).map(Path::toString).stream()
@@ -283,6 +290,9 @@ public class Downloader implements Callable<Boolean> {
     @SuppressWarnings("PMD.AssignmentInOperand")
     private void download() throws IOException, DownloadFailedException {
         Files.createDirectories(Optional.ofNullable(getCacheFile().getParent()).orElseThrow());
+        if (sha == null) {
+            throw new DownloadFailedException("There is no commit SHA!");
+        }
         final URL url = new URL(GITHUB_DOWNLOAD_URL
                 .replace("{namespace}", namespace)
                 .replace("{sha}", sha)
@@ -363,7 +373,6 @@ public class Downloader implements Callable<Boolean> {
             } catch (final FileAlreadyExistsException e) {
                 throw new DownloadFailedException("File already exists: " + e.getMessage(), e);
             }
-
         }
     }
 
