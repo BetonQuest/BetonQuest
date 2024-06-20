@@ -9,6 +9,7 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -94,7 +95,11 @@ public abstract class ID {
         } else if (pack != null && packName.startsWith("-")) {
             this.pack = resolveRelativePathDown(pack, identifier, packName);
         } else {
-            dotIndex = getDotIndex(pack, identifier, packName, dotIndex);
+            final Map.Entry<QuestPackage, Integer> entry = getDotIndex(identifier, packName, dotIndex);
+            if (entry != null) {
+                dotIndex = entry.getValue();
+                this.pack = entry.getKey();
+            }
         }
         if (identifier.length() == dotIndex + 1) {
             throw new ObjectNotFoundException("ID of the pack is null");
@@ -106,18 +111,17 @@ public abstract class ID {
         }
     }
 
-    private int getDotIndex(@Nullable final QuestPackage pack, final String identifier, final String packName, final int dotIndex) {
+    @Nullable
+    private Map.Entry<QuestPackage, Integer> getDotIndex(final String identifier, final String packName, final int dotIndex) {
         final String[] parts = identifier.split(":")[0].split("\\.");
         final QuestPackage potentialPack = Config.getPackages().get(packName);
         if (potentialPack == null) {
-            this.pack = pack;
-            return -1;
+            return null;
         }
         if (BetonQuest.isVariableType(packName)) {
-            return resolveIdOfVariable(pack, parts, potentialPack, dotIndex);
+            return resolveIdOfVariable(parts, potentialPack, dotIndex);
         }
-        this.pack = potentialPack;
-        return dotIndex;
+        return Map.entry(potentialPack, dotIndex);
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
@@ -165,24 +169,21 @@ public abstract class ID {
     }
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    private int resolveIdOfVariable(@Nullable final QuestPackage pack, final String[] parts, final QuestPackage potentialPack, final int dotIndex) {
-        int index = dotIndex;
+    @Nullable
+    private Map.Entry<QuestPackage, Integer> resolveIdOfVariable(final String[] parts, final QuestPackage potentialPack, final int dotIndex) {
         if (parts.length == 2 && isIdFromPack(potentialPack, parts[1])) {
-            this.pack = potentialPack;
+            return Map.entry(potentialPack, dotIndex);
         } else if (parts.length > 2) {
             if (BetonQuest.isVariableType(parts[1]) && isIdFromPack(potentialPack, parts[2])) {
-                this.pack = potentialPack;
+                return Map.entry(potentialPack, dotIndex);
             } else if (isIdFromPack(potentialPack, parts[1])) {
-                this.pack = pack;
-                index = -1;
+                return null;
             } else {
-                this.pack = potentialPack;
+                return Map.entry(potentialPack, dotIndex);
             }
         } else {
-            this.pack = pack;
-            index = -1;
+            return null;
         }
-        return index;
     }
 
     /**
