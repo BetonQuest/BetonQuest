@@ -50,6 +50,7 @@ public class DefaultConfigurationFileFactory implements ConfigurationFileFactory
     }
 
     @Override
+    @SuppressWarnings("NullAway")
     public ConfigurationFile create(final File configurationFile, final Plugin plugin, final String resourceFile, @Nullable final PatchTransformerRegisterer patchTransformerRegisterer) throws InvalidConfigurationException, FileNotFoundException {
         final ConfigAccessor accessor = configAccessorFactory.create(configurationFile, plugin, resourceFile);
         final ConfigAccessor resourceAccessor = configAccessorFactory.create(plugin, resourceFile);

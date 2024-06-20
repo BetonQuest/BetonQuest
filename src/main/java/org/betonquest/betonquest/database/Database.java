@@ -47,6 +47,9 @@ public abstract class Database {
         } catch (final SQLException e) {
             log.error("Failed opening database connection!", e);
         }
+        if (con == null) {
+            throw new IllegalStateException("Not able to create a database connection!");
+        }
         return con;
     }
 

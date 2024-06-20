@@ -54,6 +54,7 @@ public class RPGMenu {
 
     private RPGMenuConfig config;
 
+    @SuppressWarnings("NullAway.Init")
     public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor menuConfigAccessor) {
         this.log = log;
         this.loggerFactory = loggerFactory;

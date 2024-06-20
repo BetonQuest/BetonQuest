@@ -21,6 +21,9 @@ public class TypeTransformer implements PatchTransformer {
     @Override
     public void transform(final Map<String, String> options, final ConfigurationSection config) throws PatchException {
         final String key = options.get("key");
+        if (key == null) {
+            throw new PatchException("Key is not set, skipping transformation.");
+        }
         final Object value = config.get(key);
         if (value == null) {
             throw new PatchException("Value is not set, skipping transformation.");
@@ -29,8 +32,10 @@ public class TypeTransformer implements PatchTransformer {
         if (type == null) {
             throw new PatchException("No 'newType', skipping transformation.");
         }
+        setValue(config, type, key, value.toString());
+    }
 
-        final String valueString = value.toString();
+    private void setValue(final ConfigurationSection config, final String type, final String key, final String valueString) throws PatchException {
         switch (type.toLowerCase(Locale.ROOT)) {
             case "boolean" -> config.set(key, Boolean.valueOf(valueString));
             case "integer" -> config.set(key, Integer.valueOf(valueString));

@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @SuppressWarnings("PMD.CommentRequired")
 public final class MMOCoreUtils {
-
+    @SuppressWarnings("NullAway.Init")
     private static Configuration mmoCoreAttributeConfig;
 
     private MMOCoreUtils() {

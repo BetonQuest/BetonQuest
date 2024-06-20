@@ -173,6 +173,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     }
 
     @Override
+    @SuppressWarnings("NullAway")
     public String getName() {
         final ConfigurationSection original = manager.getOriginal();
         final ConfigurationSection fallback = manager.getFallback();
@@ -385,18 +386,27 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     }
 
     @Override
+    @Nullable
     public <T> T getObject(final String path, final Class<T> clazz) {
         if (isConfigurationSection(path)) {
             final ConfigurationSection config = getFallbackConfigurationSection(path);
+            if (config == null) {
+                return null;
+            }
             return clazz.isInstance(config) ? clazz.cast(config) : null;
         }
         return getOriginalOrFallback(path, (section, sectionPath) -> section.getObject(sectionPath, clazz));
     }
 
     @Override
+    @Contract("_, _, !null -> !null")
+    @Nullable
     public <T> T getObject(final String path, final Class<T> clazz, @Nullable final T def) {
         if (isConfigurationSection(path)) {
             final ConfigurationSection config = getFallbackConfigurationSection(path);
+            if (config == null) {
+                return null;
+            }
             return clazz.isInstance(config) ? clazz.cast(config) : def;
         }
         return getOriginalOrFallback(path, (section, sectionPath) -> section.getObject(sectionPath, clazz, def));
@@ -586,7 +596,9 @@ public class FallbackConfigurationSection implements ConfigurationSection {
      * @param <T>      The type of the value
      * @return The value or the given default value
      */
-    private <T> T getOriginalOrFallback(final String path, final ConfigurationConsumer<T> function, final T def) {
+    @Contract("_, _, !null -> !null")
+    @Nullable
+    private <T> T getOriginalOrFallback(final String path, final ConfigurationConsumer<T> function, @Nullable final T def) {
         return getOriginalOrFallbackWithDefault(path, function, (configs) -> def);
     }
 
@@ -700,6 +712,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
          *
          * @return The original {@link ConfigurationSection}
          */
+        @SuppressWarnings("NullAway")
         protected ConfigurationSection getOriginal() {
             if (sectionName != null && !checkIsOrphaned()) {
                 if (parent == null) {

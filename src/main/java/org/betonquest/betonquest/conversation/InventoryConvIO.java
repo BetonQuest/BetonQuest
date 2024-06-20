@@ -38,7 +38,8 @@ import java.util.Objects;
 /**
  * Inventory GUI for conversations.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidFieldNameMatchingMethodName", "PMD.AvoidLiteralsInIfCondition", "PMD.NPathComplexity"})
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired",
+        "PMD.AvoidFieldNameMatchingMethodName", "PMD.AvoidLiteralsInIfCondition", "PMD.NPathComplexity", "NullAway.Init"})
 public class InventoryConvIO implements Listener, ConversationIO {
 
     private static final Map<String, ItemStack> SKULL_CACHE = new HashMap<>();
@@ -59,7 +60,6 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
     protected int playerOptionsCount;
 
-    @SuppressWarnings("NullAway.Init")
     protected String npcName;
 
     protected String npcNameColor;

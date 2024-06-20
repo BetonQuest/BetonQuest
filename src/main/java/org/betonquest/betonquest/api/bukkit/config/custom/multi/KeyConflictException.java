@@ -76,6 +76,7 @@ public class KeyConflictException extends InvalidConfigurationException {
         return exMessage.toString();
     }
 
+    @SuppressWarnings("NullAway")
     private void resolveKeyMessage(final Map<ConfigurationSection, String> namedConfigurations, final StringBuilder exMessage) {
         exMessage.append('\n');
         final SortedSet<String> sorted = new TreeSet<>(conflictingKeys.keySet());
@@ -86,6 +87,7 @@ public class KeyConflictException extends InvalidConfigurationException {
         }
     }
 
+    @SuppressWarnings("NullAway")
     private void resolvePathMessage(final Map<ConfigurationSection, String> namedConfigurations, final StringBuilder exMessage) {
         exMessage.append('\n');
         for (final List<Pair<String, ConfigurationSection>> entry : conflictingPaths) {

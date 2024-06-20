@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Objects;
 
 /**
  * Represents a {@link YamlConfiguration} that is a file or a resource from a plugin.
@@ -30,6 +31,7 @@ public class ConfigAccessorImpl implements ConfigAccessor {
     /**
      * The loaded configurationFile represented by this {@link ConfigAccessorImpl}.
      */
+    @SuppressWarnings("NullAway.Init")
     private YamlConfiguration configuration;
 
     /**
@@ -169,7 +171,7 @@ public class ConfigAccessorImpl implements ConfigAccessor {
 
     @Override
     public File getConfigurationFile() {
-        return configurationFile;
+        return Objects.requireNonNull(configurationFile);
     }
 
     private String buildExceptionMessage(final boolean isResource, final String sourcePath, final String message) {

@@ -254,8 +254,12 @@ public class Patcher {
         for (final Map<?, ?> transformationData : patchData) {
             final Map<String, String> typeSafeTransformationData = new HashMap<>();
             transformationData.forEach((key, value) -> typeSafeTransformationData.put(String.valueOf(key), String.valueOf(value)));
-
-            final String transformationType = typeSafeTransformationData.get("type").toUpperCase(Locale.ROOT);
+            final String raw = typeSafeTransformationData.get("type");
+            if (raw == null) {
+                log.warn("Missing transformation type for patcher '" + patchDataPath + "'!");
+                continue;
+            }
+            final String transformationType = raw.toUpperCase(Locale.ROOT);
             try {
                 applyTransformation(typeSafeTransformationData, transformationType);
             } catch (final PatchException e) {
