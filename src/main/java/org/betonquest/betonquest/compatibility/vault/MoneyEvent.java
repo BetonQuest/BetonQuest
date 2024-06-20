@@ -51,12 +51,12 @@ public class MoneyEvent extends QuestEvent {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final OfflinePlayer player = profile.getPlayer();
         // get the difference between target money and current money
         final Economy economy = VaultIntegrator.getInstance().getEconomy();
         if (economy == null) {
             throw new QuestRuntimeException("Can't execute the event because the Vault instance is null!");
         }
+        final OfflinePlayer player = profile.getPlayer();
         final double current = economy.getBalance(player);
         final double target;
         if (multi) {

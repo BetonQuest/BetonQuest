@@ -45,13 +45,15 @@ public final class MobKillNotifier {
      * @param killed the mob that was killed
      */
     public static void addKill(final Profile killer, final Entity killed) {
-        if (instance == null) {
-            instance = new MobKillNotifier();
+        synchronized (MobKillNotifier.class) {
+            if (instance == null) {
+                instance = new MobKillNotifier();
+            }
+            if (instance.entities.contains(killed)) {
+                return;
+            }
+            instance.entities.add(killed);
         }
-        if (instance.entities.contains(killed)) {
-            return;
-        }
-        instance.entities.add(killed);
         final MobKilledEvent event = new MobKilledEvent(killer, killed);
         Bukkit.getPluginManager().callEvent(event);
     }

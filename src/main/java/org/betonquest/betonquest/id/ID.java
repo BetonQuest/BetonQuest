@@ -112,11 +112,11 @@ public abstract class ID {
 
     @Nullable
     private Map.Entry<QuestPackage, Integer> getDotIndex(final String identifier, final String packName, final int dotIndex) {
-        final String[] parts = identifier.split(":")[0].split("\\.");
         final QuestPackage potentialPack = Config.getPackages().get(packName);
         if (potentialPack == null) {
             return null;
         }
+        final String[] parts = identifier.split(":")[0].split("\\.");
         if (BetonQuest.isVariableType(packName)) {
             return resolveIdOfVariable(parts, potentialPack, dotIndex);
         }

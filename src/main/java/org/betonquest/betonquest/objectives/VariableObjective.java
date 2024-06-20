@@ -106,6 +106,7 @@ public class VariableObjective extends Objective implements Listener {
      * @param profile the {@link Profile} of the player
      * @return the profile's variables as unmodifiable map; or null if the objective is not active for the profile
      */
+    @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
     @Nullable
     public Map<String, String> getProperties(final Profile profile) {
         if (containsPlayer(profile)) {

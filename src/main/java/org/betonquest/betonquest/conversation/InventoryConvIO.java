@@ -39,7 +39,7 @@ import java.util.Objects;
  * Inventory GUI for conversations.
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired",
-        "PMD.AvoidFieldNameMatchingMethodName", "PMD.AvoidLiteralsInIfCondition", "PMD.NPathComplexity", "NullAway.Init"})
+        "PMD.AvoidFieldNameMatchingMethodName", "PMD.AvoidLiteralsInIfCondition", "PMD.NPathComplexity", "PMD.CouplingBetweenObjects", "NullAway.Init"})
 public class InventoryConvIO implements Listener, ConversationIO {
 
     private static final Map<String, ItemStack> SKULL_CACHE = new HashMap<>();
@@ -116,7 +116,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
-    private String collect(final ChatColor[] chatColors) {
+    private String collect(final ChatColor... chatColors) {
         final StringBuilder string = new StringBuilder();
         for (final ChatColor color : chatColors) {
             string.append(color);

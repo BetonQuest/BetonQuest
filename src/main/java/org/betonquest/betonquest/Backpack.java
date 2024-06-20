@@ -500,7 +500,7 @@ public class Backpack implements Listener {
             final Inventory inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "compass_page"));
             final ItemStack[] content;
             try {
-                content = setContent(numberOfRows);
+                content = getContent(numberOfRows);
             } catch (final InstructionParseException e) {
                 log.warn("Could not load compass button: " + e.getMessage(), e);
                 onlineProfile.getPlayer().closeInventory();
@@ -512,7 +512,7 @@ public class Backpack implements Listener {
         }
 
         @SuppressWarnings("NullAway")
-        private ItemStack[] setContent(final int numberOfRows) throws InstructionParseException {
+        private ItemStack[] getContent(final int numberOfRows) throws InstructionParseException {
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int index = 0;
             for (final Integer slot : locations.keySet()) {

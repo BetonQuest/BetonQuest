@@ -12,7 +12,6 @@ import org.betonquest.betonquest.utils.math.tokens.Parenthesis;
 import org.betonquest.betonquest.utils.math.tokens.Token;
 import org.betonquest.betonquest.utils.math.tokens.Variable;
 import org.betonquest.betonquest.variables.MathVariable;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.Matcher;
@@ -175,9 +174,10 @@ public class Tokenizer {
         return tokenizeFurther(val1, operator, val2, index, nextInLine);
     }
 
-    @SuppressWarnings("NullAway")
-    private @NotNull Token tokenizeFurther(final @Nullable Token val1, final @Nullable Operator operator, final String val2, int index, final Token nextInLine) throws InstructionParseException {
-        if (index < val2.length() - 1) {
+    @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "NullAway"})
+    private Token tokenizeFurther(@Nullable final Token val1, @Nullable final Operator operator, final String val2, final int indexx, final Token nextInLine) throws InstructionParseException {
+        if (indexx < val2.length() - 1) {
+            int index = indexx;
             final char chr = val2.charAt(++index);
             if (!Operator.isOperator(chr)) {
                 if (chr == ')' || chr == ']') {
