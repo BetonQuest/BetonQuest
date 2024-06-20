@@ -34,9 +34,14 @@ public final class Selectors {
      * @return the created selector
      */
     public static <T> Selector<T> fromOnlineProfile(final Function<? super OnlineProfile, ? extends T> onlineProfileToTarget) {
-        return profile -> profile == null ? null : profile.getOnlineProfile()
-                .map(onlineProfileToTarget)
-                .orElseThrow(() -> new QuestRuntimeException("Player must be online."));
+        return profile -> {
+            if (profile == null) {
+                throw new QuestRuntimeException("Profile must be present.");
+            }
+            return profile.getOnlineProfile()
+                    .map(onlineProfileToTarget)
+                    .orElseThrow(() -> new QuestRuntimeException("Player must be online."));
+        };
     }
 
     /**

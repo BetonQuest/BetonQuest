@@ -145,6 +145,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
+    @SuppressWarnings("NullAway")
     private List<List<Pair<String, ConfigurationSection>>> validateKeyIndexPaths() {
         final List<List<Pair<String, ConfigurationSection>>> conflictingPaths = new ArrayList<>();
         final SortedSet<String> index = new TreeSet<>(keyIndex.keySet());
@@ -162,6 +163,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
         return conflictingPaths;
     }
 
+    @SuppressWarnings("NullAway")
     private List<Pair<String, ConfigurationSection>> validateKeyIndexPathsConflicts(final SortedSet<String> index, final String currentKey) {
         final List<Pair<String, ConfigurationSection>> conflict = new ArrayList<>();
         for (final String targetKey : index) {

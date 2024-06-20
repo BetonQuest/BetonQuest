@@ -15,7 +15,7 @@ import java.util.Set;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class GlobalObjectives {
-
+    @SuppressWarnings("NullAway.Init")
     private static GlobalObjectives instance;
 
     private final Set<ObjectiveID> globalObjectiveIds;
@@ -24,7 +24,6 @@ public class GlobalObjectives {
     public GlobalObjectives() {
         instance = this;
         globalObjectiveIds = new HashSet<>();
-
     }
 
     /**

@@ -79,6 +79,7 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
     }
 
     @Override
+    @Nullable
     public String getString(final String address) {
         return getString(address, null);
     }

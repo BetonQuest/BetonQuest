@@ -39,7 +39,7 @@ public class RPGMenuConfig extends SimpleYMLSection {
      */
     private final List<String> languages;
 
-    @SuppressWarnings("PMD.AvoidDuplicateLiterals")
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "NullAway"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public RPGMenuConfig(final ConfigAccessor menuConfigAccessor) throws InvalidConfigurationException, FileNotFoundException {
         super(null, "menuConfig.yml", menuConfigAccessor.getConfig());
@@ -146,5 +146,4 @@ public class RPGMenuConfig extends SimpleYMLSection {
             }
         }
     }
-
 }

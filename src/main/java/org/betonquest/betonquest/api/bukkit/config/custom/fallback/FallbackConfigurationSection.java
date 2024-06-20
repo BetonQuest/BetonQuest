@@ -9,6 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
@@ -407,6 +408,8 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     }
 
     @Override
+    @Contract("_, _, !null -> !null")
+    @Nullable
     public <T extends ConfigurationSerializable> T getSerializable(final String path, final Class<T> clazz, @Nullable final T def) {
         return getOriginalOrFallback(path, (section, sectionPath) -> section.getSerializable(sectionPath, clazz), def);
     }

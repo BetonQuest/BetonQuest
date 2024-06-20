@@ -16,7 +16,7 @@ import java.util.Objects;
  * Identifies any object(events, objectives, conversations etc.) of BetonQuest's scripting system via the path syntax.
  * Handles relative and absolute paths.
  */
-@SuppressWarnings({"PMD.ShortClassName", "PMD.AbstractClassWithoutAbstractMethod"})
+@SuppressWarnings({"PMD.ShortClassName", "PMD.AbstractClassWithoutAbstractMethod", "PMD.GodClass"})
 public abstract class ID {
 
     /**
@@ -53,7 +53,6 @@ public abstract class ID {
      * @param identifier the id instruction string
      * @throws ObjectNotFoundException if the ID could not be parsed
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     protected ID(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         if (identifier.isEmpty()) {
             throw new ObjectNotFoundException("ID is null");

@@ -12,6 +12,7 @@ import org.betonquest.betonquest.utils.math.tokens.Parenthesis;
 import org.betonquest.betonquest.utils.math.tokens.Token;
 import org.betonquest.betonquest.utils.math.tokens.Variable;
 import org.betonquest.betonquest.variables.MathVariable;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.Matcher;
@@ -171,8 +172,13 @@ public class Tokenizer {
             nextInLine = new Negation(nextInLine);
         }
 
+        return tokenizeFurther(val1, operator, val2, index, nextInLine);
+    }
+
+    @SuppressWarnings("NullAway")
+    private @NotNull Token tokenizeFurther(final @Nullable Token val1, final @Nullable Operator operator, final String val2, int index, final Token nextInLine) throws InstructionParseException {
         if (index < val2.length() - 1) {
-            chr = val2.charAt(++index);
+            final char chr = val2.charAt(++index);
             if (!Operator.isOperator(chr)) {
                 if (chr == ')' || chr == ']') {
                     throw new InstructionParseException("invalid calculation (unbalanced parenthesis)");

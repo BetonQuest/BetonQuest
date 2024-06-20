@@ -31,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -160,7 +161,7 @@ public class EntityInteractObjective extends CountingObjective {
             }
         }
 
-        final boolean success = ((EntityInteractData) dataMap.get(onlineProfile)).tryProgressWithEntity(entity);
+        final boolean success = Objects.requireNonNull((EntityInteractData) dataMap.get(onlineProfile)).tryProgressWithEntity(entity);
         if (success) {
             completeIfDoneOrNotify(onlineProfile);
         }
@@ -209,7 +210,6 @@ public class EntityInteractObjective extends CountingObjective {
         public String toString() {
             return super.toString() + ";" + entities.stream().map(UUID::toString).collect(Collectors.joining("/"));
         }
-
     }
 
     private class LeftClickListener implements Listener {

@@ -93,7 +93,10 @@ public class ConversationOptionResolver {
 
         //Since the conversation might be in another package we must load this again
         final ConversationData newData = plugin.getConversation(conversationWithNextOption);
+        if (newData == null) {
+            throw new ObjectNotFoundException("Tried to load conversation '" + conversationWithNextOption.getFullID()
+                    + "' but it is not loaded! Check for errors on /bq reload!");
+        }
         return new ResolvedOption(newData, optionType, optionName);
     }
-
 }

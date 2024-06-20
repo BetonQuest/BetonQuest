@@ -69,6 +69,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
     /**
      * @return the currently used NPCHider instance
      */
+    @Nullable
     public static NPCHider getInstance() {
         return instance;
     }
@@ -111,7 +112,6 @@ public final class NPCHider extends BukkitRunnable implements Listener {
                 }
             }
         }
-
     }
 
     @Override

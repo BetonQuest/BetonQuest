@@ -13,6 +13,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 /**
  * Integrates LuckPerms to BetonQuest.
  */
+@SuppressWarnings("NullAway.Init")
 public class LuckPermsIntegrator implements Integrator {
 
     /**

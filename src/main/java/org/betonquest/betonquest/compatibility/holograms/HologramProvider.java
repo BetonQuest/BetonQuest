@@ -163,7 +163,7 @@ public final class HologramProvider implements Integrator {
     @Override
     public void reload() {
         synchronized (HologramProvider.class) {
-            if (instance.locationHologramLoop != null) {
+            if (instance != null && instance.locationHologramLoop != null) {
                 HologramRunner.cancel();
 
                 Collections.sort(ATTEMPTED_INTEGRATIONS);

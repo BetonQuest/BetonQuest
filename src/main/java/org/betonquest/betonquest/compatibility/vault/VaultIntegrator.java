@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class VaultIntegrator implements Integrator {
+    @SuppressWarnings("NullAway.Init")
     private static VaultIntegrator instance;
 
     /**

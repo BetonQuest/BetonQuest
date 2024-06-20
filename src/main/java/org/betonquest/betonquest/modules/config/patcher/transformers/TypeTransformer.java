@@ -26,6 +26,9 @@ public class TypeTransformer implements PatchTransformer {
             throw new PatchException("Value is not set, skipping transformation.");
         }
         final String type = options.get("newType");
+        if (type == null) {
+            throw new PatchException("No 'newType', skipping transformation.");
+        }
 
         final String valueString = value.toString();
         switch (type.toLowerCase(Locale.ROOT)) {

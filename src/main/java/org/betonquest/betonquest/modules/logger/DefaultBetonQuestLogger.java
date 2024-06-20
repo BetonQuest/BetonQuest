@@ -43,19 +43,19 @@ public class DefaultBetonQuestLogger implements BetonQuestLogger {
     }
 
     @Override
-    public void debug(@Nullable final QuestPackage pack, final String msg) {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, msg, plugin, pack);
+    public void debug(@Nullable final QuestPackage pack, @Nullable final String msg) {
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, msg == null ? "" : msg, plugin, pack);
         logger.log(record);
     }
 
     @Override
-    public void debug(final String msg, final Throwable thrown) {
+    public void debug(@Nullable final String msg, final Throwable thrown) {
         debug(null, msg, thrown);
     }
 
     @Override
-    public void debug(@Nullable final QuestPackage pack, final String msg, final Throwable thrown) {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, msg, plugin, pack);
+    public void debug(@Nullable final QuestPackage pack, @Nullable final String msg, final Throwable thrown) {
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, msg == null ? "" : msg, plugin, pack);
         record.setThrown(thrown);
         logger.log(record);
     }
@@ -103,8 +103,8 @@ public class DefaultBetonQuestLogger implements BetonQuestLogger {
     }
 
     @Override
-    public void error(@Nullable final QuestPackage pack, final String msg) {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.SEVERE, msg, plugin, pack);
+    public void error(@Nullable final QuestPackage pack, @Nullable final String msg) {
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.SEVERE, msg == null ? "" : msg, plugin, pack);
         logger.log(record);
     }
 
@@ -114,8 +114,8 @@ public class DefaultBetonQuestLogger implements BetonQuestLogger {
     }
 
     @Override
-    public void error(@Nullable final QuestPackage pack, final String msg, final Throwable thrown) {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.SEVERE, msg, plugin, pack);
+    public void error(@Nullable final QuestPackage pack, @Nullable final String msg, final Throwable thrown) {
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.SEVERE, msg == null ? "" : msg, plugin, pack);
         record.setThrown(thrown);
         logger.log(record);
     }

@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.handle.ConfigurationSe
 import org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfigurationSection;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -55,7 +56,9 @@ public class UnmodifiableConfigurationSection extends HandleModificationConfigur
         });
     }
 
-    static /* default */ Object getObject(final Object obj) {
+    @Contract("null -> null; !null -> !null")
+    @Nullable
+    static /* default */ Object getObject(@Nullable final Object obj) {
         if (obj instanceof UnmodifiableConfigurationSection) {
             return obj;
         }
@@ -69,7 +72,9 @@ public class UnmodifiableConfigurationSection extends HandleModificationConfigur
     }
 
     @Override
-    protected Object wrapModifiable(final Object obj) {
+    @Contract("null -> null; !null -> !null")
+    @Nullable
+    protected Object wrapModifiable(@Nullable final Object obj) {
         return getObject(obj);
     }
 }

@@ -53,6 +53,7 @@ public class LazyHandler extends Handler {
     }
 
     @Override
+    @SuppressWarnings("NullAway")
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     public void publish(final LogRecord record) {
         requireNotClosed();

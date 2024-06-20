@@ -27,11 +27,11 @@ public final class LocalChatPaginator {
     /**
      * Pixel-length of a space character.
      */
-    public static final int SPACE_WIDTH;
+    public static final int SPACE_WIDTH = 4;
 
     static {
         FONT_SIZES = Map.ofEntries(
-                Map.entry(' ', 4),
+                Map.entry(' ', SPACE_WIDTH),
                 Map.entry('!', 2),
                 Map.entry('"', 4),
                 Map.entry('\'', 2),
@@ -59,7 +59,6 @@ public final class LocalChatPaginator {
                 Map.entry('}', 4),
                 Map.entry('~', 7)
         );
-        SPACE_WIDTH = FONT_SIZES.get(' ');
     }
 
     private LocalChatPaginator() {

@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class QuestsIntegrator implements Integrator {
+    @SuppressWarnings("NullAway.Init")
     private static Quests questsInstance;
 
     private final BetonQuest plugin;
@@ -41,5 +42,4 @@ public class QuestsIntegrator implements Integrator {
     public void close() {
         // Empty
     }
-
 }

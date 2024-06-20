@@ -59,6 +59,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
     protected int playerOptionsCount;
 
+    @SuppressWarnings("NullAway.Init")
     protected String npcName;
 
     protected String npcNameColor;
@@ -93,28 +94,11 @@ public class InventoryConvIO implements Listener, ConversationIO {
         this.conv = conv;
         this.player = onlineProfile.getPlayer();
         final ConversationColors.Colors colors = ConversationColors.getColors();
-        StringBuilder string = new StringBuilder();
-        for (final ChatColor color : colors.npc()) {
-            string.append(color);
-        }
-        this.npcNameColor = string.toString();
-        string = new StringBuilder();
-        for (final ChatColor color : colors.text()) {
-            string.append(color);
-        }
-        this.npcTextColor = string.toString();
-        string = new StringBuilder();
-        for (final ChatColor color : colors.number()) {
-            string.append(color);
-        }
-        string.append("%number%.");
-        this.numberFormat = string.toString();
-        string = new StringBuilder();
-        for (final ChatColor color : colors.option()) {
-            string.append(color);
-        }
-        this.optionColor = string.toString();
-        string = new StringBuilder();
+        this.npcNameColor = collect(colors.npc());
+        this.npcTextColor = collect(colors.text());
+        this.numberFormat = collect(colors.number()) + "%number%.";
+        this.optionColor = collect(colors.option());
+        final StringBuilder string = new StringBuilder();
         for (final ChatColor color : colors.player()) {
             string.append(color);
         }
@@ -130,6 +114,14 @@ public class InventoryConvIO implements Listener, ConversationIO {
         showNPCText = pluginConfig.getBoolean("conversation_IO_config.chest.show_npc_text", true);
 
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+    }
+
+    private String collect(final ChatColor[] chatColors) {
+        final StringBuilder string = new StringBuilder();
+        for (final ChatColor color : chatColors) {
+            string.append(color);
+        }
+        return string.toString();
     }
 
     @Override

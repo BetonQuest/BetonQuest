@@ -8,6 +8,7 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.Map;
 import java.util.UUID;
@@ -32,14 +33,23 @@ public class EventReward extends BukkitCustomReward {
 
     @Override
     public void giveReward(final UUID uuid, final Map<String, Object> dataMap) {
-        final String string = dataMap.get("Event").toString();
+        final Object object = dataMap.get("Event");
+        if (object == null) {
+            log.warn("Error while checking quest requirement - Missing Event Object");
+            return;
+        }
+        final String string = object.toString();
         try {
-            final OnlineProfile onlineProfile = PlayerConverter.getID(Bukkit.getPlayer(uuid));
+            final Player player = Bukkit.getPlayer(uuid);
+            if (player == null) {
+                log.warn("Error while running quest reward - Player with UUID '" + uuid + "' not found.");
+                return;
+            }
+            final OnlineProfile onlineProfile = PlayerConverter.getID(player);
             final EventID event = new EventID(null, string);
             BetonQuest.event(onlineProfile, event);
         } catch (final ObjectNotFoundException e) {
             log.warn("Error while running quest reward - BetonQuest event '" + string + "' not found: " + e.getMessage(), e);
         }
     }
-
 }

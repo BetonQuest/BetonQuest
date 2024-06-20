@@ -22,6 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -128,7 +129,7 @@ public class DelayObjective extends Objective {
         final String secondsWord = Config.getMessage(lang, "seconds");
         final String secondsWordSingular = Config.getMessage(lang, "seconds_singular");
 
-        final long endTimestamp = (long) ((DelayData) dataMap.get(profile)).getTime();
+        final long endTimestamp = (long) getDelayData(profile).getTime();
         final LocalDateTime end = LocalDateTime.ofInstant(Instant.ofEpochMilli(endTimestamp), ZoneId.systemDefault());
         final Duration duration = Duration.between(LocalDateTime.now(), end);
 
@@ -155,12 +156,19 @@ public class DelayObjective extends Objective {
 
     private String parseVariableDate(final Profile profile) {
         return new SimpleDateFormat(Config.getString("config.date_format"), Locale.ROOT)
-                .format(new Date((long) ((DelayData) dataMap.get(profile)).getTime()));
+                .format(new Date((long) getDelayData(profile).getTime()));
     }
 
     private String parseVariableRawSeconds(final Profile profile) {
-        final double timeLeft = ((DelayData) dataMap.get(profile)).getTime() - new Date().getTime();
+        final double timeLeft = getDelayData(profile).getTime() - new Date().getTime();
         return String.valueOf(timeLeft / 1000);
+    }
+
+    /**
+     * @throws NullPointerException when {@link #containsPlayer(Profile)} is false
+     */
+    private DelayData getDelayData(final Profile profile) {
+        return Objects.requireNonNull((DelayData) dataMap.get(profile));
     }
 
     public static class DelayData extends ObjectiveData {
@@ -175,6 +183,5 @@ public class DelayObjective extends Objective {
         private double getTime() {
             return timestamp;
         }
-
     }
 }
