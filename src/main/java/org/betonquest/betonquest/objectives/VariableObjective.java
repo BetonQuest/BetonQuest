@@ -19,6 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -65,7 +66,7 @@ public class VariableObjective extends Objective implements Listener {
             event.setCancelled(true);
             final String key = chatVariableMatcher.group("key").toLowerCase(Locale.ROOT);
             final String value = chatVariableMatcher.group("value");
-            ((VariableData) dataMap.get(onlineProfile)).add(key, value);
+            getVariableData(onlineProfile).add(key, value);
             event.getPlayer().sendMessage("§2§l\u2713"); // send checkmark
         }
     }
@@ -80,12 +81,11 @@ public class VariableObjective extends Objective implements Listener {
      * objective
      */
     public boolean store(final Profile profile, final String key, @Nullable final String value) {
-        final VariableData data = (VariableData) dataMap.get(profile);
-        if (data == null) {
-            return false;
+        if (containsPlayer(profile)) {
+            getVariableData(profile).add(key.toLowerCase(Locale.ROOT), value);
+            return true;
         }
-        data.add(key.toLowerCase(Locale.ROOT), value);
-        return true;
+        return false;
     }
 
     @Override
@@ -96,7 +96,7 @@ public class VariableObjective extends Objective implements Listener {
     @Override
     public String getProperty(final String name, final Profile profile) {
         final String key = name.toLowerCase(Locale.ROOT);
-        final String value = ((VariableData) dataMap.get(profile)).get(key);
+        final String value = getVariableData(profile).get(key);
         return value == null ? "" : value;
     }
 
@@ -108,8 +108,17 @@ public class VariableObjective extends Objective implements Listener {
      */
     @Nullable
     public Map<String, String> getProperties(final Profile profile) {
-        final VariableData profileData = (VariableData) dataMap.get(profile);
-        return profileData == null ? null : Collections.unmodifiableMap(profileData.variables);
+        if (containsPlayer(profile)) {
+            return Collections.unmodifiableMap(getVariableData(profile).variables);
+        }
+        return null;
+    }
+
+    /**
+     * @throws NullPointerException when {@link #containsPlayer(Profile)} is false
+     */
+    private VariableData getVariableData(final Profile profile) {
+        return Objects.requireNonNull((VariableData) dataMap.get(profile));
     }
 
     public static class VariableData extends ObjectiveData {

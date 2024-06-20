@@ -9,6 +9,7 @@ import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -80,9 +81,10 @@ public abstract class CountingObjective extends Objective {
      *
      * @param profile the {@link Profile} to get the data for
      * @return counting objective data of the profile
+     * @throws NullPointerException when {@link #containsPlayer(Profile)} is false
      */
     public final CountingData getCountingData(final Profile profile) {
-        return (CountingData) dataMap.get(profile);
+        return Objects.requireNonNull((CountingData) dataMap.get(profile));
     }
 
     /**
