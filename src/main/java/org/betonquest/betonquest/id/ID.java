@@ -31,14 +31,14 @@ public abstract class ID {
             "conversations", "cancel", "items");
 
     /**
+     * The package the object is in.
+     */
+    protected final QuestPackage pack;
+
+    /**
      * The identifier of the object without the package name.
      */
     protected String identifier;
-
-    /**
-     * The package the object is in.
-     */
-    protected QuestPackage pack;
 
     /**
      * The created instruction of the object.
@@ -59,7 +59,9 @@ public abstract class ID {
             throw new ObjectNotFoundException("ID is null");
         }
         if (identifier.contains(".")) {
-            parsePackageFromIdentifier(pack, identifier);
+            final Map.Entry<QuestPackage, String> entry = parsePackageFromIdentifier(pack, identifier);
+            this.pack = entry.getKey();
+            this.identifier = entry.getValue();
         } else {
             if (pack == null) {
                 throw new ObjectNotFoundException("No package specified for id '" + identifier + "'!");
@@ -87,28 +89,26 @@ public abstract class ID {
         instruction = new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), this.pack, this, rawInstruction);
     }
 
-    private void parsePackageFromIdentifier(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
-        int dotIndex = identifier.indexOf('.');
+    private Map.Entry<QuestPackage, String> parsePackageFromIdentifier(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
+        final int dotIndex = identifier.indexOf('.');
         final String packName = identifier.substring(0, dotIndex);
         if (pack != null && packName.startsWith(UP_STR + "-")) {
-            this.pack = resolveRelativePathUp(pack, identifier, packName);
+            final QuestPackage questPackage = resolveRelativePathUp(pack, identifier, packName);
+            return Map.entry(questPackage, identifier.substring(dotIndex));
         } else if (pack != null && packName.startsWith("-")) {
-            this.pack = resolveRelativePathDown(pack, identifier, packName);
+            final QuestPackage questPackage = resolveRelativePathDown(pack, identifier, packName);
+            return Map.entry(questPackage, identifier.substring(dotIndex));
         } else {
             final Map.Entry<QuestPackage, Integer> entry = getDotIndex(identifier, packName, dotIndex);
             if (entry != null) {
-                dotIndex = entry.getValue();
-                this.pack = entry.getKey();
+                final QuestPackage questPackage = entry.getKey();
+                return Map.entry(questPackage, identifier.substring(entry.getValue()));
             }
         }
         if (identifier.length() == dotIndex + 1) {
             throw new ObjectNotFoundException("ID of the pack is null");
         }
-        this.identifier = identifier.substring(dotIndex + 1);
-
-        if (this.pack == null) {
-            throw new ObjectNotFoundException("Package in ID '" + identifier + "' does not exist");
-        }
+        throw new ObjectNotFoundException("Package in ID '" + identifier + "' does not exist");
     }
 
     @Nullable
