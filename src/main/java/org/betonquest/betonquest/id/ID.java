@@ -58,29 +58,13 @@ public abstract class ID {
             throw new ObjectNotFoundException("ID is null");
         }
         if (identifier.contains(".")) {
-            int dotIndex = identifier.indexOf('.');
-            final String packName = identifier.substring(0, dotIndex);
-            if (pack != null && packName.startsWith(UP_STR + "-")) {
-                resolveRelativePathUp(pack, identifier, packName);
-            } else if (pack != null && packName.startsWith("-")) {
-                resolveRelativePathDown(pack, identifier, packName);
-            } else {
-                dotIndex = getDotIndex(pack, identifier, packName, dotIndex);
-            }
-            if (identifier.length() == dotIndex + 1) {
-                throw new ObjectNotFoundException("ID of the pack is null");
-            }
-            this.identifier = identifier.substring(dotIndex + 1);
+            parsePackageFromIdentifier(pack, identifier);
         } else {
             if (pack == null) {
                 throw new ObjectNotFoundException("No package specified for id '" + identifier + "'!");
             }
             this.pack = pack;
             this.identifier = identifier;
-        }
-
-        if (this.pack == null) {
-            throw new ObjectNotFoundException("Package in ID '" + identifier + "' does not exist");
         }
     }
 
@@ -102,6 +86,26 @@ public abstract class ID {
         instruction = new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), this.pack, this, rawInstruction);
     }
 
+    private void parsePackageFromIdentifier(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
+        int dotIndex = identifier.indexOf('.');
+        final String packName = identifier.substring(0, dotIndex);
+        if (pack != null && packName.startsWith(UP_STR + "-")) {
+            this.pack = resolveRelativePathUp(pack, identifier, packName);
+        } else if (pack != null && packName.startsWith("-")) {
+            this.pack = resolveRelativePathDown(pack, identifier, packName);
+        } else {
+            dotIndex = getDotIndex(pack, identifier, packName, dotIndex);
+        }
+        if (identifier.length() == dotIndex + 1) {
+            throw new ObjectNotFoundException("ID of the pack is null");
+        }
+        this.identifier = identifier.substring(dotIndex + 1);
+
+        if (this.pack == null) {
+            throw new ObjectNotFoundException("Package in ID '" + identifier + "' does not exist");
+        }
+    }
+
     private int getDotIndex(@Nullable final QuestPackage pack, final String identifier, final String packName, final int dotIndex) {
         final String[] parts = identifier.split(":")[0].split("\\.");
         final QuestPackage potentialPack = Config.getPackages().get(packName);
@@ -117,7 +121,7 @@ public abstract class ID {
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    private void resolveRelativePathUp(final QuestPackage pack, final String identifier, final String packName) throws ObjectNotFoundException {
+    private QuestPackage resolveRelativePathUp(final QuestPackage pack, final String identifier, final String packName) throws ObjectNotFoundException {
         final String[] root = pack.getQuestPath().split("-");
         final String[] path = packName.split("-");
         int stepsUp = 0;
@@ -137,29 +141,31 @@ public abstract class ID {
         }
         try {
             final String absolute = builder.substring(0, builder.length() - 1);
-            this.pack = Config.getPackages().get(absolute);
-            if (this.pack == null) {
+            final QuestPackage resolved = Config.getPackages().get(absolute);
+            if (resolved == null) {
                 throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' resolved to '"
                         + absolute + "', but this package does not exist!");
             }
+            return resolved;
         } catch (final StringIndexOutOfBoundsException e) {
             throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' is invalid!", e);
         }
     }
 
-    private void resolveRelativePathDown(final QuestPackage pack, final String identifier, final String packName) throws ObjectNotFoundException {
+    private QuestPackage resolveRelativePathDown(final QuestPackage pack, final String identifier, final String packName) throws ObjectNotFoundException {
         final String currentPath = pack.getQuestPath();
         final String fullPath = currentPath + packName;
 
-        this.pack = Config.getPackages().get(fullPath);
-        if (this.pack == null) {
+        final QuestPackage resolved = Config.getPackages().get(fullPath);
+        if (resolved == null) {
             throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' resolved to '"
                     + fullPath + "', but this package does not exist!");
         }
+        return resolved;
     }
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    private int resolveIdOfVariable(final QuestPackage pack, final String[] parts, final QuestPackage potentialPack, final int dotIndex) {
+    private int resolveIdOfVariable(@Nullable final QuestPackage pack, final String[] parts, final QuestPackage potentialPack, final int dotIndex) {
         int index = dotIndex;
         if (parts.length == 2 && isIdFromPack(potentialPack, parts[1])) {
             this.pack = potentialPack;
