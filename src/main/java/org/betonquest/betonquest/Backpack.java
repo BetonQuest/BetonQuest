@@ -498,6 +498,21 @@ public class Backpack implements Listener {
                 return;
             }
             final Inventory inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "compass_page"));
+            final ItemStack[] content;
+            try {
+                content = setContent(numberOfRows);
+            } catch (final InstructionParseException e) {
+                log.warn("Could not load compass button: " + e.getMessage(), e);
+                onlineProfile.getPlayer().closeInventory();
+                return;
+            }
+            inv.setContents(content);
+            onlineProfile.getPlayer().openInventory(inv);
+            Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
+        }
+
+        @SuppressWarnings("NullAway")
+        private ItemStack[] setContent(final int numberOfRows) throws InstructionParseException {
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int index = 0;
             for (final Integer slot : locations.keySet()) {
@@ -508,10 +523,6 @@ public class Backpack implements Listener {
                 ItemStack compass;
                 try {
                     compass = new QuestItem(new ItemID(item.getKey(), item.getValue())).generate(1);
-                } catch (final InstructionParseException e) {
-                    log.warn("Could not load compass button: " + e.getMessage(), e);
-                    onlineProfile.getPlayer().closeInventory();
-                    return;
                 } catch (final ObjectNotFoundException e) {
                     log.warn("Could not find item: " + e.getMessage(), e);
                     compass = new ItemStack(Material.COMPASS);
@@ -523,9 +534,7 @@ public class Backpack implements Listener {
                 content[index] = compass;
                 index++;
             }
-            inv.setContents(content);
-            onlineProfile.getPlayer().openInventory(inv);
-            Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
+            return content;
         }
 
         @Override

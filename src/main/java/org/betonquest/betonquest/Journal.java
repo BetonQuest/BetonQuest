@@ -339,6 +339,11 @@ public class Journal {
         if (numbers.isEmpty()) {
             return null;
         }
+        return sort(numbers, lines);
+    }
+
+    @SuppressWarnings("NullAway")
+    private String sort(final Set<Integer> numbers, final Map<Integer, List<String>> lines) {
         // now all lines from all packages are extracted, sort numbers
         Integer[] sorted = new Integer[numbers.size()];
         sorted = numbers.toArray(sorted);
