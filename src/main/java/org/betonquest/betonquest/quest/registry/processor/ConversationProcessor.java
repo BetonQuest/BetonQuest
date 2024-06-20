@@ -8,6 +8,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConversationID;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Stores Conversation Data and validates it.
@@ -79,6 +80,7 @@ public class ConversationProcessor extends QuestProcessor<ConversationID, Conver
      * @param conversationID package name, dot and name of the conversation
      * @return ConversationData object for this conversation or null if it does not exist
      */
+    @Nullable
     public ConversationData getConversation(final ConversationID conversationID) {
         return values.get(conversationID);
     }

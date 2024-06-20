@@ -1007,6 +1007,7 @@ public class BetonQuest extends JavaPlugin {
      * @return ConversationData object for this conversation or null if it does
      * not exist
      */
+    @Nullable
     public ConversationData getConversation(final ConversationID conversationID) {
         return instance.questRegistry.conversations().getConversation(conversationID);
     }

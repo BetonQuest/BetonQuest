@@ -207,6 +207,7 @@ public class ConversationData {
      *
      * @throws ObjectNotFoundException when a pointer to an external conversation could not be resolved
      */
+    @SuppressWarnings("PMD.ExceptionAsFlowControl")
     public void checkExternalPointers() throws ObjectNotFoundException {
         for (final CrossConversationReference externalPointer : externalPointers) {
 
@@ -214,6 +215,11 @@ public class ConversationData {
             final QuestPackage targetPack = resolvedPointer.conversationData().pack;
             final String targetConvName = resolvedPointer.conversationData().convName;
             final String targetOptionName = resolvedPointer.name();
+
+            // This is null if we refer to the starting options of a conversation
+            if (targetOptionName == null) {
+                continue;
+            }
 
             final String sourceOption;
             if (externalPointer.sourceOption() == null) {
@@ -225,15 +231,13 @@ public class ConversationData {
             final ConversationData conv;
             try {
                 conv = plugin.getConversation(new ConversationID(targetPack, targetConvName));
+                if (conv == null) {
+                    throw new ObjectNotFoundException("No Conversation for conversationID '" + conversationID.getFullID() + "'! Check for errors on /bq reload!");
+                }
             } catch (final ObjectNotFoundException e) {
                 log.warn("Cross-conversation pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
                         + sourceOption + " points to the '" + targetConvName
                         + "' conversation in the package '" + targetPack.getQuestPath() + "' but that conversation does not exist. Check your spelling!", e);
-                continue;
-            }
-
-            // This is null if we refer to the starting options of a conversation
-            if (targetOptionName == null) {
                 continue;
             }
 
