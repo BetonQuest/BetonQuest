@@ -120,7 +120,7 @@ abstract class AbstractData<T extends Cloneable> {
         return object == null ? parseVariableObject(profile) : clone(object);
     }
 
-    @SuppressWarnings("NullAway.Passing")
+    @SuppressWarnings("NullAway")
     private T parseVariableObject(@Nullable final Profile profile) throws QuestRuntimeException {
         Objects.requireNonNull(objectVariables);
         Objects.requireNonNull(objectFormatted);

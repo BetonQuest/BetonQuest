@@ -73,6 +73,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
         new BukkitRunnable() {
             private int lineCount;
 
+            @SuppressWarnings("NullAway")
             @Override
             @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
             public void run() {

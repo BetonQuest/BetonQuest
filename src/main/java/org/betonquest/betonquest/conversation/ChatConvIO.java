@@ -52,6 +52,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
     protected String textFormat;
 
+    @SuppressWarnings("NullAway.Init")
     public ChatConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         this.options = new HashMap<>();
         this.conv = conv;

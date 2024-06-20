@@ -49,6 +49,7 @@ public class TellrawConvIO extends ChatConvIO {
 
     private int count;
 
+    @SuppressWarnings("NullAway.Init")
     public TellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         super(conv, onlineProfile);
         hashes = new HashMap<>();

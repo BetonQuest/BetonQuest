@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "NullAway.Init"})
 public class EffectLibIntegrator implements Integrator {
     private static EffectLibIntegrator instance;
 

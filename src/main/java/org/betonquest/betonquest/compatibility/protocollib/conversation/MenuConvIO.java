@@ -147,7 +147,7 @@ public class MenuConvIO extends ChatConvIO {
     @Nullable
     private ArmorStand stand;
 
-    @SuppressWarnings("PMD.CognitiveComplexity")
+    @SuppressWarnings({"PMD.CognitiveComplexity", "NullAway.Init"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public MenuConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         super(conv, onlineProfile);
