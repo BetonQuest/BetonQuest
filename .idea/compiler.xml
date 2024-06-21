@@ -184,7 +184,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="betonquest" options="-XDcompilePolicy=simple &quot;-Xplugin:ErrorProne&#10;                -XepDisableAllWarnings&#10;                -Xep:NullAway:ERROR&#10;                -XepOpt:NullAway:AnnotatedPackages=org.betonquest.betonquest&quot; -Xmaxerrs 65536 -Xmaxwarns 65536" />
+      <module name="betonquest" options="-XDcompilePolicy=simple &quot;-Xplugin:ErrorProne&#10;                -XepDisableAllWarnings&#10;                -Xep:NullAway:ERROR&#10;                -XepOpt:NullAway:AnnotatedPackages=org.betonquest.betonquest&#10;                -XepExcludedPaths:.*/src/test/java/.*&quot; -Xmaxerrs 65536 -Xmaxwarns 65536" />
     </option>
   </component>
 </project>

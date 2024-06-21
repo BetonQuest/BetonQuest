@@ -848,6 +848,7 @@
                 -XepDisableAllWarnings
                 -Xep:NullAway:ERROR
                 -XepOpt:NullAway:AnnotatedPackages=${project.groupId}.${project.artifactId}
+                -XepExcludedPaths:.*/src/test/java/.*
               </arg>
               <arg>-Xmaxerrs</arg>
               <arg>65536</arg>
