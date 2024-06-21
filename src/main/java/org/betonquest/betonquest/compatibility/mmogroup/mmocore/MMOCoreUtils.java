@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.Indyuce.mmocore.api.player.PlayerData;
 import net.Indyuce.mmocore.api.player.attribute.PlayerAttribute;
 import net.Indyuce.mmocore.api.player.attribute.PlayerAttributes;
@@ -20,7 +19,6 @@ public final class MMOCoreUtils {
     private MMOCoreUtils() {
     }
 
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static void loadMMOCoreAttributeConfig() {
         mmoCoreAttributeConfig = YamlConfiguration.loadConfiguration(new File(Bukkit.getPluginManager().getPlugin("MMOCore").getDataFolder(), "attributes.yml"));
     }

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.conversation;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.tuple.Pair;
@@ -58,7 +57,6 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
  * Manages an active conversation between a player and a NPC.
  * Handles the conversation flow based on {@link ConversationData}.
  */
-@SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired",
         "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.AvoidDuplicateLiterals",
         "PMD.CouplingBetweenObjects", "NullAway"})
@@ -497,7 +495,6 @@ public class Conversation implements Listener {
      * Instead of ending the conversation it saves it to the database, from
      * where it will be resumed after the player logs in again.
      */
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public void suspend() {
         if (state.isInactive()) {
             return;

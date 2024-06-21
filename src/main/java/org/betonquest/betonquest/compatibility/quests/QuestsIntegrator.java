@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.quests;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import me.pikamug.quests.Quests;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -23,7 +22,6 @@ public class QuestsIntegrator implements Integrator {
     }
 
     @Override
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public void hook() {
         questsInstance = (Quests) Bukkit.getPluginManager().getPlugin("Quests");
         plugin.registerConditions("quest", QuestsCondition.class);

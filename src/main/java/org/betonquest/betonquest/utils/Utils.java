@@ -157,7 +157,6 @@ public final class Utils {
      * @param item ItemStack to check
      * @return true if the supplied ItemStack is a quest item, false otherwise
      */
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static boolean isQuestItem(@Nullable final ItemStack item) {
         if (item == null) {
             return false;
@@ -175,7 +174,6 @@ public final class Utils {
      * @param conditions    conditions that the party members must meet
      * @return the party of the player
      */
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static Map<OnlineProfile, Double> getParty(final OnlineProfile onlineProfile, final double range, final ConditionID... conditions) {
         final Location loc = onlineProfile.getPlayer().getLocation();
         final World world = loc.getWorld();
@@ -329,5 +327,4 @@ public final class Utils {
         }
         return argument;
     }
-
 }

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -154,7 +153,6 @@ public class Backpack implements Listener {
          * @param page number of the page to display, starting from 1
          */
         @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
-        @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         public Page(final int page) {
             super();
             final boolean showJournalInBackpack = Boolean.parseBoolean(Config.getString("config.journal.show_in_backpack"));
@@ -416,7 +414,6 @@ public class Backpack implements Listener {
 
         @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity",
                 "PMD.CognitiveComplexity"})
-        @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         public Compass() {
             super();
             int counter = 0;

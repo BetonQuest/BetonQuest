@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.objectives;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
@@ -121,7 +120,6 @@ public class EntityInteractObjective extends CountingObjective {
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private boolean onInteract(final Player player, final Entity entity) {
         // check if it's the right entity type
         if (!entity.getType().equals(mobType)) {

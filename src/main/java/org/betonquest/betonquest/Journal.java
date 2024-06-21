@@ -1,7 +1,6 @@
 package org.betonquest.betonquest;
 
 import com.google.common.collect.Lists;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.api.PlayerJournalAddEvent;
 import org.betonquest.betonquest.api.PlayerJournalDeleteEvent;
@@ -87,7 +86,6 @@ public class Journal {
      * @param item          ItemStack to check against being the journal
      * @return true if the ItemStack is the journal, false otherwise
      */
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static boolean isJournal(final OnlineProfile onlineProfile, @Nullable final ItemStack item) {
         // if there is no item then it's not a journal
         if (item == null) {
@@ -113,7 +111,6 @@ public class Journal {
      * @param onlineProfile the {@link OnlineProfile} of the player
      * @return true if the player has his journal, false otherwise
      */
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static boolean hasJournal(final OnlineProfile onlineProfile) {
         final Player player = onlineProfile.getPlayer();
         for (final ItemStack item : player.getInventory().getContents()) {
@@ -412,7 +409,6 @@ public class Journal {
      * @return the journal ItemStack
      */
     @SuppressWarnings("PMD.CognitiveComplexity")
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public ItemStack getAsItem() {
         final ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
         final BookMeta meta = (BookMeta) item.getItemMeta();

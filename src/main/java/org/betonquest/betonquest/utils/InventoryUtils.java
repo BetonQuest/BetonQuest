@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.utils;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -36,7 +35,6 @@ public final class InventoryUtils {
      * @param item      the item to fit.
      * @return the maximum amount the item fits into the inventory
      */
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static int calculateSpaceForItem(final Inventory inventory, final ItemStack item) {
         int remainingSpace = 0;
         for (final ItemStack i : inventory.getStorageContents()) {

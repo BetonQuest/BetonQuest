@@ -12,7 +12,6 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.session.ClipboardHolder;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
@@ -44,7 +43,6 @@ public class PasteSchematicEvent extends QuestEvent {
 
     private final File file;
 
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public PasteSchematicEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
@@ -100,5 +98,4 @@ public class PasteSchematicEvent extends QuestEvent {
             return reader.read();
         }
     }
-
 }

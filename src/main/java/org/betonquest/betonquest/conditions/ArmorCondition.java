@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.conditions;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -22,7 +21,6 @@ public class ArmorCondition extends Condition {
     }
 
     @Override
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Boolean execute(final Profile profile) {
         for (final ItemStack armor : profile.getOnlineProfile().get().getPlayer().getEquipment().getArmorContents()) {
             if (item.compare(armor)) {
@@ -31,5 +29,4 @@ public class ArmorCondition extends Condition {
         }
         return false;
     }
-
 }

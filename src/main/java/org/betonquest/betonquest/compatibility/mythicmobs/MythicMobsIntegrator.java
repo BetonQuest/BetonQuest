@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.mythicmobs;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
@@ -39,7 +38,6 @@ public class MythicMobsIntegrator implements Integrator {
      *
      * @throws UnsupportedVersionException if the installed version of MythicMobs is < 5.0.0.
      */
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private void validateVersion() throws UnsupportedVersionException {
         final Plugin mythicMobs = Bukkit.getPluginManager().getPlugin("MythicMobs");
         final String versionWithCommit = mythicMobs.getDescription().getVersion();
@@ -60,5 +58,4 @@ public class MythicMobsIntegrator implements Integrator {
     public void close() {
         // Empty
     }
-
 }

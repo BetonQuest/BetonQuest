@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.shopkeepers;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.exceptions.HookException;
@@ -21,7 +20,6 @@ public class ShopkeepersIntegrator implements Integrator {
     }
 
     @Override
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public void hook() throws HookException {
         final Plugin shopkeepers = Bukkit.getPluginManager().getPlugin("Shopkeepers");
         final Version shopkeepersVersion = new Version(shopkeepers.getDescription().getVersion());
@@ -42,5 +40,4 @@ public class ShopkeepersIntegrator implements Integrator {
     public void close() {
         // Empty
     }
-
 }

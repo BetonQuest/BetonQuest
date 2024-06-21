@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.conversation;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
@@ -75,7 +74,6 @@ public class SlowTellrawConvIO extends TellrawConvIO {
 
             @SuppressWarnings("NullAway")
             @Override
-            @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
             public void run() {
                 if (lineCount == lines.length) {
                     displayText();

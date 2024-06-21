@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.protocollib.hider;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.npc.NPC;
@@ -75,7 +74,6 @@ public final class NPCHider extends BukkitRunnable implements Listener {
     }
 
     @SuppressWarnings("PMD.CognitiveComplexity")
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private void loadFromConfig() {
 
         for (final QuestPackage cfgPackage : Config.getPackages().values()) {

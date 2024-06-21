@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.commands;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -120,7 +119,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Registers a new executor and a new tab completer of the /betonquest command.
      */
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public QuestCommand(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final BukkitAudiences bukkitAudiences, final PlayerLogWatcher logWatcher, final LogPublishingController debuggingController) {
         this.loggerFactory = loggerFactory;
         this.log = log;
@@ -1497,7 +1495,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
     }
 
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private void displayVersionInfo(final CommandSender sender, final String commandAlias) {
         final Updater updater = BetonQuest.getInstance().getUpdater();
         final String updateCommand = "/" + commandAlias + " update";

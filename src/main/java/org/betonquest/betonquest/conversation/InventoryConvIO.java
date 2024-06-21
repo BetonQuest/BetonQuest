@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.conversation;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
@@ -88,7 +87,6 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
     protected boolean printMessages;
 
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public InventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         this.conv = conv;
@@ -138,7 +136,6 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
     @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity",
             "PMD.CognitiveComplexity", "PMD.UnusedAssignment", "PMD.LambdaCanBeMethodReference"})
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
     public void display() {
         if (conv.isEnded()) {

@@ -8,7 +8,6 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.papermc.lib.PaperLib;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -148,7 +147,6 @@ public class MenuConvIO extends ChatConvIO {
     private ArmorStand stand;
 
     @SuppressWarnings({"PMD.CognitiveComplexity", "NullAway.Init"})
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public MenuConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         super(conv, onlineProfile);
         final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());

@@ -59,7 +59,7 @@ public final class Config {
      * Creates new instance of the Config handler
      */
     @SuppressWarnings({"PMD.AssignmentToNonFinalStatic", "PMD.CognitiveComplexity", "PMD.NPathComplexity"})
-    @SuppressFBWarnings({"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", "EI_EXPOSE_STATIC_REP2"})
+    @SuppressFBWarnings("EI_EXPOSE_STATIC_REP2")
     public static void setup(final BetonQuest plugin, final ConfigurationFile config) {
         Config.plugin = plugin;
         LANGUAGES.clear();

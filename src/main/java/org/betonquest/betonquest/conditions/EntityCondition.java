@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.conditions;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
@@ -88,7 +87,6 @@ public class EntityCondition extends Condition {
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         final Location location = loc.getLocation(profile);
@@ -127,5 +125,4 @@ public class EntityCondition extends Condition {
         }
         return true;
     }
-
 }

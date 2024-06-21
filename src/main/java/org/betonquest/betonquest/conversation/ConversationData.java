@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.conversation;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -573,7 +572,6 @@ public class ConversationData {
      * @throws InstructionParseException if an external pointer reference has an invalid format
      * @throws ObjectNotFoundException   if an external pointer inside the conversation could not be resolved
      */
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public boolean isReady(final Profile profile) throws InstructionParseException, ObjectNotFoundException {
         for (final String option : getStartingOptions()) {
             final ConversationData sourceData;
@@ -691,7 +689,6 @@ public class ConversationData {
          * @throws InstructionParseException if the configuration is invalid
          */
         @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
-        @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         protected ConversationOption(final ConversationID conversationID, final String name, final OptionType type, final ConfigurationSection convSection) throws InstructionParseException {
             this.pack = conversationID.getPackage();
             this.conversationName = conversationID.getBaseID();
@@ -749,7 +746,6 @@ public class ConversationData {
 
         //TODO: Consider removing this undocumented feature.
         @SuppressWarnings("PMD.CognitiveComplexity")
-        @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         private void parsePrefix(final String name, final OptionType type, final ConfigurationSection conv, final String defaultLang) throws InstructionParseException {
             if (conv.contains("prefix")) {
                 if (conv.isConfigurationSection("prefix")) {
@@ -773,7 +769,6 @@ public class ConversationData {
         }
 
         @SuppressWarnings("PMD.CognitiveComplexity")
-        @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         private void parseText(final String name, final OptionType type, final ConfigurationSection conv, final String defaultLang) throws InstructionParseException {
             if (conv.contains("text")) {
                 if (conv.isConfigurationSection("text")) {

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.conditions;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -27,7 +26,6 @@ public class LocationCondition extends Condition {
     }
 
     @Override
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         final Location location = loc.getLocation(profile);
         final Player player = profile.getOnlineProfile().get().getPlayer();
@@ -37,5 +35,4 @@ public class LocationCondition extends Condition {
         final double pRange = range.getDouble(profile);
         return player.getLocation().distanceSquared(location) <= pRange * pRange;
     }
-
 }
