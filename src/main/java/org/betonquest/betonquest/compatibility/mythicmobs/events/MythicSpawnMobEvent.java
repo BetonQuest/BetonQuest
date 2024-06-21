@@ -1,22 +1,17 @@
-package org.betonquest.betonquest.compatibility.mythicmobs;
+package org.betonquest.betonquest.compatibility.mythicmobs.events;
 
 import io.lumine.mythic.api.exceptions.InvalidMobTypeException;
 import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import io.lumine.mythic.bukkit.BukkitAdapter;
-import io.lumine.mythic.bukkit.MythicBukkit;
 import io.lumine.mythic.core.mobs.ActiveMob;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.compatibility.Compatibility;
+import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.compatibility.protocollib.hider.MythicHider;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -29,7 +24,9 @@ import org.jetbrains.annotations.Nullable;
  * Spawns MythicMobs mobs
  */
 @SuppressWarnings("PMD.CommentRequired")
-public class MythicSpawnMobEvent extends QuestEvent {
+public class MythicSpawnMobEvent implements Event {
+    private final BukkitAPIHelper apiHelper;
+
     private final VariableLocation loc;
 
     private final String mob;
@@ -45,40 +42,28 @@ public class MythicSpawnMobEvent extends QuestEvent {
     @Nullable
     private final VariableString marked;
 
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    public MythicSpawnMobEvent(final Instruction instruction) throws InstructionParseException {
-        super(instruction, true);
-        loc = instruction.getLocation();
-        final String[] mobParts = instruction.next().split(":");
-        if (mobParts.length != 2) {
-            throw new InstructionParseException("Wrong mob format");
-        }
-        mob = mobParts[0];
-        level = instruction.getVarNum(mobParts[1]);
-        amount = instruction.getVarNum();
-        if (Compatibility.getHooked().contains("ProtocolLib")) {
-            privateMob = instruction.hasArgument("private");
-        } else {
-            privateMob = false;
-        }
-        targetPlayer = instruction.hasArgument("target");
-        final String markedString = instruction.getOptional("marked");
-        marked = markedString == null ? null : new VariableString(
-                instruction.getPackage(),
-                Utils.addPackage(instruction.getPackage(), markedString)
-        );
+    public MythicSpawnMobEvent(final BukkitAPIHelper apiHelper, final VariableLocation loc, final String mob, final VariableNumber level,
+                               final VariableNumber amount, final boolean privateMob, final boolean targetPlayer, @Nullable final VariableString marked) {
+        this.apiHelper = apiHelper;
+        this.loc = loc;
+        this.mob = mob;
+        this.level = level;
+        this.amount = amount;
+        this.privateMob = privateMob;
+        this.targetPlayer = targetPlayer;
+        this.marked = marked;
     }
 
     @Override
-    protected Void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(final Profile profile) throws QuestRuntimeException {
         final Player player = profile.getOnlineProfile().get().getPlayer();
         final int pAmount = amount.getValue(profile).intValue();
         final int level = this.level.getValue(profile).intValue();
         final Location location = loc.getValue(profile);
         for (int i = 0; i < pAmount; i++) {
             try {
-                final Entity entity = new BukkitAPIHelper().spawnMythicMob(mob, location, level);
-                final ActiveMob targetMob = MythicBukkit.inst().getMobManager().getMythicMobInstance(entity);
+                final Entity entity = apiHelper.spawnMythicMob(mob, location, level);
+                final ActiveMob targetMob = apiHelper.getMythicMobInstance(entity);
 
                 if (privateMob) {
                     final MythicHider mythicHider = MythicHider.getInstance();
@@ -92,12 +77,11 @@ public class MythicSpawnMobEvent extends QuestEvent {
                 }
                 if (marked != null) {
                     final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
-                    entity.getPersistentDataContainer().set(key, PersistentDataType.STRING, marked.getString(profile));
+                    entity.getPersistentDataContainer().set(key, PersistentDataType.STRING, marked.getValue(profile));
                 }
             } catch (final InvalidMobTypeException e) {
                 throw new QuestRuntimeException("MythicMob type " + mob + " is invalid.", e);
             }
         }
-        return null;
     }
 }
