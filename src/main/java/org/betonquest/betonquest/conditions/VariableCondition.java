@@ -2,11 +2,11 @@ package org.betonquest.betonquest.conditions;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 
 import java.util.regex.PatternSyntaxException;
 

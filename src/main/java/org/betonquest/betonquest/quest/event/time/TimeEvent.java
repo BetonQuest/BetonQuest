@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.event.time;
 
-import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
 

@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.event.experience;
 
-import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
  * Gives the player specified amount of experience.

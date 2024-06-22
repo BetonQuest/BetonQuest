@@ -2,7 +2,6 @@ package org.betonquest.betonquest.config;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
@@ -14,6 +13,7 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.modules.config.QuestManager;
 import org.betonquest.betonquest.notify.Notify;
 import org.bukkit.ChatColor;

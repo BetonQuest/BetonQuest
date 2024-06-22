@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.event.random;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 import java.util.List;
 

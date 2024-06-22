@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.event.log;
 
-import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.jetbrains.annotations.Nullable;
 
 /**

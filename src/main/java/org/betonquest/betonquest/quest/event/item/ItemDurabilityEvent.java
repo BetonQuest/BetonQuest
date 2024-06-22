@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.item;
 
-import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.event.point.Point;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;

@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.utils.math;
 
-import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.utils.math.tokens.AbsoluteValue;
 import org.betonquest.betonquest.utils.math.tokens.Negation;

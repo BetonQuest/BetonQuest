@@ -1,4 +1,4 @@
-package org.betonquest.betonquest;
+package org.betonquest.betonquest.instruction.variable;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;

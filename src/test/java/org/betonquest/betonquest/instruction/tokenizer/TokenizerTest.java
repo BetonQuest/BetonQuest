@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.instruction;
+package org.betonquest.betonquest.instruction.tokenizer;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -9,14 +9,6 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TokenizerTest {
-    @ParameterizedTest
-    @MethodSource("validInstructions")
-    void strings_are_tokenized_correctly(final String instruction, final String... expected) throws TokenizerException {
-        final Tokenizer tokenizer = new QuotingTokenizer();
-        final String[] parsed = tokenizer.tokens(instruction);
-        assertArrayEquals(expected, parsed, "The tokenized instruction should match the expected for instruction: " + instruction);
-    }
-
     public static Stream<Arguments> validInstructions() {
         return Stream.of(
                 Arguments.of("", new String[]{}),
@@ -52,13 +44,6 @@ class TokenizerTest {
         );
     }
 
-    @ParameterizedTest
-    @MethodSource("invalidInstructions")
-    void invalid_strings_throw_tokenizer_exception(final String instruction) {
-        final Tokenizer tokenizer = new QuotingTokenizer();
-        assertThrows(TokenizerException.class, () -> tokenizer.tokens(instruction), "Expected tokenizing to fail for instruction: " + instruction);
-    }
-
     public static Stream<String> invalidInstructions() {
         return Stream.of(
                 "\"",
@@ -66,5 +51,20 @@ class TokenizerTest {
                 "my \"string",
                 "inner \"quo\"te"
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("validInstructions")
+    void strings_are_tokenized_correctly(final String instruction, final String... expected) throws TokenizerException {
+        final Tokenizer tokenizer = new QuotingTokenizer();
+        final String[] parsed = tokenizer.tokens(instruction);
+        assertArrayEquals(expected, parsed, "The tokenized instruction should match the expected for instruction: " + instruction);
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidInstructions")
+    void invalid_strings_throw_tokenizer_exception(final String instruction) {
+        final Tokenizer tokenizer = new QuotingTokenizer();
+        assertThrows(TokenizerException.class, () -> tokenizer.tokens(instruction), "Expected tokenizing to fail for instruction: " + instruction);
     }
 }

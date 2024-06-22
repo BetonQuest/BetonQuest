@@ -3,11 +3,11 @@ package org.betonquest.betonquest.compatibility.mcmmo;
 import com.gmail.nossr50.api.ExperienceAPI;
 import com.gmail.nossr50.api.SkillAPI;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 import java.util.Locale;
 

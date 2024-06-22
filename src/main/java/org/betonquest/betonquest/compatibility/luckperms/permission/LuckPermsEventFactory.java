@@ -3,12 +3,12 @@ package org.betonquest.betonquest.compatibility.luckperms.permission;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.data.NodeMap;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 
 import java.util.ArrayList;
 import java.util.List;
