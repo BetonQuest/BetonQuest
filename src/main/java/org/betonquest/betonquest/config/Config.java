@@ -205,7 +205,7 @@ public final class Config {
      * @param messageName   ID of the message
      * @param variables     array of variables which will be inserted into the string
      */
-    public static void sendMessage(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, final String... variables) {
+    public static void sendMessage(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, @Nullable final String... variables) {
         sendMessage(packName, onlineProfile, messageName, variables, null, null, (String) null);
     }
 

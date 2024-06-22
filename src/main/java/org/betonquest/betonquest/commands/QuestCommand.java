@@ -88,7 +88,7 @@ import java.util.stream.Stream;
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.NPathComplexity", "PMD.TooManyMethods",
         "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition",
-        "PMD.CognitiveComplexity", "PMD.CouplingBetweenObjects", "NullAway"})
+        "PMD.CognitiveComplexity", "PMD.CouplingBetweenObjects"})
 public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
@@ -225,17 +225,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     BetonQuest.getInstance().getUpdater().update(sender);
                     break;
                 case "reload":
-                    // just reloading
-                    final UUID uuid = sender instanceof Player ? ((Player) sender).getUniqueId() : null;
-                    final boolean noFilters = uuid != null && !logWatcher.hasActiveFilters(uuid);
-                    if (noFilters) {
-                        logWatcher.addFilter(uuid, "*", Level.WARNING);
-                    }
-                    instance.reload();
-                    sendMessage(sender, "reloaded");
-                    if (noFilters) {
-                        logWatcher.removeFilter(uuid, "*");
-                    }
+                    handleReload(sender);
                     break;
                 case "backup":
                     // do a full plugin backup
@@ -464,6 +454,25 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         playerData.purgePlayer();
         // done
         sendMessage(sender, "purged", args[1]);
+    }
+
+    /**
+     * Just reloading.
+     *
+     * @param sender the sender to send the reload confirmation
+     */
+    @SuppressWarnings("NullAway")
+    private void handleReload(final CommandSender sender) {
+        final UUID uuid = sender instanceof Player ? ((Player) sender).getUniqueId() : null;
+        final boolean noFilters = uuid != null && !logWatcher.hasActiveFilters(uuid);
+        if (noFilters) {
+            logWatcher.addFilter(uuid, "*", Level.WARNING);
+        }
+        instance.reload();
+        sendMessage(sender, "reloaded");
+        if (noFilters) {
+            logWatcher.removeFilter(uuid, "*");
+        }
     }
 
     @Nullable
@@ -1264,7 +1273,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 final String newPath = "objectives." + rename.split("\\.")[1];
                 configuration.set(newPath, nameID.getInstruction().getInstruction());
                 try {
-                    configuration.associateWith(newPath, configuration.getSourceConfigurationSection(nameID.getBaseID()));
+                    final ConfigurationSection sourceConfigurationSection = configuration.getSourceConfigurationSection(nameID.getBaseID());
+                    if (sourceConfigurationSection == null) {
+                        log.warn(nameID.getPackage(), "There is no SourceConfigurationSection!");
+                        break;
+                    }
+                    configuration.associateWith(newPath, sourceConfigurationSection);
                     nameID.getPackage().saveAll();
                 } catch (final IOException | InvalidConfigurationException e) {
                     log.warn(nameID.getPackage(), e.getMessage(), e);
@@ -1874,13 +1888,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         return Optional.of(new ArrayList<>());
     }
 
-    private void sendMessageSync(final CommandSender sender, final String messageName, final String... variables) {
+    private void sendMessageSync(final CommandSender sender, final String messageName, @Nullable final String... variables) {
         Bukkit.getScheduler().runTask(instance, () -> {
             sendMessage(sender, messageName, variables);
         });
     }
 
-    private void sendMessage(final CommandSender sender, final String messageName, final String... variables) {
+    private void sendMessage(final CommandSender sender, final String messageName, @Nullable final String... variables) {
         if (sender instanceof Player) {
             Config.sendMessage(null, PlayerConverter.getID((Player) sender), messageName, variables);
         } else {
