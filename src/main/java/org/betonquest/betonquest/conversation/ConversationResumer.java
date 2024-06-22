@@ -56,7 +56,7 @@ public class ConversationResumer implements Listener {
         this.onlineProfile = onlineProfile;
         this.player = onlineProfile.getPlayer();
         this.state = state;
-        this.distance = Double.parseDouble(Config.getString("config.max_npc_distance"));
+        this.distance = Double.parseDouble(Config.getConfigString("max_npc_distance"));
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 

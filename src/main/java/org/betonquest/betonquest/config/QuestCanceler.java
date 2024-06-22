@@ -90,7 +90,7 @@ public class QuestCanceler {
         }
         // get the item
         final String itemString = pack.getString("cancel." + cancelerID + ".item");
-        item = itemString == null ? Config.getString(pack.getQuestPath() + ".items.cancel_button") : itemString;
+        item = itemString == null ? pack.getRawString("items.cancel_button") : itemString;
         // parse it to get the data
         if (rawEvents == null) {
             events = null;

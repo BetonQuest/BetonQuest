@@ -35,7 +35,7 @@ public class CombatTagger implements Listener {
      */
     public CombatTagger() {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-        delay = Integer.parseInt(Config.getString("config.combat_delay"));
+        delay = Integer.parseInt(Config.getConfigString("combat_delay"));
     }
 
     /**

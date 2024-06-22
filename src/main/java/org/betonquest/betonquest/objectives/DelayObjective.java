@@ -155,7 +155,7 @@ public class DelayObjective extends Objective {
     }
 
     private String parseVariableDate(final Profile profile) {
-        return new SimpleDateFormat(Config.getString("config.date_format"), Locale.ROOT)
+        return new SimpleDateFormat(Config.getConfigString("date_format"), Locale.ROOT)
                 .format(new Date((long) getDelayData(profile).getTime()));
     }
 

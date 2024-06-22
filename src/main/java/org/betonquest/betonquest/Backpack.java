@@ -155,7 +155,7 @@ public class Backpack implements Listener {
         @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
         public Page(final int page) {
             super();
-            final boolean showJournalInBackpack = Boolean.parseBoolean(Config.getString("config.journal.show_in_backpack"));
+            final boolean showJournalInBackpack = Boolean.parseBoolean(Config.getConfigString("journal.show_in_backpack"));
             this.page = page;
             this.showJournal = showJournalInBackpack && !Journal.hasJournal(onlineProfile);
             this.backpackItems = playerData.getBackpack();
@@ -176,7 +176,7 @@ public class Backpack implements Listener {
             // if there are other pages, place the buttons
             if (page > 1) {
                 ItemStack previous = null;
-                final String previousButton = Config.getString("config.items.backpack.previous_button");
+                final String previousButton = Config.getConfigString("items.backpack.previous_button");
                 if (previousButton != null && !previousButton.isEmpty()) {
                     try {
                         previous = new QuestItem(new ItemID(null, previousButton)).generate(1);
@@ -194,7 +194,7 @@ public class Backpack implements Listener {
             }
             if (page < pages) {
                 ItemStack next = null;
-                final String nextButton = Config.getString("config.items.backpack.next_button");
+                final String nextButton = Config.getConfigString("items.backpack.next_button");
                 if (nextButton != null && !nextButton.isEmpty()) {
                     try {
                         next = new QuestItem(new ItemID(null, nextButton)).generate(1);
@@ -212,7 +212,7 @@ public class Backpack implements Listener {
             }
             // set "cancel quest" button
             ItemStack cancel = null;
-            final String cancelButton = Config.getString("config.items.backpack.cancel_button");
+            final String cancelButton = Config.getConfigString("items.backpack.cancel_button");
             if (cancelButton != null && !cancelButton.isEmpty()) {
                 showCancel = true;
                 if (!"DEFAULT".equalsIgnoreCase(cancelButton)) {
@@ -234,7 +234,7 @@ public class Backpack implements Listener {
                 showCancel = false;
             }
             ItemStack compassItem = null;
-            final String compassButton = Config.getString("config.items.backpack.compass_button");
+            final String compassButton = Config.getConfigString("items.backpack.compass_button");
             if (compassButton != null && !compassButton.isEmpty()) {
                 showCompass = true;
                 if (!"DEFAULT".equalsIgnoreCase(compassButton)) {
@@ -307,7 +307,7 @@ public class Backpack implements Listener {
                 // slot above 53 is player's inventory, so handle item storing
                 final ItemStack item = onlineProfile.getPlayer().getInventory().getItem(playerSlot);
                 if (item != null) {
-                    final boolean lockJournalSlot = Boolean.parseBoolean(Config.getString("config.journal.lock_default_journal_slot"));
+                    final boolean lockJournalSlot = Boolean.parseBoolean(Config.getConfigString("journal.lock_default_journal_slot"));
                     // if the item exists continue
                     if (Utils.isQuestItem(item)) {
                         // if it is a quest item, add it to the backpack

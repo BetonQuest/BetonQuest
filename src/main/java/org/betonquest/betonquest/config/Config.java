@@ -33,7 +33,7 @@ import java.util.Set;
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods", "PMD.UseObjectForClearerAPI",
         "PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.AvoidFieldNameMatchingTypeName",
-        "PMD.ClassNamingConventions", "NullAway"})
+        "PMD.ClassNamingConventions", "NullAway.Init"})
 public final class Config {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -112,15 +112,15 @@ public final class Config {
         if (result == null) {
             result = internal.getConfig().getString("en." + message);
         }
-        if (result != null) {
-            if (variables != null) {
-                for (int i = 0; i < variables.length; i++) {
-                    result = result.replace("{" + (i + 1) + "}", variables[i]);
-                }
-            }
-            result = ChatColor.translateAlternateColorCodes('&', result);
+        if (result == null) {
+            return null;
         }
-        return result;
+        if (variables != null) {
+            for (int i = 0; i < variables.length; i++) {
+                result = result.replace("{" + (i + 1) + "}", variables[i]);
+            }
+        }
+        return ChatColor.translateAlternateColorCodes('&', result);
     }
 
     /**
@@ -143,30 +143,13 @@ public final class Config {
     }
 
     /**
-     * Retrieves the string from across all configuration. The variables are not
-     * replaced! To replace variables automatically just call getString() method
-     * on {@link QuestPackage}.
+     * Retrieves the string from the configuration.
      *
-     * @param address address of the string
+     * @param address address of the string without leading {@code config.}
      * @return the requested string
      */
-    public static String getString(final String address) {
-        final String[] parts = address.split("\\.");
-        if (parts.length < 2) {
-            return null;
-        }
-        final String main = parts[0];
-        if ("config".equals(main)) {
-            return plugin.getPluginConfig().getString(address.substring(7));
-        } else if ("messages".equals(main)) {
-            return messages.getString(address.substring(9));
-        } else {
-            final QuestPackage pack = getPackages().get(main);
-            if (pack == null) {
-                return null;
-            }
-            return pack.getRawString(address.substring(main.length() + 1));
-        }
+    public static String getConfigString(final String address) {
+        return plugin.getPluginConfig().getString(address);
     }
 
     /**

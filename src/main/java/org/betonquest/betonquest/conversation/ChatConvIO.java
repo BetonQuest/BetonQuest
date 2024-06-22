@@ -82,7 +82,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         }
         answerFormat = string.toString();
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-        maxNpcDistance = Double.parseDouble(Config.getString("config.max_npc_distance"));
+        maxNpcDistance = Double.parseDouble(Config.getConfigString("max_npc_distance"));
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -129,7 +129,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         newLocation.setPitch(pitch);
         newLocation.setYaw(yaw);
         event.getPlayer().teleport(newLocation);
-        if (Boolean.parseBoolean(Config.getString("config.notify_pullback"))) {
+        if (Boolean.parseBoolean(Config.getConfigString("notify_pullback"))) {
             conv.sendMessage(Config.getMessage(Config.getLanguage(), "pullback"));
         }
     }

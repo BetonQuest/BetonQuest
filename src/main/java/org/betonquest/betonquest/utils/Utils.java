@@ -88,8 +88,8 @@ public final class Utils {
         final List<String> pages = new ArrayList<>();
         final String[] bigPages = string.split("\\|");
         for (final String bigPage : bigPages) {
-            if (Config.getString("config.journal.lines_per_page") == null) {
-                final int charsPerPage = Integer.parseInt(Config.getString("config.journal.chars_per_page"));
+            if (Config.getConfigString("journal.lines_per_page") == null) {
+                final int charsPerPage = Integer.parseInt(Config.getConfigString("journal.chars_per_page"));
                 StringBuilder page = new StringBuilder();
                 for (final String word : bigPage.split(" ")) {
                     if (getStringLength(page.toString()) + getStringLength(word) + 1 > charsPerPage) {
@@ -100,8 +100,8 @@ public final class Utils {
                 }
                 pages.add(page.toString().stripTrailing().replaceAll("(?<!\\\\)\\\\n", "\n"));
             } else {
-                final int charsPerLine = Integer.parseInt(Config.getString("config.journal.chars_per_line"));
-                final int linesPerPage = Integer.parseInt(Config.getString("config.journal.lines_per_page"));
+                final int charsPerLine = Integer.parseInt(Config.getConfigString("journal.chars_per_line"));
+                final int linesPerPage = Integer.parseInt(Config.getConfigString("journal.lines_per_page"));
                 StringBuilder page = new StringBuilder();
                 int lines = 0;
                 for (final String line : bigPage.split("((?<!\\\\)\\\\n|\n)")) {

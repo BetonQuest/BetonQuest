@@ -19,8 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class UtilsTest {
 
     private void prepareConfig(final MockedStatic<Config> config) {
-        config.when(() -> Config.getString("config.journal.lines_per_page")).thenReturn("13");
-        config.when(() -> Config.getString("config.journal.chars_per_line")).thenReturn("19");
+        config.when(() -> Config.getConfigString("journal.lines_per_page")).thenReturn("13");
+        config.when(() -> Config.getConfigString("journal.chars_per_line")).thenReturn("19");
     }
 
     @Test

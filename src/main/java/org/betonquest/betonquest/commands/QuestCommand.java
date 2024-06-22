@@ -509,7 +509,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             journal.getPointers().stream()
                     .filter(shouldDisplay)
                     .forEach(pointer -> {
-                        final String date = new SimpleDateFormat(Config.getString("config.date_format"), Locale.ROOT)
+                        final String date = new SimpleDateFormat(Config.getConfigString("date_format"), Locale.ROOT)
                                 .format(new Date(pointer.getTimestamp()));
                         sender.sendMessage("§b- " + pointer.getPointer() + " §c(§2" + date + "§c)");
                     });
@@ -538,7 +538,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 } else {
                     log.debug("Adding pointer with date " + args[4].replaceAll("_", " "));
                     try {
-                        pointer = new Pointer(pointerName, new SimpleDateFormat(Config.getString("config.date_format"), Locale.ROOT)
+                        pointer = new Pointer(pointerName, new SimpleDateFormat(Config.getConfigString("date_format"), Locale.ROOT)
                                 .parse(args[4].replaceAll("_", " ")).getTime());
                     } catch (final ParseException e) {
                         sendMessage(sender, "specify_date");

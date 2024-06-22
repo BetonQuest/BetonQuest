@@ -53,7 +53,7 @@ public class AsyncSaver extends Thread implements Listener, Saver {
         this.con = new Connector();
         this.queue = new ConcurrentLinkedQueue<>();
         this.running = true;
-        this.reconnectInterval = Long.parseLong(Config.getString("config.mysql.reconnect_interval"));
+        this.reconnectInterval = Long.parseLong(Config.getConfigString("mysql.reconnect_interval"));
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
@@ -107,5 +107,4 @@ public class AsyncSaver extends Thread implements Listener, Saver {
             notifyAll();
         }
     }
-
 }
