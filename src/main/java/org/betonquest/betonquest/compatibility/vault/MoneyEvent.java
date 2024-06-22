@@ -73,7 +73,7 @@ public class MoneyEvent extends QuestEvent {
             economy.depositPlayer(player, difference);
             if (notify && profile.getOnlineProfile().isPresent()) {
                 try {
-                    Config.sendNotify(instruction.getPackage().getQuestPath(), profile.getOnlineProfile().get(), "money_given",
+                    Config.sendNotify(instruction.getPackage(), profile.getOnlineProfile().get(), "money_given",
                             new String[]{decimalFormat.format(difference), currencyName}, "money_given,info");
                 } catch (final QuestRuntimeException e) {
                     log.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'money_given' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
@@ -83,7 +83,7 @@ public class MoneyEvent extends QuestEvent {
             economy.withdrawPlayer(player, -difference);
             if (notify && profile.getOnlineProfile().isPresent()) {
                 try {
-                    Config.sendNotify(instruction.getPackage().getQuestPath(), profile.getOnlineProfile().get(), "money_taken",
+                    Config.sendNotify(instruction.getPackage(), profile.getOnlineProfile().get(), "money_taken",
                             new String[]{decimalFormat.format(difference), currencyName}, "money_taken,info");
                 } catch (final QuestRuntimeException e) {
                     log.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'money_taken' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);

@@ -131,6 +131,7 @@ public final class Config {
      * @return message in that language, or message in English, or null if it
      * does not exist
      */
+    @SuppressWarnings("NullAway")
     public static String getMessage(final String lang, final String message) {
         return getMessage(lang, message, (String[]) null);
     }
@@ -170,12 +171,12 @@ public final class Config {
      * Sends a message to player from the {@link OnlineProfile} in his chosen language or default or English
      * (if previous not found).
      *
-     * @param packName      ID of the pack
+     * @param pack          the pack
      * @param onlineProfile the {@link OnlineProfile} of the player
      * @param messageName   ID of the message
      */
-    public static void sendMessage(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName) {
-        sendMessage(packName, onlineProfile, messageName, (String[]) null, null, null);
+    public static void sendMessage(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName) {
+        sendMessage(pack, onlineProfile, messageName, (String[]) null, null, null);
     }
 
     /**
@@ -183,13 +184,13 @@ public final class Config {
      * (if previous not found). It will replace all {x} sequences with the
      * variables.
      *
-     * @param packName      ID of the pack
+     * @param pack          the pack
      * @param onlineProfile the {@link OnlineProfile} of the player
      * @param messageName   ID of the message
      * @param variables     array of variables which will be inserted into the string
      */
-    public static void sendMessage(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, @Nullable final String... variables) {
-        sendMessage(packName, onlineProfile, messageName, variables, null, null, (String) null);
+    public static void sendMessage(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String... variables) {
+        sendMessage(pack, onlineProfile, messageName, variables, null, null, (String) null);
     }
 
     /**
@@ -197,14 +198,14 @@ public final class Config {
      * (if previous not found). It will replace all {x} sequences with the
      * variables and play the sound.
      *
-     * @param packName      ID of the pack
+     * @param pack          the pack
      * @param onlineProfile the {@link OnlineProfile} of the player
      * @param messageName   ID of the message
      * @param variables     array of variables which will be inserted into the string
      * @param soundName     name of the sound to play to the player
      */
-    public static void sendMessage(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, final String[] variables, final String soundName) {
-        sendMessage(packName, onlineProfile, messageName, variables, soundName, null, (String) null);
+    public static void sendMessage(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, final String[] variables, final String soundName) {
+        sendMessage(pack, onlineProfile, messageName, variables, soundName, null, (String) null);
     }
 
     /**
@@ -212,7 +213,7 @@ public final class Config {
      * (if previous not found). It will replace all {x} sequences with the
      * variables and play the sound. It will also add a prefix to the message.
      *
-     * @param packName        ID of the pack
+     * @param pack            the pack
      * @param onlineProfile   the {@link OnlineProfile} of the player
      * @param messageName     ID of the message
      * @param variables       array of variables which will be inserted into the message
@@ -220,9 +221,9 @@ public final class Config {
      * @param prefixName      ID of the prefix
      * @param prefixVariables array of variables which will be inserted into the prefix
      */
-    public static void sendMessage(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String soundName,
+    public static void sendMessage(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String soundName,
                                    @Nullable final String prefixName, @Nullable final String... prefixVariables) {
-        final String message = parseMessage(packName, onlineProfile, messageName, variables, prefixName, prefixVariables);
+        final String message = parseMessage(pack, onlineProfile, messageName, variables, prefixName, prefixVariables);
         if (message == null || message.length() == 0) {
             return;
         }
@@ -234,12 +235,12 @@ public final class Config {
         }
     }
 
-    public static void sendNotify(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, @Nullable final String category) throws QuestRuntimeException {
-        sendNotify(packName, onlineProfile, messageName, null, category);
+    public static void sendNotify(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String category) throws QuestRuntimeException {
+        sendNotify(pack, onlineProfile, messageName, null, category);
     }
 
-    public static void sendNotify(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String category) throws QuestRuntimeException {
-        sendNotify(packName, onlineProfile, messageName, variables, category, null);
+    public static void sendNotify(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String category) throws QuestRuntimeException {
+        sendNotify(pack, onlineProfile, messageName, variables, category, null);
     }
 
     /**
@@ -247,7 +248,7 @@ public final class Config {
      * (if previous not found). It will replace all {x} sequences with the
      * variables and play the sound. It will also add a prefix to the message.
      *
-     * @param packName      ID of the pack
+     * @param pack          the pack
      * @param onlineProfile the {@link OnlineProfile} of the player
      * @param messageName   ID of the message
      * @param variables     array of variables which will be inserted into the message
@@ -255,24 +256,25 @@ public final class Config {
      * @param data          custom notifyIO data
      * @throws QuestRuntimeException thrown if it is not possible to send the notification
      */
-    public static void sendNotify(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String category, @Nullable final Map<String, String> data) throws QuestRuntimeException {
-        final String message = parseMessage(packName, onlineProfile, messageName, variables);
+    @SuppressWarnings("NullAway")
+    public static void sendNotify(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String category, @Nullable final Map<String, String> data) throws QuestRuntimeException {
+        final String message = parseMessage(pack, onlineProfile, messageName, variables);
         if (message == null || message.length() == 0) {
             return;
         }
 
-        Notify.get(getPackages().get(packName), category, data).sendNotify(message, onlineProfile);
+        Notify.get(pack, category, data).sendNotify(message, onlineProfile);
     }
 
     @Nullable
-    public static String parseMessage(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, @Nullable final String... variables) {
-        return parseMessage(packName, onlineProfile, messageName, variables, null, (String) null);
+    public static String parseMessage(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String... variables) {
+        return parseMessage(pack, onlineProfile, messageName, variables, null, (String) null);
     }
 
     /**
      * Retrieve's a message in the language of the player from the {@link OnlineProfile}, replacing variables
      *
-     * @param packName        ID of the pack
+     * @param pack            the pack
      * @param onlineProfile   the {@link OnlineProfile} of the player
      * @param messageName     name of the message to retrieve
      * @param variables       Variables to replace in message
@@ -281,7 +283,7 @@ public final class Config {
      * @return The parsed message.
      */
     @Nullable
-    public static String parseMessage(@Nullable final String packName, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String prefixName,
+    public static String parseMessage(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String prefixName,
                                       @Nullable final String... prefixVariables) {
         final PlayerData playerData = plugin.getPlayerData(onlineProfile);
         final String language = playerData.getLanguage();
@@ -295,9 +297,9 @@ public final class Config {
                 message = prefix + message;
             }
         }
-        if (packName != null) {
+        if (pack != null) {
             try {
-                message = new VariableString(getPackages().get(packName), message).getString(onlineProfile);
+                message = new VariableString(pack, message).getString(onlineProfile);
             } catch (final InstructionParseException e) {
                 LOG.warn("Could not parse message: " + message, e);
             }

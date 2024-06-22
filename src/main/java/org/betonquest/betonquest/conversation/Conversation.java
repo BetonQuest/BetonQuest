@@ -381,7 +381,7 @@ public class Conversation implements Listener {
             //only display status messages if conversationIO allows it
             if (conv.inOut.printMessages()) {
                 // print message
-                conv.inOut.print(Config.parseMessage(pack.getQuestPath(), onlineProfile, "conversation_end", data.getQuester(language)));
+                conv.inOut.print(Config.parseMessage(pack, onlineProfile, "conversation_end", data.getQuester(language)));
             }
             //play conversation end sound
             Config.playSound(onlineProfile, "end");
@@ -462,7 +462,7 @@ public class Conversation implements Listener {
         if (blacklist.contains(cmdName)) {
             event.setCancelled(true);
             try {
-                Config.sendNotify(getPackage().getQuestPath(), PlayerConverter.getID(event.getPlayer()), "command_blocked", "command_blocked,error");
+                Config.sendNotify(getPackage(), PlayerConverter.getID(event.getPlayer()), "command_blocked", "command_blocked,error");
             } catch (final QuestRuntimeException e) {
                 log.warn(pack, "The notify system was unable to play a sound for the 'command_blocked' category. Error was: '" + e.getMessage() + "'", e);
             }
@@ -706,7 +706,7 @@ public class Conversation implements Listener {
                     //only display status messages if conversationIO allows it
                     if (conv.inOut.printMessages()) {
                         // print message about starting a conversation only if it is started, not resumed
-                        conv.inOut.print(Config.parseMessage(pack.getQuestPath(), onlineProfile, "conversation_start", new String[]{data.getQuester(language)},
+                        conv.inOut.print(Config.parseMessage(pack, onlineProfile, "conversation_start", new String[]{data.getQuester(language)},
                                 prefixName, prefixVariables));
                     }
 
