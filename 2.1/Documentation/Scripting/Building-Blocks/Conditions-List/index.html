@@ -6839,13 +6839,15 @@ The valid operations are: <code>&lt;</code>, <code>&lt;=</code>, <code>=</code>,
 <div class="highlight"><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">anyNumber</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;variable</span><span class="nv"> </span><span class="s">%objective.var.price%</span><span class="nv"> </span><span class="s">-?</span><span class="err">\</span><span class="s">d+&quot;</span><span class="w"> </span><span class="c1">#(1)!</span>
 <span class="w">  </span><span class="nt">isPlayer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;variable</span><span class="nv"> </span><span class="s">%ph.parties_members_1%</span><span class="nv"> </span><span class="s">%player%&quot;</span><span class="w"> </span><span class="c1">#(2)!</span>
-<span class="w">  </span><span class="nt">denizenVariable</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;variable</span><span class="nv"> </span><span class="s">ph.denizen_&lt;server.match_player[SomeName].has_flag[flag_name]&gt;</span><span class="nv"> </span><span class="s">true</span><span class="nv"> </span><span class="s">forceSync&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
+<span class="w">  </span><span class="nt">denizenVariable</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;variable</span><span class="nv"> </span><span class="s">%ph.denizen_&lt;server.match_player[SomeName].has_flag[flag_name]&gt;%</span><span class="nv"> </span><span class="s">true</span><span class="nv"> </span><span class="s">forceSync&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
+<span class="w">  </span><span class="nt">denizenVariableThis</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;variable</span><span class="nv"> </span><span class="s">%ph.denizen_&lt;player.has_flag[flag_name]&gt;%</span><span class="nv"> </span><span class="s">true</span><span class="nv"> </span><span class="s">forceSync&quot;</span><span class="w"> </span><span class="c1">#(4)!</span>
 </code></pre></div>
 <ol>
 <li>Returns true if the variable <code>%objective.var.price%</code> contains any number.</li>
 <li>Returns true if the <code>parties_members_1</code> variable contains the player's name.</li>
-<li>Returns true if the <code>denizen_&lt;server.match_player[SomeName].has_flag[flag_name]&gt;</code> Denizen variable contains <code>true</code>
-   . This variable is resolved on the main thread.</li>
+<li>Returns true if the <code>denizen_&lt;server.match_player[SomeName].has_flag[flag_name]&gt;</code> Denizen variable contains <code>true</code>.
+   This variable is resolved on the main thread. <p>The <code>someName</code> part can't be a variable!</li>
+<li>Works the same as the <code>denizenVariable</code> with the only difference it checks for the player the condition is executed with.</li>
 </ol>
 <h2 id="weather-weather">Weather: <code>weather</code><a class="headerlink" href="#weather-weather" title="Permanent link">🔗</a></h2>
 <p>There must be a specific weather for this condition to return true. There are three possible options: sun, rain and storm. Note that <code>/toggledownfall</code> does not change the weather, it just does what the name suggests: toggles downfall. The rain toggled off will still be considered as rain! Use <code>/weather clear</code> instead.</p>

@@ -1895,6 +1895,29 @@
       
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#eval-variable">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Eval Variable
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#item-variable">
     <span class="md-ellipsis">
 
@@ -4732,6 +4755,29 @@
       
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#eval-variable">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Eval Variable
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#item-variable">
     <span class="md-ellipsis">
 
@@ -5076,6 +5122,17 @@ latter is resolved when the quests are running, usually on a per-player basis.</
 <span class="w">  </span><span class="nt">village_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Concrete</span>
 </code></pre></div>
 <h2 id="other-variables">Other Variables<a class="headerlink" href="#other-variables" title="Permanent link">🔗</a></h2>
+<h3 id="eval-variable">Eval Variable<a class="headerlink" href="#eval-variable" title="Permanent link">🔗</a></h3>
+<p><strong>static</strong></p>
+<p>This variable allows you to resolve an expression containing variables,
+and the result will then be interpreted again as a variable.
+You need to escape the <code>%</code> inside eval with a backslash <code>\</code> to prevent it from being interpreted as a delimiter.
+You can nest multiple evals, but this leads you to an escape hell.
+If you do so, you need to add one escape level with each nesting level,
+this means normally you write <code>\%</code> and in the next level you need to write <code>\\\%</code>.</p>
+<div class="highlight"><pre><span></span><code>%eval.player.\%objective.variableStore.displayType\%%
+%eval.player.\%eval.objective.\\\%objective.otherStore.targetStore\\\%.displayType\%%
+</code></pre></div>
 <h3 id="item-variable">Item Variable<a class="headerlink" href="#item-variable" title="Permanent link">🔗</a></h3>
 <p>With this variable you can display different properties of a specific QuestItem.
 The first argument is the name of the item (as defined in the <em>items</em> section).
@@ -5135,10 +5192,16 @@ decimal digits given on the right. So <code>4+0.35~1</code> will produce <code>4
 In cases where this doesn't work, e.g. if the variable contains mathematical operators, you can surround it with curly
 braces <code>{ }</code>. Inside the curly braces you have to escape with <code>\</code>, so to have a <code>\</code> in your variable you need to write
 <code>\\</code>, to have a <code>}</code> inside your variable you need to write <code>\}</code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The modulo operator needs to be escaped with a backslash <code>\</code> to prevent it from being interpreted as a placeholder delimiter.
+If you don't want to escape the percentage and actually want to write a backslash you can use <code>\\%</code>.
+Don't forget to escape the backslash itself with another backslash if you are inside a double-quoted string <code>"</code>.</p>
+</div>
 <div class="highlight"><pre><span></span><code>%math.calc:100*(15-point.reputation.amount)%
 %math.calc:objective.kill_zombies.left/objective.kill_zombies.total*100~2%
 %math.calc:-{ph.myplugin_stragee+placeholder}%
-%math.calc:64%32%
+%math.calc:64\%32%
 </code></pre></div>
 <h3 id="npc-name-variable">NPC Name Variable<a class="headerlink" href="#npc-name-variable" title="Permanent link">🔗</a></h3>
 <p>When the player is in a conversation, this variable will contain the questers name in the player's quest language.
