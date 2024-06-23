@@ -54,8 +54,6 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable>
      * @return the Variable instance
      * @throws InstructionParseException when the variable parsing fails
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
-    @Nullable
     public Variable create(@Nullable final QuestPackage pack, final String instruction)
             throws InstructionParseException {
         final VariableID variableID;
@@ -89,16 +87,12 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable>
      * @return the value of this variable for given player
      * @throws InstructionParseException if the variable could not be created
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     public String getValue(final QuestPackage pack, final String name, @Nullable final Profile profile) throws InstructionParseException {
         final Variable var;
         try {
             var = create(pack, name);
         } catch (final InstructionParseException e) {
             throw new InstructionParseException("Could not create variable '" + name + "': " + e.getMessage(), e);
-        }
-        if (var == null) {
-            throw new InstructionParseException("Could not resolve variable '" + name + "'!");
         }
         if (profile == null && !var.isStaticness()) {
             throw new InstructionParseException("Non-static variable '" + name + "' cannot be executed without a profile reference!");

@@ -1062,11 +1062,11 @@ public class BetonQuest extends JavaPlugin {
      */
     @Deprecated
     public String getVariableValue(final String packName, final String name, @Nullable final Profile profile) {
-        if (!Config.getPackages().containsKey(packName)) {
+        final QuestPackage pack = Config.getPackages().get(packName);
+        if (pack == null) {
             log.warn("The variable '" + name + "' reference the non-existent package '" + packName + "' !");
             return "";
         }
-        final QuestPackage pack = Config.getPackages().get(packName);
         try {
             return questRegistry.variables().getValue(pack, name, profile);
         } catch (final InstructionParseException e) {
