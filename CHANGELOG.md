@@ -6,6 +6,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [2.1.2] - 2024-06-23
+### Added
 - LuckPerms permission events
   - `addPermission` event adds a permission to a player
   - `removePermission` event removes a permission from a player
