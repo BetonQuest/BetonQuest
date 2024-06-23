@@ -1706,7 +1706,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             } catch (final Exception e) {
                 sendMessageSync(sender, "download_failed", e.getClass().getSimpleName() + ": " + e.getMessage());
                 if (sender instanceof final Player player) {
-                    final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, "", instance);
+                    final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, null, instance);
                     record.setThrown(e);
                     bukkitAudiences.player(player).sendMessage(new ChatFormatter().formatTextComponent(record));
                     log.debug(errSummary, e);

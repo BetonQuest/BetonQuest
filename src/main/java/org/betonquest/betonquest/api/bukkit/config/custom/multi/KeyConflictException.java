@@ -76,7 +76,6 @@ public class KeyConflictException extends InvalidConfigurationException {
         return exMessage.toString();
     }
 
-    @SuppressWarnings("NullAway")
     private void resolveKeyMessage(final Map<ConfigurationSection, String> namedConfigurations, final StringBuilder exMessage) {
         exMessage.append('\n');
         final SortedMap<String, List<ConfigurationSection>> sorted = new TreeMap<>(conflictingKeys);
