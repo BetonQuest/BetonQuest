@@ -10,6 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Deprecated
 ### Removed
 ### Fixed
+- LuckPerms integration not sending the permission updates via the messaging service to connected Servers in the same network.
 ### Security
 
 ## [2.1.2] - 2024-06-23
