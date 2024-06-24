@@ -36,14 +36,14 @@ public class Variable<T> {
      * Resolves a string that may contain variables to a variable of the given type.
      *
      * @param variableProcessor the processor to create the variables
-     * @param questPackage      the package in which the variable is used in
+     * @param pack              the package in which the variable is used in
      * @param input             the string that may contain variables
      * @param resolver          the resolver to convert the resolved variable to the given type
      * @throws InstructionParseException if the variables could not be created or resolved to the given type
      */
-    public Variable(final VariableProcessor variableProcessor, final QuestPackage questPackage, final String input,
+    public Variable(final VariableProcessor variableProcessor, final QuestPackage pack, final String input,
                     final TypeResolver<T> resolver) throws InstructionParseException {
-        final Map<String, org.betonquest.betonquest.api.Variable> variables = getVariables(variableProcessor, questPackage, input);
+        final Map<String, org.betonquest.betonquest.api.Variable> variables = getVariables(variableProcessor, pack, input);
         if (variables.isEmpty()) {
             try {
                 final T resolved = resolver.resolve(input);
@@ -57,13 +57,13 @@ public class Variable<T> {
     }
 
     private Map<String, org.betonquest.betonquest.api.Variable> getVariables(final VariableProcessor variableProcessor,
-                                                                             final QuestPackage questPackage,
+                                                                             final QuestPackage pack,
                                                                              final String input)
             throws InstructionParseException {
         final Map<String, org.betonquest.betonquest.api.Variable> variables = new HashMap<>();
         for (final String variable : resolveVariables(input)) {
             try {
-                final org.betonquest.betonquest.api.Variable variable1 = variableProcessor.create(questPackage, replaceEscapedPercent(variable));
+                final org.betonquest.betonquest.api.Variable variable1 = variableProcessor.create(pack, replaceEscapedPercent(variable));
                 variables.put(variable, variable1);
             } catch (final InstructionParseException exception) {
                 throw new InstructionParseException("Could not create variable '" + variable + "': "
