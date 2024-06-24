@@ -61,6 +61,7 @@ public class LuckPermsPermissionEvent implements Event {
             nodeApply.apply(data, node);
         }
         userManager.saveUser(user);
+        luckPermsAPI.getMessagingService().ifPresent(service -> service.pushUserUpdate(user));
     }
 
     private User getUser(final CompletableFuture<User> userFuture) throws QuestRuntimeException {
