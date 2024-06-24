@@ -32,42 +32,42 @@ public class VariableNumber extends Variable<Number> {
     /**
      * Resolves a string that may contain variables to a variable of the given type.
      *
-     * @param questPackage the package in which the variable is used in
-     * @param input        the string that may contain variables
+     * @param pack  the package in which the variable is used in
+     * @param input the string that may contain variables
      * @throws InstructionParseException if the variables could not be created or resolved to the given type
      * @deprecated use {@link #VariableNumber(VariableProcessor, QuestPackage, String)} instead
      */
     @Deprecated
-    public VariableNumber(final QuestPackage questPackage, final String input) throws InstructionParseException {
-        this(BetonQuest.getInstance().getVariableProcessor(), questPackage, input, (value) -> {
+    public VariableNumber(final QuestPackage pack, final String input) throws InstructionParseException {
+        this(BetonQuest.getInstance().getVariableProcessor(), pack, input, (value) -> {
         });
     }
 
     /**
      * Resolves a string that may contain variables to a variable of the given type.
      *
-     * @param questPackage the package in which the variable is used in
+     * @param pack         the package in which the variable is used in
      * @param input        the string that may contain variables
      * @param valueChecker the checker to verify valid values
      * @throws InstructionParseException if the variables could not be created or resolved to the given type
      * @deprecated use {@link #VariableNumber(VariableProcessor, QuestPackage, String, ValueChecker)} instead
      */
     @Deprecated
-    public VariableNumber(final QuestPackage questPackage, final String input, final ValueChecker<Number> valueChecker) throws InstructionParseException {
-        this(BetonQuest.getInstance().getVariableProcessor(), questPackage, input, valueChecker);
+    public VariableNumber(final QuestPackage pack, final String input, final ValueChecker<Number> valueChecker) throws InstructionParseException {
+        this(BetonQuest.getInstance().getVariableProcessor(), pack, input, valueChecker);
     }
 
     /**
      * Resolves a string that may contain variables to a variable of the given type.
      *
      * @param variableProcessor the processor to create the variables
-     * @param questPackage      the package in which the variable is used in
+     * @param pack              the package in which the variable is used in
      * @param input             the string that may contain variables
      * @throws InstructionParseException if the variables could not be created or resolved to the given type
      */
-    public VariableNumber(final VariableProcessor variableProcessor, final QuestPackage questPackage, final String input)
+    public VariableNumber(final VariableProcessor variableProcessor, final QuestPackage pack, final String input)
             throws InstructionParseException {
-        this(variableProcessor, questPackage, input, (value) -> {
+        this(variableProcessor, pack, input, (value) -> {
         });
     }
 
@@ -75,14 +75,14 @@ public class VariableNumber extends Variable<Number> {
      * Resolves a string that may contain variables to a variable of the given type.
      *
      * @param variableProcessor the processor to create the variables
-     * @param questPackage      the package in which the variable is used in
+     * @param pack              the package in which the variable is used in
      * @param input             the string that may contain variables
      * @param valueChecker      the checker to verify valid values
      * @throws InstructionParseException if the variables could not be created or resolved to the given type
      */
-    public VariableNumber(final VariableProcessor variableProcessor, final QuestPackage questPackage, final String input,
+    public VariableNumber(final VariableProcessor variableProcessor, final QuestPackage pack, final String input,
                           final ValueChecker<Number> valueChecker) throws InstructionParseException {
-        super(variableProcessor, questPackage, input, (value) -> {
+        super(variableProcessor, pack, input, (value) -> {
             try {
                 final double parsedValue = Double.parseDouble(value);
                 valueChecker.check(parsedValue);

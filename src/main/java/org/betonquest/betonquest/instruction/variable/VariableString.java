@@ -14,53 +14,53 @@ public class VariableString extends Variable<String> {
     /**
      * Resolves a string that may contain variables to a variable of the given type.
      *
-     * @param questPackage the package in which the variable is used in
-     * @param input        the string that may contain variables
+     * @param pack  the package in which the variable is used in
+     * @param input the string that may contain variables
      * @throws InstructionParseException if the variables could not be created or resolved to the given type
      * @deprecated use {@link #VariableString(VariableProcessor, QuestPackage, String)} instead
      */
     @Deprecated
-    public VariableString(final QuestPackage questPackage, final String input) throws InstructionParseException {
-        this(BetonQuest.getInstance().getVariableProcessor(), questPackage, input);
+    public VariableString(final QuestPackage pack, final String input) throws InstructionParseException {
+        this(BetonQuest.getInstance().getVariableProcessor(), pack, input);
     }
 
     /**
      * Resolves a string that may contain variables to a variable of the given type.
      *
      * @param variableProcessor the processor to create the variables
-     * @param questPackage      the package in which the variable is used in
+     * @param pack              the package in which the variable is used in
      * @param input             the string that may contain variables
      * @throws InstructionParseException if the variables could not be created or resolved to the given type
      */
-    public VariableString(final VariableProcessor variableProcessor, final QuestPackage questPackage, final String input) throws InstructionParseException {
-        this(variableProcessor, questPackage, input, false);
+    public VariableString(final VariableProcessor variableProcessor, final QuestPackage pack, final String input) throws InstructionParseException {
+        this(variableProcessor, pack, input, false);
     }
 
     /**
      * Resolves a string that may contain variables to a variable of the given type.
      *
-     * @param questPackage       the package in which the variable is used in
+     * @param pack               the package in which the variable is used in
      * @param input              the string that may contain variables
      * @param replaceUnderscores whether underscores should be replaced
      * @throws InstructionParseException if the variables could not be created or resolved to the given type
      * @deprecated use {@link #VariableString(VariableProcessor, QuestPackage, String, boolean)} instead
      */
     @Deprecated
-    public VariableString(final QuestPackage questPackage, final String input, final boolean replaceUnderscores) throws InstructionParseException {
-        super(BetonQuest.getInstance().getVariableProcessor(), questPackage, replaceUnderscores(input, replaceUnderscores), (value) -> value);
+    public VariableString(final QuestPackage pack, final String input, final boolean replaceUnderscores) throws InstructionParseException {
+        super(BetonQuest.getInstance().getVariableProcessor(), pack, replaceUnderscores(input, replaceUnderscores), (value) -> value);
     }
 
     /**
      * Resolves a string that may contain variables to a variable of the given type.
      *
      * @param variableProcessor  the processor to create the variables
-     * @param questPackage       the package in which the variable is used in
+     * @param pack               the package in which the variable is used in
      * @param input              the string that may contain variables
      * @param replaceUnderscores whether underscores should be replaced
      * @throws InstructionParseException if the variables could not be created or resolved to the given type
      */
-    public VariableString(final VariableProcessor variableProcessor, final QuestPackage questPackage, final String input, final boolean replaceUnderscores) throws InstructionParseException {
-        super(variableProcessor, questPackage, replaceUnderscores(input, replaceUnderscores), (value) -> value);
+    public VariableString(final VariableProcessor variableProcessor, final QuestPackage pack, final String input, final boolean replaceUnderscores) throws InstructionParseException {
+        super(variableProcessor, pack, replaceUnderscores(input, replaceUnderscores), (value) -> value);
     }
 
     private static String replaceUnderscores(final String input, final boolean replaceUnderscores) {
