@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.compatibility.vault;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
  * Checks if the player has specified amount of Vault money

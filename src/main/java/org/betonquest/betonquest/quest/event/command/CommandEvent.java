@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.event.command;
 
-import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.bukkit.command.SilentConsoleCommandSender;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.Nullable;

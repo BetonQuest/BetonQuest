@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.notify;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
@@ -70,7 +70,7 @@ public class BossBarNotifyIO extends NotifyIO {
 
         progress = normalizeBossBarProgress(getFloatData("progress", 1));
         final String stayString = data.get("stay");
-        stayVariable = stayString == null ? new VariableNumber(70) : new VariableNumber(pack, stayString);
+        stayVariable = stayString == null ? new VariableNumber(pack, "70") : new VariableNumber(pack, stayString);
         countdown = getIntegerData("countdown", 0);
     }
 

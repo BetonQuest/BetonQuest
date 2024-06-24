@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.utils.math.tokens;
 
-import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
  * A token that is a Variable.

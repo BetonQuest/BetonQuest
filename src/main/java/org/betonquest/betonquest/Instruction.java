@@ -10,9 +10,11 @@ import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.id.ObjectiveID;
-import org.betonquest.betonquest.instruction.QuotingTokenizer;
-import org.betonquest.betonquest.instruction.Tokenizer;
-import org.betonquest.betonquest.instruction.TokenizerException;
+import org.betonquest.betonquest.instruction.tokenizer.QuotingTokenizer;
+import org.betonquest.betonquest.instruction.tokenizer.Tokenizer;
+import org.betonquest.betonquest.instruction.tokenizer.TokenizerException;
+import org.betonquest.betonquest.instruction.variable.Variable;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
@@ -312,16 +314,27 @@ public class Instruction {
     }
 
     public VariableNumber getVarNum() throws InstructionParseException {
-        return getVarNum(next());
+        return getVarNum(next(), (value) -> {
+        });
+    }
+
+    public VariableNumber getVarNum(final Variable.ValueChecker<Number> valueChecker) throws InstructionParseException {
+        return getVarNum(next(), valueChecker);
     }
 
     @Contract(NULL_NOT_NULL_CONTRACT)
     public VariableNumber getVarNum(@Nullable final String string) throws InstructionParseException {
+        return getVarNum(string, (value) -> {
+        });
+    }
+
+    @Contract("null, _ -> null; !null, _ -> !null")
+    public VariableNumber getVarNum(@Nullable final String string, final Variable.ValueChecker<Number> valueChecker) throws InstructionParseException {
         if (string == null) {
             return null;
         }
         try {
-            return new VariableNumber(pack, string);
+            return new VariableNumber(pack, string, valueChecker);
         } catch (final InstructionParseException e) {
             throw new PartParseException("Could not parse a number: " + e.getMessage(), e);
         }
@@ -372,7 +385,7 @@ public class Instruction {
                     number = getVarNum(parts[1]);
                 } else {
                     item = getItem(array[i]);
-                    number = new VariableNumber(1);
+                    number = getVarNum("1");
                 }
                 items[i] = new Item(item, number);
             } catch (final InstructionParseException | NumberFormatException e) {

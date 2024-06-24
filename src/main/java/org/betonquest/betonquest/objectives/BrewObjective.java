@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -42,8 +43,7 @@ BrewObjective extends CountingObjective implements Listener {
     public BrewObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "potions_to_brew");
         potion = instruction.getQuestItem();
-        targetAmount = instruction.getVarNum();
-        preCheckAmountNotLessThanOne(targetAmount);
+        targetAmount = instruction.getVarNum(VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

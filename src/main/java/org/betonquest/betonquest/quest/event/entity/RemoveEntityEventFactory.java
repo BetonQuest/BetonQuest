@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.event.entity;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.location.CompoundLocation;

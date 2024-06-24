@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.instruction;
+package org.betonquest.betonquest.instruction.tokenizer;
 
 import java.util.ArrayList;
 import java.util.List;

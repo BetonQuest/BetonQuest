@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.instruction;
+package org.betonquest.betonquest.instruction.tokenizer;
 
 /**
  * The state of an unquoted word. Escaping with backslashes is possible, quotes need to be escaped.

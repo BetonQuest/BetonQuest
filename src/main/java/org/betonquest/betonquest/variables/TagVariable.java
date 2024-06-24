@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -50,7 +51,10 @@ public class TagVariable extends Variable {
      * @return the value of the variable
      */
     @Override
-    public String getValue(final Profile profile) {
+    public String getValue(@Nullable final Profile profile) {
+        if (profile == null) {
+            return "";
+        }
         final List<String> tags = BetonQuest.getInstance().getPlayerData(profile).getTags();
         return getValue(tags);
     }

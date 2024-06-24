@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.event.time;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.common.function.ConstantSelector;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
@@ -11,6 +10,7 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
 import org.bukkit.Server;

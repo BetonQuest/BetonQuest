@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.ConditionID;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -24,8 +25,7 @@ public class KillPlayerObjective extends CountingObjective implements Listener {
 
     public KillPlayerObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "players_to_kill");
-        targetAmount = instruction.getVarNum();
-        preCheckAmountNotLessThanOne(targetAmount);
+        targetAmount = instruction.getVarNum(VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
         name = instruction.getOptional("name");
         required = instruction.getList(instruction.getOptional("required"), instruction::getCondition)
                 .toArray(new ConditionID[0]);

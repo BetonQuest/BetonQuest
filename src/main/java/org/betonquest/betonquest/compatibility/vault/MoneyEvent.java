@@ -2,13 +2,13 @@ package org.betonquest.betonquest.compatibility.vault;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.OfflinePlayer;
 
 import java.text.DecimalFormat;

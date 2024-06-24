@@ -10,7 +10,6 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.Pointer;
-import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
@@ -34,6 +33,7 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.ObjectiveID;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
 import org.betonquest.betonquest.modules.logger.PlayerLogWatcher;
@@ -434,7 +434,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 return;
             }
             final Event give = new GiveEvent(
-                    new Instruction.Item[]{new Instruction.Item(itemID, new VariableNumber(1))},
+                    new Instruction.Item[]{new Instruction.Item(itemID, new VariableNumber(itemID.getPackage(), "1"))},
                     new NoNotificationSender(),
                     new IngameNotificationSender(log, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR, "inventory_full_backpack", "inventory_full"),
                     new IngameNotificationSender(log, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR, "inventory_full_drop", "inventory_full"),

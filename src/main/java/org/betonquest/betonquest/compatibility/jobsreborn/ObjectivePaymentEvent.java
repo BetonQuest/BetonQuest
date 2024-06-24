@@ -4,10 +4,10 @@ import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.container.CurrencyType;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -23,10 +23,7 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
     public ObjectivePaymentEvent(final Instruction instructions) throws InstructionParseException {
         super(instructions);
         template = PaymentData.class;
-        targetAmount = instructions.getVarNum();
-        if (targetAmount.isExplicitLessThanOne()) {
-            throw new InstructionParseException("Amount needs to be one or more");
-        }
+        targetAmount = instructions.getVarNum(VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
     }
 
     @EventHandler(ignoreCancelled = true)

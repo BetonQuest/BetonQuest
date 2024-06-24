@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.event.item;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.point.Point;

@@ -5,13 +5,13 @@ import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.api.player.PlayerData;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -42,7 +42,7 @@ public class MMOItemsGiveEvent extends QuestEvent {
 
     private boolean singleStack;
 
-    private VariableNumber amountVar = new VariableNumber(1);
+    private VariableNumber amountVar;
 
     public MMOItemsGiveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -51,6 +51,7 @@ public class MMOItemsGiveEvent extends QuestEvent {
         itemType = MMOItemsUtils.getMMOItemType(instruction.next());
         itemID = instruction.next();
 
+        amountVar = instruction.getVarNum("1");
         while (instruction.hasNext()) {
             final String next = instruction.next();
             switch (next) {

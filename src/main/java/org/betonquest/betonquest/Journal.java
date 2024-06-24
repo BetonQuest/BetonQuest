@@ -17,6 +17,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Material;

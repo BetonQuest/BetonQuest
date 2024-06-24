@@ -5,11 +5,11 @@ import dev.aurelium.auraskills.api.registry.NamespacedId;
 import dev.aurelium.auraskills.api.stat.Stat;
 import dev.aurelium.auraskills.api.user.SkillsUser;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.Utils;
 
 @SuppressWarnings("PMD.CommentRequired")

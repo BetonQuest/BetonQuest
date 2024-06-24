@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.instruction;
+package org.betonquest.betonquest.instruction.tokenizer;
 
 /**
  * State machine context for the {@link TokenizerState}.

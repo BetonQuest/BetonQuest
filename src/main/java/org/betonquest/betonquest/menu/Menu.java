@@ -2,7 +2,6 @@ package org.betonquest.betonquest.menu;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -13,6 +12,7 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.menu.commands.SimpleCommand;
 import org.betonquest.betonquest.menu.config.RPGMenuConfig;

@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.VariableID;
@@ -55,8 +54,6 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable>
      * @return the Variable instance
      * @throws InstructionParseException when the variable parsing fails
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
-    @Nullable
     public Variable create(@Nullable final QuestPackage pack, final String instruction)
             throws InstructionParseException {
         final VariableID variableID;
@@ -82,35 +79,24 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable>
     }
 
     /**
-     * Resoles the variable for specified player. If the variable is not loaded
-     * it will load it on the main thread.
+     * Resoles the variable for specified player. If the variable is not loaded, it will load it on the main thread.
      *
-     * @param packName name of the package
-     * @param name     name of the variable (instruction, with % characters)
-     * @param profile  the {@link Profile} of the player
+     * @param pack    the {@link QuestPackage} in which the variable is defined
+     * @param name    name of the variable (instruction, with % characters)
+     * @param profile the {@link Profile} of the player
      * @return the value of this variable for given player
+     * @throws InstructionParseException if the variable could not be created
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
-    public String getValue(final String packName, final String name, @Nullable final Profile profile) {
-        if (!Config.getPackages().containsKey(packName)) {
-            log.warn("Variable '" + name + "' contains the non-existent package '" + packName + "' !");
-            return "";
-        }
-        final QuestPackage pack = Config.getPackages().get(packName);
+    public String getValue(final QuestPackage pack, final String name, @Nullable final Profile profile) throws InstructionParseException {
+        final Variable var;
         try {
-            final Variable var = create(pack, name);
-            if (var == null) {
-                log.warn(pack, "Could not resolve variable '" + name + "'.");
-                return "";
-            }
-            if (profile == null && !var.isStaticness()) {
-                log.warn(pack, "Non-static variable '" + name + "' cannot be executed without a profile reference!");
-                return "";
-            }
-            return var.getValue(profile);
+            var = create(pack, name);
         } catch (final InstructionParseException e) {
-            log.warn(pack, "&cCould not create variable '" + name + "': " + e.getMessage(), e);
-            return "";
+            throw new InstructionParseException("Could not create variable '" + name + "': " + e.getMessage(), e);
         }
+        if (profile == null && !var.isStaticness()) {
+            throw new InstructionParseException("Non-static variable '" + name + "' cannot be executed without a profile reference!");
+        }
+        return var.getValue(profile);
     }
 }

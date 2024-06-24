@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.instruction;
+package org.betonquest.betonquest.instruction.tokenizer;
 
 /**
  * The state in between words. Whitespace is ignored,

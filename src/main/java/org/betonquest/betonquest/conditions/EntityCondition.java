@@ -3,12 +3,12 @@ package org.betonquest.betonquest.conditions;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
@@ -56,14 +56,14 @@ public class EntityCondition extends Condition {
                         throw new InstructionParseException("Type not defined");
                     } else if (typeParts.length < 2) {
                         types[i] = EntityType.valueOf(typeParts[0].toUpperCase(Locale.ROOT));
-                        amounts[i] = new VariableNumber(1);
+                        amounts[i] = new VariableNumber(instruction.getPackage(), "1");
                     } else {
                         types[i] = EntityType.valueOf(typeParts[0].toUpperCase(Locale.ROOT));
                         amounts[i] = getAmount(typeParts[1]);
                     }
                 } else {
                     types[i] = EntityType.valueOf(rawTypes[i].toUpperCase(Locale.ROOT));
-                    amounts[i] = new VariableNumber(1);
+                    amounts[i] = new VariableNumber(instruction.getPackage(), "1");
                 }
             } catch (final IllegalArgumentException e) {
                 throw new InstructionParseException("Unknown entity type: " + rawTypes[i], e);

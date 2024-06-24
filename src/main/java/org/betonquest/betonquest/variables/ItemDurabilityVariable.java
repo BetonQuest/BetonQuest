@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Returns the durability of a vanilla item.
@@ -68,7 +69,10 @@ public class ItemDurabilityVariable extends Variable {
     }
 
     @Override
-    public String getValue(final Profile profile) {
+    public String getValue(@Nullable final Profile profile) {
+        if (profile == null) {
+            return "";
+        }
         final Player player = profile.getOnlineProfile().get().getPlayer();
         final ItemStack itemStack = player.getEquipment().getItem(slot);
         final int maxDurability = itemStack.getType().getMaxDurability();

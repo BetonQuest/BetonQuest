@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.quest.event.notify;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;

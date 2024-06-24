@@ -6,6 +6,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
@@ -23,8 +24,7 @@ public class BreedObjective extends CountingObjective implements Listener {
     public BreedObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "animals_to_breed");
         type = instruction.getEntity();
-        targetAmount = instruction.getVarNum();
-        preCheckAmountNotLessThanOne(targetAmount);
+        targetAmount = instruction.getVarNum(VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
     }
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
