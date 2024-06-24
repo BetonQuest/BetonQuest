@@ -71,7 +71,10 @@ public class ItemVariable extends Variable {
     }
 
     @Override
-    public String getValue(final Profile profile) {
+    public String getValue(@Nullable final Profile profile) {
+        if (profile == null) {
+            return "";
+        }
         return switch (type) {
             case AMOUNT -> Integer.toString(itemAmount(profile));
             case LEFT -> Integer.toString(amount - itemAmount(profile));

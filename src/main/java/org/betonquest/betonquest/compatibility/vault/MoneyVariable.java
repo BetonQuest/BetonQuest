@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
@@ -47,7 +48,10 @@ public class MoneyVariable extends Variable {
     }
 
     @Override
-    public String getValue(final Profile profile) {
+    public String getValue(@Nullable final Profile profile) {
+        if (profile == null) {
+            return "";
+        }
         final Economy economy = VaultIntegrator.getInstance().getEconomy();
         if (economy == null) {
             log.warn("Can't get Variable value because the Vault instance is null!");

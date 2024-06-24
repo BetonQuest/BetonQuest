@@ -332,6 +332,7 @@ public class Instruction {
     }
 
     @Contract("null, _ -> null; !null, _ -> !null")
+    @Nullable
     public VariableNumber getVarNum(@Nullable final String string, final Variable.ValueChecker<Number> valueChecker) throws InstructionParseException {
         if (string == null) {
             return null;

@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a string that can contain variables.
@@ -78,7 +79,7 @@ public class VariableString extends Variable<String> {
      * @deprecated use {@link #getValue(Profile)}} instead
      */
     @Deprecated
-    public String getString(final Profile profile) {
+    public String getString(@Nullable final Profile profile) {
         try {
             return getValue(profile);
         } catch (final QuestRuntimeException e) {

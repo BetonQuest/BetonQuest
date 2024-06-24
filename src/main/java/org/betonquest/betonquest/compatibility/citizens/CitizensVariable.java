@@ -75,7 +75,7 @@ public class CitizensVariable extends Variable {
                         new NoID(instruction.getPackage()),
                         "location." + String.join(".", instruction.getRemainingParts())
                 ));
-            } catch (ObjectNotFoundException e) {
+            } catch (final ObjectNotFoundException e) {
                 throw new InstructionParseException("Could not generate dynamic location variable", e);
             }
         } else {
@@ -84,7 +84,7 @@ public class CitizensVariable extends Variable {
     }
 
     @Override
-    public String getValue(final Profile profile) {
+    public String getValue(@Nullable final Profile profile) {
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
         if (npc == null) {
             return "";

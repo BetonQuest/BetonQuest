@@ -10,6 +10,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.utils.math.Tokenizer;
 import org.betonquest.betonquest.utils.math.tokens.Token;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -58,7 +59,7 @@ public class MathVariable extends Variable {
     }
 
     @Override
-    public String getValue(final Profile profile) {
+    public String getValue(@Nullable final Profile profile) {
         try {
             final double value = this.calculation.resolve(profile);
             if (value % 1 == 0) {

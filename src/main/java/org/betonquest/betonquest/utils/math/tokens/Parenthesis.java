@@ -2,6 +2,7 @@ package org.betonquest.betonquest.utils.math.tokens;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Parenthesis around another token.
@@ -41,7 +42,7 @@ public class Parenthesis implements Token {
     }
 
     @Override
-    public double resolve(final Profile profile) throws QuestRuntimeException {
+    public double resolve(@Nullable final Profile profile) throws QuestRuntimeException {
         return inside.resolve(profile);
     }
 
