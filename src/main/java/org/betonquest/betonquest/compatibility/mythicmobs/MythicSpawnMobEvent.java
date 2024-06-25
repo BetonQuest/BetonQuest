@@ -15,8 +15,8 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.Utils;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -30,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class MythicSpawnMobEvent extends QuestEvent {
-    private final CompoundLocation loc;
+    private final VariableLocation loc;
 
     private final String mob;
 
@@ -72,9 +72,9 @@ public class MythicSpawnMobEvent extends QuestEvent {
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
         final Player player = profile.getOnlineProfile().get().getPlayer();
-        final int pAmount = amount.getInt(profile);
-        final int level = this.level.getInt(profile);
-        final Location location = loc.getLocation(profile);
+        final int pAmount = amount.getValue(profile).intValue();
+        final int level = this.level.getValue(profile).intValue();
+        final Location location = loc.getValue(profile);
         for (int i = 0; i < pAmount; i++) {
             try {
                 final Entity entity = new BukkitAPIHelper().spawnMythicMob(mob, location, level);

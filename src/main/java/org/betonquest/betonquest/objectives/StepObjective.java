@@ -8,9 +8,9 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.betonquest.betonquest.utils.PlayerConverter;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
@@ -39,7 +39,7 @@ public class StepObjective extends Objective implements Listener {
     @Nullable
     private static final BlockSelector PRESSURE_PLATE_SELECTOR = getPressurePlateSelector();
 
-    private final CompoundLocation loc;
+    private final VariableLocation loc;
 
     public StepObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
@@ -72,7 +72,7 @@ public class StepObjective extends Objective implements Listener {
         }
         try {
             final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
-            final Block block = loc.getLocation(onlineProfile).getBlock();
+            final Block block = loc.getValue(onlineProfile).getBlock();
             if (!clickedBlock.equals(block)) {
                 return;
             }
@@ -112,7 +112,7 @@ public class StepObjective extends Objective implements Listener {
         if (LOCATION_KEY.equalsIgnoreCase(name)) {
             final Block block;
             try {
-                block = loc.getLocation(profile).getBlock();
+                block = loc.getValue(profile).getBlock();
             } catch (final QuestRuntimeException e) {
                 LOG.warn(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
                         + e.getMessage(), e);

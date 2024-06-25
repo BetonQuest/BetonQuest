@@ -5,8 +5,8 @@ import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -56,7 +56,7 @@ public class CitizensMoveEventFactory implements EventFactory {
     @SuppressWarnings("PMD.PrematureDeclaration")
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final int npcId = instruction.getInt();
-        final List<CompoundLocation> locations = instruction.getList(instruction::getLocation);
+        final List<VariableLocation> locations = instruction.getList(instruction::getLocation);
         if (locations.isEmpty()) {
             throw new InstructionParseException("Not enough arguments");
         }

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.lightning;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
@@ -15,7 +15,7 @@ public class LightningEvent implements ComposedEvent {
     /**
      * The location to strike the lightning at.
      */
-    private final CompoundLocation location;
+    private final VariableLocation location;
 
     /**
      * Whether the lightning should do damage.
@@ -28,14 +28,14 @@ public class LightningEvent implements ComposedEvent {
      * @param location the location to strike the lightning at
      * @param noDamage whether the lightning should do damage
      */
-    public LightningEvent(final CompoundLocation location, final boolean noDamage) {
+    public LightningEvent(final VariableLocation location, final boolean noDamage) {
         this.location = location;
         this.noDamage = noDamage;
     }
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
-        final Location loc = location.getLocation(profile);
+        final Location loc = location.getValue(profile);
         final World world = loc.getWorld();
         if (noDamage) {
             world.strikeLightningEffect(loc);

@@ -58,7 +58,7 @@ public class PointEvent implements Event {
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
         final PlayerData playerData = BetonQuest.getInstance().getOfflinePlayerData(profile);
-        final double countDouble = count.getDouble(profile);
+        final double countDouble = count.getValue(profile).doubleValue();
         playerData.setPoints(category, pointType.modify(playerData.hasPointsFromCategory(category), countDouble));
         pointSender.sendNotification(profile, String.valueOf(countDouble), categoryName);
     }

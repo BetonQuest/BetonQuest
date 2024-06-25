@@ -1,11 +1,12 @@
 package org.betonquest.betonquest.conditions;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -28,7 +29,8 @@ public class WorldCondition extends Condition {
             return world;
         }
         try {
-            return new CompoundLocation(instruction.getPackage(), name).getLocation(null).getWorld();
+            return new VariableLocation(BetonQuest.getInstance().getVariableProcessor(), instruction.getPackage(), name)
+                    .getValue(null).getWorld();
         } catch (InstructionParseException | QuestRuntimeException e) {
             throw new InstructionParseException("There is no such world: " + name, e);
         }

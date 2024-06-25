@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.lever;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -25,7 +25,7 @@ public class LeverEvent implements ComposedEvent {
     /**
      * The location of the lever.
      */
-    private final CompoundLocation location;
+    private final VariableLocation location;
 
     /**
      * Create a new lever event.
@@ -33,14 +33,14 @@ public class LeverEvent implements ComposedEvent {
      * @param stateType the type of state to set the lever to
      * @param location  the location of the lever
      */
-    public LeverEvent(final StateType stateType, final CompoundLocation location) {
+    public LeverEvent(final StateType stateType, final VariableLocation location) {
         this.stateType = stateType;
         this.location = location;
     }
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
-        final Block block = location.getLocation(profile).getBlock();
+        final Block block = location.getValue(profile).getBlock();
 
         if (!block.getType().equals(Material.LEVER)) {
             throw new QuestRuntimeException("There is no lever at x: " + block.getX() + " y: " + block.getY() + " z: "

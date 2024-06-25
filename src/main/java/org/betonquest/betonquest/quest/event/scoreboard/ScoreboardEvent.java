@@ -49,6 +49,6 @@ public class ScoreboardEvent implements Event {
             throw new QuestRuntimeException("Scoreboard objective " + objective + " does not exist!");
         }
         final Score score = obj.getScore(profile.getPlayer());
-        score.setScore(scoreModification.modify(score.getScore(), count.getDouble(profile)));
+        score.setScore(scoreModification.modify(score.getScore(), count.getValue(profile).doubleValue()));
     }
 }

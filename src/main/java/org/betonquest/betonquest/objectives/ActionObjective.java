@@ -9,9 +9,9 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.betonquest.betonquest.utils.PlayerConverter;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -59,7 +59,7 @@ public class ActionObjective extends Objective implements Listener {
     private final boolean exactMatch;
 
     @Nullable
-    private final CompoundLocation loc;
+    private final VariableLocation loc;
 
     private final VariableNumber range;
 
@@ -94,8 +94,8 @@ public class ActionObjective extends Objective implements Listener {
         if (loc != null) {
             final Location current = clickedBlock == null ? event.getPlayer().getLocation() : clickedBlock.getLocation();
             try {
-                final Location location = loc.getLocation(onlineProfile);
-                final double pRange = range.getDouble(onlineProfile);
+                final Location location = loc.getValue(onlineProfile);
+                final double pRange = range.getValue(onlineProfile).doubleValue();
                 if (!location.getWorld().equals(current.getWorld()) || current.distance(location) > pRange) {
                     return;
                 }
@@ -147,7 +147,7 @@ public class ActionObjective extends Objective implements Listener {
             }
             final Location location;
             try {
-                location = loc.getLocation(profile);
+                location = loc.getValue(profile);
             } catch (final QuestRuntimeException e) {
                 log.warn(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
                         + e.getMessage(), e);

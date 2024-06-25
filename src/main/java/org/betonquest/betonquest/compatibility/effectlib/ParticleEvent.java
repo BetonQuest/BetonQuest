@@ -6,8 +6,8 @@ import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.Utils;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -23,7 +23,7 @@ public class ParticleEvent extends QuestEvent {
     private final ConfigurationSection parameters;
 
     @Nullable
-    private final CompoundLocation loc;
+    private final VariableLocation loc;
 
     private final boolean privateParticle;
 
@@ -40,7 +40,7 @@ public class ParticleEvent extends QuestEvent {
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
         final Player player = profile.getOnlineProfile().get().getPlayer();
-        final Location location = (loc == null) ? player.getLocation() : loc.getLocation(profile);
+        final Location location = (loc == null) ? player.getLocation() : loc.getValue(profile);
         // This is not used at the moment
         // Entity originEntity = (loc == null) ? p : null;
         final Player targetPlayer = privateParticle ? player : null;

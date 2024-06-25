@@ -19,7 +19,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -37,7 +37,7 @@ public class PasteSchematicEvent extends QuestEvent {
      */
     private final BetonQuestLogger log;
 
-    private final CompoundLocation loc;
+    private final VariableLocation loc;
 
     private final boolean noAir;
 
@@ -71,7 +71,7 @@ public class PasteSchematicEvent extends QuestEvent {
     protected Void execute(final Profile profile) throws QuestRuntimeException {
         try {
             final Clipboard clipboard = getClipboard();
-            final Location location = loc.getLocation(profile);
+            final Location location = loc.getValue(profile);
 
             try (EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder().maxBlocks(-1).world(BukkitAdapter.adapt(location.getWorld())).build()) {
                 final Operation operation = new ClipboardHolder(clipboard)

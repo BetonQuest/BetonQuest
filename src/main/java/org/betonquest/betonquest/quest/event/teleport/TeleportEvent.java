@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
 
 /**
@@ -14,14 +14,14 @@ public class TeleportEvent implements Event {
     /**
      * Location to teleport to.
      */
-    private final CompoundLocation location;
+    private final VariableLocation location;
 
     /**
      * Create a new teleport event that teleports the player to the given location.
      *
      * @param location location to teleport to
      */
-    public TeleportEvent(final CompoundLocation location) {
+    public TeleportEvent(final VariableLocation location) {
         this.location = location;
     }
 
@@ -31,7 +31,7 @@ public class TeleportEvent implements Event {
         if (conv != null) {
             conv.endConversation();
         }
-        final Location playerLocation = location.getLocation(profile);
+        final Location playerLocation = location.getValue(profile);
         profile.getOnlineProfile().get().getPlayer().teleport(playerLocation);
     }
 }

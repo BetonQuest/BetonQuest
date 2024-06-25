@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
@@ -17,7 +17,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class NPCTeleportEvent extends QuestEvent implements Listener {
-    private final CompoundLocation location;
+    private final VariableLocation location;
 
     private final int npcId;
 
@@ -41,9 +41,9 @@ public class NPCTeleportEvent extends QuestEvent implements Listener {
         CitizensIntegrator.getCitizensMoveInstance().stopNPCMoving(npc);
         npc.getNavigator().cancelNavigation();
         if (npc.isSpawned()) {
-            npc.teleport(location.getLocation(profile), PlayerTeleportEvent.TeleportCause.PLUGIN);
+            npc.teleport(location.getValue(profile), PlayerTeleportEvent.TeleportCause.PLUGIN);
         } else {
-            npc.spawn(location.getLocation(profile), SpawnReason.PLUGIN);
+            npc.spawn(location.getValue(profile), SpawnReason.PLUGIN);
         }
         return null;
     }

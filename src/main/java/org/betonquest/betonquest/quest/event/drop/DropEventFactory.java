@@ -61,7 +61,7 @@ public class DropEventFactory implements EventFactory, StaticEventFactory {
 
     private static Selector<Location> parseLocationSelector(final Instruction instruction) throws InstructionParseException {
         return instruction.getLocationArgument("location")
-                .map(loc -> (Selector<Location>) loc::getLocation)
+                .map(loc -> (Selector<Location>) loc::getValue)
                 .orElse(Selectors.fromPlayer(Player::getLocation));
     }
 

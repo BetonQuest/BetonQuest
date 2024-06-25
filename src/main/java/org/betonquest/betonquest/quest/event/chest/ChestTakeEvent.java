@@ -4,8 +4,8 @@ import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -26,7 +26,7 @@ public class ChestTakeEvent extends AbstractChestEvent implements ComposedEvent 
      * @param compoundLocation The location of the chest.
      * @param items            The items to take from the chest.
      */
-    public ChestTakeEvent(final CompoundLocation compoundLocation, final Item... items) {
+    public ChestTakeEvent(final VariableLocation compoundLocation, final Item... items) {
         super(compoundLocation);
         this.items = items.clone();
     }

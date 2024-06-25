@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,7 +15,7 @@ public class ExplosionEvent implements ComposedEvent {
     /**
      * The location of the explosion.
      */
-    private final CompoundLocation location;
+    private final VariableLocation location;
 
     /**
      * The power of the explosion.
@@ -40,7 +40,7 @@ public class ExplosionEvent implements ComposedEvent {
      * @param setsFire     whether the explosion should set fire
      * @param breaksBlocks whether the explosion should break blocks
      */
-    public ExplosionEvent(final CompoundLocation location, final VariableNumber power, final boolean setsFire, final boolean breaksBlocks) {
+    public ExplosionEvent(final VariableLocation location, final VariableNumber power, final boolean setsFire, final boolean breaksBlocks) {
         this.location = location;
         this.power = power;
         this.setsFire = setsFire;
@@ -49,8 +49,8 @@ public class ExplosionEvent implements ComposedEvent {
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
-        final Location resolvedLocation = location.getLocation(profile);
+        final Location resolvedLocation = location.getValue(profile);
         resolvedLocation.getWorld().createExplosion(resolvedLocation,
-                (float) power.getDouble(profile), setsFire, breaksBlocks);
+                power.getValue(profile).floatValue(), setsFire, breaksBlocks);
     }
 }

@@ -5,8 +5,8 @@ import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.BlockSelector;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 @SuppressWarnings("PMD.CommentRequired")
 public class LookingAtCondition extends Condition {
     @Nullable
-    private final CompoundLocation loc;
+    private final VariableLocation loc;
 
     @Nullable
     private final BlockSelector selector;
@@ -42,7 +42,7 @@ public class LookingAtCondition extends Condition {
         final Player player = profile.getOnlineProfile().get().getPlayer();
         final Block lookingAt = player.getTargetBlock(null, 6);
         if (loc != null) {
-            final Location targetLocation = loc.getLocation(profile);
+            final Location targetLocation = loc.getValue(profile);
             final Location actualLocation = lookingAt.getLocation();
             if (targetLocation.getBlockX() != actualLocation.getBlockX()
                     || targetLocation.getBlockY() != actualLocation.getBlockY()

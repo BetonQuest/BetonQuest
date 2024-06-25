@@ -3,6 +3,7 @@ package org.betonquest.betonquest.conditions;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
@@ -38,13 +39,13 @@ public class NumberCompareCondition extends BaseNumberCompareCondition {
     }
 
     @Override
-    protected Double getFirst(final Profile profile) {
-        return first.getDouble(profile);
+    protected Double getFirst(final Profile profile) throws QuestRuntimeException {
+        return first.getValue(profile).doubleValue();
     }
 
     @Override
-    protected Double getSecond(final Profile profile) {
-        return second.getDouble(profile);
+    protected Double getSecond(final Profile profile) throws QuestRuntimeException {
+        return second.getValue(profile).doubleValue();
     }
 
     @Override

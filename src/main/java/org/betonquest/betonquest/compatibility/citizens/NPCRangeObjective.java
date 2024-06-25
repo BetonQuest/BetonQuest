@@ -117,7 +117,7 @@ public class NPCRangeObjective extends Objective {
         if (!containsPlayer(onlineProfile) || !location.getWorld().equals(onlineProfile.getPlayer().getWorld())) {
             return false;
         }
-        final double radius = this.radius.getDouble(onlineProfile);
+        final double radius = this.radius.getValue(onlineProfile).doubleValue();
         final double distanceSqrd = location.distanceSquared(onlineProfile.getPlayer().getLocation());
         final double radiusSqrd = radius * radius;
 

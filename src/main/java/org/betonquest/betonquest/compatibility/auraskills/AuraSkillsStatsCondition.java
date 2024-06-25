@@ -44,7 +44,7 @@ public class AuraSkillsStatsCondition extends Condition {
         }
 
         final double actualLevel = user.getStatLevel(stat);
-        final double targetLevel = targetLevelVar.getDouble(profile);
+        final double targetLevel = targetLevelVar.getValue(profile).doubleValue();
 
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }

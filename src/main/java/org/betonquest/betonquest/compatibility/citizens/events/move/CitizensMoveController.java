@@ -13,7 +13,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.compatibility.citizens.CitizensWalkingListener;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -152,7 +152,7 @@ public class CitizensMoveController implements Listener {
      * @param blockConversations if the NPC will block conversation interaction while moving (includes wait time)
      * @param sourcePackage      the quest package that started the movement, used for debug logging
      */
-    public record MoveData(List<CompoundLocation> locations, int waitTicks, EventID[] doneEvents,
+    public record MoveData(List<VariableLocation> locations, int waitTicks, EventID[] doneEvents,
                            EventID[] failEvents, boolean blockConversations, QuestPackage sourcePackage) {
     }
 
@@ -178,14 +178,14 @@ public class CitizensMoveController implements Listener {
         /**
          * Iterator for the next target location.
          */
-        private final ListIterator<CompoundLocation> locationsIterator;
+        private final ListIterator<VariableLocation> locationsIterator;
 
         private MoveInstance(final MoveData moveData, final Profile profile, final NPC npc) throws QuestRuntimeException {
             this.moveData = moveData;
             this.npcId = npc.getId();
             this.currentProfile = profile;
             this.locationsIterator = moveData.locations.listIterator(0);
-            final Location firstLocation = locationsIterator.next().getLocation(profile);
+            final Location firstLocation = locationsIterator.next().getValue(profile);
             stopNPCMoving(npc);
             if (npc.isSpawned()) {
                 if (CitizensWalkingListener.getInstance().isMovementPaused(npc)) {
@@ -218,7 +218,7 @@ public class CitizensMoveController implements Listener {
             if (locationsIterator.hasNext()) {
                 final Location next;
                 try {
-                    next = locationsIterator.next().getLocation(currentProfile);
+                    next = locationsIterator.next().getValue(currentProfile);
                 } catch (final QuestRuntimeException e) {
                     log.warn(moveData.sourcePackage(), "Error while NPC " + npc.getId() + " navigation: " + e.getMessage(), e);
                     return;
@@ -235,7 +235,7 @@ public class CitizensMoveController implements Listener {
 
         private void returnToStart(final NPC npc) {
             try {
-                npc.getNavigator().setTarget(locationsIterator.previous().getLocation(currentProfile));
+                npc.getNavigator().setTarget(locationsIterator.previous().getValue(currentProfile));
             } catch (final QuestRuntimeException e) {
                 log.warn(moveData.sourcePackage(), "Error while finishing NPC " + npc.getId() + " navigation: " + e.getMessage(), e);
             }

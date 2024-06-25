@@ -8,8 +8,8 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.Utils;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
@@ -29,7 +29,7 @@ public class EntityCondition extends Condition {
 
     private final VariableNumber[] amounts;
 
-    private final CompoundLocation loc;
+    private final VariableLocation loc;
 
     private final VariableNumber range;
 
@@ -89,7 +89,7 @@ public class EntityCondition extends Condition {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final Location location = loc.getLocation(profile);
+        final Location location = loc.getValue(profile);
         final int[] neededAmounts = new int[types.length];
         for (int i = 0; i < neededAmounts.length; i++) {
             neededAmounts[i] = 0;
@@ -107,7 +107,7 @@ public class EntityCondition extends Condition {
                     continue;
                 }
             }
-            final double pRange = range.getDouble(profile);
+            final double pRange = range.getValue(profile).doubleValue();
             if (entity.getLocation().distanceSquared(location) < pRange * pRange) {
                 final EntityType theType = entity.getType();
                 for (int i = 0; i < types.length; i++) {

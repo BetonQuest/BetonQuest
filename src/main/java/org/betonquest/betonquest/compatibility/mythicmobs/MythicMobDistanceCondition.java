@@ -34,7 +34,7 @@ public class MythicMobDistanceCondition extends Condition {
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         final Player player = profile.getOnlineProfile().get().getPlayer();
-        final double dist = distance.getDouble(profile);
+        final double dist = distance.getValue(profile).doubleValue();
 
         return player.getWorld().getNearbyEntities(player.getLocation(), dist, dist, dist)
                 .stream().anyMatch(entity -> entity != null

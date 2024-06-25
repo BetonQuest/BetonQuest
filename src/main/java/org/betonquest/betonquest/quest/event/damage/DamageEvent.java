@@ -26,7 +26,7 @@ public class DamageEvent implements Event {
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
-        final double calculatedDamage = Math.abs(damage.getDouble(profile));
+        final double calculatedDamage = Math.abs(damage.getValue(profile).doubleValue());
         profile.getOnlineProfile()
                 .map(OnlineProfile::getPlayer)
                 .ifPresent(player -> player.damage(calculatedDamage));
