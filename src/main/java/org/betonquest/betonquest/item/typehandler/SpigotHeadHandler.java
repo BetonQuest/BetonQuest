@@ -99,8 +99,7 @@ public class SpigotHeadHandler extends HeadHandler {
                 playerProfile.getTextures().setSkin(url);
                 skullMeta.setOwnerProfile(playerProfile);
             } catch (final MalformedURLException | IllegalArgumentException e) {
-                final String string = profile == null ? "<player>" : profile.getPlayer().getName();
-                log.warn("The quest item that was just given to '" + string + "' has an invalid head texture.", e);
+                log.warn("The quest item that was just given to '" + profile + "' has an invalid head texture.", e);
             }
         }
     }

@@ -73,9 +73,8 @@ public class CitizensMoveController implements Listener {
      * @param npc NPC to check
      * @return false if you can talk to the npc true if not
      */
-    @SuppressWarnings("NullAway") // control flow
     public boolean blocksTalking(final NPC npc) {
-        return isNPCMoving(npc) && movingNpcs.get(npc.getId()).moveData.blockConversations;
+        return movingNpcs.containsKey(npc.getId()) && movingNpcs.get(npc.getId()).moveData.blockConversations;
     }
 
     /**

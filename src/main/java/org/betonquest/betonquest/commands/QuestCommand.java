@@ -1275,6 +1275,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 try {
                     final ConfigurationSection sourceConfigurationSection = configuration.getSourceConfigurationSection(nameID.getBaseID());
                     if (sourceConfigurationSection == null) {
+                        sendMessage(sender, "error", "There is no SourceConfigurationSection!");
                         log.warn(nameID.getPackage(), "There is no SourceConfigurationSection!");
                         break;
                     }

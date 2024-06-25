@@ -115,7 +115,7 @@ public final class InventoryUtils {
      * @param cursor the item currently held in the cursor
      * @return either 0 or the amount of the result
      */
-    @SuppressWarnings("NullAway") // null check in #isEmptySlot
+    @SuppressWarnings("NullAway")
     public static int calculateSimpleCraftAmount(final ItemStack result, @Nullable final ItemStack cursor) {
         if (isEmptySlot(cursor)
                 || cursor.isSimilar(result) && cursor.getAmount() + result.getAmount() <= cursor.getMaxStackSize()) {

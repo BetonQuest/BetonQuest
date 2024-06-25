@@ -78,7 +78,7 @@ public class DefaultBetonQuestLogger implements BetonQuestLogger {
 
     @Override
     public void warn(@Nullable final QuestPackage pack, @Nullable final String msg) {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.WARNING, msg == null ? "null" : msg, plugin, pack);
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.WARNING, msg, plugin, pack);
         logger.log(record);
     }
 
