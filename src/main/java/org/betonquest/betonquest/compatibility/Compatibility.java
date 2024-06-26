@@ -96,7 +96,7 @@ public class Compatibility implements Listener {
         }
 
         //Must be called after all plugins have been integrated
-        HologramProvider.init();
+        HologramProvider.init(betonQuest.getVariableProcessor());
 
         //Delay after server start to finish all hooking first
         new BukkitRunnable() {

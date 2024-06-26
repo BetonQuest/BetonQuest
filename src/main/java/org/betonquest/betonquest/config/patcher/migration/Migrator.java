@@ -1,16 +1,17 @@
 package org.betonquest.betonquest.config.patcher.migration;
 
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.AuraSkillsRename;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.EffectLib;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.EventScheduling;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.FabledRename;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.MmoUpdates;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.NpcHolograms;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.PackageSection;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.PackageStructure;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.RPGMenuMerge;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.RemoveEntity;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.RideUpdates;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.AuraSkillsRename;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.EffectLib;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.EventScheduling;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.FabledRename;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.MmoUpdates;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.NpcHolograms;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.PackageSection;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.PackageStructure;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.RPGMenuMerge;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.RemoveEntity;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.RideUpdates;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.VariablesRename;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -52,9 +53,8 @@ public class Migrator {
         migrations.add(new FabledRename(provider));
     }
 
-    @SuppressWarnings({"PMD.UnusedFormalParameter", "PMD.UncommentedEmptyMethodBody"})
     private void addMigratorsFrom2to3(final FileConfigurationProvider provider) {
-
+        migrations.add(new VariablesRename(provider));
     }
 
     /**

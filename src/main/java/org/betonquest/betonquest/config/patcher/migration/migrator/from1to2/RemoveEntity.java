@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.config.patcher.migration.migrators.from1to2;
+package org.betonquest.betonquest.config.patcher.migration.migrator.from1to2;
 
 import org.betonquest.betonquest.config.patcher.migration.FileConfigurationProvider;
 import org.betonquest.betonquest.config.patcher.migration.Migration;
@@ -9,20 +9,21 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Handles the fabled rename migration.
+ * Handles the remove entity migration.
  */
-public class FabledRename implements Migration {
+public class RemoveEntity implements Migration {
+
     /**
-     * The config producer.
+     * The configs to migrate.
      */
     private final FileConfigurationProvider producer;
 
     /**
-     * Creates a new fabled migrator.
+     * Creates a new mmo_updates migrator.
      *
      * @param provider The config provider
      */
-    public FabledRename(final FileConfigurationProvider provider) {
+    public RemoveEntity(final FileConfigurationProvider provider) {
         this.producer = provider;
     }
 
@@ -32,9 +33,9 @@ public class FabledRename implements Migration {
         for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
             final File file = entry.getKey();
             final YamlConfiguration config = entry.getValue();
-            final boolean cond1Replaced = replaceStartValueInSection(config, "conditions", "skillapiclass", "fabledclass");
-            final boolean cond2Replaced = replaceStartValueInSection(config, "conditions", "skillapilevel", "fabledlevel");
-            if (cond1Replaced || cond2Replaced) {
+            final boolean event1Replaced = replaceStartValueInSection(config, "events", "clear", "removeentity");
+            final boolean event2Replaced = replaceStartValueInSection(config, "events", "killmob", "removeentity");
+            if (event1Replaced || event2Replaced) {
                 config.save(file);
             }
         }
