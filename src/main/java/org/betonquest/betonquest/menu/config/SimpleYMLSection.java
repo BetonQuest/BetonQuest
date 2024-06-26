@@ -1,11 +1,15 @@
 package org.betonquest.betonquest.menu.config;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
+import org.betonquest.betonquest.instruction.variable.VariableBoolean;
+import org.betonquest.betonquest.instruction.variable.VariableEnum;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.Nullable;
@@ -56,39 +60,45 @@ public abstract class SimpleYMLSection {
         }
     }
 
-    private String resolveGlobalVariable(final String string) {
-        return GlobalVariableResolver.resolve(pack, string);
-    }
-
-    /**
-     * Parse string from config file.
-     *
-     * @param key where to search
-     * @return requested String
-     * @throws Missing if string is not given
-     */
-    protected final String getString(final String key) throws Missing {
+    private final String getRawString(final String key) throws Missing {
         final String string = config.getString(key);
         if (string == null) {
             throw new Missing(key);
         } else {
-            return resolveGlobalVariable(string);
+            return string;
         }
+    }
+
+    /**
+     * Parse string from config file
+     *
+     * @param key where to search
+     * @return the {@link VariableString} from the config
+     * @throws Missing                   If string is not given
+     * @throws QuestException            If the {@link VariableString} could not be created
+     */
+    protected final VariableString getString(final String key) throws Missing, QuestException {
+        return new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, getRawString(key));
     }
 
     /**
      * Parse a list of strings from config file.
      *
      * @param key where to search
-     * @return requested List of String
-     * @throws Missing if no list is not given
+     * @return the list of {@link VariableString} from the config
+     * @throws Missing                   If no list is not given
+     * @throws QuestException            If one {@link VariableString} could not be created
      */
-    protected final List<String> getStringList(final String key) throws Missing {
-        final List<String> list = config.getStringList(key);
-        if (list.isEmpty()) {
+    protected final List<VariableString> getStringList(final String key) throws Missing, QuestException {
+        final List<String> stringList = config.getStringList(key);
+        if (stringList.isEmpty()) {
             throw new Missing(key);
         } else {
-            return list.stream().map(this::resolveGlobalVariable).toList();
+            final List<VariableString> list = new ArrayList<>();
+            for (final String string : stringList) {
+                list.add(new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, string));
+            }
+            return list;
         }
     }
 
@@ -96,56 +106,47 @@ public abstract class SimpleYMLSection {
      * Parse a list of multiple strings, separated by ',' from config file.
      *
      * @param key where to search
-     * @return requested List of String
-     * @throws Missing if no strings are given
+     * @return the list of {@link VariableString} from the config
+     * @throws Missing                   If no strings are given
+     * @throws QuestException            If one {@link VariableString} could not be created
      */
-    protected final List<String> getStrings(final String key) throws Missing {
-        final List<String> list = new ArrayList<>();
-        final String[] args = getString(key).split(",");
+    protected final List<VariableString> getStrings(final String key) throws Missing, QuestException {
+        final List<VariableString> list = new ArrayList<>();
+        final String string = getRawString(key);
+        final String[] args = string.split(",");
         for (final String arg : args) {
             final String argTrim = arg.trim();
             if (!argTrim.isEmpty()) {
-                list.add(argTrim);
+                list.add(new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, argTrim));
             }
         }
         return list;
     }
 
     /**
-     * Parse an integer from config file.
+     * Parse a number from config file.
      *
      * @param key where to search
-     * @return requested Int
-     * @throws Missing if nothing is given
-     * @throws Invalid if given string is not an integer
+     * @return the {@link VariableNumber} from the config
+     * @throws Missing                   If nothing is given
+     * @throws QuestException            If the {@link VariableNumber} could not be created
      */
-    protected final int getInt(final String key) throws Missing, Invalid {
-        final String stringInt = this.getString(key);
-        try {
-            return Integer.parseInt(stringInt);
-        } catch (final NumberFormatException e) {
-            throw new Invalid(key, "Invalid number format for '" + stringInt + "'");
-        }
+    protected final VariableNumber getNumber(final String key) throws Missing, QuestException {
+        final String stringInt = getRawString(key);
+        return new VariableNumber(BetonQuest.getInstance().getVariableProcessor(), pack, stringInt);
     }
 
     /**
-     * Parse a boolean from config file.
+     * Parse a boolean from config file
      *
      * @param key where to search
-     * @return requested Boolean
-     * @throws Missing if nothing is given
-     * @throws Invalid if given string is not a boolean
+     * @return the {@link VariableBoolean} from the config
+     * @throws Missing                   If nothing is given
+     * @throws QuestException            If the {@link VariableBoolean} could not be created
      */
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    protected final boolean getBoolean(final String key) throws Missing, Invalid {
-        final String stringBoolean = this.getString(key).trim();
-        if ("true".equalsIgnoreCase(stringBoolean)) {
-            return true;
-        } else if ("false".equalsIgnoreCase(stringBoolean)) {
-            return false;
-        } else {
-            throw new Invalid(key);
-        }
+    protected final VariableBoolean getBoolean(final String key) throws Missing, QuestException {
+        final String stringBoolean = getRawString(key).trim();
+        return new VariableBoolean(BetonQuest.getInstance().getVariableProcessor(), pack, stringBoolean);
     }
 
     /**
