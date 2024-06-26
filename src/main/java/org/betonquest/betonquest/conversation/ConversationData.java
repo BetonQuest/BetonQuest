@@ -10,19 +10,21 @@ import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.id.ID;
+import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.instruction.variable.Variable;
+import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
 import org.betonquest.betonquest.util.Utils;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +48,11 @@ public class ConversationData {
      * All references made by this conversation's pointers to other conversations.
      */
     private final List<CrossConversationReference> externalPointers = new ArrayList<>();
+
+    /**
+     * The {@link VariableProcessor} to resolve variables.
+     */
+    private final VariableProcessor variableProcessor;
 
     /**
      * Quest Type API.
@@ -107,10 +114,11 @@ public class ConversationData {
      * @throws QuestException when there is a syntax error in the defined conversation or
      *                        when conversation options cannot be resolved or {@code convSection} is null
      */
-    public ConversationData(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI,
+    public ConversationData(final BetonQuestLogger log, final VariableProcessor variableProcessor, final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI,
                             final ParsedSectionMessageCreator messageCreator, final QuestPackage pack,
                             final ConfigurationSection convSection, final PublicData publicData) throws QuestException {
         this.log = log;
+        this.variableProcessor = variableProcessor;
         this.questTypeAPI = questTypeAPI;
         this.featureAPI = featureAPI;
         this.pack = pack;
@@ -250,12 +258,13 @@ public class ConversationData {
      * @throws QuestException when the conversation could not be resolved
      */
     private List<String> loadStartingOptions(final ConfigurationSection convSection) throws QuestException {
-        final String rawStartingOptions = GlobalVariableResolver.resolve(pack, convSection.getString("first"));
-        if (rawStartingOptions == null || rawStartingOptions.isEmpty()) {
-            throw new QuestException("Starting options are not defined");
+        final List<String> startingOptions;
+        try {
+            startingOptions = new VariableList<>(variableProcessor, pack, convSection.getString("first", ""),
+                    Argument.STRING, VariableList.notEmptyChecker()).getValue(null);
+        } catch (final QuestException e) {
+            throw new QuestException("Could not load starting options: " + e.getMessage(), e);
         }
-
-        final List<String> startingOptions = Arrays.stream(rawStartingOptions.split(",")).map(String::trim).toList();
 
         for (final String startingOption : startingOptions) {
             if (startingOption.contains(".")) {
@@ -501,9 +510,9 @@ public class ConversationData {
      * @param convIO        The conversation IO that should be used for this conversation.
      * @param interceptor   The interceptor that should be used for this conversation.
      */
-    public record PublicData(String convName, Message quester, boolean blockMovement,
-                             List<EventID> finalEvents,
-                             String convIO, String interceptor) {
+    public record PublicData(String convName, Message quester, Variable<Boolean> blockMovement,
+                             Variable<List<EventID>> finalEvents, Variable<ConversationIOFactory> convIO,
+                             Variable<InterceptorFactory> interceptor) {
 
         /**
          * Gets the quester's name in the specified language.
@@ -589,36 +598,26 @@ public class ConversationData {
             }
 
             this.text = parseText(conv);
-            this.conditions = parseID(conv, "conditions", ConditionID::new);
-            this.events = parseID(conv, "events", EventID::new);
+            this.conditions = resolve(conv, "conditions", ConditionID::new);
+            this.events = resolve(conv, "events", EventID::new);
 
-            pointers = Arrays.stream(resolveAndSplit(conv, "pointers"))
+            pointers = resolve(conv, "pointers", Argument.STRING).stream()
                     .filter(StringUtils::isNotEmpty)
-                    .map(String::trim).toList();
+                    .toList();
 
-            extendLinks = Arrays.stream(resolveAndSplit(conv, "extends"))
+            extendLinks = resolve(conv, "extends", Argument.STRING).stream()
                     .filter(StringUtils::isNotEmpty)
-                    .map(String::trim).toList();
+                    .toList();
         }
 
-        private String[] resolveAndSplit(final ConfigurationSection conv, final String identifier) {
-            return GlobalVariableResolver.resolve(pack, conv.getString(identifier, "")).split(",");
+        private <T> List<T> resolve(final ConfigurationSection conv, final String identifier,
+                                    final Argument<T> resolver) throws QuestException {
+            return new VariableList<>(variableProcessor, pack, conv.getString(identifier, ""), resolver).getValue(null);
         }
 
-        private <T extends ID> List<T> parseID(final ConfigurationSection conv, final String identifier, final PackageArgument<T> argument) throws QuestException {
-            try {
-                final String[] split = resolveAndSplit(conv, identifier);
-                final List<T> list = new ArrayList<>(split.length);
-                for (final String raw : split) {
-                    if (!raw.isEmpty()) {
-                        list.add(argument.apply(pack, raw.trim()));
-                    }
-                }
-                return list;
-            } catch (final QuestException e) {
-                throw new QuestException("Error in '" + optionName + "' " + type.getReadable() + " option's " + identifier + ": "
-                        + e.getMessage(), e);
-            }
+        private <T> List<T> resolve(final ConfigurationSection conv, final String identifier,
+                                    final PackageArgument<T> resolver) throws QuestException {
+            return resolve(conv, identifier, (value) -> resolver.apply(pack, value));
         }
 
         @Nullable

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.menu.kernel;
 
-import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -15,6 +14,7 @@ import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.menu.Menu;
 import org.betonquest.betonquest.menu.MenuID;
@@ -24,7 +24,6 @@ import org.betonquest.betonquest.menu.Slots;
 import org.betonquest.betonquest.menu.command.MenuBoundCommand;
 import org.betonquest.betonquest.menu.command.SimpleCommand;
 import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -150,13 +149,10 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
             }
             final List<Slots> slots = new ArrayList<>();
             for (final String key : slotsSection.getKeys(false)) {
-                final String rawItems = GlobalVariableResolver.resolve(pack, slotsSection.getString(key, ""));
-                final List<MenuItemID> itemsList = new ArrayList<>();
-                for (final String item : StringUtils.split(rawItems, ',')) {
-                    itemsList.add(new MenuItemID(pack, item));
-                }
+                final Variable<List<MenuItemID>> itemsList = new VariableList<>(variableProcessor, pack,
+                        slotsSection.getString(key, ""), value -> new MenuItemID(pack, value));
                 try {
-                    slots.add(new Slots(rpgMenu, key, itemsList));
+                    slots.add(new Slots(rpgMenu, key, itemsList.getValue(null)));
                 } catch (final IllegalArgumentException e) {
                     throw new QuestException("slots." + key + " is invalid: " + e.getMessage(), e);
                 }

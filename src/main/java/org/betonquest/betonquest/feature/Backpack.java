@@ -14,6 +14,7 @@ import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.id.CompassID;
 import org.betonquest.betonquest.id.ItemID;
+import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -422,9 +423,13 @@ public class Backpack implements Listener {
         public Cancelers() {
             super();
             final List<QuestCanceler> cancelers = new ArrayList<>();
-            for (final QuestCanceler canceler : BetonQuest.getInstance().getFeatureAPI().getCancelers().values()) {
-                if (canceler.show(onlineProfile)) {
-                    cancelers.add(canceler);
+            for (final Map.Entry<QuestCancelerID, QuestCanceler> entry : BetonQuest.getInstance().getFeatureAPI().getCancelers().entrySet()) {
+                try {
+                    if (entry.getValue().isCancelable(onlineProfile)) {
+                        cancelers.add(entry.getValue());
+                    }
+                } catch (final QuestException e) {
+                    log.warn(entry.getKey().getPackage(), "Could not check if canceler is cancelable, dont show it in the GUI: " + e.getMessage(), e);
                 }
             }
             final int size = cancelers.size();

@@ -14,7 +14,6 @@ import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -51,11 +50,6 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
     private final List<HologramWrapper> holograms;
 
     /**
-     * Variable processor to create new variables.
-     */
-    private final VariableProcessor variableProcessor;
-
-    /**
      * Feature API.
      */
     private final FeatureAPI featureAPI;
@@ -82,8 +76,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
     public NpcHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
                            final VariableProcessor variableProcessor, final FeatureAPI featureAPI,
                            final NpcTypeRegistry npcTypeRegistry) {
-        super(loggerFactory, log);
-        this.variableProcessor = variableProcessor;
+        super(loggerFactory, log, variableProcessor);
         this.featureAPI = featureAPI;
         this.npcTypeRegistry = npcTypeRegistry;
         identifierToId = new HashMap<>();
@@ -136,8 +129,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
     }
 
     private List<NpcID> getNpcs(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
-        final String npcs = GlobalVariableResolver.resolve(pack, section.getString("npcs", ""));
-        return new VariableList<>(variableProcessor, pack, npcs, value -> new NpcID(pack, value)).getValue(null);
+        return new VariableList<>(variableProcessor, pack, section.getString("npcs", ""), value -> new NpcID(pack, value)).getValue(null);
     }
 
     @SuppressWarnings("PMD.CognitiveComplexity")

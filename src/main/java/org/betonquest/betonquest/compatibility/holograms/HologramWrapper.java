@@ -37,7 +37,7 @@ import java.util.List;
  * @param varMaxRange   The maximum range in which the hologram is visible.
  */
 public record HologramWrapper(BetonQuestLogger log, int interval, List<BetonHologram> holograms, boolean staticContent,
-                              ConditionID[] conditionList,
+                              List<ConditionID> conditionList,
                               List<AbstractLine> cleanedLines, QuestPackage questPackage,
                               Variable<Number> varMaxRange) {
     /**
@@ -45,7 +45,7 @@ public record HologramWrapper(BetonQuestLogger log, int interval, List<BetonHolo
      */
     public void updateVisibility() {
         final int maxRange = getMaxRangeFromVariable(null);
-        if (conditionList.length == 0 && maxRange <= 0) {
+        if (conditionList.isEmpty() && maxRange <= 0) {
             for (final BetonHologram hologram : holograms) {
                 hologram.showAll();
             }
