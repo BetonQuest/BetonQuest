@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.config.quest;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
@@ -16,6 +17,11 @@ import java.util.List;
  */
 public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
     /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
      * Creates a new {@link QuestPackage}.  For more information see {@link Quest}.
      *
      * @param log                   the logger that will be used for logging
@@ -31,6 +37,7 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
     public QuestPackageImpl(final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final String questPath,
                             final File root, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
         super(log, configAccessorFactory, questPath, root, files);
+        this.log = log;
     }
 
     @Override
