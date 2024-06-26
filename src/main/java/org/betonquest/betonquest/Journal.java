@@ -16,7 +16,6 @@ import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.util.Utils;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -274,11 +273,12 @@ public class Journal {
             for (final String key : section.getKeys(false)) {
                 final int number = section.getInt(key + ".priority", -1);
                 if (number >= 0) {
-                    final String rawConditions = GlobalVariableResolver.resolve(pack, section.getString(key + ".conditions"));
+                    final String rawConditions = section.getString(key + ".conditions");
                     if (rawConditions != null && !rawConditions.isEmpty()) {
                         try {
+                            final String conditionsString = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, rawConditions).getValue(profile);
                             final List<ConditionID> pageConditions = new ArrayList<>();
-                            for (final String conditionString : rawConditions.split(",")) {
+                            for (final String conditionString : conditionsString.split(",")) {
                                 if (!conditionString.isEmpty()) {
                                     pageConditions.add(new ConditionID(pack, conditionString));
                                 }
@@ -308,7 +308,6 @@ public class Journal {
                     if (text == null || text.isEmpty()) {
                         continue;
                     }
-                    text = GlobalVariableResolver.resolve(pack, text);
                     try {
                         text = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, text).getValue(profile);
                     } catch (final QuestException e) {

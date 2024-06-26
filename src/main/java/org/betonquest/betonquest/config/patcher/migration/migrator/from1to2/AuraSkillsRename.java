@@ -1,8 +1,7 @@
-package org.betonquest.betonquest.config.patcher.migration.migrators.from1to2;
+package org.betonquest.betonquest.config.patcher.migration.migrator.from1to2;
 
 import org.betonquest.betonquest.config.patcher.migration.FileConfigurationProvider;
 import org.betonquest.betonquest.config.patcher.migration.Migration;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -10,21 +9,20 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Handles the EventScheduling migration.
+ * Handles the aura_skills rename migration.
  */
-public class EventScheduling implements Migration {
-
+public class AuraSkillsRename implements Migration {
     /**
      * The config producer.
      */
     private final FileConfigurationProvider producer;
 
     /**
-     * Creates a new EventScheduling migrator.
+     * Creates a new aura_skills migrator.
      *
      * @param provider The config provider
      */
-    public EventScheduling(final FileConfigurationProvider provider) {
+    public AuraSkillsRename(final FileConfigurationProvider provider) {
         this.producer = provider;
     }
 
@@ -34,14 +32,10 @@ public class EventScheduling implements Migration {
         for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
             final File file = entry.getKey();
             final YamlConfiguration config = entry.getValue();
-            final ConfigurationSection staticSection = config.getConfigurationSection("static");
-            if (staticSection != null) {
-                staticSection.getValues(false).forEach((key, value) -> {
-                    config.set("schedules." + key + ".type", "realtime-daily");
-                    config.set("schedules." + key + ".time", key);
-                    config.set("schedules." + key + ".events", value);
-                });
-                config.set("static", null);
+            final boolean cond1Replaced = replaceStartValueInSection(config, "conditions", "aureliumskillslevel", "auraskillslevel");
+            final boolean cond2Replaced = replaceStartValueInSection(config, "conditions", "aureliumstatslevel", "auraskillsstatslevel");
+            final boolean objReplaced = replaceStartValueInSection(config, "events", "aureliumskillsxp", "auraskillsxp");
+            if (cond1Replaced || cond2Replaced || objReplaced) {
                 config.save(file);
             }
         }
