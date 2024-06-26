@@ -14,6 +14,7 @@ import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.id.CompassID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.QuestItem;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -49,6 +50,11 @@ public class Backpack implements Listener {
     private final BetonQuestLogger log;
 
     /**
+     * The {@link VariableProcessor} to use.
+     */
+    private final VariableProcessor variableProcessor;
+
+    /**
      * The {@link PluginMessage} instance.
      */
     private final PluginMessage pluginMessage;
@@ -76,11 +82,13 @@ public class Backpack implements Listener {
     /**
      * Creates new backpack GUI opened at given page type.
      *
-     * @param pluginMessage the {@link PluginMessage} instance
-     * @param onlineProfile the {@link OnlineProfile} of the player
-     * @param type          type of the display
+     * @param variableProcessor the {@link VariableProcessor} to use
+     * @param pluginMessage     the {@link PluginMessage} instance
+     * @param onlineProfile     the {@link OnlineProfile} of the player
+     * @param type              type of the display
      */
-    public Backpack(final PluginMessage pluginMessage, final OnlineProfile onlineProfile, final DisplayType type) {
+    public Backpack(final VariableProcessor variableProcessor, final PluginMessage pluginMessage, final OnlineProfile onlineProfile, final DisplayType type) {
+        this.variableProcessor = variableProcessor;
         this.pluginMessage = pluginMessage;
         final BetonQuest instance = BetonQuest.getInstance();
         this.log = instance.getLoggerFactory().create(getClass());
@@ -97,28 +105,27 @@ public class Backpack implements Listener {
     /**
      * Creates new backpack GUI.
      *
-     * @param pluginMessage the {@link PluginMessage} instance
-     * @param onlineProfile the {@link OnlineProfile} of the player
+     * @param variableProcessor the {@link VariableProcessor} to use
+     * @param pluginMessage     the {@link PluginMessage} instance
+     * @param onlineProfile     the {@link OnlineProfile} of the player
      */
-    public Backpack(final PluginMessage pluginMessage, final OnlineProfile onlineProfile) {
-        this(pluginMessage, onlineProfile, DisplayType.DEFAULT);
+    public Backpack(final VariableProcessor variableProcessor, final PluginMessage pluginMessage, final OnlineProfile onlineProfile) {
+        this(variableProcessor, pluginMessage, onlineProfile, DisplayType.DEFAULT);
     }
 
     /**
      * Catches clicks on an open backpack and processes them.
      *
      * @param event the click event
+     * @throws QuestException If an error occurs
      */
     @EventHandler(ignoreCancelled = true)
-    public void onClick(final InventoryClickEvent event) {
+    public void onClick(final InventoryClickEvent event) throws QuestException {
         if (event.getWhoClicked().equals(onlineProfile.getPlayer())) {
-            // if the player clicked, then cancel this event
             event.setCancelled(true);
-            // if the click was outside the inventory, do nothing
             if (event.getRawSlot() < 0) {
                 return;
             }
-            // pass the click to the Display
             display.click(event.getRawSlot(), event.getSlot(), event.getClick());
         }
     }
@@ -166,8 +173,9 @@ public class Backpack implements Listener {
          * @param slot       {@link InventoryClickEvent#getRawSlot()}
          * @param playerSlot {@link InventoryClickEvent#getSlot()}
          * @param click      {@link InventoryClickEvent#getClick()}
+         * @throws QuestException If an error occurs
          */
-        protected abstract void click(int slot, int playerSlot, ClickType click);
+        protected abstract void click(int slot, int playerSlot, ClickType click) throws QuestException;
     }
 
     /**
@@ -550,11 +558,11 @@ public class Backpack implements Listener {
                 log.warn("Could not resolve compass location for '" + compass + "': " + e.getMessage(), e);
                 return;
             }
-            // set the location of the compass
-            final QuestCompassTargetChangeEvent event = new QuestCompassTargetChangeEvent(onlineProfile, loc);
+            final Location location = variableLocation.getValue(onlineProfile);
+            final QuestCompassTargetChangeEvent event = new QuestCompassTargetChangeEvent(onlineProfile, location);
             Bukkit.getServer().getPluginManager().callEvent(event);
             if (!event.isCancelled()) {
-                onlineProfile.getPlayer().setCompassTarget(loc);
+                onlineProfile.getPlayer().setCompassTarget(location);
             }
             onlineProfile.getPlayer().closeInventory();
         }

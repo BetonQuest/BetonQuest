@@ -61,6 +61,7 @@ public class Migrator {
         migrations.add(new DeleteMessagesYml(loggerFactory.create(DeleteMessagesYml.class)));
         migrations.add(new DeleteMenuConfigYml(loggerFactory.create(DeleteMenuConfigYml.class)));
         migrations.add(new LanguageRename(provider));
+        migrations.add(new VariablesRename(provider));
     }
 
     /**

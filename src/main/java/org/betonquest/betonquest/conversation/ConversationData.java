@@ -60,6 +60,11 @@ public class ConversationData {
     private final FeatureAPI featureAPI;
 
     /**
+     * The {@link VariableProcessor} to use.
+     */
+    private final VariableProcessor variableProcessor;
+
+    /**
      * Processor to create new variables.
      */
     private final VariableProcessor variableProcessor;
@@ -580,12 +585,12 @@ public class ConversationData {
         /**
          * Other options that are available after this option is selected.
          */
-        private final List<String> pointers;
+        private final List<String> pointers = new ArrayList<>();
 
         /**
          * Other options that this option extends from.
          */
-        private final List<String> extendLinks;
+        private final List<String> extendLinks = new ArrayList<>();
 
         /**
          * Creates a ConversationOption.

@@ -155,6 +155,7 @@ import org.betonquest.betonquest.quest.event.variable.VariableEventFactory;
 import org.betonquest.betonquest.quest.event.velocity.VelocityEventFactory;
 import org.betonquest.betonquest.quest.event.weather.WeatherEventFactory;
 import org.betonquest.betonquest.quest.variable.condition.ConditionVariableFactory;
+import org.betonquest.betonquest.quest.variable.constant.ConstantVariableFactory;
 import org.betonquest.betonquest.quest.variable.eval.EvalVariableFactory;
 import org.betonquest.betonquest.quest.variable.item.ItemDurabilityVariableFactory;
 import org.betonquest.betonquest.quest.variable.item.ItemVariableFactory;
@@ -428,6 +429,7 @@ public class CoreQuestTypes {
 
     private void registerVariables(final VariableTypeRegistry variables) {
         variables.register("condition", new ConditionVariableFactory(questTypeAPI, pluginMessage));
+        variables.registerCombined("constant", new ConstantVariableFactory(variableProcessor));
         variables.registerCombined("eval", new EvalVariableFactory(variableProcessor));
         variables.register("globalpoint", new GlobalPointVariableFactory(globalData, loggerFactory.create(GlobalPointVariableFactory.class)));
         variables.register("globaltag", new GlobalTagVariableFactory(globalData, pluginMessage));

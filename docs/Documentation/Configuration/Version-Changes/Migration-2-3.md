@@ -15,6 +15,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
 - [3.0.0-DEV-58 - Delete messages.yml](#300-dev-58-delete-messagesyml) :exclamation:
 - [3.0.0-DEV-65 - Delete menuConfig.yml](#300-dev-65-delete-menuconfigyml) :exclamation:
 - [3.0.0-DEV-71 - Renamed Translation Keys](#300-dev-71-renamed-translation-keys) :gear:
+- [3.0.0-DEV-12 - Rename Constants](#300-dev-100-rename-constants) :gear:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :exclamation:
 
@@ -102,3 +103,32 @@ so also here you need to move your custom translations.
     - `journal.*`
     - `journal_main_page.*.text`
     - `menus.*.items.*.text`
+
+### 3.0.0-DEV-100 - Rename Constants :gear:
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+    
+    "Global Variables" were renamed to "Constants" to better reflect their purpose,
+    and to also integrate them in the existing variable system.
+    
+    <div class="grid" markdown>
+    
+    ```YAML title="Old Syntax"
+    variables:
+      MyVariable: Hello
+      MyCustomVariable: $MyVariable$ World
+    events:
+      sendNotify: notify $MyCustomVariable$
+    ```
+    
+    ```YAML title="New Syntax"
+    constants:
+      MyVariable: Hello
+      MyCustomVariable: %constant.MyVariable% World
+    events:
+      sendNotify: notify %constant.MyCustomVariable%
+    ```
+    
+    </div>
