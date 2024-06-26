@@ -1,10 +1,15 @@
 package org.betonquest.betonquest.menu.config;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
+import org.betonquest.betonquest.instruction.variable.VariableBoolean;
+import org.betonquest.betonquest.instruction.variable.VariableEnum;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -12,7 +17,6 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -38,23 +42,25 @@ public abstract class SimpleYMLSection {
         }
     }
 
-    private String resolveGlobalVariable(final String string) {
-        return GlobalVariableResolver.resolve(pack, string);
+    private final String getRawString(final String key) throws Missing {
+        final String string = config.getString(key);
+        if (string == null) {
+            throw new Missing(key);
+        } else {
+            return string;
+        }
     }
 
     /**
      * Parse string from config file
      *
      * @param key where to search
-     * @throws Missing if string is not given
+     * @return the {@link VariableString} from the config
+     * @throws Missing                   if string is not given
+     * @throws InstructionParseException If the {@link VariableString} could not be created
      */
-    protected final String getString(final String key) throws Missing {
-        final String string = config.getString(key);
-        if (string == null) {
-            throw new Missing(key);
-        } else {
-            return resolveGlobalVariable(string);
-        }
+    protected final VariableString getString(final String key) throws Missing, InstructionParseException {
+        return new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, getRawString(key));
     }
 
     /********************************************************
@@ -67,14 +73,20 @@ public abstract class SimpleYMLSection {
      * Parse a list of strings from config file
      *
      * @param key where to search
-     * @throws Missing if no list is not given
+     * @return the list of {@link VariableString} from the config
+     * @throws Missing                   if no list is not given
+     * @throws InstructionParseException If one {@link VariableString} could not be created
      */
-    protected final List<String> getStringList(final String key) throws Missing {
-        final List<String> list = config.getStringList(key);
-        if (list.isEmpty()) {
+    protected final List<VariableString> getStringList(final String key) throws Missing, InstructionParseException {
+        final List<String> stringList = config.getStringList(key);
+        if (stringList.isEmpty()) {
             throw new Missing(key);
         } else {
-            return list.stream().map(this::resolveGlobalVariable).toList();
+            final List<VariableString> list = new ArrayList<>();
+            for (final String string : stringList) {
+                list.add(new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, string));
+            }
+            return list;
         }
     }
 
@@ -82,15 +94,18 @@ public abstract class SimpleYMLSection {
      * Parse a list of multiple strings, separated by ',' from config file
      *
      * @param key where to search
-     * @throws Missing if no strings are given
+     * @return the list of {@link VariableString} from the config
+     * @throws Missing                   if no strings are given
+     * @throws InstructionParseException If one {@link VariableString} could not be created
      */
-    protected final List<String> getStrings(final String key) throws Missing {
-        final List<String> list = new ArrayList<>();
-        final String[] args = getString(key).split(",");
+    protected final List<VariableString> getStrings(final String key) throws Missing, InstructionParseException {
+        final List<VariableString> list = new ArrayList<>();
+        final String string = getRawString(key);
+        final String[] args = string.split(",");
         for (final String arg : args) {
             final String argTrim = arg.trim();
-            if (argTrim.length() != 0) {
-                list.add(argTrim);
+            if (!argTrim.isEmpty()) {
+                list.add(new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, argTrim));
             }
         }
         return list;
@@ -106,48 +121,13 @@ public abstract class SimpleYMLSection {
      * Parse an integer from config file
      *
      * @param key where to search
-     * @throws Missing if nothing is given
-     * @throws Invalid if given string is not an integer
+     * @return the {@link VariableNumber} from the config
+     * @throws Missing                   if nothing is given
+     * @throws InstructionParseException If the {@link VariableNumber} could not be created
      */
-    protected final int getInt(final String key) throws Missing, Invalid {
-        final String stringInt = this.getString(key);
-        try {
-            return Integer.parseInt(stringInt);
-        } catch (final NumberFormatException e) {
-            throw new Invalid(key, "Invalid number format for '" + stringInt + "'");
-        }
-    }
-
-    /**
-     * Parse a double from config file
-     *
-     * @param key where to search
-     * @throws Missing if nothing is given
-     * @throws Invalid if given string is not a double
-     */
-    protected double getDouble(final String key) throws Missing, Invalid {
-        final String stringDouble = this.getString(key);
-        try {
-            return Double.parseDouble(stringDouble);
-        } catch (final NumberFormatException e) {
-            throw new Invalid(key, "Invalid number format for '" + stringDouble + "'");
-        }
-    }
-
-    /**
-     * Parse a long from config file
-     *
-     * @param key where to search
-     * @throws Missing if nothing is given
-     * @throws Invalid if given string is not a long
-     */
-    protected long getLong(final String key) throws Missing, Invalid {
-        final String stringLong = this.getString(key);
-        try {
-            return Long.parseLong(stringLong);
-        } catch (final NumberFormatException e) {
-            throw new Invalid(key, "Invalid number format for '" + stringLong + "'");
-        }
+    protected final VariableNumber getNumber(final String key) throws Missing, InstructionParseException {
+        final String stringInt = getRawString(key);
+        return new VariableNumber(BetonQuest.getInstance().getVariableProcessor(), pack, stringInt);
     }
 
     /********************************************************
@@ -160,19 +140,13 @@ public abstract class SimpleYMLSection {
      * Parse a boolean from config file
      *
      * @param key where to search
-     * @throws Missing if nothing is given
-     * @throws Invalid if given string is not a boolean
+     * @return the {@link VariableBoolean} from the config
+     * @throws Missing                   if nothing is given
+     * @throws InstructionParseException If the {@link VariableBoolean} could not be created
      */
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    protected final boolean getBoolean(final String key) throws Missing, Invalid {
-        final String stringBoolean = this.getString(key).trim();
-        if ("true".equalsIgnoreCase(stringBoolean)) {
-            return true;
-        } else if ("false".equalsIgnoreCase(stringBoolean)) {
-            return false;
-        } else {
-            throw new Invalid(key);
-        }
+    protected final VariableBoolean getBoolean(final String key) throws Missing, InstructionParseException {
+        final String stringBoolean = getRawString(key).trim();
+        return new VariableBoolean(BetonQuest.getInstance().getVariableProcessor(), pack, stringBoolean);
     }
 
     /**
@@ -180,16 +154,14 @@ public abstract class SimpleYMLSection {
      *
      * @param key      where to search
      * @param enumType type of the enum
-     * @throws Missing if nothing is given
-     * @throws Invalid if given string is not of given type
+     * @param <T>      the type of the enum
+     * @return the {@link VariableEnum} from the config
+     * @throws Missing                   if nothing is given
+     * @throws InstructionParseException If the {@link VariableEnum} could not be created
      */
-    protected <T extends Enum<T>> T getEnum(final String key, final Class<T> enumType) throws Missing, Invalid {
-        final String stringEnum = this.getString(key).toUpperCase(Locale.ROOT).replace(" ", "_");
-        try {
-            return Enum.valueOf(enumType, stringEnum);
-        } catch (final IllegalArgumentException e) {
-            throw new Invalid(key, "'" + stringEnum + "' isn't a " + enumType.getName());
-        }
+    protected <T extends Enum<T>> VariableEnum<T> getEnum(final String key, final Class<T> enumType) throws Missing, InstructionParseException {
+        final String enumString = getRawString(key);
+        return new VariableEnum<>(BetonQuest.getInstance().getVariableProcessor(), pack, enumString, enumType);
     }
 
     /**
@@ -203,7 +175,7 @@ public abstract class SimpleYMLSection {
         if (key.trim().matches("\\d+")) {
             throw new Invalid(key, "Material numbers can no longer be supported! Please use the names instead.");
         }
-        final String stringMaterial = this.getString(key);
+        final String stringMaterial = this.getRawString(key);
         Material material = Material.matchMaterial(stringMaterial.replace(" ", "_"));
         if (material == null) {
             material = Material.matchMaterial(stringMaterial.replace(" ", "_"), true);
