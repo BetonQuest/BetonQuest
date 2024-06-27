@@ -23,11 +23,11 @@ public class ChestTakeEvent extends AbstractChestEvent implements ComposedEvent 
     /**
      * Creates a new ChestTakeEvent.
      *
-     * @param compoundLocation The location of the chest.
+     * @param variableLocation The location of the chest.
      * @param items            The items to take from the chest.
      */
-    public ChestTakeEvent(final VariableLocation compoundLocation, final Item... items) {
-        super(compoundLocation);
+    public ChestTakeEvent(final VariableLocation variableLocation, final Item... items) {
+        super(variableLocation);
         this.items = items.clone();
     }
 

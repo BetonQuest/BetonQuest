@@ -15,10 +15,10 @@ public class ChestClearEvent extends AbstractChestEvent implements ComposedEvent
     /**
      * Creates a new chest clear event.
      *
-     * @param compoundLocation the location of the chest
+     * @param variableLocation the location of the chest
      */
-    public ChestClearEvent(final VariableLocation compoundLocation) {
-        super(compoundLocation);
+    public ChestClearEvent(final VariableLocation variableLocation) {
+        super(variableLocation);
     }
 
     @Override

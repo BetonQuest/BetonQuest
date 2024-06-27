@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 import static org.betonquest.betonquest.instruction.variable.location.VariableVector.REGEX_DATA;
 
 /**
- * This class represents a location variable.
+ * Represents a location that can contain variables.
  */
 public class VariableLocation extends Variable<Location> {
 

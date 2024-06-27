@@ -46,10 +46,10 @@ public class SetBlockEventFactory implements ComposedEventFactory {
     @Override
     public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
         final BlockSelector blockSelector = instruction.getBlockSelector(instruction.next());
-        final VariableLocation compoundLocation = instruction.getLocation();
+        final VariableLocation variableLocation = instruction.getLocation();
         final boolean applyPhysics = !instruction.hasArgument("ignorePhysics");
         return new PrimaryServerThreadComposedEvent(
-                new SetBlockEvent(blockSelector, compoundLocation, applyPhysics),
+                new SetBlockEvent(blockSelector, variableLocation, applyPhysics),
                 server, scheduler, plugin
         );
     }

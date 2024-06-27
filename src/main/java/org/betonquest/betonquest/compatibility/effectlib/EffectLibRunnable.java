@@ -103,10 +103,10 @@ public class EffectLibRunnable extends BukkitRunnable {
     }
 
     private void runLocationEffects(final OnlineProfile profile, final EffectConfiguration effect) {
-        for (final VariableLocation compoundLocation : effect.locations()) {
+        for (final VariableLocation variableLocation : effect.locations()) {
             final Location location;
             try {
-                location = compoundLocation.getValue(profile);
+                location = variableLocation.getValue(profile);
                 EffectLibIntegrator.getEffectManager().start(effect.effectClass(), effect.settings(), location, profile.getPlayer());
             } catch (final QuestRuntimeException exception) {
                 log.warn("Error while resolving a location of an EffectLib particle effect of type '" + effect.effectClass() + "'. Check that your location (variables) are correct. Error:", exception);

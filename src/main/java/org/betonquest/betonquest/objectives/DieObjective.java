@@ -25,7 +25,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -104,8 +103,11 @@ public class DieObjective extends Objective implements Listener {
     }
 
     private Optional<Location> getLocation(final OnlineProfile onlineProfile) {
+        if (location == null) {
+            return Optional.empty();
+        }
         try {
-            return Optional.of(Objects.requireNonNull(location).getValue(onlineProfile));
+            return Optional.of(location.getValue(onlineProfile));
         } catch (final QuestRuntimeException e) {
             log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
             return Optional.empty();

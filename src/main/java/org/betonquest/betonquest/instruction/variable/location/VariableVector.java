@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * This class represents a location variable.
+ * Represents a vector that can contain variables.
  */
 public class VariableVector extends Variable<Vector> {
     /**

@@ -45,10 +45,10 @@ public class ChestTakeEventFactory implements ComposedEventFactory {
 
     @Override
     public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
-        final VariableLocation compoundLocation = instruction.getLocation();
+        final VariableLocation variableLocation = instruction.getLocation();
         final Item[] item = instruction.getItemList();
         return new PrimaryServerThreadComposedEvent(
-                new ChestTakeEvent(compoundLocation, item), server, scheduler, plugin
+                new ChestTakeEvent(variableLocation, item), server, scheduler, plugin
         );
     }
 }

@@ -75,9 +75,9 @@ class NotifySound {
         soundPlayer = getSoundPlayer(sound, soundString, variableLocation, playerOffset, playerOffsetDistance, soundCategory, volume, pitch);
     }
 
-    private SoundPlayer getSoundPlayer(@Nullable final Sound sound, final String soundString, @Nullable final VariableLocation compoundLocation, @Nullable final VariableVector playerOffset, @Nullable final Float playerOffsetDistance, final SoundCategory soundCategory, final float volume, final float pitch) {
+    private SoundPlayer getSoundPlayer(@Nullable final Sound sound, final String soundString, @Nullable final VariableLocation variableLocation, @Nullable final VariableVector playerOffset, @Nullable final Float playerOffsetDistance, final SoundCategory soundCategory, final float volume, final float pitch) {
         return (onlineProfile) -> {
-            final Location finalLocation = getLocation(onlineProfile, compoundLocation, playerOffset, playerOffsetDistance);
+            final Location finalLocation = getLocation(onlineProfile, variableLocation, playerOffset, playerOffsetDistance);
             final Player player = onlineProfile.getPlayer();
             if (sound == null) {
                 player.playSound(finalLocation, soundString, soundCategory, volume, pitch);
@@ -87,8 +87,8 @@ class NotifySound {
         };
     }
 
-    private Location getLocation(final OnlineProfile onlineProfile, @Nullable final VariableLocation compoundLocation, @Nullable final VariableVector playerOffset, @Nullable final Float playerOffsetDistance) throws QuestRuntimeException {
-        final Location location = compoundLocation == null ? onlineProfile.getPlayer().getLocation() : compoundLocation.getValue(onlineProfile);
+    private Location getLocation(final OnlineProfile onlineProfile, @Nullable final VariableLocation variableLocation, @Nullable final VariableVector playerOffset, @Nullable final Float playerOffsetDistance) throws QuestRuntimeException {
+        final Location location = variableLocation == null ? onlineProfile.getPlayer().getLocation() : variableLocation.getValue(onlineProfile);
 
         if (playerOffsetDistance != null && onlineProfile.getPlayer().getLocation().distance(location) > playerOffsetDistance) {
             return getLocationRelativeDistance(location, onlineProfile.getPlayer(), playerOffsetDistance);

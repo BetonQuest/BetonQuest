@@ -44,8 +44,8 @@ public class ChestClearEventFactory implements ComposedEventFactory {
 
     @Override
     public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
-        final VariableLocation compoundLocation = instruction.getLocation();
+        final VariableLocation variableLocation = instruction.getLocation();
         return new PrimaryServerThreadComposedEvent(
-                new ChestClearEvent(compoundLocation), server, scheduler, plugin);
+                new ChestClearEvent(variableLocation), server, scheduler, plugin);
     }
 }

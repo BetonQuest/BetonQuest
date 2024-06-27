@@ -80,7 +80,7 @@ public class Variable<T> {
     }
 
     private String getString(final String input, final Map<String, org.betonquest.betonquest.api.Variable> variables,
-                             @Nullable final Profile profile) {
+                             @Nullable final Profile profile) throws QuestRuntimeException {
         final Matcher matcher = VARIABLE_PATTERN.matcher(input);
         final StringBuilder resolvedString = new StringBuilder();
         while (matcher.find()) {
