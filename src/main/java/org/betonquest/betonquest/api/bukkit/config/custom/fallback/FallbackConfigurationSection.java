@@ -21,7 +21,7 @@ import java.util.function.Function;
 
 /**
  * This class hides an original and a fallback {@link ConfigurationSection} and exposes it,
- * as if it were the original {@link ConfigurationSection}, except for missing key, then the fallback is used.
+ * as if it were the original {@link ConfigurationSection}, except for a missing key, then the fallback is used.
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount", "PMD.TooManyMethods",
         "PMD.CouplingBetweenObjects"})
@@ -57,7 +57,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         this.manager = new ConfigManager(null, original, fallback);
     }
 
-    private FallbackConfigurationSection(final FallbackConfigurationSection parent, final String sectionName, @Nullable final ConfigurationSection original, @Nullable final ConfigurationSection fallback) {
+    private FallbackConfigurationSection(final FallbackConfigurationSection parent, final String sectionName, final ConfigurationSection original, @Nullable final ConfigurationSection fallback) {
         this.parent = parent;
         this.root = parent.root;
         this.manager = new ConfigManager(sectionName, original, fallback);
@@ -68,25 +68,27 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         final char separator = root.options().pathSeparator();
         final int separatorIndex = path.indexOf(separator);
 
-        if (separatorIndex == -1) {
-            final ConfigurationSection original = manager.getOriginal();
-            final ConfigurationSection fallback = manager.getFallback();
-            final ConfigurationSection originalConfigurationSection = original == null ? null : original.getConfigurationSection(path);
-            final ConfigurationSection fallbackConfigurationSection = fallback == null ? null : fallback.getConfigurationSection(path);
-
-            if (originalConfigurationSection == null && fallbackConfigurationSection == null) {
+        if (separatorIndex != -1) {
+            final String prefix = path.substring(0, separatorIndex);
+            final FallbackConfigurationSection fallbackConfigurationSection = getFallbackConfigurationSection(prefix);
+            if (fallbackConfigurationSection == null) {
                 return null;
             }
-            return new FallbackConfigurationSection(this, path, originalConfigurationSection, fallbackConfigurationSection);
+            final String suffix = path.substring(separatorIndex + 1);
+            return fallbackConfigurationSection.getFallbackConfigurationSection(suffix);
         }
+        final ConfigurationSection original = manager.getOriginal();
+        final ConfigurationSection fallback = manager.getFallback();
+        ConfigurationSection originalConfigurationSection = original.getConfigurationSection(path);
+        final ConfigurationSection fallbackConfigurationSection = fallback == null ? null : fallback.getConfigurationSection(path);
 
-        final String prefix = path.substring(0, separatorIndex);
-        final FallbackConfigurationSection fallbackConfigurationSection = getFallbackConfigurationSection(prefix);
-        if (fallbackConfigurationSection == null) {
-            return null;
+        if (originalConfigurationSection == null) {
+            if (fallbackConfigurationSection == null) {
+                return null;
+            }
+            originalConfigurationSection = original.createSection(path);
         }
-        final String suffix = path.substring(separatorIndex + 1);
-        return fallbackConfigurationSection.getFallbackConfigurationSection(suffix);
+        return new FallbackConfigurationSection(this, path, originalConfigurationSection, fallbackConfigurationSection);
     }
 
     @Override
@@ -97,9 +99,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         if (fallback != null) {
             keys.addAll(fallback.getKeys(deep));
         }
-        if (original != null) {
-            keys.addAll(original.getKeys(deep));
-        }
+        keys.addAll(original.getKeys(deep));
         return keys;
     }
 
@@ -111,9 +111,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         if (fallback != null) {
             values.putAll(fallback.getValues(deep));
         }
-        if (original != null) {
-            values.putAll(original.getValues(deep));
-        }
+        values.putAll(original.getValues(deep));
         replaceChildConfigurationSections(values);
         return values;
     }
@@ -142,42 +140,40 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     public boolean contains(final String path) {
         final ConfigurationSection original = manager.getOriginal();
         final ConfigurationSection fallback = manager.getFallback();
-        return original != null && original.contains(path) || fallback != null && fallback.contains(path);
+        return original.contains(path) || fallback != null && fallback.contains(path);
     }
 
     @Override
     public boolean contains(final String path, final boolean ignoreDefault) {
         final ConfigurationSection original = manager.getOriginal();
         final ConfigurationSection fallback = manager.getFallback();
-        return original != null && original.contains(path, ignoreDefault) || fallback != null && fallback.contains(path, ignoreDefault);
+        return original.contains(path, ignoreDefault) || fallback != null && fallback.contains(path, ignoreDefault);
     }
 
     @Override
     public boolean isSet(final String path) {
         final ConfigurationSection original = manager.getOriginal();
         final ConfigurationSection fallback = manager.getFallback();
-        return original != null && original.isSet(path) || fallback != null && fallback.isSet(path);
+        return original.isSet(path) || fallback != null && fallback.isSet(path);
     }
 
     @Override
     @SuppressWarnings("PMD.CompareObjectsWithEquals")
     @Nullable
     public String getCurrentPath() {
-        if (this == root) {
+        if (this == root || parent == null) {
             return "";
         }
         if (parent == root) {
             return manager.sectionName;
         }
-        return parent == null ? "" : parent.getCurrentPath() + root.options().pathSeparator() + manager.sectionName;
+        return parent.getCurrentPath() + root.options().pathSeparator() + manager.sectionName;
     }
 
     @Override
-    @SuppressWarnings("NullAway")
     public String getName() {
         final ConfigurationSection original = manager.getOriginal();
-        final ConfigurationSection fallback = manager.getFallback();
-        return original == null ? fallback.getName() : original.getName();
+        return original.getName();
     }
 
     @Override
@@ -218,9 +214,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     @Override
     public ConfigurationSection createSection(final String path) {
         final ConfigurationSection original = manager.getOriginal();
-        if (original != null) {
-            original.createSection(path);
-        }
+        original.createSection(path);
         final FallbackConfigurationSection configurationSection = getFallbackConfigurationSection(path);
         if (configurationSection == null) {
             throw new IllegalStateException("Cannot create a section when both the original and the fallback configuration section are null");
@@ -231,9 +225,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     @Override
     public ConfigurationSection createSection(final String path, final Map<?, ?> map) {
         final ConfigurationSection original = manager.getOriginal();
-        if (original != null) {
-            original.createSection(path, map);
-        }
+        original.createSection(path, map);
         final FallbackConfigurationSection configurationSection = getFallbackConfigurationSection(path);
         if (configurationSection == null) {
             throw new IllegalStateException("Cannot create a section when both the original and the fallback configuration section are null");
@@ -573,15 +565,12 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     private <T> T getOriginalOrFallback(final String path, final ConfigurationConsumer<T> function) {
         return getOriginalOrFallbackWithDefault(path, function, (configs) -> {
             final ConfigurationSection original = configs.getLeft();
-            if (original != null && original.contains(path)) {
-                return function.consume(original, path);
-            }
             final ConfigurationSection fallback = configs.getRight();
-            if (fallback != null && fallback.contains(path)) {
+            if (!original.contains(path) && fallback != null && fallback.contains(path)) {
                 return function.consume(fallback, path);
             }
 
-            return original == null ? function.consume(fallback, path) : function.consume(original, path);
+            return function.consume(original, path);
         });
     }
 
@@ -603,19 +592,19 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     }
 
     /**
-     * Tries to obtain the set value from the original configuration using {@link ConfigurationSection#isSet(String)}.
-     * If it is not present, it tries to obtain it from the
-     * fallback configuration. If it is not present there either, it calls the defFunction to obtain the default value.
+     * Tries to get the set value from the original configuration using {@link ConfigurationSection#isSet(String)}.
+     * If it is not present, it tries to get it from the fallback configuration.
+     * If it is not present there either, it calls the defFunction to get the default value.
      *
      * @param path        The path to the value
-     * @param function    The function to obtain the default value
-     * @param defFunction The function to obtain the default value
+     * @param function    The function to get the default value
+     * @param defFunction The function to get the default value
      * @param <T>         The type of the value to obtain
      * @return The value
      */
     private <T> T getOriginalOrFallbackWithDefault(final String path, final ConfigurationConsumer<T> function, final Function<Pair<ConfigurationSection, ConfigurationSection>, T> defFunction) {
         final ConfigurationSection original = manager.getOriginal();
-        if (original != null && original.isSet(path)) {
+        if (original.isSet(path)) {
             return function.consume(original, path);
         }
         final ConfigurationSection fallback = manager.getFallback();
@@ -664,7 +653,6 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         /**
          * The original {@link ConfigurationSection}.
          */
-        @Nullable
         private ConfigurationSection original;
 
         /**
@@ -682,7 +670,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
          * @throws IllegalStateException If the original and fallback {@link ConfigurationSection} is null
          */
         @SuppressWarnings({"PMD.CompareObjectsWithEquals", "PMD.AvoidUncheckedExceptionsInSignatures"})
-        public ConfigManager(@Nullable final String sectionName, @Nullable final ConfigurationSection original, @Nullable final ConfigurationSection fallback) throws IllegalStateException {
+        public ConfigManager(@Nullable final String sectionName, final ConfigurationSection original, @Nullable final ConfigurationSection fallback) throws IllegalStateException {
             this.sectionName = sectionName;
             this.original = original;
             this.fallback = fallback;
@@ -712,14 +700,17 @@ public class FallbackConfigurationSection implements ConfigurationSection {
          *
          * @return The original {@link ConfigurationSection}
          */
-        @SuppressWarnings("NullAway")
         protected ConfigurationSection getOriginal() {
             if (sectionName != null && !checkIsOrphaned()) {
                 if (parent == null) {
                     throw new IllegalArgumentException("Cannot construct a FallbackConfigurationSection when parent is null");
                 }
                 final ConfigurationSection parentOriginal = parent.manager.getOriginal();
-                original = parentOriginal == null ? null : parentOriginal.getConfigurationSection(sectionName);
+                ConfigurationSection newOriginal = parentOriginal.getConfigurationSection(sectionName);
+                if (newOriginal == null) {
+                    newOriginal = parentOriginal.createSection(sectionName);
+                }
+                original = newOriginal;
             }
             return original;
         }
@@ -752,7 +743,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
 
         @SuppressWarnings("PMD.CompareObjectsWithEquals")
         private boolean checkIsOrphaned() {
-            if (sectionName != null && original != null && original != original.getRoot()) {
+            if (sectionName != null && original != original.getRoot()) {
                 final ConfigurationSection parent = original.getParent();
                 return parent != null && original != parent.getConfigurationSection(sectionName);
             }

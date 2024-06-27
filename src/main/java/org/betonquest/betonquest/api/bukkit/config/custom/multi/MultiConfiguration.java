@@ -24,7 +24,7 @@ public interface MultiConfiguration extends Configuration {
      * Make sure to call {@link MultiConfiguration#markAsSaved(ConfigurationSection)}s
      * if you managed to successfully save a config.
      *
-     * @return a list of all unsaved {@link ConfigurationSection}s
+     * @return a set of all unsaved {@link ConfigurationSection}s
      */
     Set<ConfigurationSection> getUnsavedConfigs();
 
@@ -42,13 +42,13 @@ public interface MultiConfiguration extends Configuration {
      * If the path is not set in this {@link MultiConfiguration} this will return null.
      * This is also the case for default values.
      * <p>
-     * If the path is a configuration section it will be checked,
+     * If the path is a configuration section, it will be checked
      * that every entry in the configuration section is from the same source configuration section.
      * Otherwise, an {@link InvalidConfigurationException} is thrown.
      *
      * @param path The path of the entry to get the {@link ConfigurationSection} to
      * @return The clearly {@link ConfigurationSection} of the given path
-     * @throws InvalidConfigurationException is thrown, if the given path is defined in multiple configuration
+     * @throws InvalidConfigurationException if the given path is defined in multiple configuration
      */
     @Nullable
     ConfigurationSection getSourceConfigurationSection(String path) throws InvalidConfigurationException;
