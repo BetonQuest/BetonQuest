@@ -47,7 +47,15 @@ public class CompoundLocation extends VariableLocation {
      */
     @Deprecated
     public CompoundLocation(final String packName, final String data) throws InstructionParseException {
-        this(Config.getPackages().get(packName), data);
+        this(getPack(packName), data);
+    }
+
+    private static QuestPackage getPack(final String packName) throws InstructionParseException {
+        final QuestPackage pack = Config.getPackages().get(packName);
+        if (pack == null) {
+            throw new InstructionParseException("Package '" + packName + "' not found");
+        }
+        return pack;
     }
 
 }
