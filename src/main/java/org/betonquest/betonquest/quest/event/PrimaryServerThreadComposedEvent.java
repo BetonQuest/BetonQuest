@@ -45,21 +45,21 @@ public class PrimaryServerThreadComposedEvent extends PrimaryServerThreadType<Co
         super(synced, data);
     }
 
-    @SuppressWarnings("NullAway")
+    @SuppressWarnings("NullAway") // FalsePositive, see https://github.com/uber/NullAway/issues/801
     @Override
     public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         call(() -> {
             synced.execute(profile);
-            return null; // NullAway false positive: Void -> null
+            return null;
         });
     }
 
-    @SuppressWarnings("NullAway")
+    @SuppressWarnings("NullAway") // FalsePositive, see https://github.com/uber/NullAway/issues/801
     @Override
     public void execute() throws QuestRuntimeException {
         call(() -> {
             synced.execute();
-            return null; // NullAway false positive: Void -> null
+            return null;
         });
     }
 }

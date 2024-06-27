@@ -25,12 +25,12 @@ public class PrimaryServerThreadStaticEvent extends PrimaryServerThreadType<Stat
         super(synced, data);
     }
 
-    @SuppressWarnings("NullAway")
+    @SuppressWarnings("NullAway") // FalsePositive, see https://github.com/uber/NullAway/issues/801
     @Override
     public void execute() throws QuestRuntimeException {
         call(() -> {
             synced.execute();
-            return null; // NullAway false positive: Void -> null
+            return null;
         });
     }
 }
