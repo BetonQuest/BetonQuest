@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Skript effect, which fires specified BetonQuest's event
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "NullAway.Init"})
 public class SkriptEffectBQ extends Effect {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -43,7 +43,7 @@ public class SkriptEffectBQ extends Effect {
     }
 
     @Override
-    @SuppressFBWarnings({"NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE", "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"})
+    @SuppressFBWarnings("NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE")
     public String toString(@Nullable final Event event, final boolean debug) {
         return "fire " + this.event + " for " + player.getSingle(event).getName();
     }
@@ -52,7 +52,6 @@ public class SkriptEffectBQ extends Effect {
     protected void execute(final Event event) {
         new BukkitRunnable() {
             @Override
-            @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
             public void run() {
                 final String eventID = SkriptEffectBQ.this.event.getSingle(event);
                 try {
@@ -60,9 +59,7 @@ public class SkriptEffectBQ extends Effect {
                 } catch (final ObjectNotFoundException e) {
                     log.warn("Error when running Skript event - could not load '" + eventID + "' event: " + e.getMessage(), e);
                 }
-
             }
         }.runTask(BetonQuest.getInstance());
     }
-
 }

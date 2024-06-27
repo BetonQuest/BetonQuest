@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.conditions;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.Condition;
@@ -31,7 +30,6 @@ public class ChestItemCondition extends Condition {
     }
 
     @Override
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         final Block block = loc.getLocation(profile).getBlock();
         final InventoryHolder chest;
@@ -61,5 +59,4 @@ public class ChestItemCondition extends Condition {
         }
         return counter == questItems.length;
     }
-
 }

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.utils.math.tokens;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A token that is a Variable.
@@ -28,7 +29,7 @@ public class Variable implements Token {
     }
 
     @Override
-    public double resolve(final Profile profile) throws QuestRuntimeException {
+    public double resolve(@Nullable final Profile profile) throws QuestRuntimeException {
         return variableNumber.getDouble(profile);
     }
 

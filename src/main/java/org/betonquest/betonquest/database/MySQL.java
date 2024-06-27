@@ -70,6 +70,9 @@ public class MySQL extends Database {
         } catch (final ClassNotFoundException | SQLException e) {
             log.warn("MySQL says: " + e.getMessage(), e);
         }
+        if (connection == null) {
+            throw new IllegalStateException("Not able to create a database connection!");
+        }
         return connection;
     }
 

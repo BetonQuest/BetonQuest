@@ -53,7 +53,7 @@ public abstract class ForceSyncHandler<T> {
      *                               or from {@link ForceSyncHandler#handle(Profile)}'s
      *                               {@link org.bukkit.scheduler.BukkitScheduler#callSyncMethod(Plugin, Callable)} call.
      */
-    @SuppressWarnings("PMD.PreserveStackTrace")
+    @SuppressWarnings({"PMD.PreserveStackTrace", "NullAway"})
     public T handle(@Nullable final Profile profile) throws QuestRuntimeException {
         if (forceSync && !Bukkit.isPrimaryThread()) {
             final Future<T> returnFuture = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> execute(profile));

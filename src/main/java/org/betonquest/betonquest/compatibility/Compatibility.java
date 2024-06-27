@@ -60,6 +60,7 @@ public class Compatibility implements Listener {
     /**
      * An instance of this class.
      */
+    @SuppressWarnings("NullAway.Init")
     private static Compatibility instance;
 
     /**

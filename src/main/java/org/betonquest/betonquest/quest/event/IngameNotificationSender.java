@@ -60,7 +60,7 @@ public class IngameNotificationSender implements NotificationSender {
     public void sendNotification(final Profile profile, final String... variables) {
         profile.getOnlineProfile().ifPresent(onlineProfile -> {
             try {
-                Config.sendNotify(questPackage.getQuestPath(), onlineProfile, messageName, variables, String.join(",", categories));
+                Config.sendNotify(questPackage, onlineProfile, messageName, variables, String.join(",", categories));
             } catch (final QuestRuntimeException e) {
                 log.warn(questPackage, "The notify system was unable to play a sound for the '" + messageName + "' message in '" + fullId + "'. Error was: '" + e.getMessage() + "'", e);
             }

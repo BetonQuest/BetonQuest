@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -94,7 +93,6 @@ public abstract class HologramLoop {
         return holograms;
     }
 
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private HologramWrapper initializeHolograms(final int defaultInterval, final QuestPackage pack, final ConfigurationSection section) throws InstructionParseException {
         final String checkIntervalString = GlobalVariableResolver.resolve(pack, section.getString("check_interval"));
         final int checkInterval;

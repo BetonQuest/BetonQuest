@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class VaultIntegrator implements Integrator {
+    @SuppressWarnings("NullAway.Init")
     private static VaultIntegrator instance;
 
     /**
@@ -33,18 +34,24 @@ public class VaultIntegrator implements Integrator {
         plugin = BetonQuest.getInstance();
     }
 
+    public static VaultIntegrator getInstance() {
+        return instance;
+    }
+
     /**
      * @return the permission
      */
-    public static Permission getPermission() {
-        return instance.permission;
+    @Nullable
+    public Permission getPermission() {
+        return permission;
     }
 
     /**
      * @return the economy
      */
-    public static Economy getEconomy() {
-        return instance.economy;
+    @Nullable
+    public Economy getEconomy() {
+        return economy;
     }
 
     @Override
@@ -82,5 +89,4 @@ public class VaultIntegrator implements Integrator {
     public void close() {
         // Empty
     }
-
 }

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.item;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
@@ -78,7 +77,6 @@ public class QuestItemHandler implements Listener {
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity", "PMD.NPathComplexity"})
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onItemMove(final InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {
@@ -200,7 +198,7 @@ public class QuestItemHandler implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onRespawn(final PlayerRespawnEvent event) {
-        if (Boolean.parseBoolean(Config.getString("config.remove_items_after_respawn"))) {
+        if (Boolean.parseBoolean(Config.getConfigString("remove_items_after_respawn"))) {
             // some plugins block item dropping after death and add those
             // items after respawning, so the player doesn't loose his
             // inventory after death; this aims to force removing quest
@@ -215,7 +213,7 @@ public class QuestItemHandler implements Listener {
                 }
             }
         }
-        if (Boolean.parseBoolean(Config.getString("config.journal.give_on_respawn"))) {
+        if (Boolean.parseBoolean(Config.getConfigString("journal.give_on_respawn"))) {
             BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(event.getPlayer())).getJournal().addToInv();
         }
     }
@@ -309,7 +307,7 @@ public class QuestItemHandler implements Listener {
     }
 
     private boolean isJournalSlotLocked() {
-        return Boolean.parseBoolean(Config.getString("config.journal.lock_default_journal_slot"));
+        return Boolean.parseBoolean(Config.getConfigString("journal.lock_default_journal_slot"));
     }
 
     public HandlerList getHandlers() {

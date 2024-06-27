@@ -4,6 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Allows you to display total amount of global points or amount of global points remaining to
@@ -18,7 +19,7 @@ public class GlobalPointVariable extends PointVariable {
     }
 
     @Override
-    public String getValue(final Profile profile) {
+    public String getValue(@Nullable final Profile profile) {
         return getValue(BetonQuest.getInstance().getGlobalData().getPoints());
     }
 

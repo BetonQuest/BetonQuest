@@ -103,7 +103,8 @@ public final class MythicHider extends BukkitRunnable implements Listener {
      * @param mythicMob
      */
     public void applyVisibility(final OnlineProfile onlineProfile, final Entity mythicMob) {
-        if (!mythicmobs.get(mythicMob).contains(onlineProfile.getProfileUUID())) {
+        final Set<UUID> uuids = mythicmobs.get(mythicMob);
+        if (uuids != null && !uuids.contains(onlineProfile.getProfileUUID())) {
             hider.hideEntity(onlineProfile, mythicMob);
         }
     }

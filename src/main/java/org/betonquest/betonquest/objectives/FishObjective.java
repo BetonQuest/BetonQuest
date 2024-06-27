@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.objectives;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
@@ -63,7 +62,6 @@ public class FishObjective extends CountingObjective implements Listener {
         }
     }
 
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onFishCatch(final PlayerFishEvent event) {
         if (event.getState() != State.CAUGHT_FISH) {

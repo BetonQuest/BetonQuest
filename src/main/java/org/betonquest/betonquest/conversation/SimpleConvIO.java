@@ -14,11 +14,11 @@ public class SimpleConvIO extends ChatConvIO {
     public SimpleConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         super(conv, onlineProfile);
         final StringBuilder string = new StringBuilder();
-        for (final ChatColor color : colors.get("number")) {
+        for (final ChatColor color : colors.number()) {
             string.append(color);
         }
         string.append("%number%. ");
-        for (final ChatColor color : colors.get("option")) {
+        for (final ChatColor color : colors.option()) {
             string.append(color);
         }
         optionFormat = string.toString();

@@ -11,6 +11,7 @@ import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -48,8 +49,9 @@ public class TakeEvent extends AbstractTakeEvent {
 
     @Override
     protected ItemStack[] takeDesiredAmount(final Profile profile, final ItemStack... items) {
-        final QuestItem questItem = neededDeletions.get(profile.getProfileUUID()).getLeft();
-        int desiredDeletions = neededDeletions.get(profile.getProfileUUID()).getRight();
+        final Pair<QuestItem, Integer> pair = Objects.requireNonNull(neededDeletions.get(profile.getProfileUUID()));
+        final QuestItem questItem = pair.getLeft();
+        int desiredDeletions = pair.getRight();
 
         for (int i = 0; i < items.length && desiredDeletions > 0; i++) {
             final ItemStack item = items[i];

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.objectives;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
@@ -31,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -120,7 +120,6 @@ public class EntityInteractObjective extends CountingObjective {
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private boolean onInteract(final Player player, final Entity entity) {
         // check if it's the right entity type
         if (!entity.getType().equals(mobType)) {
@@ -160,7 +159,7 @@ public class EntityInteractObjective extends CountingObjective {
             }
         }
 
-        final boolean success = ((EntityInteractData) dataMap.get(onlineProfile)).tryProgressWithEntity(entity);
+        final boolean success = Objects.requireNonNull((EntityInteractData) dataMap.get(onlineProfile)).tryProgressWithEntity(entity);
         if (success) {
             completeIfDoneOrNotify(onlineProfile);
         }
@@ -209,7 +208,6 @@ public class EntityInteractObjective extends CountingObjective {
         public String toString() {
             return super.toString() + ";" + entities.stream().map(UUID::toString).collect(Collectors.joining("/"));
         }
-
     }
 
     private class LeftClickListener implements Listener {

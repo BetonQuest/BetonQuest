@@ -18,7 +18,7 @@ import java.util.List;
  * addKill method each time the player kills a mob like that.
  */
 @SuppressWarnings("PMD.CommentRequired")
-public class MobKillNotifier {
+public final class MobKillNotifier {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
@@ -27,9 +27,7 @@ public class MobKillNotifier {
 
     private final List<Entity> entities = new ArrayList<>();
 
-    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
-    public MobKillNotifier() {
-        instance = this;
+    private MobKillNotifier() {
         final BukkitRunnable cleaner = new BukkitRunnable() {
             @Override
             public void run() {
@@ -47,13 +45,15 @@ public class MobKillNotifier {
      * @param killed the mob that was killed
      */
     public static void addKill(final Profile killer, final Entity killed) {
-        if (instance == null) {
-            new MobKillNotifier();
+        synchronized (MobKillNotifier.class) {
+            if (instance == null) {
+                instance = new MobKillNotifier();
+            }
+            if (instance.entities.contains(killed)) {
+                return;
+            }
+            instance.entities.add(killed);
         }
-        if (instance.entities.contains(killed)) {
-            return;
-        }
-        instance.entities.add(killed);
         final MobKilledEvent event = new MobKilledEvent(killer, killed);
         Bukkit.getPluginManager().callEvent(event);
     }
@@ -85,7 +85,5 @@ public class MobKillNotifier {
         public HandlerList getHandlers() {
             return HANDLERS;
         }
-
     }
-
 }

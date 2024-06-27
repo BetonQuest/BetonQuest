@@ -5,13 +5,17 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.exceptions.HookException;
+import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("PMD.CommentRequired")
+import java.util.Objects;
+
+@SuppressWarnings({"PMD.CommentRequired", "NullAway.Init"})
 public class EffectLibIntegrator implements Integrator {
     private static EffectLibIntegrator instance;
 
     private final BetonQuest plugin;
 
+    @Nullable
     private EffectManager manager;
 
     private EffectLibParticleManager particleManager;
@@ -26,7 +30,7 @@ public class EffectLibIntegrator implements Integrator {
      * @return the EffectLib effect manager
      */
     public static EffectManager getEffectManager() {
-        return instance.manager;
+        return Objects.requireNonNull(instance.manager, "The effect manager is not initialized yet!");
     }
 
     @Override
@@ -52,5 +56,4 @@ public class EffectLibIntegrator implements Integrator {
             manager.dispose();
         }
     }
-
 }

@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.vault;
 
+import net.milkbowl.vault.economy.Economy;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -26,7 +27,10 @@ public class MoneyCondition extends Condition {
         if (pAmount < 0) {
             pAmount = -pAmount;
         }
-        return VaultIntegrator.getEconomy().has(profile.getPlayer(), pAmount);
+        final Economy economy = VaultIntegrator.getInstance().getEconomy();
+        if (economy == null) {
+            throw new QuestRuntimeException("Can't check the condition because the Vault instance is null!");
+        }
+        return economy.has(profile.getPlayer(), pAmount);
     }
-
 }

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.objectives;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
@@ -32,7 +31,6 @@ public class KillPlayerObjective extends CountingObjective implements Listener {
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onKill(final PlayerDeathEvent event) {
         if (event.getEntity().getKiller() != null) {

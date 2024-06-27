@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.quests;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import me.pikamug.quests.Quests;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -9,6 +8,7 @@ import org.bukkit.Bukkit;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class QuestsIntegrator implements Integrator {
+    @SuppressWarnings("NullAway.Init")
     private static Quests questsInstance;
 
     private final BetonQuest plugin;
@@ -22,7 +22,6 @@ public class QuestsIntegrator implements Integrator {
     }
 
     @Override
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public void hook() {
         questsInstance = (Quests) Bukkit.getPluginManager().getPlugin("Quests");
         plugin.registerConditions("quest", QuestsCondition.class);
@@ -41,5 +40,4 @@ public class QuestsIntegrator implements Integrator {
     public void close() {
         // Empty
     }
-
 }

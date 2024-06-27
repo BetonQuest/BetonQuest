@@ -85,8 +85,11 @@ public class Variable<T> {
         final StringBuilder resolvedString = new StringBuilder();
         while (matcher.find()) {
             final String variable = matcher.group();
-            final String resolvedVariable = variables.get(variable).getValue(profile);
-            matcher.appendReplacement(resolvedString, Matcher.quoteReplacement(resolvedVariable));
+            final org.betonquest.betonquest.api.Variable resolvedVariable = variables.get(variable);
+            if (resolvedVariable == null) {
+                throw new QuestRuntimeException("Could not resolve variable '" + variable + "'");
+            }
+            matcher.appendReplacement(resolvedString, Matcher.quoteReplacement(resolvedVariable.getValue(profile)));
         }
         matcher.appendTail(resolvedString);
         return resolvedString.toString();

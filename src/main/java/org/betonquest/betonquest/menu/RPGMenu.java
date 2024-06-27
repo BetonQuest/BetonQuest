@@ -50,15 +50,23 @@ public class RPGMenu {
 
     private final Map<MenuID, Menu> menus;
 
+    private final RPGMenuCommand pluginCommand;
+
     private RPGMenuConfig config;
 
-    private RPGMenuCommand pluginCommand;
-
+    @SuppressWarnings("NullAway.Init")
     public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor menuConfigAccessor) {
         this.log = log;
         this.loggerFactory = loggerFactory;
         this.menuConfigAccessor = menuConfigAccessor;
-        menus = new HashMap<>();
+        this.menus = new HashMap<>();
+        final BetonQuest betonQuest = BetonQuest.getInstance();
+        final String menu = "menu";
+        betonQuest.registerConditions(menu, MenuCondition.class);
+        betonQuest.registerObjectives(menu, MenuObjective.class);
+        betonQuest.registerEvents(menu, MenuQuestEvent.class);
+        betonQuest.registerVariable(menu, MenuVariable.class);
+        this.pluginCommand = new RPGMenuCommand(loggerFactory.create(RPGMenuCommand.class), this);
     }
 
     /**
@@ -120,17 +128,6 @@ public class RPGMenu {
         }
         new OpenedMenu(loggerFactory.create(OpenedMenu.class), onlineProfile, menu);
         log.debug(menu.getPackage(), "opening menu " + menuID + " for " + onlineProfile);
-    }
-
-    @SuppressWarnings("PMD.AvoidDuplicateLiterals")
-    public void onEnable() {
-        //register events, objectives and conditions
-        BetonQuest.getInstance().registerConditions("menu", MenuCondition.class);
-        BetonQuest.getInstance().registerObjectives("menu", MenuObjective.class);
-        BetonQuest.getInstance().registerEvents("menu", MenuQuestEvent.class);
-        BetonQuest.getInstance().registerVariable("menu", MenuVariable.class);
-        //load the plugin command
-        this.pluginCommand = new RPGMenuCommand(loggerFactory.create(RPGMenuCommand.class));
     }
 
     public void onDisable() {

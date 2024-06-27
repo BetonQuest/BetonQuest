@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.variables;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
@@ -72,7 +71,10 @@ public class ItemVariable extends Variable {
     }
 
     @Override
-    public String getValue(final Profile profile) {
+    public String getValue(@Nullable final Profile profile) {
+        if (profile == null) {
+            return "";
+        }
         return switch (type) {
             case AMOUNT -> Integer.toString(itemAmount(profile));
             case LEFT -> Integer.toString(amount - itemAmount(profile));
@@ -87,7 +89,6 @@ public class ItemVariable extends Variable {
         };
     }
 
-    @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", justification = "false positive on Inventory#getContents")
     private int itemAmount(final Profile profile) {
         final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
         final Player player = onlineProfile.getPlayer();
@@ -121,5 +122,4 @@ public class ItemVariable extends Variable {
     private enum Type {
         AMOUNT, LEFT, NAME, LORE
     }
-
 }

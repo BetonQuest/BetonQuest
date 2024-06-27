@@ -132,7 +132,7 @@ public class RandomNumberVariable extends Variable {
     }
 
     @Override
-    public String getValue(final Profile profile) {
+    public String getValue(@Nullable final Profile profile) {
         try {
             if (fractional) {
                 final double value = ThreadLocalRandom.current().nextDouble(low.getDouble(profile), high.getDouble(profile));

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.conversation;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
@@ -32,7 +31,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
     public SlowTellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         super(conv, onlineProfile);
         final StringBuilder string = new StringBuilder();
-        for (final ChatColor color : colors.get("text")) {
+        for (final ChatColor color : colors.text()) {
             string.append(color);
         }
         this.npcTextColor = string.toString();
@@ -73,8 +72,8 @@ public class SlowTellrawConvIO extends TellrawConvIO {
         new BukkitRunnable() {
             private int lineCount;
 
+            @SuppressWarnings("NullAway")
             @Override
-            @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
             public void run() {
                 if (lineCount == lines.length) {
                     displayText();

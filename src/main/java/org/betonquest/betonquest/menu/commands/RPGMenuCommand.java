@@ -5,7 +5,6 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.config.Config;
@@ -26,24 +25,31 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * The plugins main command
+ * The RPG menu main command.
  */
-
-@SuppressWarnings("PMD.CommentRequired")
 public class RPGMenuCommand extends SimpleCommand {
+    /**
+     * RPGMenu instance this command works on.
+     */
+    private final RPGMenu menu;
 
-    private final RPGMenu menu = BetonQuest.getInstance().getRpgMenu();
-
+    /**
+     * Create a new RPGMenu command.
+     *
+     * @param log  the custom logger instance for this class
+     * @param menu the rpg menu this command works on
+     */
     @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
-    public RPGMenuCommand(final BetonQuestLogger log) {
+    public RPGMenuCommand(final BetonQuestLogger log, final RPGMenu menu) {
         super(log, "rpgmenu", new Permission("betonquest.admin"), 0, "qm", "menu", "menus", "rpgmenus", "rpgm");
+        this.menu = menu;
         setDescription("Core command of the RPGMenu addon for BetonQuest");
         setUsage("/rpgmenu <reload/open/list>");
         register();
     }
 
     @Override
-    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition", "PMD.CyclomaticComplexity"})
     public List<String> simpleTabComplete(final CommandSender sender, final String alias, final String[] args) {
         if (args.length == 1) {
             return Arrays.asList("reload", "open", "list");

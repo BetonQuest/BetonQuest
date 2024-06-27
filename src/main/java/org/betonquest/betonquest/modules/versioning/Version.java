@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
  * A typical example is a qualifier like SNAPSHOT which is followed by the build number.
  * A qualifier or a qualifier with a build number is read in this class and can be compared.
  */
+@SuppressWarnings("NullAway")
 public class Version {
     /**
      * Regex for the qualifier and the build number.

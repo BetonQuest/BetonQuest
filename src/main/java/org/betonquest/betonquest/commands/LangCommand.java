@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.commands;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -28,7 +27,6 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
      */
     private final BetonQuestLogger log;
 
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public LangCommand(final BetonQuestLogger log) {
         this.log = log;
         BetonQuest.getInstance().getCommand("questlang").setExecutor(this);
@@ -71,7 +69,6 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
             } catch (final QuestRuntimeException e) {
                 log.warn("The notify system was unable to play a sound for the 'language_changed' category. Error was: '" + e.getMessage() + "'", e);
             }
-
         } else {
             BetonQuest.getInstance().getPluginConfig().set("language", args[0]);
             sender.sendMessage(Config.getMessage(args[0], "default_language_changed"));

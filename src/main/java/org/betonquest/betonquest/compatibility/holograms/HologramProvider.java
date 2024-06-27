@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -25,7 +24,7 @@ import java.util.regex.Pattern;
 /**
  * Singleton class which provides Hologram
  */
-public class HologramProvider implements Integrator {
+public final class HologramProvider implements Integrator {
     /**
      * Pattern to match an instruction variable in string
      */
@@ -45,7 +44,6 @@ public class HologramProvider implements Integrator {
      * Singleton instance of this HologramProvider, only ever null if not initialised.
      */
     @Nullable
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     private static HologramProvider instance;
 
     /**
@@ -70,12 +68,8 @@ public class HologramProvider implements Integrator {
      *
      * @param integrator The initial integrator to hook into
      */
-    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
-    public HologramProvider(final HologramIntegrator integrator) {
+    private HologramProvider(final HologramIntegrator integrator) {
         this.integrator = integrator;
-        if (instance == null) {
-            instance = this;
-        }
     }
 
     /**
@@ -95,7 +89,7 @@ public class HologramProvider implements Integrator {
         synchronized (HologramProvider.class) {
             if (instance == null && !ATTEMPTED_INTEGRATIONS.isEmpty()) {
                 Collections.sort(ATTEMPTED_INTEGRATIONS);
-                new HologramProvider(ATTEMPTED_INTEGRATIONS.get(0));
+                instance = new HologramProvider(ATTEMPTED_INTEGRATIONS.get(0));
                 try {
                     instance.hook();
                     LOG.info("Using " + ATTEMPTED_INTEGRATIONS.get(0).getPluginName() + " as dedicated hologram provider!");
@@ -167,7 +161,7 @@ public class HologramProvider implements Integrator {
     @Override
     public void reload() {
         synchronized (HologramProvider.class) {
-            if (instance.locationHologramLoop != null) {
+            if (instance != null && instance.locationHologramLoop != null) {
                 HologramRunner.cancel();
 
                 Collections.sort(ATTEMPTED_INTEGRATIONS);
@@ -186,7 +180,7 @@ public class HologramProvider implements Integrator {
     @Override
     public void close() {
         synchronized (HologramProvider.class) {
-            if (instance.locationHologramLoop != null) {
+            if (instance != null && instance.locationHologramLoop != null) {
                 HologramRunner.cancel();
                 instance.locationHologramLoop = null;
                 if (instance.citizensHologramLoop != null) {
@@ -195,7 +189,6 @@ public class HologramProvider implements Integrator {
                 }
             }
         }
-
     }
 
     /**

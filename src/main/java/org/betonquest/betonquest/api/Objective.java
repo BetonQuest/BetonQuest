@@ -241,7 +241,7 @@ public abstract class Objective {
             final String[] stringVariables = Arrays.stream(variables)
                     .map(String::valueOf)
                     .toArray(String[]::new);
-            Config.sendNotify(instruction.getPackage().getQuestPath(), onlineProfile, messageName, stringVariables, messageName + ",info");
+            Config.sendNotify(instruction.getPackage(), onlineProfile, messageName, stringVariables, messageName + ",info");
         } catch (final QuestRuntimeException exception) {
             try {
                 log.warn(instruction.getPackage(), "The notify system was unable to play a sound for the '" + messageName + "' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
@@ -579,7 +579,6 @@ public abstract class Objective {
             // information
             BetonQuest.getInstance().getPlayerData(profile).getJournal().update();
         }
-
     }
 
     /**

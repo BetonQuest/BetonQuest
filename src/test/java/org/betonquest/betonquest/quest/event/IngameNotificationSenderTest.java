@@ -25,23 +25,20 @@ import static org.mockito.Mockito.*;
 @ExtendWith(BetonQuestLoggerService.class)
 class IngameNotificationSenderTest {
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     void testSendNotifyIsCalled(final BetonQuestLogger logger, @Mock final QuestPackage questPackage) {
-        when(questPackage.getQuestPath()).thenReturn("package.path");
         final NotificationSender sender = new IngameNotificationSender(logger, questPackage, "full.id", NotificationLevel.INFO, "message-name");
 
         try (MockedStatic<Config> config = mockStatic(Config.class)) {
             final Profile profile = getMockedProfile();
             assertTrue(profile.getOnlineProfile().isPresent(), "Profile should have an online profile.");
             sender.sendNotification(profile);
-            config.verify(() -> Config.sendNotify("package.path", profile.getOnlineProfile().get(), "message-name", new String[0], "message-name,info"));
+            config.verify(() -> Config.sendNotify(questPackage, profile.getOnlineProfile().get(), "message-name", new String[0], "message-name,info"));
         }
     }
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testSendNotifyHandlesError(final BetonQuestLogger logger, @Mock final QuestPackage questPackage) {
-        when(questPackage.getQuestPath()).thenReturn("package.path");
         final NotificationSender sender = new IngameNotificationSender(logger, questPackage, "full.id", NotificationLevel.INFO, "message-name");
 
         try (MockedStatic<Config> config = mockStatic(Config.class)) {

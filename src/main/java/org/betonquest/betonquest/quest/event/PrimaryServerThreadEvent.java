@@ -44,6 +44,7 @@ public class PrimaryServerThreadEvent extends PrimaryServerThreadType<Event, Voi
         super(synced, data);
     }
 
+    @SuppressWarnings("NullAway") // FalsePositive, see https://github.com/uber/NullAway/issues/801
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
         call(() -> {

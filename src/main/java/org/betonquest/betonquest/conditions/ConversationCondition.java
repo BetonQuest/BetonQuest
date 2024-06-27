@@ -4,6 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.conversation.ConversationData;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -41,8 +42,13 @@ public class ConversationCondition extends Condition {
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         try {
-            return BetonQuest.getInstance().getConversation(conversationID).isReady(profile);
-        } catch (final InstructionParseException | ObjectNotFoundException e) {
+            final ConversationData conversation = BetonQuest.getInstance().getConversation(conversationID);
+            if (conversation == null) {
+                throw new QuestRuntimeException("Tried to check conversation '" + conversationID.getFullID()
+                        + "' but it is not loaded! Check for errors on /bq reload!");
+            }
+            return conversation.isReady(profile);
+        } catch (InstructionParseException | ObjectNotFoundException e) {
             throw new QuestRuntimeException("External pointers in the conversation this condition checks for could not"
                     + " be resoled during runtime.", e);
         }

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.item;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -178,7 +177,6 @@ public class QuestItem {
      * @return converted string
      */
     @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity"})
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static String itemToString(final ItemStack item) {
         String durability = "";
         String name = "";

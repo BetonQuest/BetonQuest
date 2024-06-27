@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.modules.config;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.api.config.patcher.PatchException;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformer;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -98,7 +97,6 @@ public class Patcher {
      * @param config      the config that must be patched
      * @param patchConfig the patchConfig that contains patches
      */
-    @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", justification = "False Positive, default value is explicitly set.")
     public Patcher(final BetonQuestLogger log, final ConfigurationSection config, final ConfigurationSection patchConfig) {
         this.log = log;
         this.pluginConfig = config;
@@ -254,8 +252,12 @@ public class Patcher {
         for (final Map<?, ?> transformationData : patchData) {
             final Map<String, String> typeSafeTransformationData = new HashMap<>();
             transformationData.forEach((key, value) -> typeSafeTransformationData.put(String.valueOf(key), String.valueOf(value)));
-
-            final String transformationType = typeSafeTransformationData.get("type").toUpperCase(Locale.ROOT);
+            final String raw = typeSafeTransformationData.get("type");
+            if (raw == null) {
+                log.warn("Missing transformation type for patcher '" + patchDataPath + "'!");
+                continue;
+            }
+            final String transformationType = raw.toUpperCase(Locale.ROOT);
             try {
                 applyTransformation(typeSafeTransformationData, transformationType);
             } catch (final PatchException e) {

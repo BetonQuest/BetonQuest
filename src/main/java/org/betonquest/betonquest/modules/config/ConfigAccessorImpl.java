@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Objects;
 
 /**
  * Represents a {@link YamlConfiguration} that is a file or a resource from a plugin.
@@ -30,6 +31,7 @@ public class ConfigAccessorImpl implements ConfigAccessor {
     /**
      * The loaded configurationFile represented by this {@link ConfigAccessorImpl}.
      */
+    @SuppressWarnings("NullAway.Init")
     private YamlConfiguration configuration;
 
     /**
@@ -45,11 +47,22 @@ public class ConfigAccessorImpl implements ConfigAccessor {
      *                                       could not be found
      */
     public ConfigAccessorImpl(@Nullable final File configurationFile, @Nullable final Plugin plugin, @Nullable final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
-        checkValidParams(configurationFile, plugin, resourceFile);
+        if (configurationFile == null && plugin == null && resourceFile == null) {
+            throw new IllegalArgumentException("The configurationsFile, plugin and resourceFile are null. Pass either a configurationFile or a plugin and a resourceFile.");
+        }
         this.configurationFile = configurationFile;
         if (configurationFile != null && configurationFile.exists()) {
             this.configuration = readFromFile(configurationFile);
         } else {
+            savePluginImpl(plugin, resourceFile);
+        }
+    }
+
+    private void savePluginImpl(@Nullable final Plugin plugin, @Nullable final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
+        if ((plugin != null) == (resourceFile == null)) {
+            throw new IllegalArgumentException("Both the plugin and the resourceFile must be defined or null!");
+        }
+        if (plugin != null) {
             this.configuration = readFromResource(plugin, resourceFile);
             try {
                 this.save();
@@ -57,15 +70,6 @@ public class ConfigAccessorImpl implements ConfigAccessor {
                 throw new InvalidConfigurationException(buildExceptionMessage(true, resourceFile,
                         "could not be saved to the representing file! Reason: " + e.getMessage()), e);
             }
-        }
-    }
-
-    private void checkValidParams(@Nullable final File configurationFile, @Nullable final Plugin plugin, @Nullable final String resourceFile) {
-        if (configurationFile == null && plugin == null && resourceFile == null) {
-            throw new IllegalArgumentException("The configurationsFile, plugin and resourceFile are null. Pass either a configurationFile or a plugin and a resourceFile.");
-        }
-        if ((plugin != null) == (resourceFile == null)) {
-            throw new IllegalArgumentException("Both the plugin and the resourceFile must be defined or null!");
         }
     }
 
@@ -167,7 +171,7 @@ public class ConfigAccessorImpl implements ConfigAccessor {
 
     @Override
     public File getConfigurationFile() {
-        return configurationFile;
+        return Objects.requireNonNull(configurationFile);
     }
 
     private String buildExceptionMessage(final boolean isResource, final String sourcePath, final String message) {

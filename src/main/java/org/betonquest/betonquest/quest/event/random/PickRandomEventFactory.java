@@ -39,6 +39,9 @@ public class PickRandomEventFactory implements ComposedEventFactory {
     @SuppressWarnings("PMD.CognitiveComplexity")
     public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
         final List<RandomEvent> events = instruction.getList(string -> {
+            if (string == null) {
+                return null;
+            }
             if (!string.matches("(\\d+\\.?\\d?|%.*%)%.+")) {
                 throw new InstructionParseException("Percentage must be specified correctly: " + string);
             }

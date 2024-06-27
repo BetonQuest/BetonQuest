@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.protocollib;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
@@ -27,7 +26,6 @@ public class ProtocolLibIntegrator implements Integrator {
     }
 
     @Override
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public void hook() throws HookException {
         final Plugin protocolLib = Bukkit.getPluginManager().getPlugin("ProtocolLib");
         final Version protocolLibVersion = new Version(protocolLib.getDescription().getVersion());
@@ -64,5 +62,4 @@ public class ProtocolLibIntegrator implements Integrator {
     public void close() {
         // Empty
     }
-
 }

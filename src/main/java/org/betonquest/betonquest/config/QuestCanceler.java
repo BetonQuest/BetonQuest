@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.config;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.api.Objective;
@@ -76,7 +75,6 @@ public class QuestCanceler {
      * @throws InstructionParseException when parsing the canceler fails for some reason
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public QuestCanceler(final QuestPackage pack, final String cancelerID) throws InstructionParseException {
         this.cancelerID = Utils.getNN(cancelerID, "Name is null");
         this.pack = Utils.getNN(pack, "Package does not exist");
@@ -92,7 +90,7 @@ public class QuestCanceler {
         }
         // get the item
         final String itemString = pack.getString("cancel." + cancelerID + ".item");
-        item = itemString == null ? Config.getString(pack.getQuestPath() + ".items.cancel_button") : itemString;
+        item = itemString == null ? pack.getRawString("items.cancel_button") : itemString;
         // parse it to get the data
         if (rawEvents == null) {
             events = null;
@@ -266,7 +264,7 @@ public class QuestCanceler {
         log.debug("Quest removed!");
         final String questName = getName(onlineProfile);
         try {
-            Config.sendNotify(pack.getQuestPath(), onlineProfile, "quest_canceled", new String[]{questName}, "quest_cancelled,quest_canceled,info");
+            Config.sendNotify(pack, onlineProfile, "quest_canceled", new String[]{questName}, "quest_cancelled,quest_canceled,info");
         } catch (final QuestRuntimeException exception) {
             log.warn("The notify system was unable to play a sound for the 'quest_canceled' category in quest '" + name + "'. Error was: '" + exception.getMessage() + "'");
         }
@@ -295,7 +293,6 @@ public class QuestCanceler {
         return questName.replace("_", " ").replace("&", "§");
     }
 
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public ItemStack getItem(final Profile profile) {
         ItemStack stack = new ItemStack(Material.BONE);
         if (item != null) {
@@ -311,5 +308,4 @@ public class QuestCanceler {
         stack.setItemMeta(meta);
         return stack;
     }
-
 }

@@ -15,7 +15,9 @@ public class UpdateVisibilityNowEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        NPCHider.getInstance().applyVisibility(profile.getOnlineProfile().get());
+        if (NPCHider.getInstance() != null) {
+            NPCHider.getInstance().applyVisibility(profile.getOnlineProfile().get());
+        }
         return null;
     }
 }

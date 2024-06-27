@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.menu.config;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.config.Config;
@@ -39,8 +38,7 @@ public class RPGMenuConfig extends SimpleYMLSection {
      */
     private final List<String> languages;
 
-    @SuppressWarnings("PMD.AvoidDuplicateLiterals")
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "NullAway"})
     public RPGMenuConfig(final ConfigAccessor menuConfigAccessor) throws InvalidConfigurationException, FileNotFoundException {
         super(null, "menuConfig.yml", menuConfigAccessor.getConfig());
         //load languages
@@ -146,5 +144,4 @@ public class RPGMenuConfig extends SimpleYMLSection {
             }
         }
     }
-
 }

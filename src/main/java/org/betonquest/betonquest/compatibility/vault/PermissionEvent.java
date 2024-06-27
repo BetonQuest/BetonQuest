@@ -5,6 +5,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -35,8 +36,11 @@ public class PermissionEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final Profile profile) {
-        final Permission vault = VaultIntegrator.getPermission();
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        final Permission vault = VaultIntegrator.getInstance().getPermission();
+        if (vault == null) {
+            throw new QuestRuntimeException("Can't execute the event because the Vault instance is null!");
+        }
         if (add) {
             if (perm) {
                 vault.playerAdd(world, profile.getPlayer(), permission);

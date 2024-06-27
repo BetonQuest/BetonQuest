@@ -60,6 +60,9 @@ class NotifySound {
         }
 
         String soundString = data.get(KEY_SOUND);
+        if (soundString == null) {
+            throw new InstructionParseException("Missing sound value!");
+        }
         final Sound sound = getSound(soundString);
         if (sound == null) {
             soundString = soundString.toLowerCase(Locale.ROOT);

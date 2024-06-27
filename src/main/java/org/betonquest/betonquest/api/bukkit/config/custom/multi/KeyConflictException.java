@@ -8,8 +8,8 @@ import org.jetbrains.annotations.Nullable;
 import java.io.Serial;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 /**
@@ -78,14 +78,15 @@ public class KeyConflictException extends InvalidConfigurationException {
 
     private void resolveKeyMessage(final Map<ConfigurationSection, String> namedConfigurations, final StringBuilder exMessage) {
         exMessage.append('\n');
-        final SortedSet<String> sorted = new TreeSet<>(conflictingKeys.keySet());
-        for (final String key : sorted) {
-            exMessage.append("    The key '").append(key).append("' is defined multiple times in the following configs:\n");
-            conflictingKeys.get(key).parallelStream().map(namedConfigurations::get).sorted()
+        final SortedMap<String, List<ConfigurationSection>> sorted = new TreeMap<>(conflictingKeys);
+        for (final Map.Entry<String, List<ConfigurationSection>> entry : sorted.entrySet()) {
+            exMessage.append("    The key '").append(entry.getKey()).append("' is defined multiple times in the following configs:\n");
+            entry.getValue().parallelStream().map(namedConfigurations::get).sorted()
                     .forEachOrdered(config -> exMessage.append("        - ").append(config).append('\n'));
         }
     }
 
+    @SuppressWarnings("NullAway")
     private void resolvePathMessage(final Map<ConfigurationSection, String> namedConfigurations, final StringBuilder exMessage) {
         exMessage.append('\n');
         for (final List<Pair<String, ConfigurationSection>> entry : conflictingPaths) {

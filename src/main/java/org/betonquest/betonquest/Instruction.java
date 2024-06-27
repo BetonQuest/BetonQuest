@@ -248,6 +248,7 @@ public class Instruction {
      * @return the value or the default value
      */
     @Contract("_, !null -> !null")
+    @Nullable
     public String getOptional(final String prefix, @Nullable final String defaultString) {
         return getOptionalArgument(prefix).orElse(defaultString);
     }
@@ -302,6 +303,7 @@ public class Instruction {
     }
 
     @Contract(NULL_NOT_NULL_CONTRACT)
+    @Nullable
     public CompoundLocation getLocation(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
@@ -323,12 +325,14 @@ public class Instruction {
     }
 
     @Contract(NULL_NOT_NULL_CONTRACT)
+    @Nullable
     public VariableNumber getVarNum(@Nullable final String string) throws InstructionParseException {
         return getVarNum(string, (value) -> {
         });
     }
 
     @Contract("null, _ -> null; !null, _ -> !null")
+    @Nullable
     public VariableNumber getVarNum(@Nullable final String string, final Variable.ValueChecker<Number> valueChecker) throws InstructionParseException {
         if (string == null) {
             return null;
@@ -345,6 +349,7 @@ public class Instruction {
     }
 
     @Contract(NULL_NOT_NULL_CONTRACT)
+    @Nullable
     public QuestItem getQuestItem(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
@@ -401,6 +406,7 @@ public class Instruction {
 
     @SuppressWarnings({"deprecation", "PMD.ReturnEmptyCollectionRatherThanNull"})
     @Contract(NULL_NOT_NULL_CONTRACT)
+    @Nullable
     public Map<Enchantment, Integer> getEnchantments(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
@@ -433,6 +439,7 @@ public class Instruction {
 
     @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
     @Contract(NULL_NOT_NULL_CONTRACT)
+    @Nullable
     public List<PotionEffect> getEffects(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
@@ -467,11 +474,13 @@ public class Instruction {
     }
 
     @Contract("null, _ -> null; !null, _ -> !null")
+    @Nullable
     public <T extends Enum<T>> T getEnum(@Nullable final String string, final Class<T> clazz) throws InstructionParseException {
         return getEnum(string, clazz, null);
     }
 
     @Contract("_, _, !null -> !null")
+    @Nullable
     public <T extends Enum<T>> T getEnum(@Nullable final String string, final Class<T> clazz, @Nullable final T defaultValue) throws InstructionParseException {
         if (string == null) {
             return defaultValue;
@@ -488,6 +497,7 @@ public class Instruction {
     }
 
     @Contract(NULL_NOT_NULL_CONTRACT)
+    @Nullable
     public Material getMaterial(@Nullable final String string) {
         if (string == null) {
             return null;
@@ -500,6 +510,7 @@ public class Instruction {
     }
 
     @Contract(NULL_NOT_NULL_CONTRACT)
+    @Nullable
     public BlockSelector getBlockSelector(@Nullable final String string) throws InstructionParseException {
         return string == null ? null : new BlockSelector(string);
     }
@@ -529,6 +540,7 @@ public class Instruction {
     }
 
     @Contract(NULL_NOT_NULL_CONTRACT)
+    @Nullable
     public EventID getEvent(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
@@ -545,6 +557,7 @@ public class Instruction {
     }
 
     @Contract(NULL_NOT_NULL_CONTRACT)
+    @Nullable
     public ConditionID getCondition(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
@@ -561,6 +574,7 @@ public class Instruction {
     }
 
     @Contract(NULL_NOT_NULL_CONTRACT)
+    @Nullable
     public ObjectiveID getObjective(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
@@ -577,6 +591,7 @@ public class Instruction {
     }
 
     @Contract(NULL_NOT_NULL_CONTRACT)
+    @Nullable
     public ItemID getItem(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
@@ -700,7 +715,9 @@ public class Instruction {
     /////////////////////////
 
     public interface Converter<T> {
-        T convert(String string) throws InstructionParseException;
+        @Contract(NULL_NOT_NULL_CONTRACT)
+        @Nullable
+        T convert(@Nullable String string) throws InstructionParseException;
     }
 
     @SuppressWarnings("PMD.ShortClassName")

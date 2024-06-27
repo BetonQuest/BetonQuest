@@ -63,6 +63,9 @@ public class SQLite extends Database {
         } catch (ClassNotFoundException | SQLException e) {
             log.error("There was an exception with SQL", e);
         }
+        if (connection == null) {
+            throw new IllegalStateException("Not able to create a database connection!");
+        }
         return connection;
     }
 

@@ -8,6 +8,7 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.Map;
 import java.util.UUID;
@@ -32,9 +33,19 @@ public class ConditionRequirement extends BukkitCustomRequirement {
 
     @Override
     public boolean testRequirement(final UUID uuid, final Map<String, Object> dataMap) {
-        final String string = dataMap.get("Condition").toString();
+        final Object object = dataMap.get("Condition");
+        if (object == null) {
+            log.warn("Error while checking quest requirement - Missing Condition Object");
+            return false;
+        }
+        final String string = object.toString();
         try {
-            final OnlineProfile onlineProfile = PlayerConverter.getID(Bukkit.getPlayer(uuid));
+            final Player player = Bukkit.getPlayer(uuid);
+            if (player == null) {
+                log.warn("Error while running quest reward - Player with UUID '" + uuid + "' not found.");
+                return false;
+            }
+            final OnlineProfile onlineProfile = PlayerConverter.getID(player);
             final ConditionID condition = new ConditionID(null, string);
             return BetonQuest.condition(onlineProfile, condition);
         } catch (final ObjectNotFoundException e) {
@@ -42,5 +53,4 @@ public class ConditionRequirement extends BukkitCustomRequirement {
             return false;
         }
     }
-
 }

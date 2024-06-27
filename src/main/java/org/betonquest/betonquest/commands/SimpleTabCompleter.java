@@ -3,6 +3,7 @@ package org.betonquest.betonquest.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public interface SimpleTabCompleter extends TabCompleter {
 
     @Override
     @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
+    @Nullable
     default List<String> onTabComplete(final CommandSender sender, final Command command, final String alias, final String[] args) {
         final Optional<List<String>> completions = this.simpleTabComplete(sender, command, alias, args);
         if (completions.isEmpty()) {

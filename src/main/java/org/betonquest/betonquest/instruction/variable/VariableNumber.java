@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a number that can contain variables.
@@ -93,7 +94,7 @@ public class VariableNumber extends Variable<Number> {
         });
     }
 
-    private Number getSaveValue(final Profile profile) {
+    private Number getSaveValue(@Nullable final Profile profile) {
         try {
             return getValue(profile);
         } catch (final QuestRuntimeException e) {
@@ -109,7 +110,7 @@ public class VariableNumber extends Variable<Number> {
      * @deprecated use {@link #getValue(Profile)} and then {@link Number#intValue()} instead
      */
     @Deprecated
-    public int getInt(final Profile profile) {
+    public int getInt(@Nullable final Profile profile) {
         return getSaveValue(profile).intValue();
     }
 
@@ -121,7 +122,7 @@ public class VariableNumber extends Variable<Number> {
      * @deprecated use {@link #getValue(Profile)} and then {@link Number#doubleValue()} instead
      */
     @Deprecated
-    public double getDouble(final Profile profile) {
+    public double getDouble(@Nullable final Profile profile) {
         return getSaveValue(profile).doubleValue();
     }
 }

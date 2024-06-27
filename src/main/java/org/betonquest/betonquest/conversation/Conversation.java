@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.conversation;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.tuple.Pair;
@@ -58,10 +57,9 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
  * Manages an active conversation between a player and a NPC.
  * Handles the conversation flow based on {@link ConversationData}.
  */
-@SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired",
         "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.AvoidDuplicateLiterals",
-        "PMD.CouplingBetweenObjects"})
+        "PMD.CouplingBetweenObjects", "NullAway"})
 public class Conversation implements Listener {
 
     /**
@@ -178,14 +176,15 @@ public class Conversation implements Listener {
         this.pack = conversationID.getPackage();
         this.language = plugin.getPlayerData(onlineProfile).getLanguage();
         this.center = center;
-        this.data = plugin.getConversation(conversationID);
         this.blacklist = plugin.getPluginConfig().getStringList("cmd_blacklist");
         this.messagesDelaying = Boolean.parseBoolean(plugin.getPluginConfig().getString("display_chat_after_conversation"));
 
-        if (data == null) {
+        final ConversationData tmpData = plugin.getConversation(conversationID);
+        if (tmpData == null) {
             log.error(pack, "Tried to start conversation '" + conversationID.getFullID() + "' but it is not loaded! Check for errors on /bq reload!");
             return;
         }
+        this.data = tmpData;
         if (ACTIVE_CONVERSATIONS.containsKey(onlineProfile)) {
             log.debug(pack, onlineProfile + " is in conversation right now, returning.");
             return;
@@ -382,7 +381,7 @@ public class Conversation implements Listener {
             //only display status messages if conversationIO allows it
             if (conv.inOut.printMessages()) {
                 // print message
-                conv.inOut.print(Config.parseMessage(pack.getQuestPath(), onlineProfile, "conversation_end", data.getQuester(language)));
+                conv.inOut.print(Config.parseMessage(pack, onlineProfile, "conversation_end", data.getQuester(language)));
             }
             //play conversation end sound
             Config.playSound(onlineProfile, "end");
@@ -463,7 +462,7 @@ public class Conversation implements Listener {
         if (blacklist.contains(cmdName)) {
             event.setCancelled(true);
             try {
-                Config.sendNotify(getPackage().getQuestPath(), PlayerConverter.getID(event.getPlayer()), "command_blocked", "command_blocked,error");
+                Config.sendNotify(getPackage(), PlayerConverter.getID(event.getPlayer()), "command_blocked", "command_blocked,error");
             } catch (final QuestRuntimeException e) {
                 log.warn(pack, "The notify system was unable to play a sound for the 'command_blocked' category. Error was: '" + e.getMessage() + "'", e);
             }
@@ -496,7 +495,6 @@ public class Conversation implements Listener {
      * Instead of ending the conversation it saves it to the database, from
      * where it will be resumed after the player logs in again.
      */
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public void suspend() {
         if (state.isInactive()) {
             return;
@@ -708,7 +706,7 @@ public class Conversation implements Listener {
                     //only display status messages if conversationIO allows it
                     if (conv.inOut.printMessages()) {
                         // print message about starting a conversation only if it is started, not resumed
-                        conv.inOut.print(Config.parseMessage(pack.getQuestPath(), onlineProfile, "conversation_start", new String[]{data.getQuester(language)},
+                        conv.inOut.print(Config.parseMessage(pack, onlineProfile, "conversation_start", new String[]{data.getQuester(language)},
                                 prefixName, prefixVariables));
                     }
 

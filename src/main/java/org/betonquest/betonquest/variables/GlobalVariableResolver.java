@@ -45,6 +45,7 @@ public final class GlobalVariableResolver {
      * @return the string with all global variables resolved
      */
     @Contract("_, null -> null; _, !null -> !null")
+    @Nullable
     public static String resolve(final QuestPackage pack, @Nullable final String input) {
         if (input == null) {
             return null;

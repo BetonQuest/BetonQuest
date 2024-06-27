@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.commands;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -120,7 +119,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Registers a new executor and a new tab completer of the /betonquest command.
      */
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public QuestCommand(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final BukkitAudiences bukkitAudiences, final PlayerLogWatcher logWatcher, final LogPublishingController debuggingController) {
         this.loggerFactory = loggerFactory;
         this.log = log;
@@ -227,17 +225,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     BetonQuest.getInstance().getUpdater().update(sender);
                     break;
                 case "reload":
-                    // just reloading
-                    final UUID uuid = sender instanceof Player ? ((Player) sender).getUniqueId() : null;
-                    final boolean noFilters = uuid != null && !logWatcher.hasActiveFilters(uuid);
-                    if (noFilters) {
-                        logWatcher.addFilter(uuid, "*", Level.WARNING);
-                    }
-                    instance.reload();
-                    sendMessage(sender, "reloaded");
-                    if (noFilters) {
-                        logWatcher.removeFilter(uuid, "*");
-                    }
+                    handleReload(sender);
                     break;
                 case "backup":
                     // do a full plugin backup
@@ -468,6 +456,25 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         sendMessage(sender, "purged", args[1]);
     }
 
+    /**
+     * Just reloading.
+     *
+     * @param sender the sender to send the reload confirmation
+     */
+    @SuppressWarnings("NullAway")
+    private void handleReload(final CommandSender sender) {
+        final UUID uuid = sender instanceof Player ? ((Player) sender).getUniqueId() : null;
+        final boolean noFilters = uuid != null && !logWatcher.hasActiveFilters(uuid);
+        if (noFilters) {
+            logWatcher.addFilter(uuid, "*", Level.WARNING);
+        }
+        instance.reload();
+        sendMessage(sender, "reloaded");
+        if (noFilters) {
+            logWatcher.removeFilter(uuid, "*");
+        }
+    }
+
     @Nullable
     private Profile getTargetProfile(final CommandSender sender, final String... args) {
         if (args.length < 2) {
@@ -502,7 +509,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             journal.getPointers().stream()
                     .filter(shouldDisplay)
                     .forEach(pointer -> {
-                        final String date = new SimpleDateFormat(Config.getString("config.date_format"), Locale.ROOT)
+                        final String date = new SimpleDateFormat(Config.getConfigString("date_format"), Locale.ROOT)
                                 .format(new Date(pointer.getTimestamp()));
                         sender.sendMessage("§b- " + pointer.getPointer() + " §c(§2" + date + "§c)");
                     });
@@ -531,7 +538,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 } else {
                     log.debug("Adding pointer with date " + args[4].replaceAll("_", " "));
                     try {
-                        pointer = new Pointer(pointerName, new SimpleDateFormat(Config.getString("config.date_format"), Locale.ROOT)
+                        pointer = new Pointer(pointerName, new SimpleDateFormat(Config.getConfigString("date_format"), Locale.ROOT)
                                 .parse(args[4].replaceAll("_", " ")).getTime());
                     } catch (final ParseException e) {
                         sendMessage(sender, "specify_date");
@@ -1266,7 +1273,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 final String newPath = "objectives." + rename.split("\\.")[1];
                 configuration.set(newPath, nameID.getInstruction().getInstruction());
                 try {
-                    configuration.associateWith(newPath, configuration.getSourceConfigurationSection(nameID.getBaseID()));
+                    final ConfigurationSection sourceConfigurationSection = configuration.getSourceConfigurationSection(nameID.getBaseID());
+                    if (sourceConfigurationSection == null) {
+                        sendMessage(sender, "error", "There is no SourceConfigurationSection!");
+                        log.warn(nameID.getPackage(), "There is no SourceConfigurationSection!");
+                        break;
+                    }
+                    configuration.associateWith(newPath, sourceConfigurationSection);
                     nameID.getPackage().saveAll();
                 } catch (final IOException | InvalidConfigurationException e) {
                     log.warn(nameID.getPackage(), e.getMessage(), e);
@@ -1497,7 +1510,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
     }
 
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private void displayVersionInfo(final CommandSender sender, final String commandAlias) {
         final Updater updater = BetonQuest.getInstance().getUpdater();
         final String updateCommand = "/" + commandAlias + " update";
@@ -1695,7 +1707,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             } catch (final Exception e) {
                 sendMessageSync(sender, "download_failed", e.getClass().getSimpleName() + ": " + e.getMessage());
                 if (sender instanceof final Player player) {
-                    final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, "", instance);
+                    final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, null, instance);
                     record.setThrown(e);
                     bukkitAudiences.player(player).sendMessage(new ChatFormatter().formatTextComponent(record));
                     log.debug(errSummary, e);
@@ -1877,13 +1889,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         return Optional.of(new ArrayList<>());
     }
 
-    private void sendMessageSync(final CommandSender sender, final String messageName, final String... variables) {
+    private void sendMessageSync(final CommandSender sender, final String messageName, @Nullable final String... variables) {
         Bukkit.getScheduler().runTask(instance, () -> {
             sendMessage(sender, messageName, variables);
         });
     }
 
-    private void sendMessage(final CommandSender sender, final String messageName, final String... variables) {
+    private void sendMessage(final CommandSender sender, final String messageName, @Nullable final String... variables) {
         if (sender instanceof Player) {
             Config.sendMessage(null, PlayerConverter.getID((Player) sender), messageName, variables);
         } else {

@@ -8,7 +8,6 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.papermc.lib.PaperLib;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -147,8 +146,7 @@ public class MenuConvIO extends ChatConvIO {
     @Nullable
     private ArmorStand stand;
 
-    @SuppressWarnings("PMD.CognitiveComplexity")
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
+    @SuppressWarnings({"PMD.CognitiveComplexity", "NullAway.Init"})
     public MenuConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         super(conv, onlineProfile);
         final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
@@ -576,8 +574,10 @@ public class MenuConvIO extends ChatConvIO {
             }
             if (stand != null) {
                 Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
-                    stand.remove();
-                    stand = null;
+                    if (stand != null) {
+                        stand.remove();
+                        stand = null;
+                    }
                 });
             }
 
@@ -710,7 +710,7 @@ public class MenuConvIO extends ChatConvIO {
             final Action action = event.getAction();
             if (action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK) {
                 if (controls.containsKey(CONTROL.LEFT_CLICK)) {
-                    handleSteering();
+                    handleSteering(controls.get(CONTROL.LEFT_CLICK));
                 }
             }
         } finally {
@@ -741,7 +741,7 @@ public class MenuConvIO extends ChatConvIO {
             }
 
             if (controls.containsKey(CONTROL.LEFT_CLICK)) {
-                handleSteering();
+                handleSteering(controls.get(CONTROL.LEFT_CLICK));
             }
         } finally {
             lock.readLock().unlock();
@@ -771,15 +771,15 @@ public class MenuConvIO extends ChatConvIO {
             }
 
             if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK) && controls.containsKey(CONTROL.LEFT_CLICK)) {
-                handleSteering();
+                handleSteering(controls.get(CONTROL.LEFT_CLICK));
             }
         } finally {
             lock.readLock().unlock();
         }
     }
 
-    private void handleSteering() {
-        switch (controls.get(CONTROL.LEFT_CLICK)) {
+    private void handleSteering(final ACTION action) {
+        switch (action) {
             case CANCEL -> {
                 if (!conv.isMovementBlock()) {
                     conv.endConversation();

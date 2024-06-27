@@ -37,6 +37,10 @@ public class CancelEventFactory implements EventFactory {
         try {
             final QuestCancelerID cancelerID = new QuestCancelerID(pack, identifier);
             final QuestCanceler canceler = BetonQuest.getCanceler().get(cancelerID);
+            if (canceler == null) {
+                throw new InstructionParseException("Quest canceler '" + cancelerID.getFullID() + "' does not exist."
+                        + " Ensure it was loaded without errors.");
+            }
             return new OnlineProfileRequiredEvent(loggerFactory.create(CancelEvent.class), new CancelEvent(canceler), pack);
         } catch (final ObjectNotFoundException e) {
             throw new InstructionParseException("Quest canceler '" + pack.getQuestPath() + "." + identifier + "' does not exist."

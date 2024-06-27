@@ -1,9 +1,7 @@
 package org.betonquest.betonquest.modules.logger;
 
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.modules.logger.filter.LogRecordTypeFilter;
 import org.betonquest.betonquest.modules.logger.format.ChatFormatter;
 import org.betonquest.betonquest.modules.logger.format.LogfileFormatter;
@@ -36,11 +34,6 @@ import java.util.logging.Handler;
  * A static helper class to create {@link Handler}s in the way they are usually used by BetonQuest.
  */
 public final class HandlerFactory {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(HandlerFactory.class, "LogWatcherFactory");
-
     private HandlerFactory() {
         // Empty
     }
@@ -100,10 +93,10 @@ public final class HandlerFactory {
             fileHandler.setFormatter(new LogfileFormatter());
             return fileHandler;
         } catch (final IOException e) {
-            LOG.error("It was not possible to create the '" + logFile.getName() + "' or to register the plugin's internal logger. "
+            throw new IllegalStateException("Could not create the FileHandler for the DebugLogger!\n"
+                    + "It was not possible to create the '" + logFile.getName() + "' or to register the plugin's internal logger. "
                     + "This is not a critical error, the server can still run, but it is not possible to use the '/q debug true' command. "
                     + "Reason: " + e.getMessage(), e);
-            return null;
         }
     }
 

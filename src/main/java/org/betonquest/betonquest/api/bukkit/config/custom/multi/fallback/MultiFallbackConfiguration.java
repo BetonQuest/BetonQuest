@@ -49,6 +49,7 @@ public class MultiFallbackConfiguration extends FallbackConfiguration implements
     }
 
     @Override
+    @Nullable
     public ConfigurationSection getSourceConfigurationSection(final String path) throws InvalidConfigurationException {
         return original.getSourceConfigurationSection(path);
     }

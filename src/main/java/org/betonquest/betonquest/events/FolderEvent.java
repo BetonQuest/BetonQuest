@@ -95,7 +95,7 @@ public class FolderEvent extends QuestEvent {
         cancelOnLogout = instruction.hasArgument("cancelOnLogout");
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "NullAway"})
     @Override
     protected Void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         final Deque<EventID> chosenList = new LinkedList<>();

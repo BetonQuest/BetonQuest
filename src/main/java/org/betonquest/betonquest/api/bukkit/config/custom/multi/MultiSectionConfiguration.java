@@ -51,8 +51,8 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
      * otherwise it is saved in a separate {@link ConfigurationSection}.
      *
      * @param sourceConfigs All configs to merge
-     * @throws KeyConflictException             is thrown, if two or more configs define conflicting entries
-     * @throws InvalidSubConfigurationException is thrown, if a source configuration is invalid in some way
+     * @throws KeyConflictException             if two or more configs define conflicting entries
+     * @throws InvalidSubConfigurationException if a source configuration is invalid in some way
      */
     @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public MultiSectionConfiguration(final List<ConfigurationSection> sourceConfigs) throws KeyConflictException, InvalidSubConfigurationException {
@@ -128,7 +128,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
     /**
      * Only validate if the given configurations can be merged. This method does not merge the configs!
      *
-     * @throws KeyConflictException when the given section contain conflicting keys
+     * @throws KeyConflictException when the given section contains conflicting keys
      */
     private void validateKeyIndex() throws KeyConflictException {
         final Map<String, List<ConfigurationSection>> conflictingKeys = validateKeyIndexKeys();
@@ -145,6 +145,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
+    @SuppressWarnings("NullAway")
     private List<List<Pair<String, ConfigurationSection>>> validateKeyIndexPaths() {
         final List<List<Pair<String, ConfigurationSection>>> conflictingPaths = new ArrayList<>();
         final SortedSet<String> index = new TreeSet<>(keyIndex.keySet());
@@ -162,6 +163,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
         return conflictingPaths;
     }
 
+    @SuppressWarnings("NullAway")
     private List<Pair<String, ConfigurationSection>> validateKeyIndexPathsConflicts(final SortedSet<String> index, final String currentKey) {
         final List<Pair<String, ConfigurationSection>> conflict = new ArrayList<>();
         for (final String targetKey : index) {

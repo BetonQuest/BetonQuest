@@ -67,7 +67,6 @@ public class MythicSpawnMobEvent extends QuestEvent {
                 instruction.getPackage(),
                 Utils.addPackage(instruction.getPackage(), markedString)
         );
-
     }
 
     @Override
@@ -82,7 +81,11 @@ public class MythicSpawnMobEvent extends QuestEvent {
                 final ActiveMob targetMob = MythicBukkit.inst().getMobManager().getMythicMobInstance(entity);
 
                 if (privateMob) {
-                    Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> MythicHider.getInstance().applyVisibilityPrivate(profile.getOnlineProfile().get(), entity), 20L);
+                    final MythicHider mythicHider = MythicHider.getInstance();
+                    if (mythicHider == null) {
+                        throw new QuestRuntimeException("Can't hide MythicMob because the Hider is null!");
+                    }
+                    Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> mythicHider.applyVisibilityPrivate(profile.getOnlineProfile().get(), entity), 20L);
                 }
                 if (targetPlayer) {
                     Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> targetMob.setTarget(BukkitAdapter.adapt(player)), 20L);
@@ -97,5 +100,4 @@ public class MythicSpawnMobEvent extends QuestEvent {
         }
         return null;
     }
-
 }

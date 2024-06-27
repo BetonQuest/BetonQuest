@@ -838,9 +838,35 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.10.1</version>
+          <version>3.12.1</version>
           <configuration>
             <release>${java.api.version}</release>
+            <compilerArgs>
+              <!--<arg>-Xlint:all</arg> May enable later when the most warnings and errors are solved-->
+              <arg>-XDcompilePolicy=simple</arg>
+              <arg>-Xplugin:ErrorProne
+                -XepDisableAllWarnings
+                -Xep:NullAway:ERROR
+                -XepOpt:NullAway:AnnotatedPackages=${project.groupId}.${project.artifactId}
+                -XepExcludedPaths:.*/src/test/java/.*
+              </arg>
+              <arg>-Xmaxerrs</arg>
+              <arg>65536</arg>
+              <arg>-Xmaxwarns</arg>
+              <arg>65536</arg>
+            </compilerArgs>
+            <annotationProcessorPaths>
+              <path>
+                <groupId>com.google.errorprone</groupId>
+                <artifactId>error_prone_core</artifactId>
+                <version>2.27.1</version>
+              </path>
+              <path>
+                <groupId>com.uber.nullaway</groupId>
+                <artifactId>nullaway</artifactId>
+                <version>0.10.26</version>
+              </path>
+            </annotationProcessorPaths>
           </configuration>
         </plugin>
         <plugin>
@@ -932,6 +958,12 @@
             <failOnWarnings>false</failOnWarnings>
             <show>public</show>
             <quiet>true</quiet>
+            <additionalJOptions>
+              <additionalJOption>-Xmaxerrs</additionalJOption>
+              <additionalJOption>65536</additionalJOption>
+              <additionalJOption>-Xmaxwarns</additionalJOption>
+              <additionalJOption>65536</additionalJOption>
+            </additionalJOptions>
           </configuration>
         </plugin>
         <plugin>

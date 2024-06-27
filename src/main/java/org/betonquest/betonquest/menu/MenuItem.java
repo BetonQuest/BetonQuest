@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.menu;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -97,7 +96,6 @@ public class MenuItem extends SimpleYMLSection {
 
     @SuppressWarnings({"PMD.ExceptionAsFlowControl", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity",
             "PMD.NPathComplexity", "checkstyle:EmptyCatchBlock"})
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public MenuItem(final BetonQuestLogger log, final QuestPackage pack, final MenuID menuID, final String name, final ConfigurationSection section)
             throws InvalidConfigurationException {
         super(pack, name, section);
@@ -252,8 +250,6 @@ public class MenuItem extends SimpleYMLSection {
      * @param profile the player from the {@link Profile} this item will be displayed to
      * @return the item as a bukkit item stack
      */
-    @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.AvoidCatchingNPE"})
-    @SuppressFBWarnings("DCN_NULLPOINTER_EXCEPTION")
     public ItemStack generateItem(final Profile profile) {
         try {
             final String lang = BetonQuest.getInstance().getPlayerData(profile).getLanguage();
@@ -264,13 +260,13 @@ public class MenuItem extends SimpleYMLSection {
                 if (description == null) {
                     description = this.descriptions.get(Config.getLanguage());
                 }
-                try {
+                if (description == null) {
+                    log.error(pack, "Couldn't add custom text to '" + name + "': No text for language '"
+                            + Config.getLanguage() + "' " + "specified");
+                } else {
                     meta.setDisplayName(description.getDisplayName(profile));
                     meta.setLore(description.getLore(profile));
                     item.setItemMeta(meta);
-                } catch (final NullPointerException npe) {
-                    log.error(pack, "Couldn't add custom text to '" + name + "': No text for language '"
-                            + Config.getLanguage() + "' " + "specified");
                 }
             }
             return item;

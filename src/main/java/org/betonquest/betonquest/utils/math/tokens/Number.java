@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.utils.math.tokens;
 
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Token that is just any number.
@@ -26,7 +27,7 @@ public class Number implements Token {
     }
 
     @Override
-    public double resolve(final Profile profile) {
+    public double resolve(@Nullable final Profile profile) {
         return value;
     }
 

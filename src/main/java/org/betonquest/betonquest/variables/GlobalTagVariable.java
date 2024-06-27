@@ -4,6 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Exposes the presence of global tags as a variable.
@@ -23,7 +24,7 @@ public class GlobalTagVariable extends TagVariable {
     }
 
     @Override
-    public String getValue(final Profile profile) {
+    public String getValue(@Nullable final Profile profile) {
         return getValue(BetonQuest.getInstance().getGlobalData().getTags());
     }
 }

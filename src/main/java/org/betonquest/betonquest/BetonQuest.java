@@ -146,7 +146,7 @@ import java.util.logging.Handler;
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods",
         "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidFieldNameMatchingMethodName",
-        "PMD.AtLeastOneConstructor", "PMD.ExcessivePublicCount", "PMD.TooManyFields"})
+        "PMD.AtLeastOneConstructor", "PMD.ExcessivePublicCount", "PMD.TooManyFields", "NullAway.Init"})
 public class BetonQuest extends JavaPlugin {
     private static final int BSTATS_METRICS_ID = 551;
 
@@ -585,7 +585,6 @@ public class BetonQuest extends JavaPlugin {
         setupUpdater();
 
         rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, menuConfigAccessor);
-        rpgMenu.onEnable();
 
         PaperLib.suggestPaper(this);
         getInstance().log.info("BetonQuest successfully enabled!");
@@ -722,7 +721,6 @@ public class BetonQuest extends JavaPlugin {
 
         if (this.adventure != null) {
             this.adventure.close();
-            this.adventure = null;
         }
 
         if (rpgMenu != null) {
@@ -1009,6 +1007,7 @@ public class BetonQuest extends JavaPlugin {
      * @return ConversationData object for this conversation or null if it does
      * not exist
      */
+    @Nullable
     public ConversationData getConversation(final ConversationID conversationID) {
         return instance.questRegistry.conversations().getConversation(conversationID);
     }

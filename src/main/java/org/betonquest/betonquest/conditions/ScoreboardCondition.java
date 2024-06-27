@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.conditions;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -28,7 +27,6 @@ public class ScoreboardCondition extends Condition {
     }
 
     @Override
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
         final Objective obj = board.getObjective(objective);
@@ -38,5 +36,4 @@ public class ScoreboardCondition extends Condition {
         final Score score = obj.getScore(profile.getPlayer());
         return score.getScore() >= count.getInt(profile);
     }
-
 }

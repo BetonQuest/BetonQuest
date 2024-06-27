@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.conversation;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -34,7 +33,7 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
  * Represents the data of the conversation.
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.CommentRequired", "PMD.TooManyFields",
-        "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals"})
+        "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals", "NullAway"})
 public class ConversationData {
 
     /**
@@ -124,7 +123,6 @@ public class ConversationData {
      * @throws ObjectNotFoundException   when conversation options cannot be resolved or {@code convSection} is null
      */
     @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public ConversationData(final BetonQuest plugin, final ConversationID conversationID, final ConfigurationSection convSection) throws InstructionParseException, ObjectNotFoundException {
         this.plugin = plugin;
         this.conversationID = conversationID;
@@ -208,6 +206,7 @@ public class ConversationData {
      *
      * @throws ObjectNotFoundException when a pointer to an external conversation could not be resolved
      */
+    @SuppressWarnings("PMD.ExceptionAsFlowControl")
     public void checkExternalPointers() throws ObjectNotFoundException {
         for (final CrossConversationReference externalPointer : externalPointers) {
 
@@ -215,6 +214,11 @@ public class ConversationData {
             final QuestPackage targetPack = resolvedPointer.conversationData().pack;
             final String targetConvName = resolvedPointer.conversationData().convName;
             final String targetOptionName = resolvedPointer.name();
+
+            // This is null if we refer to the starting options of a conversation
+            if (targetOptionName == null) {
+                continue;
+            }
 
             final String sourceOption;
             if (externalPointer.sourceOption() == null) {
@@ -226,15 +230,13 @@ public class ConversationData {
             final ConversationData conv;
             try {
                 conv = plugin.getConversation(new ConversationID(targetPack, targetConvName));
+                if (conv == null) {
+                    throw new ObjectNotFoundException("No Conversation for conversationID '" + conversationID.getFullID() + "'! Check for errors on /bq reload!");
+                }
             } catch (final ObjectNotFoundException e) {
                 log.warn("Cross-conversation pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
                         + sourceOption + " points to the '" + targetConvName
                         + "' conversation in the package '" + targetPack.getQuestPath() + "' but that conversation does not exist. Check your spelling!", e);
-                continue;
-            }
-
-            // This is null if we refer to the starting options of a conversation
-            if (targetOptionName == null) {
                 continue;
             }
 
@@ -570,7 +572,6 @@ public class ConversationData {
      * @throws InstructionParseException if an external pointer reference has an invalid format
      * @throws ObjectNotFoundException   if an external pointer inside the conversation could not be resolved
      */
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public boolean isReady(final Profile profile) throws InstructionParseException, ObjectNotFoundException {
         for (final String option : getStartingOptions()) {
             final ConversationData sourceData;
@@ -688,7 +689,6 @@ public class ConversationData {
          * @throws InstructionParseException if the configuration is invalid
          */
         @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
-        @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         protected ConversationOption(final ConversationID conversationID, final String name, final OptionType type, final ConfigurationSection convSection) throws InstructionParseException {
             this.pack = conversationID.getPackage();
             this.conversationName = conversationID.getBaseID();
@@ -746,7 +746,6 @@ public class ConversationData {
 
         //TODO: Consider removing this undocumented feature.
         @SuppressWarnings("PMD.CognitiveComplexity")
-        @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         private void parsePrefix(final String name, final OptionType type, final ConfigurationSection conv, final String defaultLang) throws InstructionParseException {
             if (conv.contains("prefix")) {
                 if (conv.isConfigurationSection("prefix")) {
@@ -770,7 +769,6 @@ public class ConversationData {
         }
 
         @SuppressWarnings("PMD.CognitiveComplexity")
-        @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         private void parseText(final String name, final OptionType type, final ConfigurationSection conv, final String defaultLang) throws InstructionParseException {
             if (conv.contains("text")) {
                 if (conv.isConfigurationSection("text")) {

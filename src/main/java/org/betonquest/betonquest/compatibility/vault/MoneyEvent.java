@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.vault;
 
+import net.milkbowl.vault.economy.Economy;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
@@ -50,9 +51,13 @@ public class MoneyEvent extends QuestEvent {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final OfflinePlayer player = profile.getPlayer();
         // get the difference between target money and current money
-        final double current = VaultIntegrator.getEconomy().getBalance(player);
+        final Economy economy = VaultIntegrator.getInstance().getEconomy();
+        if (economy == null) {
+            throw new QuestRuntimeException("Can't execute the event because the Vault instance is null!");
+        }
+        final OfflinePlayer player = profile.getPlayer();
+        final double current = economy.getBalance(player);
         final double target;
         if (multi) {
             target = current * amount.getDouble(profile);
@@ -62,23 +67,23 @@ public class MoneyEvent extends QuestEvent {
 
         final double difference = target - current;
         final DecimalFormat decimalFormat = new DecimalFormat("#.00");
-        final String currencyName = VaultIntegrator.getEconomy().currencyNamePlural();
+        final String currencyName = economy.currencyNamePlural();
 
         if (difference > 0) {
-            VaultIntegrator.getEconomy().depositPlayer(player, difference);
+            economy.depositPlayer(player, difference);
             if (notify && profile.getOnlineProfile().isPresent()) {
                 try {
-                    Config.sendNotify(instruction.getPackage().getQuestPath(), profile.getOnlineProfile().get(), "money_given",
+                    Config.sendNotify(instruction.getPackage(), profile.getOnlineProfile().get(), "money_given",
                             new String[]{decimalFormat.format(difference), currencyName}, "money_given,info");
                 } catch (final QuestRuntimeException e) {
                     log.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'money_given' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
                 }
             }
         } else if (difference < 0) {
-            VaultIntegrator.getEconomy().withdrawPlayer(player, -difference);
+            economy.withdrawPlayer(player, -difference);
             if (notify && profile.getOnlineProfile().isPresent()) {
                 try {
-                    Config.sendNotify(instruction.getPackage().getQuestPath(), profile.getOnlineProfile().get(), "money_taken",
+                    Config.sendNotify(instruction.getPackage(), profile.getOnlineProfile().get(), "money_taken",
                             new String[]{decimalFormat.format(difference), currencyName}, "money_taken,info");
                 } catch (final QuestRuntimeException e) {
                     log.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'money_taken' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);

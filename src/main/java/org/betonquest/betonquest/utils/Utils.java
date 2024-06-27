@@ -88,8 +88,8 @@ public final class Utils {
         final List<String> pages = new ArrayList<>();
         final String[] bigPages = string.split("\\|");
         for (final String bigPage : bigPages) {
-            if (Config.getString("config.journal.lines_per_page") == null) {
-                final int charsPerPage = Integer.parseInt(Config.getString("config.journal.chars_per_page"));
+            if (Config.getConfigString("journal.lines_per_page") == null) {
+                final int charsPerPage = Integer.parseInt(Config.getConfigString("journal.chars_per_page"));
                 StringBuilder page = new StringBuilder();
                 for (final String word : bigPage.split(" ")) {
                     if (getStringLength(page.toString()) + getStringLength(word) + 1 > charsPerPage) {
@@ -100,8 +100,8 @@ public final class Utils {
                 }
                 pages.add(page.toString().stripTrailing().replaceAll("(?<!\\\\)\\\\n", "\n"));
             } else {
-                final int charsPerLine = Integer.parseInt(Config.getString("config.journal.chars_per_line"));
-                final int linesPerPage = Integer.parseInt(Config.getString("config.journal.lines_per_page"));
+                final int charsPerLine = Integer.parseInt(Config.getConfigString("journal.chars_per_line"));
+                final int linesPerPage = Integer.parseInt(Config.getConfigString("journal.lines_per_page"));
                 StringBuilder page = new StringBuilder();
                 int lines = 0;
                 for (final String line : bigPage.split("((?<!\\\\)\\\\n|\n)")) {
@@ -157,7 +157,6 @@ public final class Utils {
      * @param item ItemStack to check
      * @return true if the supplied ItemStack is a quest item, false otherwise
      */
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static boolean isQuestItem(@Nullable final ItemStack item) {
         if (item == null) {
             return false;
@@ -175,7 +174,6 @@ public final class Utils {
      * @param conditions    conditions that the party members must meet
      * @return the party of the player
      */
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static Map<OnlineProfile, Double> getParty(final OnlineProfile onlineProfile, final double range, final ConditionID... conditions) {
         final Location loc = onlineProfile.getPlayer().getLocation();
         final World world = loc.getWorld();
@@ -329,5 +327,4 @@ public final class Utils {
         }
         return argument;
     }
-
 }

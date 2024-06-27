@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ObjectiveID;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Resolves to a specified property of an objective.
@@ -43,10 +44,11 @@ public class ObjectivePropertyVariable extends Variable {
     }
 
     @Override
-    public String getValue(final Profile profile) {
+    public String getValue(@Nullable final Profile profile) {
+        if (profile == null) {
+            return "";
+        }
         final Objective objective = BetonQuest.getInstance().getObjective(this.objective);
-        // existence of an objective is checked now because it may not exist yet
-        // when variable is created (in case of "message" event)
         if (objective == null) {
             return "";
         }

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.conversation;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
@@ -33,7 +32,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
     protected final Player player;
 
-    protected final Map<String, ChatColor[]> colors;
+    protected final ConversationColors.Colors colors;
 
     private final String npcTextColor;
 
@@ -52,6 +51,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
     protected String textFormat;
 
+    @SuppressWarnings("NullAway.Init")
     public ChatConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         this.options = new HashMap<>();
         this.conv = conv;
@@ -59,13 +59,13 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         this.name = player.getName();
         this.colors = ConversationColors.getColors();
         StringBuilder string = new StringBuilder();
-        for (final ChatColor color : colors.get("npc")) {
+        for (final ChatColor color : colors.npc()) {
             string.append(color);
         }
         string.append("%npc%").append(ChatColor.RESET).append(": ");
 
         final StringBuilder textColorBuilder = new StringBuilder();
-        for (final ChatColor color : colors.get("text")) {
+        for (final ChatColor color : colors.text()) {
             textColorBuilder.append(color);
         }
         npcTextColor = textColorBuilder.toString();
@@ -73,19 +73,18 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         string.append(npcTextColor);
         textFormat = string.toString();
         string = new StringBuilder();
-        for (final ChatColor color : colors.get("player")) {
+        for (final ChatColor color : colors.player()) {
             string.append(color);
         }
         string.append(name).append(ChatColor.RESET).append(": ");
-        for (final ChatColor color : colors.get("answer")) {
+        for (final ChatColor color : colors.answer()) {
             string.append(color);
         }
         answerFormat = string.toString();
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-        maxNpcDistance = Double.parseDouble(Config.getString("config.max_npc_distance"));
+        maxNpcDistance = Double.parseDouble(Config.getConfigString("max_npc_distance"));
     }
 
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onWalkAway(final PlayerMoveEvent event) {
         // return if it's someone else
@@ -110,7 +109,6 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
      *
      * @param event PlayerMoveEvent event, for extracting the necessary data
      */
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private void moveBack(final PlayerMoveEvent event) {
         // if the player is in other world (he teleported himself), teleport him
         // back to the center of the conversation
@@ -131,7 +129,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         newLocation.setPitch(pitch);
         newLocation.setYaw(yaw);
         event.getPlayer().teleport(newLocation);
-        if (Boolean.parseBoolean(Config.getString("config.notify_pullback"))) {
+        if (Boolean.parseBoolean(Config.getConfigString("notify_pullback"))) {
             conv.sendMessage(Config.getMessage(Config.getLanguage(), "pullback"));
         }
     }

@@ -9,6 +9,7 @@ import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -42,6 +43,7 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
     }
 
     @Override
+    @Nullable
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public String getRawString(final String address) {
         final String[] parts = address.split("\\.");
@@ -77,11 +79,14 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
     }
 
     @Override
+    @Nullable
     public String getString(final String address) {
         return getString(address, null);
     }
 
     @Override
+    @Contract("_, !null -> !null")
+    @Nullable
     public String getString(final String address, @Nullable final String def) {
         final String value = getRawString(address);
         if (value == null) {
@@ -95,9 +100,9 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
     }
 
     @Override
+    @Nullable
     public String getFormattedString(final String address) {
         final String string = getString(address);
         return string == null ? null : Utils.format(string);
     }
-
 }

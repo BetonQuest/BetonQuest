@@ -17,7 +17,7 @@ import java.util.Set;
 /**
  * This class hides an original {@link ConfigurationSection} and exposes it,
  * as if it were the original {@link ConfigurationSection}.
- * This makes it possible to change parts of the original {@link ConfigurationSection}'s behaviour,
+ * This makes it possible to change parts of the original {@link ConfigurationSection}'s behavior,
  * without the need to implement everything all over again.
  * <p>
  * This class is necessary because multiple implementations of the Bukkit Configuration API may exist.
