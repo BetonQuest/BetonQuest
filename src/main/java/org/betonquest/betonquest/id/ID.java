@@ -91,23 +91,28 @@ public abstract class ID {
     private Map.Entry<QuestPackage, String> parsePackageFromIdentifier(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         final int dotIndex = identifier.indexOf('.');
         final String packName = identifier.substring(0, dotIndex);
-        if (pack != null && packName.startsWith(UP_STR + "-")) {
-            final QuestPackage questPackage = resolveRelativePathUp(pack, identifier, packName);
-            return Map.entry(questPackage, identifier.substring(dotIndex));
-        } else if (pack != null && packName.startsWith("-")) {
-            final QuestPackage questPackage = resolveRelativePathDown(pack, identifier, packName);
-            return Map.entry(questPackage, identifier.substring(dotIndex));
-        } else {
-            final Map.Entry<QuestPackage, Integer> entry = getDotIndex(identifier, packName, dotIndex);
-            if (entry != null) {
-                final QuestPackage questPackage = entry.getKey();
-                return Map.entry(questPackage, identifier.substring(entry.getValue()));
+        if (pack != null) {
+            if (packName.startsWith(UP_STR + "-")) {
+                final QuestPackage questPackage = resolveRelativePathUp(pack, identifier, packName);
+                return Map.entry(questPackage, identifier.substring(dotIndex));
             }
+            if (packName.startsWith("-")) {
+                final QuestPackage questPackage = resolveRelativePathDown(pack, identifier, packName);
+                return Map.entry(questPackage, identifier.substring(dotIndex));
+            }
+        }
+        final Map.Entry<QuestPackage, Integer> entry = getDotIndex(identifier, packName, dotIndex);
+        if (entry != null) {
+            final QuestPackage questPackage = entry.getKey();
+            return Map.entry(questPackage, identifier.substring(entry.getValue() + 1));
         }
         if (identifier.length() == dotIndex + 1) {
             throw new ObjectNotFoundException("ID of the pack is null");
         }
-        throw new ObjectNotFoundException("Package in ID '" + identifier + "' does not exist");
+        if (pack == null) {
+            throw new ObjectNotFoundException("Package in ID '" + identifier + "' does not exist");
+        }
+        return Map.entry(pack, identifier);
     }
 
     @Nullable
