@@ -66,9 +66,9 @@ public class PartyEvent implements Event {
         }
     }
 
-    private Set<OnlineProfile> getMemberList(final Profile profile) {
+    private Set<OnlineProfile> getMemberList(final Profile profile) throws QuestRuntimeException {
         final int toExecute = amount != null ? amount.getInt(profile) : -1;
-        final Map<OnlineProfile, Double> members = Utils.getParty(profile.getOnlineProfile().get(), range.getDouble(profile),
+        final Map<OnlineProfile, Double> members = Utils.getParty(profile.getOnlineProfile().get(), range.getValue(profile).doubleValue(),
                 conditions);
 
         if (toExecute < 0) {

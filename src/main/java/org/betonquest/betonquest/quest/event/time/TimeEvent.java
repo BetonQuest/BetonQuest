@@ -50,7 +50,7 @@ public class TimeEvent implements ComposedEvent {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         final World world = worldSelector.selectFor(profile);
-        final double timeValue = rawTime.getDouble(profile);
+        final double timeValue = rawTime.getValue(profile).doubleValue();
         final long actualTime = (long) Math.abs(hourFormat ? timeValue * 1000 : timeValue);
         world.setTime(time.applyTo(world, actualTime));
     }

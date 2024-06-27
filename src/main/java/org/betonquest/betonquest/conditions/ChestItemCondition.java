@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 public class ChestItemCondition extends Condition {
     private final Item[] questItems;
 
-    private final CompoundLocation loc;
+    private final VariableLocation loc;
 
     public ChestItemCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -31,7 +31,7 @@ public class ChestItemCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final Block block = loc.getLocation(profile).getBlock();
+        final Block block = loc.getValue(profile).getBlock();
         final InventoryHolder chest;
         try {
             chest = (InventoryHolder) block.getState();

@@ -4,8 +4,8 @@ import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -28,7 +28,7 @@ public class ChestGiveEvent implements ComposedEvent {
     /**
      * The location of the block.
      */
-    private final CompoundLocation location;
+    private final VariableLocation location;
 
     /**
      * Create the chest give event.
@@ -36,14 +36,14 @@ public class ChestGiveEvent implements ComposedEvent {
      * @param questItems the items to put in the blocks inventory
      * @param location   the location of the block
      */
-    public ChestGiveEvent(final CompoundLocation location, final Item... questItems) {
+    public ChestGiveEvent(final VariableLocation location, final Item... questItems) {
         this.questItems = Arrays.copyOf(questItems, questItems.length);
         this.location = location;
     }
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
-        final Block block = location.getLocation(profile).getBlock();
+        final Block block = location.getValue(profile).getBlock();
         final InventoryHolder chest;
         try {
             chest = (InventoryHolder) block.getState();

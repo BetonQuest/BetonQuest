@@ -39,7 +39,7 @@ public record LuckPermsNodeBuilder(List<VariableString> permissions, VariableStr
         final List<Node> buildNodes = new ArrayList<>();
         final String resolvedValue = value.getString(profile);
         final MutableContextSet contextSet = parseContextSet(contexts, profile);
-        final long resolvedExpiry = (long) expiry.getDouble(profile);
+        final long resolvedExpiry = expiry.getValue(profile).longValue();
         final TimeUnit resolvedTimeUnit = getTimeUnit(timeUnit, profile);
         for (final VariableString permission : permissions) {
             Node node = getNode(permission.getString(profile));

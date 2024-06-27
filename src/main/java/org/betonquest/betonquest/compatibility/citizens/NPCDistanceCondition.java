@@ -40,7 +40,7 @@ public class NPCDistanceCondition extends Condition {
         if (!player.getWorld().equals(npc.getStoredLocation().getWorld())) {
             return false;
         }
-        final double distance = this.distance.getDouble(profile);
+        final double distance = this.distance.getValue(profile).doubleValue();
         return npc.getStoredLocation().distanceSquared(player.getLocation()) <= distance * distance;
     }
 }

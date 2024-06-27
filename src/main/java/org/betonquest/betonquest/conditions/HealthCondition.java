@@ -24,7 +24,7 @@ public class HealthCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final double expectedHealth = health.getDouble(profile);
+        final double expectedHealth = health.getValue(profile).doubleValue();
         return profile.getOnlineProfile()
                 .map(OnlineProfile::getPlayer)
                 .map(Player::getHealth)

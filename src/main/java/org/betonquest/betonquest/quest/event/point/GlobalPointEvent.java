@@ -54,6 +54,6 @@ public class GlobalPointEvent implements ComposedEvent {
                 .filter(p -> p.getCategory().equalsIgnoreCase(category))
                 .findFirst();
         globalData.setPoints(category, pointType.modify(
-                globalPoint.map(org.betonquest.betonquest.Point::getCount).orElse(0), count.getDouble(profile)));
+                globalPoint.map(org.betonquest.betonquest.Point::getCount).orElse(0), count.getValue(profile).doubleValue()));
     }
 }

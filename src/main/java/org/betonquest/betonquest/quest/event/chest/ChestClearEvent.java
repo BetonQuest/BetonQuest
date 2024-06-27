@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.chest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,10 +15,10 @@ public class ChestClearEvent extends AbstractChestEvent implements ComposedEvent
     /**
      * Creates a new chest clear event.
      *
-     * @param compoundLocation the location of the chest
+     * @param variableLocation the location of the chest
      */
-    public ChestClearEvent(final CompoundLocation compoundLocation) {
-        super(compoundLocation);
+    public ChestClearEvent(final VariableLocation variableLocation) {
+        super(variableLocation);
     }
 
     @Override

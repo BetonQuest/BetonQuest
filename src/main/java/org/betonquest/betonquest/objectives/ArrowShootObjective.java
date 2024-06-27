@@ -9,8 +9,8 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.PlayerConverter;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -32,7 +32,7 @@ public class ArrowShootObjective extends Objective implements Listener {
      */
     private final BetonQuestLogger log;
 
-    private final CompoundLocation loc;
+    private final VariableLocation loc;
 
     private final VariableNumber range;
 
@@ -58,7 +58,7 @@ public class ArrowShootObjective extends Objective implements Listener {
             return;
         }
         try {
-            final Location location = loc.getLocation(onlineProfile);
+            final Location location = loc.getValue(onlineProfile);
             // check if the arrow is in the right place in the next tick
             // wait one tick, let the arrow land completely
             new BukkitRunnable() {

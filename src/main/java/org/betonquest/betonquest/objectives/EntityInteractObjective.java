@@ -10,9 +10,9 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -50,7 +50,7 @@ public class EntityInteractObjective extends CountingObjective {
     private final BetonQuestLogger log;
 
     @Nullable
-    private final CompoundLocation loc;
+    private final VariableLocation loc;
 
     private final VariableNumber range;
 
@@ -148,8 +148,8 @@ public class EntityInteractObjective extends CountingObjective {
         // Check location matches
         if (loc != null) {
             try {
-                final Location location = loc.getLocation(onlineProfile);
-                final double pRange = range.getDouble(onlineProfile);
+                final Location location = loc.getValue(onlineProfile);
+                final double pRange = range.getValue(onlineProfile).doubleValue();
                 if (!entity.getWorld().equals(location.getWorld())
                         || entity.getLocation().distance(location) > pRange) {
                     return false;

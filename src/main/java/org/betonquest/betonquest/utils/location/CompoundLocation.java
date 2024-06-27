@@ -1,31 +1,22 @@
 package org.betonquest.betonquest.utils.location;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class parses various location related strings with or without {@link Variable}s.
+ *
+ * @deprecated Use {@link VariableLocation} instead
  */
-public class CompoundLocation {
-    /**
-     * The location that will be used as a base.
-     */
-    private final LocationData locationData;
-
-    /**
-     * The list of vectors that will be added to the location.
-     */
-    private final List<VectorData> vectorData;
+@Deprecated
+public class CompoundLocation extends VariableLocation {
 
     /**
      * This class parses a string into a {@link Location} and a {@link Vector}. The input string has
@@ -35,20 +26,12 @@ public class CompoundLocation {
      *
      * @param pack Name of the {@link QuestPackage} - required for {@link Variable} resolution
      * @param data string containing raw location in the defined format
-     * @throws InstructionParseException Is thrown when an error appears while parsing {@link LocationData}
-     *                                   or {@link VectorData}
+     * @throws InstructionParseException Is thrown when an error appears while parsing
+     * @deprecated Use {@link VariableLocation#VariableLocation(VariableProcessor, QuestPackage, String)}
      */
-    public CompoundLocation(@Nullable final QuestPackage pack, final String data) throws InstructionParseException {
-        vectorData = new ArrayList<>();
-        if (data.contains("->")) {
-            final String[] parts = data.split("->");
-            locationData = new LocationData(pack, parts[0]);
-            for (int i = 1; i < parts.length; i++) {
-                vectorData.add(new VectorData(pack, parts[i]));
-            }
-        } else {
-            locationData = new LocationData(pack, data);
-        }
+    @Deprecated
+    public CompoundLocation(final QuestPackage pack, final String data) throws InstructionParseException {
+        super(BetonQuest.getInstance().getVariableProcessor(), pack, data);
     }
 
     /**
@@ -59,26 +42,20 @@ public class CompoundLocation {
      *
      * @param packName Name of the {@link QuestPackage} - required for {@link Variable} resolution
      * @param data     string containing raw location in the defined format
-     * @throws InstructionParseException Is thrown when an error appears while parsing {@link LocationData}
-     *                                   or {@link VectorData}
-     * @deprecated Use {@link #CompoundLocation(QuestPackage, String)} instead
+     * @throws InstructionParseException Is thrown when an error appears while
+     * @deprecated Use {@link VariableLocation#VariableLocation(VariableProcessor, QuestPackage, String)} instead
      */
     @Deprecated
     public CompoundLocation(final String packName, final String data) throws InstructionParseException {
-        this(Config.getPackages().get(packName), data);
+        this(getPack(packName), data);
     }
 
-    /**
-     * @param profile the {@link Profile} that should be used to resolve the {@link Variable}s
-     * @return the location represented by this object
-     * @throws QuestRuntimeException Is thrown when the player cannot be accessed or the resolved location is in
-     *                               the wrong format.
-     */
-    public Location getLocation(@Nullable final Profile profile) throws QuestRuntimeException {
-        final Location loc = locationData.get(profile);
-        for (final VectorData vecData : vectorData) {
-            loc.add(vecData.get(profile));
+    private static QuestPackage getPack(final String packName) throws InstructionParseException {
+        final QuestPackage pack = Config.getPackages().get(packName);
+        if (pack == null) {
+            throw new InstructionParseException("Package '" + packName + "' not found");
         }
-        return loc;
+        return pack;
     }
+
 }

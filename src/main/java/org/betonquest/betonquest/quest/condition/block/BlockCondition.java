@@ -3,8 +3,8 @@ package org.betonquest.betonquest.quest.condition.block;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.Condition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.BlockSelector;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,7 +15,7 @@ public class BlockCondition implements Condition {
     /**
      * Location to test for the block.
      */
-    private final CompoundLocation loc;
+    private final VariableLocation loc;
 
     /**
      * Selector to validate the block.
@@ -34,7 +34,7 @@ public class BlockCondition implements Condition {
      * @param selector   the selector to validate the block
      * @param exactMatch if the selector match has to be exact
      */
-    public BlockCondition(final CompoundLocation loc, final BlockSelector selector, final boolean exactMatch) {
+    public BlockCondition(final VariableLocation loc, final BlockSelector selector, final boolean exactMatch) {
         this.loc = loc;
         this.selector = selector;
         this.exactMatch = exactMatch;
@@ -42,7 +42,7 @@ public class BlockCondition implements Condition {
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestRuntimeException {
-        final Block block = loc.getLocation(profile).getBlock();
+        final Block block = loc.getValue(profile).getBlock();
         return selector.match(block, exactMatch);
     }
 }

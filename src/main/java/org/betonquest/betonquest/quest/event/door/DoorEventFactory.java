@@ -4,8 +4,8 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -50,7 +50,7 @@ public class DoorEventFactory implements ComposedEventFactory {
     }
 
     private DoorEvent createDoorEvent(final Instruction instruction) throws InstructionParseException {
-        final CompoundLocation location = instruction.getLocation();
+        final VariableLocation location = instruction.getLocation();
         final String action = instruction.next();
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "on" -> createOpenDoorEvent(location);
@@ -61,15 +61,15 @@ public class DoorEventFactory implements ComposedEventFactory {
         };
     }
 
-    private DoorEvent createOpenDoorEvent(final CompoundLocation location) {
+    private DoorEvent createOpenDoorEvent(final VariableLocation location) {
         return new DoorEvent(location, door -> door.setOpen(true));
     }
 
-    private DoorEvent createCloseDoorEvent(final CompoundLocation location) {
+    private DoorEvent createCloseDoorEvent(final VariableLocation location) {
         return new DoorEvent(location, door -> door.setOpen(false));
     }
 
-    private DoorEvent createToggleDoorEvent(final CompoundLocation location) {
+    private DoorEvent createToggleDoorEvent(final VariableLocation location) {
         return new DoorEvent(location, door -> door.setOpen(!door.isOpen()));
     }
 }

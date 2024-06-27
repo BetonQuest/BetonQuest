@@ -30,7 +30,7 @@ public class Variable implements Token {
 
     @Override
     public double resolve(@Nullable final Profile profile) throws QuestRuntimeException {
-        return variableNumber.getDouble(profile);
+        return variableNumber.getValue(profile).doubleValue();
     }
 
     @Override

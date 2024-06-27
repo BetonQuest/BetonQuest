@@ -9,7 +9,7 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -95,7 +95,7 @@ public class EffectLibParticleManager {
                 if (Compatibility.getHooked().contains("Citizens")) {
                     npcs.addAll(loadNpcs(settings));
                 }
-                final List<CompoundLocation> locations = loadLocations(pack, settings, key);
+                final List<VariableLocation> locations = loadLocations(pack, settings, key);
                 final List<ConditionID> conditions = loadConditions(pack, key, settings);
 
                 final EffectConfiguration effect = new EffectConfiguration(effectClass, locations, npcs, conditions, settings, conditionsCheckInterval);
@@ -118,15 +118,15 @@ public class EffectLibParticleManager {
         loadParticleConfiguration();
     }
 
-    private List<CompoundLocation> loadLocations(final QuestPackage pack, final ConfigurationSection settings, final String key) {
-        final List<CompoundLocation> locations = new ArrayList<>();
+    private List<VariableLocation> loadLocations(final QuestPackage pack, final ConfigurationSection settings, final String key) {
+        final List<VariableLocation> locations = new ArrayList<>();
         if (settings.isList("locations")) {
             for (final String rawLocation : settings.getStringList("locations")) {
                 if (rawLocation == null) {
                     continue;
                 }
                 try {
-                    locations.add(new CompoundLocation(pack, GlobalVariableResolver.resolve(pack, rawLocation)));
+                    locations.add(new VariableLocation(BetonQuest.getInstance().getVariableProcessor(), pack, GlobalVariableResolver.resolve(pack, rawLocation)));
                 } catch (final InstructionParseException exception) {
                     log.warn(pack, "Could not load npc effect '" + key + "' in package " + pack.getQuestPath() + ": "
                             + "Location is invalid:" + exception.getMessage());

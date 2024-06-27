@@ -6,9 +6,9 @@ import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
 import org.betonquest.betonquest.utils.Utils;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Server;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.Plugin;
@@ -62,7 +62,7 @@ public class RemoveEntityEventFactory implements ComposedEventFactory {
                 throw new InstructionParseException("Entity type '" + entities[i] + "' does not exist", e);
             }
         }
-        final CompoundLocation loc = instruction.getLocation();
+        final VariableLocation loc = instruction.getLocation();
         final VariableNumber range = instruction.getVarNum();
         final String name = instruction.getOptional("name");
         final boolean kill = instruction.hasArgument("kill");

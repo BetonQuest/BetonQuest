@@ -4,8 +4,8 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -44,7 +44,7 @@ public class LeverEventFactory implements ComposedEventFactory {
 
     @Override
     public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
-        final CompoundLocation location = instruction.getLocation();
+        final VariableLocation location = instruction.getLocation();
         final StateType stateType = instruction.getEnum(StateType.class);
         return new PrimaryServerThreadComposedEvent(
                 new LeverEvent(stateType, location),

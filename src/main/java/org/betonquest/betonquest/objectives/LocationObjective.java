@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.HandlerList;
@@ -24,7 +24,7 @@ public class LocationObjective extends AbstractLocationObjective {
     /**
      * The location to reach
      */
-    private final CompoundLocation loc;
+    private final VariableLocation loc;
 
     /**
      * The range around the location
@@ -45,11 +45,11 @@ public class LocationObjective extends AbstractLocationObjective {
 
     @Override
     protected boolean isInside(final OnlineProfile onlineProfile, final Location location) throws QuestRuntimeException {
-        final Location targetLocation = loc.getLocation(onlineProfile);
+        final Location targetLocation = loc.getValue(onlineProfile);
         if (!location.getWorld().equals(targetLocation.getWorld())) {
             return false;
         }
-        final double pRange = range.getDouble(onlineProfile);
+        final double pRange = range.getValue(onlineProfile).doubleValue();
         return location.distanceSquared(targetLocation) <= pRange * pRange;
     }
 
@@ -73,7 +73,7 @@ public class LocationObjective extends AbstractLocationObjective {
         if (LOCATION_PROPERTY.equalsIgnoreCase(name)) {
             final Location location;
             try {
-                location = loc.getLocation(profile);
+                location = loc.getValue(profile);
             } catch (final QuestRuntimeException e) {
                 log.warn(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
                         + e.getMessage(), e);

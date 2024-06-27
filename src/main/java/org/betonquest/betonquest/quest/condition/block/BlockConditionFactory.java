@@ -4,10 +4,10 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.condition.Condition;
 import org.betonquest.betonquest.api.quest.condition.ConditionFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadCondition;
 import org.betonquest.betonquest.utils.BlockSelector;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
 
 /**
  * Factory to create test for block conditions from {@link Instruction}s.
@@ -29,7 +29,7 @@ public class BlockConditionFactory implements ConditionFactory {
 
     @Override
     public Condition parse(final Instruction instruction) throws InstructionParseException {
-        final CompoundLocation loc = instruction.getLocation();
+        final VariableLocation loc = instruction.getLocation();
         final BlockSelector selector = instruction.getBlockSelector();
         final boolean exactMatch = instruction.hasArgument("exactMatch");
         return new PrimaryServerThreadCondition(new BlockCondition(loc, selector, exactMatch), data);

@@ -46,7 +46,7 @@ public class PartyCondition extends Condition {
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         // get the party
-        final Set<OnlineProfile> members = Utils.getParty(profile.getOnlineProfile().get(), range.getDouble(profile),
+        final Set<OnlineProfile> members = Utils.getParty(profile.getOnlineProfile().get(), range.getValue(profile).doubleValue(),
                 conditions).keySet();
         // check every condition against every player - all of them must meet those conditions
         final Stream<OnlineProfile> partyStream = Bukkit.isPrimaryThread() ? members.stream() : members.parallelStream();

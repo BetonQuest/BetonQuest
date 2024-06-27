@@ -15,9 +15,9 @@ import org.betonquest.betonquest.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.instruction.tokenizer.TokenizerException;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.BlockSelector;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -283,7 +283,7 @@ public class Instruction {
     ///    OBJECTS    ///
     /////////////////////
 
-    public CompoundLocation getLocation() throws InstructionParseException {
+    public VariableLocation getLocation() throws InstructionParseException {
         return getLocation(next());
     }
 
@@ -294,7 +294,7 @@ public class Instruction {
      * @return the location if it was defined in the instruction
      * @throws InstructionParseException if the location format is invalid
      */
-    public Optional<CompoundLocation> getLocationArgument(final String prefix) throws InstructionParseException {
+    public Optional<VariableLocation> getLocationArgument(final String prefix) throws InstructionParseException {
         final Optional<String> argument = getOptionalArgument(prefix);
         if (argument.isPresent()) {
             return Optional.of(getLocation(argument.get()));
@@ -304,12 +304,12 @@ public class Instruction {
 
     @Contract(NULL_NOT_NULL_CONTRACT)
     @Nullable
-    public CompoundLocation getLocation(@Nullable final String string) throws InstructionParseException {
+    public VariableLocation getLocation(@Nullable final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }
         try {
-            return new CompoundLocation(pack, string);
+            return new VariableLocation(BetonQuest.getInstance().getVariableProcessor(), pack, string);
         } catch (final InstructionParseException e) {
             throw new PartParseException("Error while parsing location: " + e.getMessage(), e);
         }

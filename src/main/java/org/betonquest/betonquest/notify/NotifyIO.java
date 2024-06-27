@@ -68,7 +68,7 @@ public abstract class NotifyIO {
         if (dataString == null) {
             return defaultData;
         } else if (dataString.startsWith("%")) {
-            return (float) new VariableNumber(pack, dataString).getDouble(PlayerConverter.getID(player));
+            return new VariableNumber(pack, dataString).getValue(PlayerConverter.getID(player)).floatValue();
         }
         try {
             return Float.parseFloat(dataString);

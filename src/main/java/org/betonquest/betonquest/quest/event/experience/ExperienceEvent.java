@@ -33,6 +33,6 @@ public class ExperienceEvent implements Event {
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
-        experienceModification.apply(profile.getOnlineProfile().get().getPlayer(), (float) amount.getDouble(profile));
+        experienceModification.apply(profile.getOnlineProfile().get().getPlayer(), amount.getValue(profile).floatValue());
     }
 }

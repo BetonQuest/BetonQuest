@@ -7,12 +7,12 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.event.tag.AddTagChanger;
 import org.betonquest.betonquest.quest.event.tag.DeleteTagChanger;
 import org.betonquest.betonquest.quest.event.tag.TagChanger;
 import org.betonquest.betonquest.quest.event.tag.TagEvent;
 import org.betonquest.betonquest.utils.Utils;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
 import org.bukkit.plugin.PluginManager;
 
@@ -48,7 +48,7 @@ public class CompassEvent implements Event {
     /**
      * The location to set the compass to.
      */
-    private final CompoundLocation compassLocation;
+    private final VariableLocation compassLocation;
 
     /**
      * The quest package to use for logging.
@@ -67,7 +67,7 @@ public class CompassEvent implements Event {
      * @param questPackage    the quest package
      */
     public CompassEvent(final BetonQuestLogger log, final BetonQuest betonQuest, final PluginManager pluginManager,
-                        final CompassTargetAction action, final String compass, final CompoundLocation compassLocation,
+                        final CompassTargetAction action, final String compass, final VariableLocation compassLocation,
                         final QuestPackage questPackage) {
         this.log = log;
         this.betonQuest = betonQuest;
@@ -85,7 +85,7 @@ public class CompassEvent implements Event {
             case DEL -> changeTag(new DeleteTagChanger(getPackagedCompass()), profile);
             case SET -> {
                 try {
-                    final Location location = compassLocation.getLocation(profile);
+                    final Location location = compassLocation.getValue(profile);
                     if (profile.getOnlineProfile().isPresent()) {
                         final QuestCompassTargetChangeEvent event = new QuestCompassTargetChangeEvent(profile, location);
                         pluginManager.callEvent(event);

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.Nullable;
@@ -15,15 +15,15 @@ public class AbstractChestEvent {
     /**
      * The location of the chest.
      */
-    private final CompoundLocation compoundLocation;
+    private final VariableLocation variableLocation;
 
     /**
      * Creates a new chest clear event.
      *
-     * @param compoundLocation the location of the chest
+     * @param variableLocation the location of the chest
      */
-    public AbstractChestEvent(final CompoundLocation compoundLocation) {
-        this.compoundLocation = compoundLocation;
+    public AbstractChestEvent(final VariableLocation variableLocation) {
+        this.variableLocation = variableLocation;
     }
 
     /**
@@ -34,7 +34,7 @@ public class AbstractChestEvent {
      * @throws QuestRuntimeException if there is no chest at the specified location
      */
     protected InventoryHolder getChest(@Nullable final Profile profile) throws QuestRuntimeException {
-        final Block block = compoundLocation.getLocation(profile).getBlock();
+        final Block block = variableLocation.getValue(profile).getBlock();
         try {
             return (InventoryHolder) block.getState();
         } catch (final ClassCastException e) {

@@ -27,7 +27,7 @@ public class ExperienceCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final double amount = this.amount.getDouble(profile);
+        final double amount = this.amount.getValue(profile).doubleValue();
         return profile.getOnlineProfile()
                 .map(OnlineProfile::getPlayer)
                 .map(player -> player.getLevel() + player.getExp() >= amount)

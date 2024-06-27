@@ -8,9 +8,9 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.betonquest.betonquest.utils.PlayerConverter;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -46,13 +46,13 @@ public class BlockObjective extends CountingObjective implements Listener {
      * Optional location parameter.
      */
     @Nullable
-    private final CompoundLocation location;
+    private final VariableLocation location;
 
     /**
      * Optional region parameter. Used together with {@link #location} to form a cuboid region.
      */
     @Nullable
-    private final CompoundLocation region;
+    private final VariableLocation region;
 
     /**
      * Optional ignorecancel parameter.
@@ -131,7 +131,7 @@ public class BlockObjective extends CountingObjective implements Listener {
                 if (region != null) {
                     return isInRange(loc, profile, location, region);
                 }
-                return loc.getBlock().getLocation().equals(location.getLocation(profile));
+                return loc.getBlock().getLocation().equals(location.getValue(profile));
             }
         } catch (final QuestRuntimeException e) {
             logger.error(instruction.getPackage(), e.getMessage());
@@ -140,9 +140,9 @@ public class BlockObjective extends CountingObjective implements Listener {
         return true;
     }
 
-    private boolean isInRange(final Location loc, final Profile profile, final CompoundLocation location, final CompoundLocation region) throws QuestRuntimeException {
-        final Location loc1 = location.getLocation(profile);
-        final Location loc2 = region.getLocation(profile);
+    private boolean isInRange(final Location loc, final Profile profile, final VariableLocation location, final VariableLocation region) throws QuestRuntimeException {
+        final Location loc1 = location.getValue(profile);
+        final Location loc2 = region.getValue(profile);
         return inBetween(loc1, loc2, loc);
     }
 

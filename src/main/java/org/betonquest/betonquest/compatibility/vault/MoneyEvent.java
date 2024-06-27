@@ -60,9 +60,9 @@ public class MoneyEvent extends QuestEvent {
         final double current = economy.getBalance(player);
         final double target;
         if (multi) {
-            target = current * amount.getDouble(profile);
+            target = current * amount.getValue(profile).doubleValue();
         } else {
-            target = current + amount.getDouble(profile);
+            target = current + amount.getValue(profile).doubleValue();
         }
 
         final double difference = target - current;

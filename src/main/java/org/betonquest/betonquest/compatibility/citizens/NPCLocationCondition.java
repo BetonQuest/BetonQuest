@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
 
 /**
@@ -20,7 +20,7 @@ import org.bukkit.Location;
 public class NPCLocationCondition extends Condition {
     private final int npcId;
 
-    private final CompoundLocation location;
+    private final VariableLocation location;
 
     private final VariableNumber radius;
 
@@ -42,11 +42,11 @@ public class NPCLocationCondition extends Condition {
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
         }
-        final Location location = this.location.getLocation(profile);
+        final Location location = this.location.getValue(profile);
         if (!location.getWorld().equals(npc.getStoredLocation().getWorld())) {
             return false;
         }
-        final double radius = this.radius.getDouble(profile);
+        final double radius = this.radius.getValue(profile).doubleValue();
         return npc.getStoredLocation().distanceSquared(location) <= radius * radius;
     }
 }

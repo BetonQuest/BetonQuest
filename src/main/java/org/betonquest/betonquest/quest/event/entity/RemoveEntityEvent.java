@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
-import org.betonquest.betonquest.utils.location.CompoundLocation;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
@@ -29,7 +29,7 @@ public class RemoveEntityEvent implements ComposedEvent {
     /**
      * The location of the mob.
      */
-    private final CompoundLocation location;
+    private final VariableLocation location;
 
     /**
      * The radius around the location.
@@ -63,7 +63,7 @@ public class RemoveEntityEvent implements ComposedEvent {
      * @param marked   the mark of the entity
      * @param kill     whether to kill the entities
      */
-    public RemoveEntityEvent(final EntityType[] types, final CompoundLocation location, final VariableNumber radius,
+    public RemoveEntityEvent(final EntityType[] types, final VariableLocation location, final VariableNumber radius,
                              @Nullable final String name, @Nullable final VariableString marked, final boolean kill) {
         this.types = Arrays.copyOf(types, types.length);
         this.location = location;
@@ -75,9 +75,9 @@ public class RemoveEntityEvent implements ComposedEvent {
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
-        final Location mobLocation = location.getLocation(profile);
+        final Location mobLocation = location.getValue(profile);
         for (final EntityType type : types) {
-            mobLocation.getNearbyEntitiesByType(type.getEntityClass(), radius.getDouble(profile))
+            mobLocation.getNearbyEntitiesByType(type.getEntityClass(), radius.getValue(profile).doubleValue())
                     .stream()
                     .filter(entity -> name == null || name.equals(entity.getName()))
                     .filter(entity -> {

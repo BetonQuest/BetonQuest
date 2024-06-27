@@ -23,7 +23,7 @@ public class MoneyCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        double pAmount = amount.getDouble(profile);
+        double pAmount = amount.getValue(profile).doubleValue();
         if (pAmount < 0) {
             pAmount = -pAmount;
         }
