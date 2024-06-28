@@ -109,7 +109,11 @@ public class Menu extends SimpleYMLSection implements Listener {
         this.log = log;
         this.menuID = menuID;
         //load size
-        this.height = getInt("height");
+        try {
+            this.height = getNumber("height").getValue(null).intValue();
+        } catch (QuestRuntimeException | InstructionParseException e) {
+            throw new Invalid("height", e);
+        }
         if (this.height < 1 || this.height > 6) {
             throw new Invalid("height");
         }
@@ -128,7 +132,7 @@ public class Menu extends SimpleYMLSection implements Listener {
             @SuppressWarnings("PMD.ShortMethodName")
             protected QuestItem of() throws Missing, Invalid {
                 try {
-                    return new QuestItem(new ItemID(Menu.this.pack, getString("bind")));
+                    return new QuestItem(new ItemID(Menu.this.pack, getString("bind").getValue(null)));
                 } catch (final ObjectNotFoundException | QuestException e) {
                     throw new Invalid("bind", e);
                 }
@@ -139,7 +143,12 @@ public class Menu extends SimpleYMLSection implements Listener {
             @Override
             @SuppressWarnings("PMD.ShortMethodName")
             protected MenuBoundCommand of() throws Missing, Invalid {
-                String command = getString("command").trim();
+                String command;
+                try {
+                    command = getString("command").getValue(null).trim();
+                } catch (QuestRuntimeException | InstructionParseException e) {
+                    throw new Invalid("command", e);
+                }
                 if (!command.matches("/*[0-9A-Za-z\\-]+")) {
                     throw new Invalid("command");
                 }
@@ -184,17 +193,18 @@ public class Menu extends SimpleYMLSection implements Listener {
         for (final String key : config.getConfigurationSection(slotsSection).getKeys(false)) {
             final List<MenuItem> itemsList = new ArrayList<>();
             //check if items from list are all valid
-            for (final String item : getStrings("slots." + key)) {
-                if (itemsMap.containsKey(item)) {
-                    itemsList.add(itemsMap.get(item));
+            for (final VariableString item : getStrings("slots." + key)) {
+                final String itemString = item.getValue(null);
+                if (itemsMap.containsKey(itemString)) {
+                    itemsList.add(itemsMap.get(itemString));
                 } else {
-                    throw new Invalid("slots." + key, "item " + item + " not found");
+                    throw new Invalid("slots." + key, "item " + itemString + " not found");
                 }
             }
             // create a new slots object and add it to list
             try {
                 slots.add(new Slots(key, itemsList));
-            } catch (final IllegalArgumentException e) {
+            } catch (final IllegalArgumentException | QuestException e) {
                 throw new Invalid(slotsSection, e);
             }
         }
@@ -312,7 +322,12 @@ public class Menu extends SimpleYMLSection implements Listener {
      * @return the title of the menu
      */
     public String getTitle(final Profile profile) {
-        return ChatColor.translateAlternateColorCodes('&', title.getString(profile));
+        try {
+            return ChatColor.translateAlternateColorCodes('&', title.getValue(profile));
+        } catch (final QuestException e) {
+            log.warn(pack, "Could not get title for menu " + menuID + ": " + e.getMessage());
+            return "";
+        }
     }
 
     /**

@@ -17,6 +17,7 @@ public class VariableBoolean extends Variable<Boolean> {
      * @param input             the string that may contain variables
      * @throws InstructionParseException if the variables could not be created or resolved to the given type
      */
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public VariableBoolean(final VariableProcessor variableProcessor, final QuestPackage pack, final String input) throws InstructionParseException {
         super(variableProcessor, pack, input, value -> {
             if ("true".equalsIgnoreCase(value)) {

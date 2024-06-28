@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -42,7 +41,7 @@ public class LocationHologramLoop extends HologramLoop {
             throw new QuestException("Location is not specified");
         } else {
             try {
-                return new VariableLocation(BetonQuest.getInstance().getVariableProcessor(), pack, GlobalVariableResolver.resolve(pack, rawLocation)).getValue(null);
+                return new VariableLocation(BetonQuest.getInstance().getVariableProcessor(), pack, rawLocation).getValue(null);
             } catch (final QuestException e) {
                 throw new QuestException("Could not parse location: " + e.getMessage(), e);
             }

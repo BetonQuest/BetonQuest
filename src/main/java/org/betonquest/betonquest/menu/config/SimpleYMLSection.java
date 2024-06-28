@@ -3,6 +3,7 @@ package org.betonquest.betonquest.menu.config;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
@@ -60,7 +61,7 @@ public abstract class SimpleYMLSection {
         }
     }
 
-    private final String getRawString(final String key) throws Missing {
+    private String getRawString(final String key) throws Missing {
         final String string = config.getString(key);
         if (string == null) {
             throw new Missing(key);
@@ -174,17 +175,17 @@ public abstract class SimpleYMLSection {
     }
 
     private <T extends ID> List<T> getID(final String key, final QuestPackage pack, final IDArgument<T> argument) throws Invalid {
-        final List<String> strings;
+        final List<VariableString> strings;
         try {
             strings = getStrings(key);
         } catch (final Missing ignored) {
             return List.of();
         }
         final List<T> ids = new ArrayList<>(strings.size());
-        for (final String string : strings) {
+        for (final VariableString string : strings) {
             try {
-                ids.add(argument.convert(pack, string));
-            } catch (final ObjectNotFoundException e) {
+                ids.add(argument.convert(pack, string.getValue(null)));
+            } catch (final ObjectNotFoundException | QuestException e) {
                 throw new Invalid(key, e);
             }
         }

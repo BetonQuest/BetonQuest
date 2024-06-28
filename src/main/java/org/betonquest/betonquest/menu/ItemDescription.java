@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.menu;
 
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
@@ -9,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 /**
