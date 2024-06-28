@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.vault.event.MoneyEventFactory;
+import org.betonquest.betonquest.compatibility.vault.event.PermissionEventFactory;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
 import org.bukkit.Bukkit;
@@ -28,9 +29,6 @@ public class VaultIntegrator implements Integrator {
     private final BetonQuest plugin;
 
     @Nullable
-    private Permission permission;
-
-    @Nullable
     private Economy economy;
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
@@ -45,14 +43,6 @@ public class VaultIntegrator implements Integrator {
     }
 
     /**
-     * @return the permission
-     */
-    @Nullable
-    public Permission getPermission() {
-        return permission;
-    }
-
-    /**
      * @return the economy
      */
     @Nullable
@@ -63,10 +53,6 @@ public class VaultIntegrator implements Integrator {
     @Override
     public void hook() {
         final ServicesManager servicesManager = Bukkit.getServer().getServicesManager();
-        final RegisteredServiceProvider<Permission> permissionProvider = servicesManager.getRegistration(Permission.class);
-        if (permissionProvider != null) {
-            permission = permissionProvider.getProvider();
-        }
         final RegisteredServiceProvider<Economy> economyProvider = servicesManager.getRegistration(Economy.class);
         if (economyProvider != null) {
             economy = economyProvider.getProvider();
@@ -84,10 +70,13 @@ public class VaultIntegrator implements Integrator {
             plugin.registerConditions("money", MoneyCondition.class);
             plugin.registerVariable("money", MoneyVariable.class);
         }
-        if (permission == null) {
+
+        final RegisteredServiceProvider<Permission> permissionProvider = servicesManager.getRegistration(Permission.class);
+        if (permissionProvider == null) {
             log.warn("Could not get permission provider!");
         } else {
-            plugin.registerEvents("permission", PermissionEvent.class);
+            final Permission permission = permissionProvider.getProvider();
+            plugin.getQuestRegistries().getEventTypes().register("permission", new PermissionEventFactory(permission, data));
         }
     }
 
