@@ -6,6 +6,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.compatibility.vault.condition.MoneyConditionFactory;
 import org.betonquest.betonquest.compatibility.vault.event.MoneyEventFactory;
 import org.betonquest.betonquest.compatibility.vault.event.PermissionEventFactory;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -67,7 +68,7 @@ public class VaultIntegrator implements Integrator {
             final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
             final QuestTypeRegistries registries = plugin.getQuestRegistries();
             registries.getEventTypes().register("money", new MoneyEventFactory(economy, loggerFactory, data, plugin.getVariableProcessor()));
-            plugin.registerConditions("money", MoneyCondition.class);
+            registries.getConditionTypes().register("money", new MoneyConditionFactory(economy, data));
             plugin.registerVariable("money", MoneyVariable.class);
         }
 
