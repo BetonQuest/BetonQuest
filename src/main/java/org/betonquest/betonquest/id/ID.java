@@ -9,7 +9,6 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -58,16 +57,22 @@ public abstract class ID {
             throw new ObjectNotFoundException("ID is null");
         }
         if (identifier.contains(".")) {
-            final Map.Entry<QuestPackage, String> entry = parsePackageFromIdentifier(pack, identifier);
-            this.pack = entry.getKey();
-            this.identifier = entry.getValue();
-        } else {
-            if (pack == null) {
-                throw new ObjectNotFoundException("No package specified for id '" + identifier + "'!");
+            final int dotIndex = identifier.indexOf('.');
+            final QuestPackage parsed = parsePackageFromIdentifier(pack, identifier, dotIndex);
+            if (parsed != null) {
+                this.pack = parsed;
+                this.identifier = identifier.substring(dotIndex + 1);
+                return;
             }
-            this.pack = pack;
-            this.identifier = identifier;
+            if (pack == null) {
+                throw new ObjectNotFoundException("Package in ID '" + identifier + "' does not exist");
+            }
         }
+        if (pack == null) {
+            throw new ObjectNotFoundException("No package specified for id '" + identifier + "'!");
+        }
+        this.pack = pack;
+        this.identifier = identifier;
     }
 
     /**
@@ -88,30 +93,25 @@ public abstract class ID {
         instruction = new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), this.pack, this, rawInstruction);
     }
 
-    private Map.Entry<QuestPackage, String> parsePackageFromIdentifier(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
-        final int dotIndex = identifier.indexOf('.');
+    @Nullable
+    private QuestPackage parsePackageFromIdentifier(@Nullable final QuestPackage pack, final String identifier, final int dotIndex) throws ObjectNotFoundException {
         final String packName = identifier.substring(0, dotIndex);
         if (pack != null) {
             if (packName.startsWith(UP_STR + "-")) {
-                final QuestPackage questPackage = resolveRelativePathUp(pack, identifier, packName);
-                return Map.entry(questPackage, identifier.substring(dotIndex + 1));
+                return resolveRelativePathUp(pack, identifier, packName);
             }
             if (packName.startsWith("-")) {
-                final QuestPackage questPackage = resolveRelativePathDown(pack, identifier, packName);
-                return Map.entry(questPackage, identifier.substring(dotIndex + 1));
+                return resolveRelativePathDown(pack, identifier, packName);
             }
         }
         final QuestPackage packFromDot = getDotIndex(identifier, packName);
         if (packFromDot != null) {
-            return Map.entry(packFromDot, identifier.substring(dotIndex + 1));
+            return packFromDot;
         }
         if (identifier.length() == dotIndex + 1) {
             throw new ObjectNotFoundException("ID of the pack is null");
         }
-        if (pack == null) {
-            throw new ObjectNotFoundException("Package in ID '" + identifier + "' does not exist");
-        }
-        return Map.entry(pack, identifier);
+        return null;
     }
 
     @Nullable
