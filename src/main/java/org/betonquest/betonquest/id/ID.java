@@ -94,17 +94,16 @@ public abstract class ID {
         if (pack != null) {
             if (packName.startsWith(UP_STR + "-")) {
                 final QuestPackage questPackage = resolveRelativePathUp(pack, identifier, packName);
-                return Map.entry(questPackage, identifier.substring(dotIndex));
+                return Map.entry(questPackage, identifier.substring(dotIndex + 1));
             }
             if (packName.startsWith("-")) {
                 final QuestPackage questPackage = resolveRelativePathDown(pack, identifier, packName);
-                return Map.entry(questPackage, identifier.substring(dotIndex));
+                return Map.entry(questPackage, identifier.substring(dotIndex + 1));
             }
         }
-        final Map.Entry<QuestPackage, Integer> entry = getDotIndex(identifier, packName, dotIndex);
-        if (entry != null) {
-            final QuestPackage questPackage = entry.getKey();
-            return Map.entry(questPackage, identifier.substring(entry.getValue() + 1));
+        final QuestPackage packFromDot = getDotIndex(identifier, packName);
+        if (packFromDot != null) {
+            return Map.entry(packFromDot, identifier.substring(dotIndex + 1));
         }
         if (identifier.length() == dotIndex + 1) {
             throw new ObjectNotFoundException("ID of the pack is null");
@@ -116,16 +115,16 @@ public abstract class ID {
     }
 
     @Nullable
-    private Map.Entry<QuestPackage, Integer> getDotIndex(final String identifier, final String packName, final int dotIndex) {
+    private QuestPackage getDotIndex(final String identifier, final String packName) {
         final QuestPackage potentialPack = Config.getPackages().get(packName);
         if (potentialPack == null) {
             return null;
         }
         final String[] parts = identifier.split(":")[0].split("\\.");
         if (BetonQuest.isVariableType(packName)) {
-            return resolveIdOfVariable(parts, potentialPack, dotIndex);
+            return resolveIdOfVariable(parts, potentialPack);
         }
-        return Map.entry(potentialPack, dotIndex);
+        return potentialPack;
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
@@ -174,16 +173,16 @@ public abstract class ID {
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     @Nullable
-    private Map.Entry<QuestPackage, Integer> resolveIdOfVariable(final String[] parts, final QuestPackage potentialPack, final int dotIndex) {
+    private QuestPackage resolveIdOfVariable(final String[] parts, final QuestPackage potentialPack) {
         if (parts.length == 2 && isIdFromPack(potentialPack, parts[1])) {
-            return Map.entry(potentialPack, dotIndex);
+            return potentialPack;
         } else if (parts.length > 2) {
             if (BetonQuest.isVariableType(parts[1]) && isIdFromPack(potentialPack, parts[2])) {
-                return Map.entry(potentialPack, dotIndex);
+                return potentialPack;
             } else if (isIdFromPack(potentialPack, parts[1])) {
                 return null;
             } else {
-                return Map.entry(potentialPack, dotIndex);
+                return potentialPack;
             }
         } else {
             return null;
