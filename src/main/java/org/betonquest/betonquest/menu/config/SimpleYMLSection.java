@@ -4,6 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.VariableBoolean;
@@ -13,6 +14,7 @@ import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serial;
 import java.util.ArrayList;
@@ -42,7 +44,7 @@ public abstract class SimpleYMLSection {
         }
     }
 
-    private final String getRawString(final String key) throws Missing {
+    private String getRawString(final String key) throws Missing {
         final String string = config.getString(key);
         if (string == null) {
             throw new Missing(key);
@@ -196,12 +198,17 @@ public abstract class SimpleYMLSection {
      * @throws Invalid if one of the events can't be found
      */
     protected final List<EventID> getEvents(final String key, final QuestPackage pack) throws Missing, Invalid {
-        final List<String> strings = getStrings(key);
+        final List<VariableString> strings;
+        try {
+            strings = getStrings(key);
+        } catch (final InstructionParseException e) {
+            throw new Invalid(key, e);
+        }
         final List<EventID> events = new ArrayList<>(strings.size());
-        for (final String string : strings) {
+        for (final VariableString string : strings) {
             try {
-                events.add(new EventID(pack, string));
-            } catch (final ObjectNotFoundException e) {
+                events.add(new EventID(pack, string.getValue(null)));
+            } catch (final ObjectNotFoundException | QuestRuntimeException e) {
                 throw new Invalid(key, e);
             }
         }
@@ -217,12 +224,17 @@ public abstract class SimpleYMLSection {
      * @throws Invalid if one of the conditions can't be found
      */
     protected final List<ConditionID> getConditions(final String key, final QuestPackage pack) throws Missing, Invalid {
-        final List<String> strings = getStrings(key);
+        final List<VariableString> strings;
+        try {
+            strings = getStrings(key);
+        } catch (final InstructionParseException e) {
+            throw new Invalid(key, e);
+        }
         final List<ConditionID> conditions = new ArrayList<>(strings.size());
-        for (final String string : strings) {
+        for (final VariableString string : strings) {
             try {
-                conditions.add(new ConditionID(pack, string));
-            } catch (final ObjectNotFoundException e) {
+                conditions.add(new ConditionID(pack, string.getValue(null)));
+            } catch (final ObjectNotFoundException | QuestRuntimeException e) {
                 throw new Invalid(key, e);
             }
         }
@@ -294,9 +306,10 @@ public abstract class SimpleYMLSection {
 
         private final String message;
 
+        @Nullable
         private final String cause;
 
-        public InvalidSimpleConfigException(final String cause) {
+        public InvalidSimpleConfigException(@Nullable final String cause) {
             super();
             this.cause = cause;
             this.message = "Could not load '" + name + "':" + this.cause;

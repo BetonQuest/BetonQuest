@@ -1,7 +1,10 @@
 package org.betonquest.betonquest.quest.variable.constant;
 
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.variable.Variable;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -9,21 +12,33 @@ import org.jetbrains.annotations.Nullable;
  */
 public class ConstantVariable implements Variable {
     /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
      * The constant value.
      */
-    private final String constant;
+    private final VariableString constant;
 
     /**
      * Create a variable that always evaluates to the given constant.
      *
+     * @param log      The logger.
      * @param constant The constant value.
      */
-    public ConstantVariable(final String constant) {
+    public ConstantVariable(final BetonQuestLogger log, final VariableString constant) {
+        this.log = log;
         this.constant = constant;
     }
 
     @Override
     public String getValue(@Nullable final Profile profile) {
-        return constant;
+        try {
+            return constant.getValue(profile);
+        } catch (final QuestRuntimeException e) {
+            log.warn("Could not resolve constant variable: " + e.getMessage(), e);
+            return "";
+        }
     }
 }

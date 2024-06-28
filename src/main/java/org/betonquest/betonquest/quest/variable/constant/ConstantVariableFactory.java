@@ -1,9 +1,12 @@
 package org.betonquest.betonquest.quest.variable.constant;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.variable.Variable;
 import org.betonquest.betonquest.api.quest.variable.VariableFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.configuration.ConfigurationSection;
 
 /**
@@ -11,9 +14,17 @@ import org.bukkit.configuration.ConfigurationSection;
  */
 public class ConstantVariableFactory implements VariableFactory {
     /**
-     * Create a new Eval variable factory.
+     * Custom {@link BetonQuestLogger} instance for this class.
      */
-    public ConstantVariableFactory() {
+    private final BetonQuestLogger log;
+
+    /**
+     * Create a new Eval variable factory.
+     *
+     * @param log the logger
+     */
+    public ConstantVariableFactory(final BetonQuestLogger log) {
+        this.log = log;
     }
 
     @Override
@@ -27,6 +38,7 @@ public class ConstantVariableFactory implements VariableFactory {
         if (constant == null) {
             throw new InstructionParseException("No constant with the name '" + constantTarget + "' found in the 'constants' section!");
         }
-        return new ConstantVariable(constant);
+        return new ConstantVariable(log, new VariableString(BetonQuest.getInstance().getVariableProcessor(),
+                instruction.getPackage(), constant));
     }
 }

@@ -1,12 +1,15 @@
 package org.betonquest.betonquest.modules.config.quest;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.utils.Utils;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.Contract;
@@ -20,6 +23,11 @@ import java.util.List;
  * This {@link QuestPackageImpl} represents all functionality based on a {@link Quest}.
  */
 public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
     /**
      * Creates a new {@link QuestPackage}.  For more information see {@link Quest}.
      *
@@ -35,6 +43,7 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
      */
     public QuestPackageImpl(final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final String questPath, final File root, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
         super(log, configAccessorFactory, questPath, root, files);
+        this.log = log;
     }
 
     @Override
@@ -74,11 +83,6 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
     }
 
     @Override
-    public String subst(final String input) {
-        return GlobalVariableResolver.resolve(this, input);
-    }
-
-    @Override
     @Nullable
     public String getString(final String address) {
         return getString(address, null);
@@ -96,7 +100,12 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
             return value;
         }
 
-        return GlobalVariableResolver.resolve(this, value);
+        try {
+            return new VariableString(BetonQuest.getInstance().getVariableProcessor(), this, value).getValue(null);
+        } catch (QuestRuntimeException | InstructionParseException e) {
+            log.warn(this, "Error parsing variable in '" + address + "': " + e.getMessage(), e);
+            return "";
+        }
     }
 
     @Override
