@@ -9,7 +9,6 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -58,16 +57,22 @@ public abstract class ID {
             throw new ObjectNotFoundException("ID is null");
         }
         if (identifier.contains(".")) {
-            final Map.Entry<QuestPackage, String> entry = parsePackageFromIdentifier(pack, identifier);
-            this.pack = entry.getKey();
-            this.identifier = entry.getValue();
-        } else {
-            if (pack == null) {
-                throw new ObjectNotFoundException("No package specified for id '" + identifier + "'!");
+            final int dotIndex = identifier.indexOf('.');
+            final QuestPackage parsed = parsePackageFromIdentifier(pack, identifier, dotIndex);
+            if (parsed != null) {
+                this.pack = parsed;
+                this.identifier = identifier.substring(dotIndex + 1);
+                return;
             }
-            this.pack = pack;
-            this.identifier = identifier;
+            if (pack == null) {
+                throw new ObjectNotFoundException("Package in ID '" + identifier + "' does not exist");
+            }
         }
+        if (pack == null) {
+            throw new ObjectNotFoundException("No package specified for id '" + identifier + "'!");
+        }
+        this.pack = pack;
+        this.identifier = identifier;
     }
 
     /**
@@ -88,44 +93,38 @@ public abstract class ID {
         instruction = new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), this.pack, this, rawInstruction);
     }
 
-    private Map.Entry<QuestPackage, String> parsePackageFromIdentifier(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
-        final int dotIndex = identifier.indexOf('.');
+    @Nullable
+    private QuestPackage parsePackageFromIdentifier(@Nullable final QuestPackage pack, final String identifier, final int dotIndex) throws ObjectNotFoundException {
         final String packName = identifier.substring(0, dotIndex);
         if (pack != null) {
             if (packName.startsWith(UP_STR + "-")) {
-                final QuestPackage questPackage = resolveRelativePathUp(pack, identifier, packName);
-                return Map.entry(questPackage, identifier.substring(dotIndex));
+                return resolveRelativePathUp(pack, identifier, packName);
             }
             if (packName.startsWith("-")) {
-                final QuestPackage questPackage = resolveRelativePathDown(pack, identifier, packName);
-                return Map.entry(questPackage, identifier.substring(dotIndex));
+                return resolveRelativePathDown(pack, identifier, packName);
             }
         }
-        final Map.Entry<QuestPackage, Integer> entry = getDotIndex(identifier, packName, dotIndex);
-        if (entry != null) {
-            final QuestPackage questPackage = entry.getKey();
-            return Map.entry(questPackage, identifier.substring(entry.getValue() + 1));
+        final QuestPackage packFromDot = getDotIndex(identifier, packName);
+        if (packFromDot != null) {
+            return packFromDot;
         }
         if (identifier.length() == dotIndex + 1) {
             throw new ObjectNotFoundException("ID of the pack is null");
         }
-        if (pack == null) {
-            throw new ObjectNotFoundException("Package in ID '" + identifier + "' does not exist");
-        }
-        return Map.entry(pack, identifier);
+        return null;
     }
 
     @Nullable
-    private Map.Entry<QuestPackage, Integer> getDotIndex(final String identifier, final String packName, final int dotIndex) {
+    private QuestPackage getDotIndex(final String identifier, final String packName) {
         final QuestPackage potentialPack = Config.getPackages().get(packName);
         if (potentialPack == null) {
             return null;
         }
         final String[] parts = identifier.split(":")[0].split("\\.");
         if (BetonQuest.isVariableType(packName)) {
-            return resolveIdOfVariable(parts, potentialPack, dotIndex);
+            return resolveIdOfVariable(parts, potentialPack);
         }
-        return Map.entry(potentialPack, dotIndex);
+        return potentialPack;
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
@@ -174,16 +173,16 @@ public abstract class ID {
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     @Nullable
-    private Map.Entry<QuestPackage, Integer> resolveIdOfVariable(final String[] parts, final QuestPackage potentialPack, final int dotIndex) {
+    private QuestPackage resolveIdOfVariable(final String[] parts, final QuestPackage potentialPack) {
         if (parts.length == 2 && isIdFromPack(potentialPack, parts[1])) {
-            return Map.entry(potentialPack, dotIndex);
+            return potentialPack;
         } else if (parts.length > 2) {
             if (BetonQuest.isVariableType(parts[1]) && isIdFromPack(potentialPack, parts[2])) {
-                return Map.entry(potentialPack, dotIndex);
+                return potentialPack;
             } else if (isIdFromPack(potentialPack, parts[1])) {
                 return null;
             } else {
-                return Map.entry(potentialPack, dotIndex);
+                return potentialPack;
             }
         } else {
             return null;
