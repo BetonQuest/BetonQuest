@@ -69,7 +69,7 @@ public class MoneyEventFactory implements EventFactory {
         try {
             amount = new VariableNumber(variableProcessor, instruction.getPackage(), string);
         } catch (final InstructionParseException e) {
-            throw new InstructionParseException("Could not parse money amount", e);
+            throw new InstructionParseException("Could not parse money amount: " + e.getMessage(), e);
         }
         final boolean notify = instruction.hasArgument("notify");
         final IngameNotificationSender givenSender;

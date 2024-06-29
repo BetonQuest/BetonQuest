@@ -17,15 +17,23 @@ import org.bukkit.Server;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicesManager;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Integrator for <a href="https://github.com/MilkBowl/VaultAPI">Vault</a>.
+ */
 public class VaultIntegrator implements Integrator {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
+    /**
+     * BetonQuest Plugin for registering.
+     */
     private final BetonQuest plugin;
 
+    /**
+     * Constructor for the Vault Integration.
+     */
     public VaultIntegrator() {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         plugin = BetonQuest.getInstance();
@@ -44,6 +52,7 @@ public class VaultIntegrator implements Integrator {
             final Economy economy = economyProvider.getProvider();
             final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
             final QuestTypeRegistries registries = plugin.getQuestRegistries();
+
             registries.getEventTypes().register("money", new MoneyEventFactory(economy, loggerFactory, data, plugin.getVariableProcessor()));
             registries.getConditionTypes().register("money", new MoneyConditionFactory(economy, data));
             registries.getVariableTypes().register("money", new MoneyVariableFactory(economy, loggerFactory));

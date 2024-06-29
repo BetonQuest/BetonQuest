@@ -39,7 +39,7 @@ public class PermissionEventFactory implements EventFactory {
         final boolean perm = "perm".equalsIgnoreCase(instruction.next());
         final String permission = instruction.next();
         final String world;
-        if (instruction.size() >= 5 && !instruction.next().matches("conditions?:")) {
+        if (instruction.size() >= 5 && !instruction.next().matches("^conditions?:")) {
             world = instruction.current();
         } else {
             world = null;
