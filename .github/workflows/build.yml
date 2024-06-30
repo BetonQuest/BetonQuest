@@ -10,8 +10,7 @@ jobs:
       VERSION: ${{ steps.version.outputs.version }}
       VERSION_TYPE: ${{ steps.version.outputs.version_type }}
       VERSION_MAVEN: ${{ steps.version.outputs.version_maven }}
-      PREVIOUS_VERSION_TAG: ${{ steps.version.outputs.previous_version_tag }}
-      CHANGES_IN_DOCS_ONLY: ${{ steps.version.outputs.changes_in_docs_only }}
+      VERSION_IS_NEW: ${{ steps.version.outputs.version_is_new }}
 
     steps:
       - name: Checkout source code
@@ -22,6 +21,8 @@ jobs:
         with:
           ROOT_REPOSITORY: BetonQuest/BetonQuest
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EXCLUDE_PATHS: |
+            docs
       - name: Save version to output variable
         id: version
         shell: bash --noprofile --norc -euo pipefail {0}
@@ -29,8 +30,7 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
           echo "version_maven=$VERSION_MAVEN" >> $GITHUB_OUTPUT
-          echo "previous_version_tag=${VERSION_PREVIOUS_TAG-}" >> $GITHUB_OUTPUT
-          echo "changes_in_docs_only=${VERSION_CHANGES_IN_DOCS_ONLY-}" >> $GITHUB_OUTPUT
+          echo "version_is_new=${VERSION_IS_NEW-}" >> $GITHUB_OUTPUT
 
   build-code:
     name: Build Code
@@ -41,8 +41,7 @@ jobs:
       VERSION: ${{ needs.prepare.outputs.VERSION }}
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
-      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
-      CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+      VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
 
     steps:
       - name: Checkout source code
@@ -78,8 +77,7 @@ jobs:
       VERSION: ${{ needs.prepare.outputs.VERSION }}
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
-      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
-      CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+      VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
 
     steps:
       - name: Checkout source code
@@ -117,7 +115,7 @@ jobs:
 
   deploy-code:
     name: Deploy Code
-    if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY == 'false'"
+    if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && needs.prepare.outputs.VERSION_IS_NEW == 'false'"
     needs: [ prepare, build-code, build-docs ]
     runs-on: ubuntu-latest
 
@@ -125,8 +123,7 @@ jobs:
       VERSION: ${{ needs.prepare.outputs.VERSION }}
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
-      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
-      CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+      VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
 
     outputs:
       UPLOAD_PATH: ${{ steps.save_upload_path.outputs.upload_path }}
@@ -175,8 +172,7 @@ jobs:
       VERSION: ${{ needs.prepare.outputs.VERSION }}
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
-      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
-      CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+      VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
 
     steps:
       - name: Checkout source code
@@ -258,8 +254,7 @@ jobs:
       VERSION: ${{ needs.prepare.outputs.VERSION }}
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
-      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
-      CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+      VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
 
     steps:
       - name: Checkout source code
@@ -292,14 +287,10 @@ jobs:
           args: |
             target/artifacts/BetonQuest.jar
             target/docs/Docs.zip
-      - name: Delete obsolete git tag
-        shell: bash --noprofile --norc -euo pipefail {0}
-        run: |
-          git push origin :${PREVIOUS_VERSION_TAG}
 
   discord-announcement:
     name: Official Deployment
-    if: "always() && !cancelled() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && ( needs.prepare.outputs.CHANGES_IN_DOCS_ONLY == 'false' || failure() ) )"
+    if: "always() && !cancelled() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && ( needs.prepare.outputs.VERSION_IS_NEW == 'false' || failure() ) )"
     needs: [ prepare, deploy-code, deploy-docs, create-release ]
     runs-on: ubuntu-latest
 
@@ -307,8 +298,7 @@ jobs:
       VERSION: ${{ needs.prepare.outputs.VERSION }}
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
-      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
-      CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+      VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
 
     steps:
       - name: Checkout source code

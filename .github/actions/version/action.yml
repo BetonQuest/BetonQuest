@@ -11,6 +11,11 @@ inputs:
     description: |
       The GitHub token to use for creating the build-number tag.
     required: true
+  EXCLUDE_PATHS:
+    default: |
+    description: |
+      Multiline list of paths to exclude from the check.
+    required: false
 
 outputs:
   VERSION:
@@ -29,10 +34,10 @@ outputs:
     description: |
       The previous build-number tag from Development Build.
     value: ${{ steps.save_tag.outputs.version_previous_tag }}
-  VERSION_CHANGES_IN_DOCS_ONLY:
+  VERSION_IS_NEW:
     description: |
       Whether the changes are only in the docs folder.
-    value: ${{ steps.save_changes.outputs.version_changes_in_docs_only }}
+    value: ${{ steps.save_required.outputs.NEW_VERSION_REQUIRED }}
 
 runs:
   using: composite
@@ -41,6 +46,11 @@ runs:
       id: save_version_type
       with:
         ROOT_REPOSITORY: ${{ inputs.ROOT_REPOSITORY }}
+    - uses: ./.github/actions/version/required
+      id: save_required
+      if: "env.VERSION_TYPE == 'development'"
+      with:
+        TARGET_PATHS: ${{ inputs.EXCLUDE_PATHS }}
     - name: Read revision version from pom.xml
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
@@ -54,18 +64,8 @@ runs:
         VERSION_PREVIOUS_TAG="$(git tag -l ${MAVEN_POM_REVISION_VERSION}-build-number-* | head -n 1)"
         echo "VERSION_PREVIOUS_TAG=$VERSION_PREVIOUS_TAG" >> $GITHUB_ENV
         echo "version_previous_tag=$VERSION_PREVIOUS_TAG" >> $GITHUB_OUTPUT
-    - name: Check for difference in docs only
-      id: save_changes
-      if: "env.VERSION_TYPE == 'development'"
-      shell: bash --noprofile --norc -euo pipefail {0}
-      run: |
-        DIFF_OUTSIDE="$(git diff --quiet ${VERSION_PREVIOUS_TAG} -- . ':(exclude)docs/' && echo false || echo true)"
-        DIFF_INSIDE="$(git diff --quiet ${VERSION_PREVIOUS_TAG} -- docs/ && echo false || echo true)"
-        if [[ $DIFF_OUTSIDE == false && $DIFF_INSIDE == true ]]; then VERSION_CHANGES_IN_DOCS_ONLY=true; else VERSION_CHANGES_IN_DOCS_ONLY=false; fi
-        echo "VERSION_CHANGES_IN_DOCS_ONLY=$VERSION_CHANGES_IN_DOCS_ONLY" >> $GITHUB_ENV
-        echo "version_changes_in_docs_only=$VERSION_CHANGES_IN_DOCS_ONLY" >> $GITHUB_OUTPUT
     - name: Generate build number for Development Build
-      if: "env.VERSION_TYPE == 'development' && env.VERSION_CHANGES_IN_DOCS_ONLY == 'false'"
+      if: "env.VERSION_TYPE == 'development' && env.NEW_VERSION_REQUIRED == 'false'"
       uses: onyxmueller/build-tag-number@v1.0.3
       with:
         token: ${{ inputs.GITHUB_TOKEN }}
@@ -84,7 +84,7 @@ runs:
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
         echo "VERSION_MAVEN=${MAVEN_POM_REVISION_VERSION}-SNAPSHOT" >> $GITHUB_ENV
-        if [ $VERSION_CHANGES_IN_DOCS_ONLY == true ]; then VERSION=${VERSION_PREVIOUS_TAG/build-number/DEV}; else VERSION=${MAVEN_POM_REVISION_VERSION}-DEV-${BUILD_NUMBER}; fi
+        if [ ${env.NEW_VERSION_REQUIRED} == true ]; then VERSION=${VERSION_PREVIOUS_TAG/build-number/DEV}; else VERSION=${MAVEN_POM_REVISION_VERSION}-DEV-${BUILD_NUMBER}; fi
         echo "VERSION=$VERSION" >> $GITHUB_ENV
     - name: Set version for 'Artifact Build'
       if: "env.VERSION_TYPE == 'artifact'"
