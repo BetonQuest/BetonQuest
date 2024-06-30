@@ -10,7 +10,6 @@ jobs:
       VERSION: ${{ steps.version.outputs.version }}
       VERSION_TYPE: ${{ steps.version.outputs.version_type }}
       VERSION_MAVEN: ${{ steps.version.outputs.version_maven }}
-      PREVIOUS_VERSION_TAG: ${{ steps.version.outputs.previous_version_tag }}
       VERSION_IS_NEW: ${{ steps.version.outputs.version_is_new }}
 
     steps:
@@ -31,7 +30,6 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
           echo "version_maven=$VERSION_MAVEN" >> $GITHUB_OUTPUT
-          echo "previous_version_tag=${VERSION_PREVIOUS_TAG-}" >> $GITHUB_OUTPUT
           echo "version_is_new=${VERSION_IS_NEW-}" >> $GITHUB_OUTPUT
 
   build-code:
@@ -43,7 +41,6 @@ jobs:
       VERSION: ${{ needs.prepare.outputs.VERSION }}
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
-      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
 
     steps:
@@ -80,7 +77,6 @@ jobs:
       VERSION: ${{ needs.prepare.outputs.VERSION }}
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
-      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
 
     steps:
@@ -127,7 +123,6 @@ jobs:
       VERSION: ${{ needs.prepare.outputs.VERSION }}
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
-      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
 
     outputs:
@@ -177,7 +172,6 @@ jobs:
       VERSION: ${{ needs.prepare.outputs.VERSION }}
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
-      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
 
     steps:
@@ -260,7 +254,6 @@ jobs:
       VERSION: ${{ needs.prepare.outputs.VERSION }}
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
-      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
 
     steps:
@@ -294,10 +287,6 @@ jobs:
           args: |
             target/artifacts/BetonQuest.jar
             target/docs/Docs.zip
-      - name: Delete obsolete git tag
-        shell: bash --noprofile --norc -euo pipefail {0}
-        run: |
-          git push origin :${PREVIOUS_VERSION_TAG}
 
   discord-announcement:
     name: Official Deployment
@@ -309,7 +298,6 @@ jobs:
       VERSION: ${{ needs.prepare.outputs.VERSION }}
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
-      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
 
     steps:
