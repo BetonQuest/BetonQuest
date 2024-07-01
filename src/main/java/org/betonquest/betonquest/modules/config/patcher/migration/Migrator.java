@@ -11,6 +11,7 @@ import org.betonquest.betonquest.modules.config.patcher.migration.migrators.Pack
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.RPGMenuMerge;
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.RemoveEntity;
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.RideUpdates;
+import org.betonquest.betonquest.modules.config.patcher.migration.migrators.VariablesRename;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -45,6 +46,7 @@ public class Migrator {
         migrations.add(new RideUpdates(provider));
         migrations.add(new AuraSkillsRename(provider));
         migrations.add(new FabledRename(provider));
+        migrations.add(new VariablesRename(provider));
     }
 
     /**
