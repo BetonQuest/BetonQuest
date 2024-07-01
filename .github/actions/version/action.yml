@@ -84,7 +84,7 @@ runs:
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
         echo "VERSION_MAVEN=${MAVEN_POM_REVISION_VERSION}-SNAPSHOT" >> $GITHUB_ENV
-        if [ ${env.NEW_VERSION_REQUIRED} == true ]; then VERSION=${VERSION_PREVIOUS_TAG/build-number/DEV}; else VERSION=${MAVEN_POM_REVISION_VERSION}-DEV-${BUILD_NUMBER}; fi
+        if [ ${{ env.NEW_VERSION_REQUIRED }} == true ]; then VERSION=${VERSION_PREVIOUS_TAG/build-number/DEV}; else VERSION=${MAVEN_POM_REVISION_VERSION}-DEV-${BUILD_NUMBER}; fi
         echo "VERSION=$VERSION" >> $GITHUB_ENV
     - name: Set version for 'Artifact Build'
       if: "env.VERSION_TYPE == 'artifact'"
