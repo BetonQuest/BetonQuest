@@ -23,7 +23,7 @@ runs:
       run: |
         mapfile -t TARGET_PATHS_ARRAY <<< "${{ inputs.TARGET_PATHS }}"
         
-        CHANGED_FILES=$(git diff --name-only ${github.event.before} ${github.sha})
+        CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
         NEW_VERSION_REQUIRED=false
 
         is_in_target_paths() {
