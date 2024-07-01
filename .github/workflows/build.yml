@@ -115,7 +115,7 @@ jobs:
 
   deploy-code:
     name: Deploy Code
-    if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && needs.prepare.outputs.VERSION_IS_NEW == 'false'"
+    if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && needs.prepare.outputs.VERSION_IS_NEW == 'true'"
     needs: [ prepare, build-code, build-docs ]
     runs-on: ubuntu-latest
 
@@ -290,7 +290,7 @@ jobs:
 
   discord-announcement:
     name: Official Deployment
-    if: "always() && !cancelled() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && ( needs.prepare.outputs.VERSION_IS_NEW == 'false' || failure() ) )"
+    if: "always() && !cancelled() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && ( needs.prepare.outputs.VERSION_IS_NEW == 'true' || failure() ) )"
     needs: [ prepare, deploy-code, deploy-docs, create-release ]
     runs-on: ubuntu-latest
 
