@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.legacy;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -9,6 +10,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Adapter for {@link PlayerCondition} and {@link PlayerlessCondition} to fit the old convention of
@@ -55,6 +57,10 @@ public class LegacyConditionAdapter extends org.betonquest.betonquest.api.Condit
             Objects.requireNonNull(playerlessCondition);
             return playerlessCondition.check();
         } else {
+            final Optional<OnlineProfile> onlineProfile = profile.getOnlineProfile();
+            if (onlineProfile.isPresent()) {
+                return playerCondition.check(onlineProfile.get());
+            }
             return playerCondition.check(profile);
         }
     }

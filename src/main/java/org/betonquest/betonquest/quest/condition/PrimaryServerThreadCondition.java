@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.condition;
 
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.Condition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -25,6 +26,11 @@ public class PrimaryServerThreadCondition extends PrimaryServerThreadType<Condit
      */
     public PrimaryServerThreadCondition(final Condition synced, final PrimaryServerThreadData data) {
         super(synced, data);
+    }
+
+    @Override
+    public boolean check(final OnlineProfile profile) throws QuestRuntimeException {
+        return call(() -> synced.check(profile));
     }
 
     @Override
