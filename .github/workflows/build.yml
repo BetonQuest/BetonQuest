@@ -7,10 +7,10 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      VERSION: ${{ steps.version.outputs.version }}
-      VERSION_TYPE: ${{ steps.version.outputs.version_type }}
-      VERSION_MAVEN: ${{ steps.version.outputs.version_maven }}
-      VERSION_IS_NEW: ${{ steps.version.outputs.version_is_new }}
+      VERSION: ${{ steps.version.outputs.VERSION }}
+      VERSION_TYPE: ${{ steps.version.outputs.VERSION_TYPE }}
+      VERSION_MAVEN: ${{ steps.version.outputs.VERSION_MAVEN }}
+      VERSION_IS_NEW: ${{ steps.version.outputs.VERSION_IS_NEW }}
 
     steps:
       - name: Checkout source code
@@ -18,19 +18,12 @@ jobs:
         with:
           fetch-depth: 0
       - uses: ./.github/actions/version
+        id: version
         with:
           ROOT_REPOSITORY: BetonQuest/BetonQuest
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           EXCLUDE_PATHS: |
             docs
-      - name: Save version to output variable
-        id: version
-        shell: bash --noprofile --norc -euo pipefail {0}
-        run: |
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
-          echo "version_maven=$VERSION_MAVEN" >> $GITHUB_OUTPUT
-          echo "version_is_new=${VERSION_IS_NEW-}" >> $GITHUB_OUTPUT
 
   build-code:
     name: Build Code

@@ -49,7 +49,6 @@ runs:
       with:
         packages: pngquant
     - name: Update python pip
-      id: setup-dependencies
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
         python3 -m pip install --upgrade pip
