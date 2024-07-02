@@ -50,43 +50,43 @@ runs:
     - name: Read revision version from pom.xml
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
-        MAVEN_POM_REVISION_VERSION="$(mvn help:evaluate -Dexpression=revision -q -DforceStdout)"
-        echo "MAVEN_POM_REVISION_VERSION=$MAVEN_POM_REVISION_VERSION" >> $GITHUB_ENV
+        REVISION_VERSION="$(mvn help:evaluate -Dexpression=revision -q -DforceStdout)"
+        echo "REVISION_VERSION=$REVISION_VERSION" >> $GITHUB_ENV
     - name: Get the previous build-number tag from Development Build
       if: "env.VERSION_TYPE == 'release' || env.VERSION_TYPE == 'development'"
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
-        VERSION_PREVIOUS_TAG="$(git tag -l ${MAVEN_POM_REVISION_VERSION}-build-number-* | head -n 1)"
+        VERSION_PREVIOUS_TAG="$(git tag -l ${REVISION_VERSION}-build-number-* | head -n 1)"
         echo "VERSION_PREVIOUS_TAG=$VERSION_PREVIOUS_TAG" >> $GITHUB_ENV
     - name: Generate build number for Development Build
       if: "env.VERSION_TYPE == 'development' && env.NEW_VERSION_REQUIRED == 'true'"
       uses: onyxmueller/build-tag-number@v1.0.3
       with:
         token: ${{ inputs.GITHUB_TOKEN }}
-        prefix: ${{ env.MAVEN_POM_REVISION_VERSION }}
+        prefix: ${{ env.REVISION_VERSION }}
     - name: Set version for 'Release Build'
       if: "env.VERSION_TYPE == 'release'"
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
         TAG_VERSION="${GITHUB_REF#*/*/}"
         echo "Collected the tag version. The version is '$TAG_VERSION'"
-        if [ ${TAG_VERSION:1} != $MAVEN_POM_REVISION_VERSION ]; then echo "::error::The version of the tag and the version of the pom are not equal! Tag is '$TAG_VERSION' and pom is '$MAVEN_POM_REVISION_VERSION'."; exit 1; fi
-        echo "VERSION_MAVEN=$MAVEN_POM_REVISION_VERSION" >> $GITHUB_ENV
-        echo "VERSION=$MAVEN_POM_REVISION_VERSION" >> $GITHUB_ENV
+        if [ ${TAG_VERSION:1} != $REVISION_VERSION ]; then echo "::error::The version of the tag and the version of the pom are not equal! Tag is '$TAG_VERSION' and pom is '$REVISION_VERSION'."; exit 1; fi
+        echo "VERSION_MAVEN=$REVISION_VERSION" >> $GITHUB_ENV
+        echo "VERSION=$REVISION_VERSION" >> $GITHUB_ENV
     - name: Set version for 'Development Build'
       if: "env.VERSION_TYPE == 'development'"
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
-        echo "VERSION_MAVEN=${MAVEN_POM_REVISION_VERSION}-SNAPSHOT" >> $GITHUB_ENV
-        if [ ${{ env.NEW_VERSION_REQUIRED }} == false ]; then VERSION=${VERSION_PREVIOUS_TAG/build-number/DEV}; else VERSION=${MAVEN_POM_REVISION_VERSION}-DEV-${BUILD_NUMBER}; fi
+        echo "VERSION_MAVEN=${REVISION_VERSION}-SNAPSHOT" >> $GITHUB_ENV
+        if [ ${{ env.NEW_VERSION_REQUIRED }} == false ]; then VERSION=${VERSION_PREVIOUS_TAG/build-number/DEV}; else VERSION=${REVISION_VERSION}-DEV-${BUILD_NUMBER}; fi
         echo "VERSION=$VERSION" >> $GITHUB_ENV
     - name: Set version for 'Artifact Build'
       if: "env.VERSION_TYPE == 'artifact'"
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
         if [ ${{ github.repository }} != inputs.ROOT_REPOSITORY ]; then REPO=${{ github.repository }}-; fi
-        echo "VERSION_MAVEN=${MAVEN_POM_REVISION_VERSION}-DEV-UNOFFICIAL" >> $GITHUB_ENV
-        VERSION=${MAVEN_POM_REVISION_VERSION}-DEV-ARTIFACT-${REPO}${{ github.run_number }}
+        echo "VERSION_MAVEN=${REVISION_VERSION}-DEV-UNOFFICIAL" >> $GITHUB_ENV
+        VERSION=${REVISION_VERSION}-DEV-ARTIFACT-${REPO}${{ github.run_number }}
         echo "VERSION=$VERSION" >> $GITHUB_ENV
     - name: Save version to output variable
       id: version
