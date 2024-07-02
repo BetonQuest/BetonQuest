@@ -238,6 +238,7 @@ public class Compatibility implements Listener {
         register("PlaceholderAPI", PlaceholderAPIIntegrator.class);
         register("ProtocolLib", ProtocolLibIntegrator.class);
         register("Brewery", BreweryIntegrator.class);
+        register("BreweryX", BreweryIntegrator.class);
         register("Jobs", JobsRebornIntegrator.class);
         register("LuckPerms", LuckPermsIntegrator.class);
         register("AuraSkills", AuraSkillsIntegrator.class);
