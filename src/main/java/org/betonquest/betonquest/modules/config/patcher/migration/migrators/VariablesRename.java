@@ -91,8 +91,9 @@ public class VariablesRename implements Migration {
     }
 
     private String replaceGlobalVariables(final String input) {
-        final String regex = "(?<!\\\\|^)\\$(.*?)(?<!\\\\|^)\\$";
+        final String regex = "(?<!\\\\)\\$(.*?)(?<!\\\\)\\$";
         final String replacement = "%constant.$1%";
-        return input.replaceAll(regex, replacement);
+        final String result = input.replaceAll(regex, replacement);
+        return result.replaceAll("\\\\\\$", "\\$");
     }
 }
