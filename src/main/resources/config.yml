@@ -70,6 +70,7 @@ hook:
   fastasyncworldedit: true
   protocollib: true
   brewery: true
+  breweryx: true
   jobs: true
   mythiclib: true
   mmocore: true

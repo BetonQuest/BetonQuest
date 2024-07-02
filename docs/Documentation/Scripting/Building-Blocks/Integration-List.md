@@ -62,7 +62,7 @@ auraskillsxp farming 10 level
 ```
 
 
-## Brewery[](https://www.spigotmc.org/resources/3082/)
+## Brewery[](https://www.spigotmc.org/resources/3082/) & BreweryX[](https://www.spigotmc.org/resources/114777/)
 
 ### Conditions
 
