@@ -72,7 +72,7 @@ class JournalEventFactoryIntegrationTest {
 
     private QuestEventFactoryAdapter createJournalEventFactory(final BetonQuestLogger logger) {
         final JournalEventFactory journalEventFactory = new JournalEventFactory(new SingletonLoggerFactory(logger), betonQuest, InstantSource.fixed(now), saver);
-        return new QuestEventFactoryAdapter(journalEventFactory, journalEventFactory);
+        return new QuestEventFactoryAdapter(journalEventFactory, journalEventFactory, null);
     }
 
     @Test

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.registry.type;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.quest.OnlinePlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
 import org.betonquest.betonquest.api.quest.QuestFactory;
@@ -19,10 +20,11 @@ import java.util.Set;
  * @param <P> the player variant of the type
  * @param <S> the playerless variant of the type
  * @param <T> the type extending {@link P} and {@link S}
+ * @param <O> the online player variant of the type
  * @param <L> the legacy structure based on the {@link org.betonquest.betonquest.Instruction Instruction}
  *            as defined in the {@link org.betonquest.betonquest.api API package}
  */
-public abstract class QuestTypeRegistry<P, S, T, L> {
+public abstract class QuestTypeRegistry<P, S, T, O, L> {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -86,7 +88,7 @@ public abstract class QuestTypeRegistry<P, S, T, L> {
      * @param factory the player factory to create the type
      */
     public void register(final String name, final PlayerQuestFactory<P> factory) {
-        registerInternal(name, factory, null);
+        registerInternal(name, factory, null, null);
     }
 
     /**
@@ -96,7 +98,7 @@ public abstract class QuestTypeRegistry<P, S, T, L> {
      * @param playerlessFactory the playerless factory to create the type
      */
     public void register(final String name, final PlayerlessQuestFactory<S> playerlessFactory) {
-        registerInternal(name, null, playerlessFactory);
+        registerInternal(name, null, playerlessFactory, null);
     }
 
     /**
@@ -137,32 +139,55 @@ public abstract class QuestTypeRegistry<P, S, T, L> {
      * @param playerlessFactory the playerless factory to create the type
      */
     public void register(final String name, final PlayerQuestFactory<P> playerFactory, final PlayerlessQuestFactory<S> playerlessFactory) {
-        registerInternal(name, playerFactory, playerlessFactory);
+        registerInternal(name, playerFactory, playerlessFactory, null);
     }
 
     /**
-     * Either the player factory or the playerless factory has to be present.
+     * One factory has to be present.
      *
-     * @see #getLegacyFactoryAdapter(PlayerQuestFactory, PlayerlessQuestFactory)
+     * @see #getLegacyFactoryAdapter(PlayerQuestFactory, PlayerlessQuestFactory, OnlinePlayerQuestFactory)
      */
     private void registerInternal(final String name, @Nullable final PlayerQuestFactory<P> playerFactory,
-                                  @Nullable final PlayerlessQuestFactory<S> playerlessFactory) {
+                                  @Nullable final PlayerlessQuestFactory<S> playerlessFactory,
+                                  @Nullable final OnlinePlayerQuestFactory<O> onlinePlayerFactory) {
         log.debug("Registering " + name + " " + typeName + " type");
-        types.put(name, getLegacyFactoryAdapter(playerFactory, playerlessFactory));
+        types.put(name, getLegacyFactoryAdapter(playerFactory, playerlessFactory, onlinePlayerFactory));
+    }
+
+    /**
+     * Registers a type with its name and a factory to create online player instances.
+     *
+     * @param name                the name of the type
+     * @param onlinePlayerFactory the online player factory to create the type
+     */
+    public void register(final String name, final OnlinePlayerQuestFactory<O> onlinePlayerFactory) {
+        registerInternal(name, null, null, onlinePlayerFactory);
+    }
+
+    /**
+     * Registers a type with its name and two factories to create online player and playerless instances.
+     *
+     * @param name                the name of the type
+     * @param onlinePlayerFactory the online player factory to create the type
+     * @param playerlessFactory   the playerless factory to create the type
+     */
+    public void register(final String name, final OnlinePlayerQuestFactory<O> onlinePlayerFactory,
+                         final PlayerlessQuestFactory<S> playerlessFactory) {
+        registerInternal(name, null, playerlessFactory, onlinePlayerFactory);
     }
 
     /**
      * Get a new adapter to the legacy factory from the new type format.
-     * <p>
-     * Either the player factory or the playerless factory has to be present.
      *
-     * @param playerFactory     the player factory to create the type
-     * @param playerlessFactory the playerless factory to create the type
+     * @param playerFactory       the player factory to create the type
+     * @param playerlessFactory   the playerless factory to create the type
+     * @param onlinePlayerFactory the online player factory to create the type
      * @return the legacy factory to store
+     * @throws IllegalArgumentException if no factory is present
      */
     protected abstract LegacyTypeFactory<L> getLegacyFactoryAdapter(
-            @Nullable PlayerQuestFactory<P> playerFactory,
-            @Nullable PlayerlessQuestFactory<S> playerlessFactory);
+            @Nullable PlayerQuestFactory<P> playerFactory, @Nullable PlayerlessQuestFactory<S> playerlessFactory,
+            @Nullable OnlinePlayerQuestFactory<O> onlinePlayerFactory);
 
     /**
      * Fetches the factory to create the type registered with the given name.
