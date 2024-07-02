@@ -12,7 +12,7 @@ outputs:
   VERSION_TYPE:
     description: |
       The type of the build (release, development, artifact).
-    value: ${{ steps.save_version_type.outputs.version_type }}
+    value: ${{ steps.version_type.outputs.version_type }}
 
 runs:
   using: composite
@@ -40,7 +40,7 @@ runs:
         echo "VERSION_TYPE=artifact" >> $GITHUB_ENV
 
     - name: Save version type to output
-      id: save_version_type
+      id: version_type
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
-        echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
+        echo "VERSION_TYPE=$VERSION_TYPE" >> $GITHUB_OUTPUT

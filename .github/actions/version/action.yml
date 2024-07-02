@@ -21,33 +21,29 @@ outputs:
   VERSION:
     description: |
       The version of the build.
-    value: ${{ steps.save_version.outputs.version }}
+    value: ${{ steps.version.outputs.VERSION }}
   VERSION_TYPE:
     description: |
       The type of the build.
-    value: ${{ steps.save_version_type.outputs.VERSION_TYPE }}
+    value: ${{ steps.version_type.outputs.VERSION_TYPE }}
   VERSION_MAVEN:
     description: |
       The version of the build in maven format.
-    value: ${{ steps.save_version_maven.outputs.version_maven }}
-  VERSION_PREVIOUS_TAG:
-    description: |
-      The previous build-number tag from Development Build.
-    value: ${{ steps.save_tag.outputs.version_previous_tag }}
+    value: ${{ steps.version_maven.outputs.VERSION_MAVEN }}
   VERSION_IS_NEW:
     description: |
       Whether the changes are only in the docs folder.
-    value: ${{ steps.save_required.outputs.NEW_VERSION_REQUIRED }}
+    value: ${{ steps.require_new.outputs.NEW_VERSION_REQUIRED || 'true' }}
 
 runs:
   using: composite
   steps:
     - uses: ./.github/actions/version/type
-      id: save_version_type
+      id: version_type
       with:
         ROOT_REPOSITORY: ${{ inputs.ROOT_REPOSITORY }}
     - uses: ./.github/actions/version/required
-      id: save_required
+      id: require_new
       if: "env.VERSION_TYPE == 'development'"
       with:
         TARGET_PATHS: ${{ inputs.EXCLUDE_PATHS }}
@@ -57,15 +53,13 @@ runs:
         MAVEN_POM_REVISION_VERSION="$(mvn help:evaluate -Dexpression=revision -q -DforceStdout)"
         echo "MAVEN_POM_REVISION_VERSION=$MAVEN_POM_REVISION_VERSION" >> $GITHUB_ENV
     - name: Get the previous build-number tag from Development Build
-      id: save_tag
       if: "env.VERSION_TYPE == 'release' || env.VERSION_TYPE == 'development'"
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
         VERSION_PREVIOUS_TAG="$(git tag -l ${MAVEN_POM_REVISION_VERSION}-build-number-* | head -n 1)"
         echo "VERSION_PREVIOUS_TAG=$VERSION_PREVIOUS_TAG" >> $GITHUB_ENV
-        echo "version_previous_tag=$VERSION_PREVIOUS_TAG" >> $GITHUB_OUTPUT
     - name: Generate build number for Development Build
-      if: "env.VERSION_TYPE == 'development' && env.NEW_VERSION_REQUIRED == 'false'"
+      if: "env.VERSION_TYPE == 'development' && env.NEW_VERSION_REQUIRED == 'true'"
       uses: onyxmueller/build-tag-number@v1.0.3
       with:
         token: ${{ inputs.GITHUB_TOKEN }}
@@ -84,7 +78,7 @@ runs:
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
         echo "VERSION_MAVEN=${MAVEN_POM_REVISION_VERSION}-SNAPSHOT" >> $GITHUB_ENV
-        if [ ${{ env.NEW_VERSION_REQUIRED }} == true ]; then VERSION=${VERSION_PREVIOUS_TAG/build-number/DEV}; else VERSION=${MAVEN_POM_REVISION_VERSION}-DEV-${BUILD_NUMBER}; fi
+        if [ ${{ env.NEW_VERSION_REQUIRED }} == false ]; then VERSION=${VERSION_PREVIOUS_TAG/build-number/DEV}; else VERSION=${MAVEN_POM_REVISION_VERSION}-DEV-${BUILD_NUMBER}; fi
         echo "VERSION=$VERSION" >> $GITHUB_ENV
     - name: Set version for 'Artifact Build'
       if: "env.VERSION_TYPE == 'artifact'"
@@ -95,12 +89,12 @@ runs:
         VERSION=${MAVEN_POM_REVISION_VERSION}-DEV-ARTIFACT-${REPO}${{ github.run_number }}
         echo "VERSION=$VERSION" >> $GITHUB_ENV
     - name: Save version to output variable
-      id: save_version
+      id: version
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
-        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
     - name: Save version maven format to output variable
-      id: save_version_maven
+      id: version_maven
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
-        echo "version_maven=$VERSION_MAVEN" >> $GITHUB_OUTPUT
+        echo "VERSION_MAVEN=$VERSION_MAVEN" >> $GITHUB_OUTPUT

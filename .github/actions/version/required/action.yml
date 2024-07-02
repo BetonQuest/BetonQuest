@@ -12,7 +12,7 @@ outputs:
   NEW_VERSION_REQUIRED:
     description: |
       Whether a new version is required based on changes outside the target paths.
-    value: ${{ steps.check_changes.outputs.new_version_required }}
+    value: ${{ steps.check_changes.outputs.NEW_VERSION_REQUIRED }}
 
 runs:
   using: composite
@@ -44,4 +44,4 @@ runs:
         done <<< "$CHANGED_FILES"
 
         echo "NEW_VERSION_REQUIRED=$NEW_VERSION_REQUIRED" >> $GITHUB_ENV
-        echo "new_version_required=$NEW_VERSION_REQUIRED" >> $GITHUB_OUTPUT
+        echo "NEW_VERSION_REQUIRED=$NEW_VERSION_REQUIRED" >> $GITHUB_OUTPUT
