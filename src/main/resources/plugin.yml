@@ -31,6 +31,7 @@ softdepend:
   - DecentHolograms
   - ProtocolLib
   - Brewery
+  - BreweryX
   - Jobs
   - LuckPerms
   - AuraSkills
@@ -82,4 +83,3 @@ permissions:
     default: true
   betonquest.language:
     default: true
-
