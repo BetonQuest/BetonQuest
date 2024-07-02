@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.conversation;
 
-import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -8,11 +7,11 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
@@ -155,7 +154,15 @@ public class ConversationData {
         }
         final String stop = pack.getString("conversations." + convName + ".stop");
         blockMovement = Boolean.parseBoolean(stop);
-        final String rawConvIOs = pack.getString("conversations." + convName + ".conversationIO", plugin.getPluginConfig().getString("default_conversation_IO", "menu,tellraw"));
+        final String rawConvIOs;
+        try {
+            rawConvIOs = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack,
+                    pack.getConfig().getString("conversations." + convName + ".conversationIO",
+                            plugin.getPluginConfig().getString("default_conversation_IO", "menu,tellraw")))
+                    .getValue(null);
+        } catch (final QuestRuntimeException e) {
+            throw new InstructionParseException(e);
+        }
 
         // check if all data is valid (or at least exist)
         for (final String rawConvIOPart : rawConvIOs.split(",")) {
@@ -171,7 +178,15 @@ public class ConversationData {
             throw new InstructionParseException("No registered conversation IO found: " + rawConvIOs);
         }
 
-        final String rawInterceptor = pack.getString("conversations." + convName + ".interceptor", plugin.getPluginConfig().getString("default_interceptor", "simple"));
+        final String rawInterceptor;
+        try {
+            rawInterceptor = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack,
+                    pack.getConfig().getString("conversations." + convName + ".interceptor",
+                            plugin.getPluginConfig().getString("default_interceptor", "simple")))
+                    .getValue(null);
+        } catch (final QuestRuntimeException e) {
+            throw new InstructionParseException(e);
+        }
         for (final String s : rawInterceptor.split(",")) {
             if (plugin.getInterceptor(s.trim()) != null) {
                 interceptor = s.trim();
@@ -672,12 +687,12 @@ public class ConversationData {
         /**
          * Other options that are available after this option is selected.
          */
-        private final List<String> pointers;
+        private final List<String> pointers = new ArrayList<>();
 
         /**
          * Other options that this option extends from.
          */
-        private final List<String> extendLinks;
+        private final List<String> extendLinks = new ArrayList<>();
 
         /**
          * Creates a ConversationOption.
@@ -689,7 +704,8 @@ public class ConversationData {
          * @throws InstructionParseException if the configuration is invalid
          */
         @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
-        protected ConversationOption(final ConversationID conversationID, final String name, final OptionType type, final ConfigurationSection convSection) throws InstructionParseException {
+        protected ConversationOption(final ConversationID conversationID, final String name, final OptionType type,
+                                     final ConfigurationSection convSection) throws InstructionParseException {
             this.pack = conversationID.getPackage();
             this.conversationName = conversationID.getBaseID();
             this.optionName = name;
@@ -697,30 +713,38 @@ public class ConversationData {
             final ConfigurationSection conv = convSection.getConfigurationSection(type.getIdentifier() + "." + name);
 
             if (conv == null) {
-                pointers = new ArrayList<>();
-                extendLinks = new ArrayList<>();
                 return;
             }
 
             final String defaultLang = Config.getLanguage();
 
-            parsePrefix(name, type, conv, defaultLang);
-            parseText(name, type, conv, defaultLang);
-            parseConditions(name, type, conv);
-            parseEvents(name, type, conv);
-
-            pointers = Arrays.stream(GlobalVariableResolver.resolve(pack, conv.getString("pointers", conv.getString("pointer", ""))).split(","))
-                    .filter(StringUtils::isNotEmpty)
-                    .map(String::trim).toList();
-
-            extendLinks = Arrays.stream(GlobalVariableResolver.resolve(pack, conv.getString("extends", conv.getString("extend", ""))).split(","))
-                    .filter(StringUtils::isNotEmpty)
-                    .map(String::trim).toList();
+            try {
+                parsePrefix(name, type, conv, defaultLang);
+                parseText(name, type, conv, defaultLang);
+                parseConditions(name, type, conv);
+                parseEvents(name, type, conv);
+                parseStringToList(conv.getString("pointers", conv.getString("pointer", "")), pointers);
+                parseStringToList(conv.getString("extends", conv.getString("extend", "")), extendLinks);
+            } catch (final QuestRuntimeException e) {
+                throw new InstructionParseException(e);
+            }
         }
 
-        private void parseEvents(final String name, final OptionType type, final ConfigurationSection conv) throws InstructionParseException {
+        private void parseStringToList(final String string, final List<String> list) throws InstructionParseException, QuestRuntimeException {
+            final String rawPointers = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack,
+                    string).getValue(null);
+            for (final String pointer : rawPointers.split(",")) {
+                if (!pointer.isEmpty()) {
+                    list.add(pointer.trim());
+                }
+            }
+        }
+
+        private void parseEvents(final String name, final OptionType type, final ConfigurationSection conv) throws InstructionParseException, QuestRuntimeException {
             try {
-                for (final String rawEvent : GlobalVariableResolver.resolve(pack, conv.getString("events", conv.getString("event", ""))).split(",")) {
+                final String rawEvents = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack,
+                        conv.getString("events", conv.getString("event", ""))).getValue(null);
+                for (final String rawEvent : rawEvents.split(",")) {
                     if (!Objects.equals(rawEvent, "")) {
                         events.add(new EventID(pack, rawEvent.trim()));
                     }
@@ -731,9 +755,11 @@ public class ConversationData {
             }
         }
 
-        private void parseConditions(final String name, final OptionType type, final ConfigurationSection conv) throws InstructionParseException {
+        private void parseConditions(final String name, final OptionType type, final ConfigurationSection conv) throws InstructionParseException, QuestRuntimeException {
             try {
-                for (final String rawCondition : GlobalVariableResolver.resolve(pack, conv.getString("conditions", conv.getString("condition", ""))).split(",")) {
+                final String rawConditions = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack,
+                        conv.getString("conditions", conv.getString("condition", ""))).getValue(null);
+                for (final String rawCondition : rawConditions.split(",")) {
                     if (!rawCondition.isEmpty()) {
                         conditions.add(new ConditionID(pack, rawCondition.trim()));
                     }
@@ -746,11 +772,11 @@ public class ConversationData {
 
         //TODO: Consider removing this undocumented feature.
         @SuppressWarnings("PMD.CognitiveComplexity")
-        private void parsePrefix(final String name, final OptionType type, final ConfigurationSection conv, final String defaultLang) throws InstructionParseException {
+        private void parsePrefix(final String name, final OptionType type, final ConfigurationSection conv, final String defaultLang) throws InstructionParseException, QuestRuntimeException {
             if (conv.contains("prefix")) {
                 if (conv.isConfigurationSection("prefix")) {
                     for (final String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
-                        final String pref = GlobalVariableResolver.resolve(pack, conv.getConfigurationSection("prefix").getString(lang));
+                        final String pref = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, conv.getConfigurationSection("prefix").getString(lang)).getValue(null);
                         if (pref != null && !pref.isEmpty()) {
                             inlinePrefix.put(lang, pref);
                         }
@@ -760,7 +786,7 @@ public class ConversationData {
                                 + " prefix");
                     }
                 } else {
-                    final String pref = GlobalVariableResolver.resolve(pack, conv.getString("prefix"));
+                    final String pref = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, conv.getString("prefix")).getValue(null);
                     if (pref != null && !pref.isEmpty()) {
                         inlinePrefix.put(defaultLang, pref);
                     }

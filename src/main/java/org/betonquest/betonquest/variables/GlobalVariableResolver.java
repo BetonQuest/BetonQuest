@@ -3,14 +3,13 @@ package org.betonquest.betonquest.variables;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.betonquest.betonquest.id.GlobalVariableID;
+import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -22,13 +21,11 @@ import java.util.stream.Collectors;
  * Example: {@code $my.package.myVariable$}
  * <p>
  * The variables are defined in the {@code variables} section.
+ *
+ * @deprecated use {@link org.betonquest.betonquest.instruction.variable.VariableString} instead
  */
+@Deprecated
 public final class GlobalVariableResolver {
-    /**
-     * A regex pattern to match global variables.
-     */
-    public static final Pattern GLOBAL_VARIABLE_PATTERN = Pattern.compile("\\$(?<variable>[^ $\\s]+)\\$");
-
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -43,30 +40,20 @@ public final class GlobalVariableResolver {
      * @param pack  the package in which the input string is defined
      * @param input the input string
      * @return the string with all global variables resolved
+     * @deprecated use {@link org.betonquest.betonquest.instruction.variable.VariableString} instead
      */
+    @Deprecated
     @Contract("_, null -> null; _, !null -> !null")
     @Nullable
     public static String resolve(final QuestPackage pack, @Nullable final String input) {
         if (input == null) {
             return null;
         }
-        final Matcher matcher = GLOBAL_VARIABLE_PATTERN.matcher(input);
-        final StringBuilder variableInput = new StringBuilder();
-        while (matcher.find()) {
-            final String variable = matcher.group("variable");
-            final String replacement = getReplacement(pack, variable);
-            matcher.appendReplacement(variableInput, replacement.replace("\\", "\\\\").replace("$", "\\$"));
-        }
-        matcher.appendTail(variableInput);
-        return variableInput.toString();
-    }
-
-    private static String getReplacement(final QuestPackage pack, final String variable) {
         try {
-            return new GlobalVariableID(pack, variable).getInstruction().getInstruction();
-        } catch (final ObjectNotFoundException e) {
-            LOG.warn(pack, e.getMessage(), e);
-            return variable + "(not found)";
+            return new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, input).getValue(null);
+        } catch (QuestRuntimeException | InstructionParseException e) {
+            LOG.warn(pack, "Could not resolve global variable in string: " + input, e);
+            return input + "(not found)";
         }
     }
 
@@ -77,7 +64,9 @@ public final class GlobalVariableResolver {
      * @param pack   the package in which the input strings are defined
      * @param inputs the inputs string
      * @return the strings with all global variables resolved
+     * @deprecated use {@link org.betonquest.betonquest.instruction.variable.VariableString} instead
      */
+    @Deprecated
     public static List<String> resolve(final QuestPackage pack, final List<String> inputs) {
         return inputs.stream().map(string -> resolve(pack, string)).collect(Collectors.toList());
     }

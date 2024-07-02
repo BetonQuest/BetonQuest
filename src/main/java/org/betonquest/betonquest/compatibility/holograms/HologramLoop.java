@@ -12,11 +12,12 @@ import org.betonquest.betonquest.compatibility.holograms.lines.TopXObject;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
@@ -93,18 +94,27 @@ public abstract class HologramLoop {
         return holograms;
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private HologramWrapper initializeHolograms(final int defaultInterval, final QuestPackage pack, final ConfigurationSection section) throws InstructionParseException {
-        final String checkIntervalString = GlobalVariableResolver.resolve(pack, section.getString("check_interval"));
+        final String checkIntervalString = section.getString("check_interval");
         final int checkInterval;
         try {
-            checkInterval = checkIntervalString != null ? Integer.parseInt(checkIntervalString) : defaultInterval;
-        } catch (final NumberFormatException e) {
+            checkInterval = checkIntervalString != null ? new VariableNumber(BetonQuest.getInstance().getVariableProcessor(), pack, checkIntervalString).getValue(null).intValue() : defaultInterval;
+        } catch (final QuestRuntimeException e) {
             throw new InstructionParseException("Could not parse check interval", e);
         }
         final VariableNumber maxRange = new VariableNumber(pack, section.getString("max_range", "0"));
 
-        final List<String> lines = GlobalVariableResolver.resolve(pack, section.getStringList("lines"));
-        final String rawConditions = GlobalVariableResolver.resolve(pack, section.getString("conditions"));
+        final List<String> lines = new ArrayList<>();
+        String rawConditions = section.getString("conditions");
+        try {
+            for (final String line : section.getStringList("lines")) {
+                lines.add(new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, line).getValue(null));
+            }
+            rawConditions = rawConditions == null ? null : new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, rawConditions).getValue(null);
+        } catch (final QuestRuntimeException e) {
+            throw new InstructionParseException(e);
+        }
 
         final ConditionID[] conditions = parseConditions(pack, rawConditions);
 

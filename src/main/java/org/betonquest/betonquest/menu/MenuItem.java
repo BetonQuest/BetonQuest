@@ -102,13 +102,17 @@ public class MenuItem extends SimpleYMLSection {
         this.log = log;
         try {
             //load item
-            final ItemID itemID = new ItemID(pack, getString("item").trim());
+            final ItemID itemID = new ItemID(pack, getString("item").getValue(null).trim());
             final VariableNumber amount;
             amount = new VariableNumber(pack, new DefaultSetting<>("1") {
                 @Override
                 @SuppressWarnings("PMD.ShortMethodName")
-                protected String of() throws Missing {
-                    return getString("amount");
+                protected String of() throws Missing, Invalid {
+                    try {
+                        return getString("amount").getValue(null);
+                    } catch (final InstructionParseException | QuestRuntimeException e) {
+                        throw new Invalid("amount", e);
+                    }
                 }
             }.get());
             this.item = new Item(itemID, amount);
@@ -173,10 +177,14 @@ public class MenuItem extends SimpleYMLSection {
                 @Override
                 @SuppressWarnings("PMD.ShortMethodName")
                 protected Boolean of() throws Missing, Invalid {
-                    return getBoolean("close");
+                    try {
+                        return getBoolean("close").getValue(null);
+                    } catch (final InstructionParseException | QuestRuntimeException e) {
+                        throw new Invalid("close", e);
+                    }
                 }
             }.get();
-        } catch (final ObjectNotFoundException | InstructionParseException e) {
+        } catch (final ObjectNotFoundException | InstructionParseException | QuestRuntimeException e) {
             throw new InvalidConfigurationException(e.getMessage(), e);
         }
     }
@@ -291,9 +299,9 @@ public class MenuItem extends SimpleYMLSection {
             if (section.isConfigurationSection(CONFIG_TEXT)) {
                 descriptions.putAll(generateLanguageDescriptions(menuID, section));
             } else if (section.isString(CONFIG_TEXT)) {
-                descriptions.put(Config.getLanguage(), new ItemDescription(this.pack, getString(CONFIG_TEXT).lines().toList()));
+                descriptions.put(Config.getLanguage(), new ItemDescription(getString(CONFIG_TEXT)));
             } else if (section.isList(CONFIG_TEXT)) {
-                descriptions.put(Config.getLanguage(), new ItemDescription(this.pack, getStringList(CONFIG_TEXT)));
+                descriptions.put(Config.getLanguage(), new ItemDescription(getStringList(CONFIG_TEXT)));
             } else {
                 throw new InstructionParseException("Unrecognized item '" + name + "' text configuration in menu '"
                         + menuID + "'");
@@ -311,9 +319,9 @@ public class MenuItem extends SimpleYMLSection {
         if (textSection != null) {
             for (final String lang : textSection.getKeys(false)) {
                 if (section.isString(CONFIG_TEXT_PATH + lang)) {
-                    descriptions.put(lang, new ItemDescription(this.pack, getString(CONFIG_TEXT_PATH + lang).lines().toList()));
+                    descriptions.put(lang, new ItemDescription(getString(CONFIG_TEXT_PATH + lang)));
                 } else if (section.isList(CONFIG_TEXT_PATH + lang)) {
-                    descriptions.put(lang, new ItemDescription(this.pack, getStringList(CONFIG_TEXT_PATH + lang)));
+                    descriptions.put(lang, new ItemDescription(getStringList(CONFIG_TEXT_PATH + lang)));
                 } else {
                     throw new InstructionParseException("Unrecognized item '" + name + "' text language '" + lang
                             + "' configuration in menu '" + menuID + "'");
