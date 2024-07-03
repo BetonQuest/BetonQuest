@@ -7,6 +7,7 @@ import io.lumine.mythic.core.mobs.ActiveMob;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.compatibility.protocollib.hider.MythicHider;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
@@ -24,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
  * Spawns MythicMobs mobs
  */
 @SuppressWarnings("PMD.CommentRequired")
-public class MythicSpawnMobEvent implements Event {
+public class MythicSpawnMobEvent implements Event, StaticEvent {
     private final BukkitAPIHelper apiHelper;
 
     private final VariableLocation loc;
@@ -78,6 +79,24 @@ public class MythicSpawnMobEvent implements Event {
                 if (marked != null) {
                     final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
                     entity.getPersistentDataContainer().set(key, PersistentDataType.STRING, marked.getValue(profile));
+                }
+            } catch (final InvalidMobTypeException e) {
+                throw new QuestRuntimeException("MythicMob type " + mob + " is invalid.", e);
+            }
+        }
+    }
+
+    @Override
+    public void execute() throws QuestRuntimeException {
+        final int pAmount = amount.getValue(null).intValue();
+        final int level = this.level.getValue(null).intValue();
+        final Location location = loc.getValue(null);
+        for (int i = 0; i < pAmount; i++) {
+            try {
+                final Entity entity = apiHelper.spawnMythicMob(mob, location, level);
+                if (marked != null) {
+                    final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
+                    entity.getPersistentDataContainer().set(key, PersistentDataType.STRING, marked.getValue(null));
                 }
             } catch (final InvalidMobTypeException e) {
                 throw new QuestRuntimeException("MythicMob type " + mob + " is invalid.", e);

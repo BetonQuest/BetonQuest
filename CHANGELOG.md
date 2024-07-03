@@ -8,6 +8,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 - BreweryX compatibility
 ### Changed
+- `mspawnmob` can now be used in static context
 ### Deprecated
 ### Removed
 ### Fixed
