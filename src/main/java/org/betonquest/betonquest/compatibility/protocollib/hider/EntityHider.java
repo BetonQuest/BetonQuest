@@ -297,11 +297,7 @@ public class EntityHider implements Listener {
 
         if (visibleBefore && manager != null) {
             final PacketContainer destroyEntity = new PacketContainer(PacketType.Play.Server.ENTITY_DESTROY);
-            if (PaperLib.isVersion(17, 1)) {
-                destroyEntity.getIntLists().write(0, Collections.singletonList(entity.getEntityId()));
-            } else {
-                destroyEntity.getIntegerArrays().write(0, new int[]{entity.getEntityId()});
-            }
+            destroyEntity.getIntLists().write(0, Collections.singletonList(entity.getEntityId()));
             manager.sendServerPacket(observer.getPlayer(), destroyEntity);
         }
         return visibleBefore;
