@@ -1,38 +1,29 @@
-package org.betonquest.betonquest.compatibility.mythicmobs;
+package org.betonquest.betonquest.compatibility.mythicmobs.conditions;
 
 import io.lumine.mythic.bukkit.BukkitAPIHelper;
-import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("PMD.CommentRequired")
-public class MythicMobDistanceCondition extends Condition {
+public class MythicMobDistanceCondition implements PlayerCondition {
+    private final BukkitAPIHelper apiHelper;
 
     private final String mythicMobInternalName;
 
     private final VariableNumber distance;
 
-    private final BukkitAPIHelper apiHelper;
-
-    public MythicMobDistanceCondition(final Instruction instruction) throws InstructionParseException {
-        super(instruction, true);
-
-        mythicMobInternalName = instruction.next();
-        apiHelper = new BukkitAPIHelper();
-
-        if (apiHelper.getMythicMob(mythicMobInternalName) == null) {
-            throw new InstructionParseException("MythicMob with internal name '" + mythicMobInternalName + "' does not exist");
-        }
-
-        distance = instruction.getVarNum();
+    public MythicMobDistanceCondition(final BukkitAPIHelper apiHelper, final String mythicMobInternalName, final VariableNumber distance) throws InstructionParseException {
+        this.apiHelper = apiHelper;
+        this.mythicMobInternalName = mythicMobInternalName;
+        this.distance = distance;
     }
 
     @Override
-    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+    public boolean check(final Profile profile) throws QuestRuntimeException {
         final Player player = profile.getOnlineProfile().get().getPlayer();
         final double dist = distance.getValue(profile).doubleValue();
 
@@ -41,5 +32,4 @@ public class MythicMobDistanceCondition extends Condition {
                         && apiHelper.isMythicMob(entity)
                         && apiHelper.getMythicMobInstance(entity).getType().getInternalName().equals(mythicMobInternalName));
     }
-
 }
