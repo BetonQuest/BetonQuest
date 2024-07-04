@@ -63,6 +63,7 @@ class EventSchedulingTest {
         return spyType;
     }
 
+    @SuppressWarnings("PMD.UnnecessaryCast")
     private QuestPackage mockQuestPackage(final String... contentFiles) throws KeyConflictException, InvalidSubConfigurationException {
         final List<ConfigurationSection> configs = Arrays.stream(contentFiles)
                 .map(File::new)

@@ -248,7 +248,7 @@ public abstract class SimpleYMLSection {
 
         private final T value;
 
-        @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
+        @SuppressWarnings({"PMD.ConstructorCallsOverridableMethod", "PMD.LocalVariableCouldBeFinal"})
         public DefaultSetting(final T defaultValue) throws Invalid {
             T configValue;
             try {
@@ -276,7 +276,7 @@ public abstract class SimpleYMLSection {
         @Nullable
         private final T optional;
 
-        @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
+        @SuppressWarnings({"PMD.ConstructorCallsOverridableMethod", "PMD.LocalVariableCouldBeFinal"})
         public OptionalSetting() throws Invalid {
             T optionalSetting;
             try {

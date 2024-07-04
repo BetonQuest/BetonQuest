@@ -297,8 +297,8 @@ public abstract class Objective {
      * @param instructionString the objective data instruction
      * @param previousState     the objective's previous state
      */
+    @SuppressWarnings("PMD.AvoidSynchronizedStatement")
     public final void startObjective(final Profile profile, final String instructionString, final ObjectiveState previousState) {
-
         synchronized (this) {
             createObjectiveData(profile, instructionString)
                     .ifPresent(data -> startObjectiveWithEvent(profile, data, previousState));
@@ -379,6 +379,7 @@ public abstract class Objective {
      * @param profile  the {@link Profile} for which the objective is to be stopped
      * @param newState the objective's new state
      */
+    @SuppressWarnings("PMD.AvoidSynchronizedStatement")
     public final void stopObjective(final Profile profile, final ObjectiveState newState) {
         synchronized (this) {
             stopObjectiveWithEvent(profile, newState);

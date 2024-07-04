@@ -64,6 +64,7 @@
   <rule ref="category/java/bestpractices.xml/UnusedPrivateField"/>
   <rule ref="category/java/bestpractices.xml/UnusedPrivateMethod"/>
   <rule ref="category/java/bestpractices.xml/UseCollectionIsEmpty"/>
+  <rule ref="category/java/bestpractices.xml/UseEnumCollections"/>
   <rule ref="category/java/bestpractices.xml/UseStandardCharsets"/>
   <rule ref="category/java/bestpractices.xml/UseTryWithResources"/>
   <rule ref="category/java/bestpractices.xml/UseVarargs"/>
@@ -330,6 +331,7 @@
   <rule ref="category/java/errorprone.xml/UseProperClassLoader"/>
 
   <rule ref="category/java/multithreading.xml/AvoidSynchronizedAtMethodLevel"/>
+  <rule ref="category/java/multithreading.xml/AvoidSynchronizedStatement"/>
   <rule ref="category/java/multithreading.xml/AvoidThreadGroup"/>
   <rule ref="category/java/multithreading.xml/AvoidUsingVolatile"/>
   <rule ref="category/java/multithreading.xml/DoNotUseThreads"/>
