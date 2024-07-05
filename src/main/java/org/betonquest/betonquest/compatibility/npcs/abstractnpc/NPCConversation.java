@@ -9,12 +9,14 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a conversation with NPC.
+ *
+ * @param <T> the original npc type
  */
-public abstract class NPCConversation extends Conversation {
+public class NPCConversation<T> extends Conversation {
     /**
      * NPC used in this Conversation.
      */
-    private final BQNPCAdapter npc;
+    private final BQNPCAdapter<T> npc;
 
     /**
      * {@inheritDoc}
@@ -22,7 +24,7 @@ public abstract class NPCConversation extends Conversation {
      * @param npc the NPC used for this conversation
      */
     public NPCConversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final ConversationID conversationID,
-                           final Location center, final BQNPCAdapter npc) {
+                           final Location center, final BQNPCAdapter<T> npc) {
         super(log, onlineProfile, conversationID, center);
         this.npc = npc;
     }
@@ -33,7 +35,7 @@ public abstract class NPCConversation extends Conversation {
      * @param npc the NPC used for this conversation
      */
     public NPCConversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final ConversationID conversationID,
-                           final Location center, @Nullable final String startingOption, final BQNPCAdapter npc) {
+                           final Location center, @Nullable final String startingOption, final BQNPCAdapter<T> npc) {
         super(log, onlineProfile, conversationID, center, startingOption);
         this.npc = npc;
     }
@@ -46,7 +48,7 @@ public abstract class NPCConversation extends Conversation {
      *
      * @return the NPC or null if it's too early
      */
-    public BQNPCAdapter getNPC() {
+    public BQNPCAdapter<T> getNPC() {
         return npc;
     }
 }

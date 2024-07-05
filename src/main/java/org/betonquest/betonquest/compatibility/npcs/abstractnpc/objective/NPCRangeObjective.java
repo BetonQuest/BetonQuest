@@ -30,7 +30,7 @@ public abstract class NPCRangeObjective extends Objective {
     /**
      * Stores the relevant NPC ID and their supplier get their location.
      */
-    private final Map<String, Supplier<BQNPCAdapter>> npcIds;
+    private final Map<String, Supplier<BQNPCAdapter<?>>> npcIds;
 
     /**
      * Maximal distance between player and NPC.
@@ -118,7 +118,7 @@ public abstract class NPCRangeObjective extends Objective {
     private void loop() throws QuestRuntimeException {
         final List<UUID> profilesInside = new ArrayList<>();
         final List<OnlineProfile> allOnlineProfiles = PlayerConverter.getOnlineProfiles();
-        for (final Map.Entry<String, Supplier<BQNPCAdapter>> npcId : npcIds.entrySet()) {
+        for (final Map.Entry<String, Supplier<BQNPCAdapter<?>>> npcId : npcIds.entrySet()) {
             final Location npcLocation = NPCUtil.getNPC(npcId.getValue(), npcId.getKey()).getLocation();
             for (final OnlineProfile onlineProfile : allOnlineProfiles) {
                 if (!profilesInside.contains(onlineProfile.getProfileUUID()) && isInside(onlineProfile, npcLocation)) {

@@ -22,5 +22,5 @@ public interface NPCSupplierStandard {
      * @return the supplier which will return the npc or null if none was found by the npcId
      * @throws InstructionParseException if the npcId is invalid for the adapter
      */
-    Supplier<BQNPCAdapter> getSupplierByID(String npcId) throws InstructionParseException;
+    Supplier<BQNPCAdapter<?>> getSupplierByID(String npcId) throws InstructionParseException;
 }

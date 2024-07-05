@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 /**
  * Citizens Compatibility Adapter for general BetonQuest NPC behaviour.
  */
-public class CitizensBQAdapter implements BQNPCAdapter {
+public class CitizensBQAdapter implements BQNPCAdapter<NPC> {
     /**
      * The Citizens NPC instance.
      */
@@ -24,12 +24,8 @@ public class CitizensBQAdapter implements BQNPCAdapter {
         this.npc = npc;
     }
 
-    /**
-     * Gets the real Citizens NPC.
-     *
-     * @return the adapted Citizens NPC
-     */
-    public final NPC getCitizensNPC() {
+    @Override
+    public NPC getOriginal() {
         return npc;
     }
 

@@ -25,7 +25,7 @@ public class NPCRegionConditionFactory extends NPCFactory implements PlayerlessC
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws InstructionParseException {
-        final Supplier<BQNPCAdapter> supplier = getSupplierByID(instruction.next());
+        final Supplier<BQNPCAdapter<?>> supplier = getSupplierByID(instruction.next());
         final String region = instruction.next();
         return new NPCRegionCondition(supplier, region);
     }

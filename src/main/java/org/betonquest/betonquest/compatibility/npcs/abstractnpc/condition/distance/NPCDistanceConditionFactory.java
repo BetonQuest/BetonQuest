@@ -27,7 +27,7 @@ public class NPCDistanceConditionFactory extends NPCFactory implements PlayerCon
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws InstructionParseException {
         final String npcId = instruction.next();
-        final Supplier<BQNPCAdapter> supplier = getSupplierByID(npcId);
+        final Supplier<BQNPCAdapter<?>> supplier = getSupplierByID(npcId);
         final VariableNumber distance = instruction.getVarNum();
         return new NPCDistanceCondition(npcId, supplier, distance);
     }

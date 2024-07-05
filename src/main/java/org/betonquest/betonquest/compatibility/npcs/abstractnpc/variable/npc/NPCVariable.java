@@ -14,7 +14,7 @@ public class NPCVariable implements PlayerlessVariable {
     /**
      * The Supplier for the NPC.
      */
-    private final Supplier<BQNPCAdapter> npcSupplier;
+    private final Supplier<BQNPCAdapter<?>> npcSupplier;
 
     /**
      * The type of information to retrieve for the NPC: name, full_name, or location.
@@ -35,7 +35,7 @@ public class NPCVariable implements PlayerlessVariable {
      * @param location    the location to provide when
      * @throws IllegalArgumentException when location argument is given without location variable
      */
-    public NPCVariable(final Supplier<BQNPCAdapter> npcSupplier, final Argument key, @Nullable final LocationVariable location) {
+    public NPCVariable(final Supplier<BQNPCAdapter<?>> npcSupplier, final Argument key, @Nullable final LocationVariable location) {
         this.npcSupplier = npcSupplier;
         this.key = key;
         this.location = location;
@@ -46,7 +46,7 @@ public class NPCVariable implements PlayerlessVariable {
 
     @Override
     public String getValue() {
-        final BQNPCAdapter npc = npcSupplier.get();
+        final BQNPCAdapter<?> npc = npcSupplier.get();
         if (npc == null) {
             return "";
         }

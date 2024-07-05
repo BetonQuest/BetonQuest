@@ -14,7 +14,7 @@ public class NPCRegionCondition implements PlayerlessCondition {
     /**
      * The NPC Adapter supplier.
      */
-    private final Supplier<BQNPCAdapter> npcSupplier;
+    private final Supplier<BQNPCAdapter<?>> npcSupplier;
 
     /**
      * The region name where the NPC should be.
@@ -27,14 +27,14 @@ public class NPCRegionCondition implements PlayerlessCondition {
      * @param npcSupplier the npc adapter supplier
      * @param region      the name of the region where the NPC should be
      */
-    public NPCRegionCondition(final Supplier<BQNPCAdapter> npcSupplier, final String region) {
+    public NPCRegionCondition(final Supplier<BQNPCAdapter<?>> npcSupplier, final String region) {
         this.npcSupplier = npcSupplier;
         this.region = region;
     }
 
     @Override
     public boolean check() throws QuestRuntimeException {
-        final BQNPCAdapter npc = npcSupplier.get();
+        final BQNPCAdapter<?> npc = npcSupplier.get();
         return npc != null && WorldGuardIntegrator.isInsideRegion(npc.getLocation(), region);
     }
 }

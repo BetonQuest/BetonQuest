@@ -40,7 +40,7 @@ public class NPCLocationConditionFactory extends NPCFactory implements PlayerCon
 
     private NullableConditionAdapter parseNpcLocationCondition(final Instruction instruction) throws InstructionParseException {
         final String npcId = instruction.next();
-        final Supplier<BQNPCAdapter> supplier = getSupplierByID(npcId);
+        final Supplier<BQNPCAdapter<?>> supplier = getSupplierByID(npcId);
         final VariableLocation location = instruction.getLocation();
         final VariableNumber radius = instruction.getVarNum();
         return new NullableConditionAdapter(new NPCLocationCondition(npcId, supplier, location, radius));

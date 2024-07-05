@@ -22,7 +22,7 @@ public class NPCTeleportEvent implements NullableEvent {
     /**
      * Supplying the npc instance.
      */
-    protected final Supplier<BQNPCAdapter> npcSupplier;
+    protected final Supplier<BQNPCAdapter<?>> npcSupplier;
 
     /**
      * The location to teleport the NPC to.
@@ -36,7 +36,7 @@ public class NPCTeleportEvent implements NullableEvent {
      * @param npcSupplier the supplier of the NPC
      * @param location    the location the NPC will be teleported to
      */
-    public NPCTeleportEvent(final String npcId, final Supplier<BQNPCAdapter> npcSupplier, final VariableLocation location) {
+    public NPCTeleportEvent(final String npcId, final Supplier<BQNPCAdapter<?>> npcSupplier, final VariableLocation location) {
         this.npcId = npcId;
         this.npcSupplier = npcSupplier;
         this.location = location;

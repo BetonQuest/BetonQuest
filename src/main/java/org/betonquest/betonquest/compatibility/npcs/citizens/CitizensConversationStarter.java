@@ -6,18 +6,15 @@ import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.compatibility.npcs.abstractnpc.BQNPCAdapter;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCConversationStarter;
 import org.betonquest.betonquest.compatibility.npcs.citizens.event.move.CitizensMoveController;
-import org.betonquest.betonquest.id.ConversationID;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 /**
  * Starts new conversations with Citizen NPCs.
  */
-public class CitizensConversationStarter extends NPCConversationStarter {
+public class CitizensConversationStarter extends NPCConversationStarter<NPC> {
     /**
      * Move Controller to check if the NPC blocks conversations while moving.
      */
@@ -49,15 +46,6 @@ public class CitizensConversationStarter extends NPCConversationStarter {
     private boolean interactLogic(final NPCClickEvent event) {
         final NPC npc = event.getNPC();
         return !citizensMoveController.blocksTalking(npc) && super.interactLogic(event.getClicker(), () -> new CitizensBQAdapter(npc));
-    }
-
-    @Override
-    protected void startConversation(final OnlineProfile onlineProfile, final ConversationID conversationID, final BQNPCAdapter npc) {
-        if (!(npc instanceof CitizensBQAdapter)) {
-            throw new IllegalArgumentException("The NPC Adapter is not a Citizens Adapter!");
-        }
-        new CitizensConversation(loggerFactory.create(CitizensConversation.class), onlineProfile, conversationID,
-                npc.getLocation(), ((CitizensBQAdapter) npc).getCitizensNPC(), npc);
     }
 
     /**
