@@ -7,6 +7,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.PlayerConversationEndEvent;
 import org.betonquest.betonquest.api.PlayerConversationStartEvent;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCConversation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -47,13 +48,12 @@ public class CitizensWalkingListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onConversationStart(final PlayerConversationStartEvent event) {
-        if (event.getConversation() instanceof CitizensConversation) {
+        if (event.getConversation() instanceof final NPCConversation<?> conv
+                && conv.getNPC().getOriginal() instanceof final NPC npc) {
             new BukkitRunnable() {
 
                 @Override
                 public void run() {
-                    final CitizensConversation conv = (CitizensConversation) event.getConversation();
-                    final NPC npc = conv.getCitizensNPC();
                     if (npcs.containsKey(npc)) {
                         npcs.computeIfPresent(npc, (k, pair) -> Pair.of(pair.getKey() + 1, pair.getValue()));
                     } else {
@@ -62,7 +62,7 @@ public class CitizensWalkingListener implements Listener {
                             npcs.put(npc, Pair.of(1, nav.getTargetAsLocation()));
                             nav.setPaused(true);
                             nav.cancelNavigation();
-                            nav.setTarget(conv.getCitizensNPC().getEntity().getLocation());
+                            nav.setTarget(npc.getEntity().getLocation());
                             nav.setPaused(true);
                             nav.cancelNavigation();
                         }
@@ -75,13 +75,12 @@ public class CitizensWalkingListener implements Listener {
     @SuppressWarnings("PMD.CognitiveComplexity")
     @EventHandler(ignoreCancelled = true)
     public void onConversationEnd(final PlayerConversationEndEvent event) {
-        if (event.getConversation() instanceof CitizensConversation) {
+        if (event.getConversation() instanceof final NPCConversation<?> conv
+                && conv.getNPC().getOriginal() instanceof final NPC npc) {
             new BukkitRunnable() {
 
                 @Override
                 public void run() {
-                    final CitizensConversation conv = (CitizensConversation) event.getConversation();
-                    final NPC npc = conv.getCitizensNPC();
                     if (npcs.containsKey(npc)) {
                         final Pair<Integer, Location> pair = npcs.get(npc);
                         final int conversationsAmount = pair.getKey() - 1;

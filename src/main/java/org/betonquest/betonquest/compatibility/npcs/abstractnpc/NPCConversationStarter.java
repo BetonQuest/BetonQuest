@@ -27,8 +27,10 @@ import java.util.function.Supplier;
 
 /**
  * Starts new conversations with Citizen NPCs.
+ *
+ * @param <T> the original npc type
  */
-public abstract class NPCConversationStarter implements Listener {
+public abstract class NPCConversationStarter<T> implements Listener {
     /**
      * The section in which the assignments from NPCs to conversations are stored.
      */
@@ -78,7 +80,6 @@ public abstract class NPCConversationStarter implements Listener {
      * @param loggerFactory the logger factory used to create logger for the started conversations
      * @param log           the custom logger instance for this class
      */
-    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public NPCConversationStarter(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
         this.loggerFactory = loggerFactory;
         this.log = log;
@@ -132,7 +133,7 @@ public abstract class NPCConversationStarter implements Listener {
      * @param npcSupplier the supplier for lazy instantiation when the NPC is needed
      * @return if a conversation is started and the interact event should be cancelled
      */
-    protected boolean interactLogic(final Player clicker, final Supplier<BQNPCAdapter> npcSupplier) {
+    protected boolean interactLogic(final Player clicker, final Supplier<BQNPCAdapter<T>> npcSupplier) {
         if (!clicker.hasPermission("betonquest.conversation")) {
             return false;
         }
@@ -158,8 +159,8 @@ public abstract class NPCConversationStarter implements Listener {
         return startConversation(clicker, npcSupplier, onlineProfile);
     }
 
-    private boolean startConversation(final Player clicker, final Supplier<BQNPCAdapter> npcSupplier, final OnlineProfile onlineProfile) {
-        final BQNPCAdapter npc = npcSupplier.get();
+    private boolean startConversation(final Player clicker, final Supplier<BQNPCAdapter<T>> npcSupplier, final OnlineProfile onlineProfile) {
+        final BQNPCAdapter<T> npc = npcSupplier.get();
         final String npcId = npc.getId();
         final String npcName = npc.getName();
 
@@ -172,19 +173,10 @@ public abstract class NPCConversationStarter implements Listener {
             log.debug("Player '" + clicker.getName() + "' clicked NPC '" + npcId + "' but there is no conversation assigned to it.");
             return false;
         } else {
-            startConversation(onlineProfile, conversationID, npc);
+            new NPCConversation<>(loggerFactory.create(NPCConversation.class), onlineProfile, conversationID, npc.getLocation(), npc);
             return true;
         }
     }
-
-    /**
-     * Starts a new conversation between player and npc at given location.
-     *
-     * @param onlineProfile  the {@link OnlineProfile} of the player
-     * @param conversationID the ID of the conversation
-     * @param npc            the npc adapter representing the NPC used to start
-     */
-    protected abstract void startConversation(OnlineProfile onlineProfile, ConversationID conversationID, BQNPCAdapter npc);
 
     private void loadNPCConversationAssignments() {
         for (final Entry<String, QuestPackage> entry : Config.getPackages().entrySet()) {

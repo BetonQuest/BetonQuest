@@ -1,9 +1,11 @@
 package org.betonquest.betonquest.compatibility.npcs.citizens;
 
+import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.SkinTrait;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCConversation;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.InventoryConvIO;
 import org.bukkit.Bukkit;
@@ -49,14 +51,13 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
 
     @Override
     protected SkullMeta updateSkullMeta(final SkullMeta meta) {
-        // this only applied to Citizens NPC conversations
-        if (conv instanceof final CitizensConversation citizensConv) {
+        if (conv instanceof final NPCConversation<?> npcConv && npcConv.getNPC().getOriginal() instanceof final NPC npc) {
             if (Bukkit.isPrimaryThread()) {
                 throw new IllegalStateException("Must be called async!");
             }
 
             try {
-                final SkinTrait skinTrait = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> citizensConv.getCitizensNPC().getOrAddTrait(SkinTrait.class)).get();
+                final SkinTrait skinTrait = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> npc.getOrAddTrait(SkinTrait.class)).get();
                 final String texture = skinTrait.getTexture();
                 if (texture != null) {
 
@@ -68,7 +69,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
                     return meta;
                 }
             } catch (InterruptedException | ExecutionException e) {
-                log.debug(citizensConv.getPackage(), "Could not resolve a skin Texture!", e);
+                log.debug(npcConv.getPackage(), "Could not resolve a skin Texture!", e);
             } catch (final SkinFormatParseException e) {
                 log.reportException(conv.getPackage(), new IllegalStateException("Could not parse the skin metadata provided by the NPC plugin. The format may have changed."));
             }

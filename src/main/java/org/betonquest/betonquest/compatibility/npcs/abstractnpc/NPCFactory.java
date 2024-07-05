@@ -23,7 +23,7 @@ public class NPCFactory implements NPCSupplierStandard {
     }
 
     @Override
-    public Supplier<BQNPCAdapter> getSupplierByID(final String npcId) throws InstructionParseException {
+    public Supplier<BQNPCAdapter<?>> getSupplierByID(final String npcId) throws InstructionParseException {
         return supplierSupplier.get().getSupplierByID(npcId);
     }
 }

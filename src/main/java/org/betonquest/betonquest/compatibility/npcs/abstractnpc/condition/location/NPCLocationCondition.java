@@ -23,7 +23,7 @@ public class NPCLocationCondition implements NullableCondition {
     /**
      * The NPC Adapter supplier.
      */
-    private final Supplier<BQNPCAdapter> npcSupplier;
+    private final Supplier<BQNPCAdapter<?>> npcSupplier;
 
     /**
      * The location where the NPC has to be around.
@@ -43,7 +43,7 @@ public class NPCLocationCondition implements NullableCondition {
      * @param location    the location where the npc has to be around
      * @param radius      the maximal distance between the npc and the radius location
      */
-    public NPCLocationCondition(final String npcId, final Supplier<BQNPCAdapter> npcSupplier,
+    public NPCLocationCondition(final String npcId, final Supplier<BQNPCAdapter<?>> npcSupplier,
                                 final VariableLocation location, final VariableNumber radius) {
         this.npcId = npcId;
         this.npcSupplier = npcSupplier;

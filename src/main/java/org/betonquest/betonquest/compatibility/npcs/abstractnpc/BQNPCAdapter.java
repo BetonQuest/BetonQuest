@@ -4,8 +4,17 @@ import org.bukkit.Location;
 
 /**
  * NPC Plugin Adapter for general BetonQuest NPC behaviour.
+ *
+ * @param <T> the original npc type
  */
-public interface BQNPCAdapter {
+public interface BQNPCAdapter<T> {
+    /**
+     * Gets the original object.
+     *
+     * @return the adapted object
+     */
+    T getOriginal();
+
     /**
      * Gets the ID of the NPC.
      *

@@ -39,7 +39,7 @@ public abstract class NPCTeleportEventFactory extends NPCFactory implements Even
 
     private NullableEventAdapter createNpcTeleportEvent(final Instruction instruction) throws InstructionParseException {
         final String npcId = instruction.next();
-        final Supplier<BQNPCAdapter> npcSupplier = getSupplierByID(npcId);
+        final Supplier<BQNPCAdapter<?>> npcSupplier = getSupplierByID(npcId);
         final VariableLocation location = instruction.getLocation();
         return new NullableEventAdapter(new NPCTeleportEvent(npcId, npcSupplier, location));
     }

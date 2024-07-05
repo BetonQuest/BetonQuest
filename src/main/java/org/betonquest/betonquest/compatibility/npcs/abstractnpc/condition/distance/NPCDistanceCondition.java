@@ -23,7 +23,7 @@ public class NPCDistanceCondition implements PlayerCondition {
     /**
      * Supplier for the NPC to use.
      */
-    private final Supplier<BQNPCAdapter> npcSupplier;
+    private final Supplier<BQNPCAdapter<?>> npcSupplier;
 
     /**
      * The maximal distance between player and NPC.
@@ -37,7 +37,7 @@ public class NPCDistanceCondition implements PlayerCondition {
      * @param npcSupplier the supplier for the npc
      * @param distance    the maximal distance between player and npc
      */
-    public NPCDistanceCondition(final String npcId, final Supplier<BQNPCAdapter> npcSupplier, final VariableNumber distance) {
+    public NPCDistanceCondition(final String npcId, final Supplier<BQNPCAdapter<?>> npcSupplier, final VariableNumber distance) {
         this.npcId = npcId;
         this.npcSupplier = npcSupplier;
         this.distance = distance;
