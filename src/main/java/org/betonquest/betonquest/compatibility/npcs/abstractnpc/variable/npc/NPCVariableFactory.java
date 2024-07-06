@@ -39,10 +39,10 @@ public class NPCVariableFactory extends NPCFactory implements PlayerlessVariable
      * Create a new factory to create NPC Variables.
      *
      * @param loggerFactory    the logger factory creating new custom logger
-     * @param supplierSupplier the supplier providing the npc adapter supplier
+     * @param supplierStandard the supplier providing the npc adapter supplier
      */
-    public NPCVariableFactory(final BetonQuestLoggerFactory loggerFactory, final Supplier<NPCSupplierStandard> supplierSupplier) {
-        super(supplierSupplier);
+    public NPCVariableFactory(final BetonQuestLoggerFactory loggerFactory, final NPCSupplierStandard supplierStandard) {
+        super(supplierStandard);
         this.loggerFactory = loggerFactory;
     }
 

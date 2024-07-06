@@ -18,10 +18,10 @@ public class NPCDistanceConditionFactory extends NPCFactory implements PlayerCon
     /**
      * Create a new factory for NPC Distance Conditions.
      *
-     * @param supplierSupplier the supplier providing the npc adapter supplier
+     * @param supplierStandard the supplier providing the npc adapter supplier
      */
-    public NPCDistanceConditionFactory(final Supplier<NPCSupplierStandard> supplierSupplier) {
-        super(supplierSupplier);
+    public NPCDistanceConditionFactory(final NPCSupplierStandard supplierStandard) {
+        super(supplierStandard);
     }
 
     @Override

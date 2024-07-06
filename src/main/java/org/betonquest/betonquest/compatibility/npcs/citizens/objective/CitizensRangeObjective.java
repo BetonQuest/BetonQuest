@@ -16,6 +16,6 @@ public class CitizensRangeObjective extends NPCRangeObjective {
      * @throws InstructionParseException if the instruction is invalid
      */
     public CitizensRangeObjective(final Instruction instruction) throws InstructionParseException {
-        super(instruction, () -> CitizensNPCSupplier::getSupplierByIDStatic);
+        super(instruction, CitizensNPCSupplier::getSupplierByIDStatic);
     }
 }

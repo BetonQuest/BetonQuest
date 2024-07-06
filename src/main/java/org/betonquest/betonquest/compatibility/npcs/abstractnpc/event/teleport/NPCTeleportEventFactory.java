@@ -21,10 +21,10 @@ public abstract class NPCTeleportEventFactory extends NPCFactory implements Even
     /**
      * Create a new factory for NPC Teleport Events.
      *
-     * @param supplierSupplier the supplier providing the npc adapter supplier
+     * @param supplierStandard the supplier providing the npc adapter supplier
      */
-    public NPCTeleportEventFactory(final Supplier<NPCSupplierStandard> supplierSupplier) {
-        super(supplierSupplier);
+    public NPCTeleportEventFactory(final NPCSupplierStandard supplierStandard) {
+        super(supplierStandard);
     }
 
     @Override
