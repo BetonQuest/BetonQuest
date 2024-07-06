@@ -25,7 +25,7 @@ public class CitizensNPCTeleportEventFactory extends NPCTeleportEventFactory {
      * @param data the data to use for syncing to the primary server thread
      */
     public CitizensNPCTeleportEventFactory(final PrimaryServerThreadData data) {
-        super(() -> CitizensNPCSupplier::getSupplierByIDStatic);
+        super(CitizensNPCSupplier::getSupplierByIDStatic);
         this.data = data;
     }
 

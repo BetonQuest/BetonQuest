@@ -26,7 +26,7 @@ public class CitizensLocationConditionFactory extends NPCLocationConditionFactor
      * @param data the data used for primary server thread access
      */
     public CitizensLocationConditionFactory(final PrimaryServerThreadData data) {
-        super(() -> CitizensNPCSupplier::getSupplierByIDStatic);
+        super(CitizensNPCSupplier::getSupplierByIDStatic);
         this.data = data;
     }
 

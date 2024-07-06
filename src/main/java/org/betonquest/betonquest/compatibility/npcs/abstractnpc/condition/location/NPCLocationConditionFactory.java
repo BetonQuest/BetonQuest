@@ -22,10 +22,10 @@ public class NPCLocationConditionFactory extends NPCFactory implements PlayerCon
     /**
      * Create a new factory for NPC Location Conditions.
      *
-     * @param supplierSupplier the supplier providing the npc adapter supplier
+     * @param supplierStandard the supplier providing the npc adapter supplier
      */
-    public NPCLocationConditionFactory(final Supplier<NPCSupplierStandard> supplierSupplier) {
-        super(supplierSupplier);
+    public NPCLocationConditionFactory(final NPCSupplierStandard supplierStandard) {
+        super(supplierStandard);
     }
 
     @Override

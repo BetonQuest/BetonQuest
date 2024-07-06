@@ -32,7 +32,7 @@ public class CitizensDistanceConditionFactory extends NPCDistanceConditionFactor
      * @param loggerFactory the logger factory to create class specific logger
      */
     public CitizensDistanceConditionFactory(final PrimaryServerThreadData data, final BetonQuestLoggerFactory loggerFactory) {
-        super(() -> CitizensNPCSupplier::getSupplierByIDStatic);
+        super(CitizensNPCSupplier::getSupplierByIDStatic);
         this.data = data;
         this.loggerFactory = loggerFactory;
     }

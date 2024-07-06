@@ -56,16 +56,15 @@ public abstract class NPCRangeObjective extends Objective {
      * Creates a new NPCRangeObjective from the given instruction.
      *
      * @param instruction      the user-provided instruction
-     * @param supplierSupplier the supplier providing the npc adapter supplier
+     * @param supplierStandard the supplier providing the npc adapter supplier
      * @throws InstructionParseException if the instruction is invalid
      */
-    public NPCRangeObjective(final Instruction instruction, final Supplier<NPCSupplierStandard> supplierSupplier) throws InstructionParseException {
+    public NPCRangeObjective(final Instruction instruction, final NPCSupplierStandard supplierStandard) throws InstructionParseException {
         super(instruction);
         final String[] rawIds = instruction.getArray();
         this.npcIds = new HashMap<>(rawIds.length);
-        final NPCSupplierStandard npcSupplierStandard = supplierSupplier.get();
         for (final String rawId : rawIds) {
-            npcIds.put(rawId, npcSupplierStandard.getSupplierByID(rawId));
+            npcIds.put(rawId, supplierStandard.getSupplierByID(rawId));
         }
         final Trigger trigger = instruction.getEnum(NPCRangeObjective.Trigger.class);
         playersInRange = new HashMap<>();

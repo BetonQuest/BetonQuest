@@ -17,10 +17,10 @@ public class NPCRegionConditionFactory extends NPCFactory implements PlayerlessC
     /**
      * Create a new factory for NPC Region Conditions.
      *
-     * @param supplierSupplier the supplier providing the npc adapter supplier
+     * @param supplierStandard the supplier providing the npc adapter supplier
      */
-    public NPCRegionConditionFactory(final Supplier<NPCSupplierStandard> supplierSupplier) {
-        super(supplierSupplier);
+    public NPCRegionConditionFactory(final NPCSupplierStandard supplierStandard) {
+        super(supplierStandard);
     }
 
     @Override
