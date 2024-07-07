@@ -49,7 +49,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -80,7 +80,7 @@ public class MenuConvIO extends ChatConvIO {
     private final List<Player> selectionCooldowns = new ArrayList<>();
 
     // Actions
-    protected Map<CONTROL, ACTION> controls = new HashMap<>();
+    protected Map<CONTROL, ACTION> controls = new EnumMap<>(CONTROL.class);
 
     protected String configControlCancel = "sneak";
 
