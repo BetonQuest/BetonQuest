@@ -285,7 +285,7 @@
     <dependency>
       <groupId>com.github.Zrips</groupId>
       <artifactId>Jobs</artifactId>
-      <version>5.2.2.3</version>
+      <version>b537ec4f36</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
