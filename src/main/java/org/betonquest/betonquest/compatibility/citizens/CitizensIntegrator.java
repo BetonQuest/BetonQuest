@@ -4,6 +4,9 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.compatibility.citizens.condition.distance.NPCDistanceConditionFactory;
+import org.betonquest.betonquest.compatibility.citizens.condition.location.NPCLocationConditionFactory;
+import org.betonquest.betonquest.compatibility.citizens.condition.region.NPCRegionConditionFactory;
 import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveController;
 import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveEvent;
 import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveEventFactory;
@@ -12,6 +15,8 @@ import org.betonquest.betonquest.compatibility.citizens.event.teleport.NPCTelepo
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
+import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
+import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
 import org.bukkit.Server;
 import org.bukkit.event.HandlerList;
@@ -82,7 +87,8 @@ public class CitizensIntegrator implements Integrator {
 
         server.getPluginManager().registerEvents(citizensMoveController, plugin);
 
-        final EventTypeRegistry eventTypes = plugin.getQuestRegistries().getEventTypes();
+        final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
+        final EventTypeRegistry eventTypes = questRegistries.getEventTypes();
         eventTypes.register("movenpc", new CitizensMoveEventFactory(data, citizensMoveController));
         eventTypes.register("stopnpc", new CitizensStopEventFactory(data, citizensMoveController));
         eventTypes.register("teleportnpc", new NPCTeleportEventFactory(data));
@@ -91,11 +97,18 @@ public class CitizensIntegrator implements Integrator {
         plugin.registerConversationIO("combined", CitizensInventoryConvIO.CitizensCombined.class);
 
         plugin.registerVariable("citizen", CitizensVariable.class);
-        plugin.registerConditions("npcdistance", NPCDistanceCondition.class);
-        plugin.registerConditions("npclocation", NPCLocationCondition.class);
 
+        final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
+        conditionTypes.register("npcdistance", new NPCDistanceConditionFactory(data));
+        conditionTypes.register("npclocation", new NPCLocationConditionFactory(data));
+    }
+
+    @Override
+    public void postHook() {
         if (Compatibility.getHooked().contains("WorldGuard")) {
-            plugin.registerConditions("npcregion", NPCRegionCondition.class);
+            final Server server = plugin.getServer();
+            final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
+            plugin.getQuestRegistries().getConditionTypes().register("npcregion", new NPCRegionConditionFactory(data));
         }
     }
 
