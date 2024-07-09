@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.npcs.citizens.objective;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.objective.NPCRangeObjective;
-import org.betonquest.betonquest.compatibility.npcs.citizens.CitizensNPCSupplier;
+import org.betonquest.betonquest.compatibility.npcs.citizens.CitizensIntegrator;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
 /**
@@ -16,6 +16,6 @@ public class CitizensRangeObjective extends NPCRangeObjective {
      * @throws InstructionParseException if the instruction is invalid
      */
     public CitizensRangeObjective(final Instruction instruction) throws InstructionParseException {
-        super(instruction, CitizensNPCSupplier::getSupplierByIDStatic);
+        super(instruction, CitizensIntegrator::getSupplier);
     }
 }
