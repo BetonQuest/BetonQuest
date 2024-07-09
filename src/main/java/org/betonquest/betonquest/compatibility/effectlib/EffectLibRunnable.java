@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.effectlib;
 
+import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.util.DynamicLocation;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -29,6 +30,11 @@ public class EffectLibRunnable extends BukkitRunnable {
     private final BetonQuestLogger log;
 
     /**
+     * Effect manager which will create and control the particles.
+     */
+    private final EffectManager manager;
+
+    /**
      * The configuration of the effect to show.
      */
     private final EffectConfiguration effectConfiguration;
@@ -47,11 +53,13 @@ public class EffectLibRunnable extends BukkitRunnable {
      * Constructs this runnable with the given effect.
      *
      * @param log                 the logger that will be used for logging
-     * @param effectConfiguration the effect to show.
+     * @param manager             the effect manager which will create and control the particles
+     * @param effectConfiguration the effect to show
      */
-    public EffectLibRunnable(final BetonQuestLogger log, final EffectConfiguration effectConfiguration) {
+    public EffectLibRunnable(final BetonQuestLogger log, final EffectManager manager, final EffectConfiguration effectConfiguration) {
         super();
         this.log = log;
+        this.manager = manager;
         this.effectConfiguration = effectConfiguration;
         this.activeProfiles = new ArrayList<>();
     }
@@ -97,7 +105,7 @@ public class EffectLibRunnable extends BukkitRunnable {
                 continue;
             }
 
-            EffectLibIntegrator.getEffectManager().start(effect.effectClass(), effect.settings(), new DynamicLocation(npc.getEntity()),
+            manager.start(effect.effectClass(), effect.settings(), new DynamicLocation(npc.getEntity()),
                     new DynamicLocation(null, null), (ConfigurationSection) null, player);
         }
     }
@@ -107,7 +115,7 @@ public class EffectLibRunnable extends BukkitRunnable {
             final Location location;
             try {
                 location = variableLocation.getValue(profile);
-                EffectLibIntegrator.getEffectManager().start(effect.effectClass(), effect.settings(), location, profile.getPlayer());
+                manager.start(effect.effectClass(), effect.settings(), location, profile.getPlayer());
             } catch (final QuestRuntimeException exception) {
                 log.warn("Error while resolving a location of an EffectLib particle effect of type '" + effect.effectClass() + "'. Check that your location (variables) are correct. Error:", exception);
             }

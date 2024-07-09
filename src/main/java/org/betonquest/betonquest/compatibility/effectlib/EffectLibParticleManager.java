@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.effectlib;
 
+import de.slikey.effectlib.EffectManager;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -43,16 +44,26 @@ public class EffectLibParticleManager {
     private final BetonQuestLogger log;
 
     /**
+     * Effect Manager starting and controlling particles.
+     */
+    private final EffectManager manager;
+
+    /**
      * All active {@link EffectLibRunnable}s managed by this class.
      */
     private final List<EffectLibRunnable> activeParticles = new ArrayList<>();
 
     /**
      * Loads the particle configuration and starts the effects.
+     *
+     * @param loggerFactory the logger factory to create new custom loggers
+     * @param log           the custom logger for this class
+     * @param manager       the effect manager starting and controlling particles
      */
-    public EffectLibParticleManager(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
+    public EffectLibParticleManager(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final EffectManager manager) {
         this.loggerFactory = loggerFactory;
         this.log = log;
+        this.manager = manager;
         loadParticleConfiguration();
     }
 
@@ -99,7 +110,7 @@ public class EffectLibParticleManager {
                 final List<ConditionID> conditions = loadConditions(pack, key, settings);
 
                 final EffectConfiguration effect = new EffectConfiguration(effectClass, locations, npcs, conditions, settings, conditionsCheckInterval);
-                final EffectLibRunnable particleRunnable = new EffectLibRunnable(loggerFactory.create(EffectLibRunnable.class), effect);
+                final EffectLibRunnable particleRunnable = new EffectLibRunnable(loggerFactory.create(EffectLibRunnable.class), manager, effect);
 
                 activeParticles.add(particleRunnable);
                 particleRunnable.runTaskTimer(BetonQuest.getInstance(), 1, interval);
