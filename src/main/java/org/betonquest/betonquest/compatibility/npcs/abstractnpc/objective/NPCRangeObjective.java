@@ -185,7 +185,7 @@ public abstract class NPCRangeObjective extends Objective {
          */
         INSIDE,
         /**
-         * The player ha to be outside the range.
+         * The player has to be outside the range.
          */
         OUTSIDE
     }

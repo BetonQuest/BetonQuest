@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.id.ConversationID;
 import org.bukkit.Location;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a conversation with NPC.
@@ -19,9 +18,13 @@ public class NPCConversation<T> extends Conversation {
     private final BQNPCAdapter<T> npc;
 
     /**
-     * {@inheritDoc}
+     * Starts a new conversation between player and npc at given location.
      *
-     * @param npc the NPC used for this conversation
+     * @param log            the logger that will be used for logging
+     * @param onlineProfile  the {@link OnlineProfile} of the player
+     * @param conversationID ID of the conversation
+     * @param center         location where the conversation has been started
+     * @param npc            the NPC used for this conversation
      */
     public NPCConversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final ConversationID conversationID,
                            final Location center, final BQNPCAdapter<T> npc) {
@@ -30,23 +33,9 @@ public class NPCConversation<T> extends Conversation {
     }
 
     /**
-     * {@inheritDoc}
+     * This will return the NPC associated with this conversation.
      *
-     * @param npc the NPC used for this conversation
-     */
-    public NPCConversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final ConversationID conversationID,
-                           final Location center, @Nullable final String startingOption, final BQNPCAdapter<T> npc) {
-        super(log, onlineProfile, conversationID, center, startingOption);
-        this.npc = npc;
-    }
-
-    /**
-     * This will return the NPC associated with this conversation only after the
-     * conversation is created (all player options are listed and ready to
-     * receive player input)
-     * TODO is this javadoc valid?
-     *
-     * @return the NPC or null if it's too early
+     * @return the NPC Adapter
      */
     public BQNPCAdapter<T> getNPC() {
         return npc;

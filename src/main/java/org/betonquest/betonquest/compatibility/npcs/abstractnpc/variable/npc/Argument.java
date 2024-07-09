@@ -28,9 +28,9 @@ public enum Argument {
     /**
      * Function to resolve this argument from an NPC instance and optional {@link LocationVariable}.
      */
-    private final BiFunction<BQNPCAdapter, LocationVariable, String> resolveFunction;
+    private final BiFunction<BQNPCAdapter<?>, LocationVariable, String> resolveFunction;
 
-    Argument(final BiFunction<BQNPCAdapter, LocationVariable, String> resolve) {
+    Argument(final BiFunction<BQNPCAdapter<?>, LocationVariable, String> resolve) {
         this.resolveFunction = resolve;
     }
 
@@ -41,7 +41,7 @@ public enum Argument {
      * @param location location variable to use for resolving
      * @return the value that the variable resolved to
      */
-    public String resolve(final BQNPCAdapter npc, @Nullable final LocationVariable location) {
+    public String resolve(final BQNPCAdapter<?> npc, @Nullable final LocationVariable location) {
         return resolveFunction.apply(npc, location);
     }
 }
