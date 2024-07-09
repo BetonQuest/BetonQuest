@@ -6,7 +6,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.compatibility.auraskills.AuraSkillsIntegrator;
 import org.betonquest.betonquest.compatibility.brewery.BreweryIntegrator;
-import org.betonquest.betonquest.compatibility.citizens.CitizensIntegrator;
 import org.betonquest.betonquest.compatibility.denizen.DenizenIntegrator;
 import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegrator;
 import org.betonquest.betonquest.compatibility.fakeblock.FakeBlockIntegrator;
@@ -22,6 +21,7 @@ import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOCoreIntegrato
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsIntegrator;
 import org.betonquest.betonquest.compatibility.mmogroup.mmolib.MythicLibIntegrator;
 import org.betonquest.betonquest.compatibility.mythicmobs.MythicMobsIntegrator;
+import org.betonquest.betonquest.compatibility.npcs.citizens.CitizensIntegrator;
 import org.betonquest.betonquest.compatibility.placeholderapi.PlaceholderAPIIntegrator;
 import org.betonquest.betonquest.compatibility.protocollib.ProtocolLibIntegrator;
 import org.betonquest.betonquest.compatibility.quests.QuestsIntegrator;
