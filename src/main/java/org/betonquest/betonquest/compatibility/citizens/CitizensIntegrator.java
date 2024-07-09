@@ -10,19 +10,30 @@ import org.betonquest.betonquest.compatibility.citizens.events.move.CitizensMove
 import org.betonquest.betonquest.compatibility.citizens.events.move.CitizensStopEventFactory;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
+import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
 import org.bukkit.Server;
 import org.bukkit.event.HandlerList;
 import org.bukkit.scheduler.BukkitScheduler;
 
-@SuppressWarnings({"PMD.CommentRequired", "NullAway.Init"})
+/**
+ * Integrator for Citizens.
+ */
+@SuppressWarnings("NullAway.Init")
 public class CitizensIntegrator implements Integrator {
     /**
      * The active integrator instance.
      */
     private static CitizensIntegrator instance;
 
+    /**
+     * The BetonQuest plugin instance.
+     */
     private final BetonQuest plugin;
 
+    /**
+     * Starts conversations on NPC interaction.
+     */
     private CitizensConversationStarter citizensConversationStarter;
 
     /**
@@ -30,6 +41,9 @@ public class CitizensIntegrator implements Integrator {
      */
     private CitizensMoveController citizensMoveController;
 
+    /**
+     * The default Constructor.
+     */
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public CitizensIntegrator() {
         instance = this;
@@ -47,7 +61,7 @@ public class CitizensIntegrator implements Integrator {
 
     @Override
     public void hook() {
-        final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
+        final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
         citizensMoveController = new CitizensMoveController(loggerFactory.create(CitizensMoveController.class));
         citizensConversationStarter = new CitizensConversationStarter(loggerFactory, loggerFactory.create(CitizensConversationStarter.class), citizensMoveController);
         new CitizensWalkingListener();
@@ -60,17 +74,25 @@ public class CitizensIntegrator implements Integrator {
         plugin.registerObjectives("npckill", NPCKillObjective.class);
         plugin.registerObjectives("npcinteract", NPCInteractObjective.class);
         plugin.registerObjectives("npcrange", NPCRangeObjective.class);
+
         final Server server = plugin.getServer();
         final BukkitScheduler scheduler = server.getScheduler();
+        final PrimaryServerThreadData data = new PrimaryServerThreadData(server, scheduler, plugin);
+
         server.getPluginManager().registerEvents(citizensMoveController, plugin);
-        plugin.registerNonStaticEvent("movenpc", new CitizensMoveEventFactory(server, scheduler, plugin, citizensMoveController));
+
+        final EventTypeRegistry eventTypes = plugin.getQuestRegistries().getEventTypes();
+        eventTypes.register("movenpc", new CitizensMoveEventFactory(data, citizensMoveController));
         plugin.registerEvents("teleportnpc", NPCTeleportEvent.class);
-        plugin.registerEvent("stopnpc", new CitizensStopEventFactory(server, scheduler, plugin, citizensMoveController));
+        eventTypes.register("stopnpc", new CitizensStopEventFactory(data, citizensMoveController));
+
         plugin.registerConversationIO("chest", CitizensInventoryConvIO.class);
         plugin.registerConversationIO("combined", CitizensInventoryConvIO.CitizensCombined.class);
+
         plugin.registerVariable("citizen", CitizensVariable.class);
         plugin.registerConditions("npcdistance", NPCDistanceCondition.class);
         plugin.registerConditions("npclocation", NPCLocationCondition.class);
+
         if (Compatibility.getHooked().contains("WorldGuard")) {
             plugin.registerConditions("npcregion", NPCRegionCondition.class);
         }

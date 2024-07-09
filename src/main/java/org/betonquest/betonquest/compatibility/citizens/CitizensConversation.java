@@ -10,25 +10,32 @@ import org.bukkit.Location;
 /**
  * Represents a conversation with NPC
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class CitizensConversation extends Conversation {
-
+    /**
+     * NPC used in this Conversation.
+     */
     private final NPC npc;
 
-    public CitizensConversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final ConversationID conversationID, final Location location, final NPC npc) {
-        super(log, onlineProfile, conversationID, location);
+    /**
+     * Starts a new conversation between player and npc at given location.
+     *
+     * @param log            the logger that will be used for logging
+     * @param onlineProfile  the {@link OnlineProfile} of the player
+     * @param conversationID ID of the conversation
+     * @param center         location where the conversation has been started
+     * @param npc            the NPC used for this conversation
+     */
+    public CitizensConversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final ConversationID conversationID, final Location center, final NPC npc) {
+        super(log, onlineProfile, conversationID, center);
         this.npc = npc;
     }
 
     /**
-     * This will return the NPC associated with this conversation only after the
-     * coversation is created (all player options are listed and ready to
-     * receive player input)
+     * This will return the NPC associated with this conversation.
      *
      * @return the NPC or null if it's too early
      */
     public NPC getNPC() {
         return npc;
     }
-
 }
