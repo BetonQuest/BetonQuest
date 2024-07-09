@@ -8,7 +8,6 @@ import org.betonquest.betonquest.compatibility.npcs.abstractnpc.condition.distan
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.condition.distance.NPCDistanceConditionFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.condition.OnlineProfileRequiredCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
 /**
@@ -21,11 +20,6 @@ public class CitizensDistanceConditionFactory extends NPCDistanceConditionFactor
     private final PrimaryServerThreadData data;
 
     /**
-     * Logger Factory to create new class specific logger.
-     */
-    private final BetonQuestLoggerFactory loggerFactory;
-
-    /**
      * Create a new factory for NPC Distance Conditions.
      *
      * @param supplierStandard the supplier providing the npc adapter supplier
@@ -33,15 +27,12 @@ public class CitizensDistanceConditionFactory extends NPCDistanceConditionFactor
      * @param loggerFactory    the logger factory to create class specific logger
      */
     public CitizensDistanceConditionFactory(final NPCSupplierStandard supplierStandard, final PrimaryServerThreadData data, final BetonQuestLoggerFactory loggerFactory) {
-        super(supplierStandard);
+        super(supplierStandard, loggerFactory);
         this.data = data;
-        this.loggerFactory = loggerFactory;
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws InstructionParseException {
-        return new OnlineProfileRequiredCondition(loggerFactory.create(NPCDistanceCondition.class),
-                new PrimaryServerThreadPlayerCondition(super.parsePlayer(instruction), data),
-                instruction.getPackage());
+        return new PrimaryServerThreadPlayerCondition(super.parsePlayer(instruction), data);
     }
 }

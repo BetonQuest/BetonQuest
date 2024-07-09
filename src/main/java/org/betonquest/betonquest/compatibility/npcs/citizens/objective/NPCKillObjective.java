@@ -21,9 +21,6 @@ public class NPCKillObjective extends CountingObjective implements Listener {
     /**
      * The NPC id.
      */
-    /**
-     * Citizens NPC id.
-     */
     private final int npcId;
 
     /**

@@ -8,6 +8,7 @@ import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.BQNPCAdapter;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCSupplierStandard;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.variable.npc.NPCVariableFactory;
 import org.betonquest.betonquest.compatibility.npcs.citizens.condition.CitizensDistanceConditionFactory;
 import org.betonquest.betonquest.compatibility.npcs.citizens.condition.CitizensLocationConditionFactory;
 import org.betonquest.betonquest.compatibility.npcs.citizens.condition.CitizensRegionConditionFactory;
@@ -19,7 +20,6 @@ import org.betonquest.betonquest.compatibility.npcs.citizens.event.move.Citizens
 import org.betonquest.betonquest.compatibility.npcs.citizens.objective.CitizensInteractObjective;
 import org.betonquest.betonquest.compatibility.npcs.citizens.objective.CitizensRangeObjective;
 import org.betonquest.betonquest.compatibility.npcs.citizens.objective.NPCKillObjective;
-import org.betonquest.betonquest.compatibility.npcs.citizens.variable.npc.CitizensVariableFactory;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -128,7 +128,7 @@ public class CitizensIntegrator implements Integrator {
         plugin.registerConversationIO("chest", CitizensInventoryConvIO.class);
         plugin.registerConversationIO("combined", CitizensInventoryConvIO.CitizensCombined.class);
 
-        questRegistries.getVariableTypes().register("citizen", new CitizensVariableFactory(standard, loggerFactory));
+        questRegistries.getVariableTypes().register("citizen", new NPCVariableFactory(standard, loggerFactory));
 
         final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
         conditionTypes.register("npcdistance", new CitizensDistanceConditionFactory(standard, data, loggerFactory));
@@ -139,7 +139,7 @@ public class CitizensIntegrator implements Integrator {
     public void postHook() {
         if (Compatibility.getHooked().contains("ProtocolLib")) {
             NPCHider.start(plugin.getLoggerFactory().create(NPCHider.class));
-            plugin.registerEvents("updatevisibility", UpdateVisibilityNowEvent.class);
+            plugin.getQuestRegistries().getEventTypes().register("updatevisibility", UpdateVisibilityNowEvent.class);
         }
         if (Compatibility.getHooked().contains("WorldGuard")) {
             final Server server = plugin.getServer();
