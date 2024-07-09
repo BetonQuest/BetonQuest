@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
  * Token that is just any number.
  *
  * @deprecated This should be replaced in BQ 2.0 with a real expression parsing lib like
- * https://github.com/fasseg/exp4j
+ * <a href="https://github.com/fasseg/exp4j">fasseg/exp4j</a>
  */
 @Deprecated
 public class Number implements Token {

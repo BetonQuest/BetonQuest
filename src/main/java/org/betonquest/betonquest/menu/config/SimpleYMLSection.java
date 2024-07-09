@@ -57,12 +57,6 @@ public abstract class SimpleYMLSection {
         }
     }
 
-    /********************************************************
-     *                                                      *
-     *                  STRING LISTS                        *
-     *                                                      *
-     ********************************************************/
-
     /**
      * Parse a list of strings from config file
      *
@@ -95,12 +89,6 @@ public abstract class SimpleYMLSection {
         }
         return list;
     }
-
-    /********************************************************
-     *                                                      *
-     *                       NUMBERS                        *
-     *                                                      *
-     ********************************************************/
 
     /**
      * Parse an integer from config file
@@ -149,12 +137,6 @@ public abstract class SimpleYMLSection {
             throw new Invalid(key, "Invalid number format for '" + stringLong + "'");
         }
     }
-
-    /********************************************************
-     *                                                      *
-     *                      OTHER                           *
-     *                                                      *
-     ********************************************************/
 
     /**
      * Parse a boolean from config file

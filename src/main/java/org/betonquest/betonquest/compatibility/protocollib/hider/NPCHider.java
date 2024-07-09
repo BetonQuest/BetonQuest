@@ -89,7 +89,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
                     npcId = Integer.parseInt(npcIds);
                 } catch (final NumberFormatException e) {
                     log.warn(cfgPackage, "NPC ID '" + npcIds + "' is not a valid number, in hide_npcs", e);
-                    continue npcs;
+                    continue;
                 }
                 final Set<ConditionID> conditions = new HashSet<>();
                 final String conditionsString = section.getString(npcIds);
