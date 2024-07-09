@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.npcs.abstractnpc.condition.locat
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.BQNPCAdapter;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCUtil;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -53,10 +54,7 @@ public class NPCLocationCondition implements NullableCondition {
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestRuntimeException {
-        final BQNPCAdapter npc = npcSupplier.get();
-        if (npc == null) {
-            throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
-        }
+        final BQNPCAdapter<?> npc = NPCUtil.getNPC(npcSupplier, npcId);
         final Location location = this.location.getValue(profile);
         final Location npcLocation = npc.getLocation();
         if (!location.getWorld().equals(npcLocation.getWorld())) {

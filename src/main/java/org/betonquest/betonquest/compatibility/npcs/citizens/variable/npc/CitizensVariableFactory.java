@@ -16,6 +16,6 @@ public class CitizensVariableFactory extends NPCVariableFactory {
      * @param loggerFactory    the logger factory creating new custom logger
      */
     public CitizensVariableFactory(final NPCSupplierStandard supplierStandard, final BetonQuestLoggerFactory loggerFactory) {
-        super(loggerFactory, supplierStandard);
+        super(supplierStandard, loggerFactory);
     }
 }

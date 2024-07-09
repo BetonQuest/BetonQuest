@@ -5,7 +5,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import java.util.function.Supplier;
 
 /**
- *
+ * Commonly used methods related to NPC Adapter.
  */
 public final class NPCUtil {
     private NPCUtil() {

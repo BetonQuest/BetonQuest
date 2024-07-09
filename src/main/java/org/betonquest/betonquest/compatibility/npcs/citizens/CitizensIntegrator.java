@@ -121,12 +121,13 @@ public class CitizensIntegrator implements Integrator {
         final EventTypeRegistry eventTypes = questRegistries.getEventTypes();
         eventTypes.register("movenpc", new CitizensMoveEventFactory(data, citizensMoveController));
         eventTypes.register("stopnpc", new CitizensStopEventFactory(data, citizensMoveController));
-        eventTypes.registerCombined("teleportnpc", new CitizensNPCTeleportEventFactory(data));
+
+        final NPCSupplierStandard standard = CitizensIntegrator::getSupplier;
+        eventTypes.registerCombined("teleportnpc", new CitizensNPCTeleportEventFactory(standard, data));
 
         plugin.registerConversationIO("chest", CitizensInventoryConvIO.class);
         plugin.registerConversationIO("combined", CitizensInventoryConvIO.CitizensCombined.class);
 
-        final NPCSupplierStandard standard = CitizensIntegrator::getSupplier;
         questRegistries.getVariableTypes().register("citizen", new CitizensVariableFactory(standard, loggerFactory));
 
         final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
