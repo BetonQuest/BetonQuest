@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.citizens.events.move;
+package org.betonquest.betonquest.compatibility.citizens.event.move;
 
 import net.citizensnpcs.api.ai.event.NavigationCancelEvent;
 import net.citizensnpcs.api.ai.event.NavigationCompleteEvent;

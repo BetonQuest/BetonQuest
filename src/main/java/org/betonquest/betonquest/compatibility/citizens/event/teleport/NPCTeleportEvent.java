@@ -1,39 +1,43 @@
-package org.betonquest.betonquest.compatibility.citizens;
+package org.betonquest.betonquest.compatibility.citizens.event.teleport;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
-import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.compatibility.citizens.CitizensIntegrator;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * Stop the NPC when he is walking and teleport hin to a given location
+ * Stop the NPC when he is walking and teleport him to a given location.
  */
-@SuppressWarnings("PMD.CommentRequired")
-public class NPCTeleportEvent extends QuestEvent implements Listener {
+public class NPCTeleportEvent implements ComposedEvent {
+    /**
+     * The location to teleport the NPC to.
+     */
     private final VariableLocation location;
 
+    /**
+     * The NPC id.
+     */
     private final int npcId;
 
-    public NPCTeleportEvent(final Instruction instruction) throws InstructionParseException {
-        super(instruction, true);
-        super.persistent = true;
-        super.staticness = true;
-        npcId = instruction.getInt();
-        if (npcId < 0) {
-            throw new InstructionParseException("NPC ID cannot be less than 0");
-        }
-        location = instruction.getLocation();
+    /**
+     * Create a new NPCTeleportEvent.
+     *
+     * @param npcId    the id of the Citizens NPC, greater or equal to zero
+     * @param location the location the NPC will be teleported to
+     */
+    public NPCTeleportEvent(final int npcId, final VariableLocation location) {
+        this.npcId = npcId;
+        this.location = location;
     }
 
     @Override
-    protected Void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
@@ -45,6 +49,5 @@ public class NPCTeleportEvent extends QuestEvent implements Listener {
         } else {
             npc.spawn(location.getValue(profile), SpawnReason.PLUGIN);
         }
-        return null;
     }
 }

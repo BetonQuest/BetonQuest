@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.citizens.events.move;
+package org.betonquest.betonquest.compatibility.citizens.event.move;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;

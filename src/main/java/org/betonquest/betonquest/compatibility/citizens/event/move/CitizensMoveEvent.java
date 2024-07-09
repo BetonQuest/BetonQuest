@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.citizens.events.move;
+package org.betonquest.betonquest.compatibility.citizens.event.move;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
