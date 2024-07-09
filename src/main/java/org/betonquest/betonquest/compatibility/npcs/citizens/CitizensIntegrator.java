@@ -107,11 +107,6 @@ public class CitizensIntegrator implements Integrator {
         citizensConversationStarter = new CitizensConversationStarter(loggerFactory, loggerFactory.create(CitizensConversationStarter.class), citizensMoveController);
         new CitizensWalkingListener();
 
-        // if ProtocolLib is hooked, start NPCHider
-        if (Compatibility.getHooked().contains("ProtocolLib")) {
-            NPCHider.start(loggerFactory.create(NPCHider.class));
-            plugin.registerEvents("updatevisibility", UpdateVisibilityNowEvent.class);
-        }
         plugin.registerObjectives("npckill", NPCKillObjective.class);
         plugin.registerObjectives("npcinteract", CitizensInteractObjective.class);
         plugin.registerObjectives("npcrange", CitizensRangeObjective.class);
@@ -141,6 +136,10 @@ public class CitizensIntegrator implements Integrator {
 
     @Override
     public void postHook() {
+        if (Compatibility.getHooked().contains("ProtocolLib")) {
+            NPCHider.start(plugin.getLoggerFactory().create(NPCHider.class));
+            plugin.registerEvents("updatevisibility", UpdateVisibilityNowEvent.class);
+        }
         if (Compatibility.getHooked().contains("WorldGuard")) {
             final Server server = plugin.getServer();
             final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
@@ -152,6 +151,9 @@ public class CitizensIntegrator implements Integrator {
     @Override
     public void reload() {
         citizensConversationStarter.reload();
+        if (NPCHider.getInstance() != null) {
+            NPCHider.start(plugin.getLoggerFactory().create(NPCHider.class));
+        }
     }
 
     @Override
