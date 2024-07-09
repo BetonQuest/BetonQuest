@@ -12,6 +12,9 @@ import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveE
 import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveEventFactory;
 import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensStopEventFactory;
 import org.betonquest.betonquest.compatibility.citizens.event.teleport.NPCTeleportEventFactory;
+import org.betonquest.betonquest.compatibility.citizens.objective.NPCInteractObjective;
+import org.betonquest.betonquest.compatibility.citizens.objective.NPCKillObjective;
+import org.betonquest.betonquest.compatibility.citizens.objective.NPCRangeObjective;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;

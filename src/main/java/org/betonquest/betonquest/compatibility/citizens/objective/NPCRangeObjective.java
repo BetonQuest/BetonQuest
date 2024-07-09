@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.citizens;
+package org.betonquest.betonquest.compatibility.citizens.objective;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -21,18 +21,41 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.BiPredicate;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * The player has to reach certain radius around a specified NPC.
+ */
 public class NPCRangeObjective extends Objective {
+    /**
+     * Stores the relevant NPC IDs.
+     */
     private final List<Integer> npcIds;
 
+    /**
+     * Maximal distance between player and NPC.
+     */
     private final VariableNumber radius;
 
+    /**
+     * Stores the state of player to ensure correct completion based on the {@link Trigger}.
+     */
     private final Map<UUID, Boolean> playersInRange;
 
+    /**
+     * Checks if the condition based on the {@link Trigger} is not met.
+     */
     private final BiPredicate<UUID, Boolean> checkStuff;
 
+    /**
+     * BukkitTask ID to stop range check loop.
+     */
     private int npcMoveTask;
 
+    /**
+     * Creates a new NPCRangeObjective from the given instruction.
+     *
+     * @param instruction the user-provided instruction
+     * @throws InstructionParseException if the instruction is invalid
+     */
     public NPCRangeObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         this.npcIds = new ArrayList<>();
@@ -118,10 +141,10 @@ public class NPCRangeObjective extends Objective {
             return false;
         }
         final double radius = this.radius.getValue(onlineProfile).doubleValue();
-        final double distanceSqrd = location.distanceSquared(onlineProfile.getPlayer().getLocation());
-        final double radiusSqrd = radius * radius;
+        final double distanceSquared = location.distanceSquared(onlineProfile.getPlayer().getLocation());
+        final double radiusSquared = radius * radius;
 
-        return distanceSqrd <= radiusSqrd;
+        return distanceSquared <= radiusSquared;
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
@@ -146,10 +169,29 @@ public class NPCRangeObjective extends Objective {
         return "";
     }
 
+    /**
+     * The action that completes the objective.
+     */
     private enum Trigger {
+        /**
+         * The player has to enter the range.
+         * <p>
+         * When the player is already inside the range he has to leave first.
+         */
         ENTER,
+        /**
+         * The player has to leave the range.
+         * <p>
+         * If the player is already outside the range he has to enter first.
+         */
         LEAVE,
+        /**
+         * The player has to be inside the range.
+         */
         INSIDE,
+        /**
+         * The player ha to be outside the range.
+         */
         OUTSIDE
     }
 }
