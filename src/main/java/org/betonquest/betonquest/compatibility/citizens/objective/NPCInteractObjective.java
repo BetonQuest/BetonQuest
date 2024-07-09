@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.citizens;
+package org.betonquest.betonquest.compatibility.citizens.objective;
 
 import net.citizensnpcs.api.event.NPCClickEvent;
 import net.citizensnpcs.api.event.NPCLeftClickEvent;
@@ -26,7 +26,6 @@ import static org.betonquest.betonquest.objectives.EntityInteractObjective.Inter
  */
 
 public class NPCInteractObjective extends Objective implements Listener {
-
     /**
      * The ID of the NPC to interact with.
      */
@@ -114,5 +113,4 @@ public class NPCInteractObjective extends Objective implements Listener {
     public String getProperty(final String name, final Profile profile) {
         return "";
     }
-
 }

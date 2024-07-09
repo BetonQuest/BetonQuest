@@ -1,10 +1,12 @@
 package org.betonquest.betonquest.quest.condition.advancement;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
+import org.betonquest.betonquest.quest.condition.OnlineProfileRequiredCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
@@ -26,12 +28,19 @@ public class AdvancementConditionFactory implements PlayerConditionFactory {
     private final PrimaryServerThreadData data;
 
     /**
+     * Logger Factory to create new class specific logger.
+     */
+    private final BetonQuestLoggerFactory loggerFactory;
+
+    /**
      * Create the Advancement Condition Factory.
      *
-     * @param data the data used for checking the condition on the main thread
+     * @param data          the data used for checking the condition on the main thread
+     * @param loggerFactory the logger factory to create class specific logger
      */
-    public AdvancementConditionFactory(final PrimaryServerThreadData data) {
+    public AdvancementConditionFactory(final PrimaryServerThreadData data, final BetonQuestLoggerFactory loggerFactory) {
         this.data = data;
+        this.loggerFactory = loggerFactory;
     }
 
     @Override
@@ -43,6 +52,8 @@ public class AdvancementConditionFactory implements PlayerConditionFactory {
         }
         final Advancement advancement = Utils.getNN(Bukkit.getServer().getAdvancement(new NamespacedKey(split[0], split[1])),
                 "No such advancement: " + advancementString);
-        return new PrimaryServerThreadPlayerCondition(new AdvancementCondition(advancement), data);
+        return new OnlineProfileRequiredCondition(loggerFactory.create(AdvancementCondition.class),
+                new PrimaryServerThreadPlayerCondition(new AdvancementCondition(advancement), data),
+                instruction.getPackage());
     }
 }

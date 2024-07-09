@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.citizens.events.move;
+package org.betonquest.betonquest.compatibility.citizens.event.move;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
@@ -6,10 +6,8 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
-import org.bukkit.Server;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.List;
 
@@ -18,19 +16,9 @@ import java.util.List;
  */
 public class CitizensMoveEventFactory implements EventFactory {
     /**
-     * Server to use for syncing to the primary server thread.
+     * Data to use for syncing to the primary server thread.
      */
-    private final Server server;
-
-    /**
-     * Scheduler to use for syncing to the primary server thread.
-     */
-    private final BukkitScheduler scheduler;
-
-    /**
-     * Plugin to use for syncing to the primary server thread.
-     */
-    private final Plugin plugin;
+    private final PrimaryServerThreadData data;
 
     /**
      * Move instance to handle movement of Citizens NPCs.
@@ -40,15 +28,11 @@ public class CitizensMoveEventFactory implements EventFactory {
     /**
      * Create a new NPCTeleportEventFactory.
      *
-     * @param server                 the server to use for syncing to the primary server thread
-     * @param scheduler              the scheduler to use for syncing to the primary server thread
-     * @param plugin                 the plugin to use for syncing to the primary server thread
+     * @param data                   the data to use for syncing to the primary server thread
      * @param citizensMoveController the move instance to handle movement of Citizens NPCs
      */
-    public CitizensMoveEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin, final CitizensMoveController citizensMoveController) {
-        this.server = server;
-        this.scheduler = scheduler;
-        this.plugin = plugin;
+    public CitizensMoveEventFactory(final PrimaryServerThreadData data, final CitizensMoveController citizensMoveController) {
+        this.data = data;
         this.citizensMoveController = citizensMoveController;
     }
 
@@ -65,7 +49,6 @@ public class CitizensMoveEventFactory implements EventFactory {
         final EventID[] failEvents = instruction.getList(instruction.getOptional("fail"), instruction::getEvent).toArray(new EventID[0]);
         final boolean blockConversations = instruction.hasArgument("block");
         final CitizensMoveController.MoveData moveAction = new CitizensMoveController.MoveData(locations, waitTicks, doneEvents, failEvents, blockConversations, instruction.getPackage());
-        return new PrimaryServerThreadEvent(new CitizensMoveEvent(npcId, citizensMoveController, moveAction),
-                server, scheduler, plugin);
+        return new PrimaryServerThreadEvent(new CitizensMoveEvent(npcId, citizensMoveController, moveAction), data);
     }
 }

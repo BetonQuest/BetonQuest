@@ -1,43 +1,49 @@
-package org.betonquest.betonquest.compatibility.citizens;
+package org.betonquest.betonquest.compatibility.citizens.condition.location;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
-import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.api.quest.condition.Condition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Checks if a npc is at a specific location
- * <p>
- * Created on 01.10.2018.
  */
-@SuppressWarnings("PMD.CommentRequired")
-public class NPCLocationCondition extends Condition {
+public class NPCLocationCondition implements Condition {
+    /**
+     * The NPC id.
+     */
     private final int npcId;
 
+    /**
+     * The location where the NPC has to be around.
+     */
     private final VariableLocation location;
 
+    /**
+     * The maximal distance between the NPC and the radius location.
+     */
     private final VariableNumber radius;
 
-    public NPCLocationCondition(final Instruction instruction) throws InstructionParseException {
-        super(instruction, true);
-        super.persistent = true;
-        super.staticness = true;
-        npcId = instruction.getInt();
-        if (npcId < 0) {
-            throw new InstructionParseException("NPC ID cannot be less than 0");
-        }
-        location = instruction.getLocation();
-        radius = instruction.getVarNum();
+    /**
+     * Create a new NPCLocationCondition.
+     *
+     * @param npcId    the npc id, null or positive
+     * @param location the location where the npc has to be around
+     * @param radius   the maximal distance between the npc and the radius location
+     */
+    public NPCLocationCondition(final int npcId, final VariableLocation location, final VariableNumber radius) {
+        this.npcId = npcId;
+        this.location = location;
+        this.radius = radius;
     }
 
     @Override
-    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+    public boolean check(@Nullable final Profile profile) throws QuestRuntimeException {
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
