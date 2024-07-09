@@ -1,9 +1,13 @@
 package org.betonquest.betonquest.compatibility.npcs.citizens;
 
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.BQNPCAdapter;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCSupplierStandard;
 import org.betonquest.betonquest.compatibility.npcs.citizens.condition.CitizensDistanceConditionFactory;
 import org.betonquest.betonquest.compatibility.npcs.citizens.condition.CitizensLocationConditionFactory;
 import org.betonquest.betonquest.compatibility.npcs.citizens.condition.CitizensRegionConditionFactory;
@@ -18,6 +22,7 @@ import org.betonquest.betonquest.compatibility.npcs.citizens.objective.NPCKillOb
 import org.betonquest.betonquest.compatibility.npcs.citizens.variable.npc.CitizensVariableFactory;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
+import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
@@ -25,6 +30,8 @@ import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
 import org.bukkit.Server;
 import org.bukkit.event.HandlerList;
 import org.bukkit.scheduler.BukkitScheduler;
+
+import java.util.function.Supplier;
 
 /**
  * Integrator for Citizens.
@@ -69,6 +76,30 @@ public class CitizensIntegrator implements Integrator {
         return instance.citizensMoveController;
     }
 
+    /**
+     * Gets a supplier, which will return a new Citizens {@link BQNPCAdapter}
+     * if the {@code npcID} has a valid npc or null.
+     *
+     * @param npcId the id of the Citizens npc
+     * @return the supplier which will return the npc or null if none was found by the npcId
+     * @throws InstructionParseException when the id cannot be parsed as positive or zero integer
+     */
+    public static Supplier<BQNPCAdapter<?>> getSupplier(final String npcId) throws InstructionParseException {
+        final int parsedId;
+        try {
+            parsedId = Integer.parseInt(npcId);
+            if (parsedId < 0) {
+                throw new InstructionParseException("The NPC ID '" + npcId + "' is not a positive or zero integer");
+            }
+        } catch (final NumberFormatException e) {
+            throw new InstructionParseException("The NPC ID '" + npcId + "' is not a valid integer", e);
+        }
+        return () -> {
+            final NPC npc = CitizensAPI.getNPCRegistry().getById(parsedId);
+            return npc == null ? null : new CitizensBQAdapter(npc);
+        };
+    }
+
     @Override
     public void hook() {
         final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
@@ -100,11 +131,12 @@ public class CitizensIntegrator implements Integrator {
         plugin.registerConversationIO("chest", CitizensInventoryConvIO.class);
         plugin.registerConversationIO("combined", CitizensInventoryConvIO.CitizensCombined.class);
 
-        questRegistries.getVariableTypes().register("citizen", new CitizensVariableFactory(loggerFactory));
+        final NPCSupplierStandard standard = CitizensIntegrator::getSupplier;
+        questRegistries.getVariableTypes().register("citizen", new CitizensVariableFactory(standard, loggerFactory));
 
         final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
-        conditionTypes.register("npcdistance", new CitizensDistanceConditionFactory(data, loggerFactory));
-        conditionTypes.registerCombined("npclocation", new CitizensLocationConditionFactory(data));
+        conditionTypes.register("npcdistance", new CitizensDistanceConditionFactory(standard, data, loggerFactory));
+        conditionTypes.registerCombined("npclocation", new CitizensLocationConditionFactory(standard, data));
     }
 
     @Override
@@ -112,7 +144,8 @@ public class CitizensIntegrator implements Integrator {
         if (Compatibility.getHooked().contains("WorldGuard")) {
             final Server server = plugin.getServer();
             final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
-            plugin.getQuestRegistries().getConditionTypes().register("npcregion", new CitizensRegionConditionFactory(data));
+            plugin.getQuestRegistries().getConditionTypes().register("npcregion",
+                    new CitizensRegionConditionFactory(CitizensIntegrator::getSupplier, data));
         }
     }
 

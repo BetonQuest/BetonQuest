@@ -80,6 +80,7 @@ public abstract class NPCConversationStarter<T> implements Listener {
      * @param loggerFactory the logger factory used to create logger for the started conversations
      * @param log           the custom logger instance for this class
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public NPCConversationStarter(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
         this.loggerFactory = loggerFactory;
         this.log = log;

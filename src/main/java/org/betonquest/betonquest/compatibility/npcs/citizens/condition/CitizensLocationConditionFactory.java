@@ -3,9 +3,9 @@ package org.betonquest.betonquest.compatibility.npcs.citizens.condition;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCSupplierStandard;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.condition.location.NPCLocationCondition;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.condition.location.NPCLocationConditionFactory;
-import org.betonquest.betonquest.compatibility.npcs.citizens.CitizensNPCSupplier;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
@@ -23,10 +23,11 @@ public class CitizensLocationConditionFactory extends NPCLocationConditionFactor
     /**
      * Create a new factory for Citizens NPC location conditions.
      *
-     * @param data the data used for primary server thread access
+     * @param supplierStandard the supplier providing the npc adapter supplier
+     * @param data             the data used for primary server thread access
      */
-    public CitizensLocationConditionFactory(final PrimaryServerThreadData data) {
-        super(CitizensNPCSupplier::getSupplierByIDStatic);
+    public CitizensLocationConditionFactory(final NPCSupplierStandard supplierStandard, final PrimaryServerThreadData data) {
+        super(supplierStandard);
         this.data = data;
     }
 
