@@ -15,6 +15,7 @@ import org.betonquest.betonquest.compatibility.citizens.event.teleport.NPCTelepo
 import org.betonquest.betonquest.compatibility.citizens.objective.NPCInteractObjective;
 import org.betonquest.betonquest.compatibility.citizens.objective.NPCKillObjective;
 import org.betonquest.betonquest.compatibility.citizens.objective.NPCRangeObjective;
+import org.betonquest.betonquest.compatibility.citizens.variable.npc.CitizensVariableFactory;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -99,7 +100,7 @@ public class CitizensIntegrator implements Integrator {
         plugin.registerConversationIO("chest", CitizensInventoryConvIO.class);
         plugin.registerConversationIO("combined", CitizensInventoryConvIO.CitizensCombined.class);
 
-        plugin.registerVariable("citizen", CitizensVariable.class);
+        questRegistries.getVariableTypes().register("citizen", new CitizensVariableFactory(loggerFactory));
 
         final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
         conditionTypes.register("npcdistance", new NPCDistanceConditionFactory(data));
