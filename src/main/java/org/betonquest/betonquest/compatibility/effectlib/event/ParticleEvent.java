@@ -63,8 +63,6 @@ public class ParticleEvent implements Event {
     public void execute(final Profile profile) throws QuestRuntimeException {
         final Player player = profile.getOnlineProfile().get().getPlayer();
         final Location location = (loc == null) ? player.getLocation() : loc.getValue(profile);
-        // This is not used at the moment
-        // Entity originEntity = (loc == null) ? p : null;
         final Player targetPlayer = privateParticle ? player : null;
         manager.start(effectClass,
                 parameters,
