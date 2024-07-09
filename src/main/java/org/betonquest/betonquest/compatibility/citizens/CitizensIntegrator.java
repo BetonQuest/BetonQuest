@@ -103,7 +103,7 @@ public class CitizensIntegrator implements Integrator {
         questRegistries.getVariableTypes().register("citizen", new CitizensVariableFactory(loggerFactory));
 
         final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
-        conditionTypes.register("npcdistance", new NPCDistanceConditionFactory(data));
+        conditionTypes.register("npcdistance", new NPCDistanceConditionFactory(data, loggerFactory));
         conditionTypes.register("npclocation", new NPCLocationConditionFactory(data));
     }
 

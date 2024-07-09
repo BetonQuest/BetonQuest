@@ -226,7 +226,7 @@ public class CoreQuestTypes {
     }
 
     private void registerConditions(final ConditionTypeRegistry conditionTypes) {
-        conditionTypes.register("advancement", new AdvancementConditionFactory(data));
+        conditionTypes.register("advancement", new AdvancementConditionFactory(data, loggerFactory));
         betonQuest.registerConditions("and", ConjunctionCondition.class);
         betonQuest.registerConditions("armor", ArmorCondition.class);
         betonQuest.registerConditions("biome", BiomeCondition.class);

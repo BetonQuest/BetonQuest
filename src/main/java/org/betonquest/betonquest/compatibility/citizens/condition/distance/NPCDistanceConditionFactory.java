@@ -1,11 +1,13 @@
 package org.betonquest.betonquest.compatibility.citizens.condition.distance;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
+import org.betonquest.betonquest.quest.condition.OnlineProfileRequiredCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
 /**
@@ -18,12 +20,19 @@ public class NPCDistanceConditionFactory implements PlayerConditionFactory {
     private final PrimaryServerThreadData data;
 
     /**
+     * Logger Factory to create new class specific logger.
+     */
+    private final BetonQuestLoggerFactory loggerFactory;
+
+    /**
      * Create a new factory for NPC Distance Conditions.
      *
-     * @param data the data for primary server thread access
+     * @param data          the data for primary server thread access
+     * @param loggerFactory the logger factory to create class specific logger
      */
-    public NPCDistanceConditionFactory(final PrimaryServerThreadData data) {
+    public NPCDistanceConditionFactory(final PrimaryServerThreadData data, final BetonQuestLoggerFactory loggerFactory) {
         this.data = data;
+        this.loggerFactory = loggerFactory;
     }
 
     @Override
@@ -33,7 +42,8 @@ public class NPCDistanceConditionFactory implements PlayerConditionFactory {
             throw new InstructionParseException("NPC ID cannot be less than 0");
         }
         final VariableNumber distance = instruction.getVarNum();
-        // TODO online player require
-        return new PrimaryServerThreadPlayerCondition(new NPCDistanceCondition(npcId, distance), data);
+        return new OnlineProfileRequiredCondition(loggerFactory.create(NPCDistanceCondition.class),
+                new PrimaryServerThreadPlayerCondition(new NPCDistanceCondition(npcId, distance), data),
+                instruction.getPackage());
     }
 }
