@@ -56,7 +56,7 @@ public abstract class NPCRangeObjective extends Objective {
      * Creates a new NPCRangeObjective from the given instruction.
      *
      * @param instruction      the user-provided instruction
-     * @param supplierStandard the supplier providing the npc adapter supplier
+     * @param supplierStandard the supplier providing the npc adapter
      * @throws InstructionParseException if the instruction is invalid
      */
     public NPCRangeObjective(final Instruction instruction, final NPCSupplierStandard supplierStandard) throws InstructionParseException {

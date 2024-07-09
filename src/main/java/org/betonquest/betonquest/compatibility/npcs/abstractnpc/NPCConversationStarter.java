@@ -165,7 +165,7 @@ public abstract class NPCConversationStarter<T> implements Listener {
         final String npcId = npc.getId();
         final String npcName = npc.getName();
 
-        final boolean npcsByName = "true".equalsIgnoreCase(Config.getConfigString("citizens_npcs_by_name"));
+        final boolean npcsByName = Boolean.parseBoolean(Config.getConfigString("citizens_npcs_by_name"));
 
         final String selector = npcsByName ? npcName : npcId;
         final ConversationID conversationID = assignedConversations.get(selector);

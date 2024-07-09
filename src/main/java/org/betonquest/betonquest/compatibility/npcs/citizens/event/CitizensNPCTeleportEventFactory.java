@@ -3,8 +3,8 @@ package org.betonquest.betonquest.compatibility.npcs.citizens.event;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCSupplierStandard;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.event.teleport.NPCTeleportEventFactory;
-import org.betonquest.betonquest.compatibility.npcs.citizens.CitizensIntegrator;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -22,10 +22,11 @@ public class CitizensNPCTeleportEventFactory extends NPCTeleportEventFactory {
     /**
      * Create a new factory for Citizens teleport events.
      *
-     * @param data the data to use for syncing to the primary server thread
+     * @param supplierStandard the supplier providing the npc adapter
+     * @param data             the data to use for syncing to the primary server thread
      */
-    public CitizensNPCTeleportEventFactory(final PrimaryServerThreadData data) {
-        super(CitizensIntegrator::getSupplier);
+    public CitizensNPCTeleportEventFactory(final NPCSupplierStandard supplierStandard, final PrimaryServerThreadData data) {
+        super(supplierStandard);
         this.data = data;
     }
 

@@ -23,7 +23,7 @@ public class CitizensLocationConditionFactory extends NPCLocationConditionFactor
     /**
      * Create a new factory for Citizens NPC location conditions.
      *
-     * @param supplierStandard the supplier providing the npc adapter supplier
+     * @param supplierStandard the supplier providing the npc adapter
      * @param data             the data used for primary server thread access
      */
     public CitizensLocationConditionFactory(final NPCSupplierStandard supplierStandard, final PrimaryServerThreadData data) {
