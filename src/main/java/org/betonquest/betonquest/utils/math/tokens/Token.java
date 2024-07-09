@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
  * Part of a parsed mathematical expression, that can be resolved to a number.
  *
  * @deprecated This should be replaced in BQ 2.0 with a real expression parsing lib like
- * https://github.com/fasseg/exp4j
+ * <a href="https://github.com/fasseg/exp4j">fasseg/exp4j</a>
  */
 @Deprecated
 public interface Token {
