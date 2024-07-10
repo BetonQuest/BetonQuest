@@ -244,10 +244,10 @@ public class CitizensMoveController implements Listener {
                 @Override
                 public void run() {
                     npc.getNavigator().setPaused(false);
+                    movingNpcs.remove(npcId);
                     for (final EventID event : moveData.doneEvents()) {
                         BetonQuest.event(currentProfile, event);
                     }
-                    movingNpcs.remove(npcId);
                 }
             }.runTaskLater(BetonQuest.getInstance(), moveData.waitTicks());
         }
