@@ -16,6 +16,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - LuckPerms TagCalculator trying to use PlayerData even if player is offline
 - Memory Leak in CombatTagger
 - AdvancementIO not working in mc 1.20.5/6 and 1.21
+- chaining of movenpc events did trigger fail events
 ### Security
 
 ## [2.1.2] - 2024-06-23
