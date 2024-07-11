@@ -120,7 +120,7 @@ public class Backpack implements Listener {
     /**
      * Represents a display that can be shown as the backpack.
      */
-    private abstract class Display {
+    private abstract static class Display {
         private Display() {
         }
 

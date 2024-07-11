@@ -47,9 +47,7 @@ public class RPGMenuConfig extends SimpleYMLSection {
         }
         this.messages = new HashMap<>();
         this.languages = new ArrayList<>();
-        for (final String key : config.getConfigurationSection("messages").getKeys(false)) {
-            languages.add(key);
-        }
+        languages.addAll(config.getConfigurationSection("messages").getKeys(false));
         //load configuration settings
         this.defaultCloseOnClick = getBoolean("default_close");
 
