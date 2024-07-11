@@ -24,7 +24,7 @@ public class EffectEvent implements Event {
     /**
      * The amplifier of the effect.
      */
-    private final VariableNumber amplifier;
+    private final VariableNumber level;
 
     /**
      * Whether the effect is ambient.
@@ -44,17 +44,17 @@ public class EffectEvent implements Event {
     /**
      * Create a new effect event.
      *
-     * @param effect    the effect to apply
-     * @param duration  the duration of the effect
-     * @param amplifier the amplifier of the effect
-     * @param ambient   whether the effect is ambient
-     * @param hidden    whether the effect is hidden
-     * @param icon      whether the effect has an icon
+     * @param effect   the effect to apply
+     * @param duration the duration of the effect
+     * @param level    the level of the effect
+     * @param ambient  whether the effect is ambient
+     * @param hidden   whether the effect is hidden
+     * @param icon     whether the effect has an icon
      */
-    public EffectEvent(final PotionEffectType effect, final VariableNumber duration, final VariableNumber amplifier, final boolean ambient, final boolean hidden, final boolean icon) {
+    public EffectEvent(final PotionEffectType effect, final VariableNumber duration, final VariableNumber level, final boolean ambient, final boolean hidden, final boolean icon) {
         this.effect = effect;
         this.duration = duration;
-        this.amplifier = amplifier;
+        this.level = level;
         this.ambient = ambient;
         this.hidden = hidden;
         this.icon = icon;
@@ -62,7 +62,8 @@ public class EffectEvent implements Event {
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
+        final int durationInt = duration.getInt(profile);
         profile.getOnlineProfile().get().getPlayer().addPotionEffect(
-                new PotionEffect(effect, duration.getInt(profile) * 20, amplifier.getInt(profile) - 1, ambient, !hidden, icon));
+                new PotionEffect(effect, durationInt == -1 ? -1 : durationInt * 20, level.getInt(profile) - 1, ambient, !hidden, icon));
     }
 }

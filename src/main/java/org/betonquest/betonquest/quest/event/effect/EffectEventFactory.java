@@ -60,12 +60,12 @@ public class EffectEventFactory implements EventFactory {
         }
         try {
             final VariableNumber duration = instruction.getVarNum();
-            final VariableNumber amplifier = instruction.getVarNum();
+            final VariableNumber level = instruction.getVarNum();
             final boolean ambient = instruction.hasArgument("ambient");
             final boolean hidden = instruction.hasArgument("hidden");
             final boolean icon = !instruction.hasArgument("noicon");
             return new PrimaryServerThreadEvent(new OnlineProfileRequiredEvent(
-                    loggerFactory.create(EffectEvent.class), new EffectEvent(effect, duration, amplifier, ambient, hidden, icon), instruction.getPackage()),
+                    loggerFactory.create(EffectEvent.class), new EffectEvent(effect, duration, level, ambient, hidden, icon), instruction.getPackage()),
                     server, scheduler, plugin);
         } catch (final InstructionParseException e) {
             throw new InstructionParseException("Could not parse effect duration and amplifier", e);
