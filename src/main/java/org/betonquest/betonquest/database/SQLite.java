@@ -44,13 +44,15 @@ public class SQLite extends Database {
     @Override
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public Connection openConnection() {
-        if (!plugin.getDataFolder().exists()) {
-            plugin.getDataFolder().mkdirs();
+        if (!plugin.getDataFolder().exists() && !plugin.getDataFolder().mkdirs()) {
+            log.error("Unable to create plugin data folder!");
         }
         final File file = new File(plugin.getDataFolder(), dbLocation);
         if (!file.exists()) {
             try {
-                file.createNewFile();
+                if (!file.createNewFile()) {
+                    log.error("Unable to create database file!");
+                }
             } catch (final IOException e) {
                 log.error("Unable to create database!", e);
             }

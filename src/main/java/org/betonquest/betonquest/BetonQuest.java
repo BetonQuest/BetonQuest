@@ -692,7 +692,6 @@ public class BetonQuest extends JavaPlugin {
     @SuppressWarnings("PMD.DoNotUseThreads")
     @Override
     public void onDisable() {
-        //stop all schedules
         if (questRegistry != null) {
             questRegistry.stopAllEventSchedules();
         }
