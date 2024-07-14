@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Class representing a menu
@@ -67,7 +66,8 @@ public class Menu extends SimpleYMLSection implements Listener {
     /**
      * Optional which contains the item this menu is bound to or is empty if none is bound
      */
-    private final Optional<QuestItem> boundItem;
+    @Nullable
+    private final QuestItem boundItem;
 
     /**
      * Conditions which have to be matched to open the menu
@@ -87,7 +87,8 @@ public class Menu extends SimpleYMLSection implements Listener {
     /**
      * Optional which contains the command this menu is bound to or is empty if none is bound
      */
-    private final Optional<MenuBoundCommand> boundCommand;
+    @Nullable
+    private final MenuBoundCommand boundCommand;
 
     @SuppressWarnings("PMD.AvoidFieldNameMatchingTypeName")
     private final RPGMenu menu = BetonQuest.getInstance().getRpgMenu();
@@ -193,8 +194,10 @@ public class Menu extends SimpleYMLSection implements Listener {
         }
 
         //load command and register listener
-        this.boundCommand.ifPresent(SimpleCommand::register);
-        if (this.boundItem.isPresent()) {
+        if (this.boundCommand != null) {
+            boundCommand.register();
+        }
+        if (this.boundItem != null) {
             Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
         }
     }
@@ -221,8 +224,10 @@ public class Menu extends SimpleYMLSection implements Listener {
      * Run this method on reload
      */
     public void unregister() {
-        boundCommand.ifPresent(SimpleCommand::unregister);
-        if (boundItem.isPresent()) {
+        if (boundCommand != null) {
+            boundCommand.unregister();
+        }
+        if (boundItem != null) {
             HandlerList.unregisterAll(this);
         }
     }
@@ -230,7 +235,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     @EventHandler
     public void onItemClick(final PlayerInteractEvent event) {
         //check if item is bound item
-        if (!boundItem.get().compare(event.getItem())) {
+        if (boundItem == null || !boundItem.compare(event.getItem())) {
             return;
         }
         event.setCancelled(true);
@@ -338,7 +343,8 @@ public class Menu extends SimpleYMLSection implements Listener {
     /**
      * @return the item this inventory is bound to
      */
-    public Optional<QuestItem> getBoundItem() {
+    @Nullable
+    public QuestItem getBoundItem() {
         return boundItem;
     }
 
@@ -347,13 +353,6 @@ public class Menu extends SimpleYMLSection implements Listener {
      */
     public List<ConditionID> getOpenConditions() {
         return openConditions;
-    }
-
-    /**
-     * @return the command this inventory is bound to
-     */
-    public Optional<MenuBoundCommand> getBoundCommand() {
-        return boundCommand;
     }
 
     /**

@@ -107,6 +107,7 @@ public class Version {
      *
      * @return The qualifier
      */
+    @Nullable
     public String getQualifier() {
         return qualifier;
     }
@@ -116,6 +117,7 @@ public class Version {
      *
      * @return The build number
      */
+    @Nullable
     public Integer getBuildNumber() {
         return buildNumber;
     }

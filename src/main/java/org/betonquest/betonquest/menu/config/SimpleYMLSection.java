@@ -8,12 +8,12 @@ import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 /**
  * Abstract class to help parsing of yml config files
@@ -273,16 +273,16 @@ public abstract class SimpleYMLSection {
      * @param <T> the type of the setting
      */
     protected abstract class OptionalSetting<T> {
-
-        private final Optional<T> optional;
+        @Nullable
+        private final T optional;
 
         @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
         public OptionalSetting() throws Invalid {
-            Optional<T> optionalSetting;
+            T optionalSetting;
             try {
-                optionalSetting = Optional.of(of());
+                optionalSetting = of();
             } catch (final Missing missing) {
-                optionalSetting = Optional.empty();
+                optionalSetting = null;
             }
             optional = optionalSetting;
         }
@@ -290,7 +290,8 @@ public abstract class SimpleYMLSection {
         @SuppressWarnings("PMD.ShortMethodName")
         protected abstract T of() throws Missing, Invalid;
 
-        public final Optional<T> get() {
+        @Nullable
+        public final T get() {
             return optional;
         }
     }
