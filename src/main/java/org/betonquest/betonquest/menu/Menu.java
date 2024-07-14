@@ -350,13 +350,6 @@ public class Menu extends SimpleYMLSection implements Listener {
     }
 
     /**
-     * @return the command this inventory is bound to
-     */
-    public Optional<MenuBoundCommand> getBoundCommand() {
-        return boundCommand;
-    }
-
-    /**
      * A command which can be used to open the gui
      * To perform the command a player must match all open conditions
      */
