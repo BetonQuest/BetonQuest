@@ -57,6 +57,9 @@ public abstract class HologramLoop {
 
     /**
      * Creates a new instance of the loop.
+     *
+     * @param loggerFactory logger factory to use
+     * @param log           the logger that will be used for logging
      */
     public HologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
         this.loggerFactory = loggerFactory;

@@ -118,6 +118,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     /**
      * Registers a new executor and a new tab completer of the /betonquest command.
+     *
+     * @param loggerFactory         logger factory to use
+     * @param configAccessorFactory the config accessor factory to use
+     * @param bukkitAudiences       the bukkit audiences to use
+     * @param logWatcher            the player log watcher to use
+     * @param debuggingController   the log publishing controller to use
+     * @param log                   the logger that will be used for logging
      */
     public QuestCommand(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final BukkitAudiences bukkitAudiences, final PlayerLogWatcher logWatcher, final LogPublishingController debuggingController) {
         this.loggerFactory = loggerFactory;

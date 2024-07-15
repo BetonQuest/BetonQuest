@@ -40,6 +40,8 @@ public class SpigotHeadHandler extends HeadHandler {
 
     /**
      * Construct a new HeadHandler.
+     *
+     * @param log the logger that will be used for logging
      */
     public SpigotHeadHandler(final BetonQuestLogger log) {
         super();

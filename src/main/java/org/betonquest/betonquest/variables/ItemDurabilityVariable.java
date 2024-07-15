@@ -47,6 +47,9 @@ public class ItemDurabilityVariable extends Variable {
 
     /**
      * Creates a new item durability variable.
+     *
+     * @param instruction the instruction to create the variable from
+     * @throws InstructionParseException if there was an error parsing the instruction
      */
     public ItemDurabilityVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
