@@ -6,15 +6,13 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NoNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
-import org.bukkit.Server;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
 
 /**
  * Factory for {@link GiveEvent}.
@@ -26,33 +24,19 @@ public class GiveEventFactory implements EventFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Server to use for syncing to the primary server thread.
+     * Data for primary server thread access.
      */
-    private final Server server;
-
-    /**
-     * Scheduler to use for syncing to the primary server thread.
-     */
-    private final BukkitScheduler scheduler;
-
-    /**
-     * Plugin to use for syncing to the primary server thread.
-     */
-    private final Plugin plugin;
+    private final PrimaryServerThreadData data;
 
     /**
      * Create the give event factory.
      *
      * @param loggerFactory logger factory to use
-     * @param server        the server to use
-     * @param scheduler     the scheduler to use
-     * @param plugin        the plugin to use
+     * @param data          the data for primary server thread access
      */
-    public GiveEventFactory(final BetonQuestLoggerFactory loggerFactory, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+    public GiveEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
         this.loggerFactory = loggerFactory;
-        this.server = server;
-        this.scheduler = scheduler;
-        this.plugin = plugin;
+        this.data = data;
     }
 
     @Override
@@ -76,7 +60,7 @@ public class GiveEventFactory implements EventFactory {
                         itemsDroppedSender,
                         instruction.hasArgument("backpack")
                 ), instruction.getPackage()),
-                server, scheduler, plugin
+                data
         );
     }
 }

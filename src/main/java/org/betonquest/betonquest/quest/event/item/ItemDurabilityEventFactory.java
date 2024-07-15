@@ -7,13 +7,11 @@ import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.point.Point;
-import org.bukkit.Server;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.Random;
 
@@ -27,33 +25,19 @@ public class ItemDurabilityEventFactory implements EventFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Server to use for syncing to the primary server thread.
+     * Data for primary server thread access.
      */
-    private final Server server;
-
-    /**
-     * Scheduler to use for syncing to the primary server thread.
-     */
-    private final BukkitScheduler scheduler;
-
-    /**
-     * Plugin to use for syncing to the primary server thread.
-     */
-    private final Plugin plugin;
+    private final PrimaryServerThreadData data;
 
     /**
      * Create the item durability event factory.
      *
      * @param loggerFactory logger factory to use
-     * @param server        server to use
-     * @param scheduler     scheduler to use
-     * @param plugin        plugin to use
+     * @param data          the data for primary server thread access
      */
-    public ItemDurabilityEventFactory(final BetonQuestLoggerFactory loggerFactory, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+    public ItemDurabilityEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
         this.loggerFactory = loggerFactory;
-        this.server = server;
-        this.scheduler = scheduler;
-        this.plugin = plugin;
+        this.data = data;
     }
 
     @Override
@@ -64,7 +48,8 @@ public class ItemDurabilityEventFactory implements EventFactory {
         final boolean ignoreUnbreakable = instruction.hasArgument("ignoreUnbreakable");
         final boolean ignoreEvents = instruction.hasArgument("ignoreEvents");
         final ItemDurabilityEvent event = new ItemDurabilityEvent(slot, operation, amount, ignoreUnbreakable, ignoreEvents, new Random());
-        return new PrimaryServerThreadEvent(new OnlineProfileRequiredEvent(loggerFactory.create(event.getClass()), event, instruction.getPackage()),
-                server, scheduler, plugin);
+        return new PrimaryServerThreadEvent(
+                new OnlineProfileRequiredEvent(loggerFactory.create(event.getClass()), event, instruction.getPackage()),
+                data);
     }
 }

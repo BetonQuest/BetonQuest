@@ -10,11 +10,9 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.notify.NotifyIO;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
-import org.bukkit.Server;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,33 +39,19 @@ public class NotifyEventFactory implements EventFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Server to use for syncing to the primary server thread.
+     * Data for primary server thread access.
      */
-    private final Server server;
-
-    /**
-     * Scheduler to use for syncing to the primary server thread.
-     */
-    private final BukkitScheduler scheduler;
-
-    /**
-     * Plugin to use for syncing to the primary server thread.
-     */
-    private final Plugin plugin;
+    private final PrimaryServerThreadData data;
 
     /**
      * Creates a new factory for {@link NotifyEvent}.
      *
-     * @param loggerFactory Logger factory to use for creating the event logger.
-     * @param server        Server to use for syncing to the primary server thread.
-     * @param scheduler     Scheduler to use for syncing to the primary server thread.
-     * @param plugin        Plugin to use for syncing to the primary server thread.
+     * @param loggerFactory the logger factory to use for creating the event logger
+     * @param data          the data for primary server thread access
      */
-    public NotifyEventFactory(final BetonQuestLoggerFactory loggerFactory, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+    public NotifyEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
         this.loggerFactory = loggerFactory;
-        this.server = server;
-        this.scheduler = scheduler;
-        this.plugin = plugin;
+        this.data = data;
     }
 
     @Override
@@ -78,7 +62,7 @@ public class NotifyEventFactory implements EventFactory {
                 new OnlineProfileRequiredEvent(
                         loggerFactory.create(NotifyEvent.class), new NotifyEvent(notifyIO, translations),
                         instruction.getPackage()),
-                server, scheduler, plugin
+                data
         );
     }
 

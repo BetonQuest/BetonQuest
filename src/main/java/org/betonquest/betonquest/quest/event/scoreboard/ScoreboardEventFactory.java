@@ -5,10 +5,8 @@ import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
-import org.bukkit.Server;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.Locale;
 
@@ -17,31 +15,17 @@ import java.util.Locale;
  */
 public class ScoreboardEventFactory implements EventFactory {
     /**
-     * Server to use for syncing to the primary server thread.
+     * Data for primary server thread access.
      */
-    private final Server server;
-
-    /**
-     * Scheduler to use for syncing to the primary server thread.
-     */
-    private final BukkitScheduler scheduler;
-
-    /**
-     * Plugin to use for syncing to the primary server thread.
-     */
-    private final Plugin plugin;
+    private final PrimaryServerThreadData data;
 
     /**
      * Create the scoreboard event factory.
      *
-     * @param server    server to use
-     * @param scheduler scheduler to use
-     * @param plugin    plugin to use
+     * @param data the data for primary server thread access
      */
-    public ScoreboardEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
-        this.server = server;
-        this.scheduler = scheduler;
-        this.plugin = plugin;
+    public ScoreboardEventFactory(final PrimaryServerThreadData data) {
+        this.data = data;
     }
 
     @Override
@@ -54,7 +38,7 @@ public class ScoreboardEventFactory implements EventFactory {
                 final ScoreModification type = ScoreModification.valueOf(action.toUpperCase(Locale.ROOT));
                 return new PrimaryServerThreadEvent(
                         new ScoreboardEvent(objective, new VariableNumber(instruction.getPackage(), number), type),
-                        server, scheduler, plugin);
+                        data);
             } catch (final IllegalArgumentException e) {
                 throw new InstructionParseException("Unknown modification action: " + instruction.current(), e);
             }
@@ -62,10 +46,10 @@ public class ScoreboardEventFactory implements EventFactory {
         if (!number.isEmpty() && number.charAt(0) == '*') {
             return new PrimaryServerThreadEvent(
                     new ScoreboardEvent(objective, new VariableNumber(instruction.getPackage(), number.replace("*", "")), ScoreModification.MULTIPLY),
-                    server, scheduler, plugin);
+                    data);
         }
         return new PrimaryServerThreadEvent(
                 new ScoreboardEvent(objective, new VariableNumber(instruction.getPackage(), number), ScoreModification.ADD),
-                server, scheduler, plugin);
+                data);
     }
 }

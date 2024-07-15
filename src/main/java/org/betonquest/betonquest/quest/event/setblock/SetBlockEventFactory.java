@@ -5,42 +5,26 @@ import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
 import org.betonquest.betonquest.utils.BlockSelector;
-import org.bukkit.Server;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
 
 /**
  * Factory to create setblock events from {@link Instruction}s.
  */
 public class SetBlockEventFactory implements ComposedEventFactory {
     /**
-     * Server to use for syncing to the primary server thread.
+     * Data for primary server thread access.
      */
-    private final Server server;
-
-    /**
-     * Scheduler to use for syncing to the primary server thread.
-     */
-    private final BukkitScheduler scheduler;
-
-    /**
-     * Plugin to use for syncing to the primary server thread.
-     */
-    private final Plugin plugin;
+    private final PrimaryServerThreadData data;
 
     /**
      * Create the setblock event factory.
      *
-     * @param server    server to use
-     * @param scheduler scheduler to use
-     * @param plugin    plugin to use
+     * @param data the data for primary server thread access
      */
-    public SetBlockEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
-        this.server = server;
-        this.scheduler = scheduler;
-        this.plugin = plugin;
+    public SetBlockEventFactory(final PrimaryServerThreadData data) {
+        this.data = data;
     }
 
     @Override
@@ -50,7 +34,7 @@ public class SetBlockEventFactory implements ComposedEventFactory {
         final boolean applyPhysics = !instruction.hasArgument("ignorePhysics");
         return new PrimaryServerThreadComposedEvent(
                 new SetBlockEvent(blockSelector, variableLocation, applyPhysics),
-                server, scheduler, plugin
+                data
         );
     }
 }

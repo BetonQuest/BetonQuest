@@ -7,12 +7,10 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
 import org.betonquest.betonquest.utils.Utils;
-import org.bukkit.Server;
 import org.bukkit.entity.EntityType;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.Locale;
 
@@ -24,31 +22,17 @@ import java.util.Locale;
 public class RemoveEntityEventFactory implements ComposedEventFactory {
 
     /**
-     * Server to use for syncing to the primary server thread.
+     * Data for primary server thread access.
      */
-    private final Server server;
-
-    /**
-     * Scheduler to use for syncing to the primary server thread.
-     */
-    private final BukkitScheduler scheduler;
-
-    /**
-     * Plugin to use for syncing to the primary server thread.
-     */
-    private final Plugin plugin;
+    private final PrimaryServerThreadData data;
 
     /**
      * Creates a new KillMobEventFactory.
      *
-     * @param server    the server to use for syncing to the primary server thread
-     * @param scheduler the scheduler to use for syncing to the primary server thread
-     * @param plugin    the plugin to use for syncing to the primary server thread
+     * @param data the data for primary server thread access
      */
-    public RemoveEntityEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
-        this.server = server;
-        this.scheduler = scheduler;
-        this.plugin = plugin;
+    public RemoveEntityEventFactory(final PrimaryServerThreadData data) {
+        this.data = data;
     }
 
     @Override
@@ -68,7 +52,6 @@ public class RemoveEntityEventFactory implements ComposedEventFactory {
         final boolean kill = instruction.hasArgument("kill");
         final String markedString = instruction.getOptional("marked");
         final VariableString marked = markedString == null ? null : new VariableString(instruction.getPackage(), Utils.addPackage(instruction.getPackage(), markedString));
-        return new PrimaryServerThreadComposedEvent(new RemoveEntityEvent(types, loc, range, name, marked, kill),
-                server, scheduler, plugin);
+        return new PrimaryServerThreadComposedEvent(new RemoveEntityEvent(types, loc, range, name, marked, kill), data);
     }
 }
