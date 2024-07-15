@@ -31,6 +31,7 @@ public class EventScheduling {
     /**
      * Creates a new instance of the event scheduling class.
      *
+     * @param log           the logger that will be used for logging
      * @param scheduleTypes map containing the schedule types, provided by {@link org.betonquest.betonquest.BetonQuest}
      */
     public EventScheduling(final BetonQuestLogger log, final Map<String, ScheduleType<?>> scheduleTypes) {

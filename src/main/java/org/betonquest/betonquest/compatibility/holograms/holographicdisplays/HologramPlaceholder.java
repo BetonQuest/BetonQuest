@@ -19,6 +19,8 @@ public class HologramPlaceholder implements IndividualPlaceholder {
 
     /**
      * Creates new instance of HologramPlaceholder
+     *
+     * @param log the logger that will be used for logging
      */
     public HologramPlaceholder(final BetonQuestLogger log) {
         this.log = log;

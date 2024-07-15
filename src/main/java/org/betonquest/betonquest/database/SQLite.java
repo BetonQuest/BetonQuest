@@ -32,6 +32,7 @@ public class SQLite extends Database {
     /**
      * Creates a new SQLite instance
      *
+     * @param log        the logger that will be used for logging
      * @param plugin     Plugin instance
      * @param dbLocation Location of the Database (Must end in .db)
      */

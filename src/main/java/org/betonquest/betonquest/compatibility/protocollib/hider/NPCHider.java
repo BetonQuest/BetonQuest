@@ -57,6 +57,8 @@ public final class NPCHider extends BukkitRunnable implements Listener {
 
     /**
      * Starts (or restarts) the NPCHider. It loads the current configuration for hidden NPCs
+     *
+     * @param log the logger that will be used for logging
      */
     public static void start(final BetonQuestLogger log) {
         if (instance != null) {

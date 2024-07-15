@@ -16,6 +16,8 @@ public class HologramGlobalPlaceholder implements GlobalPlaceholder {
 
     /**
      * Creates new instance of HologramGlobalPlaceholder
+     *
+     * @param log the logger that will be used for logging
      */
     public HologramGlobalPlaceholder(final BetonQuestLogger log) {
         this.log = log;

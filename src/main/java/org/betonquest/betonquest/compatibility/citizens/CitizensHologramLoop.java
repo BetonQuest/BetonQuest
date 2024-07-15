@@ -53,6 +53,9 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
 
     /**
      * Starts a loop, which checks hologram conditions and shows them to players.
+     *
+     * @param loggerFactory logger factory to use
+     * @param log           the logger that will be used for logging
      */
     public CitizensHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
         super(loggerFactory, log);

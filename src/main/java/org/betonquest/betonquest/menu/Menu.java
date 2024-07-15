@@ -305,6 +305,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     }
 
     /**
+     * @param profile the {@link Profile} of the player
      * @return the title of the menu
      */
     public String getTitle(final Profile profile) {
