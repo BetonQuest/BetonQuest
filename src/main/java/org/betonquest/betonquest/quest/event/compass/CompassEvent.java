@@ -26,7 +26,7 @@ public class CompassEvent implements Event {
     private final BetonQuestLogger log;
 
     /**
-     * BetonQuest instance to use to get the event factory.
+     * BetonQuest instance to use to get the offline player data.
      */
     private final BetonQuest betonQuest;
 
@@ -59,8 +59,8 @@ public class CompassEvent implements Event {
      * Create the compass event.
      *
      * @param log             the logger
-     * @param betonQuest      the BetonQuest instance
-     * @param pluginManager   the plugin manager
+     * @param betonQuest      the BetonQuest instance to get the offline player data
+     * @param pluginManager   the plugin manager to call the {@link QuestCompassTargetChangeEvent}
      * @param action          the action to perform
      * @param compass         the compass point
      * @param compassLocation the location to set the compass to

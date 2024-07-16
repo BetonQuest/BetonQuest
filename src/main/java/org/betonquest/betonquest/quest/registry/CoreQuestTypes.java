@@ -287,8 +287,8 @@ public class CoreQuestTypes {
         eventTypes.register("chestclear", new ChestClearEventFactory(data));
         eventTypes.register("chestgive", new ChestGiveEventFactory(data));
         eventTypes.register("chesttake", new ChestTakeEventFactory(data));
-        eventTypes.register("compass", new CompassEventFactory(loggerFactory, betonQuest, server.getPluginManager(), server, scheduler));
-        eventTypes.registerCombined("command", new CommandEventFactory(loggerFactory, server, scheduler, betonQuest));
+        eventTypes.register("compass", new CompassEventFactory(loggerFactory, betonQuest, server.getPluginManager(), data));
+        eventTypes.registerCombined("command", new CommandEventFactory(loggerFactory, data));
         eventTypes.register("conversation", new ConversationEventFactory(loggerFactory, data));
         eventTypes.register("damage", new DamageEventFactory(loggerFactory, data));
         eventTypes.register("deleffect", new DeleteEffectEventFactory(loggerFactory, data));
@@ -336,7 +336,7 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("time", new TimeEventFactory(server, scheduler, betonQuest));
         eventTypes.register("variable", VariableEvent.class);
         eventTypes.register("velocity", new VelocityEventFactory(loggerFactory, data));
-        eventTypes.registerCombined("weather", new WeatherEventFactory(loggerFactory, server, scheduler, betonQuest));
+        eventTypes.registerCombined("weather", new WeatherEventFactory(loggerFactory, data));
     }
 
     private void registerObjectives() {

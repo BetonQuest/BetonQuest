@@ -7,12 +7,13 @@ import org.betonquest.betonquest.exceptions.UnsupportedVersionException;
 import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.versioning.VersionComparator;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 
 /**
- * Integrates with FakeBlock
+ * Integrates with FakeBlock.
  */
 public class FakeBlockIntegrator implements Integrator {
     /**
@@ -36,7 +37,9 @@ public class FakeBlockIntegrator implements Integrator {
     public void hook() throws HookException {
         checkRequiredVersion();
         final Server server = plugin.getServer();
-        plugin.registerNonStaticEvent("fakeblock", new FakeBlockEventFactory(server, server.getScheduler(), plugin));
+        final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
+        plugin.getQuestRegistries().getEventTypes().register("fakeblock",
+                new FakeBlockEventFactory(server.getServicesManager(), data));
     }
 
     private void checkRequiredVersion() throws UnsupportedVersionException {

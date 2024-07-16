@@ -10,12 +10,11 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.utils.Utils;
-import org.bukkit.Server;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.scheduler.BukkitScheduler;
 
 /**
  * The compass event factory.
@@ -27,7 +26,7 @@ public class CompassEventFactory implements EventFactory {
     private final BetonQuestLogger log;
 
     /**
-     * BetonQuest instance to use to get the event factory.
+     * BetonQuest instance to get the offline player data.
      */
     private final BetonQuest betonQuest;
 
@@ -37,14 +36,9 @@ public class CompassEventFactory implements EventFactory {
     private final PluginManager pluginManager;
 
     /**
-     * Server to check if the current thread is the primary server thread.
+     * Data for primary server thread access.
      */
-    private final Server server;
-
-    /**
-     * Scheduler to use for syncing to the primary server thread.
-     */
-    private final BukkitScheduler scheduler;
+    private final PrimaryServerThreadData data;
 
     /**
      * Create the compass event factory.
@@ -52,16 +46,14 @@ public class CompassEventFactory implements EventFactory {
      * @param loggerFactory logger factory to use
      * @param betonQuest    betonQuest instance to use
      * @param pluginManager plugin manager to use
-     * @param server        server to use
-     * @param scheduler     scheduler to use
+     * @param data          the data for primary server thread access
      */
     public CompassEventFactory(final BetonQuestLoggerFactory loggerFactory, final BetonQuest betonQuest,
-                               final PluginManager pluginManager, final Server server, final BukkitScheduler scheduler) {
+                               final PluginManager pluginManager, final PrimaryServerThreadData data) {
         this.log = loggerFactory.create(CompassEvent.class);
         this.betonQuest = betonQuest;
         this.pluginManager = pluginManager;
-        this.server = server;
-        this.scheduler = scheduler;
+        this.data = data;
     }
 
     @Override
@@ -71,7 +63,7 @@ public class CompassEventFactory implements EventFactory {
         final VariableLocation compassLocation = getCompassLocation(compass);
         return new PrimaryServerThreadEvent(
                 new CompassEvent(log, betonQuest, pluginManager, action, compass, compassLocation, instruction.getPackage()),
-                server, scheduler, betonQuest);
+                data);
     }
 
     private VariableLocation getCompassLocation(final String compass) throws InstructionParseException {
