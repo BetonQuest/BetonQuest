@@ -222,11 +222,11 @@
       <version>1.13-R0.1-SNAPSHOT</version>
     </dependency>
 
-    <!-- from lichtspiele repository -->
+    <!-- from projectshard repository -->
     <dependency>
       <groupId>com.nisovin.shopkeepers</groupId>
       <artifactId>ShopkeepersAPI</artifactId>
-      <version>2.19.0</version>
+      <version>2.22.1</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
@@ -509,8 +509,8 @@
       <url>https://repo.dmulloy2.net/nexus/repository/public/</url>
     </repository>
     <repository>
-      <id>betonquest-lichtspiele-repo</id>
-      <url>https://nexus.lichtspiele.org/repository/maven-public/</url>
+      <id>betonquest-projectshard-repo</id>
+      <url>https://repo.projectshard.dev/repository/releases/</url>
     </repository>
     <repository>
       <id>betonquest-elmakers-repo</id>
