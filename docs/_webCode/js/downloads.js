@@ -84,24 +84,30 @@ document$.subscribe(async () => {
     }
     const newCachedVersions = {};
 
-    let buildRequests = [];
     while (continuationToken !== null) {
       const params = getURLParams(prereleaseSearch, continuationToken);
       try {
         let data = await fetch(baseUrl + `service/rest/v1/search/assets?${params}`)
           .then(response => response.json());
-        buildRequests.push(...data["items"].map(build => getVersion(build, cachedVersions, newCachedVersions)));
-        continuationToken = data["continuationToken"];
+
+        for (const build of data["items"]) {
+          const buildVersion = await getVersion(build, cachedVersions, newCachedVersions);
+          if (buildVersion) {
+            builds.push(buildVersion);
+            if (!buildVersion.version.includes("-")) {
+              prereleaseSearch = false;
+              continuationToken = undefined;
+              break;
+            }
+          }
+        }
+
+        continuationToken = prereleaseSearch ? data["continuationToken"] : null;
       } catch (error) {
         console.error("Failed to fetch builds:", error);
         continuationToken = null;
       }
     }
-    const results = await Promise.allSettled(buildRequests);
-    results
-      .map(promise => promise.value)
-      .filter(result => result != null)
-      .forEach(result => builds.push(result));
 
     localStorage.setItem("cachedVersions", JSON.stringify(newCachedVersions));
     return builds;
