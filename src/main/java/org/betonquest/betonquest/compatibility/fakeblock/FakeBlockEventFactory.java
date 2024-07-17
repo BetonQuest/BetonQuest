@@ -2,16 +2,14 @@ package org.betonquest.betonquest.compatibility.fakeblock;
 
 import com.briarcraft.fakeblock.api.service.GroupService;
 import com.briarcraft.fakeblock.api.service.PlayerGroupService;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
-import org.bukkit.Server;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.plugin.ServicesManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,48 +21,35 @@ import java.util.Locale;
  */
 public class FakeBlockEventFactory implements EventFactory {
     /**
-     * Server to use for syncing to the primary server thread.
-     */
-    private final Server server;
-
-    /**
-     * Scheduler to use for syncing to the primary server thread.
-     */
-    private final BukkitScheduler scheduler;
-
-    /**
-     * Plugin to use for syncing to the primary server thread.
-     */
-    private final Plugin plugin;
-
-    /**
      * GroupService to search for existing Groups from FakeBlock.
      */
     private final RegisteredServiceProvider<GroupService> groupService;
 
     /**
-     * PlayerGroupService to change group states for the player
+     * PlayerGroupService to change group states for the player.
      */
     private final RegisteredServiceProvider<PlayerGroupService> playerGroupService;
 
     /**
+     * Data for primary server thread access.
+     */
+    private final PrimaryServerThreadData data;
+
+    /**
      * Creates the FakeBlock event factory.
      *
-     * @param server    server to use
-     * @param scheduler scheduler to use
-     * @param plugin    plugin to use
+     * @param servicesManager servicesManager to get services from
+     * @param data            the data for primary server thread access
      */
-    public FakeBlockEventFactory(final Server server, final BukkitScheduler scheduler, final BetonQuest plugin) {
-        this.server = server;
-        this.scheduler = scheduler;
-        this.plugin = plugin;
-        this.groupService = server.getServicesManager().getRegistration(GroupService.class);
-        this.playerGroupService = server.getServicesManager().getRegistration(PlayerGroupService.class);
+    public FakeBlockEventFactory(final ServicesManager servicesManager, final PrimaryServerThreadData data) {
+        this.data = data;
+        this.groupService = servicesManager.getRegistration(GroupService.class);
+        this.playerGroupService = servicesManager.getRegistration(PlayerGroupService.class);
     }
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        return new PrimaryServerThreadEvent(getFakeBlockEvent(instruction), server, scheduler, plugin);
+        return new PrimaryServerThreadEvent(getFakeBlockEvent(instruction), data);
     }
 
     private Event getFakeBlockEvent(final Instruction instruction) throws InstructionParseException {

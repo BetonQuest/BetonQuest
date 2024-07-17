@@ -10,45 +10,29 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Location;
-import org.bukkit.Server;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
 
 /**
  * Factory to create {@link Event}s that drop items from instructions.
  */
 public class DropEventFactory implements EventFactory, StaticEventFactory {
     /**
-     * Server to use for syncing to the primary server thread.
+     * Data for primary server thread access.
      */
-    private final Server server;
-
-    /**
-     * Scheduler to use for syncing to the primary server thread.
-     */
-    private final BukkitScheduler scheduler;
-
-    /**
-     * Plugin to use for syncing to the primary server thread.
-     */
-    private final Plugin plugin;
+    private final PrimaryServerThreadData data;
 
     /**
      * Creates the drop event factory.
      *
-     * @param server    server to use
-     * @param scheduler scheduler to use
-     * @param plugin    plugin to use
+     * @param data the data for primary server thread access
      */
-    public DropEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
-        this.server = server;
-        this.scheduler = scheduler;
-        this.plugin = plugin;
+    public DropEventFactory(final PrimaryServerThreadData data) {
+        this.data = data;
     }
 
     private static Item[] parseItemList(final Instruction instruction) throws InstructionParseException {
@@ -79,6 +63,6 @@ public class DropEventFactory implements EventFactory, StaticEventFactory {
         final Item[] items = parseItemList(instruction);
         final Selector<Location> location = parseLocationSelector(instruction);
 
-        return new PrimaryServerThreadComposedEvent(new DropEvent(items, location), server, scheduler, plugin);
+        return new PrimaryServerThreadComposedEvent(new DropEvent(items, location), data);
     }
 }
