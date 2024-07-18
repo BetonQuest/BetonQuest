@@ -84,7 +84,7 @@ document$.subscribe(async () => {
     }
     const newCachedVersions = {};
 
-    while (continuationToken !== null) {
+    nextPage: while (continuationToken !== null) {
       const params = getURLParams(prereleaseSearch, continuationToken);
       try {
         let data = await fetch(baseUrl + `service/rest/v1/search/assets?${params}`)
@@ -94,15 +94,15 @@ document$.subscribe(async () => {
           const buildVersion = await getVersion(build, cachedVersions, newCachedVersions);
           if (buildVersion) {
             builds.push(buildVersion);
-            if (!buildVersion.version.includes("-")) {
+            if (prereleaseSearch === undefined && !buildVersion.version.includes("-")) {
               prereleaseSearch = false;
               continuationToken = undefined;
-              break;
+              continue nextPage;
             }
           }
         }
 
-        continuationToken = prereleaseSearch ? data["continuationToken"] : null;
+        continuationToken = data["continuationToken"];
       } catch (error) {
         console.error("Failed to fetch builds:", error);
         continuationToken = null;
