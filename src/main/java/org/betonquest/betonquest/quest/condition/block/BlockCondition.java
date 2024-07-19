@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.block;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.condition.Condition;
+import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.BlockSelector;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Checks block at specified location against specified {@link BlockSelector}.
  */
-public class BlockCondition implements Condition {
+public class BlockCondition implements NullableCondition {
     /**
      * Location to test for the block.
      */

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.entity;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
@@ -19,7 +19,7 @@ import java.util.Arrays;
 /**
  * Removes all entities of given type at location.
  */
-public class RemoveEntityEvent implements ComposedEvent {
+public class RemoveEntityEvent implements NullableEvent {
 
     /**
      * The type of the mob.

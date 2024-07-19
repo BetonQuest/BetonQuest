@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.citizens.condition.location;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.condition.Condition;
+import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -11,9 +11,9 @@ import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Checks if a npc is at a specific location
+ * Checks if a npc is at a specific location.
  */
-public class NPCLocationCondition implements Condition {
+public class NPCLocationCondition implements NullableCondition {
     /**
      * The NPC id.
      */

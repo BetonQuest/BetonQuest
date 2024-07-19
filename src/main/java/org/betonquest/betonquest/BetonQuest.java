@@ -21,8 +21,6 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
-import org.betonquest.betonquest.api.quest.QuestFactory;
-import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.schedule.Schedule;
@@ -220,7 +218,7 @@ public class BetonQuest extends JavaPlugin {
     private RPGMenu rpgMenu;
 
     /**
-     * Cache for event schedulers, holding the last execution of an event
+     * Cache for event schedulers, holding the last execution of an event.
      */
     private LastExecutionCache lastExecutionCache;
 
@@ -261,7 +259,7 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Checks if the condition described by conditionID is met
+     * Checks if the condition described by conditionID is met.
      *
      * @param conditionID ID of the condition to check
      * @param profile     the {@link Profile} of the player which should be checked
@@ -284,7 +282,7 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Creates new objective for given player
+     * Creates new objective for given player.
      *
      * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
@@ -294,7 +292,7 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Resumes the existing objective for given player
+     * Resumes the existing objective for given player.
      *
      * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
@@ -729,7 +727,7 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Returns the database instance
+     * Returns the database instance.
      *
      * @return Database instance
      */
@@ -751,7 +749,7 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Checks if MySQL is used or not
+     * Checks if MySQL is used or not.
      *
      * @return if MySQL is used (false means that SQLite is being used)
      */
@@ -813,7 +811,7 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Retrieves GlobalData object which handles all global tags and points
+     * Retrieves GlobalData object which handles all global tags and points.
      *
      * @return GlobalData object
      */
@@ -822,7 +820,7 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Removes the database playerData from the map
+     * Removes the database playerData from the map.
      *
      * @param profile the {@link Profile} of the player whose playerData is to be removed
      */
@@ -831,13 +829,13 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Registers new condition classes by their names
+     * Registers new condition classes by their names.
      *
      * @param name           name of the condition type
      * @param conditionClass class object for the condition
      * @deprecated replaced by {@link #getQuestRegistries()}
      * further {@link QuestTypeRegistries#getConditionTypes()}
-     * further {@linkplain QuestTypeRegistry#register} or {@linkplain QuestTypeRegistry#registerCombined}
+     * further {@linkplain QuestTypeRegistry#registerCombined}
      */
     @Deprecated
     public void registerConditions(final String name, final Class<? extends Condition> conditionClass) {
@@ -864,7 +862,6 @@ public class BetonQuest extends JavaPlugin {
      * @param eventFactory factory to create the event
      * @deprecated in favor of direct usage of {@link #getQuestRegistries()}
      * further {@link QuestTypeRegistries#getEventTypes()}
-     * further {@link QuestTypeRegistry#register(String, PlayerQuestFactory)}
      */
     @Deprecated
     public void registerNonStaticEvent(final String name, final EventFactory eventFactory) {
@@ -904,22 +901,7 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Registers an event with its name and a single factory to create both normal and
-     * static instances of the event.
-     *
-     * @param name         name of the event
-     * @param eventFactory factory to create the event and the static event
-     * @deprecated in favor of direct usage of {@link #getQuestRegistries()}
-     * further {@link QuestTypeRegistries#getEventTypes()}
-     * further {@link QuestTypeRegistry#register(String, QuestFactory)}
-     */
-    @Deprecated
-    public void registerEvent(final String name, final ComposedEventFactory eventFactory) {
-        questTypeRegistries.getEventTypes().register(name, eventFactory);
-    }
-
-    /**
-     * Registers new objective classes by their names
+     * Registers new objective classes by their names.
      *
      * @param name           name of the objective type
      * @param objectiveClass class object for the objective
@@ -988,7 +970,7 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Returns the list of objectives of this player
+     * Returns the list of objectives of this player.
      *
      * @param profile the {@link Profile} of the player
      * @return list of this player's active objectives

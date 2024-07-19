@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.time;
 
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.World;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * The time event, changing the time on the server.
  */
-public class TimeEvent implements ComposedEvent {
+public class TimeEvent implements NullableEvent {
     /**
      * The type of time that will be applied.
      */

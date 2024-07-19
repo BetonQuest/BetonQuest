@@ -1,18 +1,21 @@
 package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.Instruction.Item;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
-import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
+import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
 
 /**
  * Factory to create chest events from {@link Instruction}s.
  */
-public class ChestTakeEventFactory implements ComposedEventFactory {
+public class ChestTakeEventFactory implements EventFactory, StaticEventFactory {
     /**
      * Data for primary server thread access.
      */
@@ -28,11 +31,18 @@ public class ChestTakeEventFactory implements ComposedEventFactory {
     }
 
     @Override
-    public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadEvent(createChestTakeEvent(instruction), data);
+    }
+
+    @Override
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadStaticEvent(createChestTakeEvent(instruction), data);
+    }
+
+    private NullableEventAdapter createChestTakeEvent(final Instruction instruction) throws InstructionParseException {
         final VariableLocation variableLocation = instruction.getLocation();
-        final Item[] item = instruction.getItemList();
-        return new PrimaryServerThreadComposedEvent(
-                new ChestTakeEvent(variableLocation, item), data
-        );
+        final Instruction.Item[] item = instruction.getItemList();
+        return new NullableEventAdapter(new ChestTakeEvent(variableLocation, item));
     }
 }

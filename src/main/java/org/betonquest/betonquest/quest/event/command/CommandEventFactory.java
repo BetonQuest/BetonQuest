@@ -4,13 +4,14 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.bukkit.command.SilentCommandSender;
 import org.betonquest.betonquest.api.bukkit.command.SilentConsoleCommandSender;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -36,18 +37,17 @@ public class CommandEventFactory extends BaseCommandEventFactory implements Stat
                 "CommandEvent"), data.server().getConsoleSender());
     }
 
-    private ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
-        return new PrimaryServerThreadComposedEvent(
-                new CommandEvent(parseCommands(instruction), silentSender, data.server()), data);
-    }
-
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        return parseComposedEvent(instruction);
+        return new PrimaryServerThreadEvent(createCommandEvent(instruction), data);
     }
 
     @Override
     public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
-        return parseComposedEvent(instruction);
+        return new PrimaryServerThreadStaticEvent(createCommandEvent(instruction), data);
+    }
+
+    private NullableEventAdapter createCommandEvent(final Instruction instruction) throws InstructionParseException {
+        return new NullableEventAdapter(new CommandEvent(parseCommands(instruction), silentSender, data.server()));
     }
 }
