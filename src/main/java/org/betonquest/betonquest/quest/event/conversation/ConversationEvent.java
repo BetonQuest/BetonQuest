@@ -3,8 +3,7 @@ package org.betonquest.betonquest.quest.event.conversation;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConversationID;
@@ -13,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Starts a conversation.
  */
-public class ConversationEvent implements Event {
+public class ConversationEvent implements OnlineEvent {
     /**
      * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
      */
@@ -44,8 +43,7 @@ public class ConversationEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
-        final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
-        new Conversation(loggerFactory.create(Conversation.class), onlineProfile, conversation, onlineProfile.getPlayer().getLocation(), startOption);
+    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+        new Conversation(loggerFactory.create(Conversation.class), profile, conversation, profile.getPlayer().getLocation(), startOption);
     }
 }

@@ -1,16 +1,16 @@
 package org.betonquest.betonquest.quest.event.teleport;
 
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
 
 /**
- * Teleports the player to specified location
+ * Teleports the player to specified location.
  */
-public class TeleportEvent implements Event {
+public class TeleportEvent implements OnlineEvent {
     /**
      * Location to teleport to.
      */
@@ -26,12 +26,12 @@ public class TeleportEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
         final Conversation conv = Conversation.getConversation(profile);
         if (conv != null) {
             conv.endConversation();
         }
         final Location playerLocation = location.getValue(profile);
-        profile.getOnlineProfile().get().getPlayer().teleport(playerLocation);
+        profile.getPlayer().teleport(playerLocation);
     }
 }

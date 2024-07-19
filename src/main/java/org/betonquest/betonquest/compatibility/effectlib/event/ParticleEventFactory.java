@@ -5,10 +5,10 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -33,6 +33,8 @@ public class ParticleEventFactory implements EventFactory {
     private final EffectManager manager;
 
     /**
+     * Create a factory for particle events.
+     *
      * @param loggerFactory the logger factory to create new class specific logger
      * @param data          the data for primary server thread access
      * @param manager       the effect manager which will create and control the particles
@@ -51,8 +53,8 @@ public class ParticleEventFactory implements EventFactory {
         final String effectClass = Utils.getNN(parameters.getString("class"), "Effect '" + string + "' is incorrectly defined");
         final VariableLocation loc = instruction.getLocation(instruction.getOptional("loc"));
         final boolean privateParticle = instruction.hasArgument("private");
-        final Event particleEvent = new ParticleEvent(manager, effectClass, parameters, loc, privateParticle);
-        return new OnlineProfileRequiredEvent(loggerFactory.create(ParticleEvent.class),
-                new PrimaryServerThreadEvent(particleEvent, data), instruction.getPackage());
+        final ParticleEvent particleEvent = new ParticleEvent(manager, effectClass, parameters, loc, privateParticle);
+        final Event event = new OnlineEventAdapter(particleEvent, loggerFactory.create(ParticleEvent.class), instruction.getPackage());
+        return new PrimaryServerThreadEvent(event, data);
     }
 }

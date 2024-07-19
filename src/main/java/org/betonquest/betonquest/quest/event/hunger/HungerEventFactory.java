@@ -4,10 +4,10 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 
 /**
@@ -39,9 +39,10 @@ public class HungerEventFactory implements EventFactory {
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final Hunger hunger = instruction.getEnum(Hunger.class);
         final VariableNumber amount = instruction.getVarNum();
-        return new PrimaryServerThreadEvent(
-                new OnlineProfileRequiredEvent(
-                        loggerFactory.create(HungerEventFactory.class), new HungerEvent(hunger, amount), instruction.getPackage()
-                ), data);
+        return new PrimaryServerThreadEvent(new OnlineEventAdapter(
+                new HungerEvent(hunger, amount),
+                loggerFactory.create(HungerEvent.class),
+                instruction.getPackage()
+        ), data);
     }
 }

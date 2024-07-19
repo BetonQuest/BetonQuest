@@ -5,14 +5,15 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,26 +45,32 @@ public class NotifyEventFactory implements EventFactory {
     private final PrimaryServerThreadData data;
 
     /**
+     * Variable processor for variables in messages.
+     */
+    private final VariableProcessor variableProcessor;
+
+    /**
      * Creates a new factory for {@link NotifyEvent}.
      *
-     * @param loggerFactory the logger factory to use for creating the event logger
-     * @param data          the data for primary server thread access
+     * @param loggerFactory     the logger factory to use for creating the event logger
+     * @param data              the data for primary server thread access
+     * @param variableProcessor the variable processor for creating variables
      */
-    public NotifyEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public NotifyEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data, final VariableProcessor variableProcessor) {
         this.loggerFactory = loggerFactory;
         this.data = data;
+        this.variableProcessor = variableProcessor;
     }
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final Map<String, VariableString> translations = new HashMap<>();
         final NotifyIO notifyIO = processInstruction(instruction, translations);
-        return new PrimaryServerThreadEvent(
-                new OnlineProfileRequiredEvent(
-                        loggerFactory.create(NotifyEvent.class), new NotifyEvent(notifyIO, translations),
-                        instruction.getPackage()),
-                data
-        );
+        return new PrimaryServerThreadEvent(new OnlineEventAdapter(
+                new NotifyEvent(notifyIO, translations),
+                loggerFactory.create(NotifyEvent.class),
+                instruction.getPackage()
+        ), data);
     }
 
     /**
@@ -99,7 +106,7 @@ public class NotifyEventFactory implements EventFactory {
             final String message = languageMatcher.group("message")
                     .replace("\\{", "{")
                     .replace("\\:", ":");
-            translations.put(lang, new VariableString(pack, message));
+            translations.put(lang, new VariableString(variableProcessor, pack, message));
         }
 
         final String defaultLanguageKey = Config.getLanguage();
@@ -107,7 +114,7 @@ public class NotifyEventFactory implements EventFactory {
             final String message = messages
                     .replace("\\{", "{")
                     .replace("\\:", ":");
-            translations.put(defaultLanguageKey, new VariableString(pack, message));
+            translations.put(defaultLanguageKey, new VariableString(variableProcessor, pack, message));
         }
         if (!translations.containsKey(defaultLanguageKey)) {
             throw new InstructionParseException("No message defined for default language '" + defaultLanguageKey + "'!");

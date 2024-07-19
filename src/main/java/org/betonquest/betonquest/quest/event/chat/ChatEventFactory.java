@@ -4,9 +4,9 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 
 /**
@@ -37,10 +37,10 @@ public class ChatEventFactory implements EventFactory {
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final String[] messages = String.join(" ", instruction.getAllParts()).split("\\|");
-        return new PrimaryServerThreadEvent(
-                new OnlineProfileRequiredEvent(
-                        loggerFactory.create(ChatEvent.class), new ChatEvent(messages), instruction.getPackage()),
-                data
-        );
+        return new PrimaryServerThreadEvent(new OnlineEventAdapter(
+                new ChatEvent(messages),
+                loggerFactory.create(ChatEvent.class),
+                instruction.getPackage()
+        ), data);
     }
 }

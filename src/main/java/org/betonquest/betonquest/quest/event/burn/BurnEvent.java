@@ -1,16 +1,16 @@
 package org.betonquest.betonquest.quest.event.burn;
 
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
  * The burn event. Sets the player on fire.
  */
-public class BurnEvent implements Event {
+public class BurnEvent implements OnlineEvent {
     /**
-     * Duration of the burn effect
+     * Duration of the burn effect.
      */
     private final VariableNumber duration;
 
@@ -24,8 +24,7 @@ public class BurnEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
-        profile.getOnlineProfile()
-                .ifPresent(onlineProfile -> onlineProfile.getPlayer().setFireTicks(duration.getInt(profile) * 20));
+    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+        profile.getPlayer().setFireTicks(duration.getValue(profile).intValue() * 20);
     }
 }
