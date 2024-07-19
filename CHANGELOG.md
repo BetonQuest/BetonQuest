@@ -18,6 +18,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - AdvancementIO not working in mc 1.20.5/6 and 1.21
 - chaining of movenpc events did trigger fail events
 - effect event duration -1 did not result in infinite duration
+- translation in conversation got stored in default language
 ### Security
 
 ## [2.1.2] - 2024-06-23

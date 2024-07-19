@@ -773,7 +773,7 @@ public class ConversationData {
             if (conv.contains("text")) {
                 if (conv.isConfigurationSection("text")) {
                     for (final String lang : conv.getConfigurationSection("text").getKeys(false)) {
-                        addConversationText(name, type, defaultLang, "." + lang);
+                        addConversationText(name, type, lang, "." + lang);
                     }
                     if (!text.containsKey(defaultLang)) {
                         throw new InstructionParseException("No default language for " + name + " " + type.getReadable());
@@ -784,12 +784,12 @@ public class ConversationData {
             }
         }
 
-        private void addConversationText(final String name, final OptionType type, final String defaultLang, final String suffix) throws InstructionParseException {
+        private void addConversationText(final String name, final OptionType type, final String lang, final String suffix) throws InstructionParseException {
             final String convText = pack.getFormattedString("conversations." + conversationName + "." + type.getIdentifier() + "." + name + ".text" + suffix);
             if (convText == null) {
                 throw new InstructionParseException("No text for " + name + " " + type.getReadable());
             }
-            text.put(defaultLang, new VariableString(pack, convText));
+            text.put(lang, new VariableString(pack, convText));
         }
 
         /**
