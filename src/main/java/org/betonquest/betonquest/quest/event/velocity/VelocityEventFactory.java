@@ -5,10 +5,10 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.location.VariableVector;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 
 /**
@@ -45,10 +45,10 @@ public class VelocityEventFactory implements EventFactory {
         final VariableVector vector = new VariableVector(BetonQuest.getInstance().getVariableProcessor(), instruction.getPackage(), rawVector);
         final VectorDirection direction = instruction.getEnum(instruction.getOptional("direction"), VectorDirection.class, VectorDirection.ABSOLUTE);
         final VectorModification modification = instruction.getEnum(instruction.getOptional("modification"), VectorModification.class, VectorModification.SET);
-        return new PrimaryServerThreadEvent(
-                new OnlineProfileRequiredEvent(
-                        loggerFactory.create(VelocityEvent.class), new VelocityEvent(vector, direction, modification),
-                        instruction.getPackage()),
-                data);
+        return new PrimaryServerThreadEvent(new OnlineEventAdapter(
+                new VelocityEvent(vector, direction, modification),
+                loggerFactory.create(VelocityEvent.class),
+                instruction.getPackage()
+        ), data);
     }
 }

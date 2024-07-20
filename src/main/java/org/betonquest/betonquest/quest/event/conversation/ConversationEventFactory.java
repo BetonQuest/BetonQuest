@@ -4,11 +4,11 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,11 +46,11 @@ public class ConversationEventFactory implements EventFactory {
             throw new InstructionParseException(e.getMessage(), e);
         }
         final String startingOption = getStartOption(instruction, conversationID);
-        return new PrimaryServerThreadEvent(
-                new OnlineProfileRequiredEvent(
-                        loggerFactory.create(ConversationEventFactory.class), new ConversationEvent(loggerFactory, conversationID, startingOption), instruction.getPackage()
-                ), data
-        );
+        return new PrimaryServerThreadEvent(new OnlineEventAdapter(
+                new ConversationEvent(loggerFactory, conversationID, startingOption),
+                loggerFactory.create(ConversationEvent.class),
+                instruction.getPackage()
+        ), data);
     }
 
     /**

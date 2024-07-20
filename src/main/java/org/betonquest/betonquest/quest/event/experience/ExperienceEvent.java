@@ -1,14 +1,14 @@
 package org.betonquest.betonquest.quest.event.experience;
 
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
  * Gives the player specified amount of experience.
  */
-public class ExperienceEvent implements Event {
+public class ExperienceEvent implements OnlineEvent {
 
     /**
      * The modification to apply.
@@ -32,7 +32,7 @@ public class ExperienceEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
-        experienceModification.apply(profile.getOnlineProfile().get().getPlayer(), amount.getValue(profile).floatValue());
+    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+        experienceModification.apply(profile.getPlayer(), amount.getValue(profile).floatValue());
     }
 }

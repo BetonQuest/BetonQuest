@@ -5,10 +5,10 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.point.Point;
 import org.bukkit.inventory.EquipmentSlot;
@@ -47,9 +47,10 @@ public class ItemDurabilityEventFactory implements EventFactory {
         final VariableNumber amount = instruction.getVarNum();
         final boolean ignoreUnbreakable = instruction.hasArgument("ignoreUnbreakable");
         final boolean ignoreEvents = instruction.hasArgument("ignoreEvents");
-        final ItemDurabilityEvent event = new ItemDurabilityEvent(slot, operation, amount, ignoreUnbreakable, ignoreEvents, new Random());
-        return new PrimaryServerThreadEvent(
-                new OnlineProfileRequiredEvent(loggerFactory.create(event.getClass()), event, instruction.getPackage()),
-                data);
+        return new PrimaryServerThreadEvent(new OnlineEventAdapter(
+                new ItemDurabilityEvent(slot, operation, amount, ignoreUnbreakable, ignoreEvents, new Random()),
+                loggerFactory.create(ItemDurabilityEvent.class),
+                instruction.getPackage()
+        ), data);
     }
 }

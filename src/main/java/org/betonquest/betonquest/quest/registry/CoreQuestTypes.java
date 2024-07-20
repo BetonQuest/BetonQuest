@@ -182,11 +182,6 @@ public class CoreQuestTypes {
     private final Server server;
 
     /**
-     * Scheduler used for primary server thread access.
-     */
-    private final BukkitScheduler scheduler;
-
-    /**
      * Plugin used for primary server thread access, type registration and general usage.
      */
     private final BetonQuest betonQuest;
@@ -208,7 +203,6 @@ public class CoreQuestTypes {
                           final Server server, final BukkitScheduler scheduler, final BetonQuest betonQuest) {
         this.loggerFactory = loggerFactory;
         this.server = server;
-        this.scheduler = scheduler;
         this.betonQuest = betonQuest;
         this.data = new PrimaryServerThreadData(server, scheduler, betonQuest);
     }
@@ -302,7 +296,7 @@ public class CoreQuestTypes {
         eventTypes.register("folder", FolderEvent.class);
         eventTypes.registerCombined("first", new FirstEventFactory());
         eventTypes.register("give", new GiveEventFactory(loggerFactory, data));
-        eventTypes.register("givejournal", new GiveJournalEventFactory(loggerFactory, data));
+        eventTypes.register("givejournal", new GiveJournalEventFactory(loggerFactory, betonQuest, data));
         eventTypes.registerCombined("globaltag", new TagGlobalEventFactory(betonQuest));
         eventTypes.registerCombined("globalpoint", new GlobalPointEventFactory(betonQuest.getVariableProcessor()));
         eventTypes.register("hunger", new HungerEventFactory(loggerFactory, data));
@@ -314,8 +308,8 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("lever", new LeverEventFactory(data));
         eventTypes.registerCombined("lightning", new LightningEventFactory(data));
         eventTypes.registerCombined("log", new LogEventFactory(loggerFactory, betonQuest.getVariableProcessor()));
-        eventTypes.register("notify", new NotifyEventFactory(loggerFactory, data));
-        eventTypes.registerCombined("notifyall", new NotifyAllEventFactory(loggerFactory, data));
+        eventTypes.register("notify", new NotifyEventFactory(loggerFactory, data, betonQuest.getVariableProcessor()));
+        eventTypes.registerCombined("notifyall", new NotifyAllEventFactory(loggerFactory, data, betonQuest.getVariableProcessor()));
         eventTypes.register("objective", ObjectiveEvent.class);
         eventTypes.register("opsudo", new OpSudoEventFactory(loggerFactory, data));
         eventTypes.register("party", new PartyEventFactory(loggerFactory));

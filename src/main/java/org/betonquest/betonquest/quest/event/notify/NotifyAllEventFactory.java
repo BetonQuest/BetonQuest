@@ -10,6 +10,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.CallStaticEventAdapter;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.utils.PlayerConverter;
 
 /**
@@ -20,11 +21,12 @@ public class NotifyAllEventFactory extends NotifyEventFactory implements EventFa
     /**
      * Creates the notify all event factory.
      *
-     * @param loggerFactory the logger factory to use for creating the event logger
-     * @param data          the data for primary server thread access
+     * @param loggerFactory     the logger factory to use for creating the event logger
+     * @param data              the data for primary server thread access
+     * @param variableProcessor the variable processor for creating variables
      */
-    public NotifyAllEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
-        super(loggerFactory, data);
+    public NotifyAllEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data, final VariableProcessor variableProcessor) {
+        super(loggerFactory, data, variableProcessor);
     }
 
     @Override

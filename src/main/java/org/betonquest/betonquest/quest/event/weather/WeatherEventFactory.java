@@ -10,11 +10,11 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
-import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
 import org.bukkit.World;
@@ -50,20 +50,31 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        return new PrimaryServerThreadEvent(new OnlineProfileRequiredEvent(
-                loggerFactory.create(WeatherEvent.class),
-                parseWeatherEvent(instruction),
-                instruction.getPackage()
-        ), data);
+        final Event weatherEvent = parseWeatherEvent(instruction);
+        final Event event;
+        if (requiresPlayer(instruction)) {
+            event = new OnlineEventAdapter(
+                    weatherEvent::execute,
+                    loggerFactory.create(WeatherEvent.class),
+                    instruction.getPackage()
+            );
+        } else {
+            event = weatherEvent;
+        }
+        return new PrimaryServerThreadEvent(event, data);
     }
 
     @Override
     public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
-        if (instruction.copy().getOptional("world") == null) {
+        if (requiresPlayer(instruction)) {
             return new DoNothingStaticEvent();
         } else {
             return new PrimaryServerThreadStaticEvent(parseWeatherEvent(instruction), data);
         }
+    }
+
+    private boolean requiresPlayer(final Instruction instruction) {
+        return instruction.copy().getOptional("world") == null;
     }
 
     private NullableEventAdapter parseWeatherEvent(final Instruction instruction) throws InstructionParseException {

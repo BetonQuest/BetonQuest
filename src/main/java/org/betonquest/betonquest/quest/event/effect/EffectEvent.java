@@ -1,16 +1,16 @@
 package org.betonquest.betonquest.quest.event.effect;
 
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 /**
- * Gives the player specified potion effect
+ * Gives the player specified potion effect.
  */
-public class EffectEvent implements Event {
+public class EffectEvent implements OnlineEvent {
     /**
      * The effect to apply.
      */
@@ -61,9 +61,15 @@ public class EffectEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
-        final int durationInt = duration.getInt(profile);
-        profile.getOnlineProfile().get().getPlayer().addPotionEffect(
-                new PotionEffect(effect, durationInt == -1 ? -1 : durationInt * 20, level.getInt(profile) - 1, ambient, !hidden, icon));
+    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+        final int durationInt = duration.getValue(profile).intValue();
+        profile.getPlayer().addPotionEffect(new PotionEffect(
+                effect,
+                durationInt == -1 ? -1 : durationInt * 20,
+                level.getValue(profile).intValue() - 1,
+                ambient,
+                !hidden,
+                icon
+        ));
     }
 }

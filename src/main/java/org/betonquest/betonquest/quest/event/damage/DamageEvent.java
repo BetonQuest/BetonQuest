@@ -1,15 +1,14 @@
 package org.betonquest.betonquest.quest.event.damage;
 
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
  * The damage event. It damages the player.
  */
-public class DamageEvent implements Event {
+public class DamageEvent implements OnlineEvent {
     /**
      * Amount of damage to inflict.
      */
@@ -25,10 +24,8 @@ public class DamageEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
         final double calculatedDamage = Math.abs(damage.getValue(profile).doubleValue());
-        profile.getOnlineProfile()
-                .map(OnlineProfile::getPlayer)
-                .ifPresent(player -> player.damage(calculatedDamage));
+        profile.getPlayer().damage(calculatedDamage);
     }
 }

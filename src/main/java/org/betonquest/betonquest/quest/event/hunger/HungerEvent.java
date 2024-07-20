@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.hunger;
 
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.entity.Player;
@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 /**
  * The hunger event, changing the hunger of a player.
  */
-public class HungerEvent implements Event {
+public class HungerEvent implements OnlineEvent {
     /**
      * The hunger type, how the amount will be applied to the players hunger.
      */
@@ -32,8 +32,8 @@ public class HungerEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getOnlineProfile().get().getPlayer();
-        player.setFoodLevel(hunger.calculate(player, amount.getInt(profile)));
+    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+        final Player player = profile.getPlayer();
+        player.setFoodLevel(hunger.calculate(player, amount.getValue(profile).intValue()));
     }
 }

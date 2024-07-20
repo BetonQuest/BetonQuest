@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.effectlib.event;
 
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.util.DynamicLocation;
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Displays an effect.
  */
-public class ParticleEvent implements Event {
+public class ParticleEvent implements OnlineEvent {
     /**
      * Effect manager which will create and control the particles.
      */
@@ -60,8 +60,8 @@ public class ParticleEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getOnlineProfile().get().getPlayer();
+    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+        final Player player = profile.getPlayer();
         final Location location = (loc == null) ? player.getLocation() : loc.getValue(profile);
         final Player targetPlayer = privateParticle ? player : null;
         manager.start(effectClass,

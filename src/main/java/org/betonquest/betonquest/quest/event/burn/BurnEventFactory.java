@@ -4,10 +4,10 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 
 /**
@@ -39,9 +39,11 @@ public class BurnEventFactory implements EventFactory {
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final VariableNumber duration = instruction.getVarNum(instruction.getOptionalArgument("duration")
                 .orElseThrow(() -> new InstructionParseException("Missing duration!")));
-        return new PrimaryServerThreadEvent(
-                new OnlineProfileRequiredEvent(
-                        loggerFactory.create(BurnEvent.class), new BurnEvent(duration), instruction.getPackage()),
-                data);
+        final OnlineEventAdapter burnEvent = new OnlineEventAdapter(
+                new BurnEvent(duration),
+                loggerFactory.create(BurnEvent.class),
+                instruction.getPackage()
+        );
+        return new PrimaryServerThreadEvent(burnEvent, data);
     }
 }

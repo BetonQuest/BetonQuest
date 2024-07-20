@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.command;
 
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.entity.Player;
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Forces the player to run commands.
  */
-public class SudoEvent implements Event {
+public class SudoEvent implements OnlineEvent {
 
     /**
      * The commands to run.
@@ -29,10 +29,12 @@ public class SudoEvent implements Event {
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getOnlineProfile().get().getPlayer();
+    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+        final Player player = profile.getPlayer();
         try {
-            commands.forEach(command -> player.performCommand(command.getString(profile)));
+            for (final VariableString command : commands) {
+                player.performCommand(command.getValue(profile));
+            }
         } catch (final RuntimeException exception) {
             throw new QuestRuntimeException("Unhandled exception executing command: " + exception.getMessage(), exception);
         }

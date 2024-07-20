@@ -4,10 +4,10 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.bukkit.potion.PotionEffectType;
 
@@ -48,9 +48,11 @@ public class EffectEventFactory implements EventFactory {
             final boolean ambient = instruction.hasArgument("ambient");
             final boolean hidden = instruction.hasArgument("hidden");
             final boolean icon = !instruction.hasArgument("noicon");
-            return new PrimaryServerThreadEvent(new OnlineProfileRequiredEvent(
-                    loggerFactory.create(EffectEvent.class), new EffectEvent(effect, duration, level, ambient, hidden, icon), instruction.getPackage()),
-                    data);
+            return new PrimaryServerThreadEvent(new OnlineEventAdapter(
+                    new EffectEvent(effect, duration, level, ambient, hidden, icon),
+                    loggerFactory.create(EffectEvent.class),
+                    instruction.getPackage()
+            ), data);
         } catch (final InstructionParseException e) {
             throw new InstructionParseException("Could not parse effect duration and amplifier", e);
         }
