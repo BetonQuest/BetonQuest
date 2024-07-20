@@ -1,17 +1,21 @@
 package org.betonquest.betonquest.quest.event.lightning;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
-import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
+import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
 
 /**
- * Factory for {@link LightningEvent} from the {@link Instruction}
+ * Factory for {@link LightningEvent} from the {@link Instruction}.
  */
-public class LightningEventFactory implements ComposedEventFactory {
+public class LightningEventFactory implements EventFactory, StaticEventFactory {
     /**
      * Data for primary server thread access.
      */
@@ -27,12 +31,18 @@ public class LightningEventFactory implements ComposedEventFactory {
     }
 
     @Override
-    public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadEvent(createLightningEvent(instruction), data);
+    }
+
+    @Override
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadStaticEvent(createLightningEvent(instruction), data);
+    }
+
+    private NullableEventAdapter createLightningEvent(final Instruction instruction) throws InstructionParseException {
         final VariableLocation location = instruction.getLocation();
         final boolean noDamage = instruction.hasArgument("noDamage");
-        return new PrimaryServerThreadComposedEvent(
-                new LightningEvent(location, noDamage),
-                data
-        );
+        return new NullableEventAdapter(new LightningEvent(location, noDamage));
     }
 }

@@ -4,8 +4,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
-import org.betonquest.betonquest.api.quest.QuestFactory;
-import org.betonquest.betonquest.quest.QuestTypeAdapter;
 import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,11 +16,10 @@ import java.util.Set;
  *
  * @param <P> the player variant of the type
  * @param <S> the playerless variant of the type
- * @param <T> the type extending {@link P} and {@link S}
  * @param <L> the legacy structure based on the {@link org.betonquest.betonquest.Instruction Instruction}
  *            as defined in the {@link org.betonquest.betonquest.api API package}
  */
-public abstract class QuestTypeRegistry<P, S, T, L> {
+public abstract class QuestTypeRegistry<P, S, L> {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -98,25 +95,6 @@ public abstract class QuestTypeRegistry<P, S, T, L> {
     public void register(final String name, final PlayerlessQuestFactory<S> playerlessFactory) {
         registerInternal(name, null, playerlessFactory);
     }
-
-    /**
-     * Registers a type with its name and a factory to create player and playerless instances.
-     *
-     * @param name    the name of the type
-     * @param factory the factory to create the player and playerless type instances
-     */
-    public void register(final String name, final QuestFactory<T> factory) {
-        final QuestTypeAdapter<T, P, S> adapter = getAdapter(factory);
-        register(name, adapter, adapter);
-    }
-
-    /**
-     * Get a new adapter of {@link PlayerQuestFactory} and {@link PlayerlessQuestFactory} from the {@link QuestFactory}.
-     *
-     * @param factory the factory to adapt
-     * @return the adapter to store
-     */
-    protected abstract QuestTypeAdapter<T, P, S> getAdapter(QuestFactory<T> factory);
 
     /**
      * Registers a type with its name and a single factory to create both player and playerless instances.

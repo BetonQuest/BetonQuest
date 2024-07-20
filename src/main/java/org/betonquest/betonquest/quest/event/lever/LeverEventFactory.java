@@ -1,17 +1,21 @@
 package org.betonquest.betonquest.quest.event.lever;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
-import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
+import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
 
 /**
  * Factory for {@link LeverEvent}.
  */
-public class LeverEventFactory implements ComposedEventFactory {
+public class LeverEventFactory implements EventFactory, StaticEventFactory {
     /**
      * Data for primary server thread access.
      */
@@ -27,12 +31,18 @@ public class LeverEventFactory implements ComposedEventFactory {
     }
 
     @Override
-    public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadEvent(createLeverEvent(instruction), data);
+    }
+
+    @Override
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadStaticEvent(createLeverEvent(instruction), data);
+    }
+
+    private NullableEventAdapter createLeverEvent(final Instruction instruction) throws InstructionParseException {
         final VariableLocation location = instruction.getLocation();
         final StateType stateType = instruction.getEnum(StateType.class);
-        return new PrimaryServerThreadComposedEvent(
-                new LeverEvent(stateType, location),
-                data
-        );
+        return new NullableEventAdapter(new LeverEvent(stateType, location));
     }
 }

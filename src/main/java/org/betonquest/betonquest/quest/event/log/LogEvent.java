@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.log;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.jetbrains.annotations.Nullable;
@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Prints a simple message to the server log.
  */
-public class LogEvent implements ComposedEvent {
+public class LogEvent implements NullableEvent {
 
     /**
      * Message to log.
@@ -42,6 +42,6 @@ public class LogEvent implements ComposedEvent {
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
-        level.log(logger, message.getString(profile));
+        level.log(logger, message.getValue(profile));
     }
 }

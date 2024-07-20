@@ -15,7 +15,7 @@ public class NpcNameVariableFactory implements PlayerVariableFactory {
     private final BetonQuest plugin;
 
     /**
-     * Create a NpcName variable factory
+     * Create a NpcName variable factory.
      *
      * @param plugin the class to get the {@link org.betonquest.betonquest.database.PlayerData} used in the variable
      */

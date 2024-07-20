@@ -4,7 +4,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.compatibility.citizens.CitizensIntegrator;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Stop the NPC when he is walking and teleport him to a given location.
  */
-public class NPCTeleportEvent implements ComposedEvent {
+public class NPCTeleportEvent implements NullableEvent {
     /**
      * The location to teleport the NPC to.
      */

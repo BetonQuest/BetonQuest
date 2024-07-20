@@ -95,7 +95,7 @@ public class CitizensIntegrator implements Integrator {
         final EventTypeRegistry eventTypes = questRegistries.getEventTypes();
         eventTypes.register("movenpc", new CitizensMoveEventFactory(data, citizensMoveController));
         eventTypes.register("stopnpc", new CitizensStopEventFactory(data, citizensMoveController));
-        eventTypes.register("teleportnpc", new NPCTeleportEventFactory(data));
+        eventTypes.registerCombined("teleportnpc", new NPCTeleportEventFactory(data));
 
         plugin.registerConversationIO("chest", CitizensInventoryConvIO.class);
         plugin.registerConversationIO("combined", CitizensInventoryConvIO.CitizensCombined.class);
@@ -104,7 +104,7 @@ public class CitizensIntegrator implements Integrator {
 
         final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
         conditionTypes.register("npcdistance", new NPCDistanceConditionFactory(data, loggerFactory));
-        conditionTypes.register("npclocation", new NPCLocationConditionFactory(data));
+        conditionTypes.registerCombined("npclocation", new NPCLocationConditionFactory(data));
     }
 
     @Override

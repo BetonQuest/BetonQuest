@@ -23,7 +23,7 @@ public abstract class TypedQuestProcessor<I extends ID, T> extends QuestProcesso
     /**
      * Available types.
      */
-    protected final QuestTypeRegistry<?, ?, ?, T> types;
+    protected final QuestTypeRegistry<?, ?, T> types;
 
     /**
      * Type name used for logging.
@@ -43,7 +43,7 @@ public abstract class TypedQuestProcessor<I extends ID, T> extends QuestProcesso
      * @param readable the type name used for logging, with first letter in upper case
      * @param internal the section name and/or bstats topic identifier
      */
-    public TypedQuestProcessor(final BetonQuestLogger log, final QuestTypeRegistry<?, ?, ?, T> types,
+    public TypedQuestProcessor(final BetonQuestLogger log, final QuestTypeRegistry<?, ?, T> types,
                                final String readable, final String internal) {
         super(log);
         this.types = types;

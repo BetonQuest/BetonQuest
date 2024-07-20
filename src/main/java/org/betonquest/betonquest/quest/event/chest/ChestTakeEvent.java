@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Removes items from a chest.
  */
-public class ChestTakeEvent extends AbstractChestEvent implements ComposedEvent {
+public class ChestTakeEvent extends AbstractChestEvent implements NullableEvent {
 
     /**
      * The items to take from the chest.
@@ -37,7 +37,7 @@ public class ChestTakeEvent extends AbstractChestEvent implements ComposedEvent 
             final Inventory inventory = getChest(profile).getInventory();
             for (final Item item : items) {
                 final QuestItem questItem = item.getItem();
-                final int amount = item.getAmount().getInt(profile);
+                final int amount = item.getAmount().getValue(profile).intValue();
                 final ItemStack[] newItems = removeItems(inventory.getContents(), questItem, amount);
                 inventory.setContents(newItems);
             }

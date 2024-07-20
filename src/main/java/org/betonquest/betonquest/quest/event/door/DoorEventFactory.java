@@ -1,19 +1,23 @@
 package org.betonquest.betonquest.quest.event.door;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
-import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
+import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
 
 import java.util.Locale;
 
 /**
  * Factory to create door events from {@link Instruction}s.
  */
-public class DoorEventFactory implements ComposedEventFactory {
+public class DoorEventFactory implements EventFactory, StaticEventFactory {
     /**
      * Data for primary server thread access.
      */
@@ -29,20 +33,26 @@ public class DoorEventFactory implements ComposedEventFactory {
     }
 
     @Override
-    public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
-        return new PrimaryServerThreadComposedEvent(createDoorEvent(instruction), data);
+    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadEvent(createDoorEvent(instruction), data);
     }
 
-    private DoorEvent createDoorEvent(final Instruction instruction) throws InstructionParseException {
+    @Override
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadStaticEvent(createDoorEvent(instruction), data);
+    }
+
+    private NullableEventAdapter createDoorEvent(final Instruction instruction) throws InstructionParseException {
         final VariableLocation location = instruction.getLocation();
         final String action = instruction.next();
-        return switch (action.toLowerCase(Locale.ROOT)) {
+        final DoorEvent doorEvent = switch (action.toLowerCase(Locale.ROOT)) {
             case "on" -> createOpenDoorEvent(location);
             case "off" -> createCloseDoorEvent(location);
             case "toggle" -> createToggleDoorEvent(location);
             default ->
                     throw new InstructionParseException("Unknown door action (valid options are: on, off, toggle): " + action);
         };
+        return new NullableEventAdapter(doorEvent);
     }
 
     private DoorEvent createOpenDoorEvent(final VariableLocation location) {

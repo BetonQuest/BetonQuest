@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.drop;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Event that drops items at a location.
  */
-public class DropEvent implements ComposedEvent {
+public class DropEvent implements NullableEvent {
     /**
      * Items to be dropped.
      */
@@ -34,7 +34,18 @@ public class DropEvent implements ComposedEvent {
         this.locationSelector = locationSelector;
     }
 
-    private static void dropAsStacks(final Location location, final ItemStack item, final int amount) {
+    @Override
+    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
+        final Location location = locationSelector.selectFor(profile);
+        for (final Item itemDefinition : items) {
+            final ItemStack item = itemDefinition.getItem().generate(1, profile);
+            final int amount = itemDefinition.getAmount().getValue(profile).intValue();
+
+            dropAsStacks(location, item, amount);
+        }
+    }
+
+    private void dropAsStacks(final Location location, final ItemStack item, final int amount) {
         int remaining = amount;
         while (remaining > 0) {
             final int stackSize = Math.min(remaining, item.getMaxStackSize());
@@ -43,20 +54,9 @@ public class DropEvent implements ComposedEvent {
         }
     }
 
-    private static void dropStack(final Location location, final ItemStack item, final int stackSize) {
+    private void dropStack(final Location location, final ItemStack item, final int stackSize) {
         final ItemStack drop = item.clone();
         drop.setAmount(stackSize);
         location.getWorld().dropItem(location, drop);
-    }
-
-    @Override
-    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
-        final Location location = locationSelector.selectFor(profile);
-        for (final Item itemDefinition : items) {
-            final ItemStack item = itemDefinition.getItem().generate(1, profile);
-            final int amount = itemDefinition.getAmount().getInt(profile);
-
-            dropAsStacks(location, item, amount);
-        }
     }
 }

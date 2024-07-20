@@ -1,17 +1,21 @@
 package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
-import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
+import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
 
 /**
  * Factory to create chest events from {@link Instruction}s.
  */
-public class ChestClearEventFactory implements ComposedEventFactory {
+public class ChestClearEventFactory implements EventFactory, StaticEventFactory {
     /**
      * Data for primary server thread access.
      */
@@ -27,9 +31,17 @@ public class ChestClearEventFactory implements ComposedEventFactory {
     }
 
     @Override
-    public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadEvent(createChestClearEvent(instruction), data);
+    }
+
+    @Override
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadStaticEvent(createChestClearEvent(instruction), data);
+    }
+
+    private NullableEventAdapter createChestClearEvent(final Instruction instruction) throws InstructionParseException {
         final VariableLocation variableLocation = instruction.getLocation();
-        return new PrimaryServerThreadComposedEvent(
-                new ChestClearEvent(variableLocation), data);
+        return new NullableEventAdapter(new ChestClearEvent(variableLocation));
     }
 }

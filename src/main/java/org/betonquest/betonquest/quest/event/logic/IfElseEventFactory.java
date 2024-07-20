@@ -1,32 +1,43 @@
 package org.betonquest.betonquest.quest.event.logic;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
-import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
+import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 
 /**
- * Factory to create ifelse events from {@link Instruction}s.
+ * Factory to create if-else events from {@link Instruction}s.
  */
-public class IfElseEventFactory implements ComposedEventFactory {
+public class IfElseEventFactory implements EventFactory, StaticEventFactory {
 
     /**
-     * The empty constructor
+     * The empty constructor.
      */
     public IfElseEventFactory() {
     }
 
-    @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.PrematureDeclaration"})
     @Override
-    public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+        return createIfElseEvent(instruction);
+    }
+
+    @Override
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+        return createIfElseEvent(instruction);
+    }
+
+    private NullableEventAdapter createIfElseEvent(final Instruction instruction) throws InstructionParseException {
         final ConditionID condition = instruction.getCondition();
         final EventID event = instruction.getEvent();
         if (!"else".equalsIgnoreCase(instruction.next())) {
             throw new InstructionParseException("Missing 'else' keyword");
         }
         final EventID elseEvent = instruction.getEvent();
-        return new IfElseEvent(condition, event, elseEvent);
+        return new NullableEventAdapter(new IfElseEvent(condition, event, elseEvent));
     }
 }

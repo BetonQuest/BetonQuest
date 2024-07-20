@@ -5,17 +5,18 @@ import org.betonquest.betonquest.api.common.function.ConstantSelector;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
 import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -47,16 +48,13 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
         this.data = data;
     }
 
-    private ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
-        final Weather weather = parseWeather(instruction.next());
-        final Selector<World> worldSelector = parseWorld(instruction.getOptional("world"));
-        final VariableNumber duration = instruction.getVarNum(instruction.getOptional("duration", "0"));
-        return new PrimaryServerThreadComposedEvent(new WeatherEvent(weather, worldSelector, duration), data);
-    }
-
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        return new OnlineProfileRequiredEvent(loggerFactory.create(WeatherEvent.class), parseComposedEvent(instruction), instruction.getPackage());
+        return new PrimaryServerThreadEvent(new OnlineProfileRequiredEvent(
+                loggerFactory.create(WeatherEvent.class),
+                parseWeatherEvent(instruction),
+                instruction.getPackage()
+        ), data);
     }
 
     @Override
@@ -64,8 +62,15 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
         if (instruction.copy().getOptional("world") == null) {
             return new DoNothingStaticEvent();
         } else {
-            return parseComposedEvent(instruction);
+            return new PrimaryServerThreadStaticEvent(parseWeatherEvent(instruction), data);
         }
+    }
+
+    private NullableEventAdapter parseWeatherEvent(final Instruction instruction) throws InstructionParseException {
+        final Weather weather = parseWeather(instruction.next());
+        final Selector<World> worldSelector = parseWorld(instruction.getOptional("world"));
+        final VariableNumber duration = instruction.getVarNum(instruction.getOptional("duration", "0"));
+        return new NullableEventAdapter(new WeatherEvent(weather, worldSelector, duration));
     }
 
     private Weather parseWeather(final String weatherName) throws InstructionParseException {
