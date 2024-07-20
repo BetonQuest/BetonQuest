@@ -15,7 +15,7 @@ import java.util.Optional;
  */
 public final class OnlineEventAdapter implements Event {
     /**
-     * Event to run with the online player.
+     * Event to run with the online profile.
      */
     private final OnlineEvent onlineEvent;
 

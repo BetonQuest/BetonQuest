@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 /**
- * Quest event that needs an online player to function correctly.
+ * Quest event that needs an online profile to function correctly.
  */
 public interface OnlineEvent {
     /**
