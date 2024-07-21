@@ -64,18 +64,21 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
     }
 
     @Override
-    public Map<Version, String> getReleaseVersions() throws IOException {
-        return getVersions(Map::put, false);
+    public Map<Version, String> getReleaseVersions(final Version currentVersion) throws IOException {
+        return getVersions((versionStringMap, version, downloadUrl) -> {
+            if (doVersionsEqual(version, currentVersion)) {
+                return false;
+            }
+            versionStringMap.put(version, downloadUrl);
+            return true;
+        }, false);
     }
 
     @Override
-    public Map<Version, String> getDevelopmentVersions() throws IOException {
+    public Map<Version, String> getDevelopmentVersions(final Version currentVersion) throws IOException {
         return getVersions((versions, version, downloadUrl) -> {
-            if (versions.keySet().stream()
-                    .anyMatch(v -> v.getMajorVersion() == version.getMajorVersion()
-                            && v.getMinorVersion() == version.getMinorVersion()
-                            && v.getPatchVersion() == version.getPatchVersion())) {
-                return;
+            if (versions.keySet().stream().anyMatch(v -> doVersionsEqual(version, v))) {
+                return true;
             }
             final String pomXml = contentSource.get(new URL(downloadUrl.replace("-shaded.jar", ".pom")));
             final Matcher matcher = POM_PATTERN.matcher(pomXml);
@@ -83,6 +86,7 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
                 final Version pomVersion = new Version(matcher.group("version"));
                 versions.put(pomVersion, downloadUrl);
             }
+            return !doVersionsEqual(version, currentVersion);
         }, true);
     }
 
@@ -99,11 +103,19 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
                 final JSONObject maven2 = entry.getJSONObject("maven2");
                 final Version version = new Version(maven2.getString("version"));
                 final String downloadUrl = entry.getString("downloadUrl");
-                consumer.consume(versions, version, downloadUrl);
+                if (!consumer.consume(versions, version, downloadUrl)) {
+                    return versions;
+                }
             }
             continuationToken = nexusResponse.isNull("continuationToken") ? null : CONTINUATION_TOKEN + nexusResponse.getString("continuationToken");
         }
         return versions;
+    }
+
+    private boolean doVersionsEqual(final Version version1, final Version version2) {
+        return version1.getMajorVersion() == version2.getMajorVersion()
+                && version1.getMinorVersion() == version2.getMinorVersion()
+                && version1.getPatchVersion() == version2.getPatchVersion();
     }
 
     /**
@@ -113,10 +125,11 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
         /**
          * Consumes the given version and downloadUrl.
          *
-         * @param versions    the versions map
+         * @param versions    the version map
          * @param version     the version
          * @param downloadUrl the downloadUrl
+         * @return true if the search should be continued, false otherwise
          */
-        void consume(Map<Version, String> versions, Version version, String downloadUrl) throws IOException;
+        boolean consume(Map<Version, String> versions, Version version, String downloadUrl) throws IOException;
     }
 }

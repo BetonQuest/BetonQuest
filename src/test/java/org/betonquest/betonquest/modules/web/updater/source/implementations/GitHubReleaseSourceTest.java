@@ -33,7 +33,7 @@ class GitHubReleaseSourceTest {
             throw new IOException("Unexpected URL: " + url);
         };
         final GitHubReleaseSource releaseSource = new GitHubReleaseSource(apiUrl, contentSource);
-        final Map<Version, String> versions = releaseSource.getReleaseVersions();
+        final Map<Version, String> versions = releaseSource.getReleaseVersions(new Version("1.12.0"));
 
         assertEquals(2, versions.size(), "Expected two versions from getReleaseVersions");
         final String url1 = versions.get(new Version("1.12.0"));

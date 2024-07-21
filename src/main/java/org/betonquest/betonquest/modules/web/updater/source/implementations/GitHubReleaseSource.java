@@ -61,7 +61,7 @@ public class GitHubReleaseSource implements ReleaseUpdateSource {
     }
 
     @Override
-    public Map<Version, String> getReleaseVersions() throws IOException {
+    public Map<Version, String> getReleaseVersions(final Version currentVersion) throws IOException {
         final Map<Version, String> versions = new HashMap<>();
         final JSONArray releaseArray = new JSONArray(contentSource.get(new URL(apiUrl + RELEASES_URL)));
         for (int index = 0; index < releaseArray.length(); index++) {
