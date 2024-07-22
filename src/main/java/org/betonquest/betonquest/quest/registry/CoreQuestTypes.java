@@ -375,8 +375,8 @@ public class CoreQuestTypes {
 
     private void registerVariables(final VariableTypeRegistry variables) {
         variables.register("condition", new ConditionVariableFactory());
-        variables.register("constant", new ConstantVariableFactory(loggerFactory.create(ConstantVariable.class)));
-        variables.registerCombined("eval", new EvalVariableFactory(betonQuest.getVariableProcessor()));
+        variables.registerCombined("constant", new ConstantVariableFactory(loggerFactory.create(ConstantVariable.class), betonQuest.getVariableProcessor()));
+        variables.registerCombined("eval", new EvalVariableFactory(loggerFactory.create(EvalVariable.class), betonQuest.getVariableProcessor()));
         variables.register("globalpoint", GlobalPointVariable.class);
         variables.register("globaltag", GlobalTagVariable.class);
         variables.register("item", ItemVariable.class);
