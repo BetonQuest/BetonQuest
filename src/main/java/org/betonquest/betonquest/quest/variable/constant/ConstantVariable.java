@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.variable.constant;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.variable.Variable;
+import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.jetbrains.annotations.Nullable;
@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A variable that always evaluates to the same constant value.
  */
-public class ConstantVariable implements Variable {
+public class ConstantVariable implements NullableVariable {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
