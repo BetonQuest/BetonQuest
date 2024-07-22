@@ -44,13 +44,15 @@ public final class Backup {
      * @return true if the backup was successful, false if there was an error
      */
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
-    @SuppressWarnings("PMD.CognitiveComplexity")
+    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
     public static boolean backupDatabase(final ConfigAccessorFactory configAccessorFactory, final File databaseBackupFile) {
         final BetonQuest instance = BetonQuest.getInstance();
         try {
+            if (!databaseBackupFile.createNewFile()) {
+                LOG.warn("Could not create the backup file!");
+                return false;
+            }
             boolean done = true;
-            // prepare the config file
-            databaseBackupFile.createNewFile();
             final ConfigAccessor accessor = configAccessorFactory.create(databaseBackupFile);
             final FileConfiguration config = accessor.getConfig();
             // prepare the database and map
@@ -107,8 +109,8 @@ public final class Backup {
         } catch (final IOException | SQLException | InvalidConfigurationException e) {
             LOG.warn("There was an error during database backup: " + e.getMessage(), e);
             final File brokenFile = new File(instance.getDataFolder(), "database-backup.yml");
-            if (brokenFile.exists()) {
-                brokenFile.delete();
+            if (brokenFile.exists() && !brokenFile.delete()) {
+                LOG.warn("Could not delete the broken backup file!");
             }
             return false;
         }
@@ -131,8 +133,9 @@ public final class Backup {
         LOG.info("Loading database backup!");
         // backup the database
         final File backupFolder = new File(instance.getDataFolder(), "Backups");
-        if (!backupFolder.isDirectory()) {
-            backupFolder.mkdirs();
+        if (!backupFolder.isDirectory() && !backupFolder.mkdirs()) {
+            LOG.warn("Could not create the backup folder!");
+            return;
         }
         int backupNumber = 0;
         while (new File(backupFolder, "old-database-" + backupNumber + ".yml").exists()) {
@@ -277,6 +280,8 @@ public final class Backup {
             }
         }
         // delete backup file so it doesn't get loaded again
-        file.delete();
+        if (!file.delete()) {
+            LOG.warn("Could not delete the backup file!");
+        }
     }
 }

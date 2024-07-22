@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.lightning;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
@@ -9,9 +9,9 @@ import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Strikes a lightning at specified location
+ * Strikes a lightning at specified location.
  */
-public class LightningEvent implements ComposedEvent {
+public class LightningEvent implements NullableEvent {
     /**
      * The location to strike the lightning at.
      */

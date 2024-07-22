@@ -4,8 +4,7 @@
 // (like in your pom.xml).
 // E.g.: https://nexus.betonquest.org/repository/betonquest/
 
-document$.subscribe(() => {
-
+document$.subscribe(async () => {
   const nexusUrl = "${REPOSITORY_URL}";
   const parts = nexusUrl.split("/");
   const baseUrl = parts.slice(0, -3).join("/") + "/";
@@ -22,10 +21,7 @@ document$.subscribe(() => {
     }
   };
 
-  //This script might exist on every page due to instant loading but should only be executed on the downloads page
-  if (document.getElementById("download-all-release-build") !== null) {
-    showBuilds();
-  }
+  await showBuilds();
 
   async function showBuilds() {
     const builds = await getBuilds();
@@ -77,7 +73,8 @@ document$.subscribe(() => {
   }
 
   async function getBuilds() {
-    let continuationToken = "";
+    let prereleaseSearch = undefined;
+    let continuationToken = undefined;
     const builds = [];
     let cachedVersions = {};
     try {
@@ -87,30 +84,36 @@ document$.subscribe(() => {
     }
     const newCachedVersions = {};
 
-    let buildRequests = [];
-    while (continuationToken !== null) {
-      const params = getURLParams(continuationToken);
+    nextPage: while (continuationToken !== null) {
+      const params = getURLParams(prereleaseSearch, continuationToken);
       try {
         let data = await fetch(baseUrl + `service/rest/v1/search/assets?${params}`)
           .then(response => response.json());
-        buildRequests.push(...data["items"].map(build => getVersion(build, cachedVersions, newCachedVersions)));
+
+        for (const build of data["items"]) {
+          const buildVersion = await getVersion(build, cachedVersions, newCachedVersions);
+          if (buildVersion) {
+            builds.push(buildVersion);
+            if (prereleaseSearch === undefined && !buildVersion.version.includes("-")) {
+              prereleaseSearch = false;
+              continuationToken = undefined;
+              continue nextPage;
+            }
+          }
+        }
+
         continuationToken = data["continuationToken"];
       } catch (error) {
         console.error("Failed to fetch builds:", error);
         continuationToken = null;
       }
     }
-    const results = await Promise.allSettled(buildRequests);
-    results
-      .map(promise => promise.value)
-      .filter(result => result != null)
-      .forEach(result => builds.push(result));
 
     localStorage.setItem("cachedVersions", JSON.stringify(newCachedVersions));
     return builds;
   }
 
-  function getURLParams(continuationToken) {
+  function getURLParams(prerelease, continuationToken) {
     const params = new URLSearchParams();
     params.set("repository", repositoryName);
     params.set("group", "org.betonquest");
@@ -119,17 +122,13 @@ document$.subscribe(() => {
     params.set("maven.classifier", "shaded");
     params.set("sort", "version");
 
-    if (continuationToken) {
+    if (prerelease !== undefined) {
+      params.set("prerelease", prerelease);
+    }
+    if (continuationToken !== undefined) {
       params.set("continuationToken", continuationToken);
     }
     return params;
-  }
-
-  async function getPomResult(build) {
-    const pomUrl = build["downloadUrl"].replace("-shaded.jar", ".pom");
-    const pomResponse = await fetch(pomUrl);
-    const pomData = await pomResponse.text();
-    return pomData.match(/<betonquest\.version>(.+?)<\/betonquest\.version>/);
   }
 
   async function getVersion(build, cachedVersions, newCachedVersions) {
@@ -143,17 +142,21 @@ document$.subscribe(() => {
       } else {
         const result = await getPomResult(build);
         if (!result || result[1].includes("$")) {
-          version = "invalid";
+          return null;
         } else {
           version = result[1];
         }
       }
       newCachedVersions[nexusVersion] = version;
     }
-    if (version === "invalid") {
-      return null;
-    }
     return {version: version, downloadUrl: build["downloadUrl"]};
+  }
+
+  async function getPomResult(build) {
+    const pomUrl = build["downloadUrl"].replace("-shaded.jar", ".pom");
+    const pomResponse = await fetch(pomUrl);
+    const pomData = await pomResponse.text();
+    return pomData.match(/<betonquest\.version>(.+?)<\/betonquest\.version>/);
   }
 
   function downloadWithRename(url, filename) {

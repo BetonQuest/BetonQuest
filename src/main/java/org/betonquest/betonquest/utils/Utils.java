@@ -62,8 +62,8 @@ public final class Utils {
         }
         // create Backups folder if it does not exist
         final File backupFolder = new File(instance.getDataFolder(), "Backups");
-        if (!backupFolder.isDirectory()) {
-            backupFolder.mkdir();
+        if (!backupFolder.isDirectory() && !backupFolder.mkdir()) {
+            LOG.error("Could not create backup folder!");
         }
         // zip all the files
         final String outputPath = backupFolder.getAbsolutePath() + File.separator + "backup-"
@@ -71,7 +71,9 @@ public final class Utils {
 
         Zipper.zip(instance.getDataFolder(), outputPath, "^backup.*", "^database\\.db$", "^logs$");
         // delete database backup so it doesn't make a mess later on
-        new File(instance.getDataFolder(), "database-backup.yml").delete();
+        if (!new File(instance.getDataFolder(), "database-backup.yml").delete()) {
+            LOG.warn("Could not delete database backup file!");
+        }
         // done
         LOG.debug("Done in " + (new Date().getTime() - time) + "ms");
         LOG.info("Done, you can find the backup in 'Backups' directory.");

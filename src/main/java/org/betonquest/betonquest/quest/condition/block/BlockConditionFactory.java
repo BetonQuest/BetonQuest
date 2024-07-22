@@ -1,18 +1,22 @@
 package org.betonquest.betonquest.quest.condition.block;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.quest.condition.Condition;
-import org.betonquest.betonquest.api.quest.condition.ConditionFactory;
+import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
+import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
+import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
+import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
+import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.condition.PrimaryServerThreadCondition;
+import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
+import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
 import org.betonquest.betonquest.utils.BlockSelector;
 
 /**
  * Factory to create test for block conditions from {@link Instruction}s.
  */
-public class BlockConditionFactory implements ConditionFactory {
+public class BlockConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
     /**
      * Data used for condition check on the primary server thread.
      */
@@ -28,10 +32,19 @@ public class BlockConditionFactory implements ConditionFactory {
     }
 
     @Override
-    public Condition parse(final Instruction instruction) throws InstructionParseException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadPlayerCondition(parseBlockCondition(instruction), data);
+    }
+
+    @Override
+    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadPlayerlessCondition(parseBlockCondition(instruction), data);
+    }
+
+    private NullableConditionAdapter parseBlockCondition(final Instruction instruction) throws InstructionParseException {
         final VariableLocation loc = instruction.getLocation();
         final BlockSelector selector = instruction.getBlockSelector();
         final boolean exactMatch = instruction.hasArgument("exactMatch");
-        return new PrimaryServerThreadCondition(new BlockCondition(loc, selector, exactMatch), data);
+        return new NullableConditionAdapter(new BlockCondition(loc, selector, exactMatch));
     }
 }

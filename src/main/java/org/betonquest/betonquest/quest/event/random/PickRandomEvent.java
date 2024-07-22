@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.random;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.jetbrains.annotations.Nullable;
@@ -14,9 +14,9 @@ import java.util.List;
 /**
  * Fires randomly events by chance and amount.
  */
-public class PickRandomEvent implements ComposedEvent {
+public class PickRandomEvent implements NullableEvent {
     /**
-     * The events with there chance
+     * The events with there chance.
      */
     private final List<RandomEvent> events;
 
@@ -45,7 +45,7 @@ public class PickRandomEvent implements ComposedEvent {
         }
         double total = resolvedEvents.stream().mapToDouble(ResolvedRandomEvent::chance).sum();
 
-        int pick = this.amount == null ? 1 : this.amount.getInt(profile);
+        int pick = this.amount == null ? 1 : this.amount.getValue(profile).intValue();
         while (pick > 0 && !resolvedEvents.isEmpty()) {
             pick--;
             double random = Math.random() * total;

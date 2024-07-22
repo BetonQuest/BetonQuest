@@ -3,8 +3,7 @@ package org.betonquest.betonquest.quest.event.give;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.quest.event.NotificationSender;
@@ -19,7 +18,7 @@ import java.util.Locale;
 /**
  * Gives the player items.
  */
-public class GiveEvent implements Event {
+public class GiveEvent implements OnlineEvent {
 
     /**
      * The items to give.
@@ -64,13 +63,12 @@ public class GiveEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
-        final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
-        final Player player = onlineProfile.getPlayer();
+    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+        final Player player = profile.getPlayer();
         for (final Item item : questItems) {
             final QuestItem questItem = item.getItem();
-            final int amount = item.getAmount().getInt(profile);
-            giveItems(onlineProfile, player, questItem, amount);
+            final int amount = item.getAmount().getValue(profile).intValue();
+            giveItems(profile, player, questItem, amount);
             final String questItemName = questItem.getName() == null
                     ? questItem.getMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " ")
                     : questItem.getName();

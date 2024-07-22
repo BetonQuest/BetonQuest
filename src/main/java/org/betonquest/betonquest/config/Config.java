@@ -57,6 +57,9 @@ public final class Config {
 
     /**
      * Creates new instance of the Config handler
+     *
+     * @param plugin the {@link BetonQuest} plugin instance
+     * @param config the {@link ConfigurationFile} to load from
      */
     @SuppressWarnings({"PMD.AssignmentToNonFinalStatic", "PMD.CognitiveComplexity", "PMD.NPathComplexity"})
     @SuppressFBWarnings("EI_EXPOSE_STATIC_REP2")

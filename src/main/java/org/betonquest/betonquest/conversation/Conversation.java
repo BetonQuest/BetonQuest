@@ -577,6 +577,7 @@ public class Conversation implements Listener {
     /**
      * @return the interceptor of the conversation
      */
+    @Nullable
     public Interceptor getInterceptor() {
         return interceptor;
     }

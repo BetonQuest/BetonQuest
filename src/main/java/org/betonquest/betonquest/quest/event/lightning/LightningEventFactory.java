@@ -1,54 +1,48 @@
 package org.betonquest.betonquest.quest.event.lightning;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
-import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
+import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
-import org.bukkit.Server;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
 
 /**
- * Factory for {@link LightningEvent} from the {@link Instruction}
+ * Factory for {@link LightningEvent} from the {@link Instruction}.
  */
-public class LightningEventFactory implements ComposedEventFactory {
+public class LightningEventFactory implements EventFactory, StaticEventFactory {
     /**
-     * Server to use for syncing to the primary server thread.
+     * Data for primary server thread access.
      */
-    private final Server server;
-
-    /**
-     * Scheduler to use for syncing to the primary server thread.
-     */
-    private final BukkitScheduler scheduler;
-
-    /**
-     * Plugin to use for syncing to the primary server thread.
-     */
-    private final Plugin plugin;
+    private final PrimaryServerThreadData data;
 
     /**
      * Create a new LightningEventFactory.
      *
-     * @param server    the server to use for syncing to the primary server thread
-     * @param scheduler the scheduler to use for syncing to the primary server thread
-     * @param plugin    the plugin to use for syncing to the primary server thread
+     * @param data the data for primary server thread access
      */
-    public LightningEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
-        this.server = server;
-        this.scheduler = scheduler;
-        this.plugin = plugin;
+    public LightningEventFactory(final PrimaryServerThreadData data) {
+        this.data = data;
     }
 
     @Override
-    public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadEvent(createLightningEvent(instruction), data);
+    }
+
+    @Override
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadStaticEvent(createLightningEvent(instruction), data);
+    }
+
+    private NullableEventAdapter createLightningEvent(final Instruction instruction) throws InstructionParseException {
         final VariableLocation location = instruction.getLocation();
         final boolean noDamage = instruction.hasArgument("noDamage");
-        return new PrimaryServerThreadComposedEvent(
-                new LightningEvent(location, noDamage),
-                server, scheduler, plugin
-        );
+        return new NullableEventAdapter(new LightningEvent(location, noDamage));
     }
 }

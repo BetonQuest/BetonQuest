@@ -28,7 +28,7 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
      * The sub path for a REST API call to Nexus to search for shaded jars
      * to append on a {@link NexusReleaseAndDevelopmentSource#SERVICE_REST_V_1}.
      */
-    public static final String SEARCH_URL = "/search/assets?repository=betonquest&group=org.betonquest&name=betonquest&maven.extension=jar&maven.classifier=shaded&sort=version";
+    public static final String SEARCH_URL = "/search/assets?repository=betonquest&group=org.betonquest&name=betonquest&maven.extension=jar&maven.classifier=shaded&sort=version&prerelease=%s";
 
     /**
      * The sub path for a REST API call to Nexus with pagination to append to any path that has pagination.
@@ -65,25 +65,16 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
 
     @Override
     public Map<Version, String> getReleaseVersions() throws IOException {
-        return getVersions((versions, version, downloadUrl) -> {
-            if (!version.hasQualifier() && !version.hasBuildNumber()) {
-                versions.put(version, downloadUrl);
-            }
-        });
+        return getVersions(Map::put, false);
     }
 
     @Override
     public Map<Version, String> getDevelopmentVersions() throws IOException {
         return getVersions((versions, version, downloadUrl) -> {
-            if (!version.hasQualifier() && !version.hasBuildNumber()) {
-                return;
-            }
-            final boolean alreadyConsumed = versions.keySet().stream()
-                    .anyMatch(v -> v.hasQualifier() && v.hasBuildNumber()
-                            && v.getMajorVersion() == version.getMajorVersion()
+            if (versions.keySet().stream()
+                    .anyMatch(v -> v.getMajorVersion() == version.getMajorVersion()
                             && v.getMinorVersion() == version.getMinorVersion()
-                            && v.getPatchVersion() == version.getPatchVersion());
-            if (alreadyConsumed) {
+                            && v.getPatchVersion() == version.getPatchVersion())) {
                 return;
             }
             final String pomXml = contentSource.get(new URL(downloadUrl.replace("-shaded.jar", ".pom")));
@@ -92,15 +83,15 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
                 final Version pomVersion = new Version(matcher.group("version"));
                 versions.put(pomVersion, downloadUrl);
             }
-        });
+        }, true);
     }
 
-    private Map<Version, String> getVersions(final VersionConsumer consumer) throws IOException {
+    private Map<Version, String> getVersions(final VersionConsumer consumer, final boolean prereleases) throws IOException {
         final Map<Version, String> versions = new HashMap<>();
 
         String continuationToken = "";
         while (continuationToken != null) {
-            final String url = apiUrl + SERVICE_REST_V_1 + SEARCH_URL + continuationToken;
+            final String url = apiUrl + SERVICE_REST_V_1 + String.format(SEARCH_URL, prereleases) + continuationToken;
             final JSONObject nexusResponse = new JSONObject(contentSource.get(new URL(url)));
             final JSONArray items = nexusResponse.getJSONArray("items");
             for (int index = 0; index < items.length(); index++) {

@@ -133,6 +133,8 @@ public abstract class Objective {
 
     /**
      * This method is called by the plugin when the objective starts for a specific profile.
+     *
+     * @param profile the {@link Profile} of the player
      */
     @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
     public void start(final Profile profile) {
@@ -147,6 +149,8 @@ public abstract class Objective {
 
     /**
      * This method is called by the plugin when the objective stop for a specific profile.
+     *
+     * @param profile the {@link Profile} of the player
      */
     @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
     public void stop(final Profile profile) {

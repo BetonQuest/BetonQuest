@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.inventory.InventoryHolder;
@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Clears a specified chest from all items inside.
  */
-public class ChestClearEvent extends AbstractChestEvent implements ComposedEvent {
+public class ChestClearEvent extends AbstractChestEvent implements NullableEvent {
 
     /**
      * Creates a new chest clear event.

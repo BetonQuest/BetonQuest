@@ -1,14 +1,14 @@
 package org.betonquest.betonquest.quest.event.cancel;
 
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 /**
  * The cancel event.
  */
-public class CancelEvent implements Event {
+public class CancelEvent implements OnlineEvent {
 
     /**
      * The canceler to use.
@@ -25,7 +25,7 @@ public class CancelEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
-        canceler.cancel(profile.getOnlineProfile().get());
+    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+        canceler.cancel(profile);
     }
 }

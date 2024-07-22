@@ -62,7 +62,7 @@ auraskillsxp farming 10 level
 ```
 
 
-## Brewery[](https://www.spigotmc.org/resources/3082/)
+## Brewery[](https://www.spigotmc.org/resources/3082/) & BreweryX[](https://www.spigotmc.org/resources/114777/)
 
 ### Conditions
 
@@ -837,6 +837,8 @@ Check whether the player is near a specific MythicMobs entity. The first argumen
 
 #### :material-skull: Spawn MythicMob: `mspawnmob`
 
+**persistent**, **static**
+
 | Parameter  | Syntax                                               | Default Value          | Explanation                                                                                                                             |
 |------------|------------------------------------------------------|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
 | _location_ | [ULF](../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to spawn the mob at.                                                                                                       |
@@ -859,6 +861,9 @@ events:
     It's best to use the `private` argument in combination with the `target` argument so the mob does not attack 
     players that cannot see it.
     Additionally, the mob should be configured to never change its AI target using MythicMobs.
+    
+!!! info "Private & Target Arguments"
+    The `private` and `target` arguments are ignored when the event is used in a static context like [Schedules](../Schedules.md).
 
 ## PlaceholderAPI[](https://www.spigotmc.org/resources/6245/)
 

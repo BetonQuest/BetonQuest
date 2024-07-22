@@ -4,54 +4,63 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Location;
-import org.bukkit.Server;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
 
 /**
  * Factory to create {@link Event}s that drop items from instructions.
  */
 public class DropEventFactory implements EventFactory, StaticEventFactory {
     /**
-     * Server to use for syncing to the primary server thread.
+     * Data for primary server thread access.
      */
-    private final Server server;
-
-    /**
-     * Scheduler to use for syncing to the primary server thread.
-     */
-    private final BukkitScheduler scheduler;
-
-    /**
-     * Plugin to use for syncing to the primary server thread.
-     */
-    private final Plugin plugin;
+    private final PrimaryServerThreadData data;
 
     /**
      * Creates the drop event factory.
      *
-     * @param server    server to use
-     * @param scheduler scheduler to use
-     * @param plugin    plugin to use
+     * @param data the data for primary server thread access
      */
-    public DropEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
-        this.server = server;
-        this.scheduler = scheduler;
-        this.plugin = plugin;
+    public DropEventFactory(final PrimaryServerThreadData data) {
+        this.data = data;
     }
 
-    private static Item[] parseItemList(final Instruction instruction) throws InstructionParseException {
+    @Override
+    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadEvent(createDropEvent(instruction), data);
+    }
+
+    @Override
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadStaticEvent(createStaticDropEvent(instruction), data);
+    }
+
+    private StaticEvent createStaticDropEvent(final Instruction instruction) throws InstructionParseException {
+        final NullableEventAdapter dropEvent = createDropEvent(instruction);
+        if (!instruction.hasArgument("location")) {
+            return new OnlineProfileGroupStaticEventAdapter(PlayerConverter::getOnlineProfiles, dropEvent);
+        }
+        return dropEvent;
+    }
+
+    private NullableEventAdapter createDropEvent(final Instruction instruction) throws InstructionParseException {
+        final Item[] items = parseItemList(instruction);
+        final Selector<Location> location = parseLocationSelector(instruction);
+        return new NullableEventAdapter(new DropEvent(items, location));
+    }
+
+    private Item[] parseItemList(final Instruction instruction) throws InstructionParseException {
         final Item[] items = instruction.getItemListArgument("items");
         if (items.length == 0) {
             throw new InstructionParseException("No items to drop defined");
@@ -59,26 +68,9 @@ public class DropEventFactory implements EventFactory, StaticEventFactory {
         return items;
     }
 
-    private static Selector<Location> parseLocationSelector(final Instruction instruction) throws InstructionParseException {
+    private Selector<Location> parseLocationSelector(final Instruction instruction) throws InstructionParseException {
         return instruction.getLocationArgument("location")
                 .map(loc -> (Selector<Location>) loc::getValue)
                 .orElse(Selectors.fromPlayer(Player::getLocation));
-    }
-
-    @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
-        if (instruction.hasArgument("location")) {
-            return parseEvent(instruction);
-        } else {
-            return new OnlineProfileGroupStaticEventAdapter(PlayerConverter::getOnlineProfiles, parseEvent(instruction));
-        }
-    }
-
-    @Override
-    public ComposedEvent parseEvent(final Instruction instruction) throws InstructionParseException {
-        final Item[] items = parseItemList(instruction);
-        final Selector<Location> location = parseLocationSelector(instruction);
-
-        return new PrimaryServerThreadComposedEvent(new DropEvent(items, location), server, scheduler, plugin);
     }
 }

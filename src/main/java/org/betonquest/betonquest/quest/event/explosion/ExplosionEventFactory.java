@@ -1,55 +1,51 @@
 package org.betonquest.betonquest.quest.event.explosion;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
-import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
+import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
-import org.bukkit.Server;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
 
 /**
  * Factory to create explosion events from {@link Instruction}s.
  */
-public class ExplosionEventFactory implements ComposedEventFactory {
+public class ExplosionEventFactory implements EventFactory, StaticEventFactory {
     /**
-     * Server to use for syncing to the primary server thread.
+     * Data for primary server thread access.
      */
-    private final Server server;
-
-    /**
-     * Scheduler to use for syncing to the primary server thread.
-     */
-    private final BukkitScheduler scheduler;
-
-    /**
-     * Plugin to use for syncing to the primary server thread.
-     */
-    private final Plugin plugin;
+    private final PrimaryServerThreadData data;
 
     /**
      * Create the explosion event factory.
      *
-     * @param server    server to use
-     * @param scheduler scheduler to use
-     * @param plugin    plugin to use
+     * @param data the data for primary server thread access
      */
-    public ExplosionEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
-        this.server = server;
-        this.scheduler = scheduler;
-        this.plugin = plugin;
+    public ExplosionEventFactory(final PrimaryServerThreadData data) {
+        this.data = data;
     }
 
     @Override
-    public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadEvent(createExplosionEvent(instruction), data);
+    }
+
+    @Override
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadStaticEvent(createExplosionEvent(instruction), data);
+    }
+
+    private NullableEventAdapter createExplosionEvent(final Instruction instruction) throws InstructionParseException {
         final boolean setsFire = "1".equals(instruction.next());
         final boolean breaksBlocks = "1".equals(instruction.next());
         final VariableNumber power = instruction.getVarNum();
         final VariableLocation location = instruction.getLocation();
-        return new PrimaryServerThreadComposedEvent(new ExplosionEvent(location, power, setsFire, breaksBlocks),
-                server, scheduler, plugin);
+        return new NullableEventAdapter(new ExplosionEvent(location, power, setsFire, breaksBlocks));
     }
 }

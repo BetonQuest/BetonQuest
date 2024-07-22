@@ -1,15 +1,21 @@
 package org.betonquest.betonquest.compatibility.mythicmobs;
 
+import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.compatibility.mythicmobs.conditions.MythicMobDistanceConditionFactory;
+import org.betonquest.betonquest.compatibility.mythicmobs.events.MythicSpawnMobEventFactory;
 import org.betonquest.betonquest.compatibility.protocollib.hider.MythicHider;
 import org.betonquest.betonquest.exceptions.HookException;
 import org.betonquest.betonquest.exceptions.UnsupportedVersionException;
 import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.versioning.VersionComparator;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
+import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 
 @SuppressWarnings("PMD.CommentRequired")
@@ -25,9 +31,14 @@ public class MythicMobsIntegrator implements Integrator {
     public void hook() throws HookException {
         validateVersion();
 
-        plugin.registerConditions("mythicmobdistance", MythicMobDistanceCondition.class);
+        final BukkitAPIHelper apiHelper = new BukkitAPIHelper();
+
+        final Server server = plugin.getServer();
+        final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
+        final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
+        questRegistries.getConditionTypes().register("mythicmobdistance", new MythicMobDistanceConditionFactory(apiHelper, data));
         plugin.registerObjectives("mmobkill", MythicMobKillObjective.class);
-        plugin.registerEvents("mspawnmob", MythicSpawnMobEvent.class);
+        questRegistries.getEventTypes().registerCombined("mspawnmob", new MythicSpawnMobEventFactory(apiHelper, data, plugin.getVariableProcessor()));
         if (Compatibility.getHooked().contains("ProtocolLib")) {
             MythicHider.start();
         }

@@ -5,21 +5,20 @@ import org.betonquest.betonquest.api.common.function.ConstantSelector;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
-import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
-import org.bukkit.Server;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
@@ -34,55 +33,55 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Server to use for syncing to the primary server thread.
+     * Data for primary server thread access.
      */
-    private final Server server;
-
-    /**
-     * Scheduler to use for syncing to the primary server thread.
-     */
-    private final BukkitScheduler scheduler;
-
-    /**
-     * Plugin to use for syncing to the primary server thread.
-     */
-    private final Plugin plugin;
+    private final PrimaryServerThreadData data;
 
     /**
      * Creates the weather event factory.
      *
      * @param loggerFactory logger factory to use
-     * @param server        server to use
-     * @param scheduler     scheduler to use
-     * @param plugin        plugin to use
+     * @param data          the data for primary server thread access
      */
-    public WeatherEventFactory(final BetonQuestLoggerFactory loggerFactory, final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+    public WeatherEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
         this.loggerFactory = loggerFactory;
-        this.server = server;
-        this.scheduler = scheduler;
-        this.plugin = plugin;
-    }
-
-    private ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
-        final Weather weather = parseWeather(instruction.next());
-        final Selector<World> worldSelector = parseWorld(instruction.getOptional("world"));
-        final VariableNumber duration = instruction.getVarNum(instruction.getOptional("duration", "0"));
-        return new PrimaryServerThreadComposedEvent(new WeatherEvent(weather, worldSelector, duration),
-                server, scheduler, plugin);
+        this.data = data;
     }
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        return new OnlineProfileRequiredEvent(loggerFactory.create(WeatherEvent.class), parseComposedEvent(instruction), instruction.getPackage());
+        final Event weatherEvent = parseWeatherEvent(instruction);
+        final Event event;
+        if (requiresPlayer(instruction)) {
+            event = new OnlineEventAdapter(
+                    weatherEvent::execute,
+                    loggerFactory.create(WeatherEvent.class),
+                    instruction.getPackage()
+            );
+        } else {
+            event = weatherEvent;
+        }
+        return new PrimaryServerThreadEvent(event, data);
     }
 
     @Override
     public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
-        if (instruction.copy().getOptional("world") == null) {
+        if (requiresPlayer(instruction)) {
             return new DoNothingStaticEvent();
         } else {
-            return parseComposedEvent(instruction);
+            return new PrimaryServerThreadStaticEvent(parseWeatherEvent(instruction), data);
         }
+    }
+
+    private boolean requiresPlayer(final Instruction instruction) {
+        return instruction.copy().getOptional("world") == null;
+    }
+
+    private NullableEventAdapter parseWeatherEvent(final Instruction instruction) throws InstructionParseException {
+        final Weather weather = parseWeather(instruction.next());
+        final Selector<World> worldSelector = parseWorld(instruction.getOptional("world"));
+        final VariableNumber duration = instruction.getVarNum(instruction.getOptional("duration", "0"));
+        return new NullableEventAdapter(new WeatherEvent(weather, worldSelector, duration));
     }
 
     private Weather parseWeather(final String weatherName) throws InstructionParseException {
@@ -99,7 +98,7 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
         if (worldName == null) {
             return Selectors.fromPlayer(Player::getWorld);
         } else {
-            final World world = server.getWorld(worldName);
+            final World world = data.server().getWorld(worldName);
             return new ConstantSelector<>(world);
         }
     }

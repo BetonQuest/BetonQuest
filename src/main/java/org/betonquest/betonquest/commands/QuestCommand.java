@@ -18,7 +18,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.GlobalData;
@@ -118,6 +118,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     /**
      * Registers a new executor and a new tab completer of the /betonquest command.
+     *
+     * @param loggerFactory         logger factory to use
+     * @param configAccessorFactory the config accessor factory to use
+     * @param bukkitAudiences       the bukkit audiences to use
+     * @param logWatcher            the player log watcher to use
+     * @param debuggingController   the log publishing controller to use
+     * @param log                   the logger that will be used for logging
      */
     public QuestCommand(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final BukkitAudiences bukkitAudiences, final PlayerLogWatcher logWatcher, final LogPublishingController debuggingController) {
         this.loggerFactory = loggerFactory;
@@ -421,7 +428,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 log.warn("Could not find Item: " + e.getMessage(), e);
                 return;
             }
-            final Event give = new GiveEvent(
+            final OnlineEvent give = new GiveEvent(
                     new Instruction.Item[]{new Instruction.Item(itemID, new VariableNumber(itemID.getPackage(), "1"))},
                     new NoNotificationSender(),
                     new IngameNotificationSender(log, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR, "inventory_full_backpack", "inventory_full"),

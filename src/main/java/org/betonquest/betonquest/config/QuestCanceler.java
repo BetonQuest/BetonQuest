@@ -71,6 +71,7 @@ public class QuestCanceler {
     /**
      * Creates a new canceler with given name.
      *
+     * @param pack       the {@link QuestPackage} of the canceler
      * @param cancelerID ID of the canceler (package.name)
      * @throws InstructionParseException when parsing the canceler fails for some reason
      */

@@ -7,7 +7,7 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.id.ConditionID;
 
 /**
- * Get the "fulfillment" status of a {@link org.betonquest.betonquest.api.quest.condition.Condition}.
+ * Get the "fulfillment" status of a quest condition.
  */
 public class ConditionVariable implements PlayerVariable {
     /**

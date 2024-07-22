@@ -57,6 +57,8 @@ public final class NPCHider extends BukkitRunnable implements Listener {
 
     /**
      * Starts (or restarts) the NPCHider. It loads the current configuration for hidden NPCs
+     *
+     * @param log the logger that will be used for logging
      */
     public static void start(final BetonQuestLogger log) {
         if (instance != null) {
@@ -89,7 +91,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
                     npcId = Integer.parseInt(npcIds);
                 } catch (final NumberFormatException e) {
                     log.warn(cfgPackage, "NPC ID '" + npcIds + "' is not a valid number, in hide_npcs", e);
-                    continue npcs;
+                    continue;
                 }
                 final Set<ConditionID> conditions = new HashSet<>();
                 final String conditionsString = section.getString(npcIds);

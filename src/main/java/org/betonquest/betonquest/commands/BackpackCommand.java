@@ -22,6 +22,8 @@ public class BackpackCommand implements CommandExecutor {
 
     /**
      * Registers a new executor of the /backpack command
+     *
+     * @param log the logger that will be used for logging
      */
     public BackpackCommand(final BetonQuestLogger log) {
         this.log = log;

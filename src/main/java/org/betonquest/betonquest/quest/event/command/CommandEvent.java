@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.command;
 
 import org.betonquest.betonquest.api.bukkit.command.SilentConsoleCommandSender;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.Server;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Event that runs given commands in the server console.
  */
-public class CommandEvent implements ComposedEvent {
+public class CommandEvent implements NullableEvent {
 
     /**
      * Command sender to run the commands as.
@@ -50,7 +50,9 @@ public class CommandEvent implements ComposedEvent {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         try {
-            commands.forEach(command -> server.dispatchCommand(silentSender, command.getString(profile)));
+            for (final VariableString command : commands) {
+                server.dispatchCommand(silentSender, command.getValue(profile));
+            }
         } catch (final RuntimeException exception) {
             throw new QuestRuntimeException("Unhandled exception executing command: " + exception.getMessage(), exception);
         }

@@ -5,9 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
-import org.bukkit.Server;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,19 +26,9 @@ public abstract class BaseCommandEventFactory implements EventFactory {
     private static final Pattern CONDITIONS_REGEX = Pattern.compile("conditions?:\\S*\\s*$");
 
     /**
-     * Server to use for syncing to the primary server thread.
+     * Data for primary server thread access.
      */
-    protected final Server server;
-
-    /**
-     * Scheduler to use for syncing to the primary server thread.
-     */
-    protected final BukkitScheduler scheduler;
-
-    /**
-     * Plugin to use for syncing to the primary server thread.
-     */
-    protected final Plugin plugin;
+    protected final PrimaryServerThreadData data;
 
     /**
      * Logger factory to create a logger for events.
@@ -51,16 +39,11 @@ public abstract class BaseCommandEventFactory implements EventFactory {
      * Create the sudo event factory.
      *
      * @param loggerFactory logger factory to use
-     * @param server        server to use
-     * @param scheduler     scheduler scheduler to use
-     * @param plugin        plugin to use
+     * @param data          the data for primary server thread access
      */
-    public BaseCommandEventFactory(final BetonQuestLoggerFactory loggerFactory, final Server server,
-                                   final BukkitScheduler scheduler, final Plugin plugin) {
+    public BaseCommandEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
         this.loggerFactory = loggerFactory;
-        this.server = server;
-        this.scheduler = scheduler;
-        this.plugin = plugin;
+        this.data = data;
     }
 
     /**

@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
  * @param eventID the event to be executed
  * @param chance  the chance of the event
  */
-record RandomEvent(EventID eventID, VariableNumber chance) {
+public record RandomEvent(EventID eventID, VariableNumber chance) {
 
     /**
      * Resolves the chance of the event.

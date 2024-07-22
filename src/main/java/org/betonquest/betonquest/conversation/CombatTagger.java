@@ -22,16 +22,21 @@ import java.util.Map;
 /**
  * Tags profiles that are in combat to prevent them from starting the conversation.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class CombatTagger implements Listener {
-    private static final Map<Profile, Boolean> TAGGED = new HashMap<>();
+    /**
+     * Contains a player profile if it is tagged as "in combat".
+     * <p>
+     * The Runnable removes the entry from the same map after the delay.
+     */
+    private static final Map<Profile, BukkitRunnable> TAGGERS = new HashMap<>();
 
-    private static final Map<Profile, BukkitRunnable> UNTAGGERS = new HashMap<>();
-
+    /**
+     * Delay in seconds after a player profile is untagged from "in combat".
+     */
     private final int delay;
 
     /**
-     * Starts the combat listener
+     * Starts the combat listener.
      */
     public CombatTagger() {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
@@ -45,14 +50,14 @@ public class CombatTagger implements Listener {
      * @return true if the profile is tagged, false otherwise
      */
     public static boolean isTagged(final Profile profile) {
-        boolean result = false;
-        final Boolean state = TAGGED.get(profile);
-        if (state != null) {
-            result = state;
-        }
-        return result;
+        return TAGGERS.containsKey(profile);
     }
 
+    /**
+     * Tags a player as "in combat" if dealing or taking damage to or from an entity.
+     *
+     * @param event the event to listen
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDamage(final EntityDamageByEntityEvent event) {
         final List<Profile> profiles = new ArrayList<>();
@@ -63,26 +68,29 @@ public class CombatTagger implements Listener {
             profiles.add(PlayerConverter.getID((Player) event.getDamager()));
         }
         for (final Profile profile : profiles) {
-            TAGGED.put(profile, true);
-            final BukkitRunnable run = UNTAGGERS.get(profile);
+            final BukkitRunnable run = TAGGERS.get(profile);
             if (run != null) {
                 run.cancel();
             }
-            UNTAGGERS.put(profile, new BukkitRunnable() {
+            TAGGERS.put(profile, new BukkitRunnable() {
                 @Override
                 public void run() {
-                    TAGGED.put(profile, false);
+                    TAGGERS.remove(profile);
                 }
             });
-            UNTAGGERS.get(profile).runTaskLater(BetonQuest.getInstance(), delay * 20L);
+            TAGGERS.get(profile).runTaskLater(BetonQuest.getInstance(), delay * 20L);
         }
     }
 
+    /**
+     * Removes the "in combat" tag.
+     *
+     * @param event the event to listen
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDeath(final PlayerDeathEvent event) {
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getEntity());
-        TAGGED.remove(onlineProfile);
-        final BukkitRunnable runnable = UNTAGGERS.remove(onlineProfile);
+        final BukkitRunnable runnable = TAGGERS.remove(onlineProfile);
         if (runnable != null) {
             runnable.cancel();
         }

@@ -99,12 +99,13 @@ public class Updater {
      * Create a new Updater instance.
      *
      * @param log                 the logger that will be used for logging
-     * @param config              The config for the updater
-     * @param updateSourceHandler The {@link UpdateSourceHandler} to get all available versions
-     * @param updateDownloader    The {@link UpdateDownloader} to download new versions
-     * @param plugin              The {@link org.bukkit.plugin.Plugin} instance
-     * @param scheduler           The {@link BukkitScheduler} instance
-     * @param instantSource       The {@link InstantSource} instance
+     * @param config              the config for the updater
+     * @param currentVersion      the current version of the plugin
+     * @param updateSourceHandler the {@link UpdateSourceHandler} to get all available versions
+     * @param updateDownloader    the {@link UpdateDownloader} to download new versions
+     * @param plugin              the {@link org.bukkit.plugin.Plugin} instance
+     * @param scheduler           the {@link BukkitScheduler} instance
+     * @param instantSource       the {@link InstantSource} instance
      */
     public Updater(final BetonQuestLogger log, final UpdaterConfig config, final Version currentVersion,
                    final UpdateSourceHandler updateSourceHandler, final UpdateDownloader updateDownloader,

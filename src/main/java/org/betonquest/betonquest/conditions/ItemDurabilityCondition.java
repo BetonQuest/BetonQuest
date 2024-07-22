@@ -33,6 +33,9 @@ public class ItemDurabilityCondition extends Condition {
 
     /**
      * Creates an item durability condition.
+     *
+     * @param instruction the instruction to create the condition from
+     * @throws InstructionParseException if there was an error parsing the instruction
      */
     public ItemDurabilityCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);

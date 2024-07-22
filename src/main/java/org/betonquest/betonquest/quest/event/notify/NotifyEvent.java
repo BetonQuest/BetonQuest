@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.event.notify;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * {@link Event} the implementation of the notify events.
  */
-public class NotifyEvent implements Event {
+public class NotifyEvent implements OnlineEvent {
     /**
      * The {@link NotifyIO} to use.
      */
@@ -37,9 +37,8 @@ public class NotifyEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
-        final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
-        final String playerLanguageKey = BetonQuest.getInstance().getPlayerData(onlineProfile).getLanguage();
+    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+        final String playerLanguageKey = BetonQuest.getInstance().getPlayerData(profile).getLanguage();
         final String defaultLanguageKey = Config.getLanguage();
 
         final VariableString message = translations.containsKey(playerLanguageKey)
@@ -48,6 +47,6 @@ public class NotifyEvent implements Event {
         if (message == null) {
             throw new QuestRuntimeException("Could not find a message!");
         }
-        notifyIO.sendNotify(message.getString(profile), onlineProfile);
+        notifyIO.sendNotify(message.getValue(profile), profile);
     }
 }

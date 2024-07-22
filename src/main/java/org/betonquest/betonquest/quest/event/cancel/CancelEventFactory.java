@@ -6,11 +6,11 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.QuestCancelerID;
-import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 
 /**
  * Factory for the cancel event.
@@ -41,7 +41,7 @@ public class CancelEventFactory implements EventFactory {
                 throw new InstructionParseException("Quest canceler '" + cancelerID.getFullID() + "' does not exist."
                         + " Ensure it was loaded without errors.");
             }
-            return new OnlineProfileRequiredEvent(loggerFactory.create(CancelEvent.class), new CancelEvent(canceler), pack);
+            return new OnlineEventAdapter(new CancelEvent(canceler), loggerFactory.create(CancelEvent.class), pack);
         } catch (final ObjectNotFoundException e) {
             throw new InstructionParseException("Quest canceler '" + pack.getQuestPath() + "." + identifier + "' does not exist."
                     + " Ensure it was loaded without errors.", e);

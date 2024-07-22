@@ -2,6 +2,7 @@ package org.betonquest.betonquest.notify;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
@@ -130,7 +131,11 @@ public class AdvancementNotifyIO extends NotifyIO {
 
     private JsonObject getIcon() {
         final JsonObject icon = new JsonObject();
-        icon.addProperty("item", this.icon);
+        if (PaperLib.isVersion(20, 5)) {
+            icon.addProperty("id", this.icon);
+        } else {
+            icon.addProperty("item", this.icon);
+        }
         return icon;
     }
 }

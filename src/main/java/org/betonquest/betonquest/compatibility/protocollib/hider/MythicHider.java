@@ -99,8 +99,8 @@ public final class MythicHider extends BukkitRunnable implements Listener {
     /**
      * Updates the visibility of the specified MythicMob for this player.
      *
-     * @param onlineProfile
-     * @param mythicMob
+     * @param onlineProfile the {@link OnlineProfile} of the player
+     * @param mythicMob     the mob to update the visibility for
      */
     public void applyVisibility(final OnlineProfile onlineProfile, final Entity mythicMob) {
         final Set<UUID> uuids = mythicmobs.get(mythicMob);
@@ -112,7 +112,7 @@ public final class MythicHider extends BukkitRunnable implements Listener {
     /**
      * Updates the visibility of this MythicMob for all players.
      *
-     * @param mythicMob
+     * @param mythicMob the mob to update the visibility for
      */
     public void applyVisibility(final Entity mythicMob) {
         for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
@@ -150,6 +150,8 @@ public final class MythicHider extends BukkitRunnable implements Listener {
 
     /**
      * Checks if the player logging in can see any of the mobs in the list of tracked mobs, if not hides the mob
+     *
+     * @param event the event of the player joining
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {

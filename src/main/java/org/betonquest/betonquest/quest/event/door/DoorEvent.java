@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.door;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
@@ -16,7 +16,7 @@ import java.util.function.Consumer;
  * The door event. It applies an action to the {@link Openable} block meta if it could be found at the location.
  * It fails when no {@link Openable} block is found at the location.
  */
-public class DoorEvent implements ComposedEvent {
+public class DoorEvent implements NullableEvent {
 
     /**
      * The {@link Openable}'s location.

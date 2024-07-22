@@ -31,8 +31,8 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * EntityHider From: https://gist.github.com/aadnk/5871793
- * We use the fork: https://gist.github.com/dmulloy2/5526f5bf906c064c255e
+ * EntityHider From: <a href="https://gist.github.com/aadnk/5871793">aadnk/5871793</a>
+ * We use the fork: <a href="https://gist.github.com/dmulloy2/5526f5bf906c064c255e">dmulloy2/5526f5bf906c064c255e</a>
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
 public class EntityHider implements Listener {
@@ -297,11 +297,7 @@ public class EntityHider implements Listener {
 
         if (visibleBefore && manager != null) {
             final PacketContainer destroyEntity = new PacketContainer(PacketType.Play.Server.ENTITY_DESTROY);
-            if (PaperLib.isVersion(17, 1)) {
-                destroyEntity.getIntLists().write(0, Collections.singletonList(entity.getEntityId()));
-            } else {
-                destroyEntity.getIntegerArrays().write(0, new int[]{entity.getEntityId()});
-            }
+            destroyEntity.getIntLists().write(0, Collections.singletonList(entity.getEntityId()));
             manager.sendServerPacket(observer.getPlayer(), destroyEntity);
         }
         return visibleBefore;

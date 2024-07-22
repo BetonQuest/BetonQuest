@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.conditions.ChestItemCondition;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -49,7 +48,7 @@ public class ChestPutObjective extends Objective implements Listener {
     private final Condition chestItemCondition;
 
     @Nullable
-    private final Event chestTakeEvent;
+    private final ChestTakeEvent chestTakeEvent;
 
     private final VariableLocation loc;
 
@@ -100,7 +99,7 @@ public class ChestPutObjective extends Objective implements Listener {
     }
 
     /**
-     * Checks if there is no other player that has this inventory open
+     * Checks if there is no other player that has this inventory open.
      *
      * @param event InventoryOpenEvent
      * @return true, if no other player using the inventory, else false

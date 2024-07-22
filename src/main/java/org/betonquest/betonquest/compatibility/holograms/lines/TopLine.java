@@ -33,10 +33,11 @@ public class TopLine extends AbstractLine {
     /**
      * Creates a new instance of ItemLine. Automatically creates and stores {@link TopXObject} from received data.
      *
-     * @param category  Name of point as <code>package.name</code>
-     * @param orderType Direction of order
-     * @param limit     Maximum number of lines displayed
-     * @param colors    Color codes for individual parts of display (#, name, dash, and score)
+     * @param loggerFactory logger factory to use
+     * @param category      name of point as <code>package.name</code>
+     * @param orderType     direction of order
+     * @param limit         maximum number of lines displayed
+     * @param colors        color codes for individual parts of display (#, name, dash, and score)
      */
     @SuppressWarnings("PMD.UseVarargs")
     public TopLine(final BetonQuestLoggerFactory loggerFactory, final String category, final TopXObject.OrderType orderType, final int limit, final char[] colors) {

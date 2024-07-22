@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.effect;
 
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
@@ -9,9 +9,9 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.List;
 
 /**
- * Removes potion effects from the player
+ * Removes potion effects from the player.
  */
-public class DeleteEffectEvent implements Event {
+public class DeleteEffectEvent implements OnlineEvent {
 
     /**
      * The effects to delete.
@@ -28,8 +28,8 @@ public class DeleteEffectEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getOnlineProfile().get().getPlayer();
+    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+        final Player player = profile.getPlayer();
         if (effects.isEmpty()) {
             player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
         } else {

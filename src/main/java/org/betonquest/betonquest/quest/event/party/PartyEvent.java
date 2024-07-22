@@ -2,8 +2,7 @@ package org.betonquest.betonquest.quest.event.party;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
@@ -16,9 +15,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Fires specified events for every player in the party
+ * Fires specified events for every player in the party.
  */
-public class PartyEvent implements Event {
+public class PartyEvent implements OnlineEvent {
 
     /**
      * The range of the party.
@@ -58,7 +57,7 @@ public class PartyEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
         for (final OnlineProfile member : getMemberList(profile)) {
             for (final EventID event : events) {
                 BetonQuest.event(member, event);
@@ -66,9 +65,9 @@ public class PartyEvent implements Event {
         }
     }
 
-    private Set<OnlineProfile> getMemberList(final Profile profile) throws QuestRuntimeException {
-        final int toExecute = amount != null ? amount.getInt(profile) : -1;
-        final Map<OnlineProfile, Double> members = Utils.getParty(profile.getOnlineProfile().get(), range.getValue(profile).doubleValue(),
+    private Set<OnlineProfile> getMemberList(final OnlineProfile profile) throws QuestRuntimeException {
+        final int toExecute = amount != null ? amount.getValue(profile).intValue() : -1;
+        final Map<OnlineProfile, Double> members = Utils.getParty(profile, range.getValue(profile).doubleValue(),
                 conditions);
 
         if (toExecute < 0) {

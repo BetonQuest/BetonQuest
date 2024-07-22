@@ -4,50 +4,58 @@ import de.slikey.effectlib.EffectManager;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.exceptions.HookException;
+import org.betonquest.betonquest.compatibility.effectlib.event.ParticleEventFactory;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
-
-@SuppressWarnings({"PMD.CommentRequired", "NullAway.Init"})
+/**
+ * Integrator for <a href="https://github.com/elBukkit/EffectLib/">EffectLib</a>.
+ */
 public class EffectLibIntegrator implements Integrator {
-    private static EffectLibIntegrator instance;
-
+    /**
+     * BetonQuest plugin.
+     */
     private final BetonQuest plugin;
 
+    /**
+     * Effect manager starting and controlling effects.
+     */
     @Nullable
     private EffectManager manager;
 
+    /**
+     * Particle Manager displaying effects on NPCs.
+     */
+    @Nullable
     private EffectLibParticleManager particleManager;
 
-    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
-    public EffectLibIntegrator() {
-        instance = this;
-        plugin = BetonQuest.getInstance();
-    }
-
     /**
-     * @return the EffectLib effect manager
+     * The default Constructor.
      */
-    public static EffectManager getEffectManager() {
-        return Objects.requireNonNull(instance.manager, "The effect manager is not initialized yet!");
+    public EffectLibIntegrator() {
+        plugin = BetonQuest.getInstance();
     }
 
     @Override
     public void hook() {
-        manager = new EffectManager(BetonQuest.getInstance());
-        plugin.registerEvents("particle", ParticleEvent.class);
+        manager = new EffectManager(plugin);
+        final PrimaryServerThreadData data = new PrimaryServerThreadData(plugin.getServer(), plugin.getServer().getScheduler(), plugin);
+        plugin.getQuestRegistries().getEventTypes().register("particle", new ParticleEventFactory(plugin.getLoggerFactory(), data, manager));
     }
 
     @Override
-    public void postHook() throws HookException {
-        final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
-        particleManager = new EffectLibParticleManager(loggerFactory, loggerFactory.create(EffectLibParticleManager.class));
+    public void postHook() {
+        if (manager != null) {
+            final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
+            particleManager = new EffectLibParticleManager(loggerFactory, loggerFactory.create(EffectLibParticleManager.class), manager);
+        }
     }
 
     @Override
     public void reload() {
-        particleManager.reload();
+        if (particleManager != null) {
+            particleManager.reload();
+        }
     }
 
     @Override

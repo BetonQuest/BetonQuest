@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.explosion;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Spawns an explosion in a given location and with given stats.
  */
-public class ExplosionEvent implements ComposedEvent {
+public class ExplosionEvent implements NullableEvent {
     /**
      * The location of the explosion.
      */

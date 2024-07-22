@@ -19,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -65,12 +66,6 @@ public abstract class SimpleYMLSection {
         return new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, getRawString(key));
     }
 
-    /********************************************************
-     *                                                      *
-     *                  STRING LISTS                        *
-     *                                                      *
-     ********************************************************/
-
     /**
      * Parse a list of strings from config file
      *
@@ -113,12 +108,6 @@ public abstract class SimpleYMLSection {
         return list;
     }
 
-    /********************************************************
-     *                                                      *
-     *                       NUMBERS                        *
-     *                                                      *
-     ********************************************************/
-
     /**
      * Parse an integer from config file
      *
@@ -131,12 +120,6 @@ public abstract class SimpleYMLSection {
         final String stringInt = getRawString(key);
         return new VariableNumber(BetonQuest.getInstance().getVariableProcessor(), pack, stringInt);
     }
-
-    /********************************************************
-     *                                                      *
-     *                      OTHER                           *
-     *                                                      *
-     ********************************************************/
 
     /**
      * Parse a boolean from config file
@@ -275,16 +258,16 @@ public abstract class SimpleYMLSection {
      * @param <T> the type of the setting
      */
     protected abstract class OptionalSetting<T> {
-
-        private final Optional<T> optional;
+        @Nullable
+        private final T optional;
 
         @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
         public OptionalSetting() throws Invalid {
-            Optional<T> optionalSetting;
+            T optionalSetting;
             try {
-                optionalSetting = Optional.of(of());
+                optionalSetting = of();
             } catch (final Missing missing) {
-                optionalSetting = Optional.empty();
+                optionalSetting = null;
             }
             optional = optionalSetting;
         }
@@ -292,7 +275,8 @@ public abstract class SimpleYMLSection {
         @SuppressWarnings("PMD.ShortMethodName")
         protected abstract T of() throws Missing, Invalid;
 
-        public final Optional<T> get() {
+        @Nullable
+        public final T get() {
             return optional;
         }
     }

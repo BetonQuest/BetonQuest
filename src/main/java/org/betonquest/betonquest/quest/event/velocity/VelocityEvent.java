@@ -1,34 +1,34 @@
 package org.betonquest.betonquest.quest.event.velocity;
 
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.location.VariableVector;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-
-import java.util.Optional;
 
 /**
  * The velocity event. Throws the player around.
  */
-public class VelocityEvent implements Event {
+public class VelocityEvent implements OnlineEvent {
     /**
-     * The vector of the direction and speed
+     * The vector of the direction and speed.
      */
     private final VariableVector vector;
 
     /**
-     * Sets in which direction the vector is directed
+     * Sets in which direction the vector is directed.
      */
     private final VectorDirection direction;
 
     /**
-     * Sets how the vector should get merged with the player-velocity
+     * Sets how the vector should get merged with the player-velocity.
      */
     private final VectorModification modification;
 
     /**
+     * Create a velocity event with the given parameters.
+     *
      * @param vector       vector of the direction and speed
      * @param direction    direction in which the vector is directed
      * @param modification modification how the vector should get merged with the player-velocity
@@ -40,14 +40,11 @@ public class VelocityEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
-        final Optional<OnlineProfile> optionalOnlineProfile = profile.getOnlineProfile();
-        if (optionalOnlineProfile.isPresent()) {
-            final OnlineProfile onlineProfile = optionalOnlineProfile.get();
-            final Vector pVector = vector.getValue(profile);
-            final Vector directionVector = direction.calculate(onlineProfile.getPlayer(), pVector);
-            final Vector modificationVector = modification.calculate(onlineProfile.getPlayer(), directionVector);
-            onlineProfile.getPlayer().setVelocity(modificationVector);
-        }
+    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+        final Player player = profile.getPlayer();
+        final Vector pVector = vector.getValue(profile);
+        final Vector directionVector = direction.calculate(player, pVector);
+        final Vector modificationVector = modification.calculate(player, directionVector);
+        player.setVelocity(modificationVector);
     }
 }

@@ -30,6 +30,7 @@ public class TotemNotifyIO extends NotifyIO {
     /**
      * Creates a new TotemNotifyIO instance based on the users instruction string.
      *
+     * @param pack the related {@link QuestPackage}
      * @param data map with user instructions.
      * @throws InstructionParseException if the users input couldn't be parsed.
      */
