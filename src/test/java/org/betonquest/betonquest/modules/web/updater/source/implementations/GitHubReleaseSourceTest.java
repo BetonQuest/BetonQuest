@@ -27,13 +27,16 @@ class GitHubReleaseSourceTest {
         final String apiUrlReleases = "https://github.com/BetonQuest/BetonQuest" + GitHubReleaseSource.RELEASES_URL;
 
         final ContentSource contentSource = url -> {
-            if (url.toString().equals(apiUrlReleases)) {
+            if (url.toString().equals(apiUrlReleases + GitHubReleaseSource.PAGE + 1)) {
                 return Files.readString(filePath);
+            }
+            if (url.toString().equals(apiUrlReleases + GitHubReleaseSource.PAGE + 2)) {
+                return "[]";
             }
             throw new IOException("Unexpected URL: " + url);
         };
         final GitHubReleaseSource releaseSource = new GitHubReleaseSource(apiUrl, contentSource);
-        final Map<Version, String> versions = releaseSource.getReleaseVersions();
+        final Map<Version, String> versions = releaseSource.getReleaseVersions(new Version("1.12.0"));
 
         assertEquals(2, versions.size(), "Expected two versions from getReleaseVersions");
         final String url1 = versions.get(new Version("1.12.0"));

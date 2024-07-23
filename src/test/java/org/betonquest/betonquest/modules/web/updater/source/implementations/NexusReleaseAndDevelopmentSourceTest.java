@@ -37,12 +37,9 @@ class NexusReleaseAndDevelopmentSourceTest {
                 };
         final NexusReleaseAndDevelopmentSource source = new NexusReleaseAndDevelopmentSource(API_URL, contentSource);
 
-        final Map<Version, String> versions = source.getReleaseVersions();
+        final Map<Version, String> versions = source.getReleaseVersions(new Version("1.12.4"));
 
-        assertEquals(3, versions.size(), "Expected two versions from getReleaseVersions");
-        final String url1 = versions.get(new Version("1.12.4"));
-        assertEquals(API_URL + "/repository/betonquest/org/betonquest/betonquest/1.12.4/betonquest-1.12.4-shaded.jar", url1,
-                "The download URL is not correct");
+        assertEquals(2, versions.size(), "Expected two versions from getReleaseVersions");
         final String url2 = versions.get(new Version("1.12.5"));
         assertEquals(API_URL + "/repository/betonquest/org/betonquest/betonquest/1.12.5/betonquest-1.12.5-shaded.jar", url2,
                 "The download URL is not correct");
@@ -75,7 +72,7 @@ class NexusReleaseAndDevelopmentSourceTest {
                 };
         final NexusReleaseAndDevelopmentSource source = new NexusReleaseAndDevelopmentSource(API_URL, contentSource);
 
-        final Map<Version, String> versions = source.getDevelopmentVersions();
+        final Map<Version, String> versions = source.getDevelopmentVersions(new Version("1.12.0"));
 
         assertEquals(2, versions.size(), "Expected two versions from getReleaseVersions");
         final String url1 = versions.get(new Version("2.0.0-DEV-495"));

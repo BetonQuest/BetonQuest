@@ -35,7 +35,7 @@ class UpdateSourceHandlerTest {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.PATCH, true);
         final Version version = new Version("2.0.0-DEV-3");
         final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
-        final List<DevelopmentUpdateSource> developmentHandlerList = getUpdateSourceDevelopment("2.0.0-DEV-201");
+        final List<DevelopmentUpdateSource> developmentHandlerList = getUpdateSourceDevelopment(version, "2.0.0-DEV-201");
 
         final UpdateSourceHandler handler = new UpdateSourceHandler(logger, releaseHandlerList, developmentHandlerList);
         final Pair<Version, String> latest = handler.searchUpdate(config, version, "DEV");
@@ -51,7 +51,7 @@ class UpdateSourceHandlerTest {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MINOR, true);
         final Version version = new Version("2.0.0-DEV-3");
         final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
-        final List<DevelopmentUpdateSource> developmentHandlerList = getUpdateSourceDevelopment("2.0.0-DEV-3");
+        final List<DevelopmentUpdateSource> developmentHandlerList = getUpdateSourceDevelopment(version, "2.0.0-DEV-3");
 
         final UpdateSourceHandler handler = new UpdateSourceHandler(logger, releaseHandlerList, developmentHandlerList);
         final Pair<Version, String> latest = handler.searchUpdate(config, version, "DEV");
@@ -65,7 +65,7 @@ class UpdateSourceHandlerTest {
     void release_update_available() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MAJOR, false);
         final Version version = new Version("2.0.0-DEV-3");
-        final List<ReleaseUpdateSource> releaseHandlerList = getUpdateSourceRelease();
+        final List<ReleaseUpdateSource> releaseHandlerList = getUpdateSourceRelease(version);
         final List<DevelopmentUpdateSource> developmentHandlerList = new ArrayList<>();
 
         final UpdateSourceHandler handler = new UpdateSourceHandler(logger, releaseHandlerList, developmentHandlerList);
@@ -81,7 +81,7 @@ class UpdateSourceHandlerTest {
     void no_release_update_available() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.PATCH, true);
         final Version version = new Version("2.0.0");
-        final List<ReleaseUpdateSource> releaseHandlerList = getUpdateSourceRelease();
+        final List<ReleaseUpdateSource> releaseHandlerList = getUpdateSourceRelease(version);
         final List<DevelopmentUpdateSource> developmentHandlerList = new ArrayList<>();
 
         final UpdateSourceHandler handler = new UpdateSourceHandler(logger, releaseHandlerList, developmentHandlerList);
@@ -97,7 +97,7 @@ class UpdateSourceHandlerTest {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MINOR, true);
         when(config.isForcedStrategy()).thenReturn(true);
         final Version version = new Version("2.0.0-DEV-3");
-        final List<ReleaseUpdateSource> releaseHandlerList = getUpdateSourceRelease();
+        final List<ReleaseUpdateSource> releaseHandlerList = getUpdateSourceRelease(version);
         final List<DevelopmentUpdateSource> developmentHandlerList = new ArrayList<>();
 
         final UpdateSourceHandler handler = new UpdateSourceHandler(logger, releaseHandlerList, developmentHandlerList);
@@ -114,8 +114,8 @@ class UpdateSourceHandlerTest {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MAJOR, true);
         when(config.isForcedStrategy()).thenReturn(false);
         final Version version = new Version("2.0.0-DEV-3");
-        final List<ReleaseUpdateSource> releaseHandlerList = getUpdateSourceRelease();
-        final List<DevelopmentUpdateSource> developmentHandlerList = getUpdateSourceDevelopment("2.0.1-DEV-201");
+        final List<ReleaseUpdateSource> releaseHandlerList = getUpdateSourceRelease(version);
+        final List<DevelopmentUpdateSource> developmentHandlerList = getUpdateSourceDevelopment(version, "2.0.1-DEV-201");
 
         final UpdateSourceHandler handler = new UpdateSourceHandler(logger, releaseHandlerList, developmentHandlerList);
         final Pair<Version, String> latest = handler.searchUpdate(config, version, "DEV");
@@ -148,7 +148,7 @@ class UpdateSourceHandlerTest {
         final List<DevelopmentUpdateSource> developmentHandlerList = new ArrayList<>();
 
         final ReleaseUpdateSource releaseHandler = mock(ReleaseUpdateSource.class);
-        when(releaseHandler.getReleaseVersions()).thenThrow(new UnknownHostException("Unknown host Test"));
+        when(releaseHandler.getReleaseVersions(version)).thenThrow(new UnknownHostException("Unknown host Test"));
         releaseHandlerList.add(releaseHandler);
 
         final UpdateSourceHandler handler = new UpdateSourceHandler(logger, releaseHandlerList, developmentHandlerList);
@@ -170,7 +170,7 @@ class UpdateSourceHandlerTest {
         final List<DevelopmentUpdateSource> developmentHandlerList = new ArrayList<>();
 
         final ReleaseUpdateSource releaseHandler = mock(ReleaseUpdateSource.class);
-        when(releaseHandler.getReleaseVersions()).thenThrow(new IOException("Unexpected problem"));
+        when(releaseHandler.getReleaseVersions(version)).thenThrow(new IOException("Unexpected problem"));
         releaseHandlerList.add(releaseHandler);
 
         final UpdateSourceHandler handler = new UpdateSourceHandler(logger, releaseHandlerList, developmentHandlerList);
@@ -188,11 +188,11 @@ class UpdateSourceHandlerTest {
     void one_of_two_releases_throws_IOException() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MAJOR, false);
         final Version version = new Version("2.0.0-DEV-3");
-        final List<ReleaseUpdateSource> releaseHandlerList = getUpdateSourceRelease();
+        final List<ReleaseUpdateSource> releaseHandlerList = getUpdateSourceRelease(version);
         final List<DevelopmentUpdateSource> developmentHandlerList = new ArrayList<>();
 
         final ReleaseUpdateSource releaseHandler = mock(ReleaseUpdateSource.class);
-        when(releaseHandler.getReleaseVersions()).thenThrow(new IOException("Unexpected problem"));
+        when(releaseHandler.getReleaseVersions(version)).thenThrow(new IOException("Unexpected problem"));
         releaseHandlerList.add(releaseHandler);
 
         final UpdateSourceHandler handler = new UpdateSourceHandler(logger, releaseHandlerList, developmentHandlerList);
@@ -215,7 +215,7 @@ class UpdateSourceHandlerTest {
         final List<DevelopmentUpdateSource> developmentHandlerList = new ArrayList<>();
 
         final DevelopmentUpdateSource developmentHandler = mock(DevelopmentUpdateSource.class);
-        when(developmentHandler.getDevelopmentVersions()).thenThrow(new UnknownHostException("Unknown host Test"));
+        when(developmentHandler.getDevelopmentVersions(version)).thenThrow(new UnknownHostException("Unknown host Test"));
         developmentHandlerList.add(developmentHandler);
 
         final UpdateSourceHandler handler = new UpdateSourceHandler(logger, releaseHandlerList, developmentHandlerList);
@@ -237,7 +237,7 @@ class UpdateSourceHandlerTest {
         final List<DevelopmentUpdateSource> developmentHandlerList = new ArrayList<>();
 
         final DevelopmentUpdateSource developmentHandler = mock(DevelopmentUpdateSource.class);
-        when(developmentHandler.getDevelopmentVersions()).thenThrow(new IOException("Unexpected problem"));
+        when(developmentHandler.getDevelopmentVersions(version)).thenThrow(new IOException("Unexpected problem"));
         developmentHandlerList.add(developmentHandler);
 
         final UpdateSourceHandler handler = new UpdateSourceHandler(logger, releaseHandlerList, developmentHandlerList);
@@ -256,10 +256,10 @@ class UpdateSourceHandlerTest {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MINOR, true);
         final Version version = new Version("2.0.0-DEV-3");
         final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
-        final List<DevelopmentUpdateSource> developmentHandlerList = getUpdateSourceDevelopment("2.0.0-DEV-201");
+        final List<DevelopmentUpdateSource> developmentHandlerList = getUpdateSourceDevelopment(version, "2.0.0-DEV-201");
 
         final DevelopmentUpdateSource developmentHandler = mock(DevelopmentUpdateSource.class);
-        when(developmentHandler.getDevelopmentVersions()).thenThrow(new IOException("Unexpected problem"));
+        when(developmentHandler.getDevelopmentVersions(version)).thenThrow(new IOException("Unexpected problem"));
         developmentHandlerList.add(developmentHandler);
 
         final UpdateSourceHandler handler = new UpdateSourceHandler(logger, releaseHandlerList, developmentHandlerList);
@@ -280,25 +280,25 @@ class UpdateSourceHandlerTest {
         return config;
     }
 
-    private List<ReleaseUpdateSource> getUpdateSourceRelease() throws IOException {
+    private List<ReleaseUpdateSource> getUpdateSourceRelease(final Version version) throws IOException {
         final List<ReleaseUpdateSource> handlerList = new ArrayList<>();
 
         final ReleaseUpdateSource handler = mock(ReleaseUpdateSource.class);
         final Map<Version, String> versions = new HashMap<>();
         versions.put(new Version("2.0.0"), "https://betonquest.org/release");
-        when(handler.getReleaseVersions()).thenReturn(versions);
+        when(handler.getReleaseVersions(version)).thenReturn(versions);
         handlerList.add(handler);
 
         return handlerList;
     }
 
-    private List<DevelopmentUpdateSource> getUpdateSourceDevelopment(final String version) throws IOException {
+    private List<DevelopmentUpdateSource> getUpdateSourceDevelopment(final Version version, final String versionString) throws IOException {
         final List<DevelopmentUpdateSource> handlerList = new ArrayList<>();
 
         final DevelopmentUpdateSource handler = mock(DevelopmentUpdateSource.class);
         final Map<Version, String> versions = new HashMap<>();
-        versions.put(new Version(version), "https://betonquest.org/development");
-        when(handler.getDevelopmentVersions()).thenReturn(versions);
+        versions.put(new Version(versionString), "https://betonquest.org/development");
+        when(handler.getDevelopmentVersions(version)).thenReturn(versions);
         handlerList.add(handler);
 
         return handlerList;

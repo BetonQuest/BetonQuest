@@ -14,7 +14,7 @@
       }
     },
     {
-      "downloadUrl": "https://nexus.betonquest.org/repository/betonquest/org/betonquest/betonquest/1.12.6/betonquest-1.12.6-shaded.jar",
+      "downloadUrl": "https://nexus.betonquest.org/repository/betonquest/org/betonquest/betonquest/1.12.4/betonquest-1.12.4-shaded.jar",
       "repository": "betonquest",
       "format": "maven2",
       "contentType": "application/java-archive",
@@ -23,7 +23,7 @@
         "groupId": "org.betonquest",
         "classifier": "shaded",
         "artifactId": "betonquest",
-        "version": "1.12.6"
+        "version": "1.12.4"
       }
     }
   ],
