@@ -602,11 +602,11 @@ public class BetonQuest extends JavaPlugin {
         final DownloadSource downloadSource = new TempFileDownloadSource(new WebDownloadSource());
         final UpdateDownloader updateDownloader = new UpdateDownloader(downloadSource, file);
 
-        final GitHubReleaseSource gitHubReleaseSource = new GitHubReleaseSource("https://api.github.com/repos/BetonQuest/BetonQuest",
-                new WebContentSource(GitHubReleaseSource.HTTP_CODE_HANDLER));
         final NexusReleaseAndDevelopmentSource nexusReleaseAndDevelopmentSource = new NexusReleaseAndDevelopmentSource("https://nexus.betonquest.org/",
                 new WebContentSource());
-        final List<ReleaseUpdateSource> releaseHandlers = List.of(gitHubReleaseSource, nexusReleaseAndDevelopmentSource);
+        final GitHubReleaseSource gitHubReleaseSource = new GitHubReleaseSource("https://api.github.com/repos/BetonQuest/BetonQuest",
+                new WebContentSource(GitHubReleaseSource.HTTP_CODE_HANDLER));
+        final List<ReleaseUpdateSource> releaseHandlers = List.of(nexusReleaseAndDevelopmentSource, gitHubReleaseSource);
         final List<DevelopmentUpdateSource> developmentHandlers = List.of(nexusReleaseAndDevelopmentSource);
         final UpdateSourceHandler updateSourceHandler = new UpdateSourceHandler(loggerFactory.create(UpdateSourceHandler.class), releaseHandlers, developmentHandlers);
 
