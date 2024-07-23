@@ -24,6 +24,11 @@ public class GitHubReleaseSource implements ReleaseUpdateSource {
     public static final String RELEASES_URL = "/releases";
 
     /**
+     * The sub path for a REST API call to GitHub with pagination to append to any path that has pagination.
+     */
+    public static final String PAGE = "?page=";
+
+    /**
      * The default {@link WebContentSource.HTTPCodeHandler} to use for GitHub releases api.
      */
     public static final WebContentSource.HTTPCodeHandler HTTP_CODE_HANDLER = (code) -> {
@@ -61,19 +66,27 @@ public class GitHubReleaseSource implements ReleaseUpdateSource {
     }
 
     @Override
-    public Map<Version, String> getReleaseVersions() throws IOException {
+    public Map<Version, String> getReleaseVersions(final Version currentVersion) throws IOException {
         final Map<Version, String> versions = new HashMap<>();
-        final JSONArray releaseArray = new JSONArray(contentSource.get(new URL(apiUrl + RELEASES_URL)));
-        for (int index = 0; index < releaseArray.length(); index++) {
-            final JSONObject release = releaseArray.getJSONObject(index);
-            final Version version = new Version(release.getString("tag_name").substring(1));
-            final JSONArray assetsArray = release.getJSONArray("assets");
-            for (int i = 0; i < assetsArray.length(); i++) {
-                final JSONObject asset = assetsArray.getJSONObject(i);
-                if (JAR_NAME.equals(asset.getString("name"))) {
-                    final String url = asset.getString("browser_download_url");
-                    versions.put(version, url);
+        Integer page = 1;
+        while (page != null) {
+            final JSONArray releaseArray = new JSONArray(contentSource.get(new URL(apiUrl + RELEASES_URL + PAGE + page)));
+            for (int index = 0; index < releaseArray.length(); index++) {
+                final JSONObject release = releaseArray.getJSONObject(index);
+                final Version version = new Version(release.getString("tag_name").substring(1));
+                final JSONArray assetsArray = release.getJSONArray("assets");
+                for (int i = 0; i < assetsArray.length(); i++) {
+                    final JSONObject asset = assetsArray.getJSONObject(i);
+                    if (JAR_NAME.equals(asset.getString("name"))) {
+                        final String url = asset.getString("browser_download_url");
+                        versions.put(version, url);
+                    }
                 }
+            }
+            if (releaseArray.isEmpty()) {
+                page = null;
+            } else {
+                page++;
             }
         }
         return versions;

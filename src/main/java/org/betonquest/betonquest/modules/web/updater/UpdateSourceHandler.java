@@ -68,9 +68,9 @@ public class UpdateSourceHandler {
     Pair<Version, String> searchUpdate(final UpdaterConfig config, final Version current, final String devIndicator) {
         final VersionComparator comparator = new VersionComparator(config.getStrategy(), devIndicator + "-");
         Pair<Version, String> latest = Pair.of(current, null);
-        latest = searchUpdateFor(latest, releaseHandlerList, comparator, ReleaseUpdateSource::getReleaseVersions);
+        latest = searchUpdateFor(latest, releaseHandlerList, comparator, releaseUpdateSource -> releaseUpdateSource.getReleaseVersions(current));
         if (config.isDevDownloadEnabled() && !(latest.getValue() != null && config.isForcedStrategy())) {
-            latest = searchUpdateFor(latest, developmentHandlerList, comparator, DevelopmentUpdateSource::getDevelopmentVersions);
+            latest = searchUpdateFor(latest, developmentHandlerList, comparator, developmentUpdateSource -> developmentUpdateSource.getDevelopmentVersions(current));
         }
         return latest;
     }
