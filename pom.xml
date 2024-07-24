@@ -8,7 +8,7 @@
     <changelist>-SNAPSHOT</changelist>
     <betonquest.version>${revision}-DEV-UNOFFICIAL</betonquest.version>
     <minecraft.api.version>1.18</minecraft.api.version>
-    <java.api.version>17</java.api.version>
+    <maven.compiler.target>17</maven.compiler.target>
     <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <Test-All/>
@@ -853,7 +853,7 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.13.0</version>
           <configuration>
-            <release>${java.api.version}</release>
+            <release>${maven.compiler.target}</release>
             <compilerArgs>
               <!--<arg>-Xlint:all</arg> May enable later when the most warnings and errors are solved-->
               <arg>-XDcompilePolicy=simple</arg>
