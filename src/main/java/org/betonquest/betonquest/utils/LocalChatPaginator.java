@@ -51,6 +51,12 @@ public final class LocalChatPaginator {
                 Map.entry('`', 3),
                 Map.entry('f', 5),
                 Map.entry('i', 2),
+                Map.entry('í', 3),
+                Map.entry('ì', 3),
+                Map.entry('ȋ', 4),
+                Map.entry('î', 4),
+                Map.entry('ǐ', 4),
+                Map.entry('ï', 4),
                 Map.entry('k', 5),
                 Map.entry('l', 3),
                 Map.entry('t', 4),
@@ -208,6 +214,16 @@ public final class LocalChatPaginator {
      * @return width of the character
      */
     public static int getWidth(final Character character) {
-        return FONT_SIZES.getOrDefault(character, DEFAULT_CHAR_WIDTH);
+        final Integer charWidth = FONT_SIZES.get(character);
+        if (charWidth != null) {
+            return charWidth;
+        }
+
+        final String withoutAccent = StringUtils.stripAccents(character.toString());
+        final char withoutAccentChar = withoutAccent.charAt(0);
+        if (!character.equals(withoutAccentChar)) {
+            return FONT_SIZES.getOrDefault(withoutAccentChar, DEFAULT_CHAR_WIDTH);
+        }
+        return DEFAULT_CHAR_WIDTH;
     }
 }
