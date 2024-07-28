@@ -26,7 +26,7 @@ public class GitHubReleaseSource implements ReleaseUpdateSource {
     /**
      * The sub path for a REST API call to GitHub with pagination to append to any path that has pagination.
      */
-    public static final String PAGE = "?page=";
+    public static final String PAGE = "?per_page=100&page=";
 
     /**
      * The default {@link WebContentSource.HTTPCodeHandler} to use for GitHub releases api.
