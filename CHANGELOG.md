@@ -6,6 +6,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [2.1.3] - 2024-07-29
+### Added
 - BreweryX compatibility
 ### Changed
 - `mspawnmob` can now be used in static context
