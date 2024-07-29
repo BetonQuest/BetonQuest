@@ -64,3 +64,4 @@ deploy-key
 
 # Python Virtual Environments
 venv/
+.venv/
