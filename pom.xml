@@ -188,7 +188,7 @@
     <dependency>
       <groupId>me.pikamug.quests</groupId>
       <artifactId>quests-core</artifactId>
-      <version>5.0.3</version>
+      <version>5.0.6</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
@@ -252,7 +252,7 @@
     <dependency>
       <groupId>com.github.Emibergo02</groupId>
       <artifactId>RedisChat</artifactId>
-      <version>4.5.3</version>
+      <version>4.6.1</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
@@ -272,7 +272,7 @@
     <dependency>
       <groupId>com.github.SkriptLang</groupId>
       <artifactId>Skript</artifactId>
-      <version>2.8.5</version>
+      <version>2.9.0</version>
       <scope>provided</scope>
       <optional>true</optional>
       <exclusions>
@@ -306,7 +306,7 @@
     <dependency>
       <groupId>com.github.decentsoftware-eu</groupId>
       <artifactId>decentholograms</artifactId>
-      <version>2.8.8</version>
+      <version>2.8.9</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
@@ -320,7 +320,7 @@
     <dependency>
       <groupId>net.kyori</groupId>
       <artifactId>adventure-platform-bukkit</artifactId>
-      <version>4.3.2</version>
+      <version>4.3.3</version>
     </dependency>
     <dependency>
       <groupId>net.kyori</groupId>
@@ -340,7 +340,7 @@
     <dependency>
       <groupId>com.elmakers.mine.bukkit</groupId>
       <artifactId>EffectLib</artifactId>
-      <version>10.2</version>
+      <version>10.3</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
@@ -354,7 +354,7 @@
     <dependency>
       <groupId>dev.aurelium</groupId>
       <artifactId>auraskills-api-bukkit</artifactId>
-      <version>2.0.8</version>
+      <version>2.1.5</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
@@ -380,7 +380,7 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-artifact</artifactId>
-      <version>4.0.0-alpha-13</version>
+      <version>4.0.0-beta-3</version>
       <exclusions>
         <exclusion>
           <groupId>org.apache.commons</groupId>
@@ -391,7 +391,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>33.2.0-jre</version>
+      <version>33.2.1-jre</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -401,7 +401,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.14.0</version>
+      <version>3.15.0</version>
     </dependency>
     <dependency>
       <groupId>org.json</groupId>
@@ -411,7 +411,7 @@
     <dependency>
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-annotations</artifactId>
-      <version>4.8.5</version>
+      <version>4.8.6</version>
     </dependency>
     <dependency>
       <groupId>com.cronutils</groupId>
@@ -895,7 +895,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-pmd-plugin</artifactId>
-          <version>3.23.0</version>
+          <version>3.24.0</version>
           <dependencies>
             <dependency>
               <groupId>net.sourceforge.pmd</groupId>
@@ -919,7 +919,7 @@
         <plugin>
           <groupId>com.github.spotbugs</groupId>
           <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>4.8.6.1</version>
+          <version>4.8.6.2</version>
           <configuration>
             <excludeFilterFile>${basedir}/config/spotbugs-exclude.xml</excludeFilterFile>
             <effort>max</effort>
@@ -934,7 +934,7 @@
             <dependency>
               <groupId>com.puppycrawl.tools</groupId>
               <artifactId>checkstyle</artifactId>
-              <version>10.16.0</version>
+              <version>10.17.0</version>
             </dependency>
           </dependencies>
           <configuration>
@@ -965,7 +965,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.7.0</version>
+          <version>3.8.0</version>
           <configuration>
             <!-- This is disabled because Java 16 has a stricter police for missing comments which the project does not meet yet. -->
             <failOnWarnings>false</failOnWarnings>
@@ -987,7 +987,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.3.0</version>
+          <version>3.3.1</version>
           <configuration>
             <parallel>all</parallel>
             <groups>none()${Test-All}${Test-ConfigurationSection}</groups>
@@ -1006,7 +1006,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
-          <version>4.0.0-M15</version>
+          <version>4.0.0-M16</version>
         </plugin>
         <plugin>
           <groupId>org.ec4j.maven</groupId>
@@ -1016,7 +1016,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.6.1</version>
+          <version>3.6.2</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -1026,7 +1026,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-report-plugin</artifactId>
-          <version>3.3.0</version>
+          <version>3.3.1</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
@@ -1048,7 +1048,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>versions-maven-plugin</artifactId>
-          <version>2.17.0</version>
+          <version>2.17.1</version>
           <configuration>
             <excludeProperties>changelist</excludeProperties>
             <ruleSet>
