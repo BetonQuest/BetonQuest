@@ -189,6 +189,18 @@ nav:
               - '    Events': Tutorials/Getting-Started/Basics/Events.md
               - 'Objectives': Tutorials/Getting-Started/Basics/Objectives.md
               - 'Conditions': Tutorials/Getting-Started/Basics/Conditions.md
+      - 'Advanced Tutorials':
+          - 'About': Tutorials/Advanced-Tutorials/About.md
+          - 'Daily Quests':
+              - 'Overview': Tutorials/Advanced-Tutorials/Daily-Quests/Overview.md
+              - '   Pickrandom': Tutorials/Advanced-Tutorials/Daily-Quests/Pickrandom.md
+              - 'Delays': Tutorials/Advanced-Tutorials/Daily-Quests/Delays.md
+              - 'Extras': Tutorials/Advanced-Tutorials/Daily-Quests/Extras.md
+          - 'NPC Images':
+              - 'Overview': Tutorials/Advanced-Tutorials/NPC-Images/Overview.md
+              - 'Ressourcepack': Tutorials/Advanced-Tutorials/NPC-Images/Ressourcepack.md
+              - 'Conversations': Tutorials/Advanced-Tutorials/NPC-Images/Conversations.md
+              - 'Extras': Tutorials/Advanced-Tutorials/NPC-Images/Extras.md
       - 'Tools':
           - 'Handling YAML Errors': Tutorials/Tools/YAML-Errors.md
       - 'Syntax':
