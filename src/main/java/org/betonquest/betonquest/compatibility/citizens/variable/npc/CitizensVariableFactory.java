@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.citizens.variable.npc;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.VariableInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariableFactory;
@@ -51,12 +52,14 @@ public class CitizensVariableFactory implements PlayerlessVariableFactory {
 
     private LocationVariable parseLocation(final Instruction instruction) throws InstructionParseException {
         try {
-            return new LocationVariable(new Instruction(
+            final Instruction locationInstruction = new VariableInstruction(
                     loggerFactory.create(Instruction.class),
                     instruction.getPackage(),
                     new NoID(instruction.getPackage()),
-                    "location." + String.join(".", instruction.getRemainingParts())
-            ));
+                    "%location." + String.join(".", instruction.getRemainingParts()) + "%"
+            );
+            locationInstruction.current();
+            return new LocationVariable(locationInstruction);
         } catch (final ObjectNotFoundException e) {
             throw new InstructionParseException("Could not generate dynamic location variable", e);
         }
