@@ -56,7 +56,7 @@ public class SpawnMobEventFactory implements ComposedEventFactory {
         }
         final VariableNumber amount;
         try {
-            amount = new VariableNumber(variableProcessor, instruction.getPackage(), instruction.next());
+            amount = instruction.getVarNum();
         } catch (final InstructionParseException e) {
             throw new InstructionParseException("Amount must be a number", e);
         }
@@ -77,7 +77,8 @@ public class SpawnMobEventFactory implements ComposedEventFactory {
         final QuestItem mainHand = getQuestItem(instruction, "m");
         final QuestItem offHand = getQuestItem(instruction, "o");
         final Item[] drops = instruction.getItemList(instruction.getOptional("drops"));
-        final SpawnMobEvent event = new SpawnMobEvent(loc, type, amount, helmet, chestplate, leggings, boots, mainHand, offHand, drops, name, marked);
+        final Equipment equipment = new Equipment(helmet, chestplate, leggings, boots, mainHand, offHand, drops);
+        final SpawnMobEvent event = new SpawnMobEvent(loc, type, equipment, amount, name, marked);
         return new PrimaryServerThreadComposedEvent(event, data);
     }
 
