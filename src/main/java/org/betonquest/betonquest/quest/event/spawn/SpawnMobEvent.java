@@ -52,7 +52,6 @@ public class SpawnMobEvent implements NullableEvent {
     @Nullable
     private final VariableString marked;
 
-
     /**
      * Creates a new spawn mob event.
      *
@@ -63,7 +62,6 @@ public class SpawnMobEvent implements NullableEvent {
      * @param name             the name of the entity
      * @param marked           the marked variable
      */
-    @SuppressWarnings("PMD.ExcessiveParameterList")
     public SpawnMobEvent(final VariableLocation variableLocation, final EntityType type, final Equipment equipment,
                          final VariableNumber amount, @Nullable final VariableString name, @Nullable final VariableString marked) {
         this.variableLocation = variableLocation;

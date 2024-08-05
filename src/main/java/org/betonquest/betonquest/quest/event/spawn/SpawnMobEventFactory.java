@@ -21,8 +21,6 @@ import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Locale;
-
 /**
  * Factory to create spawn mob events from {@link Instruction}s.
  */
@@ -67,19 +65,8 @@ public class SpawnMobEventFactory implements EventFactory, StaticEventFactory {
      */
     public NullableEventAdapter createSpawnEntityEvent(final Instruction instruction) throws InstructionParseException {
         final VariableLocation loc = instruction.getLocation();
-        final String entity = instruction.next();
-        final EntityType type;
-        try {
-            type = EntityType.valueOf(entity.toUpperCase(Locale.ROOT));
-        } catch (final IllegalArgumentException e) {
-            throw new InstructionParseException("Entity type '" + entity + "' does not exist", e);
-        }
-        final VariableNumber amount;
-        try {
-            amount = instruction.getVarNum();
-        } catch (final InstructionParseException e) {
-            throw new InstructionParseException("Amount must be a number", e);
-        }
+        final EntityType type = instruction.getEntity();
+        final VariableNumber amount = instruction.getVarNum();
         final String nameString = instruction.getOptional("name");
         final VariableString name = nameString == null ? null : new VariableString(variableProcessor,
                 instruction.getPackage(),
