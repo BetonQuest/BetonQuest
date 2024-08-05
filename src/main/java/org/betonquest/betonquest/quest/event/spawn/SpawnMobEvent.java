@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.spawn;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Spawns mobs at given location, with given equipment and drops.
  */
-public class SpawnMobEvent implements ComposedEvent {
+public class SpawnMobEvent implements NullableEvent {
 
     /**
      * The location to spawn the mob at.

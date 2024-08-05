@@ -321,7 +321,7 @@ public class CoreQuestTypes {
         eventTypes.register("runIndependent", new RunIndependentEventFactory());
         eventTypes.registerCombined("setblock", new SetBlockEventFactory(data));
         eventTypes.register("score", new ScoreboardEventFactory(data));
-        eventTypes.register("spawn", new SpawnMobEventFactory(data, betonQuest.getVariableProcessor()));
+        eventTypes.registerCombined("spawn", new SpawnMobEventFactory(data, betonQuest.getVariableProcessor()));
         eventTypes.register("stage", new StageEventFactory(betonQuest));
         eventTypes.register("sudo", new SudoEventFactory(loggerFactory, data));
         eventTypes.registerCombined("tag", new TagPlayerEventFactory(betonQuest, betonQuest.getSaver()));

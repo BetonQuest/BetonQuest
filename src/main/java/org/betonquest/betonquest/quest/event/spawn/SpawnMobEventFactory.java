@@ -2,8 +2,11 @@ package org.betonquest.betonquest.quest.event.spawn;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
-import org.betonquest.betonquest.api.quest.event.ComposedEvent;
-import org.betonquest.betonquest.api.quest.event.ComposedEventFactory;
+import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
@@ -11,7 +14,8 @@ import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadComposedEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.entity.EntityType;
@@ -22,7 +26,7 @@ import java.util.Locale;
 /**
  * Factory to create spawn mob events from {@link Instruction}s.
  */
-public class SpawnMobEventFactory implements ComposedEventFactory {
+public class SpawnMobEventFactory implements EventFactory, StaticEventFactory {
     /**
      * Data used for primary server access.
      */
@@ -45,7 +49,23 @@ public class SpawnMobEventFactory implements ComposedEventFactory {
     }
 
     @Override
-    public ComposedEvent parseComposedEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadEvent(createSpawnEntityEvent(instruction), data);
+    }
+
+    @Override
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+        return new PrimaryServerThreadStaticEvent(createSpawnEntityEvent(instruction), data);
+    }
+
+    /**
+     * Creates a new spawn entity event from the given instruction.
+     *
+     * @param instruction the instruction to create the event from
+     * @return the created event
+     * @throws InstructionParseException if the instruction could not be parsed
+     */
+    public NullableEventAdapter createSpawnEntityEvent(final Instruction instruction) throws InstructionParseException {
         final VariableLocation loc = instruction.getLocation();
         final String entity = instruction.next();
         final EntityType type;
@@ -79,7 +99,7 @@ public class SpawnMobEventFactory implements ComposedEventFactory {
         final Item[] drops = instruction.getItemList(instruction.getOptional("drops"));
         final Equipment equipment = new Equipment(helmet, chestplate, leggings, boots, mainHand, offHand, drops);
         final SpawnMobEvent event = new SpawnMobEvent(loc, type, equipment, amount, name, marked);
-        return new PrimaryServerThreadComposedEvent(event, data);
+        return new NullableEventAdapter(event);
     }
 
     @Nullable

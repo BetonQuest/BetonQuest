@@ -37,7 +37,7 @@ public record Equipment(@Nullable QuestItem helmet, @Nullable QuestItem chestpla
     public void addDrops(final Entity entity, @Nullable final Profile profile) throws QuestRuntimeException {
         int dropIndex = 0;
         for (final Item item : drops) {
-            final String value = item.getID().getFullID() + ":" + item.getAmount().getValue(profile);
+            final String value = item.getID().getFullID() + ":" + item.getAmount().getValue(profile).intValue();
             final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-drops-" + dropIndex);
             entity.getPersistentDataContainer().set(key, PersistentDataType.STRING, value);
             dropIndex++;
