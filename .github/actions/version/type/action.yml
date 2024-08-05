@@ -21,7 +21,7 @@ runs:
       if: "startsWith(github.ref,'refs/tags/v')"
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
-        if [[ github.repository != inputs.ROOT_REPOSITORY ]]; then
+        if [ ${{ github.repository }} != inputs.ROOT_REPOSITORY ]; then
           echo "Version tags are not allowed in forks!"
           exit 1
         fi
