@@ -1693,13 +1693,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#brewery">
+  <a class="md-nav__link" href="#brewery-breweryx">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Brewery
+          Brewery &amp; BreweryX
         </span>
 
       
@@ -1709,7 +1709,7 @@
 
   
   
-  <nav aria-label="Brewery" class="md-nav">
+  <nav aria-label="Brewery &amp; BreweryX" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -5083,13 +5083,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#brewery">
+  <a class="md-nav__link" href="#brewery-breweryx">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Brewery
+          Brewery &amp; BreweryX
         </span>
 
       
@@ -5099,7 +5099,7 @@
 
   
   
-  <nav aria-label="Brewery" class="md-nav">
+  <nav aria-label="Brewery &amp; BreweryX" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -6101,7 +6101,7 @@ The <code>level</code> argument is optional and would convert the amount to leve
 <span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">auraskillsxp farming 5</span>
 <span class="l l-Scalar l-Scalar-Plain">auraskillsxp farming 10 level</span>
 </code></pre></div></td></tr></table></div></p>
-<h2 id="brewery">Brewery<a href="https://www.spigotmc.org/resources/3082/"></a><a class="headerlink" href="#brewery" title="Permanent link">🔗</a></h2>
+<h2 id="brewery-breweryx">Brewery<a href="https://www.spigotmc.org/resources/3082/"></a> &amp; BreweryX<a href="https://www.spigotmc.org/resources/114777/"></a><a class="headerlink" href="#brewery-breweryx" title="Permanent link">🔗</a></h2>
 <h3 id="conditions_1">Conditions<a class="headerlink" href="#conditions_1" title="Permanent link">🔗</a></h3>
 <h4 id="drunk-drunk">Drunk: <code>drunk</code><a class="headerlink" href="#drunk-drunk" title="Permanent link">🔗</a></h4>
 <p>This condition is true if the player is drunken. Only argument is the minimal drunkness (0-100).</p>
@@ -6730,6 +6730,7 @@ You can also add an optional <code>marked</code> argument to only count kills ma
 </div>
 <h3 id="events_10">Events<a class="headerlink" href="#events_10" title="Permanent link">🔗</a></h3>
 <h4 id="spawn-mythicmob-mspawnmob"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 0-9 9 8.99 8.99 0 0 0 4 7.47V22h2v-3h2v3h2v-3h2v3h2v-3.54c2.47-1.65 4-4.46 4-7.46a9 9 0 0 0-9-9m-4 9a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2m8 0a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2m-4 3 1.5 3h-3l1.5-3Z"/></svg></span> Spawn MythicMob: <code>mspawnmob</code><a class="headerlink" href="#spawn-mythicmob-mspawnmob" title="Permanent link">🔗</a></h4>
+<p><strong>persistent</strong>, <strong>static</strong></p>
 <table>
 <thead>
 <tr>
@@ -6789,6 +6790,10 @@ You can also add an optional <code>marked</code> argument to only count kills ma
 It's best to use the <code>private</code> argument in combination with the <code>target</code> argument so the mob does not attack 
 players that cannot see it.
 Additionally, the mob should be configured to never change its AI target using MythicMobs.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Private &amp; Target Arguments</p>
+<p>The <code>private</code> and <code>target</code> arguments are ignored when the event is used in a static context like <a href="../../Schedules/">Schedules</a>.</p>
 </div>
 <h2 id="placeholderapi">PlaceholderAPI<a href="https://www.spigotmc.org/resources/6245/"></a><a class="headerlink" href="#placeholderapi" title="Permanent link">🔗</a></h2>
 <p>If you have this plugin, BetonQuest will add a <code>betonquest</code> placeholder to it and you will be able to use <code>ph</code> variable in your conversations.</p>
