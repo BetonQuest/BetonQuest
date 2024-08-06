@@ -84,7 +84,7 @@ runs:
       if: "env.VERSION_TYPE == 'artifact'"
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
-        if [ ${{ github.repository }} != inputs.ROOT_REPOSITORY ]; then REPO=${{ github.repository }}-; fi
+        if [ ${{ github.repository }} != ${{ inputs.ROOT_REPOSITORY }} ]; then REPO=${{ github.repository }}-; else REPO=""; fi
         echo "VERSION_MAVEN=${REVISION_VERSION}-DEV-UNOFFICIAL" >> $GITHUB_ENV
         VERSION=${REVISION_VERSION}-DEV-ARTIFACT-${REPO}${{ github.run_number }}
         echo "VERSION=$VERSION" >> $GITHUB_ENV
