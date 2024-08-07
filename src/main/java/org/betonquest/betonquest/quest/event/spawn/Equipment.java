@@ -8,6 +8,7 @@ import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Mob;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
@@ -53,17 +54,27 @@ public record Equipment(@Nullable QuestItem helmet, @Nullable QuestItem chestpla
         final EntityEquipment equipment = living.getEquipment();
         if (equipment != null) {
             equipment.setHelmet(helmet == null ? null : helmet.generate(1));
-            equipment.setHelmetDropChance(0);
             equipment.setChestplate(chestplate == null ? null : chestplate.generate(1));
-            equipment.setChestplateDropChance(0);
             equipment.setLeggings(leggings == null ? null : leggings.generate(1));
-            equipment.setLeggingsDropChance(0);
             equipment.setBoots(boots == null ? null : boots.generate(1));
-            equipment.setBootsDropChance(0);
             equipment.setItemInMainHand(mainHand == null ? null : mainHand.generate(1));
-            equipment.setItemInMainHandDropChance(0);
             equipment.setItemInOffHand(offHand == null ? null : offHand.generate(1));
-            equipment.setItemInOffHandDropChance(0);
         }
     }
+
+    /**
+     * Sets the drop chances for the equipment to 0.
+     *
+     * @param mob the mob to remove the equipment drops for
+     */
+    public void removeEquipmentDrops(final Mob mob) {
+        final EntityEquipment equipment = mob.getEquipment();
+        equipment.setHelmetDropChance(0);
+        equipment.setChestplateDropChance(0);
+        equipment.setLeggingsDropChance(0);
+        equipment.setBootsDropChance(0);
+        equipment.setItemInMainHandDropChance(0);
+        equipment.setItemInOffHandDropChance(0);
+    }
+
 }

@@ -10,6 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Deprecated
 ### Removed
 ### Fixed
+- `spawn` event can safely handle armorstands now
 ### Security
 
 ## [2.1.3] - 2024-08-06
@@ -27,7 +28,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - chaining of movenpc events did trigger fail events
 - effect event duration -1 did not result in infinite duration
 - translation in conversation got stored in default language
-- incorrect calculation of the width of strings when using characters with certain accents when doing pagination 
+- incorrect calculation of the width of strings when using characters with certain accents when doing pagination
 ### Security
 
 ## [2.1.2] - 2024-06-23

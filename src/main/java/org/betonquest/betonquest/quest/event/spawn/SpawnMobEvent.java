@@ -12,6 +12,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Mob;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
@@ -80,6 +81,9 @@ public class SpawnMobEvent implements NullableEvent {
             final Entity entity = location.getWorld().spawnEntity(location, type);
             if (entity instanceof final LivingEntity living) {
                 this.equipment.addEquipment(living);
+            }
+            if (entity instanceof final Mob mob) {
+                this.equipment.removeEquipmentDrops(mob);
             }
             this.equipment.addDrops(entity, profile);
             if (this.name != null && entity instanceof final LivingEntity livingEntity) {
