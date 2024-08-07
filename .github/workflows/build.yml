@@ -200,7 +200,7 @@ jobs:
           VERSIONS=()
           if [ "$VERSION_TYPE" = release ]; then
             VERSIONS+=("$TWO_DIGIT_VERSION" "$TWO_DIGIT_VERSION-DEV")
-            if [ -n "$(git branch --contains tags/v${VERSION} --remote origin/main)" ]; then
+            if [ -n "$(git branch -r --contains tags/v${VERSION} --remote origin/main)" ]; then
               VERSIONS+=(RELEASE DEV)
             elif { mike list --json "$TWO_DIGIT_VERSION" | grep -q '"aliases" *: *\[[^]]*"RELEASE"'; }; then
               VERSIONS+=(RELEASE)
