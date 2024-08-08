@@ -39,9 +39,6 @@ public class MythicMobsIntegrator implements Integrator {
         questRegistries.getConditionTypes().register("mythicmobdistance", new MythicMobDistanceConditionFactory(apiHelper, data));
         plugin.registerObjectives("mmobkill", MythicMobKillObjective.class);
         questRegistries.getEventTypes().registerCombined("mspawnmob", new MythicSpawnMobEventFactory(apiHelper, data, plugin.getVariableProcessor()));
-        if (Compatibility.getHooked().contains("ProtocolLib")) {
-            MythicHider.start();
-        }
     }
 
     /**
@@ -61,8 +58,17 @@ public class MythicMobsIntegrator implements Integrator {
     }
 
     @Override
+    public void postHook() {
+        if (Compatibility.getHooked().contains("ProtocolLib")) {
+            MythicHider.start();
+        }
+    }
+
+    @Override
     public void reload() {
-        // Empty
+        if (MythicHider.getInstance() != null) {
+            MythicHider.start();
+        }
     }
 
     @Override
