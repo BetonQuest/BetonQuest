@@ -11,7 +11,6 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -137,7 +136,7 @@ public class EffectLibParticleManager {
                     continue;
                 }
                 try {
-                    locations.add(new VariableLocation(BetonQuest.getInstance().getVariableProcessor(), pack, GlobalVariableResolver.resolve(pack, rawLocation)));
+                    locations.add(new VariableLocation(BetonQuest.getInstance().getVariableProcessor(), pack, rawLocation));
                 } catch (final InstructionParseException exception) {
                     log.warn(pack, "Could not load npc effect '" + key + "' in package " + pack.getQuestPath() + ": "
                             + "Location is invalid:" + exception.getMessage());

@@ -71,17 +71,6 @@ public interface QuestPackage {
     @Deprecated
     String getRawString(String address);
 
-    /**
-     * Resolves all global variables in the given string.
-     *
-     * @param input the string to resolve
-     * @return the resolved string
-     * @deprecated instead use
-     * {@link org.betonquest.betonquest.variables.GlobalVariableResolver#resolve(QuestPackage, String)}.
-     */
-    @Deprecated
-    String subst(String input);
-
     @Nullable
     @Deprecated
     String getString(String address);

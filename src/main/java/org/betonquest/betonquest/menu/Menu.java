@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
@@ -100,14 +101,17 @@ public class Menu extends SimpleYMLSection implements Listener {
         this.log = log;
         this.menuID = menuID;
         //load size
-        this.height = getInt("height");
+        try {
+            this.height = getNumber("height").getValue(null).intValue();
+        } catch (QuestRuntimeException | InstructionParseException e) {
+            throw new Invalid("height", e);
+        }
         if (this.height < 1 || this.height > 6) {
             throw new Invalid("height");
         }
         //load title
         try {
-            final String title = ChatColor.translateAlternateColorCodes('&', getString("title"));
-            this.title = new VariableString(pack, title);
+            this.title = getString("title");
         } catch (final InstructionParseException e) {
             throw new InvalidConfigurationException(e.getMessage(), e);
         }
@@ -135,8 +139,8 @@ public class Menu extends SimpleYMLSection implements Listener {
             @SuppressWarnings("PMD.ShortMethodName")
             protected QuestItem of() throws Missing, Invalid {
                 try {
-                    return new QuestItem(new ItemID(Menu.this.pack, getString("bind")));
-                } catch (final ObjectNotFoundException | InstructionParseException e) {
+                    return new QuestItem(new ItemID(Menu.this.pack, getString("bind").getValue(null)));
+                } catch (final ObjectNotFoundException | InstructionParseException | QuestRuntimeException e) {
                     throw new Invalid("bind", e);
                 }
             }
@@ -146,7 +150,12 @@ public class Menu extends SimpleYMLSection implements Listener {
             @Override
             @SuppressWarnings("PMD.ShortMethodName")
             protected MenuBoundCommand of() throws Missing, Invalid {
-                String command = getString("command").trim();
+                String command;
+                try {
+                    command = getString("command").getValue(null).trim();
+                } catch (QuestRuntimeException | InstructionParseException e) {
+                    throw new Invalid("command", e);
+                }
                 if (!command.matches("/*[0-9A-Za-z\\-]+")) {
                     throw new Invalid("command");
                 }
@@ -170,19 +179,20 @@ public class Menu extends SimpleYMLSection implements Listener {
             throw new Missing("slots");
         }
         for (final String key : config.getConfigurationSection("slots").getKeys(false)) {
-            final List<MenuItem> itemsList = new ArrayList<>();
-            //check if items from list are all valid
-            for (final String item : getStrings("slots." + key)) {
-                if (itemsMap.containsKey(item)) {
-                    itemsList.add(itemsMap.get(item));
-                } else {
-                    throw new Invalid("slots." + key, "item " + item + " not found");
-                }
-            }
-            // create a new slots object and add it to list
             try {
+                final List<MenuItem> itemsList = new ArrayList<>();
+                //check if items from list are all valid
+                for (final VariableString item : getStrings("slots." + key)) {
+                    final String itemString = item.getValue(null);
+                    if (itemsMap.containsKey(itemString)) {
+                        itemsList.add(itemsMap.get(itemString));
+                    } else {
+                        throw new Invalid("slots." + key, "item " + itemString + " not found");
+                    }
+                }
+                // create a new slots object and add it to list
                 this.slots.add(new Slots(key, itemsList));
-            } catch (final IllegalArgumentException e) {
+            } catch (final IllegalArgumentException | InstructionParseException | QuestRuntimeException e) {
                 throw new Invalid("slots", e);
             }
         }
@@ -309,7 +319,12 @@ public class Menu extends SimpleYMLSection implements Listener {
      * @return the title of the menu
      */
     public String getTitle(final Profile profile) {
-        return title.getString(profile);
+        try {
+            return ChatColor.translateAlternateColorCodes('&', title.getValue(profile));
+        } catch (final QuestRuntimeException e) {
+            log.warn(pack, "Could not get title for menu " + menuID + ": " + e.getMessage());
+            return "";
+        }
     }
 
     /**

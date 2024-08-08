@@ -1,15 +1,12 @@
 package org.betonquest.betonquest.menu;
 
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -19,11 +16,12 @@ import java.util.List;
 public class ItemDescription {
     private final List<VariableString> lines;
 
-    public ItemDescription(final QuestPackage pack, final Collection<String> content) throws InstructionParseException {
-        this.lines = new ArrayList<>();
-        for (final String line : content) {
-            this.lines.add(new VariableString(pack, line));
-        }
+    public ItemDescription(final List<VariableString> content) {
+        this.lines = content;
+    }
+
+    public ItemDescription(final VariableString content) {
+        this.lines = List.of(content);
     }
 
     /**

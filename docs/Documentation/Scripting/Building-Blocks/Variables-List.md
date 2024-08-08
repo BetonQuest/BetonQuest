@@ -34,6 +34,17 @@ the *messages.yml* config.
 %condition.myCondition.papiMode%
 ``` 
 
+### Constant Variable
+
+Constants are a bit different from other variables, as you can freely define the values of them.
+They are defined in the *constants* section.
+
+```YAML
+constants:
+  village_location: 100;200;300;world
+  village_name: Concrete
+```
+
 ## BetonQuest Data Types
 
 ### Point Variable
@@ -88,25 +99,6 @@ in the messages.yml config.
 
 It is possible to save text per player. This works by using the [`variable`](Objectives-List.md#variable-variable)
  objective and the [`variable`](Events-List.md#variable-variable) event. 
-
-## Global variables
-
-You can insert a global variable in any instruction text. It looks like this: `$beton$` (and this one would be
-called "beton"). When the plugin loads that instruction string it will replace those variables with values assigned to
-them in the `variables:` section **before** all instructions are parsed. This is useful for example when installing a
-package containing a WorldEdit schematic of the quest building. Instead of going through the whole code to set those
-locations, names or texts you will only have to specify a few variables (that is, of course, if the author of the
-package used those variables properly in his code).
-
-Note that these variables are something entirely different from other variables. Global ones use `$` characters
-and conversation ones use `%` characters. The former is resolved before the instruction text is parsed while the
-latter is resolved when the quests are running, usually on a per-player basis.
-
-```YAML
-variables:
-  village_location: 100;200;300;world
-  village_name: Concrete
-```
 
 ## Other Variables
 
