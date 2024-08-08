@@ -19,6 +19,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.CachingBetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.ProfileKeyMap;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -173,7 +174,7 @@ public class BetonQuest extends JavaPlugin {
      */
     private static BetonQuest instance;
 
-    private final Map<Profile, PlayerData> playerDataMap = new ConcurrentHashMap<>();
+    private final Map<Profile, PlayerData> playerDataMap = new ProfileKeyMap<>(new ConcurrentHashMap<>(), getServer());
 
     /**
      * Stores Conditions, Events, Objectives, Variables, Conversations and Cancelers.
