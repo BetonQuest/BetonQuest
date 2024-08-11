@@ -7,10 +7,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
 ### Changed
+- `spawn` event now only spawn mobs and no other entities
 ### Deprecated
 ### Removed
 ### Fixed
-- `spawn` event can safely handle armorstands now
 ### Security
 
 ## [2.1.3] - 2024-08-06

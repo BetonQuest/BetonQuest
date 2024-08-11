@@ -3,15 +3,14 @@ package org.betonquest.betonquest.quest.event.spawn;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
@@ -27,22 +26,22 @@ public class SpawnMobEvent implements NullableEvent {
     private final VariableLocation variableLocation;
 
     /**
-     * The type of entity to spawn.
+     * The type of mob to spawn.
      */
     private final EntityType type;
 
     /**
-     * The equipment and drops of the entity.
+     * The equipment and drops of the mob.
      */
     private final Equipment equipment;
 
     /**
-     * The amount of entities to spawn.
+     * The amount of mobs to spawn.
      */
     private final VariableNumber amount;
 
     /**
-     * The name of the entity.
+     * The name of the mob.
      */
     @Nullable
     private final VariableString name;
@@ -57,14 +56,18 @@ public class SpawnMobEvent implements NullableEvent {
      * Creates a new spawn mob event.
      *
      * @param variableLocation the location to spawn the mob at
-     * @param type             the type of entity to spawn
-     * @param equipment        the equipment and drops of the entity
+     * @param type             the type of mob to spawn
+     * @param equipment        the equipment and drops of the mob
      * @param amount           the amount of entities to spawn
-     * @param name             the name of the entity
+     * @param name             the name of the mob
      * @param marked           the marked variable
+     * @throws InstructionParseException if the entity type is not a mob
      */
     public SpawnMobEvent(final VariableLocation variableLocation, final EntityType type, final Equipment equipment,
-                         final VariableNumber amount, @Nullable final VariableString name, @Nullable final VariableString marked) {
+                         final VariableNumber amount, @Nullable final VariableString name, @Nullable final VariableString marked) throws InstructionParseException {
+        if (type.getEntityClass() == null || !Mob.class.isAssignableFrom(type.getEntityClass())) {
+            throw new InstructionParseException("The entity type must be a mob");
+        }
         this.variableLocation = variableLocation;
         this.type = type;
         this.equipment = equipment;
@@ -76,22 +79,17 @@ public class SpawnMobEvent implements NullableEvent {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
         final Location location = variableLocation.getValue(profile);
-        final int numberOfEntity = amount.getValue(profile).intValue();
-        for (int i = 0; i < numberOfEntity; i++) {
-            final Entity entity = location.getWorld().spawnEntity(location, type);
-            if (entity instanceof final LivingEntity living) {
-                this.equipment.addEquipment(living);
-            }
-            if (entity instanceof final Mob mob) {
-                this.equipment.removeEquipmentDrops(mob);
-            }
-            this.equipment.addDrops(entity, profile);
-            if (this.name != null && entity instanceof final LivingEntity livingEntity) {
-                livingEntity.setCustomName(this.name.getValue(profile));
+        final int numberOfMob = amount.getValue(profile).intValue();
+        for (int i = 0; i < numberOfMob; i++) {
+            final Mob mob = (Mob) location.getWorld().spawnEntity(location, type);
+            this.equipment.addEquipment(mob);
+            this.equipment.addDrops(mob, profile);
+            if (this.name != null) {
+                mob.setCustomName(this.name.getValue(profile));
             }
             if (this.marked != null) {
                 final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
-                entity.getPersistentDataContainer().set(key, PersistentDataType.STRING, this.marked.getValue(profile));
+                mob.getPersistentDataContainer().set(key, PersistentDataType.STRING, this.marked.getValue(profile));
             }
         }
     }
