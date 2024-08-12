@@ -19,7 +19,6 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Mob;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -67,9 +66,6 @@ public class SpawnMobEventFactory implements EventFactory, StaticEventFactory {
     public NullableEventAdapter createSpawnMobEvent(final Instruction instruction) throws InstructionParseException {
         final VariableLocation loc = instruction.getLocation();
         final EntityType type = instruction.getEntity();
-        if (type.getEntityClass() == null || !Mob.class.isAssignableFrom(type.getEntityClass())) {
-            throw new InstructionParseException("The entity type must be a mob");
-        }
         final VariableNumber amount = instruction.getVarNum();
         final String nameString = instruction.getOptional("name");
         final VariableString name = nameString == null ? null : new VariableString(variableProcessor,
