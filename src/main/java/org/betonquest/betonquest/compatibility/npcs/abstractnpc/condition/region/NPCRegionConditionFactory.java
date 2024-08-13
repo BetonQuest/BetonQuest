@@ -4,7 +4,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.BQNPCAdapter;
-import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCSupplierStandard;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCAdapterSupplier;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
 import java.util.function.Supplier;
@@ -16,14 +16,14 @@ public class NPCRegionConditionFactory implements PlayerlessConditionFactory {
     /**
      * Providing a new NPC Adapter from an id.
      */
-    private final NPCSupplierStandard supplierStandard;
+    private final NPCAdapterSupplier supplierStandard;
 
     /**
      * Create a new factory for NPC Region Conditions.
      *
      * @param supplierStandard the supplier providing the npc adapter
      */
-    public NPCRegionConditionFactory(final NPCSupplierStandard supplierStandard) {
+    public NPCRegionConditionFactory(final NPCAdapterSupplier supplierStandard) {
         this.supplierStandard = supplierStandard;
     }
 

@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariableFactory;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.BQNPCAdapter;
-import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCSupplierStandard;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCAdapterSupplier;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.NoID;
@@ -37,7 +37,7 @@ public class NPCVariableFactory implements PlayerlessVariableFactory {
     /**
      * Providing a new NPC Adapter from an id.
      */
-    private final NPCSupplierStandard supplierStandard;
+    private final NPCAdapterSupplier supplierStandard;
 
     /**
      * Create a new factory to create NPC Variables.
@@ -45,7 +45,7 @@ public class NPCVariableFactory implements PlayerlessVariableFactory {
      * @param supplierStandard the supplier providing the npc adapter
      * @param loggerFactory    the logger factory creating new custom logger
      */
-    public NPCVariableFactory(final NPCSupplierStandard supplierStandard, final BetonQuestLoggerFactory loggerFactory) {
+    public NPCVariableFactory(final NPCAdapterSupplier supplierStandard, final BetonQuestLoggerFactory loggerFactory) {
         this.supplierStandard = supplierStandard;
         this.loggerFactory = loggerFactory;
     }

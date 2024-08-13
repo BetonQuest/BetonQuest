@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.BQNPCAdapter;
-import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCSupplierStandard;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCAdapterSupplier;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 
@@ -20,14 +20,14 @@ public abstract class NPCTeleportEventFactory implements EventFactory, StaticEve
     /**
      * Providing a new NPC Adapter from an id.
      */
-    private final NPCSupplierStandard supplierStandard;
+    private final NPCAdapterSupplier supplierStandard;
 
     /**
      * Create a new factory for NPC Teleport Events.
      *
      * @param supplierStandard the supplier providing the npc adapter
      */
-    public NPCTeleportEventFactory(final NPCSupplierStandard supplierStandard) {
+    public NPCTeleportEventFactory(final NPCAdapterSupplier supplierStandard) {
         this.supplierStandard = supplierStandard;
     }
 

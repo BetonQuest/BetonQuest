@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.BQNPCAdapter;
-import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCSupplierStandard;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCAdapterSupplier;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCUtil;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -59,7 +59,7 @@ public abstract class NPCRangeObjective extends Objective {
      * @param supplierStandard the supplier providing the npc adapter
      * @throws InstructionParseException if the instruction is invalid
      */
-    public NPCRangeObjective(final Instruction instruction, final NPCSupplierStandard supplierStandard) throws InstructionParseException {
+    public NPCRangeObjective(final Instruction instruction, final NPCAdapterSupplier supplierStandard) throws InstructionParseException {
         super(instruction);
         final String[] rawIds = instruction.getArray();
         this.npcIds = new HashMap<>(rawIds.length);

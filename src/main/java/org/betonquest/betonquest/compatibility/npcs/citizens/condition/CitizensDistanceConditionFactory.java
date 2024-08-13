@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.npcs.citizens.condition;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCSupplierStandard;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCAdapterSupplier;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.condition.distance.NPCDistanceCondition;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.condition.distance.NPCDistanceConditionFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -26,7 +26,7 @@ public class CitizensDistanceConditionFactory extends NPCDistanceConditionFactor
      * @param data             the data for primary server thread access
      * @param loggerFactory    the logger factory to create class specific logger
      */
-    public CitizensDistanceConditionFactory(final NPCSupplierStandard supplierStandard, final PrimaryServerThreadData data, final BetonQuestLoggerFactory loggerFactory) {
+    public CitizensDistanceConditionFactory(final NPCAdapterSupplier supplierStandard, final PrimaryServerThreadData data, final BetonQuestLoggerFactory loggerFactory) {
         super(supplierStandard, loggerFactory);
         this.data = data;
     }

@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.BQNPCAdapter;
-import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCSupplierStandard;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCAdapterSupplier;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.variable.npc.NPCVariableFactory;
 import org.betonquest.betonquest.compatibility.npcs.citizens.condition.CitizensDistanceConditionFactory;
 import org.betonquest.betonquest.compatibility.npcs.citizens.condition.CitizensLocationConditionFactory;
@@ -122,7 +122,7 @@ public class CitizensIntegrator implements Integrator {
         eventTypes.register("movenpc", new CitizensMoveEventFactory(data, citizensMoveController));
         eventTypes.register("stopnpc", new CitizensStopEventFactory(data, citizensMoveController));
 
-        final NPCSupplierStandard standard = CitizensIntegrator::getSupplier;
+        final NPCAdapterSupplier standard = CitizensIntegrator::getSupplier;
         eventTypes.registerCombined("teleportnpc", new CitizensNPCTeleportEventFactory(standard, data));
 
         plugin.registerConversationIO("chest", CitizensInventoryConvIO.class);

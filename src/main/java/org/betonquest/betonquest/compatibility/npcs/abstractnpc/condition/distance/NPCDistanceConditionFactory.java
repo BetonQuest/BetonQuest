@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.BQNPCAdapter;
-import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCSupplierStandard;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCAdapterSupplier;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.condition.OnlineProfileRequiredCondition;
@@ -19,7 +19,7 @@ public class NPCDistanceConditionFactory implements PlayerConditionFactory {
     /**
      * Providing a new NPC Adapter from an id.
      */
-    private final NPCSupplierStandard supplierStandard;
+    private final NPCAdapterSupplier supplierStandard;
 
     /**
      * Logger Factory to create new class specific logger.
@@ -32,7 +32,7 @@ public class NPCDistanceConditionFactory implements PlayerConditionFactory {
      * @param supplierStandard the supplier providing the npc adapter
      * @param loggerFactory    logger factory to use
      */
-    public NPCDistanceConditionFactory(final NPCSupplierStandard supplierStandard, final BetonQuestLoggerFactory loggerFactory) {
+    public NPCDistanceConditionFactory(final NPCAdapterSupplier supplierStandard, final BetonQuestLoggerFactory loggerFactory) {
         this.supplierStandard = supplierStandard;
         this.loggerFactory = loggerFactory;
     }

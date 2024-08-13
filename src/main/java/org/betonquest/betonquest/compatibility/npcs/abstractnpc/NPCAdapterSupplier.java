@@ -5,12 +5,12 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import java.util.function.Supplier;
 
 /**
- * Supplies a NPC in an easy usable way in Events, Objectives, Conditions and Variables.
+ * Supplies a NPC adapter for BetonQuest usage.
  * <p>
  * This is just a function which can throw an {@link InstructionParseException}.
  */
 @FunctionalInterface
-public interface NPCSupplierStandard {
+public interface NPCAdapterSupplier {
     /**
      * Gets a supplier which will return a new {@link BQNPCAdapter}
      * if the {@code npcID} has a valid npc or null.
