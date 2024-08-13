@@ -8,6 +8,7 @@ import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.BQNPCAdapter;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCAdapterSupplier;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCAdapterSupplierSupplier;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.variable.npc.NPCVariableFactory;
 import org.betonquest.betonquest.compatibility.npcs.citizens.condition.CitizensDistanceConditionFactory;
 import org.betonquest.betonquest.compatibility.npcs.citizens.condition.CitizensLocationConditionFactory;
@@ -23,6 +24,7 @@ import org.betonquest.betonquest.compatibility.npcs.citizens.objective.NPCKillOb
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
@@ -30,8 +32,6 @@ import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
 import org.bukkit.Server;
 import org.bukkit.event.HandlerList;
 import org.bukkit.scheduler.BukkitScheduler;
-
-import java.util.function.Supplier;
 
 /**
  * Integrator for Citizens.
@@ -84,7 +84,7 @@ public class CitizensIntegrator implements Integrator {
      * @return the supplier which will return the npc or null if none was found by the npcId
      * @throws InstructionParseException when the id cannot be parsed as positive or zero integer
      */
-    public static Supplier<BQNPCAdapter<?>> getSupplier(final String npcId) throws InstructionParseException {
+    public static NPCAdapterSupplier getSupplier(final String npcId) throws InstructionParseException {
         final int parsedId;
         try {
             parsedId = Integer.parseInt(npcId);
@@ -96,7 +96,10 @@ public class CitizensIntegrator implements Integrator {
         }
         return () -> {
             final NPC npc = CitizensAPI.getNPCRegistry().getById(parsedId);
-            return npc == null ? null : new CitizensBQAdapter(npc);
+            if (npc == null) {
+                throw new QuestRuntimeException("NPC with ID " + parsedId + " does not exist");
+            }
+            return new CitizensBQAdapter(npc);
         };
     }
 
@@ -122,7 +125,7 @@ public class CitizensIntegrator implements Integrator {
         eventTypes.register("movenpc", new CitizensMoveEventFactory(data, citizensMoveController));
         eventTypes.register("stopnpc", new CitizensStopEventFactory(data, citizensMoveController));
 
-        final NPCAdapterSupplier standard = CitizensIntegrator::getSupplier;
+        final NPCAdapterSupplierSupplier standard = CitizensIntegrator::getSupplier;
         eventTypes.registerCombined("teleportnpc", new CitizensNPCTeleportEventFactory(standard, data));
 
         plugin.registerConversationIO("chest", CitizensInventoryConvIO.class);

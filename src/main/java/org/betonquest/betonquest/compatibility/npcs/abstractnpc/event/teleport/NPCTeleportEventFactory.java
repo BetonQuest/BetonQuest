@@ -6,12 +6,10 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.compatibility.npcs.abstractnpc.BQNPCAdapter;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCAdapterSupplier;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCAdapterSupplierSupplier;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-
-import java.util.function.Supplier;
 
 /**
  * Factory for {@link NPCTeleportEvent} from the {@link Instruction}.
@@ -20,14 +18,14 @@ public abstract class NPCTeleportEventFactory implements EventFactory, StaticEve
     /**
      * Providing a new NPC Adapter from an id.
      */
-    private final NPCAdapterSupplier supplierStandard;
+    private final NPCAdapterSupplierSupplier supplierStandard;
 
     /**
      * Create a new factory for NPC Teleport Events.
      *
      * @param supplierStandard the supplier providing the npc adapter
      */
-    public NPCTeleportEventFactory(final NPCAdapterSupplier supplierStandard) {
+    public NPCTeleportEventFactory(final NPCAdapterSupplierSupplier supplierStandard) {
         this.supplierStandard = supplierStandard;
     }
 
@@ -43,8 +41,8 @@ public abstract class NPCTeleportEventFactory implements EventFactory, StaticEve
 
     private NullableEventAdapter createNpcTeleportEvent(final Instruction instruction) throws InstructionParseException {
         final String npcId = instruction.next();
-        final Supplier<BQNPCAdapter<?>> npcSupplier = supplierStandard.getSupplierByID(npcId);
+        final NPCAdapterSupplier npcSupplier = supplierStandard.getSupplierByID(npcId);
         final VariableLocation location = instruction.getLocation();
-        return new NullableEventAdapter(new NPCTeleportEvent(npcId, npcSupplier, location));
+        return new NullableEventAdapter(new NPCTeleportEvent(npcSupplier, location));
     }
 }

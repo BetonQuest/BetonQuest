@@ -1,20 +1,26 @@
 package org.betonquest.betonquest.compatibility.npcs.abstractnpc.variable.npc;
 
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.BQNPCAdapter;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCAdapterSupplier;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.variables.LocationVariable;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.function.Supplier;
 
 /**
  * Provides information about a npc.
  */
 public class NPCVariable implements PlayerlessVariable {
     /**
+     * The custom {@link BetonQuestLogger} for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
      * The Supplier for the NPC.
      */
-    private final Supplier<BQNPCAdapter<?>> npcSupplier;
+    private final NPCAdapterSupplier npcSupplier;
 
     /**
      * The type of information to retrieve for the NPC: name, full_name, or location.
@@ -33,24 +39,28 @@ public class NPCVariable implements PlayerlessVariable {
      * @param npcSupplier the supplier for the npc
      * @param key         the argument defining the value
      * @param location    the location to provide when
+     * @param log         the custom logger to use when the variable cannot be resolved
      * @throws IllegalArgumentException when location argument is given without location variable
      */
-    public NPCVariable(final Supplier<BQNPCAdapter<?>> npcSupplier, final Argument key, @Nullable final LocationVariable location) {
+    public NPCVariable(final NPCAdapterSupplier npcSupplier, final Argument key, @Nullable final LocationVariable location,
+                       final BetonQuestLogger log) {
         this.npcSupplier = npcSupplier;
         this.key = key;
         this.location = location;
         if (key == Argument.LOCATION && location == null) {
             throw new IllegalArgumentException("The location argument requires a location variable!");
         }
+        this.log = log;
     }
 
     @Override
     public String getValue() {
-        final BQNPCAdapter<?> npc = npcSupplier.get();
-        if (npc == null) {
+        try {
+            final BQNPCAdapter<?> npc = npcSupplier.get();
+            return key.resolve(npc, location);
+        } catch (final QuestRuntimeException exception) {
+            log.warn("Can't get NPC for variable!", exception);
             return "";
         }
-
-        return key.resolve(npc, location);
     }
 }

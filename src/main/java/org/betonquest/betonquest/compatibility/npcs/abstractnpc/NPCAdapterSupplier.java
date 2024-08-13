@@ -1,26 +1,19 @@
 package org.betonquest.betonquest.compatibility.npcs.abstractnpc;
 
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-
-import java.util.function.Supplier;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 /**
- * Supplies a NPC adapter for BetonQuest usage.
+ * Supplies a {@link BQNPCAdapter}.
  * <p>
- * This is just a function which can throw an {@link InstructionParseException}.
+ * This is just a function which can throw a {@link QuestRuntimeException}.
  */
 @FunctionalInterface
 public interface NPCAdapterSupplier {
     /**
-     * Gets a supplier which will return a new {@link BQNPCAdapter}
-     * if the {@code npcID} has a valid npc or null.
-     * <p>
-     * This method validates the {@code npcId} format and will throw if it
-     * has an invalid format for the backing NPC plugin.
+     * Gets a {@link BQNPCAdapter} which got prior validated.
      *
-     * @param npcId of the npc returned by the supplier
-     * @return the supplier which will return the npc or null if none was found by the npcId
-     * @throws InstructionParseException if the npcId is invalid for the adapter
+     * @return the NPC Adapter
+     * @throws QuestRuntimeException when no NPC Adapter can be returned
      */
-    Supplier<BQNPCAdapter<?>> getSupplierByID(String npcId) throws InstructionParseException;
+    BQNPCAdapter<?> get() throws QuestRuntimeException;
 }

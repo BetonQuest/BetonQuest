@@ -5,9 +5,8 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.compatibility.npcs.abstractnpc.BQNPCAdapter;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCAdapterSupplier;
-import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCUtil;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCAdapterSupplierSupplier;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
@@ -21,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.BiPredicate;
-import java.util.function.Supplier;
 
 /**
  * The player has to reach certain radius around a specified NPC.
@@ -30,7 +28,7 @@ public abstract class NPCRangeObjective extends Objective {
     /**
      * Stores the relevant NPC ID and their supplier get their location.
      */
-    private final Map<String, Supplier<BQNPCAdapter<?>>> npcIds;
+    private final Map<String, NPCAdapterSupplier> npcIds;
 
     /**
      * Maximal distance between player and NPC.
@@ -59,7 +57,7 @@ public abstract class NPCRangeObjective extends Objective {
      * @param supplierStandard the supplier providing the npc adapter
      * @throws InstructionParseException if the instruction is invalid
      */
-    public NPCRangeObjective(final Instruction instruction, final NPCAdapterSupplier supplierStandard) throws InstructionParseException {
+    public NPCRangeObjective(final Instruction instruction, final NPCAdapterSupplierSupplier supplierStandard) throws InstructionParseException {
         super(instruction);
         final String[] rawIds = instruction.getArray();
         this.npcIds = new HashMap<>(rawIds.length);
@@ -117,8 +115,8 @@ public abstract class NPCRangeObjective extends Objective {
     private void loop() throws QuestRuntimeException {
         final List<UUID> profilesInside = new ArrayList<>();
         final List<OnlineProfile> allOnlineProfiles = PlayerConverter.getOnlineProfiles();
-        for (final Map.Entry<String, Supplier<BQNPCAdapter<?>>> npcId : npcIds.entrySet()) {
-            final Location npcLocation = NPCUtil.getNPC(npcId.getValue(), npcId.getKey()).getLocation();
+        for (final Map.Entry<String, NPCAdapterSupplier> npcId : npcIds.entrySet()) {
+            final Location npcLocation = npcId.getValue().get().getLocation();
             for (final OnlineProfile onlineProfile : allOnlineProfiles) {
                 if (!profilesInside.contains(onlineProfile.getProfileUUID()) && isInside(onlineProfile, npcLocation)) {
                     profilesInside.add(onlineProfile.getProfileUUID());

@@ -5,14 +5,12 @@ import org.betonquest.betonquest.VariableInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariableFactory;
-import org.betonquest.betonquest.compatibility.npcs.abstractnpc.BQNPCAdapter;
 import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCAdapterSupplier;
+import org.betonquest.betonquest.compatibility.npcs.abstractnpc.NPCAdapterSupplierSupplier;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.variables.LocationVariable;
-
-import java.util.function.Supplier;
 
 /**
  * Factory to create {@link NPCVariable}s from {@link Instruction}s.
@@ -37,7 +35,7 @@ public class NPCVariableFactory implements PlayerlessVariableFactory {
     /**
      * Providing a new NPC Adapter from an id.
      */
-    private final NPCAdapterSupplier supplierStandard;
+    private final NPCAdapterSupplierSupplier supplierStandard;
 
     /**
      * Create a new factory to create NPC Variables.
@@ -45,17 +43,17 @@ public class NPCVariableFactory implements PlayerlessVariableFactory {
      * @param supplierStandard the supplier providing the npc adapter
      * @param loggerFactory    the logger factory creating new custom logger
      */
-    public NPCVariableFactory(final NPCAdapterSupplier supplierStandard, final BetonQuestLoggerFactory loggerFactory) {
+    public NPCVariableFactory(final NPCAdapterSupplierSupplier supplierStandard, final BetonQuestLoggerFactory loggerFactory) {
         this.supplierStandard = supplierStandard;
         this.loggerFactory = loggerFactory;
     }
 
     @Override
     public PlayerlessVariable parsePlayerless(final Instruction instruction) throws InstructionParseException {
-        final Supplier<BQNPCAdapter<?>> npcSupplier = supplierStandard.getSupplierByID(instruction.next());
+        final NPCAdapterSupplier npcSupplier = supplierStandard.getSupplierByID(instruction.next());
         final Argument key = instruction.getEnum(Argument.class);
         final LocationVariable location = key == Argument.LOCATION ? parseLocation(instruction) : null;
-        return new NPCVariable(npcSupplier, key, location);
+        return new NPCVariable(npcSupplier, key, location, loggerFactory.create(NPCVariable.class));
     }
 
     private LocationVariable parseLocation(final Instruction instruction) throws InstructionParseException {
