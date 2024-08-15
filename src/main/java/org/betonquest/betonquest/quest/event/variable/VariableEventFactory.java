@@ -27,11 +27,12 @@ public class VariableEventFactory implements EventFactory {
     /**
      * Create a new factory for {@link VariableEvent}s.
      *
-     * @param betonQuest the BetonQuest instance
+     * @param betonQuest        the BetonQuest instance
+     * @param variableProcessor the processor to create new variables
      */
-    public VariableEventFactory(final BetonQuest betonQuest) {
+    public VariableEventFactory(final BetonQuest betonQuest, final VariableProcessor variableProcessor) {
         this.betonQuest = betonQuest;
-        this.variableProcessor = betonQuest.getVariableProcessor();
+        this.variableProcessor = variableProcessor;
     }
 
     @Override

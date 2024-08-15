@@ -328,7 +328,7 @@ public class CoreQuestTypes {
         eventTypes.register("take", TakeEvent.class);
         eventTypes.register("teleport", new TeleportEventFactory(loggerFactory, data));
         eventTypes.registerCombined("time", new TimeEventFactory(server, data, betonQuest.getVariableProcessor()));
-        eventTypes.register("variable", new VariableEventFactory(betonQuest));
+        eventTypes.register("variable", new VariableEventFactory(betonQuest, betonQuest.getVariableProcessor()));
         eventTypes.register("velocity", new VelocityEventFactory(loggerFactory, data));
         eventTypes.registerCombined("weather", new WeatherEventFactory(loggerFactory, data));
     }
