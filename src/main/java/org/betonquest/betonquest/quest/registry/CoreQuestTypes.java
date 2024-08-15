@@ -310,7 +310,7 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("log", new LogEventFactory(loggerFactory, betonQuest.getVariableProcessor()));
         eventTypes.register("notify", new NotifyEventFactory(loggerFactory, data, betonQuest.getVariableProcessor()));
         eventTypes.registerCombined("notifyall", new NotifyAllEventFactory(loggerFactory, data, betonQuest.getVariableProcessor()));
-        eventTypes.registerCombined("objective", new ObjectiveEventFactory(betonQuest));
+        eventTypes.registerCombined("objective", new ObjectiveEventFactory(betonQuest, loggerFactory));
         eventTypes.register("opsudo", new OpSudoEventFactory(loggerFactory, data));
         eventTypes.register("party", new PartyEventFactory(loggerFactory));
         eventTypes.registerCombined("pickrandom", new PickRandomEventFactory(betonQuest.getVariableProcessor()));
