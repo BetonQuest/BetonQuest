@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.citizens.condition.distance;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.entity.Player;
@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 /**
  * Checks if the player is close to a npc.
  */
-public class NPCDistanceCondition implements PlayerCondition {
+public class NPCDistanceCondition implements OnlineCondition {
     /**
      * The NPC id.
      */
@@ -34,12 +34,12 @@ public class NPCDistanceCondition implements PlayerCondition {
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestRuntimeException {
+    public boolean check(final OnlineProfile profile) throws QuestRuntimeException {
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
         }
-        final Player player = profile.getOnlineProfile().get().getPlayer();
+        final Player player = profile.getPlayer();
         if (!player.getWorld().equals(npc.getStoredLocation().getWorld())) {
             return false;
         }
