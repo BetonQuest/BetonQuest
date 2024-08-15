@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +16,7 @@ public class RunEvent implements NullableEvent {
     /**
      * Events that the run event will execute.
      */
-    private final List<QuestEvent> events = new ArrayList<>();
+    private final List<QuestEvent> events;
 
     /**
      * Create a run event from the given instruction.
@@ -25,7 +24,7 @@ public class RunEvent implements NullableEvent {
      * @param events events to run
      */
     public RunEvent(final List<QuestEvent> events) {
-        this.events.addAll(events);
+        this.events = List.copyOf(events);
     }
 
     @Override

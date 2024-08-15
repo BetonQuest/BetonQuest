@@ -73,7 +73,6 @@ public class RunEventFactory implements EventFactory, StaticEventFactory {
         final String[] parts = HandlerUtil.getNNSplit(instruction, "Not enough arguments in internal event", " ");
         final LegacyTypeFactory<QuestEvent> eventFactory = BetonQuest.getInstance().getQuestRegistries().getEventTypes().getFactory(parts[0]);
         if (eventFactory == null) {
-            // if it's null then there is no such type registered, log an error
             throw new InstructionParseException("Event type " + parts[0] + " is not registered, check if it's"
                     + " spelled correctly in internal event");
         }
