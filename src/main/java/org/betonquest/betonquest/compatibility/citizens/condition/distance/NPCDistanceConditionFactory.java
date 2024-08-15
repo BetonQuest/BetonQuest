@@ -4,10 +4,10 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
+import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.condition.OnlineProfileRequiredCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
 /**
@@ -42,8 +42,10 @@ public class NPCDistanceConditionFactory implements PlayerConditionFactory {
             throw new InstructionParseException("NPC ID cannot be less than 0");
         }
         final VariableNumber distance = instruction.getVarNum();
-        return new OnlineProfileRequiredCondition(loggerFactory.create(NPCDistanceCondition.class),
-                new PrimaryServerThreadPlayerCondition(new NPCDistanceCondition(npcId, distance), data),
-                instruction.getPackage());
+        return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(
+                new NPCDistanceCondition(npcId, distance),
+                loggerFactory.create(NPCDistanceCondition.class),
+                instruction.getPackage()
+        ), data);
     }
 }
