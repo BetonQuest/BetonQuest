@@ -38,11 +38,6 @@ public class FolderEvent implements NullableEvent {
     private final Random randomGenerator = new Random();
 
     /**
-     * The events to run.
-     */
-    private final EventID[] events;
-
-    /**
      * The delay to apply before running the events.
      */
     @Nullable
@@ -59,6 +54,11 @@ public class FolderEvent implements NullableEvent {
      */
     @Nullable
     private final VariableNumber random;
+
+    /**
+     * The events to run.
+     */
+    private final EventID[] events;
 
     /**
      * The time unit to use for the delay and period.
@@ -170,7 +170,7 @@ public class FolderEvent implements NullableEvent {
 
     private FolderEventCanceller createFolderEventCanceller(@Nullable final Profile profile) {
         if (cancelOnLogout && profile != null) {
-            return new QuitListener(betonQuest, profile);
+            return new QuitListener(betonQuest, betonQuest.getLoggerFactory().create(this.getClass()), profile);
         } else {
             return () -> false;
         }
@@ -234,10 +234,11 @@ public class FolderEvent implements NullableEvent {
          * Create a quit listener for the given profile's player.
          *
          * @param betonQuest the betonquest instance
+         * @param log        custom logger for this class
          * @param profile    profile to check for
          */
-        public QuitListener(final BetonQuest betonQuest, final Profile profile) {
-            this.log = betonQuest.getLoggerFactory().create(getClass());
+        public QuitListener(final BetonQuest betonQuest, final BetonQuestLogger log, final Profile profile) {
+            this.log = log;
             this.profile = profile;
             betonQuest.getServer().getPluginManager().registerEvents(this, betonQuest);
         }
