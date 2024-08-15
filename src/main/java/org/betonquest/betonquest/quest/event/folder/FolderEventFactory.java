@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.folder;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
@@ -10,6 +11,7 @@ import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.bukkit.plugin.PluginManager;
 
 /**
  * Factory to create {@link FolderEvent} instances.
@@ -22,12 +24,26 @@ public class FolderEventFactory implements EventFactory, StaticEventFactory {
     private final BetonQuest betonQuest;
 
     /**
-     * Creates a new {@link FolderEventFactory} instance.
-     *
-     * @param betonQuest the BetonQuest instance
+     * Logger factory to create a logger for events.
      */
-    public FolderEventFactory(final BetonQuest betonQuest) {
+    private final BetonQuestLoggerFactory loggerFactory;
+
+    /**
+     * The plugin manager to register the quit listener.
+     */
+    private final PluginManager pluginManager;
+
+    /**
+     * Create a new folder event factory.
+     *
+     * @param betonQuest    the BetonQuest instance
+     * @param loggerFactory the logger factory to create a logger for the events
+     * @param pluginManager the plugin manager to register the quit listener
+     */
+    public FolderEventFactory(final BetonQuest betonQuest, final BetonQuestLoggerFactory loggerFactory, final PluginManager pluginManager) {
         this.betonQuest = betonQuest;
+        this.loggerFactory = loggerFactory;
+        this.pluginManager = pluginManager;
     }
 
     @Override
@@ -47,7 +63,7 @@ public class FolderEventFactory implements EventFactory, StaticEventFactory {
         final VariableNumber random = instruction.getVarNum(instruction.getOptional("random"));
         final TimeUnit timeUnit = getTimeUnit(instruction);
         final boolean cancelOnLogout = instruction.hasArgument("cancelOnLogout");
-        return new NullableEventAdapter(new FolderEvent(betonQuest, events, delay, period, random, timeUnit, cancelOnLogout));
+        return new NullableEventAdapter(new FolderEvent(betonQuest, loggerFactory.create(FolderEvent.class), pluginManager, events, delay, period, random, timeUnit, cancelOnLogout));
     }
 
     private TimeUnit getTimeUnit(final Instruction instruction) {

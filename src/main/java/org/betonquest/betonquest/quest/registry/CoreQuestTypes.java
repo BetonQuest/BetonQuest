@@ -293,7 +293,7 @@ public class CoreQuestTypes {
         eventTypes.register("effect", new EffectEventFactory(loggerFactory, data));
         eventTypes.register("experience", new ExperienceEventFactory(loggerFactory, data));
         eventTypes.registerCombined("explosion", new ExplosionEventFactory(data));
-        eventTypes.registerCombined("folder", new FolderEventFactory(betonQuest));
+        eventTypes.registerCombined("folder", new FolderEventFactory(betonQuest, loggerFactory, server.getPluginManager()));
         eventTypes.registerCombined("first", new FirstEventFactory());
         eventTypes.register("give", new GiveEventFactory(loggerFactory, data));
         eventTypes.register("givejournal", new GiveJournalEventFactory(loggerFactory, betonQuest, data));

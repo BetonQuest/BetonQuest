@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,6 +32,16 @@ public class FolderEvent implements NullableEvent {
      * The BetonQuest instance.
      */
     private final BetonQuest betonQuest;
+
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
+     * The plugin manager to register the quit listener.
+     */
+    private final PluginManager pluginManager;
 
     /**
      * Random generator used to choose events to run.
@@ -74,6 +85,8 @@ public class FolderEvent implements NullableEvent {
      * Create a folder event with the given parameters.
      *
      * @param betonQuest     the BetonQuest instance
+     * @param log            custom logger for this class
+     * @param pluginManager  the plugin manager to register the quit listener
      * @param events         events to run
      * @param delay          delay to apply before running the events
      * @param period         delay to apply between each event
@@ -81,10 +94,12 @@ public class FolderEvent implements NullableEvent {
      * @param timeUnit       time unit to use for the delay and period
      * @param cancelOnLogout whether the event should be cancelled on logout
      */
-    public FolderEvent(final BetonQuest betonQuest, final EventID[] events, @Nullable final VariableNumber delay,
+    public FolderEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final PluginManager pluginManager, final EventID[] events, @Nullable final VariableNumber delay,
                        @Nullable final VariableNumber period, @Nullable final VariableNumber random,
                        final TimeUnit timeUnit, final boolean cancelOnLogout) {
         this.betonQuest = betonQuest;
+        this.log = log;
+        this.pluginManager = pluginManager;
         this.delay = delay;
         this.period = period;
         this.random = random;
@@ -93,7 +108,7 @@ public class FolderEvent implements NullableEvent {
         this.cancelOnLogout = cancelOnLogout;
     }
 
-    private static void executeAllEvents(@Nullable final Profile profile, final Deque<EventID> chosenList) {
+    private void executeAllEvents(@Nullable final Profile profile, final Deque<EventID> chosenList) {
         for (final EventID event : chosenList) {
             BetonQuest.event(profile, event);
         }
@@ -170,7 +185,7 @@ public class FolderEvent implements NullableEvent {
 
     private FolderEventCanceller createFolderEventCanceller(@Nullable final Profile profile) {
         if (cancelOnLogout && profile != null) {
-            return new QuitListener(betonQuest, betonQuest.getLoggerFactory().create(this.getClass()), profile);
+            return new QuitListener(betonQuest, log, pluginManager, profile);
         } else {
             return () -> false;
         }
@@ -233,14 +248,16 @@ public class FolderEvent implements NullableEvent {
         /**
          * Create a quit listener for the given profile's player.
          *
-         * @param betonQuest the betonquest instance
-         * @param log        custom logger for this class
-         * @param profile    profile to check for
+         * @param betonQuest    the betonquest instance
+         * @param log           custom logger for this class
+         * @param pluginManager the plugin manager to register the quit listener
+         * @param profile       profile to check for
          */
-        public QuitListener(final BetonQuest betonQuest, final BetonQuestLogger log, final Profile profile) {
+        public QuitListener(final BetonQuest betonQuest, final BetonQuestLogger log, final PluginManager pluginManager,
+                            final Profile profile) {
             this.log = log;
             this.profile = profile;
-            betonQuest.getServer().getPluginManager().registerEvents(this, betonQuest);
+            pluginManager.registerEvents(this, betonQuest);
         }
 
         /**
