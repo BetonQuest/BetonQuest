@@ -24,7 +24,7 @@ public class RunEvent implements NullableEvent {
      * @param events events to run
      */
     public RunEvent(final List<QuestEvent> events) {
-        this.events = List.copyOf(events);
+        this.events = events;
     }
 
     @Override
