@@ -52,7 +52,6 @@ import org.betonquest.betonquest.conditions.WorldCondition;
 import org.betonquest.betonquest.events.FolderEvent;
 import org.betonquest.betonquest.events.RunEvent;
 import org.betonquest.betonquest.events.TakeEvent;
-import org.betonquest.betonquest.events.VariableEvent;
 import org.betonquest.betonquest.objectives.ActionObjective;
 import org.betonquest.betonquest.objectives.ArrowShootObjective;
 import org.betonquest.betonquest.objectives.BlockObjective;
@@ -141,6 +140,7 @@ import org.betonquest.betonquest.quest.event.tag.TagGlobalEventFactory;
 import org.betonquest.betonquest.quest.event.tag.TagPlayerEventFactory;
 import org.betonquest.betonquest.quest.event.teleport.TeleportEventFactory;
 import org.betonquest.betonquest.quest.event.time.TimeEventFactory;
+import org.betonquest.betonquest.quest.event.variable.VariableEventFactory;
 import org.betonquest.betonquest.quest.event.velocity.VelocityEventFactory;
 import org.betonquest.betonquest.quest.event.weather.WeatherEventFactory;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
@@ -328,7 +328,7 @@ public class CoreQuestTypes {
         eventTypes.register("take", TakeEvent.class);
         eventTypes.register("teleport", new TeleportEventFactory(loggerFactory, data));
         eventTypes.registerCombined("time", new TimeEventFactory(server, data, betonQuest.getVariableProcessor()));
-        eventTypes.register("variable", VariableEvent.class);
+        eventTypes.register("variable", new VariableEventFactory(betonQuest, betonQuest.getVariableProcessor()));
         eventTypes.register("velocity", new VelocityEventFactory(loggerFactory, data));
         eventTypes.registerCombined("weather", new WeatherEventFactory(loggerFactory, data));
     }
