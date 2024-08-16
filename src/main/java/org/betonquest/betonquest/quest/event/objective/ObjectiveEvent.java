@@ -54,13 +54,14 @@ public class ObjectiveEvent implements NullableEvent {
      * Creates a new ObjectiveEvent.
      *
      * @param betonQuest   the BetonQuest instance
+     * @param log          the logger
      * @param questPackage the quest package of the instruction
      * @param objectives   the objectives to affect
      * @param action       the action to do with the objectives
      * @throws InstructionParseException if the action is invalid
      */
-    public ObjectiveEvent(final BetonQuest betonQuest, final QuestPackage questPackage, final List<ObjectiveID> objectives, final String action) throws InstructionParseException {
-        this.log = betonQuest.getLoggerFactory().create(getClass());
+    public ObjectiveEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final QuestPackage questPackage, final List<ObjectiveID> objectives, final String action) throws InstructionParseException {
+        this.log = log;
         this.questPackage = questPackage;
         this.betonQuest = betonQuest;
         this.objectives = objectives;
