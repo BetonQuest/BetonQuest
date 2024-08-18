@@ -17,7 +17,7 @@ hide:
 
 # Release Builds
  
-[Loading latest Release-Build...](){ .md-button .md-button--primary .download-latest-release-build .disabled}
+[Loading latest Release-Build...](#){ .md-button .md-button--primary .download-latest-release-build .disabled}
 
 ??? disabled "Show all Release-Builds"
     <div class="grid cards" id="download-all-release-build" markdown>
