@@ -55,6 +55,7 @@ import org.betonquest.betonquest.objectives.ArrowShootObjective;
 import org.betonquest.betonquest.objectives.BlockObjective;
 import org.betonquest.betonquest.objectives.BreedObjective;
 import org.betonquest.betonquest.objectives.BrewObjective;
+import org.betonquest.betonquest.objectives.ChatObjective;
 import org.betonquest.betonquest.objectives.ChestPutObjective;
 import org.betonquest.betonquest.objectives.CommandObjective;
 import org.betonquest.betonquest.objectives.ConsumeObjective;
@@ -339,6 +340,7 @@ public class CoreQuestTypes {
         betonQuest.registerObjectives("block", BlockObjective.class);
         betonQuest.registerObjectives("breed", BreedObjective.class);
         betonQuest.registerObjectives("brew", BrewObjective.class);
+        betonQuest.registerObjectives("chat", ChatObjective.class);
         betonQuest.registerObjectives("chestput", ChestPutObjective.class);
         betonQuest.registerObjectives("command", CommandObjective.class);
         betonQuest.registerObjectives("consume", ConsumeObjective.class);

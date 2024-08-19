@@ -6,6 +6,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
+- `chat` objective
 ### Changed
 - `spawn` event now only spawn mobs and no other entities
 ### Deprecated

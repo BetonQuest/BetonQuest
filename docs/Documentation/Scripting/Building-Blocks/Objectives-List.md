@@ -92,6 +92,20 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
     breed cow 10 notify:2 events:reward
     ```
 
+## Capture a message: `chat`
+
+Requires the player to write a message in the chat.
+
+| Parameter  | Syntax                                   | Default Value          | Explanation                                                                                                            |
+|------------|------------------------------------------|------------------------|------------------------------------------------------------------------------------------------------------------------|
+| _variable_ | [Variable Objective](#variable-variable) | :octicons-x-circle-16: | The variable where to store the chat message. Like with the event the player is required to have the objective active. |
+| _cancel_   | cancel                                   | :octicons-x-circle-16: | If the chat message should be cancelled.                                                                               |
+
+!!! example
+    ```YAML
+    chat variable:Storage#message cancel events:broadcastMessage conditions:holdsBroadcastWand
+    ```
+
 ## Put items in a chest: `chestput`
 
 This objective requires the player to put specified items in a specified chest. First argument is a location of the
