@@ -1728,7 +1728,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private Optional<List<String>> completeDownload(final String... args) {
         return switch (args.length) {
             case 2 -> Optional.of(instance.getPluginConfig().getStringList("download.repo_whitelist"));
-            case 3 -> Optional.of(List.of("main", "refs/heads/", "refs/tags/"));
+            case 3 -> Optional.of(List.of("refs/heads/", "refs/tags/"));
             case 4 -> Optional.of(Downloader.ALLOWED_OFFSET_PATHS);
             case 5 -> Optional.of(List.of("/"));
             case 6 -> Optional.of(List.of("/", "overwrite", "recursive"));
