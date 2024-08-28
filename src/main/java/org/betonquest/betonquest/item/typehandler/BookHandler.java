@@ -70,18 +70,18 @@ public class BookHandler {
     }
 
     public boolean checkTitle(@Nullable final String string) {
-        return checkExistence(titleE, string);
+        return checkExistence(titleE, title, string);
     }
 
     public boolean checkAuthor(@Nullable final String string) {
-        return checkExistence(authorE, string);
+        return checkExistence(authorE, author, string);
     }
 
     @SuppressWarnings("PMD.InefficientEmptyStringCheck")
-    private boolean checkExistence(final Existence existence, @Nullable final String string) {
+    private boolean checkExistence(final Existence existence, @Nullable final String present, @Nullable final String string) {
         return switch (existence) {
             case WHATEVER -> true;
-            case REQUIRED -> string != null && string.equals(author);
+            case REQUIRED -> string != null && string.equals(present);
             case FORBIDDEN -> string == null || string.trim().isEmpty();
         };
     }

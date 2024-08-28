@@ -11,6 +11,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Deprecated
 ### Removed
 ### Fixed
+- broken title check in book `QuestItem` 
 ### Security
 
 ## [2.1.3] - 2024-08-06
