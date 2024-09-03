@@ -3,7 +3,7 @@ import subprocess
 
 common_dependencies = [
     'mkdocs-snippets',
-    'mike==2.1.1',
+    'mike==2.1.3',
     'mkdocs-exclude==1.0.2',
 ]
 
@@ -20,12 +20,12 @@ def get_install_requires():
                   + "so if you serve mkdocs you will serve the normal version!"
                   + "\033[0m")
         return [
-            f'git+https://{mkdocs_token}@github.com/squidfunk/mkdocs-material-insiders.git@9.5.9-insiders-4.52.2',
+            f'git+https://{mkdocs_token}@github.com/squidfunk/mkdocs-material-insiders.git@9.5.33-insiders-4.53.12',
             'pillow',
             'cairosvg',
         ] + common_dependencies
     else:
-        return ['mkdocs-material==9.5.9'] + common_dependencies
+        return ['mkdocs-material==9.5.33'] + common_dependencies
 
 
 subprocess.run(['pip', 'install'] + get_install_requires())
