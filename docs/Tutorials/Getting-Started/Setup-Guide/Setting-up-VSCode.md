@@ -1,5 +1,5 @@
 ---
-icon: simple/visualstudiocode
+icon: material/microsoft-visual-studio-code
 tags:
   - VSCode
   - Editor

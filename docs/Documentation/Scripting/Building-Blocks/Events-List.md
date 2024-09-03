@@ -805,7 +805,7 @@ Using the `ticks` argument changes the time like the vanilla command.
 Teleports the player to the specified location. 
 Ends any active conversations. 
 
-Do you only want to [cancel the conversation](#cancels-the-conversation-cancelconversation)?
+Do you only want to [cancel the conversation](#cancel-the-conversation-cancelconversation)?
 
 | Parameter  | Syntax                                                                       | Default Value          | Explanation                                          |
 |------------|------------------------------------------------------------------------------|------------------------|------------------------------------------------------|
@@ -825,7 +825,7 @@ events:
 This event has only one purpose: Change values that are stored in `variable` objective variables. The first argument is
 the ID of the `variable` objective. The second argument is the name of the variable to set. The third argument is the
 value to set. Both the name and value can use `%...%` variables. To delete a variable you can use `""`.
-To store more complex values you can use [quoting](../Quoting-&-YAML.md#Quoting).
+To store more complex values you can use [quoting](../Quoting-&-YAML.md#quoting).
 Refer to the [`variable` objective](Objectives-List.md#variable-variable) documentation for more information about storing variables.
 This event will do nothing if the player does not already have a `variable` objective assigned to them.
 

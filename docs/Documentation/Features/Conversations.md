@@ -182,7 +182,7 @@ In both cases, you can choose from the following conversation styles:
         ??? "Customizing the Chest Style"
             The colors of this style can be configured with the [`conversation_colors` config option](../Configuration/Configuration.md#conversation-colors).
             
-            The formatting of this style can be configured with the [`conversation_IO_config.chest` config option](../Configuration/Configuration.md#conversation-settings-chestio).
+            The formatting of this style can be configured with the [`conversation_IO_config.chest` config option](../Configuration/Configuration.md#conversation-settings-chestio-slowtellrawio).
             
             You can change the option's item to something else than ender pearls by adding a prefix to that option's text.
             The prefix is a name of the material (like in the _items_ section) inside curly braces, with an optional damage value after a colon. Custom Model Data is not supported yet.
