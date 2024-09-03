@@ -261,7 +261,6 @@
   <rule ref="category/java/errorprone.xml/AvoidLosingExceptionInformation"/>
   <rule ref="category/java/errorprone.xml/AvoidMultipleUnaryOperators"/>
   <rule ref="category/java/errorprone.xml/AvoidUsingOctalValues"/>
-  <rule ref="category/java/errorprone.xml/ComparisonWithNaN"/>
   <rule ref="category/java/errorprone.xml/BrokenNullCheck"/>
   <rule ref="category/java/errorprone.xml/CallSuperFirst"/>
   <rule ref="category/java/errorprone.xml/CallSuperLast"/>
@@ -272,6 +271,7 @@
   <rule ref="category/java/errorprone.xml/CloneMethodReturnTypeMustMatchClassName"/>
   <rule ref="category/java/errorprone.xml/CloseResource"/>
   <rule ref="category/java/errorprone.xml/CompareObjectsWithEquals"/>
+  <rule ref="category/java/errorprone.xml/ComparisonWithNaN"/>
   <rule ref="category/java/errorprone.xml/ConfusingArgumentToVarargsMethod"/>
   <rule ref="category/java/errorprone.xml/ConstructorCallsOverridableMethod"/>
   <rule ref="category/java/errorprone.xml/DetachedTestCase"/>
@@ -290,6 +290,7 @@
   <rule ref="category/java/errorprone.xml/FinalizeOverloaded"/>
   <rule ref="category/java/errorprone.xml/FinalizeShouldBeProtected"/>
   <rule ref="category/java/errorprone.xml/IdempotentOperations"/>
+  <rule ref="category/java/errorprone.xml/ImplicitSwitchFallThrough"/>
   <rule ref="category/java/errorprone.xml/InstantiationToGetClass"/>
   <rule ref="category/java/errorprone.xml/InvalidLogMessageFormat"/>
   <rule ref="category/java/errorprone.xml/JumbledIncrementer"/>
@@ -297,7 +298,6 @@
   <rule ref="category/java/errorprone.xml/JUnitStaticSuite"/>
   <rule ref="category/java/errorprone.xml/MethodWithSameNameAsEnclosingClass"/>
   <rule ref="category/java/errorprone.xml/MisplacedNullCheck"/>
-  <rule ref="category/java/errorprone.xml/ImplicitSwitchFallThrough"/>
   <rule ref="category/java/errorprone.xml/MissingSerialVersionUID"/>
   <rule ref="category/java/errorprone.xml/MissingStaticMethodInNonInstantiatableClass"/>
   <rule ref="category/java/errorprone.xml/MoreThanOneLogger"/>
