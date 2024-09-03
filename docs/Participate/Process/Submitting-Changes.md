@@ -26,30 +26,14 @@ Then add a description that indicates what you added, removed or changed.
 If there are related issues, link them with the keyword `Closes #issue-id-here`,
 so the issue is automatically closed when the pull request is merged.
 
-### Reviewer's Checklist
-The list below contains typical problems that we will check during the review.
-Do not click any of these boxes on GitHub, we will do that. 
+### Checklist
+The list below contains typical requirements that you need to fulfill, and we check during the review.  
+Here are some things you should check by your own:
 
 **Please make sure that you fulfill these requirements. Did you...**
 
 ??? success "... run Maven verify?"
     The most basic check is [Maven Verify](Code/Checking-Requirements.md). Run it in you IDE and make sure it succeeds!
-
-??? success "... test your changes?"
-    Always test your changes in-game! Keep in mind, that there could be some special case in your code that needs to be
-    tested specifically.
-
-??? success "... update the changelog?"
-    Don't forget to add a changelog entry for every change you made.
-    Read [maintaining the changelog](Maintaining-the-Changelog.md) for more information.
-    
-??? success "... update the documentation?"
-    You need to adjust the documentation everytime you changed, added or removed any feature. Remember: Things that 
-    aren't documented don't exist to the user. There can also be other reasons why you should update the documentation,
-    like writing a new tutorial or adjusting a bad example.
-
-??? success "~~... adjust the ConfigUpdater?~~"
-    Currently not relevant. We are working on a new updater.
 
 ??? success "... solve all TODOs?"
     You shouldn't have any TODOs in your code because it indicates that your code is not finished. Unfinished
@@ -68,6 +52,32 @@ Do not click any of these boxes on GitHub, we will do that.
 ??? success "... add debug messages?"
     In general, BetonQuest already has a lot of debug messages. So normally you do not need to add anything.
     It may be beneficial for new or complicated things.
+
+#### Reviewer's Checklist
+The following list is included in the PullRequest template, do not click any of these boxes on GitHub, we will do that. 
+
+**Please make sure that you fulfill these requirements. Did you...**
+
+??? success "... test your changes?"
+    Always test your changes in-game! Keep in mind, that there could be some special case in your code that needs to be
+    tested specifically.
+    
+??? success "... increment the version?"
+    You may need to increment the version number in the `pom.xml` file. Read more about the 
+    [versioning](../Misc/Versioning-and-Releasing.md#versioning) process.
+
+??? success "... update the changelog?"
+    Don't forget to add a changelog entry for every change you made.
+    Read [maintaining the changelog](Maintaining-the-Changelog.md) for more information.
+    
+??? success "... update the documentation?"
+    You need to adjust the documentation everytime you changed, added or removed any feature. Remember: Things that 
+    aren't documented don't exist to the user. There can also be other reasons why you should update the documentation,
+    like writing a new tutorial or adjusting a bad example.
+
+??? success "... adjust the ConfigPatcher?"
+    For the `config.yml` check out the [ConfigPatcher](../../API/ConfigurationFiles.md#updating-configurationfiles).  
+    For quest files, this is currently not relevant. We are working on a new updater.
 
 ??? success "... clean the commit history?"
     You did multiple commits, that look like `progress fixing the bug`? Or you did a commit with a wrong description?  
