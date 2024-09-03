@@ -8,11 +8,10 @@ inputs:
       The distribution of the JDK to use.
     required: false
     default: 'zulu'
-  JAVA_VERSION:
+  JAVA_OVERIDE:
     description: |
       The version of the JDK to use.
     required: false
-    default: '17'
   JAVA_CACHE:
     description: |
       The name of the Java cache to use.
@@ -40,11 +39,16 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Setup JDK 17
+    - name: Determine Java version
+      uses: Wolf2323/java-version-export-github-action@main
+      id: determine-java-version
+      with:
+        maven-expression: 'java.api.version'
+    - name: Setup JDK ${{ steps.determine-java-version.outputs.java_major_version }}
       uses: actions/setup-java@v4
       with:
         distribution: ${{ inputs.JAVA_DISTRIBUTION }}
-        java-version: ${{ inputs.JAVA_VERSION }}
+        java-version: ${{ inputs.JAVA_OVERIDE || steps.determine-java-version.outputs.java_major_version }}
         cache: ${{ inputs.JAVA_CACHE }}
         server-id: ${{ inputs.JAVA_REPOSITORY_ID }}
         server-username: ${{ inputs.JAVA_REPOSITORY_USER }}

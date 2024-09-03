@@ -55,7 +55,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
      * @throws InvalidSubConfigurationException if a source configuration is invalid in some way
      */
     @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
-    public MultiSectionConfiguration(final List<ConfigurationSection> sourceConfigs) throws KeyConflictException, InvalidSubConfigurationException {
+    public MultiSectionConfiguration(final List<? extends ConfigurationSection> sourceConfigs) throws KeyConflictException, InvalidSubConfigurationException {
         super(new MemoryConfiguration(), new MultiConfigurationHandler());
         checkSourceConfigs(sourceConfigs);
         ((MultiConfigurationHandler) handler).setConsumer(getSetConsumer());
@@ -71,7 +71,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
         }
     }
 
-    private void checkSourceConfigs(final List<ConfigurationSection> sourceConfigs) throws InvalidSubConfigurationException {
+    private void checkSourceConfigs(final List<? extends ConfigurationSection> sourceConfigs) throws InvalidSubConfigurationException {
         for (final ConfigurationSection sourceConfig : sourceConfigs) {
             final Configuration root = sourceConfig.getRoot();
             if (root == null) {
@@ -119,7 +119,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
      *
      * @param sourceConfigs the configs that should represent this config
      */
-    private void buildKeyIndex(final List<ConfigurationSection> sourceConfigs) {
+    private void buildKeyIndex(final List<? extends ConfigurationSection> sourceConfigs) {
         sourceConfigs.forEach(sourceConfig -> sourceConfig.getKeys(true).stream()
                 .filter(sectionKey -> !sourceConfig.isConfigurationSection(sectionKey))
                 .forEach(sectionKey -> addToList(keyIndex, sectionKey, sourceConfig)));

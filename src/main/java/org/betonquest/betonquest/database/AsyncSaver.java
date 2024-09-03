@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * Saves the data to the database asynchronously.
  */
-@SuppressWarnings("PMD.DoNotUseThreads")
+@SuppressWarnings({"PMD.DoNotUseThreads", "PMD.AvoidSynchronizedStatement"})
 @SuppressFBWarnings("IS2_INCONSISTENT_SYNC")
 public class AsyncSaver extends Thread implements Listener, Saver {
 

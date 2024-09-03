@@ -508,7 +508,7 @@ public class Backpack implements Listener {
             Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
         }
 
-        @SuppressWarnings("NullAway")
+        @SuppressWarnings({"NullAway", "PMD.LocalVariableCouldBeFinal"})
         private ItemStack[] getContent(final int numberOfRows) throws InstructionParseException {
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int index = 0;

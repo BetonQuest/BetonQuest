@@ -49,7 +49,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -80,7 +80,7 @@ public class MenuConvIO extends ChatConvIO {
     private final List<Player> selectionCooldowns = new ArrayList<>();
 
     // Actions
-    protected Map<CONTROL, ACTION> controls = new HashMap<>();
+    protected Map<CONTROL, ACTION> controls = new EnumMap<>(CONTROL.class);
 
     protected String configControlCancel = "sneak";
 
@@ -106,6 +106,8 @@ public class MenuConvIO extends ChatConvIO {
     protected String configControlSelect = "jump,left_click";
 
     // Configuration
+    protected Integer configStartNewLines = 10;
+
     protected Integer configLineLength = 50;
 
     protected Integer configRefreshDelay = 180;
@@ -138,6 +140,8 @@ public class MenuConvIO extends ChatConvIO {
 
     protected boolean configNpcNameNewlineSeparator = true;
 
+    protected boolean configNpcTextFillNewLines = true;
+
     /**
      * The amount of ticks a player must wait before selecting another option after selecting an option.
      */
@@ -159,6 +163,7 @@ public class MenuConvIO extends ChatConvIO {
                 continue;
             }
 
+            configStartNewLines = section.getInt("start_new_lines", configStartNewLines);
             configLineLength = section.getInt("line_length", configLineLength);
             configRefreshDelay = section.getInt("refresh_delay", configRefreshDelay);
             configNpcWrap = section.getString("npc_wrap", configNpcWrap).replace('&', '§');
@@ -177,6 +182,7 @@ public class MenuConvIO extends ChatConvIO {
             configNpcNameAlign = section.getString("npc_name_align", configNpcNameAlign);
             configNpcNameFormat = section.getString("npc_name_format", configNpcNameFormat).replace('&', '§');
             configNpcNameNewlineSeparator = section.getBoolean("npc_name_newline_separator", configNpcNameNewlineSeparator);
+            configNpcTextFillNewLines = section.getBoolean("npc_text_fill_new_lines", configNpcTextFillNewLines);
             configSelectionCooldown = section.getInt("selectionCooldown");
         }
 
@@ -479,6 +485,7 @@ public class MenuConvIO extends ChatConvIO {
 
         // Build the displayOutput
         final StringBuilder displayBuilder = new StringBuilder();
+        displayBuilder.append(" \n".repeat(configStartNewLines));
 
         // If NPC name type is chat_top, show it
         if (NPC_NAME_TYPE_CHAT.equals(configNpcNameType)) {
@@ -502,9 +509,12 @@ public class MenuConvIO extends ChatConvIO {
             linesAvailable--;
         }
 
-        displayBuilder.append(String.join("\n", npcLines)).append('\n')
-                // Put clear lines between NPC text and Options
-                .append(" \n".repeat(linesAvailable));
+        displayBuilder.append(String.join("\n", npcLines)).append('\n');
+        if (configNpcTextFillNewLines) {
+            displayBuilder.append(" \n".repeat(linesAvailable));
+        } else {
+            displayBuilder.insert(0, " \n".repeat(linesAvailable));
+        }
 
         if (!options.isEmpty()) {
             // Show up arrow if options exist above our view

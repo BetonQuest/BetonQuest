@@ -44,6 +44,7 @@ public final class MobKillNotifier {
      * @param killer the {@link Profile} that killed the mob
      * @param killed the mob that was killed
      */
+    @SuppressWarnings("PMD.AvoidSynchronizedStatement")
     public static void addKill(final Profile killer, final Entity killed) {
         synchronized (MobKillNotifier.class) {
             if (instance == null) {

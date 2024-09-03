@@ -47,7 +47,7 @@ notify: |-
   theSame: "notify Hello %player%! io:chat"
 
   #This one displays a title and a subtitle:
-  myTitle: "notify This is a title.\nThis is a subtitle. io:title"
+  myTitle: "notify This is a title.\\nThis is a subtitle. io:title"
 
   #Plays a sound:
   mySound: "notify io:sound sound:x.y.z"
