@@ -119,49 +119,53 @@ In both cases, you can choose from the following conversation styles:
             
             ```YAML
             menu_conv_io:
-              line_length: 50 # (1)!
-              refresh_delay: 180 # (2)!
-              selectionCooldown: 10 # (3)!
+              start_new_lines: 10 # (1)!
+              line_length: 50 # (2)!
+              refresh_delay: 180 # (3)!
+              selectionCooldown: 10 # (4)!
             
-              npc_wrap: '&l &r' # (4)!
-              npc_text: '&l &r&f{npc_text}' # (5)!
-              npc_text_reset: '&f' # (6)!
-              option_wrap: '&r&l &l &l &l &r' # (7)!
-              option_text: '&l &l &l &l &r&8[ &b{option_text}&8 ]' # (8)!
-              option_text_reset: '&b' # (9)! 
-              option_selected: '&l &r &r&7»&r &8[ &f&n{option_text}&8 ]' # (10)!
-              option_selected_reset: '&f' # (11)!
-              option_selected_wrap: '&r&l &l &l &l &r&f&n' # (12)!
+              npc_wrap: '&l &r' # (5)!
+              npc_text: '&l &r&f{npc_text}' # (6)!
+              npc_text_reset: '&f' # (7)!
+              option_wrap: '&r&l &l &l &l &r' # (8)!
+              option_text: '&l &l &l &l &r&8[ &b{option_text}&8 ]' # (9)!
+              option_text_reset: '&b' # (10)! 
+              option_selected: '&l &r &r&7»&r &8[ &f&n{option_text}&8 ]' # (11)!
+              option_selected_reset: '&f' # (12)!
+              option_selected_wrap: '&r&l &l &l &l &r&f&n' # (13)!
             
-              control_select: jump,left_click # (13)!
-              control_cancel: sneak # (14)! 
-              control_move: scroll,move # (15)! 
+              control_select: jump,left_click # (14)!
+              control_cancel: sneak # (15)! 
+              control_move: scroll,move # (16)! 
             
-              npc_name_type: chat # (16)!
-              npc_name_align: center # (17)!
-              npc_name_format: '&e{npc_name}&r' # (18)!
-              npc_name_newline_separator: true # (19)!
+              npc_name_type: chat # (17)!
+              npc_name_align: center # (18)!
+              npc_name_format: '&e{npc_name}&r' # (19)!
+              npc_name_newline_separator: true # (20)!
+              npc_text_fill_new_lines: true # (21)!
             ```
             
-            1. Maximum size of a line till its wrapped.
-            2. Specify how many ticks to auto update display. Default 180.
-            3. The cooldown for selecting another option after selecting an option. Measured in ticks. 20 ticks = 1 second.
-            4. What text to prefix each new line in the NPC text that wraps.
-            5. How to write the NPC text. Replaces {1} with the npcs text.
-            6. When a color reset is found, what to replace it with.
-            7. What text to prefix each new line in an option that wraps.
-            8. How to write an option. Replaces {1} with the option text.
-            9. When a color reset is found, what to replace it with.
-            10. How to write a selected option. Replaces {1} with the option text.
-            11. When a color reset is found, what to replace it with.
-            12. What text to prefix each new line in a selected option that wraps.
-            13. Comma separated actions to select options. Can be any of `jump`, `left_click`, `sneak`.
-            14. Comma separated actions to cancel the conversation. Can be any of `jump`, `left_click`, `sneak`.
-            15. Comma separated actions to move the selection. Can be any of `move`, `scroll`.
-            16. Type of NPC name display. Can be one of: `none`, `chat`.
-            17. For npc name type of `chat`, how to align name. One of: `left`, `right`, `center`.
-            18. How to format the npc name.
-            19. Whether an empty line is inserted after the NPC's name if there is space leftover.
+            1. How many empty lines should be printed before the conversation starts.
+            2. Maximum size of a line till its wrapped.
+            3. Specify how many ticks to auto update display. Default 180.
+            4. The cooldown for selecting another option after selecting an option. Measured in ticks. 20 ticks = 1 second.
+            5. What text to prefix each new line in the NPC text that wraps.
+            6. How to write the NPC text. Replaces {1} with the npcs text.
+            7. When a color reset is found, what to replace it with.
+            8. What text to prefix each new line in an option that wraps.
+            9. How to write an option. Replaces {1} with the option text.
+            10. When a color reset is found, what to replace it with.
+            11. How to write a selected option. Replaces {1} with the option text.
+            12. When a color reset is found, what to replace it with.
+            13. What text to prefix each new line in a selected option that wraps.
+            14. Comma separated actions to select options. Can be any of `jump`, `left_click`, `sneak`.
+            15. Comma separated actions to cancel the conversation. Can be any of `jump`, `left_click`, `sneak`.
+            16. Comma separated actions to move the selection. Can be any of `move`, `scroll`.
+            17. Type of NPC name display. Can be one of: `none`, `chat`.
+            18. For npc name type of `chat`, how to align name. One of: `left`, `right`, `center`.
+            19. How to format the npc name.
+            20. Whether an empty line is inserted after the NPC's name if there is space leftover.
+            21. Weather to fill new lined between the NPC text and the player answer options
                                     
             | Text Variable   | Meaning               |
             |-----------------|-----------------------|

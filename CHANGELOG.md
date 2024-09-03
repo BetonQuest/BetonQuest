@@ -6,6 +6,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
+- new conversation options
+  - `start_new_lines` the amount of new lines that should be printed before the conversation starts
+  - `npc_text_fill_new_lines` should lined be filled between the NPC text and the player answer options
 ### Changed
 - `spawn` event now only spawn mobs and no other entities
 ### Deprecated
