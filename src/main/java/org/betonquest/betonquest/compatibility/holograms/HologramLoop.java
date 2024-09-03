@@ -167,6 +167,7 @@ public abstract class HologramLoop {
         return lines.stream().noneMatch(AbstractLine::isNotStaticText);
     }
 
+    @SuppressWarnings("PMD.LocalVariableCouldBeFinal")
     private ItemLine parseItemLine(final QuestPackage pack, final String line) throws InstructionParseException {
         try {
             final String[] args = line.substring(5).split(":");

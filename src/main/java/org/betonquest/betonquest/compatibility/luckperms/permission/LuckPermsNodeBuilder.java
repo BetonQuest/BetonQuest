@@ -58,6 +58,7 @@ public record LuckPermsNodeBuilder(List<VariableString> permissions, VariableStr
         return buildNodes;
     }
 
+    @SuppressWarnings("PMD.LocalVariableCouldBeFinal")
     private @NotNull TimeUnit getTimeUnit(final VariableString data, final Profile profile) throws QuestRuntimeException {
         final String time = data.getString(profile);
         TimeUnit unit;

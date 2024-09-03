@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 /**
  * Singleton class which provides Hologram
  */
+@SuppressWarnings("PMD.AvoidSynchronizedStatement")
 public final class HologramProvider implements Integrator {
     /**
      * Pattern to match an instruction variable in string
