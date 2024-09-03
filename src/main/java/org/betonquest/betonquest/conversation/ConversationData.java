@@ -242,7 +242,7 @@ public class ConversationData {
 
             if (conv.getText(Config.getLanguage(), resolvedPointer) == null) {
                 log.warn(conv.pack, "External pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
-                        + sourceOption + " option points to '" + targetOptionName + "' NPC option in '" + targetConvName
+                        + sourceOption + " points to '" + targetOptionName + "' NPC option in '" + targetConvName
                         + "' conversation from package '" + targetPack.getQuestPath() + "', but it does not exist.");
             }
         }
