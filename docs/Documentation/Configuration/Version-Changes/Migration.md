@@ -516,7 +516,7 @@ npc_holograms:
 BetonQuest had quoting support since November 2018, but unfortunately it was broken from the very start and also never properly documented.
 
 You probably don't need to change anything, but it is recommended to read how
-[quoting](../../Scripting/Quoting-&-YAML.md#Quoting) works.
+[quoting](../../Scripting/Quoting-&-YAML.md#quoting) works.
 
 If you are facing errors for instructions containing the double quote character `"` then you might need to escape them:
 

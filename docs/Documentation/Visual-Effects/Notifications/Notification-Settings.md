@@ -12,8 +12,8 @@ with unique options that allow you to customize them. Just take a look at this e
 
 ## Sending custom notifications
 
-A truly custom notification can be sent using the [`notify`](../../Scripting/Building-Blocks/Events-List.md#notification-notify) event at any time.
-Check out the [events documentation](../../Scripting/Building-Blocks/Events-List.md#notification-notify) to learn how.
+A truly custom notification can be sent using the [`notify`](../../Scripting/Building-Blocks/Events-List.md#sending-notifications-notify) event at any time.
+Check out the [events documentation](../../Scripting/Building-Blocks/Events-List.md#sending-notifications-notify) to learn how.
 
 ## Changing BetonQuest's built-in notifications
   
@@ -29,7 +29,7 @@ The Notify System can do much more than just changing messages, though:
 
 All notifications will be displayed using the ChatIO and without a sound by default. You need to use
 [notification categories](./Notification-IO's-&-Categories.md#categories) to change this behaviour.
-These categories are pretty much just pre-defined [NotifyIO settings](./Notification-IO's-&-Categories.md#notify-ios).    
+These categories are pretty much just pre-defined [NotifyIO settings](./Notification-IO's-&-Categories.md#available-notifyios).    
 Each notification in *messages.yml* has a special category with a reserved name assigned to it.
 
 For example, If you would like to have the "language_changed" notification displayed as an actionbar message, you define the following:
@@ -45,7 +45,7 @@ notifications:        #General header for all notification settings
     Therefore, you should probably create just one `notifications` section. We will improve this in BQ 2.0.**
 
 
-You can add any other [Notify IO setting](./Notification-IO's-&-Categories.md#notify-ios) to the category like so:
+You can add any other [Notify IO setting](./Notification-IO's-&-Categories.md#available-notifyios) to the category like so:
 ```YAML
 notifications:       
   language_changed:   

@@ -22,7 +22,7 @@ to be aware of. Alternatively you can install updated manual by your self.
 
 Read the [update](../Configuration.md#updating) section to correctly set up the Auto-Updater.
 
-For a production/live system it is recommended to [disable automatic updates](#enable-or-disable-auto-updates)
+For a production/live system it is recommended to [disable automatic updates](#enable-or-disable-automatic-updates)
 and to check out the [CHANGELOG](../../CHANGELOG.md) before you execute `/q update` for manual updates.
 
 !!! warning "Updating to 2.0"
