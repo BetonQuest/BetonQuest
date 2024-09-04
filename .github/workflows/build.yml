@@ -216,7 +216,7 @@ jobs:
               VERSIONS+=(DEV);
           
               OLD_DEV_VERSION=$(mike list --json DEV | awk -F\" '/version/{print $4}')
-              if [ "$TWO_DIGIT_VERSION" != "$OLD_DEV_VERSION" ] && [[ "$OLD_DEV_VERSION" == *"-DEV" ]]; then
+              if [ "$TWO_DIGIT_VERSION-DEV" != "$OLD_DEV_VERSION" ] && [[ "$OLD_DEV_VERSION" == *"-DEV" ]]; then
                 echo "mike delete $OLD_DEV_VERSION"
                 mike delete "$OLD_DEV_VERSION"
                 echo "mike alias ${OLD_DEV_VERSION%-DEV} $OLD_DEV_VERSION"
