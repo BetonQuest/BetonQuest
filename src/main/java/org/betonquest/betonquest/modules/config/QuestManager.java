@@ -90,7 +90,7 @@ public class QuestManager {
                 try {
                     quest.applyQuestTemplates(templates);
                 } catch (final InvalidConfigurationException e) {
-                    log.warn("Error while loading '" + packagesDir.getPath() + "'! Reason: " + e.getMessage(), e);
+                    log.warn("Error while loading QuestPackage '" + quest.getQuestPath() + "'! Reason: " + e.getMessage(), e);
                     return;
                 }
                 if (quest.getConfig().getBoolean("package.enabled", true)) {
