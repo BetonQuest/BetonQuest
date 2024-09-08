@@ -2,6 +2,8 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.take.MMOItemsTakeEventFactory;
+import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOItemsIntegrator implements Integrator {
@@ -14,6 +16,8 @@ public class MMOItemsIntegrator implements Integrator {
 
     @Override
     public void hook() {
+        final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
+
         plugin.registerConditions("mmoitem", MMOItemsItemCondition.class);
         plugin.registerConditions("mmohand", MMOItemsHandCondition.class);
 
@@ -22,7 +26,7 @@ public class MMOItemsIntegrator implements Integrator {
         plugin.registerObjectives("mmoitemapplygem", MMOItemsApplyGemObjective.class);
 
         plugin.registerEvents("mmoitemgive", MMOItemsGiveEvent.class);
-        plugin.registerEvents("mmoitemtake", MMOItemsTakeEvent.class);
+        questRegistries.getEventTypes().register("mmoitemtake", new MMOItemsTakeEventFactory(plugin.getLoggerFactory()));
     }
 
     @Override
