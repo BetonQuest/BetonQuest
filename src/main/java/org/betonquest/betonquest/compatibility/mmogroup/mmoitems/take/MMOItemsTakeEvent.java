@@ -69,7 +69,7 @@ public class MMOItemsTakeEvent extends AbstractTakeEvent {
         final int deleteAmount = deleteAmountVar.getValue(profile).intValue();
         neededDeletions.put(profile.getProfileUUID(), deleteAmount);
 
-        checkSelectedTypes(profile.getPlayer());
+        checkSelectedTypes(profile);
 
         final ItemStack item = MMOItemsUtils.getMMOItemStack(itemType, itemID);
         final String itemName = item.getItemMeta().getDisplayName();

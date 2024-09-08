@@ -49,7 +49,7 @@ public class TakeEvent extends AbstractTakeEvent {
             final int deleteAmount = item.getAmount().getValue(profile).intValue();
             neededDeletions.put(profile.getProfileUUID(), Pair.of(questItem, deleteAmount));
 
-            checkSelectedTypes(profile.getPlayer());
+            checkSelectedTypes(profile);
             final String itemName = questItem.getName() == null
                     ? new ItemStack(questItem.getMaterial()).getItemMeta().getDisplayName()
                     : questItem.getName();

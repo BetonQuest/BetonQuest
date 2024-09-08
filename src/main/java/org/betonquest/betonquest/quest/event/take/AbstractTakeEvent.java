@@ -5,8 +5,6 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.quest.event.NotificationSender;
-import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -43,44 +41,39 @@ public abstract class AbstractTakeEvent implements OnlineEvent {
     }
 
     /**
-     * Check the selected types for the player.
+     * Check the selected types for the profile.
      *
-     * @param player the player to check the types for
+     * @param profile the profile to check the types for
      */
-    protected void checkSelectedTypes(final Player player) {
+    protected void checkSelectedTypes(final OnlineProfile profile) {
         for (final CheckType type : checkOrder) {
             switch (type) {
-                case INVENTORY:
-                    checkInventory(player);
-                    break;
-                case ARMOR:
-                    checkArmor(player);
-                    break;
-                case OFFHAND:
-                    checkOffhand(player);
-                    break;
-                case BACKPACK:
-                    checkBackpack(PlayerConverter.getID(player));
-                    break;
+                case INVENTORY -> checkInventory(profile);
+                case ARMOR -> checkArmor(profile);
+                case OFFHAND -> checkOffhand(profile);
+                case BACKPACK -> checkBackpack(profile);
             }
         }
     }
 
-    private void checkInventory(final Player player) {
+    private void checkInventory(final OnlineProfile profile) {
+        final Player player = profile.getPlayer();
         final ItemStack[] inventory = player.getInventory().getStorageContents();
-        final ItemStack[] newInv = takeDesiredAmount(PlayerConverter.getID((OfflinePlayer) player), inventory);
+        final ItemStack[] newInv = takeDesiredAmount(profile, inventory);
         player.getInventory().setStorageContents(newInv);
     }
 
-    private void checkArmor(final Player player) {
+    private void checkArmor(final OnlineProfile profile) {
+        final Player player = profile.getPlayer();
         final ItemStack[] armorSlots = player.getInventory().getArmorContents();
-        final ItemStack[] newArmor = takeDesiredAmount(PlayerConverter.getID((OfflinePlayer) player), armorSlots);
+        final ItemStack[] newArmor = takeDesiredAmount(profile, armorSlots);
         player.getInventory().setArmorContents(newArmor);
     }
 
-    private void checkOffhand(final Player player) {
+    private void checkOffhand(final OnlineProfile profile) {
+        final Player player = profile.getPlayer();
         final ItemStack offhand = player.getInventory().getItemInOffHand();
-        final ItemStack[] newOffhand = takeDesiredAmount(PlayerConverter.getID((OfflinePlayer) player), offhand);
+        final ItemStack[] newOffhand = takeDesiredAmount(profile, offhand);
         player.getInventory().setItemInOffHand(newOffhand[0]);
     }
 
