@@ -1,15 +1,15 @@
-package org.betonquest.betonquest.events;
+package org.betonquest.betonquest.quest.event.take;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.item.QuestItem;
+import org.betonquest.betonquest.quest.event.NotificationSender;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -18,33 +18,43 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Removes items from player's inventory and/or backpack
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class TakeEvent extends AbstractTakeEvent {
-    protected final Map<UUID, Pair<QuestItem, Integer>> neededDeletions = new ConcurrentHashMap<>();
 
-    protected Item[] questItems;
+    /**
+     * The items to be removed.
+     */
+    private final Instruction.Item[] questItems;
 
-    public TakeEvent(final Instruction instruction) throws InstructionParseException {
-        super(instruction);
-        questItems = instruction.getItemList();
+    /**
+     * A map to keep track of the needed deletions for each player.
+     */
+    private final Map<UUID, Pair<QuestItem, Integer>> neededDeletions = new ConcurrentHashMap<>();
+
+    /**
+     * Constructs a new TakeEvent.
+     *
+     * @param questItems         the items to be removed
+     * @param checkOrder         the order in which the checks should be performed
+     * @param notificationSender the notification sender to use
+     */
+    public TakeEvent(final Instruction.Item[] questItems, final List<CheckType> checkOrder, final NotificationSender notificationSender) {
+        super(checkOrder, notificationSender);
+        this.questItems = questItems.clone();
     }
 
-    @SuppressWarnings("PMD.PreserveStackTrace")
     @Override
-    protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
-        for (final Item item : questItems) {
+    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+        for (final Instruction.Item item : questItems) {
             final QuestItem questItem = item.getItem();
-            final int deleteAmount = item.getAmount().getInt(profile);
-            neededDeletions.put(onlineProfile.getProfileUUID(), Pair.of(questItem, deleteAmount));
+            final int deleteAmount = item.getAmount().getValue(profile).intValue();
+            neededDeletions.put(profile.getProfileUUID(), Pair.of(questItem, deleteAmount));
 
-            checkSelectedTypes(onlineProfile.getPlayer());
+            checkSelectedTypes(profile);
             final String itemName = questItem.getName() == null
                     ? new ItemStack(questItem.getMaterial()).getItemMeta().getDisplayName()
                     : questItem.getName();
-            notifyPlayer(onlineProfile, itemName, deleteAmount - neededDeletions.get(onlineProfile.getProfileUUID()).getRight());
+            notificationSender.sendNotification(profile, itemName, String.valueOf(deleteAmount - neededDeletions.get(profile.getProfileUUID()).getRight()));
         }
-        return null;
     }
 
     @Override
