@@ -117,7 +117,11 @@ public class QuestTemplate extends Quest {
             if (questTemplate == null) {
                 throw new InvalidConfigurationException("The template '" + template + "' does not exist");
             }
-            questTemplate.applyQuestTemplates(questTemplates);
+            try {
+                questTemplate.applyQuestTemplates(questTemplates);
+            } catch (final InvalidConfigurationException e) {
+                throw new InvalidConfigurationException("The template '" + template + "' could not be loaded! Reason: " + e.getMessage(), e);
+            }
             templateConfigs.add(questTemplate);
         }
         return templateConfigs;
