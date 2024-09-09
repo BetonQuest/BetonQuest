@@ -10,7 +10,7 @@ import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.id.VariableID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
+import org.betonquest.betonquest.quest.registry.type.TypeFactory;
 import org.betonquest.betonquest.quest.registry.type.VariableTypeRegistry;
 import org.jetbrains.annotations.Nullable;
 
@@ -68,7 +68,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable>
             return existingVariable;
         }
         final Instruction instructionVar = variableID.getInstruction();
-        final LegacyTypeFactory<Variable> variableFactory = types.getFactory(instructionVar.current());
+        final TypeFactory<Variable> variableFactory = types.getFactory(instructionVar.current());
         if (variableFactory == null) {
             throw new QuestException("Variable type " + instructionVar.current() + " is not registered");
         }

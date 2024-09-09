@@ -11,7 +11,7 @@ import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.item.typehandler.HandlerUtil;
-import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
+import org.betonquest.betonquest.quest.registry.type.TypeFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +71,7 @@ public class RunEventFactory implements EventFactory, StaticEventFactory {
      */
     private QuestEvent createEvent(final String instruction, final QuestPackage questPackage) throws QuestException {
         final String[] parts = HandlerUtil.getNNSplit(instruction, "Not enough arguments in internal event", " ");
-        final LegacyTypeFactory<QuestEvent> eventFactory = BetonQuest.getInstance().getQuestRegistries().getEventTypes().getFactory(parts[0]);
+        final TypeFactory<QuestEvent> eventFactory = BetonQuest.getInstance().getQuestRegistries().getEventTypes().getFactory(parts[0]);
         if (eventFactory == null) {
             throw new QuestException("Event type " + parts[0] + " is not registered, check if it's"
                     + " spelled correctly in internal event");
