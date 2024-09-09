@@ -4,9 +4,9 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
+import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.condition.OnlineProfileRequiredCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
@@ -52,8 +52,10 @@ public class AdvancementConditionFactory implements PlayerConditionFactory {
         }
         final Advancement advancement = Utils.getNN(Bukkit.getServer().getAdvancement(new NamespacedKey(split[0], split[1])),
                 "No such advancement: " + advancementString);
-        return new OnlineProfileRequiredCondition(loggerFactory.create(AdvancementCondition.class),
-                new PrimaryServerThreadPlayerCondition(new AdvancementCondition(advancement), data),
-                instruction.getPackage());
+        return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(
+                new AdvancementCondition(advancement),
+                loggerFactory.create(AdvancementCondition.class),
+                instruction.getPackage()
+        ), data);
     }
 }
