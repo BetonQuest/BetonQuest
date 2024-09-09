@@ -29,6 +29,6 @@ public class GlobalTagConditionFactory implements PlayerlessConditionFactory {
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws InstructionParseException {
         final String tag = Utils.addPackage(instruction.getPackage(), instruction.next());
-        return new GlobalTagCondition(betonQuest, tag);
+        return new GlobalTagCondition(betonQuest.getGlobalData(), tag);
     }
 }

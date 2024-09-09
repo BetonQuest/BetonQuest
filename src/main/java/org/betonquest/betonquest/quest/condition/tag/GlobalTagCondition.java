@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.tag;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
+import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 /**
@@ -10,9 +10,9 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 public class GlobalTagCondition implements PlayerlessCondition {
 
     /**
-     * The BetonQuest instance.
+     * The global data.
      */
-    private final BetonQuest betonQuest;
+    private final GlobalData globalData;
 
     /**
      * The tag to check for.
@@ -22,16 +22,16 @@ public class GlobalTagCondition implements PlayerlessCondition {
     /**
      * Constructor for the tag condition.
      *
-     * @param betonQuest the BetonQuest instance
+     * @param globalData the global data
      * @param tag        the tag to check for
      */
-    public GlobalTagCondition(final BetonQuest betonQuest, final String tag) {
-        this.betonQuest = betonQuest;
+    public GlobalTagCondition(final GlobalData globalData, final String tag) {
+        this.globalData = globalData;
         this.tag = tag;
     }
 
     @Override
     public boolean check() throws QuestRuntimeException {
-        return betonQuest.getGlobalData().hasTag(tag);
+        return globalData.hasTag(tag);
     }
 }
