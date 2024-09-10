@@ -28,6 +28,8 @@ import org.betonquest.betonquest.objective.LocationObjective;
 import org.betonquest.betonquest.objective.LoginObjective;
 import org.betonquest.betonquest.objective.LogoutObjective;
 import org.betonquest.betonquest.objective.MobKillObjective;
+import org.betonquest.betonquest.objective.NpcInteractObjective;
+import org.betonquest.betonquest.objective.NpcRangeObjective;
 import org.betonquest.betonquest.objective.PasswordObjective;
 import org.betonquest.betonquest.objective.PickupObjective;
 import org.betonquest.betonquest.objective.ResourcePackObjective;
@@ -68,6 +70,8 @@ import org.betonquest.betonquest.quest.condition.logik.AlternativeConditionFacto
 import org.betonquest.betonquest.quest.condition.logik.ConjunctionConditionFactory;
 import org.betonquest.betonquest.quest.condition.looking.LookingAtConditionFactory;
 import org.betonquest.betonquest.quest.condition.moon.MoonCycleConditionFactory;
+import org.betonquest.betonquest.quest.condition.npc.NpcDistanceConditionFactory;
+import org.betonquest.betonquest.quest.condition.npc.NpcLocationConditionFactory;
 import org.betonquest.betonquest.quest.condition.number.NumberCompareConditionFactory;
 import org.betonquest.betonquest.quest.condition.objective.ObjectiveConditionFactory;
 import org.betonquest.betonquest.quest.condition.party.PartyConditionFactory;
@@ -125,6 +129,7 @@ import org.betonquest.betonquest.quest.event.logic.FirstEventFactory;
 import org.betonquest.betonquest.quest.event.logic.IfElseEventFactory;
 import org.betonquest.betonquest.quest.event.notify.NotifyAllEventFactory;
 import org.betonquest.betonquest.quest.event.notify.NotifyEventFactory;
+import org.betonquest.betonquest.quest.event.npc.NpcTeleportEventFactory;
 import org.betonquest.betonquest.quest.event.objective.ObjectiveEventFactory;
 import org.betonquest.betonquest.quest.event.party.PartyEventFactory;
 import org.betonquest.betonquest.quest.event.point.DeleteGlobalPointEventFactory;
@@ -161,6 +166,7 @@ import org.betonquest.betonquest.quest.variable.location.LocationVariableFactory
 import org.betonquest.betonquest.quest.variable.math.MathVariableFactory;
 import org.betonquest.betonquest.quest.variable.name.NpcNameVariableFactory;
 import org.betonquest.betonquest.quest.variable.name.PlayerNameVariableFactory;
+import org.betonquest.betonquest.quest.variable.npc.NpcVariableFactory;
 import org.betonquest.betonquest.quest.variable.objective.ObjectivePropertyVariableFactory;
 import org.betonquest.betonquest.quest.variable.point.GlobalPointVariableFactory;
 import org.betonquest.betonquest.quest.variable.point.PointVariableFactory;
@@ -176,7 +182,7 @@ import java.time.InstantSource;
 /**
  * Registers the Conditions, Events, Objectives and Variables that come with BetonQuest.
  */
-@SuppressWarnings("PMD.CouplingBetweenObjects")
+@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.NcssCount"})
 public class CoreQuestTypes {
     /**
      * Logger Factory to create new custom Logger from.
@@ -288,6 +294,8 @@ public class CoreQuestTypes {
         conditionTypes.register("location", new LocationConditionFactory(data, loggerFactory));
         conditionTypes.register("looking", new LookingAtConditionFactory(loggerFactory, data));
         conditionTypes.registerCombined("mooncycle", new MoonCycleConditionFactory(data, variableProcessor));
+        conditionTypes.register("npcdistance", new NpcDistanceConditionFactory(betonQuest.getNpcProcessor(), data, loggerFactory));
+        conditionTypes.registerCombined("npclocation", new NpcLocationConditionFactory(betonQuest.getNpcProcessor(), data));
         conditionTypes.registerCombined("numbercompare", new NumberCompareConditionFactory());
         conditionTypes.register("objective", new ObjectiveConditionFactory(questTypeAPI));
         conditionTypes.registerCombined("or", new AlternativeConditionFactory(loggerFactory));
@@ -349,6 +357,7 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("log", new LogEventFactory(loggerFactory));
         eventTypes.register("notify", new NotifyEventFactory(loggerFactory, data, dataStorage));
         eventTypes.registerCombined("notifyall", new NotifyAllEventFactory(loggerFactory, data, dataStorage));
+        eventTypes.registerCombined("npcteleport", new NpcTeleportEventFactory(betonQuest.getNpcProcessor(), data));
         eventTypes.registerCombined("objective", new ObjectiveEventFactory(betonQuest, loggerFactory, questTypeAPI));
         eventTypes.register("opsudo", new OpSudoEventFactory(loggerFactory, data));
         eventTypes.register("party", new PartyEventFactory(loggerFactory, questTypeAPI));
@@ -394,6 +403,8 @@ public class CoreQuestTypes {
         objectiveTypes.register("login", LoginObjective.class);
         objectiveTypes.register("logout", LogoutObjective.class);
         objectiveTypes.register("mobkill", MobKillObjective.class);
+        objectiveTypes.register("npcinteract", NpcInteractObjective.class);
+        objectiveTypes.register("npcrange", NpcRangeObjective.class);
         objectiveTypes.register("password", PasswordObjective.class);
         objectiveTypes.register("pickup", PickupObjective.class);
         objectiveTypes.register("ride", RideObjective.class);
@@ -412,6 +423,7 @@ public class CoreQuestTypes {
 
     private void registerVariables(final VariableTypeRegistry variables) {
         variables.register("condition", new ConditionVariableFactory(questTypeAPI, dataStorage));
+        variables.register("conversation", new NpcNameVariableFactory(dataStorage));
         variables.registerCombined("eval", new EvalVariableFactory(variableProcessor));
         variables.register("globalpoint", new GlobalPointVariableFactory(globalData, loggerFactory.create(GlobalPointVariableFactory.class)));
         variables.register("globaltag", new GlobalTagVariableFactory(globalData));
@@ -419,7 +431,7 @@ public class CoreQuestTypes {
         variables.register("itemdurability", new ItemDurabilityVariableFactory());
         variables.register("location", new LocationVariableFactory());
         variables.registerCombined("math", new MathVariableFactory(variableProcessor));
-        variables.register("npc", new NpcNameVariableFactory(dataStorage));
+        variables.register("npc", new NpcVariableFactory(betonQuest.getNpcProcessor()));
         variables.register("objective", new ObjectivePropertyVariableFactory(questTypeAPI));
         variables.register("point", new PointVariableFactory(dataStorage, loggerFactory.create(PointVariableFactory.class)));
         variables.register("player", new PlayerNameVariableFactory());
