@@ -44,6 +44,7 @@ import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.feature.CoreFeatureFactories;
 import org.betonquest.betonquest.item.QuestItemHandler;
 import org.betonquest.betonquest.kernel.processor.QuestRegistry;
+import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.FeatureRegistries;
 import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
@@ -782,5 +783,14 @@ public class BetonQuest extends JavaPlugin {
      */
     public VariableProcessor getVariableProcessor() {
         return questRegistry.variables();
+    }
+
+    /**
+     * Get the NpcProcessor instance.
+     *
+     * @return the NpcProcessor to start npc conversations
+     */
+    public NpcProcessor getNpcProcessor() {
+        return questRegistry.npcs();
     }
 }

@@ -1,15 +1,14 @@
-package org.betonquest.betonquest.compatibility.citizens.objective;
+package org.betonquest.betonquest.objective;
 
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -21,13 +20,18 @@ import java.util.UUID;
 import java.util.function.BiPredicate;
 
 /**
- * The player has to reach certain radius around a specified NPC.
+ * The player has to reach certain radius around a specified Npc.
  */
-public class NPCRangeObjective extends Objective {
+public class NpcRangeObjective extends Objective {
     /**
-     * Stores the relevant NPC IDs.
+     * Processor to get npc.
      */
-    private final List<Integer> npcIds;
+    private final NpcProcessor npcProcessor;
+
+    /**
+     * Stores the relevant Npc Ids to get their locations.
+     */
+    private final List<NpcID> npcIds;
 
     /**
      * Maximal distance between player and NPC.
@@ -55,24 +59,13 @@ public class NPCRangeObjective extends Objective {
      * @param instruction the user-provided instruction
      * @throws QuestException if the instruction is invalid
      */
-    public NPCRangeObjective(final Instruction instruction) throws QuestException {
+    public NpcRangeObjective(final Instruction instruction) throws QuestException {
         super(instruction);
-        this.npcIds = new ArrayList<>();
-        for (final String npcIdString : instruction.getArray()) {
-            try {
-                final int npcId = Integer.parseInt(npcIdString);
-                if (npcId < 0) {
-                    throw new QuestException("NPC ID cannot be less than 0");
-                }
-                npcIds.add(npcId);
-            } catch (final NumberFormatException exception) {
-                throw new QuestException("NPC ID cannot be parsed to a Number", exception);
-            }
-        }
-        final Trigger trigger = instruction.getEnum(Trigger.class);
-        playersInRange = new HashMap<>();
-        checkStuff = getStuff(trigger);
-        radius = instruction.get(VariableNumber::new);
+        this.npcProcessor = BetonQuest.getInstance().getNpcProcessor();
+        this.npcIds = instruction.getIDList(NpcID::new);
+        this.playersInRange = new HashMap<>();
+        this.checkStuff = getStuff(instruction.getEnum(Trigger.class));
+        this.radius = instruction.get(VariableNumber::new);
     }
 
     private BiPredicate<UUID, Boolean> getStuff(final Trigger trigger) {
@@ -119,21 +112,17 @@ public class NPCRangeObjective extends Objective {
 
     private void loop() throws QuestException {
         final List<UUID> profilesInside = new ArrayList<>();
-        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
-        for (final int npcId : npcIds) {
-            final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
-            if (npc == null) {
-                throw new QuestException("NPC with ID " + npcId + " does not exist");
-            }
-            for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
-                if (!profilesInside.contains(onlineProfile.getProfileUUID()) && isInside(onlineProfile, npc.getStoredLocation())) {
+        final List<OnlineProfile> allOnlineProfiles = BetonQuest.getInstance().getProfileProvider().getOnlineProfiles();
+        for (final NpcID npcId : npcIds) {
+            final Location npcLocation = npcProcessor.getNpc(npcId).getLocation();
+            for (final OnlineProfile onlineProfile : allOnlineProfiles) {
+                if (!profilesInside.contains(onlineProfile.getProfileUUID()) && isInside(onlineProfile, npcLocation)) {
                     profilesInside.add(onlineProfile.getProfileUUID());
                 }
             }
         }
-        for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
-            checkPlayer(onlineProfile.getProfileUUID(), onlineProfile,
-                    profilesInside.contains(onlineProfile.getProfileUUID()));
+        for (final OnlineProfile onlineProfile : allOnlineProfiles) {
+            checkPlayer(onlineProfile.getProfileUUID(), onlineProfile, profilesInside.contains(onlineProfile.getProfileUUID()));
         }
     }
 
@@ -148,7 +137,6 @@ public class NPCRangeObjective extends Objective {
         return distanceSquared <= radiusSquared;
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     private void checkPlayer(final UUID uuid, final Profile profile, final boolean inside) {
         if (checkStuff.test(uuid, inside)) {
             return;
@@ -191,7 +179,7 @@ public class NPCRangeObjective extends Objective {
          */
         INSIDE,
         /**
-         * The player ha to be outside the range.
+         * The player has to be outside the range.
          */
         OUTSIDE
     }

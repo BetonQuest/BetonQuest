@@ -11,6 +11,7 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
+import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
@@ -63,6 +64,11 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
     private final InterceptorRegistry interceptorRegistry;
 
     /**
+     * Processor to get Npcs.
+     */
+    private final NpcProcessor npcProcessor;
+
+    /**
      * Create a new Conversation Data Processor to load and process conversation data.
      *
      * @param log                 the custom logger for this class
@@ -73,11 +79,12 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
      * @param playerDataStorage   the player data storage to get the player language
      * @param convIORegistry      the registry for available ConversationIOs
      * @param interceptorRegistry the registry for available Interceptors
+     * @param npcProcessor        the processor to get npcs
      */
     public ConversationProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                                  final BetonQuest plugin, final VariableProcessor variableProcessor,
                                  final MessageParser messageParser, final PlayerDataStorage playerDataStorage,
-                                 final ConversationIORegistry convIORegistry, final InterceptorRegistry interceptorRegistry) {
+                                 final ConversationIORegistry convIORegistry, final InterceptorRegistry interceptorRegistry, final NpcProcessor npcProcessor) {
         super(log, "Conversation", "conversations");
         this.loggerFactory = loggerFactory;
         this.plugin = plugin;
@@ -86,6 +93,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         this.playerDataStorage = playerDataStorage;
         this.convIORegistry = convIORegistry;
         this.interceptorRegistry = interceptorRegistry;
+        this.npcProcessor = npcProcessor;
     }
 
     @Override
@@ -101,6 +109,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         final List<EventID> finalEvents = helper.parseFinalEvents();
         final ConversationData.PublicData publicData = new ConversationData.PublicData(convName, quester, blockMovement, finalEvents, convIO, interceptor);
 
+        npcProcessor.loadConversation(new ConversationID(pack, convName), section);
         return new ConversationData(loggerFactory.create(ConversationData.class), plugin.getQuestTypeAPI(), plugin.getFeatureAPI(),
                 variableProcessor, messageParser, playerDataStorage, pack, section, publicData);
     }
