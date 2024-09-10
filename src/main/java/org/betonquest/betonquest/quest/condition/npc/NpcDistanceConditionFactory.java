@@ -1,21 +1,28 @@
-package org.betonquest.betonquest.compatibility.citizens.condition.distance;
+package org.betonquest.betonquest.quest.condition.npc;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
+import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
+import org.betonquest.betonquest.quest.registry.processor.NpcProcessor;
 
 /**
- * Factory to create {@link NPCDistanceCondition}s from {@link Instruction}s.
+ * Factory to create {@link NpcDistanceCondition}s from {@link Instruction}s.
  */
-public class NPCDistanceConditionFactory implements PlayerConditionFactory {
+public class NpcDistanceConditionFactory implements PlayerConditionFactory {
     /**
-     * Data used for primary server thread access.
+     * Processor to get npc.
+     */
+    private final NpcProcessor npcProcessor;
+
+    /**
+     * Data used for condition check on the primary server thread.
      */
     private final PrimaryServerThreadData data;
 
@@ -27,24 +34,24 @@ public class NPCDistanceConditionFactory implements PlayerConditionFactory {
     /**
      * Create a new factory for NPC Distance Conditions.
      *
-     * @param data          the data for primary server thread access
-     * @param loggerFactory the logger factory to create class specific logger
+     * @param npcProcessor  the processor to get npc
+     * @param data          the data used for checking the condition on the main thread
+     * @param loggerFactory logger factory to use
      */
-    public NPCDistanceConditionFactory(final PrimaryServerThreadData data, final BetonQuestLoggerFactory loggerFactory) {
+    public NpcDistanceConditionFactory(final NpcProcessor npcProcessor, final PrimaryServerThreadData data,
+                                       final BetonQuestLoggerFactory loggerFactory) {
+        this.npcProcessor = npcProcessor;
         this.data = data;
         this.loggerFactory = loggerFactory;
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final int npcId = instruction.getInt();
-        if (npcId < 0) {
-            throw new QuestException("NPC ID cannot be less than 0");
-        }
+        final NpcID npcId = instruction.getID(NpcID::new);
         final VariableNumber distance = instruction.get(VariableNumber::new);
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(
-                new NPCDistanceCondition(npcId, distance),
-                loggerFactory.create(NPCDistanceCondition.class),
+                new NpcDistanceCondition(npcProcessor, npcId, distance),
+                loggerFactory.create(NpcDistanceCondition.class),
                 instruction.getPackage()
         ), data);
     }

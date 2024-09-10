@@ -1,45 +1,46 @@
-package org.betonquest.betonquest.compatibility.citizens;
+package org.betonquest.betonquest.api.quest.npc.conversation;
 
-import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.id.ConversationID;
 import org.bukkit.Location;
 
 /**
- * Represents a conversation with NPC
+ * Represents a conversation with Npc.
+ *
+ * @param <T> the original npc type
  */
-public class CitizensConversation extends Conversation {
+public class NpcConversation<T> extends Conversation {
     /**
-     * NPC used in this Conversation.
+     * Npc used in this Conversation.
      */
-    private final NPC npc;
+    private final Npc<T> npc;
 
     /**
      * Starts a new conversation between player and npc at given location.
      *
      * @param log            the logger that will be used for logging
      * @param pluginMessage  the {@link PluginMessage} instance
-     * @param onlineProfile  the {@link OnlineProfile} of the player
+     * @param onlineProfile  the profile of the player
      * @param conversationID ID of the conversation
      * @param center         location where the conversation has been started
-     * @param npc            the NPC used for this conversation
+     * @param npc            the Npc used for this conversation
      */
-    public CitizensConversation(final BetonQuestLogger log, final PluginMessage pluginMessage,
-                                final OnlineProfile onlineProfile, final ConversationID conversationID,
-                                final Location center, final NPC npc) {
+    public NpcConversation(final BetonQuestLogger log, final PluginMessage pluginMessage, final OnlineProfile onlineProfile, final ConversationID conversationID,
+                           final Location center, final Npc<T> npc) {
         super(log, pluginMessage, onlineProfile, conversationID, center);
         this.npc = npc;
     }
 
     /**
-     * This will return the NPC associated with this conversation.
+     * This will return the Npc associated with this conversation.
      *
-     * @return the NPC or null if it's too early
+     * @return the BetonQuest Npc
      */
-    public NPC getNPC() {
+    public Npc<T> getNPC() {
         return npc;
     }
 }

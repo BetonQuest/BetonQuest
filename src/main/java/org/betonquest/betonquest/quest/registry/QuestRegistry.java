@@ -12,6 +12,7 @@ import org.betonquest.betonquest.quest.registry.processor.CancellerProcessor;
 import org.betonquest.betonquest.quest.registry.processor.ConditionProcessor;
 import org.betonquest.betonquest.quest.registry.processor.ConversationProcessor;
 import org.betonquest.betonquest.quest.registry.processor.EventProcessor;
+import org.betonquest.betonquest.quest.registry.processor.NpcProcessor;
 import org.betonquest.betonquest.quest.registry.processor.ObjectiveProcessor;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.schedule.EventScheduling;
@@ -64,8 +65,13 @@ public class QuestRegistry {
     private final ConversationProcessor conversationProcessor;
 
     /**
+     * Npc getting and logic.
+     */
+    private final NpcProcessor npcProcessor;
+
+    /**
      * Create a new Registry for storing and using Conditions, Events, Objectives, Variables,
-     * Conversations and Quest canceller.
+     * Conversations, Npcs and Quest cancellers.
      *
      * @param log                 the custom logger for this registry
      * @param loggerFactory       the logger factory used for new custom logger instances
@@ -83,7 +89,8 @@ public class QuestRegistry {
         this.objectiveProcessor = new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), questTypeRegistries.objective());
         this.variableProcessor = new VariableProcessor(loggerFactory.create(VariableProcessor.class), questTypeRegistries.variable());
         this.cancellerProcessor = new CancellerProcessor(loggerFactory.create(CancellerProcessor.class), pluginMessage);
-        this.conversationProcessor = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), plugin);
+        this.npcProcessor = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, questTypeRegistries.npc(), pluginMessage, plugin);
+        this.conversationProcessor = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), plugin, npcProcessor);
     }
 
     /**
@@ -100,6 +107,7 @@ public class QuestRegistry {
         objectiveProcessor.clear();
         variableProcessor.clear();
         cancellerProcessor.clear();
+        npcProcessor.clear();
         conversationProcessor.clear();
 
         for (final QuestPackage pack : packages) {
@@ -109,6 +117,7 @@ public class QuestRegistry {
             eventProcessor.load(pack);
             conditionProcessor.load(pack);
             objectiveProcessor.load(pack);
+            npcProcessor.load(pack);
             conversationProcessor.load(pack);
             eventScheduling.loadData(pack);
 
@@ -118,7 +127,8 @@ public class QuestRegistry {
         conversationProcessor.checkExternalPointers();
 
         log.info("There are " + conditionProcessor.size() + " conditions, " + eventProcessor.size() + " events, "
-                + objectiveProcessor.size() + " objectives and " + conversationProcessor.size() + " conversations loaded from "
+                + objectiveProcessor.size() + " objectives, " + npcProcessor.size() + " npcs and "
+                + conversationProcessor.size() + " conversations loaded from "
                 + packages.size() + " packages.");
 
         eventScheduling.startAll();
@@ -133,6 +143,7 @@ public class QuestRegistry {
         return Map.ofEntries(
                 conditionProcessor.metricsSupplier(),
                 eventProcessor.metricsSupplier(),
+                npcProcessor.metricsSupplier(),
                 objectiveProcessor.metricsSupplier(),
                 variableProcessor.metricsSupplier()
         );
@@ -197,5 +208,14 @@ public class QuestRegistry {
      */
     public ConversationProcessor conversations() {
         return conversationProcessor;
+    }
+
+    /**
+     * Gets the class processing quest conversation logic.
+     *
+     * @return conversation logic
+     */
+    public NpcProcessor npcs() {
+        return npcProcessor;
     }
 }
