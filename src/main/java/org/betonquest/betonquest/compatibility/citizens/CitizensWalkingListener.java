@@ -7,6 +7,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.PlayerConversationEndEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerConversationStartEvent;
+import org.betonquest.betonquest.api.quest.npc.conversation.NpcConversation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -18,7 +19,7 @@ import java.util.Map;
 
 /**
  * Prevents Citizens NPCs from walking around when in conversation with the
- * player
+ * player.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class CitizensWalkingListener implements Listener {
@@ -30,7 +31,7 @@ public class CitizensWalkingListener implements Listener {
 
     /**
      * Creates new listener which prevents Citizens NPCs from walking around
-     * when in conversation
+     * when in conversation.
      */
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public CitizensWalkingListener() {
@@ -47,13 +48,12 @@ public class CitizensWalkingListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onConversationStart(final PlayerConversationStartEvent event) {
-        if (event.getConversation() instanceof CitizensConversation) {
+        if (event.getConversation() instanceof final NpcConversation<?> npcConv
+                && npcConv.getNPC().getOriginal() instanceof final NPC npc) {
             new BukkitRunnable() {
 
                 @Override
                 public void run() {
-                    final CitizensConversation conv = (CitizensConversation) event.getConversation();
-                    final NPC npc = conv.getNPC();
                     if (npcs.containsKey(npc)) {
                         npcs.computeIfPresent(npc, (k, pair) -> Pair.of(pair.getKey() + 1, pair.getValue()));
                     } else {
@@ -62,7 +62,7 @@ public class CitizensWalkingListener implements Listener {
                             npcs.put(npc, Pair.of(1, nav.getTargetAsLocation()));
                             nav.setPaused(true);
                             nav.cancelNavigation();
-                            nav.setTarget(conv.getNPC().getEntity().getLocation());
+                            nav.setTarget(npc.getEntity().getLocation());
                             nav.setPaused(true);
                             nav.cancelNavigation();
                         }
@@ -75,13 +75,12 @@ public class CitizensWalkingListener implements Listener {
     @SuppressWarnings("PMD.CognitiveComplexity")
     @EventHandler(ignoreCancelled = true)
     public void onConversationEnd(final PlayerConversationEndEvent event) {
-        if (event.getConversation() instanceof CitizensConversation) {
+        if (event.getConversation() instanceof final NpcConversation<?> npcConv
+                && npcConv.getNPC().getOriginal() instanceof final NPC npc) {
             new BukkitRunnable() {
 
                 @Override
                 public void run() {
-                    final CitizensConversation conv = (CitizensConversation) event.getConversation();
-                    final NPC npc = conv.getNPC();
                     if (npcs.containsKey(npc)) {
                         final Pair<Integer, Location> pair = npcs.get(npc);
                         final int conversationsAmount = pair.getKey() - 1;
@@ -112,7 +111,7 @@ public class CitizensWalkingListener implements Listener {
     }
 
     /**
-     * Sets a new target location to which the npc should move when the conversations end
+     * Sets a new target location to which the npc should move when the conversations end.
      * <p>
      * Check {@link #isMovementPaused(NPC)} before to make sure the npcs movement is currently paused
      *

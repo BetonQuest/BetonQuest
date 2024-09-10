@@ -1,7 +1,7 @@
-package org.betonquest.betonquest.compatibility.citizens.variable.npc;
+package org.betonquest.betonquest.quest.variable.npc;
 
-import net.citizensnpcs.api.npc.NPC;
 import org.apache.commons.lang3.function.TriFunction;
+import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.quest.variable.location.LocationFormationMode;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,19 +17,19 @@ public enum Argument {
     /**
      * Retrieve the full name of the NPC.
      */
-    FULL_NAME((npc, loc, dec) -> npc.getFullName()),
+    FULL_NAME((npc, loc, dec) -> npc.getFormattedName()),
 
     /**
      * Retrieve the location of the NPC with the given location formation and decimal places.
      */
-    LOCATION((npc, loc, dec) -> loc.getFormattedLocation(npc.getStoredLocation(), dec));
+    LOCATION((npc, loc, dec) -> loc.getFormattedLocation(npc.getLocation(), dec));
 
     /**
      * Function to resolve this argument from an NPC instance and optional {@link LocationFormationMode} with decimal places.
      */
-    private final TriFunction<NPC, LocationFormationMode, Integer, String> resolveFunction;
+    private final TriFunction<Npc<?>, LocationFormationMode, Integer, String> resolveFunction;
 
-    Argument(final TriFunction<NPC, LocationFormationMode, Integer, String> resolveFunction) {
+    Argument(final TriFunction<Npc<?>, LocationFormationMode, Integer, String> resolveFunction) {
         this.resolveFunction = resolveFunction;
     }
 
@@ -41,7 +41,7 @@ public enum Argument {
      * @param decimalPlaces the number of decimal places to use for location resolution
      * @return the value that the variable resolved to
      */
-    public String resolve(final NPC npc, @Nullable final LocationFormationMode location, final int decimalPlaces) {
+    public String resolve(final Npc<?> npc, @Nullable final LocationFormationMode location, final int decimalPlaces) {
         return resolveFunction.apply(npc, location, decimalPlaces);
     }
 }
