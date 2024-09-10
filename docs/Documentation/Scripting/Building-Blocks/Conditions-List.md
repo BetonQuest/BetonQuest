@@ -479,12 +479,19 @@ This condition is met if the block at specified location matches the given mater
 
 ## Time: `time`
 
-There must be specific (Minecraft) time on the player's world for this condition to return true. You need to specify two hour numbers separated by dash. These number are normal 24-hour format hours. The first must be smaller than the second. If you want to achieve time period between 23 and 2 you need to negate the condition.
+There must be specific (Minecraft) time on the player's world for this condition to return true.
 
-!!! example
-    ```YAML
-    time 2-23
-    ```
+| Parameter   | Syntax          | Default Value          | Explanation                                                                                                                             |
+|-------------|-----------------|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| _Variable_  | time span       | :octicons-x-circle-16: | Two hour numbers seperated by dash in th 24-hour format.                                                                                            |
+
+
+```YAML
+conditions:
+  allDay: time 6-19
+  allNight: time 19-6
+  always: time 0-24
+```
 
 ## Variable: `variable`
 
