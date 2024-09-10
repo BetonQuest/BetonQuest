@@ -14,7 +14,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Deprecated
 ### Removed
 ### Fixed
-- broken title check in book `QuestItem` 
+- broken title check in book `QuestItem`
+- BlockSelector did not match exact block matches and started regex matching causing performance issues during load and reload
 ### Security
 
 ## [2.1.3] - 2024-08-06
