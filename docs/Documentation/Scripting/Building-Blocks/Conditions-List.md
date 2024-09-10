@@ -497,12 +497,11 @@ This condition checks if a variable value matches given [regular expression](../
 | _forceSync_ | Keyword         | False                  | Forces the variables to be resolved on the main thread. This may be required by some third party variables.                             |
 
 
-```YAML
-conditions:
-  anyNumber: "variable %objective.var.price% -?\d+" #(1)!
-  isPlayer: "variable %ph.parties_members_1% %player%" #(2)!
-  denizenVariable: "variable %ph.denizen_<server.match_player[SomeName].has_flag[flag_name]>% true forceSync" #(3)!
-  denizenVariableThis: "variable %ph.denizen_<player.has_flag[flag_name]>% true forceSync" #(4)!
+```YAML title="Example"
+anyNumber: "variable %objective.var.price% -?\\d+" #(1)!
+isPlayer: "variable %ph.parties_members_1% %player%" #(2)!
+denizenVariable: "variable %ph.denizen_<server.match_player[SomeName].has_flag[flag_name]>% true forceSync" #(3)!
+denizenVariableThis: "variable %ph.denizen_<player.has_flag[flag_name]>% true forceSync" #(4)!
 ```
 
 1. Returns true if the variable `%objective.var.price%` contains any number.

@@ -44,7 +44,6 @@ import org.betonquest.betonquest.conditions.ScoreboardCondition;
 import org.betonquest.betonquest.conditions.SneakCondition;
 import org.betonquest.betonquest.conditions.StageCondition;
 import org.betonquest.betonquest.conditions.TimeCondition;
-import org.betonquest.betonquest.conditions.VariableCondition;
 import org.betonquest.betonquest.conditions.WeatherCondition;
 import org.betonquest.betonquest.conditions.WorldCondition;
 import org.betonquest.betonquest.objectives.ActionObjective;
@@ -86,6 +85,7 @@ import org.betonquest.betonquest.quest.condition.realtime.DayOfWeekConditionFact
 import org.betonquest.betonquest.quest.condition.realtime.PartialDateConditionFactory;
 import org.betonquest.betonquest.quest.condition.tag.GlobalTagConditionFactory;
 import org.betonquest.betonquest.quest.condition.tag.TagConditionFactory;
+import org.betonquest.betonquest.quest.condition.variable.VariableConditionFactory;
 import org.betonquest.betonquest.quest.event.burn.BurnEventFactory;
 import org.betonquest.betonquest.quest.event.cancel.CancelEventFactory;
 import org.betonquest.betonquest.quest.event.chat.ChatEventFactory;
@@ -268,7 +268,7 @@ public class CoreQuestTypes {
         conditionTypes.register("tag", new TagConditionFactory(betonQuest));
         conditionTypes.registerCombined("testforblock", new BlockConditionFactory(data));
         conditionTypes.register("time", TimeCondition.class);
-        conditionTypes.register("variable", VariableCondition.class);
+        conditionTypes.register("variable", new VariableConditionFactory(loggerFactory, data, betonQuest.getVariableProcessor()));
         conditionTypes.register("weather", WeatherCondition.class);
         conditionTypes.register("world", WorldCondition.class);
     }
