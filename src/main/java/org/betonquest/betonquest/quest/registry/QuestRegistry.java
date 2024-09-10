@@ -13,6 +13,7 @@ import org.betonquest.betonquest.feature.registry.processor.ConversationProcesso
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.quest.registry.processor.ConditionProcessor;
 import org.betonquest.betonquest.quest.registry.processor.EventProcessor;
+import org.betonquest.betonquest.quest.registry.processor.NpcProcessor;
 import org.betonquest.betonquest.quest.registry.processor.ObjectiveProcessor;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.schedule.EventScheduling;
@@ -42,7 +43,8 @@ public record QuestRegistry(
         VariableProcessor variables,
         CancelerProcessor cancelers,
         ConversationProcessor conversations,
-        CompassProcessor compasses
+        CompassProcessor compasses,
+        NpcProcessor npcs
 ) {
 
     /**
@@ -65,10 +67,11 @@ public record QuestRegistry(
         final ObjectiveProcessor objectives = new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), questTypeRegistries.objective());
         final VariableProcessor variables = new VariableProcessor(loggerFactory.create(VariableProcessor.class), questTypeRegistries.variable());
         final CancelerProcessor cancelers = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class), loggerFactory, pluginMessage, variables);
+        final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, questTypeRegistries.npc(), pluginMessage, plugin);
         final ConversationProcessor conversations = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), loggerFactory, plugin, variables,
-                otherRegistries.conversationIO(), otherRegistries.interceptor());
+                otherRegistries.conversationIO(), otherRegistries.interceptor(), npcs);
         final CompassProcessor compasses = new CompassProcessor(loggerFactory.create(CompassProcessor.class), variables);
-        return new QuestRegistry(log, eventScheduling, conditions, events, objectives, variables, cancelers, conversations, compasses);
+        return new QuestRegistry(log, eventScheduling, conditions, events, objectives, variables, cancelers, conversations, compasses, npcs);
     }
 
     /**
@@ -84,6 +87,7 @@ public record QuestRegistry(
         events.clear();
         objectives.clear();
         cancelers.clear();
+        npcs.clear();
         conversations.clear();
         compasses.clear();
 
@@ -94,6 +98,7 @@ public record QuestRegistry(
             events.load(pack);
             conditions.load(pack);
             objectives.load(pack);
+            npcs.load(pack);
             conversations.load(pack);
             compasses.load(pack);
             eventScheduling.loadData(pack);
@@ -104,7 +109,7 @@ public record QuestRegistry(
         conversations.checkExternalPointers();
 
         log.info("There are " + String.join(", ", conditions.readableSize(), events.readableSize(),
-                objectives.readableSize(), cancelers.readableSize(), compasses.readableSize())
+                objectives.readableSize(), cancelers.readableSize(), compasses.readableSize(), npcs.readableSize())
                 + " and " + conversations.readableSize() + " loaded from " + packages.size() + " packages.");
 
         eventScheduling.startAll();
@@ -119,6 +124,7 @@ public record QuestRegistry(
         return Map.ofEntries(
                 conditions.metricsSupplier(),
                 events.metricsSupplier(),
+                npcs.metricsSupplier(),
                 objectives.metricsSupplier(),
                 variables.metricsSupplier()
         );

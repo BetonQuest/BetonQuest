@@ -10,6 +10,7 @@ import org.betonquest.betonquest.feature.registry.ConversationIORegistry;
 import org.betonquest.betonquest.feature.registry.InterceptorRegistry;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.quest.registry.processor.NpcProcessor;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
@@ -50,6 +51,11 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
     private final InterceptorRegistry interceptorRegistry;
 
     /**
+     * Processor to get Npcs.
+     */
+    private final NpcProcessor npcProcessor;
+
+    /**
      * Create a new Conversation Data Processor to load and process conversation data.
      *
      * @param log                 the custom logger for this class
@@ -58,15 +64,17 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
      * @param variableProcessor   the processor to create new variables
      * @param convIORegistry      the registry for available ConversationIOs
      * @param interceptorRegistry the registry for available Interceptors
+     * @param npcProcessor        the processor to get npcs
      */
     public ConversationProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuest plugin,
-                                 final VariableProcessor variableProcessor, final ConversationIORegistry convIORegistry, final InterceptorRegistry interceptorRegistry) {
+                                 final VariableProcessor variableProcessor, final ConversationIORegistry convIORegistry, final InterceptorRegistry interceptorRegistry, final NpcProcessor npcProcessor) {
         super(log, "Conversation", "conversations");
         this.loggerFactory = loggerFactory;
         this.plugin = plugin;
         this.variableProcessor = variableProcessor;
         this.convIORegistry = convIORegistry;
         this.interceptorRegistry = interceptorRegistry;
+        this.npcProcessor = npcProcessor;
     }
 
     @Override
@@ -82,6 +90,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         final List<EventID> finalEvents = helper.parseFinalEvents();
         final ConversationData.PublicData publicData = new ConversationData.PublicData(convName, quester, blockMovement, finalEvents, convIO, interceptor);
 
+        npcProcessor.loadConversation(new ConversationID(pack, convName), section);
         return new ConversationData(loggerFactory.create(ConversationData.class), plugin.getQuestTypeAPI(), plugin.getFeatureAPI(),
                 variableProcessor, pack, section, publicData);
     }

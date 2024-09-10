@@ -1,23 +1,29 @@
-package org.betonquest.betonquest.compatibility.citizens.condition.location;
+package org.betonquest.betonquest.quest.condition.npc;
 
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
+import org.betonquest.betonquest.api.quest.npc.Npc;
+import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.quest.registry.processor.NpcProcessor;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Checks if a npc is at a specific location.
  */
-public class NPCLocationCondition implements NullableCondition {
+public class NpcLocationCondition implements NullableCondition {
     /**
-     * The NPC id.
+     * Processor to get npc.
      */
-    private final int npcId;
+    private final NpcProcessor npcProcessor;
+
+    /**
+     * Id of the npc.
+     */
+    private final NpcID npcId;
 
     /**
      * The location where the NPC has to be around.
@@ -32,11 +38,14 @@ public class NPCLocationCondition implements NullableCondition {
     /**
      * Create a new NPCLocationCondition.
      *
-     * @param npcId    the npc id, null or positive
-     * @param location the location where the npc has to be around
-     * @param radius   the maximal distance between the npc and the radius location
+     * @param npcProcessor the supplier for the npc adapter
+     * @param npcId        the id of the npc
+     * @param location     the location where the npc has to be around
+     * @param radius       the maximal distance between the npc and the radius location
      */
-    public NPCLocationCondition(final int npcId, final VariableLocation location, final VariableNumber radius) {
+    public NpcLocationCondition(final NpcProcessor npcProcessor, final NpcID npcId,
+                                final VariableLocation location, final VariableNumber radius) {
+        this.npcProcessor = npcProcessor;
         this.npcId = npcId;
         this.location = location;
         this.radius = radius;
@@ -44,15 +53,13 @@ public class NPCLocationCondition implements NullableCondition {
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
-        if (npc == null) {
-            throw new QuestException("NPC with ID " + npcId + " does not exist");
-        }
+        final Npc<?> npc = npcProcessor.getNpc(npcId);
         final Location location = this.location.getValue(profile);
-        if (!location.getWorld().equals(npc.getStoredLocation().getWorld())) {
+        final Location npcLocation = npc.getLocation();
+        if (!location.getWorld().equals(npcLocation.getWorld())) {
             return false;
         }
         final double radius = this.radius.getValue(profile).doubleValue();
-        return npc.getStoredLocation().distanceSquared(location) <= radius * radius;
+        return npcLocation.distanceSquared(location) <= radius * radius;
     }
 }
