@@ -3322,36 +3322,6 @@
 
   
   
-  <nav aria-label="Installing IntelliJ" class="md-nav">
-    <ul class="md-nav__list">
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#recommended-intellij-settings">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Recommended IntelliJ Settings
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-    </ul>
-  </nav>
-  
 </li>
     
     
@@ -3390,29 +3360,6 @@
       
         <span class="md-typeset">
           Adding remote repository
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#setup-quest-tutorials-submodule">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Setup Quest-Tutorials submodule
         </span>
 
       
@@ -4312,36 +4259,6 @@
 
   
   
-  <nav aria-label="Installing IntelliJ" class="md-nav">
-    <ul class="md-nav__list">
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#recommended-intellij-settings">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Recommended IntelliJ Settings
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-    </ul>
-  </nav>
-  
 </li>
     
     
@@ -4380,29 +4297,6 @@
       
         <span class="md-typeset">
           Adding remote repository
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#setup-quest-tutorials-submodule">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Setup Quest-Tutorials submodule
         </span>
 
       
@@ -4676,7 +4570,45 @@ that help to fulfill our requirements regarding code and documentation style.
 You can still use your preferred IDE, but then you need to check on your own that your changes fulfill our requirements.</p>
 <h2 id="installing-intellij">Installing IntelliJ<a class="headerlink" href="#installing-intellij" title="Permanent link">🔗</a></h2>
 <p>First download <a href="https://www.jetbrains.com/idea/download">IntelliJ</a> and install it.</p>
-<h3 id="recommended-intellij-settings">Recommended IntelliJ Settings<a class="headerlink" href="#recommended-intellij-settings" title="Permanent link">🔗</a></h3>
+<h2 id="check-out-the-repository">Check out the repository<a class="headerlink" href="#check-out-the-repository" title="Permanent link">🔗</a></h2>
+<p>You need a Git installation to be able to check out code from GitHub.
+You can follow this <a href="https://docs.github.com/en/get-started/quickstart/set-up-git">guide</a>
+if you don't know how to install Git.  </p>
+<p>Then you should <a href="https://docs.github.com/en/get-started/quickstart/fork-a-repo">fork</a>
+the <a href="https://github.com/BetonQuest/BetonQuest">BetonQuest</a> repository to your own account on GitHub.<br />
+If you want to also work on the Docs Tutorials, you should also fork the
+<a href="https://github.com/BetonQuest/Quest-Tutorials">Quest-Tutorials</a> repo.</p>
+<p>After you have set up the IDE,
+<a href="https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository">clone</a>
+the BetonQuest repository from your account. You can also directly
+<a href="https://blog.jetbrains.com/idea/2020/10/clone-a-project-from-github/">clone the repository in IntelliJ</a>.</p>
+<details class="tip">
+<summary>You want to clone the entire repo including the submodules from the get-go?</summary>
+<p>Append <code>--recurse-submodules</code> to your clone command.<br />
+Make sure you have created all necessary forks before and don't forget to add the remotes for the submodule.</p>
+</details>
+<details>
+<summary>In case videos and images are missing after cloning</summary>
+<p>We use <a href="https://git-lfs.github.com/">Git LFS</a> to store big files like media files, so you need to install that too.<br />
+Once you have executed the file that you downloaded from the Git LFS website, just run <code>git lfs install</code>.
+Then use <code>git lfs pull</code> to actually download the files.</p>
+</details>
+<details>
+<summary>In case the folder <code>docs/_tutorials</code> is empty</summary>
+<p>You need to initialize the <a href="https://www.vogella.com/tutorials/GitSubmodules/article.html">git submodule</a> by
+running <code>git submodule update --init</code> in the project's root directory.</p>
+</details>
+<h3 id="adding-remote-repository">Adding remote repository<a class="headerlink" href="#adding-remote-repository" title="Permanent link">🔗</a></h3>
+<p>In IntelliJ click on <code>Git</code> in the left upper corner (hidden in the burger menu) and then <code>Manage Remotes...</code>.
+In the new window you already see a remote called <code>origin</code>. This remote is your fork of BetonQuest.
+Now add a new repository with the name <code>upstream</code> and the url <code>https://github.com/BetonQuest/BetonQuest.git</code>.</p>
+<p>In case you also forked the Quest-Tutorials repository, you should also add a remote <code>upstream</code> for
+<code>https://github.com/BetonQuest/Quest-Tutorials</code>.
+With that setup, you should always automatically be in the remote branch of Quest-Tutorials you are in BetonQuest.</p>
+<h2 id="intellij-settings">IntelliJ settings<a class="headerlink" href="#intellij-settings" title="Permanent link">🔗</a></h2>
+<p>Formatting for .md (Markdown) files can break some features of
+<a href="https://squidfunk.github.io/mkdocs-material">Material for MkDocs</a>, so we disable it for these files.
+Go to <code>File/Settings/Editor/Code Style</code> then go to the <code>Formatter</code> tab and add <code>*.md</code> to the <code>Do not format:</code> field.</p>
 <p>In IntelliJ go to <code>File/Settings/Tools/Actions on Save</code> and check the following entries:</p>
 <ul>
 <li>Reformat code - Whole file</li>
@@ -4684,45 +4616,6 @@ You can still use your preferred IDE, but then you need to check on your own tha
 <li>Rearrange code</li>
 <li>Run code cleanup</li>
 </ul>
-<h2 id="check-out-the-repository">Check out the repository<a class="headerlink" href="#check-out-the-repository" title="Permanent link">🔗</a></h2>
-<p>You need a Git installation to be able to check out code from GitHub.
-You can follow this <a href="https://docs.github.com/en/get-started/quickstart/set-up-git">guide</a>
-if you don't know how to install Git.  </p>
-<p>Then you should <a href="https://docs.github.com/en/get-started/quickstart/fork-a-repo">fork</a>
-the BetonQuest repository to your own account on GitHub.</p>
-<p>After you have set up the IDE,
-<a href="https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository">clone</a>
-the BetonQuest repository from your account. You can also directly
-<a href="https://blog.jetbrains.com/idea/2020/10/clone-a-project-from-github/">clone the repository in IntelliJ</a>.</p>
-<details>
-<summary>In case videos and images are missing after cloning</summary>
-<p>We use <a href="https://git-lfs.github.com/">Git LFS</a> to store big files like media files, so you need to install that too.
-Once you have executed the file that you downloaded from the Git LFS website, just run <code>git lfs install</code>.
-Then use <code>git lfs pull</code> to actually download the files.</p>
-</details>
-<h3 id="adding-remote-repository">Adding remote repository<a class="headerlink" href="#adding-remote-repository" title="Permanent link">🔗</a></h3>
-<p>In IntelliJ click on <code>Git</code> in the left upper corner and then <code>Manage Remotes...</code>.
-In the new window you already see a remote called <code>origin</code>. This remote is your fork of BetonQuest.
-Now add a new repository with the name <code>upstream</code> and the url <code>https://github.com/BetonQuest/BetonQuest.git</code>.</p>
-<h3 id="setup-quest-tutorials-submodule">Setup Quest-Tutorials submodule<a class="headerlink" href="#setup-quest-tutorials-submodule" title="Permanent link">🔗</a></h3>
-<div class="admonition info">
-<p class="admonition-title">You can skip this chapter for now, if you don't want to work on Quest-Tutorials</p>
-<p>If you are unfamiliar with submodules you can also just clone the Quest-Tutorials as separate repo.</p>
-</div>
-<p>First of all you must create your own fork of <a href="https://github.com/BetonQuest/Quest-Tutorials">Quest-Tutorials</a> repo.
-Quest-Tutorials are located at <code>docs/_tutorials</code> as a <a href="https://www.vogella.com/tutorials/GitSubmodules/article.html">git submodule</a>.
-To initialize the submodule (which downloads all files), run <code>git submodule update --init</code> on the project's root directory.</p>
-<p>If you setup the BetonQuest repo correctly (with your Fork as origin) this submodule will automatically point to the fork you just created.
-To also add the BetonQuest Quest-Tutorials repo as remote, navigate the submodules root (<code>docs/_tutorials</code>) and add a new remote with the name <code>upstream</code> and the url <code>https://github.com/BetonQuest/Quest-Tutorials</code> or use IntelliJs <code>Manage Remotes</code> Dialog.</p>
-<details class="tip">
-<summary>You want to clone the entire repo including the submodules from the get-go?</summary>
-<p>Append <code>--recurse-submodules</code> to your clone command.<br />
-Make sure you have created all necessary forks before and don't forget to add the remotes for the submodule.</p>
-</details>
-<h2 id="intellij-settings">IntelliJ settings<a class="headerlink" href="#intellij-settings" title="Permanent link">🔗</a></h2>
-<p>Formatting for .md (Markdown) files can break some features of
-<a href="https://squidfunk.github.io/mkdocs-material">Material for MkDocs</a>, so we disable it for these files.
-Go to <code>File/Settings/Editor/Code Style</code> then go to the <code>Formatter</code> tab and add <code>*.md</code> to the <code>Do not format:</code> field.</p>
 <p>In <code>File/Settings/Editor/Code Style/Java</code> navigate to the <code>Imports</code> tab.
 You will now configure when to use star imports, in general we don't want them at all, but there are some exceptions.
 Set <code>Class count to use import with '*':</code> and <code>Names count to use static import with '*':</code> to <code>9999999</code>.
