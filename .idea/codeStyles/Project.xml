@@ -28,6 +28,10 @@
       <option name="MAX_LINES_BETWEEN_PARAGRAPHS" value="0" />
     </Markdown>
     <codeStyleSettings language="JAVA">
+      <option name="KEEP_BLANK_LINES_IN_DECLARATIONS" value="1" />
+      <option name="KEEP_BLANK_LINES_IN_CODE" value="1" />
+      <option name="KEEP_BLANK_LINES_BETWEEN_PACKAGE_DECLARATION_AND_HEADER" value="0" />
+      <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="0" />
       <option name="BLANK_LINES_AROUND_FIELD" value="1" />
     </codeStyleSettings>
     <codeStyleSettings language="Markdown">
