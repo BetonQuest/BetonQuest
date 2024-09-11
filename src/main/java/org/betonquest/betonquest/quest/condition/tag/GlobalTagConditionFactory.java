@@ -18,7 +18,7 @@ public class GlobalTagConditionFactory implements PlayerlessConditionFactory {
     private final GlobalData globalData;
 
     /**
-     * Creates the tag condition factory.
+     * Creates the global tag condition factory.
      *
      * @param globalData the global data
      */
