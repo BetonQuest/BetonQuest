@@ -80,7 +80,7 @@ public class BlockSelector {
      */
     @Override
     public String toString() {
-        return materials.toString() + (states.isEmpty() ? "" : "[" + states + "]");
+        return materials + (states.isEmpty() ? "" : "[" + states + "]");
     }
 
     /**
@@ -243,7 +243,7 @@ public class BlockSelector {
     @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity"})
     private List<Material> getMaterials(final String namespaceString, final String keyString) throws InstructionParseException {
         final List<Material> materials = new ArrayList<>();
-        final Material fullMatch = Material.getMaterial(namespaceString + ":" + keyString);
+        final Material fullMatch = Material.matchMaterial(namespaceString + ":" + keyString);
         if (fullMatch != null) {
             materials.add(fullMatch);
             return materials;
