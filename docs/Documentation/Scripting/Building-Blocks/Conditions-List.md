@@ -483,7 +483,7 @@ There must be specific (Minecraft) time on the player's world for this condition
 
 | Parameter   | Syntax          | Default Value          | Explanation                                                                                                                             |
 |-------------|-----------------|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
-| _Variable_  | time span       | :octicons-x-circle-16: | Two hour numbers seperated by dash in th 24-hour format.                                                                                            |
+| _Variable_  | time span       | :octicons-x-circle-16: | Two hour numbers seperated by dash in the 24-hour format.                                                                                            |
 
 
 ```YAML

@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.quest.condition.time;
 
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 /**
  * A condition that checks the time.
  */
-public class TimeCondition implements PlayerCondition {
+public class TimeCondition implements OnlineCondition {
 
     /**
      * The minimum time.
@@ -31,19 +31,14 @@ public class TimeCondition implements PlayerCondition {
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestRuntimeException {
+    public boolean check(final OnlineProfile profile) throws QuestRuntimeException {
         return isTimeBetween(currentTime(profile), timeMin, timeMax);
     }
 
-    private double currentTime(final Profile profile) {
-        double time = profile.getOnlineProfile().get().getPlayer().getWorld().getTime();
-        final int midnight = 18_000;
-        if (time >= midnight) {
-            time = time / 1000 - 18;
-        } else {
-            time = time / 1000 + 6;
-        }
-        return time;
+    private double currentTime(final OnlineProfile profile) {
+        double time = profile.getPlayer().getWorld().getTime();
+        time += 6_000;
+        return time / 1000 % 24;
     }
 
     private boolean isTimeBetween(final double time, final double start, final double end) {
