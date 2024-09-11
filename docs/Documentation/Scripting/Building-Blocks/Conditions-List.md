@@ -486,11 +486,10 @@ There must be specific (Minecraft) time on the player's world for this condition
 | _Variable_  | time span       | :octicons-x-circle-16: | Two hour numbers seperated by dash in the 24-hour format.                                                                                            |
 
 
-```YAML
-conditions:
-  allDay: time 6-19
-  allNight: time 19-6
-  always: time 0-24
+```YAML title="Example"
+allDay: time 6-19
+midnight: time 23-1
+always: time 0-24
 ```
 
 ## Variable: `variable`
