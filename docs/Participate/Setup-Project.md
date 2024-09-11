@@ -10,57 +10,54 @@ You can still use your preferred IDE, but then you need to check on your own tha
 ##Installing IntelliJ 
 First download [IntelliJ](https://www.jetbrains.com/idea/download) and install it.
 
-### Recommended IntelliJ Settings
-In IntelliJ go to `File/Settings/Tools/Actions on Save` and check the following entries:
-
-- Reformat code - Whole file
-- Optimize imports
-- Rearrange code
-- Run code cleanup
-
 ## Check out the repository
 You need a Git installation to be able to check out code from GitHub.
 You can follow this [guide](https://docs.github.com/en/get-started/quickstart/set-up-git)
 if you don't know how to install Git.  
 
 Then you should [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
-the BetonQuest repository to your own account on GitHub.
+the [BetonQuest](https://github.com/BetonQuest/BetonQuest) repository to your own account on GitHub.  
+If you want to also work on the Docs Tutorials, you should also fork the
+[Quest-Tutorials](https://github.com/BetonQuest/Quest-Tutorials) repo.
 
 After you have set up the IDE,
 [clone](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository)
 the BetonQuest repository from your account. You can also directly
 [clone the repository in IntelliJ](https://blog.jetbrains.com/idea/2020/10/clone-a-project-from-github/).
 
-??? "In case videos and images are missing after cloning"
-    We use [Git LFS](https://git-lfs.github.com/) to store big files like media files, so you need to install that too.
-    Once you have executed the file that you downloaded from the Git LFS website, just run `git lfs install`.
-    Then use `git lfs pull` to actually download the files.
-
-### Adding remote repository
-In IntelliJ click on `Git` in the left upper corner and then `Manage Remotes...`.
-In the new window you already see a remote called `origin`. This remote is your fork of BetonQuest.
-Now add a new repository with the name `upstream` and the url `https://github.com/BetonQuest/BetonQuest.git`.
-
-### Setup Quest-Tutorials submodule
-
-!!! info "You can skip this chapter for now, if you don't want to work on Quest-Tutorials"
-    If you are unfamiliar with submodules you can also just clone the Quest-Tutorials as separate repo.
-
-First of all you must create your own fork of [Quest-Tutorials](https://github.com/BetonQuest/Quest-Tutorials) repo.
-Quest-Tutorials are located at `docs/_tutorials` as a [git submodule](https://www.vogella.com/tutorials/GitSubmodules/article.html).
-To initialize the submodule (which downloads all files), run `git submodule update --init` on the project's root directory.
-
-If you setup the BetonQuest repo correctly (with your Fork as origin) this submodule will automatically point to the fork you just created.
-To also add the BetonQuest Quest-Tutorials repo as remote, navigate the submodules root (`docs/_tutorials`) and add a new remote with the name `upstream` and the url `https://github.com/BetonQuest/Quest-Tutorials` or use IntelliJs `Manage Remotes` Dialog.
-
 ??? tip "You want to clone the entire repo including the submodules from the get-go?"
     Append `--recurse-submodules` to your clone command.  
     Make sure you have created all necessary forks before and don't forget to add the remotes for the submodule.
+
+??? "In case videos and images are missing after cloning"
+    We use [Git LFS](https://git-lfs.github.com/) to store big files like media files, so you need to install that too.  
+    Once you have executed the file that you downloaded from the Git LFS website, just run `git lfs install`.
+    Then use `git lfs pull` to actually download the files.
+
+??? "In case the folder `docs/_tutorials` is empty"
+    You need to initialize the [git submodule](https://www.vogella.com/tutorials/GitSubmodules/article.html) by
+    running `git submodule update --init` in the project's root directory.
+
+### Adding remote repository
+In IntelliJ click on `Git` in the left upper corner (hidden in the burger menu) and then `Manage Remotes...`.
+In the new window you already see a remote called `origin`. This remote is your fork of BetonQuest.
+Now add a new repository with the name `upstream` and the url `https://github.com/BetonQuest/BetonQuest.git`.
+
+In case you also forked the Quest-Tutorials repository, you should also add a remote `upstream` for
+`https://github.com/BetonQuest/Quest-Tutorials`.
+With that setup, you should always automatically be in the remote branch of Quest-Tutorials you are in BetonQuest.
 
 ## IntelliJ settings
 Formatting for .md (Markdown) files can break some features of
 [Material for MkDocs](https://squidfunk.github.io/mkdocs-material), so we disable it for these files.
 Go to `File/Settings/Editor/Code Style` then go to the `Formatter` tab and add `*.md` to the `Do not format:` field.
+
+In IntelliJ go to `File/Settings/Tools/Actions on Save` and check the following entries:
+
+- Reformat code - Whole file
+- Optimize imports
+- Rearrange code
+- Run code cleanup
 
 In `File/Settings/Editor/Code Style/Java` navigate to the `Imports` tab.
 You will now configure when to use star imports, in general we don't want them at all, but there are some exceptions.
