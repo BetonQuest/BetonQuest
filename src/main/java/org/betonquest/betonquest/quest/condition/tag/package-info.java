@@ -1,5 +1,5 @@
 /**
- * {@link org.betonquest.betonquest.api.quest.condition.PlayerCondition}
- * Contains classes for tag conditions.
+ * {@link org.betonquest.betonquest.api.quest.condition Conditions}
+ * for tag.
  */
 package org.betonquest.betonquest.quest.condition.tag;

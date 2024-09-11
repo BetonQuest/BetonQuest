@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.condition.tag;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
+import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.Utils;
 
@@ -13,22 +13,22 @@ import org.betonquest.betonquest.utils.Utils;
 public class GlobalTagConditionFactory implements PlayerlessConditionFactory {
 
     /**
-     * The BetonQuest instance.
+     * The global data.
      */
-    private final BetonQuest betonQuest;
+    private final GlobalData globalData;
 
     /**
      * Creates the tag condition factory.
      *
-     * @param betonQuest the BetonQuest instance
+     * @param globalData the global data
      */
-    public GlobalTagConditionFactory(final BetonQuest betonQuest) {
-        this.betonQuest = betonQuest;
+    public GlobalTagConditionFactory(final GlobalData globalData) {
+        this.globalData = globalData;
     }
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws InstructionParseException {
         final String tag = Utils.addPackage(instruction.getPackage(), instruction.next());
-        return new GlobalTagCondition(betonQuest.getGlobalData(), tag);
+        return new GlobalTagCondition(globalData, tag);
     }
 }

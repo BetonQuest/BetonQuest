@@ -238,7 +238,7 @@ public class CoreQuestTypes {
         conditionTypes.register("fly", FlyingCondition.class);
         conditionTypes.register("gamemode", GameModeCondition.class);
         conditionTypes.register("globalpoint", GlobalPointCondition.class);
-        conditionTypes.register("globaltag", new GlobalTagConditionFactory(betonQuest));
+        conditionTypes.register("globaltag", new GlobalTagConditionFactory(betonQuest.getGlobalData()));
         conditionTypes.register("hand", HandCondition.class);
         conditionTypes.register("health", HealthCondition.class);
         conditionTypes.register("height", HeightCondition.class);
