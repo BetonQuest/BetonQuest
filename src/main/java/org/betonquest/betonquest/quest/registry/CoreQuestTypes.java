@@ -274,7 +274,7 @@ public class CoreQuestTypes {
         conditionTypes.register("time", TimeCondition.class);
         conditionTypes.register("variable", new VariableConditionFactory(loggerFactory, data, betonQuest.getVariableProcessor()));
         conditionTypes.register("weather", WeatherCondition.class);
-        conditionTypes.register("world", new WorldConditionFactory(data));
+        conditionTypes.register("world", new WorldConditionFactory(loggerFactory, data));
     }
 
     private void registerEvents(final EventTypeRegistry eventTypes) {

@@ -1,14 +1,14 @@
 package org.betonquest.betonquest.quest.condition.world;
 
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.World;
 
 /**
  * A condition that checks if the player is in a specific world.
  */
-public class WorldCondition implements PlayerCondition {
+public class WorldCondition implements OnlineCondition {
 
     /**
      * The world to check.
@@ -25,7 +25,7 @@ public class WorldCondition implements PlayerCondition {
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestRuntimeException {
-        return profile.getOnlineProfile().get().getPlayer().getWorld().equals(world);
+    public boolean check(final OnlineProfile profile) throws QuestRuntimeException {
+        return profile.getPlayer().getWorld().equals(world);
     }
 }
