@@ -51,10 +51,12 @@ public class NpcInteractEvent extends ProfileEvent implements Cancellable {
      * @param npc           the interacted npc
      * @param npcIdentifier the identifier as used inside the Npc section
      * @param interaction   the type of interaction with the Npc, left or right
+     * @param isAsync       if the trigger and so this is async
      * @throws IllegalArgumentException if {@code interaction == Interaction.ANY}
      */
-    public NpcInteractEvent(final Profile profile, final Player player, final Npc<?> npc, final String npcIdentifier, final Interaction interaction) {
-        super(profile);
+    public NpcInteractEvent(final Profile profile, final Player player, final Npc<?> npc, final String npcIdentifier,
+                            final Interaction interaction, final boolean isAsync) {
+        super(profile, isAsync);
         if (interaction == Interaction.ANY) {
             throw new IllegalArgumentException("interaction cannot be 'any'");
         }
