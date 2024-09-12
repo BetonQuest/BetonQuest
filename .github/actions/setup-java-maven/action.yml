@@ -40,7 +40,7 @@ runs:
   using: composite
   steps:
     - name: Determine Java version
-      uses: Wolf2323/java-version-export-github-action@main
+      uses: BetonQuest/java-version-export-github-action@main
       id: determine-java-version
       with:
         maven-expression: 'java.api.version'
