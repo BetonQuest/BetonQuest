@@ -52,18 +52,13 @@ runs:
       run: |
         REVISION_VERSION="$(mvn help:evaluate -Dexpression=revision -q -DforceStdout)"
         echo "REVISION_VERSION=$REVISION_VERSION" >> $GITHUB_ENV
-    - name: Get the previous build-number tag from Development Build
-      if: "env.VERSION_TYPE == 'release' || env.VERSION_TYPE == 'development'"
-      shell: bash --noprofile --norc -euo pipefail {0}
-      run: |
-        VERSION_PREVIOUS_TAG="$(git tag -l ${REVISION_VERSION}-build-number-* | head -n 1)"
-        echo "VERSION_PREVIOUS_TAG=$VERSION_PREVIOUS_TAG" >> $GITHUB_ENV
     - name: Generate build number for Development Build
-      if: "env.VERSION_TYPE == 'development' && env.NEW_VERSION_REQUIRED == 'true'"
-      uses: onyxmueller/build-tag-number@v1.0.3
+      if: "env.VERSION_TYPE == 'development'"
+      uses: BetonQuest/build-number-generator@main
       with:
         token: ${{ inputs.GITHUB_TOKEN }}
-        prefix: ${{ env.REVISION_VERSION }}
+        identifier: ${{ env.REVISION_VERSION }}
+        increment: ${{ env.NEW_VERSION_REQUIRED }}
     - name: Set version for 'Release Build'
       if: "env.VERSION_TYPE == 'release'"
       shell: bash --noprofile --norc -euo pipefail {0}
@@ -78,7 +73,7 @@ runs:
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
         echo "VERSION_MAVEN=${REVISION_VERSION}-SNAPSHOT" >> $GITHUB_ENV
-        if [ ${{ env.NEW_VERSION_REQUIRED }} == false ]; then VERSION=${VERSION_PREVIOUS_TAG/build-number/DEV}; else VERSION=${REVISION_VERSION}-DEV-${BUILD_NUMBER}; fi
+        VERSION=${REVISION_VERSION}-DEV-${BUILD_NUMBER};
         echo "VERSION=$VERSION" >> $GITHUB_ENV
     - name: Set version for 'Artifact Build'
       if: "env.VERSION_TYPE == 'artifact'"
