@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.api.quest.npc.conversation;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.NpcInteractEvent;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
@@ -12,11 +11,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 /**
- * Calls {@link NpcInteractEvent}s with supplied listeners.
+ * Catches interaction of Third Party Npcs and calls them as {@link NpcInteractEvent}s.
+ * <p>
+ * The listener methods needs to be created and the {@linkplain #interactLogic} called in it.
+ * The Integration also needs to register it as Listener.
  *
  * @param <T> the original npc type
  */
-public abstract class NpcInteractCatcher<T> {
+public abstract class NpcInteractCatcher<T> implements Listener {
     /**
      * Factory to identify the clicked Npc.
      */
@@ -30,13 +32,10 @@ public abstract class NpcInteractCatcher<T> {
     /**
      * Initializes the conversation starter.
      *
-     * @param plugin     the plugin to register listener and load config
      * @param npcFactory the factory to identify the clicked Npc
      */
-    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
-    public NpcInteractCatcher(final BetonQuest plugin, final NpcFactory<T> npcFactory) {
+    public NpcInteractCatcher(final NpcFactory<T> npcFactory) {
         this.npcFactory = npcFactory;
-        Bukkit.getPluginManager().registerEvents(getClickListener(), plugin);
     }
 
     /**
@@ -48,28 +47,20 @@ public abstract class NpcInteractCatcher<T> {
      * @param npc         the supplier for lazy instantiation when the Npc is needed
      * @param interaction the type of interaction with the npc
      * @param cancelled   if the event should be fired in already cancelled state
+     * @param isAsync     if the calling event is async
      * @return if the Npc interaction is cancelled and the source should cancel too
      */
     protected boolean interactLogic(final Player clicker, final Npc<T> npc, final Interaction interaction,
-                                    final boolean cancelled) {
+                                    final boolean cancelled, final boolean isAsync) {
         final OnlineProfile profile = PlayerConverter.getID(clicker);
         final String identifier = prefix + " " + npcFactory.npcToInstructionString(npc);
-        final NpcInteractEvent npcInteractEvent = new NpcInteractEvent(profile, clicker, npc, identifier, interaction);
+        final NpcInteractEvent npcInteractEvent = new NpcInteractEvent(profile, clicker, npc, identifier, interaction, isAsync);
         if (cancelled) {
             npcInteractEvent.setCancelled(true);
         }
         Bukkit.getPluginManager().callEvent(npcInteractEvent);
         return npcInteractEvent.isCancelled();
     }
-
-    /**
-     * Gets a listener to get interactions with a Npc.
-     * The listener has to catch original interactions and
-     * redirect them to {@link #interactLogic(Player, Npc, Interaction, boolean)}.
-     *
-     * @return a new click listener
-     */
-    protected abstract Listener getClickListener();
 
     /**
      * Sets the prefix this starter uses to build the full instruction.

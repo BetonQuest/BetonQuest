@@ -16,8 +16,9 @@ import java.util.Map;
  * Stores the npc types that can be used in BetonQuest.
  */
 public class NpcTypeRegistry extends FactoryRegistry<TypeFactory<NpcWrapper<?>>> {
-    private final Map<Class<?>, String> factoryIdentifier;
-
+    /**
+     * Factories mapped to their catcher to update their registered prefix.
+     */
     private final Map<Class<?>, List<NpcInteractCatcher<?>>> starter;
 
     /**
@@ -27,25 +28,24 @@ public class NpcTypeRegistry extends FactoryRegistry<TypeFactory<NpcWrapper<?>>>
      */
     public NpcTypeRegistry(final BetonQuestLogger log) {
         super(log, "npc");
-        this.factoryIdentifier = new HashMap<>();
         this.starter = new HashMap<>();
     }
 
     /**
-     * Registers a type that does not support playerless execution with its name
-     * and a player factory to create new player instances.
+     * Registers a npc factory with a {@link NpcInteractCatcher} to convert the third party interactions.
      *
-     * @param name    the name of the type
-     * @param factory the player factory to create the type
+     * @param name            the name of the type
+     * @param factory         the player factory to create the type
+     * @param interactCatcher the catcher to convert interactions
+     * @param <T>             the original npc type
      */
-    public <T> void register(final String name, final NpcFactory<T> factory, @Nullable final NpcInteractCatcher<T> conversationStarter) {
+    public <T> void register(final String name, final NpcFactory<T> factory, @Nullable final NpcInteractCatcher<T> interactCatcher) {
         register(name, factory::parseInstruction); // TODO irgendwas mit generics…
-        factoryIdentifier.put(factory.getClass(), name);
-        final List<NpcInteractCatcher<?>> starterList = starter.getOrDefault(factory.getClass(), new ArrayList<>());
+        final List<NpcInteractCatcher<?>> starterList = starter.computeIfAbsent(factory.getClass(), clazz -> new ArrayList<>());
         starterList.forEach(starter -> starter.setPrefix(name)); // TODO now the bad decision is here, yay!
-        if (conversationStarter != null) {
-            conversationStarter.setPrefix(name);
-            starterList.add(conversationStarter);
+        if (interactCatcher != null) {
+            interactCatcher.setPrefix(name);
+            starterList.add(interactCatcher);
         }
     }
 }
