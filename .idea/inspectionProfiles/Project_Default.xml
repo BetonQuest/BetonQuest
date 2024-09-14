@@ -38,10 +38,43 @@
       <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="public" />
       <option name="REQUIRED_TAGS" value="" />
     </inspection_tool>
+    <inspection_tool class="JavadocDeclaration" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ADDITIONAL_TAGS" value="return" />
+      <option name="IGNORE_THROWS_DUPLICATE" value="false" />
+      <option name="IGNORE_PERIOD_PROBLEM" value="false" />
+    </inspection_tool>
     <inspection_tool class="LocalCanBeFinal" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="REPORT_VARIABLES" value="true" />
       <option name="REPORT_PARAMETERS" value="true" />
       <option name="REPORT_IMPLICIT_FINALS" value="false" />
+    </inspection_tool>
+    <inspection_tool class="MissingJavadoc" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="TOP_LEVEL_CLASS_SETTINGS">
+        <Options>
+          <option name="MINIMAL_VISIBILITY" value="package" />
+          <option name="REQUIRED_TAGS" value="@param" />
+        </Options>
+      </option>
+      <option name="INNER_CLASS_SETTINGS">
+        <Options>
+          <option name="MINIMAL_VISIBILITY" value="private" />
+        </Options>
+      </option>
+      <option name="METHOD_SETTINGS">
+        <Options>
+          <option name="MINIMAL_VISIBILITY" value="protected" />
+          <option name="REQUIRED_TAGS" value="@return@param@throws or @exception" />
+        </Options>
+      </option>
+      <option name="FIELD_SETTINGS">
+        <Options>
+          <option name="MINIMAL_VISIBILITY" value="private" />
+        </Options>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="MissingOverrideAnnotation" enabled="true" level="WARNING" enabled_by_default="true" editorAttributes="WARNING_ATTRIBUTES">
+      <option name="ignoreObjectMethods" value="false" />
+      <option name="ignoreAnonymousClassMethods" value="false" />
     </inspection_tool>
   </profile>
 </component>
