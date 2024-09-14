@@ -4,7 +4,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.compatibility.citizens.condition.region.NPCRegionConditionFactory;
 import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveController;
 import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveEvent;
 import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveEventFactory;
@@ -94,11 +93,6 @@ public class CitizensIntegrator implements Integrator {
         if (Compatibility.getHooked().contains("ProtocolLib")) {
             NPCHider.start(plugin.getLoggerFactory().create(NPCHider.class));
             plugin.getQuestRegistries().event().register("updatevisibility", UpdateVisibilityNowEvent.class);
-        }
-        if (Compatibility.getHooked().contains("WorldGuard")) {
-            final Server server = plugin.getServer();
-            final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
-            plugin.getQuestRegistries().condition().register("npcregion", new NPCRegionConditionFactory(data));
         }
     }
 
