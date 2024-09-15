@@ -193,7 +193,7 @@
       <optional>true</optional>
     </dependency>
 
-    <!-- from placeholderapi repository -->
+    <!-- from helpch repository -->
     <dependency>
       <groupId>me.clip</groupId>
       <artifactId>placeholderapi</artifactId>
@@ -501,8 +501,8 @@
       <url>https://repo.codemc.io/repository/maven-public/</url>
     </repository>
     <repository>
-      <id>betonquest-placeholderapi-repo</id>
-      <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+      <id>betonquest-helpch-repo</id>
+      <url>https://repo.helpch.at/releases/</url>
     </repository>
     <repository>
       <id>betonquest-dmulloy2-repo</id>
