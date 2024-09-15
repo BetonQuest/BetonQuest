@@ -9,8 +9,7 @@ import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveE
 import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveEventFactory;
 import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensStopEventFactory;
 import org.betonquest.betonquest.compatibility.citizens.objective.NPCKillObjective;
-import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
-import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEventFactory;
+import org.betonquest.betonquest.compatibility.protocollib.hider.CitizensHider;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
@@ -19,8 +18,6 @@ import org.bukkit.Server;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
-
-import java.util.Objects;
 
 /**
  * Integrator for Citizens.
@@ -90,18 +87,17 @@ public class CitizensIntegrator implements Integrator {
     @Override
     public void postHook() {
         if (Compatibility.getHooked().contains("ProtocolLib")) {
-            NPCHider.start(plugin.getLoggerFactory().create(NPCHider.class));
-            final Server server = plugin.getServer();
-            final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
-            plugin.getQuestRegistries().event().register("updatevisibility", new UpdateVisibilityNowEventFactory(
-                    Objects.requireNonNull(NPCHider.getInstance()), plugin.getLoggerFactory(), data));
+            CitizensHider.start(plugin.getLoggerFactory().create(CitizensHider.class));
+        } else {
+            plugin.getLoggerFactory().create(CitizensIntegrator.class)
+                    .warn("ProtocolLib Integration not found! Hiding Citizens NPCs won't be available.");
         }
     }
 
     @Override
     public void reload() {
-        if (NPCHider.getInstance() != null) {
-            NPCHider.start(plugin.getLoggerFactory().create(NPCHider.class));
+        if (CitizensHider.getInstance() != null) {
+            CitizensHider.start(plugin.getLoggerFactory().create(CitizensHider.class));
         }
     }
 

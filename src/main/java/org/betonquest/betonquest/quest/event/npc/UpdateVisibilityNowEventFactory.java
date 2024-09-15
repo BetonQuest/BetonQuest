@@ -1,10 +1,11 @@
-package org.betonquest.betonquest.compatibility.protocollib.hider;
+package org.betonquest.betonquest.quest.event.npc;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -16,7 +17,7 @@ public class UpdateVisibilityNowEventFactory implements EventFactory {
     /**
      * Hider to update visibility.
      */
-    private final NPCHider npcHider;
+    private final NpcHider npcHider;
 
     /**
      * Logger factory to create a new custom logger.
@@ -35,7 +36,7 @@ public class UpdateVisibilityNowEventFactory implements EventFactory {
      * @param loggerFactory the logger factory to create new custom logger
      * @param data          the data for primary server thread access
      */
-    public UpdateVisibilityNowEventFactory(final NPCHider npcHider, final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public UpdateVisibilityNowEventFactory(final NpcHider npcHider, final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
         this.npcHider = npcHider;
         this.loggerFactory = loggerFactory;
         this.data = data;
