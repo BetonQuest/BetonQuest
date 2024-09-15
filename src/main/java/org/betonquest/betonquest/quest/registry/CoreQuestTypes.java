@@ -20,7 +20,6 @@ import org.betonquest.betonquest.conditions.FacingCondition;
 import org.betonquest.betonquest.conditions.FlyingCondition;
 import org.betonquest.betonquest.conditions.GameModeCondition;
 import org.betonquest.betonquest.conditions.GlobalPointCondition;
-import org.betonquest.betonquest.conditions.GlobalTagCondition;
 import org.betonquest.betonquest.conditions.HandCondition;
 import org.betonquest.betonquest.conditions.HealthCondition;
 import org.betonquest.betonquest.conditions.HeightCondition;
@@ -44,11 +43,8 @@ import org.betonquest.betonquest.conditions.RideCondition;
 import org.betonquest.betonquest.conditions.ScoreboardCondition;
 import org.betonquest.betonquest.conditions.SneakCondition;
 import org.betonquest.betonquest.conditions.StageCondition;
-import org.betonquest.betonquest.conditions.TagCondition;
 import org.betonquest.betonquest.conditions.TimeCondition;
-import org.betonquest.betonquest.conditions.VariableCondition;
 import org.betonquest.betonquest.conditions.WeatherCondition;
-import org.betonquest.betonquest.conditions.WorldCondition;
 import org.betonquest.betonquest.objectives.ActionObjective;
 import org.betonquest.betonquest.objectives.ArrowShootObjective;
 import org.betonquest.betonquest.objectives.BlockObjective;
@@ -242,7 +238,7 @@ public class CoreQuestTypes {
         conditionTypes.register("fly", FlyingCondition.class);
         conditionTypes.register("gamemode", GameModeCondition.class);
         conditionTypes.register("globalpoint", GlobalPointCondition.class);
-        conditionTypes.register("globaltag", GlobalTagCondition.class);
+        conditionTypes.register("globaltag", new GlobalTagConditionFactory(betonQuest.getGlobalData()));
         conditionTypes.register("hand", HandCondition.class);
         conditionTypes.register("health", HealthCondition.class);
         conditionTypes.register("height", HeightCondition.class);
@@ -274,7 +270,7 @@ public class CoreQuestTypes {
         conditionTypes.register("time", TimeCondition.class);
         conditionTypes.register("variable", new VariableConditionFactory(loggerFactory, data, betonQuest.getVariableProcessor()));
         conditionTypes.register("weather", WeatherCondition.class);
-        conditionTypes.register("world", new WorldConditionFactory(loggerFactory, data));
+        conditionTypes.register("world", new WorldConditionFactory(loggerFactory, data, betonQuest.getVariableProcessor()));
     }
 
     private void registerEvents(final EventTypeRegistry eventTypes) {
