@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api.quest.npc;
 
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.Location;
 
 /**
@@ -43,4 +44,25 @@ public interface Npc<T> {
      * @param location the new location of the NPC
      */
     void teleport(Location location);
+
+    /**
+     * Checks if the Npc exists in a world.
+     *
+     * @return if the Npc exists in a world
+     */
+    boolean isSpawned();
+
+    /**
+     * Shows the Npc to the player.
+     *
+     * @param onlineProfile the online profile of the player
+     */
+    void show(OnlineProfile onlineProfile);
+
+    /**
+     * Hides the Npc from the player.
+     *
+     * @param onlineProfile the online profile of the player
+     */
+    void hide(OnlineProfile onlineProfile);
 }

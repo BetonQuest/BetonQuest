@@ -1,37 +1,32 @@
 package org.betonquest.betonquest.api;
 
-import org.betonquest.betonquest.api.bukkit.event.ProfileEvent;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.objective.EntityInteractObjective.Interaction;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * Event for interaction with BetonQuest {@link Npc}s.
+ * Event to call when a Npc attempts to update visibility.
  */
 @SuppressWarnings("PMD.DataClass")
-public class NpcInteractEvent extends ProfileEvent implements Cancellable {
+public class NpcUpdateVisibilityEvent extends Event implements Cancellable {
     /**
      * Static HandlerList to register listeners on the event.
      */
-    private static final HandlerList HANDLERS = new HandlerList();
+    private static final HandlerList HANDLER_LIST = new HandlerList();
 
     /**
-     * Player instance who interacted.
+     * The player it updated, null if unspecific/for all.
      */
+    @Nullable
     private final Player player;
 
     /**
      * Instruction string of the Npc.
      */
     private final String npcIdentifier;
-
-    /**
-     * Interaction done with the Npc.
-     */
-    private final Interaction interaction;
 
     /**
      * Interacted Npc.
@@ -46,23 +41,15 @@ public class NpcInteractEvent extends ProfileEvent implements Cancellable {
     /**
      * Create a new Npc Interact Event with a player.
      *
-     * @param profile       the profile of the player who interacted
-     * @param player        the player who interacted
-     * @param npc           the interacted npc
+     * @param player        the player who got the update
+     * @param npc           the npc which attempts to update the visibility
      * @param npcIdentifier the identifier as used inside the Npc section
-     * @param interaction   the type of interaction with the Npc, left or right
      * @param isAsync       if the trigger and so this is async
-     * @throws IllegalArgumentException if {@code interaction == Interaction.ANY}
      */
-    public NpcInteractEvent(final Profile profile, final Player player, final Npc<?> npc, final String npcIdentifier,
-                            final Interaction interaction, final boolean isAsync) {
-        super(profile, isAsync);
-        if (interaction == Interaction.ANY) {
-            throw new IllegalArgumentException("interaction cannot be 'any'");
-        }
+    public NpcUpdateVisibilityEvent(@Nullable final Player player, final String npcIdentifier, final Npc<?> npc, final boolean isAsync) {
+        super(isAsync);
         this.player = player;
         this.npcIdentifier = npcIdentifier;
-        this.interaction = interaction;
         this.npc = npc;
     }
 
@@ -72,25 +59,26 @@ public class NpcInteractEvent extends ProfileEvent implements Cancellable {
      * @return the handler list to register new listener
      */
     public static HandlerList getHandlerList() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
 
     @Override
     public HandlerList getHandlers() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
 
     /**
-     * Gets the player instance which interacted.
+     * Gets the player which got the update.
      *
      * @return the player
      */
+    @Nullable
     public Player getPlayer() {
         return player;
     }
 
     /**
-     * Gets the interacted Npc.
+     * Gets the Npc.
      *
      * @return the npc
      */
@@ -105,15 +93,6 @@ public class NpcInteractEvent extends ProfileEvent implements Cancellable {
      */
     public String getNpcIdentifier() {
         return npcIdentifier;
-    }
-
-    /**
-     * Gets the action done on the Npc.
-     *
-     * @return the interaction type
-     */
-    public Interaction getInteraction() {
-        return interaction;
     }
 
     @Override
