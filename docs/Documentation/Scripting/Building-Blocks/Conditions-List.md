@@ -490,11 +490,11 @@ There must be specific (Minecraft) time on the player's world for this condition
 
 This condition checks if a variable value matches given [regular expression](../Data-Formats.md#regex-regular-expressions)
 
-| Parameter   | Syntax          | Default Value          | Explanation                                                                                                                             |
-|-------------|-----------------|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
-| _Variable_  | Any variable    | :octicons-x-circle-16: | The variable (surrounded by `%` characters).                                                                                            |
+| Parameter   | Syntax          | Default Value          | Explanation                                                                                                                                |
+|-------------|-----------------|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
+| _Variable_  | Any variable    | :octicons-x-circle-16: | The variable (surrounded by `%` characters).                                                                                               |
 | _Regex_     | A regex pattern | :octicons-x-circle-16: | The [regex](../Data-Formats.md#regex-regular-expressions) that the variables value must match. The regex can also be stored in a variable. |
-| _forceSync_ | Keyword         | False                  | Forces the variables to be resolved on the main thread. This may be required by some third party variables.                             |
+| _forceSync_ | Keyword         | False                  | Forces the variables to be resolved on the main thread. This may be required by some third party variables.                                |
 
 
 ```YAML title="Example"
@@ -512,12 +512,21 @@ denizenVariableThis: "variable %ph.denizen_<player.has_flag[flag_name]>% true fo
 
 ## Weather: `weather`
 
+**static**
+
 There must be a specific weather for this condition to return true. There are three possible options: sun, rain and storm. Note that `/toggledownfall` does not change the weather, it just does what the name suggests: toggles downfall. The rain toggled off will still be considered as rain! Use `/weather clear` instead.
 
-!!! example
-    ```YAML
-    weather sun
-    ```
+| Parameter | Syntax     | Default Value          | Explanation                         |
+|-----------|------------|------------------------|-------------------------------------|
+| _weather_ | Keyword    | :octicons-x-circle-16: | The weather to check for.           |
+| _world_   | world:name | player location        | The world to check for the weather. |
+
+
+```YAML title="Example"
+isSunny: "weather sun"
+weatherInPlayerWorld: "weather rain world:%ph.player_home_world%"
+overworldIsRainy: "weather rain world:overworld"
+```
 
 ## World: `world`
 

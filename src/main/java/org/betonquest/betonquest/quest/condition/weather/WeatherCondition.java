@@ -1,15 +1,17 @@
 package org.betonquest.betonquest.quest.condition.weather;
 
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
+import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.location.VariableWorld;
 import org.betonquest.betonquest.quest.event.weather.Weather;
 import org.bukkit.World;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * A condition that checks the weather in the player's world.
+ * A condition that checks the weather in the given world.
  */
-public class WeatherCondition implements OnlineCondition {
+public class WeatherCondition implements NullableCondition {
 
     /**
      * The weather to check for.
@@ -17,17 +19,24 @@ public class WeatherCondition implements OnlineCondition {
     private final Weather weather;
 
     /**
-     * Creates a new weather condition.
+     * The world to check the weather in.
+     */
+    private final VariableWorld variableWorld;
+
+    /**
+     * Checks if the weather in the given world matches the weather of this condition.
      *
      * @param weather the weather to check for
+     * @param world   the world to check the weather in
      */
-    public WeatherCondition(final Weather weather) {
+    public WeatherCondition(final Weather weather, final VariableWorld world) {
         this.weather = weather;
+        this.variableWorld = world;
     }
 
     @Override
-    public boolean check(final OnlineProfile profile) throws QuestRuntimeException {
-        final World world = profile.getPlayer().getWorld();
+    public boolean check(@Nullable final Profile profile) throws QuestRuntimeException {
+        final World world = variableWorld.getValue(profile);
         return weather.isInWorld(world);
     }
 }

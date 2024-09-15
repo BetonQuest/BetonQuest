@@ -40,7 +40,7 @@ public enum Weather {
     }
 
     /**
-     * Parses the weather string to the corresponding weather
+     * Parses the weather string to the corresponding weather.
      *
      * @param weatherName the name of the weather
      * @return the weather corresponding to the name
@@ -71,7 +71,7 @@ public enum Weather {
     }
 
     /**
-     * Checks whether the weather matches the current weather in the world
+     * Checks whether the weather matches the current weather in the world.
      *
      * @param world the world to check for
      * @return if weather matching the world's weather

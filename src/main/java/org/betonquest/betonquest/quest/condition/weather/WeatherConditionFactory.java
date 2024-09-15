@@ -1,27 +1,24 @@
 package org.betonquest.betonquest.quest.condition.weather;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
-import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
+import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
+import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
+import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.instruction.variable.location.VariableWorld;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
+import org.betonquest.betonquest.quest.condition.DoNothingPlayerlessCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
+import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
 import org.betonquest.betonquest.quest.event.weather.Weather;
-
-import java.util.Locale;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 
 /**
  * Factory to create weather conditions from {@link Instruction}s.
  */
-public class WeatherConditionFactory implements PlayerConditionFactory {
-
-    /**
-     * Logger factory to create a logger for events.
-     */
-    private final BetonQuestLoggerFactory loggerFactory;
+public class WeatherConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
 
     /**
      * Data used for condition check on the primary server thread.
@@ -29,22 +26,38 @@ public class WeatherConditionFactory implements PlayerConditionFactory {
     private final PrimaryServerThreadData data;
 
     /**
+     * The variable processor used to process variables.
+     */
+    private final VariableProcessor variableProcessor;
+
+    /**
      * Create the weather condition factory.
      *
-     * @param loggerFactory the logger factory used for creating loggers
-     * @param data          the data used for checking the condition on the main thread
+     * @param data              the data used for checking the condition on the main thread
+     * @param variableProcessor the variable processor used to process variables
      */
-    public WeatherConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
-        this.loggerFactory = loggerFactory;
+    public WeatherConditionFactory(final PrimaryServerThreadData data, final VariableProcessor variableProcessor) {
         this.data = data;
+        this.variableProcessor = variableProcessor;
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws InstructionParseException {
-        final Weather weather = Weather.parseWeather(instruction.next().toLowerCase(Locale.ROOT).trim());
-        final BetonQuestLogger logger = loggerFactory.create(WeatherCondition.class);
+        final Weather weather = Weather.parseWeather(instruction.next());
+        final VariableWorld world = new VariableWorld(variableProcessor, instruction.getPackage(), instruction.getOptional("world", "%location.world%"));
         return new PrimaryServerThreadPlayerCondition(
-                new OnlineConditionAdapter(new WeatherCondition(weather), logger, instruction.getPackage()), data);
+                new NullableConditionAdapter(new WeatherCondition(weather, world)), data);
     }
 
+    @Override
+    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws InstructionParseException {
+        final String worldString = instruction.getOptional("world");
+        if (worldString == null) {
+            return new DoNothingPlayerlessCondition();
+        }
+        final Weather weather = Weather.parseWeather(instruction.next());
+        final VariableWorld world = new VariableWorld(variableProcessor, instruction.getPackage(), worldString);
+        return new PrimaryServerThreadPlayerlessCondition(
+                new NullableConditionAdapter(new WeatherCondition(weather, world)), data);
+    }
 }
