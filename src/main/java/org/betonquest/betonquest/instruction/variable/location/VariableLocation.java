@@ -6,7 +6,6 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
@@ -62,10 +61,7 @@ public class VariableLocation extends Variable<Location> {
         }
         final String[] parts = loc.split(";");
 
-        final World world = Bukkit.getWorld(parts[3]);
-        if (world == null) {
-            throw new QuestRuntimeException("World " + parts[3] + " does not exists.");
-        }
+        final World world = VariableWorld.parse(parts[3]);
         final double locX;
         final double locY;
         final double locZ;
