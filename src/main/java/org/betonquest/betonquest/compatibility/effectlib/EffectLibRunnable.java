@@ -8,7 +8,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
+import org.betonquest.betonquest.compatibility.protocollib.hider.CitizensHider;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -101,7 +101,7 @@ public class EffectLibRunnable extends BukkitRunnable {
             final Player player = profile.getPlayer();
 
             if (npc == null || !npc.getStoredLocation().getWorld().equals(player.getWorld())
-                    || NPCHider.getInstance() != null && NPCHider.getInstance().isInvisible(profile, npc)) {
+                    || CitizensHider.getInstance() != null && CitizensHider.getInstance().isInvisible(profile, npc)) {
                 continue;
             }
 

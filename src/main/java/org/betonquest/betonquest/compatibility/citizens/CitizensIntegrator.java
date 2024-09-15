@@ -9,8 +9,7 @@ import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveE
 import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveEventFactory;
 import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensStopEventFactory;
 import org.betonquest.betonquest.compatibility.citizens.objective.NPCKillObjective;
-import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
-import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
+import org.betonquest.betonquest.compatibility.protocollib.hider.CitizensHider;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.registry.feature.ConversationIORegistry;
@@ -91,15 +90,17 @@ public class CitizensIntegrator implements Integrator {
     @Override
     public void postHook() {
         if (Compatibility.getHooked().contains("ProtocolLib")) {
-            NPCHider.start(plugin.getLoggerFactory().create(NPCHider.class));
-            plugin.getQuestRegistries().event().register("updatevisibility", UpdateVisibilityNowEvent.class);
+            CitizensHider.start(plugin.getLoggerFactory().create(CitizensHider.class));
+        } else {
+            plugin.getLoggerFactory().create(CitizensIntegrator.class)
+                    .warn("ProtocolLib Integration not found! Hiding Citizens NPCs won't be available.");
         }
     }
 
     @Override
     public void reload() {
-        if (NPCHider.getInstance() != null) {
-            NPCHider.start(plugin.getLoggerFactory().create(NPCHider.class));
+        if (CitizensHider.getInstance() != null) {
+            CitizensHider.start(plugin.getLoggerFactory().create(CitizensHider.class));
         }
     }
 

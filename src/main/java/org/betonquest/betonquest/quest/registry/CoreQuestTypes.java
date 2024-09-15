@@ -130,6 +130,7 @@ import org.betonquest.betonquest.quest.event.logic.IfElseEventFactory;
 import org.betonquest.betonquest.quest.event.notify.NotifyAllEventFactory;
 import org.betonquest.betonquest.quest.event.notify.NotifyEventFactory;
 import org.betonquest.betonquest.quest.event.npc.NpcTeleportEventFactory;
+import org.betonquest.betonquest.quest.event.npc.UpdateVisibilityNowEventFactory;
 import org.betonquest.betonquest.quest.event.objective.ObjectiveEventFactory;
 import org.betonquest.betonquest.quest.event.party.PartyEventFactory;
 import org.betonquest.betonquest.quest.event.point.DeleteGlobalPointEventFactory;
@@ -377,6 +378,7 @@ public class CoreQuestTypes {
         eventTypes.register("take", new TakeEventFactory(loggerFactory));
         eventTypes.register("teleport", new TeleportEventFactory(loggerFactory, data));
         eventTypes.registerCombined("time", new TimeEventFactory(server, data, variableProcessor));
+        eventTypes.register("updatevisibility", new UpdateVisibilityNowEventFactory(betonQuest.getNpcProcessor().getNpcHider(), loggerFactory, data));
         eventTypes.register("variable", new VariableEventFactory(questTypeAPI));
         eventTypes.register("velocity", new VelocityEventFactory(loggerFactory, data));
         eventTypes.registerCombined("weather", new WeatherEventFactory(loggerFactory, data));
