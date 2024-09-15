@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
-import org.betonquest.betonquest.api.quest.npc.conversation.NpcConversation;
+import org.betonquest.betonquest.api.quest.npc.feature.NpcConversation;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.id.ConversationID;
