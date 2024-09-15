@@ -5,7 +5,7 @@ import net.citizensnpcs.trait.SkinTrait;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.npc.conversation.NpcConversation;
+import org.betonquest.betonquest.api.quest.npc.feature.NpcConversation;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.InventoryConvIO;
 import org.bukkit.Bukkit;
