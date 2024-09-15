@@ -53,13 +53,17 @@ public abstract class NpcInteractCatcher<T> implements Listener {
     protected boolean interactLogic(final Player clicker, final Npc<T> npc, final Interaction interaction,
                                     final boolean cancelled, final boolean isAsync) {
         final OnlineProfile profile = PlayerConverter.getID(clicker);
-        final String identifier = prefix + " " + npcFactory.npcToInstructionString(npc);
+        final String identifier = constructNpcInstruction(npc);
         final NpcInteractEvent npcInteractEvent = new NpcInteractEvent(profile, clicker, npc, identifier, interaction, isAsync);
         if (cancelled) {
             npcInteractEvent.setCancelled(true);
         }
         Bukkit.getPluginManager().callEvent(npcInteractEvent);
         return npcInteractEvent.isCancelled();
+    }
+
+    public String constructNpcInstruction(final Npc<T> npc) {
+        return prefix + " " + npcFactory.npcToInstructionString(npc);
     }
 
     /**
