@@ -5,7 +5,7 @@ import net.citizensnpcs.api.event.NPCLeftClickEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.quest.npc.NpcFactory;
-import org.betonquest.betonquest.api.quest.npc.conversation.NpcInteractCatcher;
+import org.betonquest.betonquest.api.quest.npc.feature.NpcInteractCatcher;
 import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveController;
 import org.betonquest.betonquest.objective.EntityInteractObjective;
 import org.bukkit.event.EventHandler;

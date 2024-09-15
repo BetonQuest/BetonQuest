@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.quest.npc.conversation;
+package org.betonquest.betonquest.api.quest.npc.feature;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
