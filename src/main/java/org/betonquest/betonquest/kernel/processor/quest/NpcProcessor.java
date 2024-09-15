@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcConversation;
+import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.CombatTagger;
@@ -19,10 +20,13 @@ import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.objective.EntityInteractObjective.Interaction;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -62,9 +66,14 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
 
     /**
      * Stores the conversations assigned to NPCs via the configuration.
-     * The key could either be an NPC's name or its ID, depending on the configuration.
+     * The key could either be a Npcs name or its ID, depending on the configuration.
      */
     private final Map<String, ConversationID> assignedConversations = new HashMap<>();
+
+    /**
+     * Hider for Npcs.
+     */
+    private final NpcHider npcHider;
 
     /**
      * The minimum time between two interactions with an NPC.
@@ -91,7 +100,9 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
         this.loggerFactory = loggerFactory;
         this.pluginMessage = pluginMessage;
         this.plugin = plugin;
-        plugin.getServer().getPluginManager().registerEvents(new InteractListener(), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new NpcListener(), plugin);
+        this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), plugin.getQuestTypeAPI(), this,
+                plugin, plugin.getProfileProvider(), Config.getPackages().values());
     }
 
     /**
@@ -119,6 +130,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
         super.clear();
         interactionLimit = plugin.getPluginConfig().getInt("npcInteractionLimit", 500);
         acceptNpcLeftClick = plugin.getPluginConfig().getBoolean("acceptNPCLeftClick");
+        npcHider.reload(Config.getPackages().values());
     }
 
     @Override
@@ -192,9 +204,30 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
     }
 
     /**
-     * Attempts to start conversations on interaction.
+     * Gets the NpcHider.
+     *
+     * @return the active npc hider
      */
-    private class InteractListener implements Listener {
+    public NpcHider getNpcHider() {
+        return npcHider;
+    }
+
+    /**
+     * Listener for Conversation starting and Hiding with {@link Npc}s.
+     */
+    private class NpcListener implements Listener {
+        /**
+         * The default Constructor.
+         */
+        public NpcListener() {
+
+        }
+
+        /**
+         * Attempts to start conversations on Npc interactions.
+         *
+         * @param event the interact event
+         */
         @EventHandler(ignoreCancelled = true)
         public void onInteract(final NpcInteractEvent event) {
             if (event.getInteraction() == Interaction.LEFT && !acceptNpcLeftClick) {
@@ -203,6 +236,17 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
             if (interactLogic(event.getPlayer(), event.getNpcIdentifier(), event.getNpc())) {
                 event.setCancelled(true);
             }
+        }
+
+        /**
+         * Applies the visibility on Player join.
+         *
+         * @param event the event to listen
+         */
+        @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+        public void onPlayerJoin(final PlayerJoinEvent event) {
+            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () ->
+                    npcHider.applyVisibility(plugin.getProfileProvider().getProfile(event.getPlayer())));
         }
     }
 }

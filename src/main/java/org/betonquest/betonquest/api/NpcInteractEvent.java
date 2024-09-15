@@ -14,7 +14,7 @@ import org.bukkit.event.HandlerList;
 @SuppressWarnings("PMD.DataClass")
 public class NpcInteractEvent extends ProfileEvent implements Cancellable {
     /**
-     * Static HandlerList to register listeners on tih event.
+     * Static HandlerList to register listeners on the event.
      */
     private static final HandlerList HANDLERS = new HandlerList();
 
