@@ -2,18 +2,19 @@ package org.betonquest.betonquest.compatibility.effectlib;
 
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.util.DynamicLocation;
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
-import org.betonquest.betonquest.compatibility.protocollib.hider.CitizensHider;
+import org.betonquest.betonquest.api.quest.npc.Npc;
+import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -50,6 +51,11 @@ public class EffectLibRunnable extends BukkitRunnable {
     private final EffectConfiguration effectConfiguration;
 
     /**
+     * Processor to get npc.
+     */
+    private final NpcProcessor npcProcessor;
+
+    /**
      * All player profiles that meet the conditions for this classes' effect.
      */
     private List<OnlineProfile> activeProfiles;
@@ -67,14 +73,17 @@ public class EffectLibRunnable extends BukkitRunnable {
      * @param profileProvider     the profile provider instance
      * @param manager             the effect manager which will create and control the particles
      * @param effectConfiguration the effect to show
+     * @param npcProcessor        processor to get npc
      */
-    public EffectLibRunnable(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider, final EffectManager manager, final EffectConfiguration effectConfiguration) {
+    public EffectLibRunnable(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider,
+                             final EffectManager manager, final EffectConfiguration effectConfiguration, final NpcProcessor npcProcessor) {
         super();
         this.log = log;
         this.questTypeAPI = questTypeAPI;
         this.profileProvider = profileProvider;
         this.manager = manager;
         this.effectConfiguration = effectConfiguration;
+        this.npcProcessor = npcProcessor;
         this.activeProfiles = new ArrayList<>();
     }
 
@@ -90,10 +99,9 @@ public class EffectLibRunnable extends BukkitRunnable {
     private List<OnlineProfile> checkActiveEffects() {
         final List<OnlineProfile> activePlayerEffects = new ArrayList<>();
         for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
-            if (!questTypeAPI.conditions(onlineProfile, effectConfiguration.conditions())) {
-                continue;
+            if (questTypeAPI.conditions(onlineProfile, effectConfiguration.conditions())) {
+                activePlayerEffects.add(onlineProfile);
             }
-            activePlayerEffects.add(onlineProfile);
         }
         return activePlayerEffects;
     }
@@ -110,16 +118,24 @@ public class EffectLibRunnable extends BukkitRunnable {
     }
 
     private void runNPCEffects(final OnlineProfile profile, final EffectConfiguration effect) {
-        for (final Integer npcId : effect.npcs()) {
-            final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
+        for (final NpcID npcId : effect.npcs()) {
+            final Npc<?> npc;
+            try {
+                npc = npcProcessor.getNpc(npcId);
+            } catch (final QuestException exception) {
+                log.debug("Could not get Npc for id '" + npcId.getFullID() + "' in effects!", exception);
+                continue;
+            }
             final Player player = profile.getPlayer();
 
-            if (npc == null || !npc.getStoredLocation().getWorld().equals(player.getWorld())
-                    || CitizensHider.getInstance() != null && CitizensHider.getInstance().isInvisible(profile, npc)) {
+            if (!npc.getLocation().getWorld().equals(player.getWorld()) || npcProcessor.getNpcHider().isHidden(npcId, profile)) {
                 continue;
             }
 
-            manager.start(effect.effectClass(), effect.settings(), new DynamicLocation(npc.getEntity()),
+            final Entity entity = npc.getEntity();
+            final DynamicLocation location = entity == null ? new DynamicLocation(npc.getLocation()) : new DynamicLocation(entity);
+
+            manager.start(effect.effectClass(), effect.settings(), location,
                     new DynamicLocation(null, null), (ConfigurationSection) null, player);
         }
     }
