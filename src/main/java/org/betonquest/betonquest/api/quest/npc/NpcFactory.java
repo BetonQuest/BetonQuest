@@ -27,4 +27,11 @@ public interface NpcFactory<T> extends TypeFactory<NpcWrapper<T>> {
      * @return the identifying string as used inside {@link org.betonquest.betonquest.id.NpcID NpcId}s.
      */
     String npcToInstructionString(Npc<T> npc);
+
+    /**
+     * Gets the class of the Npc.
+     *
+     * @return the class of {@link T}
+     */
+    Class<? extends Npc<T>> factoredClass();
 }
