@@ -30,4 +30,9 @@ public class CitizensNpcFactory implements NpcFactory<NPC> {
     public String npcToInstructionString(final Npc<NPC> npc) {
         return String.valueOf(npc.getOriginal().getId());
     }
+
+    @Override
+    public Class<? extends Npc<NPC>> factoredClass() {
+        return CitizensAdapter.class;
+    }
 }
