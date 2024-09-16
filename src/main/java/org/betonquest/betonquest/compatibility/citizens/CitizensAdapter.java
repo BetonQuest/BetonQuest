@@ -6,7 +6,9 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.compatibility.protocollib.hider.CitizensHider;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Citizens Compatibility Adapter for BetonQuest Npcs.
@@ -34,6 +36,12 @@ public class CitizensAdapter implements Npc<NPC> {
     @Override
     public String getName() {
         return npc.getName();
+    }
+
+    @Nullable
+    @Override
+    public Entity getEntity() {
+        return npc.getEntity();
     }
 
     @Override
