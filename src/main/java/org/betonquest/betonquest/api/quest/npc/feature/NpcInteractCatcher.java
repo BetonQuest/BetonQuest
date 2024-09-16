@@ -3,8 +3,8 @@ package org.betonquest.betonquest.api.quest.npc.feature;
 import org.betonquest.betonquest.api.NpcInteractEvent;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.api.quest.npc.NpcFactory;
 import org.betonquest.betonquest.objective.EntityInteractObjective.Interaction;
+import org.betonquest.betonquest.quest.registry.type.NpcTypeRegistry;
 import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -20,22 +20,17 @@ import org.bukkit.event.Listener;
  */
 public abstract class NpcInteractCatcher<T> implements Listener {
     /**
-     * Factory to identify the clicked Npc.
+     * Processor to get Npc identifier from it.
      */
-    private final NpcFactory<T> npcFactory;
-
-    /**
-     * Prefix to identify the used factory.
-     */
-    private String prefix = "";
+    private final NpcTypeRegistry npcTypeRegistry;
 
     /**
      * Initializes the conversation starter.
      *
-     * @param npcFactory the factory to identify the clicked Npc
+     * @param npcTypeRegistry the registry to identify the clicked Npc
      */
-    public NpcInteractCatcher(final NpcFactory<T> npcFactory) {
-        this.npcFactory = npcFactory;
+    public NpcInteractCatcher(final NpcTypeRegistry npcTypeRegistry) {
+        this.npcTypeRegistry = npcTypeRegistry;
     }
 
     /**
@@ -53,25 +48,12 @@ public abstract class NpcInteractCatcher<T> implements Listener {
     protected boolean interactLogic(final Player clicker, final Npc<T> npc, final Interaction interaction,
                                     final boolean cancelled, final boolean isAsync) {
         final OnlineProfile profile = PlayerConverter.getID(clicker);
-        final String identifier = constructNpcInstruction(npc);
+        final String identifier = npcTypeRegistry.getIdentifier(npc);
         final NpcInteractEvent npcInteractEvent = new NpcInteractEvent(profile, clicker, npc, identifier, interaction, isAsync);
         if (cancelled) {
             npcInteractEvent.setCancelled(true);
         }
         Bukkit.getPluginManager().callEvent(npcInteractEvent);
         return npcInteractEvent.isCancelled();
-    }
-
-    public String constructNpcInstruction(final Npc<T> npc) {
-        return prefix + " " + npcFactory.npcToInstructionString(npc);
-    }
-
-    /**
-     * Sets the prefix this starter uses to build the full instruction.
-     *
-     * @param prefix the prefix used to identify the used factory
-     */
-    public void setPrefix(final String prefix) {
-        this.prefix = prefix;
     }
 }

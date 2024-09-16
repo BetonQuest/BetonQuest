@@ -4,10 +4,8 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.compatibility.citizens.CitizensHologramLoop;
 import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -22,17 +20,17 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Singleton class which provides Hologram
+ * Singleton class which provides Hologram.
  */
 @SuppressWarnings("PMD.AvoidSynchronizedStatement")
 public final class HologramProvider implements Integrator {
     /**
-     * Pattern to match an instruction variable in string
+     * Pattern to match an instruction variable in string.
      */
     public static final Pattern VARIABLE_VALIDATOR = Pattern.compile("%[^ %\\s]+%");
 
     /**
-     * HologramIntegrators when 'hooked' add themselves to this list
+     * HologramIntegrators when 'hooked' add themselves to this list.
      */
     private static final List<HologramIntegrator> ATTEMPTED_INTEGRATIONS = new ArrayList<>();
 
@@ -48,7 +46,7 @@ public final class HologramProvider implements Integrator {
     private static HologramProvider instance;
 
     /**
-     * The currently hooked integrator, this may change during runtime during a reload
+     * The currently hooked integrator, this may change during runtime during a reload.
      */
     private HologramIntegrator integrator;
 
@@ -59,13 +57,13 @@ public final class HologramProvider implements Integrator {
     private LocationHologramLoop locationHologramLoop;
 
     /**
-     * The current {@link CitizensHologramLoop}.
+     * The current {@link NpcHologramLoop}.
      */
     @Nullable
-    private CitizensHologramLoop citizensHologramLoop;
+    private NpcHologramLoop npcHologramLoop;
 
     /**
-     * Creates a new HologramProvider object and assigns it to singleton instance if not already
+     * Creates a new HologramProvider object and assigns it to singleton instance if not already.
      *
      * @param integrator The initial integrator to hook into
      */
@@ -74,7 +72,7 @@ public final class HologramProvider implements Integrator {
     }
 
     /**
-     * Adds a possible integrator for this provider
+     * Adds a possible integrator for this provider.
      *
      * @param integrator The integrator itself
      */
@@ -121,14 +119,11 @@ public final class HologramProvider implements Integrator {
      * @throws IllegalStateException Thrown if this method has been used at the incorrect time
      */
     public boolean isHooked(final String pluginName) {
-        if (this.integrator == null) {
-            throw new IllegalStateException("Cannot isHooked() when HologramProvider has not been fully initialised yet!");
-        }
         return this.integrator.getPluginName().equalsIgnoreCase(pluginName);
     }
 
     /**
-     * Creates a wrapped hologram using a hooked hologram plugin
+     * Creates a wrapped hologram using a hooked hologram plugin.
      *
      * @param location Location of where the hologram should be spawned
      * @return The hologram
@@ -139,7 +134,7 @@ public final class HologramProvider implements Integrator {
 
     /**
      * Parses a string containing an instruction variable and converts it to the appropriate format for the given
-     * plugin implementation
+     * plugin implementation.
      *
      * @param pack The quest pack where the variable resides
      * @param text The raw text
@@ -151,11 +146,11 @@ public final class HologramProvider implements Integrator {
 
     @Override
     public void hook() throws HookException {
-        final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
+        final BetonQuest plugin = BetonQuest.getInstance();
+        final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
         this.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class));
-        if (Compatibility.getHooked().contains("Citizens")) {
-            this.citizensHologramLoop = new CitizensHologramLoop(loggerFactory, loggerFactory.create(CitizensHologramLoop.class));
-        }
+        this.npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class),
+                plugin.getNpcProcessor(), plugin.getQuestRegistries().npc());
         new HologramListener();
     }
 
@@ -168,11 +163,13 @@ public final class HologramProvider implements Integrator {
                 Collections.sort(ATTEMPTED_INTEGRATIONS);
 
                 instance.integrator = ATTEMPTED_INTEGRATIONS.get(0);
-                final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
+                final BetonQuest plugin = BetonQuest.getInstance();
+                final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
                 instance.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class));
-                if (instance.citizensHologramLoop != null) {
-                    instance.citizensHologramLoop.close();
-                    instance.citizensHologramLoop = new CitizensHologramLoop(loggerFactory, loggerFactory.create(CitizensHologramLoop.class));
+                if (instance.npcHologramLoop != null) {
+                    instance.npcHologramLoop.close();
+                    instance.npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class),
+                            plugin.getNpcProcessor(), plugin.getQuestRegistries().npc());
                 }
             }
         }
@@ -184,27 +181,27 @@ public final class HologramProvider implements Integrator {
             if (instance != null && instance.locationHologramLoop != null) {
                 HologramRunner.cancel();
                 instance.locationHologramLoop = null;
-                if (instance.citizensHologramLoop != null) {
-                    instance.citizensHologramLoop.close();
-                    instance.citizensHologramLoop = null;
+                if (instance.npcHologramLoop != null) {
+                    instance.npcHologramLoop.close();
+                    instance.npcHologramLoop = null;
                 }
             }
         }
     }
 
     /**
-     * A listener class for bukkit events that are used by holograms
+     * A listener class for bukkit events that are used by holograms.
      */
     public static class HologramListener implements Listener {
         /**
-         * Creates and registers a new HologramListener
+         * Creates and registers a new HologramListener.
          */
         public HologramListener() {
             Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
         }
 
         /**
-         * Called when a player joins the server
+         * Called when a player joins the server.
          *
          * @param event The event
          */
