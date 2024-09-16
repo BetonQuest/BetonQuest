@@ -81,10 +81,8 @@ public class CitizensIntegrator implements Integrator {
         conversationIOTypes.register("chest", CitizensInventoryConvIO.class);
         conversationIOTypes.register("combined", CitizensInventoryConvIO.CitizensCombined.class);
 
-        final CitizensNpcFactory npcFactory = new CitizensNpcFactory();
-        final CitizensInteractCatcher catcher = new CitizensInteractCatcher(npcFactory, citizensMoveController);
-        manager.registerEvents(catcher, plugin);
-        questRegistries.npc().register("citizens", npcFactory, catcher);
+        manager.registerEvents(new CitizensInteractCatcher(questRegistries.npc(), citizensMoveController), plugin);
+        questRegistries.npc().register("citizens", new CitizensNpcFactory());
     }
 
     @Override
