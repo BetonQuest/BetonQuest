@@ -50,14 +50,14 @@ public abstract class HologramLoop {
     private static final String ORDER_ASC = "asc";
 
     /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    protected final BetonQuestLogger log;
+
+    /**
      * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
      */
     private final BetonQuestLoggerFactory loggerFactory;
-
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * Creates a new instance of the loop.

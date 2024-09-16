@@ -1,15 +1,13 @@
 package org.betonquest.betonquest.quest.registry.type;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcFactory;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcInteractCatcher;
 import org.betonquest.betonquest.quest.registry.FactoryRegistry;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,9 +15,9 @@ import java.util.Map;
  */
 public class NpcTypeRegistry extends FactoryRegistry<TypeFactory<NpcWrapper<?>>> {
     /**
-     * Factories mapped to their catcher to update their registered prefix.
+     * Npc Classes mapped to their Factory to get the instruction string.
      */
-    private final Map<Class<?>, List<NpcInteractCatcher<?>>> starter;
+    private final Map<Class<?>, Map.Entry<String, NpcFactory<?>>> mapping;
 
     /**
      * Create a new npc type registry.
@@ -28,24 +26,35 @@ public class NpcTypeRegistry extends FactoryRegistry<TypeFactory<NpcWrapper<?>>>
      */
     public NpcTypeRegistry(final BetonQuestLogger log) {
         super(log, "npc");
-        this.starter = new HashMap<>();
+        this.mapping = new HashMap<>();
     }
 
     /**
      * Registers a npc factory with a {@link NpcInteractCatcher} to convert the third party interactions.
      *
-     * @param name            the name of the type
-     * @param factory         the player factory to create the type
-     * @param interactCatcher the catcher to convert interactions
-     * @param <T>             the original npc type
+     * @param name    the name of the type
+     * @param factory the player factory to create the type
+     * @param <T>     the original npc type
      */
-    public <T> void register(final String name, final NpcFactory<T> factory, @Nullable final NpcInteractCatcher<T> interactCatcher) {
+    public <T> void register(final String name, final NpcFactory<T> factory) {
         register(name, factory::parseInstruction); // TODO irgendwas mit generics…
-        final List<NpcInteractCatcher<?>> starterList = starter.computeIfAbsent(factory.getClass(), clazz -> new ArrayList<>());
-        starterList.forEach(starter -> starter.setPrefix(name)); // TODO now the bad decision is here, yay!
-        if (interactCatcher != null) {
-            interactCatcher.setPrefix(name);
-            starterList.add(interactCatcher);
+        mapping.put(factory.factoredClass(), Map.entry(name, factory));
+    }
+
+    /**
+     * Gets the instruction string used to get the npc when used inside a {@link org.betonquest.betonquest.id.NpcID}.
+     *
+     * @param npc the npc to get the instruction string
+     * @param <T> the original type of the npc
+     * @return the instruction used in BetonQuest to identify the Npc
+     * @throws IllegalArgumentException if no factory for that Npc type is registered
+     */
+    public <T> String getIdentifier(final Npc<T> npc) {
+        final Map.Entry<String, NpcFactory<?>> entry = mapping.get(npc.getClass());
+        if (entry == null) {
+            throw new IllegalArgumentException("Npc " + npc.getClass().getName() + " does not have a factory");
         }
+        @SuppressWarnings("unchecked") final NpcFactory<T> factory = (NpcFactory<T>) entry.getValue();
+        return entry.getKey() + " " + factory.npcToInstructionString(npc);
     }
 }
