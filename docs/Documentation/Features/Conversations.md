@@ -45,7 +45,7 @@ conversations: #(1)!
     
 
 1. All conversation must be defined in a `conversations` section.
-2. `mayorHans` is the name of the conversation, which is used to reference the conversation, e.g. when [linking it to an NPC](#binding-conversations-to-npcs). 
+2. `mayorHans` is the name of the conversation, which is used to reference the conversation. 
 3. `Hans` is the visual name of NPC that is displayed during the conversation.
 4. `first` are pointers to options the NPC will use at the beginning of the conversation. He will choose the first one that meets all conditions. You 
     define these options in `npc_options` branch.
@@ -79,16 +79,18 @@ understand in the future. Don't worry though, if you make some mistake in config
 
 ## Binding Conversations to NPCs
 
-Conversations can be assigned to NPCs created with Citizens. This is done in the `npcs` section:
+Conversations can be assigned to [Npcs](Npcs.md). This is done in the `npc_conversations` section:
 
 ```YAML title="Example"
-npcs:
-  0: innkeeper
-  4: mayorHans
+npc_conversations:
+  Hans: mayorHans #(1)!
 ```
 
-The first part is the ID of the NPC. To acquire the NPCs ID select the NPC using `/npc select`, then run `/npc id`.
-The second part is the identifier of the corresponding conversation name as defined in the `conversations` section. 
+1. The key is the NpcID, the value a ConversationID.
+
+A Npc will only react to right clicks by default. 
+This can be changed by setting `acceptNPCLeftClick` in the config.yml to `true`.
+
 You can assign the same conversation to multiple NPCs.
 It is not possible to assign multiple conversations to one npc. For this
 purpose, have a look at 
