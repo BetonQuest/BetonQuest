@@ -105,51 +105,23 @@ takebrew 2 MY_OTHER_BREW
 
 ## Citizens[](https://www.spigotmc.org/resources/13811/)
 
-If you have this plugin you can use it's NPCs for conversations. I highly recommend you installing it,
-it's NPCs are way more immersive. Having Citizens also allows you to use NPCKill objective and to have moving NPC's.
+If you have this plugin you can use it's NPCs. I highly recommend you installing it,
+it's NPCs are way more immersive. Having Citizens also allows you to use NPCKill objective and to have moving NPC's
+in addition to the normal Npc functionality.
 
-A Citizen NPC will only react to right clicks by default. This can be changed by 
-setting `acceptNPCLeftClick` in the config.yml to `true`.
+### Npcs section: `npcs`
 
-!!! notice
-      You need to specify the ID of the NPC instead of it's name in the package.yml when using Citizens!
+You simply use the Citizens NPC id as argument.
+To acquire the NPCs ID select the NPC using `/npc select`, then run `/npc id`.
 
-### Conditions
+```YAML title="Example"
+npcs:
+  innkeeper: citizens 0
+  mayorHans: citizens 4
+```
 
-#### NPC distance: `npcdistance`
-
-This condition will return true if the player is closer to the NPC with the given ID than the given distance.
- The NPCs ID is the first argument, the distance is the second. If the npc is despawned the condition will return false.
-
-!!! example
-    ```YAML
-    npcdistance 16 22
-    ```
-
-#### NPC location: `npclocation`
-
-**persistent**, **static**
-
-This condition will return true if a npc is close to a location. First argument is the id of the NPC, second the location and third the maximum distance to the location that the npc is allowed to have.
-
-!!! example
-    ```YAML
-    npclocation 16 4.0;14.0;-20.0;world 22
-    ```
-
-#### NPC region: `npcregion`
-
-**persistent**, **static**
-
-!!! notice
-    This condition also requires WorldGuard to work.
-
-This condition will return true if a npc is inside a region. First argument is the id of the npc second is the name of the region.
-
-!!! example
-    ```YAML
-    npcregion 16 spawn
-    ```
+### Npc Hiding: `hide_npcs`
+@snippet:integrations:protocollib@
 
 ### Events
 
@@ -178,30 +150,8 @@ This will stop all current move tasks for the npc with the given ID.
     ```YAML
     stopnpc 16
     ```
-    
-#### Teleport NPC: `teleportnpc`
-
-This event will teleport the NPC with the given ID to the given location.
-
-!!! example
-    ```YAML
-    teleportnpc 53 100;200;300;world
-    ```
 
 ### Objectives
-
-#### NPC Interact: `npcinteract`
-
-The player has to right-click on the NPC with specified ID. It can also optionally cancel the action, so the conversation won't start.
-The first argument is number (ID of the NPC).
-You can add the optional argument `cancel` to cancel the actual interaction with the NPC. 
-With `interaction` you can also define the type of interaction that is required, you can define `left`, `right` or `any`.
-
-!!! example
-    ```YAML
-    npcinteract 3 cancel conditions:sneak events:steal
-    npcinteract 54 interaction:left events:poke
-    ```
 
 #### NPC Kill: `npckill`
 
@@ -217,58 +167,6 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
     ```YAML
     npckill 16 amount:3 events:reward notify
     ```
-
-#### NPC Range: `npcrange`
-
-The player has to enter/leave a circle with the given radius around the NPC to complete this objective.
-It is also possible to define multiple NPCs separated with `,`. The objective will be completed as soon as you meet the requirement of just one npc.
-First argument is the ID of the NPC, second one is the type: Either `enter`, `leave`, `inside` or `outside` and the third one is the range.
-The types `enter`, `leave` force the player to actually enter the radius after you were outside of it and vice versa.
-This means that `enter` is not completed when the player gets the objective and is already in the range, while `inside` is instantly completed.
-
-!!! example
-    ```YAML
-    npcrange 3,5 enter 20 events:master_inRange
-    ```
-
-### Variables
-
-#### Citizen Variable: `%citizen.<id>.<argument>%`
-
-This variable resolves information about a Citizen NPC by id. Specifying an argument determines the return: the NPC name, or full name.
-
-Arguments:
-* name - Return citizen name
-* full_name - Full Citizen name
-
-!!! example
-  ```YAML
-  %citizen.15.name%        # Bob
-  %citizen.15.full_name%   # &eBob
-  ```
-
-#### Citizen Location Variable: `%citizen.<id>.location.<mode>.<precision>%`
-
-This variable resolves to all Citizen location arguments: the x, y and z coordinates, the world name, the yaw and pitch
-(head rotation). The first argument is citizen, followed by the citizen ID, then location. It also supports the 
-BetonQuest [Unified Location Formatting](../Data-Formats.md#unified-location-formating) modes which can optionally be added to the end.
-
-!!! example
-  ```YAML
-  %citizen.15.location%           # -> 325;121;814;npcWorldName;12;6
-  %citizen.15.location.xyz%       # -> 325 121 814 
-  %citizen.15.location.x%         # -> 325
-  %citizen.15.location.y%         # -> 121
-  %citizen.15.location.z%         # -> 814
-  %citizen.15.location.yaw%       # -> 12
-  %citizen.15.location.pitch%     # -> 6
-  %citizen.15.location.world%     # -> npcWorldName
-  %citizen.15.location.ulfShort%  # -> 325;121;814;npcWorldName
-  %citizen.15.location.ulfLong%   # -> 325;121;814;npcWorldName;12;6
-  
-  %citizen.15.location.x.2%       # -> 325.16
-  %citizen.15.location.ulfLong.5% # -> 325.54268;121.32186;814.45824;npcWorldName;12.0;6.0
-  ```
 
 ## Denizen[](http://dev.bukkit.org/bukkit-plugins/denizen/)
 
@@ -1233,24 +1131,46 @@ events:
 
 ### Conditions
 
+#### NPC region: `npcregion`
+
+**persistent**, **static**
+
+This condition is met a npc is inside a region.
+
+| Parameter | Syntax      | Default Value          | Explanation                          |
+|-----------|-------------|------------------------|--------------------------------------|
+| _Npc_     | Npc         | :octicons-x-circle-16: | The ID of the Npc                    |
+| _Region_  | Region Name | :octicons-x-circle-16: | The region where the npc needs to be |
+
+!!! example
+```YAML title="Example"
+mayorAtSpawn: npcregion mayor spawn
+```
+
 #### Inside Region: `region`
 
-This condition is met when the player is inside the specified region. The only argument is the name of the region.
+This condition is met when the player is inside the specified region.
 
+| Parameter | Syntax      | Default Value          | Explanation                           |
+|-----------|-------------|------------------------|---------------------------------------|
+| _Region_  | Region name | :octicons-x-circle-16: | The region where the player has to be |
 
 ```YAML title="Example"
-conditions:
-  inCastle: "region castle"
+inCastle: "region castle"
 ```
 
 ### Objectives
 
 #### Enter Region: `region`
 
-To complete this objective you need to enter WorldGuard region with specified name. A required argument is the name of the region and you may also pass an optional `entry` and/or `exit` to only trigger when entering or exiting a region instead of anytime inside a region.
+To complete this objective you need to be in a WorldGuard region with specified name. 
 
+| Parameter | Syntax      | Default Value          | Explanation                           |
+|-----------|-------------|------------------------|---------------------------------------|
+| _Region_  | Region name | :octicons-x-circle-16: | The region where the player has to be |
+| _Entry_   | `entry`     | Disabled               | The player needs to enter the region  |
+| _Exit_    | `exit`      | Disabled               | The player needs to leave the region  |
 
 ```YAML title="Example"
-objectives:
-  deathZone: "region deathZone entry events:kill"
+deathZone: "region deathZone entry events:kill"
 ```
