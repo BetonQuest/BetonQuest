@@ -3,10 +3,13 @@ package org.betonquest.betonquest.api;
 import org.betonquest.betonquest.api.bukkit.event.ProfileEvent;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
+import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.objective.EntityInteractObjective.Interaction;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
+
+import java.util.Set;
 
 /**
  * Event for interaction with BetonQuest {@link Npc}s.
@@ -24,9 +27,9 @@ public class NpcInteractEvent extends ProfileEvent implements Cancellable {
     private final Player player;
 
     /**
-     * Instruction string of the Npc.
+     * NpcIDs the Npc match.
      */
-    private final String npcIdentifier;
+    private final Set<NpcID> npcIdentifier;
 
     /**
      * Interaction done with the Npc.
@@ -54,7 +57,7 @@ public class NpcInteractEvent extends ProfileEvent implements Cancellable {
      * @param isAsync       if the trigger and so this is async
      * @throws IllegalArgumentException if {@code interaction == Interaction.ANY}
      */
-    public NpcInteractEvent(final Profile profile, final Player player, final Npc<?> npc, final String npcIdentifier,
+    public NpcInteractEvent(final Profile profile, final Player player, final Npc<?> npc, final Set<NpcID> npcIdentifier,
                             final Interaction interaction, final boolean isAsync) {
         super(profile, isAsync);
         if (interaction == Interaction.ANY) {
@@ -99,11 +102,11 @@ public class NpcInteractEvent extends ProfileEvent implements Cancellable {
     }
 
     /**
-     * Gets the identifier which would be used to get this Npc through an instruction.
+     * Gets the NpcIDs the Npc matches.
      *
      * @return the instruction string
      */
-    public String getNpcIdentifier() {
+    public Set<NpcID> getNpcIdentifier() {
         return npcIdentifier;
     }
 
