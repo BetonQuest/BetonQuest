@@ -114,11 +114,20 @@ in addition to the normal Npc functionality.
 You simply use the Citizens NPC id as argument.
 To acquire the NPCs ID select the NPC using `/npc select`, then run `/npc id`.
 
+You can also get a NPC by its name with the `byName` argument.
+That is useful when you have many NPCs which should all start the same conversation.
+TODO use additional fail like ẃith MM?
+
 ```YAML title="Example"
 npcs:
   innkeeper: citizens 0
   mayorHans: citizens 4
+  guard: citizens Guard byName 
 ```
+
+!!! warning
+    When using the `byName` argument and use it in for example in the `npcteleport` event the first NPC with that name
+    will be teleported!
 
 ### Npc Hiding: `hide_npcs`
 @snippet:integrations:protocollib@

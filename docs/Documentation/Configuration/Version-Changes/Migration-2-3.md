@@ -26,6 +26,9 @@ Also, the `teleportnpc` event got renamed to `npcteleport`.
 You can keep most of the syntax when you use the Citizens Npc id as their BetonQuest identifier,
 but changing the "name" makes the difference more clear.
 
+Also, the `citizens_npcs_by_name` configuration option was removed in favor of the
+[`byName`](../../Scripting/Building-Blocks/Integration-List.md#citizens) argument.
+
 <div class="grid" markdown>
 
 ```YAML title="Old Syntax"

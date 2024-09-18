@@ -4,6 +4,8 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.registry.type.TypeFactory;
 
+import java.util.Set;
+
 /**
  * Factory to create specific {@link Npc}s from {@link Instruction}s.
  *
@@ -11,7 +13,7 @@ import org.betonquest.betonquest.quest.registry.type.TypeFactory;
  */
 public interface NpcFactory<T> extends TypeFactory<NpcWrapper<T>> {
     /**
-     * Parses an instruction to create a {@link NpcWrapper}.
+     * Parses an instruction to create a {@link NpcWrapper} which resolves into a {@link Npc}.
      *
      * @param instruction instruction to parse
      * @return npc referenced by the instruction
@@ -21,12 +23,12 @@ public interface NpcFactory<T> extends TypeFactory<NpcWrapper<T>> {
     NpcWrapper<T> parseInstruction(Instruction instruction) throws QuestException;
 
     /**
-     * Gets the instruction string which would be used to identify this Npc.
+     * Gets the instruction strings which could be used to identify this Npc.
      *
      * @param npc the Npc to get its identifier from
-     * @return the identifying string as used inside {@link org.betonquest.betonquest.id.NpcID NpcId}s.
+     * @return all identifying string possible used inside {@link org.betonquest.betonquest.id.NpcID NpcId}s.
      */
-    String npcToInstructionString(Npc<T> npc);
+    Set<String> npcInstructionStrings(Npc<T> npc);
 
     /**
      * Gets the class of the Npc.
