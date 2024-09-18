@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -68,7 +69,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
      * Stores the conversations assigned to NPCs via the configuration.
      * The key could either be a Npcs name or its ID, depending on the configuration.
      */
-    private final Map<String, ConversationID> assignedConversations = new HashMap<>();
+    private final Map<NpcID, ConversationID> assignedConversations = new HashMap<>();
 
     /**
      * Hider for Npcs.
@@ -115,8 +116,8 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
         if (convSection.isString(NPC_SECTION)) {
             for (final String string : Objects.requireNonNull(convSection.getString(NPC_SECTION)).split(",")) {
                 try {
-                    final NpcID identifier = new NpcID(convID.getPackage(), string);
-                    assignedConversations.put(identifier.getInstruction().toString(), convID);
+                    final NpcID npcId = new NpcID(convID.getPackage(), string);
+                    assignedConversations.put(npcId, convID);
                 } catch (final QuestException exception) {
                     log.warn(convID.getPackage(), "Error while loading Npc in conversation " + convID.getFullID() + "': " + exception.getMessage()
                             + "! The conversation will still load but the Npc won't start it.", exception);
@@ -135,7 +136,9 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
 
     @Override
     protected NpcID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new NpcID(pack, identifier);
+        final NpcID npcID = new NpcID(pack, identifier);
+        ((NpcTypeRegistry) types).addIdentifier(npcID);
+        return npcID;
     }
 
     /**
@@ -156,12 +159,12 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
     /**
      * The logic that determines if an NPC interaction starts a conversation.
      *
-     * @param clicker    the player who clicked the NPC
-     * @param identifier the identifier for the Npc as used in the definition section
-     * @param npc        the npc which was interacted with
+     * @param clicker the player who clicked the NPC
+     * @param npcIds  the ids to check for conversations
+     * @param npc     the npc which was interacted with
      * @return if a conversation is started and the interact event should be cancelled
      */
-    public boolean interactLogic(final Player clicker, final String identifier, final Npc<?> npc) {
+    public boolean interactLogic(final Player clicker, final Set<NpcID> npcIds, final Npc<?> npc) {
         if (!clicker.hasPermission("betonquest.conversation")) {
             return false;
         }
@@ -185,19 +188,28 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
             return false;
         }
 
-        return startConversation(clicker, identifier, npc, onlineProfile);
+        return startConversation(clicker, npcIds, npc, onlineProfile);
     }
 
-    private boolean startConversation(final Player clicker, final String identifier, final Npc<?> npc, final OnlineProfile onlineProfile) {
-        final boolean npcsByName = Boolean.parseBoolean(Config.getConfigString("citizens_npcs_by_name"));
-        final String selector = npcsByName ? npc.getName() : identifier;
-        final ConversationID conversationID = assignedConversations.get(selector);
+    @SuppressWarnings("NullAway")
+    private boolean startConversation(final Player clicker, final Set<NpcID> identifier, final Npc<?> npc, final OnlineProfile onlineProfile) {
+        ConversationID conversationID = null;
+        NpcID selected = null;
+        for (final NpcID npcID : identifier) {
+            conversationID = assignedConversations.get(npcID);
+            if (conversationID != null) {
+                selected = npcID;
+                break;
+            }
+        }
 
         if (conversationID == null) {
-            log.debug("Player '" + clicker.getName() + "' clicked Npc '" + selector + "' but there is no conversation assigned to it.");
+            log.debug("Player '" + clicker.getName() + "' clicked Npc '" + identifier
+                    + "' but there is no conversation assigned to it.");
             return false;
         } else {
-            log.debug("Player '" + clicker.getName() + "' clicked Npc '" + selector + "' and started conversation '" + conversationID.getFullID() + "'.");
+            log.debug("Player '" + clicker.getName() + "' clicked Npc '" + selected.getFullID()
+                    + "' and started conversation '" + conversationID.getFullID() + "'.");
             new NpcConversation<>(loggerFactory.create(NpcConversation.class), pluginMessage, onlineProfile, conversationID, npc.getLocation(), npc);
             return true;
         }
