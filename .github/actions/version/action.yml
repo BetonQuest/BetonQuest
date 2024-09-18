@@ -54,7 +54,7 @@ runs:
         echo "REVISION_VERSION=$REVISION_VERSION" >> $GITHUB_ENV
     - name: Generate build number for Development Build
       if: "env.VERSION_TYPE == 'development'"
-      uses: BetonQuest/build-number-generator@main
+      uses: BetonQuest/build-number-generator-action@v1.0.0
       with:
         token: ${{ inputs.GITHUB_TOKEN }}
         identifier: ${{ env.REVISION_VERSION }}
