@@ -57,7 +57,7 @@ public class NpcInteractObjective extends Objective implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onNPCLeftClick(final NpcInteractEvent event) {
         if (event.getInteraction() != ANY && event.getInteraction() != interactionType
-                || !npcId.getInstruction().toString().equals(event.getNpcIdentifier())) {
+                || !event.getNpcIdentifier().contains(npcId)) {
             return;
         }
 
