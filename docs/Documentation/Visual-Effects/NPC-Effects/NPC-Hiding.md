@@ -19,6 +19,16 @@ It allows you to assign conditions to specific BQ NpcIDs like so:
       innkeeper: hidden
     ```
     @snippet:integrations:protocollib@
+=== "MythicMobs"
+    ```YAML title="Example"
+    npcs:
+      innkeeper: mythicmobs UUID 60b0144d-2c55-457a-aeb8-15fbf244f3b7
+    conditions:
+      hidden: tag innkeeperIsTired
+    hide_npcs:
+      innkeeper: hidden
+    ```
+    @snippet:integrations:protocollib@
 === "FancyNpcs"
     ```YAML title="Example"
     npcs:
