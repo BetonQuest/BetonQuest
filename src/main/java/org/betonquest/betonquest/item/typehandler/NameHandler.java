@@ -15,6 +15,16 @@ public class NameHandler {
     public NameHandler() {
     }
 
+    /**
+     * Replaces all underscores with spaces, except for those that are escaped with a backslash.
+     *
+     * @param input The input string.
+     * @return The input string with all underscores replaced with spaces, except for those that are escaped with a backslash.
+     */
+    protected static String replaceUnderscore(final String input) {
+        return input.replaceAll("(?<!\\\\)_", " ").replaceAll("\\\\_", "_");
+    }
+
     public void set(final String name) throws InstructionParseException {
         if (name.isEmpty()) {
             throw new InstructionParseException("Name cannot be empty");
@@ -22,7 +32,7 @@ public class NameHandler {
         if (QuestItem.NONE_KEY.equalsIgnoreCase(name)) {
             existence = Existence.FORBIDDEN;
         } else {
-            this.name = name.replace('_', ' ').replace('&', '§');
+            this.name = replaceUnderscore(name).replace('&', '§');
             existence = Existence.REQUIRED;
         }
     }
@@ -39,5 +49,4 @@ public class NameHandler {
             case FORBIDDEN -> name == null;
         };
     }
-
 }

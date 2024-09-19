@@ -10,6 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - `start_new_lines` the amount of new lines that should be printed before the conversation starts
   - `npc_text_fill_new_lines` should lined be filled between the NPC text and the player answer options
 - `world` condition now supports variables for the world name
+- underscores are now escapable in item names and lore via `\_`
 ### Changed
 - `spawn` event now only spawn mobs and no other entities
 ### Deprecated

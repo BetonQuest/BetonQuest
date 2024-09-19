@@ -14,9 +14,16 @@ Every argument is used in two ways: when creating an item and when checking if s
 
 These are arguments that can be applied to every item:
 
-- `name` - the display name of the item. All underscores will be replaced with spaces and you can use `&` color codes. If you want to specifically say that the item must not have any name, use `none` keyword.
+- `name` - the display name of the item. Underscores will be replaced with spaces.
+You can escape them with `\_` and you can also escape the `\` with `\\_`. You can also use `&` color codes. 
+If you want to specifically say that the item must not have any name, use `none` keyword.
 
-- `lore` - text under the item's name. Default styling of lore is purple and italic. All underscores will be replaced with spaces and you can use `&` color codes. To make a new line use `;` character. If you require the item not to have lore at all, use `none` keyword. By default lore will match only if all lines are exactly the same. If you want to accept all items which contain specified lines (and/or more lines), add `lore-containing` argument to the instruction string.
+- `lore` - text under the item's name. Default styling of lore is purple and italic. 
+You can escape them with `\_` and you can also escape the `\` with `\\_`. You can also use `&` color codes.
+To make a new line use `;` character. If you require the item not to have a lore at all, use `none` keyword.
+By default, lore will match only if all lines are exactly the same.
+If you want to accept all items that contain specified lines (and/or more lines),
+add `lore-containing` argument to the instruction string.
 
 - `enchants` - a list of enchantments and their levels. Each enchantment consists of these things, separated by colons:
     - [name](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html)

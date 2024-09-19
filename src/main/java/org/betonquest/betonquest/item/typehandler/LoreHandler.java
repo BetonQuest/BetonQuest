@@ -26,7 +26,7 @@ public class LoreHandler {
         }
         existence = Existence.REQUIRED;
         for (final String line : lore.split(";")) {
-            this.lore.add(line.replaceAll("_", " ").replaceAll("&", "§"));
+            this.lore.add(NameHandler.replaceUnderscore(line).replaceAll("&", "§"));
         }
     }
 
@@ -77,5 +77,4 @@ public class LoreHandler {
                 return false;
         }
     }
-
 }
