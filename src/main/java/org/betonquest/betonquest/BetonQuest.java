@@ -545,7 +545,7 @@ public class BetonQuest extends JavaPlugin {
         registerScheduleType("realtime-daily", RealtimeDailySchedule.class, new RealtimeDailyScheduler(loggerFactory.create(RealtimeDailyScheduler.class, "Schedules"), lastExecutionCache));
         registerScheduleType("realtime-cron", RealtimeCronSchedule.class, new RealtimeCronScheduler(loggerFactory.create(RealtimeCronScheduler.class, "Schedules"), lastExecutionCache));
 
-        new Compatibility();
+        new Compatibility(this, loggerFactory.create(Compatibility.class));
 
         // schedule quest data loading on the first tick, so all other
         // plugins can register their types
