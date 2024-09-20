@@ -4648,10 +4648,17 @@
 <p>These are arguments that can be applied to every item:</p>
 <ul>
 <li>
-<p><code>name</code> - the display name of the item. All underscores will be replaced with spaces and you can use <code>&amp;</code> color codes. If you want to specifically say that the item must not have any name, use <code>none</code> keyword.</p>
+<p><code>name</code> - the display name of the item. Underscores will be replaced with spaces.
+You can escape them with <code>\_</code> and you can also escape the <code>\</code> with <code>\\_</code>. You can also use <code>&amp;</code> color codes. 
+If you want to specifically say that the item must not have any name, use <code>none</code> keyword.</p>
 </li>
 <li>
-<p><code>lore</code> - text under the item's name. Default styling of lore is purple and italic. All underscores will be replaced with spaces and you can use <code>&amp;</code> color codes. To make a new line use <code>;</code> character. If you require the item not to have lore at all, use <code>none</code> keyword. By default lore will match only if all lines are exactly the same. If you want to accept all items which contain specified lines (and/or more lines), add <code>lore-containing</code> argument to the instruction string.</p>
+<p><code>lore</code> - text under the item's name. Default styling of lore is purple and italic. 
+You can escape them with <code>\_</code> and you can also escape the <code>\</code> with <code>\\_</code>. You can also use <code>&amp;</code> color codes.
+To make a new line use <code>;</code> character. If you require the item not to have a lore at all, use <code>none</code> keyword.
+By default, lore will match only if all lines are exactly the same.
+If you want to accept all items that contain specified lines (and/or more lines),
+add <code>lore-containing</code> argument to the instruction string.</p>
 </li>
 <li>
 <p><code>enchants</code> - a list of enchantments and their levels. Each enchantment consists of these things, separated by colons:</p>
