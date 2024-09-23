@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 
+import net.Indyuce.mmocore.api.event.PlayerChangeClassEvent;
 import net.Indyuce.mmocore.api.event.PlayerLevelUpEvent;
 import net.Indyuce.mmocore.experience.Profession;
 import org.betonquest.betonquest.BetonQuest;
@@ -46,6 +47,19 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
         completeObjective(onlineProfile);
     }
 
+    @EventHandler(ignoreCancelled = true)
+    public void onClassChange(final PlayerChangeClassEvent event) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
+            return;
+        }
+        final int level = event.getData().getCollectionSkills().getLevel(professionName);
+        if (level < targetLevel.getInt(onlineProfile)) {
+            return;
+        }
+        completeObjective(onlineProfile);
+    }
+
     @Override
     public void start() {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
@@ -65,5 +79,4 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
     public String getProperty(final String name, final Profile profile) {
         return "";
     }
-
 }
