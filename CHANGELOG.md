@@ -19,6 +19,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - broken title check in book `QuestItem`
 - BlockSelector did not match exact block matches and started regex matching causing performance issues during load and reload
 - wrong order of arguments in fire work effects
+- mmoprofessionlevelup now respects the change of a class that are already fit the objective requirements
 ### Security
 
 ## [2.1.3] - 2024-08-06
