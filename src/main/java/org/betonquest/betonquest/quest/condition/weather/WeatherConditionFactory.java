@@ -9,9 +9,9 @@ import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionA
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.location.VariableWorld;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.condition.DoNothingPlayerlessCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
+import org.betonquest.betonquest.quest.condition.ThrowExceptionPlayerlessCondition;
 import org.betonquest.betonquest.quest.event.weather.Weather;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 
@@ -53,7 +53,7 @@ public class WeatherConditionFactory implements PlayerConditionFactory, Playerle
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws InstructionParseException {
         final String worldString = instruction.getOptional("world");
         if (worldString == null) {
-            return new DoNothingPlayerlessCondition();
+            return new ThrowExceptionPlayerlessCondition();
         }
         final Weather weather = Weather.parseWeather(instruction.next());
         final VariableWorld world = new VariableWorld(variableProcessor, instruction.getPackage(), worldString);
