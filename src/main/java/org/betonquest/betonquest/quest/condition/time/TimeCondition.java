@@ -1,42 +1,45 @@
 package org.betonquest.betonquest.quest.condition.time;
 
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
+import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.location.VariableWorld;
+import org.bukkit.World;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A condition that checks the time.
  */
-public class TimeCondition implements OnlineCondition {
+public class TimeCondition implements NullableCondition {
 
     /**
-     * The minimum time.
+     * The time frame in which the time should be.
      */
-    private final double timeMin;
+    private final TimeFrame timeFrame;
 
     /**
-     * The maximum time.
+     * The variable world.
      */
-    private final double timeMax;
+    private final VariableWorld variableWorld;
 
     /**
      * Creates a new TimeCondition.
      *
-     * @param timeMin the minimum time
-     * @param timeMax the maximum time
+     * @param timeFrame     the time frame
+     * @param variableWorld the variable world
      */
-    public TimeCondition(final double timeMin, final double timeMax) {
-        this.timeMin = timeMin;
-        this.timeMax = timeMax;
+    public TimeCondition(final TimeFrame timeFrame, final VariableWorld variableWorld) {
+        this.timeFrame = timeFrame;
+        this.variableWorld = variableWorld;
     }
 
     @Override
-    public boolean check(final OnlineProfile profile) throws QuestRuntimeException {
-        return isTimeBetween(currentTime(profile), timeMin, timeMax);
+    public boolean check(@Nullable final Profile profile) throws QuestRuntimeException {
+        return isTimeBetween(currentTime(variableWorld.getValue(profile)), timeFrame.start(), timeFrame.end());
     }
 
-    private double currentTime(final OnlineProfile profile) {
-        double time = profile.getPlayer().getWorld().getTime();
+    private double currentTime(final World world) {
+        double time = world.getTime();
         time += 6_000;
         return time / 1000 % 24;
     }
