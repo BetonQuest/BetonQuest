@@ -240,7 +240,7 @@ public class ConversationData {
                 continue;
             }
 
-            if (conv.getText(Config.getLanguage(), resolvedPointer) == null) {
+            if (!conv.hasOption(resolvedPointer)) {
                 log.warn(conv.pack, "External pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
                         + sourceOption + " points to '" + targetOptionName + "' NPC option in '" + targetConvName
                         + "' conversation from package '" + targetPack.getQuestPath() + "', but it does not exist.");
@@ -480,17 +480,19 @@ public class ConversationData {
     }
 
     /**
-     * Gets the text of the specified option in the specified language.
-     * <br>
-     * Does not respect option extends. Use {@link #getText(Profile, String, ResolvedOption)} instead.
+     * Checks if the option exists.
      *
-     * @param lang   the desired language of the text
-     * @param option the option
-     * @return the text of the specified option in the specified language
+     * @param option the option toc check for existence
+     * @return the existence of the option
      */
-    @Nullable
-    public String getText(final String lang, final ResolvedOption option) {
-        return getText(null, lang, option);
+    private boolean hasOption(final ResolvedOption option) {
+        final ConversationOption opt;
+        if (option.type() == NPC) {
+            opt = option.conversationData().npcOptions.get(option.name());
+        } else {
+            opt = option.conversationData().playerOptions.get(option.name());
+        }
+        return opt != null;
     }
 
     /**
