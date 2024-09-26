@@ -1,6 +1,9 @@
 package org.betonquest.betonquest.quest.event.weather;
 
+import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.World;
+
+import java.util.Locale;
 
 /**
  * Possible weather in a minecraft world.
@@ -37,6 +40,23 @@ public enum Weather {
     }
 
     /**
+     * Parses the weather string to the corresponding weather.
+     *
+     * @param weatherName the name of the weather
+     * @return the weather corresponding to the name
+     * @throws InstructionParseException if the weather name is not recognized
+     */
+    public static Weather parseWeather(final String weatherName) throws InstructionParseException {
+        return switch (weatherName.toLowerCase(Locale.ROOT)) {
+            case "sun", "clear" -> SUN;
+            case "rain", "rainy" -> RAIN;
+            case "storm", "thunder" -> STORM;
+            default ->
+                    throw new InstructionParseException("Unknown weather state (valid options are: sun, clear, rain, rainy, storm, thunder): " + weatherName);
+        };
+    }
+
+    /**
      * Apply the weather to the given world.
      *
      * @param world    world to change the weather in
@@ -48,5 +68,15 @@ public enum Weather {
         if (duration > 0) {
             world.setWeatherDuration(duration);
         }
+    }
+
+    /**
+     * Checks whether the weather matches the current weather in the world.
+     *
+     * @param world the world to check for
+     * @return if weather matching the world's weather
+     */
+    public boolean isInWorld(final World world) {
+        return world.isThundering() == thunder && world.hasStorm() == storm;
     }
 }
