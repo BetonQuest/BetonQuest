@@ -41,7 +41,6 @@ import org.betonquest.betonquest.conditions.RandomCondition;
 import org.betonquest.betonquest.conditions.RealTimeCondition;
 import org.betonquest.betonquest.conditions.RideCondition;
 import org.betonquest.betonquest.conditions.ScoreboardCondition;
-import org.betonquest.betonquest.conditions.SneakCondition;
 import org.betonquest.betonquest.conditions.StageCondition;
 import org.betonquest.betonquest.objectives.ActionObjective;
 import org.betonquest.betonquest.objectives.ArrowShootObjective;
@@ -80,6 +79,7 @@ import org.betonquest.betonquest.quest.condition.advancement.AdvancementConditio
 import org.betonquest.betonquest.quest.condition.block.BlockConditionFactory;
 import org.betonquest.betonquest.quest.condition.realtime.DayOfWeekConditionFactory;
 import org.betonquest.betonquest.quest.condition.realtime.PartialDateConditionFactory;
+import org.betonquest.betonquest.quest.condition.sneak.SneakConditionFactory;
 import org.betonquest.betonquest.quest.condition.tag.GlobalTagConditionFactory;
 import org.betonquest.betonquest.quest.condition.tag.TagConditionFactory;
 import org.betonquest.betonquest.quest.condition.time.TimeConditionFactory;
@@ -263,7 +263,7 @@ public class CoreQuestTypes {
         conditionTypes.register("realtime", RealTimeCondition.class);
         conditionTypes.register("ride", RideCondition.class);
         conditionTypes.register("score", ScoreboardCondition.class);
-        conditionTypes.register("sneak", SneakCondition.class);
+        conditionTypes.register("sneak", new SneakConditionFactory(loggerFactory, data));
         conditionTypes.register("stage", StageCondition.class);
         conditionTypes.register("tag", new TagConditionFactory(betonQuest));
         conditionTypes.registerCombined("testforblock", new BlockConditionFactory(data));
