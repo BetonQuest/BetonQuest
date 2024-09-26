@@ -6849,12 +6849,36 @@ The valid operations are: <code>&lt;</code>, <code>&lt;=</code>, <code>=</code>,
 <li>Works the same as the <code>denizenVariable</code> with the only difference it checks for the player the condition is executed with.</li>
 </ol>
 <h2 id="weather-weather">Weather: <code>weather</code><a class="headerlink" href="#weather-weather" title="Permanent link">🔗</a></h2>
+<p><strong>static</strong></p>
 <p>There must be a specific weather for this condition to return true. There are three possible options: sun, rain and storm. Note that <code>/toggledownfall</code> does not change the weather, it just does what the name suggests: toggles downfall. The rain toggled off will still be considered as rain! Use <code>/weather clear</code> instead.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">weather sun</span>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Syntax</th>
+<th>Default Value</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>weather</em></td>
+<td>Keyword</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343h-.001a8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746Zm1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275ZM6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L6.94 8 4.97 6.03a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018Z"/></svg></span></td>
+<td>The weather to check for.</td>
+</tr>
+<tr>
+<td><em>world</em></td>
+<td>world:name</td>
+<td>player location</td>
+<td>The world to check for the weather.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">isSunny</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;weather</span><span class="nv"> </span><span class="s">sun&quot;</span>
+<span class="nt">weatherInPlayerWorld</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;weather</span><span class="nv"> </span><span class="s">rain</span><span class="nv"> </span><span class="s">world:%ph.player_home_world%&quot;</span>
+<span class="nt">overworldIsRainy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;weather</span><span class="nv"> </span><span class="s">rain</span><span class="nv"> </span><span class="s">world:overworld&quot;</span>
 </code></pre></div>
-</div>
 <h2 id="world-world">World: <code>world</code><a class="headerlink" href="#world-world" title="Permanent link">🔗</a></h2>
 <p>This conditions checks if the player is in a specified world. The first argument is the name of a world.</p>
 <div class="admonition example">
