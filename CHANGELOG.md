@@ -12,6 +12,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `world` condition now supports variables for the world name
 - underscores are now escapable in item names and lore via `\_`
 - `weather` condition now allows to define a world, which can be a variable and can now be used in static context
+- `time` condition now allows to define a world, which can be a variable and can now be used in static context
 ### Changed
 - `spawn` event now only spawn mobs and no other entities
 ### Deprecated
