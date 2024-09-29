@@ -79,6 +79,7 @@ hook:
   auraskills: true
   fake-block: true
   redischat: true
+  train_carts: true
 journal:
   chars_per_line: 19
   lines_per_page: 13
