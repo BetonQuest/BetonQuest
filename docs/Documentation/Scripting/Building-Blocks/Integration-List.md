@@ -983,7 +983,7 @@ This event opens a trading window of a Villager. The only argument is the unique
     ```
 
 ## Fabled[](https://www.spigotmc.org/resources/91913/)  
-
+    
 ### Conditions
 
 #### Fabled Class: `fabledclass`

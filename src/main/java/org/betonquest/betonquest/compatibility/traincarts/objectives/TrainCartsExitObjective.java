@@ -8,8 +8,8 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -66,25 +66,10 @@ public class TrainCartsExitObjective extends Objective implements Listener {
         if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }
-        final String nameFromInstruction = getFromVariableString(onlineProfile);
-        if (nameFromInstruction.isEmpty()) {
-            completeObjective(onlineProfile);
-            return;
-        }
-        final String trainName = event.getMember().getGroup().getProperties().getTrainName();
-        if (nameFromInstruction.equalsIgnoreCase(trainName)) {
+        if (TrainCartsUtils.isValidTrain(log, instruction.getPackage(), instruction.getID(), onlineProfile, name,
+                event.getMember().getGroup().getProperties().getTrainName())) {
             completeObjective(onlineProfile);
         }
-    }
-
-    private String getFromVariableString(final OnlineProfile onlineProfile) {
-        String result = "";
-        try {
-            result = name.getValue(onlineProfile);
-        } catch (final QuestRuntimeException e) {
-            log.warn("Failed to resolve variable string.", e);
-        }
-        return result;
     }
 
     @Override
