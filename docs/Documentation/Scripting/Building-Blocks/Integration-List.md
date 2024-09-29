@@ -976,6 +976,16 @@ This event opens a trading window of a Villager. The only argument is the unique
 ## TrainCarts[](https://www.spigotmc.org/resources/traincarts.39592/)
 TrainCarts is a plugin that allows you to create trains with advanced features.
 
+### Conditions
+
+#### TrainCarts ride condition: `traincartsride`
+Checks if the player is riding a specific named train.
+
+!!! example
+    ```YAML
+    traincartsride name:Train1
+    ```
+
 ### Objectives
 
 #### TrainCarts location objective: `traincartslocation`

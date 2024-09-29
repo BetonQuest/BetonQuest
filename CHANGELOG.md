@@ -18,9 +18,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `permission` condition now supports variables
 - `moonCycle` condition now allows to define a world, which can be a variable and can now be used in static context
 - TrainCarts integration
-  - `traincartslocation` objective to check if the player passed a location 
-  - `traincartsride` objective to check if the player is riding a train
-  - `traincartsexit` objective to check if the player exited a train
+  - `traincartslocation` objective that executes when the player passed a location 
+  - `traincartsride` objective that executes when the player is riding a train
+  - `traincartsexit` objective that executes when the player exited a train
+  - `traincartsride` condition to check if the player is riding a specific named train
 ### Changed
 - `spawn` event now only spawn mobs and no other entities
 ### Deprecated

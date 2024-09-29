@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.traincarts;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.compatibility.traincarts.conditions.TrainCartsRideCondition;
 import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsExitObjective;
 import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsLocationObjective;
 import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsRideObjective;
@@ -28,6 +29,8 @@ public class TrainCartsIntegrator implements Integrator {
         plugin.registerObjectives("traincartslocation", TrainCartsLocationObjective.class);
         plugin.registerObjectives("traincartsride", TrainCartsRideObjective.class);
         plugin.registerObjectives("traincartsexit", TrainCartsExitObjective.class);
+
+        plugin.registerConditions("traincartsride", TrainCartsRideCondition.class);
     }
 
     @Override
