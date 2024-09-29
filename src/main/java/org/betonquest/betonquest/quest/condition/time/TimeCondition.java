@@ -35,20 +35,13 @@ public class TimeCondition implements NullableCondition {
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestRuntimeException {
-        return isTimeBetween(currentTime(variableWorld.getValue(profile)), timeFrame.start(), timeFrame.end());
+        return timeFrame.isTimeBetween(currentTime(variableWorld.getValue(profile)));
     }
 
-    private double currentTime(final World world) {
-        double time = world.getTime();
-        time += 6_000;
-        return time / 1000 % 24;
-    }
-
-    private boolean isTimeBetween(final double time, final double start, final double end) {
-        if (start <= end) {
-            return time >= start && time <= end;
-        } else {
-            return time >= start || time <= end;
-        }
+    private Time currentTime(final World world) {
+        final long time = world.getTime() + 6_000;
+        final int hours = (int) (time / 1_000) % 24;
+        final int minutes = (int) (time % 1000) * 60 / 1000;
+        return new Time(hours, minutes);
     }
 }

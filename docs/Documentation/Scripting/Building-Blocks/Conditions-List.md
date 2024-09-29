@@ -489,16 +489,16 @@ This condition is met if the block at specified location matches the given mater
 
 There must be specific (Minecraft) time on the world for this condition to return true.
 
-| Parameter  | Syntax     | Default Value          | Explanation                                                        |
-|------------|------------|------------------------|--------------------------------------------------------------------|
-| _Variable_ | time span  | :octicons-x-circle-16: | Two hour numbers seperated by dash in the 24-hour format (0 - 24). |
-| _world_    | world:name | player location        | The world to check for the time. Can be a variable.                |
+| Parameter  | Syntax     | Default Value          | Explanation                                                                        |
+|------------|------------|------------------------|------------------------------------------------------------------------------------|
+| _Variable_ | time span  | :octicons-x-circle-16: | Two time points (hh or hh:mm) seperated by dash in the 24-hour format (0 - 23:59). |
+| _world_    | world:name | player location        | The world to check for the time. Can be a variable.                                |
 
 
 ```YAML title="Example"
 allDay: "time 6-19"
-midnightInOverworld: "time 23-1 world:overworld"
-morningInPlayerWorld: "time 6-12 world:%ph.player_home_world%"
+midnightInOverworld: "time 23:30-0:30 world:overworld"
+exactAtTwelveAtPlayersHome: "time 12-12:00 world:%ph.player_home_world%"
 ```
 
 ## Variable: `variable`
