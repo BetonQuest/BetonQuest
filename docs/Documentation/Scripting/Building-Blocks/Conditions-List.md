@@ -424,12 +424,18 @@ There must a specific (real) time for this condition to return true. You need to
 
 ## Scoreboard: `score`
 
-With this condition you can check if the score in a specified objective on a scoreboard is greater or equal to specified amount. The first argument is the name of the objective, second one is amount (an integer).
+**persistent**
 
-!!! example
-    ```YAML
-    score kills 20
-    ```
+With this condition you can check if the score in a specified objective on a scoreboard is greater or equal to specified amount.
+
+| Parameter              | Syntax         | Default Value          | Explanation                               |
+|------------------------|----------------|------------------------|-------------------------------------------|
+| _scoreboard objective_ | Objective name | :octicons-x-circle-16: | The name of the scoreboard objective      |
+| _count_                | Number         | :octicons-x-circle-16: | The minimum whole number of the objective |
+
+```YAML title="Example"
+hasAtLeastTenKills: "score kills 10"
+```
 
 ## Sneaking: `sneak`
 
