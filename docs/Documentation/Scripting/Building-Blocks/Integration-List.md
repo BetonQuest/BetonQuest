@@ -982,7 +982,7 @@ This event opens a trading window of a Villager. The only argument is the unique
     shopkeeper b687538e-14ce-4b77-ae9f-e83b12f0b929
     ```
 
-## TrainCarts[](https://www.spigotmc.org/resources/traincarts.39592/)
+## TrainCarts[](https://www.spigotmc.org/resources/39592/)
 TrainCarts is a plugin that allows you to create trains with advanced features.
 
 ### Conditions
@@ -992,27 +992,35 @@ Checks if the player is riding a specific named train.
 
 !!! example
     ```YAML
-    traincartsride name:Train1
+    traincartsride train1
     ```
 
 ### Objectives
 
 #### TrainCarts location objective: `traincartslocation`
-This objective requires the player to be at a specific location while sitting in a train.
+This objective requires the player to be at a specific location while sitting in a train. 
+It works similarly to the location objective, but the player must be in a TrainCarts train to complete it.
 
-| Parameter  | Syntax      | Default Value          | Explanation                                                      |
-|------------|-------------|------------------------|------------------------------------------------------------------|
-| _name_     | name:Train1 | :octicons-x-circle-16: | The optional Name of the Train.                                  |
-| _location_ | x;y;z;world | :octicons-x-circle-16: | The Location the player has to pass whiles sitting in the train. |
+| Parameter  | Syntax       | Default Value          | Explanation                                                                               |
+|------------|--------------|------------------------|-------------------------------------------------------------------------------------------|
+| _location_ | x;y;z;world  | :octicons-x-circle-16: | The Location the player has to pass whiles sitting in the train.                          |
+| _range_    | range:double | 1                      | The optional range around the location where the player must be.                          |
+| _entry_    | entry        | Disabled               | The player must enter (go from outside to inside) the location to complete the objective. |
+| _exit_     | exit         | Disabled               | The player must exit (go from inside to outside) the location to complete the objective.  |
+| _name_     | name:Train1  | :octicons-x-circle-16: | The optional Name of the Train.                                                           |
+
 
 !!! example
     ```YAML
     traincartslocation 100;60;100;world
-    traincartsexit name:Train1 100;60;100;world
+    traincartslocation name:Train1 100;60;100;world range:2
+    traincartslocation 100;60;100;world entry range:2
     ```
 
 #### TrainCarts ride objective: `traincartsride`
-This objective requires the player to ride a train for a specific time
+This objective requires the player to ride a train for a specific time.
+The time starts after the player enters the train and stops when the player exits the train.
+The objective is marked as completed when the player exits the train, not while riding it.
 
 | Parameter | Syntax      | Default Value          | Explanation                                                                      |
 |-----------|-------------|------------------------|----------------------------------------------------------------------------------|
