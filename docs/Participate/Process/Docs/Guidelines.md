@@ -12,7 +12,7 @@ Tables and other special syntax are exempt from this rule.
 
 Links can be created using Markdown's link syntax:
 
-``` linenums="1"
+```markdown linenums="1"
 Click the [highlighted words](Contributing.md).
 ```
 Result: Click the [highlighted words](../../Overview.md).
