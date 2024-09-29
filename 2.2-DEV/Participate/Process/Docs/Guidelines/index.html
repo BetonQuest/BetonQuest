@@ -4608,22 +4608,20 @@ a consistent baseline for other contributors to work with.</p>
 Tables and other special syntax are exempt from this rule.</p>
 <h2 id="links">Links<a class="headerlink" href="#links" title="Permanent link">🔗</a></h2>
 <p>Links can be created using Markdown's link syntax:</p>
-<p><div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>Click the [highlighted words](Contributing.md).
+<p><div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>Click the [<span class="nt">highlighted words</span>](<span class="na">Contributing.md</span>).
 </code></pre></div></td></tr></table></div>
 Result: Click the <a href="../../../Overview/">highlighted words</a>.</p>
 <h2 id="displaying-yaml-code">Displaying (YAML) code<a class="headerlink" href="#displaying-yaml-code" title="Permanent link">🔗</a></h2>
 <p>You must use code boxes with the specific language set in the header (<code>YAML</code> in this example).
 You also have to enable line numbers by adding the <code>linenums="1"</code> argument. 
 Sometimes a setting a title using <code>title="Some Title"</code> is also useful. 
-<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Example code</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code> ``` YAML linenums=&quot;1&quot; title=&quot;Codebox&quot;
- use: &quot;codeboxes for code&quot;
- ```
-</code></pre></div></td></tr></table></div></p>
-<p>Result:
-<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Codebox</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">use</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;codeboxes</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">code&quot;</span>
-</code></pre></div></td></tr></table></div></p>
+``` linenums="1" title="Example code"
+ <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Codebox</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">use</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;codeboxes</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">code&quot;</span>
+</code></pre></div></td></tr></table></div>
+<div class="highlight"><pre><span></span><code>Result:
+``` YAML linenums=&quot;1&quot; title=&quot;Codebox&quot;
+use: &quot;codeboxes for code&quot;
+</code></pre></div></p>
 <h3 id="referring-to-yaml-elements-in-written-text">Referring to YAML elements in written text<a class="headerlink" href="#referring-to-yaml-elements-in-written-text" title="Permanent link">🔗</a></h3>
 <p>An example of this would be to reference an event name in an explanation.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">The event `someEvent` prints a message to the player!</span>
