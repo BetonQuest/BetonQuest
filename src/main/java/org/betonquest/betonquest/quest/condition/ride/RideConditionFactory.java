@@ -49,11 +49,7 @@ public class RideConditionFactory implements PlayerConditionFactory {
         if (ANY_ENTITY.equalsIgnoreCase(name)) {
             vehicle = null;
         } else {
-            try {
-                vehicle = instruction.getEnum(name, EntityType.class);
-            } catch (final IllegalArgumentException e) {
-                throw new InstructionParseException("Entity type " + name + " does not exist.", e);
-            }
+            vehicle = instruction.getEnum(name, EntityType.class);
         }
         final BetonQuestLogger logger = loggerFactory.create(RideCondition.class);
         return new PrimaryServerThreadPlayerCondition(
