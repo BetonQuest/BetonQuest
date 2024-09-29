@@ -983,7 +983,7 @@ Checks if the player is riding a specific named train.
 
 !!! example
     ```YAML
-    traincartsride name:Train1
+    traincartsride train1
     ```
 
 ### Objectives

@@ -1,18 +1,16 @@
 package org.betonquest.betonquest.compatibility.traincarts.objectives;
 
-import com.bergerkiller.bukkit.tc.controller.MinecartMember;
-import com.bergerkiller.bukkit.tc.controller.MinecartMemberStore;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.objectives.AbstractLocationObjective;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
@@ -58,12 +56,7 @@ public class TrainCartsLocationObjective extends AbstractLocationObjective imple
 
     @Override
     protected boolean isInside(final OnlineProfile onlineProfile, final Location location) throws QuestRuntimeException {
-        final Entity entity = onlineProfile.getPlayer().getVehicle();
-        if (entity == null) {
-            return false;
-        }
-        final MinecartMember<?> minecartMember = MinecartMemberStore.getFromEntity(entity);
-        if (minecartMember == null) {
+        if (!TrainCartsUtils.ridesTrainCart(onlineProfile)) {
             return false;
         }
 
