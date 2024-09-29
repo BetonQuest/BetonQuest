@@ -243,6 +243,21 @@
       <optional>true</optional>
     </dependency>
 
+    <!-- from mg repository -->
+    <dependency>
+      <groupId>com.bergerkiller.bukkit</groupId>
+      <artifactId>TrainCarts</artifactId>
+      <version>1.20.6-v1</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.bergerkiller.bukkit</groupId>
+      <artifactId>BKCommonLib</artifactId>
+      <version>1.20.6-v1</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
 
     <!-- from jitpack repository -->
     <dependency>
@@ -530,6 +545,11 @@
     <repository>
       <id>betonquest-sonatype-snapshots-repo</id>
       <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </repository>
+    <repository>
+      <id>betonquest-mg-dev-everything-repo</id>
+      <name>ci.mg-dev.eu repository</name>
+      <url>https://ci.mg-dev.eu/plugin/repository/everything</url>
     </repository>
     <repository>
       <id>betonquest-minecraft-repo</id>

@@ -37,6 +37,7 @@ softdepend:
   - AuraSkills
   - fake-block
   - RedisChat
+  - Train_Carts
 commands:
   betonquest:
     description: General quest command
