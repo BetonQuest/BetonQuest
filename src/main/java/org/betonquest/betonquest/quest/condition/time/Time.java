@@ -36,13 +36,13 @@ public record Time(int hour, int minute) {
         if (hour == 24 && minute != 0) {
             throw new InstructionParseException("Hour 24 cannot have any minutes");
         }
-        if (hour >= 0 && hour <= 23) {
+        if (hour < 0 || hour > 23) {
             throw new InstructionParseException("Hour must be between 0 and 24");
         }
     }
 
     private static void checkForValidMinute(final int minute) throws InstructionParseException {
-        if (minute >= 0 && minute <= 59) {
+        if (minute < 0 || minute > 59) {
             throw new InstructionParseException("Minute must be between 0 and 59");
         }
     }
