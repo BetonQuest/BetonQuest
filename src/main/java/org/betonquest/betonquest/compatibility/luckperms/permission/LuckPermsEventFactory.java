@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.luckperms.permission;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.data.NodeMap;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.event.Event;
@@ -9,6 +10,7 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +28,18 @@ public class LuckPermsEventFactory implements EventFactory {
     private final LuckPerms luckPermsAPI;
 
     /**
+     * The {@link VariableProcessor} to process variables.
+     */
+    private final VariableProcessor variableProcessor;
+
+    /**
      * Creates the LuckPerms event factory.
      *
      * @param luckPermsAPI The {@link LuckPerms} API.
      */
     public LuckPermsEventFactory(final LuckPerms luckPermsAPI) {
         this.luckPermsAPI = luckPermsAPI;
+        this.variableProcessor = BetonQuest.getInstance().getVariableProcessor();
     }
 
     @Override
@@ -57,9 +65,11 @@ public class LuckPermsEventFactory implements EventFactory {
         final QuestPackage pack = instruction.getPackage();
         final List<VariableString> permissions = parseList(pack, unparsedPermissions);
         final List<VariableString> contexts = parseList(pack, instruction.getOptional("context", ""));
-        final VariableString value = new VariableString(pack, instruction.getOptional("value", ""));
-        final VariableNumber expiry = instruction.getVarNum(instruction.getOptional("expiry", "0"));
-        final VariableString timeUnit = new VariableString(pack, instruction.getOptional("unit", TimeUnit.DAYS.name()));
+        final VariableString value = new VariableString(variableProcessor, pack, instruction.getOptional("value", ""));
+        final VariableNumber expiry = instruction.getVarNum(instruction.getOptional("expiry", "0"),
+                VariableNumber.NOT_LESS_THAN_ZERO_CHECKER);
+        final VariableString timeUnit = new VariableString(variableProcessor, pack,
+                instruction.getOptional("unit", TimeUnit.DAYS.name()));
 
         return new LuckPermsNodeBuilder(permissions, value, contexts, expiry, timeUnit);
     }
@@ -70,7 +80,7 @@ public class LuckPermsEventFactory implements EventFactory {
         }
         final List<VariableString> list = new ArrayList<>();
         for (final String input : unparsed.split(",")) {
-            list.add(new VariableString(pack, input));
+            list.add(new VariableString(variableProcessor, pack, input));
         }
         return list;
     }

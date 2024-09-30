@@ -37,12 +37,12 @@ public record LuckPermsNodeBuilder(List<VariableString> permissions, VariableStr
      */
     public List<Node> getNodes(final Profile profile) throws QuestRuntimeException {
         final List<Node> buildNodes = new ArrayList<>();
-        final String resolvedValue = value.getString(profile);
+        final String resolvedValue = value.getValue(profile);
         final MutableContextSet contextSet = parseContextSet(contexts, profile);
         final long resolvedExpiry = expiry.getValue(profile).longValue();
         final TimeUnit resolvedTimeUnit = getTimeUnit(timeUnit, profile);
         for (final VariableString permission : permissions) {
-            Node node = getNode(permission.getString(profile));
+            Node node = getNode(permission.getValue(profile));
             if (!resolvedValue.isEmpty()) {
                 node = addValue(node, Boolean.parseBoolean(resolvedValue));
             }
@@ -60,7 +60,7 @@ public record LuckPermsNodeBuilder(List<VariableString> permissions, VariableStr
 
     @SuppressWarnings("PMD.LocalVariableCouldBeFinal")
     private @NotNull TimeUnit getTimeUnit(final VariableString data, final Profile profile) throws QuestRuntimeException {
-        final String time = data.getString(profile);
+        final String time = data.getValue(profile);
         TimeUnit unit;
         try {
             unit = TimeUnit.valueOf(time.toUpperCase(Locale.ROOT));
@@ -84,10 +84,10 @@ public record LuckPermsNodeBuilder(List<VariableString> permissions, VariableStr
         return builder.toBuilder().context(contextSet).build();
     }
 
-    private MutableContextSet parseContextSet(final List<VariableString> contexts, final Profile profile) {
+    private MutableContextSet parseContextSet(final List<VariableString> contexts, final Profile profile) throws QuestRuntimeException {
         final MutableContextSet contextSet = MutableContextSet.create();
         for (final VariableString context : contexts) {
-            final String[] split = context.getString(profile).split(";");
+            final String[] split = context.getValue(profile).split(";");
             contextSet.add(split[0], split[1]);
         }
         return contextSet;

@@ -14,12 +14,12 @@ import java.util.List;
  */
 public final class TagCalculatorUtils {
     /**
-     * The BetonQuest tag
+     * The BetonQuest tag.
      */
     public static final String KEY_LOCAL = "betonquest:tag:";
 
     /**
-     * The global BetonQuest tag
+     * The global BetonQuest tag.
      */
     public static final String KEY_GLOBAL = "betonquest:globaltag:";
 
