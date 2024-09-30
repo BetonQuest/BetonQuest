@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.condition.time;
+package org.betonquest.betonquest.quest.condition.time.ingame;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -12,6 +12,7 @@ import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
 import org.betonquest.betonquest.quest.condition.ThrowExceptionPlayerlessCondition;
+import org.betonquest.betonquest.quest.condition.time.TimeFrame;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 
 /**

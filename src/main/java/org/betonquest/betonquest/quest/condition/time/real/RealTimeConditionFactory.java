@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.condition.realtime;
+package org.betonquest.betonquest.quest.condition.time.real;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;

@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.condition.realtime;
+package org.betonquest.betonquest.quest.condition.time.real;
 
 import java.util.Locale;
 
