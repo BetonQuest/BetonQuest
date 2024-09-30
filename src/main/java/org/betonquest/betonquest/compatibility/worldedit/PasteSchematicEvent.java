@@ -11,6 +11,7 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
+import com.sk89q.worldedit.math.transform.AffineTransform;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
@@ -19,6 +20,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -39,6 +41,8 @@ public class PasteSchematicEvent extends QuestEvent {
 
     private final VariableLocation loc;
 
+    private final VariableNumber rotation;
+
     private final boolean noAir;
 
     private final File file;
@@ -49,6 +53,8 @@ public class PasteSchematicEvent extends QuestEvent {
         staticness = true;
         persistent = true;
         loc = instruction.getLocation();
+        rotation = instruction.getVarNum(instruction.getOptional("rotation", "0"));
+
         final WorldEditPlugin worldEdit = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
         final File folder = new File(worldEdit.getDataFolder(), "schematics");
         if (!folder.exists() || !folder.isDirectory()) {
@@ -70,16 +76,19 @@ public class PasteSchematicEvent extends QuestEvent {
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
         try {
-            final Clipboard clipboard = getClipboard();
             final Location location = loc.getValue(profile);
+            final double rot = rotation.getValue(profile).doubleValue();
+
+            final ClipboardHolder clipboard = new ClipboardHolder(getClipboard());
+            final AffineTransform transform = new AffineTransform();
+            clipboard.setTransform(clipboard.getTransform().combine(transform.rotateY(rot)));
 
             try (EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder().maxBlocks(-1).world(BukkitAdapter.adapt(location.getWorld())).build()) {
-                final Operation operation = new ClipboardHolder(clipboard)
+                final Operation operation = clipboard
                         .createPaste(editSession)
                         .to(BukkitAdapter.asBlockVector(location))
                         .ignoreAirBlocks(noAir)
                         .build();
-
                 Operations.complete(operation);
             }
         } catch (final IOException | WorldEditException e) {

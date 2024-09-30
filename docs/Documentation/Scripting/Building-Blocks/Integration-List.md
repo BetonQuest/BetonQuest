@@ -1141,6 +1141,7 @@ The file must be located in `WorldEdit/schematics` or `FastAsyncWorldEdit/schema
 schematic name in the event's instruction.
 
 The optional `noair` keyword can be added to ignore air blocks while pasting.
+You can also rotate the schematic by adding `rotation:90` where `90` is the angle in degrees.
 
 
 ```YAML title="Example"
