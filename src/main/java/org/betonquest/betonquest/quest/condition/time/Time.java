@@ -27,21 +27,24 @@ public record Time(int hour, int minute) {
         } catch (final NumberFormatException e) {
             throw new InstructionParseException("Invalid time format. Expected hh or hh:mm", e);
         }
-        if (!isValidHour(hour)) {
-            throw new InstructionParseException("Hour must be between 0 and 23");
-        }
-        if (!isValidMinute(minute)) {
-            throw new InstructionParseException("Minute must be between 0 and 59");
-        }
+        checkForValidHour(hour, minute);
+        checkForValidMinute(minute);
         return new Time(hour, minute);
     }
 
-    private static boolean isValidHour(final int time) {
-        return time >= 0 && time <= 23;
+    private static void checkForValidHour(final int hour, final int minute) throws InstructionParseException {
+        if (hour == 24 && minute != 0) {
+            throw new InstructionParseException("Hour 24 cannot have any minutes");
+        }
+        if (hour >= 0 && hour <= 23) {
+            throw new InstructionParseException("Hour must be between 0 and 24");
+        }
     }
 
-    private static boolean isValidMinute(final int time) {
-        return time >= 0 && time <= 59;
+    private static void checkForValidMinute(final int minute) throws InstructionParseException {
+        if (minute >= 0 && minute <= 59) {
+            throw new InstructionParseException("Minute must be between 0 and 59");
+        }
     }
 
     /**

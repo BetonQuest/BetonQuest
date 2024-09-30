@@ -26,7 +26,7 @@ public record TimeFrame(Time startTime, Time endTime) {
     }
 
     /**
-     * Check if a time is between the start and end time.
+     * Check if a time is between or at the start and end time.
      *
      * @param now the time to check
      * @return true if the time is between the start and end time
