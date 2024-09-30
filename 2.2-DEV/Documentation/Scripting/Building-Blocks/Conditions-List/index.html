@@ -6836,7 +6836,7 @@ The valid operations are: <code>&lt;</code>, <code>&lt;=</code>, <code>=</code>,
 <td><em>Variable</em></td>
 <td>time span</td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343h-.001a8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746Zm1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275ZM6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L6.94 8 4.97 6.03a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018Z"/></svg></span></td>
-<td>Two hour numbers seperated by dash in the 24-hour format (0 - 24).</td>
+<td>Two points of time seperated by dash in the 24-hour format (0 - 24). The minutes are optional (hh or hh:mm).</td>
 </tr>
 <tr>
 <td><em>world</em></td>
@@ -6847,8 +6847,9 @@ The valid operations are: <code>&lt;</code>, <code>&lt;=</code>, <code>=</code>,
 </tbody>
 </table>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">allDay</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;time</span><span class="nv"> </span><span class="s">6-19&quot;</span>
-<span class="nt">midnightInOverworld</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;time</span><span class="nv"> </span><span class="s">23-1</span><span class="nv"> </span><span class="s">world:overworld&quot;</span>
-<span class="nt">morningInPlayerWorld</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;time</span><span class="nv"> </span><span class="s">6-12</span><span class="nv"> </span><span class="s">world:%ph.player_home_world%&quot;</span>
+<span class="nt">midnightInOverworld</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;time</span><span class="nv"> </span><span class="s">23:30-0:30</span><span class="nv"> </span><span class="s">world:overworld&quot;</span>
+<span class="nt">knoppersTime</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;time</span><span class="nv"> </span><span class="s">9:30-10&quot;</span>
+<span class="nt">exactAtTwelveAtPlayersHome</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;time</span><span class="nv"> </span><span class="s">12-12</span><span class="nv"> </span><span class="s">world:%ph.player_home_world%&quot;</span>
 </code></pre></div>
 <h2 id="variable-variable">Variable: <code>variable</code><a class="headerlink" href="#variable-variable" title="Permanent link">🔗</a></h2>
 <p>This condition checks if a variable value matches given <a href="../../Data-Formats/#regex-regular-expressions">regular expression</a></p>
