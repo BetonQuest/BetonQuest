@@ -16,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Event to add permissions to a player using LuckPerms
+ * Event to add permissions to a player using LuckPerms.
  */
 public class LuckPermsPermissionEvent implements Event {
 
@@ -60,8 +60,8 @@ public class LuckPermsPermissionEvent implements Event {
         for (final Node node : buildNodes) {
             nodeApply.apply(data, node);
         }
-        userManager.saveUser(user);
-        luckPermsAPI.getMessagingService().ifPresent(service -> service.pushUserUpdate(user));
+        userManager.saveUser(user).thenAcceptAsync(result -> luckPermsAPI.getMessagingService().ifPresent(service
+                -> service.pushUserUpdate(user)));
     }
 
     private User getUser(final CompletableFuture<User> userFuture) throws QuestRuntimeException {
