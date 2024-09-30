@@ -13,7 +13,6 @@ import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondit
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
 import org.betonquest.betonquest.quest.condition.ThrowExceptionPlayerlessCondition;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Factory to create test for time conditions from {@link Instruction}s.
@@ -43,7 +42,7 @@ public class TimeConditionFactory implements PlayerConditionFactory, PlayerlessC
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws InstructionParseException {
-        final TimeFrame timeFrame = getTimeFrame(instruction.next());
+        final TimeFrame timeFrame = TimeFrame.parse(instruction.next());
         final VariableWorld world = new VariableWorld(variableProcessor, instruction.getPackage(), instruction.getOptional("world", "%location.world%"));
         return new PrimaryServerThreadPlayerCondition(
                 new NullableConditionAdapter(new TimeCondition(timeFrame, world)), data);
@@ -55,34 +54,9 @@ public class TimeConditionFactory implements PlayerConditionFactory, PlayerlessC
         if (worldString == null) {
             return new ThrowExceptionPlayerlessCondition();
         }
-        final TimeFrame timeFrame = getTimeFrame(instruction.next());
+        final TimeFrame timeFrame = TimeFrame.parse(instruction.next());
         final VariableWorld world = new VariableWorld(variableProcessor, instruction.getPackage(), worldString);
         return new PrimaryServerThreadPlayerlessCondition(
                 new NullableConditionAdapter(new TimeCondition(timeFrame, world)), data);
-    }
-
-    @NotNull
-    private TimeFrame getTimeFrame(final String time) throws InstructionParseException {
-        final String[] theTime = time.split("-");
-        final int expectedLength = 2;
-        if (theTime.length != expectedLength) {
-            throw new InstructionParseException("Wrong time format. Expected format: <time>-<time>");
-        }
-        final double timeMin;
-        final double timeMax;
-        try {
-            timeMin = Double.parseDouble(theTime[0]);
-            timeMax = Double.parseDouble(theTime[1]);
-        } catch (final NumberFormatException e) {
-            throw new InstructionParseException("Could not parse time", e);
-        }
-        if (!(isValidTime(timeMin) && isValidTime(timeMax))) {
-            throw new InstructionParseException("Time must be between 0 and 24");
-        }
-        return new TimeFrame(timeMin, timeMax);
-    }
-
-    private boolean isValidTime(final double time) {
-        return time >= 0 && time <= 24;
     }
 }
