@@ -412,15 +412,23 @@ This one requires the player to wear armor which gives him specified amount of p
     ```YAML
     rating 10
     ```
-
+    
 ## Real time: `realtime`
 
-There must a specific (real) time for this condition to return true. You need to specify two times (formatted like `hh:mm`) separated by dash. If the first is before the second the time must be between these two, if its after the second the time must be later than the first and earlier than the second to return true.
+**static****persistent**
 
-!!! example
-    ```YAML
-    realtime 8:00-12:30
-    ```
+There must a specific (real) time for this condition to return true.
+
+| Parameter  | Syntax            | Default Value          | Explanation                                                                                                  |
+|------------|-------------------|------------------------|--------------------------------------------------------------------------------------------------------------|
+| _Timespan_ | startTime-endTime | :octicons-x-circle-16: | Two points of time seperated by dash in the 24-hour format (0 - 24). The minutes are optional (hh or hh:mm). |
+
+
+```YAML title="Example"
+allDayReal: "realtime 6-19"
+midnightReal: "realtime 23:30-0:30"
+knoppersTimeReal: "realtime 9:30-10"
+```
 
 ## Scoreboard: `score`
 
@@ -489,10 +497,10 @@ This condition is met if the block at specified location matches the given mater
 
 There must be specific (Minecraft) time on the world for this condition to return true.
 
-| Parameter  | Syntax     | Default Value          | Explanation                                                                                                  |
-|------------|------------|------------------------|--------------------------------------------------------------------------------------------------------------|
-| _Variable_ | time span  | :octicons-x-circle-16: | Two points of time seperated by dash in the 24-hour format (0 - 24). The minutes are optional (hh or hh:mm). |
-| _world_    | world:name | player location        | The world to check for the time. Can be a variable.                                                          |
+| Parameter  | Syntax            | Default Value          | Explanation                                                                                                  |
+|------------|-------------------|------------------------|--------------------------------------------------------------------------------------------------------------|
+| _Timespan_ | startTime-endTime | :octicons-x-circle-16: | Two points of time seperated by dash in the 24-hour format (0 - 24). The minutes are optional (hh or hh:mm). |
+| _world_    | world:name        | player location        | The world to check for the time. Can be a variable.                                                          |
 
 
 ```YAML title="Example"
