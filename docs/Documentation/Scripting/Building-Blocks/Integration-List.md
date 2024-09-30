@@ -973,7 +973,7 @@ This event opens a trading window of a Villager. The only argument is the unique
     shopkeeper b687538e-14ce-4b77-ae9f-e83b12f0b929
     ```
 
-## TrainCarts[](https://www.spigotmc.org/resources/traincarts.39592/)
+## TrainCarts[](https://www.spigotmc.org/resources/39592/)
 TrainCarts is a plugin that allows you to create trains with advanced features.
 
 ### Conditions
@@ -993,13 +993,13 @@ This objective requires the player to be at a specific location while sitting in
 
 | Parameter  | Syntax      | Default Value          | Explanation                                                      |
 |------------|-------------|------------------------|------------------------------------------------------------------|
-| _name_     | name:Train1 | :octicons-x-circle-16: | The optional Name of the Train.                                  |
 | _location_ | x;y;z;world | :octicons-x-circle-16: | The Location the player has to pass whiles sitting in the train. |
+| _name_     | name:Train1 | :octicons-x-circle-16: | The optional Name of the Train.                                  |
 
 !!! example
     ```YAML
     traincartslocation 100;60;100;world
-    traincartsexit name:Train1 100;60;100;world
+    traincartslocation name:Train1 100;60;100;world
     ```
 
 #### TrainCarts ride objective: `traincartsride`
