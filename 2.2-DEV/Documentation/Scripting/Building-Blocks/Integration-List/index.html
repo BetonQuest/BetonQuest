@@ -7039,7 +7039,8 @@ The first argument is a location and the second one is the name of a schematic f
 The file must be located in <code>WorldEdit/schematics</code> or <code>FastAsyncWorldEdit/schematics</code> and must have a name like
 <code>some_building.<ins class="critic">schematic</ins></code>. If WorldEdit saves <code>.schem</code> schematic files, simply append <code>.schem</code> to the
 schematic name in the event's instruction.</p>
-<p>The optional <code>noair</code> keyword can be added to ignore air blocks while pasting.</p>
+<p>The optional <code>noair</code> keyword can be added to ignore air blocks while pasting.
+You can also rotate the schematic by adding <code>rotation:90</code> where <code>90</code> is the angle in degrees.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">pasteCastle</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;paste</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">castle</span><span class="nv"> </span><span class="s">noair&quot;</span><span class="w"> </span><span class="c1">#(1)!</span>
 <span class="w">  </span><span class="nt">pasteTree</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;paste</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">tree.schem</span><span class="nv"> </span><span class="s">noair&quot;</span><span class="w"> </span><span class="c1">#(2)!</span>
