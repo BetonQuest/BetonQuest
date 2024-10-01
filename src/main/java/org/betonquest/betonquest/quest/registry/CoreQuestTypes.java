@@ -32,7 +32,6 @@ import org.betonquest.betonquest.conditions.LookingAtCondition;
 import org.betonquest.betonquest.conditions.MooncycleCondition;
 import org.betonquest.betonquest.conditions.NumberCompareCondition;
 import org.betonquest.betonquest.conditions.PartyCondition;
-import org.betonquest.betonquest.conditions.PermissionCondition;
 import org.betonquest.betonquest.conditions.StageCondition;
 import org.betonquest.betonquest.objectives.ActionObjective;
 import org.betonquest.betonquest.objectives.ArrowShootObjective;
@@ -71,6 +70,7 @@ import org.betonquest.betonquest.quest.condition.advancement.AdvancementConditio
 import org.betonquest.betonquest.quest.condition.armor.ArmorRatingConditionFactory;
 import org.betonquest.betonquest.quest.condition.block.BlockConditionFactory;
 import org.betonquest.betonquest.quest.condition.objective.ObjectiveConditionFactory;
+import org.betonquest.betonquest.quest.condition.permission.PermissionConditionFactory;
 import org.betonquest.betonquest.quest.condition.point.GlobalPointConditionFactory;
 import org.betonquest.betonquest.quest.condition.point.PointConditionFactory;
 import org.betonquest.betonquest.quest.condition.random.RandomConditionFactory;
@@ -256,7 +256,7 @@ public class CoreQuestTypes {
         conditionTypes.register("or", AlternativeCondition.class);
         conditionTypes.register("partialdate", new PartialDateConditionFactory());
         conditionTypes.register("party", PartyCondition.class);
-        conditionTypes.register("permission", PermissionCondition.class);
+        conditionTypes.register("permission", new PermissionConditionFactory(loggerFactory, data));
         conditionTypes.register("point", new PointConditionFactory(betonQuest));
         conditionTypes.registerCombined("random", new RandomConditionFactory(betonQuest.getVariableProcessor()));
         conditionTypes.register("rating", new ArmorRatingConditionFactory(loggerFactory, data));
