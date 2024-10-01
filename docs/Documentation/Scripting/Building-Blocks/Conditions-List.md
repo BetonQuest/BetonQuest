@@ -302,7 +302,9 @@ Checks if the player is looking at a block with the given location or material. 
 
 **static**
 
-This condition checks the players moon cycle (1 is full moon, 8 is Waxing Gibbous). A list of phases can be found [here](https://minecraft.wiki/w/Moon).
+This condition checks the moon cycle (1 is full moon, 8 is Waxing Gibbous) in the given world or the players world. A list of phases can be 
+found 
+[here](https://minecraft.wiki/w/Moon).
     
 | Parameter   | Syntax     | Default Value          | Explanation                                               |
 |-------------|------------|------------------------|-----------------------------------------------------------|
