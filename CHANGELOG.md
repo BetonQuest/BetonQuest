@@ -16,6 +16,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `time` condition now supports minutes
 - `paste` event can now rotate schematics
 - `permission` condition now supports variables
+- `moonCycle` condition now allows to define a world, which can be a variable and can now be used in static context
 ### Changed
 - `spawn` event now only spawn mobs and no other entities
 ### Deprecated
