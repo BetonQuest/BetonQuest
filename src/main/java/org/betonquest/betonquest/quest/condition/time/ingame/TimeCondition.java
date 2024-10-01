@@ -1,9 +1,11 @@
-package org.betonquest.betonquest.quest.condition.time;
+package org.betonquest.betonquest.quest.condition.time.ingame;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.location.VariableWorld;
+import org.betonquest.betonquest.quest.condition.time.Time;
+import org.betonquest.betonquest.quest.condition.time.TimeFrame;
 import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
 
