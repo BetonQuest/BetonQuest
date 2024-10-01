@@ -300,12 +300,22 @@ Checks if the player is looking at a block with the given location or material. 
 
 ## Moon Cycle: `mooncycle`
 
-This condition checks the players moon cycle (1 is full moon, 8 is Waxing Gibbous) and returns if the player is under that moon. A list of phases can be found [here](https://minecraft.wiki/w/Moon).
+**static**
 
-!!! example
-    ```YAML
-    mooncycle 1
-    ```
+This condition checks the moon cycle (1 is full moon, 8 is Waxing Gibbous) in the given world or the players world. A list of phases can be 
+found 
+[here](https://minecraft.wiki/w/Moon).
+    
+| Parameter   | Syntax     | Default Value          | Explanation                                               |
+|-------------|------------|------------------------|-----------------------------------------------------------|
+| _MoonPhase_ | Number     | :octicons-x-circle-16: | The MoonPhase to check for. Can be a variable.            |
+| _world_     | world:name | player location        | The world to check for the moon phase. Can be a variable. |
+
+
+```YAML title="Example"
+fullMoon: "mooncycle 1"
+newMoonHub: "mooncycle 5 world:hub"
+```
 
 ## Number compare: `numbercompare`
 
