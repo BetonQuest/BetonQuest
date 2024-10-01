@@ -67,6 +67,8 @@ import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.advancement.AdvancementConditionFactory;
 import org.betonquest.betonquest.quest.condition.armor.ArmorRatingConditionFactory;
 import org.betonquest.betonquest.quest.condition.block.BlockConditionFactory;
+import org.betonquest.betonquest.quest.condition.location.LocationConditionFactory;
+import org.betonquest.betonquest.quest.condition.moon.MoonCycleConditionFactory;
 import org.betonquest.betonquest.quest.condition.objective.ObjectiveConditionFactory;
 import org.betonquest.betonquest.quest.condition.permission.PermissionConditionFactory;
 import org.betonquest.betonquest.quest.condition.point.GlobalPointConditionFactory;
