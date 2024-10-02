@@ -324,12 +324,12 @@ The specified location where the player needs to be.
 It is not required to specify `entry` or `exit` then the objective also completes
 if the player just moves inside the location's range.
 
-| Parameter  | Syntax                                               | Default Value          | Explanation                                                                                                             |
-|------------|------------------------------------------------------|------------------------|-------------------------------------------------------------------------------------------------------------------------|
-| _location_ | [ULF](../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to go to                                                                                                   |
-| _range_    | range:number                                         | :octicons-x-circle-16: | The range arround the location where the player must be.                                                                |
-| _entry_    | entry:keyword                                        | Disabled               | The player must enter (go from outside to inside) the location to complete the objective.                               |
-| _exit_     | exit:keyword                                         | Disabled               | The player must exit (go from inside to outside) the location to complete the objective.                                |
+| Parameter  | Syntax                                               | Default Value          | Explanation                                                                               |
+|------------|------------------------------------------------------|------------------------|-------------------------------------------------------------------------------------------|
+| _location_ | [ULF](../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to go to                                                                     |
+| _range_    | number                                               | :octicons-x-circle-16: | The range around the location where the player must be.                                   |
+| _entry_    | entry                                                | Disabled               | The player must enter (go from outside to inside) the location to complete the objective. |
+| _exit_     | exit                                                 | Disabled               | The player must exit (go from inside to outside) the location to complete the objective.  |
 
 !!! example
     ```YAML
