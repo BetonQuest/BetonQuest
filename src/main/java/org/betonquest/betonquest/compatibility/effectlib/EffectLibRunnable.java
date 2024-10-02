@@ -45,7 +45,7 @@ public class EffectLibRunnable extends BukkitRunnable {
     private List<OnlineProfile> activeProfiles;
 
     /**
-     * The last game tick the conditions were checked on;
+     * The last game tick the conditions were checked on.
      */
     private int lastConditionCheckTick;
 
