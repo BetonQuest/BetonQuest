@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.commands;
 
 import org.betonquest.betonquest.Backpack;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -21,13 +20,12 @@ public class BackpackCommand implements CommandExecutor {
     private final BetonQuestLogger log;
 
     /**
-     * Registers a new executor of the /backpack command
+     * Creates a new executor for the /backpack command.
      *
      * @param log the logger that will be used for logging
      */
     public BackpackCommand(final BetonQuestLogger log) {
         this.log = log;
-        BetonQuest.getInstance().getCommand("backpack").setExecutor(this);
     }
 
     @Override

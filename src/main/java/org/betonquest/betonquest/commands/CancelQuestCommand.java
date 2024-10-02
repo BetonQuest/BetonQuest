@@ -2,7 +2,6 @@ package org.betonquest.betonquest.commands;
 
 import org.betonquest.betonquest.Backpack;
 import org.betonquest.betonquest.Backpack.DisplayType;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,10 +15,9 @@ import org.bukkit.entity.Player;
 public class CancelQuestCommand implements CommandExecutor {
 
     /**
-     * Registers a new executor of the /cancelquest command
+     * Creates a new executor for the /cancelquest command.
      */
     public CancelQuestCommand() {
-        BetonQuest.getInstance().getCommand("cancelquest").setExecutor(this);
     }
 
     @Override

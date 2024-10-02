@@ -511,12 +511,16 @@ public class BetonQuest extends JavaPlugin {
 
         pluginManager.registerEvents(new CustomDropListener(loggerFactory.create(CustomDropListener.class)), this);
 
-        new QuestCommand(loggerFactory, loggerFactory.create(QuestCommand.class), configAccessorFactory, adventure, new PlayerLogWatcher(receiverSelector), debugHistoryHandler);
-        new JournalCommand();
-        new BackpackCommand(loggerFactory.create(BackpackCommand.class));
-        new CancelQuestCommand();
-        new CompassCommand();
-        new LangCommand(loggerFactory.create(LangCommand.class));
+        final QuestCommand questCommand = new QuestCommand(loggerFactory, loggerFactory.create(QuestCommand.class), configAccessorFactory, adventure, new PlayerLogWatcher(receiverSelector), debugHistoryHandler);
+        getCommand("betonquest").setExecutor(questCommand);
+        getCommand("betonquest").setTabCompleter(questCommand);
+        getCommand("journal").setExecutor(new JournalCommand(this));
+        getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class)));
+        getCommand("cancelquest").setExecutor(new CancelQuestCommand());
+        getCommand("compass").setExecutor(new CompassCommand());
+        final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), this);
+        getCommand("questlang").setExecutor(langCommand);
+        getCommand("questlang").setTabCompleter(langCommand);
 
         questTypeRegistries = new QuestTypeRegistries(loggerFactory);
 

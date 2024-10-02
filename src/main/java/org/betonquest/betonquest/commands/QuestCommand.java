@@ -133,8 +133,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         this.bukkitAudiences = bukkitAudiences;
         this.logWatcher = logWatcher;
         this.debuggingController = debuggingController;
-        BetonQuest.getInstance().getCommand("betonquest").setExecutor(this);
-        BetonQuest.getInstance().getCommand("betonquest").setTabCompleter(this);
     }
 
     @SuppressWarnings("PMD.NcssCount")
