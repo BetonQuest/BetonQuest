@@ -5,7 +5,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.conditions.AlternativeCondition;
 import org.betonquest.betonquest.conditions.BiomeCondition;
-import org.betonquest.betonquest.conditions.BurningCondition;
 import org.betonquest.betonquest.conditions.CheckCondition;
 import org.betonquest.betonquest.conditions.ChestItemCondition;
 import org.betonquest.betonquest.conditions.ConjunctionCondition;
@@ -67,6 +66,7 @@ import org.betonquest.betonquest.quest.condition.advancement.AdvancementConditio
 import org.betonquest.betonquest.quest.condition.armor.ArmorConditionFactory;
 import org.betonquest.betonquest.quest.condition.armor.ArmorRatingConditionFactory;
 import org.betonquest.betonquest.quest.condition.block.BlockConditionFactory;
+import org.betonquest.betonquest.quest.condition.burning.BurningConditionFactory;
 import org.betonquest.betonquest.quest.condition.location.LocationConditionFactory;
 import org.betonquest.betonquest.quest.condition.moon.MoonCycleConditionFactory;
 import org.betonquest.betonquest.quest.condition.objective.ObjectiveConditionFactory;
@@ -225,7 +225,7 @@ public class CoreQuestTypes {
         conditionTypes.register("and", ConjunctionCondition.class);
         conditionTypes.register("armor", new ArmorConditionFactory(loggerFactory, data));
         conditionTypes.register("biome", BiomeCondition.class);
-        conditionTypes.register("burning", BurningCondition.class);
+        conditionTypes.register("burning", new BurningConditionFactory(loggerFactory, data));
         conditionTypes.register("check", CheckCondition.class);
         conditionTypes.register("chestitem", ChestItemCondition.class);
         conditionTypes.register("conversation", ConversationCondition.class);
