@@ -66,8 +66,8 @@ public final class Config {
     public static void setup(final BetonQuest plugin, final ConfigurationFile config) {
         Config.plugin = plugin;
         LANGUAGES.clear();
-        final ConfigAccessorFactory configAccessorFactory = BetonQuest.getInstance().getConfigAccessorFactory();
-        final ConfigurationFileFactory configurationFileFactory = BetonQuest.getInstance().getConfigurationFileFactory();
+        final ConfigAccessorFactory configAccessorFactory = plugin.getConfigAccessorFactory();
+        final ConfigurationFileFactory configurationFileFactory = plugin.getConfigurationFileFactory();
 
         final File root = plugin.getDataFolder();
         try {
@@ -86,7 +86,7 @@ public final class Config {
             }
         }
 
-        final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
+        final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
         questManager = new QuestManager(loggerFactory, loggerFactory.create(QuestManager.class), configAccessorFactory, root);
     }
 

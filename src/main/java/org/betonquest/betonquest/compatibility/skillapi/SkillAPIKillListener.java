@@ -1,10 +1,8 @@
 package org.betonquest.betonquest.compatibility.skillapi;
 
 import com.sucy.skill.api.event.SkillDamageEvent;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.MobKillNotifier;
 import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -17,7 +15,6 @@ import org.bukkit.event.Listener;
 public class SkillAPIKillListener implements Listener {
 
     public SkillAPIKillListener() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -30,5 +27,4 @@ public class SkillAPIKillListener implements Listener {
         }
         MobKillNotifier.addKill(PlayerConverter.getID((Player) event.getDamager()), event.getTarget());
     }
-
 }

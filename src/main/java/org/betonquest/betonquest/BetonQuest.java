@@ -120,6 +120,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.Event;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -480,10 +481,11 @@ public class BetonQuest extends JavaPlugin {
         saver.start();
         Backup.loadDatabaseFromBackup(configAccessorFactory);
 
-        globalData = new GlobalData();
-        new JoinQuitListener(loggerFactory);
+        globalData = new GlobalData(loggerFactory.create(GlobalData.class), saver);
 
-        new QuestItemHandler();
+        final PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(new JoinQuitListener(loggerFactory, this), this);
+        pluginManager.registerEvents(new QuestItemHandler(this), this);
 
         final ConfigAccessor cache;
         try {
@@ -494,20 +496,20 @@ public class BetonQuest extends JavaPlugin {
             }
             cache = configAccessorFactory.create(cacheFile.toFile());
         } catch (final IOException | InvalidConfigurationException e) {
-            this.log.error("Error while loading schedule cache: " + e.getMessage(), e);
+            log.error("Error while loading schedule cache: " + e.getMessage(), e);
             return;
         }
         lastExecutionCache = new LastExecutionCache(loggerFactory.create(LastExecutionCache.class, "Cache"), cache);
 
         new GlobalObjectives();
 
-        new CombatTagger();
+        pluginManager.registerEvents(new CombatTagger(config.getInt("combat_delay")), this);
 
         ConversationColors.loadColors();
 
-        new MobKillListener();
+        pluginManager.registerEvents(new MobKillListener(), this);
 
-        new CustomDropListener(loggerFactory.create(CustomDropListener.class));
+        pluginManager.registerEvents(new CustomDropListener(loggerFactory.create(CustomDropListener.class)), this);
 
         new QuestCommand(loggerFactory, loggerFactory.create(QuestCommand.class), configAccessorFactory, adventure, new PlayerLogWatcher(receiverSelector), debugHistoryHandler);
         new JournalCommand();
@@ -563,7 +565,7 @@ public class BetonQuest extends JavaPlugin {
             }
 
             try {
-                playerHider = new PlayerHider();
+                playerHider = new PlayerHider(this);
             } catch (final InstructionParseException e) {
                 log.error("Could not start PlayerHider! " + e.getMessage(), e);
             }
@@ -632,7 +634,7 @@ public class BetonQuest extends JavaPlugin {
      * @see QuestRegistry#loadData(Collection)
      */
     public void loadData() {
-        instance.questRegistry.loadData(Config.getPackages().values());
+        questRegistry.loadData(Config.getPackages().values());
 
         // start those freshly loaded objectives for all players
         for (final PlayerData playerData : playerDataMap.values()) {
@@ -672,16 +674,15 @@ public class BetonQuest extends JavaPlugin {
         // start objectives and update journals for every online profiles
         for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
             log.debug("Updating journal for player " + onlineProfile);
-            final PlayerData playerData = instance.getPlayerData(onlineProfile);
+            final PlayerData playerData = getPlayerData(onlineProfile);
             GlobalObjectives.startAll(onlineProfile);
-            final Journal journal = playerData.getJournal();
-            journal.update();
+            playerData.getJournal().update();
         }
         if (playerHider != null) {
             playerHider.stop();
         }
         try {
-            playerHider = new PlayerHider();
+            playerHider = new PlayerHider(this);
         } catch (final InstructionParseException e) {
             log.error("Could not start PlayerHider! " + e.getMessage(), e);
         }
@@ -714,7 +715,7 @@ public class BetonQuest extends JavaPlugin {
         }
 
         // done
-        log.info("BetonQuest succesfully disabled!");
+        log.info("BetonQuest successfully disabled!");
 
         if (this.adventure != null) {
             this.adventure.close();
@@ -759,7 +760,7 @@ public class BetonQuest extends JavaPlugin {
 
     /**
      * Stores the PlayerData in a map, so it can be retrieved using
-     * getPlayerData(Profile profile).
+     * {@link #getPlayerData(Profile profile)}.
      *
      * @param profile    the {@link Profile} of the player
      * @param playerData PlayerData object to store

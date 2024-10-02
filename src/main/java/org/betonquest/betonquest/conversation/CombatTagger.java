@@ -3,9 +3,7 @@ package org.betonquest.betonquest.conversation;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -36,11 +34,12 @@ public class CombatTagger implements Listener {
     private final int delay;
 
     /**
-     * Starts the combat listener.
+     * Create the combat listener.
+     *
+     * @param delay the delay in seconds after a player profile is untagged from "in combat"
      */
-    public CombatTagger() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-        delay = Integer.parseInt(Config.getConfigString("combat_delay"));
+    public CombatTagger(final int delay) {
+        this.delay = delay;
     }
 
     /**

@@ -2,11 +2,9 @@ package org.betonquest.betonquest.compatibility.mcmmo;
 
 import com.gmail.nossr50.events.skills.salvage.McMMOPlayerSalvageCheckEvent;
 import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -20,7 +18,6 @@ import org.bukkit.event.Listener;
 public class MCMMOQuestItemHandler implements Listener {
 
     public MCMMOQuestItemHandler() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
