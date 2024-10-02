@@ -6,6 +6,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.ProfileKeyMap;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
@@ -16,12 +17,12 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ObjectiveID;
+import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -62,7 +63,7 @@ public abstract class Objective {
     /**
      * Contains all data objects of the profiles with this objective active.
      */
-    protected Map<Profile, ObjectiveData> dataMap = new HashMap<>();
+    protected Map<Profile, ObjectiveData> dataMap = new ProfileKeyMap<>(Bukkit.getServer());
 
     /**
      * Should be set to the data class used to hold the objective specific information.
