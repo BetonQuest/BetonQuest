@@ -2,19 +2,18 @@ package org.betonquest.betonquest.objectives;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.conditions.ChestItemCondition;
+import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.quest.condition.chest.ChestItemCondition;
 import org.betonquest.betonquest.quest.event.chest.ChestTakeEvent;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -45,7 +44,7 @@ public class ChestPutObjective extends Objective implements Listener {
      */
     private final BetonQuestLogger log;
 
-    private final Condition chestItemCondition;
+    private final NullableCondition chestItemCondition;
 
     @Nullable
     private final ChestTakeEvent chestTakeEvent;
@@ -64,20 +63,14 @@ public class ChestPutObjective extends Objective implements Listener {
         this.log = loggerFactory.create(getClass());
         // extract location
         loc = instruction.getLocation();
-        final String location = instruction.current();
-        final String items = instruction.next();
+        final Item[] items = instruction.getItemList();
         multipleAccess = Boolean.parseBoolean(instruction.getOptional("multipleaccess"));
-        try {
-            chestItemCondition = new ChestItemCondition(new Instruction(loggerFactory.create(Instruction.class), instruction.getPackage(), new NoID(instruction.getPackage()), "chestitem " + location + " " + items));
-        } catch (final InstructionParseException | ObjectNotFoundException e) {
-            throw new InstructionParseException("Could not create inner chest item condition: " + e.getMessage(), e);
-        }
+        chestItemCondition = new ChestItemCondition(loc, items);
         if (instruction.hasArgument("items-stay")) {
             chestTakeEvent = null;
         } else {
-            chestTakeEvent = new ChestTakeEvent(loc, instruction.getItemList(items));
+            chestTakeEvent = new ChestTakeEvent(loc, items);
         }
-
     }
 
     /**
@@ -147,7 +140,7 @@ public class ChestPutObjective extends Objective implements Listener {
     }
 
     private void checkItems(final OnlineProfile onlineProfile) throws QuestRuntimeException {
-        if (chestItemCondition.handle(onlineProfile) && checkConditions(onlineProfile)) {
+        if (chestItemCondition.check(onlineProfile) && checkConditions(onlineProfile)) {
             completeObjective(onlineProfile);
             if (chestTakeEvent != null) {
                 chestTakeEvent.execute(onlineProfile);
@@ -190,5 +183,4 @@ public class ChestPutObjective extends Objective implements Listener {
     public String getProperty(final String name, final Profile profile) {
         return "";
     }
-
 }
