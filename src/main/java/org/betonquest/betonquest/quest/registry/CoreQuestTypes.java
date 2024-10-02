@@ -4,7 +4,6 @@ import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.conditions.AlternativeCondition;
-import org.betonquest.betonquest.conditions.ArmorCondition;
 import org.betonquest.betonquest.conditions.BiomeCondition;
 import org.betonquest.betonquest.conditions.BurningCondition;
 import org.betonquest.betonquest.conditions.CheckCondition;
@@ -65,6 +64,7 @@ import org.betonquest.betonquest.objectives.TameObjective;
 import org.betonquest.betonquest.objectives.VariableObjective;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.advancement.AdvancementConditionFactory;
+import org.betonquest.betonquest.quest.condition.armor.ArmorConditionFactory;
 import org.betonquest.betonquest.quest.condition.armor.ArmorRatingConditionFactory;
 import org.betonquest.betonquest.quest.condition.block.BlockConditionFactory;
 import org.betonquest.betonquest.quest.condition.location.LocationConditionFactory;
@@ -223,7 +223,7 @@ public class CoreQuestTypes {
     private void registerConditions(final ConditionTypeRegistry conditionTypes) {
         conditionTypes.register("advancement", new AdvancementConditionFactory(data, loggerFactory));
         conditionTypes.register("and", ConjunctionCondition.class);
-        conditionTypes.register("armor", ArmorCondition.class);
+        conditionTypes.register("armor", new ArmorConditionFactory(loggerFactory, data));
         conditionTypes.register("biome", BiomeCondition.class);
         conditionTypes.register("burning", BurningCondition.class);
         conditionTypes.register("check", CheckCondition.class);
