@@ -395,7 +395,7 @@ public class BetonQuest extends JavaPlugin {
         if (getServer().isPrimaryThread()) {
             getServer().getPluginManager().callEvent(event);
         } else {
-            getServer().getScheduler().runTask(getInstance(), () -> getServer().getPluginManager().callEvent(event));
+            getServer().getScheduler().runTask(this, () -> getServer().getPluginManager().callEvent(event));
         }
     }
 
@@ -419,14 +419,14 @@ public class BetonQuest extends JavaPlugin {
 
         final JREVersionPrinter jreVersionPrinter = new JREVersionPrinter();
         final String jreInfo = jreVersionPrinter.getMessage();
-        getInstance().log.info(jreInfo);
+        log.info(jreInfo);
 
         migratePackages();
 
         try {
             config = configurationFileFactory.create(new File(getDataFolder(), "config.yml"), this, "config.yml");
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
-            getInstance().log.error("Could not load the config.yml file!", e);
+            log.error("Could not load the config.yml file!", e);
             return;
         }
 
@@ -434,7 +434,7 @@ public class BetonQuest extends JavaPlugin {
         try {
             menuConfigAccessor = configAccessorFactory.create(new File(getDataFolder(), "menuConfig.yml"), this, "menuConfig.yml");
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
-            getInstance().log.error("Could not load the menuConfig.yml file!", e);
+            log.error("Could not load the menuConfig.yml file!", e);
             return;
         }
 
@@ -446,15 +446,15 @@ public class BetonQuest extends JavaPlugin {
         registerLogHandler(getServer(), chatHandler);
 
         final String version = getDescription().getVersion();
-        getInstance().log.debug("BetonQuest " + version + " is starting...");
-        getInstance().log.debug(jreInfo);
+        log.debug("BetonQuest " + version + " is starting...");
+        log.debug(jreInfo);
 
         Config.setup(this, config);
         Notify.load();
 
         final boolean mySQLEnabled = config.getBoolean("mysql.enabled", true);
         if (mySQLEnabled) {
-            getInstance().log.debug("Connecting to MySQL database");
+            log.debug("Connecting to MySQL database");
             this.database = new MySQL(loggerFactory.create(MySQL.class, "Database"), this, config.getString("mysql.host"),
                     config.getString("mysql.port"),
                     config.getString("mysql.base"),
@@ -462,15 +462,15 @@ public class BetonQuest extends JavaPlugin {
                     config.getString("mysql.pass"));
             if (database.getConnection() != null) {
                 isMySQLUsed = true;
-                getInstance().log.info("Successfully connected to MySQL database!");
+                log.info("Successfully connected to MySQL database!");
             }
         }
         if (!mySQLEnabled || !isMySQLUsed) {
             this.database = new SQLite(loggerFactory.create(SQLite.class, "Database"), this, "database.db");
             if (mySQLEnabled) {
-                getInstance().log.warn("No connection to the mySQL Database! Using SQLite for storing data as fallback!");
+                log.warn("No connection to the mySQL Database! Using SQLite for storing data as fallback!");
             } else {
-                getInstance().log.info("Using SQLite for storing data!");
+                log.info("Using SQLite for storing data!");
             }
         }
 
@@ -565,7 +565,7 @@ public class BetonQuest extends JavaPlugin {
             try {
                 playerHider = new PlayerHider();
             } catch (final InstructionParseException e) {
-                getInstance().log.error("Could not start PlayerHider! " + e.getMessage(), e);
+                log.error("Could not start PlayerHider! " + e.getMessage(), e);
             }
         });
 
@@ -575,7 +575,7 @@ public class BetonQuest extends JavaPlugin {
             final Logger coreLogger = (Logger) LogManager.getRootLogger();
             coreLogger.addFilter(new AnswerFilter());
         } catch (final ClassNotFoundException | NoClassDefFoundError e) {
-            getInstance().log.warn("Could not disable /betonquestanswer logging", e);
+            log.warn("Could not disable /betonquestanswer logging", e);
         }
 
         new BStatsMetrics(this, new Metrics(this, BSTATS_METRICS_ID), questRegistry.metricsSupplier());
@@ -585,7 +585,7 @@ public class BetonQuest extends JavaPlugin {
         rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, menuConfigAccessor);
 
         PaperLib.suggestPaper(this);
-        getInstance().log.info("BetonQuest successfully enabled!");
+        log.info("BetonQuest successfully enabled!");
     }
 
     private void migratePackages() {
@@ -649,21 +649,21 @@ public class BetonQuest extends JavaPlugin {
      */
     public void reload() {
         // reload the configuration
-        getInstance().log.debug("Reloading configuration");
+        log.debug("Reloading configuration");
         try {
             config.reload();
         } catch (final IOException e) {
-            getInstance().log.warn("Could not reload config! " + e.getMessage(), e);
+            log.warn("Could not reload config! " + e.getMessage(), e);
         }
         Config.setup(this, config);
         Notify.load();
         lastExecutionCache.reload();
 
         // reload updater settings
-        getInstance().getUpdater().search();
+        getUpdater().search();
         // stop current global locations listener
         // and start new one with reloaded configs
-        getInstance().log.debug("Restarting global locations");
+        log.debug("Restarting global locations");
         new GlobalObjectives();
         ConversationColors.loadColors();
         Compatibility.reload();
@@ -671,7 +671,7 @@ public class BetonQuest extends JavaPlugin {
         loadData();
         // start objectives and update journals for every online profiles
         for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
-            getInstance().log.debug("Updating journal for player " + onlineProfile);
+            log.debug("Updating journal for player " + onlineProfile);
             final PlayerData playerData = instance.getPlayerData(onlineProfile);
             GlobalObjectives.startAll(onlineProfile);
             final Journal journal = playerData.getJournal();
@@ -683,7 +683,7 @@ public class BetonQuest extends JavaPlugin {
         try {
             playerHider = new PlayerHider();
         } catch (final InstructionParseException e) {
-            getInstance().log.error("Could not start PlayerHider! " + e.getMessage(), e);
+            log.error("Could not start PlayerHider! " + e.getMessage(), e);
         }
     }
 
@@ -714,7 +714,7 @@ public class BetonQuest extends JavaPlugin {
         }
 
         // done
-        getInstance().log.info("BetonQuest succesfully disabled!");
+        log.info("BetonQuest succesfully disabled!");
 
         if (this.adventure != null) {
             this.adventure.close();
@@ -765,7 +765,7 @@ public class BetonQuest extends JavaPlugin {
      * @param playerData PlayerData object to store
      */
     public void putPlayerData(final Profile profile, final PlayerData playerData) {
-        getInstance().log.debug("Inserting data for " + profile);
+        log.debug("Inserting data for " + profile);
         playerDataMap.put(profile, playerData);
     }
 
@@ -907,7 +907,7 @@ public class BetonQuest extends JavaPlugin {
      * @param objectiveClass class object for the objective
      */
     public void registerObjectives(final String name, final Class<? extends Objective> objectiveClass) {
-        getInstance().log.debug("Registering " + name + " objective type");
+        log.debug("Registering " + name + " objective type");
         OBJECTIVE_TYPES.put(name, objectiveClass);
     }
 
@@ -918,7 +918,7 @@ public class BetonQuest extends JavaPlugin {
      * @param convIOClass class object to register
      */
     public void registerConversationIO(final String name, final Class<? extends ConversationIO> convIOClass) {
-        getInstance().log.debug("Registering " + name + " conversation IO type");
+        log.debug("Registering " + name + " conversation IO type");
         CONVERSATION_IO_TYPES.put(name, convIOClass);
     }
 
@@ -929,7 +929,7 @@ public class BetonQuest extends JavaPlugin {
      * @param interceptorClass class object to register
      */
     public void registerInterceptor(final String name, final Class<? extends Interceptor> interceptorClass) {
-        getInstance().log.debug("Registering " + name + " interceptor type");
+        log.debug("Registering " + name + " interceptor type");
         INTERCEPTOR_TYPES.put(name, interceptorClass);
     }
 
@@ -940,7 +940,7 @@ public class BetonQuest extends JavaPlugin {
      * @param ioClass class object to register
      */
     public void registerNotifyIO(final String name, final Class<? extends NotifyIO> ioClass) {
-        getInstance().log.debug("Registering " + name + " notify IO type");
+        log.debug("Registering " + name + " notify IO type");
         NOTIFY_IO_TYPES.put(name, ioClass);
     }
 
