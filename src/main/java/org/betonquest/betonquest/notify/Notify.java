@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.notify;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.config.Config;
@@ -33,9 +34,14 @@ public final class Notify {
     private Notify() {
     }
 
-    public static void load() {
+    /**
+     * Loads the notify settings.
+     *
+     * @param config the {@link ConfigurationFile} to load from
+     */
+    public static void load(final ConfigurationFile config) {
         loadCategorySettings();
-        defaultNotifyIO = BetonQuest.getInstance().getPluginConfig().getString("default_notify_IO");
+        defaultNotifyIO = config.getString("default_notify_IO");
     }
 
     public static NotifyIO get(final QuestPackage pack) {
@@ -102,11 +108,11 @@ public final class Notify {
     private static List<String> getIOs(final Map<String, String> categoryData) {
         final List<String> ios = new ArrayList<>();
         if (categoryData.containsKey("io")) {
-            ios.addAll(Arrays.asList(
+            ios.addAll(
                     Arrays.stream(categoryData.get("io").split(","))
                             .map(String::trim)
                             .map(o -> o.toLowerCase(Locale.ROOT))
-                            .toArray(String[]::new)));
+                            .toList());
         }
         return ios;
     }
@@ -127,13 +133,13 @@ public final class Notify {
     }
 
     /**
-     * The Notifications should be in a separate configuration in the main folder
+     * The Notifications should be in a separate configuration in the main folder.
      */
     @SuppressWarnings("PMD.CognitiveComplexity")
     private static void loadCategorySettings() {
         final Map<String, Map<String, String>> settings = new HashMap<>();
-        for (final String packName : Config.getPackages().keySet()) {
-            final ConfigurationSection notifySection = Config.getPackages().get(packName).getConfig().getConfigurationSection("notifications");
+        for (final QuestPackage pack : Config.getPackages().values()) {
+            final ConfigurationSection notifySection = pack.getConfig().getConfigurationSection("notifications");
             if (notifySection != null) {
                 for (final String notifyName : notifySection.getKeys(false)) {
                     final ConfigurationSection notify = notifySection.getConfigurationSection(notifyName);
