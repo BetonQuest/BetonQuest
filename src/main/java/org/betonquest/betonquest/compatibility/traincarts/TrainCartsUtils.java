@@ -16,7 +16,7 @@ public final class TrainCartsUtils {
      * This class cannot be instantiated.
      */
     private TrainCartsUtils() {
-        throw new UnsupportedOperationException("This class cannot be instantiated");
+        // Empty
     }
 
     /**

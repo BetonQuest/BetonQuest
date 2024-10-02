@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.objectives.AbstractLocationObjective;
 import org.bukkit.Bukkit;
@@ -24,6 +25,11 @@ public class TrainCartsLocationObjective extends AbstractLocationObjective imple
     private final VariableLocation loc;
 
     /**
+     * The {@link VariableNumber} that stores the range around the location.
+     */
+    private final VariableNumber range;
+
+    /**
      * Creates a new {@link TrainCartsLocationObjective}.
      *
      * @param instruction the Instruction object to be used in the constructor
@@ -32,6 +38,7 @@ public class TrainCartsLocationObjective extends AbstractLocationObjective imple
     public TrainCartsLocationObjective(final Instruction instruction) throws InstructionParseException {
         super(BetonQuest.getInstance().getLoggerFactory().create(TrainCartsLocationObjective.class), instruction);
         this.loc = instruction.getLocation();
+        this.range = instruction.getVarNum(instruction.getOptional("range", "1"), VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
     }
 
     @Override
@@ -61,6 +68,6 @@ public class TrainCartsLocationObjective extends AbstractLocationObjective imple
         }
 
         final Location targetLocation = loc.getValue(onlineProfile);
-        return targetLocation.getWorld().equals(location.getWorld()) || location.distanceSquared(targetLocation) <= 1.0;
+        return targetLocation.getWorld().equals(location.getWorld()) && location.distanceSquared(targetLocation) <= range.getValue(onlineProfile).doubleValue();
     }
 }
