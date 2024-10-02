@@ -35,8 +35,8 @@ public class VaultIntegrator implements Integrator {
      * Constructor for the Vault Integration.
      */
     public VaultIntegrator() {
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         plugin = BetonQuest.getInstance();
+        this.log = plugin.getLoggerFactory().create(getClass());
     }
 
     @Override

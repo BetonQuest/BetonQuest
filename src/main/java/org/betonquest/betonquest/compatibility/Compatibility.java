@@ -53,15 +53,20 @@ import java.util.Objects;
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.AssignmentToNonFinalStatic"})
 public class Compatibility implements Listener {
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(Compatibility.class);
-
-    /**
      * An instance of this class.
      */
     @SuppressWarnings("NullAway.Init")
     private static Compatibility instance;
+
+    /**
+     * BetonQuest plugin instance for tasks and configs.
+     */
+    private final BetonQuest betonQuest;
+
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
 
     /**
      * A map of all integrators.
@@ -72,13 +77,18 @@ public class Compatibility implements Listener {
 
     /**
      * Loads all compatibility with other plugins that is available in the current runtime.
+     *
+     * @param betonQuest the BetonQuest plugin instance for tasks and configs
+     * @param log        the custom logger for this class
      */
-    public Compatibility() {
+    public Compatibility(final BetonQuest betonQuest, final BetonQuestLogger log) {
+        this.betonQuest = betonQuest;
+        this.log = log;
         instance = this;
 
         registerCompatiblePlugins();
 
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        Bukkit.getPluginManager().registerEvents(this, betonQuest);
 
         // Integrate already enabled plugins in case Bukkit messes up the loading order
         for (final Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
@@ -94,10 +104,10 @@ public class Compatibility implements Listener {
             public void run() {
                 final String hooks = buildHookedPluginsMessage();
                 if (!hooks.isEmpty()) {
-                    LOG.info("Enabled compatibility for " + hooks + "!");
+                    log.info("Enabled compatibility for " + hooks + "!");
                 }
             }
-        }.runTask(BetonQuest.getInstance());
+        }.runTask(betonQuest);
     }
 
     /**
@@ -120,7 +130,7 @@ public class Compatibility implements Listener {
                     try {
                         integrator.postHook();
                     } catch (final HookException e) {
-                        LOG.warn("Error while enabling some features while post hooking into " + pair.getLeft()
+                        instance.log.warn("Error while enabling some features while post hooking into " + pair.getLeft()
                                 + " reason: " + e.getMessage(), e);
                     }
                 });
@@ -172,8 +182,9 @@ public class Compatibility implements Listener {
             return;
         }
 
-        final boolean isEnabled = BetonQuest.getInstance().getPluginConfig().getBoolean("hook." + name.toLowerCase(Locale.ROOT));
+        final boolean isEnabled = betonQuest.getPluginConfig().getBoolean("hook." + name.toLowerCase(Locale.ROOT));
         if (!isEnabled) {
+            log.debug("Did not hook " + name + " because it is disabled");
             return;
         }
 
@@ -183,12 +194,12 @@ public class Compatibility implements Listener {
             integrator = integratorClass.getConstructor().newInstance();
         } catch (final InstantiationException | IllegalAccessException | InvocationTargetException
                        | NoSuchMethodException | NoClassDefFoundError e) {
-            LOG.warn("Error while integrating " + name + " with version " + hookedPlugin.getDescription().getVersion() + ": " + e, e);
-            LOG.warn("You are likely running an incompatible version of " + name + ".");
+            log.warn("Error while integrating " + name + " with version " + hookedPlugin.getDescription().getVersion() + ": " + e, e);
+            log.warn("You are likely running an incompatible version of " + name + ".");
             return;
         }
 
-        LOG.info("Hooking into " + name);
+        log.info("Hooking into " + name);
 
         try {
             integrator.hook();
@@ -198,19 +209,19 @@ public class Compatibility implements Listener {
                     hookedPlugin.getName(),
                     hookedPlugin.getDescription().getVersion(),
                     exception.getMessage());
-            LOG.warn(message, exception);
-            LOG.warn("BetonQuest will work correctly, except for that single integration. "
+            log.warn(message, exception);
+            log.warn("BetonQuest will work correctly, except for that single integration. "
                     + "You can turn it off by setting 'hook." + name.toLowerCase(Locale.ROOT)
                     + "' to false in config.yml file.");
         } catch (final RuntimeException | LinkageError exception) {
             final String message = String.format("There was an unexpected error while hooking into %s %s (BetonQuest %s, Spigot %s)! %s",
                     hookedPlugin.getName(),
                     hookedPlugin.getDescription().getVersion(),
-                    BetonQuest.getInstance().getDescription().getVersion(),
+                    betonQuest.getDescription().getVersion(),
                     Bukkit.getVersion(),
                     exception.getMessage());
-            LOG.error(message, exception);
-            LOG.warn("BetonQuest will work correctly, except for that single integration. "
+            log.error(message, exception);
+            log.warn("BetonQuest will work correctly, except for that single integration. "
                     + "You can turn it off by setting 'hook." + name.toLowerCase(Locale.ROOT)
                     + "' to false in config.yml file.");
         }

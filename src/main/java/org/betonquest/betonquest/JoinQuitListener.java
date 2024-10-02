@@ -31,13 +31,19 @@ public class JoinQuitListener implements Listener {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
+     * Stores the {@link PlayerData}.
+     */
+    private final BetonQuest betonQuest;
+
+    /**
      * Creates new listener, which will handle the data loading/saving.
      *
      * @param loggerFactory used for logger creation in ConversationResumer
+     * @param betonQuest    the object to store and remove {@link PlayerData}
      */
-    public JoinQuitListener(final BetonQuestLoggerFactory loggerFactory) {
+    public JoinQuitListener(final BetonQuestLoggerFactory loggerFactory, final BetonQuest betonQuest) {
         this.loggerFactory = loggerFactory;
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        this.betonQuest = betonQuest;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -46,14 +52,13 @@ public class JoinQuitListener implements Listener {
             return;
         }
         final Profile profile = PlayerConverter.getID(Bukkit.getOfflinePlayer(event.getUniqueId()));
-        final BetonQuest plugin = BetonQuest.getInstance();
-        plugin.putPlayerData(profile, new PlayerData(profile));
+        betonQuest.putPlayerData(profile, new PlayerData(profile));
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
-        final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
+        final PlayerData playerData = betonQuest.getPlayerData(onlineProfile);
         playerData.startObjectives();
         GlobalObjectives.startAll(onlineProfile);
         checkResourcepack(event, onlineProfile);
@@ -72,7 +77,7 @@ public class JoinQuitListener implements Listener {
         }
         final PlayerResourcePackStatusEvent.Status resourcePackStatus = event.getPlayer().getResourcePackStatus();
         if (resourcePackStatus != null) {
-            BetonQuest.getInstance().getPlayerObjectives(onlineProfile).stream()
+            betonQuest.getPlayerObjectives(onlineProfile).stream()
                     .filter(objective -> objective instanceof ResourcePackObjective)
                     .map(objective -> (ResourcePackObjective) objective)
                     .forEach(objective -> objective.processObjective(onlineProfile, resourcePackStatus));
@@ -82,9 +87,9 @@ public class JoinQuitListener implements Listener {
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent event) {
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
-        for (final Objective objective : BetonQuest.getInstance().getPlayerObjectives(onlineProfile)) {
+        for (final Objective objective : betonQuest.getPlayerObjectives(onlineProfile)) {
             objective.pauseObjectiveForPlayer(onlineProfile);
         }
-        BetonQuest.getInstance().removePlayerData(onlineProfile);
+        betonQuest.removePlayerData(onlineProfile);
     }
 }

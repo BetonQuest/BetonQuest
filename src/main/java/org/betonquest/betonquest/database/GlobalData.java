@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.database;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.database.Saver.Record;
@@ -18,10 +17,9 @@ public class GlobalData implements TagData {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
+    private final BetonQuestLogger log;
 
-    @SuppressWarnings("PMD.DoNotUseThreads")
-    private final Saver saver = BetonQuest.getInstance().getSaver();
+    private final Saver saver;
 
     private final List<String> globalTags = new ArrayList<>();
 
@@ -29,8 +27,13 @@ public class GlobalData implements TagData {
 
     /**
      * Loads all global data from the database.
+     *
+     * @param log   the custom logger for this class
+     * @param saver the saver for player data
      */
-    public GlobalData() {
+    public GlobalData(final BetonQuestLogger log, final Saver saver) {
+        this.log = log;
+        this.saver = saver;
         loadAllGlobalData();
     }
 

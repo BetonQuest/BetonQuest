@@ -2,7 +2,6 @@ package org.betonquest.betonquest;
 
 import org.betonquest.betonquest.api.MobKillNotifier;
 import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,7 +15,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 public class MobKillListener implements Listener {
 
     public MobKillListener() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     @EventHandler(ignoreCancelled = true)

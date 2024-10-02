@@ -5,7 +5,6 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.QuestItem;
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,7 +20,6 @@ public class CustomDropListener implements Listener {
 
     public CustomDropListener(final BetonQuestLogger log) {
         this.log = log;
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     @EventHandler(ignoreCancelled = true)

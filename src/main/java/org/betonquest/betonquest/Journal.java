@@ -136,15 +136,15 @@ public class Journal {
      * @param pointer the pointer to be added
      */
     public void addPointer(final Pointer pointer) {
-        BetonQuest.getInstance()
-                .callSyncBukkitEvent(new PlayerJournalAddEvent(profile, this, pointer));
+        final BetonQuest betonQuest = BetonQuest.getInstance();
+        betonQuest.callSyncBukkitEvent(new PlayerJournalAddEvent(profile, this, pointer));
         pointers.add(pointer);
         // SQLite doesn't accept formatted date and MySQL doesn't accept numeric
         // timestamp
-        final String date = BetonQuest.getInstance().isMySQLUsed()
+        final String date = betonQuest.isMySQLUsed()
                 ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.getTimestamp()))
                 : Long.toString(pointer.getTimestamp());
-        BetonQuest.getInstance().getSaver()
+        betonQuest.getSaver()
                 .add(new Record(UpdateType.ADD_JOURNAL, profile.getProfileUUID().toString(), pointer.getPointer(), date));
     }
 
@@ -156,12 +156,12 @@ public class Journal {
     public void removePointer(final String pointerName) {
         for (final Pointer pointer : pointers) {
             if (pointer.getPointer().equalsIgnoreCase(pointerName)) {
-                BetonQuest.getInstance()
-                        .callSyncBukkitEvent(new PlayerJournalDeleteEvent(profile, this, pointer));
-                final String date = BetonQuest.getInstance().isMySQLUsed()
+                final BetonQuest betonQuest = BetonQuest.getInstance();
+                betonQuest.callSyncBukkitEvent(new PlayerJournalDeleteEvent(profile, this, pointer));
+                final String date = betonQuest.isMySQLUsed()
                         ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.getTimestamp()))
                         : Long.toString(pointer.getTimestamp());
-                BetonQuest.getInstance().getSaver()
+                betonQuest.getSaver()
                         .add(new Record(UpdateType.REMOVE_JOURNAL, profile.getProfileUUID().toString(), pointer.getPointer(), date));
                 pointers.remove(pointer);
                 break;

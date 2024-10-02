@@ -18,7 +18,7 @@ public class HeroesIntegrator implements Integrator {
         plugin.registerConditions("heroesclass", HeroesClassCondition.class);
         plugin.registerConditions("heroesskill", HeroesSkillCondition.class);
         plugin.registerEvents("heroesexp", HeroesExperienceEvent.class);
-        new HeroesMobKillListener();
+        plugin.getServer().getPluginManager().registerEvents(new HeroesMobKillListener(), plugin);
     }
 
     @Override
@@ -30,5 +30,4 @@ public class HeroesIntegrator implements Integrator {
     public void close() {
         // Empty
     }
-
 }

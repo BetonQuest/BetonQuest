@@ -31,16 +31,17 @@ public class PlayerHider {
     private final Map<ConditionID[], ConditionID[]> hiders;
 
     /**
-     * The running hider
+     * The running hider.
      */
     private final BukkitTask bukkitTask;
 
     /**
-     * Initialize and start a new {@link PlayerHider}
+     * Initialize and start a new {@link PlayerHider}.
      *
+     * @param betonQuest the plugin instance to get config and start the bukkit task
      * @throws InstructionParseException Thrown if there is a configuration error.
      */
-    public PlayerHider() throws InstructionParseException {
+    public PlayerHider(final BetonQuest betonQuest) throws InstructionParseException {
         hiders = new HashMap<>();
 
         for (final QuestPackage pack : Config.getPackages().values()) {
@@ -55,8 +56,8 @@ public class PlayerHider {
             }
         }
 
-        final long period = BetonQuest.getInstance().getPluginConfig().getLong("player_hider_check_interval", 20);
-        bukkitTask = Bukkit.getScheduler().runTaskTimer(BetonQuest.getInstance(), this::updateVisibility, 1, period);
+        final long period = betonQuest.getPluginConfig().getLong("player_hider_check_interval", 20);
+        bukkitTask = Bukkit.getScheduler().runTaskTimer(betonQuest, this::updateVisibility, 1, period);
     }
 
     /**
@@ -84,7 +85,7 @@ public class PlayerHider {
     }
 
     /**
-     * Trigger an update for the visibility
+     * Trigger an update for the visibility.
      */
     public void updateVisibility() {
         final Collection<? extends OnlineProfile> onlineProfiles = PlayerConverter.getOnlineProfiles();

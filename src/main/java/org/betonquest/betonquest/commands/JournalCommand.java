@@ -8,16 +8,22 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
- * Gives the player his journal
+ * Gives the player his journal.
  */
 @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
 public class JournalCommand implements CommandExecutor {
+    /**
+     * Object to get player data.
+     */
+    private final BetonQuest betonQuest;
 
     /**
-     * Registers a new executor of the /journal command
+     * Create a new executor for the /journal command.
+     *
+     * @param betonQuest the object to get player data from
      */
-    public JournalCommand() {
-        BetonQuest.getInstance().getCommand("journal").setExecutor(this);
+    public JournalCommand(final BetonQuest betonQuest) {
+        this.betonQuest = betonQuest;
     }
 
     @Override
@@ -26,7 +32,7 @@ public class JournalCommand implements CommandExecutor {
             // command sender must be a player, console can't have journal
             if (sender instanceof Player) {
                 // giving the player his journal
-                BetonQuest.getInstance().getPlayerData(PlayerConverter.getID((Player) sender)).getJournal().addToInv();
+                betonQuest.getPlayerData(PlayerConverter.getID((Player) sender)).getJournal().addToInv();
             }
             return true;
         }

@@ -18,19 +18,29 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Changes the default language for the player
+ * Changes the default language for the player.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
+@SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
 public class LangCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
-    public LangCommand(final BetonQuestLogger log) {
+    /**
+     * Object to get player data and config.
+     */
+    private final BetonQuest betonQuest;
+
+    /**
+     * Creates a new executor for the /questlang command.
+     *
+     * @param log        the logger that will be used for logging
+     * @param betonQuest the object to get player data and config from
+     */
+    public LangCommand(final BetonQuestLogger log, final BetonQuest betonQuest) {
         this.log = log;
-        BetonQuest.getInstance().getCommand("questlang").setExecutor(this);
-        BetonQuest.getInstance().getCommand("questlang").setTabCompleter(this);
+        this.betonQuest = betonQuest;
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
@@ -39,7 +49,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
         if (!"questlang".equalsIgnoreCase(cmd.getName())) {
             return false;
         }
-        if (args.length <= 0) {
+        if (args.length == 0) {
             sender.sendMessage(Config.getMessage(Config.getLanguage(), "language_missing"));
             return true;
         }
@@ -60,7 +70,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
         if (sender instanceof Player) {
             final String lang = args[0];
             final OnlineProfile onlineProfile = PlayerConverter.getID((Player) sender);
-            final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
+            final PlayerData playerData = betonQuest.getPlayerData(onlineProfile);
             final Journal journal = playerData.getJournal();
             playerData.setLanguage(lang);
             journal.update();
@@ -70,7 +80,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
                 log.warn("The notify system was unable to play a sound for the 'language_changed' category. Error was: '" + e.getMessage() + "'", e);
             }
         } else {
-            BetonQuest.getInstance().getPluginConfig().set("language", args[0]);
+            betonQuest.getPluginConfig().set("language", args[0]);
             sender.sendMessage(Config.getMessage(args[0], "default_language_changed"));
         }
         return true;
