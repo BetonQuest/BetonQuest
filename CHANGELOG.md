@@ -17,6 +17,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `paste` event can now rotate schematics
 - `permission` condition now supports variables
 - `moonCycle` condition now allows to define a world, which can be a variable and can now be used in static context
+- global variable support for npc ids and condition ids in `effectlib` section
 ### Changed
 - `spawn` event now only spawn mobs and no other entities
 ### Deprecated

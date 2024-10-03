@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * All relevant data for displaying effects to player.
+ *
  * @param effectClass            the EffectLib effectClass
  * @param locations              the locations in the configurationSection
  * @param npcs                   the npcs in the configurationSection

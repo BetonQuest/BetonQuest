@@ -24,12 +24,12 @@ import java.util.Set;
  */
 public class EffectLibParticleManager {
     /**
-     * The config section for the location and npc settings
+     * The config section for the location and npc settings.
      */
     private static final String EFFECTLIB_CONFIG_SECTION = "effectlib";
 
     /**
-     * The config section for the npcs
+     * The config section for the npcs.
      */
     private static final String NPCS_CONFIG_SECTION = "npcs";
 
@@ -104,7 +104,7 @@ public class EffectLibParticleManager {
 
                 final Set<Integer> npcs = new HashSet<>();
                 if (Compatibility.getHooked().contains("Citizens")) {
-                    npcs.addAll(loadNpcs(settings));
+                    npcs.addAll(loadNpcs(settings, pack));
                 }
                 final List<VariableLocation> locations = loadLocations(pack, settings, key);
                 final List<ConditionID> conditions = loadConditions(pack, key, settings);
@@ -149,20 +149,27 @@ public class EffectLibParticleManager {
 
     private List<ConditionID> loadConditions(final QuestPackage pack, final String key, final ConfigurationSection settings) {
         final List<ConditionID> conditions = new ArrayList<>();
-        for (final String conditionID : settings.getStringList("conditions")) {
+        for (final String rawConditionID : settings.getStringList("conditions")) {
             try {
-                conditions.add(new ConditionID(pack, conditionID));
-            } catch (final ObjectNotFoundException e) {
-                log.warn(pack, "Error while loading npc_effects '" + key + "': " + e.getMessage(), e);
+                conditions.add(new ConditionID(pack, GlobalVariableResolver.resolve(pack, rawConditionID)));
+            } catch (final ObjectNotFoundException exception) {
+                log.warn(pack, "Error while loading npc_effects '" + key + "': " + exception.getMessage(), exception);
             }
         }
         return conditions;
     }
 
-    private Set<Integer> loadNpcs(final ConfigurationSection settings) {
+    private Set<Integer> loadNpcs(final ConfigurationSection settings, final QuestPackage pack) {
         final Set<Integer> npcs = new HashSet<>();
         if (settings.isList(NPCS_CONFIG_SECTION)) {
-            npcs.addAll(settings.getIntegerList(NPCS_CONFIG_SECTION));
+            final List<String> rawIds = settings.getStringList(NPCS_CONFIG_SECTION);
+            for (final String rawId : rawIds) {
+                try {
+                    npcs.add(Integer.parseInt(GlobalVariableResolver.resolve(pack, rawId)));
+                } catch (final NumberFormatException exception) {
+                    log.warn(pack, "Error while loading npc id '" + rawId + "': " + exception.getMessage(), exception);
+                }
+            }
         }
         return npcs;
     }
