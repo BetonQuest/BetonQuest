@@ -1,9 +1,8 @@
-package org.betonquest.betonquest.conditions;
+package org.betonquest.betonquest.quest.condition.conversation;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.conversation.ConversationData;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -11,13 +10,9 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConversationID;
 
 /**
- * Checks if the conversation with player has at least one possible option
- * <p>
- * Example:
- * {@code conversation <name of conversation>}
- **/
-@SuppressWarnings("PMD.CommentRequired")
-public class ConversationCondition extends Condition {
+ * Checks if the conversation with player has at least one possible option.
+ */
+public class ConversationCondition implements PlayerCondition {
 
     /**
      * The conversation to check.
@@ -27,20 +22,14 @@ public class ConversationCondition extends Condition {
     /**
      * Creates a new ConversationCondition.
      *
-     * @param instruction the user-provided instruction to parse
-     * @throws InstructionParseException if the instruction is invalid
+     * @param conversationID the conversation to check
      */
-    public ConversationCondition(final Instruction instruction) throws InstructionParseException {
-        super(instruction, false);
-        try {
-            conversationID = new ConversationID(instruction.getPackage(), instruction.next());
-        } catch (final ObjectNotFoundException e) {
-            throw new InstructionParseException(e.getMessage(), e);
-        }
+    public ConversationCondition(final ConversationID conversationID) {
+        this.conversationID = conversationID;
     }
 
     @Override
-    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+    public boolean check(final Profile profile) throws QuestRuntimeException {
         try {
             final ConversationData conversation = BetonQuest.getInstance().getConversation(conversationID);
             if (conversation == null) {
