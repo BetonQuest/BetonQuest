@@ -29,6 +29,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - wrong order of arguments in fire work effects
 - non-static `variables` causing cross conversation validation to break
 - LuckPerms integration not pushing the permission update to the connected servers correctly.
+- `crafting` fixed bug, where complex recipes were not recognized
 ### Security
 
 ## [2.1.3] - 2024-08-06
