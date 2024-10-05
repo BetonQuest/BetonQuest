@@ -5,7 +5,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.conditions.AlternativeCondition;
 import org.betonquest.betonquest.conditions.CheckCondition;
-import org.betonquest.betonquest.conditions.ConjunctionCondition;
 import org.betonquest.betonquest.conditions.EffectCondition;
 import org.betonquest.betonquest.conditions.EntityCondition;
 import org.betonquest.betonquest.conditions.ExperienceCondition;
@@ -67,6 +66,7 @@ import org.betonquest.betonquest.quest.condition.burning.BurningConditionFactory
 import org.betonquest.betonquest.quest.condition.chest.ChestItemConditionFactory;
 import org.betonquest.betonquest.quest.condition.conversation.ConversationConditionFactory;
 import org.betonquest.betonquest.quest.condition.location.LocationConditionFactory;
+import org.betonquest.betonquest.quest.condition.logik.ConjunctionConditionFactory;
 import org.betonquest.betonquest.quest.condition.moon.MoonCycleConditionFactory;
 import org.betonquest.betonquest.quest.condition.objective.ObjectiveConditionFactory;
 import org.betonquest.betonquest.quest.condition.permission.PermissionConditionFactory;
@@ -222,7 +222,7 @@ public class CoreQuestTypes {
 
     private void registerConditions(final ConditionTypeRegistry conditionTypes) {
         conditionTypes.register("advancement", new AdvancementConditionFactory(data, loggerFactory));
-        conditionTypes.register("and", ConjunctionCondition.class);
+        conditionTypes.registerCombined("and", new ConjunctionConditionFactory());
         conditionTypes.register("armor", new ArmorConditionFactory(loggerFactory, data));
         conditionTypes.register("biome", new BiomeConditionFactory(loggerFactory, data));
         conditionTypes.register("burning", new BurningConditionFactory(loggerFactory, data));

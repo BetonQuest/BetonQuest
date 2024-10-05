@@ -16,6 +16,8 @@ This includes the namespace, the tab and the name of the advancement as configur
 
 ## Conjunction: `and`
 
+**static**
+
 Conjunction of specified conditions. This means that every condition has to be met in order for conjunction to be true. Used only in complex alternatives, because conditions generally work as conjunction. Instruction string is exactly the same as in `alternative`.
 
 !!! example

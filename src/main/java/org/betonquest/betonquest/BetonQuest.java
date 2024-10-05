@@ -239,7 +239,7 @@ public class BetonQuest extends JavaPlugin {
      * @param conditionIDs IDs of the conditions to check
      * @return if all conditions are met
      */
-    public static boolean conditions(final Profile profile, final Collection<ConditionID> conditionIDs) {
+    public static boolean conditions(@Nullable final Profile profile, final Collection<ConditionID> conditionIDs) {
         final ConditionID[] ids = new ConditionID[conditionIDs.size()];
         int index = 0;
         for (final ConditionID id : conditionIDs) {
