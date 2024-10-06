@@ -10,7 +10,6 @@ import org.betonquest.betonquest.conditions.EntityCondition;
 import org.betonquest.betonquest.conditions.FacingCondition;
 import org.betonquest.betonquest.conditions.GameModeCondition;
 import org.betonquest.betonquest.conditions.HealthCondition;
-import org.betonquest.betonquest.conditions.HeightCondition;
 import org.betonquest.betonquest.conditions.HungerCondition;
 import org.betonquest.betonquest.conditions.ItemCondition;
 import org.betonquest.betonquest.conditions.JournalCondition;
@@ -63,6 +62,7 @@ import org.betonquest.betonquest.quest.condition.conversation.InConversationCond
 import org.betonquest.betonquest.quest.condition.experience.ExperienceConditionFactory;
 import org.betonquest.betonquest.quest.condition.flying.FlyingConditionFactory;
 import org.betonquest.betonquest.quest.condition.hand.HandConditionFactory;
+import org.betonquest.betonquest.quest.condition.height.HeightConditionFactory;
 import org.betonquest.betonquest.quest.condition.item.ItemDurabilityConditionFactory;
 import org.betonquest.betonquest.quest.condition.language.LanguageConditionFactory;
 import org.betonquest.betonquest.quest.condition.location.LocationConditionFactory;
@@ -241,7 +241,7 @@ public class CoreQuestTypes {
         conditionTypes.register("globaltag", new GlobalTagConditionFactory(betonQuest.getGlobalData()));
         conditionTypes.register("hand", new HandConditionFactory(loggerFactory, data));
         conditionTypes.register("health", HealthCondition.class);
-        conditionTypes.register("height", HeightCondition.class);
+        conditionTypes.register("height", new HeightConditionFactory(loggerFactory, data, betonQuest.getVariableProcessor()));
         conditionTypes.register("hunger", HungerCondition.class);
         conditionTypes.register("inconversation", new InConversationConditionFactory());
         conditionTypes.register("item", ItemCondition.class);
