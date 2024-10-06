@@ -63,6 +63,8 @@ import org.betonquest.betonquest.quest.condition.block.BlockConditionFactory;
 import org.betonquest.betonquest.quest.condition.burning.BurningConditionFactory;
 import org.betonquest.betonquest.quest.condition.chest.ChestItemConditionFactory;
 import org.betonquest.betonquest.quest.condition.conversation.ConversationConditionFactory;
+import org.betonquest.betonquest.quest.condition.experience.ExperienceConditionFactory;
+import org.betonquest.betonquest.quest.condition.flying.FlyingConditionFactory;
 import org.betonquest.betonquest.quest.condition.location.LocationConditionFactory;
 import org.betonquest.betonquest.quest.condition.logik.ConjunctionConditionFactory;
 import org.betonquest.betonquest.quest.condition.moon.MoonCycleConditionFactory;
