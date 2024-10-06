@@ -9,7 +9,7 @@
 Closes #XXXX
 
 ### Requirements
-- [ ] I made sure my contribution fulfills the [requirements](https://betonquest.org/DEV/Participate/Process/Submitting-Changes/#reviewers-checklist).
+- [ ] I made sure my contribution fulfills the [requirements](https://betonquest.org/DEV/Participate/Process/Submitting-Changes/#checklist).
 
 ### Reviewer's checklist
 
