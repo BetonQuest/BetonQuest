@@ -14,7 +14,6 @@ import org.betonquest.betonquest.conditions.HeightCondition;
 import org.betonquest.betonquest.conditions.HungerCondition;
 import org.betonquest.betonquest.conditions.InConversationCondition;
 import org.betonquest.betonquest.conditions.ItemCondition;
-import org.betonquest.betonquest.conditions.ItemDurabilityCondition;
 import org.betonquest.betonquest.conditions.JournalCondition;
 import org.betonquest.betonquest.conditions.LanguageCondition;
 import org.betonquest.betonquest.conditions.LookingAtCondition;
@@ -65,6 +64,7 @@ import org.betonquest.betonquest.quest.condition.conversation.ConversationCondit
 import org.betonquest.betonquest.quest.condition.experience.ExperienceConditionFactory;
 import org.betonquest.betonquest.quest.condition.flying.FlyingConditionFactory;
 import org.betonquest.betonquest.quest.condition.hand.HandConditionFactory;
+import org.betonquest.betonquest.quest.condition.item.ItemDurabilityConditionFactory;
 import org.betonquest.betonquest.quest.condition.location.LocationConditionFactory;
 import org.betonquest.betonquest.quest.condition.logik.ConjunctionConditionFactory;
 import org.betonquest.betonquest.quest.condition.moon.MoonCycleConditionFactory;
@@ -245,7 +245,7 @@ public class CoreQuestTypes {
         conditionTypes.register("hunger", HungerCondition.class);
         conditionTypes.register("inconversation", InConversationCondition.class);
         conditionTypes.register("item", ItemCondition.class);
-        conditionTypes.register("itemdurability", ItemDurabilityCondition.class);
+        conditionTypes.register("itemdurability", new ItemDurabilityConditionFactory(loggerFactory, data));
         conditionTypes.register("journal", JournalCondition.class);
         conditionTypes.register("language", LanguageCondition.class);
         conditionTypes.register("location", new LocationConditionFactory(data, loggerFactory));
