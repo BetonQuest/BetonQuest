@@ -1,21 +1,19 @@
-package org.betonquest.betonquest.conditions;
+package org.betonquest.betonquest.quest.condition.item;
 
-import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.Condition;
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 
 /**
  * To check durability on the item on a specific slot,
- * in opposite to {@link QuestItem#getDurability()}.
+ * in opposite to {@link org.betonquest.betonquest.item.QuestItem#getDurability()}.
  */
-public class ItemDurabilityCondition extends Condition {
+public class ItemDurabilityCondition implements OnlineCondition {
+
     /**
      * The slot to check.
      */
@@ -34,19 +32,19 @@ public class ItemDurabilityCondition extends Condition {
     /**
      * Creates an item durability condition.
      *
-     * @param instruction the instruction to create the condition from
-     * @throws InstructionParseException if there was an error parsing the instruction
+     * @param slot     the slot to check
+     * @param amount   the durability needed
+     * @param relative if the durability should be handled as value from 0 to 1
      */
-    public ItemDurabilityCondition(final Instruction instruction) throws InstructionParseException {
-        super(instruction, false);
-        this.slot = instruction.getEnum(EquipmentSlot.class);
-        this.amount = instruction.getVarNum();
-        this.relative = instruction.hasArgument("relative");
+    public ItemDurabilityCondition(final EquipmentSlot slot, final VariableNumber amount, final boolean relative) {
+        this.slot = slot;
+        this.amount = amount;
+        this.relative = relative;
     }
 
     @Override
-    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final ItemStack itemStack = profile.getOnlineProfile().get().getPlayer().getEquipment().getItem(slot);
+    public boolean check(final OnlineProfile profile) throws QuestRuntimeException {
+        final ItemStack itemStack = profile.getPlayer().getEquipment().getItem(slot);
         if (itemStack.getType().isAir() || !(itemStack.getItemMeta() instanceof final Damageable damageable)) {
             return false;
         }
