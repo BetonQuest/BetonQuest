@@ -15,10 +15,10 @@ Optional arguments are displayed as such: `[argument]`.
 * `/q reload` - Reloads the plugin
 * `/q objectives <playerName> <list/add/del/complete> <objectiveName/filter>` - Shows player's currently active objectives
 * `/q tags <playerName> <list/add/del> <tag/filter>` - Lists all player's tags
-* `/q globaltags <playerName> <list/add/del> <tag/filter>` - Lists all global tags
+* `/q globaltags <list/add/del/purge> <tag/filter>` - Manges global tags
 * `/q points <playerName> <list/add/del> <category/filter> <amount>` - Lists all player's points in all categories
-* `/q globalpoints <playerName> <list/add/del> <category/filter> <amount>`
-* `/q journal <playerName> <list/add/del> <package.pointer/filter> <date>`
+* `/q globalpoints <list/add/del/purge> <category/filter> <amount>` - Manges global points
+* `/q journal <playerName> <list/add/del> <package.pointer/filter> <date>` 
 * `/q event <playerName> <package.eventID>` - Fires an event for the player
 * `/q condition <playerName> <package.conditionID>` - Shows if the player meet specified condition or not
 * `/q item <package.itemID>` - Creates an item based on what you're holding in hand
