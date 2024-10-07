@@ -1,5 +1,6 @@
 package org.betonquest.betonquest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -200,10 +201,6 @@ public class Instruction {
         return new Instruction(getPackage(), newID, instruction, getParts());
     }
 
-    /////////////////////
-    ///    GENERAL    ///
-    /////////////////////
-
     public boolean hasNext() {
         return currentIndex < parts.length - 1;
     }
@@ -278,10 +275,6 @@ public class Instruction {
         }
         return false;
     }
-
-    /////////////////////
-    ///    OBJECTS    ///
-    /////////////////////
 
     public VariableLocation getLocation() throws InstructionParseException {
         return getLocation(next());
@@ -465,10 +458,6 @@ public class Instruction {
         return effects;
     }
 
-    ///////////////////
-    ///    Enums    ///
-    ///////////////////
-
     public <T extends Enum<T>> T getEnum(final Class<T> clazz) throws InstructionParseException {
         return getEnum(next(), clazz);
     }
@@ -530,10 +519,6 @@ public class Instruction {
     public PotionType getPotion(final String string) throws InstructionParseException {
         return getEnum(string, PotionType.class);
     }
-
-    /////////////////
-    ///    IDs    ///
-    /////////////////
 
     public EventID getEvent() throws InstructionParseException {
         return getEvent(next());
@@ -602,10 +587,6 @@ public class Instruction {
             throw new PartParseException("Error while loading item: " + e.getMessage(), e);
         }
     }
-
-    /////////////////////
-    ///    NUMBERS    ///
-    /////////////////////
 
     public byte getByte() throws InstructionParseException {
         return getByte(next(), (byte) 0);
@@ -679,10 +660,6 @@ public class Instruction {
         }
     }
 
-    ////////////////////
-    ///    ARRAYS    ///
-    ////////////////////
-
     public String[] getArray() throws InstructionParseException {
         return getArray(next());
     }
@@ -691,7 +668,7 @@ public class Instruction {
         if (string == null) {
             return new String[0];
         }
-        return string.split(",");
+        return StringUtils.split(string, ",");
     }
 
     public <T> List<T> getList(final Converter<T> converter) throws InstructionParseException {
@@ -709,10 +686,6 @@ public class Instruction {
         }
         return list;
     }
-
-    /////////////////////////
-    ///    OTHER STUFF    ///
-    /////////////////////////
 
     public interface Converter<T> {
         @Contract(NULL_NOT_NULL_CONTRACT)
