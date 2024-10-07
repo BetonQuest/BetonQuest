@@ -275,6 +275,8 @@ This condition will return true if the player has specified entry in his journal
 
 ## Language: `language`
 
+**persistent**
+
 This condition is fulfilled as long as the player has one of the specified languages selected as their quest language.
 
 !!! example
