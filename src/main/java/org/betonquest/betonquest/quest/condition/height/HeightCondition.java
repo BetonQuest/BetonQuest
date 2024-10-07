@@ -27,12 +27,21 @@ public class HeightCondition implements OnlineCondition {
     /**
      * Creates a new height condition.
      *
-     * @param height   the height to check for
+     * @param height the height to check for
+     */
+    public HeightCondition(final VariableNumber height) {
+        this.height = height;
+        this.location = null;
+    }
+
+    /**
+     * Creates a new height condition.
+     *
      * @param location the height in a location to check
      */
-    public HeightCondition(@Nullable final VariableNumber height, @Nullable final VariableLocation location) {
-        this.height = height;
+    public HeightCondition(final VariableLocation location) {
         this.location = location;
+        this.height = null;
     }
 
     @Override

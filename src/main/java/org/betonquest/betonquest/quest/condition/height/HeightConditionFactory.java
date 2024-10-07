@@ -7,8 +7,6 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
@@ -42,17 +40,14 @@ public class HeightConditionFactory implements PlayerConditionFactory {
     public PlayerCondition parsePlayer(final Instruction instruction) throws InstructionParseException {
         final BetonQuestLogger log = loggerFactory.create(HeightCondition.class);
         final String string = instruction.next();
-        final VariableNumber height;
-        final VariableLocation location;
+        final HeightCondition heightCondition;
         if (string.matches("-?\\d+\\.?\\d*")) {
-            height = instruction.getVarNum();
-            location = null;
+            heightCondition = new HeightCondition(instruction.getVarNum(string));
         } else {
-            location = instruction.getLocation(string);
-            height = null;
+            heightCondition = new HeightCondition(instruction.getLocation(string));
         }
         return new PrimaryServerThreadPlayerCondition(
-                new OnlineConditionAdapter(new HeightCondition(height, location), log, instruction.getPackage()), data
+                new OnlineConditionAdapter(heightCondition, log, instruction.getPackage()), data
         );
     }
 }
