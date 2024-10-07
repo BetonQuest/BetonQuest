@@ -31,6 +31,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - non-static `variables` causing cross conversation validation to break
 - LuckPerms integration not pushing the permission update to the connected servers correctly.
 - `crafting` objective where complex recipes are not recognized
+- `hieght` condition where variable locations threw an exception
 ### Security
 
 ## [2.1.3] - 2024-08-06
