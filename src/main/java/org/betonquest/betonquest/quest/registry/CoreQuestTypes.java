@@ -241,7 +241,7 @@ public class CoreQuestTypes {
         conditionTypes.register("globaltag", new GlobalTagConditionFactory(betonQuest.getGlobalData()));
         conditionTypes.register("hand", new HandConditionFactory(loggerFactory, data));
         conditionTypes.register("health", HealthCondition.class);
-        conditionTypes.register("height", new HeightConditionFactory(loggerFactory, data));
+        conditionTypes.register("height", new HeightConditionFactory(loggerFactory, data, betonQuest.getVariableProcessor()));
         conditionTypes.register("hunger", HungerCondition.class);
         conditionTypes.register("inconversation", new InConversationConditionFactory());
         conditionTypes.register("item", ItemCondition.class);

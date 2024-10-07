@@ -7,8 +7,11 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 
 /**
  * Factory for {@link HeightCondition}s.
@@ -26,28 +29,43 @@ public class HeightConditionFactory implements PlayerConditionFactory {
     private final PrimaryServerThreadData data;
 
     /**
+     * The variable processor.
+     */
+    private final VariableProcessor variableProcessor;
+
+    /**
      * Create the height factory.
      *
-     * @param loggerFactory the logger factory
-     * @param data          the data used for checking the condition on the main thread
+     * @param loggerFactory     the logger factory
+     * @param data              the data used for checking the condition on the main thread
+     * @param variableProcessor the variable processor
      */
-    public HeightConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public HeightConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data, final VariableProcessor variableProcessor) {
         this.loggerFactory = loggerFactory;
         this.data = data;
+        this.variableProcessor = variableProcessor;
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws InstructionParseException {
         final BetonQuestLogger log = loggerFactory.create(HeightCondition.class);
         final String string = instruction.next();
-        final HeightCondition heightCondition;
-        if (string.matches("-?\\d+\\.?\\d*")) {
-            heightCondition = new HeightCondition(instruction.getVarNum(string));
-        } else {
-            heightCondition = new HeightCondition(instruction.getLocation(string));
-        }
+        final Variable<Number> height = new Variable<>(variableProcessor, instruction.getPackage(), string, (value) -> {
+            try {
+                final double parsedValue;
+                if (value.matches("-?\\d+\\.?\\d*")) {
+                    parsedValue = Double.parseDouble(value);
+                } else {
+                    parsedValue = instruction.getLocation(value).getValue(null).getY();
+                }
+
+                return parsedValue;
+            } catch (final NumberFormatException | InstructionParseException e) {
+                throw new QuestRuntimeException("Could not parse number: " + value, e);
+            }
+        });
         return new PrimaryServerThreadPlayerCondition(
-                new OnlineConditionAdapter(heightCondition, log, instruction.getPackage()), data
+                new OnlineConditionAdapter(new HeightCondition(height), log, instruction.getPackage()), data
         );
     }
 }
