@@ -754,9 +754,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      */
     private Optional<List<String>> completeGlobalPoints(final String... args) {
         if (args.length == 2) {
-            return Optional.of(Arrays.asList("add", "list", "del"));
+            return Optional.of(Arrays.asList("add", "list", "del", "purge"));
         }
         if (args.length == 3) {
+            if ("purge".equalsIgnoreCase(args[1])) {
+                return Optional.of(new ArrayList<>());
+            }
             return completeId(args, null);
         }
         return Optional.of(new ArrayList<>());
@@ -1073,9 +1076,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      */
     private Optional<List<String>> completeGlobalTags(final String... args) {
         if (args.length == 2) {
-            return Optional.of(Arrays.asList("list", "add", "del"));
+            return Optional.of(Arrays.asList("list", "add", "del", "purge"));
         }
         if (args.length == 3) {
+            if ("purge".equalsIgnoreCase(args[1])) {
+                return Optional.of(new ArrayList<>());
+            }
             return completeId(args, null);
         }
         return Optional.of(new ArrayList<>());
