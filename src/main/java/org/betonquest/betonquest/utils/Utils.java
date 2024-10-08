@@ -175,15 +175,29 @@ public final class Utils {
      * @param range         the range of the party
      * @param conditions    conditions that the party members must meet
      * @return the party of the player
+     * @deprecated use {@link #getParty(Location, double, ConditionID...)} instead
      */
+    @Deprecated
     public static Map<OnlineProfile, Double> getParty(final OnlineProfile onlineProfile, final double range, final ConditionID... conditions) {
-        final Location loc = onlineProfile.getPlayer().getLocation();
-        final World world = loc.getWorld();
+        return getParty(onlineProfile.getPlayer().getLocation(), range, conditions);
+    }
+
+    /**
+     * Gets the party of the location.
+     * A range of 0 means worldwide and -1 means server-wide.
+     *
+     * @param location   the location to get the party of
+     * @param range      the range of the party
+     * @param conditions conditions that the party members must meet
+     * @return the party of the location
+     */
+    public static Map<OnlineProfile, Double> getParty(final Location location, final double range, final ConditionID... conditions) {
+        final World world = location.getWorld();
         final double squared = range * range;
 
         final Stream<OnlineProfile> players = PlayerConverter.getOnlineProfiles().stream();
         final Stream<OnlineProfile> worldPlayers = range == -1 ? players : players.filter(profile -> world.equals(profile.getPlayer().getWorld()));
-        final Stream<Pair<OnlineProfile, Double>> distancePlayers = worldPlayers.map(profile -> Pair.of(profile, getDistanceSquared(profile, loc)));
+        final Stream<Pair<OnlineProfile, Double>> distancePlayers = worldPlayers.map(profile -> Pair.of(profile, getDistanceSquared(profile, location)));
         final Stream<Pair<OnlineProfile, Double>> rangePlayers = range <= 0 ? distancePlayers : distancePlayers.filter(pair -> pair.right() <= squared);
         return rangePlayers
                 .filter(pair -> BetonQuest.conditions(pair.left(), conditions))
