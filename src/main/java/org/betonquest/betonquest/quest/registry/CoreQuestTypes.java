@@ -255,7 +255,7 @@ public class CoreQuestTypes {
         conditionTypes.register("objective", new ObjectiveConditionFactory(betonQuest));
         conditionTypes.register("or", AlternativeCondition.class);
         conditionTypes.register("partialdate", new PartialDateConditionFactory());
-        conditionTypes.register("party", new PartyConditionFactory(loggerFactory));
+        conditionTypes.registerCombined("party", new PartyConditionFactory());
         conditionTypes.register("permission", new PermissionConditionFactory(loggerFactory, data, betonQuest.getVariableProcessor()));
         conditionTypes.register("point", new PointConditionFactory(betonQuest));
         conditionTypes.registerCombined("random", new RandomConditionFactory(betonQuest.getVariableProcessor()));

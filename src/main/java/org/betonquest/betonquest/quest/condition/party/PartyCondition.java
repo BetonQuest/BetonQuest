@@ -2,14 +2,14 @@ package org.betonquest.betonquest.quest.condition.party;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
+import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -19,7 +19,12 @@ import java.util.stream.Stream;
 /**
  * A condition that checks if a party meets certain conditions.
  */
-public class PartyCondition implements OnlineCondition {
+public class PartyCondition implements NullableCondition {
+    /**
+     * The location to check for party members.
+     */
+    private final VariableLocation location;
+
     /**
      * The range to check for party members.
      */
@@ -49,14 +54,16 @@ public class PartyCondition implements OnlineCondition {
     /**
      * Create a new party condition.
      *
+     * @param location   the location to check for party members
      * @param range      the range to check for party members
      * @param conditions the conditions to check for to be a party member
      * @param everyone   the conditions that everyone in the party must meet
      * @param anyone     the conditions that at least one party member must meet
      * @param count      the minimum number of party members
      */
-    public PartyCondition(final VariableNumber range, final ConditionID[] conditions, final ConditionID[] everyone,
+    public PartyCondition(final VariableLocation location, final VariableNumber range, final ConditionID[] conditions, final ConditionID[] everyone,
                           final ConditionID[] anyone, @Nullable final VariableNumber count) {
+        this.location = location;
         this.range = range;
         this.conditions = Arrays.copyOf(conditions, conditions.length);
         this.everyone = Arrays.copyOf(everyone, everyone.length);
@@ -65,12 +72,11 @@ public class PartyCondition implements OnlineCondition {
     }
 
     @Override
-    public boolean check(@NotNull final OnlineProfile profile) throws QuestRuntimeException {
-        final Location playerLocation = profile.getPlayer().getLocation();
-        final Set<OnlineProfile> partyMembers = Utils.getParty(playerLocation, range.getValue(profile).doubleValue(), conditions).keySet();
+    public boolean check(@Nullable final Profile profile) throws QuestRuntimeException {
+        final Set<OnlineProfile> partyMembers = Utils.getParty(location.getValue(profile), range.getValue(profile).doubleValue(), conditions).keySet();
 
         final int pCount = count == null ? 0 : count.getValue(profile).intValue();
-        if (!(pCount <= 0 || partyMembers.size() >= pCount)) {
+        if (pCount > 0 && partyMembers.size() < pCount) {
             return false;
         }
 
