@@ -52,7 +52,7 @@ public class VariableVector extends Variable<Vector> {
      * @throws QuestRuntimeException if the value could not be parsed
      */
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    protected static Vector parse(final String value) throws QuestRuntimeException {
+    public static Vector parse(final String value) throws QuestRuntimeException {
         final String[] parts = value.split("->");
         if (parts.length == 1) {
             return parseVector(parts[0]);
