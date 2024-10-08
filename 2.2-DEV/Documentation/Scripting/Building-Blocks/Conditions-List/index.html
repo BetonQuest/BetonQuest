@@ -6699,12 +6699,14 @@ The valid operations are: <code>&lt;</code>, <code>&lt;=</code>, <code>=</code>,
 </code></pre></div>
 </div>
 <h2 id="party-party">Party: <code>party</code><a class="headerlink" href="#party-party" title="Permanent link">🔗</a></h2>
+<p><strong>static</strong></p>
 <p>This is part of the <a href="../../Parties/">party system</a>.
-This condition takes three optional arguments: <code>every:</code>, <code>any:</code> and <code>count:</code>.<br />
+This condition takes three optional arguments: <code>every:</code>, <code>any:</code>, <code>count:</code> and <code>location:</code>.<br />
 "Every" is a list of conditions that must be met by every player in the party.<br />
 Any is a list of conditions that must be met by at least one player in a party (it doesn't have to be the same player,
 one can meet first condition, another one can meet the rest, and it will work).<br />
 Count is just a number, minimal amount of players in the party.
+Location can be used to create a party without the need of a player that is the center of the party.
 You don't have to specify all those arguments, you can use only one if you want.</p>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
