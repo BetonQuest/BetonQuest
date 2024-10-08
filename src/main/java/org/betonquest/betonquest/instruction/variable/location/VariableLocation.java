@@ -43,7 +43,14 @@ public class VariableLocation extends Variable<Location> {
         super(variableProcessor, pack, input, VariableLocation::parse);
     }
 
-    private static Location parse(final String value) throws QuestRuntimeException {
+    /**
+     * Parses the given value to a location.
+     *
+     * @param value the value to parse
+     * @return the parsed location
+     * @throws QuestRuntimeException if the value could not be parsed
+     */
+    public static Location parse(final String value) throws QuestRuntimeException {
         final int index = value.indexOf("->");
         if (index == -1) {
             return parseLocation(value);

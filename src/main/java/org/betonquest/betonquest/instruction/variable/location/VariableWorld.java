@@ -32,7 +32,7 @@ public class VariableWorld extends Variable<World> {
      * @return the parsed world
      * @throws QuestRuntimeException if the value could not be parsed to a world
      */
-    protected static World parse(final String value) throws QuestRuntimeException {
+    public static World parse(final String value) throws QuestRuntimeException {
         final World world = Bukkit.getWorld(value);
         if (world == null) {
             throw new QuestRuntimeException("World " + value + " does not exists.");

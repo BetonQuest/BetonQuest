@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapt
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.Variable;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
@@ -56,11 +57,11 @@ public class HeightConditionFactory implements PlayerConditionFactory {
                 if (value.matches("-?\\d+\\.?\\d*")) {
                     parsedValue = Double.parseDouble(value);
                 } else {
-                    parsedValue = instruction.getLocation(value).getValue(null).getY();
+                    parsedValue = VariableLocation.parse(value).getY();
                 }
 
                 return parsedValue;
-            } catch (final NumberFormatException | InstructionParseException e) {
+            } catch (final NumberFormatException e) {
                 throw new QuestRuntimeException("Could not parse number: " + value, e);
             }
         });
