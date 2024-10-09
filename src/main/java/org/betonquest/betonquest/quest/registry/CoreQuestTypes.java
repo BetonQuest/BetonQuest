@@ -5,7 +5,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.conditions.AlternativeCondition;
 import org.betonquest.betonquest.conditions.CheckCondition;
-import org.betonquest.betonquest.conditions.FacingCondition;
 import org.betonquest.betonquest.conditions.HungerCondition;
 import org.betonquest.betonquest.conditions.ItemCondition;
 import org.betonquest.betonquest.conditions.JournalCondition;
@@ -57,6 +56,7 @@ import org.betonquest.betonquest.quest.condition.conversation.InConversationCond
 import org.betonquest.betonquest.quest.condition.effect.EffectConditionFactory;
 import org.betonquest.betonquest.quest.condition.entity.EntityConditionFactory;
 import org.betonquest.betonquest.quest.condition.experience.ExperienceConditionFactory;
+import org.betonquest.betonquest.quest.condition.facing.FacingConditionFactory;
 import org.betonquest.betonquest.quest.condition.flying.FlyingConditionFactory;
 import org.betonquest.betonquest.quest.condition.gamemode.GameModeConditionFactory;
 import org.betonquest.betonquest.quest.condition.hand.HandConditionFactory;
@@ -234,7 +234,7 @@ public class CoreQuestTypes {
         conditionTypes.register("empty", new EmptySlotsConditionFactory(loggerFactory, data));
         conditionTypes.registerCombined("entities", new EntityConditionFactory(data, betonQuest.getVariableProcessor()));
         conditionTypes.register("experience", new ExperienceConditionFactory(loggerFactory, data));
-        conditionTypes.register("facing", FacingCondition.class);
+        conditionTypes.register("facing", new FacingConditionFactory(loggerFactory, data));
         conditionTypes.register("fly", new FlyingConditionFactory(loggerFactory, data));
         conditionTypes.register("gamemode", new GameModeConditionFactory(loggerFactory, data));
         conditionTypes.registerCombined("globalpoint", new GlobalPointConditionFactory(betonQuest.getGlobalData()));
