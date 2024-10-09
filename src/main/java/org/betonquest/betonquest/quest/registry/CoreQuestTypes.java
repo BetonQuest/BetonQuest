@@ -5,7 +5,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.conditions.AlternativeCondition;
 import org.betonquest.betonquest.conditions.CheckCondition;
-import org.betonquest.betonquest.conditions.EntityCondition;
 import org.betonquest.betonquest.conditions.FacingCondition;
 import org.betonquest.betonquest.conditions.HealthCondition;
 import org.betonquest.betonquest.conditions.HungerCondition;
@@ -57,6 +56,7 @@ import org.betonquest.betonquest.quest.condition.chest.ChestItemConditionFactory
 import org.betonquest.betonquest.quest.condition.conversation.ConversationConditionFactory;
 import org.betonquest.betonquest.quest.condition.conversation.InConversationConditionFactory;
 import org.betonquest.betonquest.quest.condition.effect.EffectConditionFactory;
+import org.betonquest.betonquest.quest.condition.entity.EntityConditionFactory;
 import org.betonquest.betonquest.quest.condition.experience.ExperienceConditionFactory;
 import org.betonquest.betonquest.quest.condition.flying.FlyingConditionFactory;
 import org.betonquest.betonquest.quest.condition.gamemode.GameModeConditionFactory;
@@ -232,7 +232,7 @@ public class CoreQuestTypes {
         conditionTypes.register("dayofweek", new DayOfWeekConditionFactory(loggerFactory.create(DayOfWeekConditionFactory.class)));
         conditionTypes.register("effect", new EffectConditionFactory(loggerFactory, data));
         conditionTypes.register("empty", new EmptySlotsConditionFactory(loggerFactory, data));
-        conditionTypes.register("entities", EntityCondition.class);
+        conditionTypes.registerCombined("entities", new EntityConditionFactory(data, betonQuest.getVariableProcessor()));
         conditionTypes.register("experience", new ExperienceConditionFactory(loggerFactory, data));
         conditionTypes.register("facing", FacingCondition.class);
         conditionTypes.register("fly", new FlyingConditionFactory(loggerFactory, data));

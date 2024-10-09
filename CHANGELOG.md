@@ -21,6 +21,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `and` condition can now be static
 - missing tab-completion and documentation for globalpoints and globaltags command
 - `party` condition now supports a location variable, to be used in a static context
+- `enitity` condition now supports variables for the entity name
 ### Changed
 - `spawn` event now only spawn mobs and no other entities
 ### Deprecated
