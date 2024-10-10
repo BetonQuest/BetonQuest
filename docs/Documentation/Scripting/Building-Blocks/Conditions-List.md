@@ -266,6 +266,8 @@ Available slot types: `HAND`, `OFF_HAND`, `HEAD`, `CHEST`, `LEGS`, `FEET`.
 
 ## Journal entry: `journal`
 
+**persistent**
+
 This condition will return true if the player has specified entry in his journal (internal name of the entry, like in _journal_ section). The only argument is name of the entry.
 
 !!! example
