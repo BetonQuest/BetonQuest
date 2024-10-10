@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class representing a menu
+ * Class representing a menu.
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.ShortClassName", "PMD.CommentRequired", "PMD.CouplingBetweenObjects"})
 public class Menu extends SimpleYMLSection implements Listener {
@@ -44,48 +44,48 @@ public class Menu extends SimpleYMLSection implements Listener {
     private final BetonQuestLogger log;
 
     /**
-     * The internal id of the menu
+     * The internal id of the menu.
      */
     private final MenuID menuID;
 
     /**
-     * The height of the menu in slots
+     * The height of the menu in slots.
      */
     private final int height;
 
     /**
-     * The title of the menu
+     * The title of the menu.
      */
     private final VariableString title;
 
     /**
-     * List of all slots objects as defined in the slots section
+     * List of all slots objects as defined in the slots section.
      */
     private final List<Slots> slots;
 
     /**
-     * Optional which contains the item this menu is bound to or is empty if none is bound
+     * Optional which contains the item this menu is bound to or is empty if none is bound.
      */
     @Nullable
     private final QuestItem boundItem;
 
     /**
-     * Conditions which have to be matched to open the menu
+     * Conditions which have to be matched to open the menu.
      */
     private final List<ConditionID> openConditions;
 
     /**
-     * Events which are fired when the menu is opened
+     * Events which are fired when the menu is opened.
      */
     private final List<EventID> openEvents;
 
     /**
-     * Events which are fired when the menu is closed
+     * Events which are fired when the menu is closed.
      */
     private final List<EventID> closeEvents;
 
     /**
-     * Optional which contains the command this menu is bound to or is empty if none is bound
+     * Optional which contains the command this menu is bound to or is empty if none is bound.
      */
     @Nullable
     private final MenuBoundCommand boundCommand;
@@ -203,7 +203,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     }
 
     /**
-     * Checks whether a player of the {@link Profile} may open this menu
+     * Checks whether a player of the {@link Profile} may open this menu.
      *
      * @param profile the {@link Profile} to check
      * @return true if all opening conditions are true, false otherwise
@@ -219,7 +219,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     }
 
     /**
-     * Unregisters listeners and commands for this menu
+     * Unregisters listeners and commands for this menu.
      * <p>
      * Run this method on reload
      */
@@ -250,7 +250,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     }
 
     /**
-     * Runs all open events for the specified player of the {@link Profile}
+     * Runs all open events for the specified player of the {@link Profile}.
      *
      * @param profile the {@link Profile} to run the events for
      */
@@ -264,7 +264,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     }
 
     /**
-     * Runs all close events for the specified player
+     * Runs all close events for the specified player.
      *
      * @param player the player to run the events for
      */
@@ -325,7 +325,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     }
 
     /**
-     * Get a menu item for a specific slot
+     * Get a menu item for a specific slot.
      *
      * @param profile the player {@link Profile} to get the item for
      * @param slot    for which the item should be get
@@ -357,8 +357,8 @@ public class Menu extends SimpleYMLSection implements Listener {
     }
 
     /**
-     * A command which can be used to open the gui
-     * To perform the command a player must match all open conditions
+     * A command which can be used to open the gui.
+     * To perform the command a player must match all open conditions.
      */
     private class MenuBoundCommand extends SimpleCommand {
 

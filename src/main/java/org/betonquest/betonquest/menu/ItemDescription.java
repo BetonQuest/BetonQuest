@@ -27,7 +27,7 @@ public class ItemDescription {
     }
 
     /**
-     * Receive display name of item for specific player
+     * Receive display name of item for specific player.
      *
      * @param profile the {@link Profile} of the player
      * @return the item's display name for the specified player.
@@ -42,7 +42,7 @@ public class ItemDescription {
     }
 
     /**
-     * Receive lore of the item for specific player
+     * Receive lore of the item for specific player.
      *
      * @param profile the {@link Profile} of the player
      * @return the item's lore for the specified player.

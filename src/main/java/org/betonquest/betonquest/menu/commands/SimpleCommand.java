@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Abstract class to simplify creation of commands and implementation of tab complete
+ * Abstract class to simplify creation of commands and implementation of tab complete.
  */
 @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.AvoidUncheckedExceptionsInSignatures",
         "PMD.CommentRequired", "PMD.TooManyMethods"})
@@ -65,7 +65,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     }
 
     /**
-     * Override this method to handle what is returned on tab complete
+     * Override this method to handle what is returned on tab complete.
      *
      * @param sender the CommandSender performing the tab complete
      * @param alias  the command alias used
@@ -78,7 +78,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
 
     /**
      * Override this method to handle what happens if the command gets executed, all permissions are met and required
-     * arguments are given
+     * arguments are given.
      *
      * @param sender the CommandSender performing the command
      * @param alias  the command alias used
@@ -88,7 +88,8 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     public abstract boolean simpleCommand(CommandSender sender, String alias, String... args);
 
     /**
-     * Override this method to specify the message which is send when the command sender doesn't has the required Permission
+     * Override this method to specify the message which is sent
+     * when the command sender doesn't have the required Permission.
      *
      * @param sender the CommandSender performing the command
      * @return the message to send
@@ -138,7 +139,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     }
 
     /**
-     * Method to register the command
+     * Method to register the command.
      *
      * @return Whether the command was successfully registered
      */
@@ -158,7 +159,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     }
 
     /**
-     * Method to unregister the command
+     * Method to unregister the command.
      *
      * @return Whether the command was successfully unregistered
      */

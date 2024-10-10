@@ -199,7 +199,7 @@ public class RPGMenuCommand extends SimpleCommand {
     }
 
     /**
-     * Displays the full help message to the command sender
+     * Displays the full help message to the command sender.
      *
      * @param sender player who issued the command or console
      */

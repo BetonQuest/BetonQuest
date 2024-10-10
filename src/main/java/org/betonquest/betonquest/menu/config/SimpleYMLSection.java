@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Abstract class to help parsing of yml config files
+ * Abstract class to help parsing of yml config files.
  */
 @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.AbstractClassWithoutAbstractMethod", "PMD.CommentRequired",
         "PMD.TooManyMethods"})
@@ -43,9 +43,10 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Parse string from config file
+     * Parse string from config file.
      *
      * @param key where to search
+     * @return requested String
      * @throws Missing if string is not given
      */
     protected final String getString(final String key) throws Missing {
@@ -58,9 +59,10 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Parse a list of strings from config file
+     * Parse a list of strings from config file.
      *
      * @param key where to search
+     * @return requested List of String
      * @throws Missing if no list is not given
      */
     protected final List<String> getStringList(final String key) throws Missing {
@@ -73,9 +75,10 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Parse a list of multiple strings, separated by ',' from config file
+     * Parse a list of multiple strings, separated by ',' from config file.
      *
      * @param key where to search
+     * @return requested List of String
      * @throws Missing if no strings are given
      */
     protected final List<String> getStrings(final String key) throws Missing {
@@ -83,7 +86,7 @@ public abstract class SimpleYMLSection {
         final String[] args = getString(key).split(",");
         for (final String arg : args) {
             final String argTrim = arg.trim();
-            if (argTrim.length() != 0) {
+            if (!argTrim.isEmpty()) {
                 list.add(argTrim);
             }
         }
@@ -91,9 +94,10 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Parse an integer from config file
+     * Parse an integer from config file.
      *
      * @param key where to search
+     * @return requested Int
      * @throws Missing if nothing is given
      * @throws Invalid if given string is not an integer
      */
@@ -107,9 +111,10 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Parse a double from config file
+     * Parse a double from config file.
      *
      * @param key where to search
+     * @return requested Double
      * @throws Missing if nothing is given
      * @throws Invalid if given string is not a double
      */
@@ -123,9 +128,10 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Parse a long from config file
+     * Parse a long from config file.
      *
      * @param key where to search
+     * @return requested Long
      * @throws Missing if nothing is given
      * @throws Invalid if given string is not a long
      */
@@ -139,9 +145,10 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Parse a boolean from config file
+     * Parse a boolean from config file.
      *
      * @param key where to search
+     * @return requested Boolean
      * @throws Missing if nothing is given
      * @throws Invalid if given string is not a boolean
      */
@@ -158,10 +165,12 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Parse an enum value from config file
+     * Parse an enum value from config file.
      *
      * @param key      where to search
      * @param enumType type of the enum
+     * @param <T>      the Enum class
+     * @return requested Enum
      * @throws Missing if nothing is given
      * @throws Invalid if given string is not of given type
      */
@@ -175,9 +184,10 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Parse a material from config file
+     * Parse a material from config file.
      *
      * @param key where to search
+     * @return requested Material
      * @throws Missing if nothing is given
      * @throws Invalid if given string is not a material
      */
@@ -198,10 +208,11 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Parse a list of events from config file
+     * Parse a list of events from config file.
      *
      * @param key  where to search
      * @param pack configuration package of this file
+     * @return requested EventIDs
      * @throws Missing if nothing is given
      * @throws Invalid if one of the events can't be found
      */
@@ -219,10 +230,11 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Parse a list of conditions from config file
+     * Parse a list of conditions from config file.
      *
      * @param key  where to search
      * @param pack configuration package of this file
+     * @return requested ConditionIDs
      * @throws Missing if nothing is given
      * @throws Invalid if one of the conditions can't be found
      */
@@ -240,7 +252,7 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * A config setting which uses a given default value if not set
+     * A config setting which uses a given default value if not set.
      *
      * @param <T> the type of the setting
      */
@@ -268,7 +280,7 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * A config setting which doesn't throw a Missing exception if not specified
+     * A config setting which doesn't throw a Missing exception if not specified.
      *
      * @param <T> the type of the setting
      */
@@ -297,7 +309,7 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Thrown when the config could not be loaded due to an error
+     * Thrown when the config could not be loaded due to an error.
      */
     public class InvalidSimpleConfigException extends InvalidConfigurationException {
         @Serial
@@ -330,7 +342,7 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Thrown when a setting is missing
+     * Thrown when a setting is missing.
      */
     public class Missing extends InvalidSimpleConfigException {
         @Serial
@@ -342,7 +354,7 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Thrown when a setting is invalid
+     * Thrown when a setting is invalid.
      */
     public class Invalid extends InvalidSimpleConfigException {
         @Serial
