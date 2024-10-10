@@ -33,6 +33,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
 - [2.0.0-DEV-769 - RemoveEntity-Event](#200-dev-769-removeentity-event) :gear:
 - [2.1.0-DEV-1 - Instruction Quoting](#210-dev-1-instruction-quoting) :exclamation:
 - [2.1.1-DEV-2 - Rename AuraSkills](#211-dev-2-rename-auraskills) :gear:
+- [2.1.3-DEV-12 - Rename Constants](#213-dev-12-rename-constants) :gear:
 
 ### 2.0.0-DEV-87 - Rename to `ride` :gear:
 
@@ -569,3 +570,29 @@ events:
   giveSkillXP: auraskillsxp farming 5
 ```
 </div>
+
+### 2.1.3-DEV-12 - Rename Constants :gear:
+"Global Variables" were renamed to "Constants" to better reflect their purpose,
+and to also integrate them in the existing variable system.
+
+<div class="grid" markdown>
+
+```YAML title="Old Syntax"
+variavles:
+  MyVariable: Hello
+  MyCustomVariable: $MyVariable$ World
+events:
+  sendNotify: notify $MyCustomVariable$
+```
+
+```YAML title="New Syntax"
+constants:
+  MyVariable: Hello
+  MyCustomVariable: %constant.MyVariable% World
+events:
+  sendNotify: notify %constant.MyCustomVariable%
+```
+</div>
+
+
+

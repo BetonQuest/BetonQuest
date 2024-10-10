@@ -16,8 +16,8 @@ import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
 import org.betonquest.betonquest.compatibility.holograms.HologramWrapper;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableVector;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -108,11 +108,10 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
     private List<Integer> getNPCs(final QuestPackage pack, final ConfigurationSection section) throws InstructionParseException {
         final List<Integer> npcIDs = new ArrayList<>();
         for (final String stringID : section.getStringList("npcs")) {
-            final String subst = GlobalVariableResolver.resolve(pack, stringID);
             try {
-                npcIDs.add(Integer.parseInt(subst));
-            } catch (final NumberFormatException e) {
-                throw new InstructionParseException("Could not parse NPC ID '" + subst + "': " + e.getMessage(), e);
+                npcIDs.add(new VariableNumber(BetonQuest.getInstance().getVariableProcessor(), pack, stringID).getValue(null).intValue());
+            } catch (final NumberFormatException | QuestRuntimeException e) {
+                throw new InstructionParseException("Could not parse NPC ID '" + stringID + "': " + e.getMessage(), e);
             }
         }
         return npcIDs;

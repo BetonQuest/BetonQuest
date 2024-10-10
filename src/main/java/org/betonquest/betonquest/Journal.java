@@ -18,7 +18,6 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.utils.Utils;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -276,11 +275,12 @@ public class Journal {
             for (final String key : section.getKeys(false)) {
                 final int number = section.getInt(key + ".priority", -1);
                 if (number >= 0) {
-                    final String rawConditions = GlobalVariableResolver.resolve(pack, section.getString(key + ".conditions"));
+                    final String rawConditions = section.getString(key + ".conditions");
                     if (rawConditions != null && !rawConditions.isEmpty()) {
                         try {
+                            final String conditionsString = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, rawConditions).getValue(profile);
                             final List<ConditionID> pageConditions = new ArrayList<>();
-                            for (final String conditionString : rawConditions.split(",")) {
+                            for (final String conditionString : conditionsString.split(",")) {
                                 if (!conditionString.isEmpty()) {
                                     pageConditions.add(new ConditionID(pack, conditionString));
                                 }
@@ -289,7 +289,7 @@ public class Journal {
                             if (!BetonQuest.conditions(profile, pageConditions)) {
                                 continue;
                             }
-                        } catch (final ObjectNotFoundException e) {
+                        } catch (final ObjectNotFoundException | InstructionParseException | QuestRuntimeException e) {
                             log.warn(pack, "Error while generating main page in " + profile + " journal: " + e.getMessage(), e);
                             continue;
                         }
@@ -310,7 +310,6 @@ public class Journal {
                     if (text == null || text.length() == 0) {
                         continue;
                     }
-                    text = GlobalVariableResolver.resolve(pack, text);
                     try {
                         text = new VariableString(pack, text).getString(profile);
                     } catch (final InstructionParseException e) {
