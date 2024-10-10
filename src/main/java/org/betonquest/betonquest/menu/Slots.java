@@ -111,18 +111,14 @@ public class Slots {
      * @return if this slots object covers the given slot
      */
     public boolean containsSlot(final int slot) {
-        switch (type) {
-            case SINGLE:
-                return start == slot;
-            case ROW:
-                return slot <= end && slot >= start;
-            case RECTANGLE:
-                return slot <= end && slot >= start
-                        && slot % 9 >= start % 9
-                        && slot % 9 <= end % 9;
-            default:
-                return false;
-        }
+        return switch (type) {
+            case SINGLE -> start == slot;
+            case ROW -> slot <= end && slot >= start;
+            case RECTANGLE -> slot <= end
+                    && slot >= start
+                    && slot % 9 >= start % 9
+                    && slot % 9 <= end % 9;
+        };
     }
 
     /**
@@ -195,16 +191,11 @@ public class Slots {
 
     @Override
     public String toString() {
-        switch (type) {
-            case SINGLE:
-                return String.valueOf(start);
-            case ROW:
-                return start + "-" + end;
-            case RECTANGLE:
-                return start + "*" + end;
-            default:
-                return super.toString();
-        }
+        return switch (type) {
+            case SINGLE -> String.valueOf(start);
+            case ROW -> start + "-" + end;
+            case RECTANGLE -> start + "*" + end;
+        };
     }
 
     /**

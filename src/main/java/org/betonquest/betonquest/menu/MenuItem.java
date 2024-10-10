@@ -189,42 +189,24 @@ public class MenuItem extends SimpleYMLSection {
      * @param type   type of the click action
      * @return if the menu should be closed after this operation
      */
-    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.CyclomaticComplexity"})
     public boolean onClick(final Player player, final ClickType type) {
-        switch (type) {
-            case LEFT:
-                for (final EventID eventID : this.leftClick) {
-                    log.debug(pack, "Item " + name + ": Run event " + eventID);
-                    BetonQuest.event(PlayerConverter.getID(player), eventID);
-                }
-                return this.close;
-            case SHIFT_LEFT:
-                for (final EventID eventID : this.shiftLeftClick) {
-                    log.debug(pack, "Item " + name + ": Run event " + eventID);
-                    BetonQuest.event(PlayerConverter.getID(player), eventID);
-                }
-                return this.close;
-            case RIGHT:
-                for (final EventID eventID : this.rightClick) {
-                    log.debug(pack, "Item " + name + ": Run event " + eventID);
-                    BetonQuest.event(PlayerConverter.getID(player), eventID);
-                }
-                return this.close;
-            case SHIFT_RIGHT:
-                for (final EventID eventID : this.shiftRightClick) {
-                    log.debug(pack, "Item " + name + ": Run event " + eventID);
-                    BetonQuest.event(PlayerConverter.getID(player), eventID);
-                }
-                return this.close;
-            case MIDDLE:
-                for (final EventID eventID : this.middleMouseClick) {
-                    log.debug(pack, "Item " + name + ": Run event " + eventID);
-                    BetonQuest.event(PlayerConverter.getID(player), eventID);
-                }
-                return this.close;
-            default:
-                return false;
+        return switch (type) {
+            case LEFT -> executeEvents(leftClick, player);
+            case SHIFT_LEFT -> executeEvents(shiftLeftClick, player);
+            case RIGHT -> executeEvents(rightClick, player);
+            case SHIFT_RIGHT -> executeEvents(shiftRightClick, player);
+            case MIDDLE -> executeEvents(middleMouseClick, player);
+            default -> false;
+        };
+    }
+
+    private boolean executeEvents(final List<EventID> variables, final Player player) {
+        final OnlineProfile profile = PlayerConverter.getID(player);
+        for (final EventID eventID : variables) {
+            log.debug(pack, "Item " + name + ": Run event " + eventID);
+            BetonQuest.event(profile, eventID);
         }
+        return this.close;
     }
 
     /**
