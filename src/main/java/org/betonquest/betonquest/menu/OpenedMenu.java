@@ -23,12 +23,12 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Class representing a menu which is currently displayed to a player
+ * Class representing a menu which is currently displayed to a player.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class OpenedMenu implements Listener {
     /**
-     * Hashmap containing all currently opened menus
+     * Hashmap containing all currently opened menus.
      */
     private static final Map<UUID, OpenedMenu> OPENED_MENUS = new HashMap<>();
 
@@ -64,7 +64,7 @@ public class OpenedMenu implements Listener {
     }
 
     /**
-     * Returns the menu a player has opened
+     * Returns the menu a player has opened.
      *
      * @param onlineProfile the player of the {@link OnlineProfile} to check for
      * @return the menu the player has opened or null if he has no open menus
@@ -75,7 +75,9 @@ public class OpenedMenu implements Listener {
     }
 
     /**
-     * Closes the players menu from the {@link OnlineProfile} if he has one open
+     * Closes the players menu from the {@link OnlineProfile} if he has one open.
+     *
+     * @param onlineProfile the player the menu is closed for
      */
     protected static void closeMenu(final OnlineProfile onlineProfile) {
         final OpenedMenu menu = getMenu(onlineProfile);
@@ -86,9 +88,9 @@ public class OpenedMenu implements Listener {
     }
 
     /**
-     * Closes all currently opened menus
+     * Closes all currently opened menus.
      * <p>
-     * Called when the plugin unloads to prevent glitching menus
+     * Called when the plugin unloads to prevent glitching menus.
      */
     public static void closeAll() {
         for (final OpenedMenu openedMenu : OPENED_MENUS.values()) {
@@ -132,7 +134,7 @@ public class OpenedMenu implements Listener {
     }
 
     /**
-     * Closes the menu
+     * Closes the menu.
      */
     public void close() {
         getProfile().getPlayer().closeInventory();
@@ -140,7 +142,7 @@ public class OpenedMenu implements Listener {
     }
 
     /**
-     * (Re-)adds all items to the inventory
+     * (Re-)adds all items to the inventory.
      *
      * @param onlineProfile the player the menu is displayed to
      * @param inventory     the inventory showing the menu
@@ -157,7 +159,7 @@ public class OpenedMenu implements Listener {
     }
 
     /**
-     * Readds all items to the inventory
+     * Readds all items to the inventory.
      */
     public void update() {
         this.update(getProfile(), getInventory());

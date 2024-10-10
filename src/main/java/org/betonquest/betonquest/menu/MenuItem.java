@@ -3,6 +3,7 @@ package org.betonquest.betonquest.menu;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -30,17 +31,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A Item which Is displayed as option in a menu and has some events that are fired when item is clicked
+ * A Item which Is displayed as option in a menu and has some events that are fired when item is clicked.
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.GodClass"})
 public class MenuItem extends SimpleYMLSection {
     /**
-     * Text config property for Item lore
+     * Text config property for Item lore.
      */
     private static final String CONFIG_TEXT = "text";
 
     /**
-     * Path component for text config property for Item lore
+     * Path component for text config property for Item lore.
      */
     private static final String CONFIG_TEXT_PATH = CONFIG_TEXT + ".";
 
@@ -50,47 +51,47 @@ public class MenuItem extends SimpleYMLSection {
     private final BetonQuestLogger log;
 
     /**
-     * The betonquest quest item this item is based on
+     * The betonquest quest item this item is based on.
      */
     private final Item item;
 
     /**
-     * HashMap with a language as key and the corresponding description as value
+     * HashMap with a language as key and the corresponding description as value.
      */
     private final Map<String, ItemDescription> descriptions;
 
     /**
-     * Ids of all events that should be run on left click
+     * Ids of all events that should be run on left click.
      */
     private final List<EventID> leftClick;
 
     /**
-     * Ids of all events that should be run on shift-left click
+     * Ids of all events that should be run on shift-left click.
      */
     private final List<EventID> shiftLeftClick;
 
     /**
-     * Ids of all events that should be run on right click
+     * Ids of all events that should be run on right click.
      */
     private final List<EventID> rightClick;
 
     /**
-     * Ids of all events that should be run on shift-right click
+     * Ids of all events that should be run on shift-right click.
      */
     private final List<EventID> shiftRightClick;
 
     /**
-     * Ids of all events that should be run on middle-mouse click
+     * Ids of all events that should be run on middle-mouse click.
      */
     private final List<EventID> middleMouseClick;
 
     /**
-     * Conditions that have to be matched to view the item
+     * Conditions that have to be matched to view the item.
      */
     private final List<ConditionID> conditions;
 
     /**
-     * If the menu should be closed when the item is clicked
+     * If the menu should be closed when the item is clicked.
      */
     private final boolean close;
 
@@ -182,7 +183,7 @@ public class MenuItem extends SimpleYMLSection {
     }
 
     /**
-     * Action that happens on click
+     * Action that happens on click.
      *
      * @param player that has clicked the item
      * @param type   type of the click action
@@ -227,7 +228,7 @@ public class MenuItem extends SimpleYMLSection {
     }
 
     /**
-     * Checks if this item should be displayed to the player
+     * Checks if this item should be displayed to the player.
      *
      * @param profile the player of the {@link Profile} should get the item displayed
      * @return true if all display conditions are met, false otherwise
@@ -245,7 +246,7 @@ public class MenuItem extends SimpleYMLSection {
     }
 
     /**
-     * Generates the menu item for a specific player
+     * Generates the menu item for a specific player.
      *
      * @param profile the player from the {@link Profile} this item will be displayed to
      * @return the item as a bukkit item stack
@@ -277,6 +278,8 @@ public class MenuItem extends SimpleYMLSection {
     }
 
     /**
+     * The name of the menu item.
+     *
      * @return the items internal id
      */
     public String getId() {

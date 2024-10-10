@@ -13,7 +13,7 @@ public final class Utils {
     }
 
     /**
-     * Allows you accessing and modifying private fields
+     * Allows you accessing and modifying private fields.
      *
      * @param clazz the class which has the field
      * @param name  the field you want to access
@@ -35,25 +35,25 @@ public final class Utils {
     }
 
     /**
-     * Allows accessing and calling private methods
+     * Allows accessing and calling private methods.
      *
      * @param clazz       the class which has the method
      * @param name        the name of the method
-     * @param paramlength the amount of parameters the method has
+     * @param paramLength the amount of parameters the method has
      * @return the method for the given class with given name and parameters
      * @throws NoSuchMethodException if the method with the specified name and parameters cant be found
      */
     @SuppressWarnings("PMD.AvoidAccessibilityAlteration")
-    public static Method getMethod(final Class<?> clazz, final String name, final int paramlength) throws NoSuchMethodException {
+    public static Method getMethod(final Class<?> clazz, final String name, final int paramLength) throws NoSuchMethodException {
         Class<?> superClazz = clazz;
         do {
             for (final Method method : superClazz.getDeclaredMethods()) {
-                if (method.getName().equals(name) && method.getParameterTypes().length == paramlength) {
+                if (method.getName().equals(name) && method.getParameterTypes().length == paramLength) {
                     method.setAccessible(true);
                     return method;
                 }
             }
         } while ((superClazz = superClazz.getSuperclass()) != null);
-        throw new NoSuchMethodException("Can't find method " + name + " with " + paramlength + " parameters");
+        throw new NoSuchMethodException("Can't find method " + name + " with " + paramLength + " parameters");
     }
 }

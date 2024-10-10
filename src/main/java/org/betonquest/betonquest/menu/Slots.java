@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Utility object that handles which items are assigned to which slots
+ * Utility object that handles which items are assigned to which slots.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class Slots {
@@ -52,7 +52,7 @@ public class Slots {
     }
 
     /**
-     * checks if all defined slots are valid
+     * checks if all defined slots are valid.
      *
      * @param slots         a iterable containing all slots objects to check
      * @param inventorySize the size of the inventory in which the slots should be
@@ -173,12 +173,11 @@ public class Slots {
      * @param slot    the slot which should contain this item
      * @return the menu item which should be displayed in the given slot to the player
      */
-    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
     @Nullable
     public MenuItem getItem(final Profile profile, final int slot) {
         final int index = this.getIndex(slot);
         if (index == -1) {
-            throw new RuntimeException("Invalid slot for Slots '" + this + "': " + slot);
+            throw new IllegalStateException("Invalid slot for Slots '" + this + "': " + slot);
         }
         try {
             return this.getItems(profile).get(index);
@@ -208,19 +207,22 @@ public class Slots {
         }
     }
 
+    /**
+     * The form of slot assignment.
+     */
     public enum Type {
         /**
-         * A single slot
+         * A single slot.
          */
         SINGLE,
 
         /**
-         * Multiple slots ordered in a row, one behind each other
+         * Multiple slots ordered in a row, one behind each other.
          */
         ROW,
 
         /**
-         * Multiple slots ordered in a rectangle
+         * Multiple slots ordered in a rectangle.
          */
         RECTANGLE
     }
