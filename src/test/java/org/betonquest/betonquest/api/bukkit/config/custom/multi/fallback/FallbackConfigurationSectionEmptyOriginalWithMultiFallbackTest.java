@@ -19,6 +19,7 @@ public class FallbackConfigurationSectionEmptyOriginalWithMultiFallbackTest exte
     @Override
     public ConfigurationSection getConfig() throws InvalidConfigurationException {
         fallback = getDefaultConfig();
-        return new MultiFallbackConfiguration(new MultiSectionConfiguration(List.of(new MemoryConfiguration())), fallback);
+        original = new MultiSectionConfiguration(List.of(new MemoryConfiguration()));
+        return new MultiFallbackConfiguration((MultiSectionConfiguration) original, fallback);
     }
 }
