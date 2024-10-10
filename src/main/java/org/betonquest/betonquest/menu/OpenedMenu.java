@@ -171,6 +171,7 @@ public class OpenedMenu implements Listener {
      * @param event the event to process
      */
     @EventHandler
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public void onClick(final InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof final Player player) || !player.equals(onlineProfile.getPlayer())) {
             return;
@@ -188,10 +189,15 @@ public class OpenedMenu implements Listener {
         }
         //only continue if click type is valid
         switch (event.getClick()) {
-            case SHIFT_RIGHT, RIGHT, SHIFT_LEFT, LEFT, MIDDLE ->
-                    Bukkit.getServer().getScheduler().runTask(BetonQuest.getInstance(), () -> clickLogic(event, player, item));
-            default -> {
-            }
+            case SHIFT_RIGHT:
+            case RIGHT:
+            case SHIFT_LEFT:
+            case LEFT:
+            case MIDDLE:
+                Bukkit.getServer().getScheduler().runTask(BetonQuest.getInstance(), () -> clickLogic(event, player, item));
+                break;
+            default:
+                break;
         }
     }
 
