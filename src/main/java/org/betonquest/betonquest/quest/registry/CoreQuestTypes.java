@@ -246,7 +246,7 @@ public class CoreQuestTypes {
         conditionTypes.register("inconversation", new InConversationConditionFactory());
         conditionTypes.register("item", new ItemConditionFactory(loggerFactory, data, betonQuest));
         conditionTypes.register("itemdurability", new ItemDurabilityConditionFactory(loggerFactory, data));
-        conditionTypes.register("journal", new JournalConditionFactory(betonQuest));
+        conditionTypes.register("journal", new JournalConditionFactory(betonQuest, loggerFactory));
         conditionTypes.register("language", new LanguageConditionFactory(betonQuest));
         conditionTypes.register("location", new LocationConditionFactory(data, loggerFactory));
         conditionTypes.register("looking", LookingAtCondition.class);

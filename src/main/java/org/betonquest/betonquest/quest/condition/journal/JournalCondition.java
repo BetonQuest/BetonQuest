@@ -2,14 +2,14 @@ package org.betonquest.betonquest.quest.condition.journal;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Pointer;
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 /**
  * A condition to check if a player has a specified pointer in his journal.
  */
-public class JournalCondition implements PlayerCondition {
+public class JournalCondition implements OnlineCondition {
 
     /**
      * The BetonQuest instance.
@@ -33,7 +33,7 @@ public class JournalCondition implements PlayerCondition {
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestRuntimeException {
+    public boolean check(final OnlineProfile profile) throws QuestRuntimeException {
         for (final Pointer pointer : betonQuest.getPlayerData(profile).getJournal().getPointers()) {
             if (pointer.getPointer().equalsIgnoreCase(targetPointer)) {
                 return true;
