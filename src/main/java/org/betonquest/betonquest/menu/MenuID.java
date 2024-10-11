@@ -7,7 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Id of a menu
+ * ID of a menu.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class MenuID extends ID {
@@ -24,7 +24,7 @@ public class MenuID extends ID {
     }
 
     /**
-     * File where the menus config is located on disk
+     * File where the menus config is located on disk.
      *
      * @return The menu's config file
      */
