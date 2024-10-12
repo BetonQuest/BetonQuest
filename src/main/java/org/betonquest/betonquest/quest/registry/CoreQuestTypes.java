@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.registry;
 import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.conditions.LookingAtCondition;
 import org.betonquest.betonquest.objectives.ActionObjective;
 import org.betonquest.betonquest.objectives.ArrowShootObjective;
 import org.betonquest.betonquest.objectives.BlockObjective;
@@ -64,6 +63,7 @@ import org.betonquest.betonquest.quest.condition.language.LanguageConditionFacto
 import org.betonquest.betonquest.quest.condition.location.LocationConditionFactory;
 import org.betonquest.betonquest.quest.condition.logik.AlternativeConditionFactory;
 import org.betonquest.betonquest.quest.condition.logik.ConjunctionConditionFactory;
+import org.betonquest.betonquest.quest.condition.looking.LookingAtConditionFactory;
 import org.betonquest.betonquest.quest.condition.moon.MoonCycleConditionFactory;
 import org.betonquest.betonquest.quest.condition.number.NumberCompareConditionFactory;
 import org.betonquest.betonquest.quest.condition.objective.ObjectiveConditionFactory;
@@ -249,7 +249,7 @@ public class CoreQuestTypes {
         conditionTypes.register("journal", new JournalConditionFactory(betonQuest, loggerFactory));
         conditionTypes.register("language", new LanguageConditionFactory(betonQuest));
         conditionTypes.register("location", new LocationConditionFactory(data, loggerFactory));
-        conditionTypes.register("looking", LookingAtCondition.class);
+        conditionTypes.register("looking", new LookingAtConditionFactory(loggerFactory, data));
         conditionTypes.registerCombined("mooncycle", new MoonCycleConditionFactory(data, betonQuest.getVariableProcessor()));
         conditionTypes.registerCombined("numbercompare", new NumberCompareConditionFactory());
         conditionTypes.register("objective", new ObjectiveConditionFactory(betonQuest));
