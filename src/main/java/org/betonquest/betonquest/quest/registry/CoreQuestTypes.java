@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.registry;
 import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.conditions.CheckCondition;
 import org.betonquest.betonquest.conditions.LookingAtCondition;
 import org.betonquest.betonquest.objectives.ActionObjective;
 import org.betonquest.betonquest.objectives.ArrowShootObjective;
@@ -44,6 +43,7 @@ import org.betonquest.betonquest.quest.condition.armor.ArmorRatingConditionFacto
 import org.betonquest.betonquest.quest.condition.biome.BiomeConditionFactory;
 import org.betonquest.betonquest.quest.condition.block.BlockConditionFactory;
 import org.betonquest.betonquest.quest.condition.burning.BurningConditionFactory;
+import org.betonquest.betonquest.quest.condition.check.CheckConditionFactory;
 import org.betonquest.betonquest.quest.condition.chest.ChestItemConditionFactory;
 import org.betonquest.betonquest.quest.condition.conversation.ConversationConditionFactory;
 import org.betonquest.betonquest.quest.condition.conversation.InConversationConditionFactory;
@@ -226,7 +226,7 @@ public class CoreQuestTypes {
         conditionTypes.register("armor", new ArmorConditionFactory(loggerFactory, data));
         conditionTypes.register("biome", new BiomeConditionFactory(loggerFactory, data));
         conditionTypes.register("burning", new BurningConditionFactory(loggerFactory, data));
-        conditionTypes.register("check", CheckCondition.class);
+        conditionTypes.registerCombined("check", new CheckConditionFactory(loggerFactory.create(CheckConditionFactory.class)));
         conditionTypes.registerCombined("chestitem", new ChestItemConditionFactory(data));
         conditionTypes.register("conversation", new ConversationConditionFactory());
         conditionTypes.register("dayofweek", new DayOfWeekConditionFactory(loggerFactory.create(DayOfWeekConditionFactory.class)));

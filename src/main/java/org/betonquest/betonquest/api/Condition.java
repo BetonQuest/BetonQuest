@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -22,6 +23,7 @@ public abstract class Condition extends ForceSyncHandler<Boolean> {
     /**
      * Stores instruction string for the condition.
      */
+    @SuppressFBWarnings("URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD")
     protected Instruction instruction;
 
     /**
