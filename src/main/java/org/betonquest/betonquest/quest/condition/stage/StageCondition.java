@@ -1,18 +1,19 @@
-package org.betonquest.betonquest.conditions;
+package org.betonquest.betonquest.quest.condition.stage;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.objectives.StageObjective;
+import org.betonquest.betonquest.quest.condition.number.Operation;
 
 /**
- * The StageCondition class to compare the players stage with a given stage.
+ * The stage condition class to compare the players stage with a given stage.
  */
-public class StageCondition extends BaseNumberCompareCondition {
+public class StageCondition implements PlayerCondition {
+
     /**
      * The stage objective.
      */
@@ -24,25 +25,36 @@ public class StageCondition extends BaseNumberCompareCondition {
     private final VariableString targetStage;
 
     /**
-     * The operation.
+     * The compare operand between the numbers used for comparing.
      */
     private final Operation operation;
 
     /**
+     * The BetonQuest instance.
+     */
+    private final BetonQuest betonQuest;
+
+    /**
      * Creates the stage condition.
      *
-     * @param instruction instruction to parse
-     * @throws InstructionParseException when the instruction is invalid
+     * @param objectiveID the objective ID
+     * @param targetStage the target stage
+     * @param operation   the operation
+     * @param betonQuest  the BetonQuest instance
      */
-    public StageCondition(final Instruction instruction) throws InstructionParseException {
-        super(instruction);
-        objectiveID = instruction.getObjective();
-        operation = fromSymbol(instruction.next());
-        targetStage = new VariableString(instruction.getPackage(), instruction.next());
+    public StageCondition(final ObjectiveID objectiveID, final VariableString targetStage, final Operation operation, final BetonQuest betonQuest) {
+        this.objectiveID = objectiveID;
+        this.targetStage = targetStage;
+        this.operation = operation;
+        this.betonQuest = betonQuest;
     }
 
     @Override
-    protected Double getFirst(final Profile profile) throws QuestRuntimeException {
+    public boolean check(final Profile profile) throws QuestRuntimeException {
+        return operation.check(getFirst(profile), getSecond(profile));
+    }
+
+    private Double getFirst(final Profile profile) throws QuestRuntimeException {
         final StageObjective stage = getStageObjective();
         if (stage.getData(profile) == null) {
             return -1.0;
@@ -54,10 +66,9 @@ public class StageCondition extends BaseNumberCompareCondition {
         }
     }
 
-    @Override
-    protected Double getSecond(final Profile profile) throws QuestRuntimeException {
+    private Double getSecond(final Profile profile) throws QuestRuntimeException {
         final StageObjective stage = getStageObjective();
-        final String targetState = targetStage.getString(profile);
+        final String targetState = targetStage.getValue(profile);
         try {
             return (double) stage.getStageIndex(targetState);
         } catch (final QuestRuntimeException e) {
@@ -65,13 +76,8 @@ public class StageCondition extends BaseNumberCompareCondition {
         }
     }
 
-    @Override
-    protected Operation getOperation() {
-        return operation;
-    }
-
     private StageObjective getStageObjective() throws QuestRuntimeException {
-        if (BetonQuest.getInstance().getObjective(objectiveID) instanceof final StageObjective stageObjective) {
+        if (betonQuest.getObjective(objectiveID) instanceof final StageObjective stageObjective) {
             return stageObjective;
         }
         throw new QuestRuntimeException("Objective '" + objectiveID.getFullID() + "' is not a stage objective");
