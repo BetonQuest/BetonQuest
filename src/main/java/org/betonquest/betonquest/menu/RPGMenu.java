@@ -23,7 +23,6 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -156,7 +155,7 @@ public class RPGMenu {
         final ReloadInformation info = new ReloadInformation();
         try {
             this.config = new RPGMenuConfig(menuConfigAccessor);
-        } catch (final InvalidConfigurationException | FileNotFoundException e) {
+        } catch (final InvalidConfigurationException e) {
             log.error("Invalid Configuration.", e);
             info.addError(e);
             info.result = ReloadResult.FAILED;

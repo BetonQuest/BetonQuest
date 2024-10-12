@@ -17,8 +17,7 @@ import java.util.List;
 /**
  * Abstract class to help parsing of yml config files.
  */
-@SuppressWarnings({"PMD.PreserveStackTrace", "PMD.AbstractClassWithoutAbstractMethod", "PMD.CommentRequired",
-        "PMD.TooManyMethods"})
+@SuppressWarnings({"PMD.PreserveStackTrace", "PMD.AbstractClassWithoutAbstractMethod"})
 public abstract class SimpleYMLSection {
     /**
      * Prefix for exception messages.
@@ -197,7 +196,15 @@ public abstract class SimpleYMLSection {
      * @param <T> the type of the id
      */
     private interface IDArgument<T extends ID> {
-        T convert(QuestPackage pack, String identifier) throws ObjectNotFoundException;
+        /**
+         * Creates a new ID.
+         *
+         * @param pack       the source pack
+         * @param identifier the id name, potentially prefixed with a quest path
+         * @return the newly created id
+         * @throws ObjectNotFoundException when there is no such {@link T} in the resolved quest package
+         */
+        T convert(@Nullable QuestPackage pack, String identifier) throws ObjectNotFoundException;
     }
 
     /**
@@ -205,19 +212,22 @@ public abstract class SimpleYMLSection {
      *
      * @param <T> the type of the setting
      */
+    @SuppressWarnings("PMD.CommentRequired")
     protected abstract class DefaultSetting<T> {
 
         private final T value;
 
-        @SuppressWarnings({"PMD.ConstructorCallsOverridableMethod", "PMD.LocalVariableCouldBeFinal"})
+        @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
         public DefaultSetting(final T defaultValue) throws Invalid {
-            T configValue;
+            value = parse(defaultValue);
+        }
+
+        private T parse(final T defaultValue) throws Invalid {
             try {
-                configValue = of();
+                return of();
             } catch (final Missing missing) {
-                configValue = defaultValue;
+                return defaultValue;
             }
-            value = configValue;
         }
 
         @SuppressWarnings("PMD.ShortMethodName")
@@ -233,19 +243,23 @@ public abstract class SimpleYMLSection {
      *
      * @param <T> the type of the setting
      */
+    @SuppressWarnings("PMD.CommentRequired")
     protected abstract class OptionalSetting<T> {
         @Nullable
         private final T optional;
 
-        @SuppressWarnings({"PMD.ConstructorCallsOverridableMethod", "PMD.LocalVariableCouldBeFinal"})
+        @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
         public OptionalSetting() throws Invalid {
-            T optionalSetting;
+            optional = parse();
+        }
+
+        @Nullable
+        private T parse() throws Invalid {
             try {
-                optionalSetting = of();
+                return of();
             } catch (final Missing missing) {
-                optionalSetting = null;
+                return null;
             }
-            optional = optionalSetting;
         }
 
         @SuppressWarnings("PMD.ShortMethodName")
@@ -264,21 +278,20 @@ public abstract class SimpleYMLSection {
         @Serial
         private static final long serialVersionUID = 5231741827329435199L;
 
-        private final String message;
-
-        private final String cause;
-
+        /**
+         * Creates a new Invalid Simple config exception.
+         *
+         * @param cause the cause of the exception
+         */
         public InvalidSimpleConfigException(final String cause) {
-            super();
-            this.cause = cause;
-            this.message = "Could not load '" + name + "':" + this.cause;
+            super("Could not load '" + name + "': " + cause);
         }
 
-        @Override
-        public String getMessage() {
-            return this.message;
-        }
-
+        /**
+         * The name of the throwing section.
+         *
+         * @return the throwing section's name
+         */
         public final String getName() {
             return name;
         }
@@ -291,6 +304,11 @@ public abstract class SimpleYMLSection {
         @Serial
         private static final long serialVersionUID = 1827433702663413827L;
 
+        /**
+         * Creates a new Missing exception.
+         *
+         * @param missingSetting the missing setting
+         */
         public Missing(final String missingSetting) {
             super(RPG_MENU_CONFIG_SETTING + missingSetting + " is missing!");
         }
@@ -303,14 +321,31 @@ public abstract class SimpleYMLSection {
         @Serial
         private static final long serialVersionUID = -4898301219445719212L;
 
+        /**
+         * Creates a new Invalid exception.
+         *
+         * @param invalidSetting the invalid setting
+         */
         public Invalid(final String invalidSetting) {
             super(RPG_MENU_CONFIG_SETTING + invalidSetting + " is invalid!");
         }
 
+        /**
+         * Creates a new Invalid exception.
+         *
+         * @param invalidSetting the invalid setting
+         * @param cause          the reason why it is invalid
+         */
         public Invalid(final String invalidSetting, final String cause) {
             super(RPG_MENU_CONFIG_SETTING + invalidSetting + " is invalid: " + cause);
         }
 
+        /**
+         * Creates a new Invalid exception.
+         *
+         * @param invalidSetting the invalid setting
+         * @param cause          the reason why it is invalid
+         */
         public Invalid(final String invalidSetting, final Throwable cause) {
             super(RPG_MENU_CONFIG_SETTING + invalidSetting + " is invalid: " + cause.getMessage());
         }
