@@ -94,7 +94,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     private final RPGMenu menu = BetonQuest.getInstance().getRpgMenu();
 
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.NPathComplexity", "PMD.CyclomaticComplexity",
-            "PMD.CognitiveComplexity", "checkstyle:EmptyCatchBlock"})
+            "PMD.CognitiveComplexity"})
     public Menu(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final MenuID menuID) throws InvalidConfigurationException {
         super(menuID.getPackage(), menuID.getFullID(), menuID.getConfig());
         this.log = log;
@@ -111,24 +111,9 @@ public class Menu extends SimpleYMLSection implements Listener {
         } catch (final InstructionParseException e) {
             throw new InvalidConfigurationException(e.getMessage(), e);
         }
-        //load opening conditions
-        this.openConditions = new ArrayList<>();
-        try {
-            this.openConditions.addAll(getConditions("open_conditions", pack));
-        } catch (final Missing ignored) {
-        }
-        //load opening events
-        this.openEvents = new ArrayList<>();
-        try {
-            this.openEvents.addAll(getEvents("open_events", pack));
-        } catch (final Missing ignored) {
-        }
-        //load closing events
-        this.closeEvents = new ArrayList<>();
-        try {
-            this.closeEvents.addAll(getEvents("close_events", pack));
-        } catch (final Missing ignored) {
-        }
+        this.openConditions = getConditions("open_conditions", pack);
+        this.openEvents = getEvents("open_events", pack);
+        this.closeEvents = getEvents("close_events", pack);
         //load bound item
         this.boundItem = new OptionalSetting<QuestItem>() {
             @Override

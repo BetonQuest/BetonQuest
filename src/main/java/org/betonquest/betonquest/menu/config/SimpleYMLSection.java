@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -153,21 +154,11 @@ public abstract class SimpleYMLSection {
      *
      * @param key  where to search
      * @param pack configuration package of this file
-     * @return requested EventIDs
-     * @throws Missing if nothing is given
+     * @return requested EventIDs or empty list when not present
      * @throws Invalid if one of the events can't be found
      */
-    protected final List<EventID> getEvents(final String key, final QuestPackage pack) throws Missing, Invalid {
-        final List<String> strings = getStrings(key);
-        final List<EventID> events = new ArrayList<>(strings.size());
-        for (final String string : strings) {
-            try {
-                events.add(new EventID(pack, string));
-            } catch (final ObjectNotFoundException e) {
-                throw new Invalid(key, e);
-            }
-        }
-        return events;
+    protected final List<EventID> getEvents(final String key, final QuestPackage pack) throws Invalid {
+        return getID(key, pack, EventID::new);
     }
 
     /**
@@ -175,21 +166,38 @@ public abstract class SimpleYMLSection {
      *
      * @param key  where to search
      * @param pack configuration package of this file
-     * @return requested ConditionIDs
-     * @throws Missing if nothing is given
+     * @return requested ConditionIDs or empty list when not present
      * @throws Invalid if one of the conditions can't be found
      */
-    protected final List<ConditionID> getConditions(final String key, final QuestPackage pack) throws Missing, Invalid {
-        final List<String> strings = getStrings(key);
-        final List<ConditionID> conditions = new ArrayList<>(strings.size());
+    protected final List<ConditionID> getConditions(final String key, final QuestPackage pack) throws Invalid {
+        return getID(key, pack, ConditionID::new);
+    }
+
+    private <T extends ID> List<T> getID(final String key, final QuestPackage pack, final IDArgument<T> argument) throws Invalid {
+        final List<String> strings;
+        try {
+            strings = getStrings(key);
+        } catch (final Missing ignored) {
+            return List.of();
+        }
+        final List<T> ids = new ArrayList<>(strings.size());
         for (final String string : strings) {
             try {
-                conditions.add(new ConditionID(pack, string));
+                ids.add(argument.convert(pack, string));
             } catch (final ObjectNotFoundException e) {
                 throw new Invalid(key, e);
             }
         }
-        return conditions;
+        return ids;
+    }
+
+    /**
+     * Creates an {@link ID} from a pack and string.
+     *
+     * @param <T> the type of the id
+     */
+    private interface IDArgument<T extends ID> {
+        T convert(QuestPackage pack, String identifier) throws ObjectNotFoundException;
     }
 
     /**
