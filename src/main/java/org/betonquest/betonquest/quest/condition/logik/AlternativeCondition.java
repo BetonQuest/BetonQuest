@@ -1,13 +1,14 @@
-package org.betonquest.betonquest.conditions;
+package org.betonquest.betonquest.quest.condition.logik;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.bukkit.Bukkit;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,28 +16,41 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 /**
- * One of specified conditions has to be true
+ * One of specified conditions has to be true.
  */
-@SuppressWarnings("PMD.CommentRequired")
-public class AlternativeCondition extends Condition {
+public class AlternativeCondition implements NullableCondition {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
+    /**
+     * List of condition IDs.
+     */
     private final List<ConditionID> conditionIDs;
 
-    public AlternativeCondition(final Instruction instruction) throws InstructionParseException {
-        super(instruction, false);
-        staticness = true;
-        persistent = true;
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        conditionIDs = instruction.getList(instruction::getCondition);
+    /**
+     * The quest package.
+     */
+    private final QuestPackage questPackage;
+
+    /**
+     * Create a new alternative condition.
+     *
+     * @param log          the logger
+     * @param conditionIDs the condition IDs
+     * @param questPackage the quest package
+     */
+    public AlternativeCondition(final BetonQuestLogger log, final List<ConditionID> conditionIDs, final QuestPackage questPackage) {
+        this.log = log;
+        this.conditionIDs = conditionIDs;
+        this.questPackage = questPackage;
     }
 
-    @SuppressWarnings("PMD.CognitiveComplexity")
     @Override
-    protected Boolean execute(final Profile profile) {
+    @SuppressWarnings("PMD.CognitiveComplexity")
+    public boolean check(@Nullable final Profile profile) throws QuestRuntimeException {
         if (Bukkit.isPrimaryThread()) {
             for (final ConditionID id : conditionIDs) {
                 if (BetonQuest.condition(profile, id)) {
@@ -56,7 +70,7 @@ public class AlternativeCondition extends Condition {
                         return true;
                     }
                 } catch (final InterruptedException | ExecutionException e) {
-                    log.reportException(instruction.getPackage(), e);
+                    log.reportException(questPackage, e);
                     return false;
                 }
             }

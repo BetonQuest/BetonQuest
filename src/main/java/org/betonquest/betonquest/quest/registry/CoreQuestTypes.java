@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.registry;
 import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.conditions.AlternativeCondition;
 import org.betonquest.betonquest.conditions.CheckCondition;
 import org.betonquest.betonquest.conditions.LookingAtCondition;
 import org.betonquest.betonquest.conditions.NumberCompareCondition;
@@ -65,6 +64,7 @@ import org.betonquest.betonquest.quest.condition.item.ItemDurabilityConditionFac
 import org.betonquest.betonquest.quest.condition.journal.JournalConditionFactory;
 import org.betonquest.betonquest.quest.condition.language.LanguageConditionFactory;
 import org.betonquest.betonquest.quest.condition.location.LocationConditionFactory;
+import org.betonquest.betonquest.quest.condition.logik.AlternativeConditionFactory;
 import org.betonquest.betonquest.quest.condition.logik.ConjunctionConditionFactory;
 import org.betonquest.betonquest.quest.condition.moon.MoonCycleConditionFactory;
 import org.betonquest.betonquest.quest.condition.objective.ObjectiveConditionFactory;
@@ -253,7 +253,7 @@ public class CoreQuestTypes {
         conditionTypes.registerCombined("mooncycle", new MoonCycleConditionFactory(data, betonQuest.getVariableProcessor()));
         conditionTypes.register("numbercompare", NumberCompareCondition.class);
         conditionTypes.register("objective", new ObjectiveConditionFactory(betonQuest));
-        conditionTypes.register("or", AlternativeCondition.class);
+        conditionTypes.registerCombined("or", new AlternativeConditionFactory(loggerFactory));
         conditionTypes.register("partialdate", new PartialDateConditionFactory());
         conditionTypes.registerCombined("party", new PartyConditionFactory());
         conditionTypes.register("permission", new PermissionConditionFactory(loggerFactory, data, betonQuest.getVariableProcessor()));
