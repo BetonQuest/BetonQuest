@@ -23,7 +23,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -317,32 +316,13 @@ public class MenuItem extends SimpleYMLSection {
      */
     @SuppressWarnings("PMD.ShortClassName")
     public static class Item {
-        private final ItemID itemID;
-
         private final QuestItem questItem;
 
         private final VariableNumber amount;
 
         public Item(final ItemID itemID, final VariableNumber amount) throws InstructionParseException {
-            this.itemID = itemID;
             this.questItem = new QuestItem(itemID);
             this.amount = amount;
-        }
-
-        public ItemID getID() {
-            return itemID;
-        }
-
-        public QuestItem getItem() {
-            return questItem;
-        }
-
-        public boolean isItemEqual(@Nullable final ItemStack item) {
-            return questItem.compare(item);
-        }
-
-        public VariableNumber getAmount() {
-            return amount;
         }
 
         public ItemStack generate(final Profile profile) throws QuestRuntimeException {

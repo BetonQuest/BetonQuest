@@ -5,7 +5,6 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.Nullable;
@@ -13,7 +12,6 @@ import org.jetbrains.annotations.Nullable;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Abstract class to help parsing of yml config files.
@@ -21,14 +19,34 @@ import java.util.Locale;
 @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.AbstractClassWithoutAbstractMethod", "PMD.CommentRequired",
         "PMD.TooManyMethods"})
 public abstract class SimpleYMLSection {
+    /**
+     * Prefix for exception messages.
+     */
     public static final String RPG_MENU_CONFIG_SETTING = "RPGMenuConfig setting ";
 
+    /**
+     * Quest Package this section is in.
+     */
     protected final QuestPackage pack;
 
+    /**
+     * Backing section containing values.
+     */
     protected final ConfigurationSection config;
 
+    /**
+     * The Identifier of this section.
+     */
     protected final String name;
 
+    /**
+     * Creates a new section for getting validated values.
+     *
+     * @param pack   the pack the section is in
+     * @param name   the name of the
+     * @param config the backing config providing values
+     * @throws InvalidConfigurationException if the backing configuration is empty
+     */
     public SimpleYMLSection(final QuestPackage pack, final String name, final ConfigurationSection config) throws InvalidConfigurationException {
         this.pack = pack;
         this.config = config;
@@ -111,40 +129,6 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Parse a double from config file.
-     *
-     * @param key where to search
-     * @return requested Double
-     * @throws Missing if nothing is given
-     * @throws Invalid if given string is not a double
-     */
-    protected double getDouble(final String key) throws Missing, Invalid {
-        final String stringDouble = this.getString(key);
-        try {
-            return Double.parseDouble(stringDouble);
-        } catch (final NumberFormatException e) {
-            throw new Invalid(key, "Invalid number format for '" + stringDouble + "'");
-        }
-    }
-
-    /**
-     * Parse a long from config file.
-     *
-     * @param key where to search
-     * @return requested Long
-     * @throws Missing if nothing is given
-     * @throws Invalid if given string is not a long
-     */
-    protected long getLong(final String key) throws Missing, Invalid {
-        final String stringLong = this.getString(key);
-        try {
-            return Long.parseLong(stringLong);
-        } catch (final NumberFormatException e) {
-            throw new Invalid(key, "Invalid number format for '" + stringLong + "'");
-        }
-    }
-
-    /**
      * Parse a boolean from config file.
      *
      * @param key where to search
@@ -161,49 +145,6 @@ public abstract class SimpleYMLSection {
             return false;
         } else {
             throw new Invalid(key);
-        }
-    }
-
-    /**
-     * Parse an enum value from config file.
-     *
-     * @param key      where to search
-     * @param enumType type of the enum
-     * @param <T>      the Enum class
-     * @return requested Enum
-     * @throws Missing if nothing is given
-     * @throws Invalid if given string is not of given type
-     */
-    protected <T extends Enum<T>> T getEnum(final String key, final Class<T> enumType) throws Missing, Invalid {
-        final String stringEnum = this.getString(key).toUpperCase(Locale.ROOT).replace(" ", "_");
-        try {
-            return Enum.valueOf(enumType, stringEnum);
-        } catch (final IllegalArgumentException e) {
-            throw new Invalid(key, "'" + stringEnum + "' isn't a " + enumType.getName());
-        }
-    }
-
-    /**
-     * Parse a material from config file.
-     *
-     * @param key where to search
-     * @return requested Material
-     * @throws Missing if nothing is given
-     * @throws Invalid if given string is not a material
-     */
-    protected final Material getMaterial(final String key) throws Missing, Invalid {
-        if (key.trim().matches("\\d+")) {
-            throw new Invalid(key, "Material numbers can no longer be supported! Please use the names instead.");
-        }
-        final String stringMaterial = this.getString(key);
-        Material material = Material.matchMaterial(stringMaterial.replace(" ", "_"));
-        if (material == null) {
-            material = Material.matchMaterial(stringMaterial.replace(" ", "_"), true);
-        }
-        if (material == null) {
-            throw new Invalid(key, "'" + stringMaterial + "' isn't a material");
-        } else {
-            return material;
         }
     }
 
@@ -323,12 +264,6 @@ public abstract class SimpleYMLSection {
             super();
             this.cause = cause;
             this.message = "Could not load '" + name + "':" + this.cause;
-        }
-
-        public InvalidSimpleConfigException(final InvalidSimpleConfigException exception) {
-            super();
-            this.cause = "  Error in '" + exception.getName() + "':\n" + exception.cause;
-            this.message = "Could not load '" + getName() + "'\n" + this.cause;
         }
 
         @Override

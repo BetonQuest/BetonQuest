@@ -291,13 +291,6 @@ public class Menu extends SimpleYMLSection implements Listener {
     }
 
     /**
-     * @return the height of the menu in slots
-     */
-    public int getHeight() {
-        return height;
-    }
-
-    /**
      * @return the size of the menu in slots
      */
     public final int getSize() {
@@ -339,21 +332,6 @@ public class Menu extends SimpleYMLSection implements Listener {
             }
         }
         return null;
-    }
-
-    /**
-     * @return the item this inventory is bound to
-     */
-    @Nullable
-    public QuestItem getBoundItem() {
-        return boundItem;
-    }
-
-    /**
-     * @return a list containing all conditions which have to be met to open the menu
-     */
-    public List<ConditionID> getOpenConditions() {
-        return openConditions;
     }
 
     /**
