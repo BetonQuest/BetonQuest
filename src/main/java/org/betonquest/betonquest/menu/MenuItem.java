@@ -23,7 +23,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,9 +30,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A Item which Is displayed as option in a menu and has some events that are fired when item is clicked.
+ * An Item which Is displayed as option in a menu and has some events that are fired when item is clicked.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.GodClass"})
 public class MenuItem extends SimpleYMLSection {
     /**
      * Text config property for Item lore.
@@ -95,8 +93,17 @@ public class MenuItem extends SimpleYMLSection {
      */
     private final boolean close;
 
-    @SuppressWarnings({"PMD.ExceptionAsFlowControl", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity",
-            "PMD.NPathComplexity", "checkstyle:EmptyCatchBlock"})
+    /**
+     * Creates a new Menu Item.
+     *
+     * @param log     the custom logger for this class
+     * @param pack    the quest package the item is in
+     * @param menuID  the menu the item is in
+     * @param name    the name of the item
+     * @param section the configuration representing the item
+     * @throws InvalidConfigurationException if there are missing or invalid entries
+     */
+    @SuppressWarnings({"PMD.ExceptionAsFlowControl", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     public MenuItem(final BetonQuestLogger log, final QuestPackage pack, final MenuID menuID, final String name, final ConfigurationSection section)
             throws InvalidConfigurationException {
         super(pack, name, section);
@@ -104,14 +111,14 @@ public class MenuItem extends SimpleYMLSection {
         try {
             //load item
             final ItemID itemID = new ItemID(pack, getString("item").trim());
-            final VariableNumber amount;
-            amount = new VariableNumber(pack, new DefaultSetting<>("1") {
-                @Override
-                @SuppressWarnings("PMD.ShortMethodName")
-                protected String of() throws Missing {
-                    return getString("amount");
-                }
-            }.get());
+            final VariableNumber amount = new VariableNumber(BetonQuest.getInstance().getVariableProcessor(), pack,
+                    new DefaultSetting<>("1") {
+                        @Override
+                        @SuppressWarnings("PMD.ShortMethodName")
+                        protected String of() throws Missing {
+                            return getString("amount");
+                        }
+                    }.get());
             this.item = new Item(itemID, amount);
             // load description
             this.descriptions = new HashMap<>();
@@ -121,54 +128,23 @@ public class MenuItem extends SimpleYMLSection {
                 log.warn("Missing description for menu item  '" + itemID.getFullID() + "' in menu '"
                         + menuID.getFullID() + "' in package '" + pack.getQuestPath() + "'! Reason: " + e.getMessage(), e);
             }
-            //load events
-            this.leftClick = new ArrayList<>();
-            this.shiftLeftClick = new ArrayList<>();
-            this.rightClick = new ArrayList<>();
-            this.shiftRightClick = new ArrayList<>();
-            this.middleMouseClick = new ArrayList<>();
             if (config.isConfigurationSection("click")) {
-                try {
-                    this.leftClick.addAll(getEvents("click.left", pack));
-                } catch (final Missing ignored) {
-                }
-                try {
-                    this.shiftLeftClick.addAll(getEvents("click.shiftLeft", pack));
-                } catch (final Missing ignored) {
-                }
-                try {
-                    this.rightClick.addAll(getEvents("click.right", pack));
-                } catch (final Missing ignored) {
-                }
-                try {
-                    this.shiftRightClick.addAll(getEvents("click.shiftRight", pack));
-                } catch (final Missing ignored) {
-                }
-                try {
-                    this.middleMouseClick.addAll(getEvents("click.middleMouse", pack));
-                } catch (final Missing ignored) {
-                }
+                this.leftClick = getEvents("click.left", pack);
+                this.shiftLeftClick = getEvents("click.shiftLeft", pack);
+                this.rightClick = getEvents("click.right", pack);
+                this.shiftRightClick = getEvents("click.shiftRight", pack);
+                this.middleMouseClick = getEvents("click.middleMouse", pack);
             } else {
-                try {
-                    final List<EventID> list = getEvents("click", pack);
-                    this.leftClick.addAll(list);
-                    this.shiftLeftClick.addAll(list);
-                    this.rightClick.addAll(list);
-                    this.shiftRightClick.addAll(list);
-                    this.middleMouseClick.addAll(list);
-                } catch (final Missing ignored) {
-                }
+                final List<EventID> list = getEvents("click", pack);
+                this.leftClick = list;
+                this.shiftLeftClick = list;
+                this.rightClick = list;
+                this.shiftRightClick = list;
+                this.middleMouseClick = list;
             }
-            //load display conditions
             this.conditions = new ArrayList<>();
-            try {
-                this.conditions.addAll(getConditions("conditions", pack));
-            } catch (final Missing ignored) {
-            }
-            try {
-                this.conditions.addAll(getConditions("condition", pack));
-            } catch (final Missing ignored) {
-            }
+            this.conditions.addAll(getConditions("conditions", pack));
+            this.conditions.addAll(getConditions("condition", pack));
             //load if menu should close when item is clicked
             this.close = new DefaultSetting<>(BetonQuest.getInstance().getRpgMenu().getConfiguration().defaultCloseOnClick) {
                 @Override
@@ -315,38 +291,19 @@ public class MenuItem extends SimpleYMLSection {
     /**
      * Extended, static copy of org.betonquest.betonquest.Instruction.Item for easier quest item handling
      */
-    @SuppressWarnings("PMD.ShortClassName")
+    @SuppressWarnings({"PMD.ShortClassName", "PMD.CommentRequired"})
     public static class Item {
-        private final ItemID itemID;
-
         private final QuestItem questItem;
 
         private final VariableNumber amount;
 
         public Item(final ItemID itemID, final VariableNumber amount) throws InstructionParseException {
-            this.itemID = itemID;
             this.questItem = new QuestItem(itemID);
             this.amount = amount;
         }
 
-        public ItemID getID() {
-            return itemID;
-        }
-
-        public QuestItem getItem() {
-            return questItem;
-        }
-
-        public boolean isItemEqual(@Nullable final ItemStack item) {
-            return questItem.compare(item);
-        }
-
-        public VariableNumber getAmount() {
-            return amount;
-        }
-
         public ItemStack generate(final Profile profile) throws QuestRuntimeException {
-            return questItem.generate(amount.getInt(profile), profile);
+            return questItem.generate(amount.getValue(profile).intValue(), profile);
         }
     }
 }

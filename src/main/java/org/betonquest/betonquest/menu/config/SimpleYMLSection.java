@@ -4,8 +4,8 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.Nullable;
@@ -13,22 +13,40 @@ import org.jetbrains.annotations.Nullable;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Abstract class to help parsing of yml config files.
  */
-@SuppressWarnings({"PMD.PreserveStackTrace", "PMD.AbstractClassWithoutAbstractMethod", "PMD.CommentRequired",
-        "PMD.TooManyMethods"})
+@SuppressWarnings({"PMD.PreserveStackTrace", "PMD.AbstractClassWithoutAbstractMethod"})
 public abstract class SimpleYMLSection {
+    /**
+     * Prefix for exception messages.
+     */
     public static final String RPG_MENU_CONFIG_SETTING = "RPGMenuConfig setting ";
 
+    /**
+     * Quest Package this section is in.
+     */
     protected final QuestPackage pack;
 
+    /**
+     * Backing section containing values.
+     */
     protected final ConfigurationSection config;
 
+    /**
+     * The Identifier of this section.
+     */
     protected final String name;
 
+    /**
+     * Creates a new section for getting validated values.
+     *
+     * @param pack   the pack the section is in
+     * @param name   the name of the
+     * @param config the backing config providing values
+     * @throws InvalidConfigurationException if the backing configuration is empty
+     */
     public SimpleYMLSection(final QuestPackage pack, final String name, final ConfigurationSection config) throws InvalidConfigurationException {
         this.pack = pack;
         this.config = config;
@@ -111,40 +129,6 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Parse a double from config file.
-     *
-     * @param key where to search
-     * @return requested Double
-     * @throws Missing if nothing is given
-     * @throws Invalid if given string is not a double
-     */
-    protected double getDouble(final String key) throws Missing, Invalid {
-        final String stringDouble = this.getString(key);
-        try {
-            return Double.parseDouble(stringDouble);
-        } catch (final NumberFormatException e) {
-            throw new Invalid(key, "Invalid number format for '" + stringDouble + "'");
-        }
-    }
-
-    /**
-     * Parse a long from config file.
-     *
-     * @param key where to search
-     * @return requested Long
-     * @throws Missing if nothing is given
-     * @throws Invalid if given string is not a long
-     */
-    protected long getLong(final String key) throws Missing, Invalid {
-        final String stringLong = this.getString(key);
-        try {
-            return Long.parseLong(stringLong);
-        } catch (final NumberFormatException e) {
-            throw new Invalid(key, "Invalid number format for '" + stringLong + "'");
-        }
-    }
-
-    /**
      * Parse a boolean from config file.
      *
      * @param key where to search
@@ -165,68 +149,15 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Parse an enum value from config file.
-     *
-     * @param key      where to search
-     * @param enumType type of the enum
-     * @param <T>      the Enum class
-     * @return requested Enum
-     * @throws Missing if nothing is given
-     * @throws Invalid if given string is not of given type
-     */
-    protected <T extends Enum<T>> T getEnum(final String key, final Class<T> enumType) throws Missing, Invalid {
-        final String stringEnum = this.getString(key).toUpperCase(Locale.ROOT).replace(" ", "_");
-        try {
-            return Enum.valueOf(enumType, stringEnum);
-        } catch (final IllegalArgumentException e) {
-            throw new Invalid(key, "'" + stringEnum + "' isn't a " + enumType.getName());
-        }
-    }
-
-    /**
-     * Parse a material from config file.
-     *
-     * @param key where to search
-     * @return requested Material
-     * @throws Missing if nothing is given
-     * @throws Invalid if given string is not a material
-     */
-    protected final Material getMaterial(final String key) throws Missing, Invalid {
-        if (key.trim().matches("\\d+")) {
-            throw new Invalid(key, "Material numbers can no longer be supported! Please use the names instead.");
-        }
-        final String stringMaterial = this.getString(key);
-        Material material = Material.matchMaterial(stringMaterial.replace(" ", "_"));
-        if (material == null) {
-            material = Material.matchMaterial(stringMaterial.replace(" ", "_"), true);
-        }
-        if (material == null) {
-            throw new Invalid(key, "'" + stringMaterial + "' isn't a material");
-        } else {
-            return material;
-        }
-    }
-
-    /**
      * Parse a list of events from config file.
      *
      * @param key  where to search
      * @param pack configuration package of this file
-     * @return requested EventIDs
-     * @throws Missing if nothing is given
+     * @return requested EventIDs or empty list when not present
      * @throws Invalid if one of the events can't be found
      */
-    protected final List<EventID> getEvents(final String key, final QuestPackage pack) throws Missing, Invalid {
-        final List<String> strings = getStrings(key);
-        final List<EventID> events = new ArrayList<>(strings.size());
-        for (final String string : strings) {
-            try {
-                events.add(new EventID(pack, string));
-            } catch (final ObjectNotFoundException e) {
-                throw new Invalid(key, e);
-            }
-        }
-        return events;
+    protected final List<EventID> getEvents(final String key, final QuestPackage pack) throws Invalid {
+        return getID(key, pack, EventID::new);
     }
 
     /**
@@ -234,21 +165,46 @@ public abstract class SimpleYMLSection {
      *
      * @param key  where to search
      * @param pack configuration package of this file
-     * @return requested ConditionIDs
-     * @throws Missing if nothing is given
+     * @return requested ConditionIDs or empty list when not present
      * @throws Invalid if one of the conditions can't be found
      */
-    protected final List<ConditionID> getConditions(final String key, final QuestPackage pack) throws Missing, Invalid {
-        final List<String> strings = getStrings(key);
-        final List<ConditionID> conditions = new ArrayList<>(strings.size());
+    protected final List<ConditionID> getConditions(final String key, final QuestPackage pack) throws Invalid {
+        return getID(key, pack, ConditionID::new);
+    }
+
+    private <T extends ID> List<T> getID(final String key, final QuestPackage pack, final IDArgument<T> argument) throws Invalid {
+        final List<String> strings;
+        try {
+            strings = getStrings(key);
+        } catch (final Missing ignored) {
+            return List.of();
+        }
+        final List<T> ids = new ArrayList<>(strings.size());
         for (final String string : strings) {
             try {
-                conditions.add(new ConditionID(pack, string));
+                ids.add(argument.convert(pack, string));
             } catch (final ObjectNotFoundException e) {
                 throw new Invalid(key, e);
             }
         }
-        return conditions;
+        return ids;
+    }
+
+    /**
+     * Creates an {@link ID} from a pack and string.
+     *
+     * @param <T> the type of the id
+     */
+    private interface IDArgument<T extends ID> {
+        /**
+         * Creates a new ID.
+         *
+         * @param pack       the source pack
+         * @param identifier the id name, potentially prefixed with a quest path
+         * @return the newly created id
+         * @throws ObjectNotFoundException when there is no such {@link T} in the resolved quest package
+         */
+        T convert(@Nullable QuestPackage pack, String identifier) throws ObjectNotFoundException;
     }
 
     /**
@@ -256,19 +212,22 @@ public abstract class SimpleYMLSection {
      *
      * @param <T> the type of the setting
      */
+    @SuppressWarnings("PMD.CommentRequired")
     protected abstract class DefaultSetting<T> {
 
         private final T value;
 
-        @SuppressWarnings({"PMD.ConstructorCallsOverridableMethod", "PMD.LocalVariableCouldBeFinal"})
+        @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
         public DefaultSetting(final T defaultValue) throws Invalid {
-            T configValue;
+            value = parse(defaultValue);
+        }
+
+        private T parse(final T defaultValue) throws Invalid {
             try {
-                configValue = of();
+                return of();
             } catch (final Missing missing) {
-                configValue = defaultValue;
+                return defaultValue;
             }
-            value = configValue;
         }
 
         @SuppressWarnings("PMD.ShortMethodName")
@@ -284,19 +243,23 @@ public abstract class SimpleYMLSection {
      *
      * @param <T> the type of the setting
      */
+    @SuppressWarnings("PMD.CommentRequired")
     protected abstract class OptionalSetting<T> {
         @Nullable
         private final T optional;
 
-        @SuppressWarnings({"PMD.ConstructorCallsOverridableMethod", "PMD.LocalVariableCouldBeFinal"})
+        @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
         public OptionalSetting() throws Invalid {
-            T optionalSetting;
+            optional = parse();
+        }
+
+        @Nullable
+        private T parse() throws Invalid {
             try {
-                optionalSetting = of();
+                return of();
             } catch (final Missing missing) {
-                optionalSetting = null;
+                return null;
             }
-            optional = optionalSetting;
         }
 
         @SuppressWarnings("PMD.ShortMethodName")
@@ -315,27 +278,20 @@ public abstract class SimpleYMLSection {
         @Serial
         private static final long serialVersionUID = 5231741827329435199L;
 
-        private final String message;
-
-        private final String cause;
-
+        /**
+         * Creates a new Invalid Simple config exception.
+         *
+         * @param cause the cause of the exception
+         */
         public InvalidSimpleConfigException(final String cause) {
-            super();
-            this.cause = cause;
-            this.message = "Could not load '" + name + "':" + this.cause;
+            super("Could not load '" + name + "': " + cause);
         }
 
-        public InvalidSimpleConfigException(final InvalidSimpleConfigException exception) {
-            super();
-            this.cause = "  Error in '" + exception.getName() + "':\n" + exception.cause;
-            this.message = "Could not load '" + getName() + "'\n" + this.cause;
-        }
-
-        @Override
-        public String getMessage() {
-            return this.message;
-        }
-
+        /**
+         * The name of the throwing section.
+         *
+         * @return the throwing section's name
+         */
         public final String getName() {
             return name;
         }
@@ -348,6 +304,11 @@ public abstract class SimpleYMLSection {
         @Serial
         private static final long serialVersionUID = 1827433702663413827L;
 
+        /**
+         * Creates a new Missing exception.
+         *
+         * @param missingSetting the missing setting
+         */
         public Missing(final String missingSetting) {
             super(RPG_MENU_CONFIG_SETTING + missingSetting + " is missing!");
         }
@@ -360,14 +321,31 @@ public abstract class SimpleYMLSection {
         @Serial
         private static final long serialVersionUID = -4898301219445719212L;
 
+        /**
+         * Creates a new Invalid exception.
+         *
+         * @param invalidSetting the invalid setting
+         */
         public Invalid(final String invalidSetting) {
             super(RPG_MENU_CONFIG_SETTING + invalidSetting + " is invalid!");
         }
 
+        /**
+         * Creates a new Invalid exception.
+         *
+         * @param invalidSetting the invalid setting
+         * @param cause          the reason why it is invalid
+         */
         public Invalid(final String invalidSetting, final String cause) {
             super(RPG_MENU_CONFIG_SETTING + invalidSetting + " is invalid: " + cause);
         }
 
+        /**
+         * Creates a new Invalid exception.
+         *
+         * @param invalidSetting the invalid setting
+         * @param cause          the reason why it is invalid
+         */
         public Invalid(final String invalidSetting, final Throwable cause) {
             super(RPG_MENU_CONFIG_SETTING + invalidSetting + " is invalid: " + cause.getMessage());
         }

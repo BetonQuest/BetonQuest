@@ -10,7 +10,6 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,8 +19,11 @@ import java.util.Optional;
 /**
  * The plugins config file.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class RPGMenuConfig extends SimpleYMLSection {
+    /**
+     * The messages section of the configuration.
+     */
+    private static final String MESSAGES = "messages";
 
     /**
      * Default value if menus close when an item was clicked.
@@ -38,16 +40,22 @@ public class RPGMenuConfig extends SimpleYMLSection {
      */
     private final List<String> languages;
 
-    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "NullAway"})
-    public RPGMenuConfig(final ConfigAccessor menuConfigAccessor) throws InvalidConfigurationException, FileNotFoundException {
+    /**
+     * Creates a new config for thr RPGMenu.
+     *
+     * @param menuConfigAccessor the provider for the config
+     * @throws InvalidConfigurationException if the backing configuration is empty
+     */
+    @SuppressWarnings("NullAway")
+    public RPGMenuConfig(final ConfigAccessor menuConfigAccessor) throws InvalidConfigurationException {
         super(null, "menuConfig.yml", menuConfigAccessor.getConfig());
         //load languages
-        if (!config.contains("messages") || !config.isConfigurationSection("messages")) {
-            throw new Missing("messages");
+        if (!config.contains(MESSAGES) || !config.isConfigurationSection(MESSAGES)) {
+            throw new Missing(MESSAGES);
         }
         this.messages = new HashMap<>();
         this.languages = new ArrayList<>();
-        languages.addAll(config.getConfigurationSection("messages").getKeys(false));
+        languages.addAll(config.getConfigurationSection(MESSAGES).getKeys(false));
         //load configuration settings
         this.defaultCloseOnClick = getBoolean("default_close");
 

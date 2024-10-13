@@ -36,7 +36,7 @@ import java.util.Map;
 /**
  * Class representing a menu.
  */
-@SuppressWarnings({"PMD.GodClass", "PMD.ShortClassName", "PMD.CommentRequired", "PMD.CouplingBetweenObjects"})
+@SuppressWarnings({"PMD.ShortClassName", "PMD.CouplingBetweenObjects"})
 public class Menu extends SimpleYMLSection implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -90,11 +90,19 @@ public class Menu extends SimpleYMLSection implements Listener {
     @Nullable
     private final MenuBoundCommand boundCommand;
 
-    @SuppressWarnings("PMD.AvoidFieldNameMatchingTypeName")
-    private final RPGMenu menu = BetonQuest.getInstance().getRpgMenu();
+    /**
+     * The RPGMenu "plugin" instance to open menus.
+     */
+    private final RPGMenu rpgMenu = BetonQuest.getInstance().getRpgMenu();
 
-    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.NPathComplexity", "PMD.CyclomaticComplexity",
-            "PMD.CognitiveComplexity", "checkstyle:EmptyCatchBlock"})
+    /**
+     * Creates a new Menu.
+     *
+     * @param loggerFactory the logger factory for new class specific custom logger
+     * @param log           the custom logger for this class
+     * @param menuID        the id of the menu
+     * @throws InvalidConfigurationException if config options are missing or invalid
+     */
     public Menu(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final MenuID menuID) throws InvalidConfigurationException {
         super(menuID.getPackage(), menuID.getFullID(), menuID.getConfig());
         this.log = log;
@@ -106,29 +114,13 @@ public class Menu extends SimpleYMLSection implements Listener {
         }
         //load title
         try {
-            final String title = ChatColor.translateAlternateColorCodes('&', getString("title"));
-            this.title = new VariableString(pack, title);
+            this.title = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, getString("title"));
         } catch (final InstructionParseException e) {
             throw new InvalidConfigurationException(e.getMessage(), e);
         }
-        //load opening conditions
-        this.openConditions = new ArrayList<>();
-        try {
-            this.openConditions.addAll(getConditions("open_conditions", pack));
-        } catch (final Missing ignored) {
-        }
-        //load opening events
-        this.openEvents = new ArrayList<>();
-        try {
-            this.openEvents.addAll(getEvents("open_events", pack));
-        } catch (final Missing ignored) {
-        }
-        //load closing events
-        this.closeEvents = new ArrayList<>();
-        try {
-            this.closeEvents.addAll(getEvents("close_events", pack));
-        } catch (final Missing ignored) {
-        }
+        this.openConditions = getConditions("open_conditions", pack);
+        this.openEvents = getEvents("open_events", pack);
+        this.closeEvents = getEvents("close_events", pack);
         //load bound item
         this.boundItem = new OptionalSetting<QuestItem>() {
             @Override
@@ -156,20 +148,38 @@ public class Menu extends SimpleYMLSection implements Listener {
                 return new MenuBoundCommand(loggerFactory.create(MenuBoundCommand.class), command);
             }
         }.get();
-        // load items
-        if (!config.isConfigurationSection("items")) {
-            throw new Missing("items");
+
+        this.slots = loadSlots(loggerFactory);
+
+        //load command and register listener
+        if (this.boundCommand != null) {
+            boundCommand.register();
         }
+        if (this.boundItem != null) {
+            Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        }
+    }
+
+    @SuppressWarnings("PMD.CyclomaticComplexity")
+    private List<Slots> loadSlots(final BetonQuestLoggerFactory loggerFactory) throws InvalidConfigurationException {
+        // load items
+        final String itemsSection = "items";
+        if (!config.isConfigurationSection(itemsSection)) {
+            throw new Missing(itemsSection);
+        }
+
         final Map<String, MenuItem> itemsMap = new HashMap<>();
-        for (final String key : config.getConfigurationSection("items").getKeys(false)) {
+        for (final String key : config.getConfigurationSection(itemsSection).getKeys(false)) {
             itemsMap.put(key, new MenuItem(loggerFactory.create(MenuItem.class), pack, menuID, key, config.getConfigurationSection("items." + key)));
         }
+
         //load slots
-        this.slots = new ArrayList<>();
-        if (!config.isConfigurationSection("slots")) {
-            throw new Missing("slots");
+        final String slotsSection = "slots";
+        if (!config.isConfigurationSection(slotsSection)) {
+            throw new Missing(slotsSection);
         }
-        for (final String key : config.getConfigurationSection("slots").getKeys(false)) {
+        final List<Slots> slots = new ArrayList<>();
+        for (final String key : config.getConfigurationSection(slotsSection).getKeys(false)) {
             final List<MenuItem> itemsList = new ArrayList<>();
             //check if items from list are all valid
             for (final String item : getStrings("slots." + key)) {
@@ -181,25 +191,18 @@ public class Menu extends SimpleYMLSection implements Listener {
             }
             // create a new slots object and add it to list
             try {
-                this.slots.add(new Slots(key, itemsList));
+                slots.add(new Slots(key, itemsList));
             } catch (final IllegalArgumentException e) {
-                throw new Invalid("slots", e);
+                throw new Invalid(slotsSection, e);
             }
         }
         //check for doubled assigned slots
         try {
-            Slots.checkSlots(this.slots, this.getSize());
+            Slots.checkSlots(slots, this.getSize());
         } catch (final Slots.SlotException e) {
             throw new Invalid("slots." + e.getSlots(), e);
         }
-
-        //load command and register listener
-        if (this.boundCommand != null) {
-            boundCommand.register();
-        }
-        if (this.boundItem != null) {
-            Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-        }
+        return slots;
     }
 
     /**
@@ -232,6 +235,11 @@ public class Menu extends SimpleYMLSection implements Listener {
         }
     }
 
+    /**
+     * Opens the menu on bound item interaction.
+     *
+     * @param event the event to process
+     */
     @EventHandler
     public void onItemClick(final PlayerInteractEvent event) {
         //check if item is bound item
@@ -246,7 +254,7 @@ public class Menu extends SimpleYMLSection implements Listener {
         }
         //open the menu
         log.debug(pack, onlineprofile + " used bound item of menu " + this.menuID);
-        menu.openMenu(onlineprofile, this.menuID);
+        rpgMenu.openMenu(onlineprofile, this.menuID);
     }
 
     /**
@@ -291,13 +299,6 @@ public class Menu extends SimpleYMLSection implements Listener {
     }
 
     /**
-     * @return the height of the menu in slots
-     */
-    public int getHeight() {
-        return height;
-    }
-
-    /**
      * @return the size of the menu in slots
      */
     public final int getSize() {
@@ -309,7 +310,7 @@ public class Menu extends SimpleYMLSection implements Listener {
      * @return the title of the menu
      */
     public String getTitle(final Profile profile) {
-        return title.getString(profile);
+        return ChatColor.translateAlternateColorCodes('&', title.getString(profile));
     }
 
     /**
@@ -342,26 +343,17 @@ public class Menu extends SimpleYMLSection implements Listener {
     }
 
     /**
-     * @return the item this inventory is bound to
-     */
-    @Nullable
-    public QuestItem getBoundItem() {
-        return boundItem;
-    }
-
-    /**
-     * @return a list containing all conditions which have to be met to open the menu
-     */
-    public List<ConditionID> getOpenConditions() {
-        return openConditions;
-    }
-
-    /**
      * A command which can be used to open the gui.
      * To perform the command a player must match all open conditions.
      */
     private class MenuBoundCommand extends SimpleCommand {
 
+        /**
+         * Creates a new command for opening this menu.
+         *
+         * @param log  the custom logger
+         * @param name the command name
+         */
         public MenuBoundCommand(final BetonQuestLogger log, final String name) {
             super(log, name, 0);
         }
@@ -375,7 +367,7 @@ public class Menu extends SimpleYMLSection implements Listener {
             final OnlineProfile onlineProfile = PlayerConverter.getID(player);
             if (mayOpen(onlineProfile)) {
                 log.debug(pack, onlineProfile + " run bound command of " + menuID);
-                menu.openMenu(onlineProfile, menuID);
+                rpgMenu.openMenu(onlineProfile, menuID);
                 return true;
             } else {
                 player.sendMessage(this.noPermissionMessage(sender));
