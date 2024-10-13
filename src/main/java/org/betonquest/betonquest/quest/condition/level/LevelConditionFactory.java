@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.condition.experience;
+package org.betonquest.betonquest.quest.condition.level;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -12,9 +12,9 @@ import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
 /**
- * Factory for {@link ExperienceCondition}s.
+ * Factory for {@link LevelCondition}s.
  */
-public class ExperienceConditionFactory implements PlayerConditionFactory {
+public class LevelConditionFactory implements PlayerConditionFactory {
 
     /**
      * Logger factory to create a logger for conditions.
@@ -32,7 +32,7 @@ public class ExperienceConditionFactory implements PlayerConditionFactory {
      * @param loggerFactory the logger factory
      * @param data          the data used for checking the condition on the main thread
      */
-    public ExperienceConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public LevelConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
         this.loggerFactory = loggerFactory;
         this.data = data;
     }
@@ -40,8 +40,8 @@ public class ExperienceConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws InstructionParseException {
         final VariableNumber amount = instruction.getVarNum();
-        final BetonQuestLogger log = loggerFactory.create(ExperienceCondition.class);
+        final BetonQuestLogger log = loggerFactory.create(LevelCondition.class);
         return new PrimaryServerThreadPlayerCondition(
-                new OnlineConditionAdapter(new ExperienceCondition(amount), log, instruction.getPackage()), data);
+                new OnlineConditionAdapter(new LevelCondition(amount), log, instruction.getPackage()), data);
     }
 }

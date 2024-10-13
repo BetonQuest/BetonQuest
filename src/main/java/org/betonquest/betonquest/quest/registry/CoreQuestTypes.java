@@ -48,7 +48,7 @@ import org.betonquest.betonquest.quest.condition.conversation.ConversationCondit
 import org.betonquest.betonquest.quest.condition.conversation.InConversationConditionFactory;
 import org.betonquest.betonquest.quest.condition.effect.EffectConditionFactory;
 import org.betonquest.betonquest.quest.condition.entity.EntityConditionFactory;
-import org.betonquest.betonquest.quest.condition.experience.ExperienceConditionFactory;
+import org.betonquest.betonquest.quest.condition.level.LevelConditionFactory;
 import org.betonquest.betonquest.quest.condition.facing.FacingConditionFactory;
 import org.betonquest.betonquest.quest.condition.flying.FlyingConditionFactory;
 import org.betonquest.betonquest.quest.condition.gamemode.GameModeConditionFactory;
@@ -233,7 +233,7 @@ public class CoreQuestTypes {
         conditionTypes.register("effect", new EffectConditionFactory(loggerFactory, data));
         conditionTypes.register("empty", new EmptySlotsConditionFactory(loggerFactory, data));
         conditionTypes.registerCombined("entities", new EntityConditionFactory(data, betonQuest.getVariableProcessor()));
-        conditionTypes.register("experience", new ExperienceConditionFactory(loggerFactory, data));
+        conditionTypes.register("level", new LevelConditionFactory(loggerFactory, data));
         conditionTypes.register("facing", new FacingConditionFactory(loggerFactory, data));
         conditionTypes.register("fly", new FlyingConditionFactory(loggerFactory, data));
         conditionTypes.register("gamemode", new GameModeConditionFactory(loggerFactory, data));
