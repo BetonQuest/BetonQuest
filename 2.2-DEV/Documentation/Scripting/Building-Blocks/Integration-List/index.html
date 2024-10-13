@@ -6578,6 +6578,14 @@ the <code>notify</code> keyword optionally with the notification interval after 
 <span class="l l-Scalar l-Scalar-Plain">mmocorebreakblock 64 block:STONE</span><span class="w">  </span><span class="c1">#vanilla material</span>
 <span class="l l-Scalar l-Scalar-Plain">mmocorebreakblock 1 block:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVy</span><span class="w"> </span><span class="c1">#... this is a heads texture data</span>
 </code></pre></div></td></tr></table></div>
+<h4 id="change-mmocore-class-mmochangeclass">Change MMOCore class: <code>mmochangeclass</code><a class="headerlink" href="#change-mmocore-class-mmochangeclass" title="Permanent link">🔗</a></h4>
+<p>This objective requires the player to change their class.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Example</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">selectAnyClass</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmochangeclass</span><span class="nv"> </span><span class="s">events:pickedClass&quot;</span>
+<span class="w">    </span><span class="nt">selectMage</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmochangeclass</span><span class="nv"> </span><span class="s">class:MAGE</span><span class="nv"> </span><span class="s">events:startMageIntroQuest&quot;</span>
+</code></pre></div></td></tr></table></div>
 <h4 id="mmocore-profession-levelup-mmoprofessionlevelup">MMOCore Profession levelup: <code>mmoprofessionlevelup</code><a class="headerlink" href="#mmocore-profession-levelup-mmoprofessionlevelup" title="Permanent link">🔗</a></h4>
 <p>This objective requires the player to level the given profession to the specified level.
 Use <code>main</code> to check for class level ups.</p>
