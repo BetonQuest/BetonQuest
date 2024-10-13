@@ -55,7 +55,7 @@ import org.betonquest.betonquest.quest.condition.gamemode.GameModeConditionFacto
 import org.betonquest.betonquest.quest.condition.hand.HandConditionFactory;
 import org.betonquest.betonquest.quest.condition.health.HealthConditionFactory;
 import org.betonquest.betonquest.quest.condition.height.HeightConditionFactory;
-import org.betonquest.betonquest.quest.condition.hunger.HungerConditionFactory;
+import org.betonquest.betonquest.quest.condition.mana.ManaConditionFactory;
 import org.betonquest.betonquest.quest.condition.item.ItemConditionFactory;
 import org.betonquest.betonquest.quest.condition.item.ItemDurabilityConditionFactory;
 import org.betonquest.betonquest.quest.condition.journal.JournalConditionFactory;
@@ -242,7 +242,7 @@ public class CoreQuestTypes {
         conditionTypes.register("hand", new HandConditionFactory(loggerFactory, data));
         conditionTypes.register("health", new HealthConditionFactory(loggerFactory, data));
         conditionTypes.register("height", new HeightConditionFactory(loggerFactory, data, betonQuest.getVariableProcessor()));
-        conditionTypes.register("hunger", new HungerConditionFactory(loggerFactory, data));
+        conditionTypes.register("mana", new ManaConditionFactory(loggerFactory, data));
         conditionTypes.register("inconversation", new InConversationConditionFactory());
         conditionTypes.register("item", new ItemConditionFactory(loggerFactory, data, betonQuest));
         conditionTypes.register("itemdurability", new ItemDurabilityConditionFactory(loggerFactory, data));
