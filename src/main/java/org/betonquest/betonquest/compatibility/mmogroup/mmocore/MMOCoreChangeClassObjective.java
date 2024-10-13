@@ -35,7 +35,7 @@ public class MMOCoreChangeClassObjective extends Objective implements Listener {
     public MMOCoreChangeClassObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
 
-        targetClassName = instruction.getOptional("className");
+        targetClassName = instruction.getOptional("class");
     }
 
     /**
