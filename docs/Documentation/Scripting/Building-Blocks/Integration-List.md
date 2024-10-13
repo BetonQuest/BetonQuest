@@ -667,6 +667,15 @@ mmocorebreakblock 64 block:STONE  #vanilla material
 mmocorebreakblock 1 block:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVy #... this is a heads texture data
 ```
 
+#### Change MMOCore class: `mmochangeclass`
+This objective requires the player to change their class.
+
+```YAML title="Example" linenums="1"
+objectives:
+    selectAnyClass: "mmochangeclass events:pickedClass"
+    selectMage: "mmochangeclass class:MAGE events:startMageIntroQuest"
+```
+
 #### MMOCore Profession levelup: `mmoprofessionlevelup`
 This objective requires the player to level the given profession to the specified level.
 Use `main` to check for class level ups.
