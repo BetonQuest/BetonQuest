@@ -29,6 +29,6 @@ public class ManaCondition implements OnlineCondition {
     @Override
     public boolean check(final OnlineProfile profile) throws QuestRuntimeException {
         return PlayerAttributesCalculator.getTotalAttributeValue(profile.getPlayer(), PlayerAttributeType.MANA, true).intValue()
-                >= mana.getValue(profile).doubleValue();
+                >= mana.getValue(profile).intValue();
     }
 }
