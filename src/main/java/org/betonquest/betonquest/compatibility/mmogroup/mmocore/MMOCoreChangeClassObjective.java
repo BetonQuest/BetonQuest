@@ -14,8 +14,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Locale;
-
 /**
  * An objective that listens for the player changing their MMOCore class.
  */
@@ -40,6 +38,11 @@ public class MMOCoreChangeClassObjective extends Objective implements Listener {
         targetClassName = instruction.getOptional("className");
     }
 
+    /**
+     * Listens for the player changing their MMOCore class.
+     *
+     * @param event the event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onClassChange(final PlayerChangeClassEvent event) {
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
@@ -53,7 +56,7 @@ public class MMOCoreChangeClassObjective extends Objective implements Listener {
         }
 
         if (targetClassName.equalsIgnoreCase(event.getNewClass().getName())) {
-         completeObjective(onlineProfile);
+            completeObjective(onlineProfile);
         }
     }
 
