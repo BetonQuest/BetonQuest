@@ -48,6 +48,7 @@ import org.betonquest.betonquest.quest.condition.conversation.ConversationCondit
 import org.betonquest.betonquest.quest.condition.conversation.InConversationConditionFactory;
 import org.betonquest.betonquest.quest.condition.effect.EffectConditionFactory;
 import org.betonquest.betonquest.quest.condition.entity.EntityConditionFactory;
+import org.betonquest.betonquest.quest.condition.experience.ExperienceConditionFactory;
 import org.betonquest.betonquest.quest.condition.level.LevelConditionFactory;
 import org.betonquest.betonquest.quest.condition.facing.FacingConditionFactory;
 import org.betonquest.betonquest.quest.condition.flying.FlyingConditionFactory;
@@ -231,6 +232,7 @@ public class CoreQuestTypes {
         conditionTypes.register("conversation", new ConversationConditionFactory());
         conditionTypes.register("dayofweek", new DayOfWeekConditionFactory(loggerFactory.create(DayOfWeekConditionFactory.class)));
         conditionTypes.register("effect", new EffectConditionFactory(loggerFactory, data));
+        conditionTypes.register("experience", new ExperienceConditionFactory(loggerFactory, data));
         conditionTypes.register("empty", new EmptySlotsConditionFactory(loggerFactory, data));
         conditionTypes.registerCombined("entities", new EntityConditionFactory(data, betonQuest.getVariableProcessor()));
         conditionTypes.register("level", new LevelConditionFactory(loggerFactory, data));
