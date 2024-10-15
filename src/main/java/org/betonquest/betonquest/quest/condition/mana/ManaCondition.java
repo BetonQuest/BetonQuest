@@ -13,7 +13,7 @@ import org.betonquest.betonquest.instruction.variable.VariableNumber;
 public class ManaCondition implements OnlineCondition {
 
     /**
-     * The hunger level required to pass the condition.
+     * The mana required to pass the condition.
      */
     private final VariableNumber mana;
 

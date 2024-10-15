@@ -18,7 +18,7 @@ public class LevelCondition implements OnlineCondition {
     private final VariableNumber amount;
 
     /**
-     * Creates a new experience condition.
+     * Creates a new level condition.
      *
      * @param amount The level the player needs to get.
      */

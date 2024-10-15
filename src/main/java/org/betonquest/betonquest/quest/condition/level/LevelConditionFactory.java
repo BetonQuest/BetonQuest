@@ -27,7 +27,7 @@ public class LevelConditionFactory implements PlayerConditionFactory {
     private final PrimaryServerThreadData data;
 
     /**
-     * Create the experience factory.
+     * Create the level factory.
      *
      * @param loggerFactory the logger factory
      * @param data          the data used for checking the condition on the main thread
