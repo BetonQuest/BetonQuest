@@ -43,11 +43,21 @@
   </distributionManagement>
 
   <dependencies>
+    <!-- Eteirnum Core -->
+    <dependency>
+      <groupId>com.eteirnum</groupId>
+      <artifactId>EteirnumCore</artifactId>
+      <version>0.1-SNAPSHOT</version>
+      <classifier>dev-all</classifier>
+      <scope>provided</scope>
+    </dependency>
+
+
     <!-- from papermc repository -->
     <dependency>
       <groupId>io.papermc.paper</groupId>
       <artifactId>paper-api</artifactId>
-      <version>1.18.2-R0.1-SNAPSHOT</version>
+      <version>1.21.1-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
@@ -206,7 +216,7 @@
     <dependency>
       <groupId>com.comphenix.protocol</groupId>
       <artifactId>ProtocolLib</artifactId>
-      <version>5.2.0-SNAPSHOT</version>
+      <version>5.3.0-SNAPSHOT</version>
       <scope>provided</scope>
       <optional>true</optional>
       <exclusions>

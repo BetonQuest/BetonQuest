@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.condition.hunger;
+package org.betonquest.betonquest.quest.condition.mana;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -12,9 +12,9 @@ import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
 /**
- * Factory for {@link HungerCondition}s.
+ * Factory for {@link ManaCondition}s.
  */
-public class HungerConditionFactory implements PlayerConditionFactory {
+public class ManaConditionFactory implements PlayerConditionFactory {
 
     /**
      * Logger factory to create a logger for conditions.
@@ -27,21 +27,21 @@ public class HungerConditionFactory implements PlayerConditionFactory {
     private final PrimaryServerThreadData data;
 
     /**
-     * Create the hunger factory.
+     * Create the mana factory.
      *
      * @param loggerFactory the logger factory
      * @param data          the data used for checking the condition on the main thread
      */
-    public HungerConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public ManaConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
         this.loggerFactory = loggerFactory;
         this.data = data;
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws InstructionParseException {
-        final VariableNumber hunger = instruction.getVarNum();
-        final BetonQuestLogger log = loggerFactory.create(HungerCondition.class);
+        final VariableNumber mana = instruction.getVarNum();
+        final BetonQuestLogger log = loggerFactory.create(ManaCondition.class);
         return new PrimaryServerThreadPlayerCondition(
-                new OnlineConditionAdapter(new HungerCondition(hunger), log, instruction.getPackage()), data);
+                new OnlineConditionAdapter(new ManaCondition(mana), log, instruction.getPackage()), data);
     }
 }
