@@ -36,10 +36,10 @@ public class TimeInterval {
         if (end < start) {
             throw new InstructionParseException(type + " " + end + " is before " + start);
         }
-        if (!type.isValid(start)) {
+        if (type.isInvalid(start)) {
             throw new InstructionParseException(start + " is not a valid " + type);
         }
-        if (!type.isValid(end)) {
+        if (type.isInvalid(end)) {
             throw new InstructionParseException(end + " is not a valid " + type);
         }
     }

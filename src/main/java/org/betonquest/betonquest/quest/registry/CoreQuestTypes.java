@@ -314,15 +314,15 @@ public class CoreQuestTypes {
         eventTypes.register("opsudo", new OpSudoEventFactory(loggerFactory, data));
         eventTypes.register("party", new PartyEventFactory(loggerFactory));
         eventTypes.registerCombined("pickrandom", new PickRandomEventFactory(betonQuest.getVariableProcessor()));
-        eventTypes.register("point", new PointEventFactory(loggerFactory));
+        eventTypes.register("point", new PointEventFactory(loggerFactory, betonQuest.getVariableProcessor()));
         eventTypes.registerCombined("removeentity", new RemoveEntityEventFactory(data, betonQuest.getVariableProcessor()));
         eventTypes.registerCombined("run", new RunEventFactory(betonQuest));
         eventTypes.register("runForAll", new RunForAllEventFactory());
         eventTypes.register("runIndependent", new RunIndependentEventFactory());
         eventTypes.registerCombined("setblock", new SetBlockEventFactory(data));
-        eventTypes.register("score", new ScoreboardEventFactory(data));
+        eventTypes.register("score", new ScoreboardEventFactory(data, betonQuest.getVariableProcessor()));
         eventTypes.registerCombined("spawn", new SpawnMobEventFactory(data, betonQuest.getVariableProcessor()));
-        eventTypes.register("stage", new StageEventFactory(betonQuest));
+        eventTypes.register("stage", new StageEventFactory(betonQuest, betonQuest.getVariableProcessor()));
         eventTypes.register("sudo", new SudoEventFactory(loggerFactory, data));
         eventTypes.registerCombined("tag", new TagPlayerEventFactory(betonQuest, betonQuest.getSaver()));
         eventTypes.register("take", new TakeEventFactory(loggerFactory));

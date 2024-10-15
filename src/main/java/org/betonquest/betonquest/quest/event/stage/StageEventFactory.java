@@ -11,6 +11,7 @@ import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.objectives.StageObjective;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
@@ -25,12 +26,19 @@ public class StageEventFactory implements EventFactory {
     private final BetonQuest betonQuest;
 
     /**
+     * Processor to create new variables.
+     */
+    private final VariableProcessor variableProcessor;
+
+    /**
      * Creates the stage event factory.
      *
-     * @param betonQuest BetonQuest instance
+     * @param betonQuest        BetonQuest instance
+     * @param variableProcessor variable processor
      */
-    public StageEventFactory(final BetonQuest betonQuest) {
+    public StageEventFactory(final BetonQuest betonQuest, final VariableProcessor variableProcessor) {
         this.betonQuest = betonQuest;
+        this.variableProcessor = variableProcessor;
     }
 
     @Override
@@ -46,8 +54,8 @@ public class StageEventFactory implements EventFactory {
     }
 
     private Event createSetEvent(final Instruction instruction, final ObjectiveID objectiveID) throws InstructionParseException {
-        final VariableString variableString = new VariableString(instruction.getPackage(), instruction.next());
-        return new StageEvent(profile -> getStageObjective(objectiveID).setStage(profile, variableString.getString(profile)));
+        final VariableString variableString = new VariableString(variableProcessor, instruction.getPackage(), instruction.next());
+        return new StageEvent(profile -> getStageObjective(objectiveID).setStage(profile, variableString.getValue(profile)));
     }
 
     private Event createIncreaseEvent(final Instruction instruction, final ObjectiveID objectiveID) throws InstructionParseException {
@@ -65,7 +73,7 @@ public class StageEventFactory implements EventFactory {
         if (instruction.hasNext()) {
             final String stringAmount = instruction.next();
             if (!stringAmount.matches("condition(s)?:.+")) {
-                return new VariableNumber(instruction.getPackage(), stringAmount);
+                return new VariableNumber(variableProcessor, instruction.getPackage(), stringAmount);
             }
         }
         return null;
@@ -75,7 +83,7 @@ public class StageEventFactory implements EventFactory {
         if (amount == null) {
             return 1;
         }
-        final int targetAmount = amount.getInt(profile);
+        final int targetAmount = amount.getValue(profile).intValue();
         if (targetAmount <= 0) {
             throw new QuestRuntimeException("Amount must be greater than 0");
         }

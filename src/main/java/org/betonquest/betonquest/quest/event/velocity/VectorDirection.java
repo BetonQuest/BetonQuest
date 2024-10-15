@@ -5,15 +5,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 /**
- * Represents the type of direction how the given vector should get rotated
+ * Represents the type of direction how the given vector should get rotated.
  */
 public enum VectorDirection {
     /**
-     * The vector is absolute and won't get rotated
+     * The vector is absolute and won't get rotated.
      */
     ABSOLUTE((player, vector) -> vector),
     /**
-     * The vector is relative to the line of sight and will get rotated to match it
+     * The vector is relative to the line of sight and will get rotated to match it.
      */
     RELATIVE((player, vector) -> {
         final Location playerLoc = player.getLocation();
@@ -23,7 +23,7 @@ public enum VectorDirection {
         return vector;
     }),
     /**
-     * The vector is relative to the line of sight but only horizontal. The vertical (Y) velocity is absolute
+     * The vector is relative to the line of sight but only horizontal. The vertical (Y) velocity is absolute.
      */
     RELATIVE_Y((player, vector) -> {
         final Location playerLoc = player.getLocation();
@@ -32,7 +32,7 @@ public enum VectorDirection {
     });
 
     /**
-     * Instance of the calculator to calculate the vector
+     * Instance of the calculator to calculate the vector.
      */
     private final Calculator calculator;
 
@@ -52,7 +52,7 @@ public enum VectorDirection {
     }
 
     /**
-     * Functional interface to calculate the vector
+     * Functional interface to calculate the vector.
      */
     private interface Calculator {
         /**

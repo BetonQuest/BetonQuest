@@ -21,7 +21,7 @@ public class DeleteEffectEvent implements OnlineEvent {
     /**
      * Creates a new DeleteEffect event.
      *
-     * @param effects the effects to delete
+     * @param effects the effects to delete or an empty list to delete all effects
      */
     public DeleteEffectEvent(final List<PotionEffectType> effects) {
         this.effects = effects;

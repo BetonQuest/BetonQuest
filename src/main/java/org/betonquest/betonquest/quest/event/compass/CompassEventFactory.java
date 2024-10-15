@@ -69,9 +69,13 @@ public class CompassEventFactory implements EventFactory {
     private VariableLocation getCompassLocation(final String compass) throws InstructionParseException {
         for (final QuestPackage pack : Config.getPackages().values()) {
             final ConfigurationSection section = pack.getConfig().getConfigurationSection("compass");
-            if (section != null && section.contains(compass)) {
+            if (section == null) {
+                continue;
+            }
+            final ConfigurationSection compassSection = section.getConfigurationSection(compass);
+            if (compassSection != null) {
                 return new VariableLocation(BetonQuest.getInstance().getVariableProcessor(), pack,
-                        Utils.getNN(pack.getString("compass." + compass + ".location"),
+                        Utils.getNN(compassSection.getString("location"),
                                 "Missing location in compass section"));
             }
         }

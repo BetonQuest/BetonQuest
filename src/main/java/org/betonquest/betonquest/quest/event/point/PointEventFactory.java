@@ -10,6 +10,7 @@ import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NoNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.quest.event.NotificationSender;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.utils.Utils;
 
 import java.util.Locale;
@@ -25,12 +26,19 @@ public class PointEventFactory implements EventFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
+     * The variable processor to use.
+     */
+    private final VariableProcessor variableProcessor;
+
+    /**
      * Create the points event factory.
      *
-     * @param loggerFactory logger factory to use
+     * @param loggerFactory     logger factory to use
+     * @param variableProcessor variable processor to use
      */
-    public PointEventFactory(final BetonQuestLoggerFactory loggerFactory) {
+    public PointEventFactory(final BetonQuestLoggerFactory loggerFactory, final VariableProcessor variableProcessor) {
         this.loggerFactory = loggerFactory;
+        this.variableProcessor = variableProcessor;
     }
 
     @Override
@@ -63,6 +71,6 @@ public class PointEventFactory implements EventFactory {
             pointSender = new NoNotificationSender();
         }
 
-        return new PointEvent(pointSender, categoryName, category, new VariableNumber(instruction.getPackage(), number), type);
+        return new PointEvent(pointSender, categoryName, category, new VariableNumber(variableProcessor, instruction.getPackage(), number), type);
     }
 }

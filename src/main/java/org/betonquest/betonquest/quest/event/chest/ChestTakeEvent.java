@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
@@ -13,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Removes items from a chest.
  */
-public class ChestTakeEvent extends AbstractChestEvent implements NullableEvent {
+public class ChestTakeEvent extends AbstractChestEvent {
 
     /**
      * The items to take from the chest.
