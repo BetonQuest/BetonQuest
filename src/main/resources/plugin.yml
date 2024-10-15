@@ -6,6 +6,8 @@ description: ${project.description}
 website: ${project.organization.url}
 author: ${project.organization.name}
 authors: [ Wolf2323, SaltyAimbOtter, seyfahni, joblo2213, bundabrg, Co0sh ]
+depend:
+  - EteirnumCore
 softdepend:
   - Skript
   - MMOLib

@@ -49,13 +49,14 @@ import org.betonquest.betonquest.quest.condition.conversation.InConversationCond
 import org.betonquest.betonquest.quest.condition.effect.EffectConditionFactory;
 import org.betonquest.betonquest.quest.condition.entity.EntityConditionFactory;
 import org.betonquest.betonquest.quest.condition.experience.ExperienceConditionFactory;
+import org.betonquest.betonquest.quest.condition.level.LevelConditionFactory;
 import org.betonquest.betonquest.quest.condition.facing.FacingConditionFactory;
 import org.betonquest.betonquest.quest.condition.flying.FlyingConditionFactory;
 import org.betonquest.betonquest.quest.condition.gamemode.GameModeConditionFactory;
 import org.betonquest.betonquest.quest.condition.hand.HandConditionFactory;
 import org.betonquest.betonquest.quest.condition.health.HealthConditionFactory;
 import org.betonquest.betonquest.quest.condition.height.HeightConditionFactory;
-import org.betonquest.betonquest.quest.condition.hunger.HungerConditionFactory;
+import org.betonquest.betonquest.quest.condition.mana.ManaConditionFactory;
 import org.betonquest.betonquest.quest.condition.item.ItemConditionFactory;
 import org.betonquest.betonquest.quest.condition.item.ItemDurabilityConditionFactory;
 import org.betonquest.betonquest.quest.condition.journal.JournalConditionFactory;
@@ -231,9 +232,10 @@ public class CoreQuestTypes {
         conditionTypes.register("conversation", new ConversationConditionFactory());
         conditionTypes.register("dayofweek", new DayOfWeekConditionFactory(loggerFactory.create(DayOfWeekConditionFactory.class)));
         conditionTypes.register("effect", new EffectConditionFactory(loggerFactory, data));
+        conditionTypes.register("experience", new ExperienceConditionFactory(loggerFactory, data));
         conditionTypes.register("empty", new EmptySlotsConditionFactory(loggerFactory, data));
         conditionTypes.registerCombined("entities", new EntityConditionFactory(data, betonQuest.getVariableProcessor()));
-        conditionTypes.register("experience", new ExperienceConditionFactory(loggerFactory, data));
+        conditionTypes.register("level", new LevelConditionFactory(loggerFactory, data));
         conditionTypes.register("facing", new FacingConditionFactory(loggerFactory, data));
         conditionTypes.register("fly", new FlyingConditionFactory(loggerFactory, data));
         conditionTypes.register("gamemode", new GameModeConditionFactory(loggerFactory, data));
@@ -242,7 +244,7 @@ public class CoreQuestTypes {
         conditionTypes.register("hand", new HandConditionFactory(loggerFactory, data));
         conditionTypes.register("health", new HealthConditionFactory(loggerFactory, data));
         conditionTypes.register("height", new HeightConditionFactory(loggerFactory, data, betonQuest.getVariableProcessor()));
-        conditionTypes.register("hunger", new HungerConditionFactory(loggerFactory, data));
+        conditionTypes.register("mana", new ManaConditionFactory(loggerFactory, data));
         conditionTypes.register("inconversation", new InConversationConditionFactory());
         conditionTypes.register("item", new ItemConditionFactory(loggerFactory, data, betonQuest));
         conditionTypes.register("itemdurability", new ItemDurabilityConditionFactory(loggerFactory, data));

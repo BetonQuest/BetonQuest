@@ -1,5 +1,8 @@
 package org.betonquest.betonquest.quest.event.experience;
 
+import com.eteirnum.core.EteirnumCore;
+import com.eteirnum.core.player.attributes.PlayerAttributes;
+import net.Indyuce.mmocore.api.player.attribute.PlayerAttribute;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -12,32 +15,30 @@ public enum ExperienceModification {
     /**
      * Adds the given amount to the player's experience, just experience points.
      */
-    ADD_EXPERIENCE("addExperience", (player, amount) -> player.giveExp((int) amount)),
+    ADD_EXPERIENCE("addExperience", (player, amount) -> {
+        PlayerAttributes attribute = EteirnumCore.instance.getPlayerAttributesManager().get(player.getUniqueId());
+        attribute.addExp((int) amount);
+    }),
     /**
      * Adds the given amount to the player's experience, levels and or percentage to the next level.
      */
     ADD_LEVEL("addLevel", (player, amount) -> {
-        if (amount % 1 == 0) {
-            player.giveExpLevels((int) amount);
-        } else {
-            final double current = player.getLevel() + player.getExp();
-            final double amountToAdd = current + amount;
-            player.setLevel((int) amountToAdd);
-            player.setExp((float) (amountToAdd - (int) amountToAdd));
-        }
+        PlayerAttributes attribute = EteirnumCore.instance.getPlayerAttributesManager().get(player.getUniqueId());
+        attribute.addLevel((int) amount);
     }),
     /**
      * Sets the player's experience to the next level to the given amount.
      */
-    SET_EXPERIENCE_BAR("setExperienceBar", Player::setExp),
+    SET_EXPERIENCE_BAR("setExperience", (player, amount) -> {
+        PlayerAttributes attribute = EteirnumCore.instance.getPlayerAttributesManager().get(player.getUniqueId());
+        attribute.setExp((int) amount);
+    }),
     /**
      * Sets the player's experience-level to the given amount.
      */
     SET_LEVEL("setLevel", (player, amount) -> {
-        player.setLevel((int) amount);
-        if (amount % 1 != 0) {
-            player.setExp(amount - (int) amount);
-        }
+        PlayerAttributes attribute = EteirnumCore.instance.getPlayerAttributesManager().get(player.getUniqueId());
+        attribute.setLevel((int) amount);
     });
 
     /**

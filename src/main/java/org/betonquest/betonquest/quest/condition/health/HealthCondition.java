@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.quest.condition.health;
 
+import com.eteirnum.core.player.attributes.PlayerAttributeType;
+import com.eteirnum.core.player.attributes.PlayerAttributesCalculator;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -27,6 +29,9 @@ public class HealthCondition implements OnlineCondition {
     @Override
     public boolean check(final OnlineProfile profile) throws QuestRuntimeException {
         final double expectedHealth = health.getValue(profile).doubleValue();
-        return profile.getPlayer().getHealth() >= expectedHealth;
+
+        final Number hp = PlayerAttributesCalculator.getTotalAttributeValue(profile.getPlayer(), PlayerAttributeType.HP, true);
+
+        return hp.floatValue() >= expectedHealth;
     }
 }
