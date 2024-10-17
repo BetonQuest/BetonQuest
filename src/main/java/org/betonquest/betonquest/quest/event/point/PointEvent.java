@@ -9,37 +9,37 @@ import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 
 /**
- * Modifies players Points
+ * Modifies players Points.
  */
 public class PointEvent implements Event {
 
     /**
-     * The notification sender to use
+     * The notification sender to use.
      */
     private final NotificationSender pointSender;
 
     /**
-     * The plain name of the category
+     * The plain name of the category.
      */
     private final String categoryName;
 
     /**
-     * The category name
+     * The category name.
      */
     private final String category;
 
     /**
-     * The count
+     * The count.
      */
     private final VariableNumber count;
 
     /**
-     * The point type, how the points should be modified
+     * The point type, how the points should be modified.
      */
     private final Point pointType;
 
     /**
-     * Creates a new point event
+     * Creates a new point event.
      *
      * @param pointSender  the notification sender to use
      * @param categoryName the plain name of the category

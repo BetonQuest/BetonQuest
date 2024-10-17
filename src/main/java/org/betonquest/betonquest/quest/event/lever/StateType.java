@@ -5,16 +5,16 @@ package org.betonquest.betonquest.quest.event.lever;
  */
 public enum StateType {
     /**
-     * Sets the lever to on
+     * Sets the lever to on.
      */
     @SuppressWarnings("PMD.ShortVariable")
     ON(power -> true),
     /**
-     * Sets the lever to off
+     * Sets the lever to off.
      */
     OFF(power -> false),
     /**
-     * Toggles the lever
+     * Toggles the lever.
      */
     TOGGLE(power -> !power);
 

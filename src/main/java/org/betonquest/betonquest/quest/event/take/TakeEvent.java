@@ -16,7 +16,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Removes items from player's inventory and/or backpack
+ * Removes items from player's inventory and/or backpack.
  */
 public class TakeEvent extends AbstractTakeEvent {
 

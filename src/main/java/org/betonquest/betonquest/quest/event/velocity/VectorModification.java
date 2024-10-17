@@ -4,20 +4,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 /**
- * Represents the type of modification how the given vector should get merged to the player-velocity
+ * Represents the type of modification how the given vector should get merged to the player-velocity.
  */
 public enum VectorModification {
     /**
-     * Sets the player-velocity to the given vector
+     * Sets the player-velocity to the given vector.
      */
     SET((player, vector) -> vector),
     /**
-     * Adds the player-velocity to the given vector
+     * Adds the player-velocity to the given vector.
      */
     ADD((player, vector) -> vector.add(player.getVelocity()));
 
     /**
-     * Instance of the calculator to calculate the vector
+     * Instance of the calculator to calculate the vector.
      */
     private final Calculator calculator;
 
@@ -26,7 +26,7 @@ public enum VectorModification {
     }
 
     /**
-     * Calculate the new merged vector with the modification type
+     * Calculate the new merged vector with the modification type.
      *
      * @param player the player
      * @param vector the vector
@@ -37,11 +37,11 @@ public enum VectorModification {
     }
 
     /**
-     * Functional interface to calculate the vector
+     * Functional interface to calculate the vector.
      */
     private interface Calculator {
         /**
-         * Applies a modification to the given vector
+         * Applies a modification to the given vector.
          *
          * @param player the player to calculate the vector for
          * @param vector the vector to modify

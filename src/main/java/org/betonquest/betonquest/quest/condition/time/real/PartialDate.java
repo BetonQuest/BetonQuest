@@ -40,8 +40,8 @@ public enum PartialDate {
      * @param max the value to check
      * @return if the value is in range
      */
-    public boolean isValid(final int max) {
-        return max > 0 && (maxValue == -1 || max <= maxValue);
+    public boolean isInvalid(final int max) {
+        return max <= 0 || (maxValue != -1 && max > maxValue);
     }
 
     @Override

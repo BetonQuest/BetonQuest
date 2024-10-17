@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Removes items from player's inventory and/or backpack
+ * Removes items from player's inventory and/or backpack.
  */
 public abstract class AbstractTakeEvent implements OnlineEvent {
 
@@ -99,5 +99,4 @@ public abstract class AbstractTakeEvent implements OnlineEvent {
      * @return the remaining items after taking the desired amount
      */
     protected abstract ItemStack[] takeDesiredAmount(Profile profile, ItemStack... items);
-
 }

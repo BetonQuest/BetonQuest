@@ -43,6 +43,9 @@ public class DeleteEffectEventFactory implements EventFactory {
         List<PotionEffectType> effects = Collections.emptyList();
         if (!instruction.hasArgument("any") && instruction.size() > 1) {
             effects = instruction.getList(type -> {
+                if (type == null) {
+                    throw new InstructionParseException("Effect type cannot be null");
+                }
                 final PotionEffectType effect = PotionEffectType.getByName(type);
                 if (effect == null) {
                     throw new InstructionParseException("Unknown effect type: " + type);
