@@ -13,25 +13,30 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.ObjectiveID;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
+import org.betonquest.betonquest.menu.config.SimpleYMLSection;
 import org.betonquest.betonquest.utils.Utils;
-import org.bukkit.Bukkit;
+import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Represents a quest canceler, which cancels quests for players.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.CouplingBetweenObjects"})
 public class QuestCanceler {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -75,113 +80,68 @@ public class QuestCanceler {
      * @param cancelerID ID of the canceler (package.name)
      * @throws InstructionParseException when parsing the canceler fails for some reason
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings("PMD.LocalVariableCouldBeFinal")
     public QuestCanceler(final QuestPackage pack, final String cancelerID) throws InstructionParseException {
         this.cancelerID = Utils.getNN(cancelerID, "Name is null");
         this.pack = Utils.getNN(pack, "Package does not exist");
-        final String rawEvents = pack.getString("cancel." + cancelerID + ".events");
+        final ConfigurationSection section = pack.getConfig().getConfigurationSection("cancel." + cancelerID);
+        Utils.getNN(section, "Missing Canceler section!");
         // get the name
-        if (pack.getConfig().isConfigurationSection("cancel." + cancelerID + ".name")) {
-            for (final String lang : pack.getConfig().getConfigurationSection("cancel." + cancelerID + ".name")
+        if (section.isConfigurationSection("name")) {
+            for (final String lang : section.getConfigurationSection("name")
                     .getKeys(false)) {
-                name.put(lang, pack.getString("cancel." + cancelerID + ".name." + lang));
+                name.put(lang, section.getString("name." + lang));
             }
         } else {
-            name.put(Config.getLanguage(), pack.getString("cancel." + cancelerID + ".name"));
+            name.put(Config.getLanguage(), section.getString("name"));
         }
         // get the item
-        final String itemString = pack.getString("cancel." + cancelerID + ".item");
+        final String itemString = section.getString("item");
         item = itemString == null ? pack.getRawString("items.cancel_button") : itemString;
         // parse it to get the data
-        if (rawEvents == null) {
-            events = null;
-        } else {
-            final String[] arr = rawEvents.split(",");
-            events = new EventID[arr.length];
-            for (int i = 0; i < arr.length; i++) {
-                try {
-                    events[i] = new EventID(pack, arr[i]);
-                } catch (final ObjectNotFoundException e) {
-                    throw new InstructionParseException("Error while parsing quest canceler events: " + e.getMessage(), e);
-                }
-            }
-        }
-        final String rawConditions = pack.getString("cancel." + cancelerID + ".conditions");
-        if (rawConditions == null) {
-            conditions = null;
-        } else {
-            final String[] arr = rawConditions.split(",");
-            conditions = new ConditionID[arr.length];
-            for (int i = 0; i < arr.length; i++) {
-                try {
-                    conditions[i] = new ConditionID(pack, arr[i]);
-                } catch (final ObjectNotFoundException e) {
-                    throw new InstructionParseException("Error while parsing quest canceler conditions: " + e.getMessage(), e);
-                }
-            }
-        }
-        final String rawObjectives = pack.getString("cancel." + cancelerID + ".objectives");
-        if (rawObjectives == null) {
-            objectives = null;
-        } else {
-            final String[] arr = rawObjectives.split(",");
-            objectives = new ObjectiveID[arr.length];
-            for (int i = 0; i < arr.length; i++) {
-                try {
-                    objectives[i] = new ObjectiveID(pack, arr[i]);
-                } catch (final ObjectNotFoundException e) {
-                    throw new InstructionParseException("Error while parsing quest canceler objectives: " + e.getMessage(), e);
-                }
-            }
-        }
-        final String rawTags = pack.getString("cancel." + cancelerID + ".tags");
-        final String rawPoints = pack.getString("cancel." + cancelerID + ".points");
-        final String rawJournal = pack.getString("cancel." + cancelerID + ".journal");
-        final String rawLoc = pack.getString("cancel." + cancelerID + ".loc");
-        tags = rawTags == null ? null : rawTags.split(",");
-        points = rawPoints == null ? null : rawPoints.split(",");
-        journal = rawJournal == null ? null : rawJournal.split(",");
-        final String[] locParts = rawLoc == null ? null : rawLoc.split(";");
-        // get location
-        if (locParts != null) {
-            if (locParts.length != 4 && locParts.length != 6) {
-                log.warn(pack, "Wrong location format in quest canceler " + name);
-                loc = null;
-                return;
-            }
-            final double locX;
-            final double locY;
-            final double locZ;
+        events = parseID(section, "events", EventID::new);
+        conditions = parseID(section, "conditions", ConditionID::new);
+        objectives = parseID(section, "objectives", ObjectiveID::new);
+        tags = split(section, "tags");
+        points = split(section, "points");
+        journal = split(section, "journal");
+        final String rawLoc = GlobalVariableResolver.resolve(pack, section.getString("loc"));
+        if (rawLoc != null) {
+            Location tmp;
             try {
-                locX = Double.parseDouble(locParts[0]);
-                locY = Double.parseDouble(locParts[1]);
-                locZ = Double.parseDouble(locParts[2]);
-            } catch (final NumberFormatException e) {
-                log.warn(pack, "Could not parse location in quest canceler " + name, e);
-                loc = null;
-                return;
+                tmp = VariableLocation.parse(rawLoc);
+            } catch (final QuestRuntimeException e) {
+                log.warn(pack, "Could not parse location in quest canceler '" + name + "': " + e.getMessage(), e);
+                tmp = null;
             }
-            final World world = Bukkit.getWorld(locParts[3]);
-            if (world == null) {
-                log.warn(pack, "The world doesn't exist in quest canceler " + name);
-                loc = null;
-                return;
-            }
-            float yaw = 0;
-            float pitch = 0;
-            if (locParts.length == 6) {
-                try {
-                    yaw = Float.parseFloat(locParts[4]);
-                    pitch = Float.parseFloat(locParts[5]);
-                } catch (final NumberFormatException e) {
-                    log.warn(pack, "Could not parse yaw/pitch in quest canceler " + name + ", setting to 0", e);
-                    yaw = 0;
-                    pitch = 0;
-                }
-            }
-            loc = new Location(world, locX, locY, locZ, yaw, pitch);
+            loc = tmp;
         } else {
             loc = null;
+        }
+    }
+
+    @Nullable
+    private String[] split(final ConfigurationSection section, final String path) {
+        final String raw = section.getString(path);
+        return raw == null ? null : GlobalVariableResolver.resolve(pack, raw).split(",");
+    }
+
+    @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
+    @Nullable
+    private <T extends ID> T[] parseID(final ConfigurationSection section, final String path, final SimpleYMLSection.IDArgument<T> argument) throws InstructionParseException {
+        final String[] rawObjectives = split(section, path);
+        if (rawObjectives == null || rawObjectives.length == 0) {
+            return null;
+        }
+        try {
+            final T first = argument.convert(pack, rawObjectives[0]);
+            @SuppressWarnings("unchecked") final T[] converted = (T[]) Array.newInstance(first.getClass());
+            for (int i = 1; i < rawObjectives.length; i++) {
+                converted[i] = argument.convert(pack, rawObjectives[i]);
+            }
+            return converted;
+        } catch (final ObjectNotFoundException e) {
+            throw new InstructionParseException("Error while parsing quest canceler " + path + ": " + e.getMessage(), e);
         }
     }
 
@@ -201,31 +161,12 @@ public class QuestCanceler {
      *
      * @param onlineProfile the {@link OnlineProfile} of the player
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     public void cancel(final OnlineProfile onlineProfile) {
         log.debug("Canceling the quest " + name + " for " + onlineProfile);
         final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
         // remove tags, points, objectives and journals
-        if (tags != null) {
-            for (final String tag : tags) {
-                log.debug("  Removing tag " + tag);
-                if (tag.contains(".")) {
-                    playerData.removeTag(tag);
-                } else {
-                    playerData.removeTag(pack.getQuestPath() + "." + tag);
-                }
-            }
-        }
-        if (points != null) {
-            for (final String point : points) {
-                log.debug("  Removing points " + point);
-                if (point.contains(".")) {
-                    playerData.removePointsCategory(point);
-                } else {
-                    playerData.removePointsCategory(pack.getQuestPath() + "." + point);
-                }
-            }
-        }
+        removeSimple(tags, "tag", playerData::removeTag);
+        removeSimple(points, "point", playerData::removePointsCategory);
         if (objectives != null) {
             for (final ObjectiveID objectiveID : objectives) {
                 log.debug(objectiveID.getPackage(), "  Removing objective " + objectiveID);
@@ -240,14 +181,7 @@ public class QuestCanceler {
         }
         if (journal != null) {
             final Journal journal = playerData.getJournal();
-            for (final String entry : this.journal) {
-                log.debug("  Removing entry " + entry);
-                if (entry.contains(".")) {
-                    journal.removePointer(entry);
-                } else {
-                    journal.removePointer(pack.getQuestPath() + "." + entry);
-                }
-            }
+            removeSimple(this.journal, "journal entry", journal::removePointer);
             journal.update();
         }
         // teleport player to the location
@@ -268,6 +202,19 @@ public class QuestCanceler {
             Config.sendNotify(pack, onlineProfile, "quest_canceled", new String[]{questName}, "quest_cancelled,quest_canceled,info");
         } catch (final QuestRuntimeException exception) {
             log.warn("The notify system was unable to play a sound for the 'quest_canceled' category in quest '" + name + "'. Error was: '" + exception.getMessage() + "'");
+        }
+    }
+
+    private void removeSimple(@Nullable final String[] toRemove, final String logIdentifier, final Consumer<String> action) {
+        if (toRemove != null) {
+            for (final String entry : toRemove) {
+                log.debug("  Removing " + logIdentifier + " " + entry);
+                if (entry.contains(".")) {
+                    action.accept(entry);
+                } else {
+                    action.accept(pack.getQuestPath() + "." + entry);
+                }
+            }
         }
     }
 
