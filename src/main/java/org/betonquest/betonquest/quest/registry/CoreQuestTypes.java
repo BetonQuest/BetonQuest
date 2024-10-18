@@ -143,6 +143,7 @@ import org.betonquest.betonquest.quest.event.time.TimeEventFactory;
 import org.betonquest.betonquest.quest.event.variable.VariableEventFactory;
 import org.betonquest.betonquest.quest.event.velocity.VelocityEventFactory;
 import org.betonquest.betonquest.quest.event.weather.WeatherEventFactory;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
 import org.betonquest.betonquest.quest.registry.type.VariableTypeRegistry;
@@ -192,18 +193,26 @@ public class CoreQuestTypes {
     private final PrimaryServerThreadData data;
 
     /**
+     * Variable processor to create new variables.
+     */
+    private final VariableProcessor variableProcessor;
+
+    /**
      * Create a new Core Quest Types class for registering.
      *
-     * @param loggerFactory used in event factories
-     * @param server        the server used for primary server thread access.
-     * @param scheduler     the scheduler used for primary server thread access
-     * @param betonQuest    the plugin used for primary server access and type registration
+     * @param loggerFactory     used in event factories
+     * @param server            the server used for primary server thread access.
+     * @param scheduler         the scheduler used for primary server thread access
+     * @param betonQuest        the plugin used for primary server access and type registration
+     * @param variableProcessor the variable processor to create new variables
      */
     public CoreQuestTypes(final BetonQuestLoggerFactory loggerFactory,
-                          final Server server, final BukkitScheduler scheduler, final BetonQuest betonQuest) {
+                          final Server server, final BukkitScheduler scheduler, final BetonQuest betonQuest,
+                          final VariableProcessor variableProcessor) {
         this.loggerFactory = loggerFactory;
         this.server = server;
         this.betonQuest = betonQuest;
+        this.variableProcessor = variableProcessor;
         this.data = new PrimaryServerThreadData(server, scheduler, betonQuest);
     }
 
@@ -232,7 +241,7 @@ public class CoreQuestTypes {
         conditionTypes.register("dayofweek", new DayOfWeekConditionFactory(loggerFactory.create(DayOfWeekConditionFactory.class)));
         conditionTypes.register("effect", new EffectConditionFactory(loggerFactory, data));
         conditionTypes.register("empty", new EmptySlotsConditionFactory(loggerFactory, data));
-        conditionTypes.registerCombined("entities", new EntityConditionFactory(data, betonQuest.getVariableProcessor()));
+        conditionTypes.registerCombined("entities", new EntityConditionFactory(data, variableProcessor));
         conditionTypes.register("experience", new ExperienceConditionFactory(loggerFactory, data));
         conditionTypes.register("facing", new FacingConditionFactory(loggerFactory, data));
         conditionTypes.register("fly", new FlyingConditionFactory(loggerFactory, data));
@@ -241,7 +250,7 @@ public class CoreQuestTypes {
         conditionTypes.register("globaltag", new GlobalTagConditionFactory(betonQuest.getGlobalData()));
         conditionTypes.register("hand", new HandConditionFactory(loggerFactory, data));
         conditionTypes.register("health", new HealthConditionFactory(loggerFactory, data));
-        conditionTypes.register("height", new HeightConditionFactory(loggerFactory, data, betonQuest.getVariableProcessor()));
+        conditionTypes.register("height", new HeightConditionFactory(loggerFactory, data, variableProcessor));
         conditionTypes.register("hunger", new HungerConditionFactory(loggerFactory, data));
         conditionTypes.register("inconversation", new InConversationConditionFactory());
         conditionTypes.register("item", new ItemConditionFactory(loggerFactory, data, betonQuest));
@@ -250,27 +259,27 @@ public class CoreQuestTypes {
         conditionTypes.register("language", new LanguageConditionFactory(betonQuest));
         conditionTypes.register("location", new LocationConditionFactory(data, loggerFactory));
         conditionTypes.register("looking", new LookingAtConditionFactory(loggerFactory, data));
-        conditionTypes.registerCombined("mooncycle", new MoonCycleConditionFactory(data, betonQuest.getVariableProcessor()));
+        conditionTypes.registerCombined("mooncycle", new MoonCycleConditionFactory(data, variableProcessor));
         conditionTypes.registerCombined("numbercompare", new NumberCompareConditionFactory());
         conditionTypes.register("objective", new ObjectiveConditionFactory(betonQuest));
         conditionTypes.registerCombined("or", new AlternativeConditionFactory(loggerFactory));
         conditionTypes.register("partialdate", new PartialDateConditionFactory());
         conditionTypes.registerCombined("party", new PartyConditionFactory());
-        conditionTypes.register("permission", new PermissionConditionFactory(loggerFactory, data, betonQuest.getVariableProcessor()));
+        conditionTypes.register("permission", new PermissionConditionFactory(loggerFactory, data, variableProcessor));
         conditionTypes.register("point", new PointConditionFactory(betonQuest));
-        conditionTypes.registerCombined("random", new RandomConditionFactory(betonQuest.getVariableProcessor()));
+        conditionTypes.registerCombined("random", new RandomConditionFactory(variableProcessor));
         conditionTypes.register("rating", new ArmorRatingConditionFactory(loggerFactory, data));
         conditionTypes.register("realtime", new RealTimeConditionFactory());
         conditionTypes.register("ride", new RideConditionFactory(loggerFactory, data));
         conditionTypes.register("score", new ScoreboardConditionFactory(data));
         conditionTypes.register("sneak", new SneakConditionFactory(loggerFactory, data));
-        conditionTypes.register("stage", new StageConditionFactory(betonQuest.getVariableProcessor(), betonQuest));
+        conditionTypes.register("stage", new StageConditionFactory(variableProcessor, betonQuest));
         conditionTypes.register("tag", new TagConditionFactory(betonQuest));
         conditionTypes.registerCombined("testforblock", new BlockConditionFactory(data));
-        conditionTypes.registerCombined("time", new TimeConditionFactory(data, betonQuest.getVariableProcessor()));
-        conditionTypes.register("variable", new VariableConditionFactory(loggerFactory, data, betonQuest.getVariableProcessor()));
-        conditionTypes.registerCombined("weather", new WeatherConditionFactory(data, betonQuest.getVariableProcessor()));
-        conditionTypes.register("world", new WorldConditionFactory(loggerFactory, data, betonQuest.getVariableProcessor()));
+        conditionTypes.registerCombined("time", new TimeConditionFactory(data, variableProcessor));
+        conditionTypes.register("variable", new VariableConditionFactory(loggerFactory, data, variableProcessor));
+        conditionTypes.registerCombined("weather", new WeatherConditionFactory(data, variableProcessor));
+        conditionTypes.register("world", new WorldConditionFactory(loggerFactory, data, variableProcessor));
     }
 
     private void registerEvents(final EventTypeRegistry eventTypes) {
@@ -298,7 +307,7 @@ public class CoreQuestTypes {
         eventTypes.register("give", new GiveEventFactory(loggerFactory, data));
         eventTypes.register("givejournal", new GiveJournalEventFactory(loggerFactory, betonQuest, data));
         eventTypes.registerCombined("globaltag", new TagGlobalEventFactory(betonQuest));
-        eventTypes.registerCombined("globalpoint", new GlobalPointEventFactory(betonQuest.getVariableProcessor()));
+        eventTypes.registerCombined("globalpoint", new GlobalPointEventFactory(variableProcessor));
         eventTypes.register("hunger", new HungerEventFactory(loggerFactory, data));
         eventTypes.registerCombined("if", new IfElseEventFactory());
         eventTypes.register("itemdurability", new ItemDurabilityEventFactory(loggerFactory, data));
@@ -307,28 +316,28 @@ public class CoreQuestTypes {
         eventTypes.register("language", new LanguageEventFactory(betonQuest));
         eventTypes.registerCombined("lever", new LeverEventFactory(data));
         eventTypes.registerCombined("lightning", new LightningEventFactory(data));
-        eventTypes.registerCombined("log", new LogEventFactory(loggerFactory, betonQuest.getVariableProcessor()));
-        eventTypes.register("notify", new NotifyEventFactory(loggerFactory, data, betonQuest.getVariableProcessor()));
-        eventTypes.registerCombined("notifyall", new NotifyAllEventFactory(loggerFactory, data, betonQuest.getVariableProcessor()));
+        eventTypes.registerCombined("log", new LogEventFactory(loggerFactory, variableProcessor));
+        eventTypes.register("notify", new NotifyEventFactory(loggerFactory, data, variableProcessor));
+        eventTypes.registerCombined("notifyall", new NotifyAllEventFactory(loggerFactory, data, variableProcessor));
         eventTypes.registerCombined("objective", new ObjectiveEventFactory(betonQuest, loggerFactory));
         eventTypes.register("opsudo", new OpSudoEventFactory(loggerFactory, data));
         eventTypes.register("party", new PartyEventFactory(loggerFactory));
-        eventTypes.registerCombined("pickrandom", new PickRandomEventFactory(betonQuest.getVariableProcessor()));
-        eventTypes.register("point", new PointEventFactory(loggerFactory));
-        eventTypes.registerCombined("removeentity", new RemoveEntityEventFactory(data, betonQuest.getVariableProcessor()));
+        eventTypes.registerCombined("pickrandom", new PickRandomEventFactory(variableProcessor));
+        eventTypes.register("point", new PointEventFactory(loggerFactory, variableProcessor));
+        eventTypes.registerCombined("removeentity", new RemoveEntityEventFactory(data, variableProcessor));
         eventTypes.registerCombined("run", new RunEventFactory(betonQuest));
         eventTypes.register("runForAll", new RunForAllEventFactory());
         eventTypes.register("runIndependent", new RunIndependentEventFactory());
         eventTypes.registerCombined("setblock", new SetBlockEventFactory(data));
-        eventTypes.register("score", new ScoreboardEventFactory(data));
-        eventTypes.registerCombined("spawn", new SpawnMobEventFactory(data, betonQuest.getVariableProcessor()));
-        eventTypes.register("stage", new StageEventFactory(betonQuest));
+        eventTypes.register("score", new ScoreboardEventFactory(data, variableProcessor));
+        eventTypes.registerCombined("spawn", new SpawnMobEventFactory(data, variableProcessor));
+        eventTypes.register("stage", new StageEventFactory(betonQuest, variableProcessor));
         eventTypes.register("sudo", new SudoEventFactory(loggerFactory, data));
         eventTypes.registerCombined("tag", new TagPlayerEventFactory(betonQuest, betonQuest.getSaver()));
         eventTypes.register("take", new TakeEventFactory(loggerFactory));
         eventTypes.register("teleport", new TeleportEventFactory(loggerFactory, data));
-        eventTypes.registerCombined("time", new TimeEventFactory(server, data, betonQuest.getVariableProcessor()));
-        eventTypes.register("variable", new VariableEventFactory(betonQuest, betonQuest.getVariableProcessor()));
+        eventTypes.registerCombined("time", new TimeEventFactory(server, data, variableProcessor));
+        eventTypes.register("variable", new VariableEventFactory(betonQuest, variableProcessor));
         eventTypes.register("velocity", new VelocityEventFactory(loggerFactory, data));
         eventTypes.registerCombined("weather", new WeatherEventFactory(loggerFactory, data));
     }
@@ -372,7 +381,7 @@ public class CoreQuestTypes {
 
     private void registerVariables(final VariableTypeRegistry variables) {
         variables.register("condition", new ConditionVariableFactory());
-        variables.registerCombined("eval", new EvalVariableFactory(betonQuest.getVariableProcessor()));
+        variables.registerCombined("eval", new EvalVariableFactory(variableProcessor));
         variables.register("globalpoint", GlobalPointVariable.class);
         variables.register("globaltag", GlobalTagVariable.class);
         variables.register("item", ItemVariable.class);
