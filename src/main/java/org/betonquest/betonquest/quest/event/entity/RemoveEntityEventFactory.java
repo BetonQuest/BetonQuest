@@ -37,7 +37,7 @@ public class RemoveEntityEventFactory implements EventFactory, StaticEventFactor
     /**
      * Creates a new KillMobEventFactory.
      *
-     * @param data the data for primary server thread access
+     * @param data              the data for primary server thread access
      * @param variableProcessor the variable processor for creating variables
      */
     public RemoveEntityEventFactory(final PrimaryServerThreadData data, final VariableProcessor variableProcessor) {
@@ -67,10 +67,16 @@ public class RemoveEntityEventFactory implements EventFactory, StaticEventFactor
         }
         final VariableLocation loc = instruction.getLocation();
         final VariableNumber range = instruction.getVarNum();
-        final String name = instruction.getOptional("name");
         final boolean kill = instruction.hasArgument("kill");
+        final String nameString = instruction.getOptional("name");
+        final VariableString name = nameString == null ? null : new VariableString(variableProcessor,
+                instruction.getPackage(),
+                Utils.format(nameString, true, false).replace('_', ' ')
+        );
         final String markedString = instruction.getOptional("marked");
-        final VariableString marked = markedString == null ? null : new VariableString(variableProcessor, instruction.getPackage(), Utils.addPackage(instruction.getPackage(), markedString));
+        final VariableString marked = markedString == null ? null : new VariableString(variableProcessor,
+                instruction.getPackage(), Utils.addPackage(instruction.getPackage(), markedString)
+        );
         return new NullableEventAdapter(new RemoveEntityEvent(types, loc, range, name, marked, kill));
     }
 }
