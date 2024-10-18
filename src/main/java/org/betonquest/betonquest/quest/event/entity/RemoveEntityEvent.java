@@ -1,20 +1,20 @@
 package org.betonquest.betonquest.quest.event.entity;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.utils.EntityUtils;
 import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Removes all entities of given type at location.
@@ -29,18 +29,18 @@ public class RemoveEntityEvent implements NullableEvent {
     /**
      * The location of the mob.
      */
-    private final VariableLocation location;
+    private final VariableLocation loc;
 
     /**
      * The radius around the location.
      */
-    private final VariableNumber radius;
+    private final VariableNumber range;
 
     /**
      * The name of the mob.
      */
     @Nullable
-    private final String name;
+    private final VariableString name;
 
     /**
      * The mark of the mob.
@@ -64,10 +64,10 @@ public class RemoveEntityEvent implements NullableEvent {
      * @param kill     whether to kill the entities
      */
     public RemoveEntityEvent(final EntityType[] types, final VariableLocation location, final VariableNumber radius,
-                             @Nullable final String name, @Nullable final VariableString marked, final boolean kill) {
+                             @Nullable final VariableString name, @Nullable final VariableString marked, final boolean kill) {
         this.types = Arrays.copyOf(types, types.length);
-        this.location = location;
-        this.radius = radius;
+        this.loc = location;
+        this.range = radius;
         this.name = name;
         this.marked = marked;
         this.kill = kill;
@@ -75,20 +75,14 @@ public class RemoveEntityEvent implements NullableEvent {
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
-        final Location mobLocation = location.getValue(profile);
+        final Location location = loc.getValue(profile);
+        final String resolvedName = name == null ? null : name.getValue(profile);
+        final String resolvedMarked = marked == null ? null : marked.getValue(profile);
+        final double resolvedRange = range.getValue(profile).doubleValue();
+        final List<Entity> entities = EntityUtils.getSelectedEntity(location, resolvedName, resolvedMarked, resolvedRange);
         for (final EntityType type : types) {
-            mobLocation.getNearbyEntitiesByType(type.getEntityClass(), radius.getValue(profile).doubleValue())
-                    .stream()
-                    .filter(entity -> name == null || name.equals(entity.getName()))
-                    .filter(entity -> {
-                        if (marked == null) {
-                            return true;
-                        }
-                        final String value = marked.getString(profile);
-                        final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
-                        final String dataContainerValue = entity.getPersistentDataContainer().get(key, PersistentDataType.STRING);
-                        return dataContainerValue != null && dataContainerValue.equals(value);
-                    })
+            entities.stream()
+                    .filter(entity -> entity.getType() == type)
                     .forEach(entity -> {
                                 if (kill && entity instanceof final LivingEntity mob) {
                                     mob.setHealth(0);
