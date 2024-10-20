@@ -195,7 +195,7 @@ public abstract class SimpleYMLSection {
      *
      * @param <T> the type of the id
      */
-    private interface IDArgument<T extends ID> {
+    public interface IDArgument<T extends ID> {
         /**
          * Creates a new ID.
          *

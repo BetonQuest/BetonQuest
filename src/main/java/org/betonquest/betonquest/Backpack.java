@@ -10,13 +10,15 @@ import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ItemID;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.Utils;
+import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -45,22 +47,22 @@ public class Backpack implements Listener {
     private final BetonQuestLogger log;
 
     /**
-     * The {@link OnlineProfile} of the player
+     * The {@link OnlineProfile} of the player.
      */
     private final OnlineProfile onlineProfile;
 
     /**
-     * Database handler for the player
+     * Database handler for the player.
      */
     private final PlayerData playerData;
 
     /**
-     * Language of the player
+     * Language of the player.
      */
     private final String lang;
 
     /**
-     * Currently displayed page
+     * Currently displayed page.
      */
     private Display display;
 
@@ -412,8 +414,7 @@ public class Backpack implements Listener {
 
         private final Map<Integer, Pair<QuestPackage, String>> items = new HashMap<>();
 
-        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity",
-                "PMD.CognitiveComplexity"})
+        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
         public Compass() {
             super();
             int counter = 0;
@@ -424,18 +425,19 @@ public class Backpack implements Listener {
                 final ConfigurationSection section = pack.getConfig().getConfigurationSection("compass");
                 if (section != null) {
                     for (final String key : section.getKeys(false)) {
-                        final String location = pack.getString("compass." + key + ".location");
+                        final ConfigurationSection keySection = section.getConfigurationSection(key);
+                        final String location = keySection.getString("location");
                         String name;
-                        if (section.isConfigurationSection(key + ".name")) {
-                            name = pack.getString("compass." + key + ".name." + lang);
+                        if (keySection.isConfigurationSection("name")) {
+                            name = keySection.getString("name." + lang);
                             if (name == null) {
-                                name = pack.getString("compass." + key + ".name." + Config.getLanguage());
+                                name = keySection.getString("name." + Config.getLanguage());
                             }
                             if (name == null) {
-                                name = pack.getString("compass." + key + ".name.en");
+                                name = keySection.getString("name.en");
                             }
                         } else {
-                            name = pack.getString("compass." + key + ".name");
+                            name = keySection.getString("name");
                         }
                         if (name == null) {
                             log.warn("Name not defined in a compass pointer in " + packName + " package: " + key);
@@ -450,36 +452,21 @@ public class Backpack implements Listener {
                             continue;
                         }
                         // if the tag is present, continue
-                        final String[] parts = location.split(";");
-                        if (parts.length != 4) {
-                            log.warn("Could not parse location in a compass pointer in " + packName + " package: "
-                                    + key);
-                            continue;
-                        }
-                        final World world = Bukkit.getWorld(parts[3]);
-                        if (world == null) {
-                            log.warn("World does not exist in a compass pointer in " + packName + " package: " + key);
-                        }
-                        final int locX;
-                        final int locY;
-                        final int locZ;
+                        final Location loc;
                         try {
-                            locX = Integer.parseInt(parts[0]);
-                            locY = Integer.parseInt(parts[1]);
-                            locZ = Integer.parseInt(parts[2]);
-                        } catch (final NumberFormatException e) {
-                            log.warn("Could not parse location coordinates in a compass pointer in " + packName
+                            loc = VariableLocation.parse(GlobalVariableResolver.resolve(pack, location));
+                        } catch (final QuestRuntimeException e) {
+                            log.warn("Could not parse location in a compass pointer in " + packName
                                     + " package: " + key, e);
                             onlineProfile.getPlayer().closeInventory();
                             return;
                         }
-                        final Location loc = new Location(world, locX, locY, locZ);
                         // put location with next number
                         locations.put(counter, loc);
-                        names.put(counter, name);
-                        final String itemName = pack.getString("compass." + key + ".item");
+                        names.put(counter, GlobalVariableResolver.resolve(pack, name));
+                        final String itemName = keySection.getString("item");
                         if (itemName != null) {
-                            items.put(counter, Pair.of(pack, itemName));
+                            items.put(counter, Pair.of(pack, GlobalVariableResolver.resolve(pack, itemName)));
                         }
                         counter++;
                     }
