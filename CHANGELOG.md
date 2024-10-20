@@ -36,7 +36,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `crafting` objective where complex recipes are not recognized
 - `hieght` condition where variable locations threw an exception
 - `globalpoint` condition where not initialized global points where 0
-- `point` condition where not initialized global points where 0
+- `point` condition where not initialized points where 0
 ### Security
 
 ## [2.1.3] - 2024-08-06
