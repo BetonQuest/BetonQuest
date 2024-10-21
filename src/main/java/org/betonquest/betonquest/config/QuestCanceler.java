@@ -135,7 +135,8 @@ public class QuestCanceler {
         }
         try {
             final T first = argument.convert(pack, rawObjectives[0]);
-            @SuppressWarnings("unchecked") final T[] converted = (T[]) Array.newInstance(first.getClass());
+            @SuppressWarnings("unchecked") final T[] converted = (T[]) Array.newInstance(first.getClass(), rawObjectives.length);
+            converted[0] = first;
             for (int i = 1; i < rawObjectives.length; i++) {
                 converted[i] = argument.convert(pack, rawObjectives[i]);
             }
