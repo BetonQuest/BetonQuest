@@ -107,8 +107,8 @@
     <!-- from heroes repository -->
     <dependency>
       <groupId>com.herocraftonline.heroes</groupId>
-      <artifactId>heroes-stripped</artifactId>
-      <version>4dd3dd85</version>
+      <artifactId>Heroes</artifactId>
+      <version>1.10.7-RELEASE</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
