@@ -117,10 +117,12 @@
     <dependency>
       <groupId>io.lumine</groupId>
       <artifactId>Mythic-Dist</artifactId>
-      <version>5.6.2</version>
+      <version>5.7.2</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
+
+    <!-- from phoenixdevt repository -->
     <dependency>
       <groupId>io.lumine</groupId>
       <artifactId>MythicLib-dist</artifactId>
@@ -142,6 +144,7 @@
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
+
 
     <!-- from citizensnpcs repository -->
     <dependency>
@@ -489,7 +492,7 @@
       <url>https://mvn.lumine.io/repository/maven-public/</url>
     </repository>
     <repository>
-      <id>betonquest-phoenixdevelopment-repo</id>
+      <id>betonquest-phoenixdevt-repo</id>
       <url>https://nexus.phoenixdevt.fr/repository/maven-public/</url>
     </repository>
     <repository>
