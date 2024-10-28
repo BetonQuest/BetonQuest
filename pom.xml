@@ -357,7 +357,7 @@
     <dependency>
       <groupId>studio.magemonkey</groupId>
       <artifactId>fabled</artifactId>
-      <version>1.0.1-R1</version>
+      <version>1.0.2-R1</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
