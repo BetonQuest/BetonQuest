@@ -74,7 +74,7 @@ public class MythicLibSkillObjective extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onSkillCast(final SkillCastEvent event) {
         final String skillName = event.getCast().getHandler().getId();
-        if (!skillId.equalsIgnoreCase(skillName) || !event.getResult().isSuccessful(event.getMetadata())) {
+        if (!skillId.equalsIgnoreCase(skillName) || !event.getResult().isSuccessful()) {
             return;
         }
 
