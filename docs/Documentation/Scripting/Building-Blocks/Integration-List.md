@@ -982,28 +982,29 @@ This event opens a trading window of a Villager. The only argument is the unique
     shopkeeper b687538e-14ce-4b77-ae9f-e83b12f0b929
     ```
 
-## ProSkillAPI[](https://www.spigotmc.org/resources/91913/)
-
-This adds support for [ProMCTeam's SkillAPI fork](https://www.spigotmc.org/resources/91913/). They still update SkillAPI.  
+## Fabled[](https://www.spigotmc.org/resources/91913/)  
 
 ### Conditions
 
-#### SkillAPI Class: `skillapiclass`
+#### Fabled Class: `fabledclass`
 
-This condition checks if the player has specified class or a child class of the specified one. The first argument is simply the name of a class. You can add `exact` argument if you want to check for that exact class, without checking child classes.
+This condition checks if the player has specified class or a child class of the specified one.
+The first argument is simply the name of a class.
+You can add `exact` argument if you want to check for that exact class, without checking child classes.
 
 !!! example
     ```YAML
-    skillapiclass warrior
+    fabledclass warrior
     ```
 
-#### SkillAPI Level: `skillapilevel`
+#### Fabled Level: `fabledlevel`
 
-This condition checks if the player has specified or greater level is the specified class. The first argument is class name, the second one is the required level.
+This condition checks if the player has specified or greater level than the specified class level.
+The first argument is class name, the second one is the required level.
 
 !!! example
     ```YAML
-    skillapilevel warrior 3
+    fabledlevel warrior 3
     ```
 
 ## Skript[](http://dev.bukkit.org/bukkit-plugins/skript/)

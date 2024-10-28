@@ -1,20 +1,20 @@
-package org.betonquest.betonquest.compatibility.skillapi;
+package org.betonquest.betonquest.compatibility.fabled;
 
-import com.sucy.skill.api.event.SkillDamageEvent;
 import org.betonquest.betonquest.api.MobKillNotifier;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import studio.magemonkey.fabled.api.event.SkillDamageEvent;
 
 /**
  * Listens to kills by SkillAPI skills.
  */
 @SuppressWarnings("PMD.CommentRequired")
-public class SkillAPIKillListener implements Listener {
+public class FabledKillListener implements Listener {
 
-    public SkillAPIKillListener() {
+    public FabledKillListener() {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

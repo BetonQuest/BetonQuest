@@ -25,6 +25,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `mmochangeclass` objective for MMOCore that listens for a player changing their class
 ### Changed
 - `spawn` event now only spawn mobs and no other entities
+- ProSkillAPI rename to Fabled
+  - this includes the class and level condition
 ### Deprecated
 ### Removed
 ### Fixed

@@ -33,6 +33,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
 - [2.0.0-DEV-769 - RemoveEntity-Event](#200-dev-769-removeentity-event) :gear:
 - [2.1.0-DEV-1 - Instruction Quoting](#210-dev-1-instruction-quoting) :exclamation:
 - [2.1.1-DEV-2 - Rename AuraSkills](#211-dev-2-rename-auraskills) :gear:
+- [2.2.0-DEV-89 - Rename Fabled](#220-dev-90-rename-fabled) :gear:
 
 ### 2.0.0-DEV-87 - Rename to `ride` :gear:
 
@@ -41,7 +42,6 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
     
     -------------
 
-    
     To unify the naming for riding a vehicle, we renamed the condition (`riding`) and the objective (`vehicle`)
     to `ride`.
     
@@ -97,71 +97,86 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
         Every type that was previously a separate file with a special name is now identified by a "parent-section". It's
         the names of the type / the name the file previously had. Let's take a look at an example for events and conditions:
       
-        !!! info "Example"
-            === "Old Way"
-                ``` YAML title="events.yml"
-                myEvent: "teleport 1;2;3;world"
-                myOtherEvent: "point level 1"
-                ```
-                ``` YAML title="conditions.yml"
-                myCondition: "location 300;200;300;world"
-                ```
-            === "New Way"
-                ``` YAML title="events.yml"
-                events:
-                  myEvent: "teleport 1;2;3;world"
-                  myOtherEvent: "point level 1"
-                ```
-                ``` YAML title="conditions.yml"
-                conditions:
-                  myCondition: "location 300;200;300;world"
-                ```
-                This allows you to freely name the files. Also, it is no longer necessary that events, conditions etc. are in separate files.
-                You could also put everything in a single file or use any other file structure:
-                ``` YAML title="anyFileName.yml"
-                events:
-                  myEvent: "teleport 1;2;3;world"
-                  myOtherEvent: "point level 1"
-                conditions:
-                  myCondition: "location 300;200;300;world"
-                ```
+        <div class="grid" markdown>
+        
+        ``` YAML title="Old events.yml"
+        myEvent: "teleport 1;2;3;world"
+        myOtherEvent: "point level 1"
+        ```
+        
+        ``` YAML title="New events.yml"
+        events:
+          myEvent: "teleport 1;2;3;world"
+          myOtherEvent: "point level 1"
+        ```
+        
+        ``` YAML title="old conditions.yml"
+        myCondition: "location 300;200;300;world"
+        ```
+        
+        ``` YAML title="New conditions.yml"
+        conditions:
+          myCondition: "location 300;200;300;world"
+        ```
+        
+        </div>
+        
+        This allows you to freely name the files. Also, it is no longer necessary that events, conditions etc. are in separate files.
+        You could also put everything in a single file or use any other file structure:
+        
+        ``` YAML title="anyFileName.yml"
+        events:
+          myEvent: "teleport 1;2;3;world"
+          myOtherEvent: "point level 1"
+        conditions:
+          myCondition: "location 300;200;300;world"
+        ```
         !!! warning 
             You must do this change for all types, not just events and conditions! 
     
     - Alongside the previous change, **conversations** and **menus** must also be updated to the following format:
       Add an extra prefix matching their type and the file name:
-    
-        !!! info "Example"
-            === "Old Syntax" 
-                ``` YAML title="lisa.yml" 
-                quester: Lisa
-                first: option1, option2
-                NPC_options:
-                  option1:
-                  # ...
-                ```
-            === "New Syntax"
-                ``` YAML title="anyFileName.yml"
-                conversations:
-                  lisa: #(1)!
-                    quester: Lisa
-                    first: option1, option2
-                    NPC_options:
-                      option1:
-                      # ...
-                ```
-    
-                1. This key is now the conversation name that you must refer to when linking NPCs to conversations. 
-    
-                Or alternatively:
-                ``` YAML
-                conversations.lisa:
-                  quester: Lisa
-                  first: option1, option2
-                  NPC_options:
-                    option1:
-                    # ...
-                ```
+      
+        <div class="grid" markdown>
+        
+        <div>
+      
+        ``` YAML title="Old lisa.yml" 
+        quester: Lisa
+        first: option1, option2
+        NPC_options:
+          option1:
+          # ...
+        ```
+        
+        </div>
+        <div>
+        
+        ``` YAML title="New anyFileName.yml"
+        conversations:
+          lisa: #(1)!
+            quester: Lisa
+            first: option1, option2
+            NPC_options:
+              option1:
+              # ...
+        ```
+        
+        1. This key is now the conversation name that you must refer to when linking NPCs to conversations. 
+      
+        Or alternatively:
+        ``` YAML title="New anyFileName.yml"
+        conversations.lisa:
+          quester: Lisa
+          first: option1, option2
+          NPC_options:
+            option1:
+            # ...
+        ```
+        
+        </div>
+        
+        </div>
 
 ### 2.0.0-DEV-337 - Event Scheduling Rework :gear:
 
@@ -169,37 +184,42 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
     *The migration is automated. You shouldn't have to do anything.*
     
     -------------
+    
     - All your static events need to be converted to the new scheduling system.
       The [`realtime-daily`](../../Scripting/Schedules.md#daily-realtime-schedule-realtime-daily) schedule makes this easy:
       
-        !!! info "Example"
-            ```YAML title="Old Syntax"
-            static:
-              '09:00': beton
-              '11:23': some_command,command_announcement
-            ```
-            ```YAML title="New Syntax"
-            schedules:
-              betonAt09: #(1)!
-                type: realtime-daily #(2)!
-                time: '09:00' #(3)!
-                events: beton #(4)!
-              cmdAt1123:
-                type: realtime-daily
-                time: '11:23'
-                events: some_command,command_announcement
-            ```
+      <div class="grid" markdown>
       
-            1. A name for the new schedule.  
-              Can be anything you want for organizing your schedules.
-            
-            2. The type schedule `realtime-daily` was created for easy updating.   
-              It behaves just like the old static events.
-            
-            3. The former key is now the time value.  
-              You still have to put it in 'quotes'.
-            
-            4. The former value is now the events value.
+      ```YAML title="Old Syntax"
+      static:
+        '09:00': beton
+        '11:23': some_command,command_announcement
+      ```
+      
+      ```YAML title="New Syntax"
+      schedules:
+        betonAt09: #(1)!
+          type: realtime-daily #(2)!
+          time: '09:00' #(3)!
+          events: beton #(4)!
+        cmdAt1123:
+          type: realtime-daily
+          time: '11:23'
+          events: some_command,command_announcement
+      ```
+
+      1. A name for the new schedule.  
+        Can be anything you want for organizing your schedules.
+      
+      2. The type schedule `realtime-daily` was created for easy updating.   
+        It behaves just like the old static events.
+      
+      3. The former key is now the time value.  
+        You still have to put it in 'quotes'.
+      
+      4. The former value is now the events value.
+      
+      </div>
 
 ### 2.0.0-DEV-450 - Package Section :gear:
 
@@ -212,15 +232,18 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
       As a result of this the `enabled` boolean was moved to this section.
       If you use the `enabled` boolean you need to move it to the `package` section.
       
-        !!! info "Example"
-            ```YAML title="Old Syntax"
-            enabled: false
-            ```
-            
-            ```YAML title="New Syntax"
-            package:
-              enabled: false
-            ```
+      <div class="grid" markdown>
+      
+      ```YAML title="Old Syntax"
+      enabled: false
+      ```
+      
+      ```YAML title="New Syntax"
+      package:
+        enabled: false
+      ```
+      
+      </div>
     
 ### 2.0.0-DEV-485 - Experience changes :exclamation:
 
@@ -307,13 +330,12 @@ npc_holograms:
     name in your config.yml, so every new generated profile (through migration or joining of a new player) will get this name. 
     If you don't set a initial name, the initial name will be "default".
     
-    !!! info "Example"
-        ```YAML title="config.yml"
-        profiles:
-          initial_name: player # (1)!
-        ```
-        
-        1. Only set this if you want to change the initial name. If you don't set this, the initial name will be "default".
+    ```YAML title="config.yml"
+    profiles:
+      initial_name: player # (1)!
+    ```
+    
+    1. Only set this if you want to change the initial name. If you don't set this, the initial name will be "default".
 
 ### 2.0.0-DEV-647 - EffectLib :gear:
 
@@ -508,7 +530,6 @@ npc_holograms:
       killBolec: 'removeentity ZOMBIE 100;200;300;world 40 name:Bolec kill'
     ```
     
-    
     </div>
 
 ### 2.1.0-DEV-1 - Instruction Quoting :exclamation:
@@ -546,26 +567,59 @@ conditions:
 1. When quoting add `\` before every `"` and already existing `\`.
 2. Do not quote only a part of a message, but instead the full message.
 3. Move the quote before the parameter name.
+
 </div>
 
 ### 2.1.1-DEV-2 - Rename AuraSkills :gear:
-AureliumSkills was renamed to AuraSkills, so all conditions and events where renamed as well.
 
-<div class="grid" markdown>
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+    
+    AureliumSkills was renamed to AuraSkills, so all conditions and events where renamed as well.
+    
+    <div class="grid" markdown>
+    
+    ```YAML title="Old Syntax"
+    conditions:
+      skillLevel: aureliumskillslevel fighting 5
+      statLevel: aureliumstatslevel luck 5
+    events:
+      giveSkillXP: aureliumskillsxp farming 5
+    ```
+    
+    ```YAML title="New Syntax"
+    conditions:
+      skillLevel: auraskillslevel fighting 5
+      statLevel: auraskillsstatslevel luck 5
+    events:
+      giveSkillXP: auraskillsxp farming 5
+    ```
+    
+    </div>
 
-```YAML title="Old Syntax"
-conditions:
-  skillLevel: aureliumskillslevel fighting 5
-  statLevel: aureliumstatslevel luck 5
-events:
-  giveSkillXP: aureliumskillsxp farming 5
-```
+### 2.2.0-DEV-90 - Rename Fabled :gear:
 
-```YAML title="New Syntax"
-conditions:
-  skillLevel: auraskillslevel fighting 5
-  statLevel: auraskillsstatslevel luck 5
-events:
-  giveSkillXP: auraskillsxp farming 5
-```
-</div>
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+    
+    ProSkillAPI was renamed to Fabled, so all conditions were renamed as well.
+    
+    <div class="grid" markdown>
+    
+    ```YAML title="Old Syntax"
+    conditions:
+      class: skillapiclass warrior
+      level: skillapilevel warrior 3
+    ```
+    
+    ```YAML title="New Syntax"
+    conditions:
+      class: fabledclass warrior
+      level: fabledlevel warrior 3
+    ```
+    
+    </div>

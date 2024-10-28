@@ -1,21 +1,21 @@
-package org.betonquest.betonquest.compatibility.skillapi;
+package org.betonquest.betonquest.compatibility.fabled;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
 
 @SuppressWarnings("PMD.CommentRequired")
-public class SkillAPIIntegrator implements Integrator {
+public class FabledIntegrator implements Integrator {
     private final BetonQuest plugin;
 
-    public SkillAPIIntegrator() {
+    public FabledIntegrator() {
         plugin = BetonQuest.getInstance();
     }
 
     @Override
     public void hook() {
-        plugin.registerConditions("skillapiclass", SkillAPIClassCondition.class);
-        plugin.registerConditions("skillapilevel", SkillAPILevelCondition.class);
-        plugin.getServer().getPluginManager().registerEvents(new SkillAPIKillListener(), plugin);
+        plugin.registerConditions("fabledclass", FabledClassCondition.class);
+        plugin.registerConditions("fabledlevel", FabledLevelCondition.class);
+        plugin.getServer().getPluginManager().registerEvents(new FabledKillListener(), plugin);
     }
 
     @Override

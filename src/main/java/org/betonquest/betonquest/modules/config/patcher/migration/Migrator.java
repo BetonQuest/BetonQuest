@@ -3,6 +3,7 @@ package org.betonquest.betonquest.modules.config.patcher.migration;
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.AuraSkillsRename;
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.EffectLib;
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.EventScheduling;
+import org.betonquest.betonquest.modules.config.patcher.migration.migrators.FabledRename;
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.MmoUpdates;
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.NpcHolograms;
 import org.betonquest.betonquest.modules.config.patcher.migration.migrators.PackageSection;
@@ -43,6 +44,7 @@ public class Migrator {
         migrations.add(new RemoveEntity(provider));
         migrations.add(new RideUpdates(provider));
         migrations.add(new AuraSkillsRename(provider));
+        migrations.add(new FabledRename(provider));
     }
 
     /**
