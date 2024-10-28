@@ -18,7 +18,7 @@ public class FabledRename implements Migration {
     private final FileConfigurationProvider producer;
 
     /**
-     * Creates a new aura_skills migrator.
+     * Creates a new fabled migrator.
      *
      * @param provider The config provider
      */
