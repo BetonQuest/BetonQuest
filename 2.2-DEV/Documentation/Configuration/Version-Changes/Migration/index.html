@@ -3209,6 +3209,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#220-dev-90-rename-fabled">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          2.2.0-DEV-90 - Rename Fabled <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -4742,6 +4765,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#220-dev-90-rename-fabled">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          2.2.0-DEV-90 - Rename Fabled <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -4883,6 +4929,7 @@ QuestPackages folder to the new 2.0 syntax. This way the migration works for bot
 <li><a href="#200-dev-769-removeentity-event">2.0.0-DEV-769 - RemoveEntity-Event</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /></li>
 <li><a href="#210-dev-1-instruction-quoting">2.1.0-DEV-1 - Instruction Quoting</a> <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2757.svg" title=":exclamation:" /></li>
 <li><a href="#211-dev-2-rename-auraskills">2.1.1-DEV-2 - Rename AuraSkills</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /></li>
+<li><a href="#220-dev-90-rename-fabled">2.2.0-DEV-89 - Rename Fabled</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /></li>
 </ul>
 <h3 id="200-dev-87-rename-to-ride">2.0.0-DEV-87 - Rename to <code>ride</code> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /><a class="headerlink" href="#200-dev-87-rename-to-ride" title="Permanent link">🔗</a></h3>
 <details class="info">
@@ -4929,37 +4976,28 @@ to <code>ride</code>.</p>
     be updated to the following format:
     Every type that was previously a separate file with a special name is now identified by a "parent-section". It's
     the names of the type / the name the file previously had. Let's take a look at an example for events and conditions:</p>
-<div class="admonition info">
-<p class="admonition-title">Example</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Old Way</label><label for="__tabbed_1_2">New Way</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<p><div class="highlight"><span class="filename">events.yml</span><pre><span></span><code><span class="nt">myEvent</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;teleport</span><span class="nv"> </span><span class="s">1;2;3;world&quot;</span>
+<div class="grid" markdown>
+<div class="highlight"><span class="filename">Old events.yml</span><pre><span></span><code><span class="nt">myEvent</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;teleport</span><span class="nv"> </span><span class="s">1;2;3;world&quot;</span>
 <span class="nt">myOtherEvent</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;point</span><span class="nv"> </span><span class="s">level</span><span class="nv"> </span><span class="s">1&quot;</span>
 </code></pre></div>
-<div class="highlight"><span class="filename">conditions.yml</span><pre><span></span><code><span class="nt">myCondition</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;location</span><span class="nv"> </span><span class="s">300;200;300;world&quot;</span>
-</code></pre></div></p>
-</div>
-<div class="tabbed-block">
-<p><div class="highlight"><span class="filename">events.yml</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
+<div class="highlight"><span class="filename">New events.yml</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">myEvent</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;teleport</span><span class="nv"> </span><span class="s">1;2;3;world&quot;</span>
 <span class="w">  </span><span class="nt">myOtherEvent</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;point</span><span class="nv"> </span><span class="s">level</span><span class="nv"> </span><span class="s">1&quot;</span>
 </code></pre></div>
-<div class="highlight"><span class="filename">conditions.yml</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">old conditions.yml</span><pre><span></span><code><span class="nt">myCondition</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;location</span><span class="nv"> </span><span class="s">300;200;300;world&quot;</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New conditions.yml</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">myCondition</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;location</span><span class="nv"> </span><span class="s">300;200;300;world&quot;</span>
 </code></pre></div>
-This allows you to freely name the files. Also, it is no longer necessary that events, conditions etc. are in separate files.
-You could also put everything in a single file or use any other file structure:
+</div>
+<p>This allows you to freely name the files. Also, it is no longer necessary that events, conditions etc. are in separate files.
+You could also put everything in a single file or use any other file structure:</p>
 <div class="highlight"><span class="filename">anyFileName.yml</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">myEvent</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;teleport</span><span class="nv"> </span><span class="s">1;2;3;world&quot;</span>
 <span class="w">  </span><span class="nt">myOtherEvent</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;point</span><span class="nv"> </span><span class="s">level</span><span class="nv"> </span><span class="s">1&quot;</span>
 <span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">myCondition</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;location</span><span class="nv"> </span><span class="s">300;200;300;world&quot;</span>
-</code></pre></div></p>
-</div>
-</div>
-</div>
-</div>
+</code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>You must do this change for all types, not just events and conditions! </p>
@@ -4968,20 +5006,17 @@ You could also put everything in a single file or use any other file structure:
 <li>
 <p>Alongside the previous change, <strong>conversations</strong> and <strong>menus</strong> must also be updated to the following format:
   Add an extra prefix matching their type and the file name:</p>
-<div class="admonition info">
-<p class="admonition-title">Example</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Old Syntax</label><label for="__tabbed_2_2">New Syntax</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="highlight"><span class="filename">lisa.yml</span><pre><span></span><code><span class="nt">quester</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Lisa</span>
+<div class="grid" markdown>
+<div>
+<div class="highlight"><span class="filename">Old lisa.yml</span><pre><span></span><code><span class="nt">quester</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Lisa</span>
 <span class="nt">first</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">option1, option2</span>
 <span class="nt">NPC_options</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">option1</span><span class="p">:</span>
 <span class="w">  </span><span class="c1"># ...</span>
 </code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><span class="filename">anyFileName.yml</span><pre><span></span><code><span class="nt">conversations</span><span class="p">:</span>
+<p></div>
+<div></p>
+<div class="highlight"><span class="filename">New anyFileName.yml</span><pre><span></span><code><span class="nt">conversations</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">lisa</span><span class="p">:</span><span class="w"> </span><span class="c1">#(1)!</span>
 <span class="w">    </span><span class="nt">quester</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Lisa</span>
 <span class="w">    </span><span class="nt">first</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">option1, option2</span>
@@ -4993,15 +5028,13 @@ You could also put everything in a single file or use any other file structure:
 <li>This key is now the conversation name that you must refer to when linking NPCs to conversations. </li>
 </ol>
 <p>Or alternatively:
-<div class="highlight"><pre><span></span><code><span class="nt">conversations.lisa</span><span class="p">:</span>
+<div class="highlight"><span class="filename">New anyFileName.yml</span><pre><span></span><code><span class="nt">conversations.lisa</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">quester</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Lisa</span>
 <span class="w">  </span><span class="nt">first</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">option1, option2</span>
 <span class="w">  </span><span class="nt">NPC_options</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">option1</span><span class="p">:</span>
 <span class="w">    </span><span class="c1"># ...</span>
 </code></pre></div></p>
-</div>
-</div>
 </div>
 </div>
 </li>
@@ -5013,12 +5046,11 @@ You could also put everything in a single file or use any other file structure:
 <p><em>The migration is automated. You shouldn't have to do anything.</em></p>
 <hr />
 <ul>
-<li>
-<p>All your static events need to be converted to the new scheduling system.
-  The <a href="../../../Scripting/Schedules/#daily-realtime-schedule-realtime-daily"><code>realtime-daily</code></a> schedule makes this easy:</p>
-<div class="admonition info">
-<p class="admonition-title">Example</p>
-<p><div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">static</span><span class="p">:</span>
+<li>All your static events need to be converted to the new scheduling system.
+  The <a href="../../../Scripting/Schedules/#daily-realtime-schedule-realtime-daily"><code>realtime-daily</code></a> schedule makes this easy:</li>
+</ul>
+<div class="grid" markdown>
+<div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">static</span><span class="p">:</span>
 <span class="w">  </span><span class="s">&#39;09:00&#39;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">beton</span>
 <span class="w">  </span><span class="s">&#39;11:23&#39;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">some_command,command_announcement</span>
 </code></pre></div>
@@ -5031,27 +5063,25 @@ You could also put everything in a single file or use any other file structure:
 <span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">realtime-daily</span>
 <span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;11:23&#39;</span>
 <span class="w">    </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">some_command,command_announcement</span>
-</code></pre></div></p>
+</code></pre></div>
 <ol>
 <li>
 <p>A name for the new schedule.<br />
-  Can be anything you want for organizing your schedules.</p>
+    Can be anything you want for organizing your schedules.</p>
 </li>
 <li>
 <p>The type schedule <code>realtime-daily</code> was created for easy updating. <br />
-  It behaves just like the old static events.</p>
+    It behaves just like the old static events.</p>
 </li>
 <li>
 <p>The former key is now the time value.<br />
-  You still have to put it in 'quotes'.</p>
+    You still have to put it in 'quotes'.</p>
 </li>
 <li>
 <p>The former value is now the events value.</p>
 </li>
 </ol>
 </div>
-</li>
-</ul>
 </details>
 <h3 id="200-dev-450-package-section">2.0.0-DEV-450 - Package Section <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /><a class="headerlink" href="#200-dev-450-package-section" title="Permanent link">🔗</a></h3>
 <details class="info">
@@ -5059,20 +5089,17 @@ You could also put everything in a single file or use any other file structure:
 <p><em>The migration is automated. You shouldn't have to do anything.</em></p>
 <hr />
 <ul>
-<li>
-<p>There is now a new section <code>package</code> for organizing package related settings.
+<li>There is now a new section <code>package</code> for organizing package related settings.
   As a result of this the <code>enabled</code> boolean was moved to this section.
-  If you use the <code>enabled</code> boolean you need to move it to the <code>package</code> section.</p>
-<div class="admonition info">
-<p class="admonition-title">Example</p>
+  If you use the <code>enabled</code> boolean you need to move it to the <code>package</code> section.</li>
+</ul>
+<div class="grid" markdown>
 <div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
 <div class="highlight"><span class="filename">New Syntax</span><pre><span></span><code><span class="nt">package</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
 </div>
-</li>
-</ul>
 </details>
 <h3 id="200-dev-485-experience-changes">2.0.0-DEV-485 - Experience changes <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2757.svg" title=":exclamation:" /><a class="headerlink" href="#200-dev-485-experience-changes" title="Permanent link">🔗</a></h3>
 <p>Due to a misuse of the Spigot API, all code regarding player experience (<code>experience</code> event, condition and objective) had to be changed.
@@ -5147,15 +5174,12 @@ If the (NPC-)hologram section does NOT contain one of the following keys the mig
 <p>The database migrated to a new format for profiles and every profile will have a name. You can set a initial creation
 name in your config.yml, so every new generated profile (through migration or joining of a new player) will get this name. 
 If you don't set a initial name, the initial name will be "default".</p>
-<div class="admonition info">
-<p class="admonition-title">Example</p>
 <div class="highlight"><span class="filename">config.yml</span><pre><span></span><code><span class="nt">profiles</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">initial_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">player</span><span class="w"> </span><span class="c1"># (1)!</span>
 </code></pre></div>
 <ol>
 <li>Only set this if you want to change the initial name. If you don't set this, the initial name will be "default".</li>
 </ol>
-</div>
 </details>
 <h3 id="200-dev-647-effectlib">2.0.0-DEV-647 - EffectLib <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /><a class="headerlink" href="#200-dev-647-effectlib" title="Permanent link">🔗</a></h3>
 <details class="info">
@@ -5350,8 +5374,12 @@ while keeping the syntax more or less the same.</p>
 </ol>
 </div>
 <h3 id="211-dev-2-rename-auraskills">2.1.1-DEV-2 - Rename AuraSkills <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /><a class="headerlink" href="#211-dev-2-rename-auraskills" title="Permanent link">🔗</a></h3>
+<details class="info">
+<summary>Automated Migration</summary>
+<p><em>The migration is automated. You shouldn't have to do anything.</em></p>
+<hr />
 <p>AureliumSkills was renamed to AuraSkills, so all conditions and events where renamed as well.</p>
-<div class="grid">
+<div class="grid" markdown>
 <div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">skillLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aureliumskillslevel fighting 5</span>
 <span class="w">  </span><span class="nt">statLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aureliumstatslevel luck 5</span>
@@ -5365,6 +5393,24 @@ while keeping the syntax more or less the same.</p>
 <span class="w">  </span><span class="nt">giveSkillXP</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auraskillsxp farming 5</span>
 </code></pre></div>
 </div>
+</details>
+<h3 id="220-dev-90-rename-fabled">2.2.0-DEV-90 - Rename Fabled <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2699.svg" title=":gear:" /><a class="headerlink" href="#220-dev-90-rename-fabled" title="Permanent link">🔗</a></h3>
+<details class="info">
+<summary>Automated Migration</summary>
+<p><em>The migration is automated. You shouldn't have to do anything.</em></p>
+<hr />
+<p>ProSkillAPI was renamed to Fabled, so all conditions were renamed as well.</p>
+<div class="grid" markdown>
+<div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">skillapiclass warrior</span>
+<span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">skillapilevel warrior 3</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New Syntax</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fabledclass warrior</span>
+<span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fabledlevel warrior 3</span>
+</code></pre></div>
+</div>
+</details>
 
 
 
