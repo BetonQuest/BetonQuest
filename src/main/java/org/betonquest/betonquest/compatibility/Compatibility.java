@@ -9,6 +9,7 @@ import org.betonquest.betonquest.compatibility.brewery.BreweryIntegrator;
 import org.betonquest.betonquest.compatibility.citizens.CitizensIntegrator;
 import org.betonquest.betonquest.compatibility.denizen.DenizenIntegrator;
 import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegrator;
+import org.betonquest.betonquest.compatibility.fabled.FabledIntegrator;
 import org.betonquest.betonquest.compatibility.fakeblock.FakeBlockIntegrator;
 import org.betonquest.betonquest.compatibility.heroes.HeroesIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
@@ -27,7 +28,6 @@ import org.betonquest.betonquest.compatibility.protocollib.ProtocolLibIntegrator
 import org.betonquest.betonquest.compatibility.quests.QuestsIntegrator;
 import org.betonquest.betonquest.compatibility.redischat.RedisChatIntegrator;
 import org.betonquest.betonquest.compatibility.shopkeepers.ShopkeepersIntegrator;
-import org.betonquest.betonquest.compatibility.skillapi.SkillAPIIntegrator;
 import org.betonquest.betonquest.compatibility.skript.SkriptIntegrator;
 import org.betonquest.betonquest.compatibility.vault.VaultIntegrator;
 import org.betonquest.betonquest.compatibility.worldedit.WorldEditIntegrator;
@@ -243,7 +243,7 @@ public class Compatibility implements Listener {
         register("Heroes", HeroesIntegrator.class);
         register("Magic", MagicIntegrator.class);
         register("Denizen", DenizenIntegrator.class);
-        register("ProSkillAPI", SkillAPIIntegrator.class);
+        register("Fabled", FabledIntegrator.class);
         register("Quests", QuestsIntegrator.class);
         register("Shopkeepers", ShopkeepersIntegrator.class);
         register("PlaceholderAPI", PlaceholderAPIIntegrator.class);

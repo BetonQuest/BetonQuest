@@ -569,3 +569,22 @@ events:
   giveSkillXP: auraskillsxp farming 5
 ```
 </div>
+
+
+### 2.2.0-DEV-89 - Rename Fabled :gear:
+ProSkillAPI was renamed to Fabled, so all conditions where renamed as well.
+
+<div class="grid" markdown>
+
+```YAML title="Old Syntax"
+conditions:
+  class: skillapiclass warrior
+  level: skillapilevel warrior 3
+```
+
+```YAML title="New Syntax"
+conditions:
+  class: fabledclass warrior
+  level: fabledlevel warrior 3
+```
+</div>

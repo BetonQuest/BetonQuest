@@ -293,13 +293,6 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>com.github.promcteam</groupId>
-      <artifactId>proskillapi</artifactId>
-      <version>75674d1f35</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
       <groupId>com.github.DieReicheErethons</groupId>
       <artifactId>Brewery</artifactId>
       <version>3.1.1</version>
@@ -358,6 +351,13 @@
       <groupId>dev.aurelium</groupId>
       <artifactId>auraskills-api-bukkit</artifactId>
       <version>2.2.0</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>studio.magemonkey</groupId>
+      <artifactId>fabled</artifactId>
+      <version>1.0.1-R1</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
