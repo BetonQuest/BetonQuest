@@ -3,16 +3,16 @@
     "version": "2.2-DEV",
     "title": "2.2-DEV",
     "aliases": [
-      "2.2",
-      "DEV"
+      "DEV",
+      "2.2"
     ]
   },
   {
     "version": "2.1",
     "title": "2.1",
     "aliases": [
-      "RELEASE",
-      "2.1-DEV"
+      "2.1-DEV",
+      "RELEASE"
     ]
   },
   {
