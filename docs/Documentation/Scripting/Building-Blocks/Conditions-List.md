@@ -529,6 +529,8 @@ exactAtTwelveAtPlayersHome: "time 12-12 world:%ph.player_home_world%"
 
 ## Variable: `variable`
 
+**static**
+
 This condition checks if a variable value matches given [regular expression](../Data-Formats.md#regex-regular-expressions)
 
 | Parameter   | Syntax          | Default Value          | Explanation                                                                                                                                |

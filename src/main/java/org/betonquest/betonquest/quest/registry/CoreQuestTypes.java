@@ -277,7 +277,7 @@ public class CoreQuestTypes {
         conditionTypes.register("tag", new TagConditionFactory(betonQuest));
         conditionTypes.registerCombined("testforblock", new BlockConditionFactory(data));
         conditionTypes.registerCombined("time", new TimeConditionFactory(data, variableProcessor));
-        conditionTypes.register("variable", new VariableConditionFactory(loggerFactory, data, variableProcessor));
+        conditionTypes.registerCombined("variable", new VariableConditionFactory(loggerFactory, data, variableProcessor));
         conditionTypes.registerCombined("weather", new WeatherConditionFactory(data, variableProcessor));
         conditionTypes.register("world", new WorldConditionFactory(loggerFactory, data, variableProcessor));
     }

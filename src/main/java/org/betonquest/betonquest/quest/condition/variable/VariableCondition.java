@@ -2,16 +2,17 @@ package org.betonquest.betonquest.quest.condition.variable;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
+import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.PatternSyntaxException;
 
 /**
  * Checks if the variable value matches given pattern.
  */
-public class VariableCondition implements PlayerCondition {
+public class VariableCondition implements NullableCondition {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -49,7 +50,7 @@ public class VariableCondition implements PlayerCondition {
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestRuntimeException {
+    public boolean check(@Nullable final Profile profile) throws QuestRuntimeException {
         final String resolvedVariable = variable.getValue(profile);
         final String resolvedRegex = regex.getValue(profile);
         try {
