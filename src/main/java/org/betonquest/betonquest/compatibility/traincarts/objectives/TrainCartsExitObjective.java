@@ -33,16 +33,10 @@ public class TrainCartsExitObjective extends Objective implements Listener {
     private final VariableString name;
 
     /**
-     * <p>
-     * Creates new instance of the objective. The objective should parse
-     * instruction string at this point and extract all the data from it.
-     * </p>
-     * <b>Do not register listeners here!</b> There is a {@link #start()} method
-     * for it.
+     * The constructor takes an Instruction object as a parameter and throws an InstructionParseException.
      *
-     * @param instruction Instruction object representing the objective; you need to
-     *                    extract all required information from it
-     * @throws InstructionParseException if the syntax is wrong or any error happens while parsing
+     * @param instruction the Instruction object to be used in the constructor
+     * @throws InstructionParseException if there is an error while parsing the instruction
      */
     public TrainCartsExitObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);

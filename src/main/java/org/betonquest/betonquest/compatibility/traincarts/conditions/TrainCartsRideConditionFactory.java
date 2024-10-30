@@ -11,7 +11,7 @@ import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
 /**
- * The TrainCarts {@link PlayerConditionFactory}.
+ * Factory for the {@link TrainCartsRideCondition}.
  */
 public class TrainCartsRideConditionFactory implements PlayerConditionFactory {
     /**
@@ -38,7 +38,7 @@ public class TrainCartsRideConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws InstructionParseException {
         final String trainName = instruction.next();
-        final BetonQuestLogger logger = loggerFactory.create(TrainCartsRideConditionFactory.class);
+        final BetonQuestLogger logger = loggerFactory.create(TrainCartsRideCondition.class);
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(new TrainCartsRideCondition(trainName),
                 logger, instruction.getPackage()), data);
     }

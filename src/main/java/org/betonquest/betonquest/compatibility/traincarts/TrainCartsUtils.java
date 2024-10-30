@@ -9,8 +9,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.entity.Entity;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Utility class for TrainCarts.

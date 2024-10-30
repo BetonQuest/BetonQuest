@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
@@ -18,7 +19,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -120,15 +120,30 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
         });
     }
 
-    private void startCount(final OnlineProfile onlineProfile) {
-        startTimes.put(onlineProfile.getPlayerUUID(), System.currentTimeMillis());
+    @Override
+    public void stop(final Profile profile) {
+        startTimes.remove(profile.getPlayerUUID());
     }
 
-    private void stopCount(@NotNull final OnlineProfile onlineProfile) {
+    private void startCount(final OnlineProfile onlineProfile) {
+        startTimes.put(onlineProfile.getPlayerUUID(), System.currentTimeMillis());
+
+        final int ticksToCompletion = getCountingData(onlineProfile).getAmountLeft() * 20;
+        Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> {
+            if (startTimes.containsKey(onlineProfile.getPlayerUUID()) || checkConditions(onlineProfile)) {
+                completeObjective(onlineProfile);
+            }
+        }, ticksToCompletion);
+    }
+
+    private void stopCount(final OnlineProfile onlineProfile) {
         if (!startTimes.containsKey(onlineProfile.getPlayerUUID())) {
             return;
         }
         final long remove = startTimes.remove(onlineProfile.getPlayerUUID());
+        if (!checkConditions(onlineProfile)) {
+            return;
+        }
         final int ridden = (int) ((System.currentTimeMillis() - remove) / MILLISECONDS_TO_SECONDS);
         final CountingData countingData = getCountingData(onlineProfile);
         countingData.add(ridden);

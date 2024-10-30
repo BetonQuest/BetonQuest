@@ -12,7 +12,7 @@ In total @snippet:constants:totalIntegratedPluginsNumber@ plugins have dedicated
 BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features.  
 _AuraSkills, Brewery, Citizens, DecentHolograms, Denizen, EffectLib, FakeBlock, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
 mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests, RedisChat, Shopkeepers, TrainCarts, ProSkillAPI,
-Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard.
+Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard._
 
 ## Provided by other plugins
 Some plugins also hook into BetonQuest and provide support by themselves:  
@@ -983,7 +983,7 @@ This event opens a trading window of a Villager. The only argument is the unique
     ```
 
 ## Fabled[](https://www.spigotmc.org/resources/91913/)  
-    
+
 ### Conditions
 
 #### Fabled Class: `fabledclass`
@@ -1006,6 +1006,7 @@ The first argument is class name, the second one is the required level.
     ```YAML
     fabledlevel warrior 3
     ```
+
 ## Skript[](http://dev.bukkit.org/bukkit-plugins/skript/)
 
 BetonQuest can also hook into Skript. Firstly, to avoid any confusion, I will refere to everything here by name of the plugin (Skript event is something else than BetonQuest event). Having Skript on your server will enable using BetonQuest events and conditions in scripts, and also trigger them by BetonQuest event.
@@ -1060,37 +1061,49 @@ You can also fire BetonQuest events with scripts. The syntax for Skript effect i
       give_emeralds: give emerald:5
     ```
 
-## TrainCarts[](https://www.spigotmc.org/resources/traincarts.39592/)
+## TrainCarts[](https://www.spigotmc.org/resources/39592/)
+
 TrainCarts is a plugin that allows you to create trains with advanced features.
 
 ### Conditions
 
 #### TrainCarts ride condition: `traincartsride`
+
 Checks if the player is riding a specific named train.
 
 !!! example
     ```YAML
-    traincartsride name:Train1
+    traincartsride train1
     ```
 
 ### Objectives
 
 #### TrainCarts location objective: `traincartslocation`
-This objective requires the player to be at a specific location while sitting in a train.
 
-| Parameter  | Syntax      | Default Value          | Explanation                                                      |
-|------------|-------------|------------------------|------------------------------------------------------------------|
-| _name_     | name:Train1 | :octicons-x-circle-16: | The optional Name of the Train.                                  |
-| _location_ | x;y;z;world | :octicons-x-circle-16: | The Location the player has to pass whiles sitting in the train. |
+This objective requires the player to be at a specific location while sitting in a train. 
+It works similarly to the location objective, but the player must be in a TrainCarts train to complete it.
+
+| Parameter  | Syntax       | Default Value          | Explanation                                                                               |
+|------------|--------------|------------------------|-------------------------------------------------------------------------------------------|
+| _location_ | x;y;z;world  | :octicons-x-circle-16: | The Location the player has to pass whiles sitting in the train.                          |
+| _range_    | range:double | 1                      | The optional range around the location where the player must be.                          |
+| _entry_    | entry        | Disabled               | The player must enter (go from outside to inside) the location to complete the objective. |
+| _exit_     | exit         | Disabled               | The player must exit (go from inside to outside) the location to complete the objective.  |
+| _name_     | name:Train1  | :octicons-x-circle-16: | The optional Name of the Train.                                                           |
 
 !!! example
     ```YAML
     traincartslocation 100;60;100;world
-    traincartsexit name:Train1 100;60;100;world
+    traincartslocation name:Train1 100;60;100;world range:2
+    traincartslocation 100;60;100;world entry range:2
     ```
 
 #### TrainCarts ride objective: `traincartsride`
-This objective requires the player to ride a train for a specific time
+
+This objective requires the player to ride a train for a specific time.
+The time starts after the player enters the train and stops when the player exits the train.
+The conditions are checked every time the player enters or leaves the train or completes the objective.
+If the conditions are not met, the time will not be counted.
 
 | Parameter | Syntax      | Default Value          | Explanation                                                                      |
 |-----------|-------------|------------------------|----------------------------------------------------------------------------------|
@@ -1105,6 +1118,7 @@ This objective requires the player to ride a train for a specific time
     ```
 
 #### TrainCarts ride objective: `traincartsexit`
+
 This objective requires the player to exit a train.
 
 !!! example
