@@ -24,6 +24,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `enitity` condition now supports variables for the entity name
 - `mmochangeclass` objective for MMOCore that listens for a player changing their class
 - `removeentity` event now supports variables for the entity name
+- `variable` condition can now be used in a static context
 ### Changed
 - `spawn` event now only spawn mobs and no other entities
 - ProSkillAPI rename to Fabled
