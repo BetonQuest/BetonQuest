@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.traincarts.objectives;
 
 import com.bergerkiller.bukkit.tc.events.seat.MemberSeatEnterEvent;
 import com.bergerkiller.bukkit.tc.events.seat.MemberSeatExitEvent;
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
@@ -19,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +45,7 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
     /**
      * The {@link Map} that stores the current amount of time the player has ridden the train.
      */
-    private final Map<UUID, Long> startTimes;
+    private final Map<UUID, Pair<Long, BukkitTask>> startTimes;
 
     /**
      * The {@link VariableString} that stores the optional name of the train.
@@ -111,40 +113,42 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
     @Override
     public void stop() {
         HandlerList.unregisterAll(this);
-        startTimes.forEach((uuid, time) -> {
-            final Player player = Bukkit.getPlayer(uuid);
+        while (!startTimes.isEmpty()) {
+            final Player player = Bukkit.getPlayer(startTimes.keySet().iterator().next());
             if (player != null) {
                 final OnlineProfile profile = PlayerConverter.getID(player);
                 stopCount(profile);
             }
-        });
+        }
     }
 
     @Override
     public void stop(final Profile profile) {
-        startTimes.remove(profile.getPlayerUUID());
+        final Pair<Long, BukkitTask> remove = startTimes.remove(profile.getPlayerUUID());
+        if (remove != null) {
+            remove.getValue().cancel();
+        }
     }
 
     private void startCount(final OnlineProfile onlineProfile) {
-        startTimes.put(onlineProfile.getPlayerUUID(), System.currentTimeMillis());
-
         final int ticksToCompletion = getCountingData(onlineProfile).getAmountLeft() * 20;
-        Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> {
-            if (startTimes.containsKey(onlineProfile.getPlayerUUID()) || checkConditions(onlineProfile)) {
-                completeObjective(onlineProfile);
-            }
+        final BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> {
+            stopCount(onlineProfile);
         }, ticksToCompletion);
+
+        startTimes.put(onlineProfile.getPlayerUUID(), Pair.of(System.currentTimeMillis(), bukkitTask));
     }
 
     private void stopCount(final OnlineProfile onlineProfile) {
         if (!startTimes.containsKey(onlineProfile.getPlayerUUID())) {
             return;
         }
-        final long remove = startTimes.remove(onlineProfile.getPlayerUUID());
+        final Pair<Long, BukkitTask> remove = startTimes.remove(onlineProfile.getPlayerUUID());
+        remove.getValue().cancel();
         if (!checkConditions(onlineProfile)) {
             return;
         }
-        final int ridden = (int) ((System.currentTimeMillis() - remove) / MILLISECONDS_TO_SECONDS);
+        final int ridden = (int) ((System.currentTimeMillis() - remove.getKey()) / MILLISECONDS_TO_SECONDS);
         final CountingData countingData = getCountingData(onlineProfile);
         countingData.add(ridden);
         if (countingData.isComplete()) {
