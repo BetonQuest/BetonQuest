@@ -30,6 +30,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - `traincartsride` objective that executes when the player is riding a train
   - `traincartsexit` objective that executes when the player exited a train
   - `traincartsride` condition to check if the player is riding a specific named train
+- `scoretag` event and condition
 ### Changed
 - `spawn` event now only spawn mobs and no other entities
 - ProSkillAPI rename to Fabled

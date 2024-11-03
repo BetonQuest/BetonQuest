@@ -11,7 +11,7 @@ import org.bukkit.scoreboard.Scoreboard;
 /**
  * Checks the amount of points on scoreboards.
  */
-public class ScoreboardCondition implements PlayerCondition {
+public class ScoreboardObjectiveCondition implements PlayerCondition {
 
     /**
      * The objective to check.
@@ -29,7 +29,7 @@ public class ScoreboardCondition implements PlayerCondition {
      * @param objective the objective to check
      * @param count     the count to check
      */
-    public ScoreboardCondition(final String objective, final VariableNumber count) {
+    public ScoreboardObjectiveCondition(final String objective, final VariableNumber count) {
         this.objective = objective;
         this.count = count;
     }

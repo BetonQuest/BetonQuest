@@ -12,7 +12,7 @@ import org.bukkit.scoreboard.Scoreboard;
 /**
  * Adds/removes/multiplies/divides scores on scoreboards.
  */
-public class ScoreboardEvent implements Event {
+public class ScoreboardObjectiveEvent implements Event {
     /**
      * The name of the objective.
      */
@@ -35,7 +35,7 @@ public class ScoreboardEvent implements Event {
      * @param count             the number to modify the score by
      * @param scoreModification the modification to apply to the score
      */
-    public ScoreboardEvent(final String objective, final VariableNumber count, final ScoreModification scoreModification) {
+    public ScoreboardObjectiveEvent(final String objective, final VariableNumber count, final ScoreModification scoreModification) {
         this.objective = objective;
         this.count = count;
         this.scoreModification = scoreModification;
