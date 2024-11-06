@@ -2635,6 +2635,46 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#traincarts">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          TrainCarts
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+  <nav aria-label="TrainCarts" class="md-nav">
+    <ul class="md-nav__list">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </ul>
+  </nav>
+  
+</li>
+    
+    
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#vault">
     <span class="md-ellipsis">
 
@@ -6025,6 +6065,46 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#traincarts">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          TrainCarts
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+  <nav aria-label="TrainCarts" class="md-nav">
+    <ul class="md-nav__list">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </ul>
+  </nav>
+  
+</li>
+    
+    
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#vault">
     <span class="md-ellipsis">
 
@@ -6231,11 +6311,11 @@
 <h1 id="integration-list">Integration List<a class="headerlink" href="#integration-list" title="Permanent link">🔗</a></h1>
 <p>This page contains documentation for known integrations that exist for third party plugins.
 Some integrations also have dedicated pages in the documentation.
-In total 37 plugins have dedicated support for BetonQuest.</p>
+In total 38 plugins have dedicated support for BetonQuest.</p>
 <h2 id="provided-by-betonquest">Provided by BetonQuest<a class="headerlink" href="#provided-by-betonquest" title="Permanent link">🔗</a></h2>
 <p>BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features.<br />
 <em>AuraSkills, Brewery, Citizens, DecentHolograms, Denizen, EffectLib, FakeBlock, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
-mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests, RedisChat, Shopkeepers, ProSkillAPI,
+mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests, RedisChat, Shopkeepers, TrainCarts, ProSkillAPI,
 Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard.</em></p>
 <h2 id="provided-by-other-plugins">Provided by other plugins<a class="headerlink" href="#provided-by-other-plugins" title="Permanent link">🔗</a></h2>
 <p>Some plugins also hook into BetonQuest and provide support by themselves:<br />
@@ -7110,8 +7190,115 @@ The first argument is class name, the second one is the required level.</p>
 <span class="w">  </span><span class="nt">give_emeralds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">give emerald:5</span>
 </code></pre></div></p>
 </div>
-<h2 id="vault">Vault<a href="http://dev.bukkit.org/bukkit-plugins/vault/"></a><a class="headerlink" href="#vault" title="Permanent link">🔗</a></h2>
+<h2 id="traincarts">TrainCarts<a href="https://www.spigotmc.org/resources/39592/"></a><a class="headerlink" href="#traincarts" title="Permanent link">🔗</a></h2>
+<p>TrainCarts is a plugin that allows you to create trains with advanced features.</p>
 <h3 id="conditions_12">Conditions<a class="headerlink" href="#conditions_12" title="Permanent link">🔗</a></h3>
+<h4 id="traincarts-ride-condition-traincartsride">TrainCarts ride condition: <code>traincartsride</code><a class="headerlink" href="#traincarts-ride-condition-traincartsride" title="Permanent link">🔗</a></h4>
+<p>Checks if the player is riding a specific named train.</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">traincartsride train1</span>
+</code></pre></div>
+</div>
+<h3 id="objectives_4">Objectives<a class="headerlink" href="#objectives_4" title="Permanent link">🔗</a></h3>
+<h4 id="traincarts-location-objective-traincartslocation">TrainCarts location objective: <code>traincartslocation</code><a class="headerlink" href="#traincarts-location-objective-traincartslocation" title="Permanent link">🔗</a></h4>
+<p>This objective requires the player to be at a specific location while sitting in a train. 
+It works similarly to the location objective, but the player must be in a TrainCarts train to complete it.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Syntax</th>
+<th>Default Value</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>location</em></td>
+<td>x;y;z;world</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343h-.001a8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746Zm1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275ZM6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L6.94 8 4.97 6.03a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018Z"/></svg></span></td>
+<td>The Location the player has to pass whiles sitting in the train.</td>
+</tr>
+<tr>
+<td><em>range</em></td>
+<td>range:double</td>
+<td>1</td>
+<td>The optional range around the location where the player must be.</td>
+</tr>
+<tr>
+<td><em>entry</em></td>
+<td>entry</td>
+<td>Disabled</td>
+<td>The player must enter (go from outside to inside) the location to complete the objective.</td>
+</tr>
+<tr>
+<td><em>exit</em></td>
+<td>exit</td>
+<td>Disabled</td>
+<td>The player must exit (go from inside to outside) the location to complete the objective.</td>
+</tr>
+<tr>
+<td><em>name</em></td>
+<td>name:Train1</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343h-.001a8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746Zm1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275ZM6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L6.94 8 4.97 6.03a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018Z"/></svg></span></td>
+<td>The optional Name of the Train.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">traincartslocation 100;60;100;world</span>
+<span class="l l-Scalar l-Scalar-Plain">traincartslocation name:Train1 100;60;100;world range:2</span>
+<span class="l l-Scalar l-Scalar-Plain">traincartslocation 100;60;100;world entry range:2</span>
+</code></pre></div>
+</div>
+<h4 id="traincarts-ride-objective-traincartsride">TrainCarts ride objective: <code>traincartsride</code><a class="headerlink" href="#traincarts-ride-objective-traincartsride" title="Permanent link">🔗</a></h4>
+<p>This objective requires the player to ride a train for a specific time.
+The time starts after the player enters the train and stops when the player exits the train.
+The conditions are checked every time the player enters or leaves the train or completes the objective.
+If the conditions are not met, the time will not be counted.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Syntax</th>
+<th>Default Value</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>name</em></td>
+<td>name:Train1</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343h-.001a8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746Zm1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275ZM6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L6.94 8 4.97 6.03a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018Z"/></svg></span></td>
+<td>The optional Name of the Train.</td>
+</tr>
+<tr>
+<td><em>amount</em></td>
+<td>amount:20</td>
+<td>0</td>
+<td>The optional amount of time in seconds, the player has to ride a specific train.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">traincartsride</span>
+<span class="l l-Scalar l-Scalar-Plain">traincartsride name:Train1</span>
+<span class="l l-Scalar l-Scalar-Plain">traincartsride name:Train1 amount:20</span>
+</code></pre></div>
+</div>
+<h4 id="traincarts-ride-objective-traincartsexit">TrainCarts ride objective: <code>traincartsexit</code><a class="headerlink" href="#traincarts-ride-objective-traincartsexit" title="Permanent link">🔗</a></h4>
+<p>This objective requires the player to exit a train.</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">traincartsexit</span>
+<span class="l l-Scalar l-Scalar-Plain">traincartsexit name:Train1</span>
+</code></pre></div>
+</div>
+<h2 id="vault">Vault<a href="http://dev.bukkit.org/bukkit-plugins/vault/"></a><a class="headerlink" href="#vault" title="Permanent link">🔗</a></h2>
+<h3 id="conditions_13">Conditions<a class="headerlink" href="#conditions_13" title="Permanent link">🔗</a></h3>
 <h4 id="vault-money-condition-money">Vault Money Condition: <code>money</code><a class="headerlink" href="#vault-money-condition-money" title="Permanent link">🔗</a></h4>
 <p>Checks if the player has the specified amount of money.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
@@ -7234,13 +7421,13 @@ You can also rotate the schematic by adding <code>rotation:90</code> where <code
 <li>Pastes the schematic file <code>tree.<ins class="critic">schem</ins></code> at the location <code>100;200;300;world</code>.</li>
 </ol>
 <h2 id="worldguard">WorldGuard<a href="http://dev.bukkit.org/bukkit-plugins/worldguard/"></a><a class="headerlink" href="#worldguard" title="Permanent link">🔗</a></h2>
-<h3 id="conditions_13">Conditions<a class="headerlink" href="#conditions_13" title="Permanent link">🔗</a></h3>
+<h3 id="conditions_14">Conditions<a class="headerlink" href="#conditions_14" title="Permanent link">🔗</a></h3>
 <h4 id="inside-region-region">Inside Region: <code>region</code><a class="headerlink" href="#inside-region-region" title="Permanent link">🔗</a></h4>
 <p>This condition is met when the player is inside the specified region. The only argument is the name of the region.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">inCastle</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;region</span><span class="nv"> </span><span class="s">castle&quot;</span>
 </code></pre></div>
-<h3 id="objectives_4">Objectives<a class="headerlink" href="#objectives_4" title="Permanent link">🔗</a></h3>
+<h3 id="objectives_5">Objectives<a class="headerlink" href="#objectives_5" title="Permanent link">🔗</a></h3>
 <h4 id="enter-region-region">Enter Region: <code>region</code><a class="headerlink" href="#enter-region-region" title="Permanent link">🔗</a></h4>
 <p>To complete this objective you need to enter WorldGuard region with specified name. A required argument is the name of the region and you may also pass an optional <code>entry</code> and/or <code>exit</code> to only trigger when entering or exiting a region instead of anytime inside a region.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
