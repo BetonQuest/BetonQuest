@@ -18,3 +18,11 @@ download-solution: |-
       :warning: _This will overwrite any changes (including NPC ID's and locations) you have made to the example.<br>_
       Linking NPCs to conversations is explained in the [basics tutorial](Tutorials/Getting-Started/Basics/Conversations.md#1-linking-a-conversation-to-a-npc).
 
+download-this-part: |-
+  ??? info "Download this part of the tutorial"
+      Enter this command in the chat to download this part of the tutorial:
+
+new-line-highlighting: |-
+  !!! info "Highlighting"
+      Every line/word that is highlighted in {==blue==} is new to the file! 
+

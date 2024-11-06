@@ -183,6 +183,10 @@ nav:
               - '    Events': Tutorials/Getting-Started/Basics/Events.md
               - 'Objectives': Tutorials/Getting-Started/Basics/Objectives.md
               - 'Conditions': Tutorials/Getting-Started/Basics/Conditions.md
+      - 'Features':
+          - 'Tracking Quest Progress':
+              - 'Overview': Tutorials/Features/Tracking-Quest-Progress/Overview.md
+              - 'Tags': Tutorials/Features/Tracking-Quest-Progress/Tags.md
       - 'Tools':
           - 'Handling YAML Errors': Tutorials/Tools/YAML-Errors.md
       - 'Syntax':
