@@ -288,8 +288,7 @@ You can now only talk to **Fren and Joe** after you introduced yourself to **Bon
 
 @snippet:tutorials:download-solution@
        ```
-       /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Features/Tracking-Quest-Progress/2-HalfExample
-       /trackingTutorial overwrite
+       /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Features/Tracking-Quest-Progress/2-HalfExample /trackingTutorial overwrite
        ```
 
 ## 3. Complete the introduction quest (optional)
@@ -403,6 +402,5 @@ Let us have a look:
     
 @snippet:tutorials:download-this-part@
        ```
-       /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Features/Tracking-Quest-Progress/3-FullExample
-       /trackingTutorial overwrite
+       /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Features/Tracking-Quest-Progress/3-FullExample /trackingTutorial overwrite
        ```
