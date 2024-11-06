@@ -40,9 +40,7 @@ The file structure should look like this:
 
 @snippet:tutorials:download-complete-files@
     ```
-    /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages 
-    /Advanced/Tracking-Quest-Progress/1-ExampleQuest 
-    /trackingTutorial overwrite
+    /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Advanced/Tracking-Quest-Progress/1-ExampleQuest /trackingTutorial overwrite
     ```
     You can now find all files needed for this tutorial in this location:
     "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/questTracking_"
@@ -204,7 +202,7 @@ conversations and also add some more conversation so that it makes more sense. T
 
 !!! tip
 
-    I always start by writing the events into the conversation. Once the event is written, I proceed to write it in 
+    I always start by writing the events into the conversation options. Once the event is written, I proceed to write it in 
     the **events section** to ensure that the event actually exists. After that, I ask myself: What do I need for the
     event? Do I still need to write a **condition** or an **objective** for it? If you proceed systematically like this,
     you will make significantly fewer mistakes.
