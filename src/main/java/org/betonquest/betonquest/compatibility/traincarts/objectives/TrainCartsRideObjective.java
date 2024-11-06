@@ -18,8 +18,10 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
@@ -102,6 +104,17 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
             return;
         }
         final OnlineProfile onlineProfile = PlayerConverter.getID(player);
+        stopCount(onlineProfile);
+    }
+
+    /**
+     * Stops the time measurement when the player quits the server.
+     *
+     * @param event the {@link PlayerQuitEvent}.
+     */
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onQuit(final PlayerQuitEvent event) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
         stopCount(onlineProfile);
     }
 
