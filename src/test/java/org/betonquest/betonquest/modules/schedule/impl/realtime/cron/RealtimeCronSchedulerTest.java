@@ -117,7 +117,7 @@ class RealtimeCronSchedulerTest {
     @Test
     void testStartWithMissedSchedulesStrategyAll() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
-        final Instant lastExecution = Instant.now().minusSeconds(60);
+        final Instant lastExecution = Instant.now().minusSeconds(61);
         when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(lastExecution));
 
         final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(logger, cache);
