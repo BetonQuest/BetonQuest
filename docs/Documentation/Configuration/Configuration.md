@@ -71,7 +71,7 @@ be added. You can disable this behaviour by setting the option to `-1`. BetonQue
 
 ### Citizens identifier
 
-`citizens_npcs_by_name` sets whether NPCs from Citizens 2 should be identified in package.yml by their name instead of
+`npcs_by_name` sets whether NPCs from Citizens 2 or FancyNpcs should be identified in package.yml by their name instead of
 their id. This is a dangerous setting as two different NPC's at the opposite edges of your world that share the same
 name by accident will trigger the same quest.
 

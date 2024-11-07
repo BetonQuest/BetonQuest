@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.citizens;
+package org.betonquest.betonquest.exceptions;
 
 import java.io.Serial;
 

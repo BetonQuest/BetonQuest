@@ -1,4 +1,11 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/ConfigPatcher.md
+2.2.2.1:
+  - type: TYPE_TRANSFORM
+    key: hook.fancynpcs
+    newType: boolean
+  - type: KEY_RENAME
+    oldKey: citizens_npcs_by_name
+    newKey: npcs_by_name
 2.1.0.1:
   - type: KEY_RENAME
     oldKey: hooks.aureliumskills

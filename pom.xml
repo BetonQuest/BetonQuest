@@ -168,6 +168,15 @@
       <optional>true</optional>
     </dependency>
 
+    <!-- from fancynpcs repository -->
+    <dependency>
+      <groupId>de.oliver</groupId>
+      <artifactId>FancyNpcs</artifactId>
+      <version>2.4.0</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+
     <!-- from codemc repository -->
     <dependency>
       <groupId>org.bstats</groupId>
@@ -506,6 +515,10 @@
     <repository>
       <id>betonquest-citizensnpcs-repo</id>
       <url>https://maven.citizensnpcs.co/repo</url>
+    </repository>
+    <repository>
+      <id>betonquest-fancynpcs-repo</id>
+      <url>https://repo.fancyplugins.de/releases</url>
     </repository>
     <repository>
       <id>betonquest-codemc-repo</id>

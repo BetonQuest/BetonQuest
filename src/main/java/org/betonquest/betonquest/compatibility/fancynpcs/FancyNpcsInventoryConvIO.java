@@ -1,6 +1,6 @@
-package org.betonquest.betonquest.compatibility.citizens;
+package org.betonquest.betonquest.compatibility.fancynpcs;
 
-import net.citizensnpcs.trait.SkinTrait;
+import de.oliver.fancynpcs.api.utils.SkinFetcher;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
@@ -22,9 +22,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * A chest conversationIO that replaces the NPCs skull with the skin of the Citizen NPC.
+ * A chest conversationIO that replaces the NPCs skull with the skin of the FancyNpcs NPC.
  */
-public class CitizensInventoryConvIO extends InventoryConvIO {
+public class FancyNpcsInventoryConvIO extends InventoryConvIO {
 
     /**
      * A regex pattern to match the skin URL in the base64 encoded skin texture.
@@ -38,29 +38,28 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
     private final BetonQuestLogger log;
 
     /**
-     * Creates a new {@link CitizensInventoryConvIO} instance.
+     * Creates a new {@link FancyNpcsInventoryConvIO} instance.
      *
      * @param conv          the conversation
      * @param onlineProfile the online profile
      */
-    public CitizensInventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
+    public FancyNpcsInventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         super(conv, onlineProfile);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
     }
 
     @Override
     protected SkullMeta updateSkullMeta(final SkullMeta meta) {
-        // this only applied to Citizens NPC conversations
-        if (conv instanceof final CitizensConversation citizensConv) {
+        // this only applied to FancyNpcs NPC conversations
+        if (conv instanceof final FancyNpcsConversation citizensConv) {
             if (Bukkit.isPrimaryThread()) {
                 throw new IllegalStateException("Must be called async!");
             }
 
             try {
-                final SkinTrait skinTrait = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> citizensConv.getNPC().getOrAddTrait(SkinTrait.class)).get();
-                final String texture = skinTrait.getTexture();
+                final SkinFetcher.SkinData skinData = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> citizensConv.getNpc().getData().getSkin()).get();
+                final String texture = skinData.value();
                 if (texture != null) {
-
                     final PlayerProfile profile = Bukkit.createProfile(UUID.randomUUID(), "");
                     final PlayerTextures skullTexture = profile.getTextures();
                     skullTexture.setSkin(resolveSkinURL(texture), PlayerTextures.SkinModel.CLASSIC);
@@ -102,15 +101,15 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
     /**
      * A FancyNpcsInventoryConvIO that also prints the messages in the chat.
      */
-    public static class CitizensCombined extends CitizensInventoryConvIO {
+    public static class FancyNpcsCombined extends FancyNpcsInventoryConvIO {
 
         /**
-         * Creates a new {@link CitizensCombined} conversationIO instance.
+         * Creates a new {@link FancyNpcsCombined} conversationIO instance.
          *
          * @param conv          the conversation
          * @param onlineProfile the online profile
          */
-        public CitizensCombined(final Conversation conv, final OnlineProfile onlineProfile) {
+        public FancyNpcsCombined(final Conversation conv, final OnlineProfile onlineProfile) {
             super(conv, onlineProfile);
             super.printMessages = true;
         }

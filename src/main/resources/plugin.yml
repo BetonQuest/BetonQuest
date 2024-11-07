@@ -12,6 +12,7 @@ softdepend:
   - MMOCore
   - MMOItems
   - Citizens
+  - FancyNpcs
   - MythicMobs
   - Vault
   - EffectLib

@@ -16,7 +16,7 @@ update:
   ingameNotification: true
 default_journal_slot: -1
 max_npc_distance: 5.3
-citizens_npcs_by_name: false
+npcs_by_name: false
 acceptNPCLeftClick: false
 npcInteractionLimit: 500
 default_conversation_IO: menu,tellraw
@@ -50,6 +50,7 @@ cmd_blacklist:
   - spawn
 hook:
   citizens: true
+  fancynpcs: true
   mythicmobs: true
   vault: true
   worldguard: true

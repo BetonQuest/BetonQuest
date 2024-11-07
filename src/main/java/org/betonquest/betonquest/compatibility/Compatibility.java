@@ -11,6 +11,7 @@ import org.betonquest.betonquest.compatibility.denizen.DenizenIntegrator;
 import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegrator;
 import org.betonquest.betonquest.compatibility.fabled.FabledIntegrator;
 import org.betonquest.betonquest.compatibility.fakeblock.FakeBlockIntegrator;
+import org.betonquest.betonquest.compatibility.fancynpcs.FancyNpcsIntegrator;
 import org.betonquest.betonquest.compatibility.heroes.HeroesIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
 import org.betonquest.betonquest.compatibility.holograms.decentholograms.DecentHologramsIntegrator;
@@ -231,6 +232,7 @@ public class Compatibility implements Listener {
     private void registerCompatiblePlugins() {
         register("MythicMobs", MythicMobsIntegrator.class);
         register("Citizens", CitizensIntegrator.class);
+        register("FancyNpcs", FancyNpcsIntegrator.class);
         register("Vault", VaultIntegrator.class);
         register("Skript", SkriptIntegrator.class);
         register("WorldGuard", WorldGuardIntegrator.class);

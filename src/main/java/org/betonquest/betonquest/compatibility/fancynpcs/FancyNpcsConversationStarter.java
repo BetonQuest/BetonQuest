@@ -1,15 +1,13 @@
-package org.betonquest.betonquest.compatibility.citizens;
+package org.betonquest.betonquest.compatibility.fancynpcs;
 
-import net.citizensnpcs.api.event.NPCClickEvent;
-import net.citizensnpcs.api.event.NPCLeftClickEvent;
-import net.citizensnpcs.api.event.NPCRightClickEvent;
-import net.citizensnpcs.api.npc.NPC;
+import de.oliver.fancynpcs.api.Npc;
+import de.oliver.fancynpcs.api.actions.ActionTrigger;
+import de.oliver.fancynpcs.api.events.NpcInteractEvent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveController;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -30,9 +28,9 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 /**
- * Starts new conversations with Citizen NPCs.
+ * Starts new conversations with FancyNpcs NPCs.
  */
-public class CitizensConversationStarter {
+public class FancyNpcsConversationStarter {
     /**
      * The section in which the assignments from NPCs to conversations are stored.
      */
@@ -42,11 +40,6 @@ public class CitizensConversationStarter {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
-
-    /**
-     * Move Controller to check if the NPC blocks conversations while moving.
-     */
-    private final CitizensMoveController citizensMoveController;
 
     /**
      * Stores the last time the player interacted with an NPC.
@@ -65,13 +58,13 @@ public class CitizensConversationStarter {
     private final Map<String, ConversationID> assignedConversations = new HashMap<>();
 
     /**
-     * A listener for right-clicking a Citizens NPC.
+     * A listener for right-clicking a FancyNpcs NPC.
      */
     @Nullable
     private RightClickListener rightClick;
 
     /**
-     * A listener for left-clicking a Citizens NPC.
+     * A listener for left-clicking a FancyNpcs NPC.
      */
     @Nullable
     private LeftClickListener leftClick;
@@ -86,13 +79,10 @@ public class CitizensConversationStarter {
      *
      * @param loggerFactory          the logger factory to create new class specific logger
      * @param log                    the custom logger for this class
-     * @param citizensMoveController the move controller to check if the NPC currently blocks conversations
      */
-    public CitizensConversationStarter(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                                       final CitizensMoveController citizensMoveController) {
+    public FancyNpcsConversationStarter(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
         this.loggerFactory = loggerFactory;
         this.log = log;
-        this.citizensMoveController = citizensMoveController;
         reload();
     }
 
@@ -128,11 +118,11 @@ public class CitizensConversationStarter {
      * @param event the event for the NPC interaction
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
-    private void interactLogic(final NPCClickEvent event) {
-        if (!event.getClicker().hasPermission("betonquest.conversation")) {
+    private void interactLogic(final NpcInteractEvent event) {
+        if (!event.getPlayer().hasPermission("betonquest.conversation")) {
             return;
         }
-        final UUID playerUUID = event.getClicker().getUniqueId();
+        final UUID playerUUID = event.getPlayer().getUniqueId();
 
         final Long lastClick = npcInteractionLimiter.get(playerUUID);
         final long currentClick = new Date().getTime();
@@ -141,12 +131,9 @@ public class CitizensConversationStarter {
         }
         npcInteractionLimiter.put(playerUUID, currentClick);
 
-        final NPC npc = event.getNPC();
+        final Npc npc = event.getNpc();
 
-        if (citizensMoveController.blocksTalking(npc)) {
-            return;
-        }
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getClicker());
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
         if (CombatTagger.isTagged(onlineProfile)) {
             try {
                 Config.sendNotify(null, onlineProfile, "busy", "busy,error");
@@ -156,8 +143,8 @@ public class CitizensConversationStarter {
             return;
         }
 
-        final String npcId = String.valueOf(npc.getId());
-        final String npcName = npc.getName();
+        final String npcId = npc.getData().getId();
+        final String npcName = npc.getData().getName();
 
         final boolean npcsByName = Boolean.parseBoolean(Config.getConfigString("npcs_by_name"));
 
@@ -165,10 +152,10 @@ public class CitizensConversationStarter {
         final ConversationID conversationID = assignedConversations.get(selector);
 
         if (conversationID == null) {
-            log.debug("Player '" + event.getClicker().getName() + "' clicked NPC '" + npcId + "' but there is no conversation assigned to it.");
+            log.debug("Player '" + event.getPlayer().getName() + "' clicked NPC '" + npcId + "' but there is no conversation assigned to it.");
         } else {
             event.setCancelled(true);
-            new CitizensConversation(loggerFactory.create(CitizensConversation.class), onlineProfile, conversationID, event.getNPC().getEntity().getLocation(), event.getNPC());
+            new FancyNpcsConversation(loggerFactory.create(FancyNpcsConversation.class), onlineProfile, conversationID, event.getNpc().getData().getLocation(), event.getNpc());
         }
     }
 
@@ -196,7 +183,7 @@ public class CitizensConversationStarter {
     }
 
     /**
-     * A listener for right-clicking a Citizens NPC.
+     * A listener for right-clicking a FancyNpcs NPC.
      */
     @SuppressWarnings("PMD.CommentRequired")
     private class RightClickListener implements Listener {
@@ -205,13 +192,14 @@ public class CitizensConversationStarter {
         }
 
         @EventHandler(ignoreCancelled = true)
-        public void onNPCClick(final NPCRightClickEvent event) {
+        public void onNPCClick(final NpcInteractEvent event) {
+            if (event.getInteractionType() != ActionTrigger.RIGHT_CLICK) return;
             interactLogic(event);
         }
     }
 
     /**
-     * A listener for left-clicking a Citizens NPC.
+     * A listener for left-clicking a FancyNpcs NPC.
      */
     @SuppressWarnings("PMD.CommentRequired")
     private class LeftClickListener implements Listener {
@@ -220,7 +208,8 @@ public class CitizensConversationStarter {
         }
 
         @EventHandler(ignoreCancelled = true)
-        public void onNPCClick(final NPCLeftClickEvent event) {
+        public void onNPCClick(final NpcInteractEvent event) {
+            if (event.getInteractionType() != ActionTrigger.LEFT_CLICK) return;
             interactLogic(event);
         }
     }

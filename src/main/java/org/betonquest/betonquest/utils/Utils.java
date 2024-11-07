@@ -168,6 +168,16 @@ public final class Utils {
     }
 
     /**
+     * Checks if the String is a valid UUID
+     *
+     * @param string String to check
+     * @return true if the supplied String is a valid UUID, false otherwise
+     */
+    public static boolean isUUID(final String string) {
+        return string.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
+    }
+
+    /**
      * Gets the party of the player.
      * A range of 0 means worldwide and -1 means server-wide.
      *
