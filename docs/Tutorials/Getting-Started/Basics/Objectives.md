@@ -115,9 +115,12 @@ you should get a notification.
 
 !!! tip "Faster Fishing"
     Use this command to get a superfast fishing rod:
+    ``` YAML title="1.20.5+"
+    /give @p fishing_rod[custom_name='["",{"text":"Instant Fishing Rod","color":"yellow"}]',lore=['["",{"text":"Instantly summons a hungry fish...","italic":false}]'],item_name=derp,enchantments={levels:{lure:100}}]
     ```
+    ``` YAML title="pre 1.20.5"
     /give @p fishing_rod{display:{Name:'{"text":"Instant Fishing Rod","color":"yellow","italic":true}',Lore:['{"text":"Instantly summons a hungry fish..."}']},HideFlags:1,Enchantments:[{id:"minecraft:lure",lvl:100s}]} 1
-    ```    
+    ```
 
 | Command Part                  | Meaning                                                                                                                                                                       |
 |-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
