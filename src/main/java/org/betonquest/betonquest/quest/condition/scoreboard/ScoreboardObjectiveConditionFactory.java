@@ -9,7 +9,7 @@ import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
 /**
- * Factory to create scoreboard conditions from {@link Instruction}s.
+ * Factory to create scoreboard objective conditions from {@link Instruction}s.
  */
 public class ScoreboardObjectiveConditionFactory implements PlayerConditionFactory {
 
@@ -19,7 +19,7 @@ public class ScoreboardObjectiveConditionFactory implements PlayerConditionFacto
     private final PrimaryServerThreadData data;
 
     /**
-     * Create the scoreboard condition factory.
+     * Create the scoreboard objective condition factory.
      *
      * @param data the data used for checking the condition on the main thread
      */
