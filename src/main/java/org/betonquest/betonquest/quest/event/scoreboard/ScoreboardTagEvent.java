@@ -17,25 +17,21 @@ public class ScoreboardTagEvent implements OnlineEvent {
     /**
      * Whether to add or remove the tag.
      */
-    private final boolean remove;
+    private final ScoreboardTagAction action;
 
     /**
      * Create a new scoreboard tag event that adds or removes the given tag.
      *
      * @param tag    the tag to add or remove
-     * @param remove whether to add or remove the tag
+     * @param action whether to add or remove the tag
      */
-    public ScoreboardTagEvent(final String tag, final boolean remove) {
+    public ScoreboardTagEvent(final String tag, final ScoreboardTagAction action) {
         this.tag = tag;
-        this.remove = remove;
+        this.action = action;
     }
 
     @Override
     public void execute(final OnlineProfile profile) throws QuestRuntimeException {
-        if (remove) {
-            profile.getPlayer().removeScoreboardTag(tag);
-        } else {
-            profile.getPlayer().addScoreboardTag(tag);
-        }
+        action.execute(profile, tag);
     }
 }

@@ -38,11 +38,11 @@ public class ScoreboardTagEventFactory implements EventFactory {
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+        final ScoreboardTagAction action = instruction.getEnum(ScoreboardTagAction.class);
         final String tag = instruction.next();
-        final boolean remove = instruction.hasArgument("remove");
         final BetonQuestLogger logger = loggerFactory.create(ScoreboardTagEvent.class);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
-                new ScoreboardTagEvent(tag, remove), logger, instruction.getPackage()
+                new ScoreboardTagEvent(tag, action), logger, instruction.getPackage()
         ), data);
     }
 }
