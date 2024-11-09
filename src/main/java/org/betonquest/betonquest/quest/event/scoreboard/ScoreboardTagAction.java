@@ -2,6 +2,8 @@ package org.betonquest.betonquest.quest.event.scoreboard;
 
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 
+import java.util.function.BiConsumer;
+
 /**
  * The action to perform on a scoreboard tag.
  */
@@ -18,9 +20,9 @@ public enum ScoreboardTagAction {
     /**
      * The consumer to use.
      */
-    private final BiConsumer biConsumer;
+    private final BiConsumer<OnlineProfile, String> biConsumer;
 
-    ScoreboardTagAction(final BiConsumer biConsumer) {
+    ScoreboardTagAction(final BiConsumer<OnlineProfile, String> biConsumer) {
         this.biConsumer = biConsumer;
     }
 
@@ -32,19 +34,5 @@ public enum ScoreboardTagAction {
      */
     public void execute(final OnlineProfile profile, final String tag) {
         biConsumer.accept(profile, tag);
-    }
-
-    /**
-     * The consumer interface.
-     */
-    private interface BiConsumer {
-
-        /**
-         * Accepts the profile and tag.
-         *
-         * @param profile the profile
-         * @param tag     the tag
-         */
-        void accept(OnlineProfile profile, String tag);
     }
 }
