@@ -2,6 +2,8 @@ package org.betonquest.betonquest.modules.logger;
 
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.modules.logger.filter.LogRecordTypeFilter;
 import org.betonquest.betonquest.modules.logger.format.ChatFormatter;
 import org.betonquest.betonquest.modules.logger.format.LogfileFormatter;
@@ -33,6 +35,7 @@ import java.util.logging.Handler;
 /**
  * A static helper class to create {@link Handler}s in the way they are usually used by BetonQuest.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public final class HandlerFactory {
     private HandlerFactory() {
         // Empty
@@ -56,6 +59,7 @@ public final class HandlerFactory {
     /**
      * Create a {@link HistoryHandler}.
      *
+     * @param loggerFactory logger factory to use
      * @param plugin        {@link Plugin} instance
      * @param scheduler     {@link BukkitScheduler} instance
      * @param config        {@link ConfigurationFile} instance
@@ -63,17 +67,18 @@ public final class HandlerFactory {
      * @param instantSource {@link InstantSource} instance
      * @return a new {@link HistoryHandler}
      */
-    public static HistoryHandler createHistoryHandler(final Plugin plugin, final BukkitScheduler scheduler, final ConfigurationFile config, final File logFileFolder, final InstantSource instantSource) {
+    public static HistoryHandler createHistoryHandler(final BetonQuestLoggerFactory loggerFactory, final Plugin plugin, final BukkitScheduler scheduler, final ConfigurationFile config, final File logFileFolder, final InstantSource instantSource) {
         final DebugHandlerConfig debugHandlerConfig = new DebugHandlerConfig(config, logFileFolder);
         final LogRecordQueue logQueue = createLogRecordQueue(plugin, scheduler, instantSource, debugHandlerConfig.getExpireAfterMinutes());
-        final ResettableHandler targetHandler = createDebugLogFileHandler(debugHandlerConfig.getLogFile(), instantSource);
+        final ResettableHandler targetHandler = createDebugLogFileHandler(loggerFactory, debugHandlerConfig.getLogFile(), instantSource);
         final HistoryHandler historyHandler = new HistoryHandler(debugHandlerConfig.isDebugging(), debugHandlerConfig::setDebugging, logQueue, targetHandler);
         historyHandler.setFilter(new LogRecordTypeFilter(BetonQuestLogRecord.class));
         return historyHandler;
     }
 
-    private static ResettableHandler createDebugLogFileHandler(final File logFile, final InstantSource instantSource) {
-        return new ResettableHandler(() -> new LazyHandler(() -> setupFileHandler(logFile, instantSource)));
+    private static ResettableHandler createDebugLogFileHandler(final BetonQuestLoggerFactory loggerFactory, final File logFile, final InstantSource instantSource) {
+        final BetonQuestLogger log = loggerFactory.create(LazyHandler.class);
+        return new ResettableHandler(() -> new LazyHandler(log, () -> setupFileHandler(logFile, instantSource)));
     }
 
     private static LogRecordQueue createLogRecordQueue(final Plugin plugin, final BukkitScheduler scheduler, final InstantSource instantSource, final int keepMinutes) {
@@ -86,17 +91,16 @@ public final class HandlerFactory {
         }
     }
 
-    private static Handler setupFileHandler(final File logFile, final InstantSource instantSource) {
+    private static Handler setupFileHandler(final File logFile, final InstantSource instantSource) throws IOException {
         try {
             renameLogFile(logFile, instantSource);
             final FileHandler fileHandler = new FileHandler(logFile.getAbsolutePath());
             fileHandler.setFormatter(new LogfileFormatter());
             return fileHandler;
         } catch (final IOException e) {
-            throw new IllegalStateException("Could not create the FileHandler for the DebugLogger!\n"
-                    + "It was not possible to create the '" + logFile.getName() + "' or to register the plugin's internal logger. "
-                    + "This is not a critical error, the server can still run, but it is not possible to use the '/q debug true' command. "
-                    + "Reason: " + e.getMessage(), e);
+            throw new IOException("Could not create the FileHandler for the DebugLogger! "
+                    + "It was not possible to create the '" + logFile.getName() + "'. Reason: " + e.getMessage() + "\n"
+                    + "This is not a critical error, the server can still run, but it is not possible to use the '/q debug true' command.", e);
         }
     }
 
@@ -107,7 +111,7 @@ public final class HandlerFactory {
             try {
                 Files.move(logFile.toPath(), newFile.toPath());
             } catch (final IOException e) {
-                throw new IOException("Could not rename '" + logFile.getName() + "' file! Continue writing into the same log file.", e);
+                throw new IOException("Could not rename '" + logFile.getName() + "' file!", e);
             }
         }
         if (!createFolderAndFile(logFile)) {

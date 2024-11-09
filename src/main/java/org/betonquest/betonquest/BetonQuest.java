@@ -439,7 +439,7 @@ public class BetonQuest extends JavaPlugin {
             return;
         }
 
-        final HistoryHandler debugHistoryHandler = HandlerFactory.createHistoryHandler(this, this.getServer().getScheduler(), config, new File(getDataFolder(), "/logs"), InstantSource.system());
+        final HistoryHandler debugHistoryHandler = HandlerFactory.createHistoryHandler(loggerFactory, this, this.getServer().getScheduler(), config, new File(getDataFolder(), "/logs"), InstantSource.system());
         registerLogHandler(getServer(), debugHistoryHandler);
         adventure = BukkitAudiences.create(this);
         final AccumulatingReceiverSelector receiverSelector = new AccumulatingReceiverSelector();
