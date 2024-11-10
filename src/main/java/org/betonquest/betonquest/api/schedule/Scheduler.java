@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.modules.schedule.ScheduleID;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ import java.util.Map;
  * <p>
  * When loading the configs,
  * new schedules are parsed and registered in the matching Scheduler by calling {@link #addSchedule(Schedule)}.
- * After everything is loaded {@link #start()} is called. It should start the scheduler.
+ * After everything is loaded {@link #start(Instant)} ()} is called. It should start the scheduler.
  * Once a time defined in the schedule is met,
  * the referenced events shall be executed using {@link #executeEvents(Schedule)}.
  * On shutdown or before reloading all data, {@link #stop()} is called to stop all schedules.
@@ -56,7 +57,7 @@ public abstract class Scheduler<S extends Schedule> {
 
     /**
      * Register a new schedule to the list of schedules managed by this scheduler.
-     * The schedule shall remain inactive till method {@link #start()} is called to activate all schedules.
+     * The schedule shall remain inactive till method {@link #start(Instant)} is called to activate all schedules.
      *
      * @param schedule schedule object to register
      */
@@ -76,8 +77,10 @@ public abstract class Scheduler<S extends Schedule> {
      * <p><b>
      * When overriding this method, make sure to call {@code super.start()} at some point to update the running flag.
      * </b></p>
+     *
+     * @param now the current time when the scheduler is started
      */
-    public void start() {
+    public void start(final Instant now) {
         running = true;
     }
 

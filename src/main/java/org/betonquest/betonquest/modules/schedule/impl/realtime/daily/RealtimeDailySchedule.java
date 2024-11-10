@@ -62,20 +62,10 @@ public class RealtimeDailySchedule extends Schedule {
      */
     public Instant getNextExecution(final Instant startTime) {
         final OffsetDateTime now = OffsetDateTime.ofInstant(startTime, ZoneId.systemDefault());
-        OffsetDateTime targetTime = getTimeToRun().atOffset(now.getOffset()).atDate(now.toLocalDate());
+        OffsetDateTime targetTime = OffsetDateTime.of(now.toLocalDate(), getTimeToRun(), now.getOffset());
         if (targetTime.isBefore(now)) {
             targetTime = targetTime.plusDays(1);
         }
         return targetTime.toInstant();
-    }
-
-    /**
-     * Get the next execution time as instant.
-     * This method uses {@link Instant#now()} as the start time.
-     *
-     * @return instant when the next run of this schedule will be
-     */
-    public Instant getNextExecution() {
-        return getNextExecution(Instant.now());
     }
 }

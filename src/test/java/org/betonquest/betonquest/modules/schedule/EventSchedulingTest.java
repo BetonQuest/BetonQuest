@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +34,11 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class EventSchedulingTest {
+    /**
+     * The current time used in the tests.
+     */
+    private final Instant now = Instant.now();
+
     /**
      * Event Scheduling instance.
      */
@@ -79,23 +85,23 @@ class EventSchedulingTest {
     void testStartAll() {
         final Scheduler<?> schedulerA = registerMockedType("typeA");
         final Scheduler<?> schedulerB = registerMockedType("typeB");
-        scheduling.startAll();
-        verify(schedulerA).start();
-        verify(schedulerB).start();
+        scheduling.startAll(now);
+        verify(schedulerA).start(now);
+        verify(schedulerB).start(now);
     }
 
     @Test
     void testStartWithError() {
         final Scheduler<?> throwingScheduler = registerMockedType("throwing");
-        doThrow(RuntimeException.class).when(throwingScheduler).start();
+        doThrow(RuntimeException.class).when(throwingScheduler).start(now);
         final List<? extends Scheduler<?>> schedulers = IntStream.range(0, 10)
                 .mapToObj(i -> "type" + (char) (i + 'A'))
                 .map(this::registerMockedType)
                 .toList();
-        scheduling.startAll();
-        verify(throwingScheduler).start();
+        scheduling.startAll(now);
+        verify(throwingScheduler).start(now);
         for (final Scheduler<?> scheduler : schedulers) {
-            verify(scheduler).start();
+            verify(scheduler).start(now);
         }
     }
 
@@ -192,7 +198,6 @@ class EventSchedulingTest {
         scheduling.loadData(pack);
         verify(simpleType, times(0)).createAndScheduleNewInstance(any(), any());
         verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.getBaseID())), any());
-
     }
 
     /**

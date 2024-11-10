@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class BukkitSchedulerCleaningLogQueueTest {
     /**
-     * Fixed instant representing now.
+     * The current time used in the tests.
      */
     private final Instant now = Instant.now();
 

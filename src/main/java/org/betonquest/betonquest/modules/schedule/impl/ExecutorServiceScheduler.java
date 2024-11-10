@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.modules.schedule.impl.realtime.daily.RealtimeDailyScheduler;
 import org.jetbrains.annotations.VisibleForTesting;
 
+import java.time.Instant;
 import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -78,12 +79,14 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
      * <p><b>
      * Make sure to call {@code super.start()}, otherwise the executor will not be instantiated.
      * </b></p>
+     *
+     * @param now the current time when the scheduler is started
      */
     @Override
-    public void start() {
-        super.start();
+    public void start(final Instant now) {
+        super.start(now);
         executor = executorServiceSupplier.get();
-        schedules.values().forEach(this::schedule);
+        schedules.values().forEach((schedule) -> schedule(now, schedule));
     }
 
     /**
@@ -96,9 +99,10 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
      * schedules.
      * </b></p>
      *
+     * @param now      The Instance of now
      * @param schedule a schedule from {@link #schedules} map
      */
-    protected abstract void schedule(S schedule);
+    protected abstract void schedule(Instant now, S schedule);
 
     /**
      * <p>

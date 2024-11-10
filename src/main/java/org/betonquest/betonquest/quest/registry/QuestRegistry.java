@@ -15,6 +15,7 @@ import org.betonquest.betonquest.quest.registry.processor.EventProcessor;
 import org.betonquest.betonquest.quest.registry.processor.ObjectiveProcessor;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.Map;
 
@@ -122,7 +123,7 @@ public class QuestRegistry {
                 + objectiveProcessor.size() + " objectives and " + conversationProcessor.size() + " conversations loaded from "
                 + packages.size() + " packages.");
 
-        eventScheduling.startAll();
+        eventScheduling.startAll(Instant.now());
     }
 
     /**

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Instant;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -23,6 +24,11 @@ import static org.mockito.Mockito.*;
 @SuppressWarnings("PMD.DoNotUseThreads")
 @ExtendWith(MockitoExtension.class)
 class ExecutorServiceSchedulerTest {
+    /**
+     * The current time used in the tests.
+     */
+    private final Instant now = Instant.now();
+
     @Mock
     private BetonQuestLogger logger;
 
@@ -51,7 +57,7 @@ class ExecutorServiceSchedulerTest {
     void setUp() {
         scheduler = spy(new ExecutorServiceScheduler<>(logger, this::newExecutor) {
             @Override
-            protected void schedule(final Schedule schedule) {
+            protected void schedule(final Instant now, final Schedule schedule) {
                 //mock, do nothing
             }
         });
@@ -64,18 +70,18 @@ class ExecutorServiceSchedulerTest {
         final Schedule schedule2 = mockSchedule();
         scheduler.addSchedule(schedule1);
         scheduler.addSchedule(schedule2);
-        scheduler.start();
+        scheduler.start(now);
 
         assertNotNull(scheduler.executor, "Executor should be present");
         assertEquals(executor, scheduler.executor, "Executor should be provided by supplier");
-        verify(scheduler, times(1)).schedule(schedule1);
-        verify(scheduler, times(1)).schedule(schedule2);
+        verify(scheduler, times(1)).schedule(now, schedule1);
+        verify(scheduler, times(1)).schedule(now, schedule2);
     }
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testStopSuccess() throws InterruptedException {
-        scheduler.start();
+        scheduler.start(now);
         doReturn(true).when(executor).awaitTermination(anyLong(), any());
         scheduler.stop();
 
@@ -91,7 +97,7 @@ class ExecutorServiceSchedulerTest {
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testStopInterrupted() throws InterruptedException {
-        scheduler.start();
+        scheduler.start(now);
         doThrow(InterruptedException.class).when(executor).awaitTermination(anyLong(), any());
         scheduler.stop();
 
@@ -107,7 +113,7 @@ class ExecutorServiceSchedulerTest {
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testStopTimeout() throws InterruptedException {
-        scheduler.start();
+        scheduler.start(now);
         doReturn(false).when(executor).awaitTermination(anyLong(), any());
         scheduler.stop();
 

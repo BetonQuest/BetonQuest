@@ -10,6 +10,7 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.lang.reflect.InvocationTargetException;
+import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
 
@@ -85,13 +86,15 @@ public class EventScheduling {
 
     /**
      * Start all schedulers and activate all schedules.
+     *
+     * @param now the current time when the scheduler is started
      */
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    public void startAll() {
+    public void startAll(final Instant now) {
         log.debug("Starting schedulers...");
         for (final ScheduleType<?> type : scheduleTypes.values()) {
             try {
-                type.scheduler.start();
+                type.scheduler.start(now);
             } catch (final Exception e) {
                 log.error("Error while enabling " + type.scheduler + ": " + e.getMessage(), e);
             }

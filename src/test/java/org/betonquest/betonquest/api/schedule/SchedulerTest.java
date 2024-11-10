@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Instant;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,6 +21,11 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class SchedulerTest {
+    /**
+     * The current time used in the tests.
+     */
+    private final Instant now = Instant.now();
+
     @Mock
     private BetonQuestLogger logger;
 
@@ -38,7 +44,7 @@ class SchedulerTest {
     void testStart() {
         final Scheduler<Schedule> scheduler = new MockedScheduler(logger);
         assertFalse(scheduler.isRunning(), "isRunning should be false before start is called");
-        scheduler.start();
+        scheduler.start(now);
         assertTrue(scheduler.isRunning(), "isRunning should be true after start is called");
     }
 
@@ -49,7 +55,7 @@ class SchedulerTest {
         final ScheduleID scheduleID = mock(ScheduleID.class);
         final Schedule schedule = mock(Schedule.class);
         scheduler.schedules.put(scheduleID, schedule);
-        scheduler.start();
+        scheduler.start(now);
         assertTrue(scheduler.isRunning(), "isRunning should be true after start is called");
         scheduler.stop();
         assertFalse(scheduler.isRunning(), "isRunning should be false before stop is called");
