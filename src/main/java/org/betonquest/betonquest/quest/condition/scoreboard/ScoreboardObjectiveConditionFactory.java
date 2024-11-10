@@ -9,9 +9,9 @@ import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
 /**
- * Factory to create scoreboard conditions from {@link Instruction}s.
+ * Factory to create scoreboard objective conditions from {@link Instruction}s.
  */
-public class ScoreboardConditionFactory implements PlayerConditionFactory {
+public class ScoreboardObjectiveConditionFactory implements PlayerConditionFactory {
 
     /**
      * Data used for condition check on the primary server thread.
@@ -19,11 +19,11 @@ public class ScoreboardConditionFactory implements PlayerConditionFactory {
     private final PrimaryServerThreadData data;
 
     /**
-     * Create the scoreboard condition factory.
+     * Create the scoreboard objective condition factory.
      *
      * @param data the data used for checking the condition on the main thread
      */
-    public ScoreboardConditionFactory(final PrimaryServerThreadData data) {
+    public ScoreboardObjectiveConditionFactory(final PrimaryServerThreadData data) {
         this.data = data;
     }
 
@@ -31,6 +31,6 @@ public class ScoreboardConditionFactory implements PlayerConditionFactory {
     public PlayerCondition parsePlayer(final Instruction instruction) throws InstructionParseException {
         final String objective = instruction.next();
         final VariableNumber count = instruction.getVarNum();
-        return new PrimaryServerThreadPlayerCondition(new ScoreboardCondition(objective, count), data);
+        return new PrimaryServerThreadPlayerCondition(new ScoreboardObjectiveCondition(objective, count), data);
     }
 }

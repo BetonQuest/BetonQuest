@@ -14,7 +14,7 @@ import java.util.Locale;
 /**
  * Factory to create scoreboard events from {@link Instruction}s.
  */
-public class ScoreboardEventFactory implements EventFactory {
+public class ScoreboardObjectiveEventFactory implements EventFactory {
     /**
      * Data for primary server thread access.
      */
@@ -31,7 +31,7 @@ public class ScoreboardEventFactory implements EventFactory {
      * @param data              the data for primary server thread access
      * @param variableProcessor the variable processor to use
      */
-    public ScoreboardEventFactory(final PrimaryServerThreadData data, final VariableProcessor variableProcessor) {
+    public ScoreboardObjectiveEventFactory(final PrimaryServerThreadData data, final VariableProcessor variableProcessor) {
         this.data = data;
         this.variableProcessor = variableProcessor;
     }
@@ -45,7 +45,7 @@ public class ScoreboardEventFactory implements EventFactory {
             try {
                 final ScoreModification type = ScoreModification.valueOf(action.toUpperCase(Locale.ROOT));
                 return new PrimaryServerThreadEvent(
-                        new ScoreboardEvent(objective, new VariableNumber(variableProcessor, instruction.getPackage(), number), type),
+                        new ScoreboardObjectiveEvent(objective, new VariableNumber(variableProcessor, instruction.getPackage(), number), type),
                         data);
             } catch (final IllegalArgumentException e) {
                 throw new InstructionParseException("Unknown modification action: " + instruction.current(), e);
@@ -53,11 +53,11 @@ public class ScoreboardEventFactory implements EventFactory {
         }
         if (!number.isEmpty() && number.charAt(0) == '*') {
             return new PrimaryServerThreadEvent(
-                    new ScoreboardEvent(objective, new VariableNumber(variableProcessor, instruction.getPackage(), number.replace("*", "")), ScoreModification.MULTIPLY),
+                    new ScoreboardObjectiveEvent(objective, new VariableNumber(variableProcessor, instruction.getPackage(), number.replace("*", "")), ScoreModification.MULTIPLY),
                     data);
         }
         return new PrimaryServerThreadEvent(
-                new ScoreboardEvent(objective, new VariableNumber(variableProcessor, instruction.getPackage(), number), ScoreModification.ADD),
+                new ScoreboardObjectiveEvent(objective, new VariableNumber(variableProcessor, instruction.getPackage(), number), ScoreModification.ADD),
                 data);
     }
 }

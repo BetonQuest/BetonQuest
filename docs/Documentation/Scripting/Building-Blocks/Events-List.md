@@ -678,6 +678,20 @@ resetKill: "score kill 0 action:set"
 applyBonus: "score kill 1.2 action:multiply"
 ```
 
+## Scoreboard Tag: `scoretag`
+
+This scoreboard event adds or remove the scoreboard tag from a player. The kind of tags that are used by vanilla Minecraft and not the [betonquest tags](#tag-tag).
+
+| Parameter        | Syntax            | Default Value          | Explanation                       |
+|------------------|-------------------|------------------------|-----------------------------------|
+| _modifier_       | `add` or `remove` | :octicons-x-circle-16: | Whether to add or remove the tag. |
+| _scoreboard tag_ | Tag name          | :octicons-x-circle-16: | The name of the scoreboard tag.   |
+
+```YAML title="Example"
+addVanillaTag: "scoretag add vanilla_tag"
+removeVanillaTag: "scoretag remove vanilla_tag"
+```
+
 ## Set Block: `setblock`
 
 **persistent**, **static**
