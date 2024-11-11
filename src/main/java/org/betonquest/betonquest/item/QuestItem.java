@@ -82,7 +82,7 @@ public class QuestItem {
     private final FlagHandler flags = new FlagHandler();
 
     /**
-     * Creates new instance of the quest item using the ID
+     * Creates new instance of the quest item using the ID.
      *
      * @param itemID ID of the item
      * @throws InstructionParseException when item parsing goes wrong
@@ -171,7 +171,7 @@ public class QuestItem {
     }
 
     /**
-     * Converts ItemStack to string, which can be later parsed by QuestItem
+     * Converts ItemStack to string, which can be later parsed by QuestItem.
      *
      * @param item ItemStack to convert
      * @return converted string
@@ -242,18 +242,7 @@ public class QuestItem {
                 }
             }
             if (meta instanceof final PotionMeta potionMeta) {
-                final PotionData pData = potionMeta.getBasePotionData();
-                effects = " type:" + pData.getType() + (pData.isExtended() ? " extended" : "")
-                        + (pData.isUpgraded() ? " upgraded" : "");
-                if (potionMeta.hasCustomEffects()) {
-                    final StringBuilder string = new StringBuilder();
-                    for (final PotionEffect effect : potionMeta.getCustomEffects()) {
-                        final int power = effect.getAmplifier() + 1;
-                        final int duration = (effect.getDuration() - (effect.getDuration() % 20)) / 20;
-                        string.append(effect.getType().getName()).append(':').append(power).append(':').append(duration).append(',');
-                    }
-                    effects += " effects:" + string.substring(0, string.length() - 1);
-                }
+                effects = PotionHandler.metaToString(potionMeta);
             }
             if (meta instanceof final LeatherArmorMeta armorMeta
                     && !armorMeta.getColor().equals(Bukkit.getServer().getItemFactory().getDefaultLeatherColor())) {
@@ -413,13 +402,8 @@ public class QuestItem {
                 return false;
             }
         }
-        if (meta instanceof final PotionMeta potionMeta) {
-            if (!potion.checkBase(potionMeta.getBasePotionData())) {
-                return false;
-            }
-            if (!potion.checkCustom(potionMeta.getCustomEffects())) {
-                return false;
-            }
+        if (meta instanceof final PotionMeta potionMeta && !potion.checkMeta(potionMeta)) {
+            return false;
         }
         if (meta instanceof final BookMeta bookMeta) {
             if (!book.checkTitle(bookMeta.getTitle())) {

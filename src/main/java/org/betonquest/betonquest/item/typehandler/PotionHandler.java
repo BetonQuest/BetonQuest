@@ -1,24 +1,46 @@
 package org.betonquest.betonquest.item.typehandler;
 
+import io.papermc.lib.PaperLib;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.item.QuestItem.Existence;
 import org.betonquest.betonquest.item.QuestItem.Number;
 import org.betonquest.betonquest.utils.Utils;
+import org.bukkit.Keyed;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods", "PMD.GodClass"})
 public class PotionHandler {
+    /**
+     * The 1.20.5+ method to check if a Potion Type is in the Potion.
+     */
+    @Nullable
+    private static Method methodHasBasePotionType;
+
+    /**
+     * The 1.20.5+ method to get the Potion Type from.
+     */
+    @Nullable
+    private static Method methodGetBasePotionType;
+
+    /**
+     * Marker for not re-initializing already failed method reflections.
+     */
+    private static boolean methodsInit;
+
     private PotionType type = PotionType.WATER;
 
     private Existence typeE = Existence.WHATEVER;
@@ -38,6 +60,79 @@ public class PotionHandler {
     private boolean exact = true;
 
     public PotionHandler() {
+    }
+
+    /**
+     * Converts the Meta into the string equivalent used by Quest Items.
+     *
+     * @param potionMeta the meta to parse into string
+     * @return the representing string or an empty string, when no representative data is present
+     */
+    public static String metaToString(final PotionMeta potionMeta) {
+        // TODO version switch:
+        //  Remove this code when only 1.20.5+ is supported
+        final String baseEffect = PaperLib.isVersion(20, 5) ? getBasePotionEffects(potionMeta)
+                : getBasePotionEffectsPre_1_21(potionMeta);
+        return addCustomEffects(potionMeta, baseEffect);
+    }
+
+    @SuppressWarnings("PMD.MethodNamingConventions")
+    private static String getBasePotionEffectsPre_1_21(final PotionMeta potionMeta) {
+        final PotionData pData = potionMeta.getBasePotionData();
+        return " type:" + pData.getType() + (pData.isExtended() ? " extended" : "")
+                + (pData.isUpgraded() ? " upgraded" : "");
+    }
+
+    private static String getBasePotionEffects(final PotionMeta potionMeta) {
+        final Keyed type;
+        try {
+            initReflection();
+            if (methodHasBasePotionType == null || methodGetBasePotionType == null) {
+                return "";
+            }
+            if (!(boolean) methodHasBasePotionType.invoke(potionMeta)) {
+                return "";
+            }
+            type = (Keyed) methodGetBasePotionType.invoke(potionMeta);
+        } catch (final ReflectiveOperationException e) {
+            BetonQuest.getInstance().getLoggerFactory().create(PotionHandler.class)
+                    .error("Could not initialize Methods to get Potion Data!", e);
+            return "";
+        }
+        final String minimalString = type.getKey().asMinimalString();
+        final String longPrefix = "long_";
+        final String strongPrefix = "strong_";
+        final String effects;
+        if (minimalString.startsWith(longPrefix)) {
+            effects = minimalString.substring(longPrefix.length()) + " extended";
+        } else if (minimalString.startsWith(strongPrefix)) {
+            effects = minimalString.substring(strongPrefix.length()) + " upgraded";
+        } else {
+            effects = minimalString;
+        }
+        return " type:" + effects;
+    }
+
+    private static void initReflection() throws NoSuchMethodException {
+        if (!methodsInit) {
+            methodsInit = true;
+            methodHasBasePotionType = PotionMeta.class.getDeclaredMethod("hasBasePotionType");
+            methodGetBasePotionType = PotionMeta.class.getDeclaredMethod("getBasePotionType");
+        }
+    }
+
+    private static String addCustomEffects(final PotionMeta potionMeta, final String effects) {
+        final List<PotionEffect> customEffects = potionMeta.getCustomEffects();
+        if (customEffects.isEmpty()) {
+            return effects;
+        }
+        final StringBuilder string = new StringBuilder();
+        for (final PotionEffect effect : customEffects) {
+            final int power = effect.getAmplifier() + 1;
+            final int duration = (effect.getDuration() - (effect.getDuration() % 20)) / 20;
+            string.append(effect.getType().getName()).append(':').append(power).append(':').append(duration).append(',');
+        }
+        return effects + " effects:" + string.substring(0, string.length() - 1);
     }
 
     public void setType(final String type) throws InstructionParseException {
@@ -94,12 +189,16 @@ public class PotionHandler {
         customE = Existence.REQUIRED;
     }
 
-    public boolean checkBase(final PotionData base) {
+    public boolean checkMeta(final PotionMeta potionMeta) {
+        return checkBase(potionMeta.getBasePotionData()) && checkCustom(potionMeta.getCustomEffects());
+    }
+
+    public boolean checkBase(@Nullable final PotionData base) {
         switch (typeE) {
             case WHATEVER:
                 return true;
             case REQUIRED:
-                if (base.getType() != type) {
+                if (base == null || base.getType() != type) {
                     return false;
                 }
                 if (extendedE == Existence.REQUIRED && base.isExtended() != extended) {
@@ -252,5 +351,4 @@ public class PotionHandler {
             }
         }
     }
-
 }
