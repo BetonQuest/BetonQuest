@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.bukkit.config.custom.fallback;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.betonquest.betonquest.api.bukkit.config.custom.lazy.LazyConfigurationSection;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -86,7 +87,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
             if (fallbackConfigurationSection == null) {
                 return null;
             }
-            originalConfigurationSection = original.createSection(path);
+            originalConfigurationSection = new LazyConfigurationSection(original, path);
         }
         return new FallbackConfigurationSection(this, path, originalConfigurationSection, fallbackConfigurationSection);
     }
@@ -569,7 +570,6 @@ public class FallbackConfigurationSection implements ConfigurationSection {
             if (!original.contains(path) && fallback != null && fallback.contains(path)) {
                 return function.consume(fallback, path);
             }
-
             return function.consume(original, path);
         });
     }
@@ -706,11 +706,8 @@ public class FallbackConfigurationSection implements ConfigurationSection {
                     throw new IllegalArgumentException("Cannot construct a FallbackConfigurationSection when parent is null");
                 }
                 final ConfigurationSection parentOriginal = parent.manager.getOriginal();
-                ConfigurationSection newOriginal = parentOriginal.getConfigurationSection(sectionName);
-                if (newOriginal == null) {
-                    newOriginal = parentOriginal.createSection(sectionName);
-                }
-                original = newOriginal;
+                final ConfigurationSection newOriginal = parentOriginal.getConfigurationSection(sectionName);
+                original = newOriginal == null ? new LazyConfigurationSection(parentOriginal, sectionName) : newOriginal;
             }
             return original;
         }
