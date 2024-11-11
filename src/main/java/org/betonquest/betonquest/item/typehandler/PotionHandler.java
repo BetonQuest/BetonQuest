@@ -1,11 +1,13 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import io.papermc.lib.PaperLib;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.item.QuestItem.Existence;
 import org.betonquest.betonquest.item.QuestItem.Number;
 import org.betonquest.betonquest.utils.Utils;
+import org.bukkit.Keyed;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
@@ -13,14 +15,32 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods", "PMD.GodClass"})
 public class PotionHandler {
+    /**
+     * The 1.20.5+ method to check if a Potion Type is in the Potion.
+     */
+    @Nullable
+    private static Method methodHasBasePotionType;
+
+    /**
+     * The 1.20.5+ method to get the Potion Type from.
+     */
+    @Nullable
+    private static Method methodGetBasePotionType;
+
+    /**
+     * Marker for not re-initializing already failed method reflections.
+     */
+    private static boolean methodsInit;
+
     private PotionType type = PotionType.WATER;
 
     private Existence typeE = Existence.WHATEVER;
@@ -64,10 +84,21 @@ public class PotionHandler {
     }
 
     private static String getBasePotionEffects(final PotionMeta potionMeta) {
-        if (!potionMeta.hasBasePotionType()) {
+        final Keyed type;
+        try {
+            initReflection();
+            if (methodHasBasePotionType == null || methodGetBasePotionType == null) {
+                return "";
+            }
+            if (!(boolean) methodHasBasePotionType.invoke(potionMeta)) {
+                return "";
+            }
+            type = (Keyed) methodGetBasePotionType.invoke(potionMeta);
+        } catch (final ReflectiveOperationException e) {
+            BetonQuest.getInstance().getLoggerFactory().create(PotionHandler.class)
+                    .error("Could not initialize Methods to get Potion Data!", e);
             return "";
         }
-        final PotionType type = potionMeta.getBasePotionType();
         final String minimalString = type.getKey().asMinimalString();
         final String longPrefix = "long_";
         final String strongPrefix = "strong_";
@@ -80,6 +111,14 @@ public class PotionHandler {
             effects = minimalString;
         }
         return " type:" + effects;
+    }
+
+    private static void initReflection() throws NoSuchMethodException {
+        if (!methodsInit) {
+            methodsInit = true;
+            methodHasBasePotionType = PotionMeta.class.getDeclaredMethod("hasBasePotionType");
+            methodGetBasePotionType = PotionMeta.class.getDeclaredMethod("getBasePotionType");
+        }
     }
 
     private static String addCustomEffects(final PotionMeta potionMeta, final String effects) {
