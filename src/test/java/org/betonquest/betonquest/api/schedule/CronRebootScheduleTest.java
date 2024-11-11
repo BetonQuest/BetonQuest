@@ -4,6 +4,7 @@ import com.cronutils.model.Cron;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.junit.jupiter.api.Test;
 
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 import static org.betonquest.betonquest.api.schedule.CronSchedule.REBOOT_CRON_DEFINITION;
@@ -32,7 +33,8 @@ public class CronRebootScheduleTest extends CronScheduleBaseTest {
         final Cron cron = schedule.getTimeCron();
         assertNotNull(cron, "time cron should not be null");
         assertDoesNotThrow(cron::validate, "Cron should be valid");
-        assertEquals(Optional.empty(), schedule.getNextExecution(), "Schedule should not provide a next execution time");
-        assertEquals(Optional.empty(), schedule.getLastExecution(), "Schedule should not provide a last execution time");
+        final ZonedDateTime now = ZonedDateTime.now();
+        assertEquals(Optional.empty(), schedule.getExecutionTime().nextExecution(now), "Schedule should not provide a next execution time");
+        assertEquals(Optional.empty(), schedule.getExecutionTime().lastExecution(now), "Schedule should not provide a last execution time");
     }
 }

@@ -5,6 +5,7 @@ import com.cronutils.model.Cron;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.junit.jupiter.api.Test;
 
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 import static com.cronutils.model.field.expression.FieldExpression.always;
@@ -46,8 +47,9 @@ public class CronScheduleBaseTest extends ScheduleBaseTest {
         assertTrue(expected.equivalent(cron), "Cron expression should be as expected");
         assertFalse(schedule.shouldRunOnReboot(), "Schedule should not run on reboot");
 
-        assertNotEquals(Optional.empty(), schedule.getNextExecution(), "Schedule should provide next execution time");
-        assertNotEquals(Optional.empty(), schedule.getLastExecution(), "Schedule should provide last execution time");
+        final ZonedDateTime now = ZonedDateTime.now();
+        assertNotEquals(Optional.empty(), schedule.getExecutionTime().nextExecution(now), "Schedule should provide next execution time");
+        assertNotEquals(Optional.empty(), schedule.getExecutionTime().lastExecution(now), "Schedule should provide last execution time");
     }
 
     @Test
