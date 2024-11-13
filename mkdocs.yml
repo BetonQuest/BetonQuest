@@ -247,6 +247,7 @@ nav:
           - 'Legacy API': API/Legacy-API.md
           - 'Logging': API/Logging.md
           - 'Configuration Files': API/ConfigurationFiles.md
+          - 'Bukkit Configurations': API/BukkitConfigurations.md
           - 'Schedules': API/Schedules.md
   - 'Participate':
       - 'Overview': Participate/Overview.md
