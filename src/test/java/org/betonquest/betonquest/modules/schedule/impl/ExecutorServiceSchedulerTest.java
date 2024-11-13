@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.modules.schedule.impl;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.schedule.FictiveTime;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.modules.schedule.ScheduleID;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.Instant;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -19,26 +19,21 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests for the {@link ExecutorServiceScheduler}
+ * Tests for the {@link ExecutorServiceScheduler}.
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
 @ExtendWith(MockitoExtension.class)
 class ExecutorServiceSchedulerTest {
-    /**
-     * The current time used in the tests.
-     */
-    private final Instant now = Instant.now();
-
     @Mock
     private BetonQuestLogger logger;
 
     /**
-     * The scheduler to test
+     * The scheduler to test.
      */
-    private ExecutorServiceScheduler<Schedule> scheduler;
+    private ExecutorServiceScheduler<Schedule, FictiveTime> scheduler;
 
     /**
-     * Executor mock used by the scheduler, will be set by {@link #newExecutor()}
+     * Executor mock used by the scheduler, will be set by {@link #newExecutor()}.
      */
     private ScheduledExecutorService executor;
 
@@ -56,9 +51,15 @@ class ExecutorServiceSchedulerTest {
     @BeforeEach
     void setUp() {
         scheduler = spy(new ExecutorServiceScheduler<>(logger, this::newExecutor) {
+
             @Override
-            protected void schedule(final Instant now, final Schedule schedule) {
-                //mock, do nothing
+            protected FictiveTime getNow() {
+                return new FictiveTime();
+            }
+
+            @Override
+            protected void schedule(final FictiveTime now, final Schedule schedule) {
+                // do nothing
             }
         });
     }
@@ -70,18 +71,18 @@ class ExecutorServiceSchedulerTest {
         final Schedule schedule2 = mockSchedule();
         scheduler.addSchedule(schedule1);
         scheduler.addSchedule(schedule2);
-        scheduler.start(now);
+        scheduler.start();
 
         assertNotNull(scheduler.executor, "Executor should be present");
         assertEquals(executor, scheduler.executor, "Executor should be provided by supplier");
-        verify(scheduler, times(1)).schedule(now, schedule1);
-        verify(scheduler, times(1)).schedule(now, schedule2);
+        verify(scheduler, times(1)).schedule(any(), eq(schedule1));
+        verify(scheduler, times(1)).schedule(any(), eq(schedule2));
     }
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testStopSuccess() throws InterruptedException {
-        scheduler.start(now);
+        scheduler.start();
         doReturn(true).when(executor).awaitTermination(anyLong(), any());
         scheduler.stop();
 
@@ -97,7 +98,7 @@ class ExecutorServiceSchedulerTest {
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testStopInterrupted() throws InterruptedException {
-        scheduler.start(now);
+        scheduler.start();
         doThrow(InterruptedException.class).when(executor).awaitTermination(anyLong(), any());
         scheduler.stop();
 
@@ -113,7 +114,7 @@ class ExecutorServiceSchedulerTest {
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testStopTimeout() throws InterruptedException {
-        scheduler.start(now);
+        scheduler.start();
         doReturn(false).when(executor).awaitTermination(anyLong(), any());
         scheduler.stop();
 

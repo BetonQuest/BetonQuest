@@ -21,7 +21,7 @@ import java.util.function.Supplier;
  * The scheduler for {@link RealtimeDailySchedule}.
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
-public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDailySchedule> {
+public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDailySchedule, Instant> {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -64,6 +64,11 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
         catchupMissedSchedules(now);
         super.start(now);
         log.debug("Simple scheduler start complete.");
+    }
+
+    @Override
+    protected Instant getNow() {
+        return Instant.now();
     }
 
     /**

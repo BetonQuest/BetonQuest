@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.modules.schedule.impl.realtime.daily.RealtimeDailyScheduler;
 import org.jetbrains.annotations.VisibleForTesting;
 
-import java.time.Instant;
 import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -23,7 +22,7 @@ import java.util.function.Supplier;
  * @param <S> Type of Schedule
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
-public abstract class ExecutorServiceScheduler<S extends Schedule> extends Scheduler<S> {
+public abstract class ExecutorServiceScheduler<S extends Schedule, T> extends Scheduler<S, T> {
     /**
      * Maximum time that the scheduler will wait on shutdown/reload for currently executing schedules.
      */
@@ -83,7 +82,7 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
      * @param now the current time when the scheduler is started
      */
     @Override
-    public void start(final Instant now) {
+    public void start(final T now) {
         super.start(now);
         executor = executorServiceSupplier.get();
         schedules.values().forEach((schedule) -> schedule(now, schedule));
@@ -99,10 +98,10 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
      * schedules.
      * </b></p>
      *
-     * @param now      The Instance of now
+     * @param now      The {@link T} of now
      * @param schedule a schedule from {@link #schedules} map
      */
-    protected abstract void schedule(Instant now, S schedule);
+    protected abstract void schedule(T now, S schedule);
 
     /**
      * <p>

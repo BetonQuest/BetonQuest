@@ -15,7 +15,6 @@ import org.betonquest.betonquest.quest.registry.processor.EventProcessor;
 import org.betonquest.betonquest.quest.registry.processor.ObjectiveProcessor;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 
-import java.time.Instant;
 import java.util.Collection;
 import java.util.Map;
 
@@ -75,7 +74,7 @@ public class QuestRegistry {
      * @param objectiveTypes      the available objective types
      */
     public QuestRegistry(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuest plugin,
-                         final Map<String, EventScheduling.ScheduleType<?>> scheduleTypes,
+                         final Map<String, EventScheduling.ScheduleType<?, ?>> scheduleTypes,
                          final QuestTypeRegistries questTypeRegistries,
                          final Map<String, Class<? extends Objective>> objectiveTypes) {
         this.log = log;
@@ -123,7 +122,7 @@ public class QuestRegistry {
                 + objectiveProcessor.size() + " objectives and " + conversationProcessor.size() + " conversations loaded from "
                 + packages.size() + " packages.");
 
-        eventScheduling.startAll(Instant.now());
+        eventScheduling.startAll();
     }
 
     /**

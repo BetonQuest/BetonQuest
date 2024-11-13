@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.modules.schedule;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.schedule.FictiveTime;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -57,43 +58,43 @@ class ScheduleTypeTest {
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends Schedule> Scheduler<T> mockScheduler() {
+    private <T extends Schedule> Scheduler<T, FictiveTime> mockScheduler() {
         return mock(Scheduler.class);
     }
 
     @Test
     void testCreate() {
-        final Scheduler<MockedSchedule> scheduler = mockScheduler();
-        final ScheduleType<MockedSchedule> type = new ScheduleType<>(MockedSchedule.class, scheduler);
+        final Scheduler<MockedSchedule, FictiveTime> scheduler = mockScheduler();
+        final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(MockedSchedule.class, scheduler);
         assertDoesNotThrow(() -> type.newScheduleInstance(scheduleID, section), "");
     }
 
     @Test
     void testCreateThrowingUnchecked() {
-        final Scheduler<ThrowingUncheckedSchedule> scheduler = mockScheduler();
-        final ScheduleType<ThrowingUncheckedSchedule> type = new ScheduleType<>(ThrowingUncheckedSchedule.class, scheduler);
+        final Scheduler<ThrowingUncheckedSchedule, FictiveTime> scheduler = mockScheduler();
+        final ScheduleType<ThrowingUncheckedSchedule, FictiveTime> type = new ScheduleType<>(ThrowingUncheckedSchedule.class, scheduler);
         assertThrows(InvocationTargetException.class, () -> type.newScheduleInstance(scheduleID, section), "");
     }
 
     @Test
     void testCreateInvalidConstructor() {
-        final Scheduler<InvalidConstructorSchedule> scheduler = mockScheduler();
-        final ScheduleType<InvalidConstructorSchedule> type = new ScheduleType<>(InvalidConstructorSchedule.class, scheduler);
+        final Scheduler<InvalidConstructorSchedule, FictiveTime> scheduler = mockScheduler();
+        final ScheduleType<InvalidConstructorSchedule, FictiveTime> type = new ScheduleType<>(InvalidConstructorSchedule.class, scheduler);
         assertThrows(NoSuchMethodException.class, () -> type.newScheduleInstance(scheduleID, section), "");
     }
 
     @Test
     void testCreateInvalidInstruction() {
         when(section.getString("time")).thenReturn(null);
-        final Scheduler<MockedSchedule> scheduler = mockScheduler();
-        final ScheduleType<MockedSchedule> type = new ScheduleType<>(MockedSchedule.class, scheduler);
+        final Scheduler<MockedSchedule, FictiveTime> scheduler = mockScheduler();
+        final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(MockedSchedule.class, scheduler);
         assertThrows(InstructionParseException.class, () -> type.newScheduleInstance(scheduleID, section), "");
     }
 
     @Test
     void testAddSchedule() {
-        final Scheduler<MockedSchedule> scheduler = mockScheduler();
-        final ScheduleType<MockedSchedule> type = new ScheduleType<>(MockedSchedule.class, scheduler);
+        final Scheduler<MockedSchedule, FictiveTime> scheduler = mockScheduler();
+        final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(MockedSchedule.class, scheduler);
         assertDoesNotThrow(() -> type.createAndScheduleNewInstance(scheduleID, section), "");
         verify(scheduler).addSchedule(any());
     }

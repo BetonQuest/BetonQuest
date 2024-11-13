@@ -23,7 +23,7 @@ import java.util.function.Supplier;
  * The scheduler for {@link RealtimeCronSchedule}.
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
-public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCronSchedule> {
+public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCronSchedule, Instant> {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -75,6 +75,11 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
         catchupMissedSchedules(now);
         super.start(now);
         log.debug("Realtime scheduler start complete.");
+    }
+
+    @Override
+    protected Instant getNow() {
+        return Instant.now();
     }
 
     /**

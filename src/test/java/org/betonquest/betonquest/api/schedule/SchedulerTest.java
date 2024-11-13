@@ -10,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.Instant;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,17 +20,12 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class SchedulerTest {
-    /**
-     * The current time used in the tests.
-     */
-    private final Instant now = Instant.now();
-
     @Mock
     private BetonQuestLogger logger;
 
     @Test
     void testAddSchedule() {
-        final Scheduler<Schedule> scheduler = new MockedScheduler(logger);
+        final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger);
         final ScheduleID scheduleID = mock(ScheduleID.class);
         final Schedule schedule = mock(Schedule.class);
         when(schedule.getId()).thenReturn(scheduleID);
@@ -42,20 +36,20 @@ class SchedulerTest {
 
     @Test
     void testStart() {
-        final Scheduler<Schedule> scheduler = new MockedScheduler(logger);
+        final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger);
         assertFalse(scheduler.isRunning(), "isRunning should be false before start is called");
-        scheduler.start(now);
+        scheduler.start();
         assertTrue(scheduler.isRunning(), "isRunning should be true after start is called");
     }
 
     @Test
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     void testStop() {
-        final Scheduler<Schedule> scheduler = new MockedScheduler(logger);
+        final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger);
         final ScheduleID scheduleID = mock(ScheduleID.class);
         final Schedule schedule = mock(Schedule.class);
         scheduler.schedules.put(scheduleID, schedule);
-        scheduler.start(now);
+        scheduler.start();
         assertTrue(scheduler.isRunning(), "isRunning should be true after start is called");
         scheduler.stop();
         assertFalse(scheduler.isRunning(), "isRunning should be false before stop is called");
@@ -66,7 +60,7 @@ class SchedulerTest {
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     void testExecuteEvents() {
         try (MockedStatic<BetonQuest> betonQuest = mockStatic(BetonQuest.class)) {
-            final Scheduler<Schedule> scheduler = new MockedScheduler(logger);
+            final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger);
             final Schedule schedule = mock(Schedule.class);
             when(schedule.getId()).thenReturn(mock(ScheduleID.class));
             final EventID eventA = mock(EventID.class);
@@ -81,7 +75,7 @@ class SchedulerTest {
     /**
      * Class extending a scheduler without any changes.
      */
-    private static final class MockedScheduler extends Scheduler<Schedule> {
+    private static final class MockedScheduler extends Scheduler<Schedule, FictiveTime> {
         /**
          * Default constructor.
          *
@@ -89,6 +83,11 @@ class SchedulerTest {
          */
         public MockedScheduler(final BetonQuestLogger logger) {
             super(logger);
+        }
+
+        @Override
+        protected FictiveTime getNow() {
+            return new FictiveTime();
         }
     }
 }

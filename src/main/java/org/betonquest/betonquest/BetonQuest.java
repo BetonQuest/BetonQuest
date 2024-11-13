@@ -157,7 +157,7 @@ public class BetonQuest extends JavaPlugin {
 
     private static final Map<String, Class<? extends NotifyIO>> NOTIFY_IO_TYPES = new HashMap<>();
 
-    private static final Map<String, EventScheduling.ScheduleType<?>> SCHEDULE_TYPES = new HashMap<>();
+    private static final Map<String, EventScheduling.ScheduleType<?, ?>> SCHEDULE_TYPES = new HashMap<>();
 
     /**
      * The indicator for dev versions.
@@ -970,7 +970,7 @@ public class BetonQuest extends JavaPlugin {
      * @param scheduler instance of the scheduler
      * @param <S>       type of schedule
      */
-    public <S extends Schedule> void registerScheduleType(final String name, final Class<S> schedule, final Scheduler<S> scheduler) {
+    public <S extends Schedule> void registerScheduleType(final String name, final Class<S> schedule, final Scheduler<S, ?> scheduler) {
         SCHEDULE_TYPES.put(name, new EventScheduling.ScheduleType<>(schedule, scheduler));
     }
 
