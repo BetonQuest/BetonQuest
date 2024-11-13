@@ -645,7 +645,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
      */
     protected class ConfigManager {
         /**
-         * Name of the current {@link ConfigurationSection}
+         * Name of the current {@link ConfigurationSection}.
          */
         @Nullable
         private final String sectionName;
@@ -670,7 +670,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
          * @throws IllegalStateException If the original and fallback {@link ConfigurationSection} is null
          */
         @SuppressWarnings({"PMD.CompareObjectsWithEquals", "PMD.AvoidUncheckedExceptionsInSignatures"})
-        public ConfigManager(@Nullable final String sectionName, final ConfigurationSection original, @Nullable final ConfigurationSection fallback) throws IllegalStateException {
+        protected ConfigManager(@Nullable final String sectionName, final ConfigurationSection original, @Nullable final ConfigurationSection fallback) throws IllegalStateException {
             this.sectionName = sectionName;
             this.original = original;
             this.fallback = fallback;
@@ -696,7 +696,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         }
 
         /**
-         * Checks if the original {@link ConfigurationSection} is up-to-date, updates it if necessary, and returns it.
+         * Checks if the original {@link ConfigurationSection} is up to date, updates it if necessary, and returns it.
          *
          * @return The original {@link ConfigurationSection}
          */
@@ -725,7 +725,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         }
 
         /**
-         * Checks if the fallback {@link ConfigurationSection} is up-to-date, updates it if necessary, and returns it.
+         * Checks if the fallback {@link ConfigurationSection} is up to date, updates it if necessary, and returns it.
          *
          * @return The fallback {@link ConfigurationSection}
          */
