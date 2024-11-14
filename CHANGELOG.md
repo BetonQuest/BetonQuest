@@ -49,6 +49,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `point` condition where not initialized points where 0
 - `QuestItem` Potions cannot be saved in 1.20.5+
 - Schedules could run twice on some systems by an inaccurate time returned java's Instant.now()
+- `Journal` interaction with blocks like lecterns
 ### Security
 
 ## [2.1.3] - 2024-08-06
