@@ -3,20 +3,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>org.betonquest</groupId>
+    <artifactId>parent</artifactId>
+    <version>1.0.0</version>
+  </parent>
+
   <properties>
     <revision>2.2.0</revision>
     <changelist>-SNAPSHOT</changelist>
     <betonquest.version>${revision}-DEV-UNOFFICIAL</betonquest.version>
     <minecraft.api.version>1.18</minecraft.api.version>
-    <java.api.version>17</java.api.version>
-    <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <Test-All/>
     <Test-ConfigurationSection/>
   </properties>
 
   <name>BetonQuest</name>
-  <groupId>org.betonquest</groupId>
   <artifactId>betonquest</artifactId>
   <version>${revision}${changelist}</version>
   <description>All Your Adventure Supplies</description>
@@ -28,19 +30,6 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-
-  <organization>
-    <name>BetonQuest Organisation</name>
-    <url>https://www.betonquest.org</url>
-  </organization>
-
-  <distributionManagement>
-    <repository>
-      <id>betonquest</id>
-      <!--suppress UnresolvedMavenProperty -->
-      <url>${env.REPOSITORY_URL}</url>
-    </repository>
-  </distributionManagement>
 
   <dependencies>
     <!-- from papermc repository -->
@@ -463,26 +452,11 @@
     </dependency>
   </dependencies>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.junit</groupId>
-        <artifactId>junit-bom</artifactId>
-        <version>5.11.0-M2</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-bom</artifactId>
-        <version>5.12.0</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <repositories>
+    <repository>
+      <id>betonquest-repo</id>
+      <url>https://nexus.betonquest.org/repository/betonquest/</url>
+    </repository>
     <repository>
       <id>betonquest-papermc-repo</id>
       <url>https://repo.papermc.io/repository/maven-public/</url>
@@ -556,40 +530,58 @@
   </repositories>
 
   <build>
-    <directory>target/artifacts</directory>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-      </resource>
-      <resource>
-        <directory>.</directory>
-        <filtering>true</filtering>
-        <includes>
-          <include>LICENSE</include>
-          <include>CHANGELOG.md</include>
-        </includes>
-      </resource>
-    </resources>
-
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <parallel>all</parallel>
+          <groups>none()${Test-All}${Test-ConfigurationSection}</groups>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <configuration>
+          <excludeProperties>changelist</excludeProperties>
+          <ruleSet>
+            <rules>
+              <rule>
+                <!-- more recent versions build against Java 21 and break compiling -->
+                <groupId>com.sk89q.worldedit</groupId>
+                <ignoreVersions>
+                  <ignoreVersion>
+                    <type>regex</type>
+                    <version>7.*</version>
+                  </ignoreVersion>
+                </ignoreVersions>
+              </rule>
+              <rule>
+                <!-- more recent versions build against Java 21 and break compiling -->
+                <groupId>com.sk89q.worldguard</groupId>
+                <ignoreVersions>
+                  <ignoreVersion>
+                    <type>regex</type>
+                    <version>7.*</version>
+                  </ignoreVersion>
+                </ignoreVersions>
+              </rule>
+            </rules>
+          </ruleSet>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <!-- This is disabled because Java 16 has a stricter police for missing comments which the project does not meet yet. -->
+          <failOnWarnings>false</failOnWarnings>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <executions>
-          <execution>
-            <id>enforce-maven</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <requireMavenVersion>
-                  <version>3.6.3</version>
-                </requireMavenVersion>
-              </rules>
-            </configuration>
-          </execution>
           <execution>
             <id>enforce-banned-dependencies</id>
             <goals>
@@ -599,43 +591,13 @@
               <rules>
                 <bannedDependencies>
                   <excludes>
-                    <exclude>com.google.code.findbugs</exclude>
-                    <exclude>junit</exclude>
                     <exclude>org.spigotmc</exclude>
                     <exclude>org.bukkit</exclude>
                   </excludes>
-                  <includes>
-                    <include>com.google.code.findbugs:jsr305</include>
-                  </includes>
                 </bannedDependencies>
               </rules>
               <fail>true</fail>
             </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>flatten-maven-plugin</artifactId>
-        <configuration>
-          <updatePomFile>true</updatePomFile>
-          <flattenMode>resolveCiFriendliesOnly</flattenMode>
-          <outputDirectory>${project.build.directory}</outputDirectory>
-        </configuration>
-        <executions>
-          <execution>
-            <id>flatten</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>flatten</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>flatten.clean</id>
-            <phase>clean</phase>
-            <goals>
-              <goal>clean</goal>
-            </goals>
           </execution>
         </executions>
       </plugin>
@@ -668,12 +630,6 @@
                 </includes>
               </artifactSet>
               <filters>
-                <filter>
-                  <artifact>*</artifact>
-                  <excludes>
-                    <exclude>META-INF/**</exclude>
-                  </excludes>
-                </filter>
                 <filter>
                   <artifact>org.bstats</artifact>
                   <includes>
@@ -743,100 +699,6 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-javadocs</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>com.coderplus.maven.plugins</groupId>
-        <artifactId>copy-rename-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy</id>
-            <phase>package</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <sourceFile>${project.build.directory}/${project.artifactId}-${project.version}-shaded.jar
-              </sourceFile>
-              <destinationFile>${project.build.directory}/${project.name}.jar</destinationFile>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.ec4j.maven</groupId>
-        <artifactId>editorconfig-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>check</id>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>check</id>
-            <goals>
-              <goal>check</goal>
-            </goals>
-            <configuration>
-              <failOnViolation>true</failOnViolation>
-              <printFailingErrors>true</printFailingErrors>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>com.github.spotbugs</groupId>
-        <artifactId>spotbugs-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>check</id>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>check</id>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
         <configuration>
           <filesets>
@@ -857,333 +719,9 @@
         </configuration>
       </plugin>
     </plugins>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.5.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.13.0</version>
-          <configuration>
-            <release>${java.api.version}</release>
-            <compilerArgs>
-              <!--<arg>-Xlint:all</arg> May enable later when the most warnings and errors are solved-->
-              <arg>-XDcompilePolicy=simple</arg>
-              <arg>-Xplugin:ErrorProne
-                -XepDisableAllWarnings
-                -Xep:NullAway:ERROR
-                -XepOpt:NullAway:AnnotatedPackages=${project.groupId}.${project.artifactId}
-                -XepExcludedPaths:.*/src/test/java/.*
-              </arg>
-              <arg>-Xmaxerrs</arg>
-              <arg>65536</arg>
-              <arg>-Xmaxwarns</arg>
-              <arg>65536</arg>
-            </compilerArgs>
-            <annotationProcessorPaths>
-              <path>
-                <groupId>com.google.errorprone</groupId>
-                <artifactId>error_prone_core</artifactId>
-                <version>2.27.1</version>
-              </path>
-              <path>
-                <groupId>com.uber.nullaway</groupId>
-                <artifactId>nullaway</artifactId>
-                <version>0.10.26</version>
-              </path>
-            </annotationProcessorPaths>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>flatten-maven-plugin</artifactId>
-          <version>1.6.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-shade-plugin</artifactId>
-          <version>3.6.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-pmd-plugin</artifactId>
-          <version>3.24.0</version>
-          <dependencies>
-            <dependency>
-              <groupId>net.sourceforge.pmd</groupId>
-              <artifactId>pmd-core</artifactId>
-              <version>7.5.0</version>
-            </dependency>
-            <dependency>
-              <groupId>net.sourceforge.pmd</groupId>
-              <artifactId>pmd-java</artifactId>
-              <version>7.5.0</version>
-            </dependency>
-          </dependencies>
-          <configuration>
-            <analysisCache>true</analysisCache>
-            <rulesets>
-              <ruleset>${basedir}/config/pmd-ruleset.xml</ruleset>
-            </rulesets>
-            <includeTests>true</includeTests>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>com.github.spotbugs</groupId>
-          <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>4.8.6.2</version>
-          <configuration>
-            <excludeFilterFile>${basedir}/config/spotbugs-exclude.xml</excludeFilterFile>
-            <effort>max</effort>
-            <threshold>low</threshold>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>3.4.0</version>
-          <dependencies>
-            <dependency>
-              <groupId>com.puppycrawl.tools</groupId>
-              <artifactId>checkstyle</artifactId>
-              <version>10.17.0</version>
-            </dependency>
-          </dependencies>
-          <configuration>
-            <configLocation>${basedir}/config/checkstyle.xml</configLocation>
-            <includeTestSourceDirectory>true</includeTestSourceDirectory>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>com.coderplus.maven.plugins</groupId>
-          <artifactId>copy-rename-maven-plugin</artifactId>
-          <version>1.0.1</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>3.4.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>3.3.1</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-source-plugin</artifactId>
-          <version>3.3.1</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.8.0</version>
-          <configuration>
-            <!-- This is disabled because Java 16 has a stricter police for missing comments which the project does not meet yet. -->
-            <failOnWarnings>false</failOnWarnings>
-            <show>public</show>
-            <quiet>true</quiet>
-            <additionalJOptions>
-              <additionalJOption>-Xmaxerrs</additionalJOption>
-              <additionalJOption>65536</additionalJOption>
-              <additionalJOption>-Xmaxwarns</additionalJOption>
-              <additionalJOption>65536</additionalJOption>
-            </additionalJOptions>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>3.4.2</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.3.1</version>
-          <configuration>
-            <parallel>all</parallel>
-            <groups>none()${Test-All}${Test-ConfigurationSection}</groups>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>3.1.2</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>3.1.2</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>4.0.0-M16</version>
-        </plugin>
-        <plugin>
-          <groupId>org.ec4j.maven</groupId>
-          <artifactId>editorconfig-maven-plugin</artifactId>
-          <version>0.1.3</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.6.2</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jxr-plugin</artifactId>
-          <version>3.4.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-report-plugin</artifactId>
-          <version>3.3.1</version>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>cobertura-maven-plugin</artifactId>
-          <version>2.7</version>
-        </plugin>
-        <plugin>
-          <groupId>org.pitest</groupId>
-          <artifactId>pitest-maven</artifactId>
-          <version>1.16.1</version>
-          <dependencies>
-            <dependency>
-              <groupId>org.pitest</groupId>
-              <artifactId>pitest-junit5-plugin</artifactId>
-              <version>1.2.1</version>
-            </dependency>
-          </dependencies>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>versions-maven-plugin</artifactId>
-          <version>2.17.1</version>
-          <configuration>
-            <excludeProperties>changelist</excludeProperties>
-            <ruleSet>
-              <rules>
-                <rule>
-                  <!-- more recent versions build against Java 21 and break compiling -->
-                  <groupId>com.sk89q.worldedit</groupId>
-                  <ignoreVersions>
-                    <ignoreVersion>
-                      <type>regex</type>
-                      <version>7.*</version>
-                    </ignoreVersion>
-                  </ignoreVersions>
-                </rule>
-                <rule>
-                  <!-- more recent versions build against Java 21 and break compiling -->
-                  <groupId>com.sk89q.worldguard</groupId>
-                  <ignoreVersions>
-                    <ignoreVersion>
-                      <type>regex</type>
-                      <version>7.*</version>
-                    </ignoreVersion>
-                  </ignoreVersions>
-                </rule>
-              </rules>
-            </ruleSet>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
   </build>
-  <reporting>
-    <outputDirectory>${basedir}/target/site</outputDirectory>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>com.github.spotbugs</groupId>
-        <artifactId>spotbugs-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jxr-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-report-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.pitest</groupId>
-        <artifactId>pitest-maven</artifactId>
-      </plugin>
-    </plugins>
-  </reporting>
 
   <profiles>
-    <profile>
-      <id>Skip-Verification</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.ec4j.maven</groupId>
-            <artifactId>editorconfig-maven-plugin</artifactId>
-            <configuration>
-              <skip>true</skip>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-pmd-plugin</artifactId>
-            <configuration>
-              <skip>true</skip>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>com.github.spotbugs</groupId>
-            <artifactId>spotbugs-maven-plugin</artifactId>
-            <configuration>
-              <skip>true</skip>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-checkstyle-plugin</artifactId>
-            <configuration>
-              <skip>true</skip>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>Test-None</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-              <skipTests>true</skipTests>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
     <profile>
       <id>Test-All</id>
       <properties>
@@ -1195,32 +733,6 @@
       <properties>
         <Test-ConfigurationSection>| ConfigurationSection</Test-ConfigurationSection>
       </properties>
-    </profile>
-
-    <profile>
-      <!--
-           Pitest's reports are always copied when goal `site` is called, but gives an exception
-           when the reports are not generated. This profile activates the plugin only when the reports exist.
-           Reports can be generated by running `test-compile org.pitest:pitest-maven:mutationCoverage`
-      -->
-      <id>Site-SkipPitestWhenNoReport</id>
-      <activation>
-        <file>
-          <missing>target/artifacts/pit-reports</missing>
-        </file>
-      </activation>
-
-      <reporting>
-        <plugins>
-          <plugin>
-            <groupId>org.pitest</groupId>
-            <artifactId>pitest-maven</artifactId>
-            <configuration>
-              <skip>true</skip>
-            </configuration>
-          </plugin>
-        </plugins>
-      </reporting>
     </profile>
   </profiles>
 </project>

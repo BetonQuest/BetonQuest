@@ -29,6 +29,7 @@ public class ColorHandler {
         return color;
     }
 
+    @SuppressWarnings("PMD.TooFewBranchesForASwitchStatement")
     public boolean check(final Color color) {
         return switch (colorE) {
             case WHATEVER -> true;
