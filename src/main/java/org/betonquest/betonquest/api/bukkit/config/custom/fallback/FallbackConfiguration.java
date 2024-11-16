@@ -33,7 +33,7 @@ public class FallbackConfiguration extends FallbackConfigurationSection implemen
 
     @Override
     public void addDefaults(final Map<String, Object> defaults) {
-        final Configuration originalRoot = manager.getOriginal().getRoot();
+        final Configuration originalRoot = root.manager.getOriginal().getRoot();
         if (originalRoot == null) {
             throw new IllegalStateException("Cannot add defaults, because the original configuration does not have a root");
         }
@@ -42,7 +42,7 @@ public class FallbackConfiguration extends FallbackConfigurationSection implemen
 
     @Override
     public void addDefaults(final Configuration defaults) {
-        final Configuration originalRoot = manager.getOriginal().getRoot();
+        final Configuration originalRoot = root.manager.getOriginal().getRoot();
         if (originalRoot == null) {
             throw new IllegalStateException("Cannot add defaults, because the original configuration does not have a root");
         }
@@ -58,7 +58,7 @@ public class FallbackConfiguration extends FallbackConfigurationSection implemen
 
     @Override
     public void setDefaults(final Configuration defaults) {
-        final Configuration originalRoot = manager.getOriginal().getRoot();
+        final Configuration originalRoot = root.manager.getOriginal().getRoot();
         if (originalRoot == null) {
             throw new IllegalStateException("Cannot add defaults, because the original configuration does not have a root");
         }
@@ -73,8 +73,8 @@ public class FallbackConfiguration extends FallbackConfigurationSection implemen
 
     @Override
     public ConfigurationOptions options() {
-        final Configuration originalRoot = manager.getOriginal().getRoot();
-        final ConfigurationSection fallback = manager.getFallback();
+        final Configuration originalRoot = root.manager.getOriginal().getRoot();
+        final ConfigurationSection fallback = root.manager.getFallback();
         final Configuration fallbackRoot = fallback == null ? null : fallback.getRoot();
         if (originalRoot == null || fallback != null && fallbackRoot == null) {
             throw new IllegalStateException("Cannot get options when the root of original or fallback is null");
@@ -87,11 +87,11 @@ public class FallbackConfiguration extends FallbackConfigurationSection implemen
         if (defaults != null) {
             return false;
         }
-        final Configuration originalRoot = manager.getOriginal().getRoot();
+        final Configuration originalRoot = root.manager.getOriginal().getRoot();
         if (originalRoot == null) {
             throw new IllegalStateException("Cannot create defaults instance when the root of original is null");
         }
-        final ConfigurationSection fallback = manager.getFallback();
+        final ConfigurationSection fallback = root.manager.getFallback();
         final Configuration fallbackRoot = fallback == null ? null : fallback.getRoot();
         Configuration originalDefault = originalRoot.getDefaults();
         final Configuration fallbackDefault = fallbackRoot == null ? null : fallbackRoot.getDefaults();

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.bukkit.config.custom.fallback;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.betonquest.betonquest.api.bukkit.config.custom.lazy.LazyConfigurationSection;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -86,7 +87,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
             if (fallbackConfigurationSection == null) {
                 return null;
             }
-            originalConfigurationSection = original.createSection(path);
+            originalConfigurationSection = new LazyConfigurationSection(original, path);
         }
         return new FallbackConfigurationSection(this, path, originalConfigurationSection, fallbackConfigurationSection);
     }
@@ -569,7 +570,6 @@ public class FallbackConfigurationSection implements ConfigurationSection {
             if (!original.contains(path) && fallback != null && fallback.contains(path)) {
                 return function.consume(fallback, path);
             }
-
             return function.consume(original, path);
         });
     }
@@ -645,7 +645,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
      */
     protected class ConfigManager {
         /**
-         * Name of the current {@link ConfigurationSection}
+         * Name of the current {@link ConfigurationSection}.
          */
         @Nullable
         private final String sectionName;
@@ -670,7 +670,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
          * @throws IllegalStateException If the original and fallback {@link ConfigurationSection} is null
          */
         @SuppressWarnings({"PMD.CompareObjectsWithEquals", "PMD.AvoidUncheckedExceptionsInSignatures"})
-        public ConfigManager(@Nullable final String sectionName, final ConfigurationSection original, @Nullable final ConfigurationSection fallback) throws IllegalStateException {
+        protected ConfigManager(@Nullable final String sectionName, final ConfigurationSection original, @Nullable final ConfigurationSection fallback) throws IllegalStateException {
             this.sectionName = sectionName;
             this.original = original;
             this.fallback = fallback;
@@ -696,7 +696,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         }
 
         /**
-         * Checks if the original {@link ConfigurationSection} is up-to-date, updates it if necessary, and returns it.
+         * Checks if the original {@link ConfigurationSection} is up to date, updates it if necessary, and returns it.
          *
          * @return The original {@link ConfigurationSection}
          */
@@ -706,11 +706,8 @@ public class FallbackConfigurationSection implements ConfigurationSection {
                     throw new IllegalArgumentException("Cannot construct a FallbackConfigurationSection when parent is null");
                 }
                 final ConfigurationSection parentOriginal = parent.manager.getOriginal();
-                ConfigurationSection newOriginal = parentOriginal.getConfigurationSection(sectionName);
-                if (newOriginal == null) {
-                    newOriginal = parentOriginal.createSection(sectionName);
-                }
-                original = newOriginal;
+                final ConfigurationSection newOriginal = parentOriginal.getConfigurationSection(sectionName);
+                original = newOriginal == null ? new LazyConfigurationSection(parentOriginal, sectionName) : newOriginal;
             }
             return original;
         }
@@ -725,7 +722,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         }
 
         /**
-         * Checks if the fallback {@link ConfigurationSection} is up-to-date, updates it if necessary, and returns it.
+         * Checks if the fallback {@link ConfigurationSection} is up to date, updates it if necessary, and returns it.
          *
          * @return The fallback {@link ConfigurationSection}
          */

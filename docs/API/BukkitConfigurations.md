@@ -30,6 +30,13 @@ Also, no new Sections can be created. All modifications throw a `UnsupportedOper
 - `org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfiguration`
 - `org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfigurationSection`
 
+## Lazy
+Based on `Handle`.
+This configuration does only create a MemorySection that is not registered to the parent, until a value is set.
+This means it can be read without creating a new section in the parent configuration.
+
+- `org.betonquest.betonquest.api.bukkit.config.custom.lazy.LazyConfigurationSection`
+
 ## Fallback
 This is a configuration buildup from two `ConfigurationSection`'s.
 One is the original where all modifications are done, and the other one is the fallback configuration.

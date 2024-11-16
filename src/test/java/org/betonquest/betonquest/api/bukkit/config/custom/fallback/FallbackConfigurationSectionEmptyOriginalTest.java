@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api.bukkit.config.custom.fallback;
 
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,10 +19,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate"})
 public class FallbackConfigurationSectionEmptyOriginalTest extends FallbackConfigurationSectionTest {
+    protected Configuration original;
+
     @Override
     public ConfigurationSection getConfig() throws InvalidConfigurationException {
         fallback = getDefaultConfig();
-        return new FallbackConfiguration(new MemoryConfiguration(), fallback);
+        original = new MemoryConfiguration();
+        return new FallbackConfiguration(original, fallback);
     }
 
     @Test
@@ -42,6 +47,13 @@ public class FallbackConfigurationSectionEmptyOriginalTest extends FallbackConfi
         assertTrue(config.isSet("childSection"));
         config.set("childSection", null);
         assertTrue(config.isSet("childSection"));
+    }
+
+    @Test
+    void testOriginalIsNotModifiedByRead() {
+        config.getValues(true);
+        final Set<String> keys = original.getKeys(true);
+        assertTrue(keys.isEmpty(), "Original was modified by read operation: " + keys);
     }
 
     @Test
