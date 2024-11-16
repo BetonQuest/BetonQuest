@@ -60,8 +60,9 @@ class RealtimeDailyScheduleTest extends ScheduleBaseTest {
         when(section.getString("time")).thenReturn(targetTime.format(TIME_FORMAT));
         final RealtimeDailySchedule schedule = new RealtimeDailySchedule(scheduleID, section);
         assertEquals(targetTime.toLocalTime(), schedule.getTimeToRun(), "Returned time should be correct");
-        final Instant expected = targetTime.toInstant(OffsetDateTime.now().getOffset());
-        assertEquals(expected, schedule.getNextExecution(), "Next execution time should be as expected");
+        final OffsetDateTime now = OffsetDateTime.now();
+        final Instant expected = targetTime.toInstant(now.getOffset());
+        assertEquals(expected, schedule.getNextExecution(now.toInstant()), "Next execution time should be as expected");
     }
 
     @Test
@@ -70,7 +71,8 @@ class RealtimeDailyScheduleTest extends ScheduleBaseTest {
         when(section.getString("time")).thenReturn(targetTime.format(TIME_FORMAT));
         final RealtimeDailySchedule schedule = new RealtimeDailySchedule(scheduleID, section);
         assertEquals(targetTime.toLocalTime(), schedule.getTimeToRun(), "Returned time should be correct");
-        final Instant expected = targetTime.toInstant(OffsetDateTime.now().getOffset());
-        assertEquals(expected, schedule.getNextExecution(), "Next execution time should be as expected");
+        final OffsetDateTime now = OffsetDateTime.now();
+        final Instant expected = targetTime.toInstant(now.getOffset());
+        assertEquals(expected, schedule.getNextExecution(now.toInstant()), "Next execution time should be as expected");
     }
 }

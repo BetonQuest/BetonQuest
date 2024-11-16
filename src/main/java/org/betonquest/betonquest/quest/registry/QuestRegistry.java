@@ -74,7 +74,7 @@ public class QuestRegistry {
      * @param objectiveTypes      the available objective types
      */
     public QuestRegistry(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuest plugin,
-                         final Map<String, EventScheduling.ScheduleType<?>> scheduleTypes,
+                         final Map<String, EventScheduling.ScheduleType<?, ?>> scheduleTypes,
                          final QuestTypeRegistries questTypeRegistries,
                          final Map<String, Class<? extends Objective>> objectiveTypes) {
         this.log = log;

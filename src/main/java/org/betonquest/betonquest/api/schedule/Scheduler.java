@@ -17,7 +17,7 @@ import java.util.Map;
  * <p>
  * When loading the configs,
  * new schedules are parsed and registered in the matching Scheduler by calling {@link #addSchedule(Schedule)}.
- * After everything is loaded {@link #start()} is called. It should start the scheduler.
+ * After everything is loaded {@link #start(Object)} is called. It should start the scheduler.
  * Once a time defined in the schedule is met,
  * the referenced events shall be executed using {@link #executeEvents(Schedule)}.
  * On shutdown or before reloading all data, {@link #stop()} is called to stop all schedules.
@@ -25,9 +25,10 @@ import java.util.Map;
  * </p>
  *
  * @param <S> Type of Schedule
+ * @param <T> Type of time used by the scheduler
  */
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
-public abstract class Scheduler<S extends Schedule> {
+public abstract class Scheduler<S extends Schedule, T> {
     /**
      * Map containing all schedules that belong to this scheduler.
      */
@@ -56,12 +57,20 @@ public abstract class Scheduler<S extends Schedule> {
 
     /**
      * Register a new schedule to the list of schedules managed by this scheduler.
-     * The schedule shall remain inactive till method {@link #start()} is called to activate all schedules.
+     * The schedule shall remain inactive till method {@link #start(Object)} is called to activate all schedules.
      *
      * @param schedule schedule object to register
      */
     public void addSchedule(final S schedule) {
         schedules.put(schedule.getId(), schedule);
+    }
+
+    /**
+     * Start all schedules that have been added to this scheduler, in the same way as {@link #start(Object)},
+     * but using the current time provided by {@link #getNow()} as the time.
+     */
+    public void start() {
+        start(getNow());
     }
 
     /**
@@ -76,10 +85,19 @@ public abstract class Scheduler<S extends Schedule> {
      * <p><b>
      * When overriding this method, make sure to call {@code super.start()} at some point to update the running flag.
      * </b></p>
+     *
+     * @param now the current time when the scheduler is started
      */
-    public void start() {
+    public void start(final T now) {
         running = true;
     }
+
+    /**
+     * Method to get the current time of the type {@link T} used by the scheduler.
+     *
+     * @return the current time
+     */
+    protected abstract T getNow();
 
     /**
      * <p>

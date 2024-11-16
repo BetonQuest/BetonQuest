@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class JournalEventFactoryIntegrationTest {
     /**
-     * Fixed present time instant.
+     * The current time used in the tests.
      */
     private final Instant now = Instant.now();
 

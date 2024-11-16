@@ -22,7 +22,7 @@ import java.util.function.Supplier;
  * @param <S> Type of Schedule
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
-public abstract class ExecutorServiceScheduler<S extends Schedule> extends Scheduler<S> {
+public abstract class ExecutorServiceScheduler<S extends Schedule, T> extends Scheduler<S, T> {
     /**
      * Maximum time that the scheduler will wait on shutdown/reload for currently executing schedules.
      */
@@ -78,12 +78,14 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
      * <p><b>
      * Make sure to call {@code super.start()}, otherwise the executor will not be instantiated.
      * </b></p>
+     *
+     * @param now the current time when the scheduler is started
      */
     @Override
-    public void start() {
-        super.start();
+    public void start(final T now) {
+        super.start(now);
         executor = executorServiceSupplier.get();
-        schedules.values().forEach(this::schedule);
+        schedules.values().forEach((schedule) -> schedule(now, schedule));
     }
 
     /**
@@ -96,9 +98,10 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
      * schedules.
      * </b></p>
      *
+     * @param now      The {@link T} of now
      * @param schedule a schedule from {@link #schedules} map
      */
-    protected abstract void schedule(S schedule);
+    protected abstract void schedule(T now, S schedule);
 
     /**
      * <p>

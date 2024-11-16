@@ -23,7 +23,7 @@ import java.util.function.Supplier;
  * The scheduler for {@link RealtimeCronSchedule}.
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
-public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCronSchedule> {
+public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCronSchedule, Instant> {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -65,16 +65,21 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
     }
 
     @Override
-    public void start() {
-        lastExecutionCache.cacheStartupTime(schedules.keySet());
+    public void start(final Instant now) {
+        lastExecutionCache.cacheStartupTime(now, schedules.keySet());
         log.debug("Starting realtime scheduler.");
         if (reboot) {
             reboot = false;
             runRebootSchedules();
         }
-        catchupMissedSchedules();
-        super.start();
+        catchupMissedSchedules(now);
+        super.start(now);
         log.debug("Realtime scheduler start complete.");
+    }
+
+    @Override
+    protected Instant getNow() {
+        return Instant.now();
     }
 
     /**
@@ -91,14 +96,16 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
     /**
      * Search for missed schedule runs during shutdown and rerun them if the catchup strategy says so.
      * The method should guarantee that the schedules are executed in the order they would have occurred.
+     *
+     * @param now The Instant of now
      */
-    private void catchupMissedSchedules() {
-        final List<RealtimeCronSchedule> missedSchedules = listMissedSchedules();
+    private void catchupMissedSchedules(final Instant now) {
+        final List<RealtimeCronSchedule> missedSchedules = listMissedSchedules(now);
         log.debug("Found " + missedSchedules.size() + " missed schedule runs that will be caught up.");
         if (!missedSchedules.isEmpty()) {
             log.debug("Running missed schedules to catch up...");
             for (final RealtimeCronSchedule missed : missedSchedules) {
-                lastExecutionCache.cacheExecutionTime(missed.getId(), Instant.now());
+                lastExecutionCache.cacheExecutionTime(now, missed.getId());
                 executeEvents(missed);
             }
         }
@@ -112,7 +119,7 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
      * {@link CatchupStrategy#ALL} are there as often as they have been missed.
      * </p>
      * <p>
-     * Uses the Queue returned by {@link #oldestMissedRuns()} to order missed runs.
+     * Uses the Queue returned by {@link #oldestMissedRuns(Instant)} to order missed runs.
      * Each runs schedule will be added to the missed schedules list.
      * </p>
      * <p>
@@ -124,12 +131,13 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
      * added.
      * </p>
      *
+     * @param now The Instant of now
      * @return list of schedules that should be run to catch up any missed schedules
      */
-    private List<RealtimeCronSchedule> listMissedSchedules() {
+    private List<RealtimeCronSchedule> listMissedSchedules(final Instant now) {
         final List<RealtimeCronSchedule> missed = new ArrayList<>();
 
-        final Queue<MissedRun> missedRuns = oldestMissedRuns();
+        final Queue<MissedRun> missedRuns = oldestMissedRuns(now);
 
         while (!missedRuns.isEmpty()) {
             final MissedRun earliest = missedRuns.poll();
@@ -138,7 +146,7 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
                     "Schedule '" + earliest.schedule.getId() + "' run missed at " + earliest.runTime);
             if (earliest.schedule.getCatchup() == CatchupStrategy.ALL) {
                 final Optional<ZonedDateTime> nextExecution = earliest.schedule.getExecutionTime().nextExecution(earliest.runTime);
-                if (nextExecution.isPresent() && nextExecution.get().isBefore(ZonedDateTime.now())) {
+                if (nextExecution.isPresent() && nextExecution.get().isBefore(ZonedDateTime.ofInstant(now, ZoneId.systemDefault()))) {
                     missedRuns.add(new MissedRun(earliest.schedule, nextExecution.get()));
                 }
             }
@@ -158,9 +166,10 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
      * Schedules with {@link CatchupStrategy#NONE} will be ignored.
      * </p>
      *
+     * @param now The Instant of now
      * @return priority que of missed runs, sorted from old to now
      */
-    private Queue<MissedRun> oldestMissedRuns() {
+    private Queue<MissedRun> oldestMissedRuns(final Instant now) {
         final Queue<MissedRun> missedRuns = new PriorityQueue<>(schedules.size() + 1, Comparator.comparing(MissedRun::runTime));
         for (final RealtimeCronSchedule schedule : schedules.values()) {
             if (schedule.getCatchup() != CatchupStrategy.NONE) {
@@ -168,7 +177,7 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
                         .map(cachedTime -> cachedTime.atZone(ZoneId.systemDefault()));
                 final Optional<ZonedDateTime> nextExecution = cachedExecutionTime
                         .flatMap(cachedTime -> schedule.getExecutionTime().nextExecution(cachedTime));
-                if (nextExecution.isPresent() && nextExecution.get().isBefore(ZonedDateTime.now())) {
+                if (nextExecution.isPresent() && nextExecution.get().isBefore(ZonedDateTime.ofInstant(now, ZoneId.systemDefault()))) {
                     missedRuns.add(new MissedRun(schedule, nextExecution.get()));
                 }
             }
@@ -177,12 +186,13 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
     }
 
     @Override
-    protected void schedule(final RealtimeCronSchedule schedule) {
-        schedule.getExecutionTime().timeToNextExecution(ZonedDateTime.now()).ifPresent(durationToNextRun ->
+    protected void schedule(final Instant now, final RealtimeCronSchedule schedule) {
+        schedule.getExecutionTime().timeToNextExecution(ZonedDateTime.ofInstant(now, ZoneId.systemDefault())).ifPresent(durationToNextRun ->
                 executor.schedule(() -> {
-                    lastExecutionCache.cacheExecutionTime(schedule.getId(), Instant.now());
+                    final Instant nextExecution = now.plus(durationToNextRun);
+                    lastExecutionCache.cacheExecutionTime(nextExecution, schedule.getId());
                     executeEvents(schedule);
-                    schedule(schedule);
+                    schedule(nextExecution, schedule);
                 }, durationToNextRun.toMillis(), TimeUnit.MILLISECONDS));
     }
 

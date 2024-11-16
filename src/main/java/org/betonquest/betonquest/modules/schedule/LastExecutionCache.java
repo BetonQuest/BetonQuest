@@ -67,11 +67,11 @@ public class LastExecutionCache {
      * Save the last execution time of a schedule to the cache in ISO-8601 format
      * (see {@link DateTimeFormatter#ISO_INSTANT}).
      *
+     * @param now      The Instance of now
      * @param schedule id of the schedule
-     * @param time     time to cache as instant
      */
-    public void cacheExecutionTime(final ScheduleID schedule, final Instant time) {
-        cacheRawExecutionTime(schedule, time.toString());
+    public void cacheExecutionTime(final Instant now, final ScheduleID schedule) {
+        cacheRawExecutionTime(schedule, now.toString());
     }
 
     /**
@@ -109,15 +109,14 @@ public class LastExecutionCache {
      * For all schedules that are not in the cache, cache the current time as last execution time.
      * This allows to find missed schedules during shutdown.
      *
+     * @param now       The Instant of now
      * @param schedules ids of the schedules to cache
      */
-    public void cacheStartupTime(final Collection<ScheduleID> schedules) {
-        final Instant startupTime = Instant.now();
+    public void cacheStartupTime(final Instant now, final Collection<ScheduleID> schedules) {
         for (final ScheduleID schedule : schedules) {
             if (!isCached(schedule)) {
-                cacheExecutionTime(schedule, startupTime);
+                cacheExecutionTime(now, schedule);
             }
         }
     }
-
 }

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.modules.schedule.impl;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.schedule.FictiveTime;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.modules.schedule.ScheduleID;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests for the {@link ExecutorServiceScheduler}
+ * Tests for the {@link ExecutorServiceScheduler}.
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
 @ExtendWith(MockitoExtension.class)
@@ -27,12 +28,12 @@ class ExecutorServiceSchedulerTest {
     private BetonQuestLogger logger;
 
     /**
-     * The scheduler to test
+     * The scheduler to test.
      */
-    private ExecutorServiceScheduler<Schedule> scheduler;
+    private ExecutorServiceScheduler<Schedule, FictiveTime> scheduler;
 
     /**
-     * Executor mock used by the scheduler, will be set by {@link #newExecutor()}
+     * Executor mock used by the scheduler, will be set by {@link #newExecutor()}.
      */
     private ScheduledExecutorService executor;
 
@@ -50,9 +51,15 @@ class ExecutorServiceSchedulerTest {
     @BeforeEach
     void setUp() {
         scheduler = spy(new ExecutorServiceScheduler<>(logger, this::newExecutor) {
+
             @Override
-            protected void schedule(final Schedule schedule) {
-                //mock, do nothing
+            protected FictiveTime getNow() {
+                return new FictiveTime();
+            }
+
+            @Override
+            protected void schedule(final FictiveTime now, final Schedule schedule) {
+                // do nothing
             }
         });
     }
@@ -68,8 +75,8 @@ class ExecutorServiceSchedulerTest {
 
         assertNotNull(scheduler.executor, "Executor should be present");
         assertEquals(executor, scheduler.executor, "Executor should be provided by supplier");
-        verify(scheduler, times(1)).schedule(schedule1);
-        verify(scheduler, times(1)).schedule(schedule2);
+        verify(scheduler, times(1)).schedule(any(), eq(schedule1));
+        verify(scheduler, times(1)).schedule(any(), eq(schedule2));
     }
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")

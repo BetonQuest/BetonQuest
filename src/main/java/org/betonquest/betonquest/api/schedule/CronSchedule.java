@@ -10,10 +10,6 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.modules.schedule.ScheduleID;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.util.Optional;
-
 /**
  * A schedule using <a href="https://crontab.guru/">cron syntax</a> for defining time instructions.
  */
@@ -121,23 +117,5 @@ public abstract class CronSchedule extends Schedule {
      */
     public ExecutionTime getExecutionTime() {
         return executionTime;
-    }
-
-    /**
-     * Utility method that simplifies getting the next execution time of this schedule as instant.
-     *
-     * @return Optional containing the next time of execution as instant. Empty if there is no next execution.
-     */
-    public Optional<Instant> getNextExecution() {
-        return executionTime.nextExecution(ZonedDateTime.now()).map(Instant::from);
-    }
-
-    /**
-     * Utility method that simplifies getting the last execution time of this schedule as instant.
-     *
-     * @return Optional containing the last time of execution as instant. Empty if there is no last execution time.
-     */
-    public Optional<Instant> getLastExecution() {
-        return executionTime.lastExecution(ZonedDateTime.now()).map(Instant::from);
     }
 }

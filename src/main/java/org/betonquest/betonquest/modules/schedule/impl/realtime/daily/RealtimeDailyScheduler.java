@@ -21,7 +21,7 @@ import java.util.function.Supplier;
  * The scheduler for {@link RealtimeDailySchedule}.
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
-public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDailySchedule> {
+public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDailySchedule, Instant> {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -58,26 +58,33 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
     }
 
     @Override
-    public void start() {
-        lastExecutionCache.cacheStartupTime(schedules.keySet());
+    public void start(final Instant now) {
+        lastExecutionCache.cacheStartupTime(now, schedules.keySet());
         log.debug("Starting simple scheduler.");
-        catchupMissedSchedules();
-        super.start();
+        catchupMissedSchedules(now);
+        super.start(now);
         log.debug("Simple scheduler start complete.");
+    }
+
+    @Override
+    protected Instant getNow() {
+        return Instant.now();
     }
 
     /**
      * Search for missed schedule runs during shutdown and rerun them if the catchup strategy says so.
      * The method should guarantee that the schedules are executed in the order they would have occurred.
+     *
+     * @param now The Instant of now
      */
-    private void catchupMissedSchedules() {
+    private void catchupMissedSchedules(final Instant now) {
         log.debug("Collecting missed schedules...");
-        final List<RealtimeDailySchedule> missedSchedules = listMissedSchedules();
+        final List<RealtimeDailySchedule> missedSchedules = listMissedSchedules(now);
         log.debug("Found " + missedSchedules.size() + " missed schedule runs that will be caught up.");
         if (!missedSchedules.isEmpty()) {
             log.debug("Running missed schedules to catch up...");
             for (final RealtimeDailySchedule schedule : missedSchedules) {
-                lastExecutionCache.cacheExecutionTime(schedule.getId(), Instant.now());
+                lastExecutionCache.cacheExecutionTime(now, schedule.getId());
                 executeEvents(schedule);
             }
         }
@@ -91,7 +98,7 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
      * {@link CatchupStrategy#ALL} are there as often as they have been missed.
      * </p>
      * <p>
-     * Uses the Queue returned by {@link #oldestMissedRuns()} to order missed runs.
+     * Uses the Queue returned by {@link #oldestMissedRuns(Instant)} to order missed runs.
      * Each runs schedule will be added to the missed schedules list.
      * </p>
      * <p>
@@ -103,11 +110,12 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
      * added.
      * </p>
      *
+     * @param now The Instant of now
      * @return list of schedules that should be run to catch up any missed schedules
      */
-    private List<RealtimeDailySchedule> listMissedSchedules() {
+    private List<RealtimeDailySchedule> listMissedSchedules(final Instant now) {
         final List<RealtimeDailySchedule> missed = new ArrayList<>();
-        final Queue<MissedRun> missedRuns = oldestMissedRuns();
+        final Queue<MissedRun> missedRuns = oldestMissedRuns(now);
 
         while (!missedRuns.isEmpty()) {
             final MissedRun earliest = missedRuns.poll();
@@ -116,7 +124,7 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
                     "Schedule '" + earliest.schedule.getId() + "' run missed at " + earliest.runTime);
             if (earliest.schedule.getCatchup() == CatchupStrategy.ALL) {
                 final Instant nextExecution = earliest.runTime.plus(1, ChronoUnit.DAYS);
-                if (nextExecution.isBefore(Instant.now())) {
+                if (nextExecution.isBefore(now)) {
                     missedRuns.add(new MissedRun(earliest.schedule, nextExecution));
                 }
             }
@@ -128,15 +136,16 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
      * This method returns the first missed run of each schedule (if a run was missed).
      * The returned queue is ordered by the time when the schedule should have run, in ascending order.
      *
+     * @param now The Instant of now
      * @return queue of missed runs, sorted from old to now
      */
-    private Queue<MissedRun> oldestMissedRuns() {
+    private Queue<MissedRun> oldestMissedRuns(final Instant now) {
         final Queue<MissedRun> missedRuns = new PriorityQueue<>(schedules.size() + 1, Comparator.comparing(MissedRun::runTime));
         for (final RealtimeDailySchedule schedule : schedules.values()) {
             if (schedule.getCatchup() != CatchupStrategy.NONE) {
                 final Optional<Instant> lastExecutionTime = lastExecutionCache.getLastExecutionTime(schedule.getId());
                 final Optional<Instant> nextExecution = lastExecutionTime.map(schedule::getNextExecution);
-                if (nextExecution.isPresent() && nextExecution.get().isBefore(Instant.now())) {
+                if (nextExecution.isPresent() && nextExecution.get().isBefore(now)) {
                     missedRuns.add(new MissedRun(schedule, nextExecution.get()));
                 }
             }
@@ -145,12 +154,13 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
     }
 
     @Override
-    protected void schedule(final RealtimeDailySchedule schedule) {
+    protected void schedule(final Instant now, final RealtimeDailySchedule schedule) {
+        final Instant nextExecution = schedule.getNextExecution(now);
         executor.schedule(() -> {
-            lastExecutionCache.cacheExecutionTime(schedule.getId(), Instant.now());
+            lastExecutionCache.cacheExecutionTime(nextExecution, schedule.getId());
             executeEvents(schedule);
-            schedule(schedule);
-        }, Instant.now().until(schedule.getNextExecution(), ChronoUnit.MILLIS), TimeUnit.MILLISECONDS);
+            schedule(nextExecution, schedule);
+        }, ChronoUnit.MILLIS.between(now, nextExecution), TimeUnit.MILLISECONDS);
     }
 
     /**

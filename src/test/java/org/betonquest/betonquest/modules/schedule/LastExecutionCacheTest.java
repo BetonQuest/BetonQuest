@@ -27,6 +27,11 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class LastExecutionCacheTest {
+    /**
+     * The current time used in the tests.
+     */
+    private final Instant now = Instant.now();
+
     @Mock
     private BetonQuestLogger logger;
 
@@ -67,7 +72,7 @@ class LastExecutionCacheTest {
     void testSaveIOException() throws IOException {
         when(scheduleID.getFullID()).thenReturn("test-package.testCacheIOException");
         when(cacheAccessor.save()).thenThrow(new IOException("ioexception"));
-        lastExecutionCache.cacheExecutionTime(scheduleID, Instant.parse("1970-01-01T00:00:00Z"));
+        lastExecutionCache.cacheExecutionTime(Instant.parse("1970-01-01T00:00:00Z"), scheduleID);
         verify(logger, times(1)).error(eq("Could not save schedule cache: ioexception"), any(IOException.class));
     }
 
@@ -137,7 +142,7 @@ class LastExecutionCacheTest {
     void testCacheInstant() throws IOException {
         final Instant toCache = Instant.parse("1970-01-01T00:00:00Z");
         when(scheduleID.getFullID()).thenReturn("test-package.testCacheInstant");
-        lastExecutionCache.cacheExecutionTime(scheduleID, toCache);
+        lastExecutionCache.cacheExecutionTime(toCache, scheduleID);
         verify(cacheContent).set("test-package.testCacheInstant", toCache.toString());
         verify(cacheAccessor).save();
     }
@@ -151,7 +156,7 @@ class LastExecutionCacheTest {
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testCacheStartup() throws IOException {
-        final Instant start = Instant.now();
+        final Instant now = this.now;
         final ScheduleID newSchedule = mock(ScheduleID.class);
         final ScheduleID cachedSchedule = mock(ScheduleID.class);
         final String expected = "2000-01-01T00:00:00Z";
@@ -159,11 +164,11 @@ class LastExecutionCacheTest {
         when(cachedSchedule.getFullID()).thenReturn("test-package.testCacheStartup-cachedSchedule");
         when(cacheContent.getString("test-package.testCacheStartup-newSchedule")).thenReturn(null);
         when(cacheContent.getString("test-package.testCacheStartup-cachedSchedule")).thenReturn(expected);
-        lastExecutionCache.cacheStartupTime(List.of(newSchedule, cachedSchedule));
-        final Instant end = Instant.now();
+        lastExecutionCache.cacheStartupTime(now, List.of(newSchedule, cachedSchedule));
+        final Instant end = this.now;
         final ArgumentMatcher<String> isCurrentTime = value -> {
             final Instant cachedTime = Instant.parse(value);
-            return !cachedTime.isBefore(start) && !cachedTime.isAfter(end);
+            return !cachedTime.isBefore(now) && !cachedTime.isAfter(end);
         };
         verify(cacheContent).set(eq("test-package.testCacheStartup-newSchedule"), argThat(isCurrentTime));
         verify(cacheContent, never()).set(eq("test-package.testCacheStartup-cachedSchedule"), anyString());

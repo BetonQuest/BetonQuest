@@ -34,6 +34,11 @@ class RealtimeCronSchedulerTest {
         when(SCHEDULE_ID.toString()).thenReturn("test.schedule");
     }
 
+    /**
+     * The current time used in the tests.
+     */
+    private final Instant now = Instant.now();
+
     @Mock
     private BetonQuestLogger logger;
 
@@ -50,7 +55,7 @@ class RealtimeCronSchedulerTest {
     void testStartWithoutSchedules() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final RealtimeCronScheduler scheduler = spy(new RealtimeCronScheduler(logger, cache));
-        scheduler.start();
+        scheduler.start(now);
 
         verify(logger, times(1)).debug("Starting realtime scheduler.");
         verify(logger, times(1)).debug("Collecting reboot schedules...");
@@ -58,7 +63,7 @@ class RealtimeCronSchedulerTest {
         verify(logger, times(1)).debug("Found 0 missed schedule runs that will be caught up.");
         verify(logger, times(1)).debug("Realtime scheduler start complete.");
         verifyNoMoreInteractions(logger);
-        verify(scheduler, never()).schedule(any());
+        verify(scheduler, never()).schedule(any(), any());
     }
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
@@ -73,7 +78,7 @@ class RealtimeCronSchedulerTest {
         when(schedule.getExecutionTime()).thenReturn(executionTime);
 
         scheduler.addSchedule(schedule);
-        scheduler.start();
+        scheduler.start(now);
 
         verify(logger, times(1)).debug("Starting realtime scheduler.");
         verify(logger, times(1)).debug("Collecting reboot schedules...");
@@ -89,7 +94,7 @@ class RealtimeCronSchedulerTest {
     @Test
     void testStartWithMissedSchedulesStrategyOne() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
-        final Instant lastExecution = Instant.now().minusSeconds(60);
+        final Instant lastExecution = now.minusSeconds(60);
         when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(lastExecution));
 
         final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(logger, cache);
@@ -99,7 +104,7 @@ class RealtimeCronSchedulerTest {
         when(executionTime.nextExecution(any())).thenReturn(Optional.of(nextMissedExecution));
         when(schedule.getExecutionTime()).thenReturn(executionTime);
         scheduler.addSchedule(schedule);
-        scheduler.start();
+        scheduler.start(now);
 
         verify(logger, times(1)).debug("Starting realtime scheduler.");
         verify(logger, times(1)).debug("Collecting reboot schedules...");
@@ -117,7 +122,7 @@ class RealtimeCronSchedulerTest {
     @Test
     void testStartWithMissedSchedulesStrategyAll() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
-        final Instant lastExecution = Instant.now().minusSeconds(61);
+        final Instant lastExecution = now.minusSeconds(65);
         when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(lastExecution));
 
         final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(logger, cache);
@@ -134,7 +139,7 @@ class RealtimeCronSchedulerTest {
                 Optional.of(nextMissedExecution4));
         when(schedule.getExecutionTime()).thenReturn(executionTime);
         scheduler.addSchedule(schedule);
-        scheduler.start();
+        scheduler.start(now);
 
         verify(logger, times(1)).debug("Starting realtime scheduler.");
         verify(logger, times(1)).debug("Collecting reboot schedules...");
@@ -154,17 +159,17 @@ class RealtimeCronSchedulerTest {
     @Test
     void testStartWithoutMissedSchedulesStrategyAll() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
-        final Instant lastExecution = Instant.now().minusSeconds(40);
+        final Instant lastExecution = now.minusSeconds(40);
         when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(lastExecution));
 
         final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(logger, cache);
         final RealtimeCronSchedule schedule = getSchedule(CatchupStrategy.ALL, false);
         final ExecutionTime executionTime = mock(ExecutionTime.class);
-        final ZonedDateTime nextExecution = Instant.now().plusSeconds(20).atZone(ZoneId.systemDefault());
+        final ZonedDateTime nextExecution = now.plusSeconds(20).atZone(ZoneId.systemDefault());
         when(executionTime.nextExecution(any())).thenReturn(Optional.of(nextExecution));
         when(schedule.getExecutionTime()).thenReturn(executionTime);
         scheduler.addSchedule(schedule);
-        scheduler.start();
+        scheduler.start(now);
 
         verify(logger, times(1)).debug("Starting realtime scheduler.");
         verify(logger, times(1)).debug("Collecting reboot schedules...");
@@ -196,7 +201,7 @@ class RealtimeCronSchedulerTest {
                 Optional.empty());
         when(schedule.getExecutionTime()).thenReturn(executionTime);
         scheduler.addSchedule(schedule);
-        scheduler.start();
+        scheduler.start(now);
 
         verify(logger, times(1)).debug("Starting realtime scheduler.");
         verify(logger, times(1)).debug("Collecting reboot schedules...");
