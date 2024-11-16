@@ -262,14 +262,28 @@ public class QuestItemHandler implements Listener {
         }
     }
 
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
+    /**
+     * Prevents generell in-world interaction with QuestItems and the Journal.
+     * <p>
+     * Interaction with written books (and so the Journal) is only blocked, when it would interact with a block.
+     *
+     * @param event the event to process
+     */
     @EventHandler
     public void onInteractEvent(final PlayerInteractEvent event) {
-        if (event.getPlayer().getGameMode() == GameMode.CREATIVE || event.useInteractedBlock() == Event.Result.DENY && event.useItemInHand() == Event.Result.DENY) {
+        if (event.getPlayer().getGameMode() == GameMode.CREATIVE
+                || event.useInteractedBlock() == Event.Result.DENY && event.useItemInHand() == Event.Result.DENY) {
             return;
         }
         final ItemStack item = event.getItem();
-        if (item != null && !EnchantmentTarget.TOOL.includes(item.getType()) && Utils.isQuestItem(item) && item.getType() != Material.WRITTEN_BOOK) {
+        if (item == null) {
+            return;
+        }
+        if (item.getType() == Material.WRITTEN_BOOK) {
+            if (Utils.isQuestItem(item) || Journal.isJournal(PlayerConverter.getID(event.getPlayer()), item)) {
+                event.setUseInteractedBlock(Event.Result.DENY);
+            }
+        } else if (!EnchantmentTarget.TOOL.includes(item.getType()) && Utils.isQuestItem(item)) {
             event.setCancelled(true);
         }
     }
@@ -301,7 +315,8 @@ public class QuestItemHandler implements Listener {
             return;
         }
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
-        if (isJournalSlotLocked() && (Journal.isJournal(onlineProfile, event.getMainHandItem()) || Journal.isJournal(onlineProfile, event.getOffHandItem()))) {
+        if (isJournalSlotLocked() && (Journal.isJournal(onlineProfile, event.getMainHandItem())
+                || Journal.isJournal(onlineProfile, event.getOffHandItem()))) {
             event.setCancelled(true);
         }
     }
