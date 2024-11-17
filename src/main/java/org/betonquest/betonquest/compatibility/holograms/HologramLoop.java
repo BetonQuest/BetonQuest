@@ -17,12 +17,12 @@ import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,9 +31,14 @@ import java.util.regex.Pattern;
  */
 public abstract class HologramLoop {
     /**
-     * Pattern to match the correct syntax for the top line content
+     * The regex for one color.
      */
-    protected static final Pattern TOP_LINE_VALIDATOR = Pattern.compile("^top:([\\w.]+);(\\w+);(\\d+);?[&§]?([\\da-f])?;?[&§]?([\\da-f])?;?[&§]?([\\da-f])?;?[&§]?([\\da-f])?$", Pattern.CASE_INSENSITIVE);
+    private static final String COLOR_REGEX = ";?([&§]?[0-9a-f])?";
+
+    /**
+     * Pattern to match the correct syntax for the top line content.
+     */
+    private static final Pattern TOP_LINE_VALIDATOR = Pattern.compile("^top:([\\w.]+);(\\w+);(\\d+)" + COLOR_REGEX + COLOR_REGEX + COLOR_REGEX + COLOR_REGEX + "$", Pattern.CASE_INSENSITIVE);
 
     /**
      * The string to match the descending order.
@@ -211,21 +216,25 @@ public abstract class HologramLoop {
         } catch (final NumberFormatException e) {
             throw new InstructionParseException("Top list limit must be numeric! Expected format: 'top:<point>;<order>;<limit>[;<color>][;<color>][;<color>][;<color>]'.", e);
         }
+        final ChatColor colorPlace = getColorCodes(validator.group(4));
+        final ChatColor colorName = getColorCodes(validator.group(5));
+        final ChatColor colorDash = getColorCodes(validator.group(6));
+        final ChatColor colorScore = getColorCodes(validator.group(7));
+        return new TopLine(loggerFactory, pointName, orderType, limit, new TopLine.FormatColors(colorPlace, colorName, colorDash, colorScore));
+    }
 
-        final StringBuilder colorCodes = new StringBuilder();
-        for (int i = 4; i <= 7; i++) {
-            String code = "";
-            if (validator.group(i) != null) {
-                code = validator.group(i).toLowerCase(Locale.ROOT);
-            }
-
-            if (code.isEmpty()) {
-                colorCodes.append('f');
-            } else {
-                colorCodes.append(code);
+    private ChatColor getColorCodes(@Nullable final String color) {
+        if (color != null) {
+            final int length = color.length();
+            if (length == 1 || length == 2) {
+                final char colorChar = color.charAt(length - 1);
+                final ChatColor byChar = ChatColor.getByChar(colorChar);
+                if (byChar != null) {
+                    return byChar;
+                }
             }
         }
-        return new TopLine(loggerFactory, pointName, orderType, limit, colorCodes.toString().toCharArray());
+        return ChatColor.WHITE;
     }
 
     private TextLine parseTextLine(final QuestPackage pack, final String line) {

@@ -2,8 +2,7 @@ package org.betonquest.betonquest.compatibility.holograms.lines;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
-
-import java.util.Arrays;
+import org.bukkit.ChatColor;
 
 /**
  * Creates a new instance for TopLine.
@@ -23,10 +22,10 @@ public class TopLine extends AbstractLine {
      * Color codes for individual elements of the displayed line in the exact order: <br>
      * <code>{#.} {name} {-} {score}</code>
      */
-    private final char[] colors;
+    private final FormatColors colors;
 
     /**
-     * Storage for rank data
+     * Storage for rank data.
      */
     private final TopXObject topXObject;
 
@@ -40,11 +39,11 @@ public class TopLine extends AbstractLine {
      * @param colors        color codes for individual parts of display (#, name, dash, and score)
      */
     @SuppressWarnings("PMD.UseVarargs")
-    public TopLine(final BetonQuestLoggerFactory loggerFactory, final String category, final TopXObject.OrderType orderType, final int limit, final char[] colors) {
+    public TopLine(final BetonQuestLoggerFactory loggerFactory, final String category, final TopXObject.OrderType orderType, final int limit, final FormatColors colors) {
         super(false, limit);
         this.category = category;
         this.orderType = orderType;
-        this.colors = colors.clone();
+        this.colors = colors;
 
         topXObject = new TopXObject(
                 loggerFactory.create(TopXObject.class), limit,
@@ -68,7 +67,7 @@ public class TopLine extends AbstractLine {
                 continue;
             }
             final TopXLine line = topXObject.getEntries().get(i);
-            lines[i] = "§" + colors[0] + (i + 1) + ". §" + colors[1] + line.playerName() + "§" + colors[2] + " - §" + colors[3] + line.count();
+            lines[i] = colors.place.toString() + (i + 1) + ". " + colors.name + line.playerName() + colors.dash + " - " + colors.score + line.count();
         }
         return lines;
     }
@@ -79,7 +78,7 @@ public class TopLine extends AbstractLine {
                 + "category='" + category + '\''
                 + ", orderType=" + orderType
                 + ", linesAdded=" + linesAdded
-                + ", colors=" + Arrays.toString(colors)
+                + ", colors=" + colors
                 + '}';
     }
 
@@ -89,5 +88,16 @@ public class TopLine extends AbstractLine {
         for (int i = 0; i < lines.length; i++) {
             hologram.setLine(index + i, lines[i]);
         }
+    }
+
+    /**
+     * The Color code for individual elements of the displayed line.
+     *
+     * @param place color for place number
+     * @param name  color for player name
+     * @param dash  color for dash
+     * @param score color for score
+     */
+    public record FormatColors(ChatColor place, ChatColor name, ChatColor dash, ChatColor score) {
     }
 }
