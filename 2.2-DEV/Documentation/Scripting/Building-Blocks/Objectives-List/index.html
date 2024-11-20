@@ -5767,22 +5767,66 @@
 
 <h1 id="objectives-list">Objectives List<a class="headerlink" href="#objectives-list" title="Permanent link">🔗</a></h1>
 <h2 id="action-action">Action: <code>action</code><a class="headerlink" href="#action-action" title="Permanent link">🔗</a></h2>
-<p>This objective completes when the player clicks on the given block type. The first argument is the type of the click,
-it can be right, left or any. Next is a <a href="../../Data-Formats/#block-selectors">Block Selector</a> or <code>any</code> if you
-want to count all clicks, even into the air. You can also specify the <code>loc:</code> argument, followed by the standard location
-format and the <code>range:</code> followed by a number (or variable). The specified location is the center of a sphere, the range it's radius.
-Therefore, these arguments define where the clicked block needs to be, as opposed to "where you must be" in location condition.
-If you add the argument <code>cancel</code>, the click will be canceled (chest will not open, button will not be pressed etc.).
-This objective works great with the location condition and the item in hand condition to further limit the counted clicks.
-One could make a magic wand using this.</p>
-<p>The objective contains one property, <code>location</code>. It's a string formatted like <code>X: 100, Y: 200, Z:300</code>. It does not
-show the radius.</p>
+<p>This objective completes when the player clicks on the given block type. 
+It works great with the location condition and the item in hand condition to further limit the counted clicks.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Syntax</th>
+<th>Default Value</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>Click Type</em></td>
+<td><code>right</code>, <code>left</code> or <code>any</code></td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343h-.001a8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746Zm1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275ZM6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L6.94 8 4.97 6.03a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018Z"/></svg></span></td>
+<td>What type of click should be handled</td>
+</tr>
+<tr>
+<td><em>Block Type</em></td>
+<td><a href="../../Data-Formats/#block-selectors">Block Selector</a> or <code>any</code></td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343h-.001a8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746Zm1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275ZM6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L6.94 8 4.97 6.03a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018Z"/></svg></span></td>
+<td>The block which must be clicked, or <code>any</code> for even air</td>
+</tr>
+<tr>
+<td><em>Location</em></td>
+<td>loc:<a href="../../Data-Formats/#unified-location-formating">Location</a></td>
+<td>Optional. Default: none</td>
+<td>Adds an optional location to the objective, only counting blocks clicked at the specific location.</td>
+</tr>
+<tr>
+<td><em>range</em></td>
+<td>range:number</td>
+<td>0</td>
+<td>The range around the location where to count the clicks.</td>
+</tr>
+<tr>
+<td><em>cancel</em></td>
+<td>Keyword (<code>cancel</code>)</td>
+<td>Not Set</td>
+<td>Prevents the player from interacting with the block.</td>
+</tr>
+<tr>
+<td><em>hand</em></td>
+<td>hand:(<code>hand</code>,<code>off_hand</code>, <code>any</code>)</td>
+<td><code>hand</code></td>
+<td>The hand the player must use to click the block, <code>any</code> can the objective cause to be completed multiple times</td>
+</tr>
+</tbody>
+</table>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">action right DOOR conditions:holding_key loc:100;200;300;world range:5</span>
 <span class="l l-Scalar l-Scalar-Plain">action any any conditions:holding_magicWand events:fireSpell</span><span class="w"> </span><span class="c1">#Custom click listener for a wand</span>
 </code></pre></div>
 </div>
+<h5> Variable Properties </h5>
+
+<p>The objective contains one property, <code>location</code>. It's a string formatted like <code>X: 100, Y: 200, Z:300</code>. It does not
+show the radius.</p>
 <h2 id="arrow-shooting-arrow">Arrow Shooting: <code>arrow</code><a class="headerlink" href="#arrow-shooting-arrow" title="Permanent link">🔗</a></h2>
 <p>To complete this objective the player needs to shoot the arrow into the target. There are two arguments, location of the
 target and precision number (radius around location where the arrow must land, should be small). Note that the position
