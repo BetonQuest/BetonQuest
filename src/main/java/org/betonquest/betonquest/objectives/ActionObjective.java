@@ -23,6 +23,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.Nullable;
 
 import static org.bukkit.event.block.Action.LEFT_CLICK_AIR;
@@ -65,6 +66,9 @@ public class ActionObjective extends Objective implements Listener {
 
     private final boolean cancel;
 
+    @Nullable
+    private final EquipmentSlot slot;
+
     public ActionObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
@@ -77,16 +81,25 @@ public class ActionObjective extends Objective implements Listener {
         }
         exactMatch = instruction.hasArgument("exactMatch");
         loc = instruction.getLocation(instruction.getOptional("loc"));
-        final String stringRange = instruction.getOptional("range");
-        range = instruction.getVarNum(stringRange == null ? "0" : stringRange);
+        range = instruction.getVarNum(instruction.getOptional("range", "0"));
         cancel = instruction.hasArgument("cancel");
+        final String handString = instruction.getOptional("hand");
+        if (handString == null || ANY.equalsIgnoreCase(handString)) {
+            slot = null;
+        } else if (handString.equalsIgnoreCase(EquipmentSlot.HAND.toString())) {
+            slot = EquipmentSlot.HAND;
+        } else if (handString.equalsIgnoreCase(EquipmentSlot.OFF_HAND.toString())) {
+            slot = EquipmentSlot.OFF_HAND;
+        } else {
+            throw new InstructionParseException("Invalid hand value: " + handString);
+        }
     }
 
     @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(final PlayerInteractEvent event) {
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(onlineProfile) || !action.match(event.getAction())) {
+        if (!containsPlayer(onlineProfile) || !action.match(event.getAction()) || slot != null && slot != event.getHand()) {
             return;
         }
 
@@ -169,5 +182,4 @@ public class ActionObjective extends Objective implements Listener {
                     || this == LEFT && (action == LEFT_CLICK_AIR || action == LEFT_CLICK_BLOCK);
         }
     }
-
 }
