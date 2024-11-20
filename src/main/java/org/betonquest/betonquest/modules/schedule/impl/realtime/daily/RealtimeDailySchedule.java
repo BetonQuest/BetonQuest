@@ -63,7 +63,7 @@ public class RealtimeDailySchedule extends Schedule {
     public Instant getNextExecution(final Instant startTime) {
         final OffsetDateTime now = OffsetDateTime.ofInstant(startTime, ZoneId.systemDefault());
         OffsetDateTime targetTime = OffsetDateTime.of(now.toLocalDate(), getTimeToRun(), now.getOffset());
-        if (targetTime.isBefore(now)) {
+        if (!targetTime.isAfter(now)) {
             targetTime = targetTime.plusDays(1);
         }
         return targetTime.toInstant();
