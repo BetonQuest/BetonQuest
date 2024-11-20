@@ -5,23 +5,28 @@ icon: octicons/codescan-checkmark-16
 
 ## Action: `action`
 
-This objective completes when the player clicks on the given block type. The first argument is the type of the click,
-it can be right, left or any. Next is a [Block Selector](../Data-Formats.md#block-selectors) or `any` if you
-want to count all clicks, even into the air. You can also specify the `loc:` argument, followed by the standard location
-format and the `range:` followed by a number (or variable). The specified location is the center of a sphere, the range it's radius.
-Therefore, these arguments define where the clicked block needs to be, as opposed to "where you must be" in location condition.
-If you add the argument `cancel`, the click will be canceled (chest will not open, button will not be pressed etc.).
-This objective works great with the location condition and the item in hand condition to further limit the counted clicks.
-One could make a magic wand using this.
+This objective completes when the player clicks on the given block type. 
+It works great with the location condition and the item in hand condition to further limit the counted clicks.
 
-The objective contains one property, `location`. It's a string formatted like `X: 100, Y: 200, Z:300`. It does not
-show the radius.
+| Parameter    | Syntax                                                        | Default Value           | Explanation                                                                                                   |
+|--------------|---------------------------------------------------------------|-------------------------|---------------------------------------------------------------------------------------------------------------|
+| _Click Type_ | `right`, `left` or `any`                                      | :octicons-x-circle-16:  | What type of click should be handled                                                                          |
+| _Block Type_ | [Block Selector](../Data-Formats.md#block-selectors) or `any` | :octicons-x-circle-16:  | The block which must be clicked, or `any` for even air                                                        |
+| _Location_   | loc:[Location](../Data-Formats.md#unified-location-formating) | Optional. Default: none | Adds an optional location to the objective, only counting blocks clicked at the specific location.            |
+| _range_      | range:number                                                  | 0                       | The range around the location where to count the clicks.                                                      |
+| _cancel_     | Keyword (`cancel`)                                            | Not Set                 | Prevents the player from interacting with the block.                                                          |
+| _hand_       | hand:(`hand`,`off_hand`, `any`)                               | `hand`                  | The hand the player must use to click the block, `any` can the objective cause to be completed multiple times |
 
 !!! example
     ```YAML
     action right DOOR conditions:holding_key loc:100;200;300;world range:5
     action any any conditions:holding_magicWand events:fireSpell #Custom click listener for a wand
     ```
+
+<h5> Variable Properties </h5> 
+
+The objective contains one property, `location`. It's a string formatted like `X: 100, Y: 200, Z:300`. It does not
+show the radius.
 
 ## Arrow Shooting: `arrow`
 
