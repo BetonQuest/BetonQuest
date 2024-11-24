@@ -611,9 +611,6 @@
               <goal>shade</goal>
             </goals>
             <configuration>
-              <createDependencyReducedPom>false</createDependencyReducedPom>
-              <shadedArtifactAttached>true</shadedArtifactAttached>
-              <minimizeJar>true</minimizeJar>
               <artifactSet>
                 <includes>
                   <include>org.bstats</include>

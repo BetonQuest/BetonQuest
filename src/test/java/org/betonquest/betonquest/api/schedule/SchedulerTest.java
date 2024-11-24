@@ -43,7 +43,7 @@ class SchedulerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     void testStop() {
         final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger);
         final ScheduleID scheduleID = mock(ScheduleID.class);
@@ -57,7 +57,7 @@ class SchedulerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testExecuteEvents() {
         try (MockedStatic<BetonQuest> betonQuest = mockStatic(BetonQuest.class)) {
             final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger);

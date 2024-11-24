@@ -74,7 +74,7 @@ public class PointVariable extends Variable {
         return getValue(BetonQuest.getInstance().getPlayerData(profile).getPoints());
     }
 
-    @SuppressWarnings("PMD.TooFewBranchesForASwitchStatement")
+    @SuppressWarnings("PMD.TooFewBranchesForSwitch")
     protected String getValue(final List<Point> points) {
         Point point = null;
         for (final Point p : points) {

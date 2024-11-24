@@ -55,7 +55,7 @@ class VariableInstructionTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     void partsShouldBeSplitByDot(final BetonQuestLogger log) throws InstructionParseException {
         final VariableInstruction instruction = new VariableInstruction(log, questPackage, null, "%instruction.part1.part2%");
         assertTrue(instruction.hasNext(), "Should have more parts");

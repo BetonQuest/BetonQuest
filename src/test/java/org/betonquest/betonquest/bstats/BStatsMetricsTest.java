@@ -99,7 +99,7 @@ class BStatsMetricsTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testCreateBStatsMetrics() {
         final Plugin plugin = mock(Plugin.class);
 
@@ -114,7 +114,7 @@ class BStatsMetricsTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     void testCustomChartCallableGetsUpdates(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         setupLogger();
         final Plugin plugin = mock(Plugin.class);

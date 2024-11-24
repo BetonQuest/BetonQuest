@@ -65,7 +65,7 @@ class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
         verify(sender, times(1)).abandonConversation(any(Conversation.class), any(ConversationAbandonedEvent.class));
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void sendRawMessage() {
         silentSender.sendRawMessage("test1");
@@ -74,7 +74,7 @@ class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
         verifyNoMoreInteractions(logger);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void sendRawMessage_sender() {
         silentSender.sendRawMessage(null, "test3");

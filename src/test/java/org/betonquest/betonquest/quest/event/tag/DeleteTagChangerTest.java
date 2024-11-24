@@ -21,7 +21,7 @@ class DeleteTagChangerTest {
         verifyNoInteractions(tagData);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testDeleteTagChangerRemoveMultipleTags(@Mock final TagData tagData) {
         final String[] tags = {"tag-1", "tag-2", "tag-3"};

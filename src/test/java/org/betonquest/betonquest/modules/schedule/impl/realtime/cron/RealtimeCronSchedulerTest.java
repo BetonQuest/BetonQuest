@@ -50,7 +50,7 @@ class RealtimeCronSchedulerTest {
         return schedule;
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testStartWithoutSchedules() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
@@ -66,7 +66,7 @@ class RealtimeCronSchedulerTest {
         verify(scheduler, never()).schedule(any(), any());
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testStartWithRebootSchedules() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
@@ -90,7 +90,7 @@ class RealtimeCronSchedulerTest {
         verify(schedule, times(1)).getEvents();
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testStartWithMissedSchedulesStrategyOne() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
@@ -118,7 +118,7 @@ class RealtimeCronSchedulerTest {
         verify(schedule, times(1)).getEvents();
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testStartWithMissedSchedulesStrategyAll() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
@@ -155,7 +155,7 @@ class RealtimeCronSchedulerTest {
         verify(schedule, times(3)).getEvents();
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testStartWithoutMissedSchedulesStrategyAll() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
@@ -181,7 +181,7 @@ class RealtimeCronSchedulerTest {
     }
 
     @Test
-    @SuppressWarnings({"PMD.DoNotUseThreads", "PMD.JUnitTestContainsTooManyAsserts"})
+    @SuppressWarnings({"PMD.DoNotUseThreads", "PMD.UnitTestContainsTooManyAsserts"})
     void testStartSchedule() {
         final Duration duration = Duration.ofSeconds(20);
         final LastExecutionCache cache = mock(LastExecutionCache.class);

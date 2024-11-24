@@ -64,7 +64,7 @@ class ExecutorServiceSchedulerTest {
         });
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testStart() {
         final Schedule schedule1 = mockSchedule();
@@ -79,7 +79,7 @@ class ExecutorServiceSchedulerTest {
         verify(scheduler, times(1)).schedule(any(), eq(schedule2));
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testStopSuccess() throws InterruptedException {
         scheduler.start();
@@ -95,7 +95,7 @@ class ExecutorServiceSchedulerTest {
         verifyNoMoreInteractions(logger);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testStopInterrupted() throws InterruptedException {
         scheduler.start();
@@ -111,7 +111,7 @@ class ExecutorServiceSchedulerTest {
         verifyNoMoreInteractions(logger);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testStopTimeout() throws InterruptedException {
         scheduler.start();

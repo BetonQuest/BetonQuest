@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * This is a test for the {@link MultiSectionConfiguration} and it's thrown {@link KeyConflictException}s.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
+@SuppressWarnings("PMD.UnitTestAssertionsShouldIncludeMessage")
 class MultiSectionConfigurationKeyConflictExceptionTest {
     /**
      * Config with key3 as value
@@ -50,7 +50,7 @@ class MultiSectionConfigurationKeyConflictExceptionTest {
                 key5: value5
             """;
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testKeyConflictException() {
         final Map<ConfigurationSection, String> configs = new HashMap<>();
@@ -72,7 +72,7 @@ class MultiSectionConfigurationKeyConflictExceptionTest {
         fail("Expected an Exception!");
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testPathConflictException() {
         final Map<ConfigurationSection, String> configs = new HashMap<>();
@@ -93,7 +93,7 @@ class MultiSectionConfigurationKeyConflictExceptionTest {
         fail("Expected an Exception!");
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testKeyPathConflictException() {
         final Map<ConfigurationSection, String> configs = new HashMap<>();

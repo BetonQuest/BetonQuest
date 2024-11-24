@@ -29,7 +29,7 @@ class UpdateSourceHandlerTest {
     @Mock
     private BetonQuestLogger logger;
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void development_update_available() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.PATCH, true);
@@ -45,7 +45,7 @@ class UpdateSourceHandlerTest {
         assertEquals("https://betonquest.org/development", latest.getValue(), "Actual URL does not match expected");
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void no_development_update_available() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MINOR, true);
@@ -60,7 +60,7 @@ class UpdateSourceHandlerTest {
         assertNull(latest.getValue(), "Expected no update URL");
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void release_update_available() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MAJOR, false);
@@ -76,7 +76,7 @@ class UpdateSourceHandlerTest {
         assertEquals("https://betonquest.org/release", latest.getValue(), "Actual URL does not match expected");
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void no_release_update_available() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.PATCH, true);
@@ -91,7 +91,7 @@ class UpdateSourceHandlerTest {
         assertNull(latest.getValue(), "Expected no update URL");
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void release_and_development_update_available_forced() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MINOR, true);
@@ -108,7 +108,7 @@ class UpdateSourceHandlerTest {
         assertEquals("https://betonquest.org/release", latest.getValue(), "Actual URL does not match expected");
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void release_and_development_update_available_not_forced() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MAJOR, true);
@@ -139,7 +139,7 @@ class UpdateSourceHandlerTest {
         assertNull(latest.getValue(), "Expected no update URL");
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void release_throws_UnknownHostException() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MINOR, false);
@@ -161,7 +161,7 @@ class UpdateSourceHandlerTest {
         verifyNoMoreInteractions(logger);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void release_throws_IOException() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MAJOR, false);
@@ -183,7 +183,7 @@ class UpdateSourceHandlerTest {
         verifyNoMoreInteractions(logger);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void one_of_two_releases_throws_IOException() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MAJOR, false);
@@ -206,7 +206,7 @@ class UpdateSourceHandlerTest {
         verifyNoMoreInteractions(logger);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void development_throws_UnknownHostException() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.PATCH, true);
@@ -228,7 +228,7 @@ class UpdateSourceHandlerTest {
         verifyNoMoreInteractions(logger);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void development_throws_IOException() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MINOR, true);
@@ -250,7 +250,7 @@ class UpdateSourceHandlerTest {
         verifyNoMoreInteractions(logger);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void one_of_two_developments_throws_IOException() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MINOR, true);

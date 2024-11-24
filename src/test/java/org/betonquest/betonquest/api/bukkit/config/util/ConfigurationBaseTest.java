@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * You only need to override methods with behaviours that differ from the default one.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate"})
+@SuppressWarnings({"PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate"})
 public class ConfigurationBaseTest extends AbstractConfigBaseTest<Configuration> implements ConfigurationTestInterface {
 
     @Override
@@ -58,7 +58,7 @@ public class ConfigurationBaseTest extends AbstractConfigBaseTest<Configuration>
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testAddDefaultsAsMapOnExistingConfigPath() {
         final Map<String, Object> defaultMap1 = new HashMap<>();
         defaultMap1.put("default.one", 1);
@@ -91,7 +91,7 @@ public class ConfigurationBaseTest extends AbstractConfigBaseTest<Configuration>
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testAddDefaultsAsConfigurationOnExistingConfigPath() {
         final Configuration defaultSection1 = new MemoryConfiguration();
         defaultSection1.set("default.one", 1);
@@ -126,7 +126,7 @@ public class ConfigurationBaseTest extends AbstractConfigBaseTest<Configuration>
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testSetDefaults() {
         final Configuration defaultSection = new MemoryConfiguration();
         defaultSection.set("default.one", 1);
@@ -139,7 +139,7 @@ public class ConfigurationBaseTest extends AbstractConfigBaseTest<Configuration>
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testSetDefaultsOnExistingConfigPath() {
         final Configuration defaultSection1 = new MemoryConfiguration();
         defaultSection1.set("default.one", 1);
@@ -161,7 +161,7 @@ public class ConfigurationBaseTest extends AbstractConfigBaseTest<Configuration>
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testOptions() {
         assertFalse(config.options().copyDefaults());
         config.options().copyDefaults(true);
@@ -176,7 +176,7 @@ public class ConfigurationBaseTest extends AbstractConfigBaseTest<Configuration>
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testOptionsPathSeparator() {
         assertEquals('.', config.options().pathSeparator());
         assertEquals("value", config.getString("childSection.nestedChildSection.key"));

@@ -31,7 +31,7 @@ class HistoryHandlerTest {
     private WriteOperation<Boolean> loggingUpdater;
 
     @Test
-    @SuppressWarnings({"PMD.JUnitTestsShouldIncludeAssert", "PMD.JUnitTestContainsTooManyAsserts"})
+    @SuppressWarnings({"PMD.UnitTestShouldIncludeAssert", "PMD.UnitTestContainsTooManyAsserts"})
     void testStartLoggingPrintsHistoryInCorrectOrder() throws IOException {
         final LogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
         final Handler validator = mock(Handler.class);
@@ -52,7 +52,7 @@ class HistoryHandlerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testLoggingAfterStart() throws IOException {
         final LogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
         final Handler validator = mock(Handler.class);
@@ -69,7 +69,7 @@ class HistoryHandlerTest {
         historyHandler.close();
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testStartLoggingPublishesHistory(@Mock final ResettableHandler internalHandler) throws IOException {
         final LogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
@@ -103,7 +103,6 @@ class HistoryHandlerTest {
                                                       @Mock final ResettableHandler internalHandler) {
         new HistoryHandler(initialDebuggingState, loggingUpdater, logQueue, internalHandler);
         verifyNoInteractions(loggingUpdater);
-
     }
 
     @Test

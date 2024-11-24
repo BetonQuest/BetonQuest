@@ -726,7 +726,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeVariable() throws Throwable {
         final String variable = "var";
         final double value = 43;
@@ -739,7 +739,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeVariableWithNumber() throws Throwable {
         final String variable = "var2";
         final double value = 44;
@@ -752,7 +752,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeVariableWithUnderscore() throws Throwable {
         final String variable = "var_able";
         final double value = 45;
@@ -765,7 +765,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeVariableWithBang() throws Throwable {
         final String variable = "var!bang";
         final double value = 47;
@@ -778,7 +778,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeVariableWithEquals() throws Throwable {
         final String variable = "var=qu";
         final double value = 48;
@@ -791,7 +791,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeVariableWithNumberSign() throws Throwable {
         final String variable = "var#rav";
         final double value = 49;
@@ -804,7 +804,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeVariableWithAmpersand() throws Throwable {
         final String variable = "var&more";
         final double value = 50;
@@ -817,7 +817,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeVariableWithApostrophe() throws Throwable {
         final String variable = "variable's";
         final double value = 51;
@@ -830,7 +830,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeVariableWithQuestionMark() throws Throwable {
         final String variable = "var?not";
         final double value = 52;
@@ -843,7 +843,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeVariableWithDot() throws Throwable {
         final String variable = "var.net";
         final double value = 53;
@@ -856,7 +856,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeVariableWithColon() throws Throwable {
         final String variable = "var:res";
         final double value = 54;
@@ -869,7 +869,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeVariableEndingWithNumber() throws Throwable {
         final String variable = "var123";
         final double value = 53;
@@ -882,7 +882,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeNegateVariable() throws Throwable {
         final String variable = "var";
         final String calculation = '-' + variable;
@@ -896,7 +896,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeNumberPlusVariable() throws Throwable {
         final String variable = "var";
         final String calculation = "5+" + variable;
@@ -911,7 +911,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeVariablePlusNumber() throws Throwable {
         final String variable = "var";
         final String calculation = variable + "+7";
@@ -926,7 +926,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeAdditionOfVariables() throws Throwable {
         final String firstVariable = "var1";
         final String secondVariable = "var2";
@@ -943,7 +943,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeVariableInParenthesis() throws Throwable {
         final String variable = "var";
         final String calculation = "(" + variable + ")";
@@ -957,7 +957,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeNumberThenVariableWithoutOperator() throws Throwable {
         final String variable = "var";
         final String calculation = "756.39" + variable;
@@ -971,7 +971,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeVariableThenParenthesisWithoutOperator() throws Throwable {
         final String variable = "var";
         final String calculation = variable + "(1+3)";
@@ -985,7 +985,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeParenthesisThenVariableWithoutOperator() throws Throwable {
         final String variable = "var";
         final String calculation = "(1+3)" + variable;
@@ -999,7 +999,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeCurlyBracesVariable() throws Throwable {
         final String variable = "var";
         final String calculation = "{" + variable + "}";
@@ -1013,7 +1013,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeNegatedCurlyBracesVariable() throws Throwable {
         final String variable = "var";
         final String calculation = "-{" + variable + "}";
@@ -1028,7 +1028,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeCurlyBracesVariableWithEscapedBackslash() throws Throwable {
         final String variable = "back\\slash";
         final String calculation = "{back\\\\slash}";
@@ -1042,7 +1042,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeCurlyBracesVariableWithEscapedClosingBrace() throws Throwable {
         final String variable = "closing{curly}brace";
         final String calculation = "{closing{curly\\}brace}";
@@ -1056,7 +1056,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeCurlyBracesVariableContainingMathExpression() throws Throwable {
         final String variable = "math:5+(7-9*var+|[|-3|+(8)]|)";
         final String calculation = "{" + variable + "}";
@@ -1070,7 +1070,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeCurlyBracesVariableContainingDoubleEscapedBackslash() throws Throwable {
         final String variable = "\\\\";
         final String calculation = "{\\\\\\\\}";
@@ -1084,7 +1084,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeMissingOpeningCurlyBrace() throws Throwable {
         final String variable = "invalid";
         final String calculation = variable + "}";
@@ -1097,7 +1097,7 @@ class TokenizerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testTokenizeMissingClosingCurlyBrace() throws Throwable {
         final String variable = "invalid";
         final String calculation = "{" + variable;

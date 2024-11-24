@@ -36,7 +36,7 @@ class IngameNotificationSenderTest {
         }
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testSendNotifyHandlesError(final BetonQuestLogger logger, @Mock final QuestPackage questPackage) {
         final NotificationSender sender = new IngameNotificationSender(logger, questPackage, "full.id", NotificationLevel.INFO, "message-name");

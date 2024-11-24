@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class DatabaseSaverStaticEventTest {
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testAddRecord(@Mock final Saver saver) throws QuestRuntimeException {
         final Saver.Record record = new Saver.Record(UpdateType.DELETE_GLOBAL_TAGS);
@@ -30,7 +30,7 @@ class DatabaseSaverStaticEventTest {
         verifyNoMoreInteractions(saver);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testRecordSupplierIsCalledEveryTime(@Mock final Saver saver) throws QuestRuntimeException {
         final Saver.Record firstRecord = new Saver.Record(UpdateType.DELETE_GLOBAL_TAGS);

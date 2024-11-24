@@ -27,7 +27,7 @@ class UpdaterTest {
     @Mock
     private BetonQuestLogger logger;
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testUpdateAvailable() {
         final Version version = new Version("2.0.0-DEV-3");
@@ -51,7 +51,7 @@ class UpdaterTest {
         verifyNoMoreInteractions(logger);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testNoUpdateAvailable() {
         final Version version = new Version("2.0.0-DEV-3");
@@ -73,7 +73,7 @@ class UpdaterTest {
         verifyNoMoreInteractions(logger);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testUpdate() {
         final Version version = new Version("2.0.0-DEV-3");
@@ -117,7 +117,7 @@ class UpdaterTest {
         verifyNoMoreInteractions(logger);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testUpdateAutomatic() {
         final Version version = new Version("2.0.0-DEV-3");
@@ -157,7 +157,7 @@ class UpdaterTest {
         verifyNoMoreInteractions(logger);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testUpdateAvailableSearchAgain() {
         final Version version = new Version("2.0.0-DEV-3");
@@ -189,7 +189,7 @@ class UpdaterTest {
         verifyNoMoreInteractions(logger);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testUpdateWithInvalidUrl() {
         final Version version = new Version("2.0.0-DEV-3");
@@ -218,7 +218,7 @@ class UpdaterTest {
         verifyNoMoreInteractions(logger);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testUpdateSearchAgain() {
         final Version version = new Version("2.0.0-DEV-3");
@@ -253,7 +253,7 @@ class UpdaterTest {
         verifyNoMoreInteractions(logger);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testUpdateWithoutAvailable() {
         final Version version = new Version("2.0.0-DEV-3");
@@ -284,7 +284,7 @@ class UpdaterTest {
         verifyNoMoreInteractions(logger);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testUpdateAlreadyDownloaded() {
         final Version version = new Version("2.0.0-DEV-3");
@@ -316,7 +316,7 @@ class UpdaterTest {
         verifyNoMoreInteractions(logger);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testUpdateWithDisabled() {
         final Version version = new Version("2.0.0-DEV-3");

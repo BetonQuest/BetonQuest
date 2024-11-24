@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * This class tests edge cases of the {@link FallbackConfiguration}.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
+@SuppressWarnings("PMD.UnitTestAssertionsShouldIncludeMessage")
 class FallbackConfigurationEdgeCaseTest {
 
     @Test

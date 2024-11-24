@@ -26,7 +26,7 @@ class TempFileDownloadSourceTest {
      */
     private static final Path UPDATE_FILE_PATH = UPDATE_FILE.toPath();
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testDownloadFile(@TempDir final File tempDir) throws IOException {
         final File file = new File(tempDir, "BetonQuest.jar");

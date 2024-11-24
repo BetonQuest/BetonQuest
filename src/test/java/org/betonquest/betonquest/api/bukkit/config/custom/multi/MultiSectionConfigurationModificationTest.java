@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * This is a test for modifications of the {@link MultiSectionConfiguration}.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnitTestContainsTooManyAsserts", "PMD.JUnit5TestShouldBePackagePrivate"})
+@SuppressWarnings({"PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.UnitTestContainsTooManyAsserts", "PMD.JUnit5TestShouldBePackagePrivate"})
 public class MultiSectionConfigurationModificationTest {
     /**
      * {@link MultiConfiguration} part 1.

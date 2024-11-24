@@ -119,7 +119,7 @@ public class EntityHider implements Listener {
      * @param visible  - TRUE if the entity should be made visible, FALSE if not.
      * @return TRUE if the entity was visible before this method call, FALSE otherwise.
      */
-    @SuppressWarnings({"PMD.LinguisticNaming", "PMD.TooFewBranchesForASwitchStatement"})
+    @SuppressWarnings({"PMD.LinguisticNaming", "PMD.TooFewBranchesForSwitch"})
     protected boolean setVisibility(final OnlineProfile observer, final int entityID, final boolean visible) {
         return switch (policy) {
             case BLACKLIST ->

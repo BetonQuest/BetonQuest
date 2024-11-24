@@ -20,7 +20,7 @@ class NexusReleaseAndDevelopmentSourceTest {
      */
     public static final String API_URL = "https://nexus.betonquest.org";
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void returns_correct_release_versions_with_url() throws IOException {
         final Path filePathShadedPage1 = Path.of("src/test/resources/modules/web/updater/nexusShadedPageRelease1.json");
@@ -48,7 +48,7 @@ class NexusReleaseAndDevelopmentSourceTest {
                 "The download URL is not correct");
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void returns_correct_development_versions_with_url() throws IOException {
         final Path filePathShadedPage1 = Path.of("src/test/resources/modules/web/updater/nexusShadedPageDevelopment1.json");

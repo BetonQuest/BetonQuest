@@ -35,7 +35,7 @@ public class CronScheduleBaseTest extends ScheduleBaseTest {
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testScheduleValidLoad() throws InstructionParseException {
         final CronSchedule schedule = createSchedule();
         assertEquals("0 22 * * *", schedule.getTime(), "Returned time should be correct");

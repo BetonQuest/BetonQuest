@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests the {@link FallbackConfigurationSection} class.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate"})
+@SuppressWarnings({"PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate"})
 public class FallbackConfigurationEmptyOriginalTest extends FallbackConfigurationTest {
     @Override
     public Configuration getConfig() throws InvalidConfigurationException {
@@ -22,7 +22,7 @@ public class FallbackConfigurationEmptyOriginalTest extends FallbackConfiguratio
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testSetDefaults() {
         final Configuration defaultSection = new MemoryConfiguration();
         defaultSection.set("default.one", 1);
