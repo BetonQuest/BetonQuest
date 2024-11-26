@@ -434,6 +434,11 @@
       <artifactId>HikariCP</artifactId>
       <version>5.1.0</version>
     </dependency>
+    <dependency>
+      <groupId>com.martiansoftware</groupId>
+      <artifactId>jsap</artifactId>
+      <version>2.1</version>
+    </dependency>
 
     <!-- only dependencies from maven central that are for testing -->
     <dependency>
@@ -665,6 +670,7 @@
                   <include>io.papermc:paperlib</include>
                   <include>com.cronutils:cron-utils</include>
                   <include>com.zaxxer</include>
+                  <include>com.martiansoftware</include>
                 </includes>
               </artifactSet>
               <filters>
@@ -735,6 +741,10 @@
                 <relocation>
                   <pattern>com.zaxxer.hikari</pattern>
                   <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.zaxxer.hikari</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.martiansoftware</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.martiansoftware</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>

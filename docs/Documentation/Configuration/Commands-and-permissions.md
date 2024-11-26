@@ -170,26 +170,77 @@ of a folder. Appending a level allows you to select which types of messages are 
 shows all `WARNINGS` and `ERRORS` from the log. If you want to see more information use the levels `info` or `debug`.
 Beware though, the debug level might be spammy.
 
-
 ### Download from GitHub: `download`
-The download command (`/q download`) can be used to download tutorial quests & quest templates from
-the [Quest-Tutorials](https://github.com/BetonQuest/Quest-Tutorials) repository. For
-example `/q download BetonQuest/Quest-Tutorials refs/tags/v2.0.0 QuestPackages /default` will download the `default` tutorial quest and
-place it in the same folder. The first argument (`gitHubNamespace`) is the github repository in the format user/repo or
-organisation/repo. Before you can download from a repo you need to add the namespace to
-the [`repo_whitelist`](Configuration.md#quest-downloader) in the BetonQuest config. This is a security measure that
-prevents users from screwing up all your quests or downloading malicious files if they get the permission to run this
-command by accident. The second argument (`ref`) is either a commit SHA or a git reference to a specific commit that
-should be downloaded. For a branch (eg. `main`)  `refs/heads/main` works. For a tag it is `refs/tags/tagname`. Pull request references (
-eg. `refs/pull/1731/head`) are also possible but must be enabled in the [config](Configuration.md#quest-downloader).
-Keep in mind that anyone can open a pullrequest so use this very carefully. Third argument (`type`) is
-either `QuestPackages` or `QuestTemplates` depending on what type you want to download. As 4th argument (`sourcePath`)
-you define what folders to download from the repo. It is appended to the type to get the full Path in the repo.
-Optionally you may add a 5th parameter:
-`targetPath` is where in your BetonQuest folder the files shall be put, relative to either the QuestPackages or
-QuestTemplates folder defined as `type`. If you want to place some QuestTemplates inside `QuestPackages` you can
-do this by adding `../QuestTemplates/` to the beginning of the target path.  
-Additionally you can add tags to the end of the command to control behavior of the downloader:
-If `recursive` is added [nested packages](../Scripting/Packages-&-Templates.md#__tabbed_1_3) or templates will be downloaded while by default they
-will be skipped. The tag `overwrite` defines that already existing files may be overwritten. By default, an error is
-logged and the download is stopped.
+The download command (`/q download`) can be used to download tutorial quests & quest templates from GitHub repositories.
+!!! example
+    To download the `default` tutorial quest from the [Quest-Tutorials](https://github.com/BetonQuest/Quest-Tutorials)
+    repository and place it in the local package `default` you can run:
+    ```
+    /q download BetonQuest/Quest-Tutorials main QuestPackages /default
+    ```
+
+#### Synopsis
+```
+/q download [options] <gitHubRepository> <gitBranchOrReference>
+```
+
+#### Description
+`gitHubRepository` is the GitHub repository name in the format `<namespace>/<project>` where `namespace` is either a
+GitHub user or organization. Repositories that can be downloaded from must be whitelisted in the
+[configuration](Configuration.md#quest-downloader) first, read more about this in the
+[security consideration](#security-considerations) section.
+
+`gitBranchOrReference` is either the git branch or a fully qualified git reference that should be downloaded. Thus, to
+download from a branch (e.g. `main`) you can either use the branch name directly (e.g. `main`) or use a git reference
+(e.g. `refs/head/main`). For all other git objects you need to use a reference, e.g. to download from tag `v1.2.3` use
+`refs/tags/1.2.3`. Additionally, pull requests (e.g. `refs/pull/1731/head`) are also supported but must be enabled in
+the [configuration](Configuration.md#quest-downloader), read more about this in the
+[security consideration](#security-considerations) section.
+
+#### Options
+`-T`, `--download-template` download template files; if either both or none of this option and `-T` is given then both
+templates and packages will be downloaded
+
+`-P`, `--download-package` download package files; if either both or none of this option and `-P` is given then both
+templates and packages will be downloaded
+
+`-R`, `--raw` do not expect the folders `QuestPackages` and `QuestTemplates` at the source and do not give them special
+meaning even if they are present; exactly one of `-T` or `-P` must be present as well when using this option to define
+where to put the downloaded files
+
+`-S`, `--structured` expect at least one of the folders `QuestPackages` and `QuestTemplates` to be present at the source
+and use them like they are used in the BetonQuest plugin folder
+
+`-s <path>`, `--source=<path>` source path to start the package search from; the path is relative to the git repository
+root that is being downloaded from
+
+`-b <basePackage>`, `--base-package=<basePackage>` base package within the quest sources to resolve packages and files;
+the base path will not be mirrored locally
+
+`-p <package>`, `--package=<package>` select the packages that should be downloaded; this option can be provided
+multiple times to download more than one package at once
+
+`-F <file>`, `--file=<file>` select the files that should be downloaded; this option can be provided multiple times to
+download more than one file at once
+
+`-l <localBasePackage>`, `--local=<localBasePackage>` local base package to put the downloaded packages and files into
+
+`-r`, `--recursive` also include [nested packages](../Scripting/Packages-&-Templates.md#__tabbed_1_3) in the download
+
+`-f`, `--force` allow overwriting local files; if not set an error will be logged and the download will be aborted
+
+#### Layout auto-detection
+By default, the download command will try to detect if the repository at the given source location is structured like
+the BetonQuest plugin folder. This is done by checking if there is a folder called `QuestPackages` or `QuestTemplates`,
+if any one of them is present then the download command will teat the quests sources like the BetonQuest plugin folder
+and is able to download both templates and packages at the same time. Otherwise, it will be treated as raw and requires
+the definition of what kind of files they are so that they can be put into the correct local directory, this can be done
+by using either the `-P` or the `-T` option.
+
+#### Security considerations
+To prevent the download of arbitrary quest files you need to add repositories you want to be able to download from to a
+whitelist. This is a security measure to prevent anyone from screwing up all your quests or downloading malicious files
+even if they have the permission to run this command.
+
+Also note that the download of pull requests needs to be manually enabled in the config if required as anyone could open
+a pull request to any of the whitelisted repositories and thus circumvent the whitelisting measure described above.
