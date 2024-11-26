@@ -12,28 +12,28 @@ Now go ahead and make your changes. Take a look at the sub-pages of this page fo
 Then come back here to verify, commit and finally submit your changes.
 
 ## Maven verify
-After you made changes, you should also run `mvn verify` to check our requirements.
+After you made changes, you should also run `./mvnw verify` to check our requirements.
 If you have problems solving issues with our requirements there is also a page
 [Checking Requirements](Checking-Requirements.md), that you will probably read later.
 
 ??? success "Improve Build Speed"
-    If `mvn verify` takes too long, and you just want a jar, you want to build without checking our requirements.
-    You can execute `mvn package` instead of `mvn verify` for that.
-    But don't forget, you need to successfully run `mvn verify`, before you make a pull request on GitHub!
+    If `./mvnw verify` takes too long, and you just want a jar, you want to build without checking our requirements.
+    You can execute `./mvnw package` instead of `./mvnw verify` for that.
+    But don't forget, you need to successfully run `./mvnw verify`, before you make a pull request on GitHub!
 
 ### Maven profiles
-There are some Maven profiles that you can use to change which tests are executed upon `mvn verify` and `mvn package`.
+There are some Maven profiles that you can use to change which tests are executed upon `./mvnw verify` and `./mvnw package`.
 Some profiles can be used to speed up the build time.
-However, you should always run `mvn verify` with no enabled profiles before making a pull request on GitHub.
+However, you should always run `./mvnw verify` with no enabled profiles before making a pull request on GitHub.
 
 You can use the `Test-None` profile to speed up the build process by skipping all tests.
 This can be useful when rapidly developing and testing changes in game. 
-Run `mvn verify -PTest-None` or `mvn package -PTest-None` or activate the profile in your IDE's Maven tab on the right side.
+Run `./mvnw verify -PTest-None` or `./mvnw package -PTest-None` or activate the profile in your IDE's Maven tab on the right side.
 
 The `Test-All` profile will run all tests, even the ones that are normally skipped.
 This is not really recommended, but if you did lots of big changes that
 may affect the whole project, you can use this profile to make sure that everything is working.
-kRun `mvn verify -PTest-All`, `mvn package -PTest-All` or activate the profile in your IDE's Maven tab on the right side.
+kRun `./mvnw verify -PTest-All`, `./mvnw package -PTest-All` or activate the profile in your IDE's Maven tab on the right side.
 
 There are more profiles, but you don't need to know them in most cases.
 
@@ -47,7 +47,7 @@ There are more profiles, but you don't need to know them in most cases.
 
 ## Commit
 
-After you made changes, don't forget to run `mvn verify` again.
+After you made changes, don't forget to run `./mvnw verify` again.
 You should also add a [changelog](../Maintaining-the-Changelog.md) entry at this point.
 
 You need to commit your changes once they are done.

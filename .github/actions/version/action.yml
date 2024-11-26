@@ -50,7 +50,7 @@ runs:
     - name: Read revision version from pom.xml
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
-        REVISION_VERSION="$(mvn help:evaluate -Dexpression=revision -q -DforceStdout)"
+        REVISION_VERSION="$(./mvnw help:evaluate -Dexpression=revision -q -DforceStdout)"
         echo "REVISION_VERSION=$REVISION_VERSION" >> $GITHUB_ENV
     - name: Generate build number for Development Build
       if: "env.VERSION_TYPE == 'development'"

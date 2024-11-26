@@ -51,7 +51,7 @@ jobs:
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           if [ $VERSION_TYPE == 'release' ]; then CHANGELIST=-Dchangelist=; fi
-          mvn ${CHANGELIST-} -P Test-All -B verify
+          ./mvnw ${CHANGELIST-} -P Test-All -B verify
           git diff > target/artifacts/changes.patch
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -140,7 +140,7 @@ jobs:
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           if [ $VERSION_TYPE == 'release' ]; then CHANGELIST=-Dchangelist=; fi
-          mvn ${CHANGELIST-} -P Skip-Verification,Test-None -B deploy | tee maven-deploy.log
+          ./mvnw ${CHANGELIST-} -P Skip-Verification,Test-None -B deploy | tee maven-deploy.log
         env:
           REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
           MAVEN_SERVER_USERNAME: ${{ secrets.MAVEN_SERVER_USERNAME }}

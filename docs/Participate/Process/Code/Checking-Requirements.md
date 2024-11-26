@@ -2,11 +2,11 @@
 icon: material/magnify
 ---
 ###Fulfil the Contributing Requirements
-Run `mvn verify` before [Submitting Changes](../Submitting-Changes.md) to check if your change
+Run `./mvnw verify` before [Submitting Changes](../Submitting-Changes.md) to check if your change
 meets the project's requirements regarding code style and quality.
 GitHub Actions (automated code check on GitHub) will also verify these requirements when you open the pull request.
 
-If any requirements are not met, `mvn verify` will fail with this log message:
+If any requirements are not met, `./mvnw verify` will fail with this log message:
 ````
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD FAILURE
@@ -76,5 +76,5 @@ IntelliJ may also show something like `Failed to execute goal`. Here's a guide h
         ````
         [ERROR] src\main\java\org\betonquest\betonquest\BetonQuest.java@284,54: Delete 5 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.linters.TextLinter
         ````
-        We recommend running `mvn editorconfig:format` or use an IDE that support EditorConfig.
+        We recommend running `./mvnw editorconfig:format` or use an IDE that support EditorConfig.
         
