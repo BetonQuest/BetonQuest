@@ -84,12 +84,12 @@ public class ActionObjective extends Objective implements Listener {
         range = instruction.getVarNum(instruction.getOptional("range", "0"));
         cancel = instruction.hasArgument("cancel");
         final String handString = instruction.getOptional("hand");
-        if (handString == null || ANY.equalsIgnoreCase(handString)) {
-            slot = null;
-        } else if (handString.equalsIgnoreCase(EquipmentSlot.HAND.toString())) {
+        if (handString == null || handString.equalsIgnoreCase(EquipmentSlot.HAND.toString())) {
             slot = EquipmentSlot.HAND;
         } else if (handString.equalsIgnoreCase(EquipmentSlot.OFF_HAND.toString())) {
             slot = EquipmentSlot.OFF_HAND;
+        } else if (ANY.equalsIgnoreCase(handString)) {
+            slot = null;
         } else {
             throw new InstructionParseException("Invalid hand value: " + handString);
         }
