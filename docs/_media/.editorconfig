@@ -1,0 +1,4 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+[*]
+end_of_line = unset
