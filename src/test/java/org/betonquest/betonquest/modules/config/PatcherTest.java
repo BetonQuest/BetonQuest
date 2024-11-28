@@ -47,7 +47,7 @@ class PatcherTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     void testHasUpdate() throws InvalidConfigurationException {
         final YamlConfiguration configBeforeTest = new YamlConfiguration();
         configBeforeTest.loadFromString(config.saveToString());
@@ -59,7 +59,7 @@ class PatcherTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     void testHasNoUpdateForNewerConfigs() throws InvalidConfigurationException {
         final YamlConfiguration configFromTheFuture = new YamlConfiguration();
         configFromTheFuture.loadFromString("""
@@ -85,7 +85,7 @@ class PatcherTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     void testAppliesUpdates() throws InvalidConfigurationException {
         final YamlConfiguration expectedConfig = new YamlConfiguration();
         expectedConfig.loadFromString(config.saveToString());
@@ -113,7 +113,7 @@ class PatcherTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testPatchVersionNumberTooShort() throws InvalidConfigurationException {
         final YamlConfiguration invalidConfig = createConfigFromString("""
                 "1.0":
@@ -128,7 +128,7 @@ class PatcherTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testPatchMalformed() throws InvalidConfigurationException {
         final YamlConfiguration invalidConfig = createConfigFromString("""
                 "1.0": Nonsense
@@ -140,7 +140,7 @@ class PatcherTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testPatchIsNonsense() throws InvalidConfigurationException {
         final String patch = """
                 1:
@@ -154,7 +154,7 @@ class PatcherTest {
         verifyNoMoreInteractions(logger);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testUnknownTransformerType() throws InvalidConfigurationException {
         final String patch = """
@@ -207,7 +207,7 @@ class PatcherTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     void testConfigFromResourceUpdate() throws InvalidConfigurationException {
         final YamlConfiguration emptyConfig = createConfigFromString("""
                         configVersion: ""

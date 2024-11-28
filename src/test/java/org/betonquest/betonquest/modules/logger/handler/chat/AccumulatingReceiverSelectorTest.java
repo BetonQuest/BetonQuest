@@ -14,7 +14,7 @@ import static org.mockito.Mockito.*;
 class AccumulatingReceiverSelectorTest {
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     void testAccumulatingReceiverSelector() {
         final UUID uuid = UUID.randomUUID();
 
@@ -29,6 +29,5 @@ class AccumulatingReceiverSelectorTest {
         assertEquals(uuid, receivers.iterator().next(), "The uuid does not match the expected uuid");
         receiverSelector.removeSelector(selector);
         assertEquals(0, receiverSelector.findReceivers(null).size(), "There should be no receivers");
-
     }
 }

@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class GitHubReleaseSourceTest {
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void returns_correct_release_versions_with_url() throws IOException {
         final Path filePath = Path.of("src/test/resources/modules/web/updater/github.json");

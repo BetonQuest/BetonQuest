@@ -59,7 +59,7 @@ class OnlineProfileGroupStaticEventAdapterTest {
         verifyNoMoreInteractions(internalEvent);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testSupplierIsCalledEveryTime() throws QuestRuntimeException {
         final List<OnlineProfile> firstExecution = List.of(createRandomProfile(), createRandomProfile());
@@ -80,7 +80,7 @@ class OnlineProfileGroupStaticEventAdapterTest {
         verifyExecutedOnceForPlayers(secondExecution);
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testAdapterFailsOnFirstEventFailure() throws QuestRuntimeException {
         final List<OnlineProfile> playerList = List.of(createRandomProfile(), createRandomProfile(), createRandomProfile());

@@ -14,7 +14,7 @@ import static org.mockito.Mockito.*;
 /**
  * A test for the {@link ChatFormatter}.
  */
-@SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+@SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
 class ChatFormatterTest {
     /**
      * The message to send.

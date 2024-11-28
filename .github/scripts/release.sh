@@ -57,7 +57,7 @@ checkGit() {
 }
 
 checkMaven() {
-  if ! mvn --version &> /dev/null
+  if ! ./mvnw --version &> /dev/null
   then
     printNewSection
     echo 'Maven is not installed or it is not added to the path!'
@@ -135,7 +135,7 @@ version() {
 }
 
 versionCurrent() {
-  CURRENT_VERSION="$(mvn help:evaluate -Dexpression=revision -q -DforceStdout)"
+  CURRENT_VERSION="$(./mvnw help:evaluate -Dexpression=revision -q -DforceStdout)"
   echo "    Current: $CURRENT_VERSION"
 }
 
@@ -244,7 +244,7 @@ setupPublish() {
   echo 'Setup'
 
   echo '    Updating pom.xml file...'
-  mvn versions:set-property -DgenerateBackupPoms=false -Dproperty=revision -DnewVersion="$NEW_VERSION" 2>&1 > /dev/null | sed 's/^/        /'
+  ./mvnw versions:set-property -DgenerateBackupPoms=false -Dproperty=revision -DnewVersion="$NEW_VERSION" 2>&1 > /dev/null | sed 's/^/        /'
 
   echo '    Updating CHANGELOG.md file...'
   NEW_CHANGELOG="## \[Unreleased\] - \${maven.build.timestamp}\n### Added\n### Changed\n### Deprecated\n### Removed\n### Fixed\n### Security\n"

@@ -17,10 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * This is a test for the {@link MultiSectionConfiguration} and it's thrown {@link InvalidSubConfigurationException}s.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
+@SuppressWarnings("PMD.UnitTestAssertionsShouldIncludeMessage")
 class MultiSectionConfigurationInvalidSubConfigurationExceptionTest {
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testInvalidPathSeparator() {
         final Configuration configuration = new MemoryConfiguration();
@@ -37,7 +37,7 @@ class MultiSectionConfigurationInvalidSubConfigurationExceptionTest {
         fail("Expected an Exception!");
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testNoRoot() {
         try {

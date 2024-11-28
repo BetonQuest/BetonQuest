@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * This test should only ensure, that the {@link Version} does not break anything or select wrong versions
  * and push them into the production server.
  */
-@SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+@SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
 class VersionComparatorTest {
     /**
      * PRE release qualifier

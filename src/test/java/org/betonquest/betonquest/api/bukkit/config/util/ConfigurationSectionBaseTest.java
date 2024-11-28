@@ -36,7 +36,7 @@ import static org.mockito.Mockito.*;
  * You only need to override methods with behaviours that differ from the default one.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.GodClass", "PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate",
+@SuppressWarnings({"PMD.GodClass", "PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate",
         "PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount"})
 public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<ConfigurationSection> implements ConfigurationSectionTestInterface {
 
@@ -47,7 +47,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testGetKeysDeepFalse() {
         assertEquals("[boolean, booleanList, characterList, childSection, color, double, doubleList, existingSet, get, integer, integerList, item, list, location, long, mapList, object, offlinePlayer, section, string, stringList, vector]",
                 config.getKeys(false).stream().sorted().toList().toString());
@@ -59,7 +59,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testGetKeysDeepTrue() {
         assertEquals("[boolean, booleanList, characterList, childSection, childSection.nestedChildSection, childSection.nestedChildSection.key, color, double, doubleList, existingSet, get, integer, integerList, item, list, location, long, mapList, object, offlinePlayer, section, section.key, string, stringList, vector]",
                 config.getKeys(true).stream().sorted().toList().toString());
@@ -181,7 +181,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testGetCurrentPath() {
         assertEquals("", config.getCurrentPath());
         final ConfigurationSection nestedChild = config.getConfigurationSection("childSection.nestedChildSection");
@@ -191,7 +191,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testGetName() {
         assertEquals("", config.getName());
         final ConfigurationSection nestedChild = config.getConfigurationSection("childSection.nestedChildSection");
@@ -201,7 +201,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testGetRoot() {
         final ConfigurationSection root = config.getRoot();
         assertNotNull(root);
@@ -216,7 +216,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testGetParent() {
         assertNull(config.getParent());
 
@@ -269,7 +269,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testSetSectionOverwritingExisting() {
         assertTrue(config.isSet("childSection"));
         final MemoryConfiguration configuration = new MemoryConfiguration();
@@ -297,7 +297,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testCreateSectionOnExistingConfigPath() {
         final ConfigurationSection section = config.createSection("createdSectionExist");
         section.set("key", "created value");
@@ -313,7 +313,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testCreateSectionWithValues() {
         final Map<String, Object> sectionMap = new HashMap<>();
         sectionMap.put("one", 1);
@@ -326,7 +326,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testCreateSectionWithValuesOnExistingConfigPath() {
         final Map<String, Object> sectionMap1 = new HashMap<>();
         sectionMap1.put("one", 1);
@@ -830,7 +830,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testGetItemStack() {
         final ItemStack configItem = config.getItemStack("item");
         assertNotNull(configItem);
@@ -846,7 +846,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testGetItemStackWithDefault() {
         final ItemStack itemDefault = mock(ItemStack.class);
         final ItemStack configItem = config.getItemStack("item", itemDefault);
@@ -992,7 +992,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testAddDefault() {
         config.addDefault("default.add", "value");
         assertEquals("value", config.getString("default.add"));
@@ -1000,7 +1000,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testAddDefaultOnExistingConfigPath() {
         config.addDefault("default.override", "first");
         config.addDefault("default.override", "second");

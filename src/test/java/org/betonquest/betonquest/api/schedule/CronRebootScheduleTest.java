@@ -24,7 +24,7 @@ public class CronRebootScheduleTest extends CronScheduleBaseTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     void testRebootScheduleValidLoad() throws InstructionParseException {
         when(section.getString("time")).thenReturn("@reboot");
         final CronSchedule schedule = createSchedule();

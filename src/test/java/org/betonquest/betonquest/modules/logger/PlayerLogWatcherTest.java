@@ -92,7 +92,7 @@ class PlayerLogWatcherTest {
         verify(registry).removeSelector(any());
     }
 
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testOverwritingAFilterUnregistersTheOldSelector(@Mock final ReceiverSelectorRegistry registry) {
         final PlayerLogWatcher watcher = new PlayerLogWatcher(registry);

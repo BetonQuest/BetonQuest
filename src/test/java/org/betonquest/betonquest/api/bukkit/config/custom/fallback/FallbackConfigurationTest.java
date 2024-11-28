@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests the {@link FallbackConfiguration} class.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.TestClassWithoutTestCases"})
+@SuppressWarnings({"PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.TestClassWithoutTestCases"})
 public class FallbackConfigurationTest extends ConfigurationBaseTest {
     /**
      * The fallback {@link Configuration} that should not be modified.
@@ -65,5 +65,4 @@ public class FallbackConfigurationTest extends ConfigurationBaseTest {
         final ConfigurationSection defaultSection = fallback.getDefaultSection();
         assertEquals(valuesDefault, defaultSection == null ? null : defaultSection.getValues(true));
     }
-
 }

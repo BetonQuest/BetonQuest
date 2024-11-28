@@ -17,7 +17,7 @@ jobs:
           JAVA_OVERRIDE_SETTINGS: 'false'
       - name: Build with Maven
         run: |
-          mvn -P Test-All -B package -DskipProjectSettings=true
+          ./mvnw -P Test-All -B package -DskipProjectSettings=true
 
   docs:
     name: Build Docs

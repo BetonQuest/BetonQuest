@@ -43,7 +43,6 @@ public class PointVariable extends Variable {
             } catch (final ObjectNotFoundException e) {
                 log.warn(instruction.getPackage(), e.getMessage());
             }
-
         } else if (instruction.size() == 3) {
             if (category.contains("*")) {
                 category = category.replace('*', '.');
@@ -75,6 +74,7 @@ public class PointVariable extends Variable {
         return getValue(BetonQuest.getInstance().getPlayerData(profile).getPoints());
     }
 
+    @SuppressWarnings("PMD.TooFewBranchesForSwitch")
     protected String getValue(final List<Point> points) {
         Point point = null;
         for (final Point p : points) {
@@ -96,5 +96,4 @@ public class PointVariable extends Variable {
     protected enum Type {
         AMOUNT, LEFT
     }
-
 }

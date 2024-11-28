@@ -38,7 +38,7 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
      * @throws InstructionParseException if parsing the schedule failed, test should fail
      */
     @Test
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testScheduleValidLoad() throws InstructionParseException {
         final Schedule schedule = createSchedule();
         assertEquals(scheduleID, schedule.getId(), "Schedule should return the id it was constructed with");

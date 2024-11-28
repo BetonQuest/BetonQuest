@@ -30,11 +30,11 @@ runs:
       if: "env.VERSION_TYPE == 'development'"
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
-        mvn versions:set-property -DgenerateBackupPoms=false -Dproperty=betonquest.version -DnewVersion="$VERSION"
+        ./mvnw versions:set-property -DgenerateBackupPoms=false -Dproperty=betonquest.version -DnewVersion="$VERSION"
       env:
         VERSION: ${{ inputs.VERSION }}
         VERSION_TYPE: ${{ inputs.VERSION_TYPE }}
     - name: Activate lf line ending check in editorconfig
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
-        sed -i "s~#end_of_line = ~end_of_line = ~g" ./.editorconfig
+        sed -i "s~\[\*\]~[*]\nend_of_line = lf~g" ./.editorconfig

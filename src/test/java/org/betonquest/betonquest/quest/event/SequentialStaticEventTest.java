@@ -30,7 +30,7 @@ class SequentialStaticEventTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testExecutesMultipleEvents(@Mock final StaticEvent first, @Mock final StaticEvent second) throws QuestRuntimeException {
         final StaticEvent event = new SequentialStaticEvent(first, second);
 
