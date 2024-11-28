@@ -4349,10 +4349,10 @@
   <h1>Checking Requirements</h1>
 
 <h3 id="fulfil-the-contributing-requirements">Fulfil the Contributing Requirements<a class="headerlink" href="#fulfil-the-contributing-requirements" title="Permanent link">🔗</a></h3>
-<p>Run <code>mvn verify</code> before <a href="../../Submitting-Changes/">Submitting Changes</a> to check if your change
+<p>Run <code>./mvnw verify</code> before <a href="../../Submitting-Changes/">Submitting Changes</a> to check if your change
 meets the project's requirements regarding code style and quality.
 GitHub Actions (automated code check on GitHub) will also verify these requirements when you open the pull request.</p>
-<p>If any requirements are not met, <code>mvn verify</code> will fail with this log message:
+<p>If any requirements are not met, <code>./mvnw verify</code> will fail with this log message:
 <div class="highlight"><pre><span></span><code>[INFO] ------------------------------------------------------------------------
 [INFO] BUILD FAILURE
 [INFO] ------------------------------------------------------------------------
@@ -4418,7 +4418,7 @@ EditorConfig violations look like this:
 If your log contains such a message, it will also contain another message that looks like this if you want to solve it manual:
 <div class="highlight"><pre><span></span><code>[ERROR] src\main\java\org\betonquest\betonquest\BetonQuest.java@284,54: Delete 5 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.linters.TextLinter
 </code></pre></div>
-We recommend running <code>mvn editorconfig:format</code> or use an IDE that support EditorConfig.</p>
+We recommend running <code>./mvnw editorconfig:format</code> or use an IDE that support EditorConfig.</p>
 </div>
 </div>
 </div>

@@ -4558,26 +4558,26 @@ fix a bug or make other changes.</p>
 <p>Now go ahead and make your changes. Take a look at the sub-pages of this page for more information about specific topics.
 Then come back here to verify, commit and finally submit your changes.</p>
 <h2 id="maven-verify">Maven verify<a class="headerlink" href="#maven-verify" title="Permanent link">🔗</a></h2>
-<p>After you made changes, you should also run <code>mvn verify</code> to check our requirements.
+<p>After you made changes, you should also run <code>./mvnw verify</code> to check our requirements.
 If you have problems solving issues with our requirements there is also a page
 <a href="../Checking-Requirements/">Checking Requirements</a>, that you will probably read later.</p>
 <details class="success">
 <summary>Improve Build Speed</summary>
-<p>If <code>mvn verify</code> takes too long, and you just want a jar, you want to build without checking our requirements.
-You can execute <code>mvn package</code> instead of <code>mvn verify</code> for that.
-But don't forget, you need to successfully run <code>mvn verify</code>, before you make a pull request on GitHub!</p>
+<p>If <code>./mvnw verify</code> takes too long, and you just want a jar, you want to build without checking our requirements.
+You can execute <code>./mvnw package</code> instead of <code>./mvnw verify</code> for that.
+But don't forget, you need to successfully run <code>./mvnw verify</code>, before you make a pull request on GitHub!</p>
 </details>
 <h3 id="maven-profiles">Maven profiles<a class="headerlink" href="#maven-profiles" title="Permanent link">🔗</a></h3>
-<p>There are some Maven profiles that you can use to change which tests are executed upon <code>mvn verify</code> and <code>mvn package</code>.
+<p>There are some Maven profiles that you can use to change which tests are executed upon <code>./mvnw verify</code> and <code>./mvnw package</code>.
 Some profiles can be used to speed up the build time.
-However, you should always run <code>mvn verify</code> with no enabled profiles before making a pull request on GitHub.</p>
+However, you should always run <code>./mvnw verify</code> with no enabled profiles before making a pull request on GitHub.</p>
 <p>You can use the <code>Test-None</code> profile to speed up the build process by skipping all tests.
 This can be useful when rapidly developing and testing changes in game. 
-Run <code>mvn verify -PTest-None</code> or <code>mvn package -PTest-None</code> or activate the profile in your IDE's Maven tab on the right side.</p>
+Run <code>./mvnw verify -PTest-None</code> or <code>./mvnw package -PTest-None</code> or activate the profile in your IDE's Maven tab on the right side.</p>
 <p>The <code>Test-All</code> profile will run all tests, even the ones that are normally skipped.
 This is not really recommended, but if you did lots of big changes that
 may affect the whole project, you can use this profile to make sure that everything is working.
-kRun <code>mvn verify -PTest-All</code>, <code>mvn package -PTest-All</code> or activate the profile in your IDE's Maven tab on the right side.</p>
+kRun <code>./mvnw verify -PTest-All</code>, <code>./mvnw package -PTest-All</code> or activate the profile in your IDE's Maven tab on the right side.</p>
 <p>There are more profiles, but you don't need to know them in most cases.</p>
 <details class="info">
 <summary>The other Profiles</summary>
@@ -4587,7 +4587,7 @@ You can use them to select a specific scope of tests that you want to run, after
 It is only used in the build pipeline to skip verifications that were already done in earlier pipeline steps.</p>
 </details>
 <h2 id="commit">Commit<a class="headerlink" href="#commit" title="Permanent link">🔗</a></h2>
-<p>After you made changes, don't forget to run <code>mvn verify</code> again.
+<p>After you made changes, don't forget to run <code>./mvnw verify</code> again.
 You should also add a <a href="../../Maintaining-the-Changelog/">changelog</a> entry at this point.</p>
 <p>You need to commit your changes once they are done.
 You can do this with
