@@ -12,3 +12,5 @@ jobs:
     steps:
       - name: Sync Common Files
         uses: BetonQuest/CommonProjectFiles@main
+        with:
+          token: ${{ secrets.ALL_REPOSITORIES_ACCESS_TOKEN }}
