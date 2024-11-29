@@ -53,6 +53,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `Journal` interaction with blocks like lecterns
 - sections that are created in templates by write operations, where no edits should actually be done
   - this caused a lot of "ghost" sections that could not be loaded like schedules, menus and manny more
+- Conversations work in 1.21.3 again
 ### Security
 
 ## [2.1.3] - 2024-08-06

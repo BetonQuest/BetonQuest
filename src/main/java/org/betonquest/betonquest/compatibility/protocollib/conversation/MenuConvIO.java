@@ -17,6 +17,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.compatibility.protocollib.wrappers.WrapperPlayClientSteerVehicleUpdated;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.ChatConvIO;
 import org.betonquest.betonquest.conversation.Conversation;
@@ -629,7 +630,15 @@ public class MenuConvIO extends ChatConvIO {
                 if (!event.getPacketType().equals(PacketType.Play.Client.STEER_VEHICLE)) {
                     return;
                 }
-                final WrapperPlayClientSteerVehicle steerEvent = new WrapperPlayClientSteerVehicle(event.getPacket());
+
+                final WrapperPlayClientSteerVehicle steerEvent;
+
+                if (PaperLib.isVersion(21, 3)) {
+                    steerEvent = new WrapperPlayClientSteerVehicleUpdated(event.getPacket());
+                } else {
+                    steerEvent = new WrapperPlayClientSteerVehicle(event.getPacket());
+                }
+
                 if (steerEvent.isJump() && controls.containsKey(CONTROL.JUMP) && !debounce) {
                     // Player Jumped
                     debounce = true;
