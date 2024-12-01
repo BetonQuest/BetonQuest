@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CheckStyle-IDEA" serialisationVersion="2">
-    <checkstyleVersion>10.12.5</checkstyleVersion>
+    <checkstyleVersion>10.20.1</checkstyleVersion>
     <scanScope>JavaOnlyWithTests</scanScope>
     <suppressErrors>true</suppressErrors>
     <option name="thirdPartyClasspath" />
     <option name="activeLocationIds">
-      <option value="7383e4f0-597c-42f7-aefa-fe0e4ae3e32a" />
+      <option value="0d156e82-b809-4bda-ba4f-06b0b6dc2eb4" />
     </option>
     <option name="locations">
       <list>
         <ConfigurationLocation id="bundled-sun-checks" type="BUNDLED" scope="All" description="Sun Checks">(bundled)</ConfigurationLocation>
         <ConfigurationLocation id="bundled-google-checks" type="BUNDLED" scope="All" description="Google Checks">(bundled)</ConfigurationLocation>
-        <ConfigurationLocation id="7383e4f0-597c-42f7-aefa-fe0e4ae3e32a" type="PROJECT_RELATIVE" scope="All" description="BetonQuest Style">$PROJECT_DIR$/config/checkstyle.xml</ConfigurationLocation>
+        <ConfigurationLocation id="0d156e82-b809-4bda-ba4f-06b0b6dc2eb4" type="HTTP_URL" scope="All" description="BetonQuest Style">https://raw.githubusercontent.com/BetonQuest/MavenSetup/refs/heads/main/configs/checkstyle.xml</ConfigurationLocation>
       </list>
     </option>
   </component>

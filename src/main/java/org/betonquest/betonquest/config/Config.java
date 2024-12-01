@@ -285,9 +285,11 @@ public final class Config {
      * @param prefixVariables array of variables which will be inserted into the prefix
      * @return The parsed message.
      */
+    @SuppressWarnings("NullAway")
     @Nullable
-    public static String parseMessage(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String prefixName,
-                                      @Nullable final String... prefixVariables) {
+    public static String parseMessage(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile,
+                                      final String messageName, @Nullable final String[] variables,
+                                      @Nullable final String prefixName, @Nullable final String... prefixVariables) {
         final PlayerData playerData = plugin.getPlayerData(onlineProfile);
         final String language = playerData.getLanguage();
         String message = getMessage(language, messageName, variables);
