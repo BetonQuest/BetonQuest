@@ -120,7 +120,7 @@ and added to the PATH environment variable. The Python installer allows you to d
     Under Windows you can set environment variables with `setx VARIABLE_NAME VALUE /M` in the terminal.
     Now you need to restart IntelliJ for the changes to take effect. 
 
-Install all other dependencies by entering `python config/setup-docs-dependencies.py` in the terminal on the project's root directory.
+Install all other dependencies by entering `python docs/setup-docs-dependencies.py` in the terminal on the project's root directory.
 
 ### See your changes live
 Run this command in IntelliJ's integrated terminal (at the bottom) to create a docs preview in your browser:

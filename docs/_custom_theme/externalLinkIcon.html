@@ -1,10 +1,5 @@
 {% extends "base.html" %}
 
-{% block outdated %}
-<a style="color: black"> You're viewing the docs of an outdated or legacy development version! </a>
-<a href="{{ '../' ~ base_url }}">
-  <strong>Click here to go to the latest BetonQuest release.</strong>
-</a>
 <style class="externalLinkIcon">
   body .md-content__inner a[href^="http"]:not([href^="SITE_DOMAIN"]):not(.md-content__button,.noExternalLinkIcon) {
     background-image: url("{{ base_url }}/_media/content/linkExternalWhite.svg");
@@ -28,4 +23,3 @@
   const updatedHTML = currentHTML.replaceAll("SITE_DOMAIN", window.location.origin);
   externalLinkIconElement.innerHTML = updatedHTML;
 </script>
-{% endblock %}

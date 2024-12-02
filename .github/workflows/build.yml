@@ -83,7 +83,7 @@ jobs:
           MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
           MKDOCS_SITE_DIR: 'target/docs'
           PYTHON_CACHE: 'pip'
-          PYTHON_CACHE_DEPENDENCY_PATH: 'config/setup-docs-dependencies.py'
+          PYTHON_CACHE_DEPENDENCY_PATH: 'docs/setup-docs-dependencies.py'
       - uses: ./.github/actions/replace-docs-variables
         with:
           VERSION: ${{ env.VERSION }}
@@ -180,7 +180,7 @@ jobs:
           MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
           MKDOCS_SITE_DIR: 'target/docs'
           PYTHON_CACHE: 'pip'
-          PYTHON_CACHE_DEPENDENCY_PATH: 'config/setup-docs-dependencies.py'
+          PYTHON_CACHE_DEPENDENCY_PATH: 'docs/setup-docs-dependencies.py'
       - name: Load patch file
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |

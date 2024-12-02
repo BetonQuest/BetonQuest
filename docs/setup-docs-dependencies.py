@@ -19,10 +19,10 @@ def get_install_requires():
                 'cairosvg',
             ] + common_dependencies
         print("\033[93m"
-              + "Warning: 'MKDOCS_MATERIAL_INSIDERS' is set "
-              + "but 'MKDOCS_MATERIAL_INSIDERS_ENABLED' is not set to 'true', "
-              + "so if you serve mkdocs you will serve the normal version!"
-              + "\033[0m")
+            + "Warning: 'MKDOCS_MATERIAL_INSIDERS' is set "
+            + "but 'MKDOCS_MATERIAL_INSIDERS_ENABLED' is not set to 'true', "
+            + "so if you serve mkdocs you will serve the normal version!"
+            + "\033[0m")
     return ['mkdocs-material==9.5.33'] + common_dependencies
 
 
