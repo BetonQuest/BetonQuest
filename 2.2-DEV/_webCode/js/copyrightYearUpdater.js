@@ -2,6 +2,5 @@
 document$.subscribe(function () {
   const copyrightElement = document.getElementById("bqCopyright");
   const currentYear = new Date().getFullYear().toString();
-  copyrightElement.textContent = "© 2014-" + currentYear + "  BetonQuest Organisation. GPLv3";
-})
-
+  copyrightElement.textContent = copyrightElement.textContent.replace("{CurrentYear}", currentYear);
+});
