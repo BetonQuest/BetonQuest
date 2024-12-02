@@ -8,7 +8,7 @@ on:
 jobs:
   sync-files:
     runs-on: ubuntu-latest
-    if: "github.repository_owner == BetonQuest" # Do not sync for forks
+    if: "github.repository_owner == 'BetonQuest'" # Do not sync for forks
 
     steps:
       - name: Sync Common Files
