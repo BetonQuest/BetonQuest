@@ -33,6 +33,7 @@ public final class LocalChatPaginator {
         FONT_SIZES = Map.ofEntries(
                 Map.entry(' ', SPACE_WIDTH),
                 Map.entry('!', 2),
+                Map.entry('¡', 2),
                 Map.entry('"', 4),
                 Map.entry('\'', 2),
                 Map.entry('(', 4),
