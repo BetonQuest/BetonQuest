@@ -11,11 +11,13 @@ extra_css:
   - '_webCode/css/contentAreaFullWidth.css'
   - '_webCode/css/coloredIcons.css'
   - '_webCode/css/mermaidCentered.css'
+  - '_webCode/css/externalLinkIcon.css'
 
 extra_javascript:
   - '_webCode/js/copyLinkToClipboard.js'
   - '_webCode/js/copyrightYearUpdater.js'
   - '_webCode/js/mathjax.js'
+  - '_webCode/js/externalLinkIcon.js'
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
