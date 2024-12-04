@@ -1,4 +1,4 @@
-body .md-content__inner a.external-link:not(.md-button,.noExternalLinkIcon) {
+body .md-content__inner a.external-link:not(.md-button,.md-content__button,.noExternalLinkIcon) {
   background-image: url("../../_media/content/linkExternalWhite.svg");
   background-repeat: no-repeat;
   background-position: top right;
