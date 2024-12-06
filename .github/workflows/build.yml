@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: ./.github/actions/version
+      - uses: BetonQuest/BetonQuest/.github/actions/version
         id: version
         with:
           ROOT_REPOSITORY: BetonQuest/BetonQuest
@@ -39,11 +39,11 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-java-maven
+      - uses: BetonQuest/BetonQuest/.github/actions/setup-java-maven
         with:
           JAVA_CACHE: 'maven'
           MAVEN_TARGET_DIR: 'target/artifacts'
-      - uses: ./.github/actions/replace-code-variables
+      - uses: BetonQuest/BetonQuest/.github/actions/replace-code-variables
         with:
           VERSION: ${{ env.VERSION }}
           VERSION_TYPE: ${{ env.VERSION_TYPE }}
@@ -77,14 +77,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: ${{ env.VERSION_TYPE == 'release' || env.VERSION_TYPE == 'development' }}
-      - uses: ./.github/actions/setup-git-lfs
-      - uses: ./.github/actions/setup-mkdocs-material
+      - uses: BetonQuest/BetonQuest/.github/actions/setup-git-lfs
+      - uses: BetonQuest/BetonQuest/.github/actions/setup-mkdocs-material
         with:
           MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
           MKDOCS_SITE_DIR: 'target/docs'
           PYTHON_CACHE: 'pip'
           PYTHON_CACHE_DEPENDENCY_PATH: 'docs/setup-docs-dependencies.py'
-      - uses: ./.github/actions/replace-docs-variables
+      - uses: BetonQuest/BetonQuest/.github/actions/replace-docs-variables
         with:
           VERSION: ${{ env.VERSION }}
           VERSION_TYPE: ${{ env.VERSION_TYPE }}
@@ -124,7 +124,7 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-java-maven
+      - uses: BetonQuest/BetonQuest/.github/actions/setup-java-maven
         with:
           JAVA_CACHE: 'maven'
           JAVA_REPOSITORY_ID: 'betonquest'
@@ -174,8 +174,8 @@ jobs:
           fetch-depth: 0
           submodules: ${{ env.VERSION_TYPE == 'release' }}
           token: ${{ secrets.ALL_REPOSITORIES_ACCESS_TOKEN }}
-      - uses: ./.github/actions/setup-git-lfs
-      - uses: ./.github/actions/setup-mkdocs-material
+      - uses: BetonQuest/BetonQuest/.github/actions/setup-git-lfs
+      - uses: BetonQuest/BetonQuest/.github/actions/setup-mkdocs-material
         with:
           MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
           MKDOCS_SITE_DIR: 'target/docs'
@@ -256,10 +256,10 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-java-maven/cache
+      - uses: BetonQuest/BetonQuest/.github/actions/setup-java-maven/cache
         with:
           MAVEN_TARGET_DIR: 'target/artifacts'
-      - uses: ./.github/actions/setup-mkdocs-material/cache
+      - uses: BetonQuest/BetonQuest/.github/actions/setup-mkdocs-material/cache
         with:
           MKDOCS_SITE_DIR: 'target/docs'
       - name: Zip Docs

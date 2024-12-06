@@ -53,6 +53,6 @@ runs:
         server-id: ${{ inputs.JAVA_REPOSITORY_ID }}
         server-username: ${{ inputs.JAVA_REPOSITORY_USER }}
         server-password: ${{ inputs.JAVA_REPOSITORY_PASS }}
-    - uses: ./.github/actions/setup-java-maven/cache
+    - uses: BetonQuest/BetonQuest/.github/actions/setup-java-maven/cache
       with:
         MAVEN_TARGET_DIR: ${{ inputs.MAVEN_TARGET_DIR }}

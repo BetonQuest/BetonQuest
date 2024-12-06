@@ -38,11 +38,11 @@ outputs:
 runs:
   using: composite
   steps:
-    - uses: ./.github/actions/version/type
+    - uses: BetonQuest/BetonQuest/.github/actions/version/type
       id: version_type
       with:
         ROOT_REPOSITORY: ${{ inputs.ROOT_REPOSITORY }}
-    - uses: ./.github/actions/version/required
+    - uses: BetonQuest/BetonQuest/.github/actions/version/required
       id: require_new
       if: "env.VERSION_TYPE == 'development'"
       with:

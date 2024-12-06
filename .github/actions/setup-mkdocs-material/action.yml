@@ -35,7 +35,7 @@ runs:
         python-version: ${{ inputs.PYTHON_VERSION }}
         cache: ${{ inputs.PYTHON_CACHE }}
         cache-dependency-path: ${{ inputs.PYTHON_CACHE_DEPENDENCY_PATH }}
-    - uses: ./.github/actions/setup-mkdocs-material/cache
+    - uses: BetonQuest/BetonQuest/.github/actions/setup-mkdocs-material/cache
       with:
         MKDOCS_SITE_DIR: ${{ inputs.MKDOCS_SITE_DIR }}
     - name: Cache MkDocs site directory /.cache/plugins/optimize
