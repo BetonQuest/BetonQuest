@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: BetonQuest/BetonQuest/.github/actions/version
+      - uses: BetonQuest/Workflows/.github/actions/version@main
         id: version
         with:
           ROOT_REPOSITORY: BetonQuest/BetonQuest
@@ -39,14 +39,15 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
-      - uses: BetonQuest/BetonQuest/.github/actions/setup-java-maven
+      - uses: BetonQuest/Workflows/.github/actions/setup-java-maven@main
         with:
           JAVA_CACHE: 'maven'
           MAVEN_TARGET_DIR: 'target/artifacts'
-      - uses: BetonQuest/BetonQuest/.github/actions/replace-code-variables
+      - uses: BetonQuest/Workflows/.github/actions/replace-code-variables@main
         with:
           VERSION: ${{ env.VERSION }}
           VERSION_TYPE: ${{ env.VERSION_TYPE }}
+          VERSION_NAMESPACE: "betonquest"
       - name: Build with Maven. Phase 'verify'
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
@@ -77,14 +78,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: ${{ env.VERSION_TYPE == 'release' || env.VERSION_TYPE == 'development' }}
-      - uses: BetonQuest/BetonQuest/.github/actions/setup-git-lfs
-      - uses: BetonQuest/BetonQuest/.github/actions/setup-mkdocs-material
+      - uses: BetonQuest/Workflows/.github/actions/setup-git-lfs@main
+      - uses: BetonQuest/Workflows/.github/actions/setup-mkdocs-material@main
         with:
           MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
           MKDOCS_SITE_DIR: 'target/docs'
           PYTHON_CACHE: 'pip'
           PYTHON_CACHE_DEPENDENCY_PATH: 'docs/setup-docs-dependencies.py'
-      - uses: BetonQuest/BetonQuest/.github/actions/replace-docs-variables
+      - uses: ./.github/actions/replace-docs-variables
         with:
           VERSION: ${{ env.VERSION }}
           VERSION_TYPE: ${{ env.VERSION_TYPE }}
@@ -124,7 +125,7 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
-      - uses: BetonQuest/BetonQuest/.github/actions/setup-java-maven
+      - uses: BetonQuest/Workflows/.github/actions/setup-java-maven@main
         with:
           JAVA_CACHE: 'maven'
           JAVA_REPOSITORY_ID: 'betonquest'
@@ -174,8 +175,8 @@ jobs:
           fetch-depth: 0
           submodules: ${{ env.VERSION_TYPE == 'release' }}
           token: ${{ secrets.ALL_REPOSITORIES_ACCESS_TOKEN }}
-      - uses: BetonQuest/BetonQuest/.github/actions/setup-git-lfs
-      - uses: BetonQuest/BetonQuest/.github/actions/setup-mkdocs-material
+      - uses: BetonQuest/Workflows/.github/actions/setup-git-lfs@main
+      - uses: BetonQuest/Workflows/.github/actions/setup-mkdocs-material@main
         with:
           MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
           MKDOCS_SITE_DIR: 'target/docs'
@@ -256,10 +257,10 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
-      - uses: BetonQuest/BetonQuest/.github/actions/setup-java-maven/cache
+      - uses: BetonQuest/Workflows/.github/actions/setup-java-maven/cache@main
         with:
           MAVEN_TARGET_DIR: 'target/artifacts'
-      - uses: BetonQuest/BetonQuest/.github/actions/setup-mkdocs-material/cache
+      - uses: BetonQuest/Workflows/.github/actions/setup-mkdocs-material/cache@main
         with:
           MKDOCS_SITE_DIR: 'target/docs'
       - name: Zip Docs
