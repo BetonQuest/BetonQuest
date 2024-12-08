@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-java-maven
+      - uses: BetonQuest/Workflows/.github/actions/setup-java-maven@main
         with:
           JAVA_OVERRIDE_SETTINGS: 'false'
       - name: Build with Maven
@@ -27,8 +27,8 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-git-lfs
-      - uses: ./.github/actions/setup-mkdocs-material
+      - uses: BetonQuest/Workflows/.github/actions/setup-git-lfs@main
+      - uses: BetonQuest/Workflows/.github/actions/setup-mkdocs-material@main
         with:
           MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
       - name: Build with mkdocs

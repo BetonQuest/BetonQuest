@@ -22,14 +22,8 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Set CHANGELOG.md version
-      shell: bash --noprofile --norc -euo pipefail {0}
-      run: |
-        sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
-        DATE="$(date +%Y-%m-%d)"
-        sed -i "s~\${maven\.build\.timestamp}~$DATE~g" ./CHANGELOG.md
-        echo "$(cat ./CHANGELOG.md)" >> './docs/Documentation/CHANGELOG.md'
-      env:
+    - uses: BetonQuest/Workflows/.github/actions/replace-docs-variables@main
+      with:
         VERSION: ${{ inputs.VERSION }}
     - name: Set API/Overview.md version
       shell: bash --noprofile --norc -euo pipefail {0}
@@ -45,12 +39,6 @@ runs:
         find docs/ -type f -exec sed -i "s#/bq download BetonQuest/Quest-Tutorials \${ref} QuestPackages #/bq download BetonQuest/Quest-Tutorials ${REFERENCE} QuestPackages #" {} +
       env:
         VERSION_TYPE: ${{ inputs.VERSION_TYPE }}
-    - name: Set user feedback form version in mkdocs.yml
-      shell: bash --noprofile --norc -euo pipefail {0}
-      run: |
-        sed -i "s~%VERSION%~${VERSION}~g" ./mkdocs.yml
-      env:
-        VERSION: ${{ inputs.VERSION }}
     - name: Set secret in downloads.js script
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
