@@ -6,6 +6,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
+- A Bukkit event which fires when a player's points change
 ### Changed
 ### Deprecated
 ### Removed

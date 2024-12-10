@@ -8,6 +8,7 @@ import org.betonquest.betonquest.Pointer;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.PlayerTagAddEvent;
 import org.betonquest.betonquest.api.PlayerTagRemoveEvent;
+import org.betonquest.betonquest.api.PlayerUpdatePointEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
@@ -282,12 +283,14 @@ public class PlayerData implements TagData {
                     saver.add(new Record(UpdateType.ADD_POINTS,
                             profileID, category, String.valueOf(point.getCount() + count)));
                     point.addPoints(count);
+                    BetonQuest.getInstance().callSyncBukkitEvent(new PlayerUpdatePointEvent(profile, category, point.getCount()));
                     return;
                 }
             }
             // if not then create new point category with given amount of points
             points.add(new Point(category, count));
             saver.add(new Record(UpdateType.ADD_POINTS, profileID, category, String.valueOf(count)));
+            BetonQuest.getInstance().callSyncBukkitEvent(new PlayerUpdatePointEvent(profile, category, count));
         }
     }
 
@@ -304,6 +307,7 @@ public class PlayerData implements TagData {
             points.removeIf(point -> point.getCategory().equalsIgnoreCase(category));
             points.add(new Point(category, count));
             saver.add(new Record(UpdateType.ADD_POINTS, profileID, category, String.valueOf(count)));
+            BetonQuest.getInstance().callSyncBukkitEvent(new PlayerUpdatePointEvent(profile, category, count));
         }
     }
 
@@ -322,6 +326,7 @@ public class PlayerData implements TagData {
             }
             if (pointToRemove != null) {
                 points.remove(pointToRemove);
+                BetonQuest.getInstance().callSyncBukkitEvent(new PlayerUpdatePointEvent(profile, category, 0));
             }
             saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
         }
