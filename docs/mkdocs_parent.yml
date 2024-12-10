@@ -122,7 +122,7 @@ plugins:
         - _custom_theme/*
         - _tutorials/*
         - mkdocs_parent.yml
-        - setup-docs_dependencies.py
+        - setup-docs-dependencies.py
   - group:
       enabled: !ENV MKDOCS_MATERIAL_INSIDERS_ENABLED
       plugins:
