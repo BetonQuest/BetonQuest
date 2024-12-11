@@ -12,6 +12,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Removed
 ### Fixed
 - fixed NPC navigation by giving better error messages and handling the stuck action correctly
+- custom sounds from resourcepacks could not be used in conversation start and end sound
 ### Security
 
 ## [2.2.0] - 2024-12-01

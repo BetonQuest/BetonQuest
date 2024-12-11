@@ -17,7 +17,6 @@ import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.modules.config.QuestManager;
 import org.betonquest.betonquest.notify.Notify;
 import org.bukkit.ChatColor;
-import org.bukkit.Sound;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -29,11 +28,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Handles the configuration of the plugin
+ * Handles the configuration of the plugin.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods", "PMD.UseObjectForClearerAPI",
-        "PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.AvoidFieldNameMatchingTypeName",
-        "PMD.ClassNamingConventions", "NullAway.Init"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired", "NullAway.Init"})
 public final class Config {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -61,7 +58,6 @@ public final class Config {
      * @param plugin the {@link BetonQuest} plugin instance
      * @param config the {@link ConfigurationFile} to load from
      */
-    @SuppressWarnings({"PMD.AssignmentToNonFinalStatic", "PMD.CognitiveComplexity", "PMD.NPathComplexity"})
     @SuppressFBWarnings("EI_EXPOSE_STATIC_REP2")
     public static void setup(final BetonQuest plugin, final ConfigurationFile config) {
         Config.plugin = plugin;
@@ -322,11 +318,7 @@ public final class Config {
         final Player player = onlineProfile.getPlayer();
         final String rawSound = plugin.getPluginConfig().getString("sounds." + soundName);
         if (!"false".equalsIgnoreCase(rawSound)) {
-            try {
-                player.playSound(player.getLocation(), Sound.valueOf(rawSound), 1F, 1F);
-            } catch (final IllegalArgumentException e) {
-                LOG.warn("Unknown sound type: " + rawSound, e);
-            }
+            player.playSound(player.getLocation(), rawSound, 1F, 1F);
         }
     }
 
