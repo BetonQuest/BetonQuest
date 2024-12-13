@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.citizens.event.move;
 
+import net.citizensnpcs.api.ai.event.CancelReason;
 import net.citizensnpcs.api.ai.event.NavigationCancelEvent;
 import net.citizensnpcs.api.ai.event.NavigationCompleteEvent;
 import net.citizensnpcs.api.ai.event.NavigationEvent;
@@ -187,6 +188,7 @@ public class CitizensMoveController implements Listener {
             this.locationsIterator = moveData.locations.listIterator(0);
             final Location firstLocation = locationsIterator.next().getValue(profile);
             stopNPCMoving(npc);
+
             if (npc.isSpawned()) {
                 if (CitizensWalkingListener.getInstance().isMovementPaused(npc)) {
                     CitizensWalkingListener.getInstance().setNewTargetLocation(npc, firstLocation);
@@ -211,9 +213,16 @@ public class CitizensMoveController implements Listener {
             if (CitizensWalkingListener.getInstance().isMovementPaused(npc)) {
                 return;
             }
-            if (event instanceof NavigationStuckEvent || event instanceof NavigationCancelEvent) {
-                log.warn(moveData.sourcePackage(), "The NPC was stucked, maybe the distance between two points was too high. "
-                        + "This is a Citizens behavior, your NPC was teleported by Citizens, we continue the movement from this location.");
+            if (event instanceof NavigationStuckEvent) {
+                log.warn("The NPC '" + npc.getId() + "' navigation was stuck while navigating from '"
+                        + locationToShortReadable(npc.getStoredLocation()) + "' to '"
+                        + locationToShortReadable(event.getNavigator().getTargetAsLocation()) + "'. "
+                        + "The configured stuck action from Citizens will now be called, BetonQuest will try to continue navigation.");
+                return;
+            } else if (event instanceof final NavigationCancelEvent cancelEvent && cancelEvent.getCancelReason() != CancelReason.STUCK) {
+                log.warn("The NPC '" + npc.getId() + "' navigation was cancelled at '"
+                        + locationToShortReadable(npc.getStoredLocation()) + "' to '" + "'. "
+                        + "Reason: " + cancelEvent.getCancelReason());
             }
             if (locationsIterator.hasNext()) {
                 final Location next;
@@ -231,6 +240,10 @@ public class CitizensMoveController implements Listener {
                 return;
             }
             returnToStart(npc);
+        }
+
+        private String locationToShortReadable(final Location location) {
+            return location.getX() + ";" + location.getY() + ";" + location.getZ() + ";" + location.getWorld().getName();
         }
 
         private void returnToStart(final NPC npc) {
