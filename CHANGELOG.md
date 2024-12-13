@@ -11,6 +11,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Deprecated
 ### Removed
 ### Fixed
+- fixed NPC navigation by giving better error messages and handling the stuck action correctly
 ### Security
 
 ## [2.2.0] - 2024-12-01
