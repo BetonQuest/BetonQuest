@@ -12,7 +12,7 @@ Run this command in IntelliJ's terminal window (at the bottom) to start a live p
 It will be available on [127.0.0.1:8000](http://127.0.0.1:8000/) by default.
 
 ``` bash linenums="1" 
-mkdocs serve --livereload # (1)
+mkdocs serve --livereload # (1)!
 ```
 
 1. `--livereload` is an optional argument that determines that only changed files will be re-build.
