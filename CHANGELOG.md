@@ -7,6 +7,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
 - A Bukkit event which fires when a player's points change
+- `folder` event now has a argument `cancelConditions` to cancel a running folder
 ### Changed
 ### Deprecated
 ### Removed

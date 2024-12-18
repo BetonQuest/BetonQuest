@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
@@ -77,26 +78,32 @@ public class FolderEvent implements NullableEvent {
     private final TimeUnit timeUnit;
 
     /**
-     * Whether the event should be cancelled on logout.
+     * Whether the event should be canceled on logout.
      */
     private final boolean cancelOnLogout;
 
     /**
+     * Conditions to check if the event should be canceled.
+     */
+    private final ConditionID[] cancelConditions;
+
+    /**
      * Create a folder event with the given parameters.
      *
-     * @param betonQuest     the BetonQuest instance
-     * @param log            custom logger for this class
-     * @param pluginManager  the plugin manager to register the quit listener
-     * @param events         events to run
-     * @param delay          delay to apply before running the events
-     * @param period         delay to apply between each event
-     * @param random         number of events to run
-     * @param timeUnit       time unit to use for the delay and period
-     * @param cancelOnLogout whether the event should be cancelled on logout
+     * @param betonQuest       the BetonQuest instance
+     * @param log              custom logger for this class
+     * @param pluginManager    the plugin manager to register the quit listener
+     * @param events           events to run
+     * @param delay            delay to apply before running the events
+     * @param period           delay to apply between each event
+     * @param random           number of events to run
+     * @param timeUnit         time unit to use for the delay and period
+     * @param cancelOnLogout   whether the event should be canceled on logout
+     * @param cancelConditions conditions to check if the event should be canceled
      */
     public FolderEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final PluginManager pluginManager, final EventID[] events, @Nullable final VariableNumber delay,
                        @Nullable final VariableNumber period, @Nullable final VariableNumber random,
-                       final TimeUnit timeUnit, final boolean cancelOnLogout) {
+                       final TimeUnit timeUnit, final boolean cancelOnLogout, final ConditionID... cancelConditions) {
         this.betonQuest = betonQuest;
         this.log = log;
         this.pluginManager = pluginManager;
@@ -106,10 +113,18 @@ public class FolderEvent implements NullableEvent {
         this.events = Arrays.copyOf(events, events.length);
         this.timeUnit = timeUnit;
         this.cancelOnLogout = cancelOnLogout;
+        this.cancelConditions = cancelConditions.clone();
+    }
+
+    private boolean checkCancelConditions(@Nullable final Profile profile) {
+        return BetonQuest.conditions(profile, cancelConditions);
     }
 
     private void executeAllEvents(@Nullable final Profile profile, final Deque<EventID> chosenList) {
         for (final EventID event : chosenList) {
+            if (checkCancelConditions(profile)) {
+                return;
+            }
             BetonQuest.event(profile, event);
         }
     }
@@ -131,6 +146,9 @@ public class FolderEvent implements NullableEvent {
     private void handleDelayPeriod(@Nullable final Profile profile, final long delayTicks, final Deque<EventID> chosenList, final long periodTicks) {
         if (delayTicks == 0 && !chosenList.isEmpty()) {
             final EventID event = chosenList.removeFirst();
+            if (checkCancelConditions(profile)) {
+                return;
+            }
             BetonQuest.event(profile, event);
         }
         if (!chosenList.isEmpty()) {
@@ -139,7 +157,7 @@ public class FolderEvent implements NullableEvent {
                 @Override
                 public void run() {
                     final EventID event = chosenList.pollFirst();
-                    if (eventCanceller.isCancelled() || event == null) {
+                    if (eventCanceller.isCancelled() || event == null || checkCancelConditions(profile)) {
                         eventCanceller.destroy();
                         this.cancel();
                         return;
