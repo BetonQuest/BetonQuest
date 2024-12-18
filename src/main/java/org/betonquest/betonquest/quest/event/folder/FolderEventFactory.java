@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.plugin.PluginManager;
@@ -63,7 +64,8 @@ public class FolderEventFactory implements EventFactory, StaticEventFactory {
         final VariableNumber random = instruction.getVarNum(instruction.getOptional("random"));
         final TimeUnit timeUnit = getTimeUnit(instruction);
         final boolean cancelOnLogout = instruction.hasArgument("cancelOnLogout");
-        return new NullableEventAdapter(new FolderEvent(betonQuest, loggerFactory.create(FolderEvent.class), pluginManager, events, delay, period, random, timeUnit, cancelOnLogout));
+        final ConditionID[] cancelConditions = instruction.getList(instruction.getOptional("cancelConditions"), instruction::getCondition).toArray(new ConditionID[0]);
+        return new NullableEventAdapter(new FolderEvent(betonQuest, loggerFactory.create(FolderEvent.class), pluginManager, events, delay, period, random, timeUnit, cancelOnLogout, cancelConditions));
     }
 
     private TimeUnit getTimeUnit(final Instruction instruction) {
