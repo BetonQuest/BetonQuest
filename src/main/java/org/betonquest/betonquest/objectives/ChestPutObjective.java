@@ -80,9 +80,17 @@ public class ChestPutObjective extends Objective implements Listener {
      */
     @EventHandler
     public void onChestOpen(final InventoryOpenEvent event) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getPlayer());
+        try {
+            if (!checkIsInventory(loc.getValue(onlineProfile))) {
+                return;
+            }
+        } catch (final QuestRuntimeException e) {
+            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
+        }
         if (!multipleAccess && !checkForNoOtherPlayer(event)) {
             try {
-                Config.sendNotify(null, PlayerConverter.getID((Player) event.getPlayer()), "chest_occupied", null);
+                Config.sendNotify(null, onlineProfile, "chest_occupied", null);
             } catch (final QuestRuntimeException e) {
                 log.warn("The notify system was unable to send the message for 'chest_occupied'. Error was: '"
                         + e.getMessage() + "'", e);
@@ -113,7 +121,7 @@ public class ChestPutObjective extends Objective implements Listener {
         }
         try {
             final Location targetLocation = loc.getValue(onlineProfile);
-            if (isNotInventory(targetLocation)) {
+            if (!checkIsInventory(targetLocation)) {
                 return;
             }
 
@@ -148,7 +156,7 @@ public class ChestPutObjective extends Objective implements Listener {
         }
     }
 
-    private boolean isNotInventory(final Location targetChestLocation) {
+    private boolean checkIsInventory(final Location targetChestLocation) {
         final Block block = targetChestLocation.getBlock();
         if (!(block.getState() instanceof InventoryHolder)) {
             final World world = targetChestLocation.getWorld();
@@ -159,9 +167,9 @@ public class ChestPutObjective extends Objective implements Listener {
                             targetChestLocation.getBlockY(),
                             targetChestLocation.getBlockZ(),
                             world == null ? "null" : world.getName()));
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     @Override
