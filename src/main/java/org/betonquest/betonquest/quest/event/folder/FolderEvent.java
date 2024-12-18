@@ -117,7 +117,7 @@ public class FolderEvent implements NullableEvent {
     }
 
     private boolean checkCancelConditions(@Nullable final Profile profile) {
-        return BetonQuest.conditions(profile, cancelConditions);
+        return cancelConditions.length != 0 && BetonQuest.conditions(profile, cancelConditions);
     }
 
     private void executeAllEvents(@Nullable final Profile profile, final Deque<EventID> chosenList) {
