@@ -17,6 +17,7 @@ import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.modules.config.QuestManager;
 import org.betonquest.betonquest.notify.Notify;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -24,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.LinkedHashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -318,7 +320,11 @@ public final class Config {
         final Player player = onlineProfile.getPlayer();
         final String rawSound = plugin.getPluginConfig().getString("sounds." + soundName);
         if (!"false".equalsIgnoreCase(rawSound)) {
-            player.playSound(player.getLocation(), rawSound, 1F, 1F);
+            try {
+                player.playSound(player.getLocation(), Sound.valueOf(rawSound), 1F, 1F);
+            } catch (final IllegalArgumentException e) {
+                player.playSound(player.getLocation(), rawSound.toLowerCase(Locale.ROOT), 1F, 1F);
+            }
         }
     }
 
