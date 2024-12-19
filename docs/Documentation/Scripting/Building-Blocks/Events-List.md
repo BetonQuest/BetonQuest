@@ -584,7 +584,7 @@ Can only effect loaded entities!
 | _location_  | [Unified Location Formatting](../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | Required. The center location of the target entity's.                                                                                       |
 | _radius_    | Number                                                                       | :octicons-x-circle-16: | Required. The radius around the location. Can be a variable.                                                                                |
 | _name_      | `name:name`                                                                  | :octicons-x-circle-16: | Name of the entity. All `_` will be replaced with spaces.                                                                                   |
-| _marked_    | `marked:mark`                                                                | :octicons-x-circle-16: | Mark of the entity (form the [spawn event](../../Scripting/Building-Blocks/Events-List.md#spawn-mob-spawn) for example). Can be a variable. |
+| _marked_    | `marked:mark`                                                                | :octicons-x-circle-16: | Mark of the entity (from the [spawn event](../../Scripting/Building-Blocks/Events-List.md#spawn-mob-spawn) for example). Can be a variable. |
 | _kill_      | `kill`                                                                       | :octicons-x-circle-16: | Whether to remove or actually kill the entity (if possible).                                                                                |
 
 ```YAML title="Example"
@@ -891,4 +891,3 @@ events:
   setShortRain: "weather rain duration:60 world:rpgworld"
   setStorm: "weather storm duration:%point.tribute.left:150%"
 ```
-    
