@@ -38,12 +38,12 @@ import static org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK;
 @SuppressWarnings({"PMD.GodClass", "PMD.CommentRequired"})
 public class ActionObjective extends Objective implements Listener {
     /**
-     * The key for the location property
+     * The key for the location property.
      */
     private static final String LOCATION_PROPERTY = "location";
 
     /**
-     * The key for any action
+     * The key for any action.
      */
     private static final String ANY = "any";
 

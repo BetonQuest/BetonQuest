@@ -25,6 +25,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,6 +46,11 @@ import java.util.stream.Collectors;
 @SuppressWarnings("PMD.CommentRequired")
 public class EntityInteractObjective extends CountingObjective {
     /**
+     * The key for any hand.
+     */
+    private static final String ANY = "any";
+
+    /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
@@ -59,6 +65,9 @@ public class EntityInteractObjective extends CountingObjective {
 
     @Nullable
     private final String realName;
+
+    @Nullable
+    private final EquipmentSlot slot;
 
     protected EntityType mobType;
 
@@ -93,6 +102,16 @@ public class EntityInteractObjective extends CountingObjective {
         loc = instruction.getLocation(instruction.getOptional("loc"));
         final String stringRange = instruction.getOptional("range");
         range = instruction.getVarNum(stringRange == null ? "1" : stringRange);
+        final String handString = instruction.getOptional("hand");
+        if (handString == null || handString.equalsIgnoreCase(EquipmentSlot.HAND.toString())) {
+            slot = EquipmentSlot.HAND;
+        } else if (handString.equalsIgnoreCase(EquipmentSlot.OFF_HAND.toString())) {
+            slot = EquipmentSlot.OFF_HAND;
+        } else if (ANY.equalsIgnoreCase(handString)) {
+            slot = null;
+        } else {
+            throw new InstructionParseException("Invalid hand value: " + handString);
+        }
     }
 
     @Nullable
@@ -224,6 +243,9 @@ public class EntityInteractObjective extends CountingObjective {
             } else {
                 return;
             }
+            if (slot != null && slot != EquipmentSlot.HAND) {
+                return;
+            }
             final boolean success = onInteract(player, event.getEntity());
             if (success && cancel) {
                 event.setCancelled(true);
@@ -238,6 +260,9 @@ public class EntityInteractObjective extends CountingObjective {
 
         @EventHandler(ignoreCancelled = true)
         public void onRightClick(final PlayerInteractAtEntityEvent event) {
+            if (slot != null && slot != event.getHand()) {
+                return;
+            }
             final boolean success = onInteract(event.getPlayer(), event.getRightClicked());
             if (success && cancel) {
                 event.setCancelled(true);
