@@ -274,27 +274,34 @@ objectives:
 
 ## Interact with entity: `interact`
 
-The player must click on an entity to complete this objective. The first argument is the type of a click.
-Available values are `right`, `left` and `any`.
-Second required argument is the [mob type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html).
-Next is an amount of mobs required to click on. These must be unique, so the player can't simply click twenty times on
-the same zombie to complete it. There is also an optional `name:` parameter which specifies what custom name the entity must have
-(you need to write `_` instead of the space character). To check for the real name (e.g. if you renamed players to include
-their rank) you can also use `realname:` instead.
-Add `marked:` if the clicked entity needs to be marked by the `spawn` event (see its description for marking explanation). 
-You can also add `notify` argument to make the objective notify players whenever they click a correct entity,
-optionally with the notification interval after colon and `cancel` if the click shouldn't do what it usually does
-(i.e. left click won't hurt the entity). This can be limited with an optional `loc` and `range` attribute to limit within a range of a location.
+The player must click on entities to complete this objective.
 
-This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of entities already interacted
-with, `left` is the amount of entities still needed to be interacted with and `total` is the amount of entities
-initially required.
+| Parameter       | Syntax                                                                                        | Default Value          | Explanation                                                                                                                                   |
+|-----------------|-----------------------------------------------------------------------------------------------|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| _Click Type_    | `right`, `left` or `any`                                                                      | :octicons-x-circle-16: | What type of click should be handled                                                                                                          |
+| _Entity Type_   | [EntityType type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html) | :octicons-x-circle-16: | The entity which must be clicked                                                                                                              |
+| _amount_        | number                                                                                        | :octicons-x-circle-16: | The amount of different entities which must be interacted with.                                                                               |
+| _name_          | name:text                                                                                     | Disabled               | Only count named mobs. Spaces must be replaced with `_`.                                                                                      |
+| _realname_      | realname:text                                                                                 | Disabled               | To check for the real name (e.g. if you renamed players to include their rank). Spaces must be replaced with `_`.                             |
+| _marked_        | marked:text                                                                                   | Disabled               | If the clicked entity needs to be marked by the [spawn event](./Events-List.md#spawn-mob-spawn) (see its description for marking explanation) |
+| _hand_          | hand:(`hand`,`off_hand`, `any`)                                                               | `hand`                 | The hand the player must use to click the block, `any` can the objective cause to be completed multiple times                                 |
+| _Notifications_ | Keyword (_notify_)                                                                            | Disabled               | Displays messages to the player each time they progress the objective. Optionally with the notification interval after colon.                 |
+| _Cancel_        | Keyword (_cancel_)                                                                            | Disabled               | if the click shouldn't do what it usually does (i.e. left click won't hurt the entity).                                                       |
+| _hookLocation_  | hookLocation:[Location](../Data-Formats.md#unified-location-formating)                        | Everywhere             | The location at which the entity must be interacted.                                                                                          |
+| _range_         | range:number                                                                                  | 1                      | The range around the `loc`. Requires defined `loc`.                                                                                           |
 
-!!! example
-    ```YAML
-    interact right creeper 1 marked:sick condition:syringeInHand cancel
-    ```
-    
+```YAML title="Example"
+interact right creeper 1 marked:sick condition:syringeInHand cancel
+```
+
+<h5> Variable Properties </h5>
+
+| Name   | Example Output | Explanation                                                |
+|--------|----------------|------------------------------------------------------------|
+| amount | 7              | The amount of already interacted entities.                 |
+| left   | 13             | The amount of entities still needed to be interacted with. |
+| total  | 20             | The initially required amount of entities to interact.     |
+
 ## Resource pack state: `resourcepack`
 **:fontawesome-solid-list-check:{.task} Objective  ·  :fontawesome-solid-paper-plane: Requires [Paper](https://papermc.io)**
 
