@@ -30,7 +30,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests if starting & stopping EventScheduling works reliable and if loading Schedules works as intended.
+ * Tests if starting and stopping EventScheduling works reliable and if loading Schedules works as intended.
  */
 @ExtendWith(MockitoExtension.class)
 class EventSchedulingTest {
