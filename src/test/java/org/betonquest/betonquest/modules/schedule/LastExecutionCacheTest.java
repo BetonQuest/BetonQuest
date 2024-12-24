@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Test that the LastExecutionCache is properly loading & saving to cache file.
+ * Test that the LastExecutionCache is properly loading and saving to cache file.
  */
 @ExtendWith(MockitoExtension.class)
 class LastExecutionCacheTest {
