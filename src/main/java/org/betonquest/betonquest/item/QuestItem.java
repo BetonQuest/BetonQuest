@@ -119,19 +119,13 @@ public class QuestItem {
             final String data = getArgumentData(part);
 
             switch (argumentName) {
-                case "durability" -> durability.set(data);
+                case "durability" -> durability.set(argumentName, data);
                 case "enchants" -> enchants.set(data);
                 case "enchants-containing" -> enchants.setNotExact();
                 case "name" -> name.set(data);
                 case "lore" -> lore.set(data);
                 case "lore-containing" -> lore.setNotExact();
-                case "unbreakable" -> {
-                    if ("unbreakable".equals(data)) {
-                        unbreakable.set("true");
-                    } else {
-                        unbreakable.set(data);
-                    }
-                }
+                case "unbreakable" -> unbreakable.set(argumentName, data);
                 case "custom-model-data" -> customModelData.parse(data);
                 case "no-custom-model-data" -> customModelData.forbid();
                 case "title", "author", "text" -> book.set(argumentName, data);
@@ -177,7 +171,7 @@ public class QuestItem {
         if (meta == null) {
             return item.getType().toString();
         }
-        String durability = "";
+        final String durability;
         String name = "";
         String lore = "";
         String enchants = "";
@@ -186,12 +180,10 @@ public class QuestItem {
         String color = "";
         final String skull;
         String firework = "";
-        String unbreakable = "";
+        final String unbreakable;
         String customModelData = "";
         String flags = "";
-        if (meta instanceof final Damageable damageable) {
-            durability = " durability:" + damageable.getDamage();
-        }
+        durability = meta instanceof final Damageable damageable ? DurabilityHandler.serializeToString(damageable) : "";
         if (meta.hasDisplayName()) {
             name = " name:" + meta.getDisplayName().replace(" ", "_");
         }
@@ -209,9 +201,7 @@ public class QuestItem {
             }
             enchants = " enchants:" + string.substring(0, string.length() - 1);
         }
-        if (meta.isUnbreakable()) {
-            unbreakable = " unbreakable";
-        }
+        unbreakable = UnbreakableHandler.serializeToString(meta);
         if (meta.hasCustomModelData()) {
             customModelData = " custom-model-data:" + meta.getCustomModelData();
         }
@@ -316,7 +306,7 @@ public class QuestItem {
         if (meta == null) {
             return true;
         }
-        if (!durability.check(meta instanceof Damageable ? ((Damageable) meta).getDamage() : 0)) {
+        if (meta instanceof final Damageable damageable && !durability.check(damageable)) {
             return false;
         }
         final String displayName = meta.hasDisplayName() ? meta.getDisplayName() : null;
@@ -326,7 +316,7 @@ public class QuestItem {
         if (!lore.check(meta.getLore())) {
             return false;
         }
-        if (!unbreakable.check(meta.isUnbreakable())) {
+        if (!unbreakable.check(meta)) {
             return false;
         }
         if (!customModelData.check(meta)) {
@@ -395,7 +385,7 @@ public class QuestItem {
         }
         meta.setDisplayName(name.get());
         meta.setLore(lore.get());
-        meta.setUnbreakable(unbreakable.isUnbreakable());
+        unbreakable.populate(meta);
         flags.get().forEach(meta::addItemFlags);
         if (customModelData.getExistence() == Existence.REQUIRED) {
             meta.setCustomModelData(customModelData.get());
@@ -434,7 +424,7 @@ public class QuestItem {
             firework.populate(fireworkMeta);
         }
         if (meta instanceof final Damageable damageableMeta) {
-            damageableMeta.setDamage(getDurability());
+            durability.populate(damageableMeta);
         }
         item.setItemMeta(meta);
         return item;
