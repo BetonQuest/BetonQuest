@@ -186,9 +186,7 @@ public class QuestItem {
         String name = "";
         String lore = "";
         String enchants = "";
-        String title = "";
-        String text = "";
-        String author = "";
+        final String book;
         String effects = "";
         String color = "";
         String skull = "";
@@ -222,27 +220,7 @@ public class QuestItem {
         if (meta.hasCustomModelData()) {
             customModelData = " custom-model-data:" + meta.getCustomModelData();
         }
-        if (meta instanceof final BookMeta bookMeta) {
-            if (bookMeta.hasAuthor()) {
-                author = " author:" + bookMeta.getAuthor().replace(" ", "_");
-            }
-            if (bookMeta.hasTitle()) {
-                title = " title:" + bookMeta.getTitle().replace(" ", "_");
-            }
-            if (bookMeta.hasPages()) {
-                final StringBuilder strBldr = new StringBuilder();
-                for (final String page : bookMeta.getPages()) {
-                    String processedPage = page;
-                    if (processedPage.startsWith("\"") && processedPage.endsWith("\"")) {
-                        processedPage = processedPage.substring(1, processedPage.length() - 1);
-                    }
-                    // this will remove black color code between lines
-                    // Bukkit is adding it for some reason (probably to mess people's code)
-                    strBldr.append(processedPage.replace(" ", "_").replaceAll("(§0)?\\n(§0)?", "\\\\n")).append('|');
-                }
-                text = " text:" + strBldr.substring(0, strBldr.length() - 1);
-            }
-        }
+        book = meta instanceof final BookMeta bookMeta ? BookHandler.serializeToString(bookMeta) : "";
         if (meta instanceof final PotionMeta potionMeta) {
             effects = PotionHandler.metaToString(potionMeta);
         }
@@ -283,7 +261,7 @@ public class QuestItem {
             flags = " flags:" + String.join(",", meta.getItemFlags().stream().map(ItemFlag::name).sorted().toList());
         }
         // put it all together in a single string
-        return item.getType() + durability + name + lore + enchants + title + author + text
+        return item.getType() + durability + name + lore + enchants + book
                 + effects + color + skull + firework + unbreakable + customModelData + flags;
     }
 
@@ -406,16 +384,8 @@ public class QuestItem {
         if (meta instanceof final PotionMeta potionMeta && !potion.checkMeta(potionMeta)) {
             return false;
         }
-        if (meta instanceof final BookMeta bookMeta) {
-            if (!book.checkTitle(bookMeta.getTitle())) {
-                return false;
-            }
-            if (!book.checkAuthor(bookMeta.getAuthor())) {
-                return false;
-            }
-            if (!book.checkText(bookMeta.getPages())) {
-                return false;
-            }
+        if (meta instanceof final BookMeta bookMeta && !book.check(bookMeta)) {
+            return false;
         }
         if (meta instanceof final SkullMeta skullMeta && !head.check(skullMeta)) {
             return false;
@@ -490,9 +460,7 @@ public class QuestItem {
             }
         }
         if (meta instanceof final BookMeta bookMeta) {
-            bookMeta.setTitle(book.getTitle());
-            bookMeta.setAuthor(book.getAuthor());
-            bookMeta.setPages(book.getText());
+            book.set(bookMeta);
         }
         if (meta instanceof SkullMeta) {
             head.populate((SkullMeta) meta, profile);

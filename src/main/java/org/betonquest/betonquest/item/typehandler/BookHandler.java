@@ -5,12 +5,13 @@ import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.item.QuestItem.Existence;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.ChatColor;
+import org.bukkit.inventory.meta.BookMeta;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings({"PMD.DataClass", "PMD.CommentRequired"})
+@SuppressWarnings("PMD.CommentRequired")
 public class BookHandler {
     private String title = Config.getMessage(Config.getLanguage(), "unknown_title");
 
@@ -25,6 +26,54 @@ public class BookHandler {
     private Existence textE = Existence.WHATEVER;
 
     public BookHandler() {
+    }
+
+    /**
+     * Converts the item meta into QuestItem format.
+     *
+     * @param bookMeta the meta to serialize
+     * @return parsed values with leading space or empty string
+     */
+    public static String serializeToString(final BookMeta bookMeta) {
+        final String author;
+        final String title;
+        final String text;
+        if (bookMeta.hasAuthor()) {
+            author = " author:" + bookMeta.getAuthor().replace(" ", "_");
+        } else {
+            author = "";
+        }
+        if (bookMeta.hasTitle()) {
+            title = " title:" + bookMeta.getTitle().replace(" ", "_");
+        } else {
+            title = "";
+        }
+        if (bookMeta.hasPages()) {
+            final StringBuilder strBldr = new StringBuilder();
+            for (final String page : bookMeta.getPages()) {
+                String processedPage = page;
+                if (processedPage.startsWith("\"") && processedPage.endsWith("\"")) {
+                    processedPage = processedPage.substring(1, processedPage.length() - 1);
+                }
+                // this will remove black color code between lines
+                // Bukkit is adding it for some reason (probably to mess people's code)
+                strBldr.append(processedPage.replace(" ", "_").replaceAll("(§0)?\\n(§0)?", "\\\\n")).append('|');
+            }
+            text = " text:" + strBldr.substring(0, strBldr.length() - 1);
+        } else {
+            text = "";
+        }
+        return author + title + text;
+    }
+
+    public void set(final BookMeta bookMeta) {
+        bookMeta.setTitle(getTitle());
+        bookMeta.setAuthor(getAuthor());
+        bookMeta.setPages(getText());
+    }
+
+    public boolean check(final BookMeta bookMeta) {
+        return checkTitle(bookMeta.getTitle()) && checkAuthor(bookMeta.getAuthor()) && checkText(bookMeta.getPages());
     }
 
     public String getTitle() {
@@ -121,5 +170,4 @@ public class BookHandler {
         }
         return true;
     }
-
 }
