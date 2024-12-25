@@ -28,7 +28,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.FireworkEffectMeta;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -42,7 +41,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -120,8 +118,7 @@ public class QuestItem {
 
             switch (argumentName) {
                 case "durability" -> durability.set(argumentName, data);
-                case "enchants" -> enchants.set(data);
-                case "enchants-containing" -> enchants.setNotExact();
+                case "enchants", "enchants-containing" -> enchants.set(argumentName, data);
                 case "name" -> name.set(data);
                 case "lore" -> lore.set(data);
                 case "lore-containing" -> lore.setNotExact();
@@ -174,7 +171,7 @@ public class QuestItem {
         final String durability;
         String name = "";
         String lore = "";
-        String enchants = "";
+        final String enchants;
         final String book;
         String effects = "";
         String color = "";
@@ -194,13 +191,7 @@ public class QuestItem {
             }
             lore = " lore:" + string.substring(0, string.length() - 1).replace(" ", "_").replace("§", "&");
         }
-        if (meta.hasEnchants()) {
-            final StringBuilder string = new StringBuilder();
-            for (final Enchantment enchant : meta.getEnchants().keySet()) {
-                string.append(enchant.getName()).append(':').append(meta.getEnchants().get(enchant)).append(',');
-            }
-            enchants = " enchants:" + string.substring(0, string.length() - 1);
-        }
+        enchants = EnchantmentsHandler.serializeToString(meta);
         unbreakable = UnbreakableHandler.serializeToString(meta);
         if (meta.hasCustomModelData()) {
             customModelData = " custom-model-data:" + meta.getCustomModelData();
@@ -213,13 +204,6 @@ public class QuestItem {
                 && !armorMeta.getColor().equals(Bukkit.getServer().getItemFactory().getDefaultLeatherColor())) {
             final DyeColor dyeColor = DyeColor.getByColor(armorMeta.getColor());
             color = " color:" + (dyeColor == null ? '#' + Integer.toHexString(armorMeta.getColor().asRGB()) : dyeColor.toString());
-        }
-        if (meta instanceof final EnchantmentStorageMeta storageMeta && storageMeta.hasStoredEnchants()) {
-            final StringBuilder string = new StringBuilder();
-            for (final Enchantment enchant : storageMeta.getStoredEnchants().keySet()) {
-                string.append(enchant.getName()).append(':').append(storageMeta.getStoredEnchants().get(enchant)).append(',');
-            }
-            enchants = " enchants:" + string.substring(0, string.length() - 1);
         }
         skull = meta instanceof SkullMeta ? HeadHandler.serializeSkullMeta((SkullMeta) meta) : "";
         if (meta instanceof final FireworkMeta fireworkMeta && fireworkMeta.hasEffects()) {
@@ -326,14 +310,8 @@ public class QuestItem {
             return false;
         }
         // advanced meta checks
-        if (meta instanceof final EnchantmentStorageMeta enchantMeta) {
-            if (!enchants.check(enchantMeta.getStoredEnchants())) {
-                return false;
-            }
-        } else {
-            if (!enchants.check(item.getEnchantments())) {
-                return false;
-            }
+        if (!enchants.check(meta)) {
+            return false;
         }
         if (meta instanceof final PotionMeta potionMeta && !potion.checkMeta(potionMeta)) {
             return false;
@@ -390,18 +368,7 @@ public class QuestItem {
         if (customModelData.getExistence() == Existence.REQUIRED) {
             meta.setCustomModelData(customModelData.get());
         }
-        if (meta instanceof final EnchantmentStorageMeta enchantMeta) {
-            // why no bulk adding method?!
-            final Map<Enchantment, Integer> map = enchants.get();
-            for (final Entry<Enchantment, Integer> e : map.entrySet()) {
-                enchantMeta.addStoredEnchant(e.getKey(), e.getValue(), true);
-            }
-        } else {
-            final Map<Enchantment, Integer> map = enchants.get();
-            for (final Entry<Enchantment, Integer> e : map.entrySet()) {
-                meta.addEnchant(e.getKey(), e.getValue(), true);
-            }
-        }
+        enchants.populate(meta);
         if (meta instanceof final PotionMeta potionMeta) {
             potionMeta.setBasePotionData(potion.getBase());
             for (final PotionEffect effect : potion.getCustom()) {
