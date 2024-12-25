@@ -152,9 +152,8 @@ public class QuestItem {
                 }
                 case "effects" -> potion.setCustom(data);
                 case "effects-containing" -> potion.setNotExact();
-                case HeadHandler.META_OWNER -> head.setOwner(data);
-                case HeadHandler.META_PLAYER_ID -> head.setPlayerId(data);
-                case HeadHandler.META_TEXTURE -> head.setTexture(data);
+                case HeadHandler.META_OWNER, HeadHandler.META_PLAYER_ID, HeadHandler.META_TEXTURE ->
+                        head.set(argumentName, data);
                 case "color" -> color.set(data);
                 case "firework", "power", "firework-containing" -> firework.set(argumentName, data);
                 case "flags" -> flags.parse(data);
@@ -185,7 +184,7 @@ public class QuestItem {
         final String book;
         String effects = "";
         String color = "";
-        String skull = "";
+        final String skull;
         String firework = "";
         String unbreakable = "";
         String customModelData = "";
@@ -232,9 +231,7 @@ public class QuestItem {
             }
             enchants = " enchants:" + string.substring(0, string.length() - 1);
         }
-        if (meta instanceof SkullMeta) {
-            skull = HeadHandler.serializeSkullMeta((SkullMeta) meta);
-        }
+        skull = meta instanceof SkullMeta ? HeadHandler.serializeSkullMeta((SkullMeta) meta) : "";
         if (meta instanceof final FireworkMeta fireworkMeta && fireworkMeta.hasEffects()) {
             firework = FireworkHandler.serializeToString(fireworkMeta);
         }
