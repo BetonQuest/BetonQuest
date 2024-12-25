@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
+import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.inventory.meta.ItemMeta;
 
 /**
@@ -26,8 +27,9 @@ public interface ItemMetaHandler<M extends ItemMeta> {
      *
      * @param key  the lower case key
      * @param data the associated data
+     * @throws InstructionParseException if the data is malformed
      */
-    void set(String key, String data);
+    void set(String key, String data) throws InstructionParseException;
 
     /**
      * Reconstitute this Handler data into the specified meta.
