@@ -134,9 +134,7 @@ public class QuestItem {
                 }
                 case "custom-model-data" -> customModelData.parse(data);
                 case "no-custom-model-data" -> customModelData.forbid();
-                case "title" -> book.setTitle(data);
-                case "author" -> book.setAuthor(data);
-                case "text" -> book.setText(data);
+                case "title", "author", "text" -> book.set(argumentName, data);
                 case "type" -> potion.setType(data);
                 case "extended" -> {
                     if ("extended".equals(data)) {
@@ -460,7 +458,7 @@ public class QuestItem {
             }
         }
         if (meta instanceof final BookMeta bookMeta) {
-            book.set(bookMeta);
+            book.populate(bookMeta);
         }
         if (meta instanceof SkullMeta) {
             head.populate((SkullMeta) meta, profile);

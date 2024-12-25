@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("PMD.CommentRequired")
-public class BookHandler {
+public class BookHandler implements ItemMetaHandler<BookMeta> {
     private String title = Config.getMessage(Config.getLanguage(), "unknown_title");
 
     private Existence titleE = Existence.WHATEVER;
@@ -66,12 +66,25 @@ public class BookHandler {
         return author + title + text;
     }
 
-    public void set(final BookMeta bookMeta) {
+    @Override
+    public void set(final String key, final String data) {
+        switch (key) {
+            case "title" -> setTitle(data);
+            case "author" -> setAuthor(data);
+            case "text" -> setText(data);
+            default -> {
+            }
+        }
+    }
+
+    @Override
+    public void populate(final BookMeta bookMeta) {
         bookMeta.setTitle(getTitle());
         bookMeta.setAuthor(getAuthor());
         bookMeta.setPages(getText());
     }
 
+    @Override
     public boolean check(final BookMeta bookMeta) {
         return checkTitle(bookMeta.getTitle()) && checkAuthor(bookMeta.getAuthor()) && checkText(bookMeta.getPages());
     }
