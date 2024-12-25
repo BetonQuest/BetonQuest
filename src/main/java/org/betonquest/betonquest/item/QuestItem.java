@@ -156,9 +156,7 @@ public class QuestItem {
                 case HeadHandler.META_PLAYER_ID -> head.setPlayerId(data);
                 case HeadHandler.META_TEXTURE -> head.setTexture(data);
                 case "color" -> color.set(data);
-                case "firework" -> firework.setEffects(data);
-                case "power" -> firework.setPower(data);
-                case "firework-containing" -> firework.setNotExact();
+                case "firework", "power", "firework-containing" -> firework.set(argumentName, data);
                 case "flags" -> flags.parse(data);
                 //catch empty string caused by multiple whitespaces in instruction split
                 case "" -> {
@@ -238,22 +236,10 @@ public class QuestItem {
             skull = HeadHandler.serializeSkullMeta((SkullMeta) meta);
         }
         if (meta instanceof final FireworkMeta fireworkMeta && fireworkMeta.hasEffects()) {
-            final StringBuilder builder = new StringBuilder(17);
-            builder.append(" firework:");
-            for (final FireworkEffect effect : fireworkMeta.getEffects()) {
-                appendFireworkEffect(builder, effect);
-                builder.append(',');
-            }
-            builder.setLength(Math.max(builder.length() - 1, 0));
-            builder.append(" power:").append(fireworkMeta.getPower());
-            firework = builder.toString();
+            firework = FireworkHandler.serializeToString(fireworkMeta);
         }
         if (meta instanceof final FireworkEffectMeta fireworkMeta && fireworkMeta.hasEffect()) {
-            final FireworkEffect effect = fireworkMeta.getEffect();
-            final StringBuilder builder = new StringBuilder();
-            builder.append(" firework:");
-            appendFireworkEffect(builder, effect);
-            firework = builder.toString();
+            firework = FireworkHandler.serializeToString(fireworkMeta);
         }
         if (!meta.getItemFlags().isEmpty()) {
             flags = " flags:" + String.join(",", meta.getItemFlags().stream().map(ItemFlag::name).sorted().toList());
@@ -261,23 +247,6 @@ public class QuestItem {
         // put it all together in a single string
         return item.getType() + durability + name + lore + enchants + book
                 + effects + color + skull + firework + unbreakable + customModelData + flags;
-    }
-
-    private static void appendFireworkEffect(final StringBuilder builder, final FireworkEffect effect) {
-        builder.append(effect.getType()).append(':');
-        for (final Color c : effect.getColors()) {
-            final DyeColor dye = DyeColor.getByFireworkColor(c);
-            builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(';');
-        }
-        // remove last semicolon
-        builder.setLength(Math.max(builder.length() - 1, 0));
-        builder.append(':');
-        for (final Color c : effect.getFadeColors()) {
-            final DyeColor dye = DyeColor.getByFireworkColor(c);
-            builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(';');
-        }
-        builder.setLength(Math.max(builder.length() - 1, 0));
-        builder.append(':').append(effect.hasTrail()).append(':').append(effect.hasFlicker());
     }
 
     /**
@@ -391,16 +360,11 @@ public class QuestItem {
         if (meta instanceof final LeatherArmorMeta armorMeta && !color.check(armorMeta.getColor())) {
             return false;
         }
-        if (meta instanceof final FireworkMeta fireworkMeta) {
-            if (!firework.checkEffects(fireworkMeta.getEffects())) {
-                return false;
-            }
-            if (!firework.checkPower(fireworkMeta.getPower())) {
-                return false;
-            }
+        if (meta instanceof final FireworkMeta fireworkMeta && !firework.check(fireworkMeta)) {
+            return false;
         }
         if (meta instanceof final FireworkEffectMeta fireworkMeta) {
-            return firework.checkSingleEffect(fireworkMeta.getEffect());
+            return firework.check(fireworkMeta);
         }
         return true;
     }
@@ -467,12 +431,10 @@ public class QuestItem {
             armorMeta.setColor(color.get());
         }
         if (meta instanceof final FireworkMeta fireworkMeta) {
-            fireworkMeta.addEffects(firework.getEffects());
-            fireworkMeta.setPower(firework.getPower());
+            firework.populate(fireworkMeta);
         }
         if (meta instanceof final FireworkEffectMeta fireworkMeta) {
-            final List<FireworkEffect> list = firework.getEffects();
-            fireworkMeta.setEffect(list.isEmpty() ? null : list.get(0));
+            firework.populate(fireworkMeta);
         }
         if (meta instanceof final Damageable damageableMeta) {
             damageableMeta.setDamage(getDurability());
