@@ -6,6 +6,8 @@ import org.betonquest.betonquest.item.QuestItem.Existence;
 import org.betonquest.betonquest.item.QuestItem.Number;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -15,7 +17,7 @@ import java.util.Locale;
 import java.util.Map;
 
 @SuppressWarnings("PMD.CommentRequired")
-public class EnchantmentsHandler {
+public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
     private List<SingleEnchantmentHandler> checkers = new ArrayList<>();
 
     private Existence checkersE = Existence.WHATEVER;
@@ -23,6 +25,67 @@ public class EnchantmentsHandler {
     private boolean exact = true;
 
     public EnchantmentsHandler() {
+    }
+
+    /**
+     * Converts the item meta into QuestItem format.
+     *
+     * @param meta the meta to serialize
+     * @return parsed values with leading space or empty string
+     */
+    public static String serializeToString(final ItemMeta meta) {
+        if (meta instanceof final EnchantmentStorageMeta storageMeta) {
+            if (!storageMeta.hasStoredEnchants()) {
+                return "";
+            }
+            final StringBuilder string = new StringBuilder();
+            for (final Enchantment enchant : storageMeta.getStoredEnchants().keySet()) {
+                string.append(enchant.getName()).append(':').append(storageMeta.getStoredEnchants().get(enchant)).append(',');
+            }
+            return " enchants:" + string.substring(0, string.length() - 1);
+        }
+        if (!meta.hasEnchants()) {
+            return "";
+        }
+        final StringBuilder string = new StringBuilder();
+        for (final Enchantment enchant : meta.getEnchants().keySet()) {
+            string.append(enchant.getName()).append(':').append(meta.getEnchants().get(enchant)).append(',');
+        }
+        return " enchants:" + string.substring(0, string.length() - 1);
+    }
+
+    @Override
+    public void set(final String key, final String data) throws InstructionParseException {
+        switch (key) {
+            case "enchants" -> set(data);
+            case "enchants-containing" -> setNotExact();
+            default -> throw new InstructionParseException("Unknown enchantment key: " + key);
+        }
+    }
+
+    @Override
+    public void populate(final ItemMeta meta) {
+        if (meta instanceof final EnchantmentStorageMeta enchantMeta) {
+            // why no bulk adding method?!
+            final Map<Enchantment, Integer> map = get();
+            for (final Map.Entry<Enchantment, Integer> e : map.entrySet()) {
+                enchantMeta.addStoredEnchant(e.getKey(), e.getValue(), true);
+            }
+        } else {
+            final Map<Enchantment, Integer> map = get();
+            for (final Map.Entry<Enchantment, Integer> e : map.entrySet()) {
+                meta.addEnchant(e.getKey(), e.getValue(), true);
+            }
+        }
+    }
+
+    @Override
+    public boolean check(final ItemMeta meta) {
+        if (meta instanceof final EnchantmentStorageMeta enchantMeta) {
+            return check(enchantMeta.getStoredEnchants());
+        } else {
+            return check(meta.getEnchants());
+        }
     }
 
     public void set(final String enchants) throws InstructionParseException {
@@ -128,7 +191,5 @@ public class EnchantmentsHandler {
                 case WHATEVER -> true;
             };
         }
-
     }
-
 }
