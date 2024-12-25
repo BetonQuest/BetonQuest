@@ -178,6 +178,10 @@ public class QuestItem {
      */
     @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity"})
     public static String itemToString(final ItemStack item) {
+        final ItemMeta meta = item.getItemMeta();
+        if (meta == null) {
+            return item.getType().toString();
+        }
         String durability = "";
         String name = "";
         String lore = "";
@@ -192,94 +196,91 @@ public class QuestItem {
         String unbreakable = "";
         String customModelData = "";
         String flags = "";
-        final ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            if (meta instanceof final Damageable damageable) {
-                durability = " durability:" + damageable.getDamage();
+        if (meta instanceof final Damageable damageable) {
+            durability = " durability:" + damageable.getDamage();
+        }
+        if (meta.hasDisplayName()) {
+            name = " name:" + meta.getDisplayName().replace(" ", "_");
+        }
+        if (meta.hasLore()) {
+            final StringBuilder string = new StringBuilder();
+            for (final String line : meta.getLore()) {
+                string.append(line).append(';');
             }
-            if (meta.hasDisplayName()) {
-                name = " name:" + meta.getDisplayName().replace(" ", "_");
+            lore = " lore:" + string.substring(0, string.length() - 1).replace(" ", "_").replace("§", "&");
+        }
+        if (meta.hasEnchants()) {
+            final StringBuilder string = new StringBuilder();
+            for (final Enchantment enchant : meta.getEnchants().keySet()) {
+                string.append(enchant.getName()).append(':').append(meta.getEnchants().get(enchant)).append(',');
             }
-            if (meta.hasLore()) {
-                final StringBuilder string = new StringBuilder();
-                for (final String line : meta.getLore()) {
-                    string.append(line).append(';');
-                }
-                lore = " lore:" + string.substring(0, string.length() - 1).replace(" ", "_").replace("§", "&");
+            enchants = " enchants:" + string.substring(0, string.length() - 1);
+        }
+        if (meta.isUnbreakable()) {
+            unbreakable = " unbreakable";
+        }
+        if (meta.hasCustomModelData()) {
+            customModelData = " custom-model-data:" + meta.getCustomModelData();
+        }
+        if (meta instanceof final BookMeta bookMeta) {
+            if (bookMeta.hasAuthor()) {
+                author = " author:" + bookMeta.getAuthor().replace(" ", "_");
             }
-            if (meta.hasEnchants()) {
-                final StringBuilder string = new StringBuilder();
-                for (final Enchantment enchant : meta.getEnchants().keySet()) {
-                    string.append(enchant.getName()).append(':').append(meta.getEnchants().get(enchant)).append(',');
-                }
-                enchants = " enchants:" + string.substring(0, string.length() - 1);
+            if (bookMeta.hasTitle()) {
+                title = " title:" + bookMeta.getTitle().replace(" ", "_");
             }
-            if (meta.isUnbreakable()) {
-                unbreakable = " unbreakable";
-            }
-            if (meta.hasCustomModelData()) {
-                customModelData = " custom-model-data:" + meta.getCustomModelData();
-            }
-            if (meta instanceof final BookMeta bookMeta) {
-                if (bookMeta.hasAuthor()) {
-                    author = " author:" + bookMeta.getAuthor().replace(" ", "_");
-                }
-                if (bookMeta.hasTitle()) {
-                    title = " title:" + bookMeta.getTitle().replace(" ", "_");
-                }
-                if (bookMeta.hasPages()) {
-                    final StringBuilder strBldr = new StringBuilder();
-                    for (final String page : bookMeta.getPages()) {
-                        String processedPage = page;
-                        if (processedPage.startsWith("\"") && processedPage.endsWith("\"")) {
-                            processedPage = processedPage.substring(1, processedPage.length() - 1);
-                        }
-                        // this will remove black color code between lines
-                        // Bukkit is adding it for some reason (probably to mess people's code)
-                        strBldr.append(processedPage.replace(" ", "_").replaceAll("(§0)?\\n(§0)?", "\\\\n")).append('|');
+            if (bookMeta.hasPages()) {
+                final StringBuilder strBldr = new StringBuilder();
+                for (final String page : bookMeta.getPages()) {
+                    String processedPage = page;
+                    if (processedPage.startsWith("\"") && processedPage.endsWith("\"")) {
+                        processedPage = processedPage.substring(1, processedPage.length() - 1);
                     }
-                    text = " text:" + strBldr.substring(0, strBldr.length() - 1);
+                    // this will remove black color code between lines
+                    // Bukkit is adding it for some reason (probably to mess people's code)
+                    strBldr.append(processedPage.replace(" ", "_").replaceAll("(§0)?\\n(§0)?", "\\\\n")).append('|');
                 }
+                text = " text:" + strBldr.substring(0, strBldr.length() - 1);
             }
-            if (meta instanceof final PotionMeta potionMeta) {
-                effects = PotionHandler.metaToString(potionMeta);
+        }
+        if (meta instanceof final PotionMeta potionMeta) {
+            effects = PotionHandler.metaToString(potionMeta);
+        }
+        if (meta instanceof final LeatherArmorMeta armorMeta
+                && !armorMeta.getColor().equals(Bukkit.getServer().getItemFactory().getDefaultLeatherColor())) {
+            final DyeColor dyeColor = DyeColor.getByColor(armorMeta.getColor());
+            color = " color:" + (dyeColor == null ? '#' + Integer.toHexString(armorMeta.getColor().asRGB()) : dyeColor.toString());
+        }
+        if (meta instanceof final EnchantmentStorageMeta storageMeta && storageMeta.hasStoredEnchants()) {
+            final StringBuilder string = new StringBuilder();
+            for (final Enchantment enchant : storageMeta.getStoredEnchants().keySet()) {
+                string.append(enchant.getName()).append(':').append(storageMeta.getStoredEnchants().get(enchant)).append(',');
             }
-            if (meta instanceof final LeatherArmorMeta armorMeta
-                    && !armorMeta.getColor().equals(Bukkit.getServer().getItemFactory().getDefaultLeatherColor())) {
-                final DyeColor dyeColor = DyeColor.getByColor(armorMeta.getColor());
-                color = " color:" + (dyeColor == null ? '#' + Integer.toHexString(armorMeta.getColor().asRGB()) : dyeColor.toString());
-            }
-            if (meta instanceof final EnchantmentStorageMeta storageMeta && storageMeta.hasStoredEnchants()) {
-                final StringBuilder string = new StringBuilder();
-                for (final Enchantment enchant : storageMeta.getStoredEnchants().keySet()) {
-                    string.append(enchant.getName()).append(':').append(storageMeta.getStoredEnchants().get(enchant)).append(',');
-                }
-                enchants = " enchants:" + string.substring(0, string.length() - 1);
-            }
-            if (meta instanceof SkullMeta) {
-                skull = HeadHandler.serializeSkullMeta((SkullMeta) meta);
-            }
-            if (meta instanceof final FireworkMeta fireworkMeta && fireworkMeta.hasEffects()) {
-                final StringBuilder builder = new StringBuilder(17);
-                builder.append(" firework:");
-                for (final FireworkEffect effect : fireworkMeta.getEffects()) {
-                    appendFireworkEffect(builder, effect);
-                    builder.append(',');
-                }
-                builder.setLength(Math.max(builder.length() - 1, 0));
-                builder.append(" power:").append(fireworkMeta.getPower());
-                firework = builder.toString();
-            }
-            if (meta instanceof final FireworkEffectMeta fireworkMeta && fireworkMeta.hasEffect()) {
-                final FireworkEffect effect = fireworkMeta.getEffect();
-                final StringBuilder builder = new StringBuilder();
-                builder.append(" firework:");
+            enchants = " enchants:" + string.substring(0, string.length() - 1);
+        }
+        if (meta instanceof SkullMeta) {
+            skull = HeadHandler.serializeSkullMeta((SkullMeta) meta);
+        }
+        if (meta instanceof final FireworkMeta fireworkMeta && fireworkMeta.hasEffects()) {
+            final StringBuilder builder = new StringBuilder(17);
+            builder.append(" firework:");
+            for (final FireworkEffect effect : fireworkMeta.getEffects()) {
                 appendFireworkEffect(builder, effect);
-                firework = builder.toString();
+                builder.append(',');
             }
-            if (!meta.getItemFlags().isEmpty()) {
-                flags = " flags:" + String.join(",", meta.getItemFlags().stream().map(ItemFlag::name).sorted().toList());
-            }
+            builder.setLength(Math.max(builder.length() - 1, 0));
+            builder.append(" power:").append(fireworkMeta.getPower());
+            firework = builder.toString();
+        }
+        if (meta instanceof final FireworkEffectMeta fireworkMeta && fireworkMeta.hasEffect()) {
+            final FireworkEffect effect = fireworkMeta.getEffect();
+            final StringBuilder builder = new StringBuilder();
+            builder.append(" firework:");
+            appendFireworkEffect(builder, effect);
+            firework = builder.toString();
+        }
+        if (!meta.getItemFlags().isEmpty()) {
+            flags = " flags:" + String.join(",", meta.getItemFlags().stream().map(ItemFlag::name).sorted().toList());
         }
         // put it all together in a single string
         return item.getType() + durability + name + lore + enchants + title + author + text
