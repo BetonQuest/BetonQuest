@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -98,7 +99,7 @@ public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
      * @param skullMeta The SkullMeta data to serialize.
      * @return A String representation of the SkullMeta data.
      */
-    public static String serializeToString(final SkullMeta skullMeta) {
+    public static String serializeSkullMeta(final SkullMeta skullMeta) {
         final Map<String, String> props;
         if (PaperLib.isPaper()) {
             props = PaperHeadHandler.parseSkullMeta(skullMeta);
@@ -108,6 +109,21 @@ public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
         return props.entrySet().stream()
                 .map(it -> it.getKey() + ":" + it.getValue())
                 .collect(Collectors.joining(" ", " ", ""));
+    }
+
+    @Override
+    public Class<SkullMeta> metaClass() {
+        return SkullMeta.class;
+    }
+
+    @Override
+    public Set<String> keys() {
+        return Set.of(META_OWNER, META_PLAYER_ID, META_TEXTURE);
+    }
+
+    @Override
+    public String serializeToString(final SkullMeta meta) {
+        return serializeSkullMeta(meta);
     }
 
     @Override

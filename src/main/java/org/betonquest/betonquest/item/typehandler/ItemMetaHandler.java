@@ -5,6 +5,8 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
+
 /**
  * Handles de/-serialization of ItemMeta from/into QuestItem string format.
  *
@@ -17,6 +19,13 @@ public interface ItemMetaHandler<M extends ItemMeta> {
      * @return the ItemMeta class for the Handler
      */
     Class<M> metaClass();
+
+    /**
+     * The keys this handler allows in {@link #set(String, String)} which are used for data identification.
+     *
+     * @return keys in lower case
+     */
+    Set<String> keys();
 
     /**
      * Converts the meta into QuestItem format.
