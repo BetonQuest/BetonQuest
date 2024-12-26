@@ -18,9 +18,7 @@ import org.betonquest.betonquest.item.typehandler.NameHandler;
 import org.betonquest.betonquest.item.typehandler.PotionHandler;
 import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
 import org.betonquest.betonquest.utils.BlockSelector;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
-import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -128,7 +126,7 @@ public class QuestItem {
                 case "type", "extended", "upgraded", "effects", "effects-containing" -> potion.set(argumentName, data);
                 case HeadHandler.META_OWNER, HeadHandler.META_PLAYER_ID, HeadHandler.META_TEXTURE ->
                         head.set(argumentName, data);
-                case "color" -> color.set(data);
+                case "color" -> color.set(argumentName, data);
                 case "firework", "power", "firework-containing" -> firework.set(argumentName, data);
                 case "flags" -> flags.parse(data);
                 //catch empty string caused by multiple whitespaces in instruction split
@@ -157,7 +155,7 @@ public class QuestItem {
         final String enchants;
         final String book;
         final String effects;
-        String color = "";
+        final String color;
         final String skull;
         String firework = "";
         final String unbreakable;
@@ -179,11 +177,7 @@ public class QuestItem {
         customModelData = CustomModelDataHandler.serializeToString(meta);
         book = meta instanceof final BookMeta bookMeta ? BookHandler.serializeToString(bookMeta) : "";
         effects = meta instanceof final PotionMeta potionMeta ? PotionHandler.serializeToString(potionMeta) : "";
-        if (meta instanceof final LeatherArmorMeta armorMeta
-                && !armorMeta.getColor().equals(Bukkit.getServer().getItemFactory().getDefaultLeatherColor())) {
-            final DyeColor dyeColor = DyeColor.getByColor(armorMeta.getColor());
-            color = " color:" + (dyeColor == null ? '#' + Integer.toHexString(armorMeta.getColor().asRGB()) : dyeColor.toString());
-        }
+        color = meta instanceof final LeatherArmorMeta armorMeta ? ColorHandler.serializeToString(armorMeta) : "";
         skull = meta instanceof SkullMeta ? HeadHandler.serializeSkullMeta((SkullMeta) meta) : "";
         if (meta instanceof final FireworkMeta fireworkMeta && fireworkMeta.hasEffects()) {
             firework = FireworkHandler.serializeToString(fireworkMeta);
@@ -301,7 +295,7 @@ public class QuestItem {
         if (meta instanceof final SkullMeta skullMeta && !head.check(skullMeta)) {
             return false;
         }
-        if (meta instanceof final LeatherArmorMeta armorMeta && !color.check(armorMeta.getColor())) {
+        if (meta instanceof final LeatherArmorMeta armorMeta && !color.check(armorMeta)) {
             return false;
         }
         if (meta instanceof final FireworkMeta fireworkMeta && !firework.check(fireworkMeta)) {
@@ -356,7 +350,7 @@ public class QuestItem {
             head.populate((SkullMeta) meta, profile);
         }
         if (meta instanceof final LeatherArmorMeta armorMeta) {
-            armorMeta.setColor(color.get());
+            color.populate(armorMeta);
         }
         if (meta instanceof final FireworkMeta fireworkMeta) {
             firework.populate(fireworkMeta);
