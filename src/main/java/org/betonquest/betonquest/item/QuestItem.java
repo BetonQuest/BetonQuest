@@ -13,29 +13,25 @@ import org.betonquest.betonquest.item.typehandler.FireworkHandler;
 import org.betonquest.betonquest.item.typehandler.FlagHandler;
 import org.betonquest.betonquest.item.typehandler.HandlerUtil;
 import org.betonquest.betonquest.item.typehandler.HeadHandler;
+import org.betonquest.betonquest.item.typehandler.ItemMetaHandler;
 import org.betonquest.betonquest.item.typehandler.LoreHandler;
 import org.betonquest.betonquest.item.typehandler.NameHandler;
 import org.betonquest.betonquest.item.typehandler.PotionHandler;
 import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
 import org.betonquest.betonquest.utils.BlockSelector;
+import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BookMeta;
-import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.FireworkEffectMeta;
-import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -50,6 +46,15 @@ import java.util.UUID;
         "PMD.CouplingBetweenObjects"})
 public class QuestItem {
     public static final String NONE_KEY = "none";
+
+    /**
+     * Static Handlers for the {@link #itemToString(ItemStack)} method.
+     */
+    private static final List<ItemMetaHandler<? extends ItemMeta>> STATIC_HANDLERS = List.of(
+            new DurabilityHandler(), new NameHandler(), new LoreHandler(), new EnchantmentsHandler(),
+            new BookHandler(), new PotionHandler(), new ColorHandler(), HeadHandler.getServerInstance(),
+            new FireworkHandler(), new UnbreakableHandler(), new CustomModelDataHandler(), new FlagHandler()
+    );
 
     private final BlockSelector selector;
 
@@ -76,6 +81,13 @@ public class QuestItem {
     private final CustomModelDataHandler customModelData = new CustomModelDataHandler();
 
     private final FlagHandler flags = new FlagHandler();
+
+    /**
+     * Handler in the order of {@link #itemToString(ItemStack)}.
+     */
+    private final List<ItemMetaHandler<? extends ItemMeta>> handlers = List.of(
+            durability, name, lore, enchants, book, potion,
+            color, head, firework, unbreakable, customModelData, flags);
 
     /**
      * Creates new instance of the quest item using the ID.
@@ -108,31 +120,25 @@ public class QuestItem {
         final String[] parts = HandlerUtil.getNNSplit(instruction, "Item instruction is null", " ");
         selector = new BlockSelector(parts[0]);
 
+        final Map<String, ItemMetaHandler<?>> keyToHandler = new HashMap<>();
+        for (final ItemMetaHandler<?> handler : handlers) {
+            for (final String key : handler.keys()) {
+                keyToHandler.put(key, handler);
+            }
+        }
+
         // Skip the block selector part to process remaining arguments
         for (int i = 1; i < parts.length; i++) {
             final String part = parts[i];
+            if (part.isEmpty()) {
+                continue; //catch empty string caused by multiple whitespaces in instruction split
+            }
+
             final String argumentName = getArgumentName(part.toLowerCase(Locale.ROOT));
             final String data = getArgumentData(part);
 
-            switch (argumentName) {
-                case "durability" -> durability.set(argumentName, data);
-                case "enchants", "enchants-containing" -> enchants.set(argumentName, data);
-                case "name" -> name.set(argumentName, data);
-                case "lore", "lore-containing" -> lore.set(argumentName, data);
-                case "unbreakable" -> unbreakable.set(argumentName, data);
-                case "custom-model-data", "no-custom-model-data" -> customModelData.set(argumentName, data);
-                case "title", "author", "text" -> book.set(argumentName, data);
-                case "type", "extended", "upgraded", "effects", "effects-containing" -> potion.set(argumentName, data);
-                case HeadHandler.META_OWNER, HeadHandler.META_PLAYER_ID, HeadHandler.META_TEXTURE ->
-                        head.set(argumentName, data);
-                case "color" -> color.set(argumentName, data);
-                case "firework", "power", "firework-containing" -> firework.set(argumentName, data);
-                case "flags" -> flags.set(argumentName, data);
-                //catch empty string caused by multiple whitespaces in instruction split
-                case "" -> {
-                }
-                default -> throw new InstructionParseException("Unknown argument: " + argumentName);
-            }
+            final ItemMetaHandler<?> handler = Utils.getNN(keyToHandler.get(argumentName), "Unknown argument: " + argumentName);
+            handler.set(argumentName, data);
         }
     }
 
@@ -148,33 +154,13 @@ public class QuestItem {
         if (meta == null) {
             return item.getType().toString();
         }
-        final String durability;
-        final String name;
-        final String lore;
-        final String enchants;
-        final String book;
-        final String effects;
-        final String color;
-        final String skull;
-        final String firework;
-        final String unbreakable;
-        final String customModelData;
-        final String flags;
-        durability = meta instanceof final Damageable damageable ? DurabilityHandler.serializeToString(damageable) : "";
-        name = NameHandler.serializeToString(meta);
-        lore = LoreHandler.serializeToString(meta);
-        enchants = EnchantmentsHandler.serializeToString(meta);
-        unbreakable = UnbreakableHandler.serializeToString(meta);
-        customModelData = CustomModelDataHandler.serializeToString(meta);
-        book = meta instanceof final BookMeta bookMeta ? BookHandler.serializeToString(bookMeta) : "";
-        effects = meta instanceof final PotionMeta potionMeta ? PotionHandler.serializeToString(potionMeta) : "";
-        color = meta instanceof final LeatherArmorMeta armorMeta ? ColorHandler.serializeToString(armorMeta) : "";
-        skull = meta instanceof SkullMeta ? HeadHandler.serializeToString((SkullMeta) meta) : "";
-        firework = FireworkHandler.rawSerializeToString(meta);
-        flags = FlagHandler.serializeToString(meta);
-        // put it all together in a single string
-        return item.getType() + durability + name + lore + enchants + book
-                + effects + color + skull + firework + unbreakable + customModelData + flags;
+
+        final StringBuilder builder = new StringBuilder();
+        for (final ItemMetaHandler<? extends ItemMeta> staticHandler : STATIC_HANDLERS) {
+            builder.append(staticHandler.rawSerializeToString(meta));
+        }
+
+        return item.getType() + builder.toString();
     }
 
     /**
@@ -207,24 +193,12 @@ public class QuestItem {
         if (!(other instanceof final QuestItem item)) {
             return false;
         }
-        return item.selector.equals(selector)
-                && item.durability.equals(durability)
-                && item.unbreakable.equals(unbreakable)
-                && item.enchants.equals(enchants)
-                && item.lore.equals(lore)
-                && item.name.equals(name)
-                && item.potion.equals(potion)
-                && item.book.equals(book)
-                && item.head.equals(head)
-                && item.color.equals(color)
-                && item.firework.equals(firework)
-                && item.customModelData.equals(customModelData)
-                && item.flags.equals(flags);
+        return item.handlers.equals(handlers);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(selector, durability, name, lore, enchants, unbreakable, potion, book, head, color, firework, customModelData, flags);
+        return Objects.hash(selector, handlers);
     }
 
     /**
@@ -247,45 +221,16 @@ public class QuestItem {
         if (meta == null) {
             return true;
         }
-        if (meta instanceof final Damageable damageable && !durability.check(damageable)) {
-            return false;
-        }
-        if (!name.check(meta)) {
-            return false;
-        }
-        if (!lore.check(meta)) {
-            return false;
-        }
-        if (!unbreakable.check(meta)) {
-            return false;
-        }
-        if (!customModelData.check(meta)) {
-            return false;
-        }
-        if (!flags.check(meta)) {
-            return false;
-        }
-        // advanced meta checks
-        if (!enchants.check(meta)) {
-            return false;
-        }
-        if (meta instanceof final PotionMeta potionMeta && !potion.check(potionMeta)) {
-            return false;
-        }
-        if (meta instanceof final BookMeta bookMeta && !book.check(bookMeta)) {
-            return false;
-        }
-        if (meta instanceof final SkullMeta skullMeta && !head.check(skullMeta)) {
-            return false;
-        }
-        if (meta instanceof final LeatherArmorMeta armorMeta && !color.check(armorMeta)) {
-            return false;
-        }
-        if (meta instanceof final FireworkMeta fireworkMeta && !firework.check(fireworkMeta)) {
-            return false;
-        }
-        if (meta instanceof final FireworkEffectMeta fireworkMeta) {
-            return firework.check(fireworkMeta);
+
+        final List<ItemMetaHandler<? extends ItemMeta>> orderedCompare = List.of(
+                durability, customModelData, unbreakable, flags, name, lore,
+                enchants, potion, book, head, color, firework
+        );
+
+        for (final ItemMetaHandler<? extends ItemMeta> handler : orderedCompare) {
+            if (!handler.rawCheck(meta)) {
+                return false;
+            }
         }
         return true;
     }
@@ -317,28 +262,11 @@ public class QuestItem {
         if (meta == null) {
             return item;
         }
-        name.populate(meta);
-        lore.populate(meta);
-        unbreakable.populate(meta);
-        flags.populate(meta);
-        customModelData.populate(meta);
-        enchants.populate(meta);
-        if (meta instanceof final PotionMeta potionMeta) {
-            potion.populate(potionMeta);
+
+        for (final ItemMetaHandler<? extends ItemMeta> handler : handlers) {
+            handler.rawPopulate(meta, profile);
         }
-        if (meta instanceof final BookMeta bookMeta) {
-            book.populate(bookMeta);
-        }
-        if (meta instanceof SkullMeta) {
-            head.populate((SkullMeta) meta, profile);
-        }
-        if (meta instanceof final LeatherArmorMeta armorMeta) {
-            color.populate(armorMeta);
-        }
-        firework.rawPopulate(meta, profile);
-        if (meta instanceof final Damageable damageableMeta) {
-            durability.populate(damageableMeta);
-        }
+
         item.setItemMeta(meta);
         return item;
     }
