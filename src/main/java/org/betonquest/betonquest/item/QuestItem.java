@@ -123,8 +123,7 @@ public class QuestItem {
                 case "lore" -> lore.set(data);
                 case "lore-containing" -> lore.setNotExact();
                 case "unbreakable" -> unbreakable.set(argumentName, data);
-                case "custom-model-data" -> customModelData.parse(data);
-                case "no-custom-model-data" -> customModelData.forbid();
+                case "custom-model-data", "no-custom-model-data" -> customModelData.set(argumentName, data);
                 case "title", "author", "text" -> book.set(argumentName, data);
                 case "type" -> potion.setType(data);
                 case "extended" -> {
@@ -178,7 +177,7 @@ public class QuestItem {
         final String skull;
         String firework = "";
         final String unbreakable;
-        String customModelData = "";
+        final String customModelData;
         String flags = "";
         durability = meta instanceof final Damageable damageable ? DurabilityHandler.serializeToString(damageable) : "";
         if (meta.hasDisplayName()) {
@@ -193,9 +192,7 @@ public class QuestItem {
         }
         enchants = EnchantmentsHandler.serializeToString(meta);
         unbreakable = UnbreakableHandler.serializeToString(meta);
-        if (meta.hasCustomModelData()) {
-            customModelData = " custom-model-data:" + meta.getCustomModelData();
-        }
+        customModelData = CustomModelDataHandler.serializeToString(meta);
         book = meta instanceof final BookMeta bookMeta ? BookHandler.serializeToString(bookMeta) : "";
         if (meta instanceof final PotionMeta potionMeta) {
             effects = PotionHandler.metaToString(potionMeta);
@@ -365,9 +362,7 @@ public class QuestItem {
         meta.setLore(lore.get());
         unbreakable.populate(meta);
         flags.get().forEach(meta::addItemFlags);
-        if (customModelData.getExistence() == Existence.REQUIRED) {
-            meta.setCustomModelData(customModelData.get());
-        }
+        customModelData.populate(meta);
         enchants.populate(meta);
         if (meta instanceof final PotionMeta potionMeta) {
             potionMeta.setBasePotionData(potion.getBase());
