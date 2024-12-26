@@ -7,27 +7,39 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Handles de/-serialization of ItemMeta from/into QuestItem string format.
- * <p>
- * The implementation needs to provide a static method that converts the item meta into QuestItem format.
- * It accepts the meta to serialize and returns the parsed values with a leading space or an empty string.
- * <pre>{@code
- * /// Converts the meta into QuestItem format.
- * ///
- * /// @param bookMeta the meta to serialize
- * /// @return parsed values with leading space or empty string
- * public static String serializeToString(M meta);
- * }</pre>
  *
  * @param <M> handled meta
  */
 public interface ItemMetaHandler<M extends ItemMeta> {
-
     /**
      * Gets the class of meta this Handler works on.
      *
      * @return the ItemMeta class for the Handler
      */
     Class<M> metaClass();
+
+    /**
+     * Converts the meta into QuestItem format.
+     *
+     * @param meta the meta to serialize
+     * @return parsed values with leading space or empty string
+     */
+    String serializeToString(M meta);
+
+    /**
+     * Converts the meta into QuestItem format if it is applicable to {@link #metaClass()}.
+     * When the meta is not applicable it will return an empty string.
+     *
+     * @param meta the meta to serialize
+     * @return parsed values with leading space or empty string
+     */
+    @SuppressWarnings("unchecked")
+    default String rawSerializeToString(final ItemMeta meta) {
+        if (metaClass().isInstance(meta)) {
+            return serializeToString((M) meta);
+        }
+        return "";
+    }
 
     /**
      * Sets the data into the Handler.
