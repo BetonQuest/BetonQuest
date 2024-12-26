@@ -97,12 +97,6 @@ public class FlagHandler implements ItemMetaHandler<ItemMeta> {
         get().forEach(meta::addItemFlags);
     }
 
-    /**
-     * Check to see if the specified ItemMeta matches this FlagHandler.
-     *
-     * @param data The ItemMeta to check.
-     * @return True if this metadata is required or matches, false otherwise.
-     */
     @Override
     public boolean check(final ItemMeta data) {
         return existence == QuestItem.Existence.WHATEVER
