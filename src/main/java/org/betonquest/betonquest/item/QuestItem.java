@@ -335,12 +335,7 @@ public class QuestItem {
         if (meta instanceof final LeatherArmorMeta armorMeta) {
             color.populate(armorMeta);
         }
-        if (meta instanceof final FireworkMeta fireworkMeta) {
-            firework.populate(fireworkMeta);
-        }
-        if (meta instanceof final FireworkEffectMeta fireworkMeta) {
-            firework.populate(fireworkMeta);
-        }
+        firework.rawPopulate(meta, profile);
         if (meta instanceof final Damageable damageableMeta) {
             durability.populate(damageableMeta);
         }

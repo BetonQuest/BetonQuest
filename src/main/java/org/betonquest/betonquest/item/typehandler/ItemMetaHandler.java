@@ -23,13 +23,20 @@ import org.jetbrains.annotations.Nullable;
 public interface ItemMetaHandler<M extends ItemMeta> {
 
     /**
+     * Gets the class of meta this Handler works on.
+     *
+     * @return the ItemMeta class for the Handler
+     */
+    Class<M> metaClass();
+
+    /**
      * Sets the data into the Handler.
      * <p>
      * The data may be empty if the key is just a keyword.
      *
      * @param key  the lower case key
      * @param data the associated data
-     * @throws InstructionParseException if the data is malformed
+     * @throws InstructionParseException if the data is malformed or key not valid for handler
      */
     void set(String key, String data) throws InstructionParseException;
 
@@ -50,6 +57,21 @@ public interface ItemMetaHandler<M extends ItemMeta> {
      */
     default void populate(final M meta, @Nullable final Profile profile) {
         populate(meta);
+    }
+
+    /**
+     * Reconstitute this Handler data into the specified meta if it is applicable to {@link #metaClass()}.
+     * <p>
+     * When the meta is not applicable nothing changes.
+     *
+     * @param meta    the meta to populate
+     * @param profile the profile for customized population
+     */
+    @SuppressWarnings("unchecked")
+    default void rawPopulate(final ItemMeta meta, @Nullable final Profile profile) {
+        if (metaClass().isInstance(meta)) {
+            populate((M) meta, profile);
+        }
     }
 
     /**
