@@ -42,8 +42,7 @@ import java.util.UUID;
 /**
  * Represents an item handled by the configuration.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.CommentRequired", "PMD.CognitiveComplexity",
-        "PMD.CouplingBetweenObjects"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.CouplingBetweenObjects"})
 public class QuestItem {
     public static final String NONE_KEY = "none";
 
@@ -115,7 +114,6 @@ public class QuestItem {
      * @param instruction instruction String
      * @throws InstructionParseException when item parsing goes wrong
      */
-    @SuppressWarnings({"PMD.NcssCount", "PMD.AvoidLiteralsInIfCondition"})
     public QuestItem(final String instruction) throws InstructionParseException {
         final String[] parts = HandlerUtil.getNNSplit(instruction, "Item instruction is null", " ");
         selector = new BlockSelector(parts[0]);
@@ -148,7 +146,6 @@ public class QuestItem {
      * @param item ItemStack to convert
      * @return converted string
      */
-    @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity"})
     public static String itemToString(final ItemStack item) {
         final ItemMeta meta = item.getItemMeta();
         if (meta == null) {
@@ -190,10 +187,7 @@ public class QuestItem {
 
     @Override
     public boolean equals(@Nullable final Object other) {
-        if (!(other instanceof final QuestItem item)) {
-            return false;
-        }
-        return item.handlers.equals(handlers);
+        return other instanceof final QuestItem item && item.handlers.equals(handlers);
     }
 
     @Override
@@ -207,7 +201,6 @@ public class QuestItem {
      * @param item ItemStack to compare
      * @return true if the item matches
      */
-    @SuppressWarnings("PMD.NPathComplexity")
     public boolean compare(@Nullable final ItemStack item) {
         // basic item checks
         if (item == null) {
@@ -252,7 +245,6 @@ public class QuestItem {
      * @param profile   profile parameter
      * @return the ItemStack equal to this quest item
      */
-    @SuppressWarnings("PMD.NPathComplexity")
     public ItemStack generate(final int stackSize, @Nullable final Profile profile) {
         // Try resolve material directly
         final Material material = selector.getRandomMaterial();

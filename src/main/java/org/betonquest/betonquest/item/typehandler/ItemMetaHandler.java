@@ -74,7 +74,7 @@ public interface ItemMetaHandler<M extends ItemMeta> {
      * Defaults to {@link #populate(ItemMeta)}.
      *
      * @param meta    the meta to populate
-     * @param profile the profile for customized population
+     * @param profile the optional profile for customized population
      */
     default void populate(final M meta, @Nullable final Profile profile) {
         populate(meta);
@@ -113,9 +113,6 @@ public interface ItemMetaHandler<M extends ItemMeta> {
      */
     @SuppressWarnings("unchecked")
     default boolean rawCheck(final ItemMeta meta) {
-        if (metaClass().isInstance(meta)) {
-            return check((M) meta);
-        }
-        return true;
+        return !metaClass().isInstance(meta) || check((M) meta);
     }
 }

@@ -44,14 +44,6 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
         return Set.of();
     }
 
-    /**
-     * Converts the item meta into QuestItem format.
-     * <p>
-     * Does nothing if the meta does not fit this Handler.
-     *
-     * @param meta the meta to serialize
-     * @return parsed values with leading space or empty string
-     */
     @Override
     public String rawSerializeToString(final ItemMeta meta) {
         if (meta instanceof FireworkEffectMeta) {
@@ -63,12 +55,6 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
         return "";
     }
 
-    /**
-     * Converts the item meta into QuestItem format.
-     *
-     * @param fireworkMeta the meta to serialize
-     * @return parsed values with leading space or empty string
-     */
     @Override
     public String serializeToString(final FireworkMeta fireworkMeta) {
         if (!fireworkMeta.hasEffects()) {

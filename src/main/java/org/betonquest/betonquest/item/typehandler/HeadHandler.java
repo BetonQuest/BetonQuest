@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Handles metadata about player Skulls.
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
     /**
      * Owner metadata about the Skull.
@@ -256,13 +257,4 @@ public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
             case FORBIDDEN -> string == null;
         };
     }
-
-    /**
-     * Reconstitute this head data into the specified skullMeta object.
-     *
-     * @param skullMeta The SkullMeta object to populate.
-     * @param profile   An optional Profile.
-     */
-    @Override
-    public abstract void populate(SkullMeta skullMeta, @Nullable Profile profile);
 }

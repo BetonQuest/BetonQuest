@@ -157,7 +157,6 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
 
         private final int level;
 
-        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
         private SingleEnchantmentHandler(final String enchant) throws InstructionParseException {
             final String[] parts = HandlerUtil.getNNSplit(enchant, "", ":");
             if (parts[0].startsWith("none-")) {
