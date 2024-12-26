@@ -117,7 +117,7 @@ public class QuestItem {
             switch (argumentName) {
                 case "durability" -> durability.set(argumentName, data);
                 case "enchants", "enchants-containing" -> enchants.set(argumentName, data);
-                case "name" -> name.set(data);
+                case "name" -> name.set(argumentName, data);
                 case "lore" -> lore.set(data);
                 case "lore-containing" -> lore.setNotExact();
                 case "unbreakable" -> unbreakable.set(argumentName, data);
@@ -150,7 +150,7 @@ public class QuestItem {
             return item.getType().toString();
         }
         final String durability;
-        String name = "";
+        final String name;
         String lore = "";
         final String enchants;
         final String book;
@@ -162,9 +162,7 @@ public class QuestItem {
         final String customModelData;
         String flags = "";
         durability = meta instanceof final Damageable damageable ? DurabilityHandler.serializeToString(damageable) : "";
-        if (meta.hasDisplayName()) {
-            name = " name:" + meta.getDisplayName().replace(" ", "_");
-        }
+        name = NameHandler.serializeToString(meta);
         if (meta.hasLore()) {
             final StringBuilder string = new StringBuilder();
             for (final String line : meta.getLore()) {
@@ -266,8 +264,7 @@ public class QuestItem {
         if (meta instanceof final Damageable damageable && !durability.check(damageable)) {
             return false;
         }
-        final String displayName = meta.hasDisplayName() ? meta.getDisplayName() : null;
-        if (!name.check(displayName)) {
+        if (!name.check(meta)) {
             return false;
         }
         if (!lore.check(meta.getLore())) {
@@ -334,7 +331,7 @@ public class QuestItem {
         if (meta == null) {
             return item;
         }
-        meta.setDisplayName(name.get());
+        name.populate(meta);
         meta.setLore(lore.get());
         unbreakable.populate(meta);
         flags.get().forEach(meta::addItemFlags);
