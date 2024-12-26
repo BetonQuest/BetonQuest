@@ -9,6 +9,8 @@ import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
+import java.util.Set;
+
 @SuppressWarnings("PMD.CommentRequired")
 public class ColorHandler implements ItemMetaHandler<LeatherArmorMeta> {
     private Color color = Bukkit.getServer().getItemFactory().getDefaultLeatherColor();
@@ -18,13 +20,18 @@ public class ColorHandler implements ItemMetaHandler<LeatherArmorMeta> {
     public ColorHandler() {
     }
 
-    /**
-     * Converts the item meta into QuestItem format.
-     *
-     * @param armorMeta the meta to serialize
-     * @return parsed values with leading space or empty string
-     */
-    public static String serializeToString(final LeatherArmorMeta armorMeta) {
+    @Override
+    public Class<LeatherArmorMeta> metaClass() {
+        return LeatherArmorMeta.class;
+    }
+
+    @Override
+    public Set<String> keys() {
+        return Set.of("color");
+    }
+
+    @Override
+    public String serializeToString(final LeatherArmorMeta armorMeta) {
         if (armorMeta.getColor().equals(Bukkit.getServer().getItemFactory().getDefaultLeatherColor())) {
             return "";
         }
@@ -34,6 +41,9 @@ public class ColorHandler implements ItemMetaHandler<LeatherArmorMeta> {
 
     @Override
     public void set(final String key, final String data) throws InstructionParseException {
+        if (!"color".equals(key)) {
+            throw new InstructionParseException("Invalid color key: " + key);
+        }
         set(data);
     }
 

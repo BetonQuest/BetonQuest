@@ -4,6 +4,8 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Set;
+
 @SuppressWarnings("PMD.CommentRequired")
 public class CustomModelDataHandler implements ItemMetaHandler<ItemMeta> {
     private QuestItem.Existence existence = QuestItem.Existence.WHATEVER;
@@ -13,13 +15,18 @@ public class CustomModelDataHandler implements ItemMetaHandler<ItemMeta> {
     public CustomModelDataHandler() {
     }
 
-    /**
-     * Converts the item meta into QuestItem format.
-     *
-     * @param meta the meta to serialize
-     * @return parsed values with leading space or empty string
-     */
-    public static String serializeToString(final ItemMeta meta) {
+    @Override
+    public Class<ItemMeta> metaClass() {
+        return ItemMeta.class;
+    }
+
+    @Override
+    public Set<String> keys() {
+        return Set.of("custom-model-data", "no-custom-model-data");
+    }
+
+    @Override
+    public String serializeToString(final ItemMeta meta) {
         if (meta.hasCustomModelData()) {
             return " custom-model-data:" + meta.getCustomModelData();
         }
