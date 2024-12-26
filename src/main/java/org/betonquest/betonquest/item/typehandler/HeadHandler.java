@@ -98,7 +98,7 @@ public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
      * @param skullMeta The SkullMeta data to serialize.
      * @return A String representation of the SkullMeta data.
      */
-    public static String serializeSkullMeta(final SkullMeta skullMeta) {
+    public static String serializeToString(final SkullMeta skullMeta) {
         final Map<String, String> props;
         if (PaperLib.isPaper()) {
             props = PaperHeadHandler.parseSkullMeta(skullMeta);
