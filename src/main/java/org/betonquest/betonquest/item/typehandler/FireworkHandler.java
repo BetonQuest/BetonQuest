@@ -9,6 +9,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
 import org.bukkit.inventory.meta.FireworkEffectMeta;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -29,6 +30,24 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     private boolean exact = true;
 
     public FireworkHandler() {
+    }
+
+    /**
+     * Converts the item meta into QuestItem format.
+     * <p>
+     * Does nothing if the meta does not fit this Handler.
+     *
+     * @param meta the meta to serialize
+     * @return parsed values with leading space or empty string
+     */
+    public static String rawSerializeToString(final ItemMeta meta) {
+        if (meta instanceof FireworkEffectMeta) {
+            return serializeToString((FireworkEffectMeta) meta);
+        }
+        if (meta instanceof FireworkMeta) {
+            return serializeToString((FireworkMeta) meta);
+        }
+        return "";
     }
 
     /**

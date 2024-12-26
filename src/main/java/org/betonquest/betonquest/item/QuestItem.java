@@ -156,7 +156,7 @@ public class QuestItem {
         final String effects;
         final String color;
         final String skull;
-        String firework = "";
+        final String firework;
         final String unbreakable;
         final String customModelData;
         final String flags;
@@ -169,13 +169,8 @@ public class QuestItem {
         book = meta instanceof final BookMeta bookMeta ? BookHandler.serializeToString(bookMeta) : "";
         effects = meta instanceof final PotionMeta potionMeta ? PotionHandler.serializeToString(potionMeta) : "";
         color = meta instanceof final LeatherArmorMeta armorMeta ? ColorHandler.serializeToString(armorMeta) : "";
-        skull = meta instanceof SkullMeta ? HeadHandler.serializeSkullMeta((SkullMeta) meta) : "";
-        if (meta instanceof final FireworkMeta fireworkMeta && fireworkMeta.hasEffects()) {
-            firework = FireworkHandler.serializeToString(fireworkMeta);
-        }
-        if (meta instanceof final FireworkEffectMeta fireworkMeta && fireworkMeta.hasEffect()) {
-            firework = FireworkHandler.serializeToString(fireworkMeta);
-        }
+        skull = meta instanceof SkullMeta ? HeadHandler.serializeToString((SkullMeta) meta) : "";
+        firework = FireworkHandler.rawSerializeToString(meta);
         flags = FlagHandler.serializeToString(meta);
         // put it all together in a single string
         return item.getType() + durability + name + lore + enchants + book
