@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * Handles metadata about item flags.
  */
-public class FlagHandler {
+public class FlagHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * Set of ItemFlags on the ItemStack.
      */
@@ -29,6 +29,19 @@ public class FlagHandler {
      */
     public FlagHandler() {
         itemFlags = Set.of();
+    }
+
+    /**
+     * Converts the item meta into QuestItem format.
+     *
+     * @param meta the meta to serialize
+     * @return parsed values with leading space or empty string
+     */
+    public static String serializeToString(final ItemMeta meta) {
+        if (meta.getItemFlags().isEmpty()) {
+            return "";
+        }
+        return " flags:" + String.join(",", meta.getItemFlags().stream().map(ItemFlag::name).sorted().toList());
     }
 
     /**
@@ -66,16 +79,26 @@ public class FlagHandler {
         return itemFlags;
     }
 
+    @Override
+    public void set(final String key, final String data) throws InstructionParseException {
+        parse(data);
+    }
+
+    @Override
+    public void populate(final ItemMeta meta) {
+        get().forEach(meta::addItemFlags);
+    }
+
     /**
      * Check to see if the specified ItemMeta matches this FlagHandler.
      *
      * @param data The ItemMeta to check.
      * @return True if this metadata is required or matches, false otherwise.
      */
+    @Override
     public boolean check(final ItemMeta data) {
         return existence == QuestItem.Existence.WHATEVER
                 || existence == QuestItem.Existence.FORBIDDEN && data.getItemFlags().isEmpty()
                 || existence == QuestItem.Existence.REQUIRED && !data.getItemFlags().isEmpty() && itemFlags.equals(data.getItemFlags());
     }
-
 }
