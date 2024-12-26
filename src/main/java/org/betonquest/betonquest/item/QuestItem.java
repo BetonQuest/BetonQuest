@@ -118,8 +118,7 @@ public class QuestItem {
                 case "durability" -> durability.set(argumentName, data);
                 case "enchants", "enchants-containing" -> enchants.set(argumentName, data);
                 case "name" -> name.set(argumentName, data);
-                case "lore" -> lore.set(data);
-                case "lore-containing" -> lore.setNotExact();
+                case "lore", "lore-containing" -> lore.set(argumentName, data);
                 case "unbreakable" -> unbreakable.set(argumentName, data);
                 case "custom-model-data", "no-custom-model-data" -> customModelData.set(argumentName, data);
                 case "title", "author", "text" -> book.set(argumentName, data);
@@ -151,7 +150,7 @@ public class QuestItem {
         }
         final String durability;
         final String name;
-        String lore = "";
+        final String lore;
         final String enchants;
         final String book;
         final String effects;
@@ -163,13 +162,7 @@ public class QuestItem {
         String flags = "";
         durability = meta instanceof final Damageable damageable ? DurabilityHandler.serializeToString(damageable) : "";
         name = NameHandler.serializeToString(meta);
-        if (meta.hasLore()) {
-            final StringBuilder string = new StringBuilder();
-            for (final String line : meta.getLore()) {
-                string.append(line).append(';');
-            }
-            lore = " lore:" + string.substring(0, string.length() - 1).replace(" ", "_").replace("§", "&");
-        }
+        lore = LoreHandler.serializeToString(meta);
         enchants = EnchantmentsHandler.serializeToString(meta);
         unbreakable = UnbreakableHandler.serializeToString(meta);
         customModelData = CustomModelDataHandler.serializeToString(meta);
@@ -267,7 +260,7 @@ public class QuestItem {
         if (!name.check(meta)) {
             return false;
         }
-        if (!lore.check(meta.getLore())) {
+        if (!lore.check(meta)) {
             return false;
         }
         if (!unbreakable.check(meta)) {
@@ -332,7 +325,7 @@ public class QuestItem {
             return item;
         }
         name.populate(meta);
-        meta.setLore(lore.get());
+        lore.populate(meta);
         unbreakable.populate(meta);
         flags.get().forEach(meta::addItemFlags);
         customModelData.populate(meta);
