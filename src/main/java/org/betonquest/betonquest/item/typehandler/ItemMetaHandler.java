@@ -93,4 +93,20 @@ public interface ItemMetaHandler<M extends ItemMeta> {
      * @return if the meta satisfies the requirement defined via {@link #set(String, String)}
      */
     boolean check(M meta);
+
+    /**
+     * Check to see if the specified ItemMeta matches the Handler if it is applicable to {@link #metaClass()}.
+     * <p>
+     * When the meta is not applicable it will return {@code true}.
+     *
+     * @param meta the ItemMeta to check
+     * @return if the meta satisfies the requirement defined via {@link #set(String, String)}
+     */
+    @SuppressWarnings("unchecked")
+    default boolean rawCheck(final ItemMeta meta) {
+        if (metaClass().isInstance(meta)) {
+            return check((M) meta);
+        }
+        return true;
+    }
 }

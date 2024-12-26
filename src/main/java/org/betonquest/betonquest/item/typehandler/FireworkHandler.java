@@ -143,6 +143,17 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     }
 
     @Override
+    public boolean rawCheck(final ItemMeta meta) {
+        if (meta instanceof final FireworkMeta fireworkMeta && !check(fireworkMeta)) {
+            return false;
+        }
+        if (meta instanceof final FireworkEffectMeta fireworkMeta) {
+            return check(fireworkMeta);
+        }
+        return true;
+    }
+
+    @Override
     public void rawPopulate(final ItemMeta meta, @Nullable final Profile profile) {
         if (meta instanceof final FireworkMeta fireworkMeta) {
             populate(fireworkMeta);
