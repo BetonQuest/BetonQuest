@@ -247,5 +247,6 @@ public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
      * @param skullMeta The SkullMeta object to populate.
      * @param profile   An optional Profile.
      */
+    @Override
     public abstract void populate(SkullMeta skullMeta, @Nullable Profile profile);
 }
