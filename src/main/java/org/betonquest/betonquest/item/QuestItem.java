@@ -125,23 +125,7 @@ public class QuestItem {
                 case "unbreakable" -> unbreakable.set(argumentName, data);
                 case "custom-model-data", "no-custom-model-data" -> customModelData.set(argumentName, data);
                 case "title", "author", "text" -> book.set(argumentName, data);
-                case "type" -> potion.setType(data);
-                case "extended" -> {
-                    if ("extended".equals(data)) {
-                        potion.setExtended("true");
-                    } else {
-                        potion.setExtended(data);
-                    }
-                }
-                case "upgraded" -> {
-                    if ("upgraded".equals(data)) {
-                        potion.setUpgraded("true");
-                    } else {
-                        potion.setUpgraded(data);
-                    }
-                }
-                case "effects" -> potion.setCustom(data);
-                case "effects-containing" -> potion.setNotExact();
+                case "type", "extended", "upgraded", "effects", "effects-containing" -> potion.set(argumentName, data);
                 case HeadHandler.META_OWNER, HeadHandler.META_PLAYER_ID, HeadHandler.META_TEXTURE ->
                         head.set(argumentName, data);
                 case "color" -> color.set(data);
@@ -172,7 +156,7 @@ public class QuestItem {
         String lore = "";
         final String enchants;
         final String book;
-        String effects = "";
+        final String effects;
         String color = "";
         final String skull;
         String firework = "";
@@ -194,9 +178,7 @@ public class QuestItem {
         unbreakable = UnbreakableHandler.serializeToString(meta);
         customModelData = CustomModelDataHandler.serializeToString(meta);
         book = meta instanceof final BookMeta bookMeta ? BookHandler.serializeToString(bookMeta) : "";
-        if (meta instanceof final PotionMeta potionMeta) {
-            effects = PotionHandler.metaToString(potionMeta);
-        }
+        effects = meta instanceof final PotionMeta potionMeta ? PotionHandler.serializeToString(potionMeta) : "";
         if (meta instanceof final LeatherArmorMeta armorMeta
                 && !armorMeta.getColor().equals(Bukkit.getServer().getItemFactory().getDefaultLeatherColor())) {
             final DyeColor dyeColor = DyeColor.getByColor(armorMeta.getColor());
@@ -310,7 +292,7 @@ public class QuestItem {
         if (!enchants.check(meta)) {
             return false;
         }
-        if (meta instanceof final PotionMeta potionMeta && !potion.checkMeta(potionMeta)) {
+        if (meta instanceof final PotionMeta potionMeta && !potion.check(potionMeta)) {
             return false;
         }
         if (meta instanceof final BookMeta bookMeta && !book.check(bookMeta)) {
@@ -365,10 +347,7 @@ public class QuestItem {
         customModelData.populate(meta);
         enchants.populate(meta);
         if (meta instanceof final PotionMeta potionMeta) {
-            potionMeta.setBasePotionData(potion.getBase());
-            for (final PotionEffect effect : potion.getCustom()) {
-                potionMeta.addCustomEffect(effect, true);
-            }
+            potion.populate(potionMeta);
         }
         if (meta instanceof final BookMeta bookMeta) {
             book.populate(bookMeta);

@@ -23,7 +23,12 @@ import java.util.Locale;
 import java.util.Map;
 
 @SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods", "PMD.GodClass"})
-public class PotionHandler {
+public class PotionHandler implements ItemMetaHandler<PotionMeta> {
+
+    public static final String EXTENDED = "extended";
+
+    public static final String UPGRADED = "upgraded";
+
     /**
      * The 1.20.5+ method to check if a Potion Type is in the Potion.
      */
@@ -68,7 +73,7 @@ public class PotionHandler {
      * @param potionMeta the meta to parse into string
      * @return the representing string or an empty string, when no representative data is present
      */
-    public static String metaToString(final PotionMeta potionMeta) {
+    public static String serializeToString(final PotionMeta potionMeta) {
         // TODO version switch:
         //  Remove this code when only 1.20.5+ is supported
         final String baseEffect = PaperLib.isVersion(20, 5) ? getBasePotionEffects(potionMeta)
@@ -133,6 +138,43 @@ public class PotionHandler {
             string.append(effect.getType().getName()).append(':').append(power).append(':').append(duration).append(',');
         }
         return effects + " effects:" + string.substring(0, string.length() - 1);
+    }
+
+    @Override
+    public void set(final String key, final String data) throws InstructionParseException {
+        switch (key) {
+            case "type" -> setType(data);
+            case EXTENDED -> {
+                if (EXTENDED.equals(data)) {
+                    extendedE = Existence.REQUIRED;
+                } else {
+                    setExtended(data);
+                }
+            }
+            case UPGRADED -> {
+                if (UPGRADED.equals(data)) {
+                    upgradedE = Existence.REQUIRED;
+                } else {
+                    setUpgraded(data);
+                }
+            }
+            case "effects" -> setCustom(data);
+            case "effects-containing" -> setNotExact();
+            default -> throw new InstructionParseException("Unknown potion key: " + key);
+        }
+    }
+
+    @Override
+    public void populate(final PotionMeta potionMeta) {
+        potionMeta.setBasePotionData(getBase());
+        for (final PotionEffect effect : getCustom()) {
+            potionMeta.addCustomEffect(effect, true);
+        }
+    }
+
+    @Override
+    public boolean check(final PotionMeta meta) {
+        return checkMeta(meta);
     }
 
     public void setType(final String type) throws InstructionParseException {
