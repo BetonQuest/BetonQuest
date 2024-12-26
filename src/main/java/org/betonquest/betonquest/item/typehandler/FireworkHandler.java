@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.item.QuestItem.Existence;
@@ -106,6 +107,11 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     }
 
     @Override
+    public Class<FireworkMeta> metaClass() {
+        return FireworkMeta.class;
+    }
+
+    @Override
     public void set(final String key, final String data) throws InstructionParseException {
         switch (key) {
             case "firework" -> setEffects(data);
@@ -134,6 +140,16 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     @Override
     public boolean check(final FireworkMeta fireworkMeta) {
         return checkEffects(fireworkMeta.getEffects()) && checkPower(fireworkMeta.getPower());
+    }
+
+    @Override
+    public void rawPopulate(final ItemMeta meta, @Nullable final Profile profile) {
+        if (meta instanceof final FireworkMeta fireworkMeta) {
+            populate(fireworkMeta);
+        }
+        if (meta instanceof final FireworkEffectMeta fireworkMeta) {
+            populate(fireworkMeta);
+        }
     }
 
     /**
