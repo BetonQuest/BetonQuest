@@ -1,7 +1,9 @@
 package org.betonquest.betonquest.item.typehandler;
 
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Handles de/-serialization of ItemMeta from/into QuestItem string format.
@@ -37,6 +39,18 @@ public interface ItemMetaHandler<M extends ItemMeta> {
      * @param meta the meta to populate
      */
     void populate(M meta);
+
+    /**
+     * Reconstitute this Handler data into the specified meta.
+     * <p>
+     * Defaults to {@link #populate(ItemMeta)}.
+     *
+     * @param meta    the meta to populate
+     * @param profile the profile for customized population
+     */
+    default void populate(final M meta, @Nullable final Profile profile) {
+        populate(meta);
+    }
 
     /**
      * Check to see if the specified ItemMeta matches the Handler.
