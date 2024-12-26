@@ -1,7 +1,10 @@
 package org.betonquest.betonquest.item.typehandler;
 
+import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem.Existence;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.Set;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class UnbreakableHandler implements ItemMetaHandler<ItemMeta> {
@@ -16,13 +19,18 @@ public class UnbreakableHandler implements ItemMetaHandler<ItemMeta> {
     public UnbreakableHandler() {
     }
 
-    /**
-     * Converts the item meta into QuestItem format.
-     *
-     * @param meta the meta to serialize
-     * @return parsed values with leading space or empty string
-     */
-    public static String serializeToString(final ItemMeta meta) {
+    @Override
+    public Class<ItemMeta> metaClass() {
+        return ItemMeta.class;
+    }
+
+    @Override
+    public Set<String> keys() {
+        return Set.of(UNBREAKABLE);
+    }
+
+    @Override
+    public String serializeToString(final ItemMeta meta) {
         if (meta.isUnbreakable()) {
             return " unbreakable";
         }
@@ -30,7 +38,10 @@ public class UnbreakableHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) {
+    public void set(final String key, final String data) throws InstructionParseException {
+        if (!UNBREAKABLE.equals(key)) {
+            throw new InstructionParseException("Unknown unbreakable key: " + key);
+        }
         if (UNBREAKABLE.equals(data)) {
             unbreakable = Existence.REQUIRED;
         } else {

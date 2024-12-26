@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class LoreHandler implements ItemMetaHandler<ItemMeta> {
@@ -20,13 +21,18 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
     public LoreHandler() {
     }
 
-    /**
-     * Converts the item meta into QuestItem format.
-     *
-     * @param meta the meta to serialize
-     * @return parsed values with leading space or empty string
-     */
-    public static String serializeToString(final ItemMeta meta) {
+    @Override
+    public Class<ItemMeta> metaClass() {
+        return ItemMeta.class;
+    }
+
+    @Override
+    public Set<String> keys() {
+        return Set.of("lore", "lore-containing");
+    }
+
+    @Override
+    public String serializeToString(final ItemMeta meta) {
         if (meta.hasLore()) {
             final StringBuilder string = new StringBuilder();
             for (final String line : meta.getLore()) {

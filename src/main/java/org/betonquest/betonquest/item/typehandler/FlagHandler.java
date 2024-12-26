@@ -31,13 +31,18 @@ public class FlagHandler implements ItemMetaHandler<ItemMeta> {
         itemFlags = Set.of();
     }
 
-    /**
-     * Converts the item meta into QuestItem format.
-     *
-     * @param meta the meta to serialize
-     * @return parsed values with leading space or empty string
-     */
-    public static String serializeToString(final ItemMeta meta) {
+    @Override
+    public Class<ItemMeta> metaClass() {
+        return ItemMeta.class;
+    }
+
+    @Override
+    public Set<String> keys() {
+        return Set.of("flags");
+    }
+
+    @Override
+    public String serializeToString(final ItemMeta meta) {
         if (meta.getItemFlags().isEmpty()) {
             return "";
         }
@@ -81,6 +86,9 @@ public class FlagHandler implements ItemMetaHandler<ItemMeta> {
 
     @Override
     public void set(final String key, final String data) throws InstructionParseException {
+        if (!"flags".equals(key)) {
+            throw new InstructionParseException("Invalid flag key: " + key);
+        }
         parse(data);
     }
 

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings({"PMD.CommentRequired", "PMD.GodClass", "PMD.TooManyMethods"})
 public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
@@ -33,6 +34,16 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     public FireworkHandler() {
     }
 
+    @Override
+    public Class<FireworkMeta> metaClass() {
+        return FireworkMeta.class;
+    }
+
+    @Override
+    public Set<String> keys() {
+        return Set.of();
+    }
+
     /**
      * Converts the item meta into QuestItem format.
      * <p>
@@ -41,7 +52,8 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
      * @param meta the meta to serialize
      * @return parsed values with leading space or empty string
      */
-    public static String rawSerializeToString(final ItemMeta meta) {
+    @Override
+    public String rawSerializeToString(final ItemMeta meta) {
         if (meta instanceof FireworkEffectMeta) {
             return serializeToString((FireworkEffectMeta) meta);
         }
@@ -57,7 +69,8 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
      * @param fireworkMeta the meta to serialize
      * @return parsed values with leading space or empty string
      */
-    public static String serializeToString(final FireworkMeta fireworkMeta) {
+    @Override
+    public String serializeToString(final FireworkMeta fireworkMeta) {
         if (!fireworkMeta.hasEffects()) {
             return "";
         }
@@ -78,7 +91,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
      * @param fireworkMeta the meta to serialize
      * @return @return parsed values with leading space or empty string
      */
-    public static String serializeToString(final FireworkEffectMeta fireworkMeta) {
+    public String serializeToString(final FireworkEffectMeta fireworkMeta) {
         if (!fireworkMeta.hasEffect()) {
             return "";
         }
@@ -89,7 +102,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
         return builder.toString();
     }
 
-    private static void appendFireworkEffect(final StringBuilder builder, final FireworkEffect effect) {
+    private void appendFireworkEffect(final StringBuilder builder, final FireworkEffect effect) {
         builder.append(effect.getType()).append(':');
         for (final Color c : effect.getColors()) {
             final DyeColor dye = DyeColor.getByFireworkColor(c);
@@ -104,11 +117,6 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
         }
         builder.setLength(Math.max(builder.length() - 1, 0));
         builder.append(':').append(effect.hasTrail()).append(':').append(effect.hasFlicker());
-    }
-
-    @Override
-    public Class<FireworkMeta> metaClass() {
-        return FireworkMeta.class;
     }
 
     @Override

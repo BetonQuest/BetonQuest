@@ -6,6 +6,8 @@ import org.betonquest.betonquest.item.QuestItem.Existence;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
+
 @SuppressWarnings("PMD.CommentRequired")
 public class NameHandler implements ItemMetaHandler<ItemMeta> {
     @Nullable
@@ -26,13 +28,18 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
         return input.replaceAll("(?<!\\\\)_", " ").replaceAll("\\\\_", "_");
     }
 
-    /**
-     * Converts the item meta into QuestItem format.
-     *
-     * @param meta the meta to serialize
-     * @return parsed values with leading space or empty string
-     */
-    public static String serializeToString(final ItemMeta meta) {
+    @Override
+    public Class<ItemMeta> metaClass() {
+        return ItemMeta.class;
+    }
+
+    @Override
+    public Set<String> keys() {
+        return Set.of("name");
+    }
+
+    @Override
+    public String serializeToString(final ItemMeta meta) {
         if (meta.hasDisplayName()) {
             return " name:" + meta.getDisplayName().replace(" ", "_");
         }
@@ -41,6 +48,9 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
 
     @Override
     public void set(final String key, final String data) throws InstructionParseException {
+        if (!"name".equals(key)) {
+            throw new InstructionParseException("Invalid name: " + key);
+        }
         set(data);
     }
 

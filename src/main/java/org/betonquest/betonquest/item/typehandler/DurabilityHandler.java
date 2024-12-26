@@ -5,6 +5,7 @@ import org.betonquest.betonquest.item.QuestItem.Number;
 import org.bukkit.inventory.meta.Damageable;
 
 import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class DurabilityHandler implements ItemMetaHandler<Damageable> {
@@ -15,18 +16,26 @@ public class DurabilityHandler implements ItemMetaHandler<Damageable> {
     public DurabilityHandler() {
     }
 
-    /**
-     * Converts the item meta into QuestItem format.
-     *
-     * @param damageable the meta to serialize
-     * @return @return parsed values with leading space or empty string
-     */
-    public static String serializeToString(final Damageable damageable) {
+    @Override
+    public Class<Damageable> metaClass() {
+        return Damageable.class;
+    }
+
+    @Override
+    public Set<String> keys() {
+        return Set.of("durability");
+    }
+
+    @Override
+    public String serializeToString(final Damageable damageable) {
         return " durability:" + damageable.getDamage();
     }
 
     @Override
     public void set(final String key, final String data) throws InstructionParseException {
+        if (!"durability".equals(key)) {
+            throw new InstructionParseException("Unknown durability key: " + key);
+        }
         set(data);
     }
 

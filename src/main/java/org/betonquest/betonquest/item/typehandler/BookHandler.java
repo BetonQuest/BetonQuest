@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.item.QuestItem.Existence;
 import org.betonquest.betonquest.utils.Utils;
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class BookHandler implements ItemMetaHandler<BookMeta> {
@@ -28,13 +30,18 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
     public BookHandler() {
     }
 
-    /**
-     * Converts the item meta into QuestItem format.
-     *
-     * @param bookMeta the meta to serialize
-     * @return parsed values with leading space or empty string
-     */
-    public static String serializeToString(final BookMeta bookMeta) {
+    @Override
+    public Class<BookMeta> metaClass() {
+        return BookMeta.class;
+    }
+
+    @Override
+    public Set<String> keys() {
+        return Set.of("title", "author", "text");
+    }
+
+    @Override
+    public String serializeToString(final BookMeta bookMeta) {
         final String author;
         final String title;
         final String text;
@@ -67,13 +74,12 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) {
+    public void set(final String key, final String data) throws InstructionParseException {
         switch (key) {
             case "title" -> setTitle(data);
             case "author" -> setAuthor(data);
             case "text" -> setText(data);
-            default -> {
-            }
+            default -> throw new InstructionParseException("Unknown book key: " + key);
         }
     }
 

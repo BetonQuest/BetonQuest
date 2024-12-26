@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
@@ -27,13 +28,18 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
     public EnchantmentsHandler() {
     }
 
-    /**
-     * Converts the item meta into QuestItem format.
-     *
-     * @param meta the meta to serialize
-     * @return parsed values with leading space or empty string
-     */
-    public static String serializeToString(final ItemMeta meta) {
+    @Override
+    public Class<ItemMeta> metaClass() {
+        return ItemMeta.class;
+    }
+
+    @Override
+    public Set<String> keys() {
+        return Set.of("enchants", "enchants-containing");
+    }
+
+    @Override
+    public String serializeToString(final ItemMeta meta) {
         if (meta instanceof final EnchantmentStorageMeta storageMeta) {
             if (!storageMeta.hasStoredEnchants()) {
                 return "";
