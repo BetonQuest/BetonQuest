@@ -3,10 +3,11 @@ package org.betonquest.betonquest.item.typehandler;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.item.QuestItem.Existence;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("PMD.CommentRequired")
-public class NameHandler {
+public class NameHandler implements ItemMetaHandler<ItemMeta> {
     @Nullable
     private String name;
 
@@ -23,6 +24,35 @@ public class NameHandler {
      */
     protected static String replaceUnderscore(final String input) {
         return input.replaceAll("(?<!\\\\)_", " ").replaceAll("\\\\_", "_");
+    }
+
+    /**
+     * Converts the item meta into QuestItem format.
+     *
+     * @param meta the meta to serialize
+     * @return parsed values with leading space or empty string
+     */
+    public static String serializeToString(final ItemMeta meta) {
+        if (meta.hasDisplayName()) {
+            return " name:" + meta.getDisplayName().replace(" ", "_");
+        }
+        return "";
+    }
+
+    @Override
+    public void set(final String key, final String data) throws InstructionParseException {
+        set(data);
+    }
+
+    @Override
+    public void populate(final ItemMeta meta) {
+        meta.setDisplayName(get());
+    }
+
+    @Override
+    public boolean check(final ItemMeta meta) {
+        final String displayName = meta.hasDisplayName() ? meta.getDisplayName() : null;
+        return check(displayName);
     }
 
     public void set(final String name) throws InstructionParseException {
