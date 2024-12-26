@@ -127,7 +127,7 @@ public class QuestItem {
                         head.set(argumentName, data);
                 case "color" -> color.set(argumentName, data);
                 case "firework", "power", "firework-containing" -> firework.set(argumentName, data);
-                case "flags" -> flags.parse(data);
+                case "flags" -> flags.set(argumentName, data);
                 //catch empty string caused by multiple whitespaces in instruction split
                 case "" -> {
                 }
@@ -159,7 +159,7 @@ public class QuestItem {
         String firework = "";
         final String unbreakable;
         final String customModelData;
-        String flags = "";
+        final String flags;
         durability = meta instanceof final Damageable damageable ? DurabilityHandler.serializeToString(damageable) : "";
         name = NameHandler.serializeToString(meta);
         lore = LoreHandler.serializeToString(meta);
@@ -176,9 +176,7 @@ public class QuestItem {
         if (meta instanceof final FireworkEffectMeta fireworkMeta && fireworkMeta.hasEffect()) {
             firework = FireworkHandler.serializeToString(fireworkMeta);
         }
-        if (!meta.getItemFlags().isEmpty()) {
-            flags = " flags:" + String.join(",", meta.getItemFlags().stream().map(ItemFlag::name).sorted().toList());
-        }
+        flags = FlagHandler.serializeToString(meta);
         // put it all together in a single string
         return item.getType() + durability + name + lore + enchants + book
                 + effects + color + skull + firework + unbreakable + customModelData + flags;
@@ -327,7 +325,7 @@ public class QuestItem {
         name.populate(meta);
         lore.populate(meta);
         unbreakable.populate(meta);
-        flags.get().forEach(meta::addItemFlags);
+        flags.populate(meta);
         customModelData.populate(meta);
         enchants.populate(meta);
         if (meta instanceof final PotionMeta potionMeta) {
