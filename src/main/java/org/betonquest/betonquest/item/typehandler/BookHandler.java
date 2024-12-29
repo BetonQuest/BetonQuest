@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "PMD.GodClass"})
 public class BookHandler implements ItemMetaHandler<BookMeta> {
     private String title = Config.getMessage(Config.getLanguage(), "unknown_title");
 
@@ -41,6 +41,7 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
     }
 
     @Override
+    @Nullable
     public String serializeToString(final BookMeta bookMeta) {
         final String author;
         final String title;
@@ -55,6 +56,14 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
         } else {
             title = "";
         }
+        text = buildPages(bookMeta);
+        if (author.isEmpty() && title.isEmpty() && text.isEmpty()) {
+            return null;
+        }
+        return (author + title + text).substring(1);
+    }
+
+    private String buildPages(final BookMeta bookMeta) {
         if (bookMeta.hasPages()) {
             final StringBuilder strBldr = new StringBuilder();
             for (final String page : bookMeta.getPages()) {
@@ -66,11 +75,9 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
                 // Bukkit is adding it for some reason (probably to mess people's code)
                 strBldr.append(processedPage.replace(" ", "_").replaceAll("(§0)?\\n(§0)?", "\\\\n")).append('|');
             }
-            text = " text:" + strBldr.substring(0, strBldr.length() - 1);
-        } else {
-            text = "";
+            return " text:" + strBldr.substring(0, strBldr.length() - 1);
         }
-        return author + title + text;
+        return "";
     }
 
     @Override

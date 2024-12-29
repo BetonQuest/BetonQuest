@@ -3,6 +3,7 @@ package org.betonquest.betonquest.item.typehandler;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
@@ -26,11 +27,12 @@ public class CustomModelDataHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
+    @Nullable
     public String serializeToString(final ItemMeta meta) {
         if (meta.hasCustomModelData()) {
-            return " custom-model-data:" + meta.getCustomModelData();
+            return "custom-model-data:" + meta.getCustomModelData();
         }
-        return "";
+        return null;
     }
 
     public void parse(final String data) throws InstructionParseException {

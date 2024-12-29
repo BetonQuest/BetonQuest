@@ -31,29 +31,31 @@ public interface ItemMetaHandler<M extends ItemMeta> {
      * Converts the meta into QuestItem format.
      *
      * @param meta the meta to serialize
-     * @return parsed values with leading space or empty string
+     * @return parsed values or null
      */
+    @Nullable
     String serializeToString(M meta);
 
     /**
      * Converts the meta into QuestItem format if it is applicable to {@link #metaClass()}.
-     * When the meta is not applicable it will return an empty string.
+     * When the meta is not applicable it will return null.
      *
      * @param meta the meta to serialize
-     * @return parsed values with leading space or empty string
+     * @return parsed values or null
      */
     @SuppressWarnings("unchecked")
+    @Nullable
     default String rawSerializeToString(final ItemMeta meta) {
         if (metaClass().isInstance(meta)) {
             return serializeToString((M) meta);
         }
-        return "";
+        return null;
     }
 
     /**
      * Sets the data into the Handler.
      * <p>
-     * The data may be empty if the key is just a keyword.
+     * The data may be the same as the key if it is just a keyword.
      *
      * @param key  the lower case key
      * @param data the associated data

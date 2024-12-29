@@ -32,15 +32,16 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
+    @Nullable
     public String serializeToString(final ItemMeta meta) {
         if (meta.hasLore()) {
             final StringBuilder string = new StringBuilder();
             for (final String line : meta.getLore()) {
                 string.append(line).append(';');
             }
-            return " lore:" + string.substring(0, string.length() - 1).replace(" ", "_").replace("§", "&");
+            return "lore:" + string.substring(0, string.length() - 1).replace(" ", "_").replace("§", "&");
         }
-        return "";
+        return null;
     }
 
     @Override

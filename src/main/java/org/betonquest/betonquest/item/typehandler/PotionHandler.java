@@ -76,7 +76,8 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         }
     }
 
-    private static String addCustomEffects(final PotionMeta potionMeta, final String effects) {
+    @Nullable
+    private static String addCustomEffects(final PotionMeta potionMeta, @Nullable final String effects) {
         final List<PotionEffect> customEffects = potionMeta.getCustomEffects();
         if (customEffects.isEmpty()) {
             return effects;
@@ -87,7 +88,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
             final int duration = (effect.getDuration() - (effect.getDuration() % 20)) / 20;
             string.append(effect.getType().getName()).append(':').append(power).append(':').append(duration).append(',');
         }
-        return effects + " effects:" + string.substring(0, string.length() - 1);
+        return (effects == null ? "" : effects) + " effects:" + string.substring(0, string.length() - 1);
     }
 
     @Override
@@ -101,6 +102,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
     }
 
     @Override
+    @Nullable
     public String serializeToString(final PotionMeta potionMeta) {
         // TODO version switch:
         //  Remove this code when only 1.20.5+ is supported
@@ -112,25 +114,26 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
     @SuppressWarnings("PMD.MethodNamingConventions")
     private String getBasePotionEffectsPre_1_21(final PotionMeta potionMeta) {
         final PotionData pData = potionMeta.getBasePotionData();
-        return " type:" + pData.getType() + (pData.isExtended() ? " extended" : "")
+        return "type:" + pData.getType() + (pData.isExtended() ? " extended" : "")
                 + (pData.isUpgraded() ? " upgraded" : "");
     }
 
+    @Nullable
     private String getBasePotionEffects(final PotionMeta potionMeta) {
         final Keyed type;
         try {
             initReflection();
             if (methodHasBasePotionType == null || methodGetBasePotionType == null) {
-                return "";
+                return null;
             }
             if (!(boolean) methodHasBasePotionType.invoke(potionMeta)) {
-                return "";
+                return null;
             }
             type = (Keyed) methodGetBasePotionType.invoke(potionMeta);
         } catch (final ReflectiveOperationException e) {
             BetonQuest.getInstance().getLoggerFactory().create(PotionHandler.class)
                     .error("Could not initialize Methods to get Potion Data!", e);
-            return "";
+            return null;
         }
         final String minimalString = type.getKey().asMinimalString();
         final String longPrefix = "long_";
@@ -143,7 +146,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         } else {
             effects = minimalString;
         }
-        return " type:" + effects;
+        return "type:" + effects;
     }
 
     @Override

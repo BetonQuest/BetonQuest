@@ -42,11 +42,12 @@ public class FlagHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
+    @Nullable
     public String serializeToString(final ItemMeta meta) {
         if (meta.getItemFlags().isEmpty()) {
-            return "";
+            return null;
         }
-        return " flags:" + String.join(",", meta.getItemFlags().stream().map(ItemFlag::name).sorted().toList());
+        return "flags:" + String.join(",", meta.getItemFlags().stream().map(ItemFlag::name).sorted().toList());
     }
 
     /**
