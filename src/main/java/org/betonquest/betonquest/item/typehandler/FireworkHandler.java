@@ -45,6 +45,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     }
 
     @Override
+    @Nullable
     public String rawSerializeToString(final ItemMeta meta) {
         if (meta instanceof FireworkEffectMeta) {
             return serializeToString((FireworkEffectMeta) meta);
@@ -52,16 +53,17 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
         if (meta instanceof FireworkMeta) {
             return serializeToString((FireworkMeta) meta);
         }
-        return "";
+        return null;
     }
 
     @Override
+    @Nullable
     public String serializeToString(final FireworkMeta fireworkMeta) {
         if (!fireworkMeta.hasEffects()) {
-            return "";
+            return null;
         }
         final StringBuilder builder = new StringBuilder(17);
-        builder.append(" firework:");
+        builder.append("firework:");
         for (final FireworkEffect effect : fireworkMeta.getEffects()) {
             appendFireworkEffect(builder, effect);
             builder.append(',');
@@ -77,13 +79,14 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
      * @param fireworkMeta the meta to serialize
      * @return @return parsed values with leading space or empty string
      */
+    @Nullable
     public String serializeToString(final FireworkEffectMeta fireworkMeta) {
         if (!fireworkMeta.hasEffect()) {
-            return "";
+            return null;
         }
         final FireworkEffect effect = fireworkMeta.getEffect();
         final StringBuilder builder = new StringBuilder();
-        builder.append(" firework:");
+        builder.append("firework:");
         appendFireworkEffect(builder, effect);
         return builder.toString();
     }

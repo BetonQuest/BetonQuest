@@ -154,7 +154,10 @@ public class QuestItem {
 
         final StringBuilder builder = new StringBuilder();
         for (final ItemMetaHandler<? extends ItemMeta> staticHandler : STATIC_HANDLERS) {
-            builder.append(staticHandler.rawSerializeToString(meta));
+            final String serialize = staticHandler.rawSerializeToString(meta);
+            if (serialize != null) {
+                builder.append(' ').append(serialize);
+            }
         }
 
         return item.getType() + builder.toString();

@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
@@ -31,12 +32,13 @@ public class ColorHandler implements ItemMetaHandler<LeatherArmorMeta> {
     }
 
     @Override
+    @Nullable
     public String serializeToString(final LeatherArmorMeta armorMeta) {
         if (armorMeta.getColor().equals(Bukkit.getServer().getItemFactory().getDefaultLeatherColor())) {
-            return "";
+            return null;
         }
         final DyeColor dyeColor = DyeColor.getByColor(armorMeta.getColor());
-        return " color:" + (dyeColor == null ? '#' + Integer.toHexString(armorMeta.getColor().asRGB()) : dyeColor.toString());
+        return "color:" + (dyeColor == null ? '#' + Integer.toHexString(armorMeta.getColor().asRGB()) : dyeColor.toString());
     }
 
     @Override

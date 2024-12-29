@@ -28,7 +28,7 @@ public class DurabilityHandler implements ItemMetaHandler<Damageable> {
 
     @Override
     public String serializeToString(final Damageable damageable) {
-        return " durability:" + damageable.getDamage();
+        return "durability:" + damageable.getDamage();
     }
 
     @Override

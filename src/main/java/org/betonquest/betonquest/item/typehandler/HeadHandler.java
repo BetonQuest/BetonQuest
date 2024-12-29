@@ -123,8 +123,13 @@ public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
     }
 
     @Override
+    @Nullable
     public String serializeToString(final SkullMeta meta) {
-        return serializeSkullMeta(meta);
+        final String serialized = serializeSkullMeta(meta);
+        if (serialized.isBlank()) {
+            return null;
+        }
+        return serialized.substring(1);
     }
 
     @Override

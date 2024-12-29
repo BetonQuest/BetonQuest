@@ -39,25 +39,26 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
+    @Nullable
     public String serializeToString(final ItemMeta meta) {
         if (meta instanceof final EnchantmentStorageMeta storageMeta) {
             if (!storageMeta.hasStoredEnchants()) {
-                return "";
+                return null;
             }
             final StringBuilder string = new StringBuilder();
             for (final Enchantment enchant : storageMeta.getStoredEnchants().keySet()) {
                 string.append(enchant.getName()).append(':').append(storageMeta.getStoredEnchants().get(enchant)).append(',');
             }
-            return " enchants:" + string.substring(0, string.length() - 1);
+            return "enchants:" + string.substring(0, string.length() - 1);
         }
         if (!meta.hasEnchants()) {
-            return "";
+            return null;
         }
         final StringBuilder string = new StringBuilder();
         for (final Enchantment enchant : meta.getEnchants().keySet()) {
             string.append(enchant.getName()).append(':').append(meta.getEnchants().get(enchant)).append(',');
         }
-        return " enchants:" + string.substring(0, string.length() - 1);
+        return "enchants:" + string.substring(0, string.length() - 1);
     }
 
     @Override

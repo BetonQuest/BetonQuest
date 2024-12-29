@@ -39,11 +39,12 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
+    @Nullable
     public String serializeToString(final ItemMeta meta) {
         if (meta.hasDisplayName()) {
-            return " name:" + meta.getDisplayName().replace(" ", "_");
+            return "name:" + meta.getDisplayName().replace(" ", "_");
         }
-        return "";
+        return null;
     }
 
     @Override

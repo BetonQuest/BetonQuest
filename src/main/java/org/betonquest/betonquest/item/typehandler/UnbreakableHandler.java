@@ -3,6 +3,7 @@ package org.betonquest.betonquest.item.typehandler;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem.Existence;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
@@ -30,11 +31,12 @@ public class UnbreakableHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
+    @Nullable
     public String serializeToString(final ItemMeta meta) {
         if (meta.isUnbreakable()) {
-            return " unbreakable";
+            return "unbreakable";
         }
-        return "";
+        return null;
     }
 
     @Override
