@@ -21,9 +21,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods", "PMD.GodClass"})
-public class PotionHandler {
+public class PotionHandler implements ItemMetaHandler<PotionMeta> {
+
+    public static final String EXTENDED = "extended";
+
+    public static final String UPGRADED = "upgraded";
+
     /**
      * The 1.20.5+ method to check if a Potion Type is in the Potion.
      */
@@ -62,13 +68,42 @@ public class PotionHandler {
     public PotionHandler() {
     }
 
-    /**
-     * Converts the Meta into the string equivalent used by Quest Items.
-     *
-     * @param potionMeta the meta to parse into string
-     * @return the representing string or an empty string, when no representative data is present
-     */
-    public static String metaToString(final PotionMeta potionMeta) {
+    private static void initReflection() throws NoSuchMethodException {
+        if (!methodsInit) {
+            methodsInit = true;
+            methodHasBasePotionType = PotionMeta.class.getDeclaredMethod("hasBasePotionType");
+            methodGetBasePotionType = PotionMeta.class.getDeclaredMethod("getBasePotionType");
+        }
+    }
+
+    @Nullable
+    private static String addCustomEffects(final PotionMeta potionMeta, @Nullable final String effects) {
+        final List<PotionEffect> customEffects = potionMeta.getCustomEffects();
+        if (customEffects.isEmpty()) {
+            return effects;
+        }
+        final StringBuilder string = new StringBuilder();
+        for (final PotionEffect effect : customEffects) {
+            final int power = effect.getAmplifier() + 1;
+            final int duration = (effect.getDuration() - (effect.getDuration() % 20)) / 20;
+            string.append(effect.getType().getName()).append(':').append(power).append(':').append(duration).append(',');
+        }
+        return (effects == null ? "" : effects) + " effects:" + string.substring(0, string.length() - 1);
+    }
+
+    @Override
+    public Class<PotionMeta> metaClass() {
+        return PotionMeta.class;
+    }
+
+    @Override
+    public Set<String> keys() {
+        return Set.of("type", EXTENDED, UPGRADED, "effects", "effects-containing");
+    }
+
+    @Override
+    @Nullable
+    public String serializeToString(final PotionMeta potionMeta) {
         // TODO version switch:
         //  Remove this code when only 1.20.5+ is supported
         final String baseEffect = PaperLib.isVersion(20, 5) ? getBasePotionEffects(potionMeta)
@@ -77,27 +112,28 @@ public class PotionHandler {
     }
 
     @SuppressWarnings("PMD.MethodNamingConventions")
-    private static String getBasePotionEffectsPre_1_21(final PotionMeta potionMeta) {
+    private String getBasePotionEffectsPre_1_21(final PotionMeta potionMeta) {
         final PotionData pData = potionMeta.getBasePotionData();
-        return " type:" + pData.getType() + (pData.isExtended() ? " extended" : "")
+        return "type:" + pData.getType() + (pData.isExtended() ? " extended" : "")
                 + (pData.isUpgraded() ? " upgraded" : "");
     }
 
-    private static String getBasePotionEffects(final PotionMeta potionMeta) {
+    @Nullable
+    private String getBasePotionEffects(final PotionMeta potionMeta) {
         final Keyed type;
         try {
             initReflection();
             if (methodHasBasePotionType == null || methodGetBasePotionType == null) {
-                return "";
+                return null;
             }
             if (!(boolean) methodHasBasePotionType.invoke(potionMeta)) {
-                return "";
+                return null;
             }
             type = (Keyed) methodGetBasePotionType.invoke(potionMeta);
         } catch (final ReflectiveOperationException e) {
             BetonQuest.getInstance().getLoggerFactory().create(PotionHandler.class)
                     .error("Could not initialize Methods to get Potion Data!", e);
-            return "";
+            return null;
         }
         final String minimalString = type.getKey().asMinimalString();
         final String longPrefix = "long_";
@@ -110,29 +146,44 @@ public class PotionHandler {
         } else {
             effects = minimalString;
         }
-        return " type:" + effects;
+        return "type:" + effects;
     }
 
-    private static void initReflection() throws NoSuchMethodException {
-        if (!methodsInit) {
-            methodsInit = true;
-            methodHasBasePotionType = PotionMeta.class.getDeclaredMethod("hasBasePotionType");
-            methodGetBasePotionType = PotionMeta.class.getDeclaredMethod("getBasePotionType");
+    @Override
+    public void set(final String key, final String data) throws InstructionParseException {
+        switch (key) {
+            case "type" -> setType(data);
+            case EXTENDED -> {
+                if (EXTENDED.equals(data)) {
+                    extendedE = Existence.REQUIRED;
+                } else {
+                    setExtended(data);
+                }
+            }
+            case UPGRADED -> {
+                if (UPGRADED.equals(data)) {
+                    upgradedE = Existence.REQUIRED;
+                } else {
+                    setUpgraded(data);
+                }
+            }
+            case "effects" -> setCustom(data);
+            case "effects-containing" -> setNotExact();
+            default -> throw new InstructionParseException("Unknown potion key: " + key);
         }
     }
 
-    private static String addCustomEffects(final PotionMeta potionMeta, final String effects) {
-        final List<PotionEffect> customEffects = potionMeta.getCustomEffects();
-        if (customEffects.isEmpty()) {
-            return effects;
+    @Override
+    public void populate(final PotionMeta potionMeta) {
+        potionMeta.setBasePotionData(getBase());
+        for (final PotionEffect effect : getCustom()) {
+            potionMeta.addCustomEffect(effect, true);
         }
-        final StringBuilder string = new StringBuilder();
-        for (final PotionEffect effect : customEffects) {
-            final int power = effect.getAmplifier() + 1;
-            final int duration = (effect.getDuration() - (effect.getDuration() % 20)) / 20;
-            string.append(effect.getType().getName()).append(':').append(power).append(':').append(duration).append(',');
-        }
-        return effects + " effects:" + string.substring(0, string.length() - 1);
+    }
+
+    @Override
+    public boolean check(final PotionMeta meta) {
+        return checkMeta(meta);
     }
 
     public void setType(final String type) throws InstructionParseException {
