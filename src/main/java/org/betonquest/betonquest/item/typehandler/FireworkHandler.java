@@ -41,7 +41,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
 
     @Override
     public Set<String> keys() {
-        return Set.of();
+        return Set.of("firework", "power", "firework-containing");
     }
 
     @Override

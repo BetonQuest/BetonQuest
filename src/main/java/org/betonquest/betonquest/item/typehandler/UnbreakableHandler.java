@@ -34,7 +34,7 @@ public class UnbreakableHandler implements ItemMetaHandler<ItemMeta> {
     @Nullable
     public String serializeToString(final ItemMeta meta) {
         if (meta.isUnbreakable()) {
-            return "unbreakable";
+            return UNBREAKABLE;
         }
         return null;
     }
