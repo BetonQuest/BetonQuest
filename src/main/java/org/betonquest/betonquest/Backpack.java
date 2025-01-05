@@ -38,8 +38,7 @@ import java.util.Map;
 /**
  * Represents a chest GUI for the backpack displayed to the player.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition",
-        "PMD.CouplingBetweenObjects"})
+@SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.CouplingBetweenObjects"})
 public class Backpack implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -79,7 +78,7 @@ public class Backpack implements Listener {
         this.playerData = instance.getPlayerData(onlineProfile);
         this.lang = playerData.getLanguage();
         this.display = switch (type) {
-            case DEFAULT -> new Page(1);
+            case DEFAULT -> new BackpackPage(1);
             case CANCEL -> new Cancelers();
             case COMPASS -> new Compass();
         };
@@ -94,6 +93,11 @@ public class Backpack implements Listener {
         this(onlineProfile, DisplayType.DEFAULT);
     }
 
+    /**
+     * Catches clicks on an open backpack and processes them.
+     *
+     * @param event the click event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onClick(final InventoryClickEvent event) {
         if (event.getWhoClicked().equals(onlineProfile.getPlayer())) {
@@ -108,6 +112,11 @@ public class Backpack implements Listener {
         }
     }
 
+    /**
+     * Unregisters the backpack listeners on closing.
+     *
+     * @param event the close event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClosing(final InventoryCloseEvent event) {
         if (event.getPlayer().equals(onlineProfile.getPlayer())) {
@@ -115,8 +124,22 @@ public class Backpack implements Listener {
         }
     }
 
+    /**
+     * The parts of the backpack.
+     */
     public enum DisplayType {
-        DEFAULT, CANCEL, COMPASS
+        /**
+         * The QuestItems and buttons.
+         */
+        DEFAULT,
+        /**
+         * The 'usable' QuestCanceller.
+         */
+        CANCEL,
+        /**
+         * The selectable targets for the Compass.
+         */
+        COMPASS
     }
 
     /**
@@ -126,27 +149,54 @@ public class Backpack implements Listener {
         private Display() {
         }
 
+        /**
+         * Processes a click from a {@link InventoryClickEvent}.
+         *
+         * @param slot       {@link InventoryClickEvent#getRawSlot()}
+         * @param playerSlot {@link InventoryClickEvent#getSlot()}
+         * @param click      {@link InventoryClickEvent#getClick()}
+         */
         protected abstract void click(int slot, int playerSlot, ClickType click);
     }
 
     /**
      * Standard page with quest items.
      */
-    @SuppressWarnings({"PMD.ShortClassName", "PMD.CyclomaticComplexity", "PMD.AvoidFieldNameMatchingTypeName",
-            "PMD.GodClass"})
-    private class Page extends Display {
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass"})
+    private class BackpackPage extends Display {
+        /**
+         * The currently shown page.
+         */
         private final int page;
 
+        /**
+         * The total amount of possible pages.
+         */
         private final int pages;
 
+        /**
+         * The offset for displaying {@link #backpackItems}.
+         */
         private final int pageOffset;
 
+        /**
+         * If the journal item should be shown.
+         */
         private final boolean showJournal;
 
+        /**
+         * If the cancel item should be shown.
+         */
         private final boolean showCancel;
 
+        /**
+         * If the compass item should be shown.
+         */
         private final boolean showCompass;
 
+        /**
+         * The (Quest) Items to display.
+         */
         private final List<ItemStack> backpackItems;
 
         /**
@@ -155,7 +205,7 @@ public class Backpack implements Listener {
          * @param page number of the page to display, starting from 1
          */
         @SuppressWarnings("PMD.NPathComplexity")
-        public Page(final int page) {
+        public BackpackPage(final int page) {
             super();
             final boolean showJournalInBackpack = Boolean.parseBoolean(Config.getConfigString("journal.show_in_backpack"));
             this.page = page;
@@ -228,7 +278,7 @@ public class Backpack implements Listener {
         protected void click(final int slot, final int playerSlot, final ClickType click) {
             if (page == 1 && slot == 0 && showJournal) {
                 playerData.getJournal().addToInv();
-                display = new Page(page);
+                display = new BackpackPage(page);
             } else if (slot < 45) {
                 final int slotId = pageOffset + slot;
                 if (backpackItems.size() > slotId) {
@@ -264,7 +314,7 @@ public class Backpack implements Listener {
                         }
                         playerData.setBackpack(backpackItems.subList(showJournal ? 1 : 0, backpackItems.size()));
                     }
-                    display = new Page(page);
+                    display = new BackpackPage(page);
                 }
             } else if (slot > 53) {
                 // slot above 53 is player's inventory, so handle item storing
@@ -300,13 +350,13 @@ public class Backpack implements Listener {
                         // backpack again
                         playerData.getJournal().removeFromInv();
                     }
-                    display = new Page(page);
+                    display = new BackpackPage(page);
                 }
             } else if (slot == 48 && page > 1) {
                 // if it was a previous/next button turn the pages
-                display = new Page(page - 1);
+                display = new BackpackPage(page - 1);
             } else if (slot == 50 && page < pages) {
-                display = new Page(page + 1);
+                display = new BackpackPage(page + 1);
             } else if (slot == 45 && showCancel) {
                 // slot 45 is a slot with quest cancelers
                 display = new Cancelers();
@@ -321,6 +371,9 @@ public class Backpack implements Listener {
      * The page with quest cancelers.
      */
     private class Cancelers extends Display {
+        /**
+         * Maps the slot to a QuestCanceler.
+         */
         private final Map<Integer, QuestCanceler> map = new HashMap<>();
 
         /**
@@ -368,13 +421,28 @@ public class Backpack implements Listener {
         }
     }
 
+    /**
+     * Showing the possible locations for the compass.
+     */
     private class Compass extends Display {
+        /**
+         * Maps the slot to a location.
+         */
         private final Map<Integer, Location> locations = new HashMap<>();
 
+        /**
+         * Maps the slot to a QuestCanceler.
+         */
         private final Map<Integer, String> names = new HashMap<>();
 
+        /**
+         * Maps the slot to an optional Pair of ItemID parts.
+         */
         private final Map<Integer, Pair<QuestPackage, String>> items = new HashMap<>();
 
+        /**
+         * Creates a page with selectable compass targets and displays it to the player.
+         */
         @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
         public Compass() {
             super();
