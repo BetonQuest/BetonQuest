@@ -154,7 +154,7 @@ public class Backpack implements Listener {
          *
          * @param page number of the page to display, starting from 1
          */
-        @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+        @SuppressWarnings("PMD.NPathComplexity")
         public Page(final int page) {
             super();
             final boolean showJournalInBackpack = Boolean.parseBoolean(Config.getConfigString("journal.show_in_backpack"));
@@ -175,91 +175,52 @@ public class Backpack implements Listener {
                 content[index] = backpackItems.get(pageOffset + index);
             }
 
-            // if there are other pages, place the buttons
             if (page > 1) {
-                ItemStack previous = null;
-                final String previousButton = Config.getConfigString("items.backpack.previous_button");
-                if (previousButton != null && !previousButton.isEmpty()) {
-                    try {
-                        previous = new QuestItem(new ItemID(null, previousButton)).generate(1);
-                    } catch (final ObjectNotFoundException | InstructionParseException e) {
-                        log.warn("Could not load previous button: " + e.getMessage(), e);
-                    }
-                }
-                if (previous == null) {
-                    previous = new ItemStack(Material.GLOWSTONE_DUST);
-                }
-                final ItemMeta meta = previous.getItemMeta();
-                meta.setDisplayName(Config.getMessage(lang, "previous").replaceAll("&", "§"));
-                previous.setItemMeta(meta);
-                content[48] = previous;
+                content[48] = button("previous", Material.GLOWSTONE_DUST, false).getLeft();
             }
             if (page < pages) {
-                ItemStack next = null;
-                final String nextButton = Config.getConfigString("items.backpack.next_button");
-                if (nextButton != null && !nextButton.isEmpty()) {
-                    try {
-                        next = new QuestItem(new ItemID(null, nextButton)).generate(1);
-                    } catch (final ObjectNotFoundException | InstructionParseException e) {
-                        log.warn("Could not load next button: " + e.getMessage(), e);
-                    }
-                }
-                if (next == null) {
-                    next = new ItemStack(Material.REDSTONE);
-                }
-                final ItemMeta meta = next.getItemMeta();
-                meta.setDisplayName(Config.getMessage(lang, "next").replaceAll("&", "§"));
-                next.setItemMeta(meta);
-                content[50] = next;
+                content[50] = button("next", Material.REDSTONE, false).getLeft();
             }
-            // set "cancel quest" button
-            ItemStack cancel = null;
-            final String cancelButton = Config.getConfigString("items.backpack.cancel_button");
-            if (cancelButton != null && !cancelButton.isEmpty()) {
+            final Pair<ItemStack, Boolean> cancel = button("cancel", Material.BONE, true);
+            if (cancel.getRight()) {
                 showCancel = true;
-                if (!"DEFAULT".equalsIgnoreCase(cancelButton)) {
-                    try {
-                        cancel = new QuestItem(new ItemID(null, cancelButton)).generate(1);
-                    } catch (final ObjectNotFoundException | InstructionParseException e) {
-                        log.warn("Could not load cancel button: " + e.getMessage(), e);
-                    }
-                }
-                if (cancel == null) {
-                    cancel = new ItemStack(Material.BONE);
-                }
-                final ItemMeta meta = cancel.getItemMeta();
-                meta.setDisplayName(Config.getMessage(lang, "cancel").replaceAll("&", "§"));
-                cancel.setItemMeta(meta);
-                content[45] = cancel;
-                // set "compass targets" button
+                content[45] = cancel.getLeft();
             } else {
                 showCancel = false;
             }
-            ItemStack compassItem = null;
-            final String compassButton = Config.getConfigString("items.backpack.compass_button");
-            if (compassButton != null && !compassButton.isEmpty()) {
+            final Pair<ItemStack, Boolean> compass = button("compass", Material.COMPASS, true);
+            if (compass.getRight()) {
                 showCompass = true;
-                if (!"DEFAULT".equalsIgnoreCase(compassButton)) {
-                    try {
-                        compassItem = new QuestItem(new ItemID(null, compassButton)).generate(1);
-                    } catch (final ObjectNotFoundException | InstructionParseException e) {
-                        log.warn("Could not load compass button: " + e.getMessage(), e);
-                    }
-                }
-                if (compassItem == null) {
-                    compassItem = new ItemStack(Material.COMPASS);
-                }
-                final ItemMeta compassMeta = compassItem.getItemMeta();
-                compassMeta.setDisplayName(Config.getMessage(lang, "compass").replace('&', '&'));
-                compassItem.setItemMeta(compassMeta);
-                content[46] = compassItem;
-                // set the inventory and display it
+                content[46] = compass.getLeft();
             } else {
                 showCompass = false;
             }
             inv.setContents(content);
             onlineProfile.getPlayer().openInventory(inv);
             Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
+        }
+
+        private Pair<ItemStack, Boolean> button(final String button, final Material fallback, final boolean checkDefault) {
+            ItemStack stack = null;
+            boolean present = false;
+            final String buttonString = Config.getConfigString("items.backpack." + button + "_button");
+            if (buttonString != null && !buttonString.isEmpty()) {
+                present = true;
+                if (!checkDefault || !"DEFAULT".equalsIgnoreCase(buttonString)) {
+                    try {
+                        stack = new QuestItem(new ItemID(null, buttonString)).generate(1);
+                    } catch (final ObjectNotFoundException | InstructionParseException e) {
+                        log.warn("Could not load " + button + " button: " + e.getMessage(), e);
+                    }
+                }
+            }
+            if (stack == null) {
+                stack = new ItemStack(fallback);
+            }
+            final ItemMeta meta = stack.getItemMeta();
+            meta.setDisplayName(Config.getMessage(lang, button).replaceAll("&", "§"));
+            stack.setItemMeta(meta);
+            return Pair.of(stack, present);
         }
 
         @SuppressWarnings({"PMD.NcssCount", "PMD.CognitiveComplexity", "PMD.AvoidDeeplyNestedIfStmts"})
