@@ -38,8 +38,13 @@ import java.util.Map;
 /**
  * Represents a chest GUI for the backpack displayed to the player.
  */
-@SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.CouplingBetweenObjects"})
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class Backpack implements Listener {
+    /**
+     * The maximum amount of rows an inventory can have.
+     */
+    private static final int MAXIMUM_ROWS = 6;
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -162,8 +167,33 @@ public class Backpack implements Listener {
     /**
      * Standard page with quest items.
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass"})
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private class BackpackPage extends Display {
+        /**
+         * Backpack size.
+         */
+        private static final int INVENTORY_SIZE = 54;
+
+        /**
+         * Position of 'cancel' button.
+         */
+        private static final int SLOT_CANCEL = 45;
+
+        /**
+         * Position of 'compass' button.
+         */
+        private static final int SLOT_COMPASS = 46;
+
+        /**
+         * Position of 'next' button.
+         */
+        private static final int SLOT_NEXT = 50;
+
+        /**
+         * Position of 'previous' button.
+         */
+        private static final int SLOT_PREVIOUS = 48;
+
         /**
          * The currently shown page.
          */
@@ -215,33 +245,34 @@ public class Backpack implements Listener {
                 backpackItems.add(0, playerData.getJournal().getAsItem());
             }
             this.pages = (int) Math.ceil(backpackItems.size() / 45F);
-            this.pageOffset = (page - 1) * 45;
+            this.pageOffset = (page - 1) * SLOT_CANCEL;
 
-            final Inventory inv = Bukkit.createInventory(null, 54, Config.getMessage(lang, "backpack_title")
+            final Inventory inv = Bukkit.createInventory(null, INVENTORY_SIZE, Config.getMessage(lang, "backpack_title")
                     + (pages == 0 || pages == 1 ? "" : " (" + page + "/" + pages + ")"));
-            final ItemStack[] content = new ItemStack[54];
+            final ItemStack[] content = new ItemStack[INVENTORY_SIZE];
 
-            for (int index = 0; index < 45 && pageOffset + index < backpackItems.size(); index++) {
+            for (int index = 0; index < SLOT_CANCEL && pageOffset + index < backpackItems.size(); index++) {
                 content[index] = backpackItems.get(pageOffset + index);
             }
 
-            if (page > 1) {
-                content[48] = button("previous", Material.GLOWSTONE_DUST, false).getLeft();
+            final int pageOne = 1;
+            if (page > pageOne) {
+                content[SLOT_PREVIOUS] = button("previous", Material.GLOWSTONE_DUST, false).getLeft();
             }
             if (page < pages) {
-                content[50] = button("next", Material.REDSTONE, false).getLeft();
+                content[SLOT_NEXT] = button("next", Material.REDSTONE, false).getLeft();
             }
             final Pair<ItemStack, Boolean> cancel = button("cancel", Material.BONE, true);
             if (cancel.getRight()) {
                 showCancel = true;
-                content[45] = cancel.getLeft();
+                content[SLOT_CANCEL] = cancel.getLeft();
             } else {
                 showCancel = false;
             }
             final Pair<ItemStack, Boolean> compass = button("compass", Material.COMPASS, true);
             if (compass.getRight()) {
                 showCompass = true;
-                content[46] = compass.getLeft();
+                content[SLOT_COMPASS] = compass.getLeft();
             } else {
                 showCompass = false;
             }
@@ -279,7 +310,7 @@ public class Backpack implements Listener {
             if (page == 1 && slot == 0 && showJournal) {
                 playerData.getJournal().addToInv();
                 display = new BackpackPage(page);
-            } else if (slot < 45) {
+            } else if (slot < SLOT_CANCEL) {
                 final int slotId = pageOffset + slot;
                 if (backpackItems.size() > slotId) {
                     final ItemStack item = backpackItems.get(slotId);
@@ -316,7 +347,7 @@ public class Backpack implements Listener {
                     }
                     display = new BackpackPage(page);
                 }
-            } else if (slot > 53) {
+            } else if (slot >= INVENTORY_SIZE) {
                 // slot above 53 is player's inventory, so handle item storing
                 final ItemStack item = onlineProfile.getPlayer().getInventory().getItem(playerSlot);
                 if (item != null) {
@@ -352,15 +383,15 @@ public class Backpack implements Listener {
                     }
                     display = new BackpackPage(page);
                 }
-            } else if (slot == 48 && page > 1) {
+            } else if (slot == SLOT_PREVIOUS && page > 1) {
                 // if it was a previous/next button turn the pages
                 display = new BackpackPage(page - 1);
-            } else if (slot == 50 && page < pages) {
+            } else if (slot == SLOT_NEXT && page < pages) {
                 display = new BackpackPage(page + 1);
-            } else if (slot == 45 && showCancel) {
+            } else if (slot == SLOT_CANCEL && showCancel) {
                 // slot 45 is a slot with quest cancelers
                 display = new Cancelers();
-            } else if (slot == 46 && showCompass) {
+            } else if (slot == SLOT_COMPASS && showCompass) {
                 // slot 46 is a slot with compass pointers
                 display = new Compass();
             }
@@ -371,6 +402,7 @@ public class Backpack implements Listener {
      * The page with quest cancelers.
      */
     private class Cancelers extends Display {
+
         /**
          * Maps the slot to a QuestCanceler.
          */
@@ -391,8 +423,8 @@ public class Backpack implements Listener {
             // generate the inventory view
             final int size = cancelers.size();
             int numberOfRows = (size - size % 9) / 9 + 1;
-            if (numberOfRows > 6) {
-                numberOfRows = 6;
+            if (numberOfRows > MAXIMUM_ROWS) {
+                numberOfRows = MAXIMUM_ROWS;
                 log.warn(onlineProfile + " has too many active quests, please"
                         + " don't allow for so many of them. It slows down your server!");
             }
@@ -504,7 +536,7 @@ public class Backpack implements Listener {
             // solve number of needed rows
             final int size = locations.size();
             final int numberOfRows = (size - size % 9) / 9 + 1;
-            if (numberOfRows > 6) {
+            if (numberOfRows > MAXIMUM_ROWS) {
                 log.warn(onlineProfile + " has too many compass pointers, please"
                         + " don't allow for so many of them. It slows down your server!");
                 onlineProfile.getPlayer().closeInventory();
