@@ -38,9 +38,13 @@ import java.util.Map;
 /**
  * Represents a chest GUI for the backpack displayed to the player.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition",
-        "PMD.CouplingBetweenObjects"})
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class Backpack implements Listener {
+    /**
+     * The maximum amount of rows an inventory can have.
+     */
+    private static final int MAXIMUM_ROWS = 6;
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -79,7 +83,7 @@ public class Backpack implements Listener {
         this.playerData = instance.getPlayerData(onlineProfile);
         this.lang = playerData.getLanguage();
         this.display = switch (type) {
-            case DEFAULT -> new Page(1);
+            case DEFAULT -> new BackpackPage(1);
             case CANCEL -> new Cancelers();
             case COMPASS -> new Compass();
         };
@@ -94,6 +98,11 @@ public class Backpack implements Listener {
         this(onlineProfile, DisplayType.DEFAULT);
     }
 
+    /**
+     * Catches clicks on an open backpack and processes them.
+     *
+     * @param event the click event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onClick(final InventoryClickEvent event) {
         if (event.getWhoClicked().equals(onlineProfile.getPlayer())) {
@@ -108,6 +117,11 @@ public class Backpack implements Listener {
         }
     }
 
+    /**
+     * Unregisters the backpack listeners on closing.
+     *
+     * @param event the close event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClosing(final InventoryCloseEvent event) {
         if (event.getPlayer().equals(onlineProfile.getPlayer())) {
@@ -115,8 +129,22 @@ public class Backpack implements Listener {
         }
     }
 
+    /**
+     * The parts of the backpack.
+     */
     public enum DisplayType {
-        DEFAULT, CANCEL, COMPASS
+        /**
+         * The QuestItems and buttons.
+         */
+        DEFAULT,
+        /**
+         * The 'usable' QuestCanceller.
+         */
+        CANCEL,
+        /**
+         * The selectable targets for the Compass.
+         */
+        COMPASS
     }
 
     /**
@@ -126,27 +154,79 @@ public class Backpack implements Listener {
         private Display() {
         }
 
+        /**
+         * Processes a click from a {@link InventoryClickEvent}.
+         *
+         * @param slot       {@link InventoryClickEvent#getRawSlot()}
+         * @param playerSlot {@link InventoryClickEvent#getSlot()}
+         * @param click      {@link InventoryClickEvent#getClick()}
+         */
         protected abstract void click(int slot, int playerSlot, ClickType click);
     }
 
     /**
      * Standard page with quest items.
      */
-    @SuppressWarnings({"PMD.ShortClassName", "PMD.CyclomaticComplexity", "PMD.AvoidFieldNameMatchingTypeName",
-            "PMD.GodClass"})
-    private class Page extends Display {
+    @SuppressWarnings("PMD.CyclomaticComplexity")
+    private class BackpackPage extends Display {
+        /**
+         * Backpack size.
+         */
+        private static final int INVENTORY_SIZE = 54;
+
+        /**
+         * Position of 'cancel' button.
+         */
+        private static final int SLOT_CANCEL = 45;
+
+        /**
+         * Position of 'compass' button.
+         */
+        private static final int SLOT_COMPASS = 46;
+
+        /**
+         * Position of 'next' button.
+         */
+        private static final int SLOT_NEXT = 50;
+
+        /**
+         * Position of 'previous' button.
+         */
+        private static final int SLOT_PREVIOUS = 48;
+
+        /**
+         * The currently shown page.
+         */
         private final int page;
 
+        /**
+         * The total amount of possible pages.
+         */
         private final int pages;
 
+        /**
+         * The offset for displaying {@link #backpackItems}.
+         */
         private final int pageOffset;
 
+        /**
+         * If the journal item should be shown.
+         */
         private final boolean showJournal;
 
+        /**
+         * If the cancel item should be shown.
+         */
         private final boolean showCancel;
 
+        /**
+         * If the compass item should be shown.
+         */
         private final boolean showCompass;
 
+        /**
+         * The (Quest) Items to display.
+         */
         private final List<ItemStack> backpackItems;
 
         /**
@@ -154,8 +234,8 @@ public class Backpack implements Listener {
          *
          * @param page number of the page to display, starting from 1
          */
-        @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
-        public Page(final int page) {
+        @SuppressWarnings("PMD.NPathComplexity")
+        public BackpackPage(final int page) {
             super();
             final boolean showJournalInBackpack = Boolean.parseBoolean(Config.getConfigString("journal.show_in_backpack"));
             this.page = page;
@@ -165,95 +245,34 @@ public class Backpack implements Listener {
                 backpackItems.add(0, playerData.getJournal().getAsItem());
             }
             this.pages = (int) Math.ceil(backpackItems.size() / 45F);
-            this.pageOffset = (page - 1) * 45;
+            this.pageOffset = (page - 1) * SLOT_CANCEL;
 
-            final Inventory inv = Bukkit.createInventory(null, 54, Config.getMessage(lang, "backpack_title")
+            final Inventory inv = Bukkit.createInventory(null, INVENTORY_SIZE, Config.getMessage(lang, "backpack_title")
                     + (pages == 0 || pages == 1 ? "" : " (" + page + "/" + pages + ")"));
-            final ItemStack[] content = new ItemStack[54];
+            final ItemStack[] content = new ItemStack[INVENTORY_SIZE];
 
-            for (int index = 0; index < 45 && pageOffset + index < backpackItems.size(); index++) {
+            for (int index = 0; index < SLOT_CANCEL && pageOffset + index < backpackItems.size(); index++) {
                 content[index] = backpackItems.get(pageOffset + index);
             }
 
-            // if there are other pages, place the buttons
-            if (page > 1) {
-                ItemStack previous = null;
-                final String previousButton = Config.getConfigString("items.backpack.previous_button");
-                if (previousButton != null && !previousButton.isEmpty()) {
-                    try {
-                        previous = new QuestItem(new ItemID(null, previousButton)).generate(1);
-                    } catch (final ObjectNotFoundException | InstructionParseException e) {
-                        log.warn("Could not load previous button: " + e.getMessage(), e);
-                    }
-                }
-                if (previous == null) {
-                    previous = new ItemStack(Material.GLOWSTONE_DUST);
-                }
-                final ItemMeta meta = previous.getItemMeta();
-                meta.setDisplayName(Config.getMessage(lang, "previous").replaceAll("&", "§"));
-                previous.setItemMeta(meta);
-                content[48] = previous;
+            final int pageOne = 1;
+            if (page > pageOne) {
+                content[SLOT_PREVIOUS] = button("previous", Material.GLOWSTONE_DUST, false).getLeft();
             }
             if (page < pages) {
-                ItemStack next = null;
-                final String nextButton = Config.getConfigString("items.backpack.next_button");
-                if (nextButton != null && !nextButton.isEmpty()) {
-                    try {
-                        next = new QuestItem(new ItemID(null, nextButton)).generate(1);
-                    } catch (final ObjectNotFoundException | InstructionParseException e) {
-                        log.warn("Could not load next button: " + e.getMessage(), e);
-                    }
-                }
-                if (next == null) {
-                    next = new ItemStack(Material.REDSTONE);
-                }
-                final ItemMeta meta = next.getItemMeta();
-                meta.setDisplayName(Config.getMessage(lang, "next").replaceAll("&", "§"));
-                next.setItemMeta(meta);
-                content[50] = next;
+                content[SLOT_NEXT] = button("next", Material.REDSTONE, false).getLeft();
             }
-            // set "cancel quest" button
-            ItemStack cancel = null;
-            final String cancelButton = Config.getConfigString("items.backpack.cancel_button");
-            if (cancelButton != null && !cancelButton.isEmpty()) {
+            final Pair<ItemStack, Boolean> cancel = button("cancel", Material.BONE, true);
+            if (cancel.getRight()) {
                 showCancel = true;
-                if (!"DEFAULT".equalsIgnoreCase(cancelButton)) {
-                    try {
-                        cancel = new QuestItem(new ItemID(null, cancelButton)).generate(1);
-                    } catch (final ObjectNotFoundException | InstructionParseException e) {
-                        log.warn("Could not load cancel button: " + e.getMessage(), e);
-                    }
-                }
-                if (cancel == null) {
-                    cancel = new ItemStack(Material.BONE);
-                }
-                final ItemMeta meta = cancel.getItemMeta();
-                meta.setDisplayName(Config.getMessage(lang, "cancel").replaceAll("&", "§"));
-                cancel.setItemMeta(meta);
-                content[45] = cancel;
-                // set "compass targets" button
+                content[SLOT_CANCEL] = cancel.getLeft();
             } else {
                 showCancel = false;
             }
-            ItemStack compassItem = null;
-            final String compassButton = Config.getConfigString("items.backpack.compass_button");
-            if (compassButton != null && !compassButton.isEmpty()) {
+            final Pair<ItemStack, Boolean> compass = button("compass", Material.COMPASS, true);
+            if (compass.getRight()) {
                 showCompass = true;
-                if (!"DEFAULT".equalsIgnoreCase(compassButton)) {
-                    try {
-                        compassItem = new QuestItem(new ItemID(null, compassButton)).generate(1);
-                    } catch (final ObjectNotFoundException | InstructionParseException e) {
-                        log.warn("Could not load compass button: " + e.getMessage(), e);
-                    }
-                }
-                if (compassItem == null) {
-                    compassItem = new ItemStack(Material.COMPASS);
-                }
-                final ItemMeta compassMeta = compassItem.getItemMeta();
-                compassMeta.setDisplayName(Config.getMessage(lang, "compass").replace('&', '&'));
-                compassItem.setItemMeta(compassMeta);
-                content[46] = compassItem;
-                // set the inventory and display it
+                content[SLOT_COMPASS] = compass.getLeft();
             } else {
                 showCompass = false;
             }
@@ -262,13 +281,36 @@ public class Backpack implements Listener {
             Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
         }
 
+        private Pair<ItemStack, Boolean> button(final String button, final Material fallback, final boolean checkDefault) {
+            ItemStack stack = null;
+            boolean present = false;
+            final String buttonString = Config.getConfigString("items.backpack." + button + "_button");
+            if (buttonString != null && !buttonString.isEmpty()) {
+                present = true;
+                if (!checkDefault || !"DEFAULT".equalsIgnoreCase(buttonString)) {
+                    try {
+                        stack = new QuestItem(new ItemID(null, buttonString)).generate(1);
+                    } catch (final ObjectNotFoundException | InstructionParseException e) {
+                        log.warn("Could not load " + button + " button: " + e.getMessage(), e);
+                    }
+                }
+            }
+            if (stack == null) {
+                stack = new ItemStack(fallback);
+            }
+            final ItemMeta meta = stack.getItemMeta();
+            meta.setDisplayName(Config.getMessage(lang, button).replaceAll("&", "§"));
+            stack.setItemMeta(meta);
+            return Pair.of(stack, present);
+        }
+
         @SuppressWarnings({"PMD.NcssCount", "PMD.CognitiveComplexity", "PMD.AvoidDeeplyNestedIfStmts"})
         @Override
         protected void click(final int slot, final int playerSlot, final ClickType click) {
             if (page == 1 && slot == 0 && showJournal) {
                 playerData.getJournal().addToInv();
-                display = new Page(page);
-            } else if (slot < 45) {
+                display = new BackpackPage(page);
+            } else if (slot < SLOT_CANCEL) {
                 final int slotId = pageOffset + slot;
                 if (backpackItems.size() > slotId) {
                     final ItemStack item = backpackItems.get(slotId);
@@ -303,9 +345,9 @@ public class Backpack implements Listener {
                         }
                         playerData.setBackpack(backpackItems.subList(showJournal ? 1 : 0, backpackItems.size()));
                     }
-                    display = new Page(page);
+                    display = new BackpackPage(page);
                 }
-            } else if (slot > 53) {
+            } else if (slot >= INVENTORY_SIZE) {
                 // slot above 53 is player's inventory, so handle item storing
                 final ItemStack item = onlineProfile.getPlayer().getInventory().getItem(playerSlot);
                 if (item != null) {
@@ -339,17 +381,17 @@ public class Backpack implements Listener {
                         // backpack again
                         playerData.getJournal().removeFromInv();
                     }
-                    display = new Page(page);
+                    display = new BackpackPage(page);
                 }
-            } else if (slot == 48 && page > 1) {
+            } else if (slot == SLOT_PREVIOUS && page > 1) {
                 // if it was a previous/next button turn the pages
-                display = new Page(page - 1);
-            } else if (slot == 50 && page < pages) {
-                display = new Page(page + 1);
-            } else if (slot == 45 && showCancel) {
+                display = new BackpackPage(page - 1);
+            } else if (slot == SLOT_NEXT && page < pages) {
+                display = new BackpackPage(page + 1);
+            } else if (slot == SLOT_CANCEL && showCancel) {
                 // slot 45 is a slot with quest cancelers
                 display = new Cancelers();
-            } else if (slot == 46 && showCompass) {
+            } else if (slot == SLOT_COMPASS && showCompass) {
                 // slot 46 is a slot with compass pointers
                 display = new Compass();
             }
@@ -360,6 +402,10 @@ public class Backpack implements Listener {
      * The page with quest cancelers.
      */
     private class Cancelers extends Display {
+
+        /**
+         * Maps the slot to a QuestCanceler.
+         */
         private final Map<Integer, QuestCanceler> map = new HashMap<>();
 
         /**
@@ -377,8 +423,8 @@ public class Backpack implements Listener {
             // generate the inventory view
             final int size = cancelers.size();
             int numberOfRows = (size - size % 9) / 9 + 1;
-            if (numberOfRows > 6) {
-                numberOfRows = 6;
+            if (numberOfRows > MAXIMUM_ROWS) {
+                numberOfRows = MAXIMUM_ROWS;
                 log.warn(onlineProfile + " has too many active quests, please"
                         + " don't allow for so many of them. It slows down your server!");
             }
@@ -407,13 +453,28 @@ public class Backpack implements Listener {
         }
     }
 
+    /**
+     * Showing the possible locations for the compass.
+     */
     private class Compass extends Display {
+        /**
+         * Maps the slot to a location.
+         */
         private final Map<Integer, Location> locations = new HashMap<>();
 
+        /**
+         * Maps the slot to a QuestCanceler.
+         */
         private final Map<Integer, String> names = new HashMap<>();
 
+        /**
+         * Maps the slot to an optional Pair of ItemID parts.
+         */
         private final Map<Integer, Pair<QuestPackage, String>> items = new HashMap<>();
 
+        /**
+         * Creates a page with selectable compass targets and displays it to the player.
+         */
         @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
         public Compass() {
             super();
@@ -475,7 +536,7 @@ public class Backpack implements Listener {
             // solve number of needed rows
             final int size = locations.size();
             final int numberOfRows = (size - size % 9) / 9 + 1;
-            if (numberOfRows > 6) {
+            if (numberOfRows > MAXIMUM_ROWS) {
                 log.warn(onlineProfile + " has too many compass pointers, please"
                         + " don't allow for so many of them. It slows down your server!");
                 onlineProfile.getPlayer().closeInventory();
