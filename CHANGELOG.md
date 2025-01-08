@@ -15,7 +15,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 - fixed NPC navigation by giving better error messages and handling the stuck action correctly
 - custom sounds from resourcepacks could not be used in conversation start and end sound
-- `chestput` objective caused that no chest could be opened on the server when `multipleaccess` was forbidden(default) 
+- `chestput` objective caused that no chest could be opened on the server when `multipleaccess` was forbidden(default)
+- providing wrong commit sha to the download command now gives a proper error message
 ### Security
 
 ## [2.2.0] - 2024-12-01
