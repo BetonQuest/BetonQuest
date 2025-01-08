@@ -184,6 +184,9 @@ public class Downloader implements Callable<Boolean> {
     @SuppressWarnings("PMD.CyclomaticComplexity")
     private void requestCommitSHA() throws DownloadFailedException, IOException {
         if (!ref.startsWith("refs/")) {
+            if (!ref.matches("[0-9a-f]{7,40}")) {
+                throw new DownloadFailedException("ref is not a valid commit SHA");
+            }
             this.sha = ref;
             log.debug("Commit has sha '" + this.sha + "'");
             return;
