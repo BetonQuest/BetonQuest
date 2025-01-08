@@ -34,48 +34,26 @@ public class CustomModelDataHandler implements ItemMetaHandler<ItemMeta> {
         return null;
     }
 
-    public void parse(final String data) throws InstructionParseException {
-        try {
-            require(Integer.parseInt(data));
-        } catch (final NumberFormatException e) {
-            throw new InstructionParseException("Could not parse custom model data value: " + data, e);
-        }
-    }
-
-    public void require(final int customModelDataId) {
-        this.existence = Existence.REQUIRED;
-        this.modelData = customModelDataId;
-    }
-
-    public void forbid() {
-        this.existence = Existence.FORBIDDEN;
-    }
-
-    public Existence getExistence() {
-        return existence;
-    }
-
-    public boolean has() {
-        return existence == Existence.REQUIRED;
-    }
-
-    public int get() {
-        return modelData;
-    }
-
     @Override
     public void set(final String key, final String data) throws InstructionParseException {
         switch (key) {
-            case "custom-model-data" -> parse(data);
-            case "no-custom-model-data" -> forbid();
+            case "custom-model-data" -> {
+                try {
+                    this.existence = Existence.REQUIRED;
+                    this.modelData = Integer.parseInt(data);
+                } catch (final NumberFormatException e) {
+                    throw new InstructionParseException("Could not parse custom model data value: " + data, e);
+                }
+            }
+            case "no-custom-model-data" -> this.existence = Existence.FORBIDDEN;
             default -> throw new InstructionParseException("Unknown custom model data key: " + key);
         }
     }
 
     @Override
     public void populate(final ItemMeta meta) {
-        if (getExistence() == Existence.REQUIRED) {
-            meta.setCustomModelData(get());
+        if (existence == Existence.REQUIRED) {
+            meta.setCustomModelData(modelData);
         }
     }
 

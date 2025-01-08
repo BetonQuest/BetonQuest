@@ -50,7 +50,15 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
         if (!"name".equals(key)) {
             throw new InstructionParseException("Invalid name: " + key);
         }
-        set(data);
+        if (data.isEmpty()) {
+            throw new InstructionParseException("Name cannot be empty");
+        }
+        if (Existence.NONE_KEY.equalsIgnoreCase(data)) {
+            existence = Existence.FORBIDDEN;
+        } else {
+            this.name = replaceUnderscore(data).replace('&', '§');
+            existence = Existence.REQUIRED;
+        }
     }
 
     @Override
@@ -61,31 +69,15 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
     @Override
     public boolean check(final ItemMeta meta) {
         final String displayName = meta.hasDisplayName() ? meta.getDisplayName() : null;
-        return check(displayName);
-    }
-
-    public void set(final String name) throws InstructionParseException {
-        if (name.isEmpty()) {
-            throw new InstructionParseException("Name cannot be empty");
-        }
-        if (Existence.NONE_KEY.equalsIgnoreCase(name)) {
-            existence = Existence.FORBIDDEN;
-        } else {
-            this.name = replaceUnderscore(name).replace('&', '§');
-            existence = Existence.REQUIRED;
-        }
+        return switch (existence) {
+            case WHATEVER -> true;
+            case REQUIRED -> displayName != null && displayName.equals(this.name);
+            case FORBIDDEN -> displayName == null;
+        };
     }
 
     @Nullable
     public String get() {
         return name;
-    }
-
-    public boolean check(@Nullable final String name) {
-        return switch (existence) {
-            case WHATEVER -> true;
-            case REQUIRED -> name != null && name.equals(this.name);
-            case FORBIDDEN -> name == null;
-        };
     }
 }

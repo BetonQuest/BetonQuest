@@ -23,8 +23,14 @@ import java.util.Set;
 @SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods", "PMD.GodClass"})
 public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
+    /**
+     * The 'extended' string.
+     */
     public static final String EXTENDED = "extended";
 
+    /**
+     * The 'upgraded' string.
+     */
     public static final String UPGRADED = "upgraded";
 
     /**
@@ -60,6 +66,9 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
     private Existence customE = Existence.WHATEVER;
 
+    /**
+     * If the Potions need to be exact the same or just contain all specified effects.
+     */
     private boolean exact = true;
 
     public PotionHandler() {
@@ -154,25 +163,27 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
                 if (EXTENDED.equals(data)) {
                     extendedE = Existence.REQUIRED;
                 } else {
-                    setExtended(data);
+                    extendedE = Existence.REQUIRED;
+                    this.extended = Boolean.parseBoolean(data);
                 }
             }
             case UPGRADED -> {
                 if (UPGRADED.equals(data)) {
                     upgradedE = Existence.REQUIRED;
                 } else {
-                    setUpgraded(data);
+                    upgradedE = Existence.REQUIRED;
+                    this.upgraded = Boolean.parseBoolean(data);
                 }
             }
             case "effects" -> setCustom(data);
-            case "effects-containing" -> setNotExact();
+            case "effects-containing" -> exact = false;
             default -> throw new InstructionParseException("Unknown potion key: " + key);
         }
     }
 
     @Override
     public void populate(final PotionMeta potionMeta) {
-        potionMeta.setBasePotionData(getBase());
+        potionMeta.setBasePotionData(new PotionData(type, extended, upgraded));
         for (final PotionEffect effect : getCustom()) {
             potionMeta.addCustomEffect(effect, true);
         }
@@ -180,7 +191,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
     @Override
     public boolean check(final PotionMeta meta) {
-        return checkMeta(meta);
+        return checkBase(meta.getBasePotionData()) && checkCustom(meta.getCustomEffects());
     }
 
     public void setType(final String type) throws InstructionParseException {
@@ -190,24 +201,6 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         } catch (final IllegalArgumentException e) {
             throw new InstructionParseException("No such potion type: " + type, e);
         }
-    }
-
-    public void setExtended(final String extended) {
-        extendedE = Existence.REQUIRED;
-        this.extended = Boolean.parseBoolean(extended);
-    }
-
-    public void setUpgraded(final String upgraded) {
-        upgradedE = Existence.REQUIRED;
-        this.upgraded = Boolean.parseBoolean(upgraded);
-    }
-
-    public void setNotExact() {
-        exact = false;
-    }
-
-    public PotionData getBase() {
-        return new PotionData(type, extended, upgraded);
     }
 
     public List<PotionEffect> getCustom() {
@@ -235,10 +228,6 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
             this.custom.add(checker);
         }
         customE = Existence.REQUIRED;
-    }
-
-    public boolean checkMeta(final PotionMeta potionMeta) {
-        return checkBase(potionMeta.getBasePotionData()) && checkCustom(potionMeta.getCustomEffects());
     }
 
     public boolean checkBase(@Nullable final PotionData base) {

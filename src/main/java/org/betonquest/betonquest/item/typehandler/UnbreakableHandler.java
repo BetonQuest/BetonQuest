@@ -43,40 +43,24 @@ public class UnbreakableHandler implements ItemMetaHandler<ItemMeta> {
         if (!UNBREAKABLE.equals(key)) {
             throw new InstructionParseException("Unknown unbreakable key: " + key);
         }
-        if (UNBREAKABLE.equals(data)) {
-            unbreakable = Existence.REQUIRED;
-        } else {
-            set(data);
-        }
-    }
-
-    @Override
-    public void populate(final ItemMeta meta) {
-        meta.setUnbreakable(isUnbreakable());
-    }
-
-    @Override
-    public boolean check(final ItemMeta meta) {
-        return check(meta.isUnbreakable());
-    }
-
-    public void set(final String string) {
-        if (Boolean.parseBoolean(string)) {
+        if (UNBREAKABLE.equals(data) || Boolean.parseBoolean(data)) {
             unbreakable = Existence.REQUIRED;
         } else {
             unbreakable = Existence.FORBIDDEN;
         }
     }
 
-    public boolean isUnbreakable() {
-        return unbreakable == Existence.REQUIRED;
+    @Override
+    public void populate(final ItemMeta meta) {
+        meta.setUnbreakable(unbreakable == Existence.REQUIRED);
     }
 
-    public boolean check(final boolean bool) {
+    @Override
+    public boolean check(final ItemMeta meta) {
         return switch (unbreakable) {
             case WHATEVER -> true;
-            case REQUIRED -> bool;
-            case FORBIDDEN -> !bool;
+            case REQUIRED -> meta.isUnbreakable();
+            case FORBIDDEN -> !meta.isUnbreakable();
         };
     }
 }

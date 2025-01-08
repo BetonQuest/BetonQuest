@@ -20,15 +20,9 @@ import org.betonquest.betonquest.item.typehandler.PotionHandler;
 import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.betonquest.betonquest.utils.Utils;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionData;
-import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -36,8 +30,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
 
 /**
  * Represents an item handled by the configuration.
@@ -272,20 +264,6 @@ public class QuestItem {
     }
 
     /**
-     * @return the durability value
-     */
-    public int getDurability() {
-        return durability.get();
-    }
-
-    /**
-     * @return the map of enchantments and their levels
-     */
-    public Map<Enchantment, Integer> getEnchants() {
-        return enchants.get();
-    }
-
-    /**
      * @return the display name or null if there is no name
      */
     @Nullable
@@ -294,117 +272,11 @@ public class QuestItem {
     }
 
     /**
+     * Gets the lore.
+     *
      * @return the list of lore lines, can be empty
      */
     public List<String> getLore() {
         return lore.get();
-    }
-
-    /**
-     * @return the title of a book or null if it's not a book
-     */
-    public String getTitle() {
-        return book.getTitle();
-    }
-
-    /**
-     * @return the author of a book or null if it's not a book
-     */
-    public String getAuthor() {
-        return book.getAuthor();
-    }
-
-    /**
-     * @return the pages from the book or null if it's not a book
-     */
-    public List<String> getText() {
-        return book.getText();
-    }
-
-    /**
-     * @return the list of custom effects of the potion
-     */
-    public List<PotionEffect> getEffects() {
-        return potion.getCustom();
-    }
-
-    /**
-     * @return color of the leather armor
-     */
-    public Color getColor() {
-        return color.get();
-    }
-
-    /**
-     * @return owner of the head, used independently of player ID and texture
-     */
-    @Nullable
-    public Profile getOwner() {
-        return head.getOwner(null);
-    }
-
-    /**
-     * @return playerId of the head, used in combination with the texture
-     */
-    @Nullable
-    public UUID getPlayerId() {
-        return head.getPlayerId();
-    }
-
-    /**
-     * @return texture URL of the head, used in combination with the player ID
-     */
-    @Nullable
-    public String getTexture() {
-        return head.getTexture();
-    }
-
-    /**
-     * @return the base data of the potion
-     */
-    public PotionData getBaseEffect() {
-        return potion.getBase();
-    }
-
-    /**
-     * @return if the item has "Unbreakable" tag
-     */
-    public boolean isUnbreakable() {
-        return unbreakable.isUnbreakable();
-    }
-
-    /**
-     * @return if the item has custom model data
-     */
-    public boolean hasCustomModelData() {
-        return customModelData.has();
-    }
-
-    /**
-     * @return the custom model data (check {@link #hasCustomModelData()} before)
-     */
-    public int getCustomModelData() {
-        return customModelData.get();
-    }
-
-    /**
-     * @return the list of firework effects
-     */
-    public List<FireworkEffect> getFireworkEffects() {
-        return firework.getEffects();
-    }
-
-    /**
-     * @return power of the firework
-     */
-    public int getPower() {
-        return firework.getPower();
-    }
-
-    /**
-     * @return the set of ItemFlags
-     */
-    public Set<ItemFlag> getFlags() {
-        return flags.get();
     }
 }

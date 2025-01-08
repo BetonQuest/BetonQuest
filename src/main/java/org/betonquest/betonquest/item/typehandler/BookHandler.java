@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@SuppressWarnings({"PMD.CommentRequired", "PMD.GodClass"})
+@SuppressWarnings("PMD.CommentRequired")
 public class BookHandler implements ItemMetaHandler<BookMeta> {
     private String title = Config.getMessage(Config.getLanguage(), "unknown_title");
 
@@ -90,18 +90,16 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
 
     @Override
     public void populate(final BookMeta bookMeta) {
-        bookMeta.setTitle(getTitle());
-        bookMeta.setAuthor(getAuthor());
-        bookMeta.setPages(getText());
+        bookMeta.setTitle(title);
+        bookMeta.setAuthor(author);
+        bookMeta.setPages(text);
     }
 
     @Override
     public boolean check(final BookMeta bookMeta) {
-        return checkTitle(bookMeta.getTitle()) && checkAuthor(bookMeta.getAuthor()) && checkText(bookMeta.getPages());
-    }
-
-    public String getTitle() {
-        return title;
+        return checkExistence(titleE, title, bookMeta.getTitle())
+                && checkExistence(authorE, author, bookMeta.getAuthor())
+                && checkText(bookMeta.getPages());
     }
 
     public void setTitle(final String string) {
@@ -114,10 +112,6 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
         }
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
     public void setAuthor(final String string) {
         if (Existence.NONE_KEY.equalsIgnoreCase(string)) {
             authorE = Existence.FORBIDDEN;
@@ -125,10 +119,6 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
             author = string.replace("_", " ");
             authorE = Existence.REQUIRED;
         }
-    }
-
-    public List<String> getText() {
-        return text;
     }
 
     public void setText(final String string) {
@@ -140,14 +130,6 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
             text.replaceAll(textToTranslate -> ChatColor.translateAlternateColorCodes('&', textToTranslate));
             textE = Existence.REQUIRED;
         }
-    }
-
-    public boolean checkTitle(@Nullable final String string) {
-        return checkExistence(titleE, title, string);
-    }
-
-    public boolean checkAuthor(@Nullable final String string) {
-        return checkExistence(authorE, author, string);
     }
 
     private boolean checkExistence(final Existence existence, @Nullable final String present, @Nullable final String string) {

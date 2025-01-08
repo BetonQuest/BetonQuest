@@ -20,6 +20,9 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
 
     private Existence checkersE = Existence.WHATEVER;
 
+    /**
+     * If the Enchantment need to be exact the same or just contain all specified enchantments.
+     */
     private boolean exact = true;
 
     public EnchantmentsHandler() {
@@ -62,7 +65,7 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
     public void set(final String key, final String data) throws InstructionParseException {
         switch (key) {
             case "enchants" -> set(data);
-            case "enchants-containing" -> setNotExact();
+            case "enchants-containing" -> exact = false;
             default -> throw new InstructionParseException("Unknown enchantment key: " + key);
         }
     }
@@ -104,10 +107,6 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
             checkers.add(checker);
         }
         checkersE = Existence.REQUIRED;
-    }
-
-    public void setNotExact() {
-        exact = false;
     }
 
     public Map<Enchantment, Integer> get() {

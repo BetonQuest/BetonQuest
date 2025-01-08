@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 /**
  * Handles metadata about player Skulls.
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
     /**
      * Owner metadata about the Skull.
@@ -134,9 +133,22 @@ public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
     @Override
     public void set(final String key, final String data) throws InstructionParseException {
         switch (key) {
-            case META_OWNER -> setOwner(data);
-            case META_PLAYER_ID -> setPlayerId(data);
-            case META_TEXTURE -> setTexture(data);
+            case META_OWNER -> {
+                if (Existence.NONE_KEY.equalsIgnoreCase(data)) {
+                    ownerE = Existence.FORBIDDEN;
+                } else {
+                    owner = data;
+                    ownerE = Existence.REQUIRED;
+                }
+            }
+            case META_PLAYER_ID -> {
+                this.playerId = UUID.fromString(data);
+                this.playerIdE = Existence.REQUIRED;
+            }
+            case META_TEXTURE -> {
+                this.texture = data;
+                this.textureE = Existence.REQUIRED;
+            }
             default -> throw new InstructionParseException("Unknown head key: " + key);
         }
     }
@@ -145,20 +157,6 @@ public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
     @Override
     public void populate(final SkullMeta meta) {
         throw new UnsupportedOperationException("Use #populate(SkullMeta, Profile) instead");
-    }
-
-    /**
-     * Set the owner name to the specified value.
-     *
-     * @param string The new String name for the owner.
-     */
-    public void setOwner(final String string) {
-        if (Existence.NONE_KEY.equalsIgnoreCase(string)) {
-            ownerE = Existence.FORBIDDEN;
-        } else {
-            owner = string;
-            ownerE = Existence.REQUIRED;
-        }
     }
 
     /**
@@ -191,16 +189,6 @@ public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
     }
 
     /**
-     * Set the player UUID to the specified value.
-     *
-     * @param playerId The new UUID player ID.
-     */
-    public void setPlayerId(final String playerId) {
-        this.playerId = UUID.fromString(playerId);
-        this.playerIdE = Existence.REQUIRED;
-    }
-
-    /**
      * Get the encoded texture.
      *
      * @return The encoded texture.
@@ -208,16 +196,6 @@ public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
     @Nullable
     public String getTexture() {
         return texture;
-    }
-
-    /**
-     * Set the encoded texture to the specified value.
-     *
-     * @param texture The new encoded texture.
-     */
-    public void setTexture(final String texture) {
-        this.texture = texture;
-        this.textureE = Existence.REQUIRED;
     }
 
     /**

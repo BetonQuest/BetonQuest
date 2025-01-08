@@ -44,38 +44,22 @@ public class ColorHandler implements ItemMetaHandler<LeatherArmorMeta> {
         if (!"color".equals(key)) {
             throw new InstructionParseException("Invalid color key: " + key);
         }
-        set(data);
+        if (Existence.NONE_KEY.equalsIgnoreCase(data)) {
+            colorE = Existence.FORBIDDEN;
+            return;
+        }
+        color = Utils.getColor(data);
+        colorE = Existence.REQUIRED;
     }
 
     @Override
     public void populate(final LeatherArmorMeta armorMeta) {
-        armorMeta.setColor(get());
+        armorMeta.setColor(color);
     }
 
     @Override
     public boolean check(final LeatherArmorMeta armorMeta) {
-        return check(armorMeta.getColor());
-    }
-
-    public void set(final String string) throws InstructionParseException {
-        if (Existence.NONE_KEY.equalsIgnoreCase(string)) {
-            colorE = Existence.FORBIDDEN;
-            return;
-        }
-        color = Utils.getColor(string);
-        colorE = Existence.REQUIRED;
-    }
-
-    public Color get() {
-        return color;
-    }
-
-    @SuppressWarnings("PMD.TooFewBranchesForSwitch")
-    public boolean check(final Color color) {
-        return switch (colorE) {
-            case WHATEVER -> true;
-            case REQUIRED, FORBIDDEN -> // if it's forbidden, this.color is default leather color (undyed)
-                    color.equals(this.color);
-        };
+        return colorE == Existence.WHATEVER || armorMeta.getColor().equals(this.color);
+        // if it's forbidden, this.color is default leather color (undyed)
     }
 }

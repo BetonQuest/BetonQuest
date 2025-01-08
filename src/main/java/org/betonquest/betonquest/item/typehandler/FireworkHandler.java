@@ -26,6 +26,9 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
 
     private Existence effectsE = Existence.WHATEVER;
 
+    /**
+     * If the Firework need to be exact the same or just contain all specified effects.
+     */
     private boolean exact = true;
 
     public FireworkHandler() {
@@ -109,8 +112,12 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     public void set(final String key, final String data) throws InstructionParseException {
         switch (key) {
             case "firework" -> setEffects(data);
-            case "power" -> setPower(data);
-            case "firework-containing" -> setNotExact();
+            case "power" -> {
+                final Map.Entry<Number, Integer> fireworkPower = HandlerUtil.getNumberValue(data, "firework power");
+                powerN = fireworkPower.getKey();
+                power = fireworkPower.getValue();
+            }
+            case "firework-containing" -> exact = false;
             default -> throw new InstructionParseException("Unknown firework key: " + key);
         }
     }
@@ -118,7 +125,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     @Override
     public void populate(final FireworkMeta fireworkMeta) {
         fireworkMeta.addEffects(getEffects());
-        fireworkMeta.setPower(getPower());
+        fireworkMeta.setPower(power);
     }
 
     /**
@@ -164,11 +171,12 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
      * @return if the meta satisfies the requirement defined via {@link #set(String, String)}
      */
     public boolean check(final FireworkEffectMeta fireworkMeta) {
-        return checkSingleEffect(fireworkMeta.getEffect());
-    }
-
-    public void setNotExact() {
-        exact = false;
+        final FireworkEffect single = fireworkMeta.getEffect();
+        return switch (effectsE) {
+            case WHATEVER -> true;
+            case REQUIRED -> single != null && !effects.isEmpty() && effects.get(0).check(single);
+            case FORBIDDEN -> single == null;
+        };
     }
 
     public List<FireworkEffect> getEffects() {
@@ -193,55 +201,31 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
         }
     }
 
-    public int getPower() {
-        return power;
-    }
-
-    public void setPower(final String string) throws InstructionParseException {
-        final Map.Entry<Number, Integer> fireworkPower = HandlerUtil.getNumberValue(string, "firework power");
-        powerN = fireworkPower.getKey();
-        power = fireworkPower.getValue();
-    }
-
-    public int getSize() {
-        return effects.size();
-    }
-
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     public boolean checkEffects(final List<FireworkEffect> list) {
-        switch (effectsE) {
-            case WHATEVER:
-                return true;
-            case REQUIRED:
-                if (exact && list.size() != effects.size()) {
-                    return false;
-                }
-                for (final FireworkEffectHandler checker : effects) {
-                    FireworkEffect effect = null;
-                    for (final FireworkEffect e : list) {
-                        if (e.getType() == checker.getType()) {
-                            effect = e;
-                            break;
-                        }
-                    }
-                    if (!checker.check(effect)) {
-                        return false;
-                    }
-                }
-                return true;
-            case FORBIDDEN:
-                return list.isEmpty();
-            default:
-                return false;
-        }
-    }
-
-    public boolean checkSingleEffect(@Nullable final FireworkEffect single) {
         return switch (effectsE) {
             case WHATEVER -> true;
-            case REQUIRED -> single != null && !effects.isEmpty() && effects.get(0).check(single);
-            case FORBIDDEN -> single == null;
+            case REQUIRED -> checkRequired(list);
+            case FORBIDDEN -> list.isEmpty();
         };
+    }
+
+    private boolean checkRequired(final List<FireworkEffect> list) {
+        if (exact && list.size() != effects.size()) {
+            return false;
+        }
+        for (final FireworkEffectHandler checker : effects) {
+            FireworkEffect effect = null;
+            for (final FireworkEffect e : list) {
+                if (e.getType() == checker.getType()) {
+                    effect = e;
+                    break;
+                }
+            }
+            if (!checker.check(effect)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean checkPower(final int powerLevel) {
