@@ -3,21 +3,25 @@ package org.betonquest.betonquest.item.typehandler;
 import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
  * Handles metadata about player Skulls.
  */
-public abstract class HeadHandler {
+@SuppressWarnings("PMD.TooManyMethods")
+public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
     /**
      * Owner metadata about the Skull.
      */
@@ -106,6 +110,42 @@ public abstract class HeadHandler {
         return props.entrySet().stream()
                 .map(it -> it.getKey() + ":" + it.getValue())
                 .collect(Collectors.joining(" ", " ", ""));
+    }
+
+    @Override
+    public Class<SkullMeta> metaClass() {
+        return SkullMeta.class;
+    }
+
+    @Override
+    public Set<String> keys() {
+        return Set.of(META_OWNER, META_PLAYER_ID, META_TEXTURE);
+    }
+
+    @Override
+    @Nullable
+    public String serializeToString(final SkullMeta meta) {
+        final String serialized = serializeSkullMeta(meta);
+        if (serialized.isBlank()) {
+            return null;
+        }
+        return serialized.substring(1);
+    }
+
+    @Override
+    public void set(final String key, final String data) throws InstructionParseException {
+        switch (key) {
+            case META_OWNER -> setOwner(data);
+            case META_PLAYER_ID -> setPlayerId(data);
+            case META_TEXTURE -> setTexture(data);
+            default -> throw new InstructionParseException("Unknown head key: " + key);
+        }
+    }
+
+    @Contract("_ -> fail")
+    @Override
+    public void populate(final SkullMeta meta) {
+        throw new UnsupportedOperationException("Use #populate(SkullMeta, Profile) instead");
     }
 
     /**
@@ -222,20 +262,4 @@ public abstract class HeadHandler {
             case FORBIDDEN -> string == null;
         };
     }
-
-    /**
-     * Reconstitute this head data into the specified skullMeta object.
-     *
-     * @param skullMeta The SkullMeta object to populate.
-     * @param profile   An optional Profile.
-     */
-    public abstract void populate(SkullMeta skullMeta, @Nullable Profile profile);
-
-    /**
-     * Check to see if the specified SkullMeta matches this HeadHandler metadata.
-     *
-     * @param skullMeta The SkullMeta to check.
-     * @return True if this metadata is required and matches, false otherwise.
-     */
-    public abstract boolean check(SkullMeta skullMeta);
 }

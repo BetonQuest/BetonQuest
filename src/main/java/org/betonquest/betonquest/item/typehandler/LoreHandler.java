@@ -3,13 +3,15 @@ package org.betonquest.betonquest.item.typehandler;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.item.QuestItem.Existence;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("PMD.CommentRequired")
-public class LoreHandler {
+public class LoreHandler implements ItemMetaHandler<ItemMeta> {
     private final List<String> lore = new LinkedList<>();
 
     private Existence existence = Existence.WHATEVER;
@@ -17,6 +19,48 @@ public class LoreHandler {
     private boolean exact = true;
 
     public LoreHandler() {
+    }
+
+    @Override
+    public Class<ItemMeta> metaClass() {
+        return ItemMeta.class;
+    }
+
+    @Override
+    public Set<String> keys() {
+        return Set.of("lore", "lore-containing");
+    }
+
+    @Override
+    @Nullable
+    public String serializeToString(final ItemMeta meta) {
+        if (meta.hasLore()) {
+            final StringBuilder string = new StringBuilder();
+            for (final String line : meta.getLore()) {
+                string.append(line).append(';');
+            }
+            return "lore:" + string.substring(0, string.length() - 1).replace(" ", "_").replace("§", "&");
+        }
+        return null;
+    }
+
+    @Override
+    public void set(final String key, final String data) throws InstructionParseException {
+        switch (key) {
+            case "lore" -> set(data);
+            case "lore-containing" -> setNotExact();
+            default -> throw new InstructionParseException("Unknown lore key: " + key);
+        }
+    }
+
+    @Override
+    public void populate(final ItemMeta meta) {
+        meta.setLore(get());
+    }
+
+    @Override
+    public boolean check(final ItemMeta meta) {
+        return check(meta.getLore());
     }
 
     public void set(final String lore) throws InstructionParseException {

@@ -2,16 +2,51 @@ package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem.Number;
+import org.bukkit.inventory.meta.Damageable;
 
 import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings("PMD.CommentRequired")
-public class DurabilityHandler {
+public class DurabilityHandler implements ItemMetaHandler<Damageable> {
     private int durability;
 
     private Number number = Number.WHATEVER;
 
     public DurabilityHandler() {
+    }
+
+    @Override
+    public Class<Damageable> metaClass() {
+        return Damageable.class;
+    }
+
+    @Override
+    public Set<String> keys() {
+        return Set.of("durability");
+    }
+
+    @Override
+    public String serializeToString(final Damageable damageable) {
+        return "durability:" + damageable.getDamage();
+    }
+
+    @Override
+    public void set(final String key, final String data) throws InstructionParseException {
+        if (!"durability".equals(key)) {
+            throw new InstructionParseException("Unknown durability key: " + key);
+        }
+        set(data);
+    }
+
+    @Override
+    public void populate(final Damageable damageableMeta) {
+        damageableMeta.setDamage(get());
+    }
+
+    @Override
+    public boolean check(final Damageable meta) {
+        return check(meta.getDamage());
     }
 
     public void set(final String durability) throws InstructionParseException {
@@ -39,5 +74,4 @@ public class DurabilityHandler {
     public boolean whatever() {
         return number == Number.WHATEVER;
     }
-
 }
