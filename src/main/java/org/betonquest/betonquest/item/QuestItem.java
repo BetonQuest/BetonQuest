@@ -44,8 +44,6 @@ import java.util.UUID;
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.CouplingBetweenObjects"})
 public class QuestItem {
-    public static final String NONE_KEY = "none";
-
     /**
      * Static Handlers for the {@link #itemToString(ItemStack)} method.
      */
@@ -408,13 +406,5 @@ public class QuestItem {
      */
     public Set<ItemFlag> getFlags() {
         return flags.get();
-    }
-
-    public enum Existence {
-        REQUIRED, FORBIDDEN, WHATEVER
-    }
-
-    public enum Number {
-        EQUAL, MORE, LESS, WHATEVER
     }
 }

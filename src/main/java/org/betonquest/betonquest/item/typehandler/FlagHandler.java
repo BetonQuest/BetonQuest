@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
@@ -22,7 +21,7 @@ public class FlagHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * Existence of the flags.
      */
-    private QuestItem.Existence existence = QuestItem.Existence.WHATEVER;
+    private Existence existence = Existence.WHATEVER;
 
     /**
      * Construct a new FlagHandler.
@@ -69,10 +68,10 @@ public class FlagHandler implements ItemMetaHandler<ItemMeta> {
     public void set(@Nullable final Set<ItemFlag> itemFlags) throws InstructionParseException {
         if (itemFlags == null || itemFlags.isEmpty()) {
             this.itemFlags = Set.of();
-            this.existence = QuestItem.Existence.FORBIDDEN;
+            this.existence = Existence.FORBIDDEN;
         } else {
             this.itemFlags = Set.copyOf(itemFlags);
-            this.existence = QuestItem.Existence.REQUIRED;
+            this.existence = Existence.REQUIRED;
         }
     }
 
@@ -100,8 +99,8 @@ public class FlagHandler implements ItemMetaHandler<ItemMeta> {
 
     @Override
     public boolean check(final ItemMeta data) {
-        return existence == QuestItem.Existence.WHATEVER
-                || existence == QuestItem.Existence.FORBIDDEN && data.getItemFlags().isEmpty()
-                || existence == QuestItem.Existence.REQUIRED && !data.getItemFlags().isEmpty() && itemFlags.equals(data.getItemFlags());
+        return existence == Existence.WHATEVER
+                || existence == Existence.FORBIDDEN && data.getItemFlags().isEmpty()
+                || existence == Existence.REQUIRED && !data.getItemFlags().isEmpty() && itemFlags.equals(data.getItemFlags());
     }
 }

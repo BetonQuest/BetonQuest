@@ -1,9 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.item.QuestItem.Existence;
-import org.betonquest.betonquest.item.QuestItem.Number;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
@@ -97,7 +94,7 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
 
     public void set(final String enchants) throws InstructionParseException {
         final String[] parts = HandlerUtil.getNNSplit(enchants, "Enchantment is null!", ",");
-        if (QuestItem.NONE_KEY.equalsIgnoreCase(parts[0])) {
+        if (Existence.NONE_KEY.equalsIgnoreCase(parts[0])) {
             checkersE = Existence.FORBIDDEN;
             return;
         }

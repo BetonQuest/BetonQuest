@@ -4,7 +4,6 @@ import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -45,12 +44,12 @@ public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
     /**
      * Existence of the player UUID.
      */
-    private QuestItem.Existence playerIdE = QuestItem.Existence.WHATEVER;
+    private Existence playerIdE = Existence.WHATEVER;
 
     /**
      * Existence of the encoded texture.
      */
-    private QuestItem.Existence textureE = QuestItem.Existence.WHATEVER;
+    private Existence textureE = Existence.WHATEVER;
 
     /**
      * An optional player name owner of the skull.
@@ -73,7 +72,7 @@ public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
     /**
      * Existence of the owner.
      */
-    private QuestItem.Existence ownerE = QuestItem.Existence.WHATEVER;
+    private Existence ownerE = Existence.WHATEVER;
 
     /**
      * Construct a new HeadHandler.
@@ -154,11 +153,11 @@ public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
      * @param string The new String name for the owner.
      */
     public void setOwner(final String string) {
-        if (QuestItem.NONE_KEY.equalsIgnoreCase(string)) {
-            ownerE = QuestItem.Existence.FORBIDDEN;
+        if (Existence.NONE_KEY.equalsIgnoreCase(string)) {
+            ownerE = Existence.FORBIDDEN;
         } else {
             owner = string;
-            ownerE = QuestItem.Existence.REQUIRED;
+            ownerE = Existence.REQUIRED;
         }
     }
 
@@ -198,7 +197,7 @@ public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
      */
     public void setPlayerId(final String playerId) {
         this.playerId = UUID.fromString(playerId);
-        this.playerIdE = QuestItem.Existence.REQUIRED;
+        this.playerIdE = Existence.REQUIRED;
     }
 
     /**
@@ -218,7 +217,7 @@ public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
      */
     public void setTexture(final String texture) {
         this.texture = texture;
-        this.textureE = QuestItem.Existence.REQUIRED;
+        this.textureE = Existence.REQUIRED;
     }
 
     /**

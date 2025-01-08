@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.item.QuestItem.Number;
 import org.bukkit.inventory.meta.Damageable;
 import org.jetbrains.annotations.Nullable;
 

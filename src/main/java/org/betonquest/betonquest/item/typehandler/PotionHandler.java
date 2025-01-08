@@ -3,9 +3,6 @@ package org.betonquest.betonquest.item.typehandler;
 import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.item.QuestItem.Existence;
-import org.betonquest.betonquest.item.QuestItem.Number;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Keyed;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -228,7 +225,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
     public void setCustom(final String custom) throws InstructionParseException {
         final String[] parts = HandlerUtil.getNNSplit(custom, "Potion is null!", ",");
-        if (QuestItem.NONE_KEY.equalsIgnoreCase(parts[0])) {
+        if (Existence.NONE_KEY.equalsIgnoreCase(parts[0])) {
             customE = Existence.FORBIDDEN;
             return;
         }

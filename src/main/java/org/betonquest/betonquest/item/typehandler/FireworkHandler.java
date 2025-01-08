@@ -2,9 +2,6 @@ package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.item.QuestItem.Existence;
-import org.betonquest.betonquest.item.QuestItem.Number;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
@@ -184,7 +181,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
 
     public void setEffects(final String string) throws InstructionParseException {
         final String[] parts = HandlerUtil.getNNSplit(string, "Firework effects missing", ",");
-        if (QuestItem.NONE_KEY.equalsIgnoreCase(parts[0])) {
+        if (Existence.NONE_KEY.equalsIgnoreCase(parts[0])) {
             effectsE = Existence.FORBIDDEN;
             return;
         }
