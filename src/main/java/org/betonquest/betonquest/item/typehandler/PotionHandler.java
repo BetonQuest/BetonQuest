@@ -210,7 +210,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         }
         for (final CustomEffectHandler checker : custom) {
             if (checker.customTypeE != Existence.FORBIDDEN) {
-                effects.add(checker.get());
+                effects.add(new PotionEffect(checker.customType, checker.duration, checker.power));
             }
         }
         return effects;
@@ -297,7 +297,6 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
         private final Number powerE;
 
-        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
         public CustomEffectHandler(final String custom) throws InstructionParseException {
             final String[] parts = HandlerUtil.getNNSplit(custom, "Potion is null!", ":");
             if (parts[0].startsWith("none-")) {
@@ -329,63 +328,14 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
             return Utils.getNN(PotionEffectType.getByName(name), "Unknown effect type: " + name);
         }
 
-        private PotionEffect get() {
-            return new PotionEffect(customType, duration, power);
-        }
-
-        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
         private boolean check(@Nullable final PotionEffect effect) {
-            switch (customTypeE) {
-                case WHATEVER:
-                    return true;
-                case REQUIRED:
-                    if (effect == null || !effect.getType().equals(customType)) {
-                        return false;
-                    }
-                    switch (durationE) {
-                        case EQUAL:
-                            if (duration != effect.getDuration()) {
-                                return false;
-                            }
-                            break;
-                        case MORE:
-                            if (duration > effect.getDuration()) {
-                                return false;
-                            }
-                            break;
-                        case LESS:
-                            if (duration < effect.getDuration()) {
-                                return false;
-                            }
-                            break;
-                        case WHATEVER:
-                            break;
-                    }
-                    switch (powerE) {
-                        case EQUAL:
-                            if (power != effect.getAmplifier()) {
-                                return false;
-                            }
-                            break;
-                        case MORE:
-                            if (power > effect.getAmplifier()) {
-                                return false;
-                            }
-                            break;
-                        case LESS:
-                            if (power < effect.getAmplifier()) {
-                                return false;
-                            }
-                            break;
-                        case WHATEVER:
-                            break;
-                    }
-                    return true;
-                case FORBIDDEN:
-                    return effect == null;
-                default:
-                    return false;
-            }
+            return switch (customTypeE) {
+                case WHATEVER -> true;
+                case REQUIRED -> effect != null && effect.getType().equals(customType)
+                        && durationE.isValid(effect.getDuration(), duration)
+                        && powerE.isValid(effect.getAmplifier(), power);
+                case FORBIDDEN -> effect == null;
+            };
         }
     }
 }

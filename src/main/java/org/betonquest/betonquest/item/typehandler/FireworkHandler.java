@@ -140,7 +140,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
 
     @Override
     public boolean check(final FireworkMeta fireworkMeta) {
-        return checkEffects(fireworkMeta.getEffects()) && checkPower(fireworkMeta.getPower());
+        return checkEffects(fireworkMeta.getEffects()) && powerN.isValid(fireworkMeta.getPower(), power);
     }
 
     @Override
@@ -226,14 +226,5 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
             }
         }
         return true;
-    }
-
-    public boolean checkPower(final int powerLevel) {
-        return switch (powerN) {
-            case WHATEVER -> true;
-            case EQUAL -> powerLevel == power;
-            case MORE -> powerLevel >= power;
-            case LESS -> powerLevel <= power;
-        };
     }
 }

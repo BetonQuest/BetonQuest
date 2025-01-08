@@ -57,11 +57,6 @@ public class DurabilityHandler implements ItemMetaHandler<Damageable> {
 
     @Override
     public boolean check(final Damageable meta) {
-        return switch (number) {
-            case WHATEVER -> true;
-            case EQUAL -> this.durability == meta.getDamage();
-            case MORE -> this.durability <= meta.getDamage();
-            case LESS -> this.durability >= meta.getDamage();
-        };
+        return number.isValid(meta.getDamage(), this.durability);
     }
 }
