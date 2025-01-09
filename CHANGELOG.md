@@ -17,6 +17,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - custom sounds from resourcepacks could not be used in conversation start and end sound
 - `chestput` objective caused that no chest could be opened on the server when `multipleaccess` was forbidden(default)
 - providing wrong commit sha to the download command now gives a proper error message
+- no longer set damage in `QuestItem` if none set
 ### Security
 
 ## [2.2.0] - 2024-12-01

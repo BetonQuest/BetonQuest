@@ -3,12 +3,15 @@ package org.betonquest.betonquest.item.typehandler;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem.Number;
 import org.bukkit.inventory.meta.Damageable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Set;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class DurabilityHandler implements ItemMetaHandler<Damageable> {
+    private boolean isSet;
+
     private int durability;
 
     private Number number = Number.WHATEVER;
@@ -27,8 +30,12 @@ public class DurabilityHandler implements ItemMetaHandler<Damageable> {
     }
 
     @Override
+    @Nullable
     public String serializeToString(final Damageable damageable) {
-        return "durability:" + damageable.getDamage();
+        if (damageable.hasDamage()) {
+            return "durability:" + damageable.getDamage();
+        }
+        return null;
     }
 
     @Override
@@ -41,7 +48,9 @@ public class DurabilityHandler implements ItemMetaHandler<Damageable> {
 
     @Override
     public void populate(final Damageable damageableMeta) {
-        damageableMeta.setDamage(get());
+        if (isSet) {
+            damageableMeta.setDamage(durability);
+        }
     }
 
     @Override
@@ -53,6 +62,7 @@ public class DurabilityHandler implements ItemMetaHandler<Damageable> {
         final Map.Entry<Number, Integer> itemDurability = HandlerUtil.getNumberValue(durability, "item durability");
         this.number = itemDurability.getKey();
         this.durability = itemDurability.getValue();
+        isSet = true;
     }
 
     public int get() {
