@@ -2,14 +2,17 @@ package org.betonquest.betonquest.compatibility.placeholderapi;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * The BetonQuest PAPI Placeholder.
+ */
 @SuppressFBWarnings("HE_INHERITS_EQUALS_USE_HASHCODE")
 public class BetonQuestPlaceholder extends PlaceholderExpansion {
     /**
@@ -17,13 +20,40 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
      */
     private final BetonQuestLogger log;
 
-    public BetonQuestPlaceholder(final BetonQuestLogger log) {
+    /**
+     * The variable processor to use for creating the placeholder variables.
+     */
+    private final VariableProcessor variableProcessor;
+
+    /**
+     * The combined authors.
+     */
+    private final String authors;
+
+    /**
+     * The version string.
+     */
+    private final String version;
+
+    /**
+     * Create a new BetonQuest PAPI Placeholder.
+     *
+     * @param log               the custom logger for this class
+     * @param variableProcessor the processor to create new variables
+     * @param authors           the combined author string
+     * @param version           the version string
+     */
+    public BetonQuestPlaceholder(final BetonQuestLogger log, final VariableProcessor variableProcessor,
+                                 final String authors, final String version) {
         super();
         this.log = log;
+        this.variableProcessor = variableProcessor;
+        this.authors = authors;
+        this.version = version;
     }
 
     /**
-     * Persist through reloads
+     * Persist through reloads.
      *
      * @return true to persist through reloads
      */
@@ -33,7 +63,7 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
     }
 
     /**
-     * We can always register
+     * We can always register.
      *
      * @return Always true since it's an internal class.
      */
@@ -43,17 +73,17 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
     }
 
     /**
-     * Name of person who created the expansion
+     * Name of person who created the expansion.
      *
      * @return The name of the author as a String.
      */
     @Override
     public String getAuthor() {
-        return BetonQuest.getInstance().getDescription().getAuthors().toString();
+        return authors;
     }
 
     /**
-     * The identifier for PlaceHolderAPI to link to this expansion
+     * The identifier for PlaceHolderAPI to link to this expansion.
      *
      * @return The identifier in {@code %<identifier>_<value>%} as String.
      */
@@ -63,17 +93,17 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
     }
 
     /**
-     * Version of the expansion
+     * Version of the expansion.
      *
      * @return The version as a String.
      */
     @Override
     public String getVersion() {
-        return BetonQuest.getInstance().getDescription().getVersion();
+        return version;
     }
 
     /**
-     * A placeholder request has occurred and needs a value
+     * A placeholder request has occurred and needs a value.
      *
      * @param player     A potentially null {@link org.bukkit.entity.Player Player}.
      * @param identifier A String containing the identifier/value.
@@ -81,17 +111,12 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
      */
     @Override
     public String onPlaceholderRequest(@Nullable final Player player, final String identifier) {
-        final String pack;
-        final String placeholderIdentifier;
-        final int index = identifier.indexOf(':');
-        if (index == -1) {
-            log.warn("Variable without explicit package requested through PAPI: '%s'".formatted(identifier));
+        final Profile profile = player == null ? null : PlayerConverter.getID(player);
+        try {
+            return variableProcessor.getValue(identifier, profile);
+        } catch (final QuestException e) {
+            log.warn("Could not parse through PAPI requested variable: " + identifier, e);
             return "";
-        } else {
-            pack = identifier.substring(0, index);
-            placeholderIdentifier = identifier.substring(index + 1);
         }
-        final OnlineProfile onlineProfile = player == null ? null : PlayerConverter.getID(player);
-        return BetonQuest.getInstance().getVariableValue(pack, '%' + placeholderIdentifier + '%', onlineProfile);
     }
 }

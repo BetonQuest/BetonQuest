@@ -1,8 +1,9 @@
 package org.betonquest.betonquest.compatibility.holograms.holographicdisplays;
 
 import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -15,12 +16,19 @@ public class HologramGlobalPlaceholder implements GlobalPlaceholder {
     private final BetonQuestLogger log;
 
     /**
-     * Creates new instance of HologramGlobalPlaceholder
-     *
-     * @param log the logger that will be used for logging
+     * The variable processor to use for creating the time variable.
      */
-    public HologramGlobalPlaceholder(final BetonQuestLogger log) {
+    private final VariableProcessor variableProcessor;
+
+    /**
+     * Creates new instance of HologramGlobalPlaceholder.
+     *
+     * @param log               the logger that will be used for logging
+     * @param variableProcessor the processor to create new variables
+     */
+    public HologramGlobalPlaceholder(final BetonQuestLogger log, final VariableProcessor variableProcessor) {
         this.log = log;
+        this.variableProcessor = variableProcessor;
     }
 
     @Override
@@ -34,12 +42,11 @@ public class HologramGlobalPlaceholder implements GlobalPlaceholder {
         if (arguments == null) {
             return "";
         }
-        final int limit = 2;
-        final String[] args = arguments.split(":", limit);
-        if (args.length == limit) {
-            return BetonQuest.getInstance().getVariableValue(args[0], "%" + args[1] + "%", null);
+        try {
+            return variableProcessor.getValue(arguments, null);
+        } catch (final QuestException e) {
+            log.warn("Could not parse hologram variable '" + arguments + "': " + e.getMessage(), e);
+            return arguments;
         }
-        log.warn("Could not parse hologram variable " + arguments + "! " + "Expected format %<package>.<variable>%");
-        return arguments;
     }
 }

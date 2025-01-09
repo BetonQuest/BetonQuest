@@ -12,6 +12,13 @@ icon: octicons/gear-16
     This is the case because we prefer to delete outdated content from this page instead of updating it.
     New APIs will instead get their own page.
 
+# (Re-)Moved Methods in 3.0
+
+## Variable getting
+
+Creating and parsing variables is now done in the `VariableProcessor`.
+It is accessed from the BetonQuest instance with `#getVariableProcessor()`.
+
 ## Profiles
 Currently, profiles are in development. So at the moment you can use the `PlayerConverter` class to get a profile.
 

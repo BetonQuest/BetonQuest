@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.placeholderapi;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.bukkit.plugin.PluginDescriptionFile;
 
 /**
  * Integrator for PlaceholderAPI.
@@ -23,7 +24,9 @@ public class PlaceholderAPIIntegrator implements Integrator {
     @Override
     public void hook() {
         plugin.getQuestRegistries().getVariableTypes().register("ph", PlaceholderVariable.class);
-        new BetonQuestPlaceholder(plugin.getLoggerFactory().create(BetonQuestPlaceholder.class, "PlaceholderAPI Integration")).register();
+        final PluginDescriptionFile description = plugin.getDescription();
+        new BetonQuestPlaceholder(plugin.getLoggerFactory().create(BetonQuestPlaceholder.class, "PlaceholderAPI Integration"),
+                plugin.getVariableProcessor(), description.getAuthors().toString(), description.getVersion()).register();
     }
 
     @Override

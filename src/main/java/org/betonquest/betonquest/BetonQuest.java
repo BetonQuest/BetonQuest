@@ -13,7 +13,6 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.ConfigurationFileFactory;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.CachingBetonQuestLoggerFactory;
@@ -301,24 +300,6 @@ public class BetonQuest extends JavaPlugin {
      */
     public static void resumeObjective(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
         instance.questRegistry.objectives().resume(profile, objectiveID, instruction);
-    }
-
-    /**
-     * Generates new instance of a Variable. If a similar one was already
-     * created, it will return it instead of creating a new one.
-     *
-     * @param pack        package in which the variable is defined
-     * @param instruction instruction of the variable, including both % characters.
-     * @return the Variable instance
-     * @throws QuestException when the variable parsing fails
-     */
-    public static Variable createVariable(@Nullable final QuestPackage pack, final String instruction)
-            throws QuestException {
-        return instance.questRegistry.variables().create(pack, instruction);
-    }
-
-    public static boolean isVariableType(final String type) {
-        return instance.getQuestRegistries().getVariableTypes().getFactory(type) != null;
     }
 
     /**
@@ -1032,32 +1013,6 @@ public class BetonQuest extends JavaPlugin {
     @Nullable
     public Class<? extends Interceptor> getInterceptor(final String name) {
         return INTERCEPTOR_TYPES.get(name);
-    }
-
-    /**
-     * Resoles the variable for specified player. If the variable is not loaded
-     * it will load it on the main thread.
-     *
-     * @param packName name of the package
-     * @param name     name of the variable (instruction, with % characters)
-     * @param profile  the {@link Profile} of the player
-     * @return the value of this variable for given player
-     * @deprecated use {@link #getVariableProcessor()} {@link VariableProcessor#getValue(QuestPackage, String, Profile)}
-     * instead
-     */
-    @Deprecated
-    public String getVariableValue(final String packName, final String name, @Nullable final Profile profile) {
-        final QuestPackage pack = Config.getPackages().get(packName);
-        if (pack == null) {
-            log.warn("The variable '" + name + "' reference the non-existent package '" + packName + "' !");
-            return "";
-        }
-        try {
-            return questRegistry.variables().getValue(pack, name, profile);
-        } catch (final QuestException e) {
-            log.warn(e.getMessage(), e);
-            return "";
-        }
     }
 
     /**

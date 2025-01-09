@@ -121,7 +121,7 @@ public abstract class ID {
             return null;
         }
         final String[] parts = identifier.split(":")[0].split("\\.");
-        if (BetonQuest.isVariableType(packName)) {
+        if (BetonQuest.getInstance().getQuestRegistries().getVariableTypes().getFactory(packName) != null) {
             return resolveIdOfVariable(parts, potentialPack);
         }
         return potentialPack;
@@ -177,7 +177,8 @@ public abstract class ID {
         if (parts.length == 2 && isIdFromPack(potentialPack, parts[1])) {
             return potentialPack;
         } else if (parts.length > 2) {
-            if (BetonQuest.isVariableType(parts[1]) && isIdFromPack(potentialPack, parts[2])) {
+            if (BetonQuest.getInstance().getQuestRegistries().getVariableTypes().getFactory(parts[1]) != null
+                    && isIdFromPack(potentialPack, parts[2])) {
                 return potentialPack;
             } else if (isIdFromPack(potentialPack, parts[1])) {
                 return null;

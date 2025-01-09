@@ -59,11 +59,9 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
         return matcher.replaceAll(match -> {
             final String group = match.group();
             try {
-                final Variable variable = BetonQuest.createVariable(pack, group);
-                if (variable != null) {
-                    final Instruction instruction = variable.getInstruction();
-                    return "%betonquest_" + instruction.getPackage().getQuestPath() + ":" + instruction.getInstruction() + "%";
-                }
+                final Variable variable = BetonQuest.getInstance().getVariableProcessor().create(pack, group);
+                final Instruction instruction = variable.getInstruction();
+                return "%betonquest_" + instruction.getPackage().getQuestPath() + ":" + instruction.getInstruction() + "%";
             } catch (final QuestException exception) {
                 log.warn("Could not create variable '" + group + "' variable: " + exception.getMessage(), exception);
             }
