@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.condition.item;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -9,6 +8,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
@@ -28,21 +28,21 @@ public class ItemConditionFactory implements PlayerConditionFactory {
     private final PrimaryServerThreadData data;
 
     /**
-     * The BetonQuest instance.
+     * Storage for player data.
      */
-    private final BetonQuest betonQuest;
+    private final PlayerDataStorage dataStorage;
 
     /**
      * Create the item factory.
      *
      * @param loggerFactory the logger factory
      * @param data          the data used for checking the condition on the main thread
-     * @param betonQuest    the BetonQuest instance
+     * @param dataStorage   the storage providing player data
      */
-    public ItemConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data, final BetonQuest betonQuest) {
+    public ItemConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data, final PlayerDataStorage dataStorage) {
         this.loggerFactory = loggerFactory;
         this.data = data;
-        this.betonQuest = betonQuest;
+        this.dataStorage = dataStorage;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ItemConditionFactory implements PlayerConditionFactory {
         final Item[] questItems = instruction.getItemList();
         final BetonQuestLogger log = loggerFactory.create(ItemCondition.class);
         return new PrimaryServerThreadPlayerCondition(
-                new OnlineConditionAdapter(new ItemCondition(questItems, betonQuest), log, instruction.getPackage()), data
+                new OnlineConditionAdapter(new ItemCondition(questItems, dataStorage), log, instruction.getPackage()), data
         );
     }
 }

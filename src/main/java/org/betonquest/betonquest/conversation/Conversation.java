@@ -173,7 +173,7 @@ public class Conversation implements Listener {
         this.player = onlineProfile.getPlayer();
         this.identifier = conversationID;
         this.pack = conversationID.getPackage();
-        this.language = plugin.getPlayerData(onlineProfile).getLanguage();
+        this.language = plugin.getPlayerDataStorage().get(onlineProfile).getLanguage();
         this.center = center;
         this.blacklist = plugin.getPluginConfig().getStringList("cmd_blacklist");
         this.messagesDelaying = Boolean.parseBoolean(plugin.getPluginConfig().getString("display_chat_after_conversation"));

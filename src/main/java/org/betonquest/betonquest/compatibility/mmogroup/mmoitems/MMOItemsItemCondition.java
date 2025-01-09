@@ -41,7 +41,8 @@ public class MMOItemsItemCondition extends Condition {
             }
         }
 
-        final List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerData(onlineProfile).getBackpack();
+        final List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerDataStorage()
+                .get(onlineProfile).getBackpack();
         for (final ItemStack item : backpackItems) {
             if (MMOItemsUtils.equalsMMOItem(item, itemType, itemID)) {
                 counter = counter + item.getAmount();

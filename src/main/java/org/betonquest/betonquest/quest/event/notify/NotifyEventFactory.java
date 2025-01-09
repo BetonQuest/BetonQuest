@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -50,16 +51,24 @@ public class NotifyEventFactory implements EventFactory {
     private final VariableProcessor variableProcessor;
 
     /**
+     * Storage for player data.
+     */
+    private final PlayerDataStorage dataStorage;
+
+    /**
      * Creates a new factory for {@link NotifyEvent}.
      *
      * @param loggerFactory     the logger factory to use for creating the event logger
      * @param data              the data for primary server thread access
      * @param variableProcessor the variable processor for creating variables
+     * @param dataStorage       the storage providing player data
      */
-    public NotifyEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data, final VariableProcessor variableProcessor) {
+    public NotifyEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data,
+                              final VariableProcessor variableProcessor, final PlayerDataStorage dataStorage) {
         this.loggerFactory = loggerFactory;
         this.data = data;
         this.variableProcessor = variableProcessor;
+        this.dataStorage = dataStorage;
     }
 
     @Override
@@ -67,7 +76,7 @@ public class NotifyEventFactory implements EventFactory {
         final Map<String, VariableString> translations = new HashMap<>();
         final NotifyIO notifyIO = processInstruction(instruction, translations);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
-                new NotifyEvent(notifyIO, translations),
+                new NotifyEvent(notifyIO, translations, dataStorage),
                 loggerFactory.create(NotifyEvent.class),
                 instruction.getPackage()
         ), data);

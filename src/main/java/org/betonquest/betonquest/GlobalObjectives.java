@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.id.ObjectiveID;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Handler for global objectives
+ * Handler for global objectives.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class GlobalObjectives {
@@ -20,6 +21,9 @@ public class GlobalObjectives {
 
     private final Set<ObjectiveID> globalObjectiveIds;
 
+    /**
+     * Sets a new empty {@link GlobalObjectives} instance.
+     */
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public GlobalObjectives() {
         instance = this;
@@ -37,12 +41,13 @@ public class GlobalObjectives {
     }
 
     /**
-     * Starts all unstarted global objectives for the player
+     * Starts all unstarted global objectives for the player.
      *
-     * @param profile the {@link Profile} of the player
+     * @param profile     the {@link Profile} of the player
+     * @param dataStorage the storage providing player data
      */
-    public static void startAll(final Profile profile) {
-        final PlayerData data = BetonQuest.getInstance().getPlayerData(profile);
+    public static void startAll(final Profile profile, final PlayerDataStorage dataStorage) {
+        final PlayerData data = dataStorage.get(profile);
         for (final ObjectiveID id : instance.globalObjectiveIds) {
             final Objective objective = BetonQuest.getInstance().getObjective(id);
 

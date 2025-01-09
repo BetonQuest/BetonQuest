@@ -66,7 +66,8 @@ public class PasswordObjective extends Objective implements Listener {
             return false;
         }
         final String prefix = passwordPrefix == null
-                ? Config.getMessage(BetonQuest.getInstance().getPlayerData(onlineProfile).getLanguage(), "password") : passwordPrefix;
+                ? Config.getMessage(BetonQuest.getInstance().getPlayerDataStorage()
+                .get(onlineProfile).getLanguage(), "password") : passwordPrefix;
         if (!prefix.isEmpty() && !message.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT))) {
             return false;
         }
@@ -103,5 +104,4 @@ public class PasswordObjective extends Objective implements Listener {
     public String getProperty(final String name, final Profile profile) {
         return "";
     }
-
 }

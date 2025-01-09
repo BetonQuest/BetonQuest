@@ -71,7 +71,7 @@ public class PointVariable extends Variable {
         if (profile == null) {
             return "";
         }
-        return getValue(BetonQuest.getInstance().getPlayerData(profile).getPoints());
+        return getValue(BetonQuest.getInstance().getPlayerDataStorage().get(profile).getPoints());
     }
 
     @SuppressWarnings("PMD.TooFewBranchesForSwitch")

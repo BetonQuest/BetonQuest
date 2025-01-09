@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.condition.item;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
@@ -17,9 +17,9 @@ import java.util.stream.Stream;
 public class ItemCondition implements OnlineCondition {
 
     /**
-     * The BetonQuest instance.
+     * Storage for player data.
      */
-    private final BetonQuest betonQuest;
+    private final PlayerDataStorage dataStorage;
 
     /**
      * The items to check for.
@@ -29,18 +29,18 @@ public class ItemCondition implements OnlineCondition {
     /**
      * Create a new item condition.
      *
-     * @param questItems the items to check for
-     * @param betonQuest the BetonQuest instance
+     * @param questItems  the items to check for
+     * @param dataStorage the storage providing player data
      */
-    public ItemCondition(final Item[] questItems, final BetonQuest betonQuest) {
+    public ItemCondition(final Item[] questItems, final PlayerDataStorage dataStorage) {
         this.questItems = Arrays.copyOf(questItems, questItems.length);
-        this.betonQuest = betonQuest;
+        this.dataStorage = dataStorage;
     }
 
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
         final ItemStack[] inventoryItems = profile.getPlayer().getInventory().getContents();
-        final List<ItemStack> backpackItems = betonQuest.getPlayerData(profile).getBackpack();
+        final List<ItemStack> backpackItems = dataStorage.get(profile).getBackpack();
         for (final Item questItem : questItems) {
             final long totalAmount = Stream.concat(
                             Stream.of(inventoryItems),

@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.event.give;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.item.QuestItem;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.entity.Player;
@@ -46,6 +46,11 @@ public class GiveEvent implements OnlineEvent {
     private final boolean backpack;
 
     /**
+     * Storage for player backpack.
+     */
+    private final PlayerDataStorage dataStorage;
+
+    /**
      * Create the give event.
      *
      * @param questItems            the items to give
@@ -53,13 +58,16 @@ public class GiveEvent implements OnlineEvent {
      * @param itemsInBackpackSender the notification sender when putting items into the backpack
      * @param itemsDroppedSender    the notification sender when dropping items
      * @param backpack              whether to put the items to the player's backpack
+     * @param dataStorage           the storage providing player backpack
      */
-    public GiveEvent(final Item[] questItems, final NotificationSender itemsGivenSender, final NotificationSender itemsInBackpackSender, final NotificationSender itemsDroppedSender, final boolean backpack) {
+    public GiveEvent(final Item[] questItems, final NotificationSender itemsGivenSender, final NotificationSender itemsInBackpackSender,
+                     final NotificationSender itemsDroppedSender, final boolean backpack, final PlayerDataStorage dataStorage) {
         this.questItems = Arrays.copyOf(questItems, questItems.length);
         this.itemsGivenSender = itemsGivenSender;
         this.itemsInBackpackSender = itemsInBackpackSender;
         this.itemsDroppedSender = itemsDroppedSender;
         this.backpack = backpack;
+        this.dataStorage = dataStorage;
     }
 
     @Override
@@ -132,7 +140,7 @@ public class GiveEvent implements OnlineEvent {
      * @param itemStack the item to give
      */
     private void giveToBackpack(final OnlineProfile profile, final ItemStack itemStack) {
-        BetonQuest.getInstance().getPlayerData(profile).addItem(itemStack, itemStack.getAmount());
+        dataStorage.get(profile).addItem(itemStack, itemStack.getAmount());
     }
 
     /**

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.event.journal;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -11,6 +10,7 @@ import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.modules.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.modules.config.quest.QuestPackageImpl;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.quest.legacy.QuestEventFactoryAdapter;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -41,10 +41,10 @@ class JournalEventFactoryIntegrationTest {
     private final Instant now = Instant.now();
 
     /**
-     * Mocked BetonQuest plugin.
+     * Mocked PlayerDataStorage.
      */
     @Mock
-    private BetonQuest betonQuest;
+    private PlayerDataStorage dataStorage;
 
     /**
      * Mocked database Saver.
@@ -71,7 +71,7 @@ class JournalEventFactoryIntegrationTest {
     }
 
     private QuestEventFactoryAdapter createJournalEventFactory(final BetonQuestLogger logger) {
-        final JournalEventFactory journalEventFactory = new JournalEventFactory(new SingletonLoggerFactory(logger), betonQuest, InstantSource.fixed(now), saver);
+        final JournalEventFactory journalEventFactory = new JournalEventFactory(new SingletonLoggerFactory(logger), dataStorage, InstantSource.fixed(now), saver);
         return new QuestEventFactoryAdapter(journalEventFactory, journalEventFactory);
     }
 

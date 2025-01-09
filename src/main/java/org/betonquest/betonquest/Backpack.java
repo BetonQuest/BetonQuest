@@ -79,7 +79,7 @@ public class Backpack implements Listener {
         final BetonQuest instance = BetonQuest.getInstance();
         this.log = instance.getLoggerFactory().create(getClass());
         this.onlineProfile = onlineProfile;
-        this.playerData = instance.getPlayerData(onlineProfile);
+        this.playerData = instance.getPlayerDataStorage().get(onlineProfile);
         this.lang = playerData.getLanguage();
         this.display = switch (type) {
             case DEFAULT -> new BackpackPage(1);

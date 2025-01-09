@@ -202,7 +202,7 @@ public abstract class Objective {
      */
     public final void completeObjective(final Profile profile) {
         completeObjectiveForPlayer(profile);
-        final PlayerData playerData = BetonQuest.getInstance().getPlayerData(profile);
+        final PlayerData playerData = BetonQuest.getInstance().getPlayerDataStorage().get(profile);
         playerData.removeRawObjective((ObjectiveID) instruction.getID());
         if (persistent) {
             playerData.addNewRawObjective((ObjectiveID) instruction.getID());
@@ -265,7 +265,7 @@ public abstract class Objective {
     public final void newPlayer(final Profile profile) {
         final String defaultInstruction = getDefaultDataInstruction(profile);
         createObjectiveForPlayer(profile, defaultInstruction);
-        BetonQuest.getInstance().getPlayerData(profile).addObjToDB(instruction.getID().getFullID(), defaultInstruction);
+        BetonQuest.getInstance().getPlayerDataStorage().get(profile).addObjToDB(instruction.getID().getFullID(), defaultInstruction);
     }
 
     /**
@@ -468,7 +468,7 @@ public abstract class Objective {
         for (final Map.Entry<Profile, ObjectiveData> entry : dataMap.entrySet()) {
             final Profile profile = entry.getKey();
             stop(profile);
-            BetonQuest.getInstance().getPlayerData(profile).addRawObjective(instruction.getID().getFullID(),
+            BetonQuest.getInstance().getPlayerDataStorage().get(profile).addRawObjective(instruction.getID().getFullID(),
                     entry.getValue().toString());
         }
     }
@@ -583,7 +583,7 @@ public abstract class Objective {
             server.getScheduler().runTask(BetonQuest.getInstance(), () -> server.getPluginManager().callEvent(event));
             // update the journal so all possible variables display correct
             // information
-            BetonQuest.getInstance().getPlayerData(profile).getJournal().update();
+            BetonQuest.getInstance().getPlayerDataStorage().get(profile).getJournal().update();
         }
     }
 

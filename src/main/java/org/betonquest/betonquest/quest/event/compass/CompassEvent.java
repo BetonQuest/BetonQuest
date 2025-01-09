@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.event.compass;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.events.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -8,6 +7,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.event.tag.AddTagChanger;
 import org.betonquest.betonquest.quest.event.tag.DeleteTagChanger;
 import org.betonquest.betonquest.quest.event.tag.TagChanger;
@@ -26,9 +26,9 @@ public class CompassEvent implements Event {
     private final BetonQuestLogger log;
 
     /**
-     * BetonQuest instance to use to get the offline player data.
+     * Storage to get the offline player data.
      */
-    private final BetonQuest betonQuest;
+    private final PlayerDataStorage dataStorage;
 
     /**
      * Plugin manager to use to call the event.
@@ -59,18 +59,18 @@ public class CompassEvent implements Event {
      * Create the compass event.
      *
      * @param log             the logger
-     * @param betonQuest      the BetonQuest instance to get the offline player data
+     * @param storage         the storage to get the offline player data
      * @param pluginManager   the plugin manager to call the {@link QuestCompassTargetChangeEvent}
      * @param action          the action to perform
      * @param compass         the compass point
      * @param compassLocation the location to set the compass to
      * @param questPackage    the quest package
      */
-    public CompassEvent(final BetonQuestLogger log, final BetonQuest betonQuest, final PluginManager pluginManager,
+    public CompassEvent(final BetonQuestLogger log, final PlayerDataStorage storage, final PluginManager pluginManager,
                         final CompassTargetAction action, final String compass, final VariableLocation compassLocation,
                         final QuestPackage questPackage) {
         this.log = log;
-        this.betonQuest = betonQuest;
+        this.dataStorage = storage;
         this.pluginManager = pluginManager;
         this.action = action;
         this.compass = compass;
@@ -105,6 +105,6 @@ public class CompassEvent implements Event {
     }
 
     private void changeTag(final TagChanger tagChanger, final Profile profile) {
-        new TagEvent(betonQuest::getOfflinePlayerData, tagChanger).execute(profile);
+        new TagEvent(dataStorage::getOffline, tagChanger).execute(profile);
     }
 }

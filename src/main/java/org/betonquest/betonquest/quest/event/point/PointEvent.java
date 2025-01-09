@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.event.point;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 
 /**
@@ -39,6 +39,11 @@ public class PointEvent implements Event {
     private final Point pointType;
 
     /**
+     * Storage for player data.
+     */
+    private final PlayerDataStorage dataStorage;
+
+    /**
      * Creates a new point event.
      *
      * @param pointSender  the notification sender to use
@@ -46,18 +51,21 @@ public class PointEvent implements Event {
      * @param category     the category name
      * @param count        the count
      * @param pointType    the point type
+     * @param dataStorage  the storage providing player data
      */
-    public PointEvent(final NotificationSender pointSender, final String categoryName, final String category, final VariableNumber count, final Point pointType) {
+    public PointEvent(final NotificationSender pointSender, final String categoryName, final String category, final VariableNumber count,
+                      final Point pointType, final PlayerDataStorage dataStorage) {
         this.pointSender = pointSender;
         this.categoryName = categoryName;
         this.category = category;
         this.count = count;
         this.pointType = pointType;
+        this.dataStorage = dataStorage;
     }
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        final PlayerData playerData = BetonQuest.getInstance().getOfflinePlayerData(profile);
+        final PlayerData playerData = dataStorage.getOffline(profile);
         final double countDouble = count.getValue(profile).doubleValue();
         playerData.setPoints(category, pointType.modify(playerData.hasPointsFromCategory(category), countDouble));
         pointSender.sendNotification(profile, String.valueOf(countDouble), categoryName);

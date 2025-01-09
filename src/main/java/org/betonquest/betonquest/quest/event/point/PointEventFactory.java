@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NoNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
@@ -31,14 +32,22 @@ public class PointEventFactory implements EventFactory {
     private final VariableProcessor variableProcessor;
 
     /**
+     * Storage for player data.
+     */
+    private final PlayerDataStorage dataStorage;
+
+    /**
      * Create the points event factory.
      *
      * @param loggerFactory     logger factory to use
      * @param variableProcessor variable processor to use
+     * @param dataStorage       the storage providing player data
      */
-    public PointEventFactory(final BetonQuestLoggerFactory loggerFactory, final VariableProcessor variableProcessor) {
+    public PointEventFactory(final BetonQuestLoggerFactory loggerFactory, final VariableProcessor variableProcessor,
+                             final PlayerDataStorage dataStorage) {
         this.loggerFactory = loggerFactory;
         this.variableProcessor = variableProcessor;
+        this.dataStorage = dataStorage;
     }
 
     @Override
@@ -71,6 +80,7 @@ public class PointEventFactory implements EventFactory {
             pointSender = new NoNotificationSender();
         }
 
-        return new PointEvent(pointSender, categoryName, category, new VariableNumber(variableProcessor, instruction.getPackage(), number), type);
+        final VariableNumber amount = new VariableNumber(variableProcessor, instruction.getPackage(), number);
+        return new PointEvent(pointSender, categoryName, category, amount, type, dataStorage);
     }
 }

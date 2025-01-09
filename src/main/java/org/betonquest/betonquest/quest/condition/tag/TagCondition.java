@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.condition.tag;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 
 /**
  * A condition that checks if a player has a certain tag.
@@ -16,23 +16,23 @@ public class TagCondition implements PlayerCondition {
     private final String tag;
 
     /**
-     * The BetonQuest instance.
+     * Storage for player data.
      */
-    private final BetonQuest betonQuest;
+    private final PlayerDataStorage dataStorage;
 
     /**
      * Constructor for the tag condition.
      *
-     * @param tag        the tag to check for
-     * @param betonQuest the BetonQuest instance
+     * @param tag         the tag to check for
+     * @param dataStorage the storage providing player data
      */
-    public TagCondition(final String tag, final BetonQuest betonQuest) {
+    public TagCondition(final String tag, final PlayerDataStorage dataStorage) {
         this.tag = tag;
-        this.betonQuest = betonQuest;
+        this.dataStorage = dataStorage;
     }
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
-        return betonQuest.getPlayerData(profile).hasTag(tag);
+        return dataStorage.get(profile).hasTag(tag);
     }
 }

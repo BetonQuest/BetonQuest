@@ -163,7 +163,7 @@ public class QuestCanceler {
      */
     public void cancel(final OnlineProfile onlineProfile) {
         log.debug("Canceling the quest " + name + " for " + onlineProfile);
-        final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
+        final PlayerData playerData = BetonQuest.getInstance().getPlayerDataStorage().get(onlineProfile);
         // remove tags, points, objectives and journals
         removeSimple(tags, "tag", playerData::removeTag);
         removeSimple(points, "point", playerData::removePointsCategory);
@@ -227,7 +227,7 @@ public class QuestCanceler {
      * @return the name of the quest canceler
      */
     public String getName(final Profile profile) {
-        String questName = name.get(BetonQuest.getInstance().getPlayerData(profile).getLanguage());
+        String questName = name.get(BetonQuest.getInstance().getPlayerDataStorage().get(profile).getLanguage());
         if (questName == null) {
             questName = name.get(Config.getLanguage());
         }

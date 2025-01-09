@@ -34,7 +34,7 @@ public final class TagCalculatorUtils {
     public static ContextCalculator<Player> getTagContextCalculator() {
         return (player, contextConsumer) -> {
             if (player.isOnline()) {
-                final PlayerData data = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+                final PlayerData data = BetonQuest.getInstance().getPlayerDataStorage().get(PlayerConverter.getID(player));
                 data.getTags().forEach(tag -> contextConsumer.accept(KEY_LOCAL + tag, "true"));
             }
 

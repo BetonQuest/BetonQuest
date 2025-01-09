@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.event.language;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 
 /**
  * Changes player's language.
@@ -16,23 +16,23 @@ public class LanguageEvent implements Event {
     private final String language;
 
     /**
-     * The BetonQuest instance.
+     * Storage for player data.
      */
-    private final BetonQuest betonQuest;
+    private final PlayerDataStorage dataStorage;
 
     /**
      * Create the language event.
      *
-     * @param language   the language to set
-     * @param betonQuest the BetonQuest instance
+     * @param language    the language to set
+     * @param dataStorage the storage providing player data
      */
-    public LanguageEvent(final String language, final BetonQuest betonQuest) {
+    public LanguageEvent(final String language, final PlayerDataStorage dataStorage) {
         this.language = language;
-        this.betonQuest = betonQuest;
+        this.dataStorage = dataStorage;
     }
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        betonQuest.getOfflinePlayerData(profile).setLanguage(language);
+        dataStorage.getOffline(profile).setLanguage(language);
     }
 }

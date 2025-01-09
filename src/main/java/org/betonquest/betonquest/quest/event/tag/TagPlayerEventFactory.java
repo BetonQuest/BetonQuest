@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.event.tag;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -9,6 +8,7 @@ import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.event.DatabaseSaverStaticEvent;
 import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
@@ -24,10 +24,11 @@ import java.util.Locale;
  * Factory to create tag events from {@link Instruction}s.
  */
 public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
+
     /**
-     * BetonQuest instance to provide to events.
+     * Storage for player data.
      */
-    private final BetonQuest betonQuest;
+    private final PlayerDataStorage dataStorage;
 
     /**
      * The saver to inject into database-using events.
@@ -37,11 +38,11 @@ public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
     /**
      * Create the tag player event factory.
      *
-     * @param betonQuest BetonQuest instance to pass on
-     * @param saver      database saver to use
+     * @param dataStorage the storage providing player data
+     * @param saver       database saver to use
      */
-    public TagPlayerEventFactory(final BetonQuest betonQuest, final Saver saver) {
-        this.betonQuest = betonQuest;
+    public TagPlayerEventFactory(final PlayerDataStorage dataStorage, final Saver saver) {
+        this.dataStorage = dataStorage;
         this.saver = saver;
     }
 
@@ -78,12 +79,12 @@ public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
 
     private TagEvent createAddTagEvent(final String... tags) {
         final TagChanger tagChanger = new AddTagChanger(tags);
-        return new TagEvent(betonQuest::getOfflinePlayerData, tagChanger);
+        return new TagEvent(dataStorage::getOffline, tagChanger);
     }
 
     private TagEvent createDeleteTagEvent(final String... tags) {
         final TagChanger tagChanger = new DeleteTagChanger(tags);
-        return new TagEvent(betonQuest::getOfflinePlayerData, tagChanger);
+        return new TagEvent(dataStorage::getOffline, tagChanger);
     }
 
     private StaticEvent createStaticDeleteTagEvent(final String... tags) {

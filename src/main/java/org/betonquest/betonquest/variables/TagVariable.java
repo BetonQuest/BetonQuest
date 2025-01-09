@@ -55,7 +55,7 @@ public class TagVariable extends Variable {
         if (profile == null) {
             return "";
         }
-        final List<String> tags = BetonQuest.getInstance().getPlayerData(profile).getTags();
+        final List<String> tags = BetonQuest.getInstance().getPlayerDataStorage().get(profile).getTags();
         return getValue(tags);
     }
 

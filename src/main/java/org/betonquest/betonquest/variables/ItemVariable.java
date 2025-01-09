@@ -99,7 +99,8 @@ public class ItemVariable extends Variable {
             }
             itemAmount += item.getAmount();
         }
-        final List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerData(onlineProfile).getBackpack();
+        final List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerDataStorage()
+                .get(onlineProfile).getBackpack();
         for (final ItemStack item : backpackItems) {
             if (item == null || !questItem.compare(item)) {
                 continue;

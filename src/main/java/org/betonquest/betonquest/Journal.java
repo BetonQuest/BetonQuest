@@ -91,7 +91,7 @@ public class Journal {
             return false;
         }
         // get language
-        final String playerLang = BetonQuest.getInstance().getPlayerData(onlineProfile).getLanguage();
+        final String playerLang = BetonQuest.getInstance().getPlayerDataStorage().get(onlineProfile).getLanguage();
         // check all properties of the item and return the result
         return item.getType().equals(Material.WRITTEN_BOOK) && ((BookMeta) item.getItemMeta()).hasTitle()
                 && ((BookMeta) item.getItemMeta()).getTitle().equals(Config.getMessage(playerLang, "journal_title"))

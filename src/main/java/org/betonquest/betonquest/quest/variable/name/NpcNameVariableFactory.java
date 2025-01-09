@@ -1,30 +1,31 @@
 package org.betonquest.betonquest.quest.variable.name;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 
 /**
  * Factory to create {@link NpcNameVariable}s from {@link Instruction}s.
  */
 public class NpcNameVariableFactory implements PlayerVariableFactory {
+
     /**
-     * Class to get {@link org.betonquest.betonquest.database.PlayerData} from.
+     * Storage for player data.
      */
-    private final BetonQuest plugin;
+    private final PlayerDataStorage dataStorage;
 
     /**
      * Create a NpcName variable factory.
      *
-     * @param plugin the class to get the {@link org.betonquest.betonquest.database.PlayerData} used in the variable
+     * @param dataStorage the storage providing player data
      */
-    public NpcNameVariableFactory(final BetonQuest plugin) {
-        this.plugin = plugin;
+    public NpcNameVariableFactory(final PlayerDataStorage dataStorage) {
+        this.dataStorage = dataStorage;
     }
 
     @Override
     public PlayerVariable parsePlayer(final Instruction instruction) {
-        return new NpcNameVariable(plugin);
+        return new NpcNameVariable(dataStorage);
     }
 }
