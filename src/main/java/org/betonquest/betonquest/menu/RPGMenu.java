@@ -170,7 +170,7 @@ public class RPGMenu {
             for (final String name : menus.getKeys(false)) {
                 try {
                     final MenuID menuID = new MenuID(pack, name);
-                    this.menus.put(menuID, new Menu(loggerFactory, loggerFactory.create(Menu.class), menuID));
+                    this.menus.put(menuID, new Menu(this, loggerFactory, loggerFactory.create(Menu.class), menuID));
                     info.loaded++;
                 } catch (final InvalidConfigurationException e) {
                     log.warn(pack, e.getMessage());
@@ -202,7 +202,7 @@ public class RPGMenu {
         }
         final ReloadInformation info = new ReloadInformation();
         try {
-            this.menus.put(menuID, new Menu(loggerFactory, loggerFactory.create(Menu.class), menuID));
+            this.menus.put(menuID, new Menu(this, loggerFactory, loggerFactory.create(Menu.class), menuID));
             info.result = ReloadResult.FULL_SUCCESS;
             info.loaded = 1;
             log.info(menuID.getPackage(), "Reloaded menu " + menuID);
