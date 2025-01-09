@@ -10,17 +10,25 @@ import org.betonquest.betonquest.compatibility.Integrator;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Integrator for WorldGuard.
+ */
 public class WorldGuardIntegrator implements Integrator {
 
+    /**
+     * The BetonQuest plugin instance.
+     */
     private final BetonQuest plugin;
 
+    /**
+     * The default constructor.
+     */
     public WorldGuardIntegrator() {
         plugin = BetonQuest.getInstance();
     }
 
     /**
-     * Return true if location is inside region
+     * Return true if location is inside region.
      *
      * @param loc        Location to Check
      * @param regionName The name of the region
@@ -43,7 +51,7 @@ public class WorldGuardIntegrator implements Integrator {
 
     @Override
     public void hook() {
-        plugin.registerConditions("region", RegionCondition.class);
+        plugin.getQuestRegistries().getConditionTypes().register("region", RegionCondition.class);
         plugin.registerObjectives("region", RegionObjective.class);
     }
 

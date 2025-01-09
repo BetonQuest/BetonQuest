@@ -4,29 +4,36 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.take.MMOItemsTakeEventFactory;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
+import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
+import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Integrator for MMO Items.
+ */
 public class MMOItemsIntegrator implements Integrator {
 
-    private final BetonQuest plugin;
-
+    /**
+     * The default constructor.
+     */
     public MMOItemsIntegrator() {
-        plugin = BetonQuest.getInstance();
+
     }
 
     @Override
     public void hook() {
+        final BetonQuest plugin = BetonQuest.getInstance();
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
-
-        plugin.registerConditions("mmoitem", MMOItemsItemCondition.class);
-        plugin.registerConditions("mmohand", MMOItemsHandCondition.class);
+        final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
+        conditionTypes.register("mmoitem", MMOItemsItemCondition.class);
+        conditionTypes.register("mmohand", MMOItemsHandCondition.class);
 
         plugin.registerObjectives("mmoitemcraft", MMOItemsCraftObjective.class);
         plugin.registerObjectives("mmoitemupgrade", MMOItemsUpgradeObjective.class);
         plugin.registerObjectives("mmoitemapplygem", MMOItemsApplyGemObjective.class);
 
-        plugin.registerEvents("mmoitemgive", MMOItemsGiveEvent.class);
-        questRegistries.getEventTypes().register("mmoitemtake", new MMOItemsTakeEventFactory(plugin.getLoggerFactory()));
+        final EventTypeRegistry eventTypes = questRegistries.getEventTypes();
+        eventTypes.register("mmoitemgive", MMOItemsGiveEvent.class);
+        eventTypes.register("mmoitemtake", new MMOItemsTakeEventFactory(plugin.getLoggerFactory()));
     }
 
     @Override

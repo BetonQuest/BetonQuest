@@ -2,6 +2,9 @@ package org.betonquest.betonquest.compatibility.brewery;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
+import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
+import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class BreweryIntegrator implements Integrator {
@@ -14,13 +17,15 @@ public class BreweryIntegrator implements Integrator {
 
     @Override
     public void hook() {
-        plugin.registerEvents("givebrew", GiveBrewEvent.class);
-        plugin.registerEvents("takebrew", TakeBrewEvent.class);
+        final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
+        final EventTypeRegistry eventTypes = questRegistries.getEventTypes();
+        eventTypes.register("givebrew", GiveBrewEvent.class);
+        eventTypes.register("takebrew", TakeBrewEvent.class);
 
-        plugin.registerConditions("drunk", DrunkCondition.class);
-        plugin.registerConditions("drunkquality", DrunkQualityCondition.class);
-        plugin.registerConditions("hasbrew", HasBrewCondition.class);
-
+        final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
+        conditionTypes.register("drunk", DrunkCondition.class);
+        conditionTypes.register("drunkquality", DrunkQualityCondition.class);
+        conditionTypes.register("hasbrew", HasBrewCondition.class);
     }
 
     @Override

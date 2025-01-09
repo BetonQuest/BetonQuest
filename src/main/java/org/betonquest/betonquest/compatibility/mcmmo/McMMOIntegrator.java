@@ -3,17 +3,26 @@ package org.betonquest.betonquest.compatibility.mcmmo;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
 import org.bukkit.Bukkit;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Integrator for McMMO.
+ */
 public class McMMOIntegrator implements Integrator {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
+    /**
+     * The BetonQuest plugin instance.
+     */
     private final BetonQuest plugin;
 
+    /**
+     * The default constructor.
+     */
     public McMMOIntegrator() {
         plugin = BetonQuest.getInstance();
         this.log = plugin.getLoggerFactory().create(getClass());
@@ -21,8 +30,9 @@ public class McMMOIntegrator implements Integrator {
 
     @Override
     public void hook() {
-        plugin.registerConditions("mcmmolevel", McMMOSkillLevelCondition.class);
-        plugin.registerEvents("mcmmoexp", McMMOAddExpEvent.class);
+        final QuestTypeRegistries questRegistries = BetonQuest.getInstance().getQuestRegistries();
+        questRegistries.getConditionTypes().register("mcmmolevel", McMMOSkillLevelCondition.class);
+        questRegistries.getEventTypes().register("mcmmoexp", McMMOAddExpEvent.class);
         try {
             Bukkit.getPluginManager().registerEvents(new MCMMOQuestItemHandler(), plugin);
             log.debug("Enabled MCMMO QuestItemHandler");

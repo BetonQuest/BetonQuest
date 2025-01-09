@@ -2,22 +2,30 @@ package org.betonquest.betonquest.compatibility.heroes;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
+import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Integrator for Heroes.
+ */
 public class HeroesIntegrator implements Integrator {
 
-    private final BetonQuest plugin;
-
+    /**
+     * The default constructor.
+     */
     public HeroesIntegrator() {
-        plugin = BetonQuest.getInstance();
+
     }
 
     @Override
     public void hook() {
-        plugin.registerConditions("heroesattribute", HeroesAttributeCondition.class);
-        plugin.registerConditions("heroesclass", HeroesClassCondition.class);
-        plugin.registerConditions("heroesskill", HeroesSkillCondition.class);
-        plugin.registerEvents("heroesexp", HeroesExperienceEvent.class);
+        final BetonQuest plugin = BetonQuest.getInstance();
+        final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
+        final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
+        conditionTypes.register("heroesattribute", HeroesAttributeCondition.class);
+        conditionTypes.register("heroesclass", HeroesClassCondition.class);
+        conditionTypes.register("heroesskill", HeroesSkillCondition.class);
+        questRegistries.getEventTypes().register("heroesexp", HeroesExperienceEvent.class);
         plugin.getServer().getPluginManager().registerEvents(new HeroesMobKillListener(), plugin);
     }
 

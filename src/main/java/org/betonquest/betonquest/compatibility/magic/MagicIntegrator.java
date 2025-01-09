@@ -9,18 +9,25 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Integrator for the Magic plugin.
+ */
 public class MagicIntegrator implements Integrator, Listener {
-
+    /**
+     * The BetonQuest plugin instance.
+     */
     private final BetonQuest plugin;
 
+    /**
+     * The default constructor.
+     */
     public MagicIntegrator() {
         plugin = BetonQuest.getInstance();
     }
 
     @Override
     public void hook() {
-        plugin.registerConditions("wand", WandCondition.class);
+        plugin.getQuestRegistries().getConditionTypes().register("wand", WandCondition.class);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
@@ -34,6 +41,11 @@ public class MagicIntegrator implements Integrator, Listener {
         // Empty
     }
 
+    /**
+     * Updates the player's journal when the spell inventory closes.
+     *
+     * @param event the even to listen
+     */
     @EventHandler(ignoreCancelled = true)
     public void onSpellInventoryEvent(final SpellInventoryEvent event) {
         if (!event.isOpening()) {

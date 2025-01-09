@@ -12,11 +12,18 @@ import org.betonquest.betonquest.modules.versioning.VersionComparator;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Integrator for ProtocolLib.
+ */
 public class ProtocolLibIntegrator implements Integrator {
-
+    /**
+     * The BetonQuest plugin instance.
+     */
     private final BetonQuest plugin;
 
+    /**
+     * The default constructor.
+     */
     public ProtocolLibIntegrator() {
         plugin = BetonQuest.getInstance();
     }
@@ -32,7 +39,7 @@ public class ProtocolLibIntegrator implements Integrator {
 
         plugin.registerConversationIO("menu", MenuConvIO.class);
         plugin.registerInterceptor("packet", PacketInterceptor.class);
-        plugin.registerEvents("freeze", FreezeEvent.class);
+        plugin.getQuestRegistries().getEventTypes().register("freeze", FreezeEvent.class);
     }
 
     @Override

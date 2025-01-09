@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.fabled;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class FabledIntegrator implements Integrator {
@@ -13,8 +14,9 @@ public class FabledIntegrator implements Integrator {
 
     @Override
     public void hook() {
-        plugin.registerConditions("fabledclass", FabledClassCondition.class);
-        plugin.registerConditions("fabledlevel", FabledLevelCondition.class);
+        final ConditionTypeRegistry conditionTypes = plugin.getQuestRegistries().getConditionTypes();
+        conditionTypes.register("fabledclass", FabledClassCondition.class);
+        conditionTypes.register("fabledlevel", FabledLevelCondition.class);
         plugin.getServer().getPluginManager().registerEvents(new FabledKillListener(), plugin);
     }
 

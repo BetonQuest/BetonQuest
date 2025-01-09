@@ -23,7 +23,7 @@ public class MythicLibIntegrator implements Integrator {
 
     @Override
     public void hook() {
-        plugin.registerConditions("mmostat", MythicLibStatCondition.class);
+        plugin.getQuestRegistries().getConditionTypes().register("mmostat", MythicLibStatCondition.class);
 
         plugin.registerObjectives("mmoskill", MythicLibSkillObjective.class);
     }
@@ -37,5 +37,4 @@ public class MythicLibIntegrator implements Integrator {
     public void close() {
         // Empty
     }
-
 }
