@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.registry;
 
+import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
@@ -15,6 +16,7 @@ import org.betonquest.betonquest.quest.registry.type.VariableTypeRegistry;
 public record QuestTypeRegistries(
         ConditionTypeRegistry condition,
         EventTypeRegistry event,
+        FactoryRegistry<Class<? extends Objective>> objective,
         VariableTypeRegistry variable
 ) {
 
@@ -28,6 +30,7 @@ public record QuestTypeRegistries(
         return new QuestTypeRegistries(
                 new ConditionTypeRegistry(loggerFactory.create(ConditionTypeRegistry.class), loggerFactory),
                 new EventTypeRegistry(loggerFactory.create(EventTypeRegistry.class), loggerFactory),
+                new FactoryRegistry<>(loggerFactory.create(FactoryRegistry.class), "objective"),
                 new VariableTypeRegistry(loggerFactory.create(VariableTypeRegistry.class), loggerFactory)
         );
     }

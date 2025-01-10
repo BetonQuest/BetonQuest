@@ -99,7 +99,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.InstantSource;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -113,8 +112,6 @@ import java.util.logging.Handler;
         "PMD.AtLeastOneConstructor", "PMD.ExcessivePublicCount", "PMD.TooManyFields", "NullAway.Init"})
 public class BetonQuest extends JavaPlugin {
     private static final int BSTATS_METRICS_ID = 551;
-
-    private static final Map<String, Class<? extends Objective>> OBJECTIVE_TYPES = new HashMap<>();
 
     /**
      * The indicator for dev versions.
@@ -468,7 +465,7 @@ public class BetonQuest extends JavaPlugin {
         otherRegistries = OtherFactoryRegistries.create(loggerFactory);
 
         questRegistry = new QuestRegistry(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
-                otherRegistries, questTypeRegistries, OBJECTIVE_TYPES);
+                otherRegistries, questTypeRegistries);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
                 questRegistry.variables(), globalData, playerDataStorage).register(questTypeRegistries);
@@ -665,17 +662,6 @@ public class BetonQuest extends JavaPlugin {
      */
     public GlobalData getGlobalData() {
         return globalData;
-    }
-
-    /**
-     * Registers new objective classes by their names.
-     *
-     * @param name           name of the objective type
-     * @param objectiveClass class object for the objective
-     */
-    public void registerObjectives(final String name, final Class<? extends Objective> objectiveClass) {
-        log.debug("Registering " + name + " objective type");
-        OBJECTIVE_TYPES.put(name, objectiveClass);
     }
 
     /**

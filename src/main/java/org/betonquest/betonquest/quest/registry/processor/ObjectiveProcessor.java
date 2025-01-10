@@ -9,6 +9,7 @@ import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.quest.registry.FactoryRegistry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,7 +25,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
     /**
      * Available Objective types.
      */
-    private final Map<String, Class<? extends Objective>> types;
+    private final FactoryRegistry<Class<? extends Objective>> types;
 
     /**
      * Create a new Objective Processor to store Objectives and starts/stops/resumes them.
@@ -32,7 +33,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
      * @param log            the custom logger for this class
      * @param objectiveTypes the available objective types
      */
-    public ObjectiveProcessor(final BetonQuestLogger log, final Map<String, Class<? extends Objective>> objectiveTypes) {
+    public ObjectiveProcessor(final BetonQuestLogger log, final FactoryRegistry<Class<? extends Objective>> objectiveTypes) {
         super(log);
         this.types = objectiveTypes;
     }
@@ -79,7 +80,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
                     log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
                     continue;
                 }
-                final Class<? extends Objective> objectiveClass = types.get(type);
+                final Class<? extends Objective> objectiveClass = types.getFactory(type);
                 if (objectiveClass == null) {
                     log.warn(pack,
                             "Objective type " + type + " is not registered, check if it's"

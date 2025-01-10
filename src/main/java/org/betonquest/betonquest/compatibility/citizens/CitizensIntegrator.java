@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.citizens;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
@@ -78,9 +79,11 @@ public class CitizensIntegrator implements Integrator {
         citizensConversationStarter = new CitizensConversationStarter(loggerFactory, loggerFactory.create(CitizensConversationStarter.class), citizensMoveController);
         new CitizensWalkingListener();
 
-        plugin.registerObjectives("npckill", NPCKillObjective.class);
-        plugin.registerObjectives("npcinteract", NPCInteractObjective.class);
-        plugin.registerObjectives("npcrange", NPCRangeObjective.class);
+        final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
+        final FactoryRegistry<Class<? extends Objective>> objectiveTypes = questRegistries.objective();
+        objectiveTypes.register("npckill", NPCKillObjective.class);
+        objectiveTypes.register("npcinteract", NPCInteractObjective.class);
+        objectiveTypes.register("npcrange", NPCRangeObjective.class);
 
         final Server server = plugin.getServer();
         final BukkitScheduler scheduler = server.getScheduler();
@@ -88,7 +91,6 @@ public class CitizensIntegrator implements Integrator {
 
         server.getPluginManager().registerEvents(citizensMoveController, plugin);
 
-        final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
         final EventTypeRegistry eventTypes = questRegistries.event();
         eventTypes.register("movenpc", new CitizensMoveEventFactory(data, citizensMoveController));
         eventTypes.register("stopnpc", new CitizensStopEventFactory(data, citizensMoveController));
