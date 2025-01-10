@@ -119,7 +119,7 @@ public final class Notify {
 
     private static NotifyIO getNotifyIO(final QuestPackage pack, final List<String> ios, final Map<String, String> categoryData) throws QuestException {
         for (final String name : ios) {
-            final Class<? extends NotifyIO> clazz = BetonQuest.getNotifyIO(name);
+            final Class<? extends NotifyIO> clazz = BetonQuest.getInstance().getOtherRegistries().getNotifyIOTypes().getFactory(name);
             if (clazz != null) {
                 try {
                     return clazz.getConstructor(QuestPackage.class, Map.class).newInstance(pack, categoryData);
