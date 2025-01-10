@@ -57,18 +57,18 @@ public class CoreOtherFactories {
      * @param registries containing the registry to register in
      */
     public void register(final OtherFactoryRegistries registries) {
-        final FactoryRegistry<Class<? extends ConversationIO>> conversationIOTypes = registries.getConversationIOTypes();
+        final FactoryRegistry<Class<? extends ConversationIO>> conversationIOTypes = registries.conversationIO();
         conversationIOTypes.register("simple", SimpleConvIO.class);
         conversationIOTypes.register("tellraw", TellrawConvIO.class);
         conversationIOTypes.register("chest", InventoryConvIO.class);
         conversationIOTypes.register("combined", InventoryConvIO.Combined.class);
         conversationIOTypes.register("slowtellraw", SlowTellrawConvIO.class);
 
-        final FactoryRegistry<Class<? extends Interceptor>> interceptorTypes = registries.getInterceptorTypes();
+        final FactoryRegistry<Class<? extends Interceptor>> interceptorTypes = registries.interceptor();
         interceptorTypes.register("simple", SimpleInterceptor.class);
         interceptorTypes.register("none", NonInterceptingInterceptor.class);
 
-        final FactoryRegistry<Class<? extends NotifyIO>> notifyIOTypes = registries.getNotifyIOTypes();
+        final FactoryRegistry<Class<? extends NotifyIO>> notifyIOTypes = registries.notifyIO();
         notifyIOTypes.register("suppress", SuppressNotifyIO.class);
         notifyIOTypes.register("chat", ChatNotifyIO.class);
         notifyIOTypes.register("advancement", AdvancementNotifyIO.class);
@@ -79,7 +79,7 @@ public class CoreOtherFactories {
         notifyIOTypes.register("subtitle", SubTitleNotifyIO.class);
         notifyIOTypes.register("sound", SoundIO.class);
 
-        final ScheduleRegistry eventSchedulingTypes = registries.getEventSchedulingTypes();
+        final ScheduleRegistry eventSchedulingTypes = registries.eventScheduling();
         eventSchedulingTypes.register("realtime-daily", RealtimeDailySchedule.class,
                 new RealtimeDailyScheduler(loggerFactory.create(RealtimeDailyScheduler.class, "Schedules"), lastExecutionCache));
         eventSchedulingTypes.register("realtime-cron", RealtimeCronSchedule.class,

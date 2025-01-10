@@ -17,7 +17,7 @@ public class WorldEditIntegrator implements Integrator {
 
     @Override
     public void hook() {
-        BetonQuest.getInstance().getQuestRegistries().getEventTypes().register("paste", PasteSchematicEvent.class);
+        BetonQuest.getInstance().getQuestRegistries().event().register("paste", PasteSchematicEvent.class);
     }
 
     @Override

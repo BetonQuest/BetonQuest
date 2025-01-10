@@ -38,7 +38,7 @@ public class FakeBlockIntegrator implements Integrator {
         checkRequiredVersion();
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
-        plugin.getQuestRegistries().getEventTypes().register("fakeblock",
+        plugin.getQuestRegistries().event().register("fakeblock",
                 new FakeBlockEventFactory(server.getServicesManager(), data));
     }
 

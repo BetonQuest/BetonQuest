@@ -71,7 +71,7 @@ public class RunEventFactory implements EventFactory, StaticEventFactory {
      */
     private QuestEvent createEvent(final String instruction, final QuestPackage questPackage) throws QuestException {
         final String[] parts = HandlerUtil.getNNSplit(instruction, "Not enough arguments in internal event", " ");
-        final TypeFactory<QuestEvent> eventFactory = BetonQuest.getInstance().getQuestRegistries().getEventTypes().getFactory(parts[0]);
+        final TypeFactory<QuestEvent> eventFactory = BetonQuest.getInstance().getQuestRegistries().event().getFactory(parts[0]);
         if (eventFactory == null) {
             throw new QuestException("Event type " + parts[0] + " is not registered, check if it's"
                     + " spelled correctly in internal event");

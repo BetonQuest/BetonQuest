@@ -53,9 +53,9 @@ public class VaultIntegrator implements Integrator {
             final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
             final QuestTypeRegistries registries = plugin.getQuestRegistries();
 
-            registries.getEventTypes().register("money", new MoneyEventFactory(economy, loggerFactory, data, plugin.getVariableProcessor()));
-            registries.getConditionTypes().register("money", new MoneyConditionFactory(economy, data));
-            registries.getVariableTypes().register("money", new MoneyVariableFactory(economy));
+            registries.event().register("money", new MoneyEventFactory(economy, loggerFactory, data, plugin.getVariableProcessor()));
+            registries.condition().register("money", new MoneyConditionFactory(economy, data));
+            registries.variable().register("money", new MoneyVariableFactory(economy));
         }
 
         final RegisteredServiceProvider<Permission> permissionProvider = servicesManager.getRegistration(Permission.class);
@@ -63,7 +63,7 @@ public class VaultIntegrator implements Integrator {
             log.warn("Could not get permission provider!");
         } else {
             final Permission permission = permissionProvider.getProvider();
-            plugin.getQuestRegistries().getEventTypes().register("permission", new PermissionEventFactory(permission, data));
+            plugin.getQuestRegistries().event().register("permission", new PermissionEventFactory(permission, data));
         }
     }
 

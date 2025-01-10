@@ -241,10 +241,10 @@ public class CoreQuestTypes {
      */
     public void register(final QuestTypeRegistries questTypeRegistries) {
         // When adding new types they need to be ordered by name in the corresponding method!
-        registerConditions(questTypeRegistries.getConditionTypes());
-        registerEvents(questTypeRegistries.getEventTypes());
+        registerConditions(questTypeRegistries.condition());
+        registerEvents(questTypeRegistries.event());
         registerObjectives();
-        registerVariables(questTypeRegistries.getVariableTypes());
+        registerVariables(questTypeRegistries.variable());
     }
 
     private void registerConditions(final ConditionTypeRegistry conditionTypes) {

@@ -89,18 +89,18 @@ public class CitizensIntegrator implements Integrator {
         server.getPluginManager().registerEvents(citizensMoveController, plugin);
 
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
-        final EventTypeRegistry eventTypes = questRegistries.getEventTypes();
+        final EventTypeRegistry eventTypes = questRegistries.event();
         eventTypes.register("movenpc", new CitizensMoveEventFactory(data, citizensMoveController));
         eventTypes.register("stopnpc", new CitizensStopEventFactory(data, citizensMoveController));
         eventTypes.registerCombined("teleportnpc", new NPCTeleportEventFactory(data));
 
-        final FactoryRegistry<Class<? extends ConversationIO>> conversationIOTypes = plugin.getOtherRegistries().getConversationIOTypes();
+        final FactoryRegistry<Class<? extends ConversationIO>> conversationIOTypes = plugin.getOtherRegistries().conversationIO();
         conversationIOTypes.register("chest", CitizensInventoryConvIO.class);
         conversationIOTypes.register("combined", CitizensInventoryConvIO.CitizensCombined.class);
 
-        questRegistries.getVariableTypes().register("citizen", new CitizensVariableFactory());
+        questRegistries.variable().register("citizen", new CitizensVariableFactory());
 
-        final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
+        final ConditionTypeRegistry conditionTypes = questRegistries.condition();
         conditionTypes.register("npcdistance", new NPCDistanceConditionFactory(data, loggerFactory));
         conditionTypes.registerCombined("npclocation", new NPCLocationConditionFactory(data));
     }
@@ -109,12 +109,12 @@ public class CitizensIntegrator implements Integrator {
     public void postHook() {
         if (Compatibility.getHooked().contains("ProtocolLib")) {
             NPCHider.start(plugin.getLoggerFactory().create(NPCHider.class));
-            plugin.getQuestRegistries().getEventTypes().register("updatevisibility", UpdateVisibilityNowEvent.class);
+            plugin.getQuestRegistries().event().register("updatevisibility", UpdateVisibilityNowEvent.class);
         }
         if (Compatibility.getHooked().contains("WorldGuard")) {
             final Server server = plugin.getServer();
             final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
-            plugin.getQuestRegistries().getConditionTypes().register("npcregion", new NPCRegionConditionFactory(data));
+            plugin.getQuestRegistries().condition().register("npcregion", new NPCRegionConditionFactory(data));
         }
     }
 
