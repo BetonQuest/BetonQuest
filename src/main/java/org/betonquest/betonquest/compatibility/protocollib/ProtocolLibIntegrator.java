@@ -37,9 +37,9 @@ public class ProtocolLibIntegrator implements Integrator {
             throw new UnsupportedVersionException(protocolLib, "5.0.0-SNAPSHOT-636");
         }
 
-        plugin.getOtherRegistries().getConversationIOTypes().register("menu", MenuConvIO.class);
-        plugin.getOtherRegistries().getInterceptorTypes().register("packet", PacketInterceptor.class);
-        plugin.getQuestRegistries().getEventTypes().register("freeze", FreezeEvent.class);
+        plugin.getOtherRegistries().conversationIO().register("menu", MenuConvIO.class);
+        plugin.getOtherRegistries().interceptor().register("packet", PacketInterceptor.class);
+        plugin.getQuestRegistries().event().register("freeze", FreezeEvent.class);
     }
 
     @Override

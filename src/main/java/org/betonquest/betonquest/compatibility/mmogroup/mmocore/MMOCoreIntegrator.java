@@ -24,7 +24,7 @@ public class MMOCoreIntegrator implements Integrator {
 
         final BetonQuest plugin = BetonQuest.getInstance();
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
-        final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
+        final ConditionTypeRegistry conditionTypes = questRegistries.condition();
         conditionTypes.register("mmoclass", MMOCoreClassCondition.class);
         conditionTypes.register("mmoattribute", MMOCoreAttributeCondition.class);
         conditionTypes.register("mmoprofession", MMOCoreProfessionLevelCondition.class);
@@ -33,7 +33,7 @@ public class MMOCoreIntegrator implements Integrator {
         plugin.registerObjectives("mmochangeclass", MMOCoreChangeClassObjective.class);
         plugin.registerObjectives("mmocorebreakblock", MMOCoreBreakCustomBlockObjective.class);
 
-        final EventTypeRegistry eventTypes = questRegistries.getEventTypes();
+        final EventTypeRegistry eventTypes = questRegistries.event();
         eventTypes.register("mmoclassexperience", MMOCoreClassExperienceEvent.class);
         eventTypes.register("mmoprofessionexperience", MMOCoreProfessionExperienceEvent.class);
         eventTypes.register("mmocoreclasspoints", MMOCoreClassPointsEvent.class);

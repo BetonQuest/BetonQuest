@@ -32,14 +32,14 @@ public class JobsRebornIntegrator implements Integrator {
     @Override
     public void hook() {
         final QuestTypeRegistries questRegistries = BetonQuest.getInstance().getQuestRegistries();
-        final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
+        final ConditionTypeRegistry conditionTypes = questRegistries.condition();
         conditionTypes.register("nujobs_canlevel", ConditionCanLevel.class);
         conditionTypes.register("nujobs_hasjob", ConditionHasJob.class);
         conditionTypes.register("nujobs_jobfull", ConditionJobFull.class);
         conditionTypes.register("nujobs_joblevel", ConditionJobLevel.class);
         log.info("Registered Conditions [nujobs_canlevel,nujobs_hasjob,nujobs_jobfull,nujobs_joblevel]");
 
-        final EventTypeRegistry eventTypes = questRegistries.getEventTypes();
+        final EventTypeRegistry eventTypes = questRegistries.event();
         eventTypes.register("nujobs_addexp", EventAddExp.class);
         eventTypes.register("nujobs_addlevel", EventAddLevel.class);
         eventTypes.register("nujobs_dellevel", EventDelLevel.class);

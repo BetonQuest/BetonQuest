@@ -464,8 +464,8 @@ public class BetonQuest extends JavaPlugin {
         getCommand("questlang").setExecutor(langCommand);
         getCommand("questlang").setTabCompleter(langCommand);
 
-        questTypeRegistries = new QuestTypeRegistries(loggerFactory);
-        otherRegistries = new OtherFactoryRegistries(loggerFactory);
+        questTypeRegistries = QuestTypeRegistries.create(loggerFactory);
+        otherRegistries = OtherFactoryRegistries.create(loggerFactory);
 
         questRegistry = new QuestRegistry(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
                 otherRegistries, questTypeRegistries, OBJECTIVE_TYPES);
