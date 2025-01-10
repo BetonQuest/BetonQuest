@@ -64,7 +64,7 @@ public class RPGMenu {
         final String menu = "menu";
         final QuestTypeRegistries questRegistries = betonQuest.getQuestRegistries();
         questRegistries.condition().register(menu, MenuCondition.class);
-        betonQuest.registerObjectives(menu, MenuObjective.class);
+        questRegistries.objective().register(menu, MenuObjective.class);
         questRegistries.event().register(menu, MenuQuestEvent.class);
         questRegistries.variable().register(menu, MenuVariable.class);
         this.pluginCommand = new RPGMenuCommand(loggerFactory.create(RPGMenuCommand.class), this);

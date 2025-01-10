@@ -25,7 +25,7 @@ public class MythicLibIntegrator implements Integrator {
     public void hook() {
         plugin.getQuestRegistries().condition().register("mmostat", MythicLibStatCondition.class);
 
-        plugin.registerObjectives("mmoskill", MythicLibSkillObjective.class);
+        plugin.getQuestRegistries().objective().register("mmoskill", MythicLibSkillObjective.class);
     }
 
     @Override

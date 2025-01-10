@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.registry;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -72,16 +71,14 @@ public class QuestRegistry {
      * @param plugin              the plugin used to create new conversation data
      * @param otherRegistries     the available other types
      * @param questTypeRegistries the available quest types
-     * @param objectiveTypes      the available objective types
      */
     public QuestRegistry(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuest plugin,
-                         final OtherFactoryRegistries otherRegistries, final QuestTypeRegistries questTypeRegistries,
-                         final Map<String, Class<? extends Objective>> objectiveTypes) {
+                         final OtherFactoryRegistries otherRegistries, final QuestTypeRegistries questTypeRegistries) {
         this.log = log;
         this.eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), otherRegistries.eventScheduling());
         this.conditionProcessor = new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), questTypeRegistries.condition());
         this.eventProcessor = new EventProcessor(loggerFactory.create(EventProcessor.class), questTypeRegistries.event());
-        this.objectiveProcessor = new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), objectiveTypes);
+        this.objectiveProcessor = new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), questTypeRegistries.objective());
         this.variableProcessor = new VariableProcessor(loggerFactory.create(VariableProcessor.class), questTypeRegistries.variable(), loggerFactory);
         this.cancellerProcessor = new CancellerProcessor(loggerFactory.create(CancellerProcessor.class));
         this.conversationProcessor = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), plugin);
