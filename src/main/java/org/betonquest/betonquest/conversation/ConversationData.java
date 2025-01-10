@@ -160,7 +160,7 @@ public class ConversationData {
         // check if all data is valid (or at least exist)
         for (final String rawConvIOPart : rawConvIOs.split(",")) {
             final String rawConvIO = rawConvIOPart.trim();
-            if (plugin.getConvIO(rawConvIO) != null) {
+            if (plugin.getOtherRegistries().getConversationIOTypes().getFactory(rawConvIO) != null) {
                 convIO = rawConvIO;
                 break;
             } else {
@@ -173,7 +173,7 @@ public class ConversationData {
 
         final String rawInterceptor = pack.getString("conversations." + convName + ".interceptor", plugin.getPluginConfig().getString("default_interceptor", "simple"));
         for (final String s : rawInterceptor.split(",")) {
-            if (plugin.getInterceptor(s.trim()) != null) {
+            if (plugin.getOtherRegistries().getInterceptorTypes().getFactory(s.trim()) != null) {
                 interceptor = s.trim();
                 break;
             }

@@ -18,7 +18,9 @@ import org.betonquest.betonquest.compatibility.citizens.objective.NPCRangeObject
 import org.betonquest.betonquest.compatibility.citizens.variable.npc.CitizensVariableFactory;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
+import org.betonquest.betonquest.conversation.ConversationIO;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
+import org.betonquest.betonquest.quest.registry.FactoryRegistry;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
@@ -92,8 +94,9 @@ public class CitizensIntegrator implements Integrator {
         eventTypes.register("stopnpc", new CitizensStopEventFactory(data, citizensMoveController));
         eventTypes.registerCombined("teleportnpc", new NPCTeleportEventFactory(data));
 
-        plugin.registerConversationIO("chest", CitizensInventoryConvIO.class);
-        plugin.registerConversationIO("combined", CitizensInventoryConvIO.CitizensCombined.class);
+        final FactoryRegistry<Class<? extends ConversationIO>> conversationIOTypes = plugin.getOtherRegistries().getConversationIOTypes();
+        conversationIOTypes.register("chest", CitizensInventoryConvIO.class);
+        conversationIOTypes.register("combined", CitizensInventoryConvIO.CitizensCombined.class);
 
         questRegistries.getVariableTypes().register("citizen", new CitizensVariableFactory());
 

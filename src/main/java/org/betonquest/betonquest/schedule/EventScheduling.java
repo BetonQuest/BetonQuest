@@ -7,10 +7,10 @@ import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.quest.registry.other.ScheduleRegistry;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -26,7 +26,7 @@ public class EventScheduling {
      * Map that contains all types of schedulers,
      * with keys being their names and values holding the scheduler and schedule class.
      */
-    private final Map<String, ScheduleType<?, ?>> scheduleTypes;
+    private final ScheduleRegistry scheduleTypes;
 
     /**
      * Creates a new instance of the event scheduling class.
@@ -34,7 +34,7 @@ public class EventScheduling {
      * @param log           the logger that will be used for logging
      * @param scheduleTypes map containing the schedule types, provided by {@link org.betonquest.betonquest.BetonQuest}
      */
-    public EventScheduling(final BetonQuestLogger log, final Map<String, ScheduleType<?, ?>> scheduleTypes) {
+    public EventScheduling(final BetonQuestLogger log, final ScheduleRegistry scheduleTypes) {
         this.log = log;
         this.scheduleTypes = scheduleTypes;
     }
@@ -66,7 +66,7 @@ public class EventScheduling {
                     );
                     final String type = Optional.ofNullable(scheduleConfig.getString("type"))
                             .orElseThrow(() -> new QuestException("Missing type instruction"));
-                    final ScheduleType<?, ?> scheduleType = Optional.ofNullable(scheduleTypes.get(type))
+                    final ScheduleType<?, ?> scheduleType = Optional.ofNullable(scheduleTypes.getFactory(type))
                             .orElseThrow(() -> new QuestException("The schedule type '" + type + "' is not defined"));
                     scheduleType.createAndScheduleNewInstance(scheduleID, scheduleConfig);
                     log.debug(questPackage, "Parsed schedule '" + scheduleID + "'.");

@@ -620,6 +620,7 @@ public class Conversation implements Listener {
             super();
         }
 
+        @SuppressWarnings("PMD.NcssCount")
         @Override
         public void run() {
             if (state.isStarted()) {
@@ -663,7 +664,11 @@ public class Conversation implements Listener {
                 // started, causing it to display "null" all the time
                 try {
                     final String name = data.getConversationIO();
-                    final Class<? extends ConversationIO> convIO = plugin.getConvIO(name);
+                    final Class<? extends ConversationIO> convIO = plugin.getOtherRegistries().getConversationIOTypes().getFactory(name);
+                    if (convIO == null) {
+                        log.warn(pack, "Error when loading conversation IO: There is no interceptor '" + name + "'!");
+                        return;
+                    }
                     conv.inOut = convIO.getConstructor(Conversation.class, OnlineProfile.class).newInstance(conv, onlineProfile);
                 } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
                                | InvocationTargetException | NoSuchMethodException | SecurityException e) {
@@ -678,7 +683,11 @@ public class Conversation implements Listener {
                 if (messagesDelaying) {
                     try {
                         final String name = data.getInterceptor();
-                        final Class<? extends Interceptor> interceptor = plugin.getInterceptor(name);
+                        final Class<? extends Interceptor> interceptor = plugin.getOtherRegistries().getInterceptorTypes().getFactory(name);
+                        if (interceptor == null) {
+                            log.warn(pack, "Error when loading interceptor: There is no interceptor '" + name + "'!");
+                            return;
+                        }
                         conv.interceptor = interceptor.getConstructor(Conversation.class, OnlineProfile.class).newInstance(conv, onlineProfile);
                     } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
                                    | InvocationTargetException | NoSuchMethodException | SecurityException e) {
