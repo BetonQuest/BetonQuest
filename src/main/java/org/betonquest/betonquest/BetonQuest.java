@@ -284,7 +284,7 @@ public class BetonQuest extends JavaPlugin {
     }
 
     public static boolean isVariableType(final String type) {
-        return instance.getQuestRegistries().getVariableTypes().getFactory(type) != null;
+        return instance.questTypeRegistries.variable().getFactory(type) != null;
     }
 
     /**
@@ -479,8 +479,8 @@ public class BetonQuest extends JavaPlugin {
         getCommand("questlang").setExecutor(langCommand);
         getCommand("questlang").setTabCompleter(langCommand);
 
-        questTypeRegistries = new QuestTypeRegistries(loggerFactory);
-        otherRegistries = new OtherFactoryRegistries(loggerFactory);
+        questTypeRegistries = QuestTypeRegistries.create(loggerFactory);
+        otherRegistries = OtherFactoryRegistries.create(loggerFactory);
 
         questRegistry = new QuestRegistry(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
                 otherRegistries, questTypeRegistries, OBJECTIVE_TYPES);

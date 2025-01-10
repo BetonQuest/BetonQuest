@@ -32,7 +32,7 @@ public class TrainCartsIntegrator implements Integrator {
         plugin.registerObjectives("traincartsexit", TrainCartsExitObjective.class);
 
         final PrimaryServerThreadData data = new PrimaryServerThreadData(plugin.getServer(), plugin.getServer().getScheduler(), plugin);
-        plugin.getQuestRegistries().getConditionTypes().register("traincartsride",
+        plugin.getQuestRegistries().condition().register("traincartsride",
                 new TrainCartsRideConditionFactory(plugin.getLoggerFactory(), data));
     }
 

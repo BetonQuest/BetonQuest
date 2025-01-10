@@ -664,7 +664,7 @@ public class Conversation implements Listener {
                 // started, causing it to display "null" all the time
                 try {
                     final String name = data.getConversationIO();
-                    final Class<? extends ConversationIO> convIO = plugin.getOtherRegistries().getConversationIOTypes().getFactory(name);
+                    final Class<? extends ConversationIO> convIO = plugin.getOtherRegistries().conversationIO().getFactory(name);
                     if (convIO == null) {
                         log.warn(pack, "Error when loading conversation IO: There is no interceptor '" + name + "'!");
                         return;
@@ -683,7 +683,7 @@ public class Conversation implements Listener {
                 if (messagesDelaying) {
                     try {
                         final String name = data.getInterceptor();
-                        final Class<? extends Interceptor> interceptor = plugin.getOtherRegistries().getInterceptorTypes().getFactory(name);
+                        final Class<? extends Interceptor> interceptor = plugin.getOtherRegistries().interceptor().getFactory(name);
                         if (interceptor == null) {
                             log.warn(pack, "Error when loading interceptor: There is no interceptor '" + name + "'!");
                             return;

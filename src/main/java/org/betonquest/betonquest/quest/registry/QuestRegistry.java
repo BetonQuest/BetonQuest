@@ -78,11 +78,11 @@ public class QuestRegistry {
                          final OtherFactoryRegistries otherRegistries, final QuestTypeRegistries questTypeRegistries,
                          final Map<String, Class<? extends Objective>> objectiveTypes) {
         this.log = log;
-        this.eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), otherRegistries.getEventSchedulingTypes());
-        this.conditionProcessor = new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), questTypeRegistries.getConditionTypes());
-        this.eventProcessor = new EventProcessor(loggerFactory.create(EventProcessor.class), questTypeRegistries.getEventTypes());
+        this.eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), otherRegistries.eventScheduling());
+        this.conditionProcessor = new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), questTypeRegistries.condition());
+        this.eventProcessor = new EventProcessor(loggerFactory.create(EventProcessor.class), questTypeRegistries.event());
         this.objectiveProcessor = new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), objectiveTypes);
-        this.variableProcessor = new VariableProcessor(loggerFactory.create(VariableProcessor.class), questTypeRegistries.getVariableTypes(), loggerFactory);
+        this.variableProcessor = new VariableProcessor(loggerFactory.create(VariableProcessor.class), questTypeRegistries.variable(), loggerFactory);
         this.cancellerProcessor = new CancellerProcessor(loggerFactory.create(CancellerProcessor.class));
         this.conversationProcessor = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), plugin);
     }

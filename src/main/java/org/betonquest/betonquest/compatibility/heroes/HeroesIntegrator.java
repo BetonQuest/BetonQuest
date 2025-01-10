@@ -21,11 +21,11 @@ public class HeroesIntegrator implements Integrator {
     public void hook() {
         final BetonQuest plugin = BetonQuest.getInstance();
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
-        final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
+        final ConditionTypeRegistry conditionTypes = questRegistries.condition();
         conditionTypes.register("heroesattribute", HeroesAttributeCondition.class);
         conditionTypes.register("heroesclass", HeroesClassCondition.class);
         conditionTypes.register("heroesskill", HeroesSkillCondition.class);
-        questRegistries.getEventTypes().register("heroesexp", HeroesExperienceEvent.class);
+        questRegistries.event().register("heroesexp", HeroesExperienceEvent.class);
         plugin.getServer().getPluginManager().registerEvents(new HeroesMobKillListener(), plugin);
     }
 

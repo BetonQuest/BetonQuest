@@ -18,11 +18,11 @@ public class BreweryIntegrator implements Integrator {
     @Override
     public void hook() {
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
-        final EventTypeRegistry eventTypes = questRegistries.getEventTypes();
+        final EventTypeRegistry eventTypes = questRegistries.event();
         eventTypes.register("givebrew", GiveBrewEvent.class);
         eventTypes.register("takebrew", TakeBrewEvent.class);
 
-        final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
+        final ConditionTypeRegistry conditionTypes = questRegistries.condition();
         conditionTypes.register("drunk", DrunkCondition.class);
         conditionTypes.register("drunkquality", DrunkQualityCondition.class);
         conditionTypes.register("hasbrew", HasBrewCondition.class);
