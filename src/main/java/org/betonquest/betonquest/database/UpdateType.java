@@ -124,7 +124,6 @@ public enum UpdateType {
     INSERT_PLAYER(prefix -> "INSERT INTO " + prefix + "player (playerID, active_profile, language, conversation) VALUES (?,?,?,?);"),
     INSERT_PROFILE(prefix -> "INSERT INTO " + prefix + "profile (profileID) VALUES (?);"),
     INSERT_PLAYER_PROFILE(prefix -> "INSERT INTO " + prefix + "player_profile (playerID, profileID, name) VALUES (?,?,?);"),
-    INSERT_MIGRATION(prefix -> "INSERT INTO " + prefix + "migration (namespace, version, time) VALUES (?,?,?);"),
 
     INSERT_GLOBAL_TAG(prefix -> "INSERT INTO " + prefix + "global_tags (tag) VALUES (?)"),
     INSERT_GLOBAL_POINT(prefix -> "INSERT INTO " + prefix + "global_points (category,count) VALUES (?,?)"),
