@@ -18,6 +18,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `chestput` objective caused that no chest could be opened on the server when `multipleaccess` was forbidden(default)
 - providing wrong commit sha to the download command now gives a proper error message
 - no longer set damage in `QuestItem` if none set
+- loading of a backup file has the wrong order of applying the statements, causing exceptions and a broken migration
 ### Security
 
 ## [2.2.0] - 2024-12-01
