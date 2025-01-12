@@ -154,14 +154,14 @@ import org.betonquest.betonquest.quest.variable.condition.ConditionVariableFacto
 import org.betonquest.betonquest.quest.variable.eval.EvalVariableFactory;
 import org.betonquest.betonquest.quest.variable.name.NpcNameVariableFactory;
 import org.betonquest.betonquest.quest.variable.name.PlayerNameVariableFactory;
-import org.betonquest.betonquest.variables.GlobalPointVariable;
+import org.betonquest.betonquest.quest.variable.point.GlobalPointVariableFactory;
+import org.betonquest.betonquest.quest.variable.point.PointVariableFactory;
 import org.betonquest.betonquest.variables.GlobalTagVariable;
 import org.betonquest.betonquest.variables.ItemDurabilityVariable;
 import org.betonquest.betonquest.variables.ItemVariable;
 import org.betonquest.betonquest.variables.LocationVariable;
 import org.betonquest.betonquest.variables.MathVariable;
 import org.betonquest.betonquest.variables.ObjectivePropertyVariable;
-import org.betonquest.betonquest.variables.PointVariable;
 import org.betonquest.betonquest.variables.RandomNumberVariable;
 import org.betonquest.betonquest.variables.TagVariable;
 import org.betonquest.betonquest.variables.VersionVariable;
@@ -395,7 +395,7 @@ public class CoreQuestTypes {
     private void registerVariables(final VariableTypeRegistry variables) {
         variables.register("condition", new ConditionVariableFactory(dataStorage));
         variables.registerCombined("eval", new EvalVariableFactory(variableProcessor));
-        variables.register("globalpoint", GlobalPointVariable.class);
+        variables.register("globalpoint", new GlobalPointVariableFactory(betonQuest, loggerFactory.create(GlobalPointVariableFactory.class)));
         variables.register("globaltag", GlobalTagVariable.class);
         variables.register("item", ItemVariable.class);
         variables.register("itemdurability", ItemDurabilityVariable.class);
@@ -403,7 +403,7 @@ public class CoreQuestTypes {
         variables.register("math", MathVariable.class);
         variables.register("npc", new NpcNameVariableFactory(dataStorage));
         variables.register("objective", ObjectivePropertyVariable.class);
-        variables.register("point", PointVariable.class);
+        variables.register("point", new PointVariableFactory(betonQuest, loggerFactory.create(PointVariableFactory.class)));
         variables.register("player", new PlayerNameVariableFactory());
         variables.register("randomnumber", RandomNumberVariable.class);
         variables.register("tag", TagVariable.class);

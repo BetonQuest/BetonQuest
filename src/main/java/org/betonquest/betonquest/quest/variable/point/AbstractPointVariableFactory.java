@@ -1,0 +1,101 @@
+package org.betonquest.betonquest.quest.variable.point;
+
+import org.apache.commons.lang3.tuple.Triple;
+import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.id.ID;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Locale;
+
+/**
+ * A factory for creating Point variables.
+ */
+@SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
+public abstract class AbstractPointVariableFactory {
+
+    /**
+     * The BetonQuest instance.
+     */
+    protected final BetonQuest betonQuest;
+
+    /**
+     * The logger instance for this factory.
+     */
+    protected final BetonQuestLogger logger;
+
+    /**
+     * Create a new Point variable factory.0
+     *
+     * @param betonQuest the BetonQuest instance
+     * @param logger     the logger instance for this factory
+     */
+    public AbstractPointVariableFactory(final BetonQuest betonQuest, final BetonQuestLogger logger) {
+        this.betonQuest = betonQuest;
+        this.logger = logger;
+    }
+
+    /**
+     * Parse the instruction to get the category, type and amount of the point.
+     *
+     * @param instruction the instruction to parse
+     * @return a triple containing the category, amount and type of the point
+     * @throws QuestException if the instruction could not be parsed
+     */
+    protected Triple<String, Integer, PointCalculationType> parseInstruction(final Instruction instruction) throws QuestException {
+        final String category = getCategory(instruction);
+        final PointCalculationType type = getType(instruction);
+        int amount = 0;
+        if (type == PointCalculationType.LEFT) {
+            amount = getAmount(instruction);
+        }
+        return Triple.of(category, amount, type);
+    }
+
+    @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.ShortVariable"})
+    @NotNull
+    private String getCategory(final Instruction instruction) throws QuestException {
+        String category = instruction.next();
+        if (instruction.size() == 4) {
+            final String questPath = instruction.current();
+            final String pointCategory = instruction.next();
+            try {
+                final ID id = new ID(instruction.getPackage(), questPath + "." + pointCategory) {
+                };
+                category = id.getPackage().getQuestPath() + "." + pointCategory;
+            } catch (final ObjectNotFoundException e) {
+                logger.warn(instruction.getPackage(), e.getMessage());
+            }
+        } else if (instruction.size() == 3) {
+            if (category.contains("*")) {
+                category = category.replace('*', '.');
+            } else {
+                category = instruction.getPackage().getQuestPath() + "." + category;
+            }
+        }
+        return category;
+    }
+
+    private int getAmount(final Instruction instruction) throws QuestException {
+        try {
+            return Integer.parseInt(instruction.current().substring(5));
+        } catch (final NumberFormatException e) {
+            throw new QuestException("Could not parse point amount", e);
+        }
+    }
+
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
+    private PointCalculationType getType(final Instruction instruction) throws QuestException {
+        if ("amount".equalsIgnoreCase(instruction.next())) {
+            return PointCalculationType.AMOUNT;
+        } else if (instruction.current().toLowerCase(Locale.ROOT).startsWith("left:")) {
+            return PointCalculationType.LEFT;
+        } else {
+            throw new QuestException(String.format("Unknown variable type: '%s'",
+                    instruction.current()));
+        }
+    }
+}
