@@ -71,6 +71,8 @@
     
       <link rel="stylesheet" href="../../../_webCode/css/mermaidCentered.css">
     
+      <link rel="stylesheet" href="../../../_webCode/css/externalLinkIcon.css">
+    
     <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -114,29 +116,6 @@
 <a href="../../../..">
   <strong>Click here to go to the latest BetonQuest release.</strong>
 </a>
-<style class="externalLinkIcon">
-  body .md-content__inner a[href^="http"]:not([href^="SITE_DOMAIN"]):not(.md-content__button,.noExternalLinkIcon) {
-    background-image: url("../../../_media/content/linkExternalWhite.svg");
-    background-repeat: no-repeat;
-    background-position: top right;
-    padding-right: 0.7em;
-    background-size: 0.6em;
-  }
-
-  body[data-md-color-scheme="slate"] .md-content__inner a[href^="http"]:not([href^="SITE_DOMAIN"]):not(.md-content__button,.noExternalLinkIcon) {
-    background-image: url("../../../_media/content/linkExternalDark.svg");
-  }
-
-  body .md-content__inner a[href^="http"]:not([href^="SITE_DOMAIN"]):not(.md-content__button,.noExternalLinkIcon):hover {
-    background-image: url("../../../_media/content/linkExternalHover.svg");
-  }
-</style>
-<script>
-  const externalLinkIconElement = document.querySelector(".externalLinkIcon");
-  const currentHTML = externalLinkIconElement.innerHTML;
-  const updatedHTML = currentHTML.replaceAll("SITE_DOMAIN", window.location.origin);
-  externalLinkIconElement.innerHTML = updatedHTML;
-</script>
 
             </div>
             <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
@@ -4661,7 +4640,7 @@ Then play around with this system to get a feel for it.</p>
 <details class="hint">
 <summary>Download the files for this tutorial</summary>
 <p>Instead of manually creating / filling the files, just download them using the command below:
-<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials refs/tags/v2.2.0 QuestPackages /Syntax/packageStructure/1-MultiFileStructure /packageStructure/MultiFile
+<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials refs/tags/v2.2.1 QuestPackages /Syntax/packageStructure/1-MultiFileStructure /packageStructure/MultiFile
 </code></pre></div>
 You can now find all files needed for this tutorial in this location:
 "<em>YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure/MultiFile</em>"</p>
@@ -4861,7 +4840,7 @@ Instead, a new folder will be created in the previous package.</p>
 <details class="hint">
 <summary>Download the files for this tutorial</summary>
 <p>Instead of manually creating / filling the files, just download them using the command below:
-<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials refs/tags/v2.2.0 QuestPackages /Syntax/packageStructure/2-SingleFileStructure /packageStructure/SingleFile
+<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials refs/tags/v2.2.1 QuestPackages /Syntax/packageStructure/2-SingleFileStructure /packageStructure/SingleFile
 </code></pre></div>
 You can now find all files needed for this tutorial in this location:
 "<em>YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure/SingleFile</em>"</p>
@@ -4913,7 +4892,7 @@ By creating a folder with a <em>package.yml</em> file inside another package, yo
 <details class="hint">
 <summary>Download the files for this tutorial</summary>
 <p>Instead of manually creating / filling the files, just download them using the command below:
-<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials refs/tags/v2.2.0 QuestPackages /Syntax/packageStructure/3-PackageInPackage /packageStructure/PackageInPackage
+<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials refs/tags/v2.2.1 QuestPackages /Syntax/packageStructure/3-PackageInPackage /packageStructure/PackageInPackage
 </code></pre></div>
 You can now find all files needed for this tutorial in this location:
 "<em>YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure/PackageInPackage</em>"</p>
@@ -4955,7 +4934,7 @@ in the directory tree.</p>
 <details class="hint">
 <summary>Download the files for this tutorial</summary>
 <p>Instead of manually creating / filling the files, just download them using the command below:
-<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials refs/tags/v2.2.0 QuestPackages /Syntax/packageStructure/4-SubDirectory /packageStructure/SubDirectory
+<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials refs/tags/v2.2.1 QuestPackages /Syntax/packageStructure/4-SubDirectory /packageStructure/SubDirectory
 </code></pre></div>
 You can now find all files needed for this tutorial in this location:
 "<em>YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure/SubDirectory</em>"</p>
@@ -5002,7 +4981,7 @@ You can now find all files needed for this tutorial in this location:
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      <p id="bqCopyright">Auto Generated by _webCode/js/copyrightYearUpdater.js</p> <a href="#__consent">Change cookie settings</a>
+      <p id="bqCopyright">© 2014-{CurrentYear} BetonQuest Organisation. GPLv3</p> <a href="#__consent">Change cookie settings</a>
 
     </div>
   
@@ -5211,6 +5190,8 @@ You can now find all files needed for this tutorial in this location:
         <script src="../../../_webCode/js/copyrightYearUpdater.js"></script>
       
         <script src="../../../_webCode/js/mathjax.js"></script>
+      
+        <script src="../../../_webCode/js/externalLinkIcon.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       
