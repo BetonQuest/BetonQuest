@@ -34,5 +34,4 @@ public class OpenShopEvent extends QuestEvent {
         shopkeeper.openTradingWindow(profile.getOnlineProfile().get().getPlayer());
         return null;
     }
-
 }

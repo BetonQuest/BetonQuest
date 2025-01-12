@@ -14,7 +14,7 @@ public class PlayerJournalAddEvent extends ProfileEvent {
     /**
      * HandlerList of this event.
      */
-    private static final HandlerList HANDLERS = new HandlerList();
+    private static final HandlerList HANDLER_LIST = new HandlerList();
 
     /**
      * Journal which is just added an entry of this event.
@@ -45,7 +45,7 @@ public class PlayerJournalAddEvent extends ProfileEvent {
      * @return the HandlerList.
      */
     public static HandlerList getHandlerList() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
 
     /**
@@ -74,6 +74,6 @@ public class PlayerJournalAddEvent extends ProfileEvent {
      */
     @Override
     public HandlerList getHandlers() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
 }

@@ -54,6 +54,5 @@ public class BQEventSkript extends QuestEvent {
         public HandlerList getHandlers() {
             return HANDLERS;
         }
-
     }
 }

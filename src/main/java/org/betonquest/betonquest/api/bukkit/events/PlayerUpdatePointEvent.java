@@ -11,7 +11,7 @@ public class PlayerUpdatePointEvent extends ProfileEvent {
     /**
      * HandlerList of this event.
      */
-    private static final HandlerList HANDLERS = new HandlerList();
+    private static final HandlerList HANDLER_LIST = new HandlerList();
 
     /**
      * The category whose points were updated.
@@ -42,7 +42,7 @@ public class PlayerUpdatePointEvent extends ProfileEvent {
      * @return the HandlerList
      */
     public static HandlerList getHandlerList() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
 
     /**
@@ -70,6 +70,6 @@ public class PlayerUpdatePointEvent extends ProfileEvent {
      */
     @Override
     public HandlerList getHandlers() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
 }

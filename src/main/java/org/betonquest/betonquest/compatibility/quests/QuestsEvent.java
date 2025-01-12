@@ -45,5 +45,4 @@ public class QuestsEvent extends QuestEvent {
         QuestsIntegrator.getQuestsInstance().getQuester(profile.getProfileUUID()).takeQuest(quest, override);
         return null;
     }
-
 }

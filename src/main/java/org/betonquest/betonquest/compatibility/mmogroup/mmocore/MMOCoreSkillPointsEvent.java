@@ -25,4 +25,3 @@ public class MMOCoreSkillPointsEvent extends QuestEvent {
         return null;
     }
 }
-

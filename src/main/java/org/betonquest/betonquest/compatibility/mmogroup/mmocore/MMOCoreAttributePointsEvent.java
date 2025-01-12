@@ -25,4 +25,3 @@ public class MMOCoreAttributePointsEvent extends QuestEvent {
         return null;
     }
 }
-

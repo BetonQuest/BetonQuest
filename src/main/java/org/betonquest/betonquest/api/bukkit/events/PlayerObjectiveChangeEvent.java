@@ -9,13 +9,12 @@ import org.bukkit.event.HandlerList;
 /**
  * Fires when a profile's objectives change.
  */
-@SuppressWarnings("PMD.DataClass")
 public class PlayerObjectiveChangeEvent extends ProfileEvent {
 
     /**
      * HandlerList of this event.
      */
-    private static final HandlerList HANDLERS = new HandlerList();
+    private static final HandlerList HANDLER_LIST = new HandlerList();
 
     /**
      * Objective which will change of this event.
@@ -61,7 +60,7 @@ public class PlayerObjectiveChangeEvent extends ProfileEvent {
      * @return the HandlerList
      */
     public static HandlerList getHandlerList() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
 
     /**
@@ -107,6 +106,6 @@ public class PlayerObjectiveChangeEvent extends ProfileEvent {
      */
     @Override
     public HandlerList getHandlers() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
 }

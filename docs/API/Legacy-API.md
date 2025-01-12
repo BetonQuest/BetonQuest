@@ -165,7 +165,7 @@ through `BetonQuest.registerConversationIO(String name, Class<? extends Conversa
 ## Listening to BetonQuest (Bukkit) events
 
 BetonQuest exposes some of its actions as Bukkit events.  
-You can find these events in `org.betonquest.betonquest.api` package.
+You can find these events in `org.betonquest.betonquest.api.bukkit.events` package.
 [Use them as you would use any other Bukkit event](https://bukkit.fandom.com/wiki/Event_API_Reference#The_Basics).
 
 If you need any additional events just open an issue or pull request on GitHub.
