@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.language;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 import java.util.Set;
 
@@ -34,7 +34,7 @@ public class LanguageCondition implements PlayerCondition {
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestRuntimeException {
+    public boolean check(final Profile profile) throws QuestException {
         final String playerLanguage = betonQuest.getOfflinePlayerData(profile).getLanguage();
         return expectedLanguages.contains(playerLanguage);
     }

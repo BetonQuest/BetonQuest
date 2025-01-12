@@ -4,8 +4,7 @@ import io.lumine.mythic.lib.api.player.MMOPlayerData;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * A condition that checks the value of a MythicLib stat.
@@ -31,9 +30,9 @@ public class MythicLibStatCondition extends Condition {
      * Parses the instruction and creates a new condition.
      *
      * @param instruction the user-provided instruction
-     * @throws InstructionParseException if the instruction is invalid
+     * @throws QuestException if the instruction is invalid
      */
-    public MythicLibStatCondition(final Instruction instruction) throws InstructionParseException {
+    public MythicLibStatCondition(final Instruction instruction) throws QuestException {
         super(instruction, true);
 
         statName = instruction.next();
@@ -42,7 +41,7 @@ public class MythicLibStatCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+    protected Boolean execute(final Profile profile) throws QuestException {
         final MMOPlayerData data = MMOPlayerData.get(profile.getPlayerUUID());
         final double actualLevel = data.getStatMap().getStat(statName);
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;

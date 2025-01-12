@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -35,7 +35,7 @@ public class PasswordObjective extends Objective implements Listener {
 
     private final EventID[] failEvents;
 
-    public PasswordObjective(final Instruction instruction) throws InstructionParseException {
+    public PasswordObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         final String pattern = instruction.next().replace('_', ' ');
         final int regexFlags = instruction.hasArgument("ignoreCase") ? Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE : 0;

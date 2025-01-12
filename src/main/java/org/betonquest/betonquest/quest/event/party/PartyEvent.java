@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.party;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
@@ -57,7 +57,7 @@ public class PartyEvent implements OnlineEvent {
     }
 
     @Override
-    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+    public void execute(final OnlineProfile profile) throws QuestException {
         for (final OnlineProfile member : getMemberList(profile)) {
             for (final EventID event : events) {
                 BetonQuest.event(member, event);
@@ -65,7 +65,7 @@ public class PartyEvent implements OnlineEvent {
         }
     }
 
-    private Set<OnlineProfile> getMemberList(final OnlineProfile profile) throws QuestRuntimeException {
+    private Set<OnlineProfile> getMemberList(final OnlineProfile profile) throws QuestException {
         final int toExecute = amount != null ? amount.getValue(profile).intValue() : -1;
         final Map<OnlineProfile, Double> members = Utils.getParty(profile.getPlayer().getLocation(), range.getValue(profile).doubleValue(),
                 conditions);

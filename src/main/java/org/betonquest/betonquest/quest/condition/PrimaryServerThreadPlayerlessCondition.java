@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition;
 
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.PrimaryServerThreadType;
 import org.bukkit.Server;
@@ -26,7 +26,7 @@ public class PrimaryServerThreadPlayerlessCondition extends PrimaryServerThreadT
     }
 
     @Override
-    public boolean check() throws QuestRuntimeException {
+    public boolean check() throws QuestException {
         return call(synced::check);
     }
 }

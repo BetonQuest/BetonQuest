@@ -6,7 +6,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * Starts a quests in Quests plugin.
@@ -22,7 +22,7 @@ public class QuestsEvent extends QuestEvent {
 
     private final boolean override;
 
-    public QuestsEvent(final Instruction instruction) throws InstructionParseException {
+    public QuestsEvent(final Instruction instruction) throws QuestException {
         super(instruction, true);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         questName = instruction.next();

@@ -8,8 +8,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
@@ -24,7 +23,7 @@ public class FreezeEvent extends QuestEvent {
 
     private final VariableNumber ticksVar;
 
-    public FreezeEvent(final Instruction instruction) throws InstructionParseException {
+    public FreezeEvent(final Instruction instruction) throws QuestException {
         super(instruction, true);
 
         ticksVar = instruction.getVarNum();
@@ -35,7 +34,7 @@ public class FreezeEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final Profile profile) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) throws QuestException {
         final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
         final int ticks = ticksVar.getInt(profile);
 
@@ -59,7 +58,6 @@ public class FreezeEvent extends QuestEvent {
         Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> {
             STANDS.remove(profile.getProfileUUID());
             armorStand.remove();
-
         }, ticks);
         return null;
     }

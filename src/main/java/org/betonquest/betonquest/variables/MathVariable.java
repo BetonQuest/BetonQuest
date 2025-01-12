@@ -5,8 +5,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.utils.math.Tokenizer;
 import org.betonquest.betonquest.utils.math.tokens.Token;
@@ -42,16 +41,16 @@ public class MathVariable extends Variable {
      * Create a math variable from the given instruction.
      *
      * @param instruction instruction to parse
-     * @throws InstructionParseException if the instruction is not a valid math variable
+     * @throws QuestException if the instruction is not a valid math variable
      */
     @SuppressWarnings("deprecation")
-    public MathVariable(final Instruction instruction) throws InstructionParseException {
+    public MathVariable(final Instruction instruction) throws QuestException {
         super(instruction);
         staticness = true;
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         final Matcher expressionMatcher = CALC_REGEX.matcher(String.join(".", instruction.getAllParts()));
         if (!expressionMatcher.matches()) {
-            throw new InstructionParseException("invalid format");
+            throw new QuestException("invalid format");
         }
         final String expression = expressionMatcher.group("expression");
         final VariableProcessor variableProcessor = BetonQuest.getInstance().getVariableProcessor();
@@ -66,7 +65,7 @@ public class MathVariable extends Variable {
                 return String.format(Locale.US, "%.0f", value);
             }
             return String.valueOf(value);
-        } catch (final QuestRuntimeException e) {
+        } catch (final QuestException e) {
             log.warn(instruction.getPackage(), "Could not calculate '" + calculation + "' (" + e.getMessage() + "). Returning 0 instead.", e);
             return "0";
         }

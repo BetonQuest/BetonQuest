@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.weather;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
@@ -42,7 +42,7 @@ public class WeatherEvent implements NullableEvent {
     }
 
     @Override
-    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestException {
         final World world = worldSelector.selectFor(profile);
         weather.applyTo(world, duration.getValue(profile).intValue());
     }

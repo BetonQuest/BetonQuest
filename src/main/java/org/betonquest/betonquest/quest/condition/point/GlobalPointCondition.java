@@ -4,7 +4,7 @@ import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.database.GlobalData;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,7 +51,7 @@ public class GlobalPointCondition implements NullableCondition {
     }
 
     @Override
-    public boolean check(@Nullable final Profile profile) throws QuestRuntimeException {
+    public boolean check(@Nullable final Profile profile) throws QuestException {
         final List<Point> points = globalData.getPoints();
         for (final Point point : points) {
             if (point.getCategory().equals(category)) {
@@ -61,7 +61,7 @@ public class GlobalPointCondition implements NullableCondition {
         return false;
     }
 
-    private boolean checkPoints(final int points, @Nullable final Profile profile) throws QuestRuntimeException {
+    private boolean checkPoints(final int points, @Nullable final Profile profile) throws QuestException {
         final int pCount = this.count.getValue(profile).intValue();
         return equal ? points == pCount : points >= pCount;
     }

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.item;
 
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.event.point.Point;
 import org.bukkit.Bukkit;
@@ -73,7 +73,7 @@ public class ItemDurabilityEvent implements OnlineEvent {
     }
 
     @Override
-    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+    public void execute(final OnlineProfile profile) throws QuestException {
         final Player player = profile.getPlayer();
         final EntityEquipment equipment = player.getEquipment();
         final ItemStack itemStack = equipment.getItem(slot);

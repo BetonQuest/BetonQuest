@@ -6,8 +6,8 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
@@ -75,7 +75,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
                 final String type;
                 try {
                     type = identifier.getInstruction().getPart(0);
-                } catch (final InstructionParseException e) {
+                } catch (final QuestException e) {
                     log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
                     continue;
                 }
@@ -92,7 +92,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
                     values.put(identifier, objective);
                     log.debug(pack, "  Objective '" + identifier + "' loaded");
                 } catch (final InvocationTargetException e) {
-                    if (e.getCause() instanceof InstructionParseException) {
+                    if (e.getCause() instanceof QuestException) {
                         log.warn(pack, "Error in '" + identifier + "' objective (" + type + "): " + e.getCause().getMessage(), e);
                     } else {
                         log.reportException(pack, e);
@@ -105,7 +105,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
     }
 
     /**
-     * Creates new objective for given player
+     * Creates new objective for given player.
      *
      * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
@@ -124,7 +124,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
     }
 
     /**
-     * Resumes the existing objective for given player
+     * Resumes the existing objective for given player.
      *
      * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
@@ -160,6 +160,8 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
     }
 
     /**
+     * Gets an objective by its ID.
+     *
      * @param objectiveID package name, dot and ID of the objective
      * @return Objective object or null if it does not exist
      */

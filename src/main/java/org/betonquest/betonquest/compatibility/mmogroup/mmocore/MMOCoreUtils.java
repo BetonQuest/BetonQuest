@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 import net.Indyuce.mmocore.api.player.PlayerData;
 import net.Indyuce.mmocore.api.player.attribute.PlayerAttribute;
 import net.Indyuce.mmocore.api.player.attribute.PlayerAttributes;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -28,9 +28,9 @@ public final class MMOCoreUtils {
         return attributes.getAttribute(new PlayerAttribute(mmoCoreAttributeConfig.getConfigurationSection(attribute)));
     }
 
-    public static void isMMOConfigValidForAttribute(final String attributeName) throws InstructionParseException {
+    public static void isMMOConfigValidForAttribute(final String attributeName) throws QuestException {
         if (!mmoCoreAttributeConfig.contains(attributeName)) {
-            throw new InstructionParseException("Couldn't find the attribute \"" + attributeName + "\" in the MMOCore attribute config!");
+            throw new QuestException("Couldn't find the attribute \"" + attributeName + "\" in the MMOCore attribute config!");
         }
     }
 }

@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.event.tag.AddTagChanger;
 import org.betonquest.betonquest.quest.event.tag.DeleteTagChanger;
@@ -79,7 +79,7 @@ public class CompassEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(final Profile profile) throws QuestException {
         switch (action) {
             case ADD -> changeTag(new AddTagChanger(getPackagedCompass()), profile);
             case DEL -> changeTag(new DeleteTagChanger(getPackagedCompass()), profile);
@@ -93,7 +93,7 @@ public class CompassEvent implements Event {
                             profile.getOnlineProfile().get().getPlayer().setCompassTarget(location);
                         }
                     }
-                } catch (final QuestRuntimeException e) {
+                } catch (final QuestException e) {
                     log.warn(questPackage, "Failed to set compass: " + compass, e);
                 }
             }

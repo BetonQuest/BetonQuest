@@ -5,8 +5,7 @@ import com.herocraftonline.heroes.characters.Hero;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
@@ -18,14 +17,14 @@ public class HeroesExperienceEvent extends QuestEvent {
 
     private final VariableNumber amount;
 
-    public HeroesExperienceEvent(final Instruction instruction) throws InstructionParseException {
+    public HeroesExperienceEvent(final Instruction instruction) throws QuestException {
         super(instruction, true);
         primary = "primary".equalsIgnoreCase(instruction.next());
         amount = instruction.getVarNum();
     }
 
     @Override
-    protected Void execute(final Profile profile) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) throws QuestException {
         final Hero hero = Heroes.getInstance().getCharacterManager().getHero(profile.getOnlineProfile().get().getPlayer());
         if (hero == null) {
             return null;
@@ -43,5 +42,4 @@ public class HeroesExperienceEvent extends QuestEvent {
         }
         return null;
     }
-
 }

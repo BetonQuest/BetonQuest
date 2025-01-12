@@ -6,8 +6,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -41,7 +40,7 @@ public class StepObjective extends Objective implements Listener {
 
     private final VariableLocation loc;
 
-    public StepObjective(final Instruction instruction) throws InstructionParseException {
+    public StepObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         loc = instruction.getLocation();
     }
@@ -50,7 +49,7 @@ public class StepObjective extends Objective implements Listener {
     private static BlockSelector getPressurePlateSelector() {
         try {
             return new BlockSelector(".*_PRESSURE_PLATE");
-        } catch (final InstructionParseException e) {
+        } catch (final QuestException e) {
             LOG.reportException(e);
         }
         return null;
@@ -87,7 +86,7 @@ public class StepObjective extends Objective implements Listener {
             if (checkConditions(onlineProfile)) {
                 completeObjective(onlineProfile);
             }
-        } catch (final QuestRuntimeException e) {
+        } catch (final QuestException e) {
             LOG.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
         }
     }
@@ -113,7 +112,7 @@ public class StepObjective extends Objective implements Listener {
             final Block block;
             try {
                 block = loc.getValue(profile).getBlock();
-            } catch (final QuestRuntimeException e) {
+            } catch (final QuestException e) {
                 LOG.warn(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
                         + e.getMessage(), e);
                 return "";

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.variables;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,9 +50,9 @@ public class RandomNumberVariable extends Variable {
      * Creates a new {@link RandomNumberVariable}
      *
      * @param instruction the {@link Instruction} used to create the Variable
-     * @throws InstructionParseException When an error occurs
+     * @throws QuestException When an error occurs
      */
-    public RandomNumberVariable(final Instruction instruction) throws InstructionParseException {
+    public RandomNumberVariable(final Instruction instruction) throws QuestException {
         super(instruction);
         staticness = true;
         final String type = instruction.next();
@@ -63,7 +63,7 @@ public class RandomNumberVariable extends Variable {
             this.fractional = true;
             this.format = getFormat(type);
         } else {
-            throw new InstructionParseException(String.format("Unknown argument type: '%s'", type));
+            throw new QuestException(String.format("Unknown argument type: '%s'", type));
         }
 
         this.low = parseFirst(instruction);
@@ -71,7 +71,7 @@ public class RandomNumberVariable extends Variable {
     }
 
     @Nullable
-    private DecimalFormat getFormat(final String type) throws InstructionParseException {
+    private DecimalFormat getFormat(final String type) throws QuestException {
         if (type.length() > DECIMAL_LENGTH) {
             try {
                 final int amount = Integer.parseInt(type.substring(DECIMAL_LENGTH + 1));
@@ -79,13 +79,13 @@ public class RandomNumberVariable extends Variable {
                     return new DecimalFormat("#." + "#".repeat(amount));
                 }
             } catch (final NumberFormatException e) {
-                throw new InstructionParseException("Could not parse round value", e);
+                throw new QuestException("Could not parse round value", e);
             }
         }
         return null;
     }
 
-    private VariableNumber parseFirst(final Instruction instruction) throws InstructionParseException {
+    private VariableNumber parseFirst(final Instruction instruction) throws QuestException {
         final String start = instruction.next();
         if (start.startsWith("{")) {
             return parseToVariable(start, instruction);
@@ -99,7 +99,7 @@ public class RandomNumberVariable extends Variable {
         }
     }
 
-    private VariableNumber parseSecond(final Instruction instruction) throws InstructionParseException {
+    private VariableNumber parseSecond(final Instruction instruction) throws QuestException {
         final String start = instruction.current().substring(instruction.current().indexOf('~') + 1);
         if (start.startsWith("{")) {
             return parseToVariable(start, instruction);
@@ -115,9 +115,9 @@ public class RandomNumberVariable extends Variable {
      * @param start       The String to start with, including '{'
      * @param instruction The {@link Instruction} to retrieve a Variable
      * @return a new {@link VariableNumber} from the variable
-     * @throws InstructionParseException if instruction ends before a variable is resolved
+     * @throws QuestException if instruction ends before a variable is resolved
      */
-    private VariableNumber parseToVariable(final String start, final Instruction instruction) throws InstructionParseException {
+    private VariableNumber parseToVariable(final String start, final Instruction instruction) throws QuestException {
         final StringBuilder builder = new StringBuilder("%");
         builder.append(start.substring(1)).append('.');
         while (true) {

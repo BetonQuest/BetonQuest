@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -33,16 +33,16 @@ public class DoorEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(createDoorEvent(instruction), data);
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadStaticEvent(createDoorEvent(instruction), data);
     }
 
-    private NullableEventAdapter createDoorEvent(final Instruction instruction) throws InstructionParseException {
+    private NullableEventAdapter createDoorEvent(final Instruction instruction) throws QuestException {
         final VariableLocation location = instruction.getLocation();
         final String action = instruction.next();
         final DoorEvent doorEvent = switch (action.toLowerCase(Locale.ROOT)) {
@@ -50,7 +50,7 @@ public class DoorEventFactory implements EventFactory, StaticEventFactory {
             case "off" -> createCloseDoorEvent(location);
             case "toggle" -> createToggleDoorEvent(location);
             default ->
-                    throw new InstructionParseException("Unknown door action (valid options are: on, off, toggle): " + action);
+                    throw new QuestException("Unknown door action (valid options are: on, off, toggle): " + action);
         };
         return new NullableEventAdapter(doorEvent);
     }

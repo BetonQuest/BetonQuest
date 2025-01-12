@@ -5,7 +5,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -16,7 +16,7 @@ import org.bukkit.event.Listener;
 @SuppressWarnings("PMD.CommentRequired")
 public class JumpObjective extends CountingObjective implements Listener {
 
-    public JumpObjective(final Instruction instruction) throws InstructionParseException {
+    public JumpObjective(final Instruction instruction) throws QuestException {
         super(instruction, "times_to_jump");
         targetAmount = instruction.getVarNum(VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
     }

@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.notify.NotifyIO;
 
@@ -37,7 +37,7 @@ public class NotifyEvent implements OnlineEvent {
     }
 
     @Override
-    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+    public void execute(final OnlineProfile profile) throws QuestException {
         final String playerLanguageKey = BetonQuest.getInstance().getPlayerData(profile).getLanguage();
         final String defaultLanguageKey = Config.getLanguage();
 
@@ -45,7 +45,7 @@ public class NotifyEvent implements OnlineEvent {
                 ? translations.get(playerLanguageKey)
                 : translations.get(defaultLanguageKey);
         if (message == null) {
-            throw new QuestRuntimeException("Could not find a message!");
+            throw new QuestException("Could not find a message!");
         }
         notifyIO.sendNotify(message.getValue(profile), profile);
     }

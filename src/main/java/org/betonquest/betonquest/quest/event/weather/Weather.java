@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.weather;
 
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.World;
 
 import java.util.Locale;
@@ -44,15 +44,15 @@ public enum Weather {
      *
      * @param weatherName the name of the weather
      * @return the weather corresponding to the name
-     * @throws InstructionParseException if the weather name is not recognized
+     * @throws QuestException if the weather name is not recognized
      */
-    public static Weather parseWeather(final String weatherName) throws InstructionParseException {
+    public static Weather parseWeather(final String weatherName) throws QuestException {
         return switch (weatherName.toLowerCase(Locale.ROOT)) {
             case "sun", "clear" -> SUN;
             case "rain", "rainy" -> RAIN;
             case "storm", "thunder" -> STORM;
             default ->
-                    throw new InstructionParseException("Unknown weather state (valid options are: sun, clear, rain, rainy, storm, thunder): " + weatherName);
+                    throw new QuestException("Unknown weather state (valid options are: sun, clear, rain, rainy, storm, thunder): " + weatherName);
         };
     }
 

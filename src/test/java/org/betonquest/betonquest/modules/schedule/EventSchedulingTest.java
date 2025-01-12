@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.FictiveTime;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.modules.schedule.EventScheduling.ScheduleType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -125,7 +125,7 @@ class EventSchedulingTest {
     }
 
     @Test
-    void testLoad() throws KeyConflictException, InvalidSubConfigurationException, InstructionParseException,
+    void testLoad() throws KeyConflictException, InvalidSubConfigurationException, QuestException,
             InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
         doNothing().when(simpleType).createAndScheduleNewInstance(any(), any());
@@ -138,19 +138,19 @@ class EventSchedulingTest {
     }
 
     @Test
-    void testLoadParseException() throws KeyConflictException, InvalidSubConfigurationException, InstructionParseException,
+    void testLoadParseException() throws KeyConflictException, InvalidSubConfigurationException, QuestException,
             InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
         final QuestPackage pack = mockQuestPackage("src/test/resources/modules.schedule/packageExample.yml");
-        doThrow(new InstructionParseException("error parsing schedule")).when(simpleType).createAndScheduleNewInstance(any(), any());
+        doThrow(new QuestException("error parsing schedule")).when(simpleType).createAndScheduleNewInstance(any(), any());
         scheduling.loadData(pack);
         verify(simpleType).createAndScheduleNewInstance(argThat(id -> "testSimple".equals(id.getBaseID())), any());
         verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.getBaseID())), any());
     }
 
     @Test
-    void testLoadUncheckedException() throws KeyConflictException, InvalidSubConfigurationException, InstructionParseException,
+    void testLoadUncheckedException() throws KeyConflictException, InvalidSubConfigurationException, QuestException,
             InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
@@ -162,7 +162,7 @@ class EventSchedulingTest {
     }
 
     @Test
-    void testLoadCreationException() throws KeyConflictException, InvalidSubConfigurationException, InstructionParseException,
+    void testLoadCreationException() throws KeyConflictException, InvalidSubConfigurationException, QuestException,
             InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
@@ -174,7 +174,7 @@ class EventSchedulingTest {
     }
 
     @Test
-    void testLoadNoSchedules() throws KeyConflictException, InvalidSubConfigurationException, InstructionParseException,
+    void testLoadNoSchedules() throws KeyConflictException, InvalidSubConfigurationException, QuestException,
             InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
@@ -185,7 +185,7 @@ class EventSchedulingTest {
     }
 
     @Test
-    void testLoadNameWithSpace() throws InstructionParseException, InvocationTargetException, NoSuchMethodException,
+    void testLoadNameWithSpace() throws QuestException, InvocationTargetException, NoSuchMethodException,
             InstantiationException, IllegalAccessException, KeyConflictException, InvalidSubConfigurationException {
         final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
@@ -200,7 +200,7 @@ class EventSchedulingTest {
      */
     private static final class MockedSchedule extends Schedule {
 
-        private MockedSchedule(final ScheduleID scheduleID, final ConfigurationSection instruction) throws InstructionParseException {
+        private MockedSchedule(final ScheduleID scheduleID, final ConfigurationSection instruction) throws QuestException {
             super(scheduleID, instruction);
         }
     }

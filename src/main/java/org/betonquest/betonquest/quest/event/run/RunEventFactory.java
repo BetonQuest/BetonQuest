@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.item.typehandler.HandlerUtil;
 import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
 
@@ -36,16 +36,16 @@ public class RunEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         return createEvent(instruction);
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
         return createEvent(instruction);
     }
 
-    private NullableEventAdapter createEvent(final Instruction instruction) throws InstructionParseException {
+    private NullableEventAdapter createEvent(final Instruction instruction) throws QuestException {
         final String[] parts = instruction.getAllParts();
         final List<QuestEvent> events = new ArrayList<>();
         StringBuilder builder = new StringBuilder();
@@ -69,11 +69,11 @@ public class RunEventFactory implements EventFactory, StaticEventFactory {
     /**
      * Constructs an event with given instruction and returns it.
      */
-    private QuestEvent createEvent(final String instruction, final QuestPackage questPackage) throws InstructionParseException {
+    private QuestEvent createEvent(final String instruction, final QuestPackage questPackage) throws QuestException {
         final String[] parts = HandlerUtil.getNNSplit(instruction, "Not enough arguments in internal event", " ");
         final LegacyTypeFactory<QuestEvent> eventFactory = BetonQuest.getInstance().getQuestRegistries().getEventTypes().getFactory(parts[0]);
         if (eventFactory == null) {
-            throw new InstructionParseException("Event type " + parts[0] + " is not registered, check if it's"
+            throw new QuestException("Event type " + parts[0] + " is not registered, check if it's"
                     + " spelled correctly in internal event");
         }
         final Instruction eventInstruction = new Instruction(betonQuest.getLoggerFactory().create(Instruction.class), questPackage, null, instruction);

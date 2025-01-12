@@ -6,8 +6,8 @@ import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ID;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,7 +28,7 @@ public class PointVariable extends Variable {
     protected int amount;
 
     @SuppressWarnings("PMD")
-    public PointVariable(final Instruction instruction) throws InstructionParseException {
+    public PointVariable(final Instruction instruction) throws QuestException {
         super(instruction);
         final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         category = instruction.next();
@@ -58,10 +58,10 @@ public class PointVariable extends Variable {
             try {
                 amount = Integer.parseInt(instruction.current().substring(5));
             } catch (final NumberFormatException e) {
-                throw new InstructionParseException("Could not parse point amount", e);
+                throw new QuestException("Could not parse point amount", e);
             }
         } else {
-            throw new InstructionParseException(String.format("Unknown variable type: '%s'",
+            throw new QuestException(String.format("Unknown variable type: '%s'",
                     instruction.current()));
         }
     }

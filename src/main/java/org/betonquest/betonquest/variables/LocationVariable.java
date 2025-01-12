@@ -3,7 +3,7 @@ package org.betonquest.betonquest.variables;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,9 +46,9 @@ public class LocationVariable extends Variable {
      * Construct a new LocationVariable that allows for resolution of information about a Player's Location.
      *
      * @param instruction The Instruction.
-     * @throws InstructionParseException If there was an error parsing the Instruction.
+     * @throws QuestException If there was an error parsing the Instruction.
      */
-    public LocationVariable(final Instruction instruction) throws InstructionParseException {
+    public LocationVariable(final Instruction instruction) throws QuestException {
         super(instruction);
 
         if (instruction.hasNext()) {
@@ -194,15 +194,15 @@ public class LocationVariable extends Variable {
          *
          * @param mode The mode as a String.
          * @return A Mode.
-         * @throws InstructionParseException If there is an error parsing the mode String.
+         * @throws QuestException If there is an error parsing the mode String.
          */
-        public static MODE getMode(final String mode) throws InstructionParseException {
+        public static MODE getMode(final String mode) throws QuestException {
             for (final MODE targetMode : values()) {
                 if (targetMode.name.equalsIgnoreCase(mode)) {
                     return targetMode;
                 }
             }
-            throw new InstructionParseException("Unknown LocationVariable mode '" + mode + "'!");
+            throw new QuestException("Unknown LocationVariable mode '" + mode + "'!");
         }
     }
 }

@@ -3,8 +3,8 @@ package org.betonquest.betonquest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.VariableID;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
@@ -56,7 +56,7 @@ class VariableInstructionTest {
 
     @Test
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    void partsShouldBeSplitByDot(final BetonQuestLogger log) throws InstructionParseException {
+    void partsShouldBeSplitByDot(final BetonQuestLogger log) throws QuestException {
         final VariableInstruction instruction = new VariableInstruction(log, questPackage, null, "%instruction.part1.part2%");
         assertTrue(instruction.hasNext(), "Should have more parts");
         assertEquals("part1", instruction.next(), "Should return the next part");

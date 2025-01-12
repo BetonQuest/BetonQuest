@@ -5,8 +5,7 @@ import net.Indyuce.mmoitems.api.Type;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -26,7 +25,7 @@ public class MMOItemsHandCondition extends Condition {
 
     private VariableNumber amount;
 
-    public MMOItemsHandCondition(final Instruction instruction) throws InstructionParseException {
+    public MMOItemsHandCondition(final Instruction instruction) throws QuestException {
         super(instruction, true);
 
         itemType = MMOItemsUtils.getMMOItemType(instruction.next());
@@ -44,7 +43,7 @@ public class MMOItemsHandCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+    protected Boolean execute(final Profile profile) throws QuestException {
         final PlayerInventory inv = profile.getOnlineProfile().get().getPlayer().getInventory();
         final ItemStack item = offhand ? inv.getItemInOffHand() : inv.getItemInMainHand();
 

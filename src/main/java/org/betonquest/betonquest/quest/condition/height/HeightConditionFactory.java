@@ -6,8 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -48,7 +47,7 @@ public class HeightConditionFactory implements PlayerConditionFactory {
     }
 
     @Override
-    public PlayerCondition parsePlayer(final Instruction instruction) throws InstructionParseException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final BetonQuestLogger log = loggerFactory.create(HeightCondition.class);
         final String string = instruction.next();
         final Variable<Number> height = new Variable<>(variableProcessor, instruction.getPackage(), string, (value) -> {
@@ -62,7 +61,7 @@ public class HeightConditionFactory implements PlayerConditionFactory {
 
                 return parsedValue;
             } catch (final NumberFormatException e) {
-                throw new QuestRuntimeException("Could not parse number: " + value, e);
+                throw new QuestException("Could not parse number: " + value, e);
             }
         });
         return new PrimaryServerThreadPlayerCondition(

@@ -7,7 +7,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
@@ -38,14 +38,14 @@ public class WandCondition extends Condition {
     @Nullable
     private final VariableNumber amount;
 
-    public WandCondition(final Instruction instruction) throws InstructionParseException {
+    public WandCondition(final Instruction instruction) throws QuestException {
         super(instruction, true);
         final String string = instruction.next();
         final CheckType type = switch (string) {
             case "hand" -> CheckType.IN_HAND;
             case "inventory" -> CheckType.IN_INVENTORY;
             case "lost" -> CheckType.IS_LOST;
-            default -> throw new InstructionParseException("Unknown check type '" + string + "'");
+            default -> throw new QuestException("Unknown check type '" + string + "'");
         };
         typeCheck = getCheck(type);
         final String[] array = instruction.getArray(instruction.getOptional("spells"));
@@ -56,17 +56,17 @@ public class WandCondition extends Condition {
     }
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    private void putSpells(final String[] spells, final QuestPackage questPackage) throws InstructionParseException {
+    private void putSpells(final String[] spells, final QuestPackage questPackage) throws QuestException {
         for (final String spell : spells) {
             final String[] spellParts = spell.split(":");
             if (spellParts.length != 2) {
-                throw new InstructionParseException("Incorrect spell format");
+                throw new QuestException("Incorrect spell format");
             }
             final VariableNumber level;
             try {
                 level = new VariableNumber(questPackage, spellParts[1]);
-            } catch (final InstructionParseException e) {
-                throw new InstructionParseException("Could not parse spell level", e);
+            } catch (final QuestException e) {
+                throw new QuestException("Could not parse spell level", e);
             }
             this.spells.put(spellParts[0], level);
         }

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.chest;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.block.Block;
@@ -42,13 +42,13 @@ public class ChestGiveEvent implements NullableEvent {
     }
 
     @Override
-    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestException {
         final Block block = location.getValue(profile).getBlock();
         final InventoryHolder chest;
         try {
             chest = (InventoryHolder) block.getState();
         } catch (final ClassCastException e) {
-            throw new QuestRuntimeException("Trying to put items in chest, but there's no chest! Location: X"
+            throw new QuestException("Trying to put items in chest, but there's no chest! Location: X"
                     + block.getX() + " Y" + block.getY() + " Z" + block.getZ(), e);
         }
         final Map<Integer, ItemStack> left = chest.getInventory().addItem(getItemStacks(profile));
@@ -63,7 +63,7 @@ public class ChestGiveEvent implements NullableEvent {
      * @param profile the profile of the player
      * @return the item stacks
      */
-    private ItemStack[] getItemStacks(@Nullable final Profile profile) throws QuestRuntimeException {
+    private ItemStack[] getItemStacks(@Nullable final Profile profile) throws QuestException {
         final List<ItemStack> itemStacks = new ArrayList<>();
         for (final Item item : questItems) {
             final QuestItem questItem = item.getItem();

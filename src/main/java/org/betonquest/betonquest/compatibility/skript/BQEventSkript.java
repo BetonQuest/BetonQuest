@@ -4,7 +4,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.profiles.ProfileEvent;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 
@@ -16,7 +16,7 @@ public class BQEventSkript extends QuestEvent {
 
     private final String identifier;
 
-    public BQEventSkript(final Instruction instruction) throws InstructionParseException {
+    public BQEventSkript(final Instruction instruction) throws QuestException {
         super(instruction, true);
         identifier = instruction.next();
     }

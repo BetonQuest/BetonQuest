@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.condition.time.real;
 
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -27,20 +27,20 @@ public class TimeInterval {
      * @param start the first match of the interval
      * @param end   the last match of the interval
      * @param type  the type for validating range
-     * @throws InstructionParseException when the input is out of range for the type
+     * @throws QuestException when the input is out of range for the type
      *                                   or {@code end} is less than {@code start}
      */
-    public TimeInterval(final int start, final int end, final PartialDate type) throws InstructionParseException {
+    public TimeInterval(final int start, final int end, final PartialDate type) throws QuestException {
         this.start = start;
         this.end = end;
         if (end < start) {
-            throw new InstructionParseException(type + " " + end + " is before " + start);
+            throw new QuestException(type + " " + end + " is before " + start);
         }
         if (type.isInvalid(start)) {
-            throw new InstructionParseException(start + " is not a valid " + type);
+            throw new QuestException(start + " is not a valid " + type);
         }
         if (type.isInvalid(end)) {
-            throw new InstructionParseException(end + " is not a valid " + type);
+            throw new QuestException(end + " is not a valid " + type);
         }
     }
 
@@ -49,9 +49,9 @@ public class TimeInterval {
      *
      * @param value the value of the interval
      * @param type  the type for validating range
-     * @throws InstructionParseException when the input is out of range for the type
+     * @throws QuestException when the input is out of range for the type
      */
-    public TimeInterval(final int value, final PartialDate type) throws InstructionParseException {
+    public TimeInterval(final int value, final PartialDate type) throws QuestException {
         this(value, value, type);
     }
 
@@ -64,11 +64,11 @@ public class TimeInterval {
      * @param string the string to parse
      * @param type   the type for validating range
      * @return list of parsed and validated time intervals
-     * @throws InstructionParseException when the input is miss-formated or exceeds type range
+     * @throws QuestException when the input is miss-formated or exceeds type range
      */
-    public static List<TimeInterval> parseFromString(final String string, final PartialDate type) throws InstructionParseException {
+    public static List<TimeInterval> parseFromString(final String string, final PartialDate type) throws QuestException {
         if (!string.matches("\\d+(-\\d+)?(,\\d+(-\\d+)?)*")) {
-            throw new InstructionParseException("could not parse " + type + " from '" + string + "'" + " (invalid format)");
+            throw new QuestException("could not parse " + type + " from '" + string + "'" + " (invalid format)");
         }
         final List<TimeInterval> intervals = new ArrayList<>();
         final String[] args = string.split(",");
@@ -82,8 +82,8 @@ public class TimeInterval {
                 } else {
                     intervals.add(new TimeInterval(Integer.parseInt(arg), type));
                 }
-            } catch (final InstructionParseException e) {
-                throw new InstructionParseException("could not parse " + type + " from '" + string + "'"
+            } catch (final QuestException e) {
+                throw new QuestException("could not parse " + type + " from '" + string + "'"
                         + " (" + e.getMessage() + ")", e);
             }
         }

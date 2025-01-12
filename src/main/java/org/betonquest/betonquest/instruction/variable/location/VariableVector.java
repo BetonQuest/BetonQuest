@@ -2,8 +2,7 @@ package org.betonquest.betonquest.instruction.variable.location;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.bukkit.util.Vector;
@@ -37,9 +36,9 @@ public class VariableVector extends Variable<Vector> {
      * @param variableProcessor the processor to create the variables
      * @param pack              the package in which the variable is used in
      * @param input             the string that may contain variables
-     * @throws InstructionParseException if the variables could not be created or resolved to the given type
+     * @throws QuestException if the variables could not be created or resolved to the given type
      */
-    public VariableVector(final VariableProcessor variableProcessor, final QuestPackage pack, final String input) throws InstructionParseException {
+    public VariableVector(final VariableProcessor variableProcessor, final QuestPackage pack, final String input) throws QuestException {
         super(variableProcessor, pack, input, VariableVector::parse);
     }
 
@@ -49,10 +48,10 @@ public class VariableVector extends Variable<Vector> {
      *
      * @param value the value to parse
      * @return the parsed vector
-     * @throws QuestRuntimeException if the value could not be parsed
+     * @throws QuestException if the value could not be parsed
      */
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    public static Vector parse(final String value) throws QuestRuntimeException {
+    public static Vector parse(final String value) throws QuestException {
         final String[] parts = value.split("->");
         if (parts.length == 1) {
             return parseVector(parts[0]);
@@ -65,9 +64,9 @@ public class VariableVector extends Variable<Vector> {
         return vectors.stream().reduce(parseVector(parts[0]), Vector::add);
     }
 
-    private static Vector parseVector(final String vector) throws QuestRuntimeException {
+    private static Vector parseVector(final String vector) throws QuestException {
         if (!PATTERN_VECTOR.matcher(vector).find()) {
-            throw new QuestRuntimeException(
+            throw new QuestException(
                     "Incorrect vector format '" + vector + "'. A vector has to be in the format '(x;y;z)'");
         }
         final String[] parts = vector.substring(1, vector.indexOf(')')).split(";");
@@ -77,7 +76,7 @@ public class VariableVector extends Variable<Vector> {
             final double locZ = Double.parseDouble(parts[2]);
             return new Vector(locX, locY, locZ);
         } catch (final NumberFormatException e) {
-            throw new QuestRuntimeException("Could not parse a number in the vector. " + e.getMessage(), e);
+            throw new QuestException("Could not parse a number in the vector. " + e.getMessage(), e);
         }
     }
 
@@ -86,11 +85,11 @@ public class VariableVector extends Variable<Vector> {
      *
      * @param profile the profile to get the value from
      * @return the value of the variable
-     * @throws QuestRuntimeException if the value could not be resolved
+     * @throws QuestException if the value could not be resolved
      * @deprecated use {@link #getValue(Profile)} instead
      */
     @Deprecated
-    public Vector get(final Profile profile) throws QuestRuntimeException {
+    public Vector get(final Profile profile) throws QuestException {
         return getValue(profile);
     }
 }

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.web.updater;
 
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.modules.web.DownloadSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -18,12 +18,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * This class test the {@link UpdateDownloader}.
+ * This class tests the {@link UpdateDownloader}.
  */
 class UpdateDownloaderTest {
 
     @Test
-    void testDownloadFile(@TempDir final File tempDir) throws IOException, QuestRuntimeException {
+    void testDownloadFile(@TempDir final File tempDir) throws IOException, QuestException {
         final File file = new File(tempDir, "BetonQuest.jar");
         final URL url = mock(URL.class);
         final DownloadSource downloadSource = mock(DownloadSource.class);
@@ -52,7 +52,7 @@ class UpdateDownloaderTest {
         doThrow(new IOException("Test Exception")).when(downloadSource).get(url, file);
         final UpdateDownloader downloader = new UpdateDownloader(downloadSource, file);
 
-        final QuestRuntimeException exception = assertThrows(QuestRuntimeException.class, () -> downloader.downloadToFile(url), "Expected QuestRuntimeException");
+        final QuestException exception = assertThrows(QuestException.class, () -> downloader.downloadToFile(url), "Expected QuestException");
         assertEquals("The download was interrupted! The updater could not download the file! You can try it again, if it still does not work use a manual download. The original exception was: Test Exception", exception.getMessage(), "Expected exception message does not Match");
     }
 
@@ -66,7 +66,7 @@ class UpdateDownloaderTest {
         doReturn(updateFolder).when(file).getParentFile();
         doReturn(false).when(updateFolder).mkdirs();
 
-        final QuestRuntimeException exception = assertThrows(QuestRuntimeException.class, () -> downloader.downloadToFile(mock(URL.class)), "Expected QuestRuntimeException");
+        final QuestException exception = assertThrows(QuestException.class, () -> downloader.downloadToFile(mock(URL.class)), "Expected QuestException");
         assertEquals("The updater could not create the folder '" + updateFolder.getAbsolutePath() + "'!", exception.getMessage(), "Expected exception message does not Match");
     }
 
@@ -91,12 +91,12 @@ class UpdateDownloaderTest {
             service.execute(() -> {
                 try {
                     downloader.downloadToFile(url);
-                } catch (final QuestRuntimeException e) {
+                } catch (final QuestException e) {
                     throw new IllegalStateException(e);
                 }
             });
             countDownLatch.await();
-            final QuestRuntimeException exception = assertThrows(QuestRuntimeException.class, () -> downloader.downloadToFile(url), "Expected QuestRuntimeException");
+            final QuestException exception = assertThrows(QuestException.class, () -> downloader.downloadToFile(url), "Expected QuestException");
             assertEquals("The updater is already downloading the update! Please wait until it is finished!", exception.getMessage(), "Expected exception message does not Match");
         } finally {
             semaphore.release();

@@ -7,8 +7,7 @@ import dev.aurelium.auraskills.api.user.SkillsUser;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.Utils;
 
@@ -26,7 +25,7 @@ public class AuraSkillsLevelCondition extends Condition {
 
     private final boolean mustBeEqual;
 
-    public AuraSkillsLevelCondition(final Instruction instruction) throws InstructionParseException {
+    public AuraSkillsLevelCondition(final Instruction instruction) throws QuestException {
         super(instruction, true);
 
         final String skillName = instruction.next();
@@ -38,7 +37,7 @@ public class AuraSkillsLevelCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+    protected Boolean execute(final Profile profile) throws QuestException {
         final SkillsUser user = auraSkills.getUser(profile.getPlayerUUID());
 
         if (user == null) {

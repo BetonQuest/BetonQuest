@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.utils.Utils;
@@ -32,20 +32,20 @@ public class GlobalPointEventFactory implements EventFactory, StaticEventFactory
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         return parseCombinedEvent(instruction);
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
         return parseCombinedEvent(instruction);
     }
 
-    private NullableEventAdapter parseCombinedEvent(final Instruction instruction) throws InstructionParseException {
+    private NullableEventAdapter parseCombinedEvent(final Instruction instruction) throws QuestException {
         return new NullableEventAdapter(createGlobalPointEvent(instruction));
     }
 
-    private GlobalPointEvent createGlobalPointEvent(final Instruction instruction) throws InstructionParseException {
+    private GlobalPointEvent createGlobalPointEvent(final Instruction instruction) throws QuestException {
         final String category = Utils.addPackage(instruction.getPackage(), instruction.next());
         final String number = instruction.next();
         final String action = instruction.getOptional("action");
@@ -54,7 +54,7 @@ public class GlobalPointEventFactory implements EventFactory, StaticEventFactory
                 final Point type = Point.valueOf(action.toUpperCase(Locale.ROOT));
                 return new GlobalPointEvent(category, new VariableNumber(variableProcessor, instruction.getPackage(), number), type);
             } catch (final IllegalArgumentException e) {
-                throw new InstructionParseException("Unknown modification action: " + instruction.current(), e);
+                throw new QuestException("Unknown modification action: " + instruction.current(), e);
             }
         }
         if (!number.isEmpty() && number.charAt(0) == '*') {

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.menu.betonquest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.menu.OpenedMenu;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 @SuppressWarnings("PMD.CommentRequired")
 public class MenuVariable extends Variable {
 
-    public MenuVariable(final Instruction instruction) throws InstructionParseException {
+    public MenuVariable(final Instruction instruction) throws QuestException {
         super(instruction);
     }
 

@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -48,16 +48,16 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
     }
 
     @Override
-    public PlayerCondition parsePlayer(final Instruction instruction) throws InstructionParseException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadPlayerCondition(new NullableConditionAdapter(parseEntityCondition(instruction)), data);
     }
 
     @Override
-    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws InstructionParseException {
+    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadPlayerlessCondition(new NullableConditionAdapter(parseEntityCondition(instruction)), data);
     }
 
-    private EntityCondition parseEntityCondition(final Instruction instruction) throws InstructionParseException {
+    private EntityCondition parseEntityCondition(final Instruction instruction) throws QuestException {
         final Map<EntityType, VariableNumber> entityAmounts = getEntityAmounts(instruction);
         final VariableLocation location = instruction.getLocation();
         final VariableNumber range = instruction.getVarNum();
@@ -74,7 +74,7 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
         return new EntityCondition(entityAmounts, location, range, name, marked);
     }
 
-    private Map<EntityType, VariableNumber> getEntityAmounts(final Instruction instruction) throws InstructionParseException {
+    private Map<EntityType, VariableNumber> getEntityAmounts(final Instruction instruction) throws QuestException {
         final Map<EntityType, VariableNumber> entityAmounts = new EnumMap<>(EntityType.class);
         final String[] rawTypes = instruction.getArray();
         for (final String rawType : rawTypes) {
@@ -84,9 +84,9 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
                 final VariableNumber amount = typeParts.length == 2 ? instruction.getVarNum(typeParts[1]) : new VariableNumber(variableProcessor, instruction.getPackage(), "1");
                 entityAmounts.put(type, amount);
             } catch (final IllegalArgumentException e) {
-                throw new InstructionParseException("Invalid entity type: " + typeParts[0], e);
-            } catch (final InstructionParseException e) {
-                throw new InstructionParseException("Could not parse entity amount: " + typeParts[1], e);
+                throw new QuestException("Invalid entity type: " + typeParts[0], e);
+            } catch (final QuestException e) {
+                throw new QuestException("Could not parse entity amount: " + typeParts[1], e);
             }
         }
         return entityAmounts;

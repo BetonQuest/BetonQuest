@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.quest;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * Factory to create a specific {@link T}.
@@ -14,7 +14,7 @@ public interface PlayerQuestFactory<T> {
      *
      * @param instruction instruction to parse
      * @return {@link T} represented by the instruction
-     * @throws InstructionParseException when the instruction cannot be parsed
+     * @throws QuestException when the instruction cannot be parsed
      */
-    T parsePlayer(Instruction instruction) throws InstructionParseException;
+    T parsePlayer(Instruction instruction) throws QuestException;
 }

@@ -7,8 +7,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -54,20 +53,20 @@ public class NPCRangeObjective extends Objective {
      * Creates a new NPCRangeObjective from the given instruction.
      *
      * @param instruction the user-provided instruction
-     * @throws InstructionParseException if the instruction is invalid
+     * @throws QuestException if the instruction is invalid
      */
-    public NPCRangeObjective(final Instruction instruction) throws InstructionParseException {
+    public NPCRangeObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         this.npcIds = new ArrayList<>();
         for (final String npcIdString : instruction.getArray()) {
             try {
                 final int npcId = Integer.parseInt(npcIdString);
                 if (npcId < 0) {
-                    throw new InstructionParseException("NPC ID cannot be less than 0");
+                    throw new QuestException("NPC ID cannot be less than 0");
                 }
                 npcIds.add(npcId);
             } catch (final NumberFormatException exception) {
-                throw new InstructionParseException("NPC ID cannot be parsed to a Number", exception);
+                throw new QuestException("NPC ID cannot be parsed to a Number", exception);
             }
         }
         final Trigger trigger = instruction.getEnum(Trigger.class);
@@ -109,7 +108,7 @@ public class NPCRangeObjective extends Objective {
 
     @Override
     public void start() {
-        npcMoveTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(BetonQuest.getInstance(), () -> qreHandler.handle(this::loop), 0, 20);
+        npcMoveTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(BetonQuest.getInstance(), () -> qeHandler.handle(this::loop), 0, 20);
     }
 
     @Override
@@ -118,12 +117,12 @@ public class NPCRangeObjective extends Objective {
         playersInRange.clear();
     }
 
-    private void loop() throws QuestRuntimeException {
+    private void loop() throws QuestException {
         final List<UUID> profilesInside = new ArrayList<>();
         for (final int npcId : npcIds) {
             final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
             if (npc == null) {
-                throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
+                throw new QuestException("NPC with ID " + npcId + " does not exist");
             }
             for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                 if (!profilesInside.contains(onlineProfile.getProfileUUID()) && isInside(onlineProfile, npc.getStoredLocation())) {
@@ -136,7 +135,7 @@ public class NPCRangeObjective extends Objective {
         }
     }
 
-    private boolean isInside(final OnlineProfile onlineProfile, final Location location) throws QuestRuntimeException {
+    private boolean isInside(final OnlineProfile onlineProfile, final Location location) throws QuestException {
         if (!containsPlayer(onlineProfile) || !location.getWorld().equals(onlineProfile.getPlayer().getWorld())) {
             return false;
         }

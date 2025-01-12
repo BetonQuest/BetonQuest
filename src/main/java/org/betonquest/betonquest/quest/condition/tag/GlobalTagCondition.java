@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.tag;
 
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.database.GlobalData;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * A condition that checks if a player has a certain tag.
@@ -31,7 +31,7 @@ public class GlobalTagCondition implements PlayerlessCondition {
     }
 
     @Override
-    public boolean check() throws QuestRuntimeException {
+    public boolean check() throws QuestException {
         return globalData.hasTag(tag);
     }
 }

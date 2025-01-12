@@ -11,8 +11,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.modules.config.QuestManager;
 import org.betonquest.betonquest.notify.Notify;
@@ -55,7 +54,7 @@ public final class Config {
     }
 
     /**
-     * Creates new instance of the Config handler
+     * Creates new instance of the Config handler.
      *
      * @param plugin the {@link BetonQuest} plugin instance
      * @param config the {@link ConfigurationFile} to load from
@@ -89,8 +88,7 @@ public final class Config {
     }
 
     /**
-     * Retrieves the message from the configuration in specified language and
-     * replaces the variables
+     * Retrieves the message from the configuration in specified language and replaces the variables.
      *
      * @param lang      language in which the message should be retrieved
      * @param message   name of the message to retrieve
@@ -125,7 +123,7 @@ public final class Config {
     }
 
     /**
-     * Retrieves the message from the configuration in specified language
+     * Retrieves the message from the configuration in the specified language.
      *
      * @param message name of the message to retrieve
      * @param lang    language in which the message should be retrieved
@@ -138,6 +136,8 @@ public final class Config {
     }
 
     /**
+     * Get all the packages loaded by the plugin.
+     *
      * @return the map of packages and their names
      */
     public static Map<String, QuestPackage> getPackages() {
@@ -155,6 +155,8 @@ public final class Config {
     }
 
     /**
+     * Get {@link ConfigurationFile} containing all the messages.
+     *
      * @return messages configuration
      */
     public static ConfigurationFile getMessages() {
@@ -162,6 +164,8 @@ public final class Config {
     }
 
     /**
+     * Get the default language.
+     *
      * @return the default language
      */
     public static String getLanguage() {
@@ -225,7 +229,7 @@ public final class Config {
     public static void sendMessage(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String soundName,
                                    @Nullable final String prefixName, @Nullable final String... prefixVariables) {
         final String message = parseMessage(pack, onlineProfile, messageName, variables, prefixName, prefixVariables);
-        if (message == null || message.length() == 0) {
+        if (message == null || message.isEmpty()) {
             return;
         }
 
@@ -236,11 +240,11 @@ public final class Config {
         }
     }
 
-    public static void sendNotify(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String category) throws QuestRuntimeException {
+    public static void sendNotify(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String category) throws QuestException {
         sendNotify(pack, onlineProfile, messageName, null, category);
     }
 
-    public static void sendNotify(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String category) throws QuestRuntimeException {
+    public static void sendNotify(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String category) throws QuestException {
         sendNotify(pack, onlineProfile, messageName, variables, category, null);
     }
 
@@ -255,12 +259,12 @@ public final class Config {
      * @param variables     array of variables which will be inserted into the message
      * @param category      notification category
      * @param data          custom notifyIO data
-     * @throws QuestRuntimeException thrown if it is not possible to send the notification
+     * @throws QuestException thrown if it is not possible to send the notification
      */
     @SuppressWarnings("NullAway")
-    public static void sendNotify(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String category, @Nullable final Map<String, String> data) throws QuestRuntimeException {
+    public static void sendNotify(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String category, @Nullable final Map<String, String> data) throws QuestException {
         final String message = parseMessage(pack, onlineProfile, messageName, variables);
-        if (message == null || message.length() == 0) {
+        if (message == null || message.isEmpty()) {
             return;
         }
 
@@ -273,12 +277,12 @@ public final class Config {
     }
 
     /**
-     * Retrieve's a message in the language of the player from the {@link OnlineProfile}, replacing variables
+     * Retrieve's a message in the language of the player from the {@link OnlineProfile}, replacing variables.
      *
      * @param pack            the pack
      * @param onlineProfile   the {@link OnlineProfile} of the player
      * @param messageName     name of the message to retrieve
-     * @param variables       Variables to replace in message
+     * @param variables       Variables to replace in the message
      * @param prefixName      ID of the prefix
      * @param prefixVariables array of variables which will be inserted into the prefix
      * @return The parsed message.
@@ -303,7 +307,7 @@ public final class Config {
         if (pack != null) {
             try {
                 message = new VariableString(pack, message).getString(onlineProfile);
-            } catch (final InstructionParseException e) {
+            } catch (final QuestException e) {
                 LOG.warn("Could not parse message: " + message, e);
             }
         }
@@ -311,7 +315,7 @@ public final class Config {
     }
 
     /**
-     * Plays a sound specified in the plugin's config to the player
+     * Plays a sound specified in the plugin's config to the player.
      *
      * @param onlineProfile the {@link OnlineProfile} of the player
      * @param soundName     the name of the sound to play to the player
@@ -329,6 +333,8 @@ public final class Config {
     }
 
     /**
+     * Get the languages defined for this plugin.
+     *
      * @return the languages defined for this plugin
      */
     public static Set<String> getLanguages() {

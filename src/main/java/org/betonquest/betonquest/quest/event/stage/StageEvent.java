@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.stage;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * The StageEvent class to make changes to a player's stage.
@@ -23,7 +23,7 @@ public class StageEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(final Profile profile) throws QuestException {
         action.execute(profile);
     }
 
@@ -35,8 +35,8 @@ public class StageEvent implements Event {
          * Execute the action.
          *
          * @param profile the profile to execute the action for
-         * @throws QuestRuntimeException when the action fails
+         * @throws QuestException when the action fails
          */
-        void execute(Profile profile) throws QuestRuntimeException;
+        void execute(Profile profile) throws QuestException;
     }
 }

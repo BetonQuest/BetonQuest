@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.modules.schedule.ScheduleID;
 import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,9 +50,9 @@ public abstract class AbstractScheduleTest {
      * Method that creates a schedule instance with the provided ScheduleID and QuestPackage
      *
      * @return the new created schedule instance
-     * @throws InstructionParseException if parsing the schedule from the config failed
+     * @throws QuestException if parsing the schedule from the config failed
      */
-    protected abstract Schedule createSchedule() throws InstructionParseException;
+    protected abstract Schedule createSchedule() throws QuestException;
 
     /**
      * Prepare the configuration section by configuring the mocks.

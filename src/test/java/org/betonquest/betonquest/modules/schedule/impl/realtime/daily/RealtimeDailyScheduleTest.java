@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.modules.schedule.impl.realtime.daily;
 
 import org.betonquest.betonquest.api.schedule.ScheduleBaseTest;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -27,7 +27,7 @@ class RealtimeDailyScheduleTest extends ScheduleBaseTest {
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm");
 
     @Override
-    protected RealtimeDailySchedule createSchedule() throws InstructionParseException {
+    protected RealtimeDailySchedule createSchedule() throws QuestException {
         return new RealtimeDailySchedule(scheduleID, section);
     }
 
@@ -41,7 +41,7 @@ class RealtimeDailyScheduleTest extends ScheduleBaseTest {
     @Test
     @Override
     @SuppressWarnings("PMD.JUnit5TestShouldBePackagePrivate")
-    public void testScheduleValidLoad() throws InstructionParseException {
+    public void testScheduleValidLoad() throws QuestException {
         final RealtimeDailySchedule schedule = createSchedule();
         assertEquals(LocalTime.of(22, 0), schedule.getTimeToRun(), "Returned time should be correct");
     }
@@ -49,13 +49,13 @@ class RealtimeDailyScheduleTest extends ScheduleBaseTest {
     @Test
     void testScheduleInvalidLoad() {
         when(section.getString("time")).thenReturn("0 22 * * * *");
-        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> new RealtimeDailySchedule(scheduleID, section), "Schedule should throw instruction parse exception for invalid time format");
+        final QuestException exception = assertThrows(QuestException.class, () -> new RealtimeDailySchedule(scheduleID, section), "Schedule should throw instruction parse exception for invalid time format");
         final String expected = "Unable to parse time '0 22 * * * *': ";
-        assertTrue(exception.getMessage().startsWith(expected), "InstructionParseException should have correct reason message");
+        assertTrue(exception.getMessage().startsWith(expected), "QuestException should have correct reason message");
     }
 
     @Test
-    void testScheduleNextExecutionIn1H() throws InstructionParseException {
+    void testScheduleNextExecutionIn1H() throws QuestException {
         final LocalDateTime targetTime = LocalDateTime.now().plusHours(1).withSecond(0).withNano(0);
         when(section.getString("time")).thenReturn(targetTime.format(TIME_FORMAT));
         final RealtimeDailySchedule schedule = new RealtimeDailySchedule(scheduleID, section);
@@ -66,7 +66,7 @@ class RealtimeDailyScheduleTest extends ScheduleBaseTest {
     }
 
     @Test
-    void testScheduleNextExecutionIn23H() throws InstructionParseException {
+    void testScheduleNextExecutionIn23H() throws QuestException {
         final LocalDateTime targetTime = LocalDateTime.now().plusHours(23).withSecond(0).withNano(0);
         when(section.getString("time")).thenReturn(targetTime.format(TIME_FORMAT));
         final RealtimeDailySchedule schedule = new RealtimeDailySchedule(scheduleID, section);

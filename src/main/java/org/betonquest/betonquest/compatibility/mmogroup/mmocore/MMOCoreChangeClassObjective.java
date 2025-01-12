@@ -6,7 +6,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -30,9 +30,9 @@ public class MMOCoreChangeClassObjective extends Objective implements Listener {
      * Creates new instance of the objective.
      *
      * @param instruction Instruction object representing the objective;
-     * @throws InstructionParseException if the syntax is wrong or any error happens while parsing
+     * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOCoreChangeClassObjective(final Instruction instruction) throws InstructionParseException {
+    public MMOCoreChangeClassObjective(final Instruction instruction) throws QuestException {
         super(instruction);
 
         targetClassName = instruction.getOptional("class");

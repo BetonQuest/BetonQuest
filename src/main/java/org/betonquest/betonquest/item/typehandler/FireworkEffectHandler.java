@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -34,7 +34,7 @@ public class FireworkEffectHandler {
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
-    public void set(final String string) throws InstructionParseException {
+    public void set(final String string) throws QuestException {
         final String[] parts = HandlerUtil.getNNSplit(string, "Effect is missing", ":");
         // if "whatever" then all type checking is unnecessary
         if (!"?".equals(parts[0])) {
@@ -45,7 +45,7 @@ public class FireworkEffectHandler {
             try {
                 type = Type.valueOf(parts[0].toUpperCase(Locale.ROOT));
             } catch (final IllegalArgumentException e) {
-                throw new InstructionParseException("Unknown firework effect type: " + parts[0], e);
+                throw new QuestException("Unknown firework effect type: " + parts[0], e);
             }
             if (typeE == Existence.FORBIDDEN) {
                 return;
@@ -53,7 +53,7 @@ public class FireworkEffectHandler {
             typeE = Existence.REQUIRED;
         }
         if (parts.length != 5) {
-            throw new InstructionParseException("Incorrect effect format: " + string);
+            throw new QuestException("Incorrect effect format: " + string);
         }
         if (Existence.NONE_KEY.equalsIgnoreCase(parts[1])) {
             mainE = Existence.FORBIDDEN;

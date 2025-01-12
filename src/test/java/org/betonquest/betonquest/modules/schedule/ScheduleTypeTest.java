@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.schedule.FictiveTime;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.schedule.EventScheduling.ScheduleType;
 import org.bukkit.configuration.ConfigurationSection;
@@ -88,7 +88,7 @@ class ScheduleTypeTest {
         when(section.getString("time")).thenReturn(null);
         final Scheduler<MockedSchedule, FictiveTime> scheduler = mockScheduler();
         final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(MockedSchedule.class, scheduler);
-        assertThrows(InstructionParseException.class, () -> type.newScheduleInstance(scheduleID, section), "");
+        assertThrows(QuestException.class, () -> type.newScheduleInstance(scheduleID, section), "");
     }
 
     @Test
@@ -109,9 +109,9 @@ class ScheduleTypeTest {
          *
          * @param scheduleID  id of the new schedule
          * @param instruction config defining the schedule
-         * @throws InstructionParseException if parsing the config failed
+         * @throws QuestException if parsing the config failed
          */
-        public MockedSchedule(final ScheduleID scheduleID, final ConfigurationSection instruction) throws InstructionParseException {
+        public MockedSchedule(final ScheduleID scheduleID, final ConfigurationSection instruction) throws QuestException {
             super(scheduleID, instruction);
         }
     }
@@ -126,10 +126,10 @@ class ScheduleTypeTest {
          *
          * @param scheduleID  id of the new schedule
          * @param instruction config defining the schedule
-         * @throws InstructionParseException if parsing the config failed
+         * @throws QuestException if parsing the config failed
          */
         @SuppressWarnings("unused")
-        public InvalidConstructorSchedule(final ScheduleID scheduleID, final ConfigurationSection instruction, final String illegalArgument) throws InstructionParseException {
+        public InvalidConstructorSchedule(final ScheduleID scheduleID, final ConfigurationSection instruction, final String illegalArgument) throws QuestException {
             super(scheduleID, instruction);
         }
     }
@@ -144,9 +144,9 @@ class ScheduleTypeTest {
          *
          * @param scheduleID  id of the new schedule
          * @param instruction config defining the schedule
-         * @throws InstructionParseException if parsing the config failed
+         * @throws QuestException if parsing the config failed
          */
-        public ThrowingUncheckedSchedule(final ScheduleID scheduleID, final ConfigurationSection instruction) throws InstructionParseException {
+        public ThrowingUncheckedSchedule(final ScheduleID scheduleID, final ConfigurationSection instruction) throws QuestException {
             super(scheduleID, instruction);
             throw new IllegalArgumentException("unchecked");
         }

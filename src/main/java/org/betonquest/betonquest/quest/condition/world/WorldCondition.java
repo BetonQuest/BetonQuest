@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.world;
 
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableWorld;
 import org.bukkit.World;
 
@@ -26,7 +26,7 @@ public class WorldCondition implements OnlineCondition {
     }
 
     @Override
-    public boolean check(final OnlineProfile profile) throws QuestRuntimeException {
+    public boolean check(final OnlineProfile profile) throws QuestException {
         final World world = variableWorld.getValue(profile);
         return profile.getPlayer().getWorld().equals(world);
     }

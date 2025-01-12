@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.spawn;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Mob;
@@ -31,9 +31,9 @@ public record Equipment(@Nullable QuestItem helmet, @Nullable QuestItem chestpla
      *
      * @param mob     the mob to add the drops to
      * @param profile the profile to get the drop amounts from
-     * @throws QuestRuntimeException if the variable could not be resolved
+     * @throws QuestException if the variable could not be resolved
      */
-    public void addDrops(final Mob mob, @Nullable final Profile profile) throws QuestRuntimeException {
+    public void addDrops(final Mob mob, @Nullable final Profile profile) throws QuestException {
         int dropIndex = 0;
         for (final Item item : drops) {
             final String value = item.getID().getFullID() + ":" + item.getAmount().getValue(profile).intValue();
@@ -63,5 +63,4 @@ public record Equipment(@Nullable QuestItem helmet, @Nullable QuestItem chestpla
         equipment.setItemInMainHandDropChance(0);
         equipment.setItemInOffHandDropChance(0);
     }
-
 }

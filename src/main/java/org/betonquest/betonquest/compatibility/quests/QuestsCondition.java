@@ -4,7 +4,7 @@ import me.pikamug.quests.quests.Quest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 import java.util.Set;
 
@@ -16,7 +16,7 @@ public class QuestsCondition extends Condition {
 
     private final String questName;
 
-    public QuestsCondition(final Instruction instruction) throws InstructionParseException {
+    public QuestsCondition(final Instruction instruction) throws QuestException {
         super(instruction, true);
         questName = instruction.next();
     }

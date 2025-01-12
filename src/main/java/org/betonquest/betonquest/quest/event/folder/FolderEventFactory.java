@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
@@ -48,16 +48,16 @@ public class FolderEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         return createFolderEvent(instruction);
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
         return createFolderEvent(instruction);
     }
 
-    private NullableEventAdapter createFolderEvent(final Instruction instruction) throws InstructionParseException {
+    private NullableEventAdapter createFolderEvent(final Instruction instruction) throws QuestException {
         final EventID[] events = instruction.getList(instruction::getEvent).toArray(new EventID[0]);
         final VariableNumber delay = instruction.getVarNum(instruction.getOptional("delay"));
         final VariableNumber period = instruction.getVarNum(instruction.getOptional("period"));

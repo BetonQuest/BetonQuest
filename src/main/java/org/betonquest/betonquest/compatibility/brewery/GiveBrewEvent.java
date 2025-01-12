@@ -4,8 +4,7 @@ import com.dre.brewery.recipe.BRecipe;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -19,7 +18,7 @@ public class GiveBrewEvent extends QuestEvent {
 
     private final BRecipe recipe;
 
-    public GiveBrewEvent(final Instruction instruction) throws InstructionParseException {
+    public GiveBrewEvent(final Instruction instruction) throws QuestException {
         super(instruction, true);
 
         amount = instruction.getInt();
@@ -27,7 +26,7 @@ public class GiveBrewEvent extends QuestEvent {
         quality = instruction.getInt();
 
         if (quality < 0 || quality > 10) {
-            throw new InstructionParseException("Brew quality must be between 0 and 10!");
+            throw new QuestException("Brew quality must be between 0 and 10!");
         }
 
         final String name = instruction.next().replace("_", " ");
@@ -41,14 +40,14 @@ public class GiveBrewEvent extends QuestEvent {
         }
 
         if (recipe == null) {
-            throw new InstructionParseException("There is no brewing recipe with the name " + name + "!");
+            throw new QuestException("There is no brewing recipe with the name " + name + "!");
         } else {
             this.recipe = recipe;
         }
     }
 
     @Override
-    protected Void execute(final Profile profile) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) throws QuestException {
         final Player player = profile.getOnlineProfile().get().getPlayer();
 
         final ItemStack[] brews = new ItemStack[amount];

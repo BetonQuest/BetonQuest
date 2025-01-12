@@ -8,7 +8,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.objectives.EntityInteractObjective.Interaction;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -45,13 +45,13 @@ public class NPCInteractObjective extends Objective implements Listener {
      * Creates a new NPCInteractObjective from the given instruction.
      *
      * @param instruction the user-provided instruction
-     * @throws InstructionParseException if the instruction is invalid
+     * @throws QuestException if the instruction is invalid
      */
-    public NPCInteractObjective(final Instruction instruction) throws InstructionParseException {
+    public NPCInteractObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         npcId = instruction.getInt();
         if (npcId < 0) {
-            throw new InstructionParseException("ID cannot be negative");
+            throw new QuestException("ID cannot be negative");
         }
         cancel = instruction.hasArgument("cancel");
         interactionType = instruction.getEnum(instruction.getOptional("interaction"), Interaction.class, RIGHT);

@@ -5,8 +5,8 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,7 +20,7 @@ public class ObjectivePropertyVariable extends Variable {
     private final ObjectiveID objective;
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    public ObjectivePropertyVariable(final Instruction instruction) throws InstructionParseException {
+    public ObjectivePropertyVariable(final Instruction instruction) throws QuestException {
         super(instruction);
 
         final StringBuilder objectiveID = new StringBuilder();
@@ -38,7 +38,7 @@ public class ObjectivePropertyVariable extends Variable {
         try {
             tempObjective = new ObjectiveID(instruction.getPackage(), objectiveID.toString());
         } catch (final ObjectNotFoundException e) {
-            throw new InstructionParseException("Error in objective property variable '" + instruction + "' " + e.getMessage(), e);
+            throw new QuestException("Error in objective property variable '" + instruction + "' " + e.getMessage(), e);
         }
         objective = tempObjective;
     }
@@ -54,5 +54,4 @@ public class ObjectivePropertyVariable extends Variable {
         }
         return objective.containsPlayer(profile) ? objective.getProperty(propertyName, profile) : "";
     }
-
 }

@@ -5,7 +5,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -20,7 +20,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 @SuppressWarnings("PMD.CommentRequired")
 public class LogoutObjective extends Objective implements Listener {
 
-    public LogoutObjective(final Instruction instruction) throws InstructionParseException {
+    public LogoutObjective(final Instruction instruction) throws QuestException {
         super(instruction);
     }
 

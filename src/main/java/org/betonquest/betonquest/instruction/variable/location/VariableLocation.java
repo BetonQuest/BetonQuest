@@ -2,8 +2,7 @@ package org.betonquest.betonquest.instruction.variable.location;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.bukkit.Location;
@@ -36,10 +35,10 @@ public class VariableLocation extends Variable<Location> {
      * @param variableProcessor the processor to create the variables
      * @param pack              the package in which the variable is used in
      * @param input             the string that may contain variables
-     * @throws InstructionParseException if the variables could not be created or resolved to the given type
+     * @throws QuestException if the variables could not be created or resolved to the given type
      */
     public VariableLocation(final VariableProcessor variableProcessor, final QuestPackage pack, final String input)
-            throws InstructionParseException {
+            throws QuestException {
         super(variableProcessor, pack, input, VariableLocation::parse);
     }
 
@@ -48,9 +47,9 @@ public class VariableLocation extends Variable<Location> {
      *
      * @param value the value to parse
      * @return the parsed location
-     * @throws QuestRuntimeException if the value could not be parsed
+     * @throws QuestException if the value could not be parsed
      */
-    public static Location parse(final String value) throws QuestRuntimeException {
+    public static Location parse(final String value) throws QuestException {
         final int index = value.indexOf("->");
         if (index == -1) {
             return parseLocation(value);
@@ -61,9 +60,9 @@ public class VariableLocation extends Variable<Location> {
     }
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    private static Location parseLocation(final String loc) throws QuestRuntimeException {
+    private static Location parseLocation(final String loc) throws QuestException {
         if (!PATTERN_LOCATION.matcher(loc).find()) {
-            throw new QuestRuntimeException("Incorrect location format '" + loc
+            throw new QuestException("Incorrect location format '" + loc
                     + "'. A location has to be in the format 'x;y;z;world[;yaw;pitch]'");
         }
         final String[] parts = loc.split(";");
@@ -83,7 +82,7 @@ public class VariableLocation extends Variable<Location> {
                 pitch = Float.parseFloat(parts[5]);
             }
         } catch (final NumberFormatException e) {
-            throw new QuestRuntimeException("Could not parse a number in the location. " + e.getMessage(), e);
+            throw new QuestException("Could not parse a number in the location. " + e.getMessage(), e);
         }
         return new Location(world, locX, locY, locZ, yaw, pitch);
     }
@@ -93,11 +92,11 @@ public class VariableLocation extends Variable<Location> {
      *
      * @param profile the profile to get the value for
      * @return the location value of the variable
-     * @throws QuestRuntimeException if the location could not be resolved
+     * @throws QuestException if the value could not be resolved
      * @deprecated use {@link #getValue(Profile)}} instead
      */
     @Deprecated
-    public Location getLocation(final Profile profile) throws QuestRuntimeException {
+    public Location getLocation(final Profile profile) throws QuestException {
         return getValue(profile);
     }
 }

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InOrder;
@@ -23,7 +23,7 @@ class SequentialStaticEventTest {
     }
 
     @Test
-    void testExecutesOneEvent(@Mock final StaticEvent internal) throws QuestRuntimeException {
+    void testExecutesOneEvent(@Mock final StaticEvent internal) throws QuestException {
         final StaticEvent event = new SequentialStaticEvent(internal);
         event.execute();
         verify(internal).execute();
@@ -31,7 +31,7 @@ class SequentialStaticEventTest {
 
     @Test
     @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
-    void testExecutesMultipleEvents(@Mock final StaticEvent first, @Mock final StaticEvent second) throws QuestRuntimeException {
+    void testExecutesMultipleEvents(@Mock final StaticEvent first, @Mock final StaticEvent second) throws QuestException {
         final StaticEvent event = new SequentialStaticEvent(first, second);
 
         event.execute();
@@ -42,13 +42,13 @@ class SequentialStaticEventTest {
     }
 
     @Test
-    void testFailuresArePassedOn(@Mock final StaticEvent internal) throws QuestRuntimeException {
-        final QuestRuntimeException exception = new QuestRuntimeException("test exception");
+    void testFailuresArePassedOn(@Mock final StaticEvent internal) throws QuestException {
+        final QuestException exception = new QuestException("test exception");
         doThrow(exception).when(internal).execute();
         final StaticEvent event = new SequentialStaticEvent(internal);
 
-        final QuestRuntimeException thrown
-                = assertThrows(QuestRuntimeException.class, event::execute, "The failure of an internal event should fail the sequential event immediately.");
+        final QuestException thrown
+                = assertThrows(QuestException.class, event::execute, "The failure of an internal event should fail the sequential event immediately.");
         assertSame(exception, thrown, "The exception should not be wrapped or exchanged.");
     }
 }

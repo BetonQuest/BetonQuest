@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.citizens.event.move;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * Stop the NPC when he is walking.
@@ -31,10 +31,10 @@ public class CitizensStopEvent implements StaticEvent {
     }
 
     @Override
-    public void execute() throws QuestRuntimeException {
+    public void execute() throws QuestException {
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
         if (npc == null) {
-            throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
+            throw new QuestException("NPC with ID " + npcId + " does not exist");
         }
         citizensMoveController.stopNPCMoving(npc);
         npc.getNavigator().cancelNavigation();

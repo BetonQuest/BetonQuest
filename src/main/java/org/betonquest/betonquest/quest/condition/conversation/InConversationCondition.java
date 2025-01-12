@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.conversation;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.conversation.Conversation;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConversationID;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,7 +28,7 @@ public class InConversationCondition implements PlayerCondition {
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestRuntimeException {
+    public boolean check(final Profile profile) throws QuestException {
         final Conversation conversation = Conversation.getConversation(profile);
         return conversation != null && (conversationID == null || conversation.getID().equals(conversationID));
     }

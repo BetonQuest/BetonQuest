@@ -6,8 +6,7 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -64,7 +63,7 @@ public class BlockObjective extends CountingObjective implements Listener {
      */
     private final BetonQuestLogger logger;
 
-    public BlockObjective(final Instruction instruction) throws InstructionParseException {
+    public BlockObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         logger = BetonQuest.getInstance().getLoggerFactory().create(BetonQuest.getInstance());
         selector = instruction.getBlockSelector();
@@ -133,14 +132,14 @@ public class BlockObjective extends CountingObjective implements Listener {
                 }
                 return loc.getBlock().getLocation().equals(location.getValue(profile));
             }
-        } catch (final QuestRuntimeException e) {
+        } catch (final QuestException e) {
             logger.error(instruction.getPackage(), e.getMessage());
             return false;
         }
         return true;
     }
 
-    private boolean isInRange(final Location loc, final Profile profile, final VariableLocation location, final VariableLocation region) throws QuestRuntimeException {
+    private boolean isInRange(final Location loc, final Profile profile, final VariableLocation location, final VariableLocation region) throws QuestException {
         final Location loc1 = location.getValue(profile);
         final Location loc2 = region.getValue(profile);
         return inBetween(loc1, loc2, loc);

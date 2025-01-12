@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 
@@ -22,20 +22,20 @@ public class IfElseEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         return createIfElseEvent(instruction);
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
         return createIfElseEvent(instruction);
     }
 
-    private NullableEventAdapter createIfElseEvent(final Instruction instruction) throws InstructionParseException {
+    private NullableEventAdapter createIfElseEvent(final Instruction instruction) throws QuestException {
         final ConditionID condition = instruction.getCondition();
         final EventID event = instruction.getEvent();
         if (!"else".equalsIgnoreCase(instruction.next())) {
-            throw new InstructionParseException("Missing 'else' keyword");
+            throw new QuestException("Missing 'else' keyword");
         }
         final EventID elseEvent = instruction.getEvent();
         return new NullableEventAdapter(new IfElseEvent(condition, event, elseEvent));

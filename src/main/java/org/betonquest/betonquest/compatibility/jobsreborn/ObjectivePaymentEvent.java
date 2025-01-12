@@ -6,7 +6,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -21,7 +21,7 @@ import java.util.Objects;
 public class ObjectivePaymentEvent extends Objective implements Listener {
     private final VariableNumber targetAmount;
 
-    public ObjectivePaymentEvent(final Instruction instructions) throws InstructionParseException {
+    public ObjectivePaymentEvent(final Instruction instructions) throws QuestException {
         super(instructions);
         template = PaymentData.class;
         targetAmount = instructions.getVarNum(VariableNumber.NOT_LESS_THAN_ONE_CHECKER);

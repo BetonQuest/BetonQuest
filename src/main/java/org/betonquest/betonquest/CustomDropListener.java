@@ -1,8 +1,8 @@
 package org.betonquest.betonquest;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.NamespacedKey;
@@ -34,7 +34,7 @@ public class CustomDropListener implements Listener {
                 try {
                     event.getDrops().add(new QuestItem(new ItemID(null, dataContainerValue.substring(0, separatorIndex)))
                             .generate(Integer.parseInt(dataContainerValue.substring(separatorIndex + 1))));
-                } catch (final InstructionParseException | ObjectNotFoundException e) {
+                } catch (final QuestException | ObjectNotFoundException e) {
                     log.warn("Error when dropping custom item from entity: " + e.getMessage(), e);
                 }
             }

@@ -8,9 +8,8 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
@@ -290,7 +289,7 @@ public class Backpack implements Listener {
                 if (!checkDefault || !"DEFAULT".equalsIgnoreCase(buttonString)) {
                     try {
                         stack = new QuestItem(new ItemID(null, buttonString)).generate(1);
-                    } catch (final ObjectNotFoundException | InstructionParseException e) {
+                    } catch (final ObjectNotFoundException | QuestException e) {
                         log.warn("Could not load " + button + " button: " + e.getMessage(), e);
                     }
                 }
@@ -516,7 +515,7 @@ public class Backpack implements Listener {
                         final Location loc;
                         try {
                             loc = VariableLocation.parse(GlobalVariableResolver.resolve(pack, location));
-                        } catch (final QuestRuntimeException e) {
+                        } catch (final QuestException e) {
                             log.warn("Could not parse location in a compass pointer in " + packName
                                     + " package: " + key, e);
                             onlineProfile.getPlayer().closeInventory();
@@ -546,7 +545,7 @@ public class Backpack implements Listener {
             final ItemStack[] content;
             try {
                 content = getContent(numberOfRows);
-            } catch (final InstructionParseException e) {
+            } catch (final QuestException e) {
                 log.warn("Could not load compass button: " + e.getMessage(), e);
                 onlineProfile.getPlayer().closeInventory();
                 return;
@@ -557,7 +556,7 @@ public class Backpack implements Listener {
         }
 
         @SuppressWarnings({"NullAway", "PMD.LocalVariableCouldBeFinal"})
-        private ItemStack[] getContent(final int numberOfRows) throws InstructionParseException {
+        private ItemStack[] getContent(final int numberOfRows) throws QuestException {
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int index = 0;
             for (final Integer slot : locations.keySet()) {

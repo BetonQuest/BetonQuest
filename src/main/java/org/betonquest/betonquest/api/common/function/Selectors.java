@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.common.function;
 
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -27,7 +27,7 @@ public final class Selectors {
 
     /**
      * Creates a selector that will select the target by calling the given function with the online profile
-     * or fail with a {@link QuestRuntimeException} if the player is not online.
+     * or fail with a {@link QuestException} if the player is not online.
      *
      * @param <T>                   type of the target to be selected
      * @param onlineProfileToTarget function for obtaining the target from an online profile
@@ -36,17 +36,17 @@ public final class Selectors {
     public static <T> Selector<T> fromOnlineProfile(final Function<? super OnlineProfile, ? extends T> onlineProfileToTarget) {
         return profile -> {
             if (profile == null) {
-                throw new QuestRuntimeException("Profile must be present.");
+                throw new QuestException("Profile must be present.");
             }
             return profile.getOnlineProfile()
                     .map(onlineProfileToTarget)
-                    .orElseThrow(() -> new QuestRuntimeException("Player must be online."));
+                    .orElseThrow(() -> new QuestException("Player must be online."));
         };
     }
 
     /**
      * Creates a selector that will select the target by calling the given function with the player
-     * or fail with a {@link QuestRuntimeException} if the player is not online.
+     * or fail with a {@link QuestException} if the player is not online.
      *
      * @param <T>            type of the target to be selected
      * @param playerToTarget function for obtaining the target from a player

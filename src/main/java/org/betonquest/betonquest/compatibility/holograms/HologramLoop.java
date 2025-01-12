@@ -10,8 +10,8 @@ import org.betonquest.betonquest.compatibility.holograms.lines.TextLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopXObject;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
@@ -93,7 +93,7 @@ public abstract class HologramLoop {
                 }
                 try {
                     holograms.add(initializeHolograms(defaultInterval, pack, hologramSection));
-                } catch (final InstructionParseException e) {
+                } catch (final QuestException e) {
                     log.warn(pack, "Error while loading hologram '" + key + "' in package '" + pack.getQuestPath() + "': " + e.getMessage(), e);
                 }
             }
@@ -101,13 +101,13 @@ public abstract class HologramLoop {
         return holograms;
     }
 
-    private HologramWrapper initializeHolograms(final int defaultInterval, final QuestPackage pack, final ConfigurationSection section) throws InstructionParseException {
+    private HologramWrapper initializeHolograms(final int defaultInterval, final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final String checkIntervalString = GlobalVariableResolver.resolve(pack, section.getString("check_interval"));
         final int checkInterval;
         try {
             checkInterval = checkIntervalString != null ? Integer.parseInt(checkIntervalString) : defaultInterval;
         } catch (final NumberFormatException e) {
-            throw new InstructionParseException("Could not parse check interval", e);
+            throw new QuestException("Could not parse check interval", e);
         }
         final VariableNumber maxRange = new VariableNumber(pack, section.getString("max_range", "0"));
 
@@ -148,11 +148,11 @@ public abstract class HologramLoop {
      * @param pack    the package of the holograms
      * @param section the section of the holograms
      * @return a list of holograms
-     * @throws InstructionParseException if there is an error while parsing the holograms
+     * @throws QuestException if there is an error while parsing the holograms
      */
-    protected abstract List<BetonHologram> getHologramsFor(QuestPackage pack, ConfigurationSection section) throws InstructionParseException;
+    protected abstract List<BetonHologram> getHologramsFor(QuestPackage pack, ConfigurationSection section) throws QuestException;
 
-    private ConditionID[] parseConditions(final QuestPackage pack, @Nullable final String rawConditions) throws InstructionParseException {
+    private ConditionID[] parseConditions(final QuestPackage pack, @Nullable final String rawConditions) throws QuestException {
         ConditionID[] conditions = {};
         if (rawConditions != null) {
             final String[] parts = rawConditions.split(",");
@@ -161,7 +161,7 @@ public abstract class HologramLoop {
                 try {
                     conditions[i] = new ConditionID(pack, parts[i]);
                 } catch (final ObjectNotFoundException e) {
-                    throw new InstructionParseException("Error while loading condition '" + parts[i] + "': " + e.getMessage(), e);
+                    throw new QuestException("Error while loading condition '" + parts[i] + "': " + e.getMessage(), e);
                 }
             }
         }
@@ -173,7 +173,7 @@ public abstract class HologramLoop {
     }
 
     @SuppressWarnings("PMD.LocalVariableCouldBeFinal")
-    private ItemLine parseItemLine(final QuestPackage pack, final String line) throws InstructionParseException {
+    private ItemLine parseItemLine(final QuestPackage pack, final String line) throws QuestException {
         try {
             final String[] args = line.substring(5).split(":");
             final ItemID itemID = new ItemID(pack, args[0]);
@@ -184,16 +184,16 @@ public abstract class HologramLoop {
                 stackSize = 1;
             }
             return new ItemLine(new QuestItem(itemID).generate(stackSize));
-        } catch (final ObjectNotFoundException | InstructionParseException e) {
-            throw new InstructionParseException("Error while loading item: " + e.getMessage(), e);
+        } catch (final ObjectNotFoundException | QuestException e) {
+            throw new QuestException("Error while loading item: " + e.getMessage(), e);
         }
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    private TopLine parseTopLine(final QuestPackage pack, final String line) throws InstructionParseException {
+    private TopLine parseTopLine(final QuestPackage pack, final String line) throws QuestException {
         final Matcher validator = TOP_LINE_VALIDATOR.matcher(line);
         if (!validator.matches()) {
-            throw new InstructionParseException("Malformed top line in hologram! Expected format: 'top:<point>;<order>;<limit>[;<color>][;<color>][;<color>][;<color>]'.");
+            throw new QuestException("Malformed top line in hologram! Expected format: 'top:<point>;<order>;<limit>[;<color>][;<color>][;<color>][;<color>]'.");
         }
 
         String pointName = validator.group(1);
@@ -207,14 +207,14 @@ public abstract class HologramLoop {
         } else if (ORDER_ASC.equalsIgnoreCase(validator.group(2))) {
             orderType = TopXObject.OrderType.ASCENDING;
         } else {
-            throw new InstructionParseException("Top list order type '" + validator.group(2) + "' unknown! Expected 'asc' or 'desc'.");
+            throw new QuestException("Top list order type '" + validator.group(2) + "' unknown! Expected 'asc' or 'desc'.");
         }
 
         final int limit;
         try {
             limit = Integer.parseInt(validator.group(3));
         } catch (final NumberFormatException e) {
-            throw new InstructionParseException("Top list limit must be numeric! Expected format: 'top:<point>;<order>;<limit>[;<color>][;<color>][;<color>][;<color>]'.", e);
+            throw new QuestException("Top list limit must be numeric! Expected format: 'top:<point>;<order>;<limit>[;<color>][;<color>][;<color>][;<color>]'.", e);
         }
         final ChatColor colorPlace = getColorCodes(validator.group(4));
         final ChatColor colorName = getColorCodes(validator.group(5));

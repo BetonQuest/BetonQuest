@@ -6,8 +6,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -36,7 +35,7 @@ public class ArrowShootObjective extends Objective implements Listener {
 
     private final VariableNumber range;
 
-    public ArrowShootObjective(final Instruction instruction) throws InstructionParseException {
+    public ArrowShootObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         loc = instruction.getLocation();
@@ -73,7 +72,7 @@ public class ArrowShootObjective extends Objective implements Listener {
                     }
                 }
             }.runTask(BetonQuest.getInstance());
-        } catch (final QuestRuntimeException e) {
+        } catch (final QuestException e) {
             log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
         }
     }

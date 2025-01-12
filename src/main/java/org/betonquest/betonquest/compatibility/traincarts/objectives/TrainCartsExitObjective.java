@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -33,12 +33,12 @@ public class TrainCartsExitObjective extends Objective implements Listener {
     private final VariableString name;
 
     /**
-     * The constructor takes an Instruction object as a parameter and throws an InstructionParseException.
+     * The constructor takes an Instruction object as a parameter and throws an QuestException.
      *
      * @param instruction the Instruction object to be used in the constructor
-     * @throws InstructionParseException if there is an error while parsing the instruction
+     * @throws QuestException if there is an error while parsing the instruction
      */
-    public TrainCartsExitObjective(final Instruction instruction) throws InstructionParseException {
+    public TrainCartsExitObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 

@@ -5,7 +5,7 @@ import com.bergerkiller.bukkit.tc.controller.MinecartMemberStore;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.entity.Entity;
@@ -80,7 +80,7 @@ public final class TrainCartsUtils {
         try {
             final String result = name.getValue(onlineProfile);
             return result.isEmpty() || result.equals(trainName);
-        } catch (final QuestRuntimeException e) {
+        } catch (final QuestException e) {
             log.warn(pack, "Error while handling '" + packId + "' objective: " + e.getMessage(), e);
             return false;
         }

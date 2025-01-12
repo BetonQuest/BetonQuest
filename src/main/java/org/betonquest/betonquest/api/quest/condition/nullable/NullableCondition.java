@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.quest.condition.nullable;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -13,9 +13,9 @@ public interface NullableCondition {
      *
      * @param profile profile or null
      * @return true if the condition holds; false otherwise
-     * @throws QuestRuntimeException if the condition cannot be checked correctly;
-     *                               this might indicate that the profile cannot be null
-     *                               in this specific case
+     * @throws QuestException if the condition cannot be checked correctly,
+     *                        this might indicate that the profile cannot be null
+     *                        in this specific case
      */
-    boolean check(@Nullable Profile profile) throws QuestRuntimeException;
+    boolean check(@Nullable Profile profile) throws QuestException;
 }

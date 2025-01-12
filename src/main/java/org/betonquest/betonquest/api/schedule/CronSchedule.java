@@ -6,7 +6,7 @@ import com.cronutils.model.definition.CronDefinition;
 import com.cronutils.model.definition.CronDefinitionBuilder;
 import com.cronutils.model.time.ExecutionTime;
 import com.cronutils.parser.CronParser;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.modules.schedule.ScheduleID;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -60,13 +60,13 @@ public abstract class CronSchedule extends Schedule {
     /**
      * Creates new instance of the schedule.
      * It should parse all options from the configuration section.
-     * If anything goes wrong, throw {@link InstructionParseException} with an error message describing the problem.
+     * If anything goes wrong, throw {@link QuestException} with an error message describing the problem.
      *
      * @param scheduleId  id of the new schedule
      * @param instruction config defining the schedule
-     * @throws InstructionParseException if parsing the config failed
+     * @throws QuestException if parsing the config failed
      */
-    public CronSchedule(final ScheduleID scheduleId, final ConfigurationSection instruction) throws InstructionParseException {
+    public CronSchedule(final ScheduleID scheduleId, final ConfigurationSection instruction) throws QuestException {
         this(scheduleId, instruction, DEFAULT_CRON_DEFINITION);
     }
 
@@ -78,16 +78,16 @@ public abstract class CronSchedule extends Schedule {
      * @param scheduleID     id of the new schedule
      * @param instruction    config defining the schedule
      * @param cronDefinition a custom cron syntax, you may use {@link #DEFAULT_CRON_DEFINITION}
-     * @throws InstructionParseException if parsing the config failed
+     * @throws QuestException if parsing the config failed
      */
     protected CronSchedule(final ScheduleID scheduleID, final ConfigurationSection instruction,
-                           final CronDefinition cronDefinition) throws InstructionParseException {
+                           final CronDefinition cronDefinition) throws QuestException {
         super(scheduleID, instruction);
         try {
             this.timeCron = new CronParser(cronDefinition).parse(super.time).validate();
             this.executionTime = ExecutionTime.forCron(timeCron);
         } catch (final IllegalArgumentException e) {
-            throw new InstructionParseException("Time is no valid cron syntax: '" + super.time + "'", e);
+            throw new QuestException("Time is no valid cron syntax: '" + super.time + "'", e);
         }
     }
 

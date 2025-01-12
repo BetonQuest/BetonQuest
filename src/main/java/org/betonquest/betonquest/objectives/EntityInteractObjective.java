@@ -6,8 +6,7 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -84,7 +83,7 @@ public class EntityInteractObjective extends CountingObjective {
     @Nullable
     private LeftClickListener leftClickListener;
 
-    public EntityInteractObjective(final Instruction instruction) throws InstructionParseException {
+    public EntityInteractObjective(final Instruction instruction) throws QuestException {
         super(instruction, "mobs_to_click");
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         template = EntityInteractData.class;
@@ -110,7 +109,7 @@ public class EntityInteractObjective extends CountingObjective {
         } else if (ANY.equalsIgnoreCase(handString)) {
             slot = null;
         } else {
-            throw new InstructionParseException("Invalid hand value: " + handString);
+            throw new QuestException("Invalid hand value: " + handString);
         }
     }
 
@@ -173,7 +172,7 @@ public class EntityInteractObjective extends CountingObjective {
                         || entity.getLocation().distance(location) > pRange) {
                     return false;
                 }
-            } catch (final QuestRuntimeException e) {
+            } catch (final QuestException e) {
                 log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
             }
         }

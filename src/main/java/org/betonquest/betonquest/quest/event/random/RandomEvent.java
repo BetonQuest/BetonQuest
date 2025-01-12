@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.random;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.jetbrains.annotations.Nullable;
@@ -19,9 +19,9 @@ public record RandomEvent(EventID eventID, VariableNumber chance) {
      *
      * @param profile the profile of the player
      * @return the resolved chance for the event
-     * @throws QuestRuntimeException if there is an error while resolving the chance
+     * @throws QuestException if there is an error while resolving the chance
      */
-    /* default */ ResolvedRandomEvent resolveFor(@Nullable final Profile profile) throws QuestRuntimeException {
+    /* default */ ResolvedRandomEvent resolveFor(@Nullable final Profile profile) throws QuestException {
         return new ResolvedRandomEvent(eventID, chance.getValue(profile).doubleValue());
     }
 }

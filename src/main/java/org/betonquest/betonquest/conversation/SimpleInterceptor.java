@@ -4,7 +4,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,7 +24,7 @@ public class SimpleInterceptor implements Interceptor, Listener {
 
     private final List<String> messages = new ArrayList<>();
 
-    public SimpleInterceptor(final Conversation conv, final OnlineProfile onlineProfile) throws QuestRuntimeException {
+    public SimpleInterceptor(final Conversation conv, final OnlineProfile onlineProfile) throws QuestException {
         this.conv = conv;
         this.player = onlineProfile.getPlayer();
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());

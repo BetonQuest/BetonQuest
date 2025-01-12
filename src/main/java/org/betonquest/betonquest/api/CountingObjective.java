@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,9 +33,9 @@ public abstract class CountingObjective extends Objective {
      * Create a counting objective.
      *
      * @param instruction the objective instruction
-     * @throws InstructionParseException if the syntax is wrong or any error happens while parsing
+     * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public CountingObjective(final Instruction instruction) throws InstructionParseException {
+    public CountingObjective(final Instruction instruction) throws QuestException {
         this(instruction, null);
     }
 
@@ -44,9 +44,9 @@ public abstract class CountingObjective extends Objective {
      *
      * @param instruction       the objective instruction
      * @param notifyMessageName the message name used for notifying by default
-     * @throws InstructionParseException if the syntax is wrong or any error happens while parsing
+     * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public CountingObjective(final Instruction instruction, @Nullable final String notifyMessageName) throws InstructionParseException {
+    public CountingObjective(final Instruction instruction, @Nullable final String notifyMessageName) throws QuestException {
         super(instruction);
         template = CountingData.class;
         defaultNotifyMessageName = notifyMessageName;
@@ -105,7 +105,7 @@ public abstract class CountingObjective extends Objective {
      * {@link #defaultNotifyMessageName} was set and a notification should have been sent.
      *
      * @param profile           the {@link Profile} to act for
-     * @param notifyMessageName message name for notification message
+     * @param notifyMessageName message name for a notification message
      * @return {@code true} if the objective is completed; {@code false} otherwise
      */
     protected final boolean completeIfDoneOrNotify(final Profile profile, @Nullable final String notifyMessageName) {
@@ -312,7 +312,7 @@ public abstract class CountingObjective extends Objective {
         }
 
         /**
-         * Move one unit in positive direction. Same as {@link #progress()} when the target unit amount is positive.
+         * Move one unit in a positive direction. Same as {@link #progress()} when the target unit amount is positive.
          * This is <b>not</b> direction-aware.
          *
          * @return self for chaining statements
@@ -333,8 +333,8 @@ public abstract class CountingObjective extends Objective {
         }
 
         /**
-         * Move one unit in negative direction. Same as {@link #regress()} when the target unit amount is negative. This
-         * is <b>not</b> direction-aware.
+         * Move one unit in a negative direction. Same as {@link #regress()} when the target unit amount is negative.
+         * This is <b>not</b> direction-aware.
          *
          * @return self for chaining statements
          */

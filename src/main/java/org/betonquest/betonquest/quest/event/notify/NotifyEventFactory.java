@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.notify.NotifyIO;
@@ -63,7 +63,7 @@ public class NotifyEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         final Map<String, VariableString> translations = new HashMap<>();
         final NotifyIO notifyIO = processInstruction(instruction, translations);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
@@ -79,9 +79,9 @@ public class NotifyEventFactory implements EventFactory {
      * @param instruction  the instruction to process
      * @param translations the map to put the translations into
      * @return the notifyIO to use
-     * @throws InstructionParseException if the instruction is invalid
+     * @throws QuestException if the instruction is invalid
      */
-    protected NotifyIO processInstruction(final Instruction instruction, final Map<String, VariableString> translations) throws InstructionParseException {
+    protected NotifyIO processInstruction(final Instruction instruction, final Map<String, VariableString> translations) throws QuestException {
         final String rawInstruction = String.join(" ", instruction.getAllParts());
 
         final Matcher keyValueMatcher = KEY_VALUE_PATTERN.matcher(rawInstruction);
@@ -97,7 +97,7 @@ public class NotifyEventFactory implements EventFactory {
         return Notify.get(instruction.getPackage(), category, data);
     }
 
-    private Map<String, VariableString> getLanguages(final QuestPackage pack, final String messages) throws InstructionParseException {
+    private Map<String, VariableString> getLanguages(final QuestPackage pack, final String messages) throws QuestException {
         final Map<String, VariableString> translations = new HashMap<>();
         final Matcher languageMatcher = LANGUAGE_PATTERN.matcher(messages);
 
@@ -117,7 +117,7 @@ public class NotifyEventFactory implements EventFactory {
             translations.put(defaultLanguageKey, new VariableString(variableProcessor, pack, message));
         }
         if (!translations.containsKey(defaultLanguageKey)) {
-            throw new InstructionParseException("No message defined for default language '" + defaultLanguageKey + "'!");
+            throw new QuestException("No message defined for default language '" + defaultLanguageKey + "'!");
         }
         return translations;
     }

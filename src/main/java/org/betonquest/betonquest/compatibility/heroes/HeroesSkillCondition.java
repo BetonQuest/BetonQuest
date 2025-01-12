@@ -5,7 +5,7 @@ import com.herocraftonline.heroes.characters.Hero;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * Checks if the player has access to specified Heroes skill.
@@ -15,7 +15,7 @@ public class HeroesSkillCondition extends Condition {
 
     private final String skillName;
 
-    public HeroesSkillCondition(final Instruction instruction) throws InstructionParseException {
+    public HeroesSkillCondition(final Instruction instruction) throws QuestException {
         super(instruction, true);
         skillName = instruction.next();
     }

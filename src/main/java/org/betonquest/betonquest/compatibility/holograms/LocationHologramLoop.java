@@ -4,8 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Location;
@@ -30,22 +29,22 @@ public class LocationHologramLoop extends HologramLoop {
     }
 
     @Override
-    protected List<BetonHologram> getHologramsFor(final QuestPackage pack, final ConfigurationSection section) throws InstructionParseException {
+    protected List<BetonHologram> getHologramsFor(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final Location location = getParsedLocation(pack, section);
         final List<BetonHologram> holograms = new ArrayList<>();
         holograms.add(HologramProvider.getInstance().createHologram(location));
         return holograms;
     }
 
-    private Location getParsedLocation(final QuestPackage pack, final ConfigurationSection section) throws InstructionParseException {
+    private Location getParsedLocation(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final String rawLocation = section.getString("location");
         if (rawLocation == null) {
-            throw new InstructionParseException("Location is not specified");
+            throw new QuestException("Location is not specified");
         } else {
             try {
                 return new VariableLocation(BetonQuest.getInstance().getVariableProcessor(), pack, GlobalVariableResolver.resolve(pack, rawLocation)).getValue(null);
-            } catch (final QuestRuntimeException | InstructionParseException e) {
-                throw new InstructionParseException("Could not parse location: " + e.getMessage(), e);
+            } catch (final QuestException e) {
+                throw new QuestException("Could not parse location: " + e.getMessage(), e);
             }
         }
     }

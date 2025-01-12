@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
@@ -50,9 +50,9 @@ public class FlagHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws InstructionParseException {
+    public void set(final String key, final String data) throws QuestException {
         if (!"flags".equals(key)) {
-            throw new InstructionParseException("Invalid flag key: " + key);
+            throw new QuestException("Invalid flag key: " + key);
         }
         final Set<ItemFlag> flags = Arrays.stream(data.split(",")).map(ItemFlag::valueOf).collect(Collectors.toSet());
         if (flags.isEmpty()) {

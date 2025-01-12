@@ -2,7 +2,7 @@ package org.betonquest.betonquest.bstats;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Compatibility;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ID;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;
@@ -87,7 +87,7 @@ public class BStatsMetrics {
     private String typeFromId(final ID identifier) {
         try {
             return identifier.getInstruction().getPart(0);
-        } catch (final InstructionParseException ex) {
+        } catch (final QuestException ex) {
             // ignore broken instructions
             return null;
         }

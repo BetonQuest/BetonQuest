@@ -7,8 +7,7 @@ import com.denizenscript.denizencore.scripts.containers.core.TaskScriptContainer
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * Runs specified Denizen task script.
@@ -18,20 +17,19 @@ public class DenizenTaskScriptEvent extends QuestEvent {
 
     private final String name;
 
-    public DenizenTaskScriptEvent(final Instruction instruction) throws InstructionParseException {
+    public DenizenTaskScriptEvent(final Instruction instruction) throws QuestException {
         super(instruction, true);
         name = instruction.next();
     }
 
     @Override
-    protected Void execute(final Profile profile) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) throws QuestException {
         final TaskScriptContainer script = ScriptRegistry.getScriptContainerAs(name, TaskScriptContainer.class);
         if (script == null) {
-            throw new QuestRuntimeException("Could not find '" + name + "' Denizen script");
+            throw new QuestException("Could not find '" + name + "' Denizen script");
         }
         final BukkitScriptEntryData data = new BukkitScriptEntryData(PlayerTag.mirrorBukkitPlayer(profile.getPlayer()), null);
         script.run(data, null);
         return null;
     }
-
 }

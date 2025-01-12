@@ -4,7 +4,7 @@ import net.Indyuce.mmoitems.api.Type;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsUtils;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 import org.betonquest.betonquest.quest.event.take.AbstractTakeEvent;
@@ -62,10 +62,10 @@ public class MMOItemsTakeEvent extends AbstractTakeEvent {
      * Executes the event, removing the specified amount of items from the player's inventory and/or backpack.
      *
      * @param profile the profile of the player
-     * @throws QuestRuntimeException if an error occurs during execution
+     * @throws QuestException if an error occurs during execution
      */
     @Override
-    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+    public void execute(final OnlineProfile profile) throws QuestException {
         final int deleteAmount = deleteAmountVar.getValue(profile).intValue();
         neededDeletions.put(profile.getProfileUUID(), deleteAmount);
 

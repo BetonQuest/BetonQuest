@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.condition.number;
 
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * The type of compare.
@@ -46,9 +46,9 @@ public enum Operation {
      *
      * @param symbol the symbol to convert
      * @return the operation
-     * @throws InstructionParseException when the symbol is unknown
+     * @throws QuestException when the symbol is unknown
      */
-    public static Operation fromSymbol(final String symbol) throws InstructionParseException {
+    public static Operation fromSymbol(final String symbol) throws QuestException {
         return switch (symbol) {
             case "<" -> LESS;
             case "<=" -> LESS_EQUAL;
@@ -56,7 +56,7 @@ public enum Operation {
             case "!=" -> NOT_EQUAL;
             case ">=" -> GREATER_EQUAL;
             case ">" -> GREATER;
-            default -> throw new InstructionParseException("Unknown operation: " + symbol);
+            default -> throw new QuestException("Unknown operation: " + symbol);
         };
     }
 

@@ -5,7 +5,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -30,7 +30,7 @@ public class ItemVariable extends Variable {
     private int amount;
 
     @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.AvoidLiteralsInIfCondition"})
-    public ItemVariable(final Instruction instruction) throws InstructionParseException {
+    public ItemVariable(final Instruction instruction) throws QuestException {
         super(instruction);
         int pos = instruction.size() - 1;
         if ("raw".equalsIgnoreCase(instruction.getPart(pos))) {
@@ -45,7 +45,7 @@ public class ItemVariable extends Variable {
             try {
                 amount = Integer.parseInt(argument.substring(5));
             } catch (final NumberFormatException e) {
-                throw new InstructionParseException("Could not parse item amount", e);
+                throw new QuestException("Could not parse item amount", e);
             }
         } else if ("amount".equals(argument)) {
             type = Type.AMOUNT;
@@ -56,10 +56,10 @@ public class ItemVariable extends Variable {
             try {
                 amount = Integer.parseInt(argument.substring(5));
             } catch (final NumberFormatException e) {
-                throw new InstructionParseException("Could not parse line", e);
+                throw new QuestException("Could not parse line", e);
             }
         } else {
-            throw new InstructionParseException(String.format("Unknown argument type: '%s'",
+            throw new QuestException(String.format("Unknown argument type: '%s'",
                     argument));
         }
         if (pos == 3) {

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.schedule;
 
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
 public class ScheduleBaseTest extends AbstractScheduleTest {
 
     @Override
-    protected Schedule createSchedule() throws InstructionParseException {
+    protected Schedule createSchedule() throws QuestException {
         return new Schedule(scheduleID, section) {
         };
     }
@@ -35,11 +35,11 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
     /**
      * Test once if a schedule with the provided sample configuration loads all values successfully.
      *
-     * @throws InstructionParseException if parsing the schedule failed, test should fail
+     * @throws QuestException if parsing the schedule failed, test should fail
      */
     @Test
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    public void testScheduleValidLoad() throws InstructionParseException {
+    public void testScheduleValidLoad() throws QuestException {
         final Schedule schedule = createSchedule();
         assertEquals(scheduleID, schedule.getId(), "Schedule should return the id it was constructed with");
         assertEquals("22:00", schedule.getTime(), "Returned time should be correct");
@@ -51,40 +51,40 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
     @Test
     void testTimeNotSet() {
         when(section.getString("time")).thenReturn(null);
-        final InstructionParseException exception = assertThrows(InstructionParseException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid time");
-        assertEquals("Missing time instruction", exception.getMessage(), "InstructionParseException should have correct reason message");
+        final QuestException exception = assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid time");
+        assertEquals("Missing time instruction", exception.getMessage(), "QuestException should have correct reason message");
     }
 
     @Test
     void testEventsNotSet() {
         when(section.getString("events")).thenReturn(null);
-        final InstructionParseException exception = assertThrows(InstructionParseException.class, this::createSchedule, "Schedule should throw instruction parse exception for missing events");
-        assertEquals("Missing events", exception.getMessage(), "InstructionParseException should have correct reason message");
+        final QuestException exception = assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for missing events");
+        assertEquals("Missing events", exception.getMessage(), "QuestException should have correct reason message");
     }
 
     @Test
     void testEventsNotFound() {
         when(questPackage.getString("events.bell_ring")).thenReturn(null);
-        final InstructionParseException exception = assertThrows(InstructionParseException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid event names");
+        final QuestException exception = assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid event names");
         assertInstanceOf(ObjectNotFoundException.class, exception.getCause(), "Cause should be ObjectNotFoundException");
     }
 
     @Test
     void testInvalidCatchup() {
         when(section.getString("catchup")).thenReturn("NotExistingCatchupStrategy");
-        final InstructionParseException exception = assertThrows(InstructionParseException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid catchup");
-        assertEquals("There is no such catchup strategy: NotExistingCatchupStrategy", exception.getMessage(), "InstructionParseException should have correct reason message");
+        final QuestException exception = assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid catchup");
+        assertEquals("There is no such catchup strategy: NotExistingCatchupStrategy", exception.getMessage(), "QuestException should have correct reason message");
     }
 
     @Test
-    void testNoCatchup() throws InstructionParseException {
+    void testNoCatchup() throws QuestException {
         when(section.getString("catchup")).thenReturn(null);
         final Schedule schedule = createSchedule();
         assertEquals(CatchupStrategy.NONE, schedule.getCatchup(), "Returned catchup strategy should be correct");
     }
 
     @Test
-    void testLowerCaseCatchup() throws InstructionParseException {
+    void testLowerCaseCatchup() throws QuestException {
         when(section.getString("catchup")).thenReturn("one");
         final Schedule schedule = createSchedule();
         assertEquals(CatchupStrategy.ONE, schedule.getCatchup(), "Returned catchup strategy should be correct");

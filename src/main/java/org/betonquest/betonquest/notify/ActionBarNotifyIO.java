@@ -5,14 +5,14 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 import java.util.Map;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class ActionBarNotifyIO extends NotifyIO {
 
-    public ActionBarNotifyIO(final QuestPackage pack, final Map<String, String> data) throws InstructionParseException {
+    public ActionBarNotifyIO(final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(pack, data);
     }
 

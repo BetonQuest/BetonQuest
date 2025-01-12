@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,7 +46,7 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws InstructionParseException {
+    public void set(final String key, final String data) throws QuestException {
         switch (key) {
             case "lore" -> {
                 if (Existence.NONE_KEY.equalsIgnoreCase(data)) {
@@ -59,7 +59,7 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
                 }
             }
             case "lore-containing" -> exact = false;
-            default -> throw new InstructionParseException("Unknown lore key: " + key);
+            default -> throw new QuestException("Unknown lore key: " + key);
         }
     }
 

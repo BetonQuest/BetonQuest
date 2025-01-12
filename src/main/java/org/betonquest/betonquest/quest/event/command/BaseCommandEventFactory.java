@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.command;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 
@@ -55,9 +55,9 @@ public abstract class BaseCommandEventFactory implements EventFactory {
      *
      * @param instruction instruction to parse
      * @return list of commands
-     * @throws InstructionParseException if the instruction is invalid
+     * @throws QuestException if the instruction is invalid
      */
-    public List<VariableString> parseCommands(final Instruction instruction) throws InstructionParseException {
+    public List<VariableString> parseCommands(final Instruction instruction) throws QuestException {
         final List<VariableString> commands = new ArrayList<>();
         final String string = String.join(" ", instruction.getAllParts());
         final Matcher conditionsMatcher = CONDITIONS_REGEX.matcher(string);

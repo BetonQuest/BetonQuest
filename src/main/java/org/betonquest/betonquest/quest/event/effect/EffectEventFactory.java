@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -37,10 +37,10 @@ public class EffectEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         final PotionEffectType effect = PotionEffectType.getByName(instruction.next());
         if (effect == null) {
-            throw new InstructionParseException("Unknown effect type: " + instruction.current());
+            throw new QuestException("Unknown effect type: " + instruction.current());
         }
         try {
             final VariableNumber duration = instruction.getVarNum();
@@ -53,8 +53,8 @@ public class EffectEventFactory implements EventFactory {
                     loggerFactory.create(EffectEvent.class),
                     instruction.getPackage()
             ), data);
-        } catch (final InstructionParseException e) {
-            throw new InstructionParseException("Could not parse effect duration and amplifier", e);
+        } catch (final QuestException e) {
+            throw new QuestException("Could not parse effect duration and amplifier", e);
         }
     }
 }

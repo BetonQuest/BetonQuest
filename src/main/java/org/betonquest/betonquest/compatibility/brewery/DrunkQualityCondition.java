@@ -4,26 +4,25 @@ import com.dre.brewery.BPlayer;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class DrunkQualityCondition extends Condition {
 
     private final Integer quality;
 
-    public DrunkQualityCondition(final Instruction instruction) throws InstructionParseException {
+    public DrunkQualityCondition(final Instruction instruction) throws QuestException {
         super(instruction, true);
 
         quality = instruction.getInt();
 
         if (quality <= 0 || quality > 10) {
-            throw new InstructionParseException("Drunk quality can only be between 1 and 10!");
+            throw new QuestException("Drunk quality can only be between 1 and 10!");
         }
     }
 
     @Override
-    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+    protected Boolean execute(final Profile profile) throws QuestException {
         final BPlayer bPlayer = BPlayer.get(profile.getOnlineProfile().get().getPlayer());
         return bPlayer != null && bPlayer.getQuality() >= quality;
     }

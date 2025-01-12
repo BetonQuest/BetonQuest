@@ -6,16 +6,14 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>
- * Superclass for all events. You need to extend it in order to create new
- * custom events.
+ * Superclass for all events. You need to extend it to create new custom events.
  * </p>
  * <p>
  * Registering your events is done using the
@@ -52,17 +50,17 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
      * Creates a new instance of the event. This constructor must parse the user-provided {@link Instruction}
      * by extracting relevant user input as object variables. These will be used later on
      * when the event is called in {@link #execute(Profile)}.
-     * If anything goes wrong, throw an {@link InstructionParseException} with an error message that helps the user fix
+     * If anything goes wrong, throw an {@link QuestException} with an error message that helps the user fix
      * the event.
      *
      * @param instruction the {@link Instruction} object for this event; you need to
      *                    extract all required data from it and throw an
-     *                    {@link InstructionParseException} if there is anything wrong
-     * @param forceSync   If set to true this executes the event on the servers main thread.
+     *                    {@link QuestException} if there is anything wrong
+     * @param forceSync   If set to true, this executes the event on the servers main thread.
      *                    Otherwise, it will keep running on the current thread (which could also be the main thread!).
-     * @throws InstructionParseException when there is an error during syntax or argument parsing
+     * @throws QuestException when there is an error during syntax or argument parsing
      */
-    public QuestEvent(final Instruction instruction, final boolean forceSync) throws InstructionParseException {
+    public QuestEvent(final Instruction instruction, final boolean forceSync) throws QuestException {
         super(forceSync);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         this.instruction = instruction;
@@ -75,24 +73,24 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
             try {
                 conditions[i] = new ConditionID(instruction.getPackage(), condition);
             } catch (final ObjectNotFoundException exception) {
-                throw new InstructionParseException("Error while parsing event conditions: " + exception.getMessage(), exception);
+                throw new QuestException("Error while parsing event conditions: " + exception.getMessage(), exception);
             }
         }
     }
 
     /**
      * This method is called by BetonQuest to execute the event. Therefore, it must contain all logic for firing the event.
-     * Use the data parsed in the event's constructor to fire the event based on the users settings.
+     * Use the data parsed in the event's constructor to fire the event based on the user's settings.
      *
      * @param profile the {@link Profile} of the player for whom the event will be executed
-     * @throws QuestRuntimeException when there is an error while running the event (for example a
-     *                               numeric variable resolved to a string)
+     * @throws QuestException when there is an error while running the event (for example, a
+     *                        numeric variable resolved to a string)
      */
     @Override
-    protected abstract Void execute(Profile profile) throws QuestRuntimeException;
+    protected abstract Void execute(Profile profile) throws QuestException;
 
     /**
-     * Returns the full id of this event. This includes the package path and the event name, seperated by a dot.
+     * Returns the full id of this event. This includes the package path and the event name, separated by a dot.
      *
      * @return the full id of this event
      */
@@ -106,9 +104,9 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
      *
      * @param profile the {@link Profile} of the player for whom the event will fire
      * @return whether the event was successfully handled or not.
-     * @throws QuestRuntimeException passes the exception from the event up the stack
+     * @throws QuestException passes the exception from the event up the stack
      */
-    public final boolean fire(@Nullable final Profile profile) throws QuestRuntimeException {
+    public final boolean fire(@Nullable final Profile profile) throws QuestException {
         if (profile == null) {
             return handleNullProfile();
         } else if (profile.getOnlineProfile().isEmpty()) {
@@ -118,7 +116,7 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
         }
     }
 
-    private boolean handleNullProfile() throws QuestRuntimeException {
+    private boolean handleNullProfile() throws QuestException {
         if (!staticness) {
             log.warn(instruction.getPackage(),
                     "Cannot fire non-static event '" + instruction.getID() + "' without a player!");
@@ -133,7 +131,7 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
         return true;
     }
 
-    private boolean handleOfflineProfile(final Profile profile) throws QuestRuntimeException {
+    private boolean handleOfflineProfile(final Profile profile) throws QuestException {
         if (persistent) {
             log.debug(instruction.getPackage(), "Persistent event will be fired for offline profile.");
             handle(profile);
@@ -144,7 +142,7 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
         }
     }
 
-    private boolean handleOnlineProfile(final Profile profile) throws QuestRuntimeException {
+    private boolean handleOnlineProfile(final Profile profile) throws QuestException {
         if (!BetonQuest.conditions(profile, conditions)) {
             log.debug(instruction.getPackage(), "Event conditions were not met for " + profile);
             return false;

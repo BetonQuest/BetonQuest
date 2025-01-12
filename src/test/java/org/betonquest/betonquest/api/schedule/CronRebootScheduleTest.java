@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.schedule;
 
 import com.cronutils.model.Cron;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.junit.jupiter.api.Test;
 
 import java.time.ZonedDateTime;
@@ -18,14 +18,14 @@ import static org.mockito.Mockito.*;
 public class CronRebootScheduleTest extends CronScheduleBaseTest {
 
     @Override
-    protected CronSchedule createSchedule() throws InstructionParseException {
+    protected CronSchedule createSchedule() throws QuestException {
         return new CronSchedule(scheduleID, section, REBOOT_CRON_DEFINITION) {
         };
     }
 
     @Test
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    void testRebootScheduleValidLoad() throws InstructionParseException {
+    void testRebootScheduleValidLoad() throws QuestException {
         when(section.getString("time")).thenReturn("@reboot");
         final CronSchedule schedule = createSchedule();
 

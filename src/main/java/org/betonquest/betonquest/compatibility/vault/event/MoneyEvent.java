@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.vault.event;
 import net.milkbowl.vault.economy.Economy;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.bukkit.OfflinePlayer;
@@ -61,7 +61,7 @@ public class MoneyEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(final Profile profile) throws QuestException {
         final OfflinePlayer player = profile.getPlayer();
         final double current = economy.getBalance(player);
         final double target;

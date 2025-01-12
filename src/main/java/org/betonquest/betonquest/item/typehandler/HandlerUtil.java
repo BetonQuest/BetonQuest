@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.utils.Utils;
 import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.Nullable;
@@ -24,12 +24,12 @@ public final class HandlerUtil {
      * @param message     of the exception when the argument is null
      * @param splitSymbol regex to split
      * @return non empty string array
-     * @throws InstructionParseException if the argument is null or empty
+     * @throws QuestException if the argument is null or empty
      */
-    public static String[] getNNSplit(@Nullable final String argument, final String message, @Language("RegExp") final String splitSymbol) throws InstructionParseException {
+    public static String[] getNNSplit(@Nullable final String argument, final String message, @Language("RegExp") final String splitSymbol) throws QuestException {
         final String[] split = Utils.getNN(argument, message).split(splitSymbol);
         if (split.length == 0) {
-            throw new InstructionParseException("Missing values!");
+            throw new QuestException("Missing values!");
         }
         return split;
     }
@@ -40,17 +40,17 @@ public final class HandlerUtil {
      * @param number      the string to parse
      * @param messagePart to put into exceptions to identify what is parsed
      * @return zero or a positive number
-     * @throws InstructionParseException if {@code number} can't be parsed or is negative
+     * @throws QuestException if {@code number} can't be parsed or is negative
      */
-    public static int getNotBelowZero(final String number, final String messagePart) throws InstructionParseException {
+    public static int getNotBelowZero(final String number, final String messagePart) throws QuestException {
         try {
             final int parsed = Integer.parseInt(number);
             if (parsed < 0) {
-                throw new InstructionParseException(messagePart + " must be a positive integer");
+                throw new QuestException(messagePart + " must be a positive integer");
             }
             return parsed;
         } catch (final NumberFormatException exception) {
-            throw new InstructionParseException("Could not parse " + messagePart + ": " + number, exception);
+            throw new QuestException("Could not parse " + messagePart + ": " + number, exception);
         }
     }
 
@@ -62,9 +62,9 @@ public final class HandlerUtil {
      * @param part        to parse into one pair
      * @param messagePart to put into exceptions to identify what is parsed
      * @return the requirement type and the parsed value
-     * @throws InstructionParseException if {@code part} can't be parsed or is negative
+     * @throws QuestException if {@code part} can't be parsed or is negative
      */
-    public static Map.Entry<Number, Integer> getNumberValue(final String part, final String messagePart) throws InstructionParseException {
+    public static Map.Entry<Number, Integer> getNumberValue(final String part, final String messagePart) throws QuestException {
         final Number number;
         final String whatEver = "?";
         if (whatEver.equals(part)) {

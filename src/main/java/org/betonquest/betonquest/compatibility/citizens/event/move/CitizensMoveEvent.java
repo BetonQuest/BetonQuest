@@ -4,7 +4,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * Moves the NPC to a specified location, optionally firing doneEvents when it's done.
@@ -39,11 +39,11 @@ public class CitizensMoveEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(final Profile profile) throws QuestException {
         // this event should not run if the player is offline
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
         if (npc == null) {
-            throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
+            throw new QuestException("NPC with ID " + npcId + " does not exist");
         }
         if (profile.getOnlineProfile().isEmpty()) {
             citizensMoveController.stopNPCMoving(npc);

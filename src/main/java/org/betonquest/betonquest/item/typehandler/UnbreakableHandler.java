@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,9 +39,9 @@ public class UnbreakableHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws InstructionParseException {
+    public void set(final String key, final String data) throws QuestException {
         if (!UNBREAKABLE.equals(key)) {
-            throw new InstructionParseException("Unknown unbreakable key: " + key);
+            throw new QuestException("Unknown unbreakable key: " + key);
         }
         if (UNBREAKABLE.equals(data) || Boolean.parseBoolean(data)) {
             unbreakable = Existence.REQUIRED;

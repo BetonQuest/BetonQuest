@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
@@ -130,7 +130,7 @@ public class FolderEvent implements NullableEvent {
     }
 
     @Override
-    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestException {
         final Deque<EventID> chosenList = getEventOrder(profile);
         final long delayTicks = delay == null ? 0 : timeUnit.getTicks(delay.getValue(profile).longValue());
         final long periodTicks = period == null ? 0 : timeUnit.getTicks(period.getValue(profile).longValue());
@@ -182,7 +182,7 @@ public class FolderEvent implements NullableEvent {
         }, delayTicks, -1);
     }
 
-    private Deque<EventID> getEventOrder(@Nullable final Profile profile) throws QuestRuntimeException {
+    private Deque<EventID> getEventOrder(@Nullable final Profile profile) throws QuestException {
         final Deque<EventID> chosenList = new LinkedList<>();
         // choose randomly which events should be fired
         final int randomInt = random == null ? 0 : random.getValue(profile).intValue();

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,12 +46,12 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws InstructionParseException {
+    public void set(final String key, final String data) throws QuestException {
         if (!"name".equals(key)) {
-            throw new InstructionParseException("Invalid name: " + key);
+            throw new QuestException("Invalid name: " + key);
         }
         if (data.isEmpty()) {
-            throw new InstructionParseException("Name cannot be empty");
+            throw new QuestException("Name cannot be empty");
         }
         if (Existence.NONE_KEY.equalsIgnoreCase(data)) {
             existence = Existence.FORBIDDEN;

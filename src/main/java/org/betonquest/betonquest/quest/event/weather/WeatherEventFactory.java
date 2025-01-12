@@ -11,7 +11,7 @@ import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
@@ -47,7 +47,7 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         final Event weatherEvent = parseWeatherEvent(instruction);
         final Event event;
         if (requiresPlayer(instruction)) {
@@ -63,7 +63,7 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
         if (requiresPlayer(instruction)) {
             return new DoNothingStaticEvent();
         } else {
@@ -75,7 +75,7 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
         return instruction.copy().getOptional("world") == null;
     }
 
-    private NullableEventAdapter parseWeatherEvent(final Instruction instruction) throws InstructionParseException {
+    private NullableEventAdapter parseWeatherEvent(final Instruction instruction) throws QuestException {
         final Weather weather = Weather.parseWeather(instruction.next());
         final Selector<World> worldSelector = parseWorld(instruction.getOptional("world"));
         final VariableNumber duration = instruction.getVarNum(instruction.getOptional("duration", "0"));

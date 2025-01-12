@@ -4,8 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
@@ -39,7 +38,7 @@ public class BossBarNotifyIO extends NotifyIO {
     private final int countdown;
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    public BossBarNotifyIO(final QuestPackage pack, final Map<String, String> data) throws InstructionParseException {
+    public BossBarNotifyIO(final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(pack, data);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
@@ -49,7 +48,7 @@ public class BossBarNotifyIO extends NotifyIO {
                 try {
                     barFlags.add(BarFlag.valueOf(flag.toUpperCase(Locale.ROOT)));
                 } catch (final IllegalArgumentException exception) {
-                    throw new InstructionParseException(String.format(CATCH_MESSAGE_TYPE, "BarFlag", flag.toUpperCase(Locale.ROOT)), exception);
+                    throw new QuestException(String.format(CATCH_MESSAGE_TYPE, "BarFlag", flag.toUpperCase(Locale.ROOT)), exception);
                 }
             }
         }
@@ -58,14 +57,14 @@ public class BossBarNotifyIO extends NotifyIO {
         try {
             barColor = barColorString == null ? BarColor.BLUE : BarColor.valueOf(barColorString.toUpperCase(Locale.ROOT));
         } catch (final IllegalArgumentException exception) {
-            throw new InstructionParseException(String.format(CATCH_MESSAGE_TYPE, "BarColor", barColorString.toUpperCase(Locale.ROOT)), exception);
+            throw new QuestException(String.format(CATCH_MESSAGE_TYPE, "BarColor", barColorString.toUpperCase(Locale.ROOT)), exception);
         }
 
         final String styleString = data.get("style");
         try {
             style = styleString == null ? BarStyle.SOLID : BarStyle.valueOf(styleString.toUpperCase(Locale.ROOT));
         } catch (final IllegalArgumentException exception) {
-            throw new InstructionParseException(String.format(CATCH_MESSAGE_TYPE, "BarStyle", styleString.toUpperCase(Locale.ROOT)), exception);
+            throw new QuestException(String.format(CATCH_MESSAGE_TYPE, "BarStyle", styleString.toUpperCase(Locale.ROOT)), exception);
         }
 
         progress = normalizeBossBarProgress(getFloatData("progress", 1));
@@ -83,7 +82,7 @@ public class BossBarNotifyIO extends NotifyIO {
         double resolvedProgress = 0;
         try {
             resolvedProgress = normalizeBossBarProgress(getFloatData(onlineProfile.getPlayer(), "progress", 1));
-        } catch (final InstructionParseException | QuestRuntimeException e) {
+        } catch (final QuestException e) {
             log.warn(pack, "Invalid variable in bossbar notification from package " + pack.getQuestPath() + ": " + e.getMessage(), e);
         }
         bossBar.setProgress(resolvedProgress);
@@ -129,7 +128,6 @@ public class BossBarNotifyIO extends NotifyIO {
                 currentCountdown -= 1;
                 currentProgress -= amount;
                 bar.setProgress(Math.max(0.0, currentProgress));
-
             }
         }.runTaskTimer(BetonQuest.getInstance(), interval, interval);
     }

@@ -15,9 +15,8 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.ConversationData.OptionType;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
@@ -463,7 +462,7 @@ public class Conversation implements Listener {
             event.setCancelled(true);
             try {
                 Config.sendNotify(getPackage(), PlayerConverter.getID(event.getPlayer()), "command_blocked", "command_blocked,error");
-            } catch (final QuestRuntimeException e) {
+            } catch (final QuestException e) {
                 log.warn(pack, "The notify system was unable to play a sound for the 'command_blocked' category. Error was: '" + e.getMessage() + "'", e);
             }
         }
@@ -582,7 +581,7 @@ public class Conversation implements Listener {
         return interceptor;
     }
 
-    private List<ResolvedOption> resolvePointers(final ResolvedOption option) throws ObjectNotFoundException, InstructionParseException {
+    private List<ResolvedOption> resolvePointers(final ResolvedOption option) throws ObjectNotFoundException, QuestException {
         final ConversationData nextConvData = option.conversationData();
         final List<String> rawPointers = nextConvData.getPointers(onlineProfile, option);
         final List<ResolvedOption> pointers = new ArrayList<>();
@@ -739,7 +738,7 @@ public class Conversation implements Listener {
                 final ResolvedOption resolvedOption;
                 try {
                     resolvedOption = new ConversationOptionResolver(plugin, pack, identifier.getBaseID(), NPC, startingOption).resolve();
-                } catch (final InstructionParseException | ObjectNotFoundException e) {
+                } catch (final QuestException | ObjectNotFoundException e) {
                     log.reportException(pack, e);
                     throw new IllegalStateException("Cannot continue starting conversation without options.", e);
                 }
@@ -839,7 +838,7 @@ public class Conversation implements Listener {
                         Bukkit.getServer().getPluginManager().callEvent(event);
                     }
                 }.runTask(BetonQuest.getInstance());
-            } catch (final InstructionParseException | ObjectNotFoundException e) {
+            } catch (final QuestException | ObjectNotFoundException e) {
                 log.reportException(pack, e);
                 throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable pointers.", e);
             } finally {
@@ -874,7 +873,7 @@ public class Conversation implements Listener {
                     return;
                 }
                 printOptions(resolvePointers(npcOption));
-            } catch (final InstructionParseException | ObjectNotFoundException e) {
+            } catch (final QuestException | ObjectNotFoundException e) {
                 log.reportException(pack, e);
                 throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable options.", e);
             } finally {

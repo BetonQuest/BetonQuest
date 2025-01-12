@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
@@ -21,16 +21,16 @@ public class NumberCompareConditionFactory implements PlayerConditionFactory, Pl
     }
 
     @Override
-    public PlayerCondition parsePlayer(final Instruction instruction) throws InstructionParseException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         return new NullableConditionAdapter(parse(instruction));
     }
 
     @Override
-    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws InstructionParseException {
+    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
         return new NullableConditionAdapter(parse(instruction));
     }
 
-    private NumberCompareCondition parse(final Instruction instruction) throws InstructionParseException {
+    private NumberCompareCondition parse(final Instruction instruction) throws QuestException {
         final VariableNumber first = instruction.getVarNum();
         final Operation operation = Operation.fromSymbol(instruction.next());
         final VariableNumber second = instruction.getVarNum();

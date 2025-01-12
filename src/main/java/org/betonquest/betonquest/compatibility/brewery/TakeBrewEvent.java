@@ -5,8 +5,7 @@ import com.dre.brewery.recipe.BRecipe;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -17,12 +16,12 @@ public class TakeBrewEvent extends QuestEvent {
 
     private final BRecipe brew;
 
-    public TakeBrewEvent(final Instruction instruction) throws InstructionParseException {
+    public TakeBrewEvent(final Instruction instruction) throws QuestException {
         super(instruction, true);
 
         count = instruction.getInt();
         if (count <= 0) {
-            throw new InstructionParseException("Can't give less than one brew!");
+            throw new QuestException("Can't give less than one brew!");
         }
 
         final String name = instruction.next().replace("_", " ");
@@ -36,7 +35,7 @@ public class TakeBrewEvent extends QuestEvent {
         }
 
         if (recipe == null) {
-            throw new InstructionParseException("There is no brewing recipe with the name " + name + "!");
+            throw new QuestException("There is no brewing recipe with the name " + name + "!");
         } else {
             this.brew = recipe;
         }
@@ -44,7 +43,7 @@ public class TakeBrewEvent extends QuestEvent {
 
     @Override
     @SuppressWarnings("PMD.CognitiveComplexity")
-    protected Void execute(final Profile profile) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) throws QuestException {
         final Player player = profile.getOnlineProfile().get().getPlayer();
 
         int remaining = count;

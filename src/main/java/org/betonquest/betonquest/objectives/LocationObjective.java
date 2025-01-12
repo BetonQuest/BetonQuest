@@ -4,8 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Bukkit;
@@ -32,19 +31,19 @@ public class LocationObjective extends AbstractLocationObjective {
     private final VariableNumber range;
 
     /**
-     * The constructor takes an Instruction object as a parameter and throws an InstructionParseException.
+     * The constructor takes an Instruction object as a parameter and throws an QuestException.
      *
      * @param instruction the Instruction object to be used in the constructor
-     * @throws InstructionParseException if there is an error while parsing the instruction
+     * @throws QuestException if there is an error while parsing the instruction
      */
-    public LocationObjective(final Instruction instruction) throws InstructionParseException {
+    public LocationObjective(final Instruction instruction) throws QuestException {
         super(BetonQuest.getInstance().getLoggerFactory().create(LocationObjective.class), instruction);
         loc = instruction.getLocation();
         range = instruction.getVarNum();
     }
 
     @Override
-    protected boolean isInside(final OnlineProfile onlineProfile, final Location location) throws QuestRuntimeException {
+    protected boolean isInside(final OnlineProfile onlineProfile, final Location location) throws QuestException {
         final Location targetLocation = loc.getValue(onlineProfile);
         if (!location.getWorld().equals(targetLocation.getWorld())) {
             return false;
@@ -74,7 +73,7 @@ public class LocationObjective extends AbstractLocationObjective {
             final Location location;
             try {
                 location = loc.getValue(profile);
-            } catch (final QuestRuntimeException e) {
+            } catch (final QuestException e) {
                 log.warn(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
                         + e.getMessage(), e);
                 return "";
@@ -83,5 +82,4 @@ public class LocationObjective extends AbstractLocationObjective {
         }
         return "";
     }
-
 }

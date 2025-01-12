@@ -5,8 +5,8 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -39,9 +39,9 @@ public class PlayerHider {
      * Initialize and start a new {@link PlayerHider}.
      *
      * @param betonQuest the plugin instance to get config and start the bukkit task
-     * @throws InstructionParseException Thrown if there is a configuration error.
+     * @throws QuestException Thrown if there is a configuration error.
      */
-    public PlayerHider(final BetonQuest betonQuest) throws InstructionParseException {
+    public PlayerHider(final BetonQuest betonQuest) throws QuestException {
         hiders = new HashMap<>();
 
         for (final QuestPackage pack : Config.getPackages().values()) {
@@ -67,7 +67,7 @@ public class PlayerHider {
         bukkitTask.cancel();
     }
 
-    private ConditionID[] getConditions(final QuestPackage pack, final String key, @Nullable final String rawConditions) throws InstructionParseException {
+    private ConditionID[] getConditions(final QuestPackage pack, final String key, @Nullable final String rawConditions) throws QuestException {
         if (rawConditions == null) {
             return new ConditionID[0];
         }
@@ -77,7 +77,7 @@ public class PlayerHider {
             try {
                 conditionList[i] = new ConditionID(pack, rawConditionsList[i]);
             } catch (final ObjectNotFoundException e) {
-                throw new InstructionParseException("Error while loading " + rawConditionsList[i]
+                throw new QuestException("Error while loading " + rawConditionsList[i]
                         + " condition for player_hider " + pack.getQuestPath() + "." + key + ": " + e.getMessage(), e);
             }
         }

@@ -7,7 +7,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -23,13 +23,13 @@ public class EquipItemObjective extends Objective implements Listener {
 
     private final PlayerArmorChangeEvent.SlotType slotType;
 
-    public EquipItemObjective(final Instruction instruction) throws InstructionParseException {
+    public EquipItemObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         final String slot = instruction.next();
         questItems = instruction.getQuestItem();
 
         if (!EnumUtils.isValidEnum(PlayerArmorChangeEvent.SlotType.class, slot)) {
-            throw new InstructionParseException("Slot " + slot + " is Invalid Please Use Valid Slot {HEAD, CHEST, LEGS, FEET}");
+            throw new QuestException("Slot " + slot + " is Invalid Please Use Valid Slot {HEAD, CHEST, LEGS, FEET}");
         }
 
         slotType = PlayerArmorChangeEvent.SlotType.valueOf(slot.toUpperCase(Locale.ROOT));

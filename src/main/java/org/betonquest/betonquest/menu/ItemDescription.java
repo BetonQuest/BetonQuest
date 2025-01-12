@@ -2,7 +2,7 @@ package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.Nullable;
@@ -19,7 +19,7 @@ import java.util.List;
 public class ItemDescription {
     private final List<VariableString> lines;
 
-    public ItemDescription(final QuestPackage pack, final Collection<String> content) throws InstructionParseException {
+    public ItemDescription(final QuestPackage pack, final Collection<String> content) throws QuestException {
         this.lines = new ArrayList<>();
         for (final String line : content) {
             this.lines.add(new VariableString(pack, line));

@@ -6,8 +6,7 @@ import com.herocraftonline.heroes.characters.classes.HeroClass;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,7 +35,7 @@ public class HeroesClassCondition extends Condition {
 
     private final boolean any;
 
-    public HeroesClassCondition(final Instruction instruction) throws InstructionParseException {
+    public HeroesClassCondition(final Instruction instruction) throws QuestException {
         super(instruction, true);
         String string = instruction.next();
         primary = "primary".equalsIgnoreCase(string);
@@ -49,14 +48,14 @@ public class HeroesClassCondition extends Condition {
             any = false;
             heroClass = Heroes.getInstance().getClassManager().getClass(string);
             if (heroClass == null) {
-                throw new InstructionParseException("Class '" + string + "' does not exist");
+                throw new QuestException("Class '" + string + "' does not exist");
             }
         }
         level = instruction.getVarNum(instruction.getOptional("level"));
     }
 
     @Override
-    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+    protected Boolean execute(final Profile profile) throws QuestException {
         final Hero hero = Heroes.getInstance().getCharacterManager().getHero(profile.getOnlineProfile().get().getPlayer());
         if (hero == null) {
             return false;
@@ -87,5 +86,4 @@ public class HeroesClassCondition extends Condition {
         }
         return matchingClass && matchingLevel;
     }
-
 }

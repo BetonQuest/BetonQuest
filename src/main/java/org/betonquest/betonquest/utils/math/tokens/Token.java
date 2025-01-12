@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.utils.math.tokens;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -19,8 +19,7 @@ public interface Token {
      * @param profile the {@link Profile} of the player for which this token should be resolved,
      *                required for parsing variables
      * @return the result
-     * @throws QuestRuntimeException if the Token contained variables that could not be resolved
-     *                               due to an Quest Runtime exception
+     * @throws QuestException if the Token contained variables that could not be resolved
      */
-    double resolve(@Nullable Profile profile) throws QuestRuntimeException;
+    double resolve(@Nullable Profile profile) throws QuestException;
 }

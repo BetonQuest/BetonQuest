@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.facing;
 
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.Location;
 
 /**
@@ -25,7 +25,7 @@ public class FacingCondition implements OnlineCondition {
     }
 
     @Override
-    public boolean check(final OnlineProfile profile) throws QuestRuntimeException {
+    public boolean check(final OnlineProfile profile) throws QuestException {
         final Location playerLocation = profile.getPlayer().getLocation();
         final Direction playerDirection = Direction.parseDirection(playerLocation.getYaw(), playerLocation.getPitch());
         return direction == playerDirection;

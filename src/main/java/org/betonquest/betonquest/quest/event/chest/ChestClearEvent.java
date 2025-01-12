@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.Nullable;
@@ -21,12 +21,12 @@ public class ChestClearEvent extends AbstractChestEvent {
     }
 
     @Override
-    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestException {
         try {
             final InventoryHolder chest = getChest(profile);
             chest.getInventory().clear();
-        } catch (final QuestRuntimeException e) {
-            throw new QuestRuntimeException("Trying to clear chest. " + e.getMessage(), e);
+        } catch (final QuestException e) {
+            throw new QuestException("Trying to clear chest. " + e.getMessage(), e);
         }
     }
 }

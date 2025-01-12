@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.weather;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableWorld;
 import org.betonquest.betonquest.quest.event.weather.Weather;
 import org.bukkit.World;
@@ -35,7 +35,7 @@ public class WeatherCondition implements NullableCondition {
     }
 
     @Override
-    public boolean check(@Nullable final Profile profile) throws QuestRuntimeException {
+    public boolean check(@Nullable final Profile profile) throws QuestException {
         final World world = variableWorld.getValue(profile);
         return weather.isInWorld(world);
     }

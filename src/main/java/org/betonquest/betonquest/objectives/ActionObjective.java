@@ -6,8 +6,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.BlockSelector;
@@ -69,7 +68,7 @@ public class ActionObjective extends Objective implements Listener {
     @Nullable
     private final EquipmentSlot slot;
 
-    public ActionObjective(final Instruction instruction) throws InstructionParseException {
+    public ActionObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
@@ -91,7 +90,7 @@ public class ActionObjective extends Objective implements Listener {
         } else if (ANY.equalsIgnoreCase(handString)) {
             slot = null;
         } else {
-            throw new InstructionParseException("Invalid hand value: " + handString);
+            throw new QuestException("Invalid hand value: " + handString);
         }
     }
 
@@ -112,7 +111,7 @@ public class ActionObjective extends Objective implements Listener {
                 if (!location.getWorld().equals(current.getWorld()) || current.distance(location) > pRange) {
                     return;
                 }
-            } catch (final QuestRuntimeException e) {
+            } catch (final QuestException e) {
                 log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
                 return;
             }
@@ -161,7 +160,7 @@ public class ActionObjective extends Objective implements Listener {
             final Location location;
             try {
                 location = loc.getValue(profile);
-            } catch (final QuestRuntimeException e) {
+            } catch (final QuestException e) {
                 log.warn(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
                         + e.getMessage(), e);
                 return "";

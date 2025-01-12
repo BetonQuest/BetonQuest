@@ -11,7 +11,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -33,7 +33,7 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
 
     private final String itemId;
 
-    public MMOItemsCraftObjective(final Instruction instruction) throws InstructionParseException {
+    public MMOItemsCraftObjective(final Instruction instruction) throws QuestException {
         super(instruction, "items_to_craft");
 
         itemType = MMOItemsUtils.getMMOItemType(instruction.next());

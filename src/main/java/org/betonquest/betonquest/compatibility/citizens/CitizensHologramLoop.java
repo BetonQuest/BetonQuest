@@ -14,8 +14,7 @@ import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramLoop;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
 import org.betonquest.betonquest.compatibility.holograms.HologramWrapper;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableVector;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Bukkit;
@@ -76,14 +75,14 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
     }
 
     @Override
-    protected List<BetonHologram> getHologramsFor(final QuestPackage pack, final ConfigurationSection section) throws InstructionParseException {
+    protected List<BetonHologram> getHologramsFor(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final Vector vector = new Vector(0, 3, 0);
         final String stringVector = section.getString("vector");
         if (stringVector != null) {
             try {
                 vector.add(new VariableVector(BetonQuest.getInstance().getVariableProcessor(), pack, "(" + stringVector + ")").getValue(null));
-            } catch (final QuestRuntimeException | InstructionParseException e) {
-                throw new InstructionParseException("Could not parse vector '" + stringVector + "': " + e.getMessage(), e);
+            } catch (final QuestException e) {
+                throw new QuestException("Could not parse vector '" + stringVector + "': " + e.getMessage(), e);
             }
         }
         final List<Integer> npcIDs = getNPCs(pack, section);
@@ -105,14 +104,14 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
         return holograms;
     }
 
-    private List<Integer> getNPCs(final QuestPackage pack, final ConfigurationSection section) throws InstructionParseException {
+    private List<Integer> getNPCs(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final List<Integer> npcIDs = new ArrayList<>();
         for (final String stringID : section.getStringList("npcs")) {
             final String subst = GlobalVariableResolver.resolve(pack, stringID);
             try {
                 npcIDs.add(Integer.parseInt(subst));
             } catch (final NumberFormatException e) {
-                throw new InstructionParseException("Could not parse NPC ID '" + subst + "': " + e.getMessage(), e);
+                throw new QuestException("Could not parse NPC ID '" + subst + "': " + e.getMessage(), e);
             }
         }
         return npcIDs;

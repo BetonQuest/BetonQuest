@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 import org.betonquest.betonquest.utils.Utils;
@@ -63,7 +63,7 @@ public class GiveEvent implements OnlineEvent {
     }
 
     @Override
-    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+    public void execute(final OnlineProfile profile) throws QuestException {
         final Player player = profile.getPlayer();
         for (final Item item : questItems) {
             final QuestItem questItem = item.getItem();
@@ -78,13 +78,13 @@ public class GiveEvent implements OnlineEvent {
 
     @SuppressWarnings("PMD.CognitiveComplexity")
     private void giveItems(final OnlineProfile profile, final Player player, final QuestItem questItem, final int totalAmount)
-            throws QuestRuntimeException {
+            throws QuestException {
         int amount = totalAmount;
         while (amount > 0) {
             final ItemStack itemStackTemplate = questItem.generate(1, profile);
             final int stackSize = Math.min(amount, itemStackTemplate.getMaxStackSize());
             if (stackSize <= 0) {
-                throw new QuestRuntimeException("Item stack size is 0 or less!");
+                throw new QuestException("Item stack size is 0 or less!");
             }
             boolean fullInventory = false;
             ItemStack itemStack = itemStackTemplate.clone();

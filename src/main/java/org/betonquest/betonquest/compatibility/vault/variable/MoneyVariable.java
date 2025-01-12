@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -14,7 +14,7 @@ public class MoneyVariable implements PlayerVariable {
     /**
      * Function to get the displayed money amount from a profile.
      */
-    private final MoneyVariableFactory.QREFunction<Profile, String> function;
+    private final MoneyVariableFactory.QuestExceptionFunction<Profile, String> function;
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -31,7 +31,7 @@ public class MoneyVariable implements PlayerVariable {
      * @param log      the custom {@link BetonQuestLogger} instance for exception logging
      * @param pack     the pack used for logging identification
      */
-    public MoneyVariable(final MoneyVariableFactory.QREFunction<Profile, String> function, final BetonQuestLogger log, final QuestPackage pack) {
+    public MoneyVariable(final MoneyVariableFactory.QuestExceptionFunction<Profile, String> function, final BetonQuestLogger log, final QuestPackage pack) {
         this.function = function;
         this.log = log;
         this.pack = pack;
@@ -44,7 +44,7 @@ public class MoneyVariable implements PlayerVariable {
         }
         try {
             return function.apply(profile);
-        } catch (final QuestRuntimeException e) {
+        } catch (final QuestException e) {
             log.warn(pack, "Unable to get money variable value: " + e.getMessage(), e);
             return "";
         }

@@ -7,8 +7,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.BlockSelector;
@@ -44,7 +43,7 @@ public class FishObjective extends CountingObjective implements Listener {
     @Nullable
     private final VariableNumber rangeVar;
 
-    public FishObjective(final Instruction instruction) throws InstructionParseException {
+    public FishObjective(final Instruction instruction) throws QuestException {
         super(instruction, "fish_to_catch");
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         blockSelector = new BlockSelector(instruction.next());
@@ -89,7 +88,7 @@ public class FishObjective extends CountingObjective implements Listener {
         final Location targetLocation;
         try {
             targetLocation = hookTargetLocation.getValue(profile);
-        } catch (final QuestRuntimeException e) {
+        } catch (final QuestException e) {
             log.warn(e.getMessage(), e);
             return true;
         }

@@ -8,7 +8,7 @@ import net.luckperms.api.node.Node;
 import net.luckperms.api.node.types.PermissionNode;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.OfflinePlayer;
 
 import java.util.List;
@@ -49,7 +49,7 @@ public class LuckPermsPermissionEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(final Profile profile) throws QuestException {
         final OfflinePlayer offlinePlayer = profile.getPlayer();
         final UserManager userManager = luckPermsAPI.getUserManager();
         final CompletableFuture<User> userFuture = userManager.loadUser(offlinePlayer.getUniqueId());
@@ -64,11 +64,11 @@ public class LuckPermsPermissionEvent implements Event {
                 -> service.pushUserUpdate(user)));
     }
 
-    private User getUser(final CompletableFuture<User> userFuture) throws QuestRuntimeException {
+    private User getUser(final CompletableFuture<User> userFuture) throws QuestException {
         try {
             return userFuture.get();
         } catch (InterruptedException | ExecutionException e) {
-            throw new QuestRuntimeException("Failed to load user from LuckPerms", e);
+            throw new QuestException("Failed to load user from LuckPerms", e);
         }
     }
 

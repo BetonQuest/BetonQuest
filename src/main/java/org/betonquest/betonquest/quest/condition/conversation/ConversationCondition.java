@@ -4,9 +4,8 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.conversation.ConversationData;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConversationID;
 
 /**
@@ -29,17 +28,16 @@ public class ConversationCondition implements PlayerCondition {
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestRuntimeException {
+    public boolean check(final Profile profile) throws QuestException {
+        final ConversationData conversation = BetonQuest.getInstance().getConversation(conversationID);
+        if (conversation == null) {
+            throw new QuestException("Tried to check conversation '" + conversationID.getFullID()
+                    + "' but it is not loaded! Ensure it was loaded without errors.");
+        }
         try {
-            final ConversationData conversation = BetonQuest.getInstance().getConversation(conversationID);
-            if (conversation == null) {
-                throw new QuestRuntimeException("Tried to check conversation '" + conversationID.getFullID()
-                        + "' but it is not loaded! Check for errors on /bq reload!");
-            }
             return conversation.isReady(profile);
-        } catch (InstructionParseException | ObjectNotFoundException e) {
-            throw new QuestRuntimeException("External pointers in the conversation this condition checks for could not"
-                    + " be resoled during runtime.", e);
+        } catch (final ObjectNotFoundException e) {
+            throw new QuestException(e.getMessage(), e);
         }
     }
 }

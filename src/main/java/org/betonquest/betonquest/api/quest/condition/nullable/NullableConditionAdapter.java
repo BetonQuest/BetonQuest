@@ -3,7 +3,7 @@ package org.betonquest.betonquest.api.quest.condition.nullable;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * An adapter to handle both the {@link PlayerCondition} and {@link PlayerlessCondition}
@@ -25,12 +25,12 @@ public final class NullableConditionAdapter implements PlayerCondition, Playerle
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestRuntimeException {
+    public boolean check(final Profile profile) throws QuestException {
         return condition.check(profile);
     }
 
     @Override
-    public boolean check() throws QuestRuntimeException {
+    public boolean check() throws QuestException {
         return condition.check(null);
     }
 }

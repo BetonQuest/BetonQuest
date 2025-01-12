@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.utils.math;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.utils.math.tokens.AbsoluteValue;
@@ -66,9 +66,9 @@ public class Tokenizer {
      *
      * @param expression the expression that should be parsed
      * @return expression parsed as token
-     * @throws InstructionParseException if the expression is invalid and therefore couldn't be parsed
+     * @throws QuestException if the expression is invalid and therefore couldn't be parsed
      */
-    public Token tokenize(final String expression) throws InstructionParseException {
+    public Token tokenize(final String expression) throws QuestException {
         return tokenize(null, null, expression.replaceAll("\\s", ""));
     }
 
@@ -83,16 +83,16 @@ public class Tokenizer {
      * @param operator operator between the token ({@code val1}) and the string ({@code val2})
      * @param val2     string containing the rest of the expression that still needs to be parsed
      * @return parsed token
-     * @throws InstructionParseException if the expression is invalid and therefore couldn't be parsed
+     * @throws QuestException if the expression is invalid and therefore couldn't be parsed
      */
     @SuppressWarnings({"PMD.AssignmentInOperand", "PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition",
             "PMD.NcssCount", "PMD.CognitiveComplexity"})
-    private Token tokenize(@Nullable final Token val1, @Nullable final Operator operator, final String val2) throws InstructionParseException {
+    private Token tokenize(@Nullable final Token val1, @Nullable final Operator operator, final String val2) throws QuestException {
         if (val2.isEmpty()) {
             if (operator != null) {
-                throw new InstructionParseException("invalid calculation (operator missing second value)");
+                throw new QuestException("invalid calculation (operator missing second value)");
             }
-            throw new InstructionParseException("missing calculation");
+            throw new QuestException("missing calculation");
         }
 
         //Parse next token in line (from left to right)
@@ -103,7 +103,7 @@ public class Tokenizer {
 
         if (chr == '-') {
             if (val2.length() == 1) {
-                throw new InstructionParseException("invalid calculation (negation missing value)");
+                throw new QuestException("invalid calculation (negation missing value)");
             }
             chr = val2.charAt(index++);
             isNegated = true;
@@ -119,20 +119,20 @@ public class Tokenizer {
 
             try {
                 nextInLine = new Variable(new VariableNumber(variableProcessor, pack, "%" + variableName + "%"));
-            } catch (final InstructionParseException e) {
-                throw new InstructionParseException("invalid calculation (" + e.getMessage() + ")", e);
+            } catch (final QuestException e) {
+                throw new QuestException("invalid calculation (" + e.getMessage() + ")", e);
             }
         } else if (chr == '(' || chr == '[') { //tokenize parenthesis
             index = findParenthesisEnd(val2, index);
 
             if (index == start + 1) {
-                throw new InstructionParseException("invalid calculation (empty parenthesis)");
+                throw new QuestException("invalid calculation (empty parenthesis)");
             }
 
             final char opening = chr;
             chr = val2.charAt(index);
             if (opening == '(' && chr != ')' || opening == '[' && chr != ']') {
-                throw new InstructionParseException("invalid calculation (parenthesis / brackets mismatch)");
+                throw new QuestException("invalid calculation (parenthesis / brackets mismatch)");
             }
 
             nextInLine = new Parenthesis(tokenize(null, null, val2.substring(start + 1, index)), opening, chr);
@@ -140,7 +140,7 @@ public class Tokenizer {
             index = findAbsoluteEnd(val2, index);
 
             if (index == start + 1) {
-                throw new InstructionParseException("invalid calculation (empty absolute value)");
+                throw new QuestException("invalid calculation (empty absolute value)");
             }
 
             nextInLine = new AbsoluteValue(tokenize(null, null, val2.substring(start + 1, index)));
@@ -150,9 +150,9 @@ public class Tokenizer {
             nextInLine = new Number(Double.parseDouble(numberMatcher.group()));
         } else if (Operator.isOperator(chr)) { //error handling
             if (operator == null) {
-                throw new InstructionParseException("invalid calculation (operator missing first value)");
+                throw new QuestException("invalid calculation (operator missing first value)");
             }
-            throw new InstructionParseException("invalid calculation (doubled operators)");
+            throw new QuestException("invalid calculation (doubled operators)");
         } else { //tokenize variables
             for (; index < val2.length(); index++) {
                 chr = val2.charAt(index);
@@ -162,8 +162,8 @@ public class Tokenizer {
             }
             try {
                 nextInLine = new Variable(new VariableNumber(variableProcessor, pack, "%" + val2.substring(start, index--) + "%"));
-            } catch (final InstructionParseException e) {
-                throw new InstructionParseException("invalid calculation (" + e.getMessage() + ")", e);
+            } catch (final QuestException e) {
+                throw new QuestException("invalid calculation (" + e.getMessage() + ")", e);
             }
         }
 
@@ -175,18 +175,18 @@ public class Tokenizer {
     }
 
     @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "NullAway"})
-    private Token tokenizeFurther(@Nullable final Token val1, @Nullable final Operator operator, final String val2, final int indexx, final Token nextInLine) throws InstructionParseException {
+    private Token tokenizeFurther(@Nullable final Token val1, @Nullable final Operator operator, final String val2, final int indexx, final Token nextInLine) throws QuestException {
         if (indexx < val2.length() - 1) {
             int index = indexx;
             final char chr = val2.charAt(++index);
             if (!Operator.isOperator(chr)) {
                 if (chr == ')' || chr == ']') {
-                    throw new InstructionParseException("invalid calculation (unbalanced parenthesis)");
+                    throw new QuestException("invalid calculation (unbalanced parenthesis)");
                 }
                 if (chr == '}') {
-                    throw new InstructionParseException("invalid calculation (unbalanced curly brace)");
+                    throw new QuestException("invalid calculation (unbalanced curly brace)");
                 }
-                throw new InstructionParseException("invalid calculation (missing operator)");
+                throw new QuestException("invalid calculation (missing operator)");
             }
             final Operator nextOperator = Operator.valueOf(chr);
             final String newVal = val2.substring(++index);
@@ -212,7 +212,7 @@ public class Tokenizer {
         }
     }
 
-    private int findAbsoluteEnd(final String val, final int startIndex) throws InstructionParseException {
+    private int findAbsoluteEnd(final String val, final int startIndex) throws QuestException {
         int index = startIndex;
         for (; index < val.length(); index++) {
             switch (val.charAt(index)) {
@@ -229,10 +229,10 @@ public class Tokenizer {
                     break;
             }
         }
-        throw new InstructionParseException("invalid calculation (unbalanced absolute value)");
+        throw new QuestException("invalid calculation (unbalanced absolute value)");
     }
 
-    private int findParenthesisEnd(final String val, final int startIndex) throws InstructionParseException {
+    private int findParenthesisEnd(final String val, final int startIndex) throws QuestException {
         int index = startIndex;
         int depth = 1;
         for (; index < val.length(); index++) {
@@ -255,10 +255,10 @@ public class Tokenizer {
                     break;
             }
         }
-        throw new InstructionParseException("invalid calculation (unbalanced parenthesis)");
+        throw new QuestException("invalid calculation (unbalanced parenthesis)");
     }
 
-    private int findCurlyBraceVariableEnd(final String val, final int startIndex) throws InstructionParseException {
+    private int findCurlyBraceVariableEnd(final String val, final int startIndex) throws QuestException {
         int index = startIndex;
         for (; index < val.length(); index++) {
             switch (val.charAt(index)) {
@@ -271,6 +271,6 @@ public class Tokenizer {
                     break;
             }
         }
-        throw new InstructionParseException("invalid calculation (unbalanced curly brace)");
+        throw new QuestException("invalid calculation (unbalanced curly brace)");
     }
 }

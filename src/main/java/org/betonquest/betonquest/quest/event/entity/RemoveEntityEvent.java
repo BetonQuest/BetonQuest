@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.entity;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -74,7 +74,7 @@ public class RemoveEntityEvent implements NullableEvent {
     }
 
     @Override
-    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestException {
         final Location location = loc.getValue(profile);
         final String resolvedName = name == null ? null : name.getValue(profile);
         final String resolvedMarked = marked == null ? null : marked.getValue(profile);

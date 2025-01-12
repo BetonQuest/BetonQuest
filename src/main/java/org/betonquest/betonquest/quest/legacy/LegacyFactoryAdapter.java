@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.legacy;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -45,7 +45,7 @@ public abstract class LegacyFactoryAdapter<P, S, L> implements LegacyTypeFactory
     }
 
     @Override
-    public L parseInstruction(final Instruction instruction) throws InstructionParseException {
+    public L parseInstruction(final Instruction instruction) throws QuestException {
         final P playerType = playerFactory == null ? null : playerFactory.parsePlayer(instruction.copy());
         final S playerlessType = playerlessFactory == null ? null : playerlessFactory.parsePlayerless(instruction.copy());
         return getAdapter(instruction, playerType, playerlessType);
@@ -60,7 +60,7 @@ public abstract class LegacyFactoryAdapter<P, S, L> implements LegacyTypeFactory
      * @param playerType     the player type to adapt
      * @param playerlessType the playerless type to adapt
      * @return the new adapter
-     * @throws InstructionParseException when the instruction cannot be parsed
+     * @throws QuestException when the instruction cannot be parsed
      */
-    protected abstract L getAdapter(Instruction instruction, @Nullable P playerType, @Nullable S playerlessType) throws InstructionParseException;
+    protected abstract L getAdapter(Instruction instruction, @Nullable P playerType, @Nullable S playerlessType) throws QuestException;
 }

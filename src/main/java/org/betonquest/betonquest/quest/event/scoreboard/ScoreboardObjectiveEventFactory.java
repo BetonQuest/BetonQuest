@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.scoreboard;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -37,7 +37,7 @@ public class ScoreboardObjectiveEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         final String objective = instruction.next();
         final String number = instruction.next();
         final String action = instruction.getOptional("action");
@@ -48,7 +48,7 @@ public class ScoreboardObjectiveEventFactory implements EventFactory {
                         new ScoreboardObjectiveEvent(objective, new VariableNumber(variableProcessor, instruction.getPackage(), number), type),
                         data);
             } catch (final IllegalArgumentException e) {
-                throw new InstructionParseException("Unknown modification action: " + instruction.current(), e);
+                throw new QuestException("Unknown modification action: " + instruction.current(), e);
             }
         }
         if (!number.isEmpty() && number.charAt(0) == '*') {

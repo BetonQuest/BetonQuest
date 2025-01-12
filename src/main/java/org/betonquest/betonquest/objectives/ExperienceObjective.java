@@ -5,7 +5,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -32,7 +32,7 @@ public class ExperienceObjective extends Objective implements Listener {
      */
     private final VariableNumber amount;
 
-    public ExperienceObjective(final Instruction instruction) throws InstructionParseException {
+    public ExperienceObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         this.amount = instruction.getVarNum();
     }

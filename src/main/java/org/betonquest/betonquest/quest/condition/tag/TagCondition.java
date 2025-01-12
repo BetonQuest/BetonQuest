@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.tag;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * A condition that checks if a player has a certain tag.
@@ -32,7 +32,7 @@ public class TagCondition implements PlayerCondition {
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestRuntimeException {
+    public boolean check(final Profile profile) throws QuestException {
         return betonQuest.getPlayerData(profile).hasTag(tag);
     }
 }

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.item.typehandler;
 import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -131,7 +131,7 @@ public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws InstructionParseException {
+    public void set(final String key, final String data) throws QuestException {
         switch (key) {
             case META_OWNER -> {
                 if (Existence.NONE_KEY.equalsIgnoreCase(data)) {
@@ -149,7 +149,7 @@ public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
                 this.texture = data;
                 this.textureE = Existence.REQUIRED;
             }
-            default -> throw new InstructionParseException("Unknown head key: " + key);
+            default -> throw new QuestException("Unknown head key: " + key);
         }
     }
 

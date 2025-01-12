@@ -6,8 +6,8 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
@@ -48,23 +48,23 @@ public class PickRandomEventFactory implements EventFactory, StaticEventFactory 
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         return createPickRandomEvent(instruction);
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
         return createPickRandomEvent(instruction);
     }
 
     @SuppressWarnings("PMD.CognitiveComplexity")
-    private NullableEventAdapter createPickRandomEvent(final Instruction instruction) throws InstructionParseException {
+    private NullableEventAdapter createPickRandomEvent(final Instruction instruction) throws QuestException {
         final List<RandomEvent> events = instruction.getList(string -> {
             if (string == null) {
                 return null;
             }
             if (!string.matches("(\\d+\\.?\\d?|%.*%)%.+")) {
-                throw new InstructionParseException("Percentage must be specified correctly: " + string);
+                throw new QuestException("Percentage must be specified correctly: " + string);
             }
 
             int index = 0;
@@ -83,7 +83,7 @@ public class PickRandomEventFactory implements EventFactory, StaticEventFactory 
                 try {
                     eventID = new EventID(instruction.getPackage(), parts[1]);
                 } catch (final ObjectNotFoundException e) {
-                    throw new InstructionParseException("Error while loading event: " + e.getMessage(), e);
+                    throw new QuestException("Error while loading event: " + e.getMessage(), e);
                 }
                 final VariableNumber chance = new VariableNumber(variableProcessor, instruction.getPackage(), parts[0]);
                 return new RandomEvent(eventID, chance);
@@ -91,12 +91,12 @@ public class PickRandomEventFactory implements EventFactory, StaticEventFactory 
                 try {
                     eventID = new EventID(instruction.getPackage(), parts[3]);
                 } catch (final ObjectNotFoundException e) {
-                    throw new InstructionParseException("Error while loading event: " + e.getMessage(), e);
+                    throw new QuestException("Error while loading event: " + e.getMessage(), e);
                 }
                 final VariableNumber chance = new VariableNumber(variableProcessor, instruction.getPackage(), "%" + parts[1] + "%");
                 return new RandomEvent(eventID, chance);
             }
-            throw new InstructionParseException("Error while loading event: '" + instruction.getEvent().getFullID() + "'. Wrong number of % detected. Check your event.");
+            throw new QuestException("Error while loading event: '" + instruction.getEvent().getFullID() + "'. Wrong number of % detected. Check your event.");
         });
         final VariableNumber amount = instruction.getVarNum(instruction.getOptional("amount"));
         return new NullableEventAdapter(new PickRandomEvent(events, amount));

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.api.quest.condition;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * Factory to create a specific {@link PlayerlessCondition} from {@link Instruction}s.
@@ -13,8 +13,8 @@ public interface PlayerlessConditionFactory extends PlayerlessQuestFactory<Playe
      *
      * @param instruction instruction to parse
      * @return condition represented by the instruction
-     * @throws InstructionParseException when the instruction cannot be parsed
+     * @throws QuestException when the instruction cannot be parsed
      */
     @Override
-    PlayerlessCondition parsePlayerless(Instruction instruction) throws InstructionParseException;
+    PlayerlessCondition parsePlayerless(Instruction instruction) throws QuestException;
 }

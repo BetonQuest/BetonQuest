@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.variable.condition;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 
 /**
@@ -17,7 +17,7 @@ public class ConditionVariableFactory implements PlayerVariableFactory {
     }
 
     @Override
-    public PlayerVariable parsePlayer(final Instruction instruction) throws InstructionParseException {
+    public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
         final ConditionID conditionId = instruction.getCondition();
         final boolean papiMode = instruction.hasArgument("papiMode");
         return new ConditionVariable(conditionId, papiMode);

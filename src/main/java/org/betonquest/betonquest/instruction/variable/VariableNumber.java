@@ -3,8 +3,7 @@ package org.betonquest.betonquest.instruction.variable;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,7 +16,7 @@ public class VariableNumber extends Variable<Number> {
      */
     public static final ValueChecker<Number> NOT_LESS_THAN_ZERO_CHECKER = (value) -> {
         if (value.doubleValue() < 0) {
-            throw new QuestRuntimeException("Value must be greater than or equal to 0: " + value);
+            throw new QuestException("Value must be greater than or equal to 0: " + value);
         }
     };
 
@@ -26,7 +25,7 @@ public class VariableNumber extends Variable<Number> {
      */
     public static final ValueChecker<Number> NOT_LESS_THAN_ONE_CHECKER = (value) -> {
         if (value.doubleValue() <= 0) {
-            throw new QuestRuntimeException("Value must be greater than or equal to 1: " + value);
+            throw new QuestException("Value must be greater than or equal to 1: " + value);
         }
     };
 
@@ -35,11 +34,11 @@ public class VariableNumber extends Variable<Number> {
      *
      * @param pack  the package in which the variable is used in
      * @param input the string that may contain variables
-     * @throws InstructionParseException if the variables could not be created or resolved to the given type
+     * @throws QuestException if the variables could not be created or resolved to the given type
      * @deprecated use {@link #VariableNumber(VariableProcessor, QuestPackage, String)} instead
      */
     @Deprecated
-    public VariableNumber(final QuestPackage pack, final String input) throws InstructionParseException {
+    public VariableNumber(final QuestPackage pack, final String input) throws QuestException {
         this(BetonQuest.getInstance().getVariableProcessor(), pack, input, (value) -> {
         });
     }
@@ -50,11 +49,11 @@ public class VariableNumber extends Variable<Number> {
      * @param pack         the package in which the variable is used in
      * @param input        the string that may contain variables
      * @param valueChecker the checker to verify valid values
-     * @throws InstructionParseException if the variables could not be created or resolved to the given type
+     * @throws QuestException if the variables could not be created or resolved to the given type
      * @deprecated use {@link #VariableNumber(VariableProcessor, QuestPackage, String, ValueChecker)} instead
      */
     @Deprecated
-    public VariableNumber(final QuestPackage pack, final String input, final ValueChecker<Number> valueChecker) throws InstructionParseException {
+    public VariableNumber(final QuestPackage pack, final String input, final ValueChecker<Number> valueChecker) throws QuestException {
         this(BetonQuest.getInstance().getVariableProcessor(), pack, input, valueChecker);
     }
 
@@ -64,10 +63,10 @@ public class VariableNumber extends Variable<Number> {
      * @param variableProcessor the processor to create the variables
      * @param pack              the package in which the variable is used in
      * @param input             the string that may contain variables
-     * @throws InstructionParseException if the variables could not be created or resolved to the given type
+     * @throws QuestException if the variables could not be created or resolved to the given type
      */
     public VariableNumber(final VariableProcessor variableProcessor, final QuestPackage pack, final String input)
-            throws InstructionParseException {
+            throws QuestException {
         this(variableProcessor, pack, input, (value) -> {
         });
     }
@@ -79,17 +78,17 @@ public class VariableNumber extends Variable<Number> {
      * @param pack              the package in which the variable is used in
      * @param input             the string that may contain variables
      * @param valueChecker      the checker to verify valid values
-     * @throws InstructionParseException if the variables could not be created or resolved to the given type
+     * @throws QuestException if the variables could not be created or resolved to the given type
      */
     public VariableNumber(final VariableProcessor variableProcessor, final QuestPackage pack, final String input,
-                          final ValueChecker<Number> valueChecker) throws InstructionParseException {
+                          final ValueChecker<Number> valueChecker) throws QuestException {
         super(variableProcessor, pack, input, (value) -> {
             try {
                 final double parsedValue = Double.parseDouble(value);
                 valueChecker.check(parsedValue);
                 return parsedValue;
             } catch (final NumberFormatException e) {
-                throw new QuestRuntimeException("Could not parse number: " + value, e);
+                throw new QuestException("Could not parse number: " + value, e);
             }
         });
     }
@@ -97,7 +96,7 @@ public class VariableNumber extends Variable<Number> {
     private Number getSaveValue(@Nullable final Profile profile) {
         try {
             return getValue(profile);
-        } catch (final QuestRuntimeException e) {
+        } catch (final QuestException e) {
             return 0;
         }
     }

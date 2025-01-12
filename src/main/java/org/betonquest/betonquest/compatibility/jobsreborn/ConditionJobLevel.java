@@ -6,7 +6,7 @@ import com.gamingmesh.jobs.container.JobProgression;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 import java.util.List;
 
@@ -19,10 +19,10 @@ public class ConditionJobLevel extends Condition {
     private final int nMaxLevel;
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    public ConditionJobLevel(final Instruction instruction) throws InstructionParseException {
+    public ConditionJobLevel(final Instruction instruction) throws QuestException {
         super(instruction, true);
         if (instruction.size() < 2) {
-            throw new InstructionParseException("Not enough arguments");
+            throw new QuestException("Not enough arguments");
         }
         for (final Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(instruction.getPart(1))) {
@@ -30,13 +30,13 @@ public class ConditionJobLevel extends Condition {
                 try {
                     this.nMinLevel = Integer.parseInt(instruction.getPart(2));
                     this.nMaxLevel = Integer.parseInt(instruction.getPart(3));
-                } catch (final InstructionParseException e) {
-                    throw new InstructionParseException("NUJobs_Joblevel: Unable to parse the min or max level", e);
+                } catch (final QuestException e) {
+                    throw new QuestException("NUJobs_Joblevel: Unable to parse the min or max level", e);
                 }
                 return;
             }
         }
-        throw new InstructionParseException("Jobs Reborn job " + instruction.getPart(1) + " does not exist");
+        throw new QuestException("Jobs Reborn job " + instruction.getPart(1) + " does not exist");
     }
 
     @Override

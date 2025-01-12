@@ -3,7 +3,7 @@ package org.betonquest.betonquest.variables;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 @SuppressWarnings("PMD.CommentRequired")
 public class GlobalPointVariable extends PointVariable {
 
-    public GlobalPointVariable(final Instruction instruction) throws InstructionParseException {
+    public GlobalPointVariable(final Instruction instruction) throws QuestException {
         super(instruction);
         staticness = true;
     }

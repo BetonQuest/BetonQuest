@@ -7,7 +7,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -23,7 +23,7 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
 
     private final VariableNumber targetLevel;
 
-    public MMOCoreProfessionObjective(final Instruction instruction) throws InstructionParseException {
+    public MMOCoreProfessionObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         final String profession = instruction.next();
         professionName = "MAIN".equalsIgnoreCase(profession) ? null : profession;
