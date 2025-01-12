@@ -19,7 +19,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 
 /**
- * Integrates with DecentHolograms
+ * Integrates with DecentHolograms.
  */
 public class DecentHologramsIntegrator extends HologramIntegrator {
     /**
@@ -28,7 +28,7 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
     private final BetonQuestLogger log;
 
     /**
-     * Creates a new DecentHologramsIntegrator for DecentHolograms
+     * Creates a new DecentHologramsIntegrator for DecentHolograms.
      */
     public DecentHologramsIntegrator() {
         super("DecentHolograms", "2.7.5");

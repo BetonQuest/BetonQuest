@@ -4,13 +4,16 @@ import ch.njol.skript.Skript;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Integrator for the Skript plugin.
+ */
 public class SkriptIntegrator implements Integrator {
 
-    private final BetonQuest plugin;
-
+    /**
+     * The default constructor.
+     */
     public SkriptIntegrator() {
-        plugin = BetonQuest.getInstance();
+
     }
 
     @Override
@@ -19,7 +22,7 @@ public class SkriptIntegrator implements Integrator {
         Skript.registerEffect(SkriptEffectBQ.class, "fire [betonquest] event %string% for %player%");
         Skript.registerEvent("betonquest", SkriptEventBQ.class, BQEventSkript.CustomEventForSkript.class,
                 "[betonquest] event %string%");
-        plugin.registerEvents("skript", BQEventSkript.class);
+        BetonQuest.getInstance().getQuestRegistries().getEventTypes().register("skript", BQEventSkript.class);
     }
 
     @Override
@@ -31,5 +34,4 @@ public class SkriptIntegrator implements Integrator {
     public void close() {
         // Empty
     }
-
 }

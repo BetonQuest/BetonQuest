@@ -3,18 +3,21 @@ package org.betonquest.betonquest.compatibility.worldedit;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Integrator for WorldEdit.
+ */
 public class WorldEditIntegrator implements Integrator {
 
-    private final BetonQuest plugin;
-
+    /**
+     * The default constructor.
+     */
     public WorldEditIntegrator() {
-        plugin = BetonQuest.getInstance();
+
     }
 
     @Override
     public void hook() {
-        plugin.registerEvents("paste", PasteSchematicEvent.class);
+        BetonQuest.getInstance().getQuestRegistries().getEventTypes().register("paste", PasteSchematicEvent.class);
     }
 
     @Override
@@ -26,5 +29,4 @@ public class WorldEditIntegrator implements Integrator {
     public void close() {
         // Empty
     }
-
 }

@@ -7,16 +7,20 @@ import org.betonquest.betonquest.exceptions.UnsupportedVersionException;
 import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.versioning.VersionComparator;
+import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Integrator for Shopkeepers.
+ */
 public class ShopkeepersIntegrator implements Integrator {
 
-    private final BetonQuest plugin;
-
+    /**
+     * The default constructor.
+     */
     public ShopkeepersIntegrator() {
-        plugin = BetonQuest.getInstance();
+
     }
 
     @Override
@@ -27,8 +31,9 @@ public class ShopkeepersIntegrator implements Integrator {
         if (comparator.isOtherNewerThanCurrent(shopkeepersVersion, new Version("2.2.0"))) {
             throw new UnsupportedVersionException(shopkeepers, "2.2.0");
         }
-        plugin.registerEvents("shopkeeper", OpenShopEvent.class);
-        plugin.registerConditions("shopamount", HavingShopCondition.class);
+        final QuestTypeRegistries questRegistries = BetonQuest.getInstance().getQuestRegistries();
+        questRegistries.getConditionTypes().register("shopamount", HavingShopCondition.class);
+        questRegistries.getEventTypes().register("shopkeeper", OpenShopEvent.class);
     }
 
     @Override

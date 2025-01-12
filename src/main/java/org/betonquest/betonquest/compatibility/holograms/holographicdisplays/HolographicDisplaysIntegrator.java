@@ -20,7 +20,7 @@ import org.bukkit.Location;
 import java.util.regex.Matcher;
 
 /**
- * Integrates with HolographicDisplays
+ * Integrates with HolographicDisplays.
  */
 public class HolographicDisplaysIntegrator extends HologramIntegrator {
     /**
@@ -29,7 +29,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
     private final BetonQuestLogger log;
 
     /**
-     * Creates a new HolographicDisplaysIntegrator for HolographicDisplays
+     * Creates a new HolographicDisplaysIntegrator for HolographicDisplays.
      */
     public HolographicDisplaysIntegrator() {
         super("HolographicDisplays", "3.0.0", "SNAPSHOT-b");

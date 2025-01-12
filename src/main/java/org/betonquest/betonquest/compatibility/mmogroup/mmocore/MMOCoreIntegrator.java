@@ -2,34 +2,44 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
+import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
+import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Integrator for MMO CORE.
+ */
 public class MMOCoreIntegrator implements Integrator {
 
-    private final BetonQuest plugin;
-
+    /**
+     * The default constructor.
+     */
     public MMOCoreIntegrator() {
-        plugin = BetonQuest.getInstance();
+
     }
 
     @Override
     public void hook() {
         MMOCoreUtils.loadMMOCoreAttributeConfig();
 
-        plugin.registerConditions("mmoclass", MMOCoreClassCondition.class);
-        plugin.registerConditions("mmoattribute", MMOCoreAttributeCondition.class);
-        plugin.registerConditions("mmoprofession", MMOCoreProfessionLevelCondition.class);
+        final BetonQuest plugin = BetonQuest.getInstance();
+        final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
+        final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
+        conditionTypes.register("mmoclass", MMOCoreClassCondition.class);
+        conditionTypes.register("mmoattribute", MMOCoreAttributeCondition.class);
+        conditionTypes.register("mmoprofession", MMOCoreProfessionLevelCondition.class);
 
         plugin.registerObjectives("mmoprofessionlevelup", MMOCoreProfessionObjective.class);
         plugin.registerObjectives("mmochangeclass", MMOCoreChangeClassObjective.class);
         plugin.registerObjectives("mmocorebreakblock", MMOCoreBreakCustomBlockObjective.class);
 
-        plugin.registerEvents("mmoclassexperience", MMOCoreClassExperienceEvent.class);
-        plugin.registerEvents("mmoprofessionexperience", MMOCoreProfessionExperienceEvent.class);
-        plugin.registerEvents("mmocoreclasspoints", MMOCoreClassPointsEvent.class);
-        plugin.registerEvents("mmocoreattributepoints", MMOCoreAttributePointsEvent.class);
-        plugin.registerEvents("mmocoreattributereallocationpoints", MMOCoreAttributeReallocationPointsEvent.class);
-        plugin.registerEvents("mmocoreskillpoints", MMOCoreSkillPointsEvent.class);
+        final EventTypeRegistry eventTypes = questRegistries.getEventTypes();
+        eventTypes.register("mmoclassexperience", MMOCoreClassExperienceEvent.class);
+        eventTypes.register("mmoprofessionexperience", MMOCoreProfessionExperienceEvent.class);
+        eventTypes.register("mmocoreclasspoints", MMOCoreClassPointsEvent.class);
+        eventTypes.register("mmocoreattributepoints", MMOCoreAttributePointsEvent.class);
+        eventTypes.register("mmocoreattributereallocationpoints", MMOCoreAttributeReallocationPointsEvent.class);
+        eventTypes.register("mmocoreskillpoints", MMOCoreSkillPointsEvent.class);
     }
 
     @Override

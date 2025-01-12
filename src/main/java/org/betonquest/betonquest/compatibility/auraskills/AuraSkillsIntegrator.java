@@ -3,26 +3,37 @@ package org.betonquest.betonquest.compatibility.auraskills;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.exceptions.HookException;
+import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
+import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 
 /**
  * Integrator for AuraSkills.
  */
-@SuppressWarnings({"PMD.AtLeastOneConstructor", "PMD.UncommentedEmptyMethodBody", "PMD.CommentRequired"})
 public class AuraSkillsIntegrator implements Integrator {
+
+    /**
+     * The default constructor.
+     */
+    public AuraSkillsIntegrator() {
+    }
 
     @Override
     public void hook() throws HookException {
-        BetonQuest.getInstance().registerConditions("auraskillslevel", AuraSkillsLevelCondition.class);
-        BetonQuest.getInstance().registerConditions("auraskillsstatslevel", AuraSkillsStatsCondition.class);
+        final QuestTypeRegistries questRegistries = BetonQuest.getInstance().getQuestRegistries();
+        final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
+        conditionTypes.register("auraskillslevel", AuraSkillsLevelCondition.class);
+        conditionTypes.register("auraskillsstatslevel", AuraSkillsStatsCondition.class);
 
-        BetonQuest.getInstance().registerEvents("auraskillsxp", AuraSkillsExperienceEvent.class);
+        questRegistries.getEventTypes().register("auraskillsxp", AuraSkillsExperienceEvent.class);
     }
 
     @Override
     public void reload() {
+        // Empty
     }
 
     @Override
     public void close() {
+        // Empty
     }
 }

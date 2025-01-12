@@ -3,18 +3,21 @@ package org.betonquest.betonquest.compatibility.denizen;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Integrator for Denizen.
+ */
 public class DenizenIntegrator implements Integrator {
 
-    private final BetonQuest plugin;
-
+    /**
+     * The default constructor.
+     */
     public DenizenIntegrator() {
-        plugin = BetonQuest.getInstance();
+
     }
 
     @Override
     public void hook() {
-        plugin.registerEvents("script", DenizenTaskScriptEvent.class);
+        BetonQuest.getInstance().getQuestRegistries().getEventTypes().register("script", DenizenTaskScriptEvent.class);
     }
 
     @Override
@@ -26,5 +29,4 @@ public class DenizenIntegrator implements Integrator {
     public void close() {
         // Empty
     }
-
 }

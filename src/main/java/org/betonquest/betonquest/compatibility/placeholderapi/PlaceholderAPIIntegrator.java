@@ -3,18 +3,26 @@ package org.betonquest.betonquest.compatibility.placeholderapi;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Integrator for PlaceholderAPI.
+ */
 public class PlaceholderAPIIntegrator implements Integrator {
 
+    /**
+     * The BetonQuest plugin instance.
+     */
     private final BetonQuest plugin;
 
+    /**
+     * The default constructor.
+     */
     public PlaceholderAPIIntegrator() {
         plugin = BetonQuest.getInstance();
     }
 
     @Override
     public void hook() {
-        plugin.registerVariable("ph", PlaceholderVariable.class);
+        plugin.getQuestRegistries().getVariableTypes().register("ph", PlaceholderVariable.class);
         new BetonQuestPlaceholder(plugin.getLoggerFactory().create(BetonQuestPlaceholder.class, "PlaceholderAPI Integration")).register();
     }
 
@@ -27,5 +35,4 @@ public class PlaceholderAPIIntegrator implements Integrator {
     public void close() {
         // Empty
     }
-
 }

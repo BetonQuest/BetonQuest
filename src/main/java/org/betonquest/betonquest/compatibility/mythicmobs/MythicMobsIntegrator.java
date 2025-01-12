@@ -18,11 +18,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Integrator for MythicMobs.
+ */
 public class MythicMobsIntegrator implements Integrator {
 
+    /**
+     * The BetonQuest plugin instance.
+     */
     private final BetonQuest plugin;
 
+    /**
+     * The default constructor.
+     */
     public MythicMobsIntegrator() {
         plugin = BetonQuest.getInstance();
     }
