@@ -6,6 +6,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [2.2.1] - 2025-01-12
+### Added
 - A Bukkit event which fires when a player's points change
 - `folder` event now has an argument `cancelConditions` to cancel a running folder
 - `action` objective now supports configuring the hand used for the interaction, preventing multiple objective completions at the same time on right click
