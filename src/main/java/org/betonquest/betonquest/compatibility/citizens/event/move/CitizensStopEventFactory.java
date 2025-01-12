@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.citizens.event.move;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
 
@@ -33,7 +33,7 @@ public class CitizensStopEventFactory implements StaticEventFactory {
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
         final int npcId = instruction.getInt();
         return new PrimaryServerThreadStaticEvent(new CitizensStopEvent(npcId, citizensMoveController), primaryServerThreadData);
     }

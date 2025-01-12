@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 import java.util.Arrays;
 
@@ -27,7 +27,7 @@ public class SequentialStaticEvent implements StaticEvent {
     }
 
     @Override
-    public void execute() throws QuestRuntimeException {
+    public void execute() throws QuestException {
         for (final StaticEvent staticEvent : staticEvents) {
             staticEvent.execute();
         }

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.quest.condition;
 
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * Interface for playerless quest-conditions.
@@ -12,7 +12,7 @@ public interface PlayerlessCondition {
      * Checks the condition.
      *
      * @return if the condition is fulfilled
-     * @throws QuestRuntimeException when the condition check fails
+     * @throws QuestException when the condition check fails
      */
-    boolean check() throws QuestRuntimeException;
+    boolean check() throws QuestException;
 }

@@ -2,8 +2,7 @@ package org.betonquest.betonquest.notify;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
@@ -26,30 +25,30 @@ public abstract class NotifyIO {
 
     private final NotifySound sound;
 
-    protected NotifyIO(final QuestPackage pack) throws InstructionParseException {
+    protected NotifyIO(final QuestPackage pack) throws QuestException {
         this(pack, new HashMap<>());
     }
 
-    protected NotifyIO(final QuestPackage pack, final Map<String, String> data) throws InstructionParseException {
+    protected NotifyIO(final QuestPackage pack, final Map<String, String> data) throws QuestException {
         this.data = data;
         this.pack = pack;
         sound = new NotifySound(this);
     }
 
-    public void sendNotify(final String message) throws QuestRuntimeException {
+    public void sendNotify(final String message) throws QuestException {
         for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
             sendNotify(message, onlineProfile);
         }
     }
 
-    public void sendNotify(final String message, final OnlineProfile onlineProfile) throws QuestRuntimeException {
+    public void sendNotify(final String message, final OnlineProfile onlineProfile) throws QuestException {
         notifyPlayer(Utils.format(message), onlineProfile);
         sound.sendSound(onlineProfile);
     }
 
     protected abstract void notifyPlayer(String message, OnlineProfile onlineProfile);
 
-    protected final float getFloatData(final String dataKey, final float defaultData) throws InstructionParseException {
+    protected final float getFloatData(final String dataKey, final float defaultData) throws QuestException {
         final String dataString = data.get(dataKey);
 
         if (dataString == null || dataString.startsWith("%")) {
@@ -58,12 +57,11 @@ public abstract class NotifyIO {
         try {
             return Float.parseFloat(dataString);
         } catch (final NumberFormatException exception) {
-            throw new InstructionParseException(String.format(CATCH_MESSAGE_FLOAT, dataKey, dataString), exception);
+            throw new QuestException(String.format(CATCH_MESSAGE_FLOAT, dataKey, dataString), exception);
         }
-
     }
 
-    protected float getFloatData(final Player player, final String dataKey, final float defaultData) throws InstructionParseException, QuestRuntimeException {
+    protected float getFloatData(final Player player, final String dataKey, final float defaultData) throws QuestException {
         final String dataString = data.get(dataKey);
         if (dataString == null) {
             return defaultData;
@@ -73,16 +71,16 @@ public abstract class NotifyIO {
         try {
             return Float.parseFloat(dataString);
         } catch (final NumberFormatException exception) {
-            throw new InstructionParseException(String.format(CATCH_MESSAGE_FLOAT, dataKey, dataString), exception);
+            throw new QuestException(String.format(CATCH_MESSAGE_FLOAT, dataKey, dataString), exception);
         }
     }
 
-    protected final int getIntegerData(final String dataKey, final int defaultData) throws InstructionParseException {
+    protected final int getIntegerData(final String dataKey, final int defaultData) throws QuestException {
         final String dataString = data.get(dataKey);
         try {
             return dataString == null ? defaultData : Integer.parseInt(dataString);
         } catch (final NumberFormatException exception) {
-            throw new InstructionParseException(String.format(CATCH_MESSAGE_INTEGER, dataKey, dataString), exception);
+            throw new QuestException(String.format(CATCH_MESSAGE_INTEGER, dataKey, dataString), exception);
         }
     }
 }

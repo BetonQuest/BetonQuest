@@ -5,7 +5,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
@@ -30,7 +30,7 @@ public class RideObjective extends Objective implements Listener {
     @Nullable
     private EntityType vehicle;
 
-    public RideObjective(final Instruction instruction) throws InstructionParseException {
+    public RideObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         final String name = instruction.next();
         if (ANY_PROPERTY.equalsIgnoreCase(name)) {
@@ -40,7 +40,7 @@ public class RideObjective extends Objective implements Listener {
             try {
                 vehicle = EntityType.valueOf(name.toUpperCase(Locale.ROOT));
             } catch (final IllegalArgumentException e) {
-                throw new InstructionParseException("Entity type " + name + " does not exist.", e);
+                throw new QuestException("Entity type " + name + " does not exist.", e);
             }
         }
     }

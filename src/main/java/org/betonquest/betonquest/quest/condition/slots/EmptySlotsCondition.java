@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.slots;
 
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.inventory.ItemStack;
 
@@ -33,7 +33,7 @@ public class EmptySlotsCondition implements OnlineCondition {
     }
 
     @Override
-    public boolean check(final OnlineProfile profile) throws QuestRuntimeException {
+    public boolean check(final OnlineProfile profile) throws QuestException {
         final ItemStack[] items = profile.getPlayer().getInventory().getStorageContents();
         int empty = 0;
         for (final ItemStack item : items) {

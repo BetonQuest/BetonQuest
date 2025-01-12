@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.utils.Utils;
@@ -44,11 +44,11 @@ public class AdvancementConditionFactory implements PlayerConditionFactory {
     }
 
     @Override
-    public PlayerCondition parsePlayer(final Instruction instruction) throws InstructionParseException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final String advancementString = instruction.next();
         final String[] split = advancementString.split(":");
         if (split.length != ADVANCEMENT_LENGTH) {
-            throw new InstructionParseException("The advancement '" + advancementString + "' is missing a namespace!");
+            throw new QuestException("The advancement '" + advancementString + "' is missing a namespace!");
         }
         final Advancement advancement = Utils.getNN(Bukkit.getServer().getAdvancement(new NamespacedKey(split[0], split[1])),
                 "No such advancement: " + advancementString);

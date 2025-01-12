@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.number;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,7 +40,7 @@ public class NumberCompareCondition implements NullableCondition {
     }
 
     @Override
-    public boolean check(@Nullable final Profile profile) throws QuestRuntimeException {
+    public boolean check(@Nullable final Profile profile) throws QuestException {
         return operation.check(first.getValue(profile).doubleValue(), second.getValue(profile).doubleValue());
     }
 }

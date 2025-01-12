@@ -2,8 +2,7 @@ package org.betonquest.betonquest.instruction.variable;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,18 +38,14 @@ public class Variable<T> {
      * @param pack              the package in which the variable is used in
      * @param input             the string that may contain variables
      * @param resolver          the resolver to convert the resolved variable to the given type
-     * @throws InstructionParseException if the variables could not be created or resolved to the given type
+     * @throws QuestException if the variables could not be created or resolved to the given type
      */
     public Variable(final VariableProcessor variableProcessor, final QuestPackage pack, final String input,
-                    final TypeResolver<T> resolver) throws InstructionParseException {
+                    final TypeResolver<T> resolver) throws QuestException {
         final Map<String, org.betonquest.betonquest.api.Variable> variables = getVariables(variableProcessor, pack, input);
         if (variables.isEmpty()) {
-            try {
-                final T resolved = resolver.resolve(input);
-                value = profile -> resolved;
-            } catch (final QuestRuntimeException e) {
-                throw new InstructionParseException(e.getMessage(), e);
-            }
+            final T resolved = resolver.resolve(input);
+            value = profile -> resolved;
         } else {
             value = profile -> resolver.resolve(getString(input, variables, profile));
         }
@@ -59,14 +54,14 @@ public class Variable<T> {
     private Map<String, org.betonquest.betonquest.api.Variable> getVariables(final VariableProcessor variableProcessor,
                                                                              final QuestPackage pack,
                                                                              final String input)
-            throws InstructionParseException {
+            throws QuestException {
         final Map<String, org.betonquest.betonquest.api.Variable> variables = new HashMap<>();
         for (final String variable : resolveVariables(input)) {
             try {
                 final org.betonquest.betonquest.api.Variable variable1 = variableProcessor.create(pack, replaceEscapedPercent(variable));
                 variables.put(variable, variable1);
-            } catch (final InstructionParseException exception) {
-                throw new InstructionParseException("Could not create variable '" + variable + "': "
+            } catch (final QuestException exception) {
+                throw new QuestException("Could not create variable '" + variable + "': "
                         + exception.getMessage(), exception);
             }
         }
@@ -80,14 +75,14 @@ public class Variable<T> {
     }
 
     private String getString(final String input, final Map<String, org.betonquest.betonquest.api.Variable> variables,
-                             @Nullable final Profile profile) throws QuestRuntimeException {
+                             @Nullable final Profile profile) throws QuestException {
         final Matcher matcher = VARIABLE_PATTERN.matcher(input);
         final StringBuilder resolvedString = new StringBuilder();
         while (matcher.find()) {
             final String variable = matcher.group();
             final org.betonquest.betonquest.api.Variable resolvedVariable = variables.get(variable);
             if (resolvedVariable == null) {
-                throw new QuestRuntimeException("Could not resolve variable '" + variable + "'");
+                throw new QuestException("Could not resolve variable '" + variable + "'");
             }
             matcher.appendReplacement(resolvedString, Matcher.quoteReplacement(resolvedVariable.getValue(profile)));
         }
@@ -104,9 +99,9 @@ public class Variable<T> {
      *
      * @param profile the profile of the player to resolve the variables for
      * @return the value of the variable
-     * @throws QuestRuntimeException if the variable could not be resolved
+     * @throws QuestException if the variable could not be resolved
      */
-    public T getValue(@Nullable final Profile profile) throws QuestRuntimeException {
+    public T getValue(@Nullable final Profile profile) throws QuestException {
         return value.resolve(profile);
     }
 
@@ -122,9 +117,9 @@ public class Variable<T> {
          *
          * @param variable the variable to resolve
          * @return the resolved variable
-         * @throws QuestRuntimeException if the variable could not be resolved
+         * @throws QuestException if the variable could not be resolved
          */
-        T resolve(String variable) throws QuestRuntimeException;
+        T resolve(String variable) throws QuestException;
     }
 
     /**
@@ -139,9 +134,9 @@ public class Variable<T> {
          *
          * @param profile the profile of the player to resolve the variables for
          * @return the value of the variable
-         * @throws QuestRuntimeException when the variable could not be resolved
+         * @throws QuestException when the variable could not be resolved
          */
-        T resolve(@Nullable Profile profile) throws QuestRuntimeException;
+        T resolve(@Nullable Profile profile) throws QuestException;
     }
 
     /**
@@ -156,8 +151,8 @@ public class Variable<T> {
          * Checks if the value of the variable is valid.
          *
          * @param value the value to check
-         * @throws QuestRuntimeException if the value is invalid
+         * @throws QuestException if the value is invalid
          */
-        void check(T value) throws QuestRuntimeException;
+        void check(T value) throws QuestException;
     }
 }

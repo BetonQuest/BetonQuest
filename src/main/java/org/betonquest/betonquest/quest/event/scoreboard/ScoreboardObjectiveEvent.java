@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.scoreboard;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.Objective;
@@ -42,11 +42,11 @@ public class ScoreboardObjectiveEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(final Profile profile) throws QuestException {
         final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
         final Objective obj = board.getObjective(objective);
         if (obj == null) {
-            throw new QuestRuntimeException("Scoreboard objective " + objective + " does not exist!");
+            throw new QuestException("Scoreboard objective " + objective + " does not exist!");
         }
         final Score score = obj.getScore(profile.getPlayer());
         score.setScore(scoreModification.modify(score.getScore(), count.getValue(profile).doubleValue()));

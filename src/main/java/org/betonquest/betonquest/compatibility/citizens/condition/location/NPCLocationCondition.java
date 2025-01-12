@@ -4,7 +4,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
@@ -43,10 +43,10 @@ public class NPCLocationCondition implements NullableCondition {
     }
 
     @Override
-    public boolean check(@Nullable final Profile profile) throws QuestRuntimeException {
+    public boolean check(@Nullable final Profile profile) throws QuestException {
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
         if (npc == null) {
-            throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
+            throw new QuestException("NPC with ID " + npcId + " does not exist");
         }
         final Location location = this.location.getValue(profile);
         if (!location.getWorld().equals(npc.getStoredLocation().getWorld())) {

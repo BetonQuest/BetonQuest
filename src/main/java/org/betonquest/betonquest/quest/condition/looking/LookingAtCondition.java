@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.looking;
 
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.bukkit.Location;
@@ -56,7 +56,7 @@ public class LookingAtCondition implements OnlineCondition {
     }
 
     @Override
-    public boolean check(final OnlineProfile profile) throws QuestRuntimeException {
+    public boolean check(final OnlineProfile profile) throws QuestException {
         final Player player = profile.getPlayer();
         final Block lookingAt = player.getTargetBlock(null, 6);
         if (loc != null) {

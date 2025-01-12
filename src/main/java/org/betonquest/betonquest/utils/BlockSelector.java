@@ -2,7 +2,7 @@ package org.betonquest.betonquest.utils;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -51,15 +51,15 @@ public class BlockSelector {
      * Create a {@link BlockSelector} from a {@link String}.
      *
      * @param block The {@link String} of the {@link BlockSelector} in the format of {@link BlockData#getAsString()}
-     * @throws InstructionParseException Is thrown, if no material match that selector string
+     * @throws QuestException Is thrown, if no material match that selector string
      */
-    public BlockSelector(final String block) throws InstructionParseException {
+    public BlockSelector(final String block) throws QuestException {
         final String[] selectorParts = getSelectorParts(block);
         materials = getMaterials(selectorParts[0], selectorParts[1]);
         states = getStates(selectorParts[2]);
 
         if (materials.isEmpty()) {
-            throw new InstructionParseException("Invalid selector, no material found for '" + block + "'!");
+            throw new QuestException("Invalid selector, no material found for '" + block + "'!");
         }
     }
 
@@ -67,9 +67,9 @@ public class BlockSelector {
      * Create a {@link BlockSelector} from a {@link Block}.
      *
      * @param block The {@link Block} of the {@link BlockSelector}
-     * @throws InstructionParseException Is thrown, if no material match that selector string
+     * @throws QuestException Is thrown, if no material match that selector string
      */
-    public BlockSelector(final Block block) throws InstructionParseException {
+    public BlockSelector(final Block block) throws QuestException {
         this(block.getBlockData().getAsString());
     }
 
@@ -116,8 +116,9 @@ public class BlockSelector {
     }
 
     /**
-     * Get a BlockData. The Material is random selected from {@link BlockSelector#getRandomMaterial()}.
-     * If the states contains regex {@link IllegalArgumentException} is thrown, if you apply this with
+     * Get a BlockData.
+     * The Material is randomly selected from {@link BlockSelector#getRandomMaterial()}.
+     * If the states contain regex {@link IllegalArgumentException} is thrown, if you apply this with
      * {@link BlockState#setBlockData(BlockData)}.
      *
      * @return A {@link BlockData}
@@ -163,7 +164,7 @@ public class BlockSelector {
      *
      * @param block      The {@link Block} that should be compared
      * @param exactMatch If false, the target block may have more {@link BlockState}s than this {@link BlockSelector}.
-     *                   If true, the the target block is not allowed to have more {@link BlockState}s than this
+     *                   If true, the target block is not allowed to have more {@link BlockState}s than this
      *                   {@link BlockSelector}.
      * @return True if the {@link Material} is represented by this {@link BlockSelector} and the {@link BlockState} matches.
      */
@@ -240,8 +241,8 @@ public class BlockSelector {
         return -1;
     }
 
-    @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity"})
-    private List<Material> getMaterials(final String namespaceString, final String keyString) throws InstructionParseException {
+    @SuppressWarnings("PMD.CyclomaticComplexity")
+    private List<Material> getMaterials(final String namespaceString, final String keyString) throws QuestException {
         final List<Material> materials = new ArrayList<>();
         final Material fullMatch = Material.matchMaterial(namespaceString + ":" + keyString);
         if (fullMatch != null) {
@@ -265,7 +266,7 @@ public class BlockSelector {
             namespacePattern = Pattern.compile("^" + namespaceString + "$");
             keyPattern = Pattern.compile("^" + keyString + "$");
         } catch (final PatternSyntaxException exception) {
-            throw new InstructionParseException("Invalid Regex: " + exception.getMessage(), exception);
+            throw new QuestException("Invalid Regex: " + exception.getMessage(), exception);
         }
         for (final Material m : Material.values()) {
             if (m.isLegacy()) {

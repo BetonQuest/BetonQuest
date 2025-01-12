@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.PrimaryServerThreadType;
 import org.bukkit.Server;
@@ -27,7 +27,7 @@ public class PrimaryServerThreadPlayerCondition extends PrimaryServerThreadType<
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestRuntimeException {
+    public boolean check(final Profile profile) throws QuestException {
         return call(() -> synced.check(profile));
     }
 }

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.citizens.condition.region;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
 
@@ -26,10 +26,10 @@ public class NPCRegionConditionFactory implements PlayerlessConditionFactory {
     }
 
     @Override
-    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws InstructionParseException {
+    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
         final int npcId = instruction.getInt();
         if (npcId < 0) {
-            throw new InstructionParseException("NPC ID cannot be less than 0");
+            throw new QuestException("NPC ID cannot be less than 0");
         }
         final String region = instruction.next();
         return new PrimaryServerThreadPlayerlessCondition(new NPCRegionCondition(npcId, region), data);

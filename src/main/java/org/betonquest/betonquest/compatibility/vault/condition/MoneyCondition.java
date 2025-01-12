@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.vault.condition;
 import net.milkbowl.vault.economy.Economy;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
@@ -32,7 +32,7 @@ public class MoneyCondition implements PlayerCondition {
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestRuntimeException {
+    public boolean check(final Profile profile) throws QuestException {
         return economy.has(profile.getPlayer(), amount.getValue(profile).doubleValue());
     }
 }

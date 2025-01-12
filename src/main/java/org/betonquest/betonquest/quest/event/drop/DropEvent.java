@@ -4,7 +4,7 @@ import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -35,7 +35,7 @@ public class DropEvent implements NullableEvent {
     }
 
     @Override
-    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestException {
         final Location location = locationSelector.selectFor(profile);
         for (final Item itemDefinition : items) {
             final ItemStack item = itemDefinition.getItem().generate(1, profile);

@@ -4,7 +4,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -48,12 +48,12 @@ public class Updater {
     private final UpdaterConfig config;
 
     /**
-     * The {@link UpdateSourceHandler} to get all available versions
+     * The {@link UpdateSourceHandler} to get all available versions.
      */
     private final UpdateSourceHandler updateSourceHandler;
 
     /**
-     * The {@link UpdateDownloader} to download new versions
+     * The {@link UpdateDownloader} to download new versions.
      */
     private final UpdateDownloader updateDownloader;
 
@@ -175,7 +175,7 @@ public class Updater {
     /**
      * Return if a new version is available.
      *
-     * @return True, if a update is available.
+     * @return True, if an update is available.
      */
     public boolean isUpdateAvailable() {
         return latest.getValue() != null;
@@ -225,38 +225,38 @@ public class Updater {
                 executeUpdate();
                 sendMessage(sender, ChatColor.DARK_GREEN + "...download finished. Restart the server to update the plugin.");
                 updateNotification = "Update was downloaded! Restart the server to update the plugin.";
-            } catch (final QuestRuntimeException e) {
+            } catch (final QuestException e) {
                 sendMessage(sender, ChatColor.RED + e.getMessage());
                 log.debug("Error while performing update!", e);
             }
         });
     }
 
-    private void checkUpdateRequirements() throws QuestRuntimeException {
+    private void checkUpdateRequirements() throws QuestException {
         config.reloadFromConfig();
         if (!config.isEnabled()) {
-            throw new QuestRuntimeException("The updater is disabled! Change config entry 'update.enabled' to 'true' to enable it.");
+            throw new QuestException("The updater is disabled! Change config entry 'update.enabled' to 'true' to enable it.");
         }
         if (searchUpdate()) {
             getUpdateNotification(config.isAutomatic());
-            throw new QuestRuntimeException("Update aborted! A newer version was found. New version '"
+            throw new QuestException("Update aborted! A newer version was found. New version '"
                     + getUpdateVersion() + "'! You can execute '/q update' again to update.");
         }
         if (latest.getValue() == null) {
             if (updateDownloader.alreadyDownloaded()) {
-                throw new QuestRuntimeException("The update was already downloaded! Restart the server to update the plugin.");
+                throw new QuestException("The update was already downloaded! Restart the server to update the plugin.");
             }
-            throw new QuestRuntimeException("The updater did not find an update!"
+            throw new QuestException("The updater did not find an update!"
                     + " This can depend on your update.strategy, check config entry 'update.strategy'.");
         }
     }
 
-    private void executeUpdate() throws QuestRuntimeException {
+    private void executeUpdate() throws QuestException {
         try {
             updateDownloader.downloadToFile(new URL(latest.getValue()));
             latest = Pair.of(latest.getKey(), null);
         } catch (final MalformedURLException e) {
-            throw new QuestRuntimeException("There was an error resolving the url '" + latest.getValue() + "'! Reason: " + e.getMessage(), e);
+            throw new QuestException("There was an error resolving the url '" + latest.getValue() + "'! Reason: " + e.getMessage(), e);
         }
     }
 

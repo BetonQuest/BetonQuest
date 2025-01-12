@@ -2,7 +2,7 @@ package org.betonquest.betonquest;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * Represents a string that can contain variables.
@@ -18,12 +18,12 @@ public class VariableString extends org.betonquest.betonquest.instruction.variab
      *
      * @param questPackage the package in which the variable is used in
      * @param input        the string that may contain variables
-     * @throws InstructionParseException if the variables could not be created or resolved to the given type
+     * @throws QuestException if the variables could not be created or resolved to the given type
      * @deprecated use {@link org.betonquest.betonquest.instruction.variable.VariableString#VariableString(
      *org.betonquest.betonquest.quest.registry.processor.VariableProcessor, QuestPackage, String)} instead
      */
     @Deprecated
-    public VariableString(final QuestPackage questPackage, final String input) throws InstructionParseException {
+    public VariableString(final QuestPackage questPackage, final String input) throws QuestException {
         super(BetonQuest.getInstance().getVariableProcessor(), questPackage, input);
     }
 
@@ -33,13 +33,13 @@ public class VariableString extends org.betonquest.betonquest.instruction.variab
      * @param questPackage       the package in which the variable is used in
      * @param input              the string that may contain variables
      * @param replaceUnderscores whether underscores should be replaced
-     * @throws InstructionParseException if the variables could not be created or resolved to the given type
+     * @throws QuestException if the variables could not be created or resolved to the given type
      * @deprecated use {@link org.betonquest.betonquest.instruction.variable.VariableString#VariableString(
      *VariableProcessor, QuestPackage, String, boolean)} instead
      */
     @Deprecated
     public VariableString(final QuestPackage questPackage, final String input, final boolean replaceUnderscores)
-            throws InstructionParseException {
+            throws QuestException {
         super(BetonQuest.getInstance().getVariableProcessor(), questPackage, input, replaceUnderscores);
     }
 }

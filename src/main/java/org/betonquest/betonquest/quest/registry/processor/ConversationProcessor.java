@@ -4,8 +4,8 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.conversation.ConversationData;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConversationID;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
@@ -44,7 +44,7 @@ public class ConversationProcessor extends QuestProcessor<ConversationID, Conver
                     }
                     final ConversationID convID = new ConversationID(pack, convName);
                     values.put(convID, new ConversationData(plugin, convID, convSection));
-                } catch (final InstructionParseException | ObjectNotFoundException e) {
+                } catch (final QuestException | ObjectNotFoundException e) {
                     log.warn(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
                 }
             }
@@ -52,7 +52,7 @@ public class ConversationProcessor extends QuestProcessor<ConversationID, Conver
     }
 
     /**
-     * Validates all pointer to conversations and removes them when the target conversation is not loaded.
+     * Validates all pointers to conversations and removes them when the target conversation is not loaded.
      * <p>
      * This method should be invoked after loading QuestPackages.
      *

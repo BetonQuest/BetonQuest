@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -50,7 +50,7 @@ public class LegacyConditionAdapter extends org.betonquest.betonquest.api.Condit
     }
 
     @Override
-    protected Boolean execute(@Nullable final Profile profile) throws QuestRuntimeException {
+    protected Boolean execute(@Nullable final Profile profile) throws QuestException {
         if (playerCondition == null || profile == null) {
             Objects.requireNonNull(playerlessCondition);
             return playerlessCondition.check();

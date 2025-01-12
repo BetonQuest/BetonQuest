@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.armor;
 
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemStack;
 
@@ -26,7 +26,7 @@ public class ArmorCondition implements OnlineCondition {
     }
 
     @Override
-    public boolean check(final OnlineProfile profile) throws QuestRuntimeException {
+    public boolean check(final OnlineProfile profile) throws QuestException {
         for (final ItemStack armor : profile.getPlayer().getEquipment().getArmorContents()) {
             if (armorItem.compare(armor)) {
                 return true;

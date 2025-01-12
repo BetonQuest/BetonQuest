@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.door;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -40,7 +40,7 @@ public class DoorEvent implements NullableEvent {
     }
 
     @Override
-    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestException {
         final Location resolvedLocation = location.getValue(profile);
         final Block block = resolvedLocation.getBlock();
         final BlockData blockData = block.getBlockData();
@@ -52,7 +52,7 @@ public class DoorEvent implements NullableEvent {
             final String message = String.format("There is no door at x: %d y: %d z: %d in world '%s'.",
                     resolvedLocation.getBlockX(), resolvedLocation.getBlockY(), resolvedLocation.getBlockZ(),
                     resolvedLocation.getWorld().getName());
-            throw new QuestRuntimeException(message);
+            throw new QuestException(message);
         }
     }
 }

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.gamemode;
 
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.GameMode;
 
 /**
@@ -25,7 +25,7 @@ public class GameModeCondition implements OnlineCondition {
     }
 
     @Override
-    public boolean check(final OnlineProfile profile) throws QuestRuntimeException {
+    public boolean check(final OnlineProfile profile) throws QuestException {
         return profile.getPlayer().getGameMode() == gameMode;
     }
 }

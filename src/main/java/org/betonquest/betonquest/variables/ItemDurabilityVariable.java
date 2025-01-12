@@ -3,7 +3,7 @@ package org.betonquest.betonquest.variables;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -49,9 +49,9 @@ public class ItemDurabilityVariable extends Variable {
      * Creates a new item durability variable.
      *
      * @param instruction the instruction to create the variable from
-     * @throws InstructionParseException if there was an error parsing the instruction
+     * @throws QuestException if there was an error parsing the instruction
      */
-    public ItemDurabilityVariable(final Instruction instruction) throws InstructionParseException {
+    public ItemDurabilityVariable(final Instruction instruction) throws QuestException {
         super(instruction);
         this.slot = instruction.getEnum(EquipmentSlot.class);
         this.relative = instruction.hasArgument("relative");
@@ -59,7 +59,7 @@ public class ItemDurabilityVariable extends Variable {
         this.inPercent = instruction.hasArgument("percent");
     }
 
-    private int digits(final Instruction instruction) throws InstructionParseException {
+    private int digits(final Instruction instruction) throws QuestException {
         if (instruction.hasArgument(DIGITS_KEY)) {
             for (int i = instruction.size() - 2; i >= 0; i--) {
                 final String part = instruction.getPart(i);

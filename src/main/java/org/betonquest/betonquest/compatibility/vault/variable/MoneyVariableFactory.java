@@ -6,8 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 import java.util.Locale;
@@ -48,34 +47,34 @@ public class MoneyVariableFactory implements PlayerVariableFactory {
     }
 
     @Override
-    public PlayerVariable parsePlayer(final Instruction instruction) throws InstructionParseException {
+    public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
         final String instructionString = instruction.next();
-        final QREFunction<Profile, String> function;
+        final QuestExceptionFunction<Profile, String> function;
         if (MONEY_AMOUNT.equalsIgnoreCase(instructionString)) {
             function = profile -> String.valueOf(economy.getBalance(profile.getPlayer()));
         } else if (instructionString.toLowerCase(Locale.ROOT).startsWith(MONEY_LEFT)) {
             final VariableNumber amount = instruction.getVarNum(instructionString.substring(MONEY_LEFT.length()));
             function = profile -> String.valueOf(amount.getValue(profile).doubleValue() - economy.getBalance(profile.getPlayer()));
         } else {
-            throw new InstructionParseException("No type specified");
+            throw new QuestException("No type specified");
         }
         return new MoneyVariable(function, loggerFactory.create(MoneyVariable.class), instruction.getPackage());
     }
 
     /**
-     * A simple {@link java.util.function.Function} that can throw a QuestRuntimeException.
+     * A simple {@link java.util.function.Function} that can throw a QuestException.
      *
      * @param <T> the type of the input to the function
      * @param <R> the type of the result of the function
      */
-    public interface QREFunction<T, R> {
+    public interface QuestExceptionFunction<T, R> {
         /**
          * Applies this function to the given argument.
          *
          * @param arg the function argument
          * @return the function result
-         * @throws QuestRuntimeException if the resolving fails
+         * @throws QuestException if the resolving fails
          */
-        R apply(T arg) throws QuestRuntimeException;
+        R apply(T arg) throws QuestException;
     }
 }

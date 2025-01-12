@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -76,7 +76,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
             journal.update();
             try {
                 Config.sendNotify(null, onlineProfile, "language_changed", new String[]{lang}, "language_changed,info");
-            } catch (final QuestRuntimeException e) {
+            } catch (final QuestException e) {
                 log.warn("The notify system was unable to play a sound for the 'language_changed' category. Error was: '" + e.getMessage() + "'", e);
             }
         } else {

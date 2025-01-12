@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ObjectiveID;
 
 /**
@@ -34,10 +34,10 @@ public class ObjectiveCondition implements PlayerCondition {
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestRuntimeException {
+    public boolean check(final Profile profile) throws QuestException {
         final Objective objective = betonQuest.getObjective(this.objective);
         if (objective == null) {
-            throw new QuestRuntimeException("Objective " + this.objective + " not found. Check for errors on /bq reload!");
+            throw new QuestException("Objective " + this.objective + " not found. Check for errors on /bq reload!");
         }
         return objective.containsPlayer(profile);
     }

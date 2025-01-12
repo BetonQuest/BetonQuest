@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 class DatabaseSaverStaticEventTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testAddRecord(@Mock final Saver saver) throws QuestRuntimeException {
+    void testAddRecord(@Mock final Saver saver) throws QuestException {
         final Saver.Record record = new Saver.Record(UpdateType.DELETE_GLOBAL_TAGS);
         final DatabaseSaverStaticEvent event = new DatabaseSaverStaticEvent(saver, () -> record);
 
@@ -32,7 +32,7 @@ class DatabaseSaverStaticEventTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testRecordSupplierIsCalledEveryTime(@Mock final Saver saver) throws QuestRuntimeException {
+    void testRecordSupplierIsCalledEveryTime(@Mock final Saver saver) throws QuestException {
         final Saver.Record firstRecord = new Saver.Record(UpdateType.DELETE_GLOBAL_TAGS);
         final Saver.Record secondRecord = new Saver.Record(UpdateType.DELETE_GLOBAL_POINTS);
         final Iterator<Saver.Record> recordsForSupplier = List.of(firstRecord, secondRecord).iterator();

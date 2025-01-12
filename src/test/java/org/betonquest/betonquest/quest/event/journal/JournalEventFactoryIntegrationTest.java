@@ -6,8 +6,8 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.SingletonLoggerFactory;
 import org.betonquest.betonquest.database.Saver;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.modules.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.modules.config.quest.QuestPackageImpl;
@@ -99,7 +99,7 @@ class JournalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(logger, questPackage, new NoID(questPackage), "journal add");
-        assertThrows(InstructionParseException.class, () -> journalFactory.parseInstruction(instruction), "journal event add action without page reference should throw an exception when created");
+        assertThrows(QuestException.class, () -> journalFactory.parseInstruction(instruction), "journal event add action without page reference should throw an exception when created");
     }
 
     @Test
@@ -117,7 +117,7 @@ class JournalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(logger, questPackage, new NoID(questPackage), "journal delete");
-        assertThrows(InstructionParseException.class, () -> journalFactory.parseInstruction(instruction), "journal event delete action without page reference should throw an exception when created");
+        assertThrows(QuestException.class, () -> journalFactory.parseInstruction(instruction), "journal event delete action without page reference should throw an exception when created");
     }
 
     @Test
@@ -126,6 +126,6 @@ class JournalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(logger, questPackage, new NoID(questPackage), "journal invalid");
-        assertThrows(InstructionParseException.class, () -> journalFactory.parseInstruction(instruction), "invalid action of journal event should throw an exception when created");
+        assertThrows(QuestException.class, () -> journalFactory.parseInstruction(instruction), "invalid action of journal event should throw an exception when created");
     }
 }

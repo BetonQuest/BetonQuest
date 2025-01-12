@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.Inventory;
@@ -31,7 +31,7 @@ public class ChestTakeEvent extends AbstractChestEvent {
     }
 
     @Override
-    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestException {
         try {
             final Inventory inventory = getChest(profile).getInventory();
             for (final Item item : items) {
@@ -40,8 +40,8 @@ public class ChestTakeEvent extends AbstractChestEvent {
                 final ItemStack[] newItems = removeItems(inventory.getContents(), questItem, amount);
                 inventory.setContents(newItems);
             }
-        } catch (final QuestRuntimeException e) {
-            throw new QuestRuntimeException("Trying to take items from chest. " + e.getMessage(), e);
+        } catch (final QuestException e) {
+            throw new QuestException("Trying to take items from chest. " + e.getMessage(), e);
         }
     }
 

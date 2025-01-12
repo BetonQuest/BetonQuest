@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,18 +35,18 @@ public class CustomModelDataHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws InstructionParseException {
+    public void set(final String key, final String data) throws QuestException {
         switch (key) {
             case "custom-model-data" -> {
                 try {
                     this.existence = Existence.REQUIRED;
                     this.modelData = Integer.parseInt(data);
                 } catch (final NumberFormatException e) {
-                    throw new InstructionParseException("Could not parse custom model data value: " + data, e);
+                    throw new QuestException("Could not parse custom model data value: " + data, e);
                 }
             }
             case "no-custom-model-data" -> this.existence = Existence.FORBIDDEN;
-            default -> throw new InstructionParseException("Unknown custom model data key: " + key);
+            default -> throw new QuestException("Unknown custom model data key: " + key);
         }
     }
 

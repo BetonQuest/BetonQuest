@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.scoreboard;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.Objective;
@@ -35,11 +35,11 @@ public class ScoreboardObjectiveCondition implements PlayerCondition {
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestRuntimeException {
+    public boolean check(final Profile profile) throws QuestException {
         final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
         final Objective obj = board.getObjective(objective);
         if (obj == null) {
-            throw new QuestRuntimeException("Scoreboard objective " + objective + " dose not exist!");
+            throw new QuestException("Scoreboard objective " + objective + " dose not exist!");
         }
         final int score = obj.getScore(profile.getPlayer()).getScore();
         return score >= count.getValue(profile).intValue();

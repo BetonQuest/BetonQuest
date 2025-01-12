@@ -3,7 +3,7 @@ package org.betonquest.betonquest.modules.web.updater;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.util.scheduler.BukkitSchedulerMock;
 import org.bukkit.entity.Player;
@@ -214,7 +214,7 @@ class UpdaterTest {
         verify(logger, times(1)).info("Found newer version '2.0.0-DEV-5', it will be downloaded and automatically installed on the next restart!");
         verify(logger, times(1)).info("Started update to version '2.0.0-DEV-5'...");
         verify(logger, times(1)).info("There was an error resolving the url 'betonquest'! Reason: no protocol: betonquest");
-        verify(logger, times(1)).debug(eq("Error while performing update!"), any(QuestRuntimeException.class));
+        verify(logger, times(1)).debug(eq("Error while performing update!"), any(QuestException.class));
         verifyNoMoreInteractions(logger);
     }
 
@@ -249,7 +249,7 @@ class UpdaterTest {
 
         verify(logger, times(1)).info("Found newer version '2.0.0-DEV-5', it will be installed, if you execute '/q update'!");
         verify(logger, times(1)).info("Update aborted! A newer version was found. New version '2.0.0-DEV-6'! You can execute '/q update' again to update.");
-        verify(logger, times(1)).debug(eq("Error while performing update!"), any(QuestRuntimeException.class));
+        verify(logger, times(1)).debug(eq("Error while performing update!"), any(QuestException.class));
         verifyNoMoreInteractions(logger);
     }
 
@@ -280,7 +280,7 @@ class UpdaterTest {
         }
 
         verify(logger, times(1)).info("The updater did not find an update! This can depend on your update.strategy, check config entry 'update.strategy'.");
-        verify(logger, times(1)).debug(eq("Error while performing update!"), any(QuestRuntimeException.class));
+        verify(logger, times(1)).debug(eq("Error while performing update!"), any(QuestException.class));
         verifyNoMoreInteractions(logger);
     }
 
@@ -312,7 +312,7 @@ class UpdaterTest {
         }
 
         verify(logger, times(1)).info("The update was already downloaded! Restart the server to update the plugin.");
-        verify(logger, times(1)).debug(eq("Error while performing update!"), any(QuestRuntimeException.class));
+        verify(logger, times(1)).debug(eq("Error while performing update!"), any(QuestException.class));
         verifyNoMoreInteractions(logger);
     }
 
@@ -340,7 +340,7 @@ class UpdaterTest {
         }
 
         verify(logger, times(1)).info("The updater is disabled! Change config entry 'update.enabled' to 'true' to enable it.");
-        verify(logger, times(1)).debug(eq("Error while performing update!"), any(QuestRuntimeException.class));
+        verify(logger, times(1)).debug(eq("Error while performing update!"), any(QuestException.class));
         verifyNoMoreInteractions(logger);
     }
 }

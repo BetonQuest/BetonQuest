@@ -29,16 +29,16 @@ public class MyCustomSchedule extends Schedule/* (1)! */ {
     private final int ticks, rebootSleep;
 
     // (2)!
-    public MyCustomSchedule(ScheduleID scheduleID, ConfigurationSection instruction) throws InstructionParseException { 
+    public MyCustomSchedule(ScheduleID scheduleID, ConfigurationSection instruction) throws QuestException { 
         super(scheduleID, instruction);
         try {
             ticks = Integer.parseInt(getTime()/* (3)! */);
         } catch (NumberFormatException e) {
-            throw new InstructionParseException("Time is not a number");// (4)!
+            throw new QuestException("Time is not a number");// (4)!
         }
 
         if (getCatchup() != CatchupStrategy.NONE) {// (5)!
-            throw new InstructionParseException("Catchup " + getCatchup() + " is not supported by this schedule type");
+            throw new QuestException("Catchup " + getCatchup() + " is not supported by this schedule type");
         }
 
         rebootSleep = instruction.getInt("options.rebootSleep");// (6)!
@@ -61,7 +61,7 @@ public class MyCustomSchedule extends Schedule/* (1)! */ {
 
 4. Make sure to handle all parsing errors & thrown exceptions!  
    If a schedule can't be loaded due to an invalid instruction,
-   you should throw a `InstructionParseException` that describes
+   you should throw a `QuestException` that describes
    the error.
 
 5.  You'll have to implement your own handling of catchup strategies

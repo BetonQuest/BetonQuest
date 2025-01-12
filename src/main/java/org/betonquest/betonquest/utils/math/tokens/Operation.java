@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.utils.math.tokens;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.utils.math.Operator;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,7 +43,7 @@ public class Operation implements Token {
     }
 
     @Override
-    public double resolve(@Nullable final Profile profile) throws QuestRuntimeException {
+    public double resolve(@Nullable final Profile profile) throws QuestException {
         return operator.calculate(val1.resolve(profile), val2.resolve(profile));
     }
 

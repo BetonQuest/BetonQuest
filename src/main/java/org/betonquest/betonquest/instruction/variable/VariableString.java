@@ -3,8 +3,7 @@ package org.betonquest.betonquest.instruction.variable;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,11 +16,11 @@ public class VariableString extends Variable<String> {
      *
      * @param pack  the package in which the variable is used in
      * @param input the string that may contain variables
-     * @throws InstructionParseException if the variables could not be created or resolved to the given type
+     * @throws QuestException if the variables could not be created or resolved to the given type
      * @deprecated use {@link #VariableString(VariableProcessor, QuestPackage, String)} instead
      */
     @Deprecated
-    public VariableString(final QuestPackage pack, final String input) throws InstructionParseException {
+    public VariableString(final QuestPackage pack, final String input) throws QuestException {
         this(BetonQuest.getInstance().getVariableProcessor(), pack, input);
     }
 
@@ -31,9 +30,9 @@ public class VariableString extends Variable<String> {
      * @param variableProcessor the processor to create the variables
      * @param pack              the package in which the variable is used in
      * @param input             the string that may contain variables
-     * @throws InstructionParseException if the variables could not be created or resolved to the given type
+     * @throws QuestException if the variables could not be created or resolved to the given type
      */
-    public VariableString(final VariableProcessor variableProcessor, final QuestPackage pack, final String input) throws InstructionParseException {
+    public VariableString(final VariableProcessor variableProcessor, final QuestPackage pack, final String input) throws QuestException {
         this(variableProcessor, pack, input, false);
     }
 
@@ -43,11 +42,11 @@ public class VariableString extends Variable<String> {
      * @param pack               the package in which the variable is used in
      * @param input              the string that may contain variables
      * @param replaceUnderscores whether underscores should be replaced
-     * @throws InstructionParseException if the variables could not be created or resolved to the given type
+     * @throws QuestException if the variables could not be created or resolved to the given type
      * @deprecated use {@link #VariableString(VariableProcessor, QuestPackage, String, boolean)} instead
      */
     @Deprecated
-    public VariableString(final QuestPackage pack, final String input, final boolean replaceUnderscores) throws InstructionParseException {
+    public VariableString(final QuestPackage pack, final String input, final boolean replaceUnderscores) throws QuestException {
         super(BetonQuest.getInstance().getVariableProcessor(), pack, replaceUnderscores(input, replaceUnderscores), (value) -> value);
     }
 
@@ -58,9 +57,9 @@ public class VariableString extends Variable<String> {
      * @param pack               the package in which the variable is used in
      * @param input              the string that may contain variables
      * @param replaceUnderscores whether underscores should be replaced
-     * @throws InstructionParseException if the variables could not be created or resolved to the given type
+     * @throws QuestException if the variables could not be created or resolved to the given type
      */
-    public VariableString(final VariableProcessor variableProcessor, final QuestPackage pack, final String input, final boolean replaceUnderscores) throws InstructionParseException {
+    public VariableString(final VariableProcessor variableProcessor, final QuestPackage pack, final String input, final boolean replaceUnderscores) throws QuestException {
         super(variableProcessor, pack, replaceUnderscores(input, replaceUnderscores), (value) -> value);
     }
 
@@ -82,7 +81,7 @@ public class VariableString extends Variable<String> {
     public String getString(@Nullable final Profile profile) {
         try {
             return getValue(profile);
-        } catch (final QuestRuntimeException e) {
+        } catch (final QuestException e) {
             return "";
         }
     }

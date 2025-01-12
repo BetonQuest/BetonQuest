@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.modules.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.modules.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
@@ -70,7 +70,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag add");
-        assertThrows(InstructionParseException.class, () -> factory.parseEvent(instruction), "globaltag event action add without tags should throw an exception when created");
+        assertThrows(QuestException.class, () -> factory.parseEvent(instruction), "globaltag event action add without tags should throw an exception when created");
     }
 
     @Test
@@ -97,7 +97,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag delete");
-        assertThrows(InstructionParseException.class, () -> factory.parseEvent(instruction), "globaltag event action delete without tags should throw an exception when created");
+        assertThrows(QuestException.class, () -> factory.parseEvent(instruction), "globaltag event action delete without tags should throw an exception when created");
     }
 
     @Test
@@ -124,7 +124,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag del");
-        assertThrows(InstructionParseException.class, () -> factory.parseEvent(instruction), "globaltag event action del without tags should throw an exception when created");
+        assertThrows(QuestException.class, () -> factory.parseEvent(instruction), "globaltag event action del without tags should throw an exception when created");
     }
 
     @Test
@@ -133,7 +133,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag invalid tag-1,tag-2");
-        assertThrows(InstructionParseException.class, () -> factory.parseEvent(instruction), "globaltag event action invalid should throw an exception when created");
+        assertThrows(QuestException.class, () -> factory.parseEvent(instruction), "globaltag event action invalid should throw an exception when created");
     }
 
     @Test
@@ -160,7 +160,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag add");
-        assertThrows(InstructionParseException.class, () -> factory.parseStaticEvent(instruction), "globaltag event action add without tags should throw an exception when created");
+        assertThrows(QuestException.class, () -> factory.parseStaticEvent(instruction), "globaltag event action add without tags should throw an exception when created");
     }
 
     @Test
@@ -187,7 +187,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag delete");
-        assertThrows(InstructionParseException.class, () -> factory.parseStaticEvent(instruction), "globaltag event action delete without tags should throw an exception when created");
+        assertThrows(QuestException.class, () -> factory.parseStaticEvent(instruction), "globaltag event action delete without tags should throw an exception when created");
     }
 
     @Test
@@ -214,7 +214,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag del");
-        assertThrows(InstructionParseException.class, () -> factory.parseStaticEvent(instruction), "globaltag event action del without tags should throw an exception when created");
+        assertThrows(QuestException.class, () -> factory.parseStaticEvent(instruction), "globaltag event action del without tags should throw an exception when created");
     }
 
     @Test
@@ -223,6 +223,6 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(logger, questPackage, null, "globaltag invalid tag-1,tag-2");
-        assertThrows(InstructionParseException.class, () -> factory.parseStaticEvent(instruction), "globaltag event action invalid should throw an exception when created");
+        assertThrows(QuestException.class, () -> factory.parseStaticEvent(instruction), "globaltag event action invalid should throw an exception when created");
     }
 }

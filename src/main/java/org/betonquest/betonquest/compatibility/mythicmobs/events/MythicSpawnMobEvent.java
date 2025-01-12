@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.compatibility.protocollib.hider.MythicHider;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -56,7 +56,7 @@ public class MythicSpawnMobEvent implements Event, StaticEvent {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(final Profile profile) throws QuestException {
         final Player player = profile.getOnlineProfile().get().getPlayer();
         final int pAmount = amount.getValue(profile).intValue();
         final int level = this.level.getValue(profile).intValue();
@@ -69,7 +69,7 @@ public class MythicSpawnMobEvent implements Event, StaticEvent {
                 if (privateMob) {
                     final MythicHider mythicHider = MythicHider.getInstance();
                     if (mythicHider == null) {
-                        throw new QuestRuntimeException("Can't hide MythicMob because the Hider is null!");
+                        throw new QuestException("Can't hide MythicMob because the Hider is null!");
                     }
                     Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> mythicHider.applyVisibilityPrivate(profile.getOnlineProfile().get(), entity), 20L);
                 }
@@ -81,13 +81,13 @@ public class MythicSpawnMobEvent implements Event, StaticEvent {
                     entity.getPersistentDataContainer().set(key, PersistentDataType.STRING, marked.getValue(profile));
                 }
             } catch (final InvalidMobTypeException e) {
-                throw new QuestRuntimeException("MythicMob type " + mob + " is invalid.", e);
+                throw new QuestException("MythicMob type " + mob + " is invalid.", e);
             }
         }
     }
 
     @Override
-    public void execute() throws QuestRuntimeException {
+    public void execute() throws QuestException {
         final int pAmount = amount.getValue(null).intValue();
         final int level = this.level.getValue(null).intValue();
         final Location location = loc.getValue(null);
@@ -99,7 +99,7 @@ public class MythicSpawnMobEvent implements Event, StaticEvent {
                     entity.getPersistentDataContainer().set(key, PersistentDataType.STRING, marked.getValue(null));
                 }
             } catch (final InvalidMobTypeException e) {
-                throw new QuestRuntimeException("MythicMob type " + mob + " is invalid.", e);
+                throw new QuestException("MythicMob type " + mob + " is invalid.", e);
             }
         }
     }

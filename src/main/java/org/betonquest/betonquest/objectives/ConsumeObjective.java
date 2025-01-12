@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -34,9 +34,9 @@ public class ConsumeObjective extends CountingObjective implements Listener {
      * Constructs a new {@code ConsumeObjective} for the given {@code Instruction}.
      *
      * @param instruction the instruction out of a quest package
-     * @throws InstructionParseException if the instruction is invalid
+     * @throws QuestException if the instruction is invalid
      */
-    public ConsumeObjective(final Instruction instruction) throws InstructionParseException {
+    public ConsumeObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         item = instruction.getQuestItem();
         targetAmount = instruction.getVarNum(instruction.getOptional(AMOUNT_ARGUMENT, "1"), VariableNumber.NOT_LESS_THAN_ONE_CHECKER);

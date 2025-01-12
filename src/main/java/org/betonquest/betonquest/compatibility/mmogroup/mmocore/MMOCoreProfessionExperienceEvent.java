@@ -7,8 +7,7 @@ import net.Indyuce.mmocore.experience.Profession;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 @SuppressWarnings("PMD.CommentRequired")
@@ -19,14 +18,14 @@ public class MMOCoreProfessionExperienceEvent extends QuestEvent {
 
     private final boolean isLevel;
 
-    public MMOCoreProfessionExperienceEvent(final Instruction instruction) throws InstructionParseException {
+    public MMOCoreProfessionExperienceEvent(final Instruction instruction) throws QuestException {
         super(instruction, true);
 
         final String professionName = instruction.next();
         if (MMOCore.plugin.professionManager.has(professionName)) {
             profession = MMOCore.plugin.professionManager.get(professionName);
         } else {
-            throw new InstructionParseException("The profession could not be found!");
+            throw new QuestException("The profession could not be found!");
         }
 
         amountVar = instruction.getVarNum();
@@ -34,7 +33,7 @@ public class MMOCoreProfessionExperienceEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final Profile profile) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) throws QuestException {
         final int amount = amountVar.getInt(profile);
         final PlayerData mmoData = PlayerData.get(profile.getPlayerUUID());
 

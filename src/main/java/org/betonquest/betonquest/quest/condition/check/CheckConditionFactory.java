@@ -10,8 +10,8 @@ import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
 import org.jetbrains.annotations.Nullable;
@@ -39,20 +39,20 @@ public class CheckConditionFactory implements PlayerConditionFactory, Playerless
     }
 
     @Override
-    public PlayerCondition parsePlayer(final Instruction instruction) throws InstructionParseException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         return new NullableConditionAdapter(new CheckCondition(parseConditions(instruction)));
     }
 
     @Override
-    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws InstructionParseException {
+    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
         return new NullableConditionAdapter(new CheckCondition(parseConditions(instruction)));
     }
 
-    private List<Condition> parseConditions(final Instruction instruction) throws InstructionParseException {
+    private List<Condition> parseConditions(final Instruction instruction) throws QuestException {
         final List<Condition> internalConditions = new ArrayList<>();
         final String[] parts = instruction.getAllParts();
         if (parts.length == 0) {
-            throw new InstructionParseException("Not enough arguments");
+            throw new QuestException("Not enough arguments");
         }
         final QuestPackage questPackage = instruction.getPackage();
         StringBuilder builder = new StringBuilder();
@@ -75,23 +75,23 @@ public class CheckConditionFactory implements PlayerConditionFactory, Playerless
      * Constructs a condition with given instruction and returns it.
      */
     @Nullable
-    private Condition createCondition(final String instruction, final QuestPackage questPackage) throws InstructionParseException {
+    private Condition createCondition(final String instruction, final QuestPackage questPackage) throws QuestException {
         final String[] parts = instruction.split(" ");
         if (parts.length == 0) {
-            throw new InstructionParseException("Not enough arguments in internal condition");
+            throw new QuestException("Not enough arguments in internal condition");
         }
         final LegacyTypeFactory<Condition> conditionFactory = BetonQuest.getInstance().getQuestRegistries().getConditionTypes().getFactory(parts[0]);
         if (conditionFactory == null) {
             // if it's null then there is no such type registered, log an error
-            throw new InstructionParseException("Condition type " + parts[0] + " is not registered, check if it's"
+            throw new QuestException("Condition type " + parts[0] + " is not registered, check if it's"
                     + " spelled correctly in internal condition");
         }
         try {
             final Instruction innerInstruction = new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), questPackage, new NoID(questPackage), instruction);
             return conditionFactory.parseInstruction(innerInstruction);
         } catch (final ObjectNotFoundException e) {
-            if (e.getCause() instanceof InstructionParseException) {
-                throw new InstructionParseException("Error in internal condition: " + e.getCause().getMessage(), e);
+            if (e.getCause() instanceof QuestException) {
+                throw new QuestException("Error in internal condition: " + e.getCause().getMessage(), e);
             } else {
                 log.reportException(questPackage, e);
             }

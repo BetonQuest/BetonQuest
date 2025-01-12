@@ -6,8 +6,8 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.VariableID;
 import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
 import org.betonquest.betonquest.quest.registry.type.VariableTypeRegistry;
@@ -52,15 +52,15 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable>
      * @param pack        package in which the variable is defined
      * @param instruction instruction of the variable, including both % characters.
      * @return the Variable instance
-     * @throws InstructionParseException when the variable parsing fails
+     * @throws QuestException when the variable parsing fails
      */
     public Variable create(@Nullable final QuestPackage pack, final String instruction)
-            throws InstructionParseException {
+            throws QuestException {
         final VariableID variableID;
         try {
             variableID = new VariableID(loggerFactory, pack, instruction);
         } catch (final ObjectNotFoundException e) {
-            throw new InstructionParseException("Could not load variable: " + e.getMessage(), e);
+            throw new QuestException("Could not load variable: " + e.getMessage(), e);
         }
         final Variable existingVariable = values.get(variableID);
         if (existingVariable != null) {
@@ -69,7 +69,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable>
         final Instruction instructionVar = variableID.getInstruction();
         final LegacyTypeFactory<Variable> variableFactory = types.getFactory(instructionVar.current());
         if (variableFactory == null) {
-            throw new InstructionParseException("Variable type " + instructionVar.current() + " is not registered");
+            throw new QuestException("Variable type " + instructionVar.current() + " is not registered");
         }
 
         final Variable variable = variableFactory.parseInstruction(instructionVar);
@@ -85,17 +85,17 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable>
      * @param name    name of the variable (instruction, with % characters)
      * @param profile the {@link Profile} of the player
      * @return the value of this variable for given player
-     * @throws InstructionParseException if the variable could not be created
+     * @throws QuestException if the variable could not be created
      */
-    public String getValue(final QuestPackage pack, final String name, @Nullable final Profile profile) throws InstructionParseException {
+    public String getValue(final QuestPackage pack, final String name, @Nullable final Profile profile) throws QuestException {
         final Variable var;
         try {
             var = create(pack, name);
-        } catch (final InstructionParseException e) {
-            throw new InstructionParseException("Could not create variable '" + name + "': " + e.getMessage(), e);
+        } catch (final QuestException e) {
+            throw new QuestException("Could not create variable '" + name + "': " + e.getMessage(), e);
         }
         if (profile == null && !var.isStaticness()) {
-            throw new InstructionParseException("Non-static variable '" + name + "' cannot be executed without a profile reference!");
+            throw new QuestException("Non-static variable '" + name + "' cannot be executed without a profile reference!");
         }
         return var.getValue(profile);
     }

@@ -5,7 +5,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -31,11 +31,11 @@ public class LanguageConditionFactory implements PlayerConditionFactory {
     }
 
     @Override
-    public PlayerCondition parsePlayer(final Instruction instruction) throws InstructionParseException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final String[] languages = instruction.getArray();
         for (final String language : languages) {
             if (!Config.getLanguages().contains(language)) {
-                throw new InstructionParseException("Language " + language + " does not exist.");
+                throw new QuestException("Language " + language + " does not exist.");
             }
         }
         final Set<String> expectedLanguages = new HashSet<>(Arrays.asList(languages));

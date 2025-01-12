@@ -6,8 +6,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -42,7 +41,7 @@ public class DieObjective extends Objective implements Listener {
     @Nullable
     private final VariableLocation location;
 
-    public DieObjective(final Instruction instruction) throws InstructionParseException {
+    public DieObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         cancel = instruction.hasArgument("cancel");
@@ -108,7 +107,7 @@ public class DieObjective extends Objective implements Listener {
         }
         try {
             return Optional.of(location.getValue(onlineProfile));
-        } catch (final QuestRuntimeException e) {
+        } catch (final QuestException e) {
             log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
             return Optional.empty();
         }

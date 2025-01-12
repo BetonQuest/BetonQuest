@@ -25,9 +25,8 @@ import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
@@ -434,7 +433,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     false
             );
             give.execute(PlayerConverter.getID((Player) sender));
-        } catch (final InstructionParseException | QuestRuntimeException e) {
+        } catch (final QuestException e) {
             sendMessage(sender, "error", e.getMessage());
             log.warn("Error while creating an item: " + e.getMessage(), e);
         }

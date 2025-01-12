@@ -5,7 +5,7 @@ import com.comphenix.packetwrapper.WrapperPlayServerSetSlot;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -28,13 +28,13 @@ public class TotemNotifyIO extends NotifyIO {
     private final int customModelData;
 
     /**
-     * Creates a new TotemNotifyIO instance based on the users instruction string.
+     * Creates a new TotemNotifyIO instance based on the user's instruction string.
      *
      * @param pack the related {@link QuestPackage}
      * @param data map with user instructions.
-     * @throws InstructionParseException if the users input couldn't be parsed.
+     * @throws QuestException if the user's input couldn't be parsed.
      */
-    public TotemNotifyIO(final QuestPackage pack, final Map<String, String> data) throws InstructionParseException {
+    public TotemNotifyIO(final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(pack, data);
         customModelData = getIntegerData("custommodeldata", 2);
     }
@@ -69,7 +69,6 @@ public class TotemNotifyIO extends NotifyIO {
         slotPacket.setSlotData(offHandItem);
         slotPacket.setWindowId(0);
         slotPacket.sendPacket(player);
-
     }
 
     private void playSilentTotemEffect(final Player player) {

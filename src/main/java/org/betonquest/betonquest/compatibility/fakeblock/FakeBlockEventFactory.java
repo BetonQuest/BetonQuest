@@ -5,7 +5,7 @@ import com.briarcraft.fakeblock.api.service.PlayerGroupService;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -48,11 +48,11 @@ public class FakeBlockEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(getFakeBlockEvent(instruction), data);
     }
 
-    private Event getFakeBlockEvent(final Instruction instruction) throws InstructionParseException {
+    private Event getFakeBlockEvent(final Instruction instruction) throws QuestException {
         final String action = instruction.next();
         final List<String> groupNames = new ArrayList<>();
         Collections.addAll(groupNames, instruction.getArray());
@@ -61,11 +61,11 @@ public class FakeBlockEventFactory implements EventFactory {
             case "hidegroup" -> new HideGroupEvent(groupNames, playerGroupService);
             case "showgroup" -> new ShowGroupEvent(groupNames, playerGroupService);
             default ->
-                    throw new InstructionParseException("Unknown action (valid options are: showgroup, hidegroup): " + action);
+                    throw new QuestException("Unknown action (valid options are: showgroup, hidegroup): " + action);
         };
     }
 
-    private void checkForNotExistingGroups(final List<String> groupNames) throws InstructionParseException {
+    private void checkForNotExistingGroups(final List<String> groupNames) throws QuestException {
         final List<String> notExistingGroups = new ArrayList<>();
         for (final String groupName : groupNames) {
             if (!groupService.getProvider().hasGroup(groupName)) {
@@ -75,6 +75,6 @@ public class FakeBlockEventFactory implements EventFactory {
         if (notExistingGroups.isEmpty()) {
             return;
         }
-        throw new InstructionParseException("The following groups do not exist: " + notExistingGroups);
+        throw new QuestException("The following groups do not exist: " + notExistingGroups);
     }
 }

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.api.quest.event.nullable;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * An adapter to handle both the {@link Event} and {@link StaticEvent} with one
@@ -25,12 +25,12 @@ public final class NullableEventAdapter implements Event, StaticEvent {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(final Profile profile) throws QuestException {
         event.execute(profile);
     }
 
     @Override
-    public void execute() throws QuestRuntimeException {
+    public void execute() throws QuestException {
         event.execute(null);
     }
 }

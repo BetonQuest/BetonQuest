@@ -3,8 +3,8 @@ package org.betonquest.betonquest.quest.registry.processor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
 import org.betonquest.betonquest.quest.registry.type.QuestTypeRegistry;
@@ -40,7 +40,7 @@ public abstract class TypedQuestProcessor<I extends ID, T> extends QuestProcesso
      *
      * @param log      the custom logger for this class
      * @param types    the available types
-     * @param readable the type name used for logging, with first letter in upper case
+     * @param readable the type name used for logging, with the first letter in upper case
      * @param internal the section name and/or bstats topic identifier
      */
     public TypedQuestProcessor(final BetonQuestLogger log, final QuestTypeRegistry<?, ?, T> types,
@@ -87,7 +87,7 @@ public abstract class TypedQuestProcessor<I extends ID, T> extends QuestProcesso
         final String type;
         try {
             type = identifier.getInstruction().getPart(0);
-        } catch (final InstructionParseException e) {
+        } catch (final QuestException e) {
             log.warn(pack, readable + " type not defined in '" + packName + "." + key + "'", e);
             return;
         }
@@ -102,7 +102,7 @@ public abstract class TypedQuestProcessor<I extends ID, T> extends QuestProcesso
             final T parsed = factory.parseInstruction(identifier.getInstruction());
             values.put(identifier, parsed);
             log.debug(pack, "  " + readable + " '" + identifier + "' loaded");
-        } catch (final InstructionParseException e) {
+        } catch (final QuestException e) {
             log.warn(pack, "Error in '" + identifier + "' " + readable + " (" + type + "): " + e.getMessage(), e);
         }
     }

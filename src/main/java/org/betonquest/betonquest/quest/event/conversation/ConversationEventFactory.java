@@ -5,8 +5,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -38,12 +38,12 @@ public class ConversationEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         final ConversationID conversationID;
         try {
             conversationID = new ConversationID(instruction.getPackage(), instruction.next());
         } catch (final ObjectNotFoundException e) {
-            throw new InstructionParseException(e.getMessage(), e);
+            throw new QuestException(e.getMessage(), e);
         }
         final String startingOption = getStartOption(instruction, conversationID);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
@@ -59,10 +59,10 @@ public class ConversationEventFactory implements EventFactory {
      * @param instruction    to get option name from
      * @param conversationID to get option from
      * @return null if no option argument is given, otherwise the option name
-     * @throws InstructionParseException if no NPC option with the given name is present
+     * @throws QuestException if no NPC option with the given name is present
      */
     @Nullable
-    private String getStartOption(final Instruction instruction, final ConversationID conversationID) throws InstructionParseException {
+    private String getStartOption(final Instruction instruction, final ConversationID conversationID) throws QuestException {
         final String targetOptionName = instruction.getOptional("option");
         if (targetOptionName == null) {
             return null;
@@ -71,7 +71,7 @@ public class ConversationEventFactory implements EventFactory {
         // We need to manually check the existence of the starting option because the conversation is not loaded yet.
         final String optionPath = "conversations." + conversationID.getBaseID() + ".NPC_options." + targetOptionName;
         if (!conversationID.getPackage().getConfig().contains(optionPath)) {
-            throw new InstructionParseException("NPC Option '" + targetOptionName + "' does not exist in '" + conversationID + "'.");
+            throw new QuestException("NPC Option '" + targetOptionName + "' does not exist in '" + conversationID + "'.");
         }
 
         return targetOptionName;

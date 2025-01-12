@@ -4,7 +4,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NoNotificationSender;
@@ -42,14 +42,14 @@ public class PointEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         final String action = instruction.getOptional("action");
         Point type = Point.ADD;
         if (action != null) {
             try {
                 type = Point.valueOf(action.toUpperCase(Locale.ROOT));
             } catch (final IllegalArgumentException e) {
-                throw new InstructionParseException("Unknown modification action: " + action, e);
+                throw new QuestException("Unknown modification action: " + action, e);
             }
         }
         final String categoryName = instruction.next();

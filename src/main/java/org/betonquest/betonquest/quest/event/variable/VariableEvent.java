@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.objectives.VariableObjective;
@@ -50,15 +50,15 @@ public class VariableEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(final Profile profile) throws QuestException {
         final Objective obj = betonQuest.getObjective(objectiveID);
         if (!(obj instanceof final VariableObjective objective)) {
-            throw new QuestRuntimeException(objectiveID.getFullID() + " is not a variable objective");
+            throw new QuestException(objectiveID.getFullID() + " is not a variable objective");
         }
         final String keyReplaced = key.getValue(profile);
         final String valueReplaced = value.getValue(profile);
         if (!objective.store(profile, keyReplaced, valueReplaced)) {
-            throw new QuestRuntimeException("Player " + profile.getProfileName() + " does not have '"
+            throw new QuestException("Player " + profile.getProfileName() + " does not have '"
                     + objectiveID + "' objective, cannot store a variable.");
         }
     }

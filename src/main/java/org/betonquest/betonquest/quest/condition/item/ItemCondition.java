@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
@@ -38,7 +38,7 @@ public class ItemCondition implements OnlineCondition {
     }
 
     @Override
-    public boolean check(final OnlineProfile profile) throws QuestRuntimeException {
+    public boolean check(final OnlineProfile profile) throws QuestException {
         final ItemStack[] inventoryItems = profile.getPlayer().getInventory().getContents();
         final List<ItemStack> backpackItems = betonQuest.getPlayerData(profile).getBackpack();
         for (final Item questItem : questItems) {

@@ -10,8 +10,7 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.condition.chest.ChestItemCondition;
 import org.betonquest.betonquest.quest.event.chest.ChestTakeEvent;
@@ -57,7 +56,7 @@ public class ChestPutObjective extends Objective implements Listener {
      */
     private final boolean multipleAccess;
 
-    public ChestPutObjective(final Instruction instruction) throws InstructionParseException {
+    public ChestPutObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
         this.log = loggerFactory.create(getClass());
@@ -85,13 +84,13 @@ public class ChestPutObjective extends Objective implements Listener {
             if (!checkIsInventory(loc.getValue(onlineProfile))) {
                 return;
             }
-        } catch (final QuestRuntimeException e) {
+        } catch (final QuestException e) {
             log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
         }
         if (!multipleAccess && !checkForNoOtherPlayer(event)) {
             try {
                 Config.sendNotify(null, onlineProfile, "chest_occupied", null);
-            } catch (final QuestRuntimeException e) {
+            } catch (final QuestException e) {
                 log.warn("The notify system was unable to send the message for 'chest_occupied'. Error was: '"
                         + e.getMessage() + "'", e);
             }
@@ -142,12 +141,12 @@ public class ChestPutObjective extends Objective implements Listener {
                     }
                 }
             }
-        } catch (final QuestRuntimeException e) {
+        } catch (final QuestException e) {
             log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
         }
     }
 
-    private void checkItems(final OnlineProfile onlineProfile) throws QuestRuntimeException {
+    private void checkItems(final OnlineProfile onlineProfile) throws QuestException {
         if (chestItemCondition.check(onlineProfile) && checkConditions(onlineProfile)) {
             completeObjective(onlineProfile);
             if (chestTakeEvent != null) {

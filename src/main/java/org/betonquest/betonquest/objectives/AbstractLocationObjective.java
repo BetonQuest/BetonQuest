@@ -4,8 +4,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -56,14 +55,14 @@ public abstract class AbstractLocationObjective extends Objective implements Lis
     private final Map<UUID, Boolean> playersInsideRegion;
 
     /**
-     * The constructor takes an Instruction object as a parameter and throws an InstructionParseException.
+     * The constructor takes an Instruction object as a parameter and throws an QuestException.
      * It initializes the entry and exit booleans and the playersInsideRegion map.
      *
      * @param log         the BetonQuestLogger object to be used in the constructor
      * @param instruction the Instruction object to be used in the constructor
-     * @throws InstructionParseException if there is an error while parsing the instruction
+     * @throws QuestException if there is an error while parsing the instruction
      */
-    public AbstractLocationObjective(final BetonQuestLogger log, final Instruction instruction) throws InstructionParseException {
+    public AbstractLocationObjective(final BetonQuestLogger log, final Instruction instruction) throws QuestException {
         super(instruction);
         this.log = log;
         entry = instruction.hasArgument("entry");
@@ -180,7 +179,7 @@ public abstract class AbstractLocationObjective extends Objective implements Lis
 
     private boolean isInsideHandleException(final Location location, final OnlineProfile onlineProfile) {
         final AtomicBoolean toInsideAtomic = new AtomicBoolean();
-        qreHandler.handle(() -> toInsideAtomic.set(isInside(onlineProfile, location)));
+        qeHandler.handle(() -> toInsideAtomic.set(isInside(onlineProfile, location)));
         return toInsideAtomic.get();
     }
 
@@ -190,7 +189,7 @@ public abstract class AbstractLocationObjective extends Objective implements Lis
      * @param onlineProfile the online profile of the player
      * @param location      the location to be checked
      * @return true if the player is inside the location, false otherwise
-     * @throws QuestRuntimeException if there is an error while checking if the player is inside the location
+     * @throws QuestException if there is an error while checking if the player is inside the location
      */
-    protected abstract boolean isInside(OnlineProfile onlineProfile, Location location) throws QuestRuntimeException;
+    protected abstract boolean isInside(OnlineProfile onlineProfile, Location location) throws QuestException;
 }

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.stage;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.objectives.StageObjective;
@@ -50,36 +50,36 @@ public class StageCondition implements PlayerCondition {
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestRuntimeException {
+    public boolean check(final Profile profile) throws QuestException {
         return operation.check(getFirst(profile), getSecond(profile));
     }
 
-    private Double getFirst(final Profile profile) throws QuestRuntimeException {
+    private Double getFirst(final Profile profile) throws QuestException {
         final StageObjective stage = getStageObjective();
         if (stage.getData(profile) == null) {
             return -1.0;
         }
         try {
             return (double) stage.getStageIndex(stage.getStage(profile));
-        } catch (final QuestRuntimeException e) {
+        } catch (final QuestException e) {
             throw new IllegalStateException(profile + " has an invalid stage", e);
         }
     }
 
-    private Double getSecond(final Profile profile) throws QuestRuntimeException {
+    private Double getSecond(final Profile profile) throws QuestException {
         final StageObjective stage = getStageObjective();
         final String targetState = targetStage.getValue(profile);
         try {
             return (double) stage.getStageIndex(targetState);
-        } catch (final QuestRuntimeException e) {
+        } catch (final QuestException e) {
             throw new IllegalStateException("The stage " + targetState + "' does not exist", e);
         }
     }
 
-    private StageObjective getStageObjective() throws QuestRuntimeException {
+    private StageObjective getStageObjective() throws QuestException {
         if (betonQuest.getObjective(objectiveID) instanceof final StageObjective stageObjective) {
             return stageObjective;
         }
-        throw new QuestRuntimeException("Objective '" + objectiveID.getFullID() + "' is not a stage objective");
+        throw new QuestException("Objective '" + objectiveID.getFullID() + "' is not a stage objective");
     }
 }

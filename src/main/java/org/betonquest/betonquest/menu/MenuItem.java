@@ -6,9 +6,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
@@ -154,7 +153,7 @@ public class MenuItem extends SimpleYMLSection {
                     return getBoolean("close");
                 }
             }.get();
-        } catch (final ObjectNotFoundException | InstructionParseException e) {
+        } catch (final ObjectNotFoundException | QuestException e) {
             throw new InvalidConfigurationException(e.getMessage(), e);
         }
     }
@@ -230,8 +229,8 @@ public class MenuItem extends SimpleYMLSection {
                 }
             }
             return item;
-        } catch (final QuestRuntimeException qre) {
-            log.error(pack, "QuestRuntimeException while creating '" + name + "': " + qre.getMessage());
+        } catch (final QuestException e) {
+            log.error(pack, "QuestException while creating '" + name + "': " + e.getMessage());
             return new ItemStack(Material.AIR);
         }
     }
@@ -246,7 +245,7 @@ public class MenuItem extends SimpleYMLSection {
     }
 
     private Map<String, ItemDescription> generateDescriptions(final String menuID, final ConfigurationSection section)
-            throws Missing, InstructionParseException {
+            throws Missing, QuestException {
         final Map<String, ItemDescription> descriptions = new HashMap<>();
 
         if (section.contains(CONFIG_TEXT)) {
@@ -257,7 +256,7 @@ public class MenuItem extends SimpleYMLSection {
             } else if (section.isList(CONFIG_TEXT)) {
                 descriptions.put(Config.getLanguage(), new ItemDescription(this.pack, getStringList(CONFIG_TEXT)));
             } else {
-                throw new InstructionParseException("Unrecognized item '" + name + "' text configuration in menu '"
+                throw new QuestException("Unrecognized item '" + name + "' text configuration in menu '"
                         + menuID + "'");
             }
         }
@@ -266,7 +265,7 @@ public class MenuItem extends SimpleYMLSection {
     }
 
     private Map<String, ItemDescription> generateLanguageDescriptions(final String menuID, final ConfigurationSection section)
-            throws Missing, InstructionParseException {
+            throws Missing, QuestException {
         final Map<String, ItemDescription> descriptions = new HashMap<>();
 
         final ConfigurationSection textSection = section.getConfigurationSection(CONFIG_TEXT);
@@ -277,7 +276,7 @@ public class MenuItem extends SimpleYMLSection {
                 } else if (section.isList(CONFIG_TEXT_PATH + lang)) {
                     descriptions.put(lang, new ItemDescription(this.pack, getStringList(CONFIG_TEXT_PATH + lang)));
                 } else {
-                    throw new InstructionParseException("Unrecognized item '" + name + "' text language '" + lang
+                    throw new QuestException("Unrecognized item '" + name + "' text language '" + lang
                             + "' configuration in menu '" + menuID + "'");
                 }
             }
@@ -298,12 +297,12 @@ public class MenuItem extends SimpleYMLSection {
 
         private final VariableNumber amount;
 
-        public Item(final ItemID itemID, final VariableNumber amount) throws InstructionParseException {
+        public Item(final ItemID itemID, final VariableNumber amount) throws QuestException {
             this.questItem = new QuestItem(itemID);
             this.amount = amount;
         }
 
-        public ItemStack generate(final Profile profile) throws QuestRuntimeException {
+        public ItemStack generate(final Profile profile) throws QuestException {
             return questItem.generate(amount.getValue(profile).intValue(), profile);
         }
     }

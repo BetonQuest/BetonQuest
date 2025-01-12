@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.bukkit.Bukkit;
@@ -87,7 +87,7 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
     }
 
     /**
-     * Checks if the condition described by conditionID is met
+     * Checks if the condition described by conditionID is met.
      *
      * @param conditionID ID of the condition to check
      * @param profile     the {@link Profile} of the player which should be checked
@@ -112,7 +112,7 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
         final boolean outcome;
         try {
             outcome = condition.handle(profile);
-        } catch (final QuestRuntimeException e) {
+        } catch (final QuestException e) {
             log.warn(conditionID.getPackage(), "Error while checking '" + conditionID + "' condition: " + e.getMessage(), e);
             return false;
         }

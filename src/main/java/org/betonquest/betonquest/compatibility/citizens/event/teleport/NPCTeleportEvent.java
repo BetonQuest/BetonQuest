@@ -6,7 +6,7 @@ import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.compatibility.citizens.CitizensIntegrator;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.jetbrains.annotations.Nullable;
@@ -37,10 +37,10 @@ public class NPCTeleportEvent implements NullableEvent {
     }
 
     @Override
-    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestException {
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
         if (npc == null) {
-            throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
+            throw new QuestException("NPC with ID " + npcId + " does not exist");
         }
         CitizensIntegrator.getCitizensMoveInstance().stopNPCMoving(npc);
         npc.getNavigator().cancelNavigation();

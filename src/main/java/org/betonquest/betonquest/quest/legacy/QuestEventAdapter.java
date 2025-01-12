@@ -5,8 +5,7 @@ import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -36,9 +35,9 @@ public class QuestEventAdapter extends QuestEvent {
      * @param instruction instruction used to create the events
      * @param event       event to use
      * @param staticEvent static event to use or null if no static execution is supported
-     * @throws InstructionParseException if the instruction contains errors
+     * @throws QuestException if the instruction contains errors
      */
-    public QuestEventAdapter(final Instruction instruction, @Nullable final Event event, @Nullable final StaticEvent staticEvent) throws InstructionParseException {
+    public QuestEventAdapter(final Instruction instruction, @Nullable final Event event, @Nullable final StaticEvent staticEvent) throws QuestException {
         super(instruction, false);
         if (event == null && staticEvent == null) {
             throw new IllegalArgumentException("Either the normal or static factory must be present!");
@@ -50,7 +49,7 @@ public class QuestEventAdapter extends QuestEvent {
     }
 
     @Override
-    protected Void execute(@Nullable final Profile profile) throws QuestRuntimeException {
+    protected Void execute(@Nullable final Profile profile) throws QuestException {
         if (event == null || profile == null) {
             Objects.requireNonNull(staticEvent);
             staticEvent.execute();

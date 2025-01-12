@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.chest;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.InventoryHolder;
@@ -39,13 +39,13 @@ public class ChestItemCondition implements NullableCondition {
     }
 
     @Override
-    public boolean check(@Nullable final Profile profile) throws QuestRuntimeException {
+    public boolean check(@Nullable final Profile profile) throws QuestException {
         final Block block = loc.getValue(profile).getBlock();
         final InventoryHolder chest;
         try {
             chest = (InventoryHolder) block.getState();
         } catch (final ClassCastException e) {
-            throw new QuestRuntimeException("Trying to check items in a chest, but there's no chest! Location: X" + block.getX() + " Y"
+            throw new QuestException("Trying to check items in a chest, but there's no chest! Location: X" + block.getX() + " Y"
                     + block.getY() + " Z" + block.getZ(), e);
         }
         int counter = 0;

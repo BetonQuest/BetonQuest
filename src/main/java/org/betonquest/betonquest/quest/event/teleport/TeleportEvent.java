@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.teleport;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.conversation.Conversation;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
 
@@ -26,7 +26,7 @@ public class TeleportEvent implements OnlineEvent {
     }
 
     @Override
-    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+    public void execute(final OnlineProfile profile) throws QuestException {
         final Conversation conv = Conversation.getConversation(profile);
         if (conv != null) {
             conv.endConversation();

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.damage;
 
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
@@ -24,7 +24,7 @@ public class DamageEvent implements OnlineEvent {
     }
 
     @Override
-    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+    public void execute(final OnlineProfile profile) throws QuestException {
         final double calculatedDamage = Math.abs(damage.getValue(profile).doubleValue());
         profile.getPlayer().damage(calculatedDamage);
     }

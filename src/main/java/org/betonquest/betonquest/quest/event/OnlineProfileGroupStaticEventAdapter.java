@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.entity.Player;
 
 import java.util.function.Supplier;
@@ -35,7 +35,7 @@ public class OnlineProfileGroupStaticEventAdapter implements StaticEvent {
     }
 
     @Override
-    public void execute() throws QuestRuntimeException {
+    public void execute() throws QuestException {
         for (final OnlineProfile onlineProfile : profileCollectionSupplier.get()) {
             event.execute(onlineProfile);
         }

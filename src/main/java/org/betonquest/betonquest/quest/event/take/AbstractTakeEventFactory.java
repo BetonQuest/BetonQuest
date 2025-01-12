@@ -4,7 +4,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NoNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
@@ -39,9 +39,9 @@ public abstract class AbstractTakeEventFactory implements EventFactory {
      *
      * @param instruction the instruction to get the check order from
      * @return the check order
-     * @throws InstructionParseException if the check order is invalid
+     * @throws QuestException if the check order is invalid
      */
-    protected List<CheckType> getCheckOrder(final Instruction instruction) throws InstructionParseException {
+    protected List<CheckType> getCheckOrder(final Instruction instruction) throws QuestException {
         final String order = instruction.getOptional("invOrder");
         if (order == null) {
             return Arrays.asList(CheckType.INVENTORY, CheckType.OFFHAND, CheckType.ARMOR, CheckType.BACKPACK);
@@ -53,7 +53,7 @@ public abstract class AbstractTakeEventFactory implements EventFactory {
                     final CheckType checkType = CheckType.valueOf(s.toUpperCase(Locale.ROOT));
                     checkOrder.add(checkType);
                 } catch (final IllegalArgumentException e) {
-                    throw new InstructionParseException("There is no such check type: " + s, e);
+                    throw new QuestException("There is no such check type: " + s, e);
                 }
             }
             return checkOrder;

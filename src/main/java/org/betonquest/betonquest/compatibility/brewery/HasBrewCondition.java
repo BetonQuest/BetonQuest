@@ -5,8 +5,7 @@ import com.dre.brewery.recipe.BRecipe;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -16,12 +15,12 @@ public class HasBrewCondition extends Condition {
 
     private final BRecipe brew;
 
-    public HasBrewCondition(final Instruction instruction) throws InstructionParseException {
+    public HasBrewCondition(final Instruction instruction) throws QuestException {
         super(instruction, true);
 
         count = instruction.getInt();
         if (count <= 0) {
-            throw new InstructionParseException("Can't give less than one brew!");
+            throw new QuestException("Can't give less than one brew!");
         }
 
         final String name = instruction.next().replace("_", " ");
@@ -35,14 +34,14 @@ public class HasBrewCondition extends Condition {
         }
 
         if (recipe == null) {
-            throw new InstructionParseException("There is no brewing recipe with the name " + name + "!");
+            throw new QuestException("There is no brewing recipe with the name " + name + "!");
         } else {
             this.brew = recipe;
         }
     }
 
     @Override
-    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+    protected Boolean execute(final Profile profile) throws QuestException {
         final Player player = profile.getOnlineProfile().get().getPlayer();
 
         int remaining = count;

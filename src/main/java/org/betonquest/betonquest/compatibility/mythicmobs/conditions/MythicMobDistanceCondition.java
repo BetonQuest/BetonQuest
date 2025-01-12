@@ -3,8 +3,7 @@ package org.betonquest.betonquest.compatibility.mythicmobs.conditions;
 import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.entity.Player;
 
@@ -16,14 +15,14 @@ public class MythicMobDistanceCondition implements PlayerCondition {
 
     private final VariableNumber distance;
 
-    public MythicMobDistanceCondition(final BukkitAPIHelper apiHelper, final String mythicMobInternalName, final VariableNumber distance) throws InstructionParseException {
+    public MythicMobDistanceCondition(final BukkitAPIHelper apiHelper, final String mythicMobInternalName, final VariableNumber distance) throws QuestException {
         this.apiHelper = apiHelper;
         this.mythicMobInternalName = mythicMobInternalName;
         this.distance = distance;
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestRuntimeException {
+    public boolean check(final Profile profile) throws QuestException {
         final Player player = profile.getOnlineProfile().get().getPlayer();
         final double dist = distance.getValue(profile).doubleValue();
 

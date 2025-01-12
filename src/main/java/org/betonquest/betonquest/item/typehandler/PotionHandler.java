@@ -2,7 +2,7 @@ package org.betonquest.betonquest.item.typehandler;
 
 import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Keyed;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -156,7 +156,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws InstructionParseException {
+    public void set(final String key, final String data) throws QuestException {
         switch (key) {
             case "type" -> setType(data);
             case EXTENDED -> {
@@ -179,7 +179,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
             }
             case "effects" -> setCustom(data);
             case "effects-containing" -> exact = false;
-            default -> throw new InstructionParseException("Unknown potion key: " + key);
+            default -> throw new QuestException("Unknown potion key: " + key);
         }
     }
 
@@ -196,12 +196,12 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         return checkBase(meta.getBasePotionData()) && checkCustom(meta.getCustomEffects());
     }
 
-    public void setType(final String type) throws InstructionParseException {
+    public void setType(final String type) throws QuestException {
         typeE = Existence.REQUIRED;
         try {
             this.type = PotionType.valueOf(type.toUpperCase(Locale.ROOT));
         } catch (final IllegalArgumentException e) {
-            throw new InstructionParseException("No such potion type: " + type, e);
+            throw new QuestException("No such potion type: " + type, e);
         }
     }
 
@@ -218,7 +218,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         return effects;
     }
 
-    public void setCustom(final String custom) throws InstructionParseException {
+    public void setCustom(final String custom) throws QuestException {
         final String[] parts = HandlerUtil.getNNSplit(custom, "Potion is null!", ",");
         if (Existence.NONE_KEY.equalsIgnoreCase(parts[0])) {
             customE = Existence.FORBIDDEN;
@@ -299,7 +299,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
         private final Number powerE;
 
-        public CustomEffectHandler(final String custom) throws InstructionParseException {
+        public CustomEffectHandler(final String custom) throws QuestException {
             final String[] parts = HandlerUtil.getNNSplit(custom, "Potion is null!", ":");
             if (parts[0].startsWith("none-")) {
                 customTypeE = Existence.FORBIDDEN;
@@ -313,20 +313,20 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
             customType = getType(parts[0]);
             customTypeE = Existence.REQUIRED;
             if (parts.length != INSTRUCTION_FORMAT_LENGTH) {
-                throw new InstructionParseException("Wrong effect format");
+                throw new QuestException("Wrong effect format");
             }
             final Map.Entry<Number, Integer> effectPower = HandlerUtil.getNumberValue(parts[1], "effect power");
             powerE = effectPower.getKey();
             power = effectPower.getValue() - 1;
             if (power < 0) {
-                throw new InstructionParseException("Effect power must be a positive integer");
+                throw new QuestException("Effect power must be a positive integer");
             }
             final Map.Entry<Number, Integer> effectDuration = HandlerUtil.getNumberValue(parts[2], "effect duration");
             durationE = effectDuration.getKey();
             duration = effectDuration.getValue() * 20;
         }
 
-        private PotionEffectType getType(final String name) throws InstructionParseException {
+        private PotionEffectType getType(final String name) throws QuestException {
             return Utils.getNN(PotionEffectType.getByName(name), "Unknown effect type: " + name);
         }
 

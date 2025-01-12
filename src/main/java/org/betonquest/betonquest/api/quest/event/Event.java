@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.quest.event;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * Interface for quest-events that are executed for a profile. It represents the normal event as described in the
@@ -12,7 +12,7 @@ public interface Event {
      * Executes the event.
      *
      * @param profile the {@link Profile} the event is executed for
-     * @throws QuestRuntimeException when the event execution fails
+     * @throws QuestException when the event execution fails
      */
-    void execute(Profile profile) throws QuestRuntimeException;
+    void execute(Profile profile) throws QuestException;
 }

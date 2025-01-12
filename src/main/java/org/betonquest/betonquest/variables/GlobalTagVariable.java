@@ -3,7 +3,7 @@ package org.betonquest.betonquest.variables;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -16,9 +16,9 @@ public class GlobalTagVariable extends TagVariable {
      * Constructs a new GlobalTagVariable.
      *
      * @param instruction the instruction to parse
-     * @throws InstructionParseException if the instruction is malformed
+     * @throws QuestException if the instruction is malformed
      */
-    public GlobalTagVariable(final Instruction instruction) throws InstructionParseException {
+    public GlobalTagVariable(final Instruction instruction) throws QuestException {
         super(instruction);
         staticness = true;
     }

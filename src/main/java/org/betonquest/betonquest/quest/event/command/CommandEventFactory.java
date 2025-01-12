@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
@@ -38,16 +38,16 @@ public class CommandEventFactory extends BaseCommandEventFactory implements Stat
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(createCommandEvent(instruction), data);
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadStaticEvent(createCommandEvent(instruction), data);
     }
 
-    private NullableEventAdapter createCommandEvent(final Instruction instruction) throws InstructionParseException {
+    private NullableEventAdapter createCommandEvent(final Instruction instruction) throws QuestException {
         return new NullableEventAdapter(new CommandEvent(parseCommands(instruction), silentSender, data.server()));
     }
 }

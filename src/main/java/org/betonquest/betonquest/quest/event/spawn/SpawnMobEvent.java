@@ -3,8 +3,7 @@ package org.betonquest.betonquest.quest.event.spawn;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -61,12 +60,12 @@ public class SpawnMobEvent implements NullableEvent {
      * @param amount           the amount of entities to spawn
      * @param name             the name of the mob
      * @param marked           the marked variable
-     * @throws InstructionParseException if the entity type is not a mob
+     * @throws QuestException if the entity type is not a mob
      */
     public SpawnMobEvent(final VariableLocation variableLocation, final EntityType type, final Equipment equipment,
-                         final VariableNumber amount, @Nullable final VariableString name, @Nullable final VariableString marked) throws InstructionParseException {
+                         final VariableNumber amount, @Nullable final VariableString name, @Nullable final VariableString marked) throws QuestException {
         if (type.getEntityClass() == null || !Mob.class.isAssignableFrom(type.getEntityClass())) {
-            throw new InstructionParseException("The entity type must be a mob");
+            throw new QuestException("The entity type must be a mob");
         }
         this.variableLocation = variableLocation;
         this.type = type;
@@ -77,7 +76,7 @@ public class SpawnMobEvent implements NullableEvent {
     }
 
     @Override
-    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestException {
         final Location location = variableLocation.getValue(profile);
         final int numberOfMob = amount.getValue(profile).intValue();
         for (int i = 0; i < numberOfMob; i++) {
@@ -93,5 +92,4 @@ public class SpawnMobEvent implements NullableEvent {
             }
         }
     }
-
 }

@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.quest.event.DatabaseSaverStaticEvent;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
 import org.betonquest.betonquest.quest.event.SequentialStaticEvent;
@@ -42,12 +42,12 @@ public class DeletePointEventFactory implements EventFactory, StaticEventFactory
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         return new DeletePointEvent(betonQuest::getOfflinePlayerData, getCategory(instruction));
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
         final String category = getCategory(instruction);
         return new SequentialStaticEvent(
                 new OnlineProfileGroupStaticEventAdapter(
@@ -58,7 +58,7 @@ public class DeletePointEventFactory implements EventFactory, StaticEventFactory
         );
     }
 
-    private static @NotNull String getCategory(final Instruction instruction) throws InstructionParseException {
+    private static @NotNull String getCategory(final Instruction instruction) throws QuestException {
         return Utils.addPackage(instruction.getPackage(), instruction.next());
     }
 }

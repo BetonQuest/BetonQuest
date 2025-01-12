@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -31,7 +31,7 @@ public class QuestEventFactoryAdapter extends LegacyFactoryAdapter<Event, Static
 
     @Override
     protected QuestEvent getAdapter(final Instruction instruction, @Nullable final Event playerType, @Nullable final StaticEvent playerlessType)
-            throws InstructionParseException {
+            throws QuestException {
         return new QuestEventAdapter(instruction, playerType, playerlessType);
     }
 }

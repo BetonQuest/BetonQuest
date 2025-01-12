@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.scoreboard;
 
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * A condition that checks if a player has a certain scoreboard tag.
@@ -24,7 +24,7 @@ public class ScoreboardTagCondition implements OnlineCondition {
     }
 
     @Override
-    public boolean check(final OnlineProfile profile) throws QuestRuntimeException {
+    public boolean check(final OnlineProfile profile) throws QuestException {
         return profile.getPlayer().getScoreboardTags().contains(tag);
     }
 }

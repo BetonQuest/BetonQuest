@@ -100,7 +100,7 @@ Registering variables is done via `BetonQuest.registerVariable(String name, Clas
 The `Instruction` object parses the instruction string defined by the user and splits it into arguments.
 You can ask it for required arguments one by one with `next()` method or a parser method like `getQuestItem()`.
 Required arguments are the ones specified at the very beginning of an instruction string, for example `add someTag` in `tag` event.
-It will automatically throw `InstructionParseException` for you if it encounters an error,
+It will automatically throw `QuestException` for you if it encounters an error,
 for example when there were no more arguments in user's instruction or it can't parse the argument to the type you asked for.
 
 You can also ask for optional arguments: if the instruction string contains argument `arg:something`
@@ -115,7 +115,7 @@ The former method is simply `getLocation(next())`.
 
 If your instruction is more complicated and `Instruction` class doesn't provide necessary methods,
 you can still parse the instruction string manually. You can get it with `getInstruction()` method.
-Just remember to throw `InstructionParseException` when the instruction supplied by the user is incorrect.
+Just remember to throw `QuestException` when the instruction supplied by the user is incorrect.
 BetonQuest will catch them and display a message in the console.
 
 ## Firing events

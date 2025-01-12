@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.bukkit.Location;
@@ -26,11 +26,11 @@ public class CompoundLocation extends VariableLocation {
      *
      * @param pack Name of the {@link QuestPackage} - required for {@link Variable} resolution
      * @param data string containing raw location in the defined format
-     * @throws InstructionParseException Is thrown when an error appears while parsing
+     * @throws QuestException Is thrown when an error appears while parsing
      * @deprecated Use {@link VariableLocation#VariableLocation(VariableProcessor, QuestPackage, String)}
      */
     @Deprecated
-    public CompoundLocation(final QuestPackage pack, final String data) throws InstructionParseException {
+    public CompoundLocation(final QuestPackage pack, final String data) throws QuestException {
         super(BetonQuest.getInstance().getVariableProcessor(), pack, data);
     }
 
@@ -42,18 +42,18 @@ public class CompoundLocation extends VariableLocation {
      *
      * @param packName Name of the {@link QuestPackage} - required for {@link Variable} resolution
      * @param data     string containing raw location in the defined format
-     * @throws InstructionParseException Is thrown when an error appears while
+     * @throws QuestException Is thrown when an error appears while
      * @deprecated Use {@link VariableLocation#VariableLocation(VariableProcessor, QuestPackage, String)} instead
      */
     @Deprecated
-    public CompoundLocation(final String packName, final String data) throws InstructionParseException {
+    public CompoundLocation(final String packName, final String data) throws QuestException {
         this(getPack(packName), data);
     }
 
-    private static QuestPackage getPack(final String packName) throws InstructionParseException {
+    private static QuestPackage getPack(final String packName) throws QuestException {
         final QuestPackage pack = Config.getPackages().get(packName);
         if (pack == null) {
-            throw new InstructionParseException("Package '" + packName + "' not found");
+            throw new QuestException("Package '" + packName + "' not found");
         }
         return pack;
     }

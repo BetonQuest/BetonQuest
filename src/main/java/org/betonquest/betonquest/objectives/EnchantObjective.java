@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -32,13 +32,13 @@ public class EnchantObjective extends CountingObjective implements Listener {
 
     private boolean requireOne;
 
-    public EnchantObjective(final Instruction instruction) throws InstructionParseException {
+    public EnchantObjective(final Instruction instruction) throws QuestException {
         super(instruction, "items_to_enchant");
         targetAmount = instruction.getVarNum(instruction.getOptional("amount", "1"), VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
         item = instruction.getQuestItem();
         desiredEnchantments = instruction.getList(string -> string != null ? EnchantmentData.convert(string) : null);
         if (desiredEnchantments.isEmpty()) {
-            throw new InstructionParseException("No enchantments were given! You must specify at least one enchantment.");
+            throw new QuestException("No enchantments were given! You must specify at least one enchantment.");
         }
 
         instruction.getOptionalArgument("requirementMode").ifPresent((mode) -> requireOne = JUST_ONE_ENCHANT.equalsIgnoreCase(mode));
@@ -100,22 +100,22 @@ public class EnchantObjective extends CountingObjective implements Listener {
          *
          * @param string the string to parse
          * @return the parsed EnchantmentData object
-         * @throws InstructionParseException if the user defined string is not a valid enchantment or does not
+         * @throws QuestException if the user defined string is not a valid enchantment or does not
          *                                   contain a level
          */
         @SuppressWarnings({"deprecation", "PMD.AvoidLiteralsInIfCondition"})
-        public static EnchantmentData convert(final String string) throws InstructionParseException {
+        public static EnchantmentData convert(final String string) throws QuestException {
             final String[] parts = string.split(":");
             final Enchantment enchantment = Enchantment.getByName(parts[0].toUpperCase(Locale.ROOT));
             if (enchantment == null) {
-                throw new InstructionParseException("Enchantment type '" + parts[0] + "' does not exist");
+                throw new QuestException("Enchantment type '" + parts[0] + "' does not exist");
             }
             int level = 1;
             if (parts.length == 2) {
                 try {
                     level = Integer.parseInt(parts[1]);
                 } catch (final NumberFormatException e) {
-                    throw new InstructionParseException("Could not parse enchantment level: " + string, e);
+                    throw new QuestException("Could not parse enchantment level: " + string, e);
                 }
             }
             return new EnchantmentData(enchantment, level);

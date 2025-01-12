@@ -3,8 +3,8 @@ package org.betonquest.betonquest.menu.betonquest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.jetbrains.annotations.Nullable;
@@ -18,13 +18,13 @@ public class MenuCondition extends Condition {
     @Nullable
     private final MenuID menu;
 
-    public MenuCondition(final Instruction instruction) throws InstructionParseException {
+    public MenuCondition(final Instruction instruction) throws QuestException {
         super(instruction, true);
         final String menuID = instruction.getOptional("id");
         try {
             this.menu = (menuID == null) ? null : new MenuID(instruction.getPackage(), menuID);
         } catch (final ObjectNotFoundException e) {
-            throw new InstructionParseException("Error while parsing id optional: Error while loading menu: " + e.getMessage(), e);
+            throw new QuestException("Error while parsing id optional: Error while loading menu: " + e.getMessage(), e);
         }
     }
 

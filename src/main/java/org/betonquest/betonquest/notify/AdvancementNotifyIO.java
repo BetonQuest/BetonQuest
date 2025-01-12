@@ -6,7 +6,7 @@ import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.advancement.Advancement;
@@ -26,7 +26,7 @@ public class AdvancementNotifyIO extends NotifyIO {
 
     private final String icon;
 
-    public AdvancementNotifyIO(final QuestPackage pack, final Map<String, String> data) throws InstructionParseException {
+    public AdvancementNotifyIO(final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(pack, data);
         frame = data.getOrDefault("frame", "challenge").toLowerCase(Locale.ROOT);
         icon = data.getOrDefault("icon", "minecraft:map").toLowerCase(Locale.ROOT);

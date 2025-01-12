@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.luckperms.permission;
 import net.luckperms.api.context.MutableContextSet;
 import net.luckperms.api.node.Node;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.jetbrains.annotations.NotNull;
@@ -33,9 +33,9 @@ public record LuckPermsNodeBuilder(List<VariableString> permissions, VariableStr
      *
      * @param profile The {@link Profile} to get the data from.
      * @return A list of {@link Node}s.
-     * @throws QuestRuntimeException If an error occurs while building the nodes.
+     * @throws QuestException If an error occurs while building the nodes.
      */
-    public List<Node> getNodes(final Profile profile) throws QuestRuntimeException {
+    public List<Node> getNodes(final Profile profile) throws QuestException {
         final List<Node> buildNodes = new ArrayList<>();
         final String resolvedValue = value.getValue(profile);
         final MutableContextSet contextSet = parseContextSet(contexts, profile);
@@ -59,14 +59,14 @@ public record LuckPermsNodeBuilder(List<VariableString> permissions, VariableStr
     }
 
     @SuppressWarnings("PMD.LocalVariableCouldBeFinal")
-    private @NotNull TimeUnit getTimeUnit(final VariableString data, final Profile profile) throws QuestRuntimeException {
+    private @NotNull TimeUnit getTimeUnit(final VariableString data, final Profile profile) throws QuestException {
         final String time = data.getValue(profile);
         TimeUnit unit;
         try {
             unit = TimeUnit.valueOf(time.toUpperCase(Locale.ROOT));
         } catch (final IllegalArgumentException e) {
             unit = TimeUnit.DAYS;
-            throw new QuestRuntimeException("Invalid time unit: " + time + ". Setting default to + '" + unit.name() + "'.", e);
+            throw new QuestException("Invalid time unit: " + time + ". Setting default to + '" + unit.name() + "'.", e);
         }
         return unit;
     }
@@ -84,7 +84,7 @@ public record LuckPermsNodeBuilder(List<VariableString> permissions, VariableStr
         return builder.toBuilder().context(contextSet).build();
     }
 
-    private MutableContextSet parseContextSet(final List<VariableString> contexts, final Profile profile) throws QuestRuntimeException {
+    private MutableContextSet parseContextSet(final List<VariableString> contexts, final Profile profile) throws QuestException {
         final MutableContextSet contextSet = MutableContextSet.create();
         for (final VariableString context : contexts) {
             final String[] split = context.getValue(profile).split(";");

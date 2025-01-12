@@ -2,7 +2,7 @@ package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -16,27 +16,26 @@ public abstract class Variable {
     protected Instruction instruction;
 
     /**
-     * A variable marked as static can be executed even if the profile in the
-     * {@link #getValue(Profile)} method is null
+     * A variable marked as static can be executed even if the profile in the {@link #getValue(Profile)} method is null.
      */
     protected boolean staticness;
 
     /**
      * Creates new instance of the variable. The variable should parse the
      * instruction string at this point and extract all the data from it. If
-     * anything goes wrong, throw {@link InstructionParseException} with an
+     * anything goes wrong, throw {@link QuestException} with an
      * error message describing the problem.
      *
      * @param instruction the Instruction object representing this variable; you need to
      *                    extract all required data from it and throw
-     *                    {@link InstructionParseException} if there is anything wrong
+     *                    {@link QuestException} if there is anything wrong
      */
     public Variable(final Instruction instruction) {
         this.instruction = instruction;
     }
 
     /**
-     * Get the instruction object for this variable
+     * Get the instruction object for this variable.
      *
      * @return The instruction
      */
@@ -45,7 +44,7 @@ public abstract class Variable {
     }
 
     /**
-     * Get the staticness of a variable
+     * Get the staticness of a variable.
      *
      * @return The staticness
      */

@@ -5,7 +5,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.database.Saver;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.modules.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.modules.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
@@ -77,7 +77,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(logger, questPackage, null, "tag add");
-        assertThrows(InstructionParseException.class, () -> factory.parseEvent(instruction), "tag event action add without tags should throw an exception when created");
+        assertThrows(QuestException.class, () -> factory.parseEvent(instruction), "tag event action add without tags should throw an exception when created");
     }
 
     @Test
@@ -104,7 +104,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(logger, questPackage, null, "tag delete");
-        assertThrows(InstructionParseException.class, () -> factory.parseEvent(instruction), "tag event action delete without tags should throw an exception when created");
+        assertThrows(QuestException.class, () -> factory.parseEvent(instruction), "tag event action delete without tags should throw an exception when created");
     }
 
     @Test
@@ -131,7 +131,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(logger, questPackage, null, "tag del");
-        assertThrows(InstructionParseException.class, () -> factory.parseEvent(instruction), "tag event action del without tags should throw an exception when created");
+        assertThrows(QuestException.class, () -> factory.parseEvent(instruction), "tag event action del without tags should throw an exception when created");
     }
 
     @Test
@@ -140,7 +140,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(logger, questPackage, null, "tag invalid tag-1,tag-2");
-        assertThrows(InstructionParseException.class, () -> factory.parseEvent(instruction), "tag event action invalid should throw an exception when created");
+        assertThrows(QuestException.class, () -> factory.parseEvent(instruction), "tag event action invalid should throw an exception when created");
     }
 
     @Test
@@ -167,7 +167,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(logger, questPackage, null, "tag add");
-        assertThrows(InstructionParseException.class, () -> factory.parseStaticEvent(instruction), "tag event action add without tags should throw an exception when created");
+        assertThrows(QuestException.class, () -> factory.parseStaticEvent(instruction), "tag event action add without tags should throw an exception when created");
     }
 
     @Test
@@ -194,7 +194,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(logger, questPackage, null, "tag delete");
-        assertThrows(InstructionParseException.class, () -> factory.parseStaticEvent(instruction), "tag event action delete without tags should throw an exception when created");
+        assertThrows(QuestException.class, () -> factory.parseStaticEvent(instruction), "tag event action delete without tags should throw an exception when created");
     }
 
     @Test
@@ -221,7 +221,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(logger, questPackage, null, "tag del");
-        assertThrows(InstructionParseException.class, () -> factory.parseStaticEvent(instruction), "tag event action del without tags should throw an exception when created");
+        assertThrows(QuestException.class, () -> factory.parseStaticEvent(instruction), "tag event action del without tags should throw an exception when created");
     }
 
     @Test
@@ -230,6 +230,6 @@ class TagPlayerEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(logger, questPackage, null, "tag invalid tag-1,tag-2");
-        assertThrows(InstructionParseException.class, () -> factory.parseStaticEvent(instruction), "tag event action invalid should throw an exception when created");
+        assertThrows(QuestException.class, () -> factory.parseStaticEvent(instruction), "tag event action invalid should throw an exception when created");
     }
 }

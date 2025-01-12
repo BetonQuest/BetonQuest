@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.meta.BookMeta;
@@ -79,12 +79,12 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws InstructionParseException {
+    public void set(final String key, final String data) throws QuestException {
         switch (key) {
             case "title" -> setTitle(data);
             case "author" -> setAuthor(data);
             case "text" -> setText(data);
-            default -> throw new InstructionParseException("Unknown book key: " + key);
+            default -> throw new QuestException("Unknown book key: " + key);
         }
     }
 

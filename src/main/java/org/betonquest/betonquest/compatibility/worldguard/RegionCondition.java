@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.worldguard;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * Checks if the player is in specified region
@@ -13,7 +13,7 @@ public class RegionCondition extends Condition {
 
     private final String name;
 
-    public RegionCondition(final Instruction instruction) throws InstructionParseException {
+    public RegionCondition(final Instruction instruction) throws QuestException {
         super(instruction, true);
         name = instruction.next();
     }

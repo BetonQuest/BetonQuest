@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -32,19 +32,19 @@ public class NPCLocationConditionFactory implements PlayerConditionFactory, Play
     }
 
     @Override
-    public PlayerCondition parsePlayer(final Instruction instruction) throws InstructionParseException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadPlayerCondition(parseNpcLocationCondition(instruction), data);
     }
 
     @Override
-    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws InstructionParseException {
+    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadPlayerlessCondition(parseNpcLocationCondition(instruction), data);
     }
 
-    private NullableConditionAdapter parseNpcLocationCondition(final Instruction instruction) throws InstructionParseException {
+    private NullableConditionAdapter parseNpcLocationCondition(final Instruction instruction) throws QuestException {
         final int npcId = instruction.getInt();
         if (npcId < 0) {
-            throw new InstructionParseException("NPC ID cannot be less than 0");
+            throw new QuestException("NPC ID cannot be less than 0");
         }
         final VariableLocation location = instruction.getLocation();
         final VariableNumber radius = instruction.getVarNum();

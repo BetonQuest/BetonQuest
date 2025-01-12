@@ -7,7 +7,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
@@ -43,7 +43,7 @@ public class LuckPermsEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         final String action = instruction.next();
 
         return switch (action.toLowerCase(Locale.ROOT)) {
@@ -52,14 +52,14 @@ public class LuckPermsEventFactory implements EventFactory {
             case "removepermission" ->
                     new LuckPermsPermissionEvent(getNodeBuilder(instruction), luckPermsAPI, NodeMap::remove);
             default ->
-                    throw new InstructionParseException("Unknown action: " + action + ". Expected addPermission or removePermission.");
+                    throw new QuestException("Unknown action: " + action + ". Expected addPermission or removePermission.");
         };
     }
 
-    private LuckPermsNodeBuilder getNodeBuilder(final Instruction instruction) throws InstructionParseException {
+    private LuckPermsNodeBuilder getNodeBuilder(final Instruction instruction) throws QuestException {
         final String unparsedPermissions = instruction.getOptional("permission", "");
         if (unparsedPermissions.isEmpty()) {
-            throw new InstructionParseException("Missing permissions argument. Expected permissions:permission1,"
+            throw new QuestException("Missing permissions argument. Expected permissions:permission1,"
                     + "permission2,permission3,...");
         }
         final QuestPackage pack = instruction.getPackage();
@@ -74,7 +74,7 @@ public class LuckPermsEventFactory implements EventFactory {
         return new LuckPermsNodeBuilder(permissions, value, contexts, expiry, timeUnit);
     }
 
-    private List<VariableString> parseList(final QuestPackage pack, final String unparsed) throws InstructionParseException {
+    private List<VariableString> parseList(final QuestPackage pack, final String unparsed) throws QuestException {
         if (unparsed.isEmpty()) {
             return List.of();
         }

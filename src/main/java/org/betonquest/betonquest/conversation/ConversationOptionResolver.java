@@ -2,8 +2,8 @@ package org.betonquest.betonquest.conversation;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConversationID;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,10 +47,12 @@ public class ConversationOptionResolver {
      * @param currentConversationName the current conversation data
      * @param optionType              the {@link ConversationData.OptionType} of the option
      * @param option                  the option string to resolve
-     * @throws InstructionParseException when the option string is incorrectly formatted
-     * @throws ObjectNotFoundException   when the conversation could not be found
+     * @throws QuestException          when the option string is incorrectly formatted
+     * @throws ObjectNotFoundException when the conversation could not be found
      */
-    public ConversationOptionResolver(final BetonQuest plugin, final QuestPackage currentPackage, final String currentConversationName, final ConversationData.OptionType optionType, final String option) throws InstructionParseException, ObjectNotFoundException {
+    public ConversationOptionResolver(final BetonQuest plugin, final QuestPackage currentPackage,
+                                      final String currentConversationName, final ConversationData.OptionType optionType,
+                                      final String option) throws QuestException, ObjectNotFoundException {
         this.plugin = plugin;
         this.optionType = optionType;
 
@@ -77,7 +79,7 @@ public class ConversationOptionResolver {
                 convName = currentConversationName;
                 optionName = parts[0];
             }
-            default -> throw new InstructionParseException("Invalid conversation pointer format in package '"
+            default -> throw new QuestException("Invalid conversation pointer format in package '"
                     + currentPackage.getQuestPath() + "', conversation '" + currentConversationName + "': " + option);
         }
     }
@@ -95,7 +97,7 @@ public class ConversationOptionResolver {
         final ConversationData newData = plugin.getConversation(conversationWithNextOption);
         if (newData == null) {
             throw new ObjectNotFoundException("Tried to load conversation '" + conversationWithNextOption.getFullID()
-                    + "' but it is not loaded! Check for errors on /bq reload!");
+                    + "' but it is not loaded! Ensure it was loaded without errors.");
         }
         return new ResolvedOption(newData, optionType, optionName);
     }

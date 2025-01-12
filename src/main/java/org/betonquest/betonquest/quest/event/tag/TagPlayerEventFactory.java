@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.quest.event.DatabaseSaverStaticEvent;
 import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
@@ -46,28 +46,28 @@ public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         final String action = instruction.next();
         final String[] tags = getTags(instruction);
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "add" -> createAddTagEvent(tags);
             case "delete", "del" -> createDeleteTagEvent(tags);
-            default -> throw new InstructionParseException("Unknown tag action: " + action);
+            default -> throw new QuestException("Unknown tag action: " + action);
         };
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
         final String action = instruction.next();
         final String[] tags = getTags(instruction);
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "add" -> new DoNothingStaticEvent();
             case "delete", "del" -> createStaticDeleteTagEvent(tags);
-            default -> throw new InstructionParseException("Unknown tag action: " + action);
+            default -> throw new QuestException("Unknown tag action: " + action);
         };
     }
 
-    private String[] getTags(final Instruction instruction) throws InstructionParseException {
+    private String[] getTags(final Instruction instruction) throws QuestException {
         final String[] tags;
         tags = instruction.getArray();
         for (int ii = 0; ii < tags.length; ii++) {

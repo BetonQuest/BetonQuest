@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.lever;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -39,11 +39,11 @@ public class LeverEvent implements NullableEvent {
     }
 
     @Override
-    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestException {
         final Block block = location.getValue(profile).getBlock();
 
         if (!block.getType().equals(Material.LEVER)) {
-            throw new QuestRuntimeException("There is no lever at x: " + block.getX() + " y: " + block.getY() + " z: "
+            throw new QuestException("There is no lever at x: " + block.getX() + " y: " + block.getY() + " z: "
                     + block.getZ() + " in world '" + block.getWorld().getName() + "'");
         }
 

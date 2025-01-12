@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 
@@ -52,16 +52,16 @@ public class LogEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         return createLogEvent(instruction);
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
         return createLogEvent(instruction);
     }
 
-    private NullableEventAdapter createLogEvent(final Instruction instruction) throws InstructionParseException {
+    private NullableEventAdapter createLogEvent(final Instruction instruction) throws QuestException {
         final LogEventLevel level = instruction.getEnum(instruction.getOptional("level"), LogEventLevel.class, LogEventLevel.INFO);
         final String raw = String.join(" ", instruction.getAllParts());
         final Matcher conditionsMatcher = CONDITIONS_REGEX.matcher(raw);

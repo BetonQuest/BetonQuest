@@ -12,7 +12,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.compatibility.citizens.CitizensWalkingListener;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
@@ -87,9 +87,9 @@ public class CitizensMoveController implements Listener {
      * @param npc      the npc to move
      * @param profile  the profile the events will be executed with
      * @param moveData the move data used for the npc movement
-     * @throws QuestRuntimeException if there was an error getting the first location
+     * @throws QuestException if there was an error getting the first location
      */
-    public void startNew(final NPC npc, final Profile profile, final MoveData moveData) throws QuestRuntimeException {
+    public void startNew(final NPC npc, final Profile profile, final MoveData moveData) throws QuestException {
         final MoveInstance oldMoveInstance = movingNpcs.get(npc.getId());
         if (oldMoveInstance != null) {
             for (final EventID event : oldMoveInstance.moveData.failEvents()) {
@@ -181,7 +181,7 @@ public class CitizensMoveController implements Listener {
          */
         private final ListIterator<VariableLocation> locationsIterator;
 
-        private MoveInstance(final MoveData moveData, final Profile profile, final NPC npc) throws QuestRuntimeException {
+        private MoveInstance(final MoveData moveData, final Profile profile, final NPC npc) throws QuestException {
             this.moveData = moveData;
             this.npcId = npc.getId();
             this.currentProfile = profile;
@@ -228,7 +228,7 @@ public class CitizensMoveController implements Listener {
                 final Location next;
                 try {
                     next = locationsIterator.next().getValue(currentProfile);
-                } catch (final QuestRuntimeException e) {
+                } catch (final QuestException e) {
                     log.warn(moveData.sourcePackage(), "Error while NPC " + npc.getId() + " navigation: " + e.getMessage(), e);
                     return;
                 }
@@ -249,7 +249,7 @@ public class CitizensMoveController implements Listener {
         private void returnToStart(final NPC npc) {
             try {
                 npc.getNavigator().setTarget(locationsIterator.previous().getValue(currentProfile));
-            } catch (final QuestRuntimeException e) {
+            } catch (final QuestException e) {
                 log.warn(moveData.sourcePackage(), "Error while finishing NPC " + npc.getId() + " navigation: " + e.getMessage(), e);
             }
             npc.getNavigator().setPaused(true);

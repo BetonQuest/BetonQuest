@@ -4,8 +4,7 @@ import net.Indyuce.mmocore.api.player.PlayerData;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,7 +17,7 @@ public class MMOCoreClassCondition extends Condition {
     @Nullable
     private final VariableNumber targetClassLevel;
 
-    public MMOCoreClassCondition(final Instruction instruction) throws InstructionParseException {
+    public MMOCoreClassCondition(final Instruction instruction) throws QuestException {
         super(instruction, true);
         targetClassName = instruction.next();
         targetClassLevel = instruction.hasNext() ? instruction.getVarNum() : null;
@@ -26,7 +25,7 @@ public class MMOCoreClassCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+    protected Boolean execute(final Profile profile) throws QuestException {
         final PlayerData data = PlayerData.get(profile.getPlayerUUID());
 
         final String actualClassName = data.getProfess().getId();

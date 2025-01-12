@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.legacy;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -46,20 +46,20 @@ public class FromClassLegacyTypeFactory<T extends L, L> implements LegacyTypeFac
     }
 
     @Override
-    public L parseInstruction(final Instruction instruction) throws InstructionParseException {
+    public L parseInstruction(final Instruction instruction) throws QuestException {
         final Throwable error;
         try {
             return lClass.getConstructor(Instruction.class).newInstance(instruction);
         } catch (final InvocationTargetException e) {
             final Throwable cause = e.getCause();
-            if (cause instanceof InstructionParseException) {
-                throw (InstructionParseException) cause;
+            if (cause instanceof QuestException) {
+                throw (QuestException) cause;
             }
             error = e;
         } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
             error = e;
         }
         log.reportException(instruction.getPackage(), error);
-        throw new InstructionParseException("A broken " + typeName + " prevents the creation of " + instruction, error);
+        throw new QuestException("A broken " + typeName + " prevents the creation of " + instruction, error);
     }
 }

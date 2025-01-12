@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,7 +35,7 @@ public final class Notify {
     }
 
     /**
-     * Loads the notify settings.
+     * Loads the notification settings.
      *
      * @param config the {@link ConfigurationFile} to load from
      */
@@ -74,13 +74,13 @@ public final class Notify {
 
         try {
             return getNotifyIO(pack, ios, categoryData);
-        } catch (final InstructionParseException exception) {
+        } catch (final QuestException exception) {
             LOG.warn(exception.getMessage(), exception);
         }
 
         try {
             return new SuppressNotifyIO(pack, categoryData);
-        } catch (final InstructionParseException e) {
+        } catch (final QuestException e) {
             LOG.reportException(e);
             throw new UnsupportedOperationException(e);
         }
@@ -117,7 +117,7 @@ public final class Notify {
         return ios;
     }
 
-    private static NotifyIO getNotifyIO(final QuestPackage pack, final List<String> ios, final Map<String, String> categoryData) throws InstructionParseException {
+    private static NotifyIO getNotifyIO(final QuestPackage pack, final List<String> ios, final Map<String, String> categoryData) throws QuestException {
         for (final String name : ios) {
             final Class<? extends NotifyIO> clazz = BetonQuest.getNotifyIO(name);
             if (clazz != null) {
@@ -125,11 +125,11 @@ public final class Notify {
                     return clazz.getConstructor(QuestPackage.class, Map.class).newInstance(pack, categoryData);
                 } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException
                                | InvocationTargetException exception) {
-                    throw new InstructionParseException("Couldn't load Notify IO '" + name + "': " + exception.getMessage(), exception);
+                    throw new QuestException("Couldn't load Notify IO '" + name + "': " + exception.getMessage(), exception);
                 }
             }
         }
-        throw new InstructionParseException("No Notify IO could be found, searched for '" + ios + "'!");
+        throw new QuestException("No Notify IO could be found, searched for '" + ios + "'!");
     }
 
     /**

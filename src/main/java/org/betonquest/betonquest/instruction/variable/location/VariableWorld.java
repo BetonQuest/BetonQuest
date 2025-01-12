@@ -1,8 +1,7 @@
 package org.betonquest.betonquest.instruction.variable.location;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.bukkit.Bukkit;
@@ -19,9 +18,9 @@ public class VariableWorld extends Variable<World> {
      * @param variableProcessor the processor to create the variables
      * @param pack              the package in which the variable is used in
      * @param input             the string that may contain variables
-     * @throws InstructionParseException if the variables could not be created or resolved to the given type
+     * @throws QuestException if the variables could not be created or resolved to the given type
      */
-    public VariableWorld(final VariableProcessor variableProcessor, final QuestPackage pack, final String input) throws InstructionParseException {
+    public VariableWorld(final VariableProcessor variableProcessor, final QuestPackage pack, final String input) throws QuestException {
         super(variableProcessor, pack, input, VariableWorld::parse);
     }
 
@@ -30,12 +29,12 @@ public class VariableWorld extends Variable<World> {
      *
      * @param value the value to parse
      * @return the parsed world
-     * @throws QuestRuntimeException if the value could not be parsed to a world
+     * @throws QuestException if the value could not be parsed to a world
      */
-    public static World parse(final String value) throws QuestRuntimeException {
+    public static World parse(final String value) throws QuestException {
         final World world = Bukkit.getWorld(value);
         if (world == null) {
-            throw new QuestRuntimeException("World " + value + " does not exists.");
+            throw new QuestException("World " + value + " does not exists.");
         }
         return world;
     }

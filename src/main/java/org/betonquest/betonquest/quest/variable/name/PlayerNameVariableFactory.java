@@ -4,7 +4,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 import java.util.Locale;
 
@@ -27,12 +27,12 @@ public class PlayerNameVariableFactory implements PlayerVariableFactory {
     }
 
     @Override
-    public PlayerVariable parsePlayer(final Instruction instruction) throws InstructionParseException {
+    public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
         final PlayerNameType type = getType(instruction);
         return new PlayerNameVariable(type, loggerFactory.create(PlayerNameVariable.class), instruction.getPackage());
     }
 
-    private PlayerNameType getType(final Instruction instruction) throws InstructionParseException {
+    private PlayerNameType getType(final Instruction instruction) throws QuestException {
         if (!instruction.hasNext()) {
             return PlayerNameType.NAME;
         }
@@ -41,7 +41,7 @@ public class PlayerNameVariableFactory implements PlayerVariableFactory {
             case "name" -> PlayerNameType.NAME;
             case "display" -> PlayerNameType.DISPLAY;
             case "uuid" -> PlayerNameType.UUID;
-            default -> throw new InstructionParseException("Unknown type specified: " + type);
+            default -> throw new QuestException("Unknown type specified: " + type);
         };
     }
 }

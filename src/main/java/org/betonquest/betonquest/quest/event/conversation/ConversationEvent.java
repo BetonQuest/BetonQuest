@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.conversation.Conversation;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConversationID;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,7 +43,7 @@ public class ConversationEvent implements OnlineEvent {
     }
 
     @Override
-    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+    public void execute(final OnlineProfile profile) throws QuestException {
         new Conversation(loggerFactory.create(Conversation.class), profile, conversation, profile.getPlayer().getLocation(), startOption);
     }
 }

@@ -3,8 +3,7 @@ package org.betonquest.betonquest.compatibility.fabled;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import studio.magemonkey.fabled.Fabled;
 import studio.magemonkey.fabled.api.player.PlayerClass;
@@ -21,17 +20,17 @@ public class FabledLevelCondition extends Condition {
 
     private final VariableNumber level;
 
-    public FabledLevelCondition(final Instruction instruction) throws InstructionParseException {
+    public FabledLevelCondition(final Instruction instruction) throws QuestException {
         super(instruction, true);
         className = instruction.next();
         if (!Fabled.isClassRegistered(className)) {
-            throw new InstructionParseException("Class '" + className + "' is not registered");
+            throw new QuestException("Class '" + className + "' is not registered");
         }
         level = instruction.getVarNum();
     }
 
     @Override
-    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+    protected Boolean execute(final Profile profile) throws QuestException {
         final PlayerData data = Fabled.getData(profile.getPlayer());
         final Optional<PlayerClass> playerClass = data
                 .getClasses()

@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 import java.util.List;
@@ -50,7 +50,7 @@ public class PointCondition implements PlayerCondition {
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestRuntimeException {
+    public boolean check(final Profile profile) throws QuestException {
         final List<Point> points = betonQuest.getPlayerData(profile).getPoints();
         for (final Point point : points) {
             if (point.getCategory().equals(category)) {
@@ -60,7 +60,7 @@ public class PointCondition implements PlayerCondition {
         return false;
     }
 
-    private boolean checkPoints(final int points, final Profile profile) throws QuestRuntimeException {
+    private boolean checkPoints(final int points, final Profile profile) throws QuestException {
         final int pCount = this.count.getValue(profile).intValue();
         return equal ? points == pCount : points >= pCount;
     }

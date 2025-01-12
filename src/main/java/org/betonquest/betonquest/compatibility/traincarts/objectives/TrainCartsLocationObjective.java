@@ -5,8 +5,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.objectives.AbstractLocationObjective;
@@ -33,9 +32,9 @@ public class TrainCartsLocationObjective extends AbstractLocationObjective imple
      * Creates a new {@link TrainCartsLocationObjective}.
      *
      * @param instruction the Instruction object to be used in the constructor
-     * @throws InstructionParseException if there is an error while parsing the instruction
+     * @throws QuestException if there is an error while parsing the instruction
      */
-    public TrainCartsLocationObjective(final Instruction instruction) throws InstructionParseException {
+    public TrainCartsLocationObjective(final Instruction instruction) throws QuestException {
         super(BetonQuest.getInstance().getLoggerFactory().create(TrainCartsLocationObjective.class), instruction);
         this.loc = instruction.getLocation();
         this.range = instruction.getVarNum(instruction.getOptional("range", "1"), VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
@@ -62,7 +61,7 @@ public class TrainCartsLocationObjective extends AbstractLocationObjective imple
     }
 
     @Override
-    protected boolean isInside(final OnlineProfile onlineProfile, final Location location) throws QuestRuntimeException {
+    protected boolean isInside(final OnlineProfile onlineProfile, final Location location) throws QuestException {
         if (!TrainCartsUtils.isRidingTrainCart(onlineProfile)) {
             return false;
         }

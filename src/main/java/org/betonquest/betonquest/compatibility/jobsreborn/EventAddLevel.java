@@ -6,7 +6,7 @@ import com.gamingmesh.jobs.container.JobProgression;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 import java.util.List;
 
@@ -17,10 +17,10 @@ public class EventAddLevel extends QuestEvent {
     private final Integer nAddLevel;
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    public EventAddLevel(final Instruction instruction) throws InstructionParseException {
+    public EventAddLevel(final Instruction instruction) throws QuestException {
         super(instruction, true);
         if (instruction.size() < 3) {
-            throw new InstructionParseException("Not enough arguments");
+            throw new QuestException("Not enough arguments");
         }
         for (final Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(instruction.getPart(1))) {
@@ -28,12 +28,12 @@ public class EventAddLevel extends QuestEvent {
                 try {
                     this.nAddLevel = Integer.parseInt(instruction.getPart(2));
                 } catch (final NumberFormatException e) {
-                    throw new InstructionParseException("NUJobs_AddLevel: Unable to parse the level amount", e);
+                    throw new QuestException("NUJobs_AddLevel: Unable to parse the level amount", e);
                 }
                 return;
             }
         }
-        throw new InstructionParseException("Jobs Reborn job " + instruction.getPart(1) + " does not exist");
+        throw new QuestException("Jobs Reborn job " + instruction.getPart(1) + " does not exist");
     }
 
     @Override

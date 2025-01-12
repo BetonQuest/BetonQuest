@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 
@@ -56,7 +56,7 @@ public class PointEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(final Profile profile) throws QuestException {
         final PlayerData playerData = BetonQuest.getInstance().getOfflinePlayerData(profile);
         final double countDouble = count.getValue(profile).doubleValue();
         playerData.setPoints(category, pointType.modify(playerData.hasPointsFromCategory(category), countDouble));

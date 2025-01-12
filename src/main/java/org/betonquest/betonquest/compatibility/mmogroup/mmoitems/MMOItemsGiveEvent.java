@@ -9,8 +9,7 @@ import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.entity.Player;
@@ -44,7 +43,7 @@ public class MMOItemsGiveEvent extends QuestEvent {
 
     private VariableNumber amountVar;
 
-    public MMOItemsGiveEvent(final Instruction instruction) throws InstructionParseException {
+    public MMOItemsGiveEvent(final Instruction instruction) throws QuestException {
         super(instruction, true);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
@@ -68,14 +67,14 @@ public class MMOItemsGiveEvent extends QuestEvent {
 
     @SuppressWarnings("PMD.PreserveStackTrace")
     @Override
-    protected Void execute(final Profile profile) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) throws QuestException {
         final Player player = profile.getOnlineProfile().get().getPlayer();
 
         final ItemStack mmoItem;
         if (scale) {
             mmoItem = MMO_PLUGIN.getItem(itemType, itemID, PlayerData.get(profile.getPlayerUUID()));
             if (mmoItem == null) {
-                throw new QuestRuntimeException("Item with type '" + itemType + "' and ID '" + itemID + "' does not exist for player '"
+                throw new QuestException("Item with type '" + itemType + "' and ID '" + itemID + "' does not exist for player '"
                         + player.getName() + "'.");
             }
         } else {
@@ -89,7 +88,7 @@ public class MMOItemsGiveEvent extends QuestEvent {
                 Config.sendNotify(instruction.getPackage(), profile.getOnlineProfile().get(), "items_given",
                         new String[]{mmoItem.getItemMeta().getDisplayName(), String.valueOf(amount)},
                         "items_given,info");
-            } catch (final QuestRuntimeException e) {
+            } catch (final QuestException e) {
                 log.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'items_given' category in '"
                         + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
             }

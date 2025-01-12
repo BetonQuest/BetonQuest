@@ -58,7 +58,7 @@ import org.betonquest.betonquest.database.MySQL;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.SQLite;
 import org.betonquest.betonquest.database.Saver;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
@@ -310,10 +310,10 @@ public class BetonQuest extends JavaPlugin {
      * @param pack        package in which the variable is defined
      * @param instruction instruction of the variable, including both % characters.
      * @return the Variable instance
-     * @throws InstructionParseException when the variable parsing fails
+     * @throws QuestException when the variable parsing fails
      */
     public static Variable createVariable(@Nullable final QuestPackage pack, final String instruction)
-            throws InstructionParseException {
+            throws QuestException {
         return instance.questRegistry.variables().create(pack, instruction);
     }
 
@@ -570,7 +570,7 @@ public class BetonQuest extends JavaPlugin {
 
             try {
                 playerHider = new PlayerHider(this);
-            } catch (final InstructionParseException e) {
+            } catch (final QuestException e) {
                 log.error("Could not start PlayerHider! " + e.getMessage(), e);
             }
         });
@@ -687,7 +687,7 @@ public class BetonQuest extends JavaPlugin {
         }
         try {
             playerHider = new PlayerHider(this);
-        } catch (final InstructionParseException e) {
+        } catch (final QuestException e) {
             log.error("Could not start PlayerHider! " + e.getMessage(), e);
         }
     }
@@ -1054,7 +1054,7 @@ public class BetonQuest extends JavaPlugin {
         }
         try {
             return questRegistry.variables().getValue(pack, name, profile);
-        } catch (final InstructionParseException e) {
+        } catch (final QuestException e) {
             log.warn(e.getMessage(), e);
             return "";
         }

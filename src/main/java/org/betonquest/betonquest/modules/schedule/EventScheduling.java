@@ -5,8 +5,8 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.lang.reflect.InvocationTargetException;
@@ -65,12 +65,12 @@ public class EventScheduling {
                             questPackage.getConfig().getConfigurationSection("schedules." + scheduleID.getBaseID())
                     );
                     final String type = Optional.ofNullable(scheduleConfig.getString("type"))
-                            .orElseThrow(() -> new InstructionParseException("Missing type instruction"));
+                            .orElseThrow(() -> new QuestException("Missing type instruction"));
                     final ScheduleType<?, ?> scheduleType = Optional.ofNullable(scheduleTypes.get(type))
-                            .orElseThrow(() -> new InstructionParseException("The schedule type '" + type + "' is not defined"));
+                            .orElseThrow(() -> new QuestException("The schedule type '" + type + "' is not defined"));
                     scheduleType.createAndScheduleNewInstance(scheduleID, scheduleConfig);
                     log.debug(questPackage, "Parsed schedule '" + scheduleID + "'.");
-                } catch (final InstructionParseException e) {
+                } catch (final QuestException e) {
                     log.warn(questPackage, "Error loading schedule '" + scheduleID + "':" + e.getMessage(), e);
                 } catch (final InvocationTargetException | NoSuchMethodException | InstantiationException
                                | IllegalAccessException e) {
@@ -123,13 +123,13 @@ public class EventScheduling {
     @SuppressWarnings("PMD.PreserveStackTrace")
     public record ScheduleType<S extends Schedule, T>(Class<S> scheduleClass, Scheduler<S, T> scheduler) {
         /* default */ S newScheduleInstance(final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
-                throws InstructionParseException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+                throws QuestException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
             try {
                 return scheduleClass
                         .getConstructor(ScheduleID.class, ConfigurationSection.class)
                         .newInstance(scheduleID, scheduleConfig);
             } catch (final InvocationTargetException e) {
-                if (e.getCause() instanceof final InstructionParseException cause) {
+                if (e.getCause() instanceof final QuestException cause) {
                     throw cause;
                 } else {
                     throw e;
@@ -138,7 +138,7 @@ public class EventScheduling {
         }
 
         /* default */ void createAndScheduleNewInstance(final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
-                throws InstructionParseException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+                throws QuestException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
             scheduler.addSchedule(newScheduleInstance(scheduleID, scheduleConfig));
         }
     }

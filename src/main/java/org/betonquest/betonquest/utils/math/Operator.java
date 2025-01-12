@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.utils.math;
 
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 import java.util.Arrays;
 
@@ -106,11 +106,11 @@ public enum Operator {
      *
      * @param chr the symbol representing an operator
      * @return the operator of the symbol
-     * @throws InstructionParseException if no operator exists for the given character
+     * @throws QuestException if no operator exists for the given character
      */
-    public static Operator valueOf(final char chr) throws InstructionParseException {
+    public static Operator valueOf(final char chr) throws QuestException {
         return Arrays.stream(values()).filter(operator -> operator.symbol == chr).findAny()
-                .orElseThrow(() -> new InstructionParseException(chr + " is not a valid operator"));
+                .orElseThrow(() -> new QuestException(chr + " is not a valid operator"));
     }
 
     /**

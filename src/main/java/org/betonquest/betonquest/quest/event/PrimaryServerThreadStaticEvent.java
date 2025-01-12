@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.PrimaryServerThreadType;
 import org.bukkit.Server;
@@ -27,7 +27,7 @@ public class PrimaryServerThreadStaticEvent extends PrimaryServerThreadType<Stat
 
     @SuppressWarnings("NullAway") // FalsePositive, see https://github.com/uber/NullAway/issues/801
     @Override
-    public void execute() throws QuestRuntimeException {
+    public void execute() throws QuestException {
         call(() -> {
             synced.execute();
             return null;

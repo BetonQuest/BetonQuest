@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
@@ -49,7 +49,7 @@ public class VariableConditionFactory implements PlayerConditionFactory, Playerl
     }
 
     @Override
-    public PlayerCondition parsePlayer(final Instruction instruction) throws InstructionParseException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final NullableConditionAdapter condition = new NullableConditionAdapter(parse(instruction));
         if (instruction.hasArgument("forceSync")) {
             return new PrimaryServerThreadPlayerCondition(condition, data);
@@ -58,7 +58,7 @@ public class VariableConditionFactory implements PlayerConditionFactory, Playerl
     }
 
     @Override
-    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws InstructionParseException {
+    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
         final NullableConditionAdapter condition = new NullableConditionAdapter(parse(instruction));
         if (instruction.hasArgument("forceSync")) {
             return new PrimaryServerThreadPlayerlessCondition(condition, data);
@@ -66,7 +66,7 @@ public class VariableConditionFactory implements PlayerConditionFactory, Playerl
         return condition;
     }
 
-    private VariableCondition parse(final Instruction instruction) throws InstructionParseException {
+    private VariableCondition parse(final Instruction instruction) throws QuestException {
         final VariableString variable = new VariableString(variableProcessor, instruction.getPackage(), instruction.next());
         final VariableString regex = new VariableString(variableProcessor, instruction.getPackage(), instruction.next(), true);
         final String variableAddress = instruction.getID().toString();

@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
@@ -55,12 +55,12 @@ public class TimeEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(createTimeEvent(instruction), data);
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
         if (instruction.copy().getOptional("world") == null) {
             return new DoNothingStaticEvent();
         } else {
@@ -68,7 +68,7 @@ public class TimeEventFactory implements EventFactory, StaticEventFactory {
         }
     }
 
-    private NullableEventAdapter createTimeEvent(final Instruction instruction) throws InstructionParseException {
+    private NullableEventAdapter createTimeEvent(final Instruction instruction) throws QuestException {
         final String timeString = instruction.next();
         final Time time = parseTimeType(timeString);
         final VariableNumber rawTime = parseTime(instruction.getPackage(), timeString, time != Time.SET);
@@ -77,9 +77,9 @@ public class TimeEventFactory implements EventFactory, StaticEventFactory {
         return new NullableEventAdapter(new TimeEvent(time, rawTime, worldSelector, hourFormat));
     }
 
-    private Time parseTimeType(final String timeString) throws InstructionParseException {
+    private Time parseTimeType(final String timeString) throws QuestException {
         if (timeString.isEmpty()) {
-            throw new InstructionParseException("Time cannot be empty");
+            throw new QuestException("Time cannot be empty");
         }
         return switch (timeString.charAt(0)) {
             case '+' -> Time.ADD;
@@ -88,7 +88,7 @@ public class TimeEventFactory implements EventFactory, StaticEventFactory {
         };
     }
 
-    private VariableNumber parseTime(final QuestPackage questPackage, final String timeString, final boolean cutFirst) throws InstructionParseException {
+    private VariableNumber parseTime(final QuestPackage questPackage, final String timeString, final boolean cutFirst) throws QuestException {
         final String rawTime = cutFirst ? timeString.substring(1) : timeString;
         return new VariableNumber(variableProcessor, questPackage, rawTime);
     }

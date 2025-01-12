@@ -18,8 +18,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Bukkit;
@@ -47,7 +46,7 @@ public class PasteSchematicEvent extends QuestEvent {
 
     private final File file;
 
-    public PasteSchematicEvent(final Instruction instruction) throws InstructionParseException {
+    public PasteSchematicEvent(final Instruction instruction) throws QuestException {
         super(instruction, true);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         staticness = true;
@@ -58,7 +57,7 @@ public class PasteSchematicEvent extends QuestEvent {
         final WorldEditPlugin worldEdit = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
         final File folder = new File(worldEdit.getDataFolder(), "schematics");
         if (!folder.exists() || !folder.isDirectory()) {
-            throw new InstructionParseException("Schematic folder does not exist");
+            throw new QuestException("Schematic folder does not exist");
         }
         final String schemName = instruction.next();
         final File schemFile = new File(folder, schemName);
@@ -67,14 +66,14 @@ public class PasteSchematicEvent extends QuestEvent {
         } else {
             file = new File(folder, schemName + ".schematic");
             if (!file.exists()) {
-                throw new InstructionParseException("Schematic " + schemName + " does not exist (" + folder.toPath().resolve(schemName + ".schematic") + ")");
+                throw new QuestException("Schematic " + schemName + " does not exist (" + folder.toPath().resolve(schemName + ".schematic") + ")");
             }
         }
         noAir = instruction.hasArgument("noair");
     }
 
     @Override
-    protected Void execute(final Profile profile) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) throws QuestException {
         try {
             final Location location = loc.getValue(profile);
             final double rot = rotation.getValue(profile).doubleValue();

@@ -6,7 +6,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -32,7 +32,7 @@ public class CommandObjective extends Objective implements Listener {
 
     private final EventID[] failEvents;
 
-    public CommandObjective(final Instruction instruction) throws InstructionParseException {
+    public CommandObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         command = new VariableString(instruction.getPackage(), instruction.next(), true);
         ignoreCase = instruction.hasArgument("ignoreCase");

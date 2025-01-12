@@ -7,7 +7,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -66,9 +66,9 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      * Creates a new MythicMobKillObjective.
      *
      * @param instruction the user-provided instruction
-     * @throws InstructionParseException if the instruction is invalid
+     * @throws QuestException if the instruction is invalid
      */
-    public MythicMobKillObjective(final Instruction instruction) throws InstructionParseException {
+    public MythicMobKillObjective(final Instruction instruction) throws QuestException {
         super(instruction, "mobs_to_kill");
 
         Collections.addAll(names, instruction.getArray());

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.database.Saver;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 import java.util.function.Supplier;
 
@@ -24,7 +24,7 @@ public class DatabaseSaverStaticEvent implements StaticEvent {
     /**
      * Create a "static" database saver event. The saver will be used to save the record created by the record supplier.
      *
-     * @param saver the saver to use
+     * @param saver          the saver to use
      * @param recordSupplier the record supplier
      */
     public DatabaseSaverStaticEvent(final Saver saver, final Supplier<? extends Saver.Record> recordSupplier) {
@@ -33,7 +33,7 @@ public class DatabaseSaverStaticEvent implements StaticEvent {
     }
 
     @Override
-    public void execute() throws QuestRuntimeException {
+    public void execute() throws QuestException {
         saver.add(recordSupplier.get());
     }
 }

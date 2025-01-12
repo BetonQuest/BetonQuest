@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
@@ -62,11 +62,11 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws InstructionParseException {
+    public void set(final String key, final String data) throws QuestException {
         switch (key) {
             case "enchants" -> set(data);
             case "enchants-containing" -> exact = false;
-            default -> throw new InstructionParseException("Unknown enchantment key: " + key);
+            default -> throw new QuestException("Unknown enchantment key: " + key);
         }
     }
 
@@ -95,7 +95,7 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
         }
     }
 
-    public void set(final String enchants) throws InstructionParseException {
+    public void set(final String enchants) throws QuestException {
         final String[] parts = HandlerUtil.getNNSplit(enchants, "Enchantment is null!", ",");
         if (Existence.NONE_KEY.equalsIgnoreCase(parts[0])) {
             checkersE = Existence.FORBIDDEN;
@@ -154,7 +154,7 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
 
         private final int level;
 
-        private SingleEnchantmentHandler(final String enchant) throws InstructionParseException {
+        private SingleEnchantmentHandler(final String enchant) throws QuestException {
             final String[] parts = HandlerUtil.getNNSplit(enchant, "", ":");
             if (parts[0].startsWith("none-")) {
                 existence = Existence.FORBIDDEN;
@@ -166,7 +166,7 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
             existence = Existence.REQUIRED;
             type = getType(parts[0]);
             if (parts.length != INSTRUCTION_FORMAT_LENGTH) {
-                throw new InstructionParseException("Wrong enchantment format");
+                throw new QuestException("Wrong enchantment format");
             }
             final Map.Entry<Number, Integer> enchantmentLevel = HandlerUtil.getNumberValue(parts[1], "enchantment level");
             number = enchantmentLevel.getKey();
@@ -174,7 +174,7 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
         }
 
         @SuppressWarnings("deprecation")
-        private Enchantment getType(final String name) throws InstructionParseException {
+        private Enchantment getType(final String name) throws QuestException {
             return Utils.getNN(Enchantment.getByName(name.toUpperCase(Locale.ROOT)), "Unknown enchantment type: " + name);
         }
 

@@ -6,8 +6,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.inventory.ItemStack;
 
@@ -21,7 +20,7 @@ public class MMOItemsItemCondition extends Condition {
 
     private final VariableNumber amount;
 
-    public MMOItemsItemCondition(final Instruction instruction) throws InstructionParseException {
+    public MMOItemsItemCondition(final Instruction instruction) throws QuestException {
         super(instruction, true);
 
         itemType = MMOItemsUtils.getMMOItemType(instruction.next());
@@ -31,7 +30,7 @@ public class MMOItemsItemCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+    protected Boolean execute(final Profile profile) throws QuestException {
         int counter = 0;
 
         final OnlineProfile onlineProfile = profile.getOnlineProfile().get();

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.time.real;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class PartialDateConditionFactory implements PlayerlessConditionFactory {
     }
 
     @Override
-    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws InstructionParseException {
+    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
         final String dayOfMonthString = instruction.getOptional("day");
         final List<TimeInterval> dayOfMonth;
         if (dayOfMonthString == null) {

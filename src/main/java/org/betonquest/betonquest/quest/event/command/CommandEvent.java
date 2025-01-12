@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.command;
 import org.betonquest.betonquest.api.bukkit.command.SilentConsoleCommandSender;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
@@ -48,13 +48,13 @@ public class CommandEvent implements NullableEvent {
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     @Override
-    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestException {
         try {
             for (final VariableString command : commands) {
                 server.dispatchCommand(silentSender, command.getValue(profile));
             }
         } catch (final RuntimeException exception) {
-            throw new QuestRuntimeException("Unhandled exception executing command: " + exception.getMessage(), exception);
+            throw new QuestException("Unhandled exception executing command: " + exception.getMessage(), exception);
         }
     }
 }

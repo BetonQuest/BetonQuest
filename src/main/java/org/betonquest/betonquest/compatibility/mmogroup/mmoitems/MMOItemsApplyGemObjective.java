@@ -7,7 +7,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -22,7 +22,7 @@ public class MMOItemsApplyGemObjective extends Objective implements Listener {
 
     private final String gemID;
 
-    public MMOItemsApplyGemObjective(final Instruction instruction) throws InstructionParseException {
+    public MMOItemsApplyGemObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         itemType = instruction.next();
         itemID = instruction.next();

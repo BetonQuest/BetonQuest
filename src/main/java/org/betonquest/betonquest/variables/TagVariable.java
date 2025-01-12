@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -35,9 +35,9 @@ public class TagVariable extends Variable {
      * Constructs a new GlobalTagVariable.
      *
      * @param instruction the instruction to parse
-     * @throws InstructionParseException if the instruction is malformed
+     * @throws QuestException if the instruction is malformed
      */
-    public TagVariable(final Instruction instruction) throws InstructionParseException {
+    public TagVariable(final Instruction instruction) throws QuestException {
         super(instruction);
         tagName = instruction.next();
         questPackage = instruction.getPackage();

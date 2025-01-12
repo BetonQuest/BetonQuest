@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
@@ -56,7 +56,7 @@ public class MoneyEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         String string = instruction.next();
         final boolean multi;
         if (!string.isEmpty() && string.charAt(0) == '*') {
@@ -68,8 +68,8 @@ public class MoneyEventFactory implements EventFactory {
         final VariableNumber amount;
         try {
             amount = new VariableNumber(variableProcessor, instruction.getPackage(), string);
-        } catch (final InstructionParseException e) {
-            throw new InstructionParseException("Could not parse money amount: " + e.getMessage(), e);
+        } catch (final QuestException e) {
+            throw new QuestException("Could not parse money amount: " + e.getMessage(), e);
         }
         final boolean notify = instruction.hasArgument("notify");
         final IngameNotificationSender givenSender;

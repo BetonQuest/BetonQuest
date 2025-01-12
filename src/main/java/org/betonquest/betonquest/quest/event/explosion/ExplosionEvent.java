@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.explosion;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
@@ -48,7 +48,7 @@ public class ExplosionEvent implements NullableEvent {
     }
 
     @Override
-    public void execute(@Nullable final Profile profile) throws QuestRuntimeException {
+    public void execute(@Nullable final Profile profile) throws QuestException {
         final Location resolvedLocation = location.getValue(profile);
         resolvedLocation.getWorld().createExplosion(resolvedLocation,
                 power.getValue(profile).floatValue(), setsFire, breaksBlocks);

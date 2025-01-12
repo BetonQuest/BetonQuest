@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
@@ -59,9 +59,9 @@ public interface ItemMetaHandler<M extends ItemMeta> {
      *
      * @param key  the lower case key
      * @param data the associated data
-     * @throws InstructionParseException if the data is malformed or key not valid for handler
+     * @throws QuestException if the data is malformed or key not valid for handler
      */
-    void set(String key, String data) throws InstructionParseException;
+    void set(String key, String data) throws QuestException;
 
     /**
      * Reconstitute this Handler data into the specified meta.

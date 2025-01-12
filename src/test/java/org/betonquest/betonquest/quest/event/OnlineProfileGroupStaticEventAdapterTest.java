@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -51,7 +51,7 @@ class OnlineProfileGroupStaticEventAdapterTest {
     @ParameterizedTest
     @EmptySource
     @MethodSource("playerListSource")
-    void testInternalEventIsExecutedForEachPlayerExactlyOnce(final List<OnlineProfile> onlineProfileList) throws QuestRuntimeException {
+    void testInternalEventIsExecutedForEachPlayerExactlyOnce(final List<OnlineProfile> onlineProfileList) throws QuestException {
         final OnlineProfileGroupStaticEventAdapter subject = new OnlineProfileGroupStaticEventAdapter(() -> onlineProfileList, internalEvent);
         subject.execute();
 
@@ -61,7 +61,7 @@ class OnlineProfileGroupStaticEventAdapterTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testSupplierIsCalledEveryTime() throws QuestRuntimeException {
+    void testSupplierIsCalledEveryTime() throws QuestException {
         final List<OnlineProfile> firstExecution = List.of(createRandomProfile(), createRandomProfile());
         final List<OnlineProfile> secondExecution = List.of(createRandomProfile(), createRandomProfile(), createRandomProfile());
         final Iterator<List<OnlineProfile>> playerListsForSupplier = List.of(
@@ -82,28 +82,28 @@ class OnlineProfileGroupStaticEventAdapterTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testAdapterFailsOnFirstEventFailure() throws QuestRuntimeException {
+    void testAdapterFailsOnFirstEventFailure() throws QuestException {
         final List<OnlineProfile> playerList = List.of(createRandomProfile(), createRandomProfile(), createRandomProfile());
         final OnlineProfile firstProfile = playerList.get(0);
         final OnlineProfile failingProfile = playerList.get(1);
-        final Exception eventFailureException = new QuestRuntimeException("test exception");
+        final Exception eventFailureException = new QuestException("test exception");
 
         doNothing().when(internalEvent).execute(firstProfile);
         doThrow(eventFailureException).when(internalEvent).execute(failingProfile);
 
         final OnlineProfileGroupStaticEventAdapter subject = new OnlineProfileGroupStaticEventAdapter(() -> playerList, internalEvent);
-        assertThrows(QuestRuntimeException.class, subject::execute);
+        assertThrows(QuestException.class, subject::execute);
         verify(internalEvent).execute(firstProfile);
         verify(internalEvent, never()).execute(playerList.get(2));
     }
 
-    private void verifyExecutedOnceForPlayers(final Iterable<OnlineProfile> onlineProfilesList) throws QuestRuntimeException {
+    private void verifyExecutedOnceForPlayers(final Iterable<OnlineProfile> onlineProfilesList) throws QuestException {
         for (final OnlineProfile onlineProfile : onlineProfilesList) {
             verify(internalEvent).execute(onlineProfile);
         }
     }
 
-    private void verifyNotExecutedForPlayers(final Iterable<OnlineProfile> onlineProfilesList) throws QuestRuntimeException {
+    private void verifyNotExecutedForPlayers(final Iterable<OnlineProfile> onlineProfilesList) throws QuestException {
         for (final OnlineProfile onlineProfile : onlineProfilesList) {
             verify(internalEvent, never()).execute(onlineProfile);
         }

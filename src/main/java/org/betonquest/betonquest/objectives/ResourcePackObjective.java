@@ -5,7 +5,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -30,9 +30,9 @@ public class ResourcePackObjective extends Objective implements Listener {
      * Constructs a new ResourcePackObjective instance.
      *
      * @param instruction The instruction object.
-     * @throws InstructionParseException if an error occurs while parsing the instruction.
+     * @throws QuestException if an error occurs while parsing the instruction.
      */
-    public ResourcePackObjective(final Instruction instruction) throws InstructionParseException {
+    public ResourcePackObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         targetStatus = new VariableString(instruction.getPackage(), instruction.next());
     }

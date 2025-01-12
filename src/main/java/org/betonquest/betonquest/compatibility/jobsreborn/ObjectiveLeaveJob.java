@@ -8,7 +8,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -20,10 +20,10 @@ public class ObjectiveLeaveJob extends Objective implements Listener {
     private final String sJobName;
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    public ObjectiveLeaveJob(final Instruction instructions) throws InstructionParseException {
+    public ObjectiveLeaveJob(final Instruction instructions) throws QuestException {
         super(instructions);
         if (instructions.size() < 2) {
-            throw new InstructionParseException("Not enough arguments");
+            throw new QuestException("Not enough arguments");
         }
         for (final Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(instructions.getPart(1))) {
@@ -31,7 +31,7 @@ public class ObjectiveLeaveJob extends Objective implements Listener {
                 return;
             }
         }
-        throw new InstructionParseException("Jobs Reborn job " + instructions.getPart(1) + " does not exist");
+        throw new QuestException("Jobs Reborn job " + instructions.getPart(1) + " does not exist");
     }
 
     @EventHandler(ignoreCancelled = true)

@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 import java.util.Optional;
 
@@ -26,7 +26,7 @@ public final class OnlineConditionAdapter implements PlayerCondition {
 
     /**
      * Create a condition that checks the given online condition.
-     * If the player is not online it logs a message into the debug log
+     * If the player is not online, it logs a message into the debug log
      * and returns 'false'.
      *
      * @param onlineCondition condition to run for online players
@@ -56,7 +56,7 @@ public final class OnlineConditionAdapter implements PlayerCondition {
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestRuntimeException {
+    public boolean check(final Profile profile) throws QuestException {
         final Optional<OnlineProfile> onlineProfile = profile.getOnlineProfile();
         if (onlineProfile.isPresent()) {
             return onlineCondition.check(onlineProfile.get());

@@ -13,7 +13,7 @@ import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveC
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -150,7 +150,7 @@ public class CitizensConversationStarter {
         if (CombatTagger.isTagged(onlineProfile)) {
             try {
                 Config.sendNotify(null, onlineProfile, "busy", "busy,error");
-            } catch (final QuestRuntimeException e) {
+            } catch (final QuestException e) {
                 log.warn("The notify system was unable to play a sound for the 'busy' category. Error was: '" + e.getMessage() + "'", e);
             }
             return;

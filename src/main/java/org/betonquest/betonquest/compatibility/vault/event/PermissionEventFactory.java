@@ -4,7 +4,7 @@ import net.milkbowl.vault.permission.Permission;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 
@@ -34,7 +34,7 @@ public class PermissionEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         final boolean add = "add".equalsIgnoreCase(instruction.next());
         final boolean perm = "perm".equalsIgnoreCase(instruction.next());
         final String permission = instruction.next();

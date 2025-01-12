@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.condition.time;
 
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * A time with an hour and minute.
@@ -12,9 +12,9 @@ public record Time(int hour, int minute) {
      *
      * @param time the time string to parse
      * @return the parsed time
-     * @throws InstructionParseException if the time is invalid
+     * @throws QuestException if the time is invalid
      */
-    public static Time parseTime(final String time) throws InstructionParseException {
+    public static Time parseTime(final String time) throws QuestException {
         final String[] parts = time.split(":");
         final int hour;
         int minute = 0;
@@ -25,25 +25,25 @@ public record Time(int hour, int minute) {
                 minute = Integer.parseInt(parts[1]);
             }
         } catch (final NumberFormatException e) {
-            throw new InstructionParseException("Invalid time format. Expected hh or hh:mm", e);
+            throw new QuestException("Invalid time format. Expected hh or hh:mm", e);
         }
         checkForValidHour(hour, minute);
         checkForValidMinute(minute);
         return new Time(hour, minute);
     }
 
-    private static void checkForValidHour(final int hour, final int minute) throws InstructionParseException {
+    private static void checkForValidHour(final int hour, final int minute) throws QuestException {
         if (hour == 24 && minute != 0) {
-            throw new InstructionParseException("Hour 24 cannot have any minutes");
+            throw new QuestException("Hour 24 cannot have any minutes");
         }
         if (hour < 0 || hour > 24) {
-            throw new InstructionParseException("Hour must be between 0 and 24");
+            throw new QuestException("Hour must be between 0 and 24");
         }
     }
 
-    private static void checkForValidMinute(final int minute) throws InstructionParseException {
+    private static void checkForValidMinute(final int minute) throws QuestException {
         if (minute < 0 || minute > 59) {
-            throw new InstructionParseException("Minute must be between 0 and 59");
+            throw new QuestException("Minute must be between 0 and 59");
         }
     }
 

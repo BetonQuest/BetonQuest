@@ -7,8 +7,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 import java.util.List;
 import java.util.Locale;
@@ -37,9 +36,9 @@ public class StageObjective extends Objective {
      * Creates a new stage objective.
      *
      * @param instruction the instruction
-     * @throws InstructionParseException if the instruction is invalid
+     * @throws QuestException if the instruction is invalid
      */
-    public StageObjective(final Instruction instruction) throws InstructionParseException {
+    public StageObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         log = BetonQuest.getInstance().getLoggerFactory().create(this.getClass());
         template = StageData.class;
@@ -62,7 +61,7 @@ public class StageObjective extends Objective {
     public String getDefaultDataInstruction() {
         try {
             return stageMap.getStage(0);
-        } catch (final QuestRuntimeException e) {
+        } catch (final QuestException e) {
             log.reportException(instruction.getPackage(), e);
             return "";
         }
@@ -78,7 +77,7 @@ public class StageObjective extends Objective {
                 case "previous" -> stageMap.previousStage(getStage(profile));
                 default -> "";
             };
-        } catch (final QuestRuntimeException e) {
+        } catch (final QuestException e) {
             log.debug(instruction.getPackage(), "Error while getting property '" + name + "' for objective '" + instruction.getID() + "'.", e);
             return "";
         }
@@ -89,19 +88,19 @@ public class StageObjective extends Objective {
      *
      * @param profile the profile
      * @return the stage
-     * @throws QuestRuntimeException if the stage is not a valid stage for the objective
+     * @throws QuestException if the stage is not a valid stage for the objective
      */
-    public String getStage(final Profile profile) throws QuestRuntimeException {
+    public String getStage(final Profile profile) throws QuestException {
         final StageData stageData = (StageObjective.StageData) dataMap.get(profile);
         if (stageData == null) {
-            throw new QuestRuntimeException("No data found for profile '" + profile + "' for objective '" + instruction.getID() + "'."
+            throw new QuestException("No data found for profile '" + profile + "' for objective '" + instruction.getID() + "'."
                     + " Make sure the objective is started before setting the stage.");
         }
         final String stage = stageData.getStage();
         if (stageMap.isValidStage(stage)) {
             return stage;
         }
-        throw new QuestRuntimeException(profile + " has invalid stage '" + stage + "' for objective '" + instruction.getID() + "'.");
+        throw new QuestException(profile + " has invalid stage '" + stage + "' for objective '" + instruction.getID() + "'.");
     }
 
     /**
@@ -109,12 +108,12 @@ public class StageObjective extends Objective {
      *
      * @param profile the profile
      * @param stage   the stage
-     * @throws QuestRuntimeException if the stage is not a valid stage for the objective
+     * @throws QuestException if the stage is not a valid stage for the objective
      */
-    public void setStage(final Profile profile, final String stage) throws QuestRuntimeException {
+    public void setStage(final Profile profile, final String stage) throws QuestException {
         final StageData stageData = (StageObjective.StageData) dataMap.get(profile);
         if (stageData == null) {
-            throw new QuestRuntimeException("No data found for profile '" + profile + "' for objective '" + instruction.getID() + "'."
+            throw new QuestException("No data found for profile '" + profile + "' for objective '" + instruction.getID() + "'."
                     + " Make sure the objective is started before setting the stage.");
         }
         if (stageMap.isValidStage(stage)) {
@@ -123,7 +122,7 @@ public class StageObjective extends Objective {
             }
             return;
         }
-        throw new QuestRuntimeException("Invalid stage '" + stage + "' for objective '" + instruction.getID() + "'.");
+        throw new QuestException("Invalid stage '" + stage + "' for objective '" + instruction.getID() + "'.");
     }
 
     /**
@@ -131,9 +130,9 @@ public class StageObjective extends Objective {
      *
      * @param profile the profile
      * @param amount  the amount to increase
-     * @throws QuestRuntimeException if the stage is not a valid stage for the objective
+     * @throws QuestException if the stage is not a valid stage for the objective
      */
-    public void increaseStage(final Profile profile, final int amount) throws QuestRuntimeException {
+    public void increaseStage(final Profile profile, final int amount) throws QuestException {
         String nextStage = getStage(profile);
         try {
             for (int i = 0; i < amount; i++) {
@@ -142,7 +141,7 @@ public class StageObjective extends Objective {
                 }
                 nextStage = stageMap.nextStage(nextStage);
             }
-        } catch (final QuestRuntimeException e) {
+        } catch (final QuestException e) {
             if (!preventCompletion) {
                 completeObjective(profile);
             }
@@ -156,16 +155,12 @@ public class StageObjective extends Objective {
      *
      * @param profile the profile
      * @param amount  the amount to increase
-     * @throws QuestRuntimeException if the stage is not a valid stage for the objective
+     * @throws QuestException if the stage is not a valid stage for the objective
      */
-    public void decreaseStage(final Profile profile, final int amount) throws QuestRuntimeException {
+    public void decreaseStage(final Profile profile, final int amount) throws QuestException {
         String previousStage = getStage(profile);
-        try {
-            for (int i = 0; i < amount; i++) {
-                previousStage = stageMap.previousStage(previousStage);
-            }
-        } catch (final QuestRuntimeException e) {
-            return;
+        for (int i = 0; i < amount; i++) {
+            previousStage = stageMap.previousStage(previousStage);
         }
         setStage(profile, previousStage);
     }
@@ -175,9 +170,9 @@ public class StageObjective extends Objective {
      *
      * @param stage the stage
      * @return the index of the stage
-     * @throws QuestRuntimeException if the stage is not a valid stage for the objective
+     * @throws QuestException if the stage is not a valid stage for the objective
      */
-    public int getStageIndex(final String stage) throws QuestRuntimeException {
+    public int getStageIndex(final String stage) throws QuestException {
         return stageMap.getIndex(stage);
     }
 
@@ -229,19 +224,19 @@ public class StageObjective extends Objective {
          * Creates a new mapping of stages to indices.
          *
          * @param stages the stages
-         * @throws InstructionParseException if there are duplicate stages or no stages
+         * @throws QuestException if there are duplicate stages or no stages
          */
-        public StageMap(final List<String> stages) throws InstructionParseException {
+        public StageMap(final List<String> stages) throws QuestException {
             this.stages = HashBiMap.create(stages.size());
             for (int i = 0; i < stages.size(); i++) {
                 final String key = stages.get(i);
                 if (this.stages.containsKey(key)) {
-                    throw new InstructionParseException("Duplicate stage '" + key + "'!");
+                    throw new QuestException("Duplicate stage '" + key + "'!");
                 }
                 this.stages.put(key, i);
             }
             if (this.stages.isEmpty()) {
-                throw new InstructionParseException("No stages defined");
+                throw new QuestException("No stages defined");
             }
         }
 
@@ -250,12 +245,12 @@ public class StageObjective extends Objective {
          *
          * @param index the index
          * @return the stage
-         * @throws QuestRuntimeException if the index is not a valid index for the objective
+         * @throws QuestException if the index is not a valid index for the objective
          */
-        public String getStage(final int index) throws QuestRuntimeException {
+        public String getStage(final int index) throws QuestException {
             final String stage = stages.inverse().get(index);
             if (stage == null) {
-                throw new QuestRuntimeException("Index '" + index + "' is not a valid index for objective '" + instruction.getID() + "'.");
+                throw new QuestException("Index '" + index + "' is not a valid index for objective '" + instruction.getID() + "'.");
             }
             return stage;
         }
@@ -265,12 +260,12 @@ public class StageObjective extends Objective {
          *
          * @param stage the stage
          * @return the index of the stage
-         * @throws QuestRuntimeException if the stage is not a valid stage for the objective
+         * @throws QuestException if the stage is not a valid stage for the objective
          */
-        public int getIndex(final String stage) throws QuestRuntimeException {
+        public int getIndex(final String stage) throws QuestException {
             final Integer index = stages.get(stage);
             if (index == null) {
-                throw new QuestRuntimeException("Stage '" + stage + "' is not a valid stage for objective '" + instruction.getID() + "'.");
+                throw new QuestException("Stage '" + stage + "' is not a valid stage for objective '" + instruction.getID() + "'.");
             }
             return index;
         }
@@ -280,9 +275,9 @@ public class StageObjective extends Objective {
          *
          * @param stage the stage
          * @return the next stage
-         * @throws QuestRuntimeException if the stage is not a valid stage for the objective
+         * @throws QuestException if the stage is not a valid stage for the objective
          */
-        public String nextStage(final String stage) throws QuestRuntimeException {
+        public String nextStage(final String stage) throws QuestException {
             return getStage(getIndex(stage) + 1);
         }
 
@@ -291,9 +286,9 @@ public class StageObjective extends Objective {
          *
          * @param stage the stage
          * @return the previous stage
-         * @throws QuestRuntimeException if the stage is not a valid stage for the objective
+         * @throws QuestException if the stage is not a valid stage for the objective
          */
-        public String previousStage(final String stage) throws QuestRuntimeException {
+        public String previousStage(final String stage) throws QuestException {
             return getStage(getIndex(stage) - 1);
         }
 

@@ -7,8 +7,7 @@ import dev.aurelium.auraskills.api.user.SkillsUser;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.Utils;
 
@@ -23,7 +22,7 @@ public class AuraSkillsExperienceEvent extends QuestEvent {
 
     private final Skill skill;
 
-    public AuraSkillsExperienceEvent(final Instruction instruction) throws InstructionParseException {
+    public AuraSkillsExperienceEvent(final Instruction instruction) throws QuestException {
         super(instruction, true);
 
         final String skillName = instruction.next();
@@ -35,7 +34,7 @@ public class AuraSkillsExperienceEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final Profile profile) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) throws QuestException {
         final SkillsUser user = auraSkills.getUser(profile.getPlayerUUID());
 
         if (user == null) {

@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
@@ -50,7 +50,7 @@ public class AlternativeCondition implements NullableCondition {
 
     @Override
     @SuppressWarnings("PMD.CognitiveComplexity")
-    public boolean check(@Nullable final Profile profile) throws QuestRuntimeException {
+    public boolean check(@Nullable final Profile profile) throws QuestException {
         if (Bukkit.isPrimaryThread()) {
             for (final ConditionID id : conditionIDs) {
                 if (BetonQuest.condition(profile, id)) {

@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -57,7 +57,7 @@ public class CompassEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         final CompassTargetAction action = instruction.getEnum(CompassTargetAction.class);
         final String compass = instruction.next();
         final VariableLocation compassLocation = getCompassLocation(compass);
@@ -66,7 +66,7 @@ public class CompassEventFactory implements EventFactory {
                 data);
     }
 
-    private VariableLocation getCompassLocation(final String compass) throws InstructionParseException {
+    private VariableLocation getCompassLocation(final String compass) throws QuestException {
         for (final QuestPackage pack : Config.getPackages().values()) {
             final ConfigurationSection section = pack.getConfig().getConfigurationSection("compass");
             if (section == null) {
@@ -79,6 +79,6 @@ public class CompassEventFactory implements EventFactory {
                                 "Missing location in compass section"));
             }
         }
-        throw new InstructionParseException("Invalid compass location: " + compass);
+        throw new QuestException("Invalid compass location: " + compass);
     }
 }

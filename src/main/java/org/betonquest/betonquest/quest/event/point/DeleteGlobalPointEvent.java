@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.point;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.database.GlobalData;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * Deletes a category from the global points.
@@ -30,7 +30,7 @@ public class DeleteGlobalPointEvent implements StaticEvent {
     }
 
     @Override
-    public void execute() throws QuestRuntimeException {
+    public void execute() throws QuestException {
         globalData.removePointsCategory(category);
     }
 }

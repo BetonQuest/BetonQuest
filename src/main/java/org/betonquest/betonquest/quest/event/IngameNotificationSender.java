@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * Notification sender that sends ingame chat notifications to the player if they are online.
@@ -61,7 +61,7 @@ public class IngameNotificationSender implements NotificationSender {
         profile.getOnlineProfile().ifPresent(onlineProfile -> {
             try {
                 Config.sendNotify(questPackage, onlineProfile, messageName, variables, String.join(",", categories));
-            } catch (final QuestRuntimeException e) {
+            } catch (final QuestException e) {
                 log.warn(questPackage, "The notify system was unable to play a sound for the '" + messageName + "' message in '" + fullId + "'. Error was: '" + e.getMessage() + "'", e);
             }
         });

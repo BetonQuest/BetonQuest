@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.language;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * Changes player's language.
@@ -32,7 +32,7 @@ public class LanguageEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(final Profile profile) throws QuestException {
         betonQuest.getOfflinePlayerData(profile).setLanguage(language);
     }
 }

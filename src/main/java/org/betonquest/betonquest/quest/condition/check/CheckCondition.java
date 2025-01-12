@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.check;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class CheckCondition implements NullableCondition {
     }
 
     @Override
-    public boolean check(@Nullable final Profile profile) throws QuestRuntimeException {
+    public boolean check(@Nullable final Profile profile) throws QuestException {
         for (final Condition condition : internalConditions) {
             if (!condition.handle(profile)) {
                 return false;

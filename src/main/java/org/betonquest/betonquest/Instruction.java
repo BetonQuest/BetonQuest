@@ -3,8 +3,8 @@ package org.betonquest.betonquest;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
@@ -205,21 +205,21 @@ public class Instruction {
         return currentIndex < parts.length - 1;
     }
 
-    public String next() throws InstructionParseException {
+    public String next() throws QuestException {
         lastOptional = null;
         currentIndex = nextIndex;
         return getPart(nextIndex++);
     }
 
-    public String current() throws InstructionParseException {
+    public String current() throws QuestException {
         lastOptional = null;
         currentIndex = nextIndex - 1;
         return getPart(currentIndex);
     }
 
-    public String getPart(final int index) throws InstructionParseException {
+    public String getPart(final int index) throws QuestException {
         if (parts.length <= index) {
-            throw new InstructionParseException("Not enough arguments");
+            throw new QuestException("Not enough arguments");
         }
         lastOptional = null;
         currentIndex = index;
@@ -276,7 +276,7 @@ public class Instruction {
         return false;
     }
 
-    public VariableLocation getLocation() throws InstructionParseException {
+    public VariableLocation getLocation() throws QuestException {
         return getLocation(next());
     }
 
@@ -285,9 +285,9 @@ public class Instruction {
      *
      * @param prefix argument prefix
      * @return the location if it was defined in the instruction
-     * @throws InstructionParseException if the location format is invalid
+     * @throws QuestException if the location format is invalid
      */
-    public Optional<VariableLocation> getLocationArgument(final String prefix) throws InstructionParseException {
+    public Optional<VariableLocation> getLocationArgument(final String prefix) throws QuestException {
         final Optional<String> argument = getOptionalArgument(prefix);
         if (argument.isPresent()) {
             return Optional.of(getLocation(argument.get()));
@@ -297,64 +297,64 @@ public class Instruction {
 
     @Contract(NULL_NOT_NULL_CONTRACT)
     @Nullable
-    public VariableLocation getLocation(@Nullable final String string) throws InstructionParseException {
+    public VariableLocation getLocation(@Nullable final String string) throws QuestException {
         if (string == null) {
             return null;
         }
         try {
             return new VariableLocation(BetonQuest.getInstance().getVariableProcessor(), pack, string);
-        } catch (final InstructionParseException e) {
+        } catch (final QuestException e) {
             throw new PartParseException("Error while parsing location: " + e.getMessage(), e);
         }
     }
 
-    public VariableNumber getVarNum() throws InstructionParseException {
+    public VariableNumber getVarNum() throws QuestException {
         return getVarNum(next(), (value) -> {
         });
     }
 
-    public VariableNumber getVarNum(final Variable.ValueChecker<Number> valueChecker) throws InstructionParseException {
+    public VariableNumber getVarNum(final Variable.ValueChecker<Number> valueChecker) throws QuestException {
         return getVarNum(next(), valueChecker);
     }
 
     @Contract(NULL_NOT_NULL_CONTRACT)
     @Nullable
-    public VariableNumber getVarNum(@Nullable final String string) throws InstructionParseException {
+    public VariableNumber getVarNum(@Nullable final String string) throws QuestException {
         return getVarNum(string, (value) -> {
         });
     }
 
     @Contract("null, _ -> null; !null, _ -> !null")
     @Nullable
-    public VariableNumber getVarNum(@Nullable final String string, final Variable.ValueChecker<Number> valueChecker) throws InstructionParseException {
+    public VariableNumber getVarNum(@Nullable final String string, final Variable.ValueChecker<Number> valueChecker) throws QuestException {
         if (string == null) {
             return null;
         }
         try {
             return new VariableNumber(pack, string, valueChecker);
-        } catch (final InstructionParseException e) {
+        } catch (final QuestException e) {
             throw new PartParseException("Could not parse a number: " + e.getMessage(), e);
         }
     }
 
-    public QuestItem getQuestItem() throws InstructionParseException {
+    public QuestItem getQuestItem() throws QuestException {
         return getQuestItem(next());
     }
 
     @Contract(NULL_NOT_NULL_CONTRACT)
     @Nullable
-    public QuestItem getQuestItem(@Nullable final String string) throws InstructionParseException {
+    public QuestItem getQuestItem(@Nullable final String string) throws QuestException {
         if (string == null) {
             return null;
         }
         try {
             return new QuestItem(new ItemID(pack, string));
-        } catch (final ObjectNotFoundException | InstructionParseException e) {
+        } catch (final ObjectNotFoundException | QuestException e) {
             throw new PartParseException("Could not load '" + string + "' item: " + e.getMessage(), e);
         }
     }
 
-    public Item[] getItemList() throws InstructionParseException {
+    public Item[] getItemList() throws QuestException {
         return getItemList(next());
     }
 
@@ -364,13 +364,13 @@ public class Instruction {
      *
      * @param prefix argument prefix
      * @return array of items given; or empty list if there is no such argument
-     * @throws InstructionParseException if the item definitions contain errors
+     * @throws QuestException if the item definitions contain errors
      */
-    public Item[] getItemListArgument(final String prefix) throws InstructionParseException {
+    public Item[] getItemListArgument(final String prefix) throws QuestException {
         return getItemList(getOptionalArgument(prefix).orElse(null));
     }
 
-    public Item[] getItemList(@Nullable final String string) throws InstructionParseException {
+    public Item[] getItemList(@Nullable final String string) throws QuestException {
         final String[] array = getArray(string);
         final Item[] items = new Item[array.length];
         for (int i = 0; i < items.length; i++) {
@@ -386,21 +386,21 @@ public class Instruction {
                     number = getVarNum("1");
                 }
                 items[i] = new Item(item, number);
-            } catch (final InstructionParseException | NumberFormatException e) {
+            } catch (final QuestException | NumberFormatException e) {
                 throw new PartParseException("Error while parsing '" + array[i] + "' item: " + e.getMessage(), e);
             }
         }
         return items;
     }
 
-    public Map<Enchantment, Integer> getEnchantments() throws InstructionParseException {
+    public Map<Enchantment, Integer> getEnchantments() throws QuestException {
         return getEnchantments(next());
     }
 
     @SuppressWarnings({"deprecation", "PMD.ReturnEmptyCollectionRatherThanNull"})
     @Contract(NULL_NOT_NULL_CONTRACT)
     @Nullable
-    public Map<Enchantment, Integer> getEnchantments(@Nullable final String string) throws InstructionParseException {
+    public Map<Enchantment, Integer> getEnchantments(@Nullable final String string) throws QuestException {
         if (string == null) {
             return null;
         }
@@ -426,14 +426,14 @@ public class Instruction {
         return enchants;
     }
 
-    public List<PotionEffect> getEffects() throws InstructionParseException {
+    public List<PotionEffect> getEffects() throws QuestException {
         return getEffects(next());
     }
 
     @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
     @Contract(NULL_NOT_NULL_CONTRACT)
     @Nullable
-    public List<PotionEffect> getEffects(@Nullable final String string) throws InstructionParseException {
+    public List<PotionEffect> getEffects(@Nullable final String string) throws QuestException {
         if (string == null) {
             return null;
         }
@@ -458,19 +458,19 @@ public class Instruction {
         return effects;
     }
 
-    public <T extends Enum<T>> T getEnum(final Class<T> clazz) throws InstructionParseException {
+    public <T extends Enum<T>> T getEnum(final Class<T> clazz) throws QuestException {
         return getEnum(next(), clazz);
     }
 
     @Contract("null, _ -> null; !null, _ -> !null")
     @Nullable
-    public <T extends Enum<T>> T getEnum(@Nullable final String string, final Class<T> clazz) throws InstructionParseException {
+    public <T extends Enum<T>> T getEnum(@Nullable final String string, final Class<T> clazz) throws QuestException {
         return getEnum(string, clazz, null);
     }
 
     @Contract("_, _, !null -> !null")
     @Nullable
-    public <T extends Enum<T>> T getEnum(@Nullable final String string, final Class<T> clazz, @Nullable final T defaultValue) throws InstructionParseException {
+    public <T extends Enum<T>> T getEnum(@Nullable final String string, final Class<T> clazz, @Nullable final T defaultValue) throws QuestException {
         if (string == null) {
             return defaultValue;
         }
@@ -481,7 +481,7 @@ public class Instruction {
         }
     }
 
-    public Material getMaterial() throws InstructionParseException {
+    public Material getMaterial() throws QuestException {
         return getMaterial(next());
     }
 
@@ -494,39 +494,39 @@ public class Instruction {
         return Material.matchMaterial(string);
     }
 
-    public BlockSelector getBlockSelector() throws InstructionParseException {
+    public BlockSelector getBlockSelector() throws QuestException {
         return getBlockSelector(next());
     }
 
     @Contract(NULL_NOT_NULL_CONTRACT)
     @Nullable
-    public BlockSelector getBlockSelector(@Nullable final String string) throws InstructionParseException {
+    public BlockSelector getBlockSelector(@Nullable final String string) throws QuestException {
         return string == null ? null : new BlockSelector(string);
     }
 
-    public EntityType getEntity() throws InstructionParseException {
+    public EntityType getEntity() throws QuestException {
         return getEnum(next(), EntityType.class);
     }
 
-    public EntityType getEntity(final String string) throws InstructionParseException {
+    public EntityType getEntity(final String string) throws QuestException {
         return getEnum(string, EntityType.class);
     }
 
-    public PotionType getPotion() throws InstructionParseException {
+    public PotionType getPotion() throws QuestException {
         return getEnum(next(), PotionType.class);
     }
 
-    public PotionType getPotion(final String string) throws InstructionParseException {
+    public PotionType getPotion(final String string) throws QuestException {
         return getEnum(string, PotionType.class);
     }
 
-    public EventID getEvent() throws InstructionParseException {
+    public EventID getEvent() throws QuestException {
         return getEvent(next());
     }
 
     @Contract(NULL_NOT_NULL_CONTRACT)
     @Nullable
-    public EventID getEvent(@Nullable final String string) throws InstructionParseException {
+    public EventID getEvent(@Nullable final String string) throws QuestException {
         if (string == null) {
             return null;
         }
@@ -537,13 +537,13 @@ public class Instruction {
         }
     }
 
-    public ConditionID getCondition() throws InstructionParseException {
+    public ConditionID getCondition() throws QuestException {
         return getCondition(next());
     }
 
     @Contract(NULL_NOT_NULL_CONTRACT)
     @Nullable
-    public ConditionID getCondition(@Nullable final String string) throws InstructionParseException {
+    public ConditionID getCondition(@Nullable final String string) throws QuestException {
         if (string == null) {
             return null;
         }
@@ -554,13 +554,13 @@ public class Instruction {
         }
     }
 
-    public ObjectiveID getObjective() throws InstructionParseException {
+    public ObjectiveID getObjective() throws QuestException {
         return getObjective(next());
     }
 
     @Contract(NULL_NOT_NULL_CONTRACT)
     @Nullable
-    public ObjectiveID getObjective(@Nullable final String string) throws InstructionParseException {
+    public ObjectiveID getObjective(@Nullable final String string) throws QuestException {
         if (string == null) {
             return null;
         }
@@ -571,13 +571,13 @@ public class Instruction {
         }
     }
 
-    public ItemID getItem() throws InstructionParseException {
+    public ItemID getItem() throws QuestException {
         return getItem(next());
     }
 
     @Contract(NULL_NOT_NULL_CONTRACT)
     @Nullable
-    public ItemID getItem(@Nullable final String string) throws InstructionParseException {
+    public ItemID getItem(@Nullable final String string) throws QuestException {
         if (string == null) {
             return null;
         }
@@ -588,11 +588,11 @@ public class Instruction {
         }
     }
 
-    public byte getByte() throws InstructionParseException {
+    public byte getByte() throws QuestException {
         return getByte(next(), (byte) 0);
     }
 
-    public byte getByte(@Nullable final String string, final byte def) throws InstructionParseException {
+    public byte getByte(@Nullable final String string, final byte def) throws QuestException {
         if (string == null) {
             return def;
         }
@@ -603,23 +603,23 @@ public class Instruction {
         }
     }
 
-    public int getPositive() throws InstructionParseException {
+    public int getPositive() throws QuestException {
         return getPositive(next(), 0);
     }
 
-    public int getPositive(@Nullable final String string, final int def) throws InstructionParseException {
+    public int getPositive(@Nullable final String string, final int def) throws QuestException {
         final int number = getInt(string, def);
         if (number <= 0) {
-            throw new InstructionParseException("Number cannot be less than 1");
+            throw new QuestException("Number cannot be less than 1");
         }
         return number;
     }
 
-    public int getInt() throws InstructionParseException {
+    public int getInt() throws QuestException {
         return getInt(next(), 0);
     }
 
-    public int getInt(@Nullable final String string, final int def) throws InstructionParseException {
+    public int getInt(@Nullable final String string, final int def) throws QuestException {
         if (string == null) {
             return def;
         }
@@ -630,11 +630,11 @@ public class Instruction {
         }
     }
 
-    public long getLong() throws InstructionParseException {
+    public long getLong() throws QuestException {
         return getLong(next(), 0);
     }
 
-    public long getLong(@Nullable final String string, final long def) throws InstructionParseException {
+    public long getLong(@Nullable final String string, final long def) throws QuestException {
         if (string == null) {
             return def;
         }
@@ -645,11 +645,11 @@ public class Instruction {
         }
     }
 
-    public double getDouble() throws InstructionParseException {
+    public double getDouble() throws QuestException {
         return getDouble(next(), 0.0);
     }
 
-    public double getDouble(@Nullable final String string, final double def) throws InstructionParseException {
+    public double getDouble(@Nullable final String string, final double def) throws QuestException {
         if (string == null) {
             return def;
         }
@@ -660,7 +660,7 @@ public class Instruction {
         }
     }
 
-    public String[] getArray() throws InstructionParseException {
+    public String[] getArray() throws QuestException {
         return getArray(next());
     }
 
@@ -671,11 +671,11 @@ public class Instruction {
         return StringUtils.split(string, ",");
     }
 
-    public <T> List<T> getList(final Converter<T> converter) throws InstructionParseException {
+    public <T> List<T> getList(final Converter<T> converter) throws QuestException {
         return getList(next(), converter);
     }
 
-    public <T> List<T> getList(@Nullable final String string, final Converter<T> converter) throws InstructionParseException {
+    public <T> List<T> getList(@Nullable final String string, final Converter<T> converter) throws QuestException {
         if (string == null) {
             return new ArrayList<>(0);
         }
@@ -690,7 +690,7 @@ public class Instruction {
     public interface Converter<T> {
         @Contract(NULL_NOT_NULL_CONTRACT)
         @Nullable
-        T convert(@Nullable String string) throws InstructionParseException;
+        T convert(@Nullable String string) throws QuestException;
     }
 
     @SuppressWarnings("PMD.ShortClassName")
@@ -701,7 +701,7 @@ public class Instruction {
 
         private final VariableNumber amount;
 
-        public Item(final ItemID itemID, final VariableNumber amount) throws InstructionParseException {
+        public Item(final ItemID itemID, final VariableNumber amount) throws QuestException {
             this.itemID = itemID;
             this.questItem = new QuestItem(itemID);
             this.amount = amount;
@@ -724,7 +724,7 @@ public class Instruction {
         }
     }
 
-    public class PartParseException extends InstructionParseException {
+    public class PartParseException extends QuestException {
         @Serial
         private static final long serialVersionUID = 2007556828888605511L;
 

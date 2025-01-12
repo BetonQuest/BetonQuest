@@ -5,8 +5,8 @@ import org.betonquest.betonquest.VariableInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariableFactory;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.variables.LocationVariable;
 
@@ -40,17 +40,17 @@ public class CitizensVariableFactory implements PlayerlessVariableFactory {
     }
 
     @Override
-    public PlayerlessVariable parsePlayerless(final Instruction instruction) throws InstructionParseException {
+    public PlayerlessVariable parsePlayerless(final Instruction instruction) throws QuestException {
         final int npcId = instruction.getInt();
         if (npcId < 0) {
-            throw new InstructionParseException("NPC ID cannot be less than 0");
+            throw new QuestException("NPC ID cannot be less than 0");
         }
         final Argument key = instruction.getEnum(Argument.class);
         final LocationVariable location = key == Argument.LOCATION ? parseLocation(instruction) : null;
         return new CitizensVariable(npcId, key, location);
     }
 
-    private LocationVariable parseLocation(final Instruction instruction) throws InstructionParseException {
+    private LocationVariable parseLocation(final Instruction instruction) throws QuestException {
         try {
             final Instruction locationInstruction = new VariableInstruction(
                     loggerFactory.create(Instruction.class),
@@ -61,7 +61,7 @@ public class CitizensVariableFactory implements PlayerlessVariableFactory {
             locationInstruction.current();
             return new LocationVariable(locationInstruction);
         } catch (final ObjectNotFoundException e) {
-            throw new InstructionParseException("Could not generate dynamic location variable", e);
+            throw new QuestException("Could not generate dynamic location variable", e);
         }
     }
 }

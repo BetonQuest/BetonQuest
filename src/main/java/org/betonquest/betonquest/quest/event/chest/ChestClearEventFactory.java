@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -31,16 +31,16 @@ public class ChestClearEventFactory implements EventFactory, StaticEventFactory 
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(createChestClearEvent(instruction), data);
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadStaticEvent(createChestClearEvent(instruction), data);
     }
 
-    private NullableEventAdapter createChestClearEvent(final Instruction instruction) throws InstructionParseException {
+    private NullableEventAdapter createChestClearEvent(final Instruction instruction) throws QuestException {
         final VariableLocation variableLocation = instruction.getLocation();
         return new NullableEventAdapter(new ChestClearEvent(variableLocation));
     }

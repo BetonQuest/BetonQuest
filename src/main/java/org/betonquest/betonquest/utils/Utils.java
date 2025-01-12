@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Backup;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.modules.config.Zipper;
 import org.bukkit.ChatColor;
@@ -57,7 +57,7 @@ public final class Utils {
         if (!Backup.backupDatabase(configAccessorFactory, new File(instance.getDataFolder(), "database-backup.yml"))) {
             LOG.warn("There was an error during backing up the database! This does not affect"
                     + " the configuration backup, nor damage your database. You should backup"
-                    + " the database maually if you want to be extra safe, but it's not necessary if"
+                    + " the database manually if you want to be extra safe, but it's not necessary if"
                     + " you don't want to downgrade later.");
         }
         // create Backups folder if it does not exist
@@ -80,7 +80,7 @@ public final class Utils {
     }
 
     /**
-     * Converts string to list of pages for a book.
+     * Converts string to a list of pages for a book.
      *
      * @param string text to convert
      * @return the list of pages for a book
@@ -141,7 +141,7 @@ public final class Utils {
                     }
                     page.append(lineBuilder.toString().stripTrailing()).append('\n');
                 }
-                if (page.length() != 0) {
+                if (!page.isEmpty()) {
                     pages.add(page.toString());
                 }
             }
@@ -154,7 +154,7 @@ public final class Utils {
     }
 
     /**
-     * Checks if the ItemStack is a quest item
+     * Checks if the ItemStack is a quest item.
      *
      * @param item ItemStack to check
      * @return true if the supplied ItemStack is a quest item, false otherwise
@@ -233,12 +233,12 @@ public final class Utils {
      *
      * @param string string to parse as a Color
      * @return the Color (never null)
-     * @throws InstructionParseException when something goes wrong
+     * @throws QuestException when something goes wrong
      */
     @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity"})
-    public static Color getColor(final String string) throws InstructionParseException {
+    public static Color getColor(final String string) throws QuestException {
         if (string.isEmpty()) {
-            throw new InstructionParseException("Color is not specified");
+            throw new QuestException("Color is not specified");
         }
         try {
             return Color.fromRGB(Integer.parseInt(string));
@@ -254,17 +254,17 @@ public final class Utils {
                     return DyeColor.valueOf(string.trim().toUpperCase(Locale.ROOT).replace(' ', '_')).getColor();
                 } catch (final IllegalArgumentException e3) {
                     // this was not a dye color name
-                    throw new InstructionParseException("Dye color does not exist: " + string, e3);
+                    throw new QuestException("Dye color does not exist: " + string, e3);
                 }
             }
         } catch (final IllegalArgumentException e) {
             // string was a number, but incorrect
-            throw new InstructionParseException("Incorrect RGB code: " + string, e);
+            throw new QuestException("Incorrect RGB code: " + string, e);
         }
     }
 
     /**
-     * Resets any color resets to def. Also ensures any new lines copy the colours and format from the previous line
+     * Resets any color resets to def. Also ensures any new lines copy the colors and format from the previous line
      *
      * @param pages multiple pages to process
      * @param def   default color code to use instead of resetting; use null for regular reset code
@@ -296,9 +296,9 @@ public final class Utils {
     }
 
     /**
-     * Formats the string by replacing {@code \\n} with {@code \n} and resolving alternate color codes with {@code &}
+     * Formats the string by replacing {@code \\n} with {@code \n} and resolving alternate color codes with {@code &}.
      * <p>
-     * {@code format(string, false, false)} will return the string with no formatting done
+     * {@code format(string, false, false)} will return the string with no formatting done.
      *
      * @param string     the input string
      * @param colorCodes if alternate color codes should be resolved
@@ -317,7 +317,7 @@ public final class Utils {
     }
 
     /**
-     * Formats the string by replacing {@code \\n} with {@code \n} and resolving alternate color codes with {@code &}
+     * Formats the string by replacing {@code \\n} with {@code \n} and resolving alternate color codes with {@code &}.
      *
      * @param string the input string
      * @return a formatted version of the input string
@@ -335,11 +335,11 @@ public final class Utils {
      * @param message  of the exception when the argument is null
      * @param <A>      type of the argument
      * @return the argument, if not null
-     * @throws InstructionParseException if the argument is null
+     * @throws QuestException if the argument is null
      */
-    public static <A> A getNN(@Nullable final A argument, final String message) throws InstructionParseException {
+    public static <A> A getNN(@Nullable final A argument, final String message) throws QuestException {
         if (argument == null) {
-            throw new InstructionParseException(message);
+            throw new QuestException(message);
         }
         return argument;
     }

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.fakeblock;
 import com.briarcraft.fakeblock.api.service.PlayerGroupService;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public class ShowGroupEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(final Profile profile) throws QuestException {
         for (final String groupName : groupNames) {
             playerGroupService.getProvider().showGroup(groupName, profile.getPlayer());
         }

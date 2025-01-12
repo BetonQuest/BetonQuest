@@ -5,7 +5,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.utils.Utils;
@@ -35,7 +35,7 @@ public class MobKillObjective extends CountingObjective implements Listener {
     @Nullable
     protected VariableString marked;
 
-    public MobKillObjective(final Instruction instruction) throws InstructionParseException {
+    public MobKillObjective(final Instruction instruction) throws QuestException {
         super(instruction, "mobs_to_kill");
         entities = instruction.getList(mob -> instruction.getEnum(mob, EntityType.class));
         targetAmount = instruction.getVarNum(VariableNumber.NOT_LESS_THAN_ONE_CHECKER);

@@ -6,8 +6,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
@@ -116,7 +116,7 @@ public class Menu extends SimpleYMLSection implements Listener {
         //load title
         try {
             this.title = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, getString("title"));
-        } catch (final InstructionParseException e) {
+        } catch (final QuestException e) {
             throw new InvalidConfigurationException(e.getMessage(), e);
         }
         this.openConditions = getConditions("open_conditions", pack);
@@ -129,7 +129,7 @@ public class Menu extends SimpleYMLSection implements Listener {
             protected QuestItem of() throws Missing, Invalid {
                 try {
                     return new QuestItem(new ItemID(Menu.this.pack, getString("bind")));
-                } catch (final ObjectNotFoundException | InstructionParseException e) {
+                } catch (final ObjectNotFoundException | QuestException e) {
                     throw new Invalid("bind", e);
                 }
             }

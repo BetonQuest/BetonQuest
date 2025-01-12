@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -40,9 +40,9 @@ public class ColorHandler implements ItemMetaHandler<LeatherArmorMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws InstructionParseException {
+    public void set(final String key, final String data) throws QuestException {
         if (!"color".equals(key)) {
-            throw new InstructionParseException("Invalid color key: " + key);
+            throw new QuestException("Invalid color key: " + key);
         }
         if (Existence.NONE_KEY.equalsIgnoreCase(data)) {
             colorE = Existence.FORBIDDEN;

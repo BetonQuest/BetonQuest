@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.common.function;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -15,7 +15,7 @@ public interface Selector<T> {
      *
      * @param profile profile to get the target for
      * @return the appropriate target to use
-     * @throws QuestRuntimeException if the target to use cannot be determined
+     * @throws QuestException if the target to use cannot be determined
      */
-    T selectFor(@Nullable Profile profile) throws QuestRuntimeException;
+    T selectFor(@Nullable Profile profile) throws QuestException;
 }

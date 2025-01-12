@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.quest.event.DatabaseSaverStaticEvent;
 import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
@@ -64,34 +64,34 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         final String action = instruction.next();
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "update" -> createJournalUpdateEvent();
             case "add" -> createJournalAddEvent(instruction);
             case "delete" -> createJournalDeleteEvent(instruction);
-            default -> throw new InstructionParseException("Unknown journal action: " + action);
+            default -> throw new QuestException("Unknown journal action: " + action);
         };
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
         final String action = instruction.next();
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "update", "add" -> new DoNothingStaticEvent();
             case "delete" -> createStaticJournalDeleteEvent(instruction);
-            default -> throw new InstructionParseException("Unknown journal action: " + action);
+            default -> throw new QuestException("Unknown journal action: " + action);
         };
     }
 
-    private JournalEvent createJournalDeleteEvent(final Instruction instruction) throws InstructionParseException {
+    private JournalEvent createJournalDeleteEvent(final Instruction instruction) throws QuestException {
         final String entryName = Utils.addPackage(instruction.getPackage(), instruction.getPart(2));
         final JournalChanger journalChanger = new RemoveEntryJournalChanger(entryName);
         final NotificationSender notificationSender = new NoNotificationSender();
         return new JournalEvent(betonQuest, journalChanger, notificationSender);
     }
 
-    private JournalEvent createJournalAddEvent(final Instruction instruction) throws InstructionParseException {
+    private JournalEvent createJournalAddEvent(final Instruction instruction) throws QuestException {
         final String entryName = Utils.addPackage(instruction.getPackage(), instruction.getPart(2));
         final JournalChanger journalChanger = new AddEntryJournalChanger(instantSource, entryName);
         final NotificationSender notificationSender = new IngameNotificationSender(loggerFactory.create(JournalEvent.class), instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.INFO, "new_journal_entry");
@@ -104,7 +104,7 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
         return new JournalEvent(betonQuest, journalChanger, notificationSender);
     }
 
-    private StaticEvent createStaticJournalDeleteEvent(final Instruction instruction) throws InstructionParseException {
+    private StaticEvent createStaticJournalDeleteEvent(final Instruction instruction) throws QuestException {
         final JournalEvent journalDeleteEvent = createJournalDeleteEvent(instruction.copy());
         final String entryName = Utils.addPackage(instruction.getPackage(), instruction.getPart(2));
         return new SequentialStaticEvent(

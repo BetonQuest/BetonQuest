@@ -8,9 +8,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
@@ -78,10 +77,10 @@ public class QuestCanceler {
      *
      * @param pack       the {@link QuestPackage} of the canceler
      * @param cancelerID ID of the canceler (package.name)
-     * @throws InstructionParseException when parsing the canceler fails for some reason
+     * @throws QuestException when parsing, the canceler fails for some reason
      */
     @SuppressWarnings("PMD.LocalVariableCouldBeFinal")
-    public QuestCanceler(final QuestPackage pack, final String cancelerID) throws InstructionParseException {
+    public QuestCanceler(final QuestPackage pack, final String cancelerID) throws QuestException {
         this.cancelerID = Utils.getNN(cancelerID, "Name is null");
         this.pack = Utils.getNN(pack, "Package does not exist");
         final ConfigurationSection section = pack.getConfig().getConfigurationSection("cancel." + cancelerID);
@@ -110,7 +109,7 @@ public class QuestCanceler {
             Location tmp;
             try {
                 tmp = VariableLocation.parse(rawLoc);
-            } catch (final QuestRuntimeException e) {
+            } catch (final QuestException e) {
                 log.warn(pack, "Could not parse location in quest canceler '" + name + "': " + e.getMessage(), e);
                 tmp = null;
             }
@@ -128,7 +127,7 @@ public class QuestCanceler {
 
     @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
     @Nullable
-    private <T extends ID> T[] parseID(final ConfigurationSection section, final String path, final SimpleYMLSection.IDArgument<T> argument) throws InstructionParseException {
+    private <T extends ID> T[] parseID(final ConfigurationSection section, final String path, final SimpleYMLSection.IDArgument<T> argument) throws QuestException {
         final String[] rawObjectives = split(section, path);
         if (rawObjectives == null || rawObjectives.length == 0) {
             return null;
@@ -142,7 +141,7 @@ public class QuestCanceler {
             }
             return converted;
         } catch (final ObjectNotFoundException e) {
-            throw new InstructionParseException("Error while parsing quest canceler " + path + ": " + e.getMessage(), e);
+            throw new QuestException("Error while parsing quest canceler " + path + ": " + e.getMessage(), e);
         }
     }
 
@@ -201,7 +200,7 @@ public class QuestCanceler {
         final String questName = getName(onlineProfile);
         try {
             Config.sendNotify(pack, onlineProfile, "quest_canceled", new String[]{questName}, "quest_cancelled,quest_canceled,info");
-        } catch (final QuestRuntimeException exception) {
+        } catch (final QuestException exception) {
             log.warn("The notify system was unable to play a sound for the 'quest_canceled' category in quest '" + name + "'. Error was: '" + exception.getMessage() + "'");
         }
     }
@@ -221,7 +220,7 @@ public class QuestCanceler {
 
     /**
      * Returns a name of this quest canceler in the language of the player,
-     * default language, English or if none of above are specified, simply
+     * default language, English, or if none of the above are specified,
      * "Quest". In that case, it will also log an error to the console.
      *
      * @param profile the {@link Profile} of the player
@@ -248,7 +247,7 @@ public class QuestCanceler {
             try {
                 final ItemID itemID = new ItemID(pack, item);
                 stack = new QuestItem(itemID).generate(1);
-            } catch (final InstructionParseException | ObjectNotFoundException e) {
+            } catch (final QuestException | ObjectNotFoundException e) {
                 log.warn("Could not load cancel button: " + e.getMessage(), e);
             }
         }

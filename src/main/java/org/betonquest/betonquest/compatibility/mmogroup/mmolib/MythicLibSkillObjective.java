@@ -7,7 +7,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -39,9 +39,9 @@ public class MythicLibSkillObjective extends Objective implements Listener {
      * Parses the instruction and creates a new objective.
      *
      * @param instruction the user-provided instruction
-     * @throws InstructionParseException if the instruction is invalid
+     * @throws QuestException if the instruction is invalid
      */
-    public MythicLibSkillObjective(final Instruction instruction) throws InstructionParseException {
+    public MythicLibSkillObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         skillId = instruction.next();
         final String triggerTypesString = instruction.getOptional("trigger");
@@ -52,13 +52,13 @@ public class MythicLibSkillObjective extends Objective implements Listener {
         }
     }
 
-    private Collection<TriggerType> parseTriggerTypes(final String triggerTypeString) throws InstructionParseException {
+    private Collection<TriggerType> parseTriggerTypes(final String triggerTypeString) throws QuestException {
         final Collection<TriggerType> types = new ArrayList<>();
         final Collection<String> possibleTypes = TriggerType.values().stream().map(TriggerType::name).toList();
         final String[] parts = triggerTypeString.toUpperCase(Locale.ROOT).split(",");
         for (final String part : parts) {
             if (!possibleTypes.contains(part)) {
-                throw new InstructionParseException("Unknown trigger type: " + part);
+                throw new QuestException("Unknown trigger type: " + part);
             }
             final TriggerType triggerType = TriggerType.valueOf(part);
             types.add(triggerType);

@@ -8,7 +8,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -116,7 +116,7 @@ public class EffectLibRunnable extends BukkitRunnable {
             try {
                 location = variableLocation.getValue(profile);
                 manager.start(effect.effectClass(), effect.settings(), location, profile.getPlayer());
-            } catch (final QuestRuntimeException exception) {
+            } catch (final QuestException exception) {
                 log.warn("Error while resolving a location of an EffectLib particle effect of type '" + effect.effectClass() + "'. Check that your location (variables) are correct. Error:", exception);
             }
         }

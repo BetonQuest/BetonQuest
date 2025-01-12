@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * Factory for the {@link ConjunctionCondition} class.
@@ -20,16 +20,16 @@ public class ConjunctionConditionFactory implements PlayerConditionFactory, Play
     }
 
     @Override
-    public PlayerCondition parsePlayer(final Instruction instruction) throws InstructionParseException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         return new NullableConditionAdapter(parse(instruction));
     }
 
     @Override
-    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws InstructionParseException {
+    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
         return new NullableConditionAdapter(parse(instruction));
     }
 
-    private ConjunctionCondition parse(final Instruction instruction) throws InstructionParseException {
+    private ConjunctionCondition parse(final Instruction instruction) throws QuestException {
         return new ConjunctionCondition(instruction.getList(instruction::getCondition));
     }
 }

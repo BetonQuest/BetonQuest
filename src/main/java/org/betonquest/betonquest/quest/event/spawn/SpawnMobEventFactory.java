@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
@@ -47,12 +47,12 @@ public class SpawnMobEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(createSpawnMobEvent(instruction), data);
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadStaticEvent(createSpawnMobEvent(instruction), data);
     }
 
@@ -61,9 +61,9 @@ public class SpawnMobEventFactory implements EventFactory, StaticEventFactory {
      *
      * @param instruction the instruction to create the event from
      * @return the created event
-     * @throws InstructionParseException if the instruction could not be parsed
+     * @throws QuestException if the instruction could not be parsed
      */
-    public NullableEventAdapter createSpawnMobEvent(final Instruction instruction) throws InstructionParseException {
+    public NullableEventAdapter createSpawnMobEvent(final Instruction instruction) throws QuestException {
         final VariableLocation loc = instruction.getLocation();
         final EntityType type = instruction.getEntity();
         final VariableNumber amount = instruction.getVarNum();
@@ -90,7 +90,7 @@ public class SpawnMobEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Nullable
-    private QuestItem getQuestItem(final Instruction instruction, final String key) throws InstructionParseException {
+    private QuestItem getQuestItem(final Instruction instruction, final String key) throws QuestException {
         final ItemID item = instruction.getItem(instruction.getOptional(key));
         return item == null ? null : new QuestItem(item);
     }

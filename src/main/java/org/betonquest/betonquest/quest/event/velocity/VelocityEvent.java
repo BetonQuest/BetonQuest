@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.velocity;
 
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableVector;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -40,7 +40,7 @@ public class VelocityEvent implements OnlineEvent {
     }
 
     @Override
-    public void execute(final OnlineProfile profile) throws QuestRuntimeException {
+    public void execute(final OnlineProfile profile) throws QuestException {
         final Player player = profile.getPlayer();
         final Vector pVector = vector.getValue(profile);
         final Vector directionVector = direction.calculate(player, pVector);

@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.objectives.AbstractLocationObjective;
 import org.bukkit.Bukkit;
@@ -21,12 +21,12 @@ public class RegionObjective extends AbstractLocationObjective {
     private final VariableString name;
 
     /**
-     * The constructor takes an Instruction object as a parameter and throws an InstructionParseException.
+     * The constructor takes an Instruction object as a parameter and throws an QuestException.
      *
      * @param instruction the Instruction object to be used in the constructor
-     * @throws InstructionParseException if there is an error while parsing the instruction
+     * @throws QuestException if there is an error while parsing the instruction
      */
-    public RegionObjective(final Instruction instruction) throws InstructionParseException {
+    public RegionObjective(final Instruction instruction) throws QuestException {
         super(BetonQuest.getInstance().getLoggerFactory().create(RegionObjective.class), instruction);
         name = new VariableString(instruction.getPackage(), instruction.next());
     }

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest;
 
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -64,9 +64,9 @@ public class PrimaryServerThreadType<T, R> {
      *
      * @param execute the wrapped quest type method call
      * @return result of the call
-     * @throws QuestRuntimeException when a QuestRuntimeException is thrown during event execution
+     * @throws QuestException when an QuestException is thrown during event execution
      */
-    protected R call(final QuestCallable<R> execute) throws QuestRuntimeException {
+    protected R call(final QuestCallable<R> execute) throws QuestException {
         if (data.server().isPrimaryThread()) {
             return execute.call();
         } else {
@@ -79,34 +79,34 @@ public class PrimaryServerThreadType<T, R> {
      *
      * @param callable the method of {@link T}
      * @return the return value {@link R} of the callable
-     * @throws QuestRuntimeException when the callable gets interrupted or another exception occurs during the execution
+     * @throws QuestException when the callable gets interrupted or another exception occurs during the execution
      */
     @SuppressWarnings("PMD.PreserveStackTrace")
-    private R executeOnPrimaryThread(final Callable<R> callable) throws QuestRuntimeException {
+    private R executeOnPrimaryThread(final Callable<R> callable) throws QuestException {
         final Future<R> executingEventFuture = data.scheduler().callSyncMethod(data.plugin(), callable);
         try {
             return executingEventFuture.get(10, TimeUnit.SECONDS);
         } catch (final InterruptedException | TimeoutException e) {
             executingEventFuture.cancel(true);
-            throw new QuestRuntimeException("Thread was Interrupted!", e);
+            throw new QuestException("Thread was Interrupted!", e);
         } catch (final ExecutionException e) {
-            if (e.getCause() instanceof final QuestRuntimeException cause) {
+            if (e.getCause() instanceof final QuestException cause) {
                 throw cause;
             }
-            throw new QuestRuntimeException(e);
+            throw new QuestException(e);
         }
     }
 
     /**
-     * Calls the quest method that may throw a {@link QuestRuntimeException}.
+     * Calls the quest method that may throw a {@link QuestException}.
      */
     protected interface QuestCallable<R> {
         /**
          * Calls the method and gets the result.
          *
          * @return result of the check
-         * @throws QuestRuntimeException when a QuestRuntimeException is thrown during method execution
+         * @throws QuestException when a QuestException is thrown during method execution
          */
-        R call() throws QuestRuntimeException;
+        R call() throws QuestException;
     }
 }

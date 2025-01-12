@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 import java.util.Optional;
 
@@ -26,7 +26,7 @@ public final class OnlineEventAdapter implements Event {
 
     /**
      * Create an event that runs the given online event.
-     * If the player is not online it logs a message into the debug log.
+     * If the player is not online, it logs a message into the debug log.
      *
      * @param onlineEvent  event to run for online players
      * @param log          log to write to if the player is not online
@@ -52,7 +52,7 @@ public final class OnlineEventAdapter implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(final Profile profile) throws QuestException {
         final Optional<OnlineProfile> onlineProfile = profile.getOnlineProfile();
         if (onlineProfile.isPresent()) {
             onlineEvent.execute(onlineProfile.get());

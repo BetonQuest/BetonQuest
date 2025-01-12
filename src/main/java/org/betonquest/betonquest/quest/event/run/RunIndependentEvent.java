@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.run;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.quest.event.CallStaticEventAdapter;
 
@@ -32,7 +32,7 @@ public class RunIndependentEvent implements StaticEvent {
     }
 
     @Override
-    public void execute() throws QuestRuntimeException {
+    public void execute() throws QuestException {
         for (final EventID event : events) {
             BetonQuest.event(null, event);
         }

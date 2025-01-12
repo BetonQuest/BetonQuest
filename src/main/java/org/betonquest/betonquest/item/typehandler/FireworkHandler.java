@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
@@ -109,7 +109,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws InstructionParseException {
+    public void set(final String key, final String data) throws QuestException {
         switch (key) {
             case "firework" -> setEffects(data);
             case "power" -> {
@@ -118,7 +118,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
                 power = fireworkPower.getValue();
             }
             case "firework-containing" -> exact = false;
-            default -> throw new InstructionParseException("Unknown firework key: " + key);
+            default -> throw new QuestException("Unknown firework key: " + key);
         }
     }
 
@@ -187,7 +187,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
         return list;
     }
 
-    public void setEffects(final String string) throws InstructionParseException {
+    public void setEffects(final String string) throws QuestException {
         final String[] parts = HandlerUtil.getNNSplit(string, "Firework effects missing", ",");
         if (Existence.NONE_KEY.equalsIgnoreCase(parts[0])) {
             effectsE = Existence.FORBIDDEN;
