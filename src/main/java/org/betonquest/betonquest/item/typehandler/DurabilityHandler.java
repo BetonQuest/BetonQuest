@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.item.QuestItem.Number;
 import org.bukkit.inventory.meta.Damageable;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,7 +42,10 @@ public class DurabilityHandler implements ItemMetaHandler<Damageable> {
         if (!"durability".equals(key)) {
             throw new InstructionParseException("Unknown durability key: " + key);
         }
-        set(data);
+        final Map.Entry<Number, Integer> itemDurability = HandlerUtil.getNumberValue(data, "item durability");
+        this.number = itemDurability.getKey();
+        this.durability = itemDurability.getValue();
+        isSet = true;
     }
 
     @Override
@@ -55,33 +57,6 @@ public class DurabilityHandler implements ItemMetaHandler<Damageable> {
 
     @Override
     public boolean check(final Damageable meta) {
-        return check(meta.getDamage());
-    }
-
-    public void set(final String durability) throws InstructionParseException {
-        final Map.Entry<Number, Integer> itemDurability = HandlerUtil.getNumberValue(durability, "item durability");
-        this.number = itemDurability.getKey();
-        this.durability = itemDurability.getValue();
-        isSet = true;
-    }
-
-    public int get() {
-        return durability;
-    }
-
-    public boolean check(final int durability) {
-        return switch (number) {
-            case WHATEVER -> true;
-            case EQUAL -> this.durability == durability;
-            case MORE -> this.durability <= durability;
-            case LESS -> this.durability >= durability;
-        };
-    }
-
-    /**
-     * @return checks if the state of this type handler should be ignored
-     */
-    public boolean whatever() {
-        return number == Number.WHATEVER;
+        return number.isValid(meta.getDamage(), this.durability);
     }
 }

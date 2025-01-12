@@ -9,8 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 
 /**
- * To check durability on the item on a specific slot,
- * in opposite to {@link org.betonquest.betonquest.item.QuestItem#getDurability()}.
+ * To check durability on the item on a specific slot.
  */
 public class ItemDurabilityCondition implements OnlineCondition {
 

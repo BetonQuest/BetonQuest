@@ -3,9 +3,6 @@ package org.betonquest.betonquest.item.typehandler;
 import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.item.QuestItem.Existence;
-import org.betonquest.betonquest.item.QuestItem.Number;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Keyed;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -26,8 +23,14 @@ import java.util.Set;
 @SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods", "PMD.GodClass"})
 public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
+    /**
+     * The 'extended' string.
+     */
     public static final String EXTENDED = "extended";
 
+    /**
+     * The 'upgraded' string.
+     */
     public static final String UPGRADED = "upgraded";
 
     /**
@@ -63,6 +66,9 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
     private Existence customE = Existence.WHATEVER;
 
+    /**
+     * If the Potions need to be exact the same or just contain all specified effects.
+     */
     private boolean exact = true;
 
     public PotionHandler() {
@@ -156,26 +162,30 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
             case EXTENDED -> {
                 if (EXTENDED.equals(data)) {
                     extendedE = Existence.REQUIRED;
+                    this.extended = true;
                 } else {
-                    setExtended(data);
+                    extendedE = Existence.REQUIRED;
+                    this.extended = Boolean.parseBoolean(data);
                 }
             }
             case UPGRADED -> {
                 if (UPGRADED.equals(data)) {
                     upgradedE = Existence.REQUIRED;
+                    this.upgraded = true;
                 } else {
-                    setUpgraded(data);
+                    upgradedE = Existence.REQUIRED;
+                    this.upgraded = Boolean.parseBoolean(data);
                 }
             }
             case "effects" -> setCustom(data);
-            case "effects-containing" -> setNotExact();
+            case "effects-containing" -> exact = false;
             default -> throw new InstructionParseException("Unknown potion key: " + key);
         }
     }
 
     @Override
     public void populate(final PotionMeta potionMeta) {
-        potionMeta.setBasePotionData(getBase());
+        potionMeta.setBasePotionData(new PotionData(type, extended, upgraded));
         for (final PotionEffect effect : getCustom()) {
             potionMeta.addCustomEffect(effect, true);
         }
@@ -183,7 +193,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
     @Override
     public boolean check(final PotionMeta meta) {
-        return checkMeta(meta);
+        return checkBase(meta.getBasePotionData()) && checkCustom(meta.getCustomEffects());
     }
 
     public void setType(final String type) throws InstructionParseException {
@@ -195,24 +205,6 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         }
     }
 
-    public void setExtended(final String extended) {
-        extendedE = Existence.REQUIRED;
-        this.extended = Boolean.parseBoolean(extended);
-    }
-
-    public void setUpgraded(final String upgraded) {
-        upgradedE = Existence.REQUIRED;
-        this.upgraded = Boolean.parseBoolean(upgraded);
-    }
-
-    public void setNotExact() {
-        exact = false;
-    }
-
-    public PotionData getBase() {
-        return new PotionData(type, extended, upgraded);
-    }
-
     public List<PotionEffect> getCustom() {
         final List<PotionEffect> effects = new LinkedList<>();
         if (customE == Existence.FORBIDDEN) {
@@ -220,7 +212,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         }
         for (final CustomEffectHandler checker : custom) {
             if (checker.customTypeE != Existence.FORBIDDEN) {
-                effects.add(checker.get());
+                effects.add(new PotionEffect(checker.customType, checker.duration, checker.power));
             }
         }
         return effects;
@@ -228,7 +220,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
     public void setCustom(final String custom) throws InstructionParseException {
         final String[] parts = HandlerUtil.getNNSplit(custom, "Potion is null!", ",");
-        if (QuestItem.NONE_KEY.equalsIgnoreCase(parts[0])) {
+        if (Existence.NONE_KEY.equalsIgnoreCase(parts[0])) {
             customE = Existence.FORBIDDEN;
             return;
         }
@@ -238,10 +230,6 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
             this.custom.add(checker);
         }
         customE = Existence.REQUIRED;
-    }
-
-    public boolean checkMeta(final PotionMeta potionMeta) {
-        return checkBase(potionMeta.getBasePotionData()) && checkCustom(potionMeta.getCustomEffects());
     }
 
     public boolean checkBase(@Nullable final PotionData base) {
@@ -311,7 +299,6 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
         private final Number powerE;
 
-        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
         public CustomEffectHandler(final String custom) throws InstructionParseException {
             final String[] parts = HandlerUtil.getNNSplit(custom, "Potion is null!", ":");
             if (parts[0].startsWith("none-")) {
@@ -343,63 +330,14 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
             return Utils.getNN(PotionEffectType.getByName(name), "Unknown effect type: " + name);
         }
 
-        private PotionEffect get() {
-            return new PotionEffect(customType, duration, power);
-        }
-
-        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
         private boolean check(@Nullable final PotionEffect effect) {
-            switch (customTypeE) {
-                case WHATEVER:
-                    return true;
-                case REQUIRED:
-                    if (effect == null || !effect.getType().equals(customType)) {
-                        return false;
-                    }
-                    switch (durationE) {
-                        case EQUAL:
-                            if (duration != effect.getDuration()) {
-                                return false;
-                            }
-                            break;
-                        case MORE:
-                            if (duration > effect.getDuration()) {
-                                return false;
-                            }
-                            break;
-                        case LESS:
-                            if (duration < effect.getDuration()) {
-                                return false;
-                            }
-                            break;
-                        case WHATEVER:
-                            break;
-                    }
-                    switch (powerE) {
-                        case EQUAL:
-                            if (power != effect.getAmplifier()) {
-                                return false;
-                            }
-                            break;
-                        case MORE:
-                            if (power > effect.getAmplifier()) {
-                                return false;
-                            }
-                            break;
-                        case LESS:
-                            if (power < effect.getAmplifier()) {
-                                return false;
-                            }
-                            break;
-                        case WHATEVER:
-                            break;
-                    }
-                    return true;
-                case FORBIDDEN:
-                    return effect == null;
-                default:
-                    return false;
-            }
+            return switch (customTypeE) {
+                case WHATEVER -> true;
+                case REQUIRED -> effect != null && effect.getType().equals(customType)
+                        && durationE.isValid(effect.getDuration(), duration)
+                        && powerE.isValid(effect.getAmplifier(), power);
+                case FORBIDDEN -> effect == null;
+            };
         }
     }
 }

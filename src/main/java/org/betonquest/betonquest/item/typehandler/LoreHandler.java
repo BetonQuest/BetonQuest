@@ -1,8 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.item.QuestItem.Existence;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,6 +14,9 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
 
     private Existence existence = Existence.WHATEVER;
 
+    /**
+     * If the lore need to be exact the same or just contain all specified lines.
+     */
     private boolean exact = true;
 
     public LoreHandler() {
@@ -47,8 +48,17 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
     @Override
     public void set(final String key, final String data) throws InstructionParseException {
         switch (key) {
-            case "lore" -> set(data);
-            case "lore-containing" -> setNotExact();
+            case "lore" -> {
+                if (Existence.NONE_KEY.equalsIgnoreCase(data)) {
+                    existence = Existence.FORBIDDEN;
+                } else {
+                    existence = Existence.REQUIRED;
+                    for (final String line : data.split(";")) {
+                        this.lore.add(NameHandler.replaceUnderscore(line).replaceAll("&", "§"));
+                    }
+                }
+            }
+            case "lore-containing" -> exact = false;
             default -> throw new InstructionParseException("Unknown lore key: " + key);
         }
     }
@@ -60,65 +70,55 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
 
     @Override
     public boolean check(final ItemMeta meta) {
-        return check(meta.getLore());
+        final List<String> lore = meta.getLore();
+        return switch (existence) {
+            case WHATEVER -> true;
+            case REQUIRED -> checkRequired(lore);
+            case FORBIDDEN -> lore == null || lore.isEmpty();
+        };
     }
 
-    public void set(final String lore) throws InstructionParseException {
-        if (QuestItem.NONE_KEY.equalsIgnoreCase(lore)) {
-            existence = Existence.FORBIDDEN;
-            return;
-        }
-        existence = Existence.REQUIRED;
-        for (final String line : lore.split(";")) {
-            this.lore.add(NameHandler.replaceUnderscore(line).replaceAll("&", "§"));
-        }
-    }
-
-    public void setNotExact() {
-        exact = false;
-    }
-
+    /**
+     * Gets the lore.
+     *
+     * @return the list of lore lines, can be empty
+     */
     public List<String> get() {
         return lore;
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
-    public boolean check(@Nullable final List<String> lore) {
-        switch (existence) {
-            case WHATEVER:
-                return true;
-            case REQUIRED:
-                if (lore == null) {
+    private boolean checkRequired(@Nullable final List<String> lore) {
+        if (lore == null) {
+            return false;
+        }
+        if (exact) {
+            if (this.lore.size() != lore.size()) {
+                return false;
+            }
+            for (int i = 0; i < lore.size(); i++) {
+                if (!this.lore.get(i).equals(lore.get(i))) {
                     return false;
                 }
-                if (exact) {
-                    if (this.lore.size() != lore.size()) {
-                        return false;
-                    }
-                    for (int i = 0; i < lore.size(); i++) {
-                        if (!this.lore.get(i).equals(lore.get(i))) {
-                            return false;
-                        }
-                    }
-                } else {
-                    for (final String line : this.lore) {
-                        boolean has = false;
-                        for (final String itemLine : lore) {
-                            if (itemLine.equals(line)) {
-                                has = true;
-                                break;
-                            }
-                        }
-                        if (!has) {
-                            return false;
-                        }
-                    }
-                }
-                return true;
-            case FORBIDDEN:
-                return lore == null || lore.isEmpty();
-            default:
-                return false;
+            }
+        } else {
+            return !checkNonExact(lore);
         }
+        return true;
+    }
+
+    private boolean checkNonExact(final List<String> lore) {
+        for (final String line : this.lore) {
+            boolean has = false;
+            for (final String itemLine : lore) {
+                if (itemLine.equals(line)) {
+                    has = true;
+                    break;
+                }
+            }
+            if (!has) {
+                return true;
+            }
+        }
+        return false;
     }
 }

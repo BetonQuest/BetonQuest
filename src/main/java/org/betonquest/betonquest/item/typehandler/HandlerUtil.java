@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.Utils;
 import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.Nullable;
@@ -58,24 +57,24 @@ public final class HandlerUtil {
     /**
      * Gets a pair of Number requirement and its non-negative int.
      * <p>
-     * The value will be one in the {@link QuestItem.Number#WHATEVER} case.
+     * The value will be one in the {@link Number#WHATEVER} case.
      *
      * @param part        to parse into one pair
      * @param messagePart to put into exceptions to identify what is parsed
      * @return the requirement type and the parsed value
      * @throws InstructionParseException if {@code part} can't be parsed or is negative
      */
-    public static Map.Entry<QuestItem.Number, Integer> getNumberValue(final String part, final String messagePart) throws InstructionParseException {
-        final QuestItem.Number number;
+    public static Map.Entry<Number, Integer> getNumberValue(final String part, final String messagePart) throws InstructionParseException {
+        final Number number;
         final String whatEver = "?";
         if (whatEver.equals(part)) {
-            return Map.entry(QuestItem.Number.WHATEVER, 1);
+            return Map.entry(Number.WHATEVER, 1);
         } else if (part.endsWith("-")) {
-            number = QuestItem.Number.LESS;
+            number = Number.LESS;
         } else if (part.endsWith("+")) {
-            number = QuestItem.Number.MORE;
+            number = Number.MORE;
         } else {
-            return Map.entry(QuestItem.Number.EQUAL, getNotBelowZero(part, messagePart));
+            return Map.entry(Number.EQUAL, getNotBelowZero(part, messagePart));
         }
         return Map.entry(number, getNotBelowZero(part.substring(0, part.length() - 1), messagePart));
     }

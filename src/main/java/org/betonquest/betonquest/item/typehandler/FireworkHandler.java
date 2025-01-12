@@ -2,9 +2,6 @@ package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.item.QuestItem.Existence;
-import org.betonquest.betonquest.item.QuestItem.Number;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
@@ -29,6 +26,9 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
 
     private Existence effectsE = Existence.WHATEVER;
 
+    /**
+     * If the Firework need to be exact the same or just contain all specified effects.
+     */
     private boolean exact = true;
 
     public FireworkHandler() {
@@ -112,8 +112,12 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     public void set(final String key, final String data) throws InstructionParseException {
         switch (key) {
             case "firework" -> setEffects(data);
-            case "power" -> setPower(data);
-            case "firework-containing" -> setNotExact();
+            case "power" -> {
+                final Map.Entry<Number, Integer> fireworkPower = HandlerUtil.getNumberValue(data, "firework power");
+                powerN = fireworkPower.getKey();
+                power = fireworkPower.getValue();
+            }
+            case "firework-containing" -> exact = false;
             default -> throw new InstructionParseException("Unknown firework key: " + key);
         }
     }
@@ -121,7 +125,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     @Override
     public void populate(final FireworkMeta fireworkMeta) {
         fireworkMeta.addEffects(getEffects());
-        fireworkMeta.setPower(getPower());
+        fireworkMeta.setPower(power);
     }
 
     /**
@@ -136,7 +140,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
 
     @Override
     public boolean check(final FireworkMeta fireworkMeta) {
-        return checkEffects(fireworkMeta.getEffects()) && checkPower(fireworkMeta.getPower());
+        return checkEffects(fireworkMeta.getEffects()) && powerN.isValid(fireworkMeta.getPower(), power);
     }
 
     @Override
@@ -167,11 +171,12 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
      * @return if the meta satisfies the requirement defined via {@link #set(String, String)}
      */
     public boolean check(final FireworkEffectMeta fireworkMeta) {
-        return checkSingleEffect(fireworkMeta.getEffect());
-    }
-
-    public void setNotExact() {
-        exact = false;
+        final FireworkEffect single = fireworkMeta.getEffect();
+        return switch (effectsE) {
+            case WHATEVER -> true;
+            case REQUIRED -> single != null && !effects.isEmpty() && effects.get(0).check(single);
+            case FORBIDDEN -> single == null;
+        };
     }
 
     public List<FireworkEffect> getEffects() {
@@ -184,7 +189,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
 
     public void setEffects(final String string) throws InstructionParseException {
         final String[] parts = HandlerUtil.getNNSplit(string, "Firework effects missing", ",");
-        if (QuestItem.NONE_KEY.equalsIgnoreCase(parts[0])) {
+        if (Existence.NONE_KEY.equalsIgnoreCase(parts[0])) {
             effectsE = Existence.FORBIDDEN;
             return;
         }
@@ -196,63 +201,30 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
         }
     }
 
-    public int getPower() {
-        return power;
-    }
-
-    public void setPower(final String string) throws InstructionParseException {
-        final Map.Entry<Number, Integer> fireworkPower = HandlerUtil.getNumberValue(string, "firework power");
-        powerN = fireworkPower.getKey();
-        power = fireworkPower.getValue();
-    }
-
-    public int getSize() {
-        return effects.size();
-    }
-
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     public boolean checkEffects(final List<FireworkEffect> list) {
-        switch (effectsE) {
-            case WHATEVER:
-                return true;
-            case REQUIRED:
-                if (exact && list.size() != effects.size()) {
-                    return false;
-                }
-                for (final FireworkEffectHandler checker : effects) {
-                    FireworkEffect effect = null;
-                    for (final FireworkEffect e : list) {
-                        if (e.getType() == checker.getType()) {
-                            effect = e;
-                            break;
-                        }
-                    }
-                    if (!checker.check(effect)) {
-                        return false;
-                    }
-                }
-                return true;
-            case FORBIDDEN:
-                return list.isEmpty();
-            default:
-                return false;
-        }
-    }
-
-    public boolean checkSingleEffect(@Nullable final FireworkEffect single) {
         return switch (effectsE) {
             case WHATEVER -> true;
-            case REQUIRED -> single != null && !effects.isEmpty() && effects.get(0).check(single);
-            case FORBIDDEN -> single == null;
+            case REQUIRED -> checkRequired(list);
+            case FORBIDDEN -> list.isEmpty();
         };
     }
 
-    public boolean checkPower(final int powerLevel) {
-        return switch (powerN) {
-            case WHATEVER -> true;
-            case EQUAL -> powerLevel == power;
-            case MORE -> powerLevel >= power;
-            case LESS -> powerLevel <= power;
-        };
+    private boolean checkRequired(final List<FireworkEffect> list) {
+        if (exact && list.size() != effects.size()) {
+            return false;
+        }
+        for (final FireworkEffectHandler checker : effects) {
+            FireworkEffect effect = null;
+            for (final FireworkEffect e : list) {
+                if (e.getType() == checker.getType()) {
+                    effect = e;
+                    break;
+                }
+            }
+            if (!checker.check(effect)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
