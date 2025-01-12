@@ -104,7 +104,7 @@ public class RPGMenuCommand extends SimpleCommand {
                     try {
                         menu = new MenuID(null, args[1]);
                     } catch (final ObjectNotFoundException e) {
-                        RPGMenuConfig.sendMessage(sender, "command_invalid_menu", args[1]);
+                        this.menu.getConfiguration().sendMessage(sender, "command_invalid_menu", args[1]);
                         return false;
                     }
                 }
@@ -118,7 +118,8 @@ public class RPGMenuCommand extends SimpleCommand {
             case "l":
             case "list":
                 final ComponentBuilder builder = new ComponentBuilder("");
-                builder.append(TextComponent.fromLegacyText(RPGMenuConfig.getMessage(sender, "command_list")));
+                final RPGMenuConfig menuConfig = this.menu.getConfiguration();
+                builder.append(TextComponent.fromLegacyText(menuConfig.getMessage(sender, "command_list")));
                 final Collection<MenuID> ids = this.menu.getMenus();
                 if (ids.isEmpty()) {
                     builder.append("\n - ").color(ChatColor.GRAY);
@@ -127,7 +128,7 @@ public class RPGMenuCommand extends SimpleCommand {
                         builder
                                 .append("\n" + menuID, ComponentBuilder.FormatRetention.FORMATTING)
                                 .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                                        TextComponent.fromLegacyText(RPGMenuConfig.getMessage(sender, "click_to_open"))))
+                                        TextComponent.fromLegacyText(menuConfig.getMessage(sender, "click_to_open"))))
                                 .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + getName() + " open " + menuID));
                     }
                 }
@@ -140,7 +141,7 @@ public class RPGMenuCommand extends SimpleCommand {
                 if (args.length >= 3) {
                     player = Bukkit.getPlayer(args[2]);
                     if (player == null) {
-                        RPGMenuConfig.sendMessage(sender, "command_invalid_player", args[1]);
+                        this.menu.getConfiguration().sendMessage(sender, "command_invalid_player", args[1]);
                         return false;
                     }
                 }
@@ -149,18 +150,18 @@ public class RPGMenuCommand extends SimpleCommand {
                     if (sender instanceof Player) {
                         player = (Player) sender;
                     } else {
-                        RPGMenuConfig.sendMessage(sender, "command_no_player");
+                        this.menu.getConfiguration().sendMessage(sender, "command_no_player");
                         return false;
                     }
                 }
                 //handle unspecified ids
                 if (menu == null) {
-                    RPGMenuConfig.sendMessage(sender, "command_no_menu");
+                    this.menu.getConfiguration().sendMessage(sender, "command_no_menu");
                     return false;
                 }
                 //open the menu and send feedback
                 this.menu.openMenu(PlayerConverter.getID(player), menu);
-                RPGMenuConfig.sendMessage(sender, "command_open_successful", menu.toString());
+                this.menu.getConfiguration().sendMessage(sender, "command_open_successful", menu.toString());
                 break;
             case "reload":
                 final RPGMenu.ReloadInformation info;
@@ -179,7 +180,7 @@ public class RPGMenuCommand extends SimpleCommand {
                             for (final String errorMessage : info.getErrorMessages()) {
                                 sender.sendMessage(errorMessage);
                             }
-                            RPGMenuConfig.sendMessage(sender, "command_reload_failed");
+                            this.menu.getConfiguration().sendMessage(sender, "command_reload_failed");
                             return true;
                         case SUCCESS:
                             color = ChatColor.YELLOW;
@@ -191,7 +192,7 @@ public class RPGMenuCommand extends SimpleCommand {
                     for (final String errorMessage : info.getErrorMessages()) {
                         sender.sendMessage(errorMessage);
                     }
-                    RPGMenuConfig
+                    this.menu.getConfiguration()
                             .sendMessage(sender, "command_reload_successful", color.toString(), String.valueOf(info.getLoaded()));
                 }
         }
@@ -204,20 +205,21 @@ public class RPGMenuCommand extends SimpleCommand {
      * @param sender player who issued the command or console
      */
     private void showHelp(final CommandSender sender) {
+        final RPGMenuConfig menuConfig = this.menu.getConfiguration();
         final ComponentBuilder builder = new ComponentBuilder("");
         builder
                 .append(TextComponent.fromLegacyText("----- RPGMenu for Betonquest -----\n"))
                 .append("/rpgmenu reload [menu]\n").color(ChatColor.RED)
                 .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                        TextComponent.fromLegacyText(RPGMenuConfig.getMessage(sender, "command_info_reload"))))
+                        TextComponent.fromLegacyText(menuConfig.getMessage(sender, "command_info_reload"))))
                 .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/rpgmenu reload "))
                 .append("/rpgmenu open <menu> [player]\n", ComponentBuilder.FormatRetention.FORMATTING)
                 .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                        TextComponent.fromLegacyText(RPGMenuConfig.getMessage(sender, "command_info_open"))))
+                        TextComponent.fromLegacyText(menuConfig.getMessage(sender, "command_info_open"))))
                 .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/rpgmenu open"))
                 .append("/rpgmenu list", ComponentBuilder.FormatRetention.FORMATTING)
                 .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                        TextComponent.fromLegacyText(RPGMenuConfig.getMessage(sender, "command_info_list"))))
+                        TextComponent.fromLegacyText(menuConfig.getMessage(sender, "command_info_list"))))
                 .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/rpgmenu list"));
         sender.spigot().sendMessage(builder.create());
     }

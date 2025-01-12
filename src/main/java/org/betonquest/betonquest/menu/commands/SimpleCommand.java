@@ -2,7 +2,6 @@ package org.betonquest.betonquest.menu.commands;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.menu.config.RPGMenuConfig;
 import org.betonquest.betonquest.menu.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -11,7 +10,6 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginIdentifiableCommand;
 import org.bukkit.permissions.Permission;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.Nullable;
 
@@ -95,7 +93,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
      * @return the message to send
      */
     protected String noPermissionMessage(final CommandSender sender) {
-        return RPGMenuConfig.getMessage(sender, "command_no_permission");
+        return getPlugin().getRpgMenu().getConfiguration().getMessage(sender, "command_no_permission");
     }
 
     @Override
@@ -107,7 +105,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     @Override
     public boolean execute(final CommandSender sender, final String label, final String[] args) {
         if (args.length < minimalArgs) {
-            RPGMenuConfig.sendMessage(sender, "command_usage", usage);
+            getPlugin().getRpgMenu().getConfiguration().sendMessage(sender, "command_usage", usage);
             return false;
         }
         if (perimssion != null && !sender.hasPermission(perimssion)) {
@@ -202,7 +200,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     }
 
     @Override
-    public Plugin getPlugin() {
+    public BetonQuest getPlugin() {
         return BetonQuest.getInstance();
     }
 }

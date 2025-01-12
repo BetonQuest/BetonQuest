@@ -14,7 +14,6 @@ import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.menu.commands.SimpleCommand;
-import org.betonquest.betonquest.menu.config.RPGMenuConfig;
 import org.betonquest.betonquest.menu.config.SimpleYMLSection;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -252,7 +251,7 @@ public class Menu extends SimpleYMLSection implements Listener {
         event.setCancelled(true);
         final OnlineProfile onlineprofile = PlayerConverter.getID(event.getPlayer());
         if (!mayOpen(onlineprofile)) {
-            RPGMenuConfig.sendMessage(event.getPlayer(), "menu_do_not_open");
+            rpgMenu.getConfiguration().sendMessage(event.getPlayer(), "menu_do_not_open");
             return;
         }
         //open the menu
@@ -380,7 +379,7 @@ public class Menu extends SimpleYMLSection implements Listener {
 
         @Override
         protected String noPermissionMessage(final CommandSender sender) {
-            return RPGMenuConfig.getMessage(sender, "menu_do_not_open");
+            return rpgMenu.getConfiguration().getMessage(sender, "menu_do_not_open");
         }
     }
 }

@@ -85,14 +85,13 @@ public class RPGMenuConfig extends SimpleYMLSection {
      * @param replace arguments in the message that should be replaced
      * @return the predefined message with all args replaced
      */
-    public static String getMessage(@Nullable final String lang, final String key, final String... replace) {
-        final RPGMenuConfig instance = BetonQuest.getInstance().getRpgMenu().getConfiguration();
+    public String getMessage(@Nullable final String lang, final String key, final String... replace) {
         String message = Optional.ofNullable(lang)
-                .map(instance.messages::get).map(translations -> translations.get(key))
+                .map(messages::get).map(translations -> translations.get(key))
                 .or(() -> Optional.ofNullable(Config.getLanguage())
-                        .map(instance.messages::get).map(translations -> translations.get(key)))
+                        .map(messages::get).map(translations -> translations.get(key)))
                 .or(() -> Optional.of("en")
-                        .map(instance.messages::get).map(translations -> translations.get(key)))
+                        .map(messages::get).map(translations -> translations.get(key)))
                 .orElse("null");
 
         for (int i = 1; i <= replace.length; i++) {
@@ -109,7 +108,7 @@ public class RPGMenuConfig extends SimpleYMLSection {
      * @param replace arguments in the message that should be replaced
      * @return the predefined message with all args replaced
      */
-    public static String getMessage(final CommandSender sender, final String key, final String... replace) {
+    public String getMessage(final CommandSender sender, final String key, final String... replace) {
         String lang = null;
         if (sender instanceof Player) {
             lang = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID((Player) sender)).getLanguage();
@@ -124,7 +123,7 @@ public class RPGMenuConfig extends SimpleYMLSection {
      * @param key     the key of the message
      * @param replace arguments in the message that should be replaced
      */
-    public static void sendMessage(final CommandSender sender, final String key, final String... replace) {
+    public void sendMessage(final CommandSender sender, final String key, final String... replace) {
         sender.sendMessage(getMessage(sender, key, replace));
     }
 
