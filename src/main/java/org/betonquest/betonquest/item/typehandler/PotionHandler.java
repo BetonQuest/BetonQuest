@@ -162,6 +162,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
             case EXTENDED -> {
                 if (EXTENDED.equals(data)) {
                     extendedE = Existence.REQUIRED;
+                    this.extended = true;
                 } else {
                     extendedE = Existence.REQUIRED;
                     this.extended = Boolean.parseBoolean(data);
@@ -170,6 +171,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
             case UPGRADED -> {
                 if (UPGRADED.equals(data)) {
                     upgradedE = Existence.REQUIRED;
+                    this.upgraded = true;
                 } else {
                     upgradedE = Existence.REQUIRED;
                     this.upgraded = Boolean.parseBoolean(data);
