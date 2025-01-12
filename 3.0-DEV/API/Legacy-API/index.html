@@ -4910,7 +4910,7 @@ Registering variables is done via <code>BetonQuest.registerVariable(String name,
 <p>The <code>Instruction</code> object parses the instruction string defined by the user and splits it into arguments.
 You can ask it for required arguments one by one with <code>next()</code> method or a parser method like <code>getQuestItem()</code>.
 Required arguments are the ones specified at the very beginning of an instruction string, for example <code>add someTag</code> in <code>tag</code> event.
-It will automatically throw <code>InstructionParseException</code> for you if it encounters an error,
+It will automatically throw <code>QuestException</code> for you if it encounters an error,
 for example when there were no more arguments in user's instruction or it can't parse the argument to the type you asked for.</p>
 <p>You can also ask for optional arguments: if the instruction string contains argument <code>arg:something</code>
 and you ask for optional <code>arg</code>, it will give you <code>something</code>. If there is no optional argument, it will return <code>null</code>.
@@ -4922,7 +4922,7 @@ you can just use <code>getLocation()</code> or <code>getLocation(String)</code> 
 The former method is simply <code>getLocation(next())</code>.</p>
 <p>If your instruction is more complicated and <code>Instruction</code> class doesn't provide necessary methods,
 you can still parse the instruction string manually. You can get it with <code>getInstruction()</code> method.
-Just remember to throw <code>InstructionParseException</code> when the instruction supplied by the user is incorrect.
+Just remember to throw <code>QuestException</code> when the instruction supplied by the user is incorrect.
 BetonQuest will catch them and display a message in the console.</p>
 <h2 id="firing-events">Firing events<a class="headerlink" href="#firing-events" title="Permanent link">🔗</a></h2>
 <p>The plugin has a static method for firing events - <code>event(String playerID, EventID eventID)</code>.</p>

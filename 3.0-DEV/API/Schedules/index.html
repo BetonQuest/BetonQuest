@@ -4567,16 +4567,16 @@ construct new instances of this class.</p>
 <span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ticks</span><span class="p">,</span><span class="w"> </span><span class="n">rebootSleep</span><span class="p">;</span>
 
 <span class="w">    </span><span class="c1">// (2)!</span>
-<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">MyCustomSchedule</span><span class="p">(</span><span class="n">ScheduleID</span><span class="w"> </span><span class="n">scheduleID</span><span class="p">,</span><span class="w"> </span><span class="n">ConfigurationSection</span><span class="w"> </span><span class="n">instruction</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">InstructionParseException</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">MyCustomSchedule</span><span class="p">(</span><span class="n">ScheduleID</span><span class="w"> </span><span class="n">scheduleID</span><span class="p">,</span><span class="w"> </span><span class="n">ConfigurationSection</span><span class="w"> </span><span class="n">instruction</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">QuestException</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
 <span class="w">        </span><span class="kd">super</span><span class="p">(</span><span class="n">scheduleID</span><span class="p">,</span><span class="w"> </span><span class="n">instruction</span><span class="p">);</span>
 <span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
 <span class="w">            </span><span class="n">ticks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">parseInt</span><span class="p">(</span><span class="n">getTime</span><span class="p">()</span><span class="cm">/* (3)! */</span><span class="p">);</span>
 <span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">NumberFormatException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">InstructionParseException</span><span class="p">(</span><span class="s">&quot;Time is not a number&quot;</span><span class="p">);</span><span class="c1">// (4)!</span>
+<span class="w">            </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">QuestException</span><span class="p">(</span><span class="s">&quot;Time is not a number&quot;</span><span class="p">);</span><span class="c1">// (4)!</span>
 <span class="w">        </span><span class="p">}</span>
 
 <span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getCatchup</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">CatchupStrategy</span><span class="p">.</span><span class="na">NONE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="c1">// (5)!</span>
-<span class="w">            </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">InstructionParseException</span><span class="p">(</span><span class="s">&quot;Catchup &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">getCatchup</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; is not supported by this schedule type&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">QuestException</span><span class="p">(</span><span class="s">&quot;Catchup &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">getCatchup</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; is not supported by this schedule type&quot;</span><span class="p">);</span>
 <span class="w">        </span><span class="p">}</span>
 
 <span class="w">        </span><span class="n">rebootSleep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getInt</span><span class="p">(</span><span class="s">&quot;options.rebootSleep&quot;</span><span class="p">);</span><span class="c1">// (6)!</span>
@@ -4603,7 +4603,7 @@ construct new instances of this class.</p>
 <li>
 <p>Make sure to handle all parsing errors &amp; thrown exceptions!<br />
    If a schedule can't be loaded due to an invalid instruction,
-   you should throw a <code>InstructionParseException</code> that describes
+   you should throw a <code>QuestException</code> that describes
    the error.</p>
 </li>
 <li>
