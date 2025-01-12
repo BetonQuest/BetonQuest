@@ -23,6 +23,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -154,8 +155,9 @@ public class RPGMenu {
         }
         final ReloadInformation info = new ReloadInformation();
         try {
+            menuConfigAccessor.reload();
             this.config = new RPGMenuConfig(menuConfigAccessor);
-        } catch (final InvalidConfigurationException e) {
+        } catch (final InvalidConfigurationException | IOException e) {
             log.error("Invalid Configuration.", e);
             info.addError(e);
             info.result = ReloadResult.FAILED;
@@ -170,7 +172,7 @@ public class RPGMenu {
             for (final String name : menus.getKeys(false)) {
                 try {
                     final MenuID menuID = new MenuID(pack, name);
-                    this.menus.put(menuID, new Menu(loggerFactory, loggerFactory.create(Menu.class), menuID));
+                    this.menus.put(menuID, new Menu(this, loggerFactory, loggerFactory.create(Menu.class), menuID));
                     info.loaded++;
                 } catch (final InvalidConfigurationException e) {
                     log.warn(pack, e.getMessage());
@@ -202,7 +204,7 @@ public class RPGMenu {
         }
         final ReloadInformation info = new ReloadInformation();
         try {
-            this.menus.put(menuID, new Menu(loggerFactory, loggerFactory.create(Menu.class), menuID));
+            this.menus.put(menuID, new Menu(this, loggerFactory, loggerFactory.create(Menu.class), menuID));
             info.result = ReloadResult.FULL_SUCCESS;
             info.loaded = 1;
             log.info(menuID.getPackage(), "Reloaded menu " + menuID);

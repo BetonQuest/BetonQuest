@@ -14,7 +14,6 @@ import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.menu.commands.SimpleCommand;
-import org.betonquest.betonquest.menu.config.RPGMenuConfig;
 import org.betonquest.betonquest.menu.config.SimpleYMLSection;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -93,18 +92,20 @@ public class Menu extends SimpleYMLSection implements Listener {
     /**
      * The RPGMenu "plugin" instance to open menus.
      */
-    private final RPGMenu rpgMenu = BetonQuest.getInstance().getRpgMenu();
+    private final RPGMenu rpgMenu;
 
     /**
      * Creates a new Menu.
      *
+     * @param rpgMenu       the rpg menu instance to open menus
      * @param loggerFactory the logger factory for new class specific custom logger
      * @param log           the custom logger for this class
      * @param menuID        the id of the menu
      * @throws InvalidConfigurationException if config options are missing or invalid
      */
-    public Menu(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final MenuID menuID) throws InvalidConfigurationException {
+    public Menu(final RPGMenu rpgMenu, final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final MenuID menuID) throws InvalidConfigurationException {
         super(menuID.getPackage(), menuID.getFullID(), menuID.getConfig());
+        this.rpgMenu = rpgMenu;
         this.log = log;
         this.menuID = menuID;
         //load size
@@ -170,7 +171,8 @@ public class Menu extends SimpleYMLSection implements Listener {
 
         final Map<String, MenuItem> itemsMap = new HashMap<>();
         for (final String key : config.getConfigurationSection(itemsSection).getKeys(false)) {
-            itemsMap.put(key, new MenuItem(loggerFactory.create(MenuItem.class), pack, menuID, key, config.getConfigurationSection("items." + key)));
+            itemsMap.put(key, new MenuItem(loggerFactory.create(MenuItem.class), pack, menuID, key,
+                    config.getConfigurationSection("items." + key), rpgMenu.getConfiguration().defaultCloseOnClick));
         }
 
         //load slots
@@ -249,7 +251,7 @@ public class Menu extends SimpleYMLSection implements Listener {
         event.setCancelled(true);
         final OnlineProfile onlineprofile = PlayerConverter.getID(event.getPlayer());
         if (!mayOpen(onlineprofile)) {
-            RPGMenuConfig.sendMessage(event.getPlayer(), "menu_do_not_open");
+            rpgMenu.getConfiguration().sendMessage(event.getPlayer(), "menu_do_not_open");
             return;
         }
         //open the menu
@@ -377,7 +379,7 @@ public class Menu extends SimpleYMLSection implements Listener {
 
         @Override
         protected String noPermissionMessage(final CommandSender sender) {
-            return RPGMenuConfig.getMessage(sender, "menu_do_not_open");
+            return rpgMenu.getConfiguration().getMessage(sender, "menu_do_not_open");
         }
     }
 }

@@ -96,15 +96,16 @@ public class MenuItem extends SimpleYMLSection {
     /**
      * Creates a new Menu Item.
      *
-     * @param log     the custom logger for this class
-     * @param pack    the quest package the item is in
-     * @param menuID  the menu the item is in
-     * @param name    the name of the item
-     * @param section the configuration representing the item
+     * @param log          the custom logger for this class
+     * @param pack         the quest package the item is in
+     * @param menuID       the menu the item is in
+     * @param name         the name of the item
+     * @param section      the configuration representing the item
+     * @param defaultClose if the item click closes as default
      * @throws InvalidConfigurationException if there are missing or invalid entries
      */
-    @SuppressWarnings({"PMD.ExceptionAsFlowControl", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
-    public MenuItem(final BetonQuestLogger log, final QuestPackage pack, final MenuID menuID, final String name, final ConfigurationSection section)
+    public MenuItem(final BetonQuestLogger log, final QuestPackage pack, final MenuID menuID, final String name,
+                    final ConfigurationSection section, final boolean defaultClose)
             throws InvalidConfigurationException {
         super(pack, name, section);
         this.log = log;
@@ -146,7 +147,7 @@ public class MenuItem extends SimpleYMLSection {
             this.conditions.addAll(getConditions("conditions", pack));
             this.conditions.addAll(getConditions("condition", pack));
             //load if menu should close when item is clicked
-            this.close = new DefaultSetting<>(BetonQuest.getInstance().getRpgMenu().getConfiguration().defaultCloseOnClick) {
+            this.close = new DefaultSetting<>(defaultClose) {
                 @Override
                 @SuppressWarnings("PMD.ShortMethodName")
                 protected Boolean of() throws Missing, Invalid {

@@ -10,6 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Deprecated
 ### Removed
 ### Fixed
+- Reloading plugin did not reload Menu config
 ### Security
 
 ## [2.2.1] - 2025-01-12
