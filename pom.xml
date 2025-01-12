@@ -10,7 +10,7 @@
   </parent>
 
   <properties>
-    <revision>2.2.1</revision>
+    <revision>3.0.0</revision>
     <changelist>-SNAPSHOT</changelist>
     <betonquest.version>${revision}-DEV-UNOFFICIAL</betonquest.version>
     <minecraft.api.version>1.18</minecraft.api.version>
