@@ -67,7 +67,7 @@ public class PointEvent implements Event {
     public void execute(final Profile profile) throws QuestException {
         final PlayerData playerData = dataStorage.getOffline(profile);
         final double countDouble = count.getValue(profile).doubleValue();
-        playerData.setPoints(category, pointType.modify(playerData.hasPointsFromCategory(category), countDouble));
+        playerData.setPoints(category, pointType.modify(playerData.getPointsFromCategory(category).orElse(0), countDouble));
         pointSender.sendNotification(profile, String.valueOf(countDouble), categoryName);
     }
 }

@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Represents an object storing all player-related data, which can load and save it.
@@ -115,20 +116,18 @@ public class GlobalData implements TagData {
     }
 
     /**
-     * Returns the amount of point the in specified category. If the
-     * category does not exist, it will return 0.
+     * Returns the amount of point the in specified category.
      *
      * @param category name of the category
      * @return amount of global_points
      */
-    @SuppressWarnings("PMD.LinguisticNaming")
-    public int hasPointsFromCategory(final String category) {
+    public Optional<Integer> getPointsFromCategory(final String category) {
         for (final Point p : globalPoints) {
             if (p.getCategory().equals(category)) {
-                return p.getCount();
+                return Optional.of(p.getCount());
             }
         }
-        return 0;
+        return Optional.empty();
     }
 
     /**

@@ -248,21 +248,19 @@ public class PlayerData implements TagData {
     }
 
     /**
-     * Returns the amount of point the profile has in specified category. If the
-     * category does not exist, it will return 0.
+     * Returns the amount of point the profile has in specified category.
      *
      * @param category name of the category
      * @return amount of points
      */
-    @SuppressWarnings("PMD.LinguisticNaming")
-    public int hasPointsFromCategory(final String category) {
+    public Optional<Integer> getPointsFromCategory(final String category) {
         synchronized (points) {
             for (final Point p : points) {
                 if (p.getCategory().equals(category)) {
-                    return p.getCount();
+                    return Optional.of(p.getCount());
                 }
             }
-            return 0;
+            return Optional.empty();
         }
     }
 
