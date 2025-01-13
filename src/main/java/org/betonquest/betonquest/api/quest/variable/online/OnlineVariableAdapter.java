@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 import java.util.Optional;
 
@@ -51,8 +52,11 @@ public final class OnlineVariableAdapter implements PlayerVariable {
     }
 
     @Override
-    public String getValue(final Profile profile) {
+    public String getValue(final Profile profile) throws QuestException {
         final Optional<OnlineProfile> onlineProfile = profile.getOnlineProfile();
-        return onlineProfile.map(onlineVariable::getValue).orElseGet(() -> fallbackVariable.getValue(profile));
+        if (onlineProfile.isPresent()) {
+            return onlineVariable.getValue(onlineProfile.get());
+        }
+        return fallbackVariable.getValue(profile);
     }
 }

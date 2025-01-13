@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.vault.variable;
 
 import net.milkbowl.vault.economy.Economy;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
@@ -31,19 +30,12 @@ public class MoneyVariableFactory implements PlayerVariableFactory {
     private final Economy economy;
 
     /**
-     * Logger factory to create new class specific loggers.
-     */
-    private final BetonQuestLoggerFactory loggerFactory;
-
-    /**
      * Create a new Factory to create Vault Money Variables.
      *
-     * @param economy       the economy where the balance will be got
-     * @param loggerFactory the logger factory to create new class specific loggers
+     * @param economy the economy where the balance will be got
      */
-    public MoneyVariableFactory(final Economy economy, final BetonQuestLoggerFactory loggerFactory) {
+    public MoneyVariableFactory(final Economy economy) {
         this.economy = economy;
-        this.loggerFactory = loggerFactory;
     }
 
     @Override
@@ -58,7 +50,7 @@ public class MoneyVariableFactory implements PlayerVariableFactory {
         } else {
             throw new QuestException("No type specified");
         }
-        return new MoneyVariable(function, loggerFactory.create(MoneyVariable.class), instruction.getPackage());
+        return new MoneyVariable(function);
     }
 
     /**

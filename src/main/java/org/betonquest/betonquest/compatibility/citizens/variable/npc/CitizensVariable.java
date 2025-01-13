@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.citizens.variable.npc;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.variables.LocationVariable;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,10 +45,10 @@ public class CitizensVariable implements PlayerlessVariable {
     }
 
     @Override
-    public String getValue() {
+    public String getValue() throws QuestException {
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
         if (npc == null) {
-            return "";
+            throw new QuestException("No NPC with id '" + npcId + "' found!");
         }
 
         return key.resolve(npc, location);

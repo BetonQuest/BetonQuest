@@ -41,11 +41,7 @@ public class EvalVariable implements NullableVariable {
     }
 
     @Override
-    public String getValue(@Nullable final Profile profile) {
-        try {
-            return new VariableString(variableProcessor, pack, "%" + evaluation.getValue(profile) + "%").getValue(profile);
-        } catch (final QuestException e) {
-            return "";
-        }
+    public String getValue(@Nullable final Profile profile) throws QuestException {
+        return new VariableString(variableProcessor, pack, "%" + evaluation.getValue(profile) + "%").getValue(profile);
     }
 }

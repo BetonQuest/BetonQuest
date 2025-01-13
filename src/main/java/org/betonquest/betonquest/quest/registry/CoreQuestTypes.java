@@ -395,7 +395,7 @@ public class CoreQuestTypes {
         variables.register("npc", new NpcNameVariableFactory(betonQuest));
         variables.register("objective", ObjectivePropertyVariable.class);
         variables.register("point", PointVariable.class);
-        variables.register("player", new PlayerNameVariableFactory(loggerFactory));
+        variables.register("player", new PlayerNameVariableFactory());
         variables.register("randomnumber", RandomNumberVariable.class);
         variables.register("tag", TagVariable.class);
         variables.register("version", VersionVariable.class);

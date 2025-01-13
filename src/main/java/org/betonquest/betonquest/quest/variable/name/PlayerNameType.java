@@ -1,8 +1,7 @@
 package org.betonquest.betonquest.quest.variable.name;
 
 import org.betonquest.betonquest.api.profiles.Profile;
-
-import java.util.function.Function;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * The type of the {@link PlayerNameVariable}.
@@ -17,7 +16,7 @@ public enum PlayerNameType {
      */
     DISPLAY(profile -> profile.getOnlineProfile()
             .map(online -> online.getPlayer().getDisplayName())
-            .orElseThrow(() -> new IllegalStateException(profile.getPlayer().getName() + " is offline, cannot get display name."))),
+            .orElseThrow(() -> new QuestException(profile.getPlayer().getName() + " is offline, cannot get display name."))),
     /**
      * The player's UUID.
      */
@@ -26,13 +25,27 @@ public enum PlayerNameType {
     /**
      * Method to get the variable value from a profile.
      */
-    private final Function<Profile, String> valueExtractor;
+    private final QEThrowingFunction valueExtractor;
 
-    PlayerNameType(final Function<Profile, String> valueExtractor) {
+    PlayerNameType(final QEThrowingFunction valueExtractor) {
         this.valueExtractor = valueExtractor;
     }
 
-    /* default */ String extractValue(final Profile profile) {
+    /* default */ String extractValue(final Profile profile) throws QuestException {
         return valueExtractor.apply(profile);
+    }
+
+    /**
+     * A function that can throw.
+     */
+    private interface QEThrowingFunction {
+        /**
+         * Applies the function.
+         *
+         * @param profile the profile to apply to
+         * @return the applied value
+         * @throws QuestException when the argument is invalid for the type
+         */
+        String apply(Profile profile) throws QuestException;
     }
 }

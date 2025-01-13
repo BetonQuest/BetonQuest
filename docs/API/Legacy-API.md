@@ -93,7 +93,7 @@ All variables need to extend `Variable` class.
 In the constructor you must parse the instruction and extract all information about your variable's behavior.
 Then you have to override the `String getValue(String playerID)` method.
 It should return the value of the variable for the supplied player.
-If it's impossible, it should return an empty String.
+If it's impossible, in the old it should return an empty String and in the new throw with a descriptive message.
 Registering variables is done via `BetonQuest.registerVariable(String name, Class<? extends Variable> variable)` method.
 
 ## Reading `Instruction` object

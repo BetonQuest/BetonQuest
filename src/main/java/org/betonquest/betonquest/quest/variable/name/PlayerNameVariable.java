@@ -1,25 +1,14 @@
 package org.betonquest.betonquest.quest.variable.name;
 
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * This variable resolves into the player's name. It can have optional "display"
  * argument, which will resolve it to the display name.
  */
 public class PlayerNameVariable implements PlayerVariable {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
-
-    /**
-     * QuestPackage to use in logging.
-     */
-    private final QuestPackage questPackage;
-
     /**
      * The type of the variable.
      */
@@ -28,23 +17,14 @@ public class PlayerNameVariable implements PlayerVariable {
     /**
      * Creates a new PlayerNameVariable from the given instruction.
      *
-     * @param type         the type to extract the variable value from the profile
-     * @param log          the logger to use when there was an error during variable resolving
-     * @param questPackage the quest package used for the error logging
+     * @param type the type to extract the variable value from the profile
      */
-    public PlayerNameVariable(final PlayerNameType type, final BetonQuestLogger log, final QuestPackage questPackage) {
+    public PlayerNameVariable(final PlayerNameType type) {
         this.type = type;
-        this.log = log;
-        this.questPackage = questPackage;
     }
 
     @Override
-    public String getValue(final Profile profile) {
-        try {
-            return type.extractValue(profile);
-        } catch (final IllegalStateException e) {
-            log.warn(questPackage, e.getMessage(), e);
-            return "";
-        }
+    public String getValue(final Profile profile) throws QuestException {
+        return type.extractValue(profile);
     }
 }
