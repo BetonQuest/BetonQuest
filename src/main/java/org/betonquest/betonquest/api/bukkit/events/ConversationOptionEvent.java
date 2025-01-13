@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api;
+package org.betonquest.betonquest.api.bukkit.events;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.profiles.ProfileEvent;
@@ -14,7 +14,7 @@ public class ConversationOptionEvent extends ProfileEvent {
     /**
      * A list of all handlers for this event.
      */
-    private static final HandlerList HANDLERS = new HandlerList();
+    private static final HandlerList HANDLER_LIST = new HandlerList();
 
     /**
      * The conversation in which the option was selected.
@@ -47,13 +47,17 @@ public class ConversationOptionEvent extends ProfileEvent {
     }
 
     /**
-     * @return a list of all handlers for this event
+     * Get the HandlerList of this event.
+     *
+     * @return the HandlerList.
      */
     public static HandlerList getHandlerList() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
 
     /**
+     * Get the conversation.
+     *
      * @return the conversation in which the option was selected
      */
     public Conversation getConversation() {
@@ -61,6 +65,8 @@ public class ConversationOptionEvent extends ProfileEvent {
     }
 
     /**
+     * Get the selected option.
+     *
      * @return the option chosen by the player
      */
     public ResolvedOption getSelectedOption() {
@@ -76,12 +82,8 @@ public class ConversationOptionEvent extends ProfileEvent {
         return nextNPCOption;
     }
 
-    /**
-     * @return a list of all handlers for this event
-     */
     @Override
     public HandlerList getHandlers() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
-
 }

@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api;
+package org.betonquest.betonquest.api.bukkit.events;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.profiles.ProfileEvent;
@@ -7,14 +7,22 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 
 /**
- * Fires when profile starts a conversation with an NPC
+ * Fires when profile starts a conversation with an NPC.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class PlayerConversationStartEvent extends ProfileEvent implements Cancellable {
-    private static final HandlerList HANDLERS = new HandlerList();
+    /**
+     * A list of all handlers for this event.
+     */
+    private static final HandlerList HANDLER_LIST = new HandlerList();
 
+    /**
+     * The conversation to start.
+     */
     private final Conversation conversation;
 
+    /**
+     * If the event is cancelled.
+     */
     private boolean canceled;
 
     /**
@@ -28,11 +36,18 @@ public class PlayerConversationStartEvent extends ProfileEvent implements Cancel
         this.conversation = conversation;
     }
 
+    /**
+     * Get the HandlerList of this event.
+     *
+     * @return the HandlerList.
+     */
     public static HandlerList getHandlerList() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
 
     /**
+     * Get the conversation to start.
+     *
      * @return the conversation which has been ended
      */
     public Conversation getConversation() {
@@ -41,7 +56,7 @@ public class PlayerConversationStartEvent extends ProfileEvent implements Cancel
 
     @Override
     public HandlerList getHandlers() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
 
     @Override
@@ -50,8 +65,7 @@ public class PlayerConversationStartEvent extends ProfileEvent implements Cancel
     }
 
     @Override
-    public void setCancelled(final boolean arg) {
-        canceled = arg;
+    public void setCancelled(final boolean cancel) {
+        canceled = cancel;
     }
-
 }

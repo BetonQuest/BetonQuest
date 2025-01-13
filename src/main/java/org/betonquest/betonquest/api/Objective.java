@@ -3,6 +3,8 @@ package org.betonquest.betonquest.api;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.GlobalObjectives;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.bukkit.events.PlayerObjectiveChangeEvent;
+import org.betonquest.betonquest.api.bukkit.events.QuestDataUpdateEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -392,7 +394,7 @@ public abstract class Objective {
 
     private void runObjectiveChangeEvent(final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {
         BetonQuest.getInstance()
-                .callSyncBukkitEvent(new PlayerObjectiveChangeEvent(profile, this, newState, previousState));
+                .callSyncBukkitEvent(new PlayerObjectiveChangeEvent(profile, this, instruction.getID(), newState, previousState));
     }
 
     private void activateObjective(final Profile profile, final ObjectiveData data) {

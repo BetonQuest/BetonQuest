@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api;
+package org.betonquest.betonquest.api.bukkit.events;
 
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Pointer;
@@ -14,7 +14,7 @@ public class PlayerJournalDeleteEvent extends ProfileEvent {
     /**
      * HandlerList of this event.
      */
-    private static final HandlerList HANDLERS = new HandlerList();
+    private static final HandlerList HANDLER_LIST = new HandlerList();
 
     /**
      * Journal which is just deleted an entry of this event.
@@ -45,7 +45,7 @@ public class PlayerJournalDeleteEvent extends ProfileEvent {
      * @return the HandlerList.
      */
     public static HandlerList getHandlerList() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
 
     /**
@@ -74,6 +74,6 @@ public class PlayerJournalDeleteEvent extends ProfileEvent {
      */
     @Override
     public HandlerList getHandlers() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
 }

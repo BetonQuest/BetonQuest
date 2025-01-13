@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api;
+package org.betonquest.betonquest.api.bukkit.events;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.profiles.ProfileEvent;
@@ -11,7 +11,7 @@ public class PlayerUpdatePointEvent extends ProfileEvent {
     /**
      * HandlerList of this event.
      */
-    private static final HandlerList HANDLERS = new HandlerList();
+    private static final HandlerList HANDLER_LIST = new HandlerList();
 
     /**
      * The category whose points were updated.
@@ -26,7 +26,7 @@ public class PlayerUpdatePointEvent extends ProfileEvent {
     /**
      * Creates a new PlayerAddPointEvent.
      *
-     * @param who the {@link Profile} whose points was added
+     * @param who      the {@link Profile} whose points was added
      * @param category the category whose points were updated
      * @param newCount the updated total points count of the involved category
      */
@@ -42,7 +42,7 @@ public class PlayerUpdatePointEvent extends ProfileEvent {
      * @return the HandlerList
      */
     public static HandlerList getHandlerList() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
 
     /**
@@ -70,6 +70,6 @@ public class PlayerUpdatePointEvent extends ProfileEvent {
      */
     @Override
     public HandlerList getHandlers() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
 }

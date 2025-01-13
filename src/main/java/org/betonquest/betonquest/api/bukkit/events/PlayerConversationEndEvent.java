@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api;
+package org.betonquest.betonquest.api.bukkit.events;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.profiles.ProfileEvent;
@@ -6,16 +6,21 @@ import org.betonquest.betonquest.conversation.Conversation;
 import org.bukkit.event.HandlerList;
 
 /**
- * Fires when a profile starts a conversation with an NPC
+ * Fires when a profile starts a conversation with an NPC.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class PlayerConversationEndEvent extends ProfileEvent {
-    private static final HandlerList HANDLERS = new HandlerList();
+    /**
+     * A list of all handlers for this event.
+     */
+    private static final HandlerList HANDLER_LIST = new HandlerList();
 
+    /**
+     * The conversation that ended.
+     */
     private final Conversation conversation;
 
     /**
-     * Creates new conversation start event
+     * Creates new conversation end event.
      *
      * @param who          the {@link Profile} who ended the conversation
      * @param conversation conversation which has been ended
@@ -25,12 +30,19 @@ public class PlayerConversationEndEvent extends ProfileEvent {
         this.conversation = conversation;
     }
 
+    /**
+     * Get the HandlerList of this event.
+     *
+     * @return the HandlerList.
+     */
     public static HandlerList getHandlerList() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
 
     /**
-     * @return the conversation which has been started
+     * Get the ended conversation.
+     *
+     * @return the conversation which has been ended
      */
     public Conversation getConversation() {
         return conversation;
@@ -38,7 +50,6 @@ public class PlayerConversationEndEvent extends ProfileEvent {
 
     @Override
     public HandlerList getHandlers() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
-
 }

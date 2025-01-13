@@ -1,32 +1,32 @@
-package org.betonquest.betonquest.api;
+package org.betonquest.betonquest.api.bukkit.events;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.bukkit.event.HandlerList;
 
 /**
- * Fired when a tag is removed from a profile.
+ * Fired when a tag is added to a profile.
  */
 @SuppressWarnings("PMD.DataClass")
-public class PlayerTagRemoveEvent extends ProfileEvent {
+public class PlayerTagAddEvent extends ProfileEvent {
 
     /**
      * HandlerList of this event.
      */
-    private static final HandlerList HANDLERS = new HandlerList();
+    private static final HandlerList HANDLER_LIST = new HandlerList();
 
     /**
-     * The tag that was removed.
+     * The tag that was added.
      */
     private final String tag;
 
     /**
-     * Creates a new PlayerTagRemoveEvent.
+     * Creates a new PlayerTagAddEvent.
      *
-     * @param who the {@link Profile} whose tag was removed
-     * @param tag removed tag
+     * @param who the {@link Profile} whose tag has added
+     * @param tag added tag
      */
-    public PlayerTagRemoveEvent(final Profile who, final String tag) {
+    public PlayerTagAddEvent(final Profile who, final String tag) {
         super(who);
         this.tag = tag;
     }
@@ -37,9 +37,14 @@ public class PlayerTagRemoveEvent extends ProfileEvent {
      * @return the HandlerList
      */
     public static HandlerList getHandlerList() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
 
+    /**
+     * Get the added tag.
+     *
+     * @return the tag which was added
+     */
     public String getTag() {
         return tag;
     }
@@ -51,6 +56,6 @@ public class PlayerTagRemoveEvent extends ProfileEvent {
      */
     @Override
     public HandlerList getHandlers() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
 }

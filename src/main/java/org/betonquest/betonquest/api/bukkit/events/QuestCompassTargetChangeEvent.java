@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api;
+package org.betonquest.betonquest.api.bukkit.events;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.profiles.ProfileEvent;
@@ -9,30 +9,55 @@ import org.bukkit.event.HandlerList;
 /**
  * Fired when the compass calls the setCompassTarget method.
  */
-@SuppressWarnings({"PMD.DataClass", "PMD.CommentRequired"})
+@SuppressWarnings("PMD.DataClass")
 public class QuestCompassTargetChangeEvent extends ProfileEvent implements Cancellable {
-    private static final HandlerList HANDLERS = new HandlerList();
+    /**
+     * A list of all handlers for this event.
+     */
+    private static final HandlerList HANDLER_LIST = new HandlerList();
 
+    /**
+     * The target location.
+     */
     private final Location location;
 
+    /**
+     * Whether the event is cancelled.
+     */
     private boolean cancelled;
 
+    /**
+     * Create a new event.
+     *
+     * @param profile  the profile to change the target for
+     * @param location the location to target with the compass
+     */
     public QuestCompassTargetChangeEvent(final Profile profile, final Location location) {
         super(profile);
         this.location = location;
     }
 
+    /**
+     * Get the HandlerList of this event.
+     *
+     * @return the HandlerList.
+     */
     public static HandlerList getHandlerList() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
 
+    /**
+     * Get the location to set the compass to.
+     *
+     * @return the target location
+     */
     public Location getLocation() {
         return location;
     }
 
     @Override
     public HandlerList getHandlers() {
-        return HANDLERS;
+        return HANDLER_LIST;
     }
 
     @Override
