@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.notify;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.common.function.QuestConsumer;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -34,7 +35,7 @@ class NotifySound {
 
     private static final String[] SOUND_OPTIONS = {KEY_SOUND_LOCATION, KEY_SOUND_PLAYER_OFFSET, KEY_SOUND_CATEGORY, KEY_SOUND_VOLUME, KEY_SOUND_PITCH};
 
-    private final SoundPlayer soundPlayer;
+    private final QuestConsumer<OnlineProfile> soundPlayer;
 
     private final QuestPackage pack;
 
@@ -42,7 +43,7 @@ class NotifySound {
         this.pack = notify.pack;
         final Map<String, String> data = notify.data;
 
-        final SoundPlayer tempSoundPlayer = checkInput(data);
+        final QuestConsumer<OnlineProfile> tempSoundPlayer = checkInput(data);
         if (tempSoundPlayer != null) {
             soundPlayer = tempSoundPlayer;
             return;
@@ -74,7 +75,7 @@ class NotifySound {
         soundPlayer = getSoundPlayer(sound, soundString, variableLocation, playerOffset, playerOffsetDistance, soundCategory, volume, pitch);
     }
 
-    private SoundPlayer getSoundPlayer(@Nullable final Sound sound, final String soundString, @Nullable final VariableLocation variableLocation, @Nullable final VariableVector playerOffset, @Nullable final Float playerOffsetDistance, final SoundCategory soundCategory, final float volume, final float pitch) {
+    private QuestConsumer<OnlineProfile> getSoundPlayer(@Nullable final Sound sound, final String soundString, @Nullable final VariableLocation variableLocation, @Nullable final VariableVector playerOffset, @Nullable final Float playerOffsetDistance, final SoundCategory soundCategory, final float volume, final float pitch) {
         return (onlineProfile) -> {
             final Location finalLocation = getLocation(onlineProfile, variableLocation, playerOffset, playerOffsetDistance);
             final Player player = onlineProfile.getPlayer();
@@ -117,7 +118,7 @@ class NotifySound {
     }
 
     @Nullable
-    private SoundPlayer checkInput(final Map<String, String> data) throws QuestException {
+    private QuestConsumer<OnlineProfile> checkInput(final Map<String, String> data) throws QuestException {
         if (!data.containsKey(KEY_SOUND)) {
             if (Arrays.stream(SOUND_OPTIONS).anyMatch(data::containsKey)) {
                 throw new QuestException("You must specify a 'sound' if you want to use sound options!");
@@ -177,11 +178,6 @@ class NotifySound {
     }
 
     protected void sendSound(final OnlineProfile onlineProfile) throws QuestException {
-        soundPlayer.play(onlineProfile);
-    }
-
-    @FunctionalInterface
-    private interface SoundPlayer {
-        void play(OnlineProfile onlineProfile) throws QuestException;
+        soundPlayer.accept(onlineProfile);
     }
 }

@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.stage;
 
+import org.betonquest.betonquest.api.common.function.QuestConsumer;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestException;
@@ -11,32 +12,19 @@ public class StageEvent implements Event {
     /**
      * The action to perform.
      */
-    private final StageAction action;
+    private final QuestConsumer<Profile> action;
 
     /**
      * Creates the stage event.
      *
-     * @param action the action to perform
+     * @param action the stage action to perform
      */
-    public StageEvent(final StageAction action) {
+    public StageEvent(final QuestConsumer<Profile> action) {
         this.action = action;
     }
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        action.execute(profile);
-    }
-
-    /**
-     * The stage action interface.
-     */
-    public interface StageAction {
-        /**
-         * Execute the action.
-         *
-         * @param profile the profile to execute the action for
-         * @throws QuestException when the action fails
-         */
-        void execute(Profile profile) throws QuestException;
+        action.accept(profile);
     }
 }

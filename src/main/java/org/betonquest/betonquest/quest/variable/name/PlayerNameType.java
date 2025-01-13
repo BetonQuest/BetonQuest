@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.variable.name;
 
+import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
 
@@ -25,27 +26,13 @@ public enum PlayerNameType {
     /**
      * Method to get the variable value from a profile.
      */
-    private final QEThrowingFunction valueExtractor;
+    private final QuestFunction<Profile, String> valueExtractor;
 
-    PlayerNameType(final QEThrowingFunction valueExtractor) {
+    PlayerNameType(final QuestFunction<Profile, String> valueExtractor) {
         this.valueExtractor = valueExtractor;
     }
 
     /* default */ String extractValue(final Profile profile) throws QuestException {
         return valueExtractor.apply(profile);
-    }
-
-    /**
-     * A function that can throw.
-     */
-    private interface QEThrowingFunction {
-        /**
-         * Applies the function.
-         *
-         * @param profile the profile to apply to
-         * @return the applied value
-         * @throws QuestException when the argument is invalid for the type
-         */
-        String apply(Profile profile) throws QuestException;
     }
 }
