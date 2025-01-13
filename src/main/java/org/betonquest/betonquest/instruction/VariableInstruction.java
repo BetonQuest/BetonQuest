@@ -1,5 +1,6 @@
-package org.betonquest.betonquest;
+package org.betonquest.betonquest.instruction;
 
+import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.id.ID;

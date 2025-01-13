@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.compatibility.citizens.variable.npc;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.VariableInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariableFactory;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.NoID;
+import org.betonquest.betonquest.instruction.VariableInstruction;
 import org.betonquest.betonquest.variables.LocationVariable;
 
 /**
