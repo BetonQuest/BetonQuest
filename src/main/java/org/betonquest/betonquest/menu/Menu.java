@@ -111,7 +111,7 @@ public class Menu extends SimpleYMLSection implements Listener {
         //load size
         try {
             this.height = getNumber("height").getValue(null).intValue();
-        } catch (QuestRuntimeException | InstructionParseException e) {
+        } catch (final QuestException e) {
             throw new Invalid("height", e);
         }
         if (this.height < 1 || this.height > 6) {
@@ -119,7 +119,7 @@ public class Menu extends SimpleYMLSection implements Listener {
         }
         //load title
         try {
-            this.title = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, getString("title"));
+            this.title = getString("title");
         } catch (final QuestException e) {
             throw new InvalidConfigurationException(e.getMessage(), e);
         }
@@ -146,7 +146,7 @@ public class Menu extends SimpleYMLSection implements Listener {
                 String command;
                 try {
                     command = getString("command").getValue(null).trim();
-                } catch (QuestRuntimeException | InstructionParseException e) {
+                } catch (final QuestException e) {
                     throw new Invalid("command", e);
                 }
                 if (!command.matches("/*[0-9A-Za-z\\-]+")) {
@@ -193,18 +193,22 @@ public class Menu extends SimpleYMLSection implements Listener {
         for (final String key : config.getConfigurationSection(slotsSection).getKeys(false)) {
             final List<MenuItem> itemsList = new ArrayList<>();
             //check if items from list are all valid
-            for (final VariableString item : getStrings("slots." + key)) {
-                final String itemString = item.getValue(null);
-                if (itemsMap.containsKey(itemString)) {
-                    itemsList.add(itemsMap.get(itemString));
-                } else {
-                    throw new Invalid("slots." + key, "item " + itemString + " not found");
+            try {
+                for (final VariableString item : getStrings("slots." + key)) {
+                    final String itemString = item.getValue(null);
+                    if (itemsMap.containsKey(itemString)) {
+                        itemsList.add(itemsMap.get(itemString));
+                    } else {
+                        throw new Invalid("slots." + key, "item " + itemString + " not found");
+                    }
                 }
+            } catch (final QuestException e) {
+                throw new Invalid(slotsSection, e);
             }
             // create a new slots object and add it to list
             try {
                 slots.add(new Slots(key, itemsList));
-            } catch (final IllegalArgumentException | QuestException e) {
+            } catch (final IllegalArgumentException e) {
                 throw new Invalid(slotsSection, e);
             }
         }

@@ -110,13 +110,17 @@ public class MenuItem extends SimpleYMLSection {
         this.log = log;
         try {
             //load item
-            final ItemID itemID = new ItemID(pack, getString("item").trim());
+            final ItemID itemID = new ItemID(pack, getString("item").getValue(null).trim());
             final VariableNumber amount = new VariableNumber(BetonQuest.getInstance().getVariableProcessor(), pack,
                     new DefaultSetting<>("1") {
                         @Override
                         @SuppressWarnings("PMD.ShortMethodName")
                         protected String of() throws Missing {
-                            return getString("amount").getValue(null);
+                            try {
+                                return getString("amount").getValue(null);
+                            } catch (final QuestException e) {
+                                throw new Missing("amount");
+                            }
                         }
                     }.get());
             this.item = new Item(itemID, amount);
@@ -152,7 +156,7 @@ public class MenuItem extends SimpleYMLSection {
                 protected Boolean of() throws Missing, Invalid {
                     try {
                         return getBoolean("close").getValue(null);
-                    } catch (final InstructionParseException | QuestRuntimeException e) {
+                    } catch (final QuestException e) {
                         throw new Invalid("close", e);
                     }
                 }
@@ -256,7 +260,7 @@ public class MenuItem extends SimpleYMLSection {
             if (section.isConfigurationSection(CONFIG_TEXT)) {
                 descriptions.putAll(generateLanguageDescriptions(menuID, section));
             } else if (section.isString(CONFIG_TEXT)) {
-                descriptions.put(Config.getLanguage(), new ItemDescription(getString(CONFIG_TEXT)));
+                descriptions.put(Config.getLanguage(), new ItemDescription(List.of(getString(CONFIG_TEXT))));
             } else if (section.isList(CONFIG_TEXT)) {
                 descriptions.put(Config.getLanguage(), new ItemDescription(getStringList(CONFIG_TEXT)));
             } else {
@@ -276,7 +280,7 @@ public class MenuItem extends SimpleYMLSection {
         if (textSection != null) {
             for (final String lang : textSection.getKeys(false)) {
                 if (section.isString(CONFIG_TEXT_PATH + lang)) {
-                    descriptions.put(lang, new ItemDescription(getString(CONFIG_TEXT_PATH + lang)));
+                    descriptions.put(lang, new ItemDescription(List.of(getString(CONFIG_TEXT_PATH + lang))));
                 } else if (section.isList(CONFIG_TEXT_PATH + lang)) {
                     descriptions.put(lang, new ItemDescription(getStringList(CONFIG_TEXT_PATH + lang)));
                 } else {

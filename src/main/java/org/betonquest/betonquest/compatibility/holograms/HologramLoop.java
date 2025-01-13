@@ -17,6 +17,7 @@ import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.item.QuestItem;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
@@ -113,14 +114,10 @@ public abstract class HologramLoop {
 
         final List<String> lines = new ArrayList<>();
         String rawConditions = section.getString("conditions");
-        try {
-            for (final String line : section.getStringList("lines")) {
-                lines.add(new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, line).getValue(null));
-            }
-            rawConditions = rawConditions == null ? null : new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, rawConditions).getValue(null);
-        } catch (final QuestRuntimeException e) {
-            throw new InstructionParseException(e);
+        for (final String line : section.getStringList("lines")) {
+            lines.add(new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, line).getValue(null));
         }
+        rawConditions = rawConditions == null ? null : new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, rawConditions).getValue(null);
 
         final ConditionID[] conditions = parseConditions(pack, rawConditions);
 

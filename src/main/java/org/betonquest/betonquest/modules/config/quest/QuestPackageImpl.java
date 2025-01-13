@@ -6,8 +6,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -102,7 +101,7 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
 
         try {
             return new VariableString(BetonQuest.getInstance().getVariableProcessor(), this, value).getValue(null);
-        } catch (QuestRuntimeException | InstructionParseException e) {
+        } catch (final QuestException e) {
             log.warn(this, "Error parsing variable in '" + address + "': " + e.getMessage(), e);
             return "";
         }

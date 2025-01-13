@@ -3,8 +3,7 @@ package org.betonquest.betonquest.menu.config;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -61,7 +60,7 @@ public class RPGMenuConfig extends SimpleYMLSection {
         //load configuration settings
         try {
             this.defaultCloseOnClick = getBoolean("default_close").getValue(null);
-        } catch (QuestRuntimeException | InstructionParseException e) {
+        } catch (final QuestException e) {
             throw new InvalidConfigurationException("Could not parse default_close: " + e.getMessage(), e);
         }
 
@@ -153,7 +152,7 @@ public class RPGMenuConfig extends SimpleYMLSection {
                 if (lang.equals(Config.getLanguage())) {
                     throw e;
                 }
-            } catch (final QuestRuntimeException | InstructionParseException e) {
+            } catch (final QuestException e) {
                 throw new InvalidConfigurationException(e);
             }
         }

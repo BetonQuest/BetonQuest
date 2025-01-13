@@ -83,7 +83,7 @@ public class QuestRegistry {
         this.eventProcessor = new EventProcessor(loggerFactory.create(EventProcessor.class), questTypeRegistries.getEventTypes());
         this.objectiveProcessor = new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), objectiveTypes);
         this.variableProcessor = new VariableProcessor(loggerFactory.create(VariableProcessor.class), questTypeRegistries.getVariableTypes(), loggerFactory);
-        this.cancellerProcessor = new CancellerProcessor(loggerFactory.create(CancellerProcessor.class));
+        this.cancellerProcessor = new CancellerProcessor(loggerFactory.create(CancellerProcessor.class), variableProcessor);
         this.conversationProcessor = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), plugin);
     }
 

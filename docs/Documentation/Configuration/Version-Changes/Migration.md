@@ -632,7 +632,7 @@ and to also integrate them in the existing variable system.
 <div class="grid" markdown>
 
 ```YAML title="Old Syntax"
-variavles:
+variables:
   MyVariable: Hello
   MyCustomVariable: $MyVariable$ World
 events:

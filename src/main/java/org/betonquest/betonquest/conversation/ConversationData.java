@@ -153,15 +153,10 @@ public class ConversationData {
         }
         final String stop = pack.getString("conversations." + convName + ".stop");
         blockMovement = Boolean.parseBoolean(stop);
-        final String rawConvIOs;
-        try {
-            rawConvIOs = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack,
-                    pack.getConfig().getString("conversations." + convName + ".conversationIO",
-                            plugin.getPluginConfig().getString("default_conversation_IO", "menu,tellraw")))
-                    .getValue(null);
-        } catch (final QuestRuntimeException e) {
-            throw new InstructionParseException(e);
-        }
+        final String rawConvIOs = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack,
+                pack.getConfig().getString("conversations." + convName + ".conversationIO",
+                        plugin.getPluginConfig().getString("default_conversation_IO", "menu,tellraw")))
+                .getValue(null);
 
         // check if all data is valid (or at least exist)
         for (final String rawConvIOPart : rawConvIOs.split(",")) {
@@ -177,15 +172,10 @@ public class ConversationData {
             throw new QuestException("No registered conversation IO found: " + rawConvIOs);
         }
 
-        final String rawInterceptor;
-        try {
-            rawInterceptor = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack,
-                    pack.getConfig().getString("conversations." + convName + ".interceptor",
-                            plugin.getPluginConfig().getString("default_interceptor", "simple")))
-                    .getValue(null);
-        } catch (final QuestRuntimeException e) {
-            throw new InstructionParseException(e);
-        }
+        final String rawInterceptor = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack,
+                pack.getConfig().getString("conversations." + convName + ".interceptor",
+                        plugin.getPluginConfig().getString("default_interceptor", "simple")))
+                .getValue(null);
         for (final String s : rawInterceptor.split(",")) {
             if (plugin.getInterceptor(s.trim()) != null) {
                 interceptor = s.trim();
@@ -704,7 +694,6 @@ public class ConversationData {
          * @param convSection    the {@link ConfigurationSection} of the option
          * @throws QuestException if the configuration is invalid
          */
-        @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
         protected ConversationOption(final ConversationID conversationID, final String name, final OptionType type,
                                      final ConfigurationSection convSection) throws QuestException {
             this.pack = conversationID.getPackage();
@@ -718,20 +707,15 @@ public class ConversationData {
             }
 
             final String defaultLang = Config.getLanguage();
-
-            try {
-                parsePrefix(name, type, conv, defaultLang);
-                parseText(name, type, conv, defaultLang);
-                parseConditions(name, type, conv);
-                parseEvents(name, type, conv);
-                parseStringToList(conv.getString("pointers", conv.getString("pointer", "")), pointers);
-                parseStringToList(conv.getString("extends", conv.getString("extend", "")), extendLinks);
-            } catch (final QuestRuntimeException e) {
-                throw new InstructionParseException(e);
-            }
+            parsePrefix(name, type, conv, defaultLang);
+            parseText(name, type, conv, defaultLang);
+            parseConditions(name, type, conv);
+            parseEvents(name, type, conv);
+            parseStringToList(conv.getString("pointers", conv.getString("pointer", "")), pointers);
+            parseStringToList(conv.getString("extends", conv.getString("extend", "")), extendLinks);
         }
 
-        private void parseStringToList(final String string, final List<String> list) throws InstructionParseException, QuestRuntimeException {
+        private void parseStringToList(final String string, final List<String> list) throws QuestException {
             final String rawPointers = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack,
                     string).getValue(null);
             for (final String pointer : rawPointers.split(",")) {

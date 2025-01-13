@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.variable.constant;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,12 +33,7 @@ public class ConstantVariable implements NullableVariable {
     }
 
     @Override
-    public String getValue(@Nullable final Profile profile) {
-        try {
-            return constant.getValue(profile);
-        } catch (final QuestRuntimeException e) {
-            log.warn("Could not resolve constant variable: " + e.getMessage(), e);
-            return "";
-        }
+    public String getValue(@Nullable final Profile profile) throws QuestException {
+        return constant.getValue(profile);
     }
 }

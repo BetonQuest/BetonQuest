@@ -1,8 +1,7 @@
 package org.betonquest.betonquest.instruction.variable;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 
 /**
@@ -15,17 +14,17 @@ public class VariableBoolean extends Variable<Boolean> {
      * @param variableProcessor the processor to create the variables
      * @param pack              the package in which the variable is used in
      * @param input             the string that may contain variables
-     * @throws InstructionParseException if the variables could not be created or resolved to the given type
+     * @throws QuestException if the variables could not be created or resolved to the given type
      */
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    public VariableBoolean(final VariableProcessor variableProcessor, final QuestPackage pack, final String input) throws InstructionParseException {
+    public VariableBoolean(final VariableProcessor variableProcessor, final QuestPackage pack, final String input) throws QuestException {
         super(variableProcessor, pack, input, value -> {
             if ("true".equalsIgnoreCase(value)) {
                 return true;
             } else if ("false".equalsIgnoreCase(value)) {
                 return false;
             } else {
-                throw new QuestRuntimeException("Could not parse value to boolean: " + value);
+                throw new QuestException("Could not parse value to boolean: " + value);
             }
         });
     }

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.commands;
 
 import org.betonquest.betonquest.Backpack;
 import org.betonquest.betonquest.Backpack.DisplayType;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,18 +14,25 @@ import org.bukkit.entity.Player;
  */
 @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
 public class CompassCommand implements CommandExecutor {
+    /**
+     * The variable processor that the command should use for creating variables.
+     */
+    private final VariableProcessor variableProcessor;
 
     /**
      * Creates a new executor for the /compass command.
+     *
+     * @param variableProcessor the processor that will be used for creating variables
      */
-    public CompassCommand() {
+    public CompassCommand(final VariableProcessor variableProcessor) {
+        this.variableProcessor = variableProcessor;
     }
 
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
         if ("compass".equalsIgnoreCase(cmd.getName())) {
             if (sender instanceof Player) {
-                new Backpack(PlayerConverter.getID((Player) sender), DisplayType.COMPASS);
+                new Backpack(variableProcessor, PlayerConverter.getID((Player) sender), DisplayType.COMPASS);
             }
             return true;
         }

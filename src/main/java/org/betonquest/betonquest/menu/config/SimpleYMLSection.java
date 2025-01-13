@@ -3,12 +3,11 @@ package org.betonquest.betonquest.menu.config;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.instruction.variable.VariableBoolean;
-import org.betonquest.betonquest.instruction.variable.VariableEnum;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.configuration.ConfigurationSection;
@@ -71,12 +70,12 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Parse string from config file
+     * Parse string from a config file.
      *
      * @param key where to search
      * @return the {@link VariableString} from the config
-     * @throws Missing                   If string is not given
-     * @throws QuestException            If the {@link VariableString} could not be created
+     * @throws Missing        If string is not given
+     * @throws QuestException If the {@link VariableString} could not be created
      */
     protected final VariableString getString(final String key) throws Missing, QuestException {
         return new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, getRawString(key));
@@ -87,8 +86,8 @@ public abstract class SimpleYMLSection {
      *
      * @param key where to search
      * @return the list of {@link VariableString} from the config
-     * @throws Missing                   If no list is not given
-     * @throws QuestException            If one {@link VariableString} could not be created
+     * @throws Missing        If no list is not given
+     * @throws QuestException If one {@link VariableString} could not be created
      */
     protected final List<VariableString> getStringList(final String key) throws Missing, QuestException {
         final List<String> stringList = config.getStringList(key);
@@ -108,8 +107,8 @@ public abstract class SimpleYMLSection {
      *
      * @param key where to search
      * @return the list of {@link VariableString} from the config
-     * @throws Missing                   If no strings are given
-     * @throws QuestException            If one {@link VariableString} could not be created
+     * @throws Missing        If no strings are given
+     * @throws QuestException If one {@link VariableString} could not be created
      */
     protected final List<VariableString> getStrings(final String key) throws Missing, QuestException {
         final List<VariableString> list = new ArrayList<>();
@@ -129,8 +128,8 @@ public abstract class SimpleYMLSection {
      *
      * @param key where to search
      * @return the {@link VariableNumber} from the config
-     * @throws Missing                   If nothing is given
-     * @throws QuestException            If the {@link VariableNumber} could not be created
+     * @throws Missing        If nothing is given
+     * @throws QuestException If the {@link VariableNumber} could not be created
      */
     protected final VariableNumber getNumber(final String key) throws Missing, QuestException {
         final String stringInt = getRawString(key);
@@ -142,8 +141,8 @@ public abstract class SimpleYMLSection {
      *
      * @param key where to search
      * @return the {@link VariableBoolean} from the config
-     * @throws Missing                   If nothing is given
-     * @throws QuestException            If the {@link VariableBoolean} could not be created
+     * @throws Missing        If nothing is given
+     * @throws QuestException If the {@link VariableBoolean} could not be created
      */
     protected final VariableBoolean getBoolean(final String key) throws Missing, QuestException {
         final String stringBoolean = getRawString(key).trim();
@@ -178,7 +177,7 @@ public abstract class SimpleYMLSection {
         final List<VariableString> strings;
         try {
             strings = getStrings(key);
-        } catch (final Missing ignored) {
+        } catch (final Missing | QuestException ignored) {
             return List.of();
         }
         final List<T> ids = new ArrayList<>(strings.size());

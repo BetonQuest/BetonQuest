@@ -15,12 +15,12 @@ import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.ObjectiveID;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.menu.config.SimpleYMLSection;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.utils.Utils;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -64,23 +64,27 @@ public class QuestCanceler {
 
     private final QuestPackage pack;
 
+    private final VariableProcessor variableProcessor;
+
     private final String cancelerID;
 
     @Nullable
     private final String item;
 
     @Nullable
-    private final Location loc;
+    private final VariableLocation loc;
 
     /**
      * Creates a new canceler with given name.
      *
-     * @param pack       the {@link QuestPackage} of the canceler
-     * @param cancelerID ID of the canceler (package.name)
+     * @param variableProcessor The {@link VariableProcessor} to use for parsing
+     * @param pack              the {@link QuestPackage} of the canceler
+     * @param cancelerID        ID of the canceler (package.name)
      * @throws QuestException when parsing, the canceler fails for some reason
      */
     @SuppressWarnings("PMD.LocalVariableCouldBeFinal")
-    public QuestCanceler(final QuestPackage pack, final String cancelerID) throws QuestException {
+    public QuestCanceler(final VariableProcessor variableProcessor, final QuestPackage pack, final String cancelerID) throws QuestException {
+        this.variableProcessor = variableProcessor;
         this.cancelerID = Utils.getNN(cancelerID, "Name is null");
         this.pack = Utils.getNN(pack, "Package does not exist");
         final ConfigurationSection section = pack.getConfig().getConfigurationSection("cancel." + cancelerID);
@@ -104,14 +108,13 @@ public class QuestCanceler {
         tags = split(section, "tags");
         points = split(section, "points");
         journal = split(section, "journal");
-        final String rawLoc = GlobalVariableResolver.resolve(pack, section.getString("loc"));
+        final String rawLoc = section.getString("loc");
         if (rawLoc != null) {
-            Location tmp;
+            VariableLocation tmp = null;
             try {
-                tmp = VariableLocation.parse(rawLoc);
+                tmp = new VariableLocation(variableProcessor, pack, rawLoc);
             } catch (final QuestException e) {
                 log.warn(pack, "Could not parse location in quest canceler '" + name + "': " + e.getMessage(), e);
-                tmp = null;
             }
             loc = tmp;
         } else {
@@ -120,9 +123,9 @@ public class QuestCanceler {
     }
 
     @Nullable
-    private String[] split(final ConfigurationSection section, final String path) {
+    private String[] split(final ConfigurationSection section, final String path) throws QuestException {
         final String raw = section.getString(path);
-        return raw == null ? null : GlobalVariableResolver.resolve(pack, raw).split(",");
+        return raw == null ? null : new VariableString(variableProcessor, pack, raw).getValue(null).split(",");
     }
 
     @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
@@ -187,7 +190,11 @@ public class QuestCanceler {
         // teleport player to the location
         if (loc != null) {
             log.debug("  Teleporting to new location");
-            onlineProfile.getPlayer().teleport(loc);
+            try {
+                onlineProfile.getPlayer().teleport(loc.getValue(onlineProfile));
+            } catch (final QuestException e) {
+                log.warn("Could not teleport player to location in quest canceler '" + name + "': " + e.getMessage(), e);
+            }
         }
         // fire all events
         if (events != null) {

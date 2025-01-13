@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariableAdapter;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -38,24 +38,24 @@ public class ConstantVariableFactory implements PlayerVariableFactory, Playerles
     }
 
     @Override
-    public PlayerVariable parsePlayer(final Instruction instruction) throws InstructionParseException {
+    public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
         return parseConstantVariable(instruction);
     }
 
     @Override
-    public PlayerlessVariable parsePlayerless(final Instruction instruction) throws InstructionParseException {
+    public PlayerlessVariable parsePlayerless(final Instruction instruction) throws QuestException {
         return parseConstantVariable(instruction);
     }
 
-    private NullableVariableAdapter parseConstantVariable(final Instruction instruction) throws InstructionParseException {
+    private NullableVariableAdapter parseConstantVariable(final Instruction instruction) throws QuestException {
         final ConfigurationSection section = instruction.getPackage().getConfig().getConfigurationSection("constants");
         if (section == null) {
-            throw new InstructionParseException("No 'constants' section found in the QuestPackage!");
+            throw new QuestException("No 'constants' section found in the QuestPackage!");
         }
         final String constantTarget = instruction.next();
         final String constant = section.getString(constantTarget);
         if (constant == null) {
-            throw new InstructionParseException("No constant with the name '" + constantTarget + "' found in the 'constants' section!");
+            throw new QuestException("No constant with the name '" + constantTarget + "' found in the 'constants' section!");
         }
         return new NullableVariableAdapter(new ConstantVariable(
                 log, new VariableString(variableProcessor, instruction.getPackage(), constant)));

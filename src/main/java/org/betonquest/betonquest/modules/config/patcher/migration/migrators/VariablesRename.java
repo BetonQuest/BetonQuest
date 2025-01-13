@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Handles the aura_skills rename migration.
+ * Handles the variables rename migration.
  */
 public class VariablesRename implements Migration {
     /**
@@ -20,7 +20,7 @@ public class VariablesRename implements Migration {
     private final FileConfigurationProvider producer;
 
     /**
-     * Creates a new aura_skills migrator.
+     * Creates a new variables rename migrator.
      *
      * @param provider The config provider
      */

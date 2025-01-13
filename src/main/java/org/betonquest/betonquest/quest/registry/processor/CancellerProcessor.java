@@ -16,12 +16,19 @@ import java.util.Map;
  */
 public class CancellerProcessor extends QuestProcessor<QuestCancelerID, QuestCanceler> {
     /**
+     * The {@link VariableProcessor} to use.
+     */
+    private final VariableProcessor variableProcessor;
+
+    /**
      * Create a new Quest Canceler Processor to store them.
      *
-     * @param log the custom logger for this class
+     * @param log               the custom logger for this class
+     * @param variableProcessor The {@link VariableProcessor} to use.
      */
-    public CancellerProcessor(final BetonQuestLogger log) {
+    public CancellerProcessor(final BetonQuestLogger log, final VariableProcessor variableProcessor) {
         super(log);
+        this.variableProcessor = variableProcessor;
     }
 
     @Override
@@ -30,7 +37,7 @@ public class CancellerProcessor extends QuestProcessor<QuestCancelerID, QuestCan
         if (cancelSection != null) {
             for (final String key : cancelSection.getKeys(false)) {
                 try {
-                    values.put(new QuestCancelerID(pack, key), new QuestCanceler(pack, key));
+                    values.put(new QuestCancelerID(pack, key), new QuestCanceler(variableProcessor, pack, key));
                 } catch (final QuestException | ObjectNotFoundException e) {
                     log.warn(pack, "Could not load '" + pack.getQuestPath() + "." + key + "' quest canceler: " + e.getMessage(), e);
                 }
