@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -33,14 +34,21 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
     private final BetonQuest betonQuest;
 
     /**
+     * Storage for player data.
+     */
+    private final PlayerDataStorage dataStorage;
+
+    /**
      * Creates a new executor for the /questlang command.
      *
-     * @param log        the logger that will be used for logging
-     * @param betonQuest the object to get player data and config from
+     * @param log         the logger that will be used for logging
+     * @param betonQuest  the object to get player data and config from
+     * @param dataStorage the storage providing player data
      */
-    public LangCommand(final BetonQuestLogger log, final BetonQuest betonQuest) {
+    public LangCommand(final BetonQuestLogger log, final BetonQuest betonQuest, final PlayerDataStorage dataStorage) {
         this.log = log;
         this.betonQuest = betonQuest;
+        this.dataStorage = dataStorage;
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
@@ -70,7 +78,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
         if (sender instanceof Player) {
             final String lang = args[0];
             final OnlineProfile onlineProfile = PlayerConverter.getID((Player) sender);
-            final PlayerData playerData = betonQuest.getPlayerData(onlineProfile);
+            final PlayerData playerData = dataStorage.get(onlineProfile);
             final Journal journal = playerData.getJournal();
             playerData.setLanguage(lang);
             journal.update();

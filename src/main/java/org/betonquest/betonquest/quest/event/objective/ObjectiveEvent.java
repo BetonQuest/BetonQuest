@@ -118,6 +118,6 @@ public class ObjectiveEvent implements NullableEvent {
 
     private void cancelObjectiveForOnlinePlayer(final Profile profile, final ObjectiveID objectiveID, final Objective objective) {
         objective.cancelObjectiveForPlayer(profile);
-        betonQuest.getPlayerData(profile).removeRawObjective(objectiveID);
+        betonQuest.getPlayerDataStorage().get(profile).removeRawObjective(objectiveID);
     }
 }

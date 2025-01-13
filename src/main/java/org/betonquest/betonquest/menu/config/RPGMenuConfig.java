@@ -111,7 +111,7 @@ public class RPGMenuConfig extends SimpleYMLSection {
     public String getMessage(final CommandSender sender, final String key, final String... replace) {
         String lang = null;
         if (sender instanceof Player) {
-            lang = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID((Player) sender)).getLanguage();
+            lang = BetonQuest.getInstance().getPlayerDataStorage().get(PlayerConverter.getID((Player) sender)).getLanguage();
         }
         return getMessage(lang, key, replace);
     }

@@ -4,6 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -78,9 +79,10 @@ public abstract class AbstractTakeEvent implements OnlineEvent {
     }
 
     private void checkBackpack(final OnlineProfile profile) {
-        final List<ItemStack> backpack = BetonQuest.getInstance().getPlayerData(profile).getBackpack();
+        final PlayerData playerData = BetonQuest.getInstance().getPlayerDataStorage().get(profile);
+        final List<ItemStack> backpack = playerData.getBackpack();
         final List<ItemStack> newBackpack = removeDesiredAmount(profile, backpack);
-        BetonQuest.getInstance().getPlayerData(profile).setBackpack(newBackpack);
+        playerData.setBackpack(newBackpack);
     }
 
     private List<ItemStack> removeDesiredAmount(final Profile profile, final List<ItemStack> items) {

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.condition.journal;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -8,6 +7,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.utils.Utils;
 
 /**
@@ -16,9 +16,9 @@ import org.betonquest.betonquest.utils.Utils;
 public class JournalConditionFactory implements PlayerConditionFactory {
 
     /**
-     * The BetonQuest instance.
+     * Storage for player data.
      */
-    private final BetonQuest betonQuest;
+    private final PlayerDataStorage dataStorage;
 
     /**
      * Logger factory to create a logger for conditions.
@@ -28,11 +28,11 @@ public class JournalConditionFactory implements PlayerConditionFactory {
     /**
      * Create the journal condition factory.
      *
-     * @param betonQuest    the BetonQuest instance
+     * @param dataStorage   the storage providing player data
      * @param loggerFactory the logger factory
      */
-    public JournalConditionFactory(final BetonQuest betonQuest, final BetonQuestLoggerFactory loggerFactory) {
-        this.betonQuest = betonQuest;
+    public JournalConditionFactory(final PlayerDataStorage dataStorage, final BetonQuestLoggerFactory loggerFactory) {
+        this.dataStorage = dataStorage;
         this.loggerFactory = loggerFactory;
     }
 
@@ -40,6 +40,6 @@ public class JournalConditionFactory implements PlayerConditionFactory {
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final String targetPointer = Utils.addPackage(instruction.getPackage(), instruction.next());
         final BetonQuestLogger log = loggerFactory.create(JournalCondition.class);
-        return new OnlineConditionAdapter(new JournalCondition(betonQuest, targetPointer), log, instruction.getPackage());
+        return new OnlineConditionAdapter(new JournalCondition(dataStorage, targetPointer), log, instruction.getPackage());
     }
 }

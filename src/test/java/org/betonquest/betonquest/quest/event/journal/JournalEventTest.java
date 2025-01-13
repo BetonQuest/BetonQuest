@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.event.journal;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.database.PlayerData;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
@@ -23,13 +23,13 @@ class JournalEventTest {
     @Test
     @SuppressWarnings({"PMD.UnitTestShouldIncludeAssert", "PMD.UnitTestContainsTooManyAsserts"})
     void testJournalEventChangesUpdatesAndNotifiesInOrder(
-            @Mock final BetonQuest betonQuest, @Mock final PlayerData data, @Mock final Journal journal,
+            @Mock final PlayerDataStorage dataStorage, @Mock final PlayerData data, @Mock final Journal journal,
             @Mock final JournalChanger changer, @Mock final NotificationSender sender) {
         final OnlineProfile onlineProfile = PlayerConverter.getID(mock(Player.class));
-        when(betonQuest.getOfflinePlayerData(onlineProfile)).thenReturn(data);
+        when(dataStorage.getOffline(onlineProfile)).thenReturn(data);
         when(data.getJournal()).thenReturn(journal);
 
-        final JournalEvent event = new JournalEvent(betonQuest, changer, sender);
+        final JournalEvent event = new JournalEvent(dataStorage, changer, sender);
 
         event.execute(onlineProfile);
 

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.event.journal;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
@@ -10,6 +9,7 @@ import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.event.DatabaseSaverStaticEvent;
 import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
@@ -36,7 +36,7 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
     /**
      * BetonQuest instance to provide to events.
      */
-    private final BetonQuest betonQuest;
+    private final PlayerDataStorage dataStorage;
 
     /**
      * The instant source to provide to events.
@@ -52,13 +52,13 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
      * Create the journal event factory.
      *
      * @param loggerFactory logger factory to use
-     * @param betonQuest    BetonQuest instance to pass on
+     * @param dataStorage   storage for used player data
      * @param instantSource instant source to pass on
      * @param saver         database saver to use
      */
-    public JournalEventFactory(final BetonQuestLoggerFactory loggerFactory, final BetonQuest betonQuest, final InstantSource instantSource, final Saver saver) {
+    public JournalEventFactory(final BetonQuestLoggerFactory loggerFactory, final PlayerDataStorage dataStorage, final InstantSource instantSource, final Saver saver) {
         this.loggerFactory = loggerFactory;
-        this.betonQuest = betonQuest;
+        this.dataStorage = dataStorage;
         this.instantSource = instantSource;
         this.saver = saver;
     }
@@ -88,20 +88,20 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
         final String entryName = Utils.addPackage(instruction.getPackage(), instruction.getPart(2));
         final JournalChanger journalChanger = new RemoveEntryJournalChanger(entryName);
         final NotificationSender notificationSender = new NoNotificationSender();
-        return new JournalEvent(betonQuest, journalChanger, notificationSender);
+        return new JournalEvent(dataStorage, journalChanger, notificationSender);
     }
 
     private JournalEvent createJournalAddEvent(final Instruction instruction) throws QuestException {
         final String entryName = Utils.addPackage(instruction.getPackage(), instruction.getPart(2));
         final JournalChanger journalChanger = new AddEntryJournalChanger(instantSource, entryName);
         final NotificationSender notificationSender = new IngameNotificationSender(loggerFactory.create(JournalEvent.class), instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.INFO, "new_journal_entry");
-        return new JournalEvent(betonQuest, journalChanger, notificationSender);
+        return new JournalEvent(dataStorage, journalChanger, notificationSender);
     }
 
     private JournalEvent createJournalUpdateEvent() {
         final JournalChanger journalChanger = new NoActionJournalChanger();
         final NotificationSender notificationSender = new NoNotificationSender();
-        return new JournalEvent(betonQuest, journalChanger, notificationSender);
+        return new JournalEvent(dataStorage, journalChanger, notificationSender);
     }
 
     private StaticEvent createStaticJournalDeleteEvent(final Instruction instruction) throws QuestException {

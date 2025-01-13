@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.conversation.ConversationResumer;
 import org.betonquest.betonquest.database.PlayerData;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.objectives.ResourcePackObjective;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -23,7 +24,6 @@ import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 /**
  * Listener which handles data loading/saving when players are joining/quitting.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class JoinQuitListener implements Listener {
     /**
      * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
@@ -36,31 +36,48 @@ public class JoinQuitListener implements Listener {
     private final BetonQuest betonQuest;
 
     /**
+     * Holds loaded PlayerData.
+     */
+    private final PlayerDataStorage playerDataStorage;
+
+    /**
      * Creates new listener, which will handle the data loading/saving.
      *
-     * @param loggerFactory used for logger creation in ConversationResumer
-     * @param betonQuest    the object to store and remove {@link PlayerData}
+     * @param loggerFactory     used for logger creation in ConversationResumer
+     * @param betonQuest        the object to store and remove {@link PlayerData}
+     * @param playerDataStorage the storage for un-/loading player data
      */
-    public JoinQuitListener(final BetonQuestLoggerFactory loggerFactory, final BetonQuest betonQuest) {
+    public JoinQuitListener(final BetonQuestLoggerFactory loggerFactory, final BetonQuest betonQuest, final PlayerDataStorage playerDataStorage) {
         this.loggerFactory = loggerFactory;
         this.betonQuest = betonQuest;
+        this.playerDataStorage = playerDataStorage;
     }
 
+    /**
+     * Loads the player data async before it joins.
+     *
+     * @param event the async event to listen
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void playerPreLogin(final AsyncPlayerPreLoginEvent event) {
         if (event.getLoginResult() != Result.ALLOWED) {
             return;
         }
         final Profile profile = PlayerConverter.getID(Bukkit.getOfflinePlayer(event.getUniqueId()));
-        betonQuest.putPlayerData(profile, new PlayerData(profile));
+        playerDataStorage.put(profile, new PlayerData(profile));
     }
 
+    /**
+     * Starts the player objectives and running conversation on join.
+     *
+     * @param event the join event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
-        final PlayerData playerData = betonQuest.getPlayerData(onlineProfile);
+        final PlayerData playerData = playerDataStorage.get(onlineProfile);
         playerData.startObjectives();
-        GlobalObjectives.startAll(onlineProfile);
+        GlobalObjectives.startAll(onlineProfile, playerDataStorage);
         checkResourcepack(event, onlineProfile);
 
         if (Journal.hasJournal(onlineProfile)) {
@@ -84,12 +101,17 @@ public class JoinQuitListener implements Listener {
         }
     }
 
+    /**
+     * Removes the PlayerData from storage when the player quits the server.
+     *
+     * @param event the quit event
+     */
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent event) {
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
         for (final Objective objective : betonQuest.getPlayerObjectives(onlineProfile)) {
             objective.pauseObjectiveForPlayer(onlineProfile);
         }
-        betonQuest.removePlayerData(onlineProfile);
+        playerDataStorage.remove(onlineProfile);
     }
 }

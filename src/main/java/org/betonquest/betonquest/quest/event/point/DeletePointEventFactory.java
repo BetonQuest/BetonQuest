@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.event.point;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -9,21 +8,22 @@ import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.event.DatabaseSaverStaticEvent;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
 import org.betonquest.betonquest.quest.event.SequentialStaticEvent;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Factory to create delete points events from {@link Instruction}s.
  */
 public class DeletePointEventFactory implements EventFactory, StaticEventFactory {
+
     /**
-     * BetonQuest plugin instance needed for building the point event.
+     * Storage for player data.
      */
-    private final BetonQuest betonQuest;
+    private final PlayerDataStorage dataStorage;
 
     /**
      * Database saver to use for writing offline player data.
@@ -33,17 +33,17 @@ public class DeletePointEventFactory implements EventFactory, StaticEventFactory
     /**
      * Create the delete points event factory.
      *
-     * @param betonQuest the plugin to use
-     * @param saver      the saver to use
+     * @param dataStorage the storage providing player data
+     * @param saver       the saver to use
      */
-    public DeletePointEventFactory(final BetonQuest betonQuest, final Saver saver) {
-        this.betonQuest = betonQuest;
+    public DeletePointEventFactory(final PlayerDataStorage dataStorage, final Saver saver) {
+        this.dataStorage = dataStorage;
         this.saver = saver;
     }
 
     @Override
     public Event parseEvent(final Instruction instruction) throws QuestException {
-        return new DeletePointEvent(betonQuest::getOfflinePlayerData, getCategory(instruction));
+        return new DeletePointEvent(dataStorage::getOffline, getCategory(instruction));
     }
 
     @Override
@@ -52,13 +52,13 @@ public class DeletePointEventFactory implements EventFactory, StaticEventFactory
         return new SequentialStaticEvent(
                 new OnlineProfileGroupStaticEventAdapter(
                         PlayerConverter::getOnlineProfiles,
-                        new DeletePointEvent(betonQuest::getOfflinePlayerData, category)
+                        new DeletePointEvent(dataStorage::getOffline, category)
                 ),
                 new DatabaseSaverStaticEvent(saver, () -> new Saver.Record(UpdateType.REMOVE_ALL_POINTS, category))
         );
     }
 
-    private static @NotNull String getCategory(final Instruction instruction) throws QuestException {
+    private String getCategory(final Instruction instruction) throws QuestException {
         return Utils.addPackage(instruction.getPackage(), instruction.next());
     }
 }

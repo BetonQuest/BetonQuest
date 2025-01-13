@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.condition.point;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.utils.Utils;
 
 /**
@@ -14,17 +14,17 @@ import org.betonquest.betonquest.utils.Utils;
 public class PointConditionFactory implements PlayerConditionFactory {
 
     /**
-     * The BetonQuest instance.
+     * Storage for player data.
      */
-    private final BetonQuest betonQuest;
+    private final PlayerDataStorage dataStorage;
 
     /**
      * Creates the point condition factory.
      *
-     * @param betonQuest the BetonQuest instance
+     * @param dataStorage the BetonQuest instance
      */
-    public PointConditionFactory(final BetonQuest betonQuest) {
-        this.betonQuest = betonQuest;
+    public PointConditionFactory(final PlayerDataStorage dataStorage) {
+        this.dataStorage = dataStorage;
     }
 
     @Override
@@ -32,6 +32,6 @@ public class PointConditionFactory implements PlayerConditionFactory {
         final String category = Utils.addPackage(instruction.getPackage(), instruction.next());
         final VariableNumber count = instruction.getVarNum();
         final boolean equal = instruction.hasArgument("equal");
-        return new PointCondition(betonQuest, category, count, equal);
+        return new PointCondition(dataStorage, category, count, equal);
     }
 }

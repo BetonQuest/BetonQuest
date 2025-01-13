@@ -211,7 +211,7 @@ public class MenuItem extends SimpleYMLSection {
      */
     public ItemStack generateItem(final Profile profile) {
         try {
-            final String lang = BetonQuest.getInstance().getPlayerData(profile).getLanguage();
+            final String lang = BetonQuest.getInstance().getPlayerDataStorage().get(profile).getLanguage();
             final ItemStack item = this.item.generate(profile);
             final ItemMeta meta = item.getItemMeta();
             if (!descriptions.isEmpty()) {

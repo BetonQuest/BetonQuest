@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.item;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.GameMode;
@@ -43,18 +43,17 @@ import java.util.ListIterator;
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.CyclomaticComplexity"})
 public class QuestItemHandler implements Listener {
     /**
-     * Object for Player Data and config.
+     * Storage for player data.
      */
-    private final BetonQuest betonQuest;
+    private final PlayerDataStorage dataStorage;
 
     /**
      * Creates a new quest item handler listener.
      *
-     * @param betonQuest the object to get {@link org.betonquest.betonquest.database.PlayerData PlayerData}
-     *                   and plugin config from
+     * @param dataStorage the storage providing player data
      */
-    public QuestItemHandler(final BetonQuest betonQuest) {
-        this.betonQuest = betonQuest;
+    public QuestItemHandler(final PlayerDataStorage dataStorage) {
+        this.dataStorage = dataStorage;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -71,7 +70,7 @@ public class QuestItemHandler implements Listener {
                 event.getItemDrop().remove();
             }
         } else if (Utils.isQuestItem(item)) {
-            betonQuest.getPlayerData(onlineProfile).addItem(item.clone(), item.getAmount());
+            dataStorage.get(onlineProfile).addItem(item.clone(), item.getAmount());
             event.getItemDrop().remove();
         }
     }
@@ -190,7 +189,7 @@ public class QuestItemHandler implements Listener {
             }
             // remove all quest items and add them to backpack
             if (Utils.isQuestItem(stack)) {
-                betonQuest.getPlayerData(onlineProfile).addItem(stack.clone(), stack.getAmount());
+                dataStorage.get(onlineProfile).addItem(stack.clone(), stack.getAmount());
                 litr.remove();
             }
         }
@@ -214,7 +213,7 @@ public class QuestItemHandler implements Listener {
             }
         }
         if (Boolean.parseBoolean(Config.getConfigString("journal.give_on_respawn"))) {
-            betonQuest.getPlayerData(PlayerConverter.getID(event.getPlayer())).getJournal().addToInv();
+            dataStorage.get(PlayerConverter.getID(event.getPlayer())).getJournal().addToInv();
         }
     }
 
@@ -249,7 +248,7 @@ public class QuestItemHandler implements Listener {
     @SuppressWarnings("deprecation")
     @EventHandler(ignoreCancelled = true)
     public void onItemBreak(final PlayerItemBreakEvent event) {
-        if (!Boolean.parseBoolean(betonQuest.getPluginConfig().getString("quest_items_unbreakable"))) {
+        if (!Boolean.parseBoolean(Config.getConfigString("quest_items_unbreakable"))) {
             return;
         }
         // prevent quest items from breaking

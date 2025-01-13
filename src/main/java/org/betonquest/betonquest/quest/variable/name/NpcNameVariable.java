@@ -1,26 +1,27 @@
 package org.betonquest.betonquest.quest.variable.name;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.conversation.Conversation;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 
 /**
  * This variable resolves into the name of the NPC.
  */
 public class NpcNameVariable implements PlayerVariable {
+
     /**
-     * Class to get the player data from.
+     * Storage for player data.
      */
-    private final BetonQuest plugin;
+    private final PlayerDataStorage dataStorage;
 
     /**
      * Create a NpcName variable.
      *
-     * @param plugin the class to get the {@link org.betonquest.betonquest.database.PlayerData}
+     * @param dataStorage the class to get the {@link org.betonquest.betonquest.database.PlayerData}
      */
-    public NpcNameVariable(final BetonQuest plugin) {
-        this.plugin = plugin;
+    public NpcNameVariable(final PlayerDataStorage dataStorage) {
+        this.dataStorage = dataStorage;
     }
 
     @Override
@@ -29,6 +30,6 @@ public class NpcNameVariable implements PlayerVariable {
         if (conv == null) {
             return "";
         }
-        return conv.getData().getQuester(plugin.getPlayerData(profile).getLanguage());
+        return conv.getData().getQuester(dataStorage.get(profile).getLanguage());
     }
 }

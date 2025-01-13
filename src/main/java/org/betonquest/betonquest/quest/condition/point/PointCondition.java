@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.condition.point;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 
 import java.util.List;
 
@@ -15,9 +15,9 @@ import java.util.List;
 public class PointCondition implements PlayerCondition {
 
     /**
-     * The BetonQuest instance.
+     * Storage for player data.
      */
-    private final BetonQuest betonQuest;
+    private final PlayerDataStorage dataStorage;
 
     /**
      * The category of the points.
@@ -37,13 +37,13 @@ public class PointCondition implements PlayerCondition {
     /**
      * Constructor for the point condition.
      *
-     * @param betonQuest the BetonQuest instance
-     * @param category   the category of the points
-     * @param count      the amount of points
-     * @param equal      whether the points should be equal to the specified amount
+     * @param dataStorage the storage providing player data
+     * @param category    the category of the points
+     * @param count       the amount of points
+     * @param equal       whether the points should be equal to the specified amount
      */
-    public PointCondition(final BetonQuest betonQuest, final String category, final VariableNumber count, final boolean equal) {
-        this.betonQuest = betonQuest;
+    public PointCondition(final PlayerDataStorage dataStorage, final String category, final VariableNumber count, final boolean equal) {
+        this.dataStorage = dataStorage;
         this.category = category;
         this.count = count;
         this.equal = equal;
@@ -51,7 +51,7 @@ public class PointCondition implements PlayerCondition {
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
-        final List<Point> points = betonQuest.getPlayerData(profile).getPoints();
+        final List<Point> points = dataStorage.get(profile).getPoints();
         for (final Point point : points) {
             if (point.getCategory().equals(category)) {
                 return checkPoints(point.getCount(), profile);

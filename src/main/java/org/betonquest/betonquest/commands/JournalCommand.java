@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.commands;
 
-import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,29 +10,34 @@ import org.bukkit.entity.Player;
 /**
  * Gives the player his journal.
  */
-@SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
 public class JournalCommand implements CommandExecutor {
+
     /**
-     * Object to get player data.
+     * The command name.
      */
-    private final BetonQuest betonQuest;
+    private static final String JOURNAL = "journal";
+
+    /**
+     * Storage for player data.
+     */
+    private final PlayerDataStorage dataStorage;
 
     /**
      * Create a new executor for the /journal command.
      *
-     * @param betonQuest the object to get player data from
+     * @param dataStorage the storage providing player data
      */
-    public JournalCommand(final BetonQuest betonQuest) {
-        this.betonQuest = betonQuest;
+    public JournalCommand(final PlayerDataStorage dataStorage) {
+        this.dataStorage = dataStorage;
     }
 
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
-        if ("journal".equalsIgnoreCase(cmd.getName())) {
+        if (JOURNAL.equalsIgnoreCase(cmd.getName())) {
             // command sender must be a player, console can't have journal
             if (sender instanceof Player) {
                 // giving the player his journal
-                betonQuest.getPlayerData(PlayerConverter.getID((Player) sender)).getJournal().addToInv();
+                dataStorage.get(PlayerConverter.getID((Player) sender)).getJournal().addToInv();
             }
             return true;
         }

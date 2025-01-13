@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.condition.tag;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.utils.Utils;
 
 /**
@@ -13,22 +13,22 @@ import org.betonquest.betonquest.utils.Utils;
 public class TagConditionFactory implements PlayerConditionFactory {
 
     /**
-     * The BetonQuest instance.
+     * Storage for player data.
      */
-    private final BetonQuest betonQuest;
+    private final PlayerDataStorage dataStorage;
 
     /**
      * Creates the tag condition factory.
      *
-     * @param betonQuest the BetonQuest instance
+     * @param dataStorage the storage providing player data
      */
-    public TagConditionFactory(final BetonQuest betonQuest) {
-        this.betonQuest = betonQuest;
+    public TagConditionFactory(final PlayerDataStorage dataStorage) {
+        this.dataStorage = dataStorage;
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final String tag = Utils.addPackage(instruction.getPackage(), instruction.next());
-        return new TagCondition(tag, betonQuest);
+        return new TagCondition(tag, dataStorage);
     }
 }

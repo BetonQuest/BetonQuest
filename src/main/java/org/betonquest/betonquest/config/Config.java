@@ -292,7 +292,7 @@ public final class Config {
     public static String parseMessage(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile,
                                       final String messageName, @Nullable final String[] variables,
                                       @Nullable final String prefixName, @Nullable final String... prefixVariables) {
-        final PlayerData playerData = plugin.getPlayerData(onlineProfile);
+        final PlayerData playerData = plugin.getPlayerDataStorage().get(onlineProfile);
         final String language = playerData.getLanguage();
         String message = getMessage(language, messageName, variables);
         if (message == null || message.isEmpty()) {
