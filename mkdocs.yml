@@ -111,6 +111,7 @@ nav:
       - APIs:
           - 'Legacy API': API/Legacy-API.md
           - 'Instruction': API/Instruction.md
+          - 'Writing Implementations': API/Writing-Implementations.md
           - 'Logging': API/Logging.md
           - 'Configuration Files': API/ConfigurationFiles.md
           - 'Bukkit Configurations': API/BukkitConfigurations.md
