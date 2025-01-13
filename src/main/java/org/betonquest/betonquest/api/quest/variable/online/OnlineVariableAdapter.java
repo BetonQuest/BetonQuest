@@ -1,7 +1,5 @@
 package org.betonquest.betonquest.api.quest.variable.online;
 
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
@@ -26,16 +24,13 @@ public final class OnlineVariableAdapter implements PlayerVariable {
 
     /**
      * Create a variable that resolves the given online variable.
-     * If the player is not online it logs a message into the debug log.
+     * If the player is not online it will throw with an info message.
      *
      * @param onlineVariable variable to resolve for online players
-     * @param log            log to write to if the player is not online
-     * @param questPackage   quest package to reference in the log
      */
-    public OnlineVariableAdapter(final OnlineVariable onlineVariable, final BetonQuestLogger log, final QuestPackage questPackage) {
+    public OnlineVariableAdapter(final OnlineVariable onlineVariable) {
         this(onlineVariable, profile -> {
-            log.debug(questPackage, profile + " is offline, cannot get variable value because it's not persistent.");
-            return "";
+            throw new QuestException(profile + " is offline, cannot get variable value because it's not persistent.");
         });
     }
 
