@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.modules.schedule.impl;
 
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.FictiveTime;
 import org.betonquest.betonquest.api.schedule.Schedule;
@@ -24,6 +25,9 @@ import static org.mockito.Mockito.*;
 @SuppressWarnings("PMD.DoNotUseThreads")
 @ExtendWith(MockitoExtension.class)
 class ExecutorServiceSchedulerTest {
+    /**
+     * Mocked logger.
+     */
     @Mock
     private BetonQuestLogger logger;
 
@@ -50,7 +54,7 @@ class ExecutorServiceSchedulerTest {
 
     @BeforeEach
     void setUp() {
-        scheduler = spy(new ExecutorServiceScheduler<>(logger, this::newExecutor) {
+        scheduler = spy(new ExecutorServiceScheduler<>(logger, mock(BetonQuestAPI.class), this::newExecutor) {
 
             @Override
             protected FictiveTime getNow() {

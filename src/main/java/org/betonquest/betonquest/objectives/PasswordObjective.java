@@ -77,7 +77,7 @@ public class PasswordObjective extends Objective implements Listener {
                 return !fromCommand || !prefix.isEmpty();
             } else {
                 for (final EventID event : failEvents) {
-                    BetonQuest.event(onlineProfile, event);
+                    BetonQuest.getInstance().getQuestAPI().event(onlineProfile, event);
                 }
             }
         }
@@ -103,5 +103,4 @@ public class PasswordObjective extends Objective implements Listener {
     public String getProperty(final String name, final Profile profile) {
         return "";
     }
-
 }

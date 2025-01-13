@@ -153,7 +153,7 @@ public class QuestCanceler {
      * @return true if all conditions are met, false otherwise
      */
     public boolean show(final Profile profile) {
-        return conditions == null || BetonQuest.conditions(profile, conditions);
+        return conditions == null || BetonQuest.getInstance().getQuestAPI().conditions(profile, conditions);
     }
 
     /**
@@ -192,7 +192,7 @@ public class QuestCanceler {
         // fire all events
         if (events != null) {
             for (final EventID event : events) {
-                BetonQuest.event(onlineProfile, event);
+                BetonQuest.getInstance().getQuestAPI().event(onlineProfile, event);
             }
         }
         // done

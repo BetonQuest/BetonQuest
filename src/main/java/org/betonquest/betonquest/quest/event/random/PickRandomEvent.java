@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.random;
 
-import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.exceptions.QuestException;
@@ -27,14 +27,21 @@ public class PickRandomEvent implements NullableEvent {
     private final VariableNumber amount;
 
     /**
+     * BetonQuest API.
+     */
+    private final BetonQuestAPI questAPI;
+
+    /**
      * Creates a new PickRandomEvent.
      *
-     * @param events the events with there chance
-     * @param amount the amount of events to fire
+     * @param events   the events with there chance
+     * @param amount   the amount of events to fire
+     * @param questAPI the BetonQuest API
      */
-    public PickRandomEvent(final List<RandomEvent> events, @Nullable final VariableNumber amount) {
+    public PickRandomEvent(final List<RandomEvent> events, @Nullable final VariableNumber amount, final BetonQuestAPI questAPI) {
         this.events = events;
         this.amount = amount;
+        this.questAPI = questAPI;
     }
 
     @Override
@@ -54,7 +61,7 @@ public class PickRandomEvent implements NullableEvent {
                 final ResolvedRandomEvent event = iterator.next();
                 random -= event.chance();
                 if (random < 0) {
-                    BetonQuest.event(profile, event.eventID());
+                    questAPI.event(profile, event.eventID());
                     iterator.remove();
                     total -= event.chance();
                     break;

@@ -54,7 +54,7 @@ public class CommandObjective extends Objective implements Listener {
                 completeObjective(onlineProfile);
             } else {
                 for (final EventID failEvent : failEvents) {
-                    BetonQuest.event(onlineProfile, failEvent);
+                    BetonQuest.getInstance().getQuestAPI().event(onlineProfile, failEvent);
                 }
             }
         }
@@ -89,5 +89,4 @@ public class CommandObjective extends Objective implements Listener {
                     : StringUtils.startsWith(commandExecuted, commandRequired);
         }
     }
-
 }

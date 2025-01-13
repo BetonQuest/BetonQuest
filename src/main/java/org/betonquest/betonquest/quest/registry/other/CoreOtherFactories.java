@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.registry.other;
 
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.conversation.ConversationIO;
 import org.betonquest.betonquest.conversation.Interceptor;
@@ -41,14 +42,22 @@ public class CoreOtherFactories {
     private final LastExecutionCache lastExecutionCache;
 
     /**
+     * BetonQuest API.
+     */
+    private final BetonQuestAPI questAPI;
+
+    /**
      * Create a new Core Other Factories class for registering.
      *
      * @param loggerFactory      the factory to create new class specific loggers
      * @param lastExecutionCache the cache to catch up missed schedulers
+     * @param questAPI           the class for executing events
      */
-    public CoreOtherFactories(final BetonQuestLoggerFactory loggerFactory, final LastExecutionCache lastExecutionCache) {
+    public CoreOtherFactories(final BetonQuestLoggerFactory loggerFactory, final LastExecutionCache lastExecutionCache,
+                              final BetonQuestAPI questAPI) {
         this.loggerFactory = loggerFactory;
         this.lastExecutionCache = lastExecutionCache;
+        this.questAPI = questAPI;
     }
 
     /**
@@ -80,9 +89,9 @@ public class CoreOtherFactories {
         notifyIOTypes.register("sound", SoundIO.class);
 
         final ScheduleRegistry eventSchedulingTypes = registries.eventScheduling();
-        eventSchedulingTypes.register("realtime-daily", RealtimeDailySchedule.class,
-                new RealtimeDailyScheduler(loggerFactory.create(RealtimeDailyScheduler.class, "Schedules"), lastExecutionCache));
-        eventSchedulingTypes.register("realtime-cron", RealtimeCronSchedule.class,
-                new RealtimeCronScheduler(loggerFactory.create(RealtimeCronScheduler.class, "Schedules"), lastExecutionCache));
+        eventSchedulingTypes.register("realtime-daily", RealtimeDailySchedule.class, new RealtimeDailyScheduler(
+                loggerFactory.create(RealtimeDailyScheduler.class, "Schedules"), questAPI, lastExecutionCache));
+        eventSchedulingTypes.register("realtime-cron", RealtimeCronSchedule.class, new RealtimeCronScheduler(
+                loggerFactory.create(RealtimeCronScheduler.class, "Schedules"), questAPI, lastExecutionCache));
     }
 }

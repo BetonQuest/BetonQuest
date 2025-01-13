@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.folder;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
@@ -45,9 +46,14 @@ public class FolderEvent implements NullableEvent {
     private final PluginManager pluginManager;
 
     /**
+     * BetonQuest API.
+     */
+    private final BetonQuestAPI questAPI;
+
+    /**
      * Random generator used to choose events to run.
      */
-    private final Random randomGenerator = new Random();
+    private final Random randomGenerator;
 
     /**
      * The delay to apply before running the events.
@@ -94,6 +100,8 @@ public class FolderEvent implements NullableEvent {
      * @param log              custom logger for this class
      * @param pluginManager    the plugin manager to register the quit listener
      * @param events           events to run
+     * @param questAPI         the BetonQuest API
+     * @param randomGenerator  the random instance to use
      * @param delay            delay to apply before running the events
      * @param period           delay to apply between each event
      * @param random           number of events to run
@@ -101,12 +109,16 @@ public class FolderEvent implements NullableEvent {
      * @param cancelOnLogout   whether the event should be canceled on logout
      * @param cancelConditions conditions to check if the event should be canceled
      */
-    public FolderEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final PluginManager pluginManager, final EventID[] events, @Nullable final VariableNumber delay,
+    @SuppressWarnings("PMD.ExcessiveParameterList")
+    public FolderEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final PluginManager pluginManager, final EventID[] events,
+                       final BetonQuestAPI questAPI, final Random randomGenerator, @Nullable final VariableNumber delay,
                        @Nullable final VariableNumber period, @Nullable final VariableNumber random,
                        final TimeUnit timeUnit, final boolean cancelOnLogout, final ConditionID... cancelConditions) {
         this.betonQuest = betonQuest;
         this.log = log;
         this.pluginManager = pluginManager;
+        this.questAPI = questAPI;
+        this.randomGenerator = randomGenerator;
         this.delay = delay;
         this.period = period;
         this.random = random;
@@ -117,7 +129,7 @@ public class FolderEvent implements NullableEvent {
     }
 
     private boolean checkCancelConditions(@Nullable final Profile profile) {
-        return cancelConditions.length != 0 && BetonQuest.conditions(profile, cancelConditions);
+        return cancelConditions.length != 0 && questAPI.conditions(profile, cancelConditions);
     }
 
     private void executeAllEvents(@Nullable final Profile profile, final Deque<EventID> chosenList) {
@@ -125,7 +137,7 @@ public class FolderEvent implements NullableEvent {
             if (checkCancelConditions(profile)) {
                 return;
             }
-            BetonQuest.event(profile, event);
+            questAPI.event(profile, event);
         }
     }
 
@@ -149,7 +161,7 @@ public class FolderEvent implements NullableEvent {
             if (checkCancelConditions(profile)) {
                 return;
             }
-            BetonQuest.event(profile, event);
+            questAPI.event(profile, event);
         }
         if (!chosenList.isEmpty()) {
             final FolderEventCanceller eventCanceller = createFolderEventCanceller(profile);
@@ -162,7 +174,7 @@ public class FolderEvent implements NullableEvent {
                         this.cancel();
                         return;
                     }
-                    BetonQuest.event(profile, event);
+                    questAPI.event(profile, event);
                 }
             }, delayTicks == 0 ? periodTicks : delayTicks, periodTicks);
         }

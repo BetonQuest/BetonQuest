@@ -4,6 +4,7 @@ import io.papermc.lib.PaperLib;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.LoadDataEvent;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.Variable;
@@ -43,9 +44,7 @@ import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.SQLite;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.exceptions.QuestException;
-import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
-import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.item.QuestItemHandler;
@@ -184,6 +183,8 @@ public class BetonQuest extends JavaPlugin {
 
     private RPGMenu rpgMenu;
 
+    private BetonQuestAPI questAPI;
+
     /**
      * Cache for event schedulers, holding the last execution of an event.
      */
@@ -196,77 +197,6 @@ public class BetonQuest extends JavaPlugin {
      */
     public static BetonQuest getInstance() {
         return instance;
-    }
-
-    /**
-     * Checks if the conditions described by conditionID are met.
-     *
-     * @param profile      the {@link Profile} of the player which should be checked
-     * @param conditionIDs IDs of the conditions to check
-     * @return if all conditions are met
-     */
-    public static boolean conditions(@Nullable final Profile profile, final Collection<ConditionID> conditionIDs) {
-        final ConditionID[] ids = new ConditionID[conditionIDs.size()];
-        int index = 0;
-        for (final ConditionID id : conditionIDs) {
-            ids[index++] = id;
-        }
-        return conditions(profile, ids);
-    }
-
-    /**
-     * Checks if the conditions described by conditionID are met.
-     *
-     * @param profile      the {@link Profile} of the player which should be checked
-     * @param conditionIDs IDs of the conditions to check
-     * @return if all conditions are met
-     */
-    public static boolean conditions(@Nullable final Profile profile, final ConditionID... conditionIDs) {
-        return instance.questRegistry.conditions().checks(profile, conditionIDs);
-    }
-
-    /**
-     * Checks if the condition described by conditionID is met.
-     *
-     * @param conditionID ID of the condition to check
-     * @param profile     the {@link Profile} of the player which should be checked
-     * @return if the condition is met
-     */
-    public static boolean condition(@Nullable final Profile profile, final ConditionID conditionID) {
-        return instance.questRegistry.conditions().check(profile, conditionID);
-    }
-
-    /**
-     * Fires an event for the {@link Profile} if it meets the event's conditions.
-     * If the profile is null, the event will be fired as a static event.
-     *
-     * @param profile the {@link Profile} for which the event must be executed or null
-     * @param eventID ID of the event to fire
-     * @return true if the event was run even if there was an exception during execution
-     */
-    public static boolean event(@Nullable final Profile profile, final EventID eventID) {
-        return instance.questRegistry.events().execute(profile, eventID);
-    }
-
-    /**
-     * Creates new objective for given player.
-     *
-     * @param profile     the {@link Profile} of the player
-     * @param objectiveID ID of the objective
-     */
-    public static void newObjective(final Profile profile, final ObjectiveID objectiveID) {
-        instance.questRegistry.objectives().start(profile, objectiveID);
-    }
-
-    /**
-     * Resumes the existing objective for given player.
-     *
-     * @param profile     the {@link Profile} of the player
-     * @param objectiveID ID of the objective
-     * @param instruction data instruction string
-     */
-    public static void resumeObjective(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
-        instance.questRegistry.objectives().resume(profile, objectiveID, instruction);
     }
 
     /**
@@ -485,9 +415,12 @@ public class BetonQuest extends JavaPlugin {
         questRegistry = new QuestRegistry(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
                 otherRegistries, questTypeRegistries, OBJECTIVE_TYPES);
 
-        new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this, questRegistry.variables()).register(questTypeRegistries);
+        questAPI = new APIImpl(questRegistry);
 
-        new CoreOtherFactories(loggerFactory, lastExecutionCache).register(otherRegistries);
+        new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this, questRegistry.variables(), questAPI)
+                .register(questTypeRegistries);
+
+        new CoreOtherFactories(loggerFactory, lastExecutionCache, questAPI).register(otherRegistries);
 
         new Compatibility(this, loggerFactory.create(Compatibility.class));
 
@@ -507,7 +440,7 @@ public class BetonQuest extends JavaPlugin {
             }
 
             try {
-                playerHider = new PlayerHider(this);
+                playerHider = new PlayerHider(this, questAPI);
             } catch (final QuestException e) {
                 log.error("Could not start PlayerHider! " + e.getMessage(), e);
             }
@@ -624,7 +557,7 @@ public class BetonQuest extends JavaPlugin {
             playerHider.stop();
         }
         try {
-            playerHider = new PlayerHider(this);
+            playerHider = new PlayerHider(this, questAPI);
         } catch (final QuestException e) {
             log.error("Could not start PlayerHider! " + e.getMessage(), e);
         }
@@ -667,6 +600,10 @@ public class BetonQuest extends JavaPlugin {
             rpgMenu.onDisable();
         }
         FreezeEvent.cleanup();
+    }
+
+    public BetonQuestAPI getQuestAPI() {
+        return questAPI;
     }
 
     /**
@@ -857,16 +794,6 @@ public class BetonQuest extends JavaPlugin {
      */
     public OtherFactoryRegistries getOtherRegistries() {
         return otherRegistries;
-    }
-
-    /**
-     * Renames the objective instance.
-     *
-     * @param name   the current name
-     * @param rename the name it should have now
-     */
-    public void renameObjective(final ObjectiveID name, final ObjectiveID rename) {
-        questRegistry.objectives().renameObjective(name, rename);
     }
 
     /**

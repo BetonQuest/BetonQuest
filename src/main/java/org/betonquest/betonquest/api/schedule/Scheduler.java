@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.schedule;
 
-import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.modules.schedule.ScheduleID;
@@ -40,6 +40,11 @@ public abstract class Scheduler<S extends Schedule, T> {
     private final BetonQuestLogger log;
 
     /**
+     * BetonQuest API.
+     */
+    private final BetonQuestAPI questAPI;
+
+    /**
      * Flag stating if this scheduler is currently running.
      */
     private boolean running;
@@ -47,10 +52,12 @@ public abstract class Scheduler<S extends Schedule, T> {
     /**
      * Default constructor.
      *
-     * @param log the logger that will be used for logging
+     * @param log      the logger that will be used for logging
+     * @param questAPI the BetonQuest API
      */
-    public Scheduler(final BetonQuestLogger log) {
+    public Scheduler(final BetonQuestLogger log, final BetonQuestAPI questAPI) {
         this.log = log;
+        this.questAPI = questAPI;
         schedules = new HashMap<>();
         running = false;
     }
@@ -122,7 +129,7 @@ public abstract class Scheduler<S extends Schedule, T> {
     protected void executeEvents(final S schedule) {
         log.debug(schedule.getId().getPackage(), "Schedule '" + schedule.getId() + "' runs its events...");
         for (final EventID eventID : schedule.getEvents()) {
-            BetonQuest.event(null, eventID);
+            questAPI.event(null, eventID);
         }
     }
 

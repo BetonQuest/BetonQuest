@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.run;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.exceptions.QuestException;
@@ -14,14 +15,22 @@ import java.util.List;
 public class RunIndependentEventFactory implements StaticEventFactory {
 
     /**
-     * Create new {@link RunIndependentEventFactory}.
+     * BetonQuest API.
      */
-    public RunIndependentEventFactory() {
+    private final BetonQuestAPI questAPI;
+
+    /**
+     * Create new {@link RunIndependentEventFactory}.
+     *
+     * @param questAPI the BetonQuest API
+     */
+    public RunIndependentEventFactory(final BetonQuestAPI questAPI) {
+        this.questAPI = questAPI;
     }
 
     @Override
     public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
         final List<EventID> events = instruction.getList(instruction.getOptional("events"), instruction::getEvent);
-        return new RunIndependentEvent(events);
+        return new RunIndependentEvent(questAPI, events);
     }
 }

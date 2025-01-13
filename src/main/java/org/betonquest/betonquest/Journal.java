@@ -285,7 +285,7 @@ public class Journal {
                                 }
                             }
 
-                            if (!BetonQuest.conditions(profile, pageConditions)) {
+                            if (!BetonQuest.getInstance().getQuestAPI().conditions(profile, pageConditions)) {
                                 continue;
                             }
                         } catch (final ObjectNotFoundException e) {

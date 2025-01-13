@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.modules.schedule.impl.realtime.cron;
 
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.CronSchedule;
@@ -43,10 +44,11 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
      * Create a new realtime scheduler and pass BetonQuest instance to it.
      *
      * @param log                the logger that will be used for logging
+     * @param questAPI           the class for executing events
      * @param lastExecutionCache cache where the last execution times of a schedule are stored
      */
-    public RealtimeCronScheduler(final BetonQuestLogger log, final LastExecutionCache lastExecutionCache) {
-        super(log);
+    public RealtimeCronScheduler(final BetonQuestLogger log, final BetonQuestAPI questAPI, final LastExecutionCache lastExecutionCache) {
+        super(log, questAPI);
         this.log = log;
         this.lastExecutionCache = lastExecutionCache;
     }
@@ -55,11 +57,12 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
      * Create a new realtime scheduler and pass BetonQuest instance to it.
      *
      * @param log                the logger that will be used for logging
+     * @param questAPI           the class for executing events
      * @param executor           supplier used to create new instances of the executor used by this scheduler
      * @param lastExecutionCache cache where the last execution times of a schedule are stored
      */
-    public RealtimeCronScheduler(final BetonQuestLogger log, final Supplier<ScheduledExecutorService> executor, final LastExecutionCache lastExecutionCache) {
-        super(log, executor);
+    public RealtimeCronScheduler(final BetonQuestLogger log, final BetonQuestAPI questAPI, final Supplier<ScheduledExecutorService> executor, final LastExecutionCache lastExecutionCache) {
+        super(log, questAPI, executor);
         this.log = log;
         this.lastExecutionCache = lastExecutionCache;
     }

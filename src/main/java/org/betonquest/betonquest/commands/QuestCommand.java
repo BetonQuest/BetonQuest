@@ -859,7 +859,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         // fire the event
         final Profile profile = "-".equals(args[1]) ? null : PlayerConverter.getID(Bukkit.getOfflinePlayer(args[1]));
-        BetonQuest.event(profile, eventID);
+        instance.getQuestAPI().event(profile, eventID);
         sendMessage(sender, "player_event", eventID.getInstruction().toString());
     }
 
@@ -907,7 +907,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // display message about condition
         final Profile profile = "-".equals(args[1]) ? null : PlayerConverter.getID(Bukkit.getOfflinePlayer(args[1]));
         sendMessage(sender, "player_condition", (conditionID.inverted() ? "! " : "") + conditionID.getInstruction(),
-                Boolean.toString(BetonQuest.condition(profile, conditionID)));
+                Boolean.toString(instance.getQuestAPI().condition(profile, conditionID)));
     }
 
     /**
@@ -1152,7 +1152,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         "Adding new objective " + objectiveID + " for " + profile);
                 // add the objective
                 if (isOnline) {
-                    BetonQuest.newObjective(profile, objectiveID);
+                    instance.getQuestAPI().newObjective(profile, objectiveID);
                 } else {
                     playerData.addNewRawObjective(objectiveID);
                 }
@@ -1304,7 +1304,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     log.reportException(e);
                     return;
                 }
-                BetonQuest.getInstance().renameObjective(nameID, renameID);
+                instance.getQuestAPI().renameObjective(nameID, renameID);
                 nameID.getPackage().getConfig().set(nameID.getBaseID(), null);
                 try {
                     nameID.getPackage().saveAll();

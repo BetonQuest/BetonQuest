@@ -586,7 +586,7 @@ public class ConversationData {
                 sourceData = this;
                 optionName = option;
             }
-            if (BetonQuest.conditions(profile, sourceData.getConditionIDs(optionName, NPC))) {
+            if (BetonQuest.getInstance().getQuestAPI().conditions(profile, sourceData.getConditionIDs(optionName, NPC))) {
                 return true;
             }
         }
@@ -834,7 +834,7 @@ public class ConversationData {
 
             if (profile != null) {
                 for (final String extend : extendLinks) {
-                    if (BetonQuest.conditions(profile, getOption(extend, type).getConditions())) {
+                    if (BetonQuest.getInstance().getQuestAPI().conditions(profile, getOption(extend, type).getConditions())) {
                         text.append(getOption(extend, type).getText(profile, lang, optionPath));
                         break;
                     }
@@ -887,7 +887,7 @@ public class ConversationData {
             final List<EventID> events = new ArrayList<>(this.events);
 
             for (final String extend : extendLinks) {
-                if (BetonQuest.conditions(profile, getOption(extend, type).getConditions())) {
+                if (BetonQuest.getInstance().getQuestAPI().conditions(profile, getOption(extend, type).getConditions())) {
                     events.addAll(getOption(extend, type).getEvents(profile, optionPath));
                     break;
                 }
@@ -927,7 +927,7 @@ public class ConversationData {
                     }
 
                     final ConversationData targetConvData = resolvedExtend.conversationData();
-                    if (BetonQuest.conditions(profile, targetConvData.getOption(resolvedExtend.name(), type).getConditions())) {
+                    if (BetonQuest.getInstance().getQuestAPI().conditions(profile, targetConvData.getOption(resolvedExtend.name(), type).getConditions())) {
                         pointers.addAll(targetConvData.getOption(resolvedExtend.name(), type).getPointers(profile, optionPath));
                         break;
                     }

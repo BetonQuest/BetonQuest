@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.logic;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
@@ -15,10 +16,19 @@ import java.util.List;
  * Factory to create FirstEvents from events from {@link Instruction}s.
  */
 public class FirstEventFactory implements EventFactory, StaticEventFactory {
+
+    /**
+     * BetonQuest API.
+     */
+    private final BetonQuestAPI questAPI;
+
     /**
      * Empty constructor.
+     *
+     * @param questAPI the BetonQuest API
      */
-    public FirstEventFactory() {
+    public FirstEventFactory(final BetonQuestAPI questAPI) {
+        this.questAPI = questAPI;
     }
 
     @Override
@@ -33,6 +43,6 @@ public class FirstEventFactory implements EventFactory, StaticEventFactory {
 
     private NullableEventAdapter createFirstEvent(final Instruction instruction) throws QuestException {
         final List<EventID> list = instruction.getList(instruction::getEvent);
-        return new NullableEventAdapter(new FirstEvent(list));
+        return new NullableEventAdapter(new FirstEvent(list, questAPI));
     }
 }

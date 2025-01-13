@@ -3,6 +3,7 @@ package org.betonquest.betonquest.utils;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unimi.dsi.fastutil.Pair;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -22,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
@@ -168,39 +170,27 @@ public final class Utils {
     }
 
     /**
-     * Gets the party of the player.
-     * A range of 0 means worldwide and -1 means server-wide.
-     *
-     * @param onlineProfile the player to get the party of
-     * @param range         the range of the party
-     * @param conditions    conditions that the party members must meet
-     * @return the party of the player
-     * @deprecated use {@link #getParty(Location, double, ConditionID...)} instead
-     */
-    @Deprecated
-    public static Map<OnlineProfile, Double> getParty(final OnlineProfile onlineProfile, final double range, final ConditionID... conditions) {
-        return getParty(onlineProfile.getPlayer().getLocation(), range, conditions);
-    }
-
-    /**
      * Gets the party of the location.
      * A range of 0 means worldwide and -1 means server-wide.
      *
+     * @param questAPI   the BetonQuest API to check the conditions
+     * @param profiles   the online profiles in question
      * @param location   the location to get the party of
      * @param range      the range of the party
      * @param conditions conditions that the party members must meet
      * @return the party of the location
      */
-    public static Map<OnlineProfile, Double> getParty(final Location location, final double range, final ConditionID... conditions) {
+    public static Map<OnlineProfile, Double> getParty(final BetonQuestAPI questAPI, final Collection<OnlineProfile> profiles,
+                                                      final Location location, final double range, final ConditionID... conditions) {
         final World world = location.getWorld();
         final double squared = range * range;
 
-        final Stream<OnlineProfile> players = PlayerConverter.getOnlineProfiles().stream();
+        final Stream<OnlineProfile> players = profiles.stream();
         final Stream<OnlineProfile> worldPlayers = range == -1 ? players : players.filter(profile -> world.equals(profile.getPlayer().getWorld()));
         final Stream<Pair<OnlineProfile, Double>> distancePlayers = worldPlayers.map(profile -> Pair.of(profile, getDistanceSquared(profile, location)));
         final Stream<Pair<OnlineProfile, Double>> rangePlayers = range <= 0 ? distancePlayers : distancePlayers.filter(pair -> pair.right() <= squared);
         return rangePlayers
-                .filter(pair -> BetonQuest.conditions(pair.left(), conditions))
+                .filter(pair -> questAPI.conditions(pair.left(), conditions))
                 .collect(Collectors.toMap(Pair::left, Pair::right));
     }
 

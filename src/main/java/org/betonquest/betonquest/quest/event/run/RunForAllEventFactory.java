@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.run;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.exceptions.QuestException;
@@ -16,15 +17,23 @@ import java.util.List;
 public class RunForAllEventFactory implements StaticEventFactory {
 
     /**
-     * Create new {@link RunForAllEventFactory}.
+     * BetonQuest API.
      */
-    public RunForAllEventFactory() {
+    private final BetonQuestAPI questAPI;
+
+    /**
+     * Create new {@link RunForAllEventFactory}.
+     *
+     * @param questAPI the BetonQuest API
+     */
+    public RunForAllEventFactory(final BetonQuestAPI questAPI) {
+        this.questAPI = questAPI;
     }
 
     @Override
     public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
         final List<EventID> events = instruction.getList(instruction.getOptional("events"), instruction::getEvent);
         final List<ConditionID> conditions = instruction.getList(instruction.getOptional("where"), instruction::getCondition);
-        return new RunForAllEvent(PlayerConverter::getOnlineProfiles, events, conditions);
+        return new RunForAllEvent(PlayerConverter::getOnlineProfiles, questAPI, events, conditions);
     }
 }
