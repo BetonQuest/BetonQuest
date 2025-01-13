@@ -53,8 +53,10 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
         final BetonQuest instance = BetonQuest.getInstance();
         final HolographicDisplaysAPI api = HolographicDisplaysAPI.get(instance);
         final BetonQuestLoggerFactory loggerFactory = instance.getLoggerFactory();
-        api.registerIndividualPlaceholder("bq", new HologramPlaceholder(loggerFactory.create(HologramPlaceholder.class)));
-        api.registerGlobalPlaceholder("bqg", new HologramGlobalPlaceholder(loggerFactory.create(HologramGlobalPlaceholder.class)));
+        api.registerIndividualPlaceholder("bq", new HologramPlaceholder(
+                loggerFactory.create(HologramPlaceholder.class), instance.getVariableProcessor()));
+        api.registerGlobalPlaceholder("bqg", new HologramGlobalPlaceholder(
+                loggerFactory.create(HologramGlobalPlaceholder.class), instance.getVariableProcessor()));
     }
 
     @Override
@@ -65,12 +67,10 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
         return matcher.replaceAll(match -> {
             final String group = match.group();
             try {
-                final Variable variable = BetonQuest.createVariable(pack, group);
-                if (variable != null) {
-                    final Instruction instruction = variable.getInstruction();
-                    final String prefix = variable.isStaticness() ? "{bqg:" : "{bq:";
-                    return prefix + instruction.getPackage().getQuestPath() + ":" + instruction.getInstruction() + "}";
-                }
+                final Variable variable = BetonQuest.getInstance().getVariableProcessor().create(pack, group);
+                final Instruction instruction = variable.getInstruction();
+                final String prefix = variable.isStaticness() ? "{bqg:" : "{bq:";
+                return prefix + instruction.getPackage().getQuestPath() + ":" + instruction.getInstruction() + "}";
             } catch (final QuestException exception) {
                 log.warn("Could not create variable '" + group + "' variable: " + exception.getMessage(), exception);
             }

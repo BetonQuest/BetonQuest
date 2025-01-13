@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.VariableID;
@@ -79,7 +80,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable>
     }
 
     /**
-     * Resoles the variable for specified player. If the variable is not loaded, it will load it on the main thread.
+     * Resolves the variable for specified player. If the variable is not loaded, it will create it.
      *
      * @param pack    the {@link QuestPackage} in which the variable is defined
      * @param name    name of the variable (instruction, with % characters)
@@ -98,5 +99,28 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable>
             throw new QuestException("Non-static variable '" + name + "' cannot be executed without a profile reference!");
         }
         return var.getValue(profile);
+    }
+
+    /**
+     * Resolves the variable for specified player from string format.
+     *
+     * @param variable the package with the variable, in {@code <package>:<variable>} format
+     * @param profile  the {@link Profile} of the player
+     * @return the value of parsed variable for given player
+     * @throws QuestException if the package cannot be parsed, is not present or the variable could not be created
+     * @see #getValue(QuestPackage, String, Profile)
+     */
+    public String getValue(final String variable, @Nullable final Profile profile) throws QuestException {
+        final int index = variable.indexOf(':');
+        if (index == -1) {
+            throw new QuestException("Variable without explicit package '" + variable + "'! Expected format '<package>:<variable>'");
+        }
+        final String packString = variable.substring(0, index);
+        final QuestPackage pack = Config.getPackages().get(packString);
+        if (pack == null) {
+            throw new QuestException("The variable '" + variable + "' reference the non-existent package '" + packString + "' !");
+        }
+        final String value = variable.substring(index + 1);
+        return getValue(pack, '%' + value + '%', profile);
     }
 }
