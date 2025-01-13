@@ -4904,7 +4904,7 @@ Don't worry about inverting it, as it's automatically done by BetonQuest.</p>
 In the constructor you must parse the instruction and extract all information about your variable's behavior.
 Then you have to override the <code>String getValue(String playerID)</code> method.
 It should return the value of the variable for the supplied player.
-If it's impossible, it should return an empty String.
+If it's impossible, in the old it should return an empty String and in the new throw with a descriptive message.
 Registering variables is done via <code>BetonQuest.registerVariable(String name, Class&lt;? extends Variable&gt; variable)</code> method.</p>
 <h2 id="reading-instruction-object">Reading <code>Instruction</code> object<a class="headerlink" href="#reading-instruction-object" title="Permanent link">🔗</a></h2>
 <p>The <code>Instruction</code> object parses the instruction string defined by the user and splits it into arguments.
