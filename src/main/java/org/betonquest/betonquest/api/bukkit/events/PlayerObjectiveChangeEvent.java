@@ -1,8 +1,9 @@
-package org.betonquest.betonquest.api;
+package org.betonquest.betonquest.api.bukkit.events;
 
+import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.profiles.ProfileEvent;
-import org.betonquest.betonquest.id.ObjectiveID;
+import org.betonquest.betonquest.id.ID;
 import org.bukkit.event.HandlerList;
 
 /**
@@ -22,6 +23,11 @@ public class PlayerObjectiveChangeEvent extends ProfileEvent {
     private final Objective objective;
 
     /**
+     * ID of the changed objective.
+     */
+    private final ID objectiveID;
+
+    /**
      * Objective future state.
      */
     private final Objective.ObjectiveState state;
@@ -36,13 +42,15 @@ public class PlayerObjectiveChangeEvent extends ProfileEvent {
      *
      * @param who           {@link Profile} who change this objective
      * @param objective     objective which will be changed
+     * @param objectiveID   the objective id
      * @param state         future state of this objective
      * @param previousState previous state of this objective
      */
-    public PlayerObjectiveChangeEvent(final Profile who, final Objective objective,
+    public PlayerObjectiveChangeEvent(final Profile who, final Objective objective, final ID objectiveID,
                                       final Objective.ObjectiveState state, final Objective.ObjectiveState previousState) {
         super(who);
         this.objective = objective;
+        this.objectiveID = objectiveID;
         this.state = state;
         this.previousState = previousState;
     }
@@ -70,8 +78,8 @@ public class PlayerObjectiveChangeEvent extends ProfileEvent {
      *
      * @return the objective ID
      */
-    public ObjectiveID getObjectiveID() {
-        return (ObjectiveID) objective.instruction.getID();
+    public ID getObjectiveID() {
+        return objectiveID;
     }
 
     /**

@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api;
+package org.betonquest.betonquest.api.bukkit.events;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.profiles.ProfileEvent;
@@ -26,7 +26,7 @@ public class PlayerUpdatePointEvent extends ProfileEvent {
     /**
      * Creates a new PlayerAddPointEvent.
      *
-     * @param who the {@link Profile} whose points was added
+     * @param who      the {@link Profile} whose points was added
      * @param category the category whose points were updated
      * @param newCount the updated total points count of the involved category
      */

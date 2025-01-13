@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api;
+package org.betonquest.betonquest.api.bukkit.events;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.profiles.ProfileEvent;
@@ -53,5 +53,4 @@ public class PlayerConversationStartEvent extends ProfileEvent implements Cancel
     public void setCancelled(final boolean arg) {
         canceled = arg;
     }
-
 }

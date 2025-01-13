@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api;
+package org.betonquest.betonquest.api.bukkit.events;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.profiles.ProfileEvent;
@@ -83,5 +83,4 @@ public class ConversationOptionEvent extends ProfileEvent {
     public HandlerList getHandlers() {
         return HANDLERS;
     }
-
 }

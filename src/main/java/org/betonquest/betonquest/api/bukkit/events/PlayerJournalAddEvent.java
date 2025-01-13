@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api;
+package org.betonquest.betonquest.api.bukkit.events;
 
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Pointer;
@@ -7,9 +7,9 @@ import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.bukkit.event.HandlerList;
 
 /**
- * Fires when content is removed from a profile's journal.
+ * Fires when new content is added to a profile's journal.
  */
-public class PlayerJournalDeleteEvent extends ProfileEvent {
+public class PlayerJournalAddEvent extends ProfileEvent {
 
     /**
      * HandlerList of this event.
@@ -17,23 +17,23 @@ public class PlayerJournalDeleteEvent extends ProfileEvent {
     private static final HandlerList HANDLERS = new HandlerList();
 
     /**
-     * Journal which is just deleted an entry of this event.
+     * Journal which is just added an entry of this event.
      */
     private final Journal journal;
 
     /**
-     * Pointer of journal entry which is just deleted to Journal of this event.
+     * Pointer of journal entry which is just added to Journal of this event.
      */
     private final Pointer pointer;
 
     /**
-     * Constructor of PlayerJournalDeleteEvent.
+     * Constructor of PlayerJournalAddEvent.
      *
-     * @param who     the {@link Profile} who was deleted journal
+     * @param who     the {@link Profile} who was added journal
      * @param journal the journal of this profile
-     * @param pointer the pointer for which journal entry was deleted for this profile
+     * @param pointer the pointer for which journal entry was added for this profile
      */
-    public PlayerJournalDeleteEvent(final Profile who, final Journal journal, final Pointer pointer) {
+    public PlayerJournalAddEvent(final Profile who, final Journal journal, final Pointer pointer) {
         super(who);
         this.journal = journal;
         this.pointer = pointer;
@@ -49,7 +49,7 @@ public class PlayerJournalDeleteEvent extends ProfileEvent {
     }
 
     /**
-     * Get this Journal. This is the whole journal of this profile, not a journal entry.
+     * Get this Journal. This is the whole of journal of this player, not a journal entry.
      *
      * @return the journal
      */
