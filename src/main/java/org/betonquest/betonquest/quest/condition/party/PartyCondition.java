@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.condition.party;
 
-import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
@@ -8,6 +8,7 @@ import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
@@ -52,6 +53,11 @@ public class PartyCondition implements NullableCondition {
     private final VariableNumber count;
 
     /**
+     * BetonQuest API.
+     */
+    private final BetonQuestAPI questAPI;
+
+    /**
      * Create a new party condition.
      *
      * @param location   the location to check for party members
@@ -60,20 +66,23 @@ public class PartyCondition implements NullableCondition {
      * @param everyone   the conditions that everyone in the party must meet
      * @param anyone     the conditions that at least one party member must meet
      * @param count      the minimum number of party members
+     * @param questAPI   the BetonQuest API
      */
     public PartyCondition(final VariableLocation location, final VariableNumber range, final ConditionID[] conditions, final ConditionID[] everyone,
-                          final ConditionID[] anyone, @Nullable final VariableNumber count) {
+                          final ConditionID[] anyone, @Nullable final VariableNumber count, final BetonQuestAPI questAPI) {
         this.location = location;
         this.range = range;
         this.conditions = Arrays.copyOf(conditions, conditions.length);
         this.everyone = Arrays.copyOf(everyone, everyone.length);
         this.anyone = Arrays.copyOf(anyone, anyone.length);
         this.count = count;
+        this.questAPI = questAPI;
     }
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        final Set<OnlineProfile> partyMembers = Utils.getParty(location.getValue(profile), range.getValue(profile).doubleValue(), conditions).keySet();
+        final Set<OnlineProfile> partyMembers = Utils.getParty(questAPI, PlayerConverter.getOnlineProfiles(),
+                location.getValue(profile), range.getValue(profile).doubleValue(), conditions).keySet();
 
         final int pCount = count == null ? 0 : count.getValue(profile).intValue();
         if (pCount > 0 && partyMembers.size() < pCount) {
@@ -85,14 +94,14 @@ public class PartyCondition implements NullableCondition {
 
     private boolean meetEveryoneConditions(final Set<OnlineProfile> partyMembers) {
         final Stream<OnlineProfile> everyoneStream = Bukkit.isPrimaryThread() ? partyMembers.stream() : partyMembers.parallelStream();
-        return everyoneStream.allMatch(member -> BetonQuest.conditions(member, everyone));
+        return everyoneStream.allMatch(member -> questAPI.conditions(member, everyone));
     }
 
     private boolean meetAnyoneConditions(final Set<OnlineProfile> partyMembers) {
         final Stream<ConditionID> anyoneStream = Bukkit.isPrimaryThread() ? Arrays.stream(anyone) : Arrays.stream(anyone).parallel();
         return anyoneStream.allMatch(condition -> {
             final Stream<OnlineProfile> memberStream = Bukkit.isPrimaryThread() ? partyMembers.stream() : partyMembers.parallelStream();
-            return memberStream.anyMatch(member -> BetonQuest.condition(member, condition));
+            return memberStream.anyMatch(member -> questAPI.condition(member, condition));
         });
     }
 }

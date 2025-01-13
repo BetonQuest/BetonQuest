@@ -180,7 +180,7 @@ public class MenuItem extends SimpleYMLSection {
         final OnlineProfile profile = PlayerConverter.getID(player);
         for (final EventID eventID : variables) {
             log.debug(pack, "Item " + name + ": Run event " + eventID);
-            BetonQuest.event(profile, eventID);
+            BetonQuest.getInstance().getQuestAPI().event(profile, eventID);
         }
         return this.close;
     }
@@ -193,7 +193,7 @@ public class MenuItem extends SimpleYMLSection {
      */
     public boolean display(final Profile profile) {
         for (final ConditionID condition : this.conditions) {
-            if (BetonQuest.condition(profile, condition)) {
+            if (BetonQuest.getInstance().getQuestAPI().condition(profile, condition)) {
                 log.debug(pack, "Item " + name + ": condition " + condition + " returned true");
             } else {
                 log.debug(pack, "Item " + name + " wont be displayed: condition" + condition + " returned false.");

@@ -215,7 +215,7 @@ public class Menu extends SimpleYMLSection implements Listener {
      */
     public boolean mayOpen(final Profile profile) {
         for (final ConditionID conditionID : openConditions) {
-            if (!BetonQuest.condition(profile, conditionID)) {
+            if (!BetonQuest.getInstance().getQuestAPI().condition(profile, conditionID)) {
                 log.debug(pack, "Denied opening of " + name + ": Condition " + conditionID + "returned false.");
                 return false;
             }
@@ -268,7 +268,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     public void runOpenEvents(final Profile profile) {
         log.debug(pack, "Menu " + menuID + ": Running open events");
         for (final EventID event : this.openEvents) {
-            BetonQuest.event(profile, event);
+            BetonQuest.getInstance().getQuestAPI().event(profile, event);
             log.debug(pack, "Menu " + menuID + ": Run event " + event);
         }
     }
@@ -281,7 +281,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     public void runCloseEvents(final Player player) {
         log.debug(pack, "Menu " + menuID + ": Running close events");
         for (final EventID event : this.closeEvents) {
-            BetonQuest.event(PlayerConverter.getID(player), event);
+            BetonQuest.getInstance().getQuestAPI().event(PlayerConverter.getID(player), event);
             log.debug(pack, "Menu " + menuID + ": Run event " + event);
         }
     }

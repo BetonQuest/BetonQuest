@@ -22,7 +22,7 @@ public class PlaceholderAPIIntegrator implements Integrator {
 
     @Override
     public void hook() {
-        plugin.getQuestRegistries().getVariableTypes().register("ph", PlaceholderVariable.class);
+        plugin.getQuestRegistries().variable().register("ph", PlaceholderVariable.class);
         new BetonQuestPlaceholder(plugin.getLoggerFactory().create(BetonQuestPlaceholder.class, "PlaceholderAPI Integration")).register();
     }
 

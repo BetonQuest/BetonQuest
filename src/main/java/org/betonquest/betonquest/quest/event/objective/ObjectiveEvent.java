@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.objective;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -45,6 +46,11 @@ public class ObjectiveEvent implements NullableEvent {
     private final List<ObjectiveID> objectives;
 
     /**
+     * API for starting objectives.
+     */
+    private final BetonQuestAPI questAPI;
+
+    /**
      * The action to do with the objectives.
      */
     private final String action;
@@ -57,13 +63,16 @@ public class ObjectiveEvent implements NullableEvent {
      * @param questPackage the quest package of the instruction
      * @param objectives   the objectives to affect
      * @param action       the action to do with the objectives
+     * @param questAPI     the class for starting objectives
      * @throws QuestException if the action is invalid
      */
-    public ObjectiveEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final QuestPackage questPackage, final List<ObjectiveID> objectives, final String action) throws QuestException {
+    public ObjectiveEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final QuestPackage questPackage, final List<ObjectiveID> objectives,
+                          final String action, final BetonQuestAPI questAPI) throws QuestException {
         this.log = log;
         this.questPackage = questPackage;
         this.betonQuest = betonQuest;
         this.objectives = objectives;
+        this.questAPI = questAPI;
         if (!Arrays.asList("start", "add", "delete", "remove", "complete", "finish").contains(action)) {
             throw new QuestException("Invalid action: " + action);
         }
@@ -98,7 +107,7 @@ public class ObjectiveEvent implements NullableEvent {
 
     private void handleForOnlinePlayer(final Profile profile, final ObjectiveID objectiveID, final Objective objective) {
         switch (action.toLowerCase(Locale.ROOT)) {
-            case "start", "add" -> BetonQuest.newObjective(profile, objectiveID);
+            case "start", "add" -> questAPI.newObjective(profile, objectiveID);
             case "complete", "finish" -> objective.completeObjective(profile);
             default -> cancelObjectiveForOnlinePlayer(profile, objectiveID, objective);
         }

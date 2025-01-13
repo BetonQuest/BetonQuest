@@ -241,14 +241,14 @@ public class Conversation implements Listener {
             // If we refer to another conversation starting options the name is null
             if (option.name() == null) {
                 for (final String startingOptionName : option.conversationData().getStartingOptions()) {
-                    if (force || BetonQuest.conditions(onlineProfile, option.conversationData().getConditionIDs(startingOptionName, NPC))) {
+                    if (force || BetonQuest.getInstance().getQuestAPI().conditions(onlineProfile, option.conversationData().getConditionIDs(startingOptionName, NPC))) {
                         this.data = option.conversationData();
                         this.nextNPCOption = new ResolvedOption(option.conversationData(), NPC, startingOptionName);
                         break;
                     }
                 }
             } else {
-                if (force || BetonQuest.conditions(onlineProfile, option.conversationData().getConditionIDs(option.name(), NPC))) {
+                if (force || BetonQuest.getInstance().getQuestAPI().conditions(onlineProfile, option.conversationData().getConditionIDs(option.name(), NPC))) {
                     this.data = option.conversationData();
                     this.nextNPCOption = option;
                     break;
@@ -308,7 +308,7 @@ public class Conversation implements Listener {
             final List<CompletableFuture<Boolean>> conditions = new ArrayList<>();
             for (final ConditionID conditionID : option.conversationData().getConditionIDs(option.name(), option.type())) {
                 final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
-                        () -> BetonQuest.condition(onlineProfile, conditionID));
+                        () -> BetonQuest.getInstance().getQuestAPI().condition(onlineProfile, conditionID));
                 conditions.add(future);
             }
             futuresOptions.add(Pair.of(option, conditions));
@@ -375,7 +375,7 @@ public class Conversation implements Listener {
             inOut.end();
             // fire final events
             for (final EventID event : data.getFinalEvents()) {
-                BetonQuest.event(onlineProfile, event);
+                BetonQuest.getInstance().getQuestAPI().event(onlineProfile, event);
             }
             //only display status messages if conversationIO allows it
             if (conv.inOut.printMessages()) {
@@ -620,6 +620,7 @@ public class Conversation implements Listener {
             super();
         }
 
+        @SuppressWarnings("PMD.NcssCount")
         @Override
         public void run() {
             if (state.isStarted()) {
@@ -663,7 +664,11 @@ public class Conversation implements Listener {
                 // started, causing it to display "null" all the time
                 try {
                     final String name = data.getConversationIO();
-                    final Class<? extends ConversationIO> convIO = plugin.getConvIO(name);
+                    final Class<? extends ConversationIO> convIO = plugin.getOtherRegistries().conversationIO().getFactory(name);
+                    if (convIO == null) {
+                        log.warn(pack, "Error when loading conversation IO: There is no interceptor '" + name + "'!");
+                        return;
+                    }
                     conv.inOut = convIO.getConstructor(Conversation.class, OnlineProfile.class).newInstance(conv, onlineProfile);
                 } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
                                | InvocationTargetException | NoSuchMethodException | SecurityException e) {
@@ -678,7 +683,11 @@ public class Conversation implements Listener {
                 if (messagesDelaying) {
                     try {
                         final String name = data.getInterceptor();
-                        final Class<? extends Interceptor> interceptor = plugin.getInterceptor(name);
+                        final Class<? extends Interceptor> interceptor = plugin.getOtherRegistries().interceptor().getFactory(name);
+                        if (interceptor == null) {
+                            log.warn(pack, "Error when loading interceptor: There is no interceptor '" + name + "'!");
+                            return;
+                        }
                         conv.interceptor = interceptor.getConstructor(Conversation.class, OnlineProfile.class).newInstance(conv, onlineProfile);
                     } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
                                    | InvocationTargetException | NoSuchMethodException | SecurityException e) {
@@ -766,7 +775,7 @@ public class Conversation implements Listener {
         @Override
         public void run() {
             for (final EventID event : data.getEventIDs(onlineProfile, npcOption, NPC)) {
-                BetonQuest.event(onlineProfile, event);
+                BetonQuest.getInstance().getQuestAPI().event(onlineProfile, event);
             }
             new OptionPrinter(npcOption).runTaskAsynchronously(BetonQuest.getInstance());
         }
@@ -795,7 +804,7 @@ public class Conversation implements Listener {
         @Override
         public void run() {
             for (final EventID event : data.getEventIDs(onlineProfile, playerOption, PLAYER)) {
-                BetonQuest.event(onlineProfile, event);
+                BetonQuest.getInstance().getQuestAPI().event(onlineProfile, event);
             }
             new ResponsePrinter(playerOption).runTaskAsynchronously(BetonQuest.getInstance());
         }

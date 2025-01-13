@@ -8,6 +8,7 @@ import net.citizensnpcs.api.ai.event.NavigationStuckEvent;
 import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -40,12 +41,19 @@ public class CitizensMoveController implements Listener {
     private final BetonQuestLogger log;
 
     /**
+     * BetonQuest API.
+     */
+    private final BetonQuestAPI questAPI;
+
+    /**
      * Creates a new Citizens Move Controller.
      *
-     * @param log logger instance for this class
+     * @param log      logger instance for this class
+     * @param questAPI the BetonQuest API
      */
-    public CitizensMoveController(final BetonQuestLogger log) {
+    public CitizensMoveController(final BetonQuestLogger log, final BetonQuestAPI questAPI) {
         this.log = log;
+        this.questAPI = questAPI;
     }
 
     /**
@@ -93,7 +101,7 @@ public class CitizensMoveController implements Listener {
         final MoveInstance oldMoveInstance = movingNpcs.get(npc.getId());
         if (oldMoveInstance != null) {
             for (final EventID event : oldMoveInstance.moveData.failEvents()) {
-                BetonQuest.event(profile, event);
+                questAPI.event(profile, event);
             }
             return;
         }
@@ -259,7 +267,7 @@ public class CitizensMoveController implements Listener {
                     npc.getNavigator().setPaused(false);
                     movingNpcs.remove(npcId);
                     for (final EventID event : moveData.doneEvents()) {
-                        BetonQuest.event(currentProfile, event);
+                        questAPI.event(currentProfile, event);
                     }
                 }
             }.runTaskLater(BetonQuest.getInstance(), moveData.waitTicks());

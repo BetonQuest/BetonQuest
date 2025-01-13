@@ -12,6 +12,12 @@ icon: octicons/gear-16
     This is the case because we prefer to delete outdated content from this page instead of updating it.
     New APIs will instead get their own page.
 
+# (Re-)Moved Methods in 3.0
+
+## Using Quest Types
+
+The methods for using Conditions, Events and Objectives was moved into `BetonQuest.getInstance().getQuestAPI()`.
+
 ## Profiles
 Currently, profiles are in development. So at the moment you can use the `PlayerConverter` class to get a profile.
 
@@ -22,7 +28,7 @@ How to write and register new base concepts (events, conditions, objectives, var
 Use the `BetonQuest.registerEvent(String name, EventFactory eventFactory, StaticEventFactory staticEventFactory)`
 and `BetonQuest.registerNonStaticEvent(String name, EventFactory eventFactory)` method.
 Read the Javadocs for more information and see the implementation of the existing events.
-to call an event, you need to use the `BetonQuest.event(Profile profile, EventID eventID)` method.
+to call an event, you need to use the `BetonQuest.getInstance().getAPI().event(Profile profile, EventID eventID)` method.
 
 ### Writing objectives
 Objectives are more complicated because they use event handlers and they must store players' data.
@@ -127,7 +133,7 @@ You can't fire an event directly using an instruction string.
 final QuestPackage questPackage = Config.getPackages().get("myPackage") //(1)!
 final Profile playerProfile = PlayerConverter.getID(player); //(2)!
 
-BetonQuest.event(playerProfile, new EventID(questPackage, eventID)); 
+BetonQuest.getInstance().getAPI().event(playerProfile, new EventID(questPackage, eventID)); 
 ```
 
 1. You can get the package from the `Config` class. It's a map of all packages, so you can get the one you need by its

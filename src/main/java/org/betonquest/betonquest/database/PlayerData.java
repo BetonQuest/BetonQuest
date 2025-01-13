@@ -354,7 +354,7 @@ public class PlayerData implements TagData {
             final String objective = entry.getKey();
             try {
                 final ObjectiveID objectiveID = new ObjectiveID(null, objective);
-                BetonQuest.resumeObjective(profile, objectiveID, entry.getValue());
+                BetonQuest.getInstance().getQuestAPI().resumeObjective(profile, objectiveID, entry.getValue());
             } catch (final ObjectNotFoundException e) {
                 log.warn("Loaded '" + objective
                         + "' objective from the database, but it is not defined in configuration. Skipping.", e);

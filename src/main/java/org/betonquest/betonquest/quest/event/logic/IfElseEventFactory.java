@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.logic;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
@@ -16,9 +17,17 @@ import org.betonquest.betonquest.id.EventID;
 public class IfElseEventFactory implements EventFactory, StaticEventFactory {
 
     /**
-     * The empty constructor.
+     * BetonQuest API.
      */
-    public IfElseEventFactory() {
+    private final BetonQuestAPI questAPI;
+
+    /**
+     * The event constructor.
+     *
+     * @param questAPI the BetonQuest API
+     */
+    public IfElseEventFactory(final BetonQuestAPI questAPI) {
+        this.questAPI = questAPI;
     }
 
     @Override
@@ -38,6 +47,6 @@ public class IfElseEventFactory implements EventFactory, StaticEventFactory {
             throw new QuestException("Missing 'else' keyword");
         }
         final EventID elseEvent = instruction.getEvent();
-        return new NullableEventAdapter(new IfElseEvent(condition, event, elseEvent));
+        return new NullableEventAdapter(new IfElseEvent(condition, event, elseEvent, questAPI));
     }
 }

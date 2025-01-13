@@ -4,10 +4,9 @@ import io.papermc.lib.PaperLib;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
-import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.LoadDataEvent;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
@@ -19,12 +18,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.CachingBetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
-import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
-import org.betonquest.betonquest.api.schedule.Schedule;
-import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.bstats.BStatsMetrics;
 import org.betonquest.betonquest.commands.BackpackCommand;
 import org.betonquest.betonquest.commands.CancelQuestCommand;
@@ -41,15 +34,7 @@ import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationData;
-import org.betonquest.betonquest.conversation.ConversationIO;
 import org.betonquest.betonquest.conversation.ConversationResumer;
-import org.betonquest.betonquest.conversation.Interceptor;
-import org.betonquest.betonquest.conversation.InventoryConvIO;
-import org.betonquest.betonquest.conversation.NonInterceptingInterceptor;
-import org.betonquest.betonquest.conversation.SimpleConvIO;
-import org.betonquest.betonquest.conversation.SimpleInterceptor;
-import org.betonquest.betonquest.conversation.SlowTellrawConvIO;
-import org.betonquest.betonquest.conversation.TellrawConvIO;
 import org.betonquest.betonquest.database.AsyncSaver;
 import org.betonquest.betonquest.database.Backup;
 import org.betonquest.betonquest.database.Database;
@@ -59,9 +44,7 @@ import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.SQLite;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.exceptions.QuestException;
-import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
-import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.item.QuestItemHandler;
@@ -76,12 +59,7 @@ import org.betonquest.betonquest.modules.logger.handler.chat.AccumulatingReceive
 import org.betonquest.betonquest.modules.logger.handler.chat.ChatHandler;
 import org.betonquest.betonquest.modules.logger.handler.history.HistoryHandler;
 import org.betonquest.betonquest.modules.playerhider.PlayerHider;
-import org.betonquest.betonquest.modules.schedule.EventScheduling;
 import org.betonquest.betonquest.modules.schedule.LastExecutionCache;
-import org.betonquest.betonquest.modules.schedule.impl.realtime.cron.RealtimeCronSchedule;
-import org.betonquest.betonquest.modules.schedule.impl.realtime.cron.RealtimeCronScheduler;
-import org.betonquest.betonquest.modules.schedule.impl.realtime.daily.RealtimeDailySchedule;
-import org.betonquest.betonquest.modules.schedule.impl.realtime.daily.RealtimeDailyScheduler;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.versioning.java.JREVersionPrinter;
 import org.betonquest.betonquest.modules.web.DownloadSource;
@@ -96,23 +74,13 @@ import org.betonquest.betonquest.modules.web.updater.source.DevelopmentUpdateSou
 import org.betonquest.betonquest.modules.web.updater.source.ReleaseUpdateSource;
 import org.betonquest.betonquest.modules.web.updater.source.implementations.GitHubReleaseSource;
 import org.betonquest.betonquest.modules.web.updater.source.implementations.NexusReleaseAndDevelopmentSource;
-import org.betonquest.betonquest.notify.ActionBarNotifyIO;
-import org.betonquest.betonquest.notify.AdvancementNotifyIO;
-import org.betonquest.betonquest.notify.BossBarNotifyIO;
-import org.betonquest.betonquest.notify.ChatNotifyIO;
 import org.betonquest.betonquest.notify.Notify;
-import org.betonquest.betonquest.notify.NotifyIO;
-import org.betonquest.betonquest.notify.SoundIO;
-import org.betonquest.betonquest.notify.SubTitleNotifyIO;
-import org.betonquest.betonquest.notify.SuppressNotifyIO;
-import org.betonquest.betonquest.notify.TitleNotifyIO;
-import org.betonquest.betonquest.notify.TotemNotifyIO;
-import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
 import org.betonquest.betonquest.quest.registry.CoreQuestTypes;
 import org.betonquest.betonquest.quest.registry.QuestRegistry;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
+import org.betonquest.betonquest.quest.registry.other.CoreOtherFactories;
+import org.betonquest.betonquest.quest.registry.other.OtherFactoryRegistries;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
-import org.betonquest.betonquest.quest.registry.type.QuestTypeRegistry;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -151,14 +119,6 @@ public class BetonQuest extends JavaPlugin {
 
     private static final Map<String, Class<? extends Objective>> OBJECTIVE_TYPES = new HashMap<>();
 
-    private static final Map<String, Class<? extends ConversationIO>> CONVERSATION_IO_TYPES = new HashMap<>();
-
-    private static final Map<String, Class<? extends Interceptor>> INTERCEPTOR_TYPES = new HashMap<>();
-
-    private static final Map<String, Class<? extends NotifyIO>> NOTIFY_IO_TYPES = new HashMap<>();
-
-    private static final Map<String, EventScheduling.ScheduleType<?, ?>> SCHEDULE_TYPES = new HashMap<>();
-
     /**
      * The indicator for dev versions.
      */
@@ -185,6 +145,11 @@ public class BetonQuest extends JavaPlugin {
      * Registry for quest core elements.
      */
     private QuestTypeRegistries questTypeRegistries;
+
+    /**
+     * Stores Registry for ConvIO, Interceptor, NotifyIO and EventScheduling.
+     */
+    private OtherFactoryRegistries otherRegistries;
 
     private BetonQuestLoggerFactory loggerFactory;
 
@@ -218,6 +183,8 @@ public class BetonQuest extends JavaPlugin {
 
     private RPGMenu rpgMenu;
 
+    private BetonQuestAPI questAPI;
+
     /**
      * Cache for event schedulers, holding the last execution of an event.
      */
@@ -230,77 +197,6 @@ public class BetonQuest extends JavaPlugin {
      */
     public static BetonQuest getInstance() {
         return instance;
-    }
-
-    /**
-     * Checks if the conditions described by conditionID are met.
-     *
-     * @param profile      the {@link Profile} of the player which should be checked
-     * @param conditionIDs IDs of the conditions to check
-     * @return if all conditions are met
-     */
-    public static boolean conditions(@Nullable final Profile profile, final Collection<ConditionID> conditionIDs) {
-        final ConditionID[] ids = new ConditionID[conditionIDs.size()];
-        int index = 0;
-        for (final ConditionID id : conditionIDs) {
-            ids[index++] = id;
-        }
-        return conditions(profile, ids);
-    }
-
-    /**
-     * Checks if the conditions described by conditionID are met.
-     *
-     * @param profile      the {@link Profile} of the player which should be checked
-     * @param conditionIDs IDs of the conditions to check
-     * @return if all conditions are met
-     */
-    public static boolean conditions(@Nullable final Profile profile, final ConditionID... conditionIDs) {
-        return instance.questRegistry.conditions().checks(profile, conditionIDs);
-    }
-
-    /**
-     * Checks if the condition described by conditionID is met.
-     *
-     * @param conditionID ID of the condition to check
-     * @param profile     the {@link Profile} of the player which should be checked
-     * @return if the condition is met
-     */
-    public static boolean condition(@Nullable final Profile profile, final ConditionID conditionID) {
-        return instance.questRegistry.conditions().check(profile, conditionID);
-    }
-
-    /**
-     * Fires an event for the {@link Profile} if it meets the event's conditions.
-     * If the profile is null, the event will be fired as a static event.
-     *
-     * @param profile the {@link Profile} for which the event must be executed or null
-     * @param eventID ID of the event to fire
-     * @return true if the event was run even if there was an exception during execution
-     */
-    public static boolean event(@Nullable final Profile profile, final EventID eventID) {
-        return instance.questRegistry.events().execute(profile, eventID);
-    }
-
-    /**
-     * Creates new objective for given player.
-     *
-     * @param profile     the {@link Profile} of the player
-     * @param objectiveID ID of the objective
-     */
-    public static void newObjective(final Profile profile, final ObjectiveID objectiveID) {
-        instance.questRegistry.objectives().start(profile, objectiveID);
-    }
-
-    /**
-     * Resumes the existing objective for given player.
-     *
-     * @param profile     the {@link Profile} of the player
-     * @param objectiveID ID of the objective
-     * @param instruction data instruction string
-     */
-    public static void resumeObjective(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
-        instance.questRegistry.objectives().resume(profile, objectiveID, instruction);
     }
 
     /**
@@ -318,16 +214,7 @@ public class BetonQuest extends JavaPlugin {
     }
 
     public static boolean isVariableType(final String type) {
-        return instance.getQuestRegistries().getVariableTypes().getFactory(type) != null;
-    }
-
-    /**
-     * @param name name of the notify IO type
-     * @return the class object for this notify IO type
-     */
-    @Nullable
-    public static Class<? extends NotifyIO> getNotifyIO(final String name) {
-        return NOTIFY_IO_TYPES.get(name);
+        return instance.questTypeRegistries.variable().getFactory(type) != null;
     }
 
     /**
@@ -522,34 +409,18 @@ public class BetonQuest extends JavaPlugin {
         getCommand("questlang").setExecutor(langCommand);
         getCommand("questlang").setTabCompleter(langCommand);
 
-        questTypeRegistries = new QuestTypeRegistries(loggerFactory);
+        questTypeRegistries = QuestTypeRegistries.create(loggerFactory);
+        otherRegistries = OtherFactoryRegistries.create(loggerFactory);
 
         questRegistry = new QuestRegistry(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
-                SCHEDULE_TYPES, questTypeRegistries, OBJECTIVE_TYPES);
+                otherRegistries, questTypeRegistries, OBJECTIVE_TYPES);
 
-        new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this, questRegistry.variables()).register(questTypeRegistries);
+        questAPI = new APIImpl(questRegistry);
 
-        registerConversationIO("simple", SimpleConvIO.class);
-        registerConversationIO("tellraw", TellrawConvIO.class);
-        registerConversationIO("chest", InventoryConvIO.class);
-        registerConversationIO("combined", InventoryConvIO.Combined.class);
-        registerConversationIO("slowtellraw", SlowTellrawConvIO.class);
+        new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this, questRegistry.variables(), questAPI)
+                .register(questTypeRegistries);
 
-        registerInterceptor("simple", SimpleInterceptor.class);
-        registerInterceptor("none", NonInterceptingInterceptor.class);
-
-        registerNotifyIO("suppress", SuppressNotifyIO.class);
-        registerNotifyIO("chat", ChatNotifyIO.class);
-        registerNotifyIO("advancement", AdvancementNotifyIO.class);
-        registerNotifyIO("actionbar", ActionBarNotifyIO.class);
-        registerNotifyIO("bossbar", BossBarNotifyIO.class);
-        registerNotifyIO("title", TitleNotifyIO.class);
-        registerNotifyIO("totem", TotemNotifyIO.class);
-        registerNotifyIO("subtitle", SubTitleNotifyIO.class);
-        registerNotifyIO("sound", SoundIO.class);
-
-        registerScheduleType("realtime-daily", RealtimeDailySchedule.class, new RealtimeDailyScheduler(loggerFactory.create(RealtimeDailyScheduler.class, "Schedules"), lastExecutionCache));
-        registerScheduleType("realtime-cron", RealtimeCronSchedule.class, new RealtimeCronScheduler(loggerFactory.create(RealtimeCronScheduler.class, "Schedules"), lastExecutionCache));
+        new CoreOtherFactories(loggerFactory, lastExecutionCache, questAPI).register(otherRegistries);
 
         new Compatibility(this, loggerFactory.create(Compatibility.class));
 
@@ -569,7 +440,7 @@ public class BetonQuest extends JavaPlugin {
             }
 
             try {
-                playerHider = new PlayerHider(this);
+                playerHider = new PlayerHider(this, questAPI);
             } catch (final QuestException e) {
                 log.error("Could not start PlayerHider! " + e.getMessage(), e);
             }
@@ -686,7 +557,7 @@ public class BetonQuest extends JavaPlugin {
             playerHider.stop();
         }
         try {
-            playerHider = new PlayerHider(this);
+            playerHider = new PlayerHider(this, questAPI);
         } catch (final QuestException e) {
             log.error("Could not start PlayerHider! " + e.getMessage(), e);
         }
@@ -731,6 +602,10 @@ public class BetonQuest extends JavaPlugin {
         FreezeEvent.cleanup();
     }
 
+    public BetonQuestAPI getQuestAPI() {
+        return questAPI;
+    }
+
     /**
      * Returns the database instance.
      *
@@ -742,15 +617,6 @@ public class BetonQuest extends JavaPlugin {
 
     public Updater getUpdater() {
         return updater;
-    }
-
-    /**
-     * Returns the schedules cache instance.
-     *
-     * @return LastExecutionCache instance
-     */
-    public LastExecutionCache getLastExecutionCache() {
-        return lastExecutionCache;
     }
 
     /**
@@ -834,78 +700,6 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Registers new condition classes by their names.
-     *
-     * @param name           name of the condition type
-     * @param conditionClass class object for the condition
-     * @deprecated replaced by {@link #getQuestRegistries()}
-     * further {@link QuestTypeRegistries#getConditionTypes()}
-     * further {@linkplain QuestTypeRegistry#registerCombined}
-     */
-    @Deprecated
-    public void registerConditions(final String name, final Class<? extends Condition> conditionClass) {
-        questTypeRegistries.getConditionTypes().register(name, conditionClass);
-    }
-
-    /**
-     * Registers an event with its name and the class used to create instances of the event.
-     *
-     * @param name       name of the event type
-     * @param eventClass class object for the event
-     * @deprecated replaced by {@link #registerEvent(String, EventFactory, StaticEventFactory)}
-     */
-    @Deprecated
-    public void registerEvents(final String name, final Class<? extends QuestEvent> eventClass) {
-        questTypeRegistries.getEventTypes().register(name, eventClass);
-    }
-
-    /**
-     * Registers an event that does not support static execution with its name
-     * and a factory to create new normal instances of the event.
-     *
-     * @param name         name of the event
-     * @param eventFactory factory to create the event
-     * @deprecated in favor of direct usage of {@link #getQuestRegistries()}
-     * further {@link QuestTypeRegistries#getEventTypes()}
-     */
-    @Deprecated
-    public void registerNonStaticEvent(final String name, final EventFactory eventFactory) {
-        questTypeRegistries.getEventTypes().register(name, eventFactory);
-    }
-
-    /**
-     * Registers an event with its name and a single factory to create both normal and
-     * static instances of the event.
-     *
-     * @param name         name of the event
-     * @param eventFactory factory to create the event and the static event
-     * @param <T>          type of factory that creates both normal and static instances of the event.
-     * @deprecated in favor of direct usage of {@link #getQuestRegistries()}
-     * further {@link QuestTypeRegistries#getEventTypes()}
-     * further {@link QuestTypeRegistry#registerCombined(String, PlayerQuestFactory)}
-     */
-    @Deprecated
-    public <T extends EventFactory & StaticEventFactory> void registerEvent(final String name, final T eventFactory) {
-        questTypeRegistries.getEventTypes().registerCombined(name, eventFactory);
-    }
-
-    /**
-     * Registers an event with its name and two factories to create normal and
-     * static instances of the event.
-     *
-     * @param name               name of the event
-     * @param eventFactory       factory to create the event
-     * @param staticEventFactory factory to create the static event
-     * @deprecated in favor of direct usage of {@link #getQuestRegistries()}
-     * further {@link QuestTypeRegistries#getEventTypes()}
-     * further {@link QuestTypeRegistry#register(String, PlayerQuestFactory, PlayerlessQuestFactory)}
-     */
-    @Deprecated
-    public void registerEvent(final String name, final EventFactory eventFactory, final StaticEventFactory staticEventFactory) {
-        questTypeRegistries.getEventTypes().register(name, eventFactory, staticEventFactory);
-    }
-
-    /**
      * Registers new objective classes by their names.
      *
      * @param name           name of the objective type
@@ -914,64 +708,6 @@ public class BetonQuest extends JavaPlugin {
     public void registerObjectives(final String name, final Class<? extends Objective> objectiveClass) {
         log.debug("Registering " + name + " objective type");
         OBJECTIVE_TYPES.put(name, objectiveClass);
-    }
-
-    /**
-     * Registers new conversation input/output class.
-     *
-     * @param name        name of the IO type
-     * @param convIOClass class object to register
-     */
-    public void registerConversationIO(final String name, final Class<? extends ConversationIO> convIOClass) {
-        log.debug("Registering " + name + " conversation IO type");
-        CONVERSATION_IO_TYPES.put(name, convIOClass);
-    }
-
-    /**
-     * Registers new interceptor class.
-     *
-     * @param name             name of the interceptor type
-     * @param interceptorClass class object to register
-     */
-    public void registerInterceptor(final String name, final Class<? extends Interceptor> interceptorClass) {
-        log.debug("Registering " + name + " interceptor type");
-        INTERCEPTOR_TYPES.put(name, interceptorClass);
-    }
-
-    /**
-     * Registers new notify input/output class.
-     *
-     * @param name    name of the IO type
-     * @param ioClass class object to register
-     */
-    public void registerNotifyIO(final String name, final Class<? extends NotifyIO> ioClass) {
-        log.debug("Registering " + name + " notify IO type");
-        NOTIFY_IO_TYPES.put(name, ioClass);
-    }
-
-    /**
-     * Registers new variable type.
-     *
-     * @param name     name of the variable type
-     * @param variable class object of this type
-     * @deprecated in favor of direct usage of {@link #getQuestRegistries()}
-     * further {@link QuestTypeRegistries#getVariableTypes()}
-     */
-    @Deprecated
-    public void registerVariable(final String name, final Class<? extends Variable> variable) {
-        getQuestRegistries().getVariableTypes().register(name, variable);
-    }
-
-    /**
-     * Register a new schedule type.
-     *
-     * @param name      name of the schedule type
-     * @param schedule  class object of the schedule type
-     * @param scheduler instance of the scheduler
-     * @param <S>       type of schedule
-     */
-    public <S extends Schedule> void registerScheduleType(final String name, final Class<S> schedule, final Scheduler<S, ?> scheduler) {
-        SCHEDULE_TYPES.put(name, new EventScheduling.ScheduleType<>(schedule, scheduler));
     }
 
     /**
@@ -1017,24 +753,6 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * @param name name of the conversation IO type
-     * @return the class object for this conversation IO type
-     */
-    @Nullable
-    public Class<? extends ConversationIO> getConvIO(final String name) {
-        return CONVERSATION_IO_TYPES.get(name);
-    }
-
-    /**
-     * @param name name of the interceptor type
-     * @return the class object for this interceptor type
-     */
-    @Nullable
-    public Class<? extends Interceptor> getInterceptor(final String name) {
-        return INTERCEPTOR_TYPES.get(name);
-    }
-
-    /**
      * Resoles the variable for specified player. If the variable is not loaded
      * it will load it on the main thread.
      *
@@ -1061,21 +779,6 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Fetches the factory to create the event registered with the given name.
-     *
-     * @param name the name of the event
-     * @return a factory to create the event
-     * @deprecated in favor of direct usage of {@link #getQuestRegistries()}
-     * further {@link QuestTypeRegistries#getEventTypes()}
-     * further {@link QuestTypeRegistry#getFactory(String)}
-     */
-    @Deprecated
-    @Nullable
-    public LegacyTypeFactory<QuestEvent> getEventFactory(final String name) {
-        return questTypeRegistries.getEventTypes().getFactory(name);
-    }
-
-    /**
      * Gets the QuestRegistry holding the core Quest types.
      *
      * @return registry holding Conditions and Events
@@ -1085,20 +788,12 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Renames the objective instance.
+     * Gets the Registries holding other types.
      *
-     * @param name   the current name
-     * @param rename the name it should have now
+     * @return registry holding ConvIO, Interceptor, ...
      */
-    public void renameObjective(final ObjectiveID name, final ObjectiveID rename) {
-        questRegistry.objectives().renameObjective(name, rename);
-    }
-
-    /**
-     * @return the objective types map
-     */
-    public Map<String, Class<? extends Objective>> getObjectiveTypes() {
-        return new HashMap<>(OBJECTIVE_TYPES);
+    public OtherFactoryRegistries getOtherRegistries() {
+        return otherRegistries;
     }
 
     /**

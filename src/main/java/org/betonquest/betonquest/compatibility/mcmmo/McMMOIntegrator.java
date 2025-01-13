@@ -31,8 +31,8 @@ public class McMMOIntegrator implements Integrator {
     @Override
     public void hook() {
         final QuestTypeRegistries questRegistries = BetonQuest.getInstance().getQuestRegistries();
-        questRegistries.getConditionTypes().register("mcmmolevel", McMMOSkillLevelCondition.class);
-        questRegistries.getEventTypes().register("mcmmoexp", McMMOAddExpEvent.class);
+        questRegistries.condition().register("mcmmolevel", McMMOSkillLevelCondition.class);
+        questRegistries.event().register("mcmmoexp", McMMOAddExpEvent.class);
         try {
             Bukkit.getPluginManager().registerEvents(new MCMMOQuestItemHandler(), plugin);
             log.debug("Enabled MCMMO QuestItemHandler");

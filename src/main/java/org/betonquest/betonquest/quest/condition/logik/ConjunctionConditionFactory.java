@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.condition.logik;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -14,9 +15,17 @@ import org.betonquest.betonquest.exceptions.QuestException;
 public class ConjunctionConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
 
     /**
-     * Constructor for the {@link ConjunctionConditionFactory} class.
+     * BetonQuest API.
      */
-    public ConjunctionConditionFactory() {
+    private final BetonQuestAPI questAPI;
+
+    /**
+     * Constructor for the {@link ConjunctionConditionFactory} class.
+     *
+     * @param questAPI the BetonQuest API
+     */
+    public ConjunctionConditionFactory(final BetonQuestAPI questAPI) {
+        this.questAPI = questAPI;
     }
 
     @Override
@@ -30,6 +39,6 @@ public class ConjunctionConditionFactory implements PlayerConditionFactory, Play
     }
 
     private ConjunctionCondition parse(final Instruction instruction) throws QuestException {
-        return new ConjunctionCondition(instruction.getList(instruction::getCondition));
+        return new ConjunctionCondition(instruction.getList(instruction::getCondition), questAPI);
     }
 }

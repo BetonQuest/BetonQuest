@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.logic;
 
-import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.exceptions.QuestException;
@@ -28,24 +28,31 @@ public class IfElseEvent implements NullableEvent {
     private final EventID elseEvent;
 
     /**
+     * BetonQuest API.
+     */
+    private final BetonQuestAPI questAPI;
+
+    /**
      * Creates a new if-else event.
      *
      * @param condition the condition to check
      * @param event     the event to run if the condition is true
      * @param elseEvent the event to run if the condition is false
+     * @param questAPI  the BetonQuest API
      */
-    public IfElseEvent(final ConditionID condition, final EventID event, final EventID elseEvent) {
+    public IfElseEvent(final ConditionID condition, final EventID event, final EventID elseEvent, final BetonQuestAPI questAPI) {
         this.condition = condition;
         this.event = event;
         this.elseEvent = elseEvent;
+        this.questAPI = questAPI;
     }
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        if (BetonQuest.condition(profile, condition)) {
-            BetonQuest.event(profile, event);
+        if (questAPI.condition(profile, condition)) {
+            questAPI.event(profile, event);
         } else {
-            BetonQuest.event(profile, elseEvent);
+            questAPI.event(profile, elseEvent);
         }
     }
 }

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.quests;
 
 import me.pikamug.quests.module.BukkitCustomReward;
-import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -16,16 +16,28 @@ import java.util.UUID;
 /**
  * Fires a BetonQuest event as a quest reward.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.ConstructorCallsOverridableMethod"})
+@SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
 public class EventReward extends BukkitCustomReward {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
-    public EventReward(final BetonQuestLogger log) {
+    /**
+     * BetonQuest API.
+     */
+    private final BetonQuestAPI questAPI;
+
+    /**
+     * Create a new 'Quests' Reward.
+     *
+     * @param log      the custom logger
+     * @param questAPI the BetonQuest API
+     */
+    public EventReward(final BetonQuestLogger log, final BetonQuestAPI questAPI) {
         super();
         this.log = log;
+        this.questAPI = questAPI;
         setName("BetonQuest event");
         setAuthor("BetonQuest");
         addStringPrompt("Event", "Specify BetonQuest event name (with the package, like: package.event)", null);
@@ -47,7 +59,7 @@ public class EventReward extends BukkitCustomReward {
             }
             final OnlineProfile onlineProfile = PlayerConverter.getID(player);
             final EventID event = new EventID(null, string);
-            BetonQuest.event(onlineProfile, event);
+            questAPI.event(onlineProfile, event);
         } catch (final ObjectNotFoundException e) {
             log.warn("Error while running quest reward - BetonQuest event '" + string + "' not found: " + e.getMessage(), e);
         }

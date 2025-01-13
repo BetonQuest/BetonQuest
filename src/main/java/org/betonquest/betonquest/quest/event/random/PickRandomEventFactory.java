@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.random;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
@@ -39,12 +40,19 @@ public class PickRandomEventFactory implements EventFactory, StaticEventFactory 
     private final VariableProcessor variableProcessor;
 
     /**
+     * BetonQuest API.
+     */
+    private final BetonQuestAPI questAPI;
+
+    /**
      * Creates the PickRandomEventFactory.
      *
      * @param variableProcessor variable processor for creating variables
+     * @param questAPI          the BetonQuest API
      */
-    public PickRandomEventFactory(final VariableProcessor variableProcessor) {
+    public PickRandomEventFactory(final VariableProcessor variableProcessor, final BetonQuestAPI questAPI) {
         this.variableProcessor = variableProcessor;
+        this.questAPI = questAPI;
     }
 
     @Override
@@ -99,6 +107,6 @@ public class PickRandomEventFactory implements EventFactory, StaticEventFactory 
             throw new QuestException("Error while loading event: '" + instruction.getEvent().getFullID() + "'. Wrong number of % detected. Check your event.");
         });
         final VariableNumber amount = instruction.getVarNum(instruction.getOptional("amount"));
-        return new NullableEventAdapter(new PickRandomEvent(events, amount));
+        return new NullableEventAdapter(new PickRandomEvent(events, amount, questAPI));
     }
 }

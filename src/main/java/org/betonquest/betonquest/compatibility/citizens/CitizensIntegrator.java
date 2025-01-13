@@ -18,7 +18,9 @@ import org.betonquest.betonquest.compatibility.citizens.objective.NPCRangeObject
 import org.betonquest.betonquest.compatibility.citizens.variable.npc.CitizensVariableFactory;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
+import org.betonquest.betonquest.conversation.ConversationIO;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
+import org.betonquest.betonquest.quest.registry.FactoryRegistry;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
@@ -72,7 +74,7 @@ public class CitizensIntegrator implements Integrator {
     @Override
     public void hook() {
         final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
-        citizensMoveController = new CitizensMoveController(loggerFactory.create(CitizensMoveController.class));
+        citizensMoveController = new CitizensMoveController(loggerFactory.create(CitizensMoveController.class), plugin.getQuestAPI());
         citizensConversationStarter = new CitizensConversationStarter(loggerFactory, loggerFactory.create(CitizensConversationStarter.class), citizensMoveController);
         new CitizensWalkingListener();
 
@@ -87,17 +89,18 @@ public class CitizensIntegrator implements Integrator {
         server.getPluginManager().registerEvents(citizensMoveController, plugin);
 
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
-        final EventTypeRegistry eventTypes = questRegistries.getEventTypes();
+        final EventTypeRegistry eventTypes = questRegistries.event();
         eventTypes.register("movenpc", new CitizensMoveEventFactory(data, citizensMoveController));
         eventTypes.register("stopnpc", new CitizensStopEventFactory(data, citizensMoveController));
         eventTypes.registerCombined("teleportnpc", new NPCTeleportEventFactory(data));
 
-        plugin.registerConversationIO("chest", CitizensInventoryConvIO.class);
-        plugin.registerConversationIO("combined", CitizensInventoryConvIO.CitizensCombined.class);
+        final FactoryRegistry<Class<? extends ConversationIO>> conversationIOTypes = plugin.getOtherRegistries().conversationIO();
+        conversationIOTypes.register("chest", CitizensInventoryConvIO.class);
+        conversationIOTypes.register("combined", CitizensInventoryConvIO.CitizensCombined.class);
 
-        questRegistries.getVariableTypes().register("citizen", new CitizensVariableFactory(loggerFactory));
+        questRegistries.variable().register("citizen", new CitizensVariableFactory(loggerFactory));
 
-        final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
+        final ConditionTypeRegistry conditionTypes = questRegistries.condition();
         conditionTypes.register("npcdistance", new NPCDistanceConditionFactory(data, loggerFactory));
         conditionTypes.registerCombined("npclocation", new NPCLocationConditionFactory(data));
     }
@@ -106,12 +109,12 @@ public class CitizensIntegrator implements Integrator {
     public void postHook() {
         if (Compatibility.getHooked().contains("ProtocolLib")) {
             NPCHider.start(plugin.getLoggerFactory().create(NPCHider.class));
-            plugin.getQuestRegistries().getEventTypes().register("updatevisibility", UpdateVisibilityNowEvent.class);
+            plugin.getQuestRegistries().event().register("updatevisibility", UpdateVisibilityNowEvent.class);
         }
         if (Compatibility.getHooked().contains("WorldGuard")) {
             final Server server = plugin.getServer();
             final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
-            plugin.getQuestRegistries().getConditionTypes().register("npcregion", new NPCRegionConditionFactory(data));
+            plugin.getQuestRegistries().condition().register("npcregion", new NPCRegionConditionFactory(data));
         }
     }
 

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.logic;
 
-import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.exceptions.QuestException;
@@ -20,18 +20,25 @@ public class FirstEvent implements NullableEvent {
     private final List<EventID> events;
 
     /**
+     * BetonQuest API.
+     */
+    private final BetonQuestAPI questAPI;
+
+    /**
      * Makes a new first event.
      *
      * @param eventIDList A list of events to execute in order.
+     * @param questAPI    the BetonQuest API
      */
-    public FirstEvent(final List<EventID> eventIDList) {
+    public FirstEvent(final List<EventID> eventIDList, final BetonQuestAPI questAPI) {
         events = eventIDList;
+        this.questAPI = questAPI;
     }
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         for (final EventID event : events) {
-            if (BetonQuest.event(profile, event)) {
+            if (questAPI.event(profile, event)) {
                 break;
             }
         }

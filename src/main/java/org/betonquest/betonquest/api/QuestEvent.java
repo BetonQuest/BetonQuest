@@ -4,8 +4,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
@@ -17,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
  * </p>
  * <p>
  * Registering your events is done using the
- * {@link BetonQuest#registerEvent(String, EventFactory, StaticEventFactory) registerEvent()} method.
+ * {@code BetonQuest.getQuestRegistries().getEventTypes().register(String, Class)} method.
  * </p>
  */
 public abstract class QuestEvent extends ForceSyncHandler<Void> {
@@ -123,7 +121,7 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
             return false;
         }
         log.debug(instruction.getPackage(), "Static event will be fired without a profile.");
-        if (!BetonQuest.conditions(null, conditions)) {
+        if (!BetonQuest.getInstance().getQuestAPI().conditions(null, conditions)) {
             log.debug(instruction.getPackage(), "Event conditions were not met");
             return false;
         }
@@ -143,7 +141,7 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
     }
 
     private boolean handleOnlineProfile(final Profile profile) throws QuestException {
-        if (!BetonQuest.conditions(profile, conditions)) {
+        if (!BetonQuest.getInstance().getQuestAPI().conditions(profile, conditions)) {
             log.debug(instruction.getPackage(), "Event conditions were not met for " + profile);
             return false;
         }

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.condition.party;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -18,9 +19,17 @@ import org.betonquest.betonquest.quest.condition.ThrowExceptionPlayerlessConditi
 public class PartyConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
 
     /**
-     * Create the party condition factory.
+     * BetonQuest API.
      */
-    public PartyConditionFactory() {
+    private final BetonQuestAPI questAPI;
+
+    /**
+     * Create the party condition factory.
+     *
+     * @param questAPI the BetonQuest API
+     */
+    public PartyConditionFactory(final BetonQuestAPI questAPI) {
+        this.questAPI = questAPI;
     }
 
     @Override
@@ -45,6 +54,6 @@ public class PartyConditionFactory implements PlayerConditionFactory, Playerless
         final ConditionID[] anyone = instruction.getList(instruction.getOptional("any"), instruction::getCondition).toArray(new ConditionID[0]);
         final VariableNumber count = instruction.getVarNum(instruction.getOptional("count"));
 
-        return new PartyCondition(location, range, conditions, everyone, anyone, count);
+        return new PartyCondition(location, range, conditions, everyone, anyone, count, questAPI);
     }
 }

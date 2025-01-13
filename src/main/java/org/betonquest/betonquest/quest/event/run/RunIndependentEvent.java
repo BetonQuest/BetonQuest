@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.run;
 
-import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.EventID;
@@ -18,6 +18,11 @@ import java.util.List;
 public class RunIndependentEvent implements StaticEvent {
 
     /**
+     * BetonQuest API.
+     */
+    private final BetonQuestAPI questAPI;
+
+    /**
      * List of Events to run.
      */
     private final List<EventID> events;
@@ -25,16 +30,18 @@ public class RunIndependentEvent implements StaticEvent {
     /**
      * Create a new RunIndependentEvent instance.
      *
-     * @param events the events to run
+     * @param questAPI the BetonQuest API
+     * @param events   the events to run
      */
-    public RunIndependentEvent(final List<EventID> events) {
+    public RunIndependentEvent(final BetonQuestAPI questAPI, final List<EventID> events) {
+        this.questAPI = questAPI;
         this.events = events;
     }
 
     @Override
     public void execute() throws QuestException {
         for (final EventID event : events) {
-            BetonQuest.event(null, event);
+            questAPI.event(null, event);
         }
     }
 }

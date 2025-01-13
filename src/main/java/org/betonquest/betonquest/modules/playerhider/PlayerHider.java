@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.modules.playerhider;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestAPI;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -36,13 +37,20 @@ public class PlayerHider {
     private final BukkitTask bukkitTask;
 
     /**
+     * BetonQuest API.
+     */
+    private final BetonQuestAPI questAPI;
+
+    /**
      * Initialize and start a new {@link PlayerHider}.
      *
      * @param betonQuest the plugin instance to get config and start the bukkit task
+     * @param questAPI   the BetonQuest API
      * @throws QuestException Thrown if there is a configuration error.
      */
-    public PlayerHider(final BetonQuest betonQuest) throws QuestException {
+    public PlayerHider(final BetonQuest betonQuest, final BetonQuestAPI questAPI) throws QuestException {
         hiders = new HashMap<>();
+        this.questAPI = questAPI;
 
         for (final QuestPackage pack : Config.getPackages().values()) {
             final ConfigurationSection hiderSection = pack.getConfig().getConfigurationSection("player_hider");
@@ -116,12 +124,12 @@ public class PlayerHider {
         for (final Map.Entry<ConditionID[], ConditionID[]> hider : hiders.entrySet()) {
             final List<OnlineProfile> targetProfiles = new ArrayList<>();
             for (final OnlineProfile target : onlineProfiles) {
-                if (BetonQuest.conditions(target, hider.getValue())) {
+                if (questAPI.conditions(target, hider.getValue())) {
                     targetProfiles.add(target);
                 }
             }
             for (final OnlineProfile source : onlineProfiles) {
-                if (!BetonQuest.conditions(source, hider.getKey())) {
+                if (!questAPI.conditions(source, hider.getKey())) {
                     continue;
                 }
                 final List<OnlineProfile> hiddenProfiles = getOrCreateProfileList(source, profilesToHide);

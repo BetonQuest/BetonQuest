@@ -32,8 +32,8 @@ public class ShopkeepersIntegrator implements Integrator {
             throw new UnsupportedVersionException(shopkeepers, "2.2.0");
         }
         final QuestTypeRegistries questRegistries = BetonQuest.getInstance().getQuestRegistries();
-        questRegistries.getConditionTypes().register("shopamount", HavingShopCondition.class);
-        questRegistries.getEventTypes().register("shopkeeper", OpenShopEvent.class);
+        questRegistries.condition().register("shopamount", HavingShopCondition.class);
+        questRegistries.event().register("shopkeeper", OpenShopEvent.class);
     }
 
     @Override
