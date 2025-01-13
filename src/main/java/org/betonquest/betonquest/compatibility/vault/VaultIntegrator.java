@@ -55,7 +55,7 @@ public class VaultIntegrator implements Integrator {
 
             registries.getEventTypes().register("money", new MoneyEventFactory(economy, loggerFactory, data, plugin.getVariableProcessor()));
             registries.getConditionTypes().register("money", new MoneyConditionFactory(economy, data));
-            registries.getVariableTypes().register("money", new MoneyVariableFactory(economy, loggerFactory));
+            registries.getVariableTypes().register("money", new MoneyVariableFactory(economy));
         }
 
         final RegisteredServiceProvider<Permission> permissionProvider = servicesManager.getRegistration(Permission.class);

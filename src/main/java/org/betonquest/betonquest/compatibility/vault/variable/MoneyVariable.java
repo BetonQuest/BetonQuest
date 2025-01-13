@@ -1,11 +1,9 @@
 package org.betonquest.betonquest.compatibility.vault.variable;
 
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.exceptions.QuestException;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Resolves to amount of money.
@@ -14,39 +12,19 @@ public class MoneyVariable implements PlayerVariable {
     /**
      * Function to get the displayed money amount from a profile.
      */
-    private final MoneyVariableFactory.QuestExceptionFunction<Profile, String> function;
+    private final QuestFunction<Profile, String> function;
 
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
-
-    /**
-     * Pack used for logging identification.
-     */
-    private final QuestPackage pack;
-
-    /**
+     * Create a new Money variable.
+     *
      * @param function the function to get the displayed money amount from a profile
-     * @param log      the custom {@link BetonQuestLogger} instance for exception logging
-     * @param pack     the pack used for logging identification
      */
-    public MoneyVariable(final MoneyVariableFactory.QuestExceptionFunction<Profile, String> function, final BetonQuestLogger log, final QuestPackage pack) {
+    public MoneyVariable(final QuestFunction<Profile, String> function) {
         this.function = function;
-        this.log = log;
-        this.pack = pack;
     }
 
     @Override
-    public String getValue(@Nullable final Profile profile) {
-        if (profile == null) {
-            return "";
-        }
-        try {
-            return function.apply(profile);
-        } catch (final QuestException e) {
-            log.warn(pack, "Unable to get money variable value: " + e.getMessage(), e);
-            return "";
-        }
+    public String getValue(final Profile profile) throws QuestException {
+        return function.apply(profile);
     }
 }

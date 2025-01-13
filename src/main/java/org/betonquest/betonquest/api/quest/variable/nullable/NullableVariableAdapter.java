@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api.quest.variable.nullable;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * An adapter to handle both the {@link PlayerVariable} and {@link PlayerlessVariable}
@@ -24,12 +25,12 @@ public final class NullableVariableAdapter implements PlayerVariable, Playerless
     }
 
     @Override
-    public String getValue(final Profile profile) {
+    public String getValue(final Profile profile) throws QuestException {
         return variable.getValue(profile);
     }
 
     @Override
-    public String getValue() {
+    public String getValue() throws QuestException {
         return variable.getValue(null);
     }
 }

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.quest.variable.nullable;
 
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -14,6 +15,7 @@ public interface NullableVariable {
      * @return the resolved variable value; or an empty string if the variable
      * cannot be resolved, this might indicate that the profile cannot be null
      * in this specific case
+     * @throws QuestException when the value could not be retrieved
      */
-    String getValue(@Nullable Profile profile);
+    String getValue(@Nullable Profile profile) throws QuestException;
 }

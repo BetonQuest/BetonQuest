@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.vault.variable;
 
 import net.milkbowl.vault.economy.Economy;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
@@ -31,25 +31,18 @@ public class MoneyVariableFactory implements PlayerVariableFactory {
     private final Economy economy;
 
     /**
-     * Logger factory to create new class specific loggers.
-     */
-    private final BetonQuestLoggerFactory loggerFactory;
-
-    /**
      * Create a new Factory to create Vault Money Variables.
      *
-     * @param economy       the economy where the balance will be got
-     * @param loggerFactory the logger factory to create new class specific loggers
+     * @param economy the economy where the balance will be got
      */
-    public MoneyVariableFactory(final Economy economy, final BetonQuestLoggerFactory loggerFactory) {
+    public MoneyVariableFactory(final Economy economy) {
         this.economy = economy;
-        this.loggerFactory = loggerFactory;
     }
 
     @Override
     public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
         final String instructionString = instruction.next();
-        final QuestExceptionFunction<Profile, String> function;
+        final QuestFunction<Profile, String> function;
         if (MONEY_AMOUNT.equalsIgnoreCase(instructionString)) {
             function = profile -> String.valueOf(economy.getBalance(profile.getPlayer()));
         } else if (instructionString.toLowerCase(Locale.ROOT).startsWith(MONEY_LEFT)) {
@@ -58,23 +51,6 @@ public class MoneyVariableFactory implements PlayerVariableFactory {
         } else {
             throw new QuestException("No type specified");
         }
-        return new MoneyVariable(function, loggerFactory.create(MoneyVariable.class), instruction.getPackage());
-    }
-
-    /**
-     * A simple {@link java.util.function.Function} that can throw a QuestException.
-     *
-     * @param <T> the type of the input to the function
-     * @param <R> the type of the result of the function
-     */
-    public interface QuestExceptionFunction<T, R> {
-        /**
-         * Applies this function to the given argument.
-         *
-         * @param arg the function argument
-         * @return the function result
-         * @throws QuestException if the resolving fails
-         */
-        R apply(T arg) throws QuestException;
+        return new MoneyVariable(function);
     }
 }

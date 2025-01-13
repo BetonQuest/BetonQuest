@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest;
 
+import org.betonquest.betonquest.api.common.function.QuestCallable;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
@@ -95,18 +96,5 @@ public class PrimaryServerThreadType<T, R> {
             }
             throw new QuestException(e);
         }
-    }
-
-    /**
-     * Calls the quest method that may throw a {@link QuestException}.
-     */
-    protected interface QuestCallable<R> {
-        /**
-         * Calls the method and gets the result.
-         *
-         * @return result of the check
-         * @throws QuestException when a QuestException is thrown during method execution
-         */
-        R call() throws QuestException;
     }
 }

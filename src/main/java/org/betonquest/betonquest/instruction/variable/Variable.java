@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.instruction.variable;
 
+import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
@@ -41,13 +42,13 @@ public class Variable<T> {
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
     public Variable(final VariableProcessor variableProcessor, final QuestPackage pack, final String input,
-                    final TypeResolver<T> resolver) throws QuestException {
+                    final QuestFunction<String, T> resolver) throws QuestException {
         final Map<String, org.betonquest.betonquest.api.Variable> variables = getVariables(variableProcessor, pack, input);
         if (variables.isEmpty()) {
-            final T resolved = resolver.resolve(input);
+            final T resolved = resolver.apply(input);
             value = profile -> resolved;
         } else {
-            value = profile -> resolver.resolve(getString(input, variables, profile));
+            value = profile -> resolver.apply(getString(input, variables, profile));
         }
     }
 
@@ -102,41 +103,18 @@ public class Variable<T> {
      * @throws QuestException if the variable could not be resolved
      */
     public T getValue(@Nullable final Profile profile) throws QuestException {
-        return value.resolve(profile);
+        return value.apply(profile);
     }
 
     /**
-     * Resolves the value of the variable to the given type.
+     * Resolves the value of the variable with a Nullable Profile.
      *
      * @param <T> the type of the variable
      */
     @FunctionalInterface
-    public interface TypeResolver<T> {
-        /**
-         * Converts the resolved variable to the given type.
-         *
-         * @param variable the variable to resolve
-         * @return the resolved variable
-         * @throws QuestException if the variable could not be resolved
-         */
-        T resolve(String variable) throws QuestException;
-    }
-
-    /**
-     * Resolves the value of the variable.
-     *
-     * @param <T> the type of the variable
-     */
-    @FunctionalInterface
-    private interface ValueResolver<T> {
-        /**
-         * Gets the value of the variable.
-         *
-         * @param profile the profile of the player to resolve the variables for
-         * @return the value of the variable
-         * @throws QuestException when the variable could not be resolved
-         */
-        T resolve(@Nullable Profile profile) throws QuestException;
+    private interface ValueResolver<T> extends QuestFunction<Profile, T> {
+        @Override
+        T apply(@Nullable Profile arg) throws QuestException;
     }
 
     /**

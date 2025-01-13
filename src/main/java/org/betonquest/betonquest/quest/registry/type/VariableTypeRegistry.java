@@ -17,6 +17,11 @@ import org.jetbrains.annotations.Nullable;
  */
 public class VariableTypeRegistry extends QuestTypeRegistry<PlayerVariable, PlayerlessVariable, Variable> {
     /**
+     * Logger factory for creating new custom loggers.
+     */
+    private final BetonQuestLoggerFactory loggerFactory;
+
+    /**
      * Create a new variable type registry.
      *
      * @param log           the logger that will be used for logging
@@ -24,6 +29,7 @@ public class VariableTypeRegistry extends QuestTypeRegistry<PlayerVariable, Play
      */
     public VariableTypeRegistry(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory) {
         super(log, loggerFactory, "variable");
+        this.loggerFactory = loggerFactory;
     }
 
     @Override
@@ -36,6 +42,6 @@ public class VariableTypeRegistry extends QuestTypeRegistry<PlayerVariable, Play
     protected LegacyTypeFactory<Variable> getLegacyFactoryAdapter(
             @Nullable final PlayerQuestFactory<PlayerVariable> playerFactory,
             @Nullable final PlayerlessQuestFactory<PlayerlessVariable> playerlessFactory) {
-        return new LegacyVariableFactoryAdapter(playerFactory, playerlessFactory);
+        return new LegacyVariableFactoryAdapter(playerFactory, playerlessFactory, loggerFactory);
     }
 }

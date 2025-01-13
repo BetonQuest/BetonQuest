@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.quest.variable.online;
 
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.exceptions.QuestException;
 
 /**
  * Player Variable that needs an online profile to function correctly.
@@ -11,6 +12,7 @@ public interface OnlineVariable {
      *
      * @param profile the {@link OnlineProfile} to get the value for
      * @return the value of this variable
+     * @throws QuestException when the value could not be retrieved
      */
-    String getValue(OnlineProfile profile);
+    String getValue(OnlineProfile profile) throws QuestException;
 }
