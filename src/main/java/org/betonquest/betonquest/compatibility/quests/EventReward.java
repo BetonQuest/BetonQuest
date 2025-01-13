@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.compatibility.quests;
 
 import me.pikamug.quests.module.BukkitCustomReward;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -16,16 +16,28 @@ import java.util.UUID;
 /**
  * Fires a BetonQuest event as a quest reward.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.ConstructorCallsOverridableMethod"})
+@SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
 public class EventReward extends BukkitCustomReward {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
-    public EventReward(final BetonQuestLogger log) {
+    /**
+     * Quest Type API.
+     */
+    private final QuestTypeAPI questTypeAPI;
+
+    /**
+     * Create a new 'Quests' Reward.
+     *
+     * @param log          the custom logger
+     * @param questTypeAPI the Quest Type API
+     */
+    public EventReward(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI) {
         super();
         this.log = log;
+        this.questTypeAPI = questTypeAPI;
         setName("BetonQuest event");
         setAuthor("BetonQuest");
         addStringPrompt("Event", "Specify BetonQuest event name (with the package, like: package.event)", null);
@@ -47,7 +59,7 @@ public class EventReward extends BukkitCustomReward {
             }
             final OnlineProfile onlineProfile = PlayerConverter.getID(player);
             final EventID event = new EventID(null, string);
-            BetonQuest.event(onlineProfile, event);
+            questTypeAPI.event(onlineProfile, event);
         } catch (final QuestException e) {
             log.warn("Error while running quest reward - BetonQuest event '" + string + "' not found: " + e.getMessage(), e);
         }

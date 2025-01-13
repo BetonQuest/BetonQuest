@@ -55,12 +55,12 @@ public record HologramWrapper(int interval, List<BetonHologram> holograms, boole
     }
 
     /**
-     * Update the visibility for a particular player
+     * Update the visibility for a particular player.
      *
      * @param profile The online player's profile
      */
     public void updateVisibilityForPlayer(final OnlineProfile profile) {
-        final boolean conditionsMet = BetonQuest.conditions(profile, conditionList);
+        final boolean conditionsMet = BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, conditionList);
 
         for (final BetonHologram hologram : holograms) {
             final boolean playerOutOfRange = isPlayerOutOfRange(profile, hologram);

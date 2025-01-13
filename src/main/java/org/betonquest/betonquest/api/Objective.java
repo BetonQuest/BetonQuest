@@ -212,7 +212,7 @@ public abstract class Objective {
                         + profile + ", firing events.");
         // fire all events
         for (final EventID event : events) {
-            BetonQuest.event(profile, event);
+            BetonQuest.getInstance().getQuestTypeAPI().event(profile, event);
         }
         log.debug(instruction.getPackage(),
                 "Firing events in objective \"" + instruction.getID().getFullID() + "\" for "
@@ -230,7 +230,7 @@ public abstract class Objective {
     public final boolean checkConditions(final Profile profile) {
         log.debug(instruction.getPackage(), "Condition check in \"" + instruction.getID().getFullID()
                 + "\" objective for " + profile);
-        return BetonQuest.conditions(profile, conditions);
+        return BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, conditions);
     }
 
     /**

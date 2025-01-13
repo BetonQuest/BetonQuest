@@ -51,7 +51,7 @@ public class SkriptConditionBQ extends Condition {
     public boolean check(final Event event) {
         final String conditionID = condition.getSingle(event);
         try {
-            return BetonQuest.condition(PlayerConverter.getID(player.getSingle(event)), new ConditionID(null, conditionID));
+            return BetonQuest.getInstance().getQuestTypeAPI().condition(PlayerConverter.getID(player.getSingle(event)), new ConditionID(null, conditionID));
         } catch (final QuestException e) {
             log.warn("Error while checking Skript condition - could not load condition with ID '" + conditionID + "': " + e.getMessage(), e);
             return false;

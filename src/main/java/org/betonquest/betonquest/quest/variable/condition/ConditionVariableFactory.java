@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.variable.condition;
 
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -13,6 +14,11 @@ import org.betonquest.betonquest.instruction.Instruction;
 public class ConditionVariableFactory implements PlayerVariableFactory {
 
     /**
+     * Quest Type API.
+     */
+    private final QuestTypeAPI questTypeAPI;
+
+    /**
      * Storage for player data.
      */
     private final PlayerDataStorage dataStorage;
@@ -20,9 +26,11 @@ public class ConditionVariableFactory implements PlayerVariableFactory {
     /**
      * Create the Condition Variable Factory.
      *
-     * @param dataStorage the storage providing player data
+     * @param questTypeAPI the Quest Type API
+     * @param dataStorage  the storage providing player data
      */
-    public ConditionVariableFactory(final PlayerDataStorage dataStorage) {
+    public ConditionVariableFactory(final QuestTypeAPI questTypeAPI, final PlayerDataStorage dataStorage) {
+        this.questTypeAPI = questTypeAPI;
         this.dataStorage = dataStorage;
     }
 
@@ -30,6 +38,6 @@ public class ConditionVariableFactory implements PlayerVariableFactory {
     public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
         final ConditionID conditionId = instruction.getID(ConditionID::new);
         final boolean papiMode = instruction.hasArgument("papiMode");
-        return new ConditionVariable(conditionId, papiMode, dataStorage);
+        return new ConditionVariable(conditionId, papiMode, questTypeAPI, dataStorage);
     }
 }

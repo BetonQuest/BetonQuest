@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.condition.stage;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
@@ -30,23 +30,24 @@ public class StageCondition implements PlayerCondition {
     private final Operation operation;
 
     /**
-     * The BetonQuest instance.
+     * Quest Type API.
      */
-    private final BetonQuest betonQuest;
+    private final QuestTypeAPI questTypeAPI;
 
     /**
      * Creates the stage condition.
      *
-     * @param objectiveID the objective ID
-     * @param targetStage the target stage
-     * @param operation   the operation
-     * @param betonQuest  the BetonQuest instance
+     * @param questTypeAPI the Quest Type API
+     * @param objectiveID  the objective ID
+     * @param targetStage  the target stage
+     * @param operation    the operation
      */
-    public StageCondition(final ObjectiveID objectiveID, final VariableString targetStage, final Operation operation, final BetonQuest betonQuest) {
+    public StageCondition(final QuestTypeAPI questTypeAPI, final ObjectiveID objectiveID, final VariableString targetStage,
+                          final Operation operation) {
+        this.questTypeAPI = questTypeAPI;
         this.objectiveID = objectiveID;
         this.targetStage = targetStage;
         this.operation = operation;
-        this.betonQuest = betonQuest;
     }
 
     @Override
@@ -77,7 +78,7 @@ public class StageCondition implements PlayerCondition {
     }
 
     private StageObjective getStageObjective() throws QuestException {
-        if (betonQuest.getObjective(objectiveID) instanceof final StageObjective stageObjective) {
+        if (questTypeAPI.getObjective(objectiveID) instanceof final StageObjective stageObjective) {
             return stageObjective;
         }
         throw new QuestException("Objective '" + objectiveID.getFullID() + "' is not a stage objective");

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.schedule.impl.realtime.cron;
 
 import com.cronutils.model.time.ExecutionTime;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.schedule.LastExecutionCache;
 import org.betonquest.betonquest.schedule.ScheduleID;
@@ -21,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests for the {@link RealtimeCronScheduler}
+ * Tests for the {@link RealtimeCronScheduler}.
  */
 @ExtendWith(MockitoExtension.class)
 class RealtimeCronSchedulerTest {
@@ -39,8 +40,17 @@ class RealtimeCronSchedulerTest {
      */
     private final Instant now = Instant.now();
 
+    /**
+     * Mocked logger.
+     */
     @Mock
     private BetonQuestLogger logger;
+
+    /**
+     * Mocked BetonQuestAPI.
+     */
+    @Mock
+    private QuestTypeAPI questTypeAPI;
 
     private static RealtimeCronSchedule getSchedule(final CatchupStrategy catchupStrategy, final boolean shouldRunOnReboot) {
         final RealtimeCronSchedule schedule = mock(RealtimeCronSchedule.class);
@@ -54,7 +64,7 @@ class RealtimeCronSchedulerTest {
     @Test
     void testStartWithoutSchedules() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
-        final RealtimeCronScheduler scheduler = spy(new RealtimeCronScheduler(logger, cache));
+        final RealtimeCronScheduler scheduler = spy(new RealtimeCronScheduler(logger, questTypeAPI, cache));
         scheduler.start(now);
 
         verify(logger, times(1)).debug("Starting realtime scheduler.");
@@ -70,7 +80,7 @@ class RealtimeCronSchedulerTest {
     @Test
     void testStartWithRebootSchedules() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
-        final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(logger, cache);
+        final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(logger, questTypeAPI, cache);
         final RealtimeCronSchedule schedule = getSchedule(CatchupStrategy.NONE, true);
 
         final ExecutionTime executionTime = mock(ExecutionTime.class);
@@ -97,7 +107,7 @@ class RealtimeCronSchedulerTest {
         final Instant lastExecution = now.minusSeconds(60);
         when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(lastExecution));
 
-        final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(logger, cache);
+        final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(logger, questTypeAPI, cache);
         final RealtimeCronSchedule schedule = getSchedule(CatchupStrategy.ONE, false);
         final ExecutionTime executionTime = mock(ExecutionTime.class);
         final ZonedDateTime nextMissedExecution = lastExecution.plusSeconds(30).atZone(ZoneId.systemDefault());
@@ -125,7 +135,7 @@ class RealtimeCronSchedulerTest {
         final Instant lastExecution = now.minusSeconds(65);
         when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(lastExecution));
 
-        final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(logger, cache);
+        final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(logger, questTypeAPI, cache);
         final RealtimeCronSchedule schedule = getSchedule(CatchupStrategy.ALL, false);
         final ExecutionTime executionTime = mock(ExecutionTime.class);
         final ZonedDateTime nextMissedExecution1 = lastExecution.plusSeconds(20).atZone(ZoneId.systemDefault());
@@ -162,7 +172,7 @@ class RealtimeCronSchedulerTest {
         final Instant lastExecution = now.minusSeconds(40);
         when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(lastExecution));
 
-        final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(logger, cache);
+        final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(logger, questTypeAPI, cache);
         final RealtimeCronSchedule schedule = getSchedule(CatchupStrategy.ALL, false);
         final ExecutionTime executionTime = mock(ExecutionTime.class);
         final ZonedDateTime nextExecution = now.plusSeconds(20).atZone(ZoneId.systemDefault());
@@ -191,7 +201,7 @@ class RealtimeCronSchedulerTest {
             runnable.run();
             return null;
         });
-        final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(logger, () -> executorService, cache);
+        final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(logger, questTypeAPI, () -> executorService, cache);
         final RealtimeCronSchedule schedule = getSchedule(CatchupStrategy.NONE, false);
         final ExecutionTime executionTime = mock(ExecutionTime.class);
         when(executionTime.timeToNextExecution(any())).thenReturn(

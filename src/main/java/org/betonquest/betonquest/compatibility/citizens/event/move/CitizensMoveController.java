@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.compatibility.citizens.CitizensWalkingListener;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -40,12 +41,19 @@ public class CitizensMoveController implements Listener {
     private final BetonQuestLogger log;
 
     /**
+     * Quest Type API.
+     */
+    private final QuestTypeAPI questTypeAPI;
+
+    /**
      * Creates a new Citizens Move Controller.
      *
-     * @param log logger instance for this class
+     * @param log          logger instance for this class
+     * @param questTypeAPI the Quest Type API
      */
-    public CitizensMoveController(final BetonQuestLogger log) {
+    public CitizensMoveController(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI) {
         this.log = log;
+        this.questTypeAPI = questTypeAPI;
     }
 
     /**
@@ -93,7 +101,7 @@ public class CitizensMoveController implements Listener {
         final MoveInstance oldMoveInstance = movingNpcs.get(npc.getId());
         if (oldMoveInstance != null) {
             for (final EventID event : oldMoveInstance.moveData.failEvents()) {
-                BetonQuest.event(profile, event);
+                questTypeAPI.event(profile, event);
             }
             return;
         }
@@ -259,7 +267,7 @@ public class CitizensMoveController implements Listener {
                     npc.getNavigator().setPaused(false);
                     movingNpcs.remove(npcId);
                     for (final EventID event : moveData.doneEvents()) {
-                        BetonQuest.event(currentProfile, event);
+                        questTypeAPI.event(currentProfile, event);
                     }
                 }
             }.runTaskLater(BetonQuest.getInstance(), moveData.waitTicks());

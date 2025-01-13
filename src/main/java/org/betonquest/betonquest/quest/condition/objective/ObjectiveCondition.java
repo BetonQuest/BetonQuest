@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.condition.objective;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.id.ObjectiveID;
 
@@ -13,31 +13,31 @@ import org.betonquest.betonquest.id.ObjectiveID;
 public class ObjectiveCondition implements PlayerCondition {
 
     /**
-     * The objective ID.
+     * Quest Type API.
      */
-    private final ObjectiveID objective;
+    private final QuestTypeAPI questTypeAPI;
 
     /**
-     * The BetonQuest instance.
+     * The objective ID.
      */
-    private final BetonQuest betonQuest;
+    private final ObjectiveID objectiveId;
 
     /**
      * Creates a new ObjectiveCondition.
      *
-     * @param objective  the objective ID
-     * @param betonQuest the BetonQuest instance
+     * @param questTypeAPI the Quest Type API
+     * @param objectiveId  the objective ID
      */
-    public ObjectiveCondition(final ObjectiveID objective, final BetonQuest betonQuest) {
-        this.objective = objective;
-        this.betonQuest = betonQuest;
+    public ObjectiveCondition(final QuestTypeAPI questTypeAPI, final ObjectiveID objectiveId) {
+        this.questTypeAPI = questTypeAPI;
+        this.objectiveId = objectiveId;
     }
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
-        final Objective objective = betonQuest.getObjective(this.objective);
+        final Objective objective = questTypeAPI.getObjective(objectiveId);
         if (objective == null) {
-            throw new QuestException("Objective " + this.objective + " not found. Check for errors on /bq reload!");
+            throw new QuestException("Objective " + objectiveId + " not found. Check for errors on /bq reload!");
         }
         return objective.containsPlayer(profile);
     }

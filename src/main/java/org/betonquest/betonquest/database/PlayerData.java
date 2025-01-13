@@ -351,7 +351,7 @@ public class PlayerData implements TagData {
             final String objective = entry.getKey();
             try {
                 final ObjectiveID objectiveID = new ObjectiveID(null, objective);
-                BetonQuest.resumeObjective(profile, objectiveID, entry.getValue());
+                BetonQuest.getInstance().getQuestTypeAPI().resumeObjective(profile, objectiveID, entry.getValue());
             } catch (final QuestException e) {
                 log.warn("Loaded '" + objective
                         + "' objective from the database, but it is not defined in configuration. Skipping.", e);
@@ -375,7 +375,7 @@ public class PlayerData implements TagData {
      * @param objectiveID ID of the objective
      */
     public void addNewRawObjective(final ObjectiveID objectiveID) {
-        final Objective obj = BetonQuest.getInstance().getObjective(objectiveID);
+        final Objective obj = BetonQuest.getInstance().getQuestTypeAPI().getObjective(objectiveID);
         if (obj == null) {
             return;
         }
@@ -552,7 +552,7 @@ public class PlayerData implements TagData {
      * Purges all profile's data from the database and from this object.
      */
     public void purgePlayer() {
-        for (final Objective obj : BetonQuest.getInstance().getPlayerObjectives(profile)) {
+        for (final Objective obj : BetonQuest.getInstance().getQuestTypeAPI().getPlayerObjectives(profile)) {
             obj.cancelObjectiveForPlayer(profile);
         }
         // clear all lists

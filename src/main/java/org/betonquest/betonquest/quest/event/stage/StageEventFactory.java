@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.stage;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.id.ObjectiveID;
@@ -18,18 +18,19 @@ import java.util.Locale;
  * Factory to create stage events to modify a StageObjective.
  */
 public class StageEventFactory implements EventFactory {
+
     /**
-     * BetonQuest instance.
+     * Quest Type API.
      */
-    private final BetonQuest betonQuest;
+    private final QuestTypeAPI questTypeAPI;
 
     /**
      * Creates the stage event factory.
      *
-     * @param betonQuest BetonQuest instance
+     * @param questTypeAPI the Quest Type API
      */
-    public StageEventFactory(final BetonQuest betonQuest) {
-        this.betonQuest = betonQuest;
+    public StageEventFactory(final QuestTypeAPI questTypeAPI) {
+        this.questTypeAPI = questTypeAPI;
     }
 
     @Override
@@ -82,7 +83,7 @@ public class StageEventFactory implements EventFactory {
     }
 
     private StageObjective getStageObjective(final ObjectiveID objectiveID) throws QuestException {
-        if (betonQuest.getObjective(objectiveID) instanceof final StageObjective stageObjective) {
+        if (questTypeAPI.getObjective(objectiveID) instanceof final StageObjective stageObjective) {
             return stageObjective;
         }
         throw new QuestException("Objective '" + objectiveID.getFullID() + "' is not a stage objective");

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.stage;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.id.ObjectiveID;
@@ -15,17 +15,17 @@ import org.betonquest.betonquest.quest.condition.number.Operation;
 public class StageConditionFactory implements PlayerConditionFactory {
 
     /**
-     * The BetonQuest instance.
+     * Quest Type API.
      */
-    private final BetonQuest betonQuest;
+    private final QuestTypeAPI questTypeAPI;
 
     /**
      * Creates the stage condition factory.
      *
-     * @param betonQuest the BetonQuest instance
+     * @param questTypeAPI the Quest Type API
      */
-    public StageConditionFactory(final BetonQuest betonQuest) {
-        this.betonQuest = betonQuest;
+    public StageConditionFactory(final QuestTypeAPI questTypeAPI) {
+        this.questTypeAPI = questTypeAPI;
     }
 
     @Override
@@ -33,6 +33,6 @@ public class StageConditionFactory implements PlayerConditionFactory {
         final ObjectiveID objectiveID = instruction.getID(ObjectiveID::new);
         final Operation operation = Operation.fromSymbol(instruction.next());
         final VariableString targetStage = instruction.get(VariableString::new);
-        return new StageCondition(objectiveID, targetStage, operation, betonQuest);
+        return new StageCondition(questTypeAPI, objectiveID, targetStage, operation);
     }
 }

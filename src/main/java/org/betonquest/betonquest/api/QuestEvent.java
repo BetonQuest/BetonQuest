@@ -120,7 +120,7 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
             return false;
         }
         log.debug(instruction.getPackage(), "Static event will be fired without a profile.");
-        if (!BetonQuest.conditions(null, conditions)) {
+        if (!BetonQuest.getInstance().getQuestTypeAPI().conditions(null, conditions)) {
             log.debug(instruction.getPackage(), "Event conditions were not met");
             return false;
         }
@@ -140,7 +140,7 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
     }
 
     private boolean handleOnlineProfile(final Profile profile) throws QuestException {
-        if (!BetonQuest.conditions(profile, conditions)) {
+        if (!BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, conditions)) {
             log.debug(instruction.getPackage(), "Event conditions were not met for " + profile);
             return false;
         }

@@ -76,7 +76,7 @@ public class EffectLibRunnable extends BukkitRunnable {
     private List<OnlineProfile> checkActiveEffects() {
         final List<OnlineProfile> activePlayerEffects = new ArrayList<>();
         for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
-            if (!BetonQuest.conditions(onlineProfile, effectConfiguration.conditions())) {
+            if (!BetonQuest.getInstance().getQuestTypeAPI().conditions(onlineProfile, effectConfiguration.conditions())) {
                 continue;
             }
             activePlayerEffects.add(onlineProfile);

@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.condition.logik;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.id.ConditionID;
 import org.jetbrains.annotations.Nullable;
@@ -20,16 +20,23 @@ public class ConjunctionCondition implements NullableCondition {
     private final List<ConditionID> conditions;
 
     /**
+     * Quest Type API.
+     */
+    private final QuestTypeAPI questTypeAPI;
+
+    /**
      * Constructor for the {@link ConjunctionCondition} class.
      *
-     * @param conditions All of specified conditions have to be true.
+     * @param conditions   All of specified conditions have to be true.
+     * @param questTypeAPI the Quest Type API
      */
-    public ConjunctionCondition(final List<ConditionID> conditions) {
+    public ConjunctionCondition(final List<ConditionID> conditions, final QuestTypeAPI questTypeAPI) {
         this.conditions = conditions;
+        this.questTypeAPI = questTypeAPI;
     }
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        return BetonQuest.conditions(profile, conditions);
+        return questTypeAPI.conditions(profile, conditions);
     }
 }

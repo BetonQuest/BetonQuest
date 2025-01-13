@@ -2,6 +2,7 @@ package org.betonquest.betonquest;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.id.ObjectiveID;
@@ -48,8 +49,9 @@ public class GlobalObjectives {
      */
     public static void startAll(final Profile profile, final PlayerDataStorage dataStorage) {
         final PlayerData data = dataStorage.get(profile);
+        final QuestTypeAPI questTypeAPI = BetonQuest.getInstance().getQuestTypeAPI();
         for (final ObjectiveID id : instance.globalObjectiveIds) {
-            final Objective objective = BetonQuest.getInstance().getObjective(id);
+            final Objective objective = questTypeAPI.getObjective(id);
 
             if (objective == null) {
                 continue;

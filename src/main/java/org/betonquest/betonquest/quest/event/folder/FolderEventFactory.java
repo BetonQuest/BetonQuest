@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.event.folder;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
@@ -15,6 +16,7 @@ import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * Factory to create {@link FolderEvent} instances.
@@ -37,17 +39,24 @@ public class FolderEventFactory implements EventFactory, StaticEventFactory {
     private final PluginManager pluginManager;
 
     /**
+     * Quest Type API.
+     */
+    private final QuestTypeAPI questTypeAPI;
+
+    /**
      * Create a new folder event factory.
      *
      * @param betonQuest    the BetonQuest instance
      * @param loggerFactory the logger factory to create a logger for the events
      * @param pluginManager the plugin manager to register the quit listener
+     * @param questTypeAPI  the Quest Type API
      */
     public FolderEventFactory(final BetonQuest betonQuest, final BetonQuestLoggerFactory loggerFactory,
-                              final PluginManager pluginManager) {
+                              final PluginManager pluginManager, final QuestTypeAPI questTypeAPI) {
         this.betonQuest = betonQuest;
         this.loggerFactory = loggerFactory;
         this.pluginManager = pluginManager;
+        this.questTypeAPI = questTypeAPI;
     }
 
     @Override
@@ -69,7 +78,8 @@ public class FolderEventFactory implements EventFactory, StaticEventFactory {
         final boolean cancelOnLogout = instruction.hasArgument("cancelOnLogout");
         final List<ConditionID> cancelConditions = instruction.getIDList(instruction.getOptional("cancelConditions"), ConditionID::new);
         return new NullableEventAdapter(new FolderEvent(betonQuest, loggerFactory.create(FolderEvent.class), pluginManager,
-                events, delay, period, random, timeUnit, cancelOnLogout, cancelConditions));
+                events,
+                questTypeAPI, new Random(), delay, period, random, timeUnit, cancelOnLogout, cancelConditions));
     }
 
     private TimeUnit getTimeUnit(final Instruction instruction) {

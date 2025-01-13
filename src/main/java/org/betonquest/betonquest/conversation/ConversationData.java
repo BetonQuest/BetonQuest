@@ -3,6 +3,7 @@ package org.betonquest.betonquest.conversation;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -31,7 +32,7 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
 /**
  * Represents the data of the conversation.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals", "NullAway"})
+@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.CyclomaticComplexity", "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals", "NullAway"})
 public class ConversationData {
 
     /**
@@ -45,9 +46,9 @@ public class ConversationData {
     private final List<CrossConversationReference> externalPointers = new ArrayList<>();
 
     /**
-     * The {@link BetonQuest} instance.
+     * Feature API.
      */
-    private final BetonQuest plugin;
+    private final FeatureAPI featureAPI;
 
     /**
      * The {@link ConversationID} of the conversation holding this data.
@@ -122,7 +123,7 @@ public class ConversationData {
      */
     @SuppressWarnings({"PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     public ConversationData(final BetonQuest plugin, final ConversationID conversationID, final ConfigurationSection convSection) throws QuestException {
-        this.plugin = plugin;
+        this.featureAPI = plugin.getFeatureAPI();
         this.conversationID = conversationID;
         this.pack = conversationID.getPackage();
         this.convName = conversationID.getBaseID();
@@ -228,7 +229,7 @@ public class ConversationData {
 
             final ConversationData conv;
             try {
-                conv = plugin.getConversation(new ConversationID(targetPack, targetConvName));
+                conv = featureAPI.getConversation(new ConversationID(targetPack, targetConvName));
                 if (conv == null) {
                     throw new QuestException("No Conversation for conversationID '" + conversationID.getFullID() + "'! Check for errors on /bq reload!");
                 }
@@ -259,7 +260,7 @@ public class ConversationData {
      * @throws QuestException when the conversation could not be resolved
      */
     private CrossConversationReference resolvePointer(final QuestPackage pack, final String currentConversationName, @Nullable final String currentOptionName, final OptionType optionType, final String option) throws QuestException {
-        final ConversationOptionResolver resolver = new ConversationOptionResolver(plugin, pack, currentConversationName, optionType, option);
+        final ConversationOptionResolver resolver = new ConversationOptionResolver(featureAPI, pack, currentConversationName, optionType, option);
         return new CrossConversationReference(pack, currentConversationName, currentOptionName, resolver);
     }
 
@@ -580,14 +581,14 @@ public class ConversationData {
             final ConversationData sourceData;
             final String optionName;
             if (option.contains(".")) {
-                final ResolvedOption result = new ConversationOptionResolver(plugin, pack, this.convName, NPC, option).resolve();
+                final ResolvedOption result = new ConversationOptionResolver(featureAPI, pack, this.convName, NPC, option).resolve();
                 sourceData = result.conversationData();
                 optionName = result.name();
             } else {
                 sourceData = this;
                 optionName = option;
             }
-            if (BetonQuest.conditions(profile, sourceData.getConditionIDs(optionName, NPC))) {
+            if (BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, sourceData.getConditionIDs(optionName, NPC))) {
                 return true;
             }
         }
@@ -857,7 +858,7 @@ public class ConversationData {
 
             if (profile != null) {
                 for (final String extend : extendLinks) {
-                    if (BetonQuest.conditions(profile, getOption(extend, type).getConditions())) {
+                    if (BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, getOption(extend, type).getConditions())) {
                         text.append(getOption(extend, type).getText(profile, lang, optionPath));
                         break;
                     }
@@ -910,7 +911,7 @@ public class ConversationData {
             final List<EventID> events = new ArrayList<>(this.events);
 
             for (final String extend : extendLinks) {
-                if (BetonQuest.conditions(profile, getOption(extend, type).getConditions())) {
+                if (BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, getOption(extend, type).getConditions())) {
                     events.addAll(getOption(extend, type).getEvents(profile, optionPath));
                     break;
                 }
@@ -943,14 +944,14 @@ public class ConversationData {
                 for (final String extend : extendLinks) {
                     final ResolvedOption resolvedExtend;
                     try {
-                        resolvedExtend = new ConversationOptionResolver(plugin, pack, convName, type, extend).resolve();
+                        resolvedExtend = new ConversationOptionResolver(featureAPI, pack, convName, type, extend).resolve();
                     } catch (final QuestException e) {
                         log.reportException(pack, e);
                         throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable pointers.", e);
                     }
 
                     final ConversationData targetConvData = resolvedExtend.conversationData();
-                    if (BetonQuest.conditions(profile, targetConvData.getOption(resolvedExtend.name(), type).getConditions())) {
+                    if (BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, targetConvData.getOption(resolvedExtend.name(), type).getConditions())) {
                         pointers.addAll(targetConvData.getOption(resolvedExtend.name(), type).getPointers(profile, optionPath));
                         break;
                     }

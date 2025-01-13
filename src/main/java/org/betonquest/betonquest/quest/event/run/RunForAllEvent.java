@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.run;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
@@ -24,6 +24,11 @@ public class RunForAllEvent implements StaticEvent {
     private final Supplier<? extends Iterable<? extends Profile>> profileCollectionSupplier;
 
     /**
+     * Quest Type API.
+     */
+    private final QuestTypeAPI questTypeAPI;
+
+    /**
      * List of Events to run.
      */
     private final List<EventID> events;
@@ -37,11 +42,13 @@ public class RunForAllEvent implements StaticEvent {
      * Create a new RunForAllEvent instance.
      *
      * @param profileCollectionSupplier the supplier for generating the profiles
+     * @param questTypeAPI              the Quest Type API
      * @param events                    the events to run
      * @param conditions                the conditions each profile must meet to run the events
      */
-    public RunForAllEvent(final Supplier<? extends Iterable<? extends Profile>> profileCollectionSupplier, final List<EventID> events, final List<ConditionID> conditions) {
+    public RunForAllEvent(final Supplier<? extends Iterable<? extends Profile>> profileCollectionSupplier, final QuestTypeAPI questTypeAPI, final List<EventID> events, final List<ConditionID> conditions) {
         this.profileCollectionSupplier = profileCollectionSupplier;
+        this.questTypeAPI = questTypeAPI;
         this.events = events;
         this.conditions = conditions;
     }
@@ -49,9 +56,9 @@ public class RunForAllEvent implements StaticEvent {
     @Override
     public void execute() throws QuestException {
         for (final Profile profile : profileCollectionSupplier.get()) {
-            if (conditions.isEmpty() || BetonQuest.conditions(profile, conditions.toArray(new ConditionID[0]))) {
+            if (conditions.isEmpty() || questTypeAPI.conditions(profile, conditions.toArray(new ConditionID[0]))) {
                 for (final EventID event : events) {
-                    BetonQuest.event(profile, event);
+                    questTypeAPI.event(profile, event);
                 }
             }
         }
