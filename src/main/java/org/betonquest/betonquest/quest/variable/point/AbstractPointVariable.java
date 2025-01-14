@@ -6,7 +6,7 @@ package org.betonquest.betonquest.quest.variable.point;
  * @param <T> the data holder type
  */
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
-abstract class AbstractPointVariable<T> {
+public abstract class AbstractPointVariable<T> {
 
     /**
      * The data holder.

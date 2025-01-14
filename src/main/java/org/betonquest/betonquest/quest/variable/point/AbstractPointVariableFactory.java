@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ID;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
@@ -48,7 +47,7 @@ public abstract class AbstractPointVariableFactory<T> {
      */
     protected Triple<String, Integer, PointCalculationType> parseInstruction(final Instruction instruction) throws QuestException {
         final String category = getCategory(instruction);
-        final PointCalculationType type = getType(instruction);
+        final PointCalculationType type = getType(instruction.next());
         int amount = 0;
         if (type == PointCalculationType.LEFT) {
             amount = getAmount(instruction);
@@ -56,17 +55,16 @@ public abstract class AbstractPointVariableFactory<T> {
         return Triple.of(category, amount, type);
     }
 
-    @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.ShortVariable"})
-    @NotNull
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     private String getCategory(final Instruction instruction) throws QuestException {
         String category = instruction.next();
         if (instruction.size() == 4) {
             final String questPath = instruction.current();
             final String pointCategory = instruction.next();
             try {
-                final ID id = new ID(instruction.getPackage(), questPath + "." + pointCategory) {
+                final ID packageId = new ID(instruction.getPackage(), questPath + "." + pointCategory) {
                 };
-                category = id.getPackage().getQuestPath() + "." + pointCategory;
+                category = packageId.getPackage().getQuestPath() + "." + pointCategory;
             } catch (final ObjectNotFoundException e) {
                 logger.warn(instruction.getPackage(), e.getMessage());
             }
@@ -89,14 +87,14 @@ public abstract class AbstractPointVariableFactory<T> {
     }
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    private PointCalculationType getType(final Instruction instruction) throws QuestException {
-        if ("amount".equalsIgnoreCase(instruction.next())) {
+    private PointCalculationType getType(final String type) throws QuestException {
+        if ("amount".equalsIgnoreCase(type)) {
             return PointCalculationType.AMOUNT;
-        } else if (instruction.current().toLowerCase(Locale.ROOT).startsWith("left:")) {
+        } else if (type.toLowerCase(Locale.ROOT).startsWith("left:")) {
             return PointCalculationType.LEFT;
         } else {
             throw new QuestException(String.format("Unknown variable type: '%s'",
-                    instruction.current()));
+                    type));
         }
     }
 }
