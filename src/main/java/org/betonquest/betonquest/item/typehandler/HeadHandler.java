@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.item.typehandler;
 
-import io.papermc.lib.PaperLib;
+import com.destroystokyo.paper.profile.PlayerProfile;
+import com.destroystokyo.paper.profile.ProfileProperty;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -10,6 +11,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -18,7 +20,8 @@ import java.util.stream.Collectors;
 /**
  * Handles metadata about player Skulls.
  */
-public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
+@SuppressWarnings("PMD.TooManyMethods")
+public class HeadHandler implements ItemMetaHandler<SkullMeta> {
     /**
      * Owner metadata about the Skull.
      */
@@ -78,35 +81,65 @@ public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
     public HeadHandler() {
     }
 
-    /**
-     * Get an appropriate implementation of the HeadHandler based upon the type of server running.
-     *
-     * @return An appropriate HeadHandler instance.
-     */
-    public static HeadHandler getServerInstance() {
-        if (PaperLib.isPaper()) {
-            return new PaperHeadHandler();
-        } else {
-            return new SpigotHeadHandler(BetonQuest.getInstance().getLoggerFactory().create(SpigotHeadHandler.class));
+    private static Map<String, String> parseSkullMeta(final SkullMeta skullMeta) {
+        final Map<String, String> parsedValues = new HashMap<>();
+        if (skullMeta.hasOwner()) {
+            final OfflinePlayer owningPlayer = skullMeta.getOwningPlayer();
+            if (owningPlayer != null) {
+                parsedValues.put(META_OWNER, owningPlayer.getName());
+            }
+        }
+        final PlayerProfile playerProfile = skullMeta.getPlayerProfile();
+        if (playerProfile != null) {
+            final UUID playerId = playerProfile.getId();
+            if (playerId != null) {
+                parsedValues.put(META_PLAYER_ID, playerId.toString());
+            }
+            final String texture = encodeSkin(playerProfile);
+            if (texture != null) {
+                parsedValues.put(META_TEXTURE, texture);
+            }
+        }
+        return parsedValues;
+    }
+
+    @Nullable
+    private static String encodeSkin(final PlayerProfile playerProfile) {
+        return playerProfile.getProperties().stream()
+                .filter(it -> "textures".equals(it.getName()))
+                .map(ProfileProperty::getValue)
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public void populate(final SkullMeta skullMeta, @Nullable final Profile profile) {
+        final Profile owner = getOwner(profile);
+        final UUID playerId = getPlayerId();
+        final String texture = getTexture();
+
+        if (owner != null) {
+            skullMeta.setOwningPlayer(owner.getPlayer());
+        }
+        if (playerId != null && texture != null) {
+            final PlayerProfile playerProfile = Bukkit.getServer().createProfile(playerId);
+            playerProfile.getProperties().add(new ProfileProperty("textures", texture));
+            skullMeta.setPlayerProfile(playerProfile);
         }
     }
 
-    /**
-     * Serialize the specified SkullMeta data into a String for item persistence.
-     *
-     * @param skullMeta The SkullMeta data to serialize.
-     * @return A String representation of the SkullMeta data.
-     */
-    public static String serializeSkullMeta(final SkullMeta skullMeta) {
-        final Map<String, String> props;
-        if (PaperLib.isPaper()) {
-            props = PaperHeadHandler.parseSkullMeta(skullMeta);
+    @Override
+    public boolean check(final SkullMeta skullMeta) {
+        final OfflinePlayer owner = skullMeta.getOwningPlayer();
+        final String ownerName = owner == null ? null : owner.getName();
+        final PlayerProfile playerProfile = skullMeta.getPlayerProfile();
+        if (playerProfile != null) {
+            final UUID playerUniqueId = playerProfile.getId();
+            final String texture = encodeSkin(playerProfile);
+            return checkOwner(ownerName) && checkPlayerId(playerUniqueId) && checkTexture(texture);
         } else {
-            props = SpigotHeadHandler.parseSkullMeta(skullMeta);
+            return checkOwner(ownerName);
         }
-        return props.entrySet().stream()
-                .map(it -> it.getKey() + ":" + it.getValue())
-                .collect(Collectors.joining(" ", " ", ""));
     }
 
     @Override
@@ -122,7 +155,9 @@ public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
     @Override
     @Nullable
     public String serializeToString(final SkullMeta meta) {
-        final String serialized = serializeSkullMeta(meta);
+        final String serialized = parseSkullMeta(meta).entrySet().stream()
+                .map(it -> it.getKey() + ":" + it.getValue())
+                .collect(Collectors.joining(" ", " ", ""));
         if (serialized.isBlank()) {
             return null;
         }

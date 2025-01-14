@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.listener;
 
-import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.GlobalObjectives;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -108,9 +107,6 @@ public class JoinQuitListener implements Listener {
     }
 
     private void checkResourcepack(final PlayerJoinEvent event, final OnlineProfile onlineProfile) {
-        if (!PaperLib.isPaper()) {
-            return;
-        }
         final PlayerResourcePackStatusEvent.Status resourcePackStatus = event.getPlayer().getResourcePackStatus();
         if (resourcePackStatus != null) {
             questTypeAPI.getPlayerObjectives(onlineProfile).stream()

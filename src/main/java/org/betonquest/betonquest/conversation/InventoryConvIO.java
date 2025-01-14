@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.conversation;
 
-import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -293,7 +292,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         if (Bukkit.isPrimaryThread()) {
             throw new IllegalStateException("Must be called async!");
         }
-        if (PaperLib.isPaper() && !Bukkit.createProfile(npcName).complete()) {
+        if (!Bukkit.createProfile(npcName).complete()) {
             return meta;
         }
         meta.setOwner(npcName);
