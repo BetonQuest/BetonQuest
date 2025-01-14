@@ -1,17 +1,17 @@
 package org.betonquest.betonquest.quest.variable.point;
 
-import org.betonquest.betonquest.BetonQuest;
-
 /**
  * An abstract class for creating Point variables.
+ *
+ * @param <T> the data holder type
  */
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
-abstract class AbstractPointVariable {
+abstract class AbstractPointVariable<T> {
 
     /**
-     * The BetonQuest instance.
+     * The data holder.
      */
-    protected final BetonQuest betonQuest;
+    protected final T data;
 
     /**
      * The category of the point.
@@ -31,13 +31,13 @@ abstract class AbstractPointVariable {
     /**
      * Creates a new PointVariable.
      *
-     * @param betonQuest the BetonQuest instance
-     * @param category   the category of the point
-     * @param amount     the number to calculate the point to
-     * @param type       the type of how the points should be calculated
+     * @param data     the data holder
+     * @param category the category of the point
+     * @param amount   the number to calculate the point to
+     * @param type     the type of how the points should be calculated
      */
-    public AbstractPointVariable(final BetonQuest betonQuest, final String category, final int amount, final PointCalculationType type) {
-        this.betonQuest = betonQuest;
+    public AbstractPointVariable(final T data, final String category, final int amount, final PointCalculationType type) {
+        this.data = data;
         this.category = category;
         this.amount = amount;
         this.type = type;

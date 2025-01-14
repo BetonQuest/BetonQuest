@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.variable.point;
 
 import org.apache.commons.lang3.tuple.Triple;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -13,14 +12,16 @@ import java.util.Locale;
 
 /**
  * A factory for creating Point variables.
+ *
+ * @param <T> the data holder type
  */
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
-public abstract class AbstractPointVariableFactory {
+public abstract class AbstractPointVariableFactory<T> {
 
     /**
-     * The BetonQuest instance.
+     * The data holder.
      */
-    protected final BetonQuest betonQuest;
+    protected final T dataHolder;
 
     /**
      * The logger instance for this factory.
@@ -28,13 +29,13 @@ public abstract class AbstractPointVariableFactory {
     protected final BetonQuestLogger logger;
 
     /**
-     * Create a new Point variable factory.0
+     * Create a new Point variable factory.
      *
-     * @param betonQuest the BetonQuest instance
+     * @param dataHolder the data holder
      * @param logger     the logger instance for this factory
      */
-    public AbstractPointVariableFactory(final BetonQuest betonQuest, final BetonQuestLogger logger) {
-        this.betonQuest = betonQuest;
+    public AbstractPointVariableFactory(final T dataHolder, final BetonQuestLogger logger) {
+        this.dataHolder = dataHolder;
         this.logger = logger;
     }
 
