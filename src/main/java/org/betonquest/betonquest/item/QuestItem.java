@@ -41,7 +41,7 @@ public class QuestItem {
      */
     private static final List<ItemMetaHandler<? extends ItemMeta>> STATIC_HANDLERS = List.of(
             new DurabilityHandler(), new NameHandler(), new LoreHandler(), new EnchantmentsHandler(),
-            new BookHandler(), new PotionHandler(), new ColorHandler(), HeadHandler.getServerInstance(),
+            new BookHandler(), new PotionHandler(), new ColorHandler(), new HeadHandler(),
             new FireworkHandler(), new UnbreakableHandler(), new CustomModelDataHandler(), new FlagHandler()
     );
 
@@ -61,7 +61,7 @@ public class QuestItem {
 
     private final BookHandler book = new BookHandler();
 
-    private final HeadHandler head = HeadHandler.getServerInstance();
+    private final HeadHandler head = new HeadHandler();
 
     private final ColorHandler color = new ColorHandler();
 
