@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.registry.processor;
 
-import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -69,13 +68,9 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
                     // This will throw a CancellationException and IllegalPluginAccessExceptions.
                     // For Paper, we can detect this and only log it to the debug log.
                     // When the conditions get reworked, this complete check can be removed including the Spigot message.
-                    if (PaperLib.isPaper() && Bukkit.getServer().isStopping()) {
+                    if (Bukkit.getServer().isStopping()) {
                         log.debug("Exception during shutdown while checking conditions (expected):", e);
                         return false;
-                    }
-                    if (PaperLib.isSpigot()) {
-                        log.warn("The following exception is only ok when the server is currently stopping."
-                                + "Switch to papermc.io to fix this.");
                     }
                     log.reportException(e);
                     return false;
