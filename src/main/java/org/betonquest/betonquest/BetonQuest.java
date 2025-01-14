@@ -96,6 +96,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Handler;
+import java.util.logging.Level;
 
 /**
  * Represents BetonQuest plugin.
@@ -344,12 +345,18 @@ public class BetonQuest extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-
         this.loggerFactory = registerAndGetService(BetonQuestLoggerFactory.class, new CachingBetonQuestLoggerFactory(new DefaultBetonQuestLoggerFactory()));
+        this.log = loggerFactory.create(this);
+        if (!PaperLib.isPaper()) {
+            PaperLib.suggestPaper(this, Level.WARNING);
+            log.warn("Only Paper is supported! Disabling BetonQuest...");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
         this.configAccessorFactory = registerAndGetService(ConfigAccessorFactory.class, new DefaultConfigAccessorFactory(loggerFactory, loggerFactory.create(ConfigAccessorFactory.class)));
         this.profileProvider = registerAndGetService(ProfileProvider.class, new UUIDProfileProvider());
 
-        this.log = loggerFactory.create(this);
         pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
 
         final JREVersionPrinter jreVersionPrinter = new JREVersionPrinter();
@@ -480,7 +487,6 @@ public class BetonQuest extends JavaPlugin {
 
         rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, config, pluginMessage, questTypeAPI, profileProvider);
 
-        PaperLib.suggestPaper(this);
         log.info("BetonQuest successfully enabled!");
     }
 
