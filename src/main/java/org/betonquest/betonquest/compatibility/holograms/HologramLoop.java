@@ -17,6 +17,7 @@ import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.item.QuestItem;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
@@ -61,14 +62,21 @@ public abstract class HologramLoop {
     private final BetonQuestLogger log;
 
     /**
+     * The {@link VariableProcessor} to use.
+     */
+    private final VariableProcessor variableProcessor;
+
+    /**
      * Creates a new instance of the loop.
      *
-     * @param loggerFactory logger factory to use
-     * @param log           the logger that will be used for logging
+     * @param loggerFactory     logger factory to use
+     * @param log               the logger that will be used for logging
+     * @param variableProcessor the {@link VariableProcessor} to use
      */
-    public HologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
+    public HologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final VariableProcessor variableProcessor) {
         this.loggerFactory = loggerFactory;
         this.log = log;
+        this.variableProcessor = variableProcessor;
     }
 
     /**
@@ -103,21 +111,16 @@ public abstract class HologramLoop {
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
     private HologramWrapper initializeHolograms(final int defaultInterval, final QuestPackage pack, final ConfigurationSection section) throws QuestException {
-        final String checkIntervalString = section.getString("check_interval");
-        final int checkInterval;
-        try {
-            checkInterval = checkIntervalString != null ? new VariableNumber(BetonQuest.getInstance().getVariableProcessor(), pack, checkIntervalString).getValue(null).intValue() : defaultInterval;
-        } catch (final QuestException e) {
-            throw new QuestException("Could not parse check interval", e);
-        }
-        final VariableNumber maxRange = new VariableNumber(pack, section.getString("max_range", "0"));
+        final String checkIntervalString = section.getString("check_interval", String.valueOf(defaultInterval));
+        final int checkInterval = new VariableNumber(variableProcessor, pack, checkIntervalString).getValue(null).intValue();
+        final VariableNumber maxRange = new VariableNumber(variableProcessor, pack, section.getString("max_range", "0"));
 
         final List<String> lines = new ArrayList<>();
         String rawConditions = section.getString("conditions");
         for (final String line : section.getStringList("lines")) {
-            lines.add(new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, line).getValue(null));
+            lines.add(new VariableString(variableProcessor, pack, line).getValue(null));
         }
-        rawConditions = rawConditions == null ? null : new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, rawConditions).getValue(null);
+        rawConditions = rawConditions == null ? null : new VariableString(variableProcessor, pack, rawConditions).getValue(null);
 
         final ConditionID[] conditions = parseConditions(pack, rawConditions);
 

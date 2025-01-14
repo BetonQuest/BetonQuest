@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.variable.constant;
 
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
 import org.betonquest.betonquest.exceptions.QuestException;
@@ -12,11 +11,6 @@ import org.jetbrains.annotations.Nullable;
  */
 public class ConstantVariable implements NullableVariable {
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
-
-    /**
      * The constant value.
      */
     private final VariableString constant;
@@ -24,11 +18,9 @@ public class ConstantVariable implements NullableVariable {
     /**
      * Create a variable that always evaluates to the given constant.
      *
-     * @param log      The logger.
      * @param constant The constant value.
      */
-    public ConstantVariable(final BetonQuestLogger log, final VariableString constant) {
-        this.log = log;
+    public ConstantVariable(final VariableString constant) {
         this.constant = constant;
     }
 

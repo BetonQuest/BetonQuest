@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.config.patcher.migration.migrators;
+package org.betonquest.betonquest.modules.config.patcher.migration.migrators.from2to3;
 
 import org.betonquest.betonquest.modules.config.patcher.migration.FileConfigurationProvider;
 import org.betonquest.betonquest.modules.config.patcher.migration.Migration;

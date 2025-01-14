@@ -77,7 +77,7 @@ public class QuestCanceler {
     /**
      * Creates a new canceler with given name.
      *
-     * @param variableProcessor The {@link VariableProcessor} to use for parsing
+     * @param variableProcessor the {@link VariableProcessor} to use for parsing
      * @param pack              the {@link QuestPackage} of the canceler
      * @param cancelerID        ID of the canceler (package.name)
      * @throws QuestException when parsing, the canceler fails for some reason
@@ -109,17 +109,7 @@ public class QuestCanceler {
         points = split(section, "points");
         journal = split(section, "journal");
         final String rawLoc = section.getString("loc");
-        if (rawLoc != null) {
-            VariableLocation tmp = null;
-            try {
-                tmp = new VariableLocation(variableProcessor, pack, rawLoc);
-            } catch (final QuestException e) {
-                log.warn(pack, "Could not parse location in quest canceler '" + name + "': " + e.getMessage(), e);
-            }
-            loc = tmp;
-        } else {
-            loc = null;
-        }
+        loc = rawLoc == null ? null : new VariableLocation(variableProcessor, pack, rawLoc);
     }
 
     @Nullable

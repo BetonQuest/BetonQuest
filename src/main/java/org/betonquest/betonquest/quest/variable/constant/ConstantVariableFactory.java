@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.variable.constant;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
@@ -17,11 +16,6 @@ import org.bukkit.configuration.ConfigurationSection;
  */
 public class ConstantVariableFactory implements PlayerVariableFactory, PlayerlessVariableFactory {
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
-
-    /**
      * Variable processor that the constant variable should use for creating variables.
      */
     private final VariableProcessor variableProcessor;
@@ -29,11 +23,9 @@ public class ConstantVariableFactory implements PlayerVariableFactory, Playerles
     /**
      * Create a new Eval variable factory.
      *
-     * @param log               the logger
      * @param variableProcessor variable processor to use
      */
-    public ConstantVariableFactory(final BetonQuestLogger log, final VariableProcessor variableProcessor) {
-        this.log = log;
+    public ConstantVariableFactory(final VariableProcessor variableProcessor) {
         this.variableProcessor = variableProcessor;
     }
 
@@ -57,7 +49,6 @@ public class ConstantVariableFactory implements PlayerVariableFactory, Playerles
         if (constant == null) {
             throw new QuestException("No constant with the name '" + constantTarget + "' found in the 'constants' section!");
         }
-        return new NullableVariableAdapter(new ConstantVariable(
-                log, new VariableString(variableProcessor, instruction.getPackage(), constant)));
+        return new NullableVariableAdapter(new ConstantVariable(new VariableString(variableProcessor, instruction.getPackage(), constant)));
     }
 }

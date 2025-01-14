@@ -11,6 +11,7 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
@@ -48,6 +49,11 @@ public class ConversationData {
      * The {@link BetonQuest} instance.
      */
     private final BetonQuest plugin;
+
+    /**
+     * The {@link VariableProcessor} to use.
+     */
+    private final VariableProcessor variableProcessor;
 
     /**
      * The {@link ConversationID} of the conversation holding this data.
@@ -123,6 +129,7 @@ public class ConversationData {
     @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     public ConversationData(final BetonQuest plugin, final ConversationID conversationID, final ConfigurationSection convSection) throws QuestException, ObjectNotFoundException {
         this.plugin = plugin;
+        this.variableProcessor = plugin.getVariableProcessor();
         this.conversationID = conversationID;
         this.pack = conversationID.getPackage();
         this.convName = conversationID.getBaseID();
@@ -153,7 +160,7 @@ public class ConversationData {
         }
         final String stop = pack.getString("conversations." + convName + ".stop");
         blockMovement = Boolean.parseBoolean(stop);
-        final String rawConvIOs = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack,
+        final String rawConvIOs = new VariableString(variableProcessor, pack,
                 pack.getConfig().getString("conversations." + convName + ".conversationIO",
                         plugin.getPluginConfig().getString("default_conversation_IO", "menu,tellraw")))
                 .getValue(null);
@@ -172,7 +179,7 @@ public class ConversationData {
             throw new QuestException("No registered conversation IO found: " + rawConvIOs);
         }
 
-        final String rawInterceptor = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack,
+        final String rawInterceptor = new VariableString(variableProcessor, pack,
                 pack.getConfig().getString("conversations." + convName + ".interceptor",
                         plugin.getPluginConfig().getString("default_interceptor", "simple")))
                 .getValue(null);
@@ -401,10 +408,7 @@ public class ConversationData {
     public String getPrefix(final String lang, @Nullable final ResolvedOption option) {
         // get prefix from an option
         if (option != null) {
-            String pref = option.conversationData().npcOptions.get(option.name()).getInlinePrefix(lang);
-            if (pref == null) {
-                pref = option.conversationData().npcOptions.get(option.name()).getInlinePrefix(Config.getLanguage());
-            }
+            final String pref = option.conversationData().npcOptions.get(option.name()).getInlinePrefix(lang);
             if (pref != null) {
                 return pref;
             }
@@ -716,7 +720,7 @@ public class ConversationData {
         }
 
         private void parseStringToList(final String string, final List<String> list) throws QuestException {
-            final String rawPointers = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack,
+            final String rawPointers = new VariableString(variableProcessor, pack,
                     string).getValue(null);
             for (final String pointer : rawPointers.split(",")) {
                 if (!pointer.isEmpty()) {
@@ -727,7 +731,7 @@ public class ConversationData {
 
         private void parseEvents(final String name, final OptionType type, final ConfigurationSection conv) throws QuestException {
             try {
-                final String rawEvents = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack,
+                final String rawEvents = new VariableString(variableProcessor, pack,
                         conv.getString("events", conv.getString("event", ""))).getValue(null);
                 for (final String rawEvent : rawEvents.split(",")) {
                     if (!Objects.equals(rawEvent, "")) {
@@ -742,7 +746,7 @@ public class ConversationData {
 
         private void parseConditions(final String name, final OptionType type, final ConfigurationSection conv) throws QuestException {
             try {
-                final String rawConditions = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack,
+                final String rawConditions = new VariableString(variableProcessor, pack,
                         conv.getString("conditions", conv.getString("condition", ""))).getValue(null);
                 for (final String rawCondition : rawConditions.split(",")) {
                     if (!rawCondition.isEmpty()) {
@@ -761,7 +765,7 @@ public class ConversationData {
             if (conv.contains("prefix")) {
                 if (conv.isConfigurationSection("prefix")) {
                     for (final String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
-                        final String pref = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, conv.getConfigurationSection("prefix").getString(lang)).getValue(null);
+                        final String pref = new VariableString(variableProcessor, pack, conv.getConfigurationSection("prefix").getString(lang)).getValue(null);
                         if (pref != null && !pref.isEmpty()) {
                             inlinePrefix.put(lang, pref);
                         }
@@ -771,7 +775,7 @@ public class ConversationData {
                                 + " prefix");
                     }
                 } else {
-                    final String pref = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, conv.getString("prefix")).getValue(null);
+                    final String pref = new VariableString(variableProcessor, pack, conv.getString("prefix")).getValue(null);
                     if (pref != null && !pref.isEmpty()) {
                         inlinePrefix.put(defaultLang, pref);
                     }

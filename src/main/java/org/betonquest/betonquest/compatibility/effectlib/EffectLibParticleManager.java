@@ -46,7 +46,7 @@ public class EffectLibParticleManager {
     private final BetonQuestLogger log;
 
     /**
-     * The {@link VariableProcessor} to use for variable creation.
+     * The {@link VariableProcessor} to use.
      */
     private final VariableProcessor variableProcessor;
 
@@ -65,7 +65,7 @@ public class EffectLibParticleManager {
      *
      * @param loggerFactory     the logger factory to create new custom loggers
      * @param log               the custom logger for this class
-     * @param variableProcessor the variable processor to use for creating variables
+     * @param variableProcessor the {@link VariableProcessor} to use
      * @param manager           the effect manager starting and controlling particles
      */
     public EffectLibParticleManager(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final VariableProcessor variableProcessor, final EffectManager manager) {
@@ -146,7 +146,7 @@ public class EffectLibParticleManager {
                     continue;
                 }
                 try {
-                    locations.add(new VariableLocation(BetonQuest.getInstance().getVariableProcessor(), pack, rawLocation));
+                    locations.add(new VariableLocation(variableProcessor, pack, rawLocation));
                 } catch (final QuestException exception) {
                     log.warn(pack, "Could not load npc effect '" + key + "' in package " + pack.getQuestPath() + ": "
                             + "Location is invalid:" + exception.getMessage());

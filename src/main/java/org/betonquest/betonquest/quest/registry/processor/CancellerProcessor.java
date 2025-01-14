@@ -24,7 +24,7 @@ public class CancellerProcessor extends QuestProcessor<QuestCancelerID, QuestCan
      * Create a new Quest Canceler Processor to store them.
      *
      * @param log               the custom logger for this class
-     * @param variableProcessor The {@link VariableProcessor} to use.
+     * @param variableProcessor the {@link VariableProcessor} to use.
      */
     public CancellerProcessor(final BetonQuestLogger log, final VariableProcessor variableProcessor) {
         super(log);

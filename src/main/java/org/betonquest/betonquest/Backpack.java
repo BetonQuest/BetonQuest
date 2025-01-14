@@ -78,8 +78,9 @@ public class Backpack implements Listener {
     /**
      * Creates new backpack GUI opened at given page type.
      *
-     * @param onlineProfile the {@link OnlineProfile} of the player
-     * @param type          type of the display
+     * @param variableProcessor the {@link VariableProcessor} to use
+     * @param onlineProfile     the {@link OnlineProfile} of the player
+     * @param type              type of the display
      */
     public Backpack(final VariableProcessor variableProcessor, final OnlineProfile onlineProfile, final DisplayType type) {
         this.variableProcessor = variableProcessor;
@@ -109,17 +110,15 @@ public class Backpack implements Listener {
      * Catches clicks on an open backpack and processes them.
      *
      * @param event the click event
+     * @throws QuestException If an error occurs
      */
     @EventHandler(ignoreCancelled = true)
     public void onClick(final InventoryClickEvent event) throws QuestException {
         if (event.getWhoClicked().equals(onlineProfile.getPlayer())) {
-            // if the player clicked, then cancel this event
             event.setCancelled(true);
-            // if the click was outside the inventory, do nothing
             if (event.getRawSlot() < 0) {
                 return;
             }
-            // pass the click to the Display
             display.click(event.getRawSlot(), event.getSlot(), event.getClick());
         }
     }
@@ -607,7 +606,6 @@ public class Backpack implements Listener {
                 return;
             }
             final Location location = variableLocation.getValue(onlineProfile);
-            // set the location of the compass
             final QuestCompassTargetChangeEvent event = new QuestCompassTargetChangeEvent(onlineProfile, location);
             Bukkit.getServer().getPluginManager().callEvent(event);
             if (!event.isCancelled()) {

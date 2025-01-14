@@ -42,6 +42,3 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
     ```
     
     </div>
-    
-    
-    

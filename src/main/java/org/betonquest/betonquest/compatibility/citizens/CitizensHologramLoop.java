@@ -17,6 +17,7 @@ import org.betonquest.betonquest.compatibility.holograms.HologramWrapper;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableVector;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -53,11 +54,12 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
     /**
      * Starts a loop, which checks hologram conditions and shows them to players.
      *
-     * @param loggerFactory logger factory to use
-     * @param log           the logger that will be used for logging
+     * @param loggerFactory     logger factory to use
+     * @param log               the logger that will be used for logging
+     * @param variableProcessor the {@link VariableProcessor} to use
      */
-    public CitizensHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
-        super(loggerFactory, log);
+    public CitizensHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final VariableProcessor variableProcessor) {
+        super(loggerFactory, log, variableProcessor);
         npcHolograms = new ArrayList<>();
         holograms = initialize("npc_holograms");
         followTask = Bukkit.getServer().getScheduler().runTaskTimer(BetonQuest.getInstance(),

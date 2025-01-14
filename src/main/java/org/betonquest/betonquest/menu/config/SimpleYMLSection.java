@@ -82,7 +82,7 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Parse a list of strings from config file.
+     * Parse a list of strings from a config file.
      *
      * @param key where to search
      * @return the list of {@link VariableString} from the config
@@ -103,7 +103,7 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Parse a list of multiple strings, separated by ',' from config file.
+     * Parse a list of multiple strings, separated by ',' from a config file.
      *
      * @param key where to search
      * @return the list of {@link VariableString} from the config
@@ -124,7 +124,7 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Parse a number from config file.
+     * Parse a number from a config file.
      *
      * @param key where to search
      * @return the {@link VariableNumber} from the config
@@ -132,12 +132,11 @@ public abstract class SimpleYMLSection {
      * @throws QuestException If the {@link VariableNumber} could not be created
      */
     protected final VariableNumber getNumber(final String key) throws Missing, QuestException {
-        final String stringInt = getRawString(key);
-        return new VariableNumber(BetonQuest.getInstance().getVariableProcessor(), pack, stringInt);
+        return new VariableNumber(BetonQuest.getInstance().getVariableProcessor(), pack, getRawString(key));
     }
 
     /**
-     * Parse a boolean from config file
+     * Parse a boolean from a config file.
      *
      * @param key where to search
      * @return the {@link VariableBoolean} from the config
@@ -150,7 +149,7 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Parse a list of events from config file.
+     * Parse a list of events from a config file.
      *
      * @param key  where to search
      * @param pack configuration package of this file
@@ -162,7 +161,7 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Parse a list of conditions from config file.
+     * Parse a list of conditions from a config file.
      *
      * @param key  where to search
      * @param pack configuration package of this file

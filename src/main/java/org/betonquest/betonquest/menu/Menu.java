@@ -121,7 +121,7 @@ public class Menu extends SimpleYMLSection implements Listener {
         try {
             this.title = getString("title");
         } catch (final QuestException e) {
-            throw new InvalidConfigurationException(e.getMessage(), e);
+            throw new Invalid("title", e);
         }
         this.openConditions = getConditions("open_conditions", pack);
         this.openEvents = getEvents("open_events", pack);

@@ -15,14 +15,14 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
 public class CancelQuestCommand implements CommandExecutor {
     /**
-     * The variable processor that the command should use for creating variables.
+     * The {@link VariableProcessor} to use.
      */
     private final VariableProcessor variableProcessor;
 
     /**
      * Creates a new executor for the /cancelquest command.
      *
-     * @param variableProcessor the processor that will be used for creating variables
+     * @param variableProcessor the {@link VariableProcessor} to use
      */
     public CancelQuestCommand(final VariableProcessor variableProcessor) {
         this.variableProcessor = variableProcessor;

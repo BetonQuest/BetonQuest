@@ -16,24 +16,24 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
 public class BackpackCommand implements CommandExecutor {
     /**
-     * The variable processor that the command should use for creating variables.
-     */
-    private final VariableProcessor variableProcessor;
-
-    /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
     /**
+     * The {@link VariableProcessor} to use.
+     */
+    private final VariableProcessor variableProcessor;
+
+    /**
      * Creates a new executor for the /backpack command.
      *
-     * @param variableProcessor the processor that will be used for creating variables
      * @param log               the logger that will be used for logging
+     * @param variableProcessor the {@link VariableProcessor} to use
      */
-    public BackpackCommand(final VariableProcessor variableProcessor, final BetonQuestLogger log) {
-        this.variableProcessor = variableProcessor;
+    public BackpackCommand(final BetonQuestLogger log, final VariableProcessor variableProcessor) {
         this.log = log;
+        this.variableProcessor = variableProcessor;
     }
 
     @Override

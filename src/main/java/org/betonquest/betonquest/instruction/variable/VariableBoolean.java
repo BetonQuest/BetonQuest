@@ -9,6 +9,16 @@ import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
  */
 public class VariableBoolean extends Variable<Boolean> {
     /**
+     * The string representation of a boolean true.
+     */
+    private static final String TRUE = "true";
+
+    /**
+     * The string representation of a boolean false.
+     */
+    private static final String FALSE = "false";
+
+    /**
      * Resolves a string that may contain variables to a variable of the given type.
      *
      * @param variableProcessor the processor to create the variables
@@ -16,12 +26,11 @@ public class VariableBoolean extends Variable<Boolean> {
      * @param input             the string that may contain variables
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public VariableBoolean(final VariableProcessor variableProcessor, final QuestPackage pack, final String input) throws QuestException {
         super(variableProcessor, pack, input, value -> {
-            if ("true".equalsIgnoreCase(value)) {
+            if (TRUE.equalsIgnoreCase(value)) {
                 return true;
-            } else if ("false".equalsIgnoreCase(value)) {
+            } else if (FALSE.equalsIgnoreCase(value)) {
                 return false;
             } else {
                 throw new QuestException("Could not parse value to boolean: " + value);
