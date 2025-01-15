@@ -73,8 +73,4 @@ public interface QuestPackage {
     @Nullable
     @Deprecated
     String getString(String address);
-
-    @Nullable
-    @Deprecated
-    String getFormattedString(String address);
 }

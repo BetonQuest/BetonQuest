@@ -11,6 +11,7 @@ import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
+import org.betonquest.betonquest.util.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
@@ -819,7 +820,7 @@ public class ConversationData {
         }
 
         private void addConversationText(final String name, final OptionType type, final String lang, final String suffix) throws QuestException {
-            final String convText = pack.getFormattedString("conversations." + conversationName + "." + type.getIdentifier() + "." + name + ".text" + suffix);
+            final String convText = Utils.format(pack.getString("conversations." + conversationName + "." + type.getIdentifier() + "." + name + ".text" + suffix));
             if (convText == null) {
                 throw new QuestException("No text for " + name + " " + type.getReadable());
             }
