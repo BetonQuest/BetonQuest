@@ -24,7 +24,7 @@ public class RedisChatIntegrator implements Integrator, Listener {
 
     @Override
     public void hook() throws HookException {
-        plugin.getOtherRegistries().interceptor().register("redischat", RedisChatInterceptor.class);
+        plugin.getFeatureRegistries().interceptor().register("redischat", RedisChatInterceptor.class);
     }
 
     @Override

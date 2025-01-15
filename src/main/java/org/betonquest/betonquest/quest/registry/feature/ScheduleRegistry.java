@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.registry.other;
+package org.betonquest.betonquest.quest.registry.feature;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.Schedule;

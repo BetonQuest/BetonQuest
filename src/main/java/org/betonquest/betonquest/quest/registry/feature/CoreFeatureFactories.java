@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.registry.other;
+package org.betonquest.betonquest.quest.registry.feature;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.conversation.ConversationIO;
@@ -29,7 +29,7 @@ import org.betonquest.betonquest.schedule.impl.realtime.daily.RealtimeDailySched
 /**
  * Registers the stuff that is not built from Instructions.
  */
-public class CoreOtherFactories {
+public class CoreFeatureFactories {
     /**
      * Factory to create new class specific loggers.
      */
@@ -46,7 +46,7 @@ public class CoreOtherFactories {
      * @param loggerFactory      the factory to create new class specific loggers
      * @param lastExecutionCache the cache to catch up missed schedulers
      */
-    public CoreOtherFactories(final BetonQuestLoggerFactory loggerFactory, final LastExecutionCache lastExecutionCache) {
+    public CoreFeatureFactories(final BetonQuestLoggerFactory loggerFactory, final LastExecutionCache lastExecutionCache) {
         this.loggerFactory = loggerFactory;
         this.lastExecutionCache = lastExecutionCache;
     }
@@ -56,7 +56,7 @@ public class CoreOtherFactories {
      *
      * @param registries containing the registry to register in
      */
-    public void register(final OtherFactoryRegistries registries) {
+    public void register(final FeatureRegistries registries) {
         final FactoryRegistry<Class<? extends ConversationIO>> conversationIOTypes = registries.conversationIO();
         conversationIOTypes.register("simple", SimpleConvIO.class);
         conversationIOTypes.register("tellraw", TellrawConvIO.class);

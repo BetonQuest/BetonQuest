@@ -96,7 +96,7 @@ public class CitizensIntegrator implements Integrator {
         eventTypes.register("stopnpc", new CitizensStopEventFactory(data, citizensMoveController));
         eventTypes.registerCombined("teleportnpc", new NPCTeleportEventFactory(data));
 
-        final FactoryRegistry<Class<? extends ConversationIO>> conversationIOTypes = plugin.getOtherRegistries().conversationIO();
+        final FactoryRegistry<Class<? extends ConversationIO>> conversationIOTypes = plugin.getFeatureRegistries().conversationIO();
         conversationIOTypes.register("chest", CitizensInventoryConvIO.class);
         conversationIOTypes.register("combined", CitizensInventoryConvIO.CitizensCombined.class);
 

@@ -108,18 +108,16 @@ public final class Notify {
     private static List<String> getIOs(final Map<String, String> categoryData) {
         final List<String> ios = new ArrayList<>();
         if (categoryData.containsKey("io")) {
-            ios.addAll(
-                    Arrays.stream(categoryData.get("io").split(","))
-                            .map(String::trim)
-                            .map(o -> o.toLowerCase(Locale.ROOT))
-                            .toList());
+            for (final String part : categoryData.get("io").split(",")) {
+                ios.add(part.trim().toLowerCase(Locale.ROOT));
+            }
         }
         return ios;
     }
 
     private static NotifyIO getNotifyIO(final QuestPackage pack, final List<String> ios, final Map<String, String> categoryData) throws QuestException {
         for (final String name : ios) {
-            final Class<? extends NotifyIO> clazz = BetonQuest.getInstance().getOtherRegistries().notifyIO().getFactory(name);
+            final Class<? extends NotifyIO> clazz = BetonQuest.getInstance().getFeatureRegistries().notifyIO().getFactory(name);
             if (clazz != null) {
                 try {
                     return clazz.getConstructor(QuestPackage.class, Map.class).newInstance(pack, categoryData);

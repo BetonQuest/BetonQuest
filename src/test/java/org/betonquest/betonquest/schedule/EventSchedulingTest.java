@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.schedule.FictiveTime;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.exception.QuestException;
-import org.betonquest.betonquest.quest.registry.other.ScheduleRegistry;
+import org.betonquest.betonquest.quest.registry.feature.ScheduleRegistry;
 import org.betonquest.betonquest.schedule.EventScheduling.ScheduleType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;

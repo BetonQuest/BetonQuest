@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.registry.other;
+package org.betonquest.betonquest.quest.registry.feature;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -15,7 +15,7 @@ import org.betonquest.betonquest.quest.registry.FactoryRegistry;
  * @param notifyIO        The Registry holding registered NotifyIOs.
  * @param eventScheduling The Registry holding registered Event Schedulers.
  */
-public record OtherFactoryRegistries(
+public record FeatureRegistries(
         FactoryRegistry<Class<? extends ConversationIO>> conversationIO,
         FactoryRegistry<Class<? extends Interceptor>> interceptor,
         FactoryRegistry<Class<? extends NotifyIO>> notifyIO,
@@ -28,9 +28,9 @@ public record OtherFactoryRegistries(
      * @param loggerFactory the logger factory to create individual class logger
      * @return the newly created registries
      */
-    public static OtherFactoryRegistries create(final BetonQuestLoggerFactory loggerFactory) {
+    public static FeatureRegistries create(final BetonQuestLoggerFactory loggerFactory) {
         final BetonQuestLogger logger = loggerFactory.create(FactoryRegistry.class);
-        return new OtherFactoryRegistries(
+        return new FeatureRegistries(
                 new FactoryRegistry<>(logger, "Conversation IO"),
                 new FactoryRegistry<>(logger, "Interceptor"),
                 new FactoryRegistry<>(logger, "Notify IO"),

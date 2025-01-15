@@ -61,8 +61,8 @@ import org.betonquest.betonquest.playerhider.PlayerHider;
 import org.betonquest.betonquest.quest.registry.CoreQuestTypes;
 import org.betonquest.betonquest.quest.registry.QuestRegistry;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
-import org.betonquest.betonquest.quest.registry.other.CoreOtherFactories;
-import org.betonquest.betonquest.quest.registry.other.OtherFactoryRegistries;
+import org.betonquest.betonquest.quest.registry.feature.CoreFeatureFactories;
+import org.betonquest.betonquest.quest.registry.feature.FeatureRegistries;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.schedule.LastExecutionCache;
 import org.betonquest.betonquest.util.PlayerConverter;
@@ -146,7 +146,7 @@ public class BetonQuest extends JavaPlugin {
     /**
      * Stores Registry for ConvIO, Interceptor, NotifyIO and EventScheduling.
      */
-    private OtherFactoryRegistries otherRegistries;
+    private FeatureRegistries featureRegistries;
 
     private BetonQuestLoggerFactory loggerFactory;
 
@@ -462,15 +462,15 @@ public class BetonQuest extends JavaPlugin {
         getCommand("questlang").setTabCompleter(langCommand);
 
         questTypeRegistries = QuestTypeRegistries.create(loggerFactory);
-        otherRegistries = OtherFactoryRegistries.create(loggerFactory);
+        featureRegistries = FeatureRegistries.create(loggerFactory);
 
         questRegistry = new QuestRegistry(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
-                otherRegistries, questTypeRegistries);
+                featureRegistries, questTypeRegistries);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
                 questRegistry.variables(), globalData, playerDataStorage).register(questTypeRegistries);
 
-        new CoreOtherFactories(loggerFactory, lastExecutionCache).register(otherRegistries);
+        new CoreFeatureFactories(loggerFactory, lastExecutionCache).register(featureRegistries);
 
         new Compatibility(this, loggerFactory.create(Compatibility.class));
 
@@ -729,8 +729,8 @@ public class BetonQuest extends JavaPlugin {
      *
      * @return registry holding ConvIO, Interceptor, ...
      */
-    public OtherFactoryRegistries getOtherRegistries() {
-        return otherRegistries;
+    public FeatureRegistries getFeatureRegistries() {
+        return featureRegistries;
     }
 
     /**
