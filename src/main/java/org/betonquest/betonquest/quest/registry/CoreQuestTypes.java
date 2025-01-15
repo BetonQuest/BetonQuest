@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.registry;
 
-import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.database.GlobalData;
@@ -393,11 +392,9 @@ public class CoreQuestTypes {
         betonQuest.registerObjectives("step", StepObjective.class);
         betonQuest.registerObjectives("tame", TameObjective.class);
         betonQuest.registerObjectives("variable", VariableObjective.class);
-        if (PaperLib.isPaper()) {
-            betonQuest.registerObjectives("equip", EquipItemObjective.class);
-            betonQuest.registerObjectives("jump", JumpObjective.class);
-            betonQuest.registerObjectives("resourcepack", ResourcePackObjective.class);
-        }
+        betonQuest.registerObjectives("equip", EquipItemObjective.class);
+        betonQuest.registerObjectives("jump", JumpObjective.class);
+        betonQuest.registerObjectives("resourcepack", ResourcePackObjective.class);
     }
 
     private void registerVariables(final VariableTypeRegistry variables) {
