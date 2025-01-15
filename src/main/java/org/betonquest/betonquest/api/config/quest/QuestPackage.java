@@ -4,7 +4,6 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
@@ -74,11 +73,6 @@ public interface QuestPackage {
     @Nullable
     @Deprecated
     String getString(String address);
-
-    @Contract("_, !null -> !null")
-    @Nullable
-    @Deprecated
-    String getString(String address, @Nullable String def);
 
     @Nullable
     @Deprecated

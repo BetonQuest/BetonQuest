@@ -11,7 +11,6 @@ import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -84,16 +83,9 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
     @Override
     @Nullable
     public String getString(final String address) {
-        return getString(address, null);
-    }
-
-    @Override
-    @Contract("_, !null -> !null")
-    @Nullable
-    public String getString(final String address, @Nullable final String def) {
         final String value = getRawString(address);
         if (value == null) {
-            return def;
+            return null;
         }
         try {
             return new VariableString(BetonQuest.getInstance().getVariableProcessor(), this, value).getValue(null);
