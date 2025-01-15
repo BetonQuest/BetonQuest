@@ -1,8 +1,6 @@
 package org.betonquest.betonquest.quest.registry.feature;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.conversation.ConversationIO;
-import org.betonquest.betonquest.conversation.Interceptor;
 import org.betonquest.betonquest.conversation.InventoryConvIO;
 import org.betonquest.betonquest.conversation.NonInterceptingInterceptor;
 import org.betonquest.betonquest.conversation.SimpleConvIO;
@@ -13,13 +11,11 @@ import org.betonquest.betonquest.notify.ActionBarNotifyIO;
 import org.betonquest.betonquest.notify.AdvancementNotifyIO;
 import org.betonquest.betonquest.notify.BossBarNotifyIO;
 import org.betonquest.betonquest.notify.ChatNotifyIO;
-import org.betonquest.betonquest.notify.NotifyIO;
 import org.betonquest.betonquest.notify.SoundIO;
 import org.betonquest.betonquest.notify.SubTitleNotifyIO;
 import org.betonquest.betonquest.notify.SuppressNotifyIO;
 import org.betonquest.betonquest.notify.TitleNotifyIO;
 import org.betonquest.betonquest.notify.TotemNotifyIO;
-import org.betonquest.betonquest.quest.registry.FactoryRegistry;
 import org.betonquest.betonquest.schedule.LastExecutionCache;
 import org.betonquest.betonquest.schedule.impl.realtime.cron.RealtimeCronSchedule;
 import org.betonquest.betonquest.schedule.impl.realtime.cron.RealtimeCronScheduler;
@@ -57,18 +53,18 @@ public class CoreFeatureFactories {
      * @param registries containing the registry to register in
      */
     public void register(final FeatureRegistries registries) {
-        final FactoryRegistry<Class<? extends ConversationIO>> conversationIOTypes = registries.conversationIO();
+        final ConversationIORegistry conversationIOTypes = registries.conversationIO();
         conversationIOTypes.register("simple", SimpleConvIO.class);
         conversationIOTypes.register("tellraw", TellrawConvIO.class);
         conversationIOTypes.register("chest", InventoryConvIO.class);
         conversationIOTypes.register("combined", InventoryConvIO.Combined.class);
         conversationIOTypes.register("slowtellraw", SlowTellrawConvIO.class);
 
-        final FactoryRegistry<Class<? extends Interceptor>> interceptorTypes = registries.interceptor();
+        final InterceptorRegistry interceptorTypes = registries.interceptor();
         interceptorTypes.register("simple", SimpleInterceptor.class);
         interceptorTypes.register("none", NonInterceptingInterceptor.class);
 
-        final FactoryRegistry<Class<? extends NotifyIO>> notifyIOTypes = registries.notifyIO();
+        final NotifyIORegistry notifyIOTypes = registries.notifyIO();
         notifyIOTypes.register("suppress", SuppressNotifyIO.class);
         notifyIOTypes.register("chat", ChatNotifyIO.class);
         notifyIOTypes.register("advancement", AdvancementNotifyIO.class);

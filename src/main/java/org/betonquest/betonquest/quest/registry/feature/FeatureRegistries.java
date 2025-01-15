@@ -1,10 +1,6 @@
 package org.betonquest.betonquest.quest.registry.feature;
 
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.conversation.ConversationIO;
-import org.betonquest.betonquest.conversation.Interceptor;
-import org.betonquest.betonquest.notify.NotifyIO;
 import org.betonquest.betonquest.quest.registry.FactoryRegistry;
 
 /**
@@ -16,9 +12,9 @@ import org.betonquest.betonquest.quest.registry.FactoryRegistry;
  * @param eventScheduling The Registry holding registered Event Schedulers.
  */
 public record FeatureRegistries(
-        FactoryRegistry<Class<? extends ConversationIO>> conversationIO,
-        FactoryRegistry<Class<? extends Interceptor>> interceptor,
-        FactoryRegistry<Class<? extends NotifyIO>> notifyIO,
+        ConversationIORegistry conversationIO,
+        InterceptorRegistry interceptor,
+        NotifyIORegistry notifyIO,
         ScheduleRegistry eventScheduling
 ) {
 
@@ -29,11 +25,10 @@ public record FeatureRegistries(
      * @return the newly created registries
      */
     public static FeatureRegistries create(final BetonQuestLoggerFactory loggerFactory) {
-        final BetonQuestLogger logger = loggerFactory.create(FactoryRegistry.class);
         return new FeatureRegistries(
-                new FactoryRegistry<>(logger, "Conversation IO"),
-                new FactoryRegistry<>(logger, "Interceptor"),
-                new FactoryRegistry<>(logger, "Notify IO"),
+                new ConversationIORegistry(loggerFactory.create(ConversationIORegistry.class)),
+                new InterceptorRegistry(loggerFactory.create(FactoryRegistry.class)),
+                new NotifyIORegistry(loggerFactory.create(NotifyIORegistry.class)),
                 new ScheduleRegistry(loggerFactory.create(ScheduleRegistry.class))
         );
     }

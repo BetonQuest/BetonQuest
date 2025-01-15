@@ -1,0 +1,59 @@
+package org.betonquest.betonquest.quest.registry.feature;
+
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.conversation.Conversation;
+import org.betonquest.betonquest.conversation.Interceptor;
+import org.betonquest.betonquest.exception.QuestException;
+
+import java.lang.reflect.Constructor;
+import java.util.Map;
+
+/**
+ * Stores the Interceptors that can be used in BetonQuest.
+ */
+public class InterceptorRegistry extends FromClassFactoryRegistry<Interceptor, InterceptorRegistry.InterceptorFactory> {
+
+    /**
+     * Create a new Interceptor registry.
+     *
+     * @param log the logger that will be used for logging
+     */
+    public InterceptorRegistry(final BetonQuestLogger log) {
+        super(log, "Interceptor");
+    }
+
+    @Override
+    protected InterceptorFactory createFactory(final Class<? extends Interceptor> clazz) throws NoSuchMethodException {
+        return new FactoryImpl(clazz.getConstructor(QuestPackage.class, Map.class));
+    }
+
+    /**
+     * Factory to create Interceptors for a conversation and online profile.
+     */
+    public interface InterceptorFactory {
+        /**
+         * Create the Interceptor.
+         *
+         * @param conversation  the affected conversation
+         * @param onlineProfile the affected player
+         * @return the created interceptor
+         * @throws QuestException when the creation fails
+         */
+        Interceptor parse(Conversation conversation, OnlineProfile onlineProfile) throws QuestException;
+    }
+
+    /**
+     * Class Constructor based implementation.
+     *
+     * @param constructor the used constructor
+     */
+    private record FactoryImpl(Constructor<? extends Interceptor> constructor) implements InterceptorFactory {
+
+        @Override
+        public Interceptor parse(final Conversation conversation, final OnlineProfile onlineProfile) throws QuestException {
+            return catchConstructionException("Interceptor", constructor, conversation, onlineProfile);
+        }
+    }
+}
