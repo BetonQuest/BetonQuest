@@ -1,13 +1,12 @@
 package org.betonquest.betonquest.quest.condition.point;
 
-import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 
-import java.util.List;
+import java.util.Optional;
 
 /**
  * A condition that checks if a player has a certain amount of points.
@@ -51,13 +50,8 @@ public class PointCondition implements PlayerCondition {
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
-        final List<Point> points = dataStorage.get(profile).getPoints();
-        for (final Point point : points) {
-            if (point.getCategory().equals(category)) {
-                return checkPoints(point.getCount(), profile);
-            }
-        }
-        return false;
+        final Optional<Integer> amount = dataStorage.get(profile).getPointsFromCategory(category);
+        return amount.isPresent() && checkPoints(amount.get(), profile);
     }
 
     private boolean checkPoints(final int points, final Profile profile) throws QuestException {

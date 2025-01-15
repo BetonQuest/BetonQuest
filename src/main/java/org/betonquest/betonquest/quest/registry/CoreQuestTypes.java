@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.registry;
 import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.objectives.ActionObjective;
 import org.betonquest.betonquest.objectives.ArrowShootObjective;
@@ -154,14 +155,14 @@ import org.betonquest.betonquest.quest.variable.condition.ConditionVariableFacto
 import org.betonquest.betonquest.quest.variable.eval.EvalVariableFactory;
 import org.betonquest.betonquest.quest.variable.name.NpcNameVariableFactory;
 import org.betonquest.betonquest.quest.variable.name.PlayerNameVariableFactory;
-import org.betonquest.betonquest.variables.GlobalPointVariable;
+import org.betonquest.betonquest.quest.variable.point.GlobalPointVariableFactory;
+import org.betonquest.betonquest.quest.variable.point.PointVariableFactory;
 import org.betonquest.betonquest.variables.GlobalTagVariable;
 import org.betonquest.betonquest.variables.ItemDurabilityVariable;
 import org.betonquest.betonquest.variables.ItemVariable;
 import org.betonquest.betonquest.variables.LocationVariable;
 import org.betonquest.betonquest.variables.MathVariable;
 import org.betonquest.betonquest.variables.ObjectivePropertyVariable;
-import org.betonquest.betonquest.variables.PointVariable;
 import org.betonquest.betonquest.variables.RandomNumberVariable;
 import org.betonquest.betonquest.variables.TagVariable;
 import org.betonquest.betonquest.variables.VersionVariable;
@@ -201,6 +202,11 @@ public class CoreQuestTypes {
     private final VariableProcessor variableProcessor;
 
     /**
+     * Storage for global data.
+     */
+    private final GlobalData globalData;
+
+    /**
      * Storage for player data.
      */
     private final PlayerDataStorage dataStorage;
@@ -213,15 +219,17 @@ public class CoreQuestTypes {
      * @param scheduler         the scheduler used for primary server thread access
      * @param betonQuest        the plugin used for primary server access and type registration
      * @param variableProcessor the variable processor to create new variables
+     * @param globalData        the storage providing global data
      * @param dataStorage       the storage providing player data
      */
     public CoreQuestTypes(final BetonQuestLoggerFactory loggerFactory,
                           final Server server, final BukkitScheduler scheduler, final BetonQuest betonQuest,
-                          final VariableProcessor variableProcessor, final PlayerDataStorage dataStorage) {
+                          final VariableProcessor variableProcessor, final GlobalData globalData, final PlayerDataStorage dataStorage) {
         this.loggerFactory = loggerFactory;
         this.server = server;
         this.betonQuest = betonQuest;
         this.variableProcessor = variableProcessor;
+        this.globalData = globalData;
         this.dataStorage = dataStorage;
         this.data = new PrimaryServerThreadData(server, scheduler, betonQuest);
     }
@@ -395,7 +403,7 @@ public class CoreQuestTypes {
     private void registerVariables(final VariableTypeRegistry variables) {
         variables.register("condition", new ConditionVariableFactory(dataStorage));
         variables.registerCombined("eval", new EvalVariableFactory(variableProcessor));
-        variables.register("globalpoint", GlobalPointVariable.class);
+        variables.register("globalpoint", new GlobalPointVariableFactory(globalData, loggerFactory.create(GlobalPointVariableFactory.class)));
         variables.register("globaltag", GlobalTagVariable.class);
         variables.register("item", ItemVariable.class);
         variables.register("itemdurability", ItemDurabilityVariable.class);
@@ -403,7 +411,7 @@ public class CoreQuestTypes {
         variables.register("math", MathVariable.class);
         variables.register("npc", new NpcNameVariableFactory(dataStorage));
         variables.register("objective", ObjectivePropertyVariable.class);
-        variables.register("point", PointVariable.class);
+        variables.register("point", new PointVariableFactory(dataStorage, loggerFactory.create(PointVariableFactory.class)));
         variables.register("player", new PlayerNameVariableFactory());
         variables.register("randomnumber", RandomNumberVariable.class);
         variables.register("tag", TagVariable.class);
