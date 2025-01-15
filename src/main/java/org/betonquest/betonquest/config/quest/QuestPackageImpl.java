@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.Nullable;
@@ -93,12 +92,5 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
             log.warn(this, "Error parsing variable in '" + address + "': " + e.getMessage(), e);
             return "";
         }
-    }
-
-    @Override
-    @Nullable
-    public String getFormattedString(final String address) {
-        final String string = getString(address);
-        return string == null ? null : Utils.format(string);
     }
 }

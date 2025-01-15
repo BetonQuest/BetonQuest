@@ -223,12 +223,12 @@ public class Journal {
             final ConfigurationSection journal = pack.getConfig().getConfigurationSection("journal");
             if (journal != null && journal.contains(pointerName)) {
                 if (journal.isConfigurationSection(pointerName)) {
-                    text = pack.getFormattedString("journal." + pointerName + "." + lang);
+                    text = Utils.format(pack.getString("journal." + pointerName + "." + lang));
                     if (text == null) {
-                        text = pack.getFormattedString("journal." + pointerName + "." + Config.getLanguage());
+                        text = Utils.format(pack.getString("journal." + pointerName + "." + Config.getLanguage()));
                     }
                 } else {
-                    text = pack.getFormattedString("journal." + pointerName);
+                    text = Utils.format(pack.getString("journal." + pointerName));
                 }
             } else {
                 log.warn(pack, "No defined journal entry " + pointerName + " in package " + pack.getQuestPath());
