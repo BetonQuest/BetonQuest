@@ -157,14 +157,14 @@ import org.betonquest.betonquest.quest.variable.name.NpcNameVariableFactory;
 import org.betonquest.betonquest.quest.variable.name.PlayerNameVariableFactory;
 import org.betonquest.betonquest.quest.variable.point.GlobalPointVariableFactory;
 import org.betonquest.betonquest.quest.variable.point.PointVariableFactory;
-import org.betonquest.betonquest.variables.GlobalTagVariable;
+import org.betonquest.betonquest.quest.variable.tag.GlobalTagVariableFactory;
+import org.betonquest.betonquest.quest.variable.tag.TagVariableFactory;
 import org.betonquest.betonquest.variables.ItemDurabilityVariable;
 import org.betonquest.betonquest.variables.ItemVariable;
 import org.betonquest.betonquest.variables.LocationVariable;
 import org.betonquest.betonquest.variables.MathVariable;
 import org.betonquest.betonquest.variables.ObjectivePropertyVariable;
 import org.betonquest.betonquest.variables.RandomNumberVariable;
-import org.betonquest.betonquest.variables.TagVariable;
 import org.betonquest.betonquest.variables.VersionVariable;
 import org.bukkit.Server;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -404,7 +404,7 @@ public class CoreQuestTypes {
         variables.register("condition", new ConditionVariableFactory(dataStorage));
         variables.registerCombined("eval", new EvalVariableFactory(variableProcessor));
         variables.register("globalpoint", new GlobalPointVariableFactory(globalData, loggerFactory.create(GlobalPointVariableFactory.class)));
-        variables.register("globaltag", GlobalTagVariable.class);
+        variables.register("globaltag", new GlobalTagVariableFactory(globalData));
         variables.register("item", ItemVariable.class);
         variables.register("itemdurability", ItemDurabilityVariable.class);
         variables.register("location", LocationVariable.class);
@@ -414,7 +414,7 @@ public class CoreQuestTypes {
         variables.register("point", new PointVariableFactory(dataStorage, loggerFactory.create(PointVariableFactory.class)));
         variables.register("player", new PlayerNameVariableFactory());
         variables.register("randomnumber", RandomNumberVariable.class);
-        variables.register("tag", TagVariable.class);
+        variables.register("tag", new TagVariableFactory(dataStorage));
         variables.register("version", VersionVariable.class);
     }
 }
