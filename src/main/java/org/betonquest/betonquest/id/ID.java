@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -86,11 +87,11 @@ public abstract class ID {
      */
     protected ID(@Nullable final QuestPackage pack, final String identifier, final String section, final String readable) throws QuestException {
         this(pack, identifier);
-        final String rawInstruction = this.pack.getString(section + "." + this.identifier);
+        final String rawInstruction = this.pack.getConfig().getString(section + "." + this.identifier);
         if (rawInstruction == null) {
             throw new QuestException(readable + " '" + getFullID() + "' is not defined");
         }
-        instruction = new Instruction(this.pack, this, rawInstruction);
+        instruction = new Instruction(this.pack, this, GlobalVariableResolver.resolve(this.pack, rawInstruction));
     }
 
     @Nullable

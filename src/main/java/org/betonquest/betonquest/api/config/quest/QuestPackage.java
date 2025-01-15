@@ -4,8 +4,6 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,7 +12,6 @@ import java.util.List;
 /**
  * Functionality for a quest to get all related information.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public interface QuestPackage {
     /**
      * Gets the path that addresses this {@link QuestPackage}.
@@ -67,32 +64,4 @@ public interface QuestPackage {
      * @throws FileNotFoundException         thrown if the file for the new {@link ConfigAccessor} could not be found
      */
     ConfigAccessor getOrCreateConfigAccessor(String relativePath) throws InvalidConfigurationException, FileNotFoundException;
-
-    @Nullable
-    @Deprecated
-    String getRawString(String address);
-
-    /**
-     * Resolves all global variables in the given string.
-     *
-     * @param input the string to resolve
-     * @return the resolved string
-     * @deprecated instead use
-     * {@link org.betonquest.betonquest.variables.GlobalVariableResolver#resolve(QuestPackage, String)}.
-     */
-    @Deprecated
-    String subst(String input);
-
-    @Nullable
-    @Deprecated
-    String getString(String address);
-
-    @Contract("_, !null -> !null")
-    @Nullable
-    @Deprecated
-    String getString(String address, @Nullable String def);
-
-    @Nullable
-    @Deprecated
-    String getFormattedString(String address);
 }

@@ -5,12 +5,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.util.Utils;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,69 +36,5 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
     @Override
     public boolean hasTemplate(final String templatePath) {
         return getTemplates().contains(templatePath);
-    }
-
-    @Override
-    @Nullable
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    public String getRawString(final String address) {
-        final String[] parts = address.split("\\.");
-        if (parts.length < 2) {
-            return null;
-        }
-        final String path = parts[0];
-        int startPath = 1;
-        ConfigurationSection section = getConfig().getConfigurationSection(path);
-        if (section != null && "conversations".equals(path)) {
-            if (parts.length < 3) {
-                return null;
-            }
-            section = section.getConfigurationSection(parts[1]);
-            startPath = 2;
-        }
-        if (section == null) {
-            return null;
-        }
-        final StringBuilder restPath = new StringBuilder();
-        for (int i = startPath; i < parts.length; i++) {
-            restPath.append(parts[i]);
-            if (i < parts.length - 1) {
-                restPath.append('.');
-            }
-        }
-        return section.getString(restPath.toString(), null);
-    }
-
-    @Override
-    public String subst(final String input) {
-        return GlobalVariableResolver.resolve(this, input);
-    }
-
-    @Override
-    @Nullable
-    public String getString(final String address) {
-        return getString(address, null);
-    }
-
-    @Override
-    @Contract("_, !null -> !null")
-    @Nullable
-    public String getString(final String address, @Nullable final String def) {
-        final String value = getRawString(address);
-        if (value == null) {
-            return def;
-        }
-        if (!value.contains("$")) {
-            return value;
-        }
-
-        return GlobalVariableResolver.resolve(this, value);
-    }
-
-    @Override
-    @Nullable
-    public String getFormattedString(final String address) {
-        final String string = getString(address);
-        return string == null ? null : Utils.format(string);
     }
 }
