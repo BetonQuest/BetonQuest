@@ -3,6 +3,7 @@ package org.betonquest.betonquest.menu.config;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -57,7 +58,11 @@ public class RPGMenuConfig extends SimpleYMLSection {
         this.languages = new ArrayList<>();
         languages.addAll(config.getConfigurationSection(MESSAGES).getKeys(false));
         //load configuration settings
-        this.defaultCloseOnClick = getBoolean("default_close");
+        try {
+            this.defaultCloseOnClick = getBoolean("default_close").getValue(null);
+        } catch (final QuestException e) {
+            throw new InvalidConfigurationException("Could not parse default_close: " + e.getMessage(), e);
+        }
 
         //load all messages
         this.loadMessage("command_no_permission");
@@ -133,19 +138,22 @@ public class RPGMenuConfig extends SimpleYMLSection {
      * @param key key of the message
      * @throws Missing if message isn't found in default language
      */
-    private void loadMessage(final String key) throws Missing {
+    private void loadMessage(final String key) throws InvalidConfigurationException {
         for (final String lang : this.languages) {
             try {
                 Map<String, String> msgs = messages.get(lang);
                 if (msgs == null) {
                     msgs = new HashMap<>();
                 }
-                msgs.put(key, ChatColor.translateAlternateColorCodes('&', getString("messages." + lang + "." + key)).replace("\\n", "\n"));
+                msgs.put(key, ChatColor.translateAlternateColorCodes('&', getString("messages." + lang + "." + key).getValue(null))
+                        .replace("\\n", "\n"));
                 this.messages.put(lang, msgs);
             } catch (final Missing e) {
                 if (lang.equals(Config.getLanguage())) {
                     throw e;
                 }
+            } catch (final QuestException e) {
+                throw new InvalidConfigurationException(e);
             }
         }
     }

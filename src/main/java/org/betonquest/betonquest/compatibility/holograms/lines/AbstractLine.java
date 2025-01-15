@@ -24,7 +24,7 @@ public abstract class AbstractLine {
 
     /**
      * Creates a new instance of the content line. It may validate data, however, the main validation is handled by
-     * {@link HologramLoop#HologramLoop(BetonQuestLoggerFactory, BetonQuestLogger)}.
+     * {@link HologramLoop#HologramLoop(BetonQuestLoggerFactory, BetonQuestLogger, org.betonquest.betonquest.quest.registry.processor.VariableProcessor)}.
      *
      * @param staticText false if this line needs to be updated
      * @param linesAdded the amount of lines added by this line when {@link #setLine(BetonHologram, int)} is called

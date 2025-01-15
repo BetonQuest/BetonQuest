@@ -1,8 +1,7 @@
-package org.betonquest.betonquest.modules.config.patcher.migration.migrators;
+package org.betonquest.betonquest.modules.config.patcher.migration.migrators.from1to2;
 
 import org.betonquest.betonquest.modules.config.patcher.migration.FileConfigurationProvider;
 import org.betonquest.betonquest.modules.config.patcher.migration.Migration;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -10,21 +9,21 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Handles the EventScheduling migration.
+ * Handles the Ride migration.
  */
-public class EventScheduling implements Migration {
+public class RideUpdates implements Migration {
 
     /**
-     * The config producer.
+     * The configs to migrate.
      */
     private final FileConfigurationProvider producer;
 
     /**
-     * Creates a new EventScheduling migrator.
+     * Creates a new ride migrator.
      *
      * @param provider The config provider
      */
-    public EventScheduling(final FileConfigurationProvider provider) {
+    public RideUpdates(final FileConfigurationProvider provider) {
         this.producer = provider;
     }
 
@@ -34,14 +33,9 @@ public class EventScheduling implements Migration {
         for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
             final File file = entry.getKey();
             final YamlConfiguration config = entry.getValue();
-            final ConfigurationSection staticSection = config.getConfigurationSection("static");
-            if (staticSection != null) {
-                staticSection.getValues(false).forEach((key, value) -> {
-                    config.set("schedules." + key + ".type", "realtime-daily");
-                    config.set("schedules." + key + ".time", key);
-                    config.set("schedules." + key + ".events", value);
-                });
-                config.set("static", null);
+            final boolean objReplaced = replaceStartValueInSection(config, "objectives", "vehicle", "ride");
+            final boolean condReplaced = replaceStartValueInSection(config, "conditions", "riding", "ride");
+            if (objReplaced || condReplaced) {
                 config.save(file);
             }
         }

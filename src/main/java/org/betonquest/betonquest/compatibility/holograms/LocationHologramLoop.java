@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -20,11 +20,12 @@ public class LocationHologramLoop extends HologramLoop {
     /**
      * Starts a loop, which checks hologram conditions and shows them to players.
      *
-     * @param loggerFactory logger factory to use
-     * @param log           the logger that will be used for logging
+     * @param loggerFactory     logger factory to use
+     * @param log               the logger that will be used for logging
+     * @param variableProcessor the {@link VariableProcessor} to use
      */
-    public LocationHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
-        super(loggerFactory, log);
+    public LocationHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final VariableProcessor variableProcessor) {
+        super(loggerFactory, log, variableProcessor);
         initialize("holograms");
     }
 
@@ -42,7 +43,7 @@ public class LocationHologramLoop extends HologramLoop {
             throw new QuestException("Location is not specified");
         } else {
             try {
-                return new VariableLocation(BetonQuest.getInstance().getVariableProcessor(), pack, GlobalVariableResolver.resolve(pack, rawLocation)).getValue(null);
+                return new VariableLocation(BetonQuest.getInstance().getVariableProcessor(), pack, rawLocation).getValue(null);
             } catch (final QuestException e) {
                 throw new QuestException("Could not parse location: " + e.getMessage(), e);
             }
