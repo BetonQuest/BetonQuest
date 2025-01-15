@@ -1,8 +1,10 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.take.MMOItemsTakeEventFactory;
+import org.betonquest.betonquest.quest.registry.FactoryRegistry;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
@@ -23,15 +25,16 @@ public class MMOItemsIntegrator implements Integrator {
     public void hook() {
         final BetonQuest plugin = BetonQuest.getInstance();
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
-        final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
+        final ConditionTypeRegistry conditionTypes = questRegistries.condition();
         conditionTypes.register("mmoitem", MMOItemsItemCondition.class);
         conditionTypes.register("mmohand", MMOItemsHandCondition.class);
 
-        plugin.registerObjectives("mmoitemcraft", MMOItemsCraftObjective.class);
-        plugin.registerObjectives("mmoitemupgrade", MMOItemsUpgradeObjective.class);
-        plugin.registerObjectives("mmoitemapplygem", MMOItemsApplyGemObjective.class);
+        final FactoryRegistry<Class<? extends Objective>> objectiveTypes = questRegistries.objective();
+        objectiveTypes.register("mmoitemcraft", MMOItemsCraftObjective.class);
+        objectiveTypes.register("mmoitemupgrade", MMOItemsUpgradeObjective.class);
+        objectiveTypes.register("mmoitemapplygem", MMOItemsApplyGemObjective.class);
 
-        final EventTypeRegistry eventTypes = questRegistries.getEventTypes();
+        final EventTypeRegistry eventTypes = questRegistries.event();
         eventTypes.register("mmoitemgive", MMOItemsGiveEvent.class);
         eventTypes.register("mmoitemtake", new MMOItemsTakeEventFactory(plugin.getLoggerFactory()));
     }

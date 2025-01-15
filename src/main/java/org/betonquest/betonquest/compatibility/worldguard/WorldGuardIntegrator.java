@@ -51,8 +51,8 @@ public class WorldGuardIntegrator implements Integrator {
 
     @Override
     public void hook() {
-        plugin.getQuestRegistries().getConditionTypes().register("region", RegionCondition.class);
-        plugin.registerObjectives("region", RegionObjective.class);
+        plugin.getQuestRegistries().condition().register("region", RegionCondition.class);
+        plugin.getQuestRegistries().objective().register("region", RegionObjective.class);
     }
 
     @Override

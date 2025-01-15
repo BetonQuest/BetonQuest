@@ -33,7 +33,7 @@ import java.util.Optional;
  * </p>
  * <p>
  * Registering your objectives is done through
- * {@link org.betonquest.betonquest.BetonQuest#registerObjectives(String, Class)
+ * {@code BetonQuest.getQuestRegistries().objectives().register(String, Class)
  * registerObjectives()} method.
  * </p>
  */

@@ -40,7 +40,7 @@ public class EffectLibIntegrator implements Integrator {
     public void hook() {
         manager = new EffectManager(plugin);
         final PrimaryServerThreadData data = new PrimaryServerThreadData(plugin.getServer(), plugin.getServer().getScheduler(), plugin);
-        plugin.getQuestRegistries().getEventTypes().register("particle", new ParticleEventFactory(plugin.getLoggerFactory(), data, manager));
+        plugin.getQuestRegistries().event().register("particle", new ParticleEventFactory(plugin.getLoggerFactory(), data, manager));
     }
 
     @Override

@@ -14,7 +14,7 @@ public class FabledIntegrator implements Integrator {
 
     @Override
     public void hook() {
-        final ConditionTypeRegistry conditionTypes = plugin.getQuestRegistries().getConditionTypes();
+        final ConditionTypeRegistry conditionTypes = plugin.getQuestRegistries().condition();
         conditionTypes.register("fabledclass", FabledClassCondition.class);
         conditionTypes.register("fabledlevel", FabledLevelCondition.class);
         plugin.getServer().getPluginManager().registerEvents(new FabledKillListener(), plugin);
