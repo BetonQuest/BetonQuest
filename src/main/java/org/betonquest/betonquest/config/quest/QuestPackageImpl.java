@@ -5,9 +5,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -37,36 +35,5 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
     @Override
     public boolean hasTemplate(final String templatePath) {
         return getTemplates().contains(templatePath);
-    }
-
-    @Override
-    @Nullable
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    public String getRawString(final String address) {
-        final String[] parts = address.split("\\.");
-        if (parts.length < 2) {
-            return null;
-        }
-        final String path = parts[0];
-        int startPath = 1;
-        ConfigurationSection section = getConfig().getConfigurationSection(path);
-        if (section != null && "conversations".equals(path)) {
-            if (parts.length < 3) {
-                return null;
-            }
-            section = section.getConfigurationSection(parts[1]);
-            startPath = 2;
-        }
-        if (section == null) {
-            return null;
-        }
-        final StringBuilder restPath = new StringBuilder();
-        for (int i = startPath; i < parts.length; i++) {
-            restPath.append(parts[i]);
-            if (i < parts.length - 1) {
-                restPath.append('.');
-            }
-        }
-        return section.getString(restPath.toString(), null);
     }
 }
