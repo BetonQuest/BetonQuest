@@ -140,25 +140,27 @@ public class ConversationData {
         }
         if (convSection.isConfigurationSection("quester")) {
             for (final String lang : convSection.getConfigurationSection("quester").getKeys(false)) {
-                quester.put(lang, ChatColor.translateAlternateColorCodes('&', pack.getString("conversations." + convName + ".quester." + lang)));
+                final String questerName = new VariableString(variableProcessor, pack, pack.getRawString("conversations." + convName + ".quester." + lang)).getValue(null);
+                quester.put(lang, ChatColor.translateAlternateColorCodes('&', questerName));
             }
         } else {
-            quester.put(Config.getLanguage(), ChatColor.translateAlternateColorCodes('&', pack.getString("conversations." + convName + ".quester")));
+            final String questerName = new VariableString(variableProcessor, pack, pack.getRawString("conversations." + convName + ".quester")).getValue(null);
+            quester.put(Config.getLanguage(), ChatColor.translateAlternateColorCodes('&', questerName));
         }
         if (convSection.isConfigurationSection("prefix")) {
             for (final String lang : convSection.getConfigurationSection("prefix").getKeys(false)) {
-                final String pref = pack.getString("conversations." + convName + ".prefix." + lang);
+                final String pref = pack.getRawString("conversations." + convName + ".prefix." + lang);
                 if (pref != null && !pref.isEmpty()) {
-                    prefix.put(lang, pref);
+                    prefix.put(lang, new VariableString(variableProcessor, pack, pref).getValue(null));
                 }
             }
         } else {
-            final String pref = pack.getString("conversations." + convName + ".prefix");
+            final String pref = pack.getRawString("conversations." + convName + ".prefix");
             if (pref != null && !pref.isEmpty()) {
-                prefix.put(Config.getLanguage(), pref);
+                prefix.put(Config.getLanguage(), new VariableString(variableProcessor, pack, pref).getValue(null));
             }
         }
-        final String stop = pack.getString("conversations." + convName + ".stop");
+        final String stop = pack.getRawString("conversations." + convName + ".stop");
         blockMovement = Boolean.parseBoolean(stop);
         final String rawConvIOs = new VariableString(variableProcessor, pack,
                 pack.getConfig().getString("conversations." + convName + ".conversationIO",
@@ -276,9 +278,9 @@ public class ConversationData {
     }
 
     private void parseOptions(final QuestPackage pack, final ConfigurationSection convSection) throws QuestException {
-        final String rawFinalEvents = pack.getString("conversations." + convName + ".final_events");
+        final String rawFinalEvents = pack.getRawString("conversations." + convName + ".final_events");
         if (rawFinalEvents != null && !rawFinalEvents.isEmpty()) {
-            final String[] array = rawFinalEvents.split(",");
+            final String[] array = new VariableString(variableProcessor, pack, rawFinalEvents).getValue(null).split(",");
             for (final String identifier : array) {
                 try {
                     finalEvents.add(new EventID(pack, identifier));
@@ -352,12 +354,12 @@ public class ConversationData {
      * @throws QuestException when the conversation could not be resolved
      */
     private void loadStartingOptions(final QuestPackage pack) throws QuestException {
-        final String rawStartingOptions = pack.getString("conversations." + convName + ".first");
+        final String rawStartingOptions = pack.getRawString("conversations." + convName + ".first");
         if (rawStartingOptions == null || rawStartingOptions.isEmpty()) {
             throw new QuestException("Starting options are not defined");
         }
 
-        startingOptions = Arrays.stream(rawStartingOptions.split(",")).map(String::trim).toList();
+        startingOptions = Arrays.stream(new VariableString(variableProcessor, pack, rawStartingOptions).getValue(null).split(",")).map(String::trim).toList();
 
         for (final String startingOption : startingOptions) {
             if (startingOption.contains(".")) {
@@ -820,7 +822,7 @@ public class ConversationData {
         }
 
         private void addConversationText(final String name, final OptionType type, final String lang, final String suffix) throws QuestException {
-            final String convText = Utils.format(pack.getString("conversations." + conversationName + "." + type.getIdentifier() + "." + name + ".text" + suffix));
+            final String convText = Utils.format(pack.getRawString("conversations." + conversationName + "." + type.getIdentifier() + "." + name + ".text" + suffix));
             if (convText == null) {
                 throw new QuestException("No text for " + name + " " + type.getReadable());
             }

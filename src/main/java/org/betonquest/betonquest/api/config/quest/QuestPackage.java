@@ -69,8 +69,4 @@ public interface QuestPackage {
     @Nullable
     @Deprecated
     String getRawString(String address);
-
-    @Nullable
-    @Deprecated
-    String getString(String address);
 }

@@ -51,7 +51,7 @@ public class Journal {
 
     private final List<Pointer> pointers;
 
-    private final List<String> texts = new ArrayList<>();
+    private final List<VariableString> texts = new ArrayList<>();
 
     private final ConfigurationFile config;
 
@@ -172,15 +172,19 @@ public class Journal {
      * @return list of Strings - texts for every journal entry
      */
     public List<String> getText() {
-        final List<String> list;
+        final List<VariableString> list;
         if (Boolean.parseBoolean(config.getString("journal.reversed_order"))) {
             list = Lists.reverse(texts);
         } else {
             list = new ArrayList<>(texts);
         }
         final List<String> pagesList = new ArrayList<>();
-        for (final String entry : list) {
-            pagesList.addAll(Utils.pagesFromString(entry));
+        for (final VariableString entry : list) {
+            try {
+                pagesList.addAll(Utils.pagesFromString(entry.getValue(profile)));
+            } catch (final QuestException e) {
+                log.warn("Error while generating journal page: " + e.getMessage(), e);
+            }
         }
         return pagesList;
     }
@@ -224,33 +228,28 @@ public class Journal {
             final ConfigurationSection journal = pack.getConfig().getConfigurationSection("journal");
             if (journal != null && journal.contains(pointerName)) {
                 if (journal.isConfigurationSection(pointerName)) {
-                    text = Utils.format(pack.getString("journal." + pointerName + "." + lang));
+                    text = pack.getRawString("journal." + pointerName + "." + lang);
                     if (text == null) {
-                        text = Utils.format(pack.getString("journal." + pointerName + "." + Config.getLanguage()));
+                        text = pack.getRawString("journal." + pointerName + "." + Config.getLanguage());
                     }
                 } else {
-                    text = Utils.format(pack.getString("journal." + pointerName));
+                    text = pack.getRawString("journal." + pointerName);
                 }
             } else {
                 log.warn(pack, "No defined journal entry " + pointerName + " in package " + pack.getQuestPath());
                 text = "error";
             }
-
-            // handle case when the text isn't defined
             if (text == null) {
                 log.warn(pack, "No text defined for journal entry " + pointerName + " in language " + lang);
                 text = "error";
             }
 
             try {
-                text = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, text).getValue(profile);
+                texts.add(new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, datePrefix + "§" + config.getString("journal_colors.text") + Utils.format(text)));
             } catch (final QuestException e) {
                 log.warn(pack, "Error while creating variable on journal page '" + pointerName + "' in "
                         + profile + " journal: " + e.getMessage(), e);
             }
-
-            // add the entry to the list
-            texts.add(datePrefix + "§" + config.getString("journal_colors.text") + text);
         }
     }
 

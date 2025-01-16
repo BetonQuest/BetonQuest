@@ -23,8 +23,8 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
 
     @Override
     protected void prepareConfig() {
-        lenient().when(questPackage.getString("events.bell_ring")).thenReturn("folder bell_lever_toggle,bell_lever_toggle period:0.5");
-        lenient().when(questPackage.getString("events.notify_goodNight")).thenReturn("notify &6Good night, sleep well!");
+        lenient().when(questPackage.getRawString("events.bell_ring")).thenReturn("folder bell_lever_toggle,bell_lever_toggle period:0.5");
+        lenient().when(questPackage.getRawString("events.notify_goodNight")).thenReturn("notify &6Good night, sleep well!");
 
         lenient().when(section.getString("time")).thenReturn("22:00");
         lenient().when(section.getString("events")).thenReturn("bell_ring,notify_goodNight");
@@ -63,7 +63,7 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
 
     @Test
     void testEventsNotFound() {
-        when(questPackage.getString("events.bell_ring")).thenReturn(null);
+        when(questPackage.getRawString("events.bell_ring")).thenReturn(null);
         final QuestException exception = assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid event names");
         assertInstanceOf(QuestException.class, exception.getCause(), "Cause should be QuestException");
     }
