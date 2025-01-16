@@ -45,9 +45,9 @@ class ScheduleTypeTest {
 
     @BeforeEach
     void prepareConfig() {
-        lenient().when(questPackage.getString("events.bell_ring"))
+        lenient().when(questPackage.getRawString("events.bell_ring"))
                 .thenReturn("folder bell_lever_toggle,bell_lever_toggle period:0.5");
-        lenient().when(questPackage.getString("events.notify_goodNight"))
+        lenient().when(questPackage.getRawString("events.notify_goodNight"))
                 .thenReturn("notify &6Good night, sleep well!");
 
         lenient().when(scheduleID.getPackage()).thenReturn(questPackage);
