@@ -4,7 +4,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
 import org.betonquest.betonquest.exceptions.QuestException;
-import org.betonquest.betonquest.variables.LocationVariable;
+import org.betonquest.betonquest.quest.variable.location.LocationFormationMode;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -22,26 +22,33 @@ public class CitizensVariable implements PlayerlessVariable {
     private final Argument key;
 
     /**
-     * A wrapper for the location property of the NPC.
+     * The location formation mode to use for location resolution.
      */
     @Nullable
-    private final LocationVariable location;
+    private final LocationFormationMode formationMode;
+
+    /**
+     * The number of decimal places to use for location resolution.
+     */
+    private final int decimalPlaces;
 
     /**
      * Construct a new Citizens NPC Variable that allows for resolution of information about a NPC.
      *
-     * @param npcId    the id of the npc
-     * @param key      the argument defining the value
-     * @param location the location to provide when
+     * @param npcId         the id of the npc
+     * @param key           the argument defining the value
+     * @param formationMode the location formation mode to use for location resolution
+     * @param decimalPlaces the number of decimal places to use for location resolution
      * @throws IllegalArgumentException when location argument is given without location variable
      */
-    public CitizensVariable(final int npcId, final Argument key, @Nullable final LocationVariable location) {
+    public CitizensVariable(final int npcId, final Argument key, @Nullable final LocationFormationMode formationMode, final int decimalPlaces) {
         this.npcId = npcId;
         this.key = key;
-        this.location = location;
-        if (key == Argument.LOCATION && location == null) {
+        this.formationMode = formationMode;
+        if (key == Argument.LOCATION && formationMode == null) {
             throw new IllegalArgumentException("The location argument requires a location variable!");
         }
+        this.decimalPlaces = decimalPlaces;
     }
 
     @Override
@@ -51,6 +58,6 @@ public class CitizensVariable implements PlayerlessVariable {
             throw new QuestException("No NPC with id '" + npcId + "' found!");
         }
 
-        return key.resolve(npc, location);
+        return key.resolve(npc, formationMode, decimalPlaces);
     }
 }
