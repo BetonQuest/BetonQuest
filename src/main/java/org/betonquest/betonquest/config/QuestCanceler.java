@@ -104,7 +104,7 @@ public class QuestCanceler {
         }
         // get the item
         final String itemString = section.getString("item");
-        item = itemString == null ? pack.getRawString("items.cancel_button") : itemString;
+        item = itemString == null ? pack.getConfig().getString("items.cancel_button") : itemString;
         // parse it to get the data
         events = parseID(section, "events", EventID::new);
         conditions = parseID(section, "conditions", ConditionID::new);
