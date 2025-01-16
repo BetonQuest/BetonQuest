@@ -1,10 +1,9 @@
-package org.betonquest.betonquest.variables;
+package org.betonquest.betonquest.quest.variable.item;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.ChatColor;
@@ -13,67 +12,53 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Allows you to display properties of QuestItems like the name
  * or the amount in player's inventory.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CommentRequired"})
-public class ItemVariable extends Variable {
+public class ItemVariable implements NullableVariable {
+
+    /**
+     * The QuestItem.
+     */
     private final QuestItem questItem;
 
-    private final Type type;
+    /**
+     * The type how the item should be displayed.
+     */
+    private final ItemDisplayType type;
 
+    /**
+     * If the output should be raw.
+     */
     private final boolean raw;
 
-    private int amount;
+    /**
+     * The amount of the item.
+     */
+    private final int amount;
 
-    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.AvoidLiteralsInIfCondition"})
-    public ItemVariable(final Instruction instruction) throws QuestException {
-        super(instruction);
-        int pos = instruction.size() - 1;
-        if ("raw".equalsIgnoreCase(instruction.getPart(pos))) {
-            raw = true;
-            pos--;
-        } else {
-            raw = false;
-        }
-        final String argument = instruction.getPart(pos).toLowerCase(Locale.ROOT);
-        if (argument.startsWith("left:")) {
-            type = Type.LEFT;
-            try {
-                amount = Integer.parseInt(argument.substring(5));
-            } catch (final NumberFormatException e) {
-                throw new QuestException("Could not parse item amount", e);
-            }
-        } else if ("amount".equals(argument)) {
-            type = Type.AMOUNT;
-        } else if ("name".equals(argument)) {
-            type = Type.NAME;
-        } else if (argument.startsWith("lore:")) {
-            type = Type.LORE;
-            try {
-                amount = Integer.parseInt(argument.substring(5));
-            } catch (final NumberFormatException e) {
-                throw new QuestException("Could not parse line", e);
-            }
-        } else {
-            throw new QuestException(String.format("Unknown argument type: '%s'",
-                    argument));
-        }
-        if (pos == 3) {
-            final String path = instruction.getPart(1) + "." + instruction.getPart(2);
-            questItem = instruction.getQuestItem(path);
-        } else {
-            questItem = instruction.getQuestItem();
-        }
+    /**
+     * Creates a new ItemVariable.
+     *
+     * @param questItem the QuestItem
+     * @param type      the type how the item should be displayed
+     * @param raw       if the output should be raw
+     * @param amount    the amount of the item
+     */
+    public ItemVariable(final QuestItem questItem, final ItemDisplayType type, final boolean raw, final int amount) {
+        this.questItem = questItem;
+        this.type = type;
+        this.raw = raw;
+        this.amount = amount;
     }
 
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "NullAway"})
     @Override
-    public String getValue(@Nullable final Profile profile) {
-        if (profile == null) {
-            return "";
+    public String getValue(@Nullable final Profile profile) throws QuestException {
+        if (profile == null && (type == ItemDisplayType.AMOUNT || type == ItemDisplayType.LEFT)) {
+            throw new QuestException("ItemVariable with type " + type + " can't be used without a profile.");
         }
         return switch (type) {
             case AMOUNT -> Integer.toString(itemAmount(profile));
@@ -118,9 +103,5 @@ public class ItemVariable extends Variable {
             return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', string));
         }
         return string;
-    }
-
-    private enum Type {
-        AMOUNT, LEFT, NAME, LORE
     }
 }
