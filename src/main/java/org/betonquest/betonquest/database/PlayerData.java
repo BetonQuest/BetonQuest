@@ -35,7 +35,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * Represents an object storing all profile-related data, which can load and save it.
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidSynchronizedStatement"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidSynchronizedStatement"})
 @SuppressFBWarnings("JLM_JSR166_UTILCONCURRENT_MONITORENTER")
 public class PlayerData implements TagData {
     /**
@@ -518,6 +518,8 @@ public class PlayerData implements TagData {
     }
 
     /**
+     * Gets player's language.
+     *
      * @return the language this profile uses
      */
     public String getLanguage() {
@@ -525,7 +527,7 @@ public class PlayerData implements TagData {
     }
 
     /**
-     * Sets player's language
+     * Sets player's language.
      *
      * @param lang language to set
      */

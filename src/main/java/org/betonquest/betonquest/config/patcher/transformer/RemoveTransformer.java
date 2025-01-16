@@ -12,7 +12,7 @@ import java.util.Map;
 public class RemoveTransformer implements PatchTransformer {
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public RemoveTransformer() {
     }

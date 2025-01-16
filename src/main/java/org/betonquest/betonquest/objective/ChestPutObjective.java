@@ -52,7 +52,7 @@ public class ChestPutObjective extends Objective implements Listener {
 
     /**
      * Argument to manage the chest access for one or multiple players. False by default which means only one player
-     * can acess the chest at the same time.
+     * can access the chest at the same time.
      */
     private final boolean multipleAccess;
 

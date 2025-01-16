@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 public class ListEntryRenameTransformer implements PatchTransformer {
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public ListEntryRenameTransformer() {
     }

@@ -29,7 +29,8 @@ public interface TagData {
     void addTag(String tag);
 
     /**
-     * Remove a tag
+     * Remove a tag.
+     *
      * @param tag tag to remove
      */
     void removeTag(String tag);

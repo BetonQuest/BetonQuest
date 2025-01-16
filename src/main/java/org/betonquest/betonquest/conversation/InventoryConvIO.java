@@ -204,7 +204,6 @@ public class InventoryConvIO implements Listener, ConversationIO {
                         data = Short.parseShort(materialName.substring(colonIndex + 1));
                     } catch (final NumberFormatException e) {
                         log.warn(conv.getPackage(), "Could not read material data: " + e.getMessage(), e);
-                        data = 0;
                     }
                     materialName = materialName.substring(0, colonIndex);
                 }
@@ -213,9 +212,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                     mat = Material.matchMaterial(materialName, true);
                 }
                 option = option.replace('{' + fullMaterial + '}', "");
-                if (mat == null) {
-                    material = Material.ENDER_PEARL;
-                } else {
+                if (mat != null) {
                     material = mat;
                 }
             }

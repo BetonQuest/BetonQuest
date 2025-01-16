@@ -11,11 +11,10 @@ import java.util.Map;
 /**
  * Adds an entry to the given list at the given position.
  */
-
 public class ListEntryAddTransformer implements PatchTransformer {
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public ListEntryAddTransformer() {
     }
@@ -29,12 +28,11 @@ public class ListEntryAddTransformer implements PatchTransformer {
         final List<String> list = config.getStringList(key);
         final boolean listExists = config.isList(key);
 
-        final int index;
-        switch (position.toUpperCase(Locale.ROOT)) {
-            case "FIRST" -> index = 0;
-            case "LAST" -> index = list.size();
-            default -> index = list.size();
-        }
+        final int index = switch (position.toUpperCase(Locale.ROOT)) {
+            case "FIRST" -> 0;
+            case "LAST" -> list.size();
+            default -> list.size();
+        };
 
         list.add(index, entry);
         config.set(key, list);

@@ -6,12 +6,12 @@ package org.betonquest.betonquest;
 @SuppressWarnings("PMD.AvoidFieldNameMatchingTypeName")
 public class Pointer {
     /**
-     * String pointing to the journal entry
+     * String pointing to the journal entry.
      */
     private final String pointer;
 
     /**
-     * Timestamp indicating date of this entry
+     * Timestamp indicating date of this entry.
      */
     private final long timestamp;
 
@@ -27,7 +27,7 @@ public class Pointer {
     }
 
     /**
-     * Returns the name of the journal entry
+     * Returns the name of the journal entry.
      *
      * @return the name of the journal entry
      */

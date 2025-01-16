@@ -107,10 +107,11 @@ import java.util.logging.Handler;
 /**
  * Represents BetonQuest plugin.
  */
-@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods",
-        "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidFieldNameMatchingMethodName",
-        "PMD.AtLeastOneConstructor", "PMD.ExcessivePublicCount", "PMD.TooManyFields", "NullAway.Init"})
+@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.GodClass", "PMD.TooManyMethods", "PMD.TooManyFields", "NullAway.Init"})
 public class BetonQuest extends JavaPlugin {
+    /**
+     * BStats Plugin id.
+     */
     private static final int BSTATS_METRICS_ID = 551;
 
     /**
@@ -148,16 +149,34 @@ public class BetonQuest extends JavaPlugin {
      */
     private FeatureRegistries featureRegistries;
 
+    /**
+     * Factory to create new class specific loggers.
+     */
     private BetonQuestLoggerFactory loggerFactory;
 
+    /**
+     * Factory to create new file accessors.
+     */
     private ConfigAccessorFactory configAccessorFactory;
 
+    /**
+     * Factory to create new Configuration Files.
+     */
     private ConfigurationFileFactory configurationFileFactory;
 
+    /**
+     * The custom logger for the plugin.
+     */
     private BetonQuestLogger log;
 
+    /**
+     * The plugin tag used for command feedback.
+     */
     private String pluginTag;
 
+    /**
+     * The plugin configuration file.
+     */
     private ConfigurationFile config;
 
     /**
@@ -165,25 +184,53 @@ public class BetonQuest extends JavaPlugin {
      */
     private BukkitAudiences adventure;
 
+    /**
+     * The used Database.
+     */
     private Database database;
 
-    private boolean isMySQLUsed;
+    /**
+     * If MySQL is used.
+     */
+    private boolean usesMySQL;
 
+    /**
+     * The database saver for Quest Data.
+     */
     @SuppressWarnings("PMD.DoNotUseThreads")
     private AsyncSaver saver;
 
+    /**
+     * The plugin updater.
+     */
     private Updater updater;
 
+    /**
+     * The Global Quest Data.
+     */
     private GlobalData globalData;
 
+    /**
+     * The Player Hider instance.
+     */
     private PlayerHider playerHider;
 
+    /**
+     * The RPG Menu instance.
+     */
     private RPGMenu rpgMenu;
 
     /**
      * Cache for event schedulers, holding the last execution of an event.
      */
     private LastExecutionCache lastExecutionCache;
+
+    /**
+     * The required default constructor without arguments for plugin creation.
+     */
+    public BetonQuest() {
+        super();
+    }
 
     /**
      * Get the plugin's instance.
@@ -310,14 +357,29 @@ public class BetonQuest extends JavaPlugin {
         return adventure;
     }
 
+    /**
+     * Get the RPG Menu instance.
+     *
+     * @return The RPG Menu instance.
+     */
     public RPGMenu getRpgMenu() {
         return rpgMenu;
     }
 
+    /**
+     * Get the plugin configuration file.
+     *
+     * @return config file
+     */
     public ConfigurationFile getPluginConfig() {
         return config;
     }
 
+    /**
+     * Get the plugin tag used for command feedback.
+     *
+     * @return plugin tag
+     */
     public String getPluginTag() {
         return pluginTag;
     }
@@ -341,14 +403,15 @@ public class BetonQuest extends JavaPlugin {
         return servicesManager.load(clazz);
     }
 
-    @SuppressWarnings({"PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.NcssCount", "PMD.DoNotUseThreads"})
     @Override
     public void onEnable() {
         instance = this;
 
         this.loggerFactory = registerAndGetService(BetonQuestLoggerFactory.class, new CachingBetonQuestLoggerFactory(new DefaultBetonQuestLoggerFactory()));
         this.configAccessorFactory = registerAndGetService(ConfigAccessorFactory.class, new DefaultConfigAccessorFactory());
-        this.configurationFileFactory = registerAndGetService(ConfigurationFileFactory.class, new DefaultConfigurationFileFactory(loggerFactory, loggerFactory.create(DefaultConfigurationFileFactory.class), configAccessorFactory));
+        this.configurationFileFactory = registerAndGetService(ConfigurationFileFactory.class, new DefaultConfigurationFileFactory(
+                loggerFactory, loggerFactory.create(DefaultConfigurationFileFactory.class), configAccessorFactory));
 
         this.log = loggerFactory.create(this);
         pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
@@ -374,7 +437,8 @@ public class BetonQuest extends JavaPlugin {
             return;
         }
 
-        final HistoryHandler debugHistoryHandler = HandlerFactory.createHistoryHandler(loggerFactory, this, this.getServer().getScheduler(), config, new File(getDataFolder(), "/logs"), InstantSource.system());
+        final HistoryHandler debugHistoryHandler = HandlerFactory.createHistoryHandler(loggerFactory, this,
+                this.getServer().getScheduler(), config, new File(getDataFolder(), "/logs"), InstantSource.system());
         registerLogHandler(getServer(), debugHistoryHandler);
         adventure = BukkitAudiences.create(this);
         final AccumulatingReceiverSelector receiverSelector = new AccumulatingReceiverSelector();
@@ -388,29 +452,7 @@ public class BetonQuest extends JavaPlugin {
         Config.setup(this, config);
         Notify.load(config);
 
-        final boolean mySQLEnabled = config.getBoolean("mysql.enabled", true);
-        if (mySQLEnabled) {
-            log.debug("Connecting to MySQL database");
-            this.database = new MySQL(loggerFactory.create(MySQL.class, "Database"), this, config.getString("mysql.host"),
-                    config.getString("mysql.port"),
-                    config.getString("mysql.base"),
-                    config.getString("mysql.user"),
-                    config.getString("mysql.pass"));
-            if (database.getConnection() != null) {
-                isMySQLUsed = true;
-                log.info("Successfully connected to MySQL database!");
-            }
-        }
-        if (!mySQLEnabled || !isMySQLUsed) {
-            this.database = new SQLite(loggerFactory.create(SQLite.class, "Database"), this, "database.db");
-            if (mySQLEnabled) {
-                log.warn("No connection to the mySQL Database! Using SQLite for storing data as fallback!");
-            } else {
-                log.info("Using SQLite for storing data!");
-            }
-        }
-
-        database.createTables();
+        setupDatabase();
 
         saver = new AsyncSaver(loggerFactory.create(AsyncSaver.class, "Database"));
         saver.start();
@@ -448,18 +490,7 @@ public class BetonQuest extends JavaPlugin {
 
         pluginManager.registerEvents(new CustomDropListener(loggerFactory.create(CustomDropListener.class)), this);
 
-        final QuestCommand questCommand = new QuestCommand(loggerFactory, loggerFactory.create(QuestCommand.class),
-                configAccessorFactory, adventure, new PlayerLogWatcher(receiverSelector), debugHistoryHandler,
-                this, playerDataStorage);
-        getCommand("betonquest").setExecutor(questCommand);
-        getCommand("betonquest").setTabCompleter(questCommand);
-        getCommand("journal").setExecutor(new JournalCommand(playerDataStorage));
-        getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class)));
-        getCommand("cancelquest").setExecutor(new CancelQuestCommand());
-        getCommand("compass").setExecutor(new CompassCommand());
-        final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), this, playerDataStorage);
-        getCommand("questlang").setExecutor(langCommand);
-        getCommand("questlang").setTabCompleter(langCommand);
+        registerCommands(receiverSelector, debugHistoryHandler);
 
         questTypeRegistries = QuestTypeRegistries.create(loggerFactory);
         featureRegistries = FeatureRegistries.create(loggerFactory);
@@ -507,6 +538,48 @@ public class BetonQuest extends JavaPlugin {
         log.info("BetonQuest successfully enabled!");
     }
 
+    private void setupDatabase() {
+        final boolean mySQLEnabled = config.getBoolean("mysql.enabled", true);
+        if (mySQLEnabled) {
+            log.debug("Connecting to MySQL database");
+            this.database = new MySQL(loggerFactory.create(MySQL.class, "Database"), this,
+                    config.getString("mysql.host"),
+                    config.getString("mysql.port"),
+                    config.getString("mysql.base"),
+                    config.getString("mysql.user"),
+                    config.getString("mysql.pass"));
+            if (database.getConnection() != null) {
+                usesMySQL = true;
+                log.info("Successfully connected to MySQL database!");
+            }
+        }
+        if (!mySQLEnabled || !usesMySQL) {
+            this.database = new SQLite(loggerFactory.create(SQLite.class, "Database"), this, "database.db");
+            if (mySQLEnabled) {
+                log.warn("No connection to the mySQL Database! Using SQLite for storing data as fallback!");
+            } else {
+                log.info("Using SQLite for storing data!");
+            }
+        }
+
+        database.createTables();
+    }
+
+    private void registerCommands(final AccumulatingReceiverSelector receiverSelector, final HistoryHandler debugHistoryHandler) {
+        final QuestCommand questCommand = new QuestCommand(loggerFactory, loggerFactory.create(QuestCommand.class),
+                configAccessorFactory, adventure, new PlayerLogWatcher(receiverSelector), debugHistoryHandler,
+                this, playerDataStorage);
+        getCommand("betonquest").setExecutor(questCommand);
+        getCommand("betonquest").setTabCompleter(questCommand);
+        getCommand("journal").setExecutor(new JournalCommand(playerDataStorage));
+        getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class)));
+        getCommand("cancelquest").setExecutor(new CancelQuestCommand());
+        getCommand("compass").setExecutor(new CompassCommand());
+        final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), this, playerDataStorage);
+        getCommand("questlang").setExecutor(langCommand);
+        getCommand("questlang").setTabCompleter(langCommand);
+    }
+
     private void migratePackages() {
         try {
             new Migrator().migrate();
@@ -521,13 +594,15 @@ public class BetonQuest extends JavaPlugin {
         final DownloadSource downloadSource = new TempFileDownloadSource(new WebDownloadSource());
         final UpdateDownloader updateDownloader = new UpdateDownloader(downloadSource, file);
 
-        final NexusReleaseAndDevelopmentSource nexusReleaseAndDevelopmentSource = new NexusReleaseAndDevelopmentSource("https://nexus.betonquest.org/",
-                new WebContentSource());
-        final GitHubReleaseSource gitHubReleaseSource = new GitHubReleaseSource("https://api.github.com/repos/BetonQuest/BetonQuest",
+        final NexusReleaseAndDevelopmentSource nexusReleaseAndDevelopmentSource = new NexusReleaseAndDevelopmentSource(
+                "https://nexus.betonquest.org/", new WebContentSource());
+        final GitHubReleaseSource gitHubReleaseSource = new GitHubReleaseSource(
+                "https://api.github.com/repos/BetonQuest/BetonQuest",
                 new WebContentSource(GitHubReleaseSource.HTTP_CODE_HANDLER));
         final List<ReleaseUpdateSource> releaseHandlers = List.of(nexusReleaseAndDevelopmentSource, gitHubReleaseSource);
         final List<DevelopmentUpdateSource> developmentHandlers = List.of(nexusReleaseAndDevelopmentSource);
-        final UpdateSourceHandler updateSourceHandler = new UpdateSourceHandler(loggerFactory.create(UpdateSourceHandler.class), releaseHandlers, developmentHandlers);
+        final UpdateSourceHandler updateSourceHandler = new UpdateSourceHandler(loggerFactory.create(UpdateSourceHandler.class),
+                releaseHandlers, developmentHandlers);
 
         final Version pluginVersion = new Version(this.getDescription().getVersion());
         final UpdaterConfig updaterConfig = new UpdaterConfig(loggerFactory.create(UpdaterConfig.class), config, pluginVersion, DEV_INDICATOR);
@@ -652,7 +727,7 @@ public class BetonQuest extends JavaPlugin {
      * @return if MySQL is used (false means that SQLite is being used)
      */
     public boolean isMySQLUsed() {
-        return isMySQLUsed;
+        return usesMySQL;
     }
 
     /**
