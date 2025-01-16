@@ -5,6 +5,7 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
+import org.betonquest.betonquest.instruction.argument.IDArgument;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -188,23 +189,6 @@ public abstract class SimpleYMLSection {
             }
         }
         return ids;
-    }
-
-    /**
-     * Creates an {@link ID} from a pack and string.
-     *
-     * @param <T> the type of the id
-     */
-    public interface IDArgument<T extends ID> {
-        /**
-         * Creates a new ID.
-         *
-         * @param pack       the source pack
-         * @param identifier the id name, potentially prefixed with a quest path
-         * @return the newly created id
-         * @throws ObjectNotFoundException when there is no such {@link T} in the resolved quest package
-         */
-        T convert(@Nullable QuestPackage pack, String identifier) throws ObjectNotFoundException;
     }
 
     /**

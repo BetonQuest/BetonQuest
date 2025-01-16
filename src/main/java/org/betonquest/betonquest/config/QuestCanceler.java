@@ -15,9 +15,9 @@ import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.ObjectiveID;
+import org.betonquest.betonquest.instruction.argument.IDArgument;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.menu.config.SimpleYMLSection;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Location;
@@ -127,7 +127,7 @@ public class QuestCanceler {
 
     @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
     @Nullable
-    private <T extends ID> T[] parseID(final ConfigurationSection section, final String path, final SimpleYMLSection.IDArgument<T> argument) throws QuestException {
+    private <T extends ID> T[] parseID(final ConfigurationSection section, final String path, final IDArgument<T> argument) throws QuestException {
         final String[] rawObjectives = split(section, path);
         if (rawObjectives == null || rawObjectives.length == 0) {
             return null;
