@@ -764,7 +764,7 @@ public class ConversationData {
             }
         }
 
-        //TODO: Consider removing this undocumented feature.
+        // TODO: Consider removing this undocumented feature.
         @SuppressWarnings("PMD.CognitiveComplexity")
         private void parsePrefix(final String name, final OptionType type, final ConfigurationSection conv, final String defaultLang) throws QuestException {
             if (conv.contains("prefix")) {
