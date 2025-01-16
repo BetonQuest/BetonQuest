@@ -43,11 +43,7 @@ public class MobKillObjective extends CountingObjective implements Listener {
         if (name != null) {
             name = Utils.format(name, true, false).replace('_', ' ');
         }
-        final String markedString = instruction.getOptional("marked");
-        marked = markedString == null ? null : new VariableString(
-                instruction.getPackage(),
-                Utils.addPackage(instruction.getPackage(), markedString)
-        );
+        marked = instruction.get(instruction.getOptional("marked"), VariableArgument.STRING_WITH_PACKAGE);
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})

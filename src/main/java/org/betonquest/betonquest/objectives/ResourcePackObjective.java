@@ -34,7 +34,7 @@ public class ResourcePackObjective extends Objective implements Listener {
      */
     public ResourcePackObjective(final Instruction instruction) throws QuestException {
         super(instruction);
-        targetStatus = new VariableString(instruction.getPackage(), instruction.next());
+        targetStatus = instruction.get(VariableString::new);
     }
 
     @Override

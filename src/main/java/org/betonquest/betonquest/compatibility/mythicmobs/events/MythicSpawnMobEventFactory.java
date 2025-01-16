@@ -8,21 +8,20 @@ import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
-import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
-import org.betonquest.betonquest.utils.Utils;
 
 /**
  * Factory to create {@link MythicSpawnMobEvent}s from {@link Instruction}s.
  */
 public class MythicSpawnMobEventFactory implements EventFactory, StaticEventFactory {
     /**
-     * Expected format: identifier:amount
+     * Expected format: {@code identifier:amount}.
      */
     private static final int MOB_FORMAT_LENGTH = 2;
 
@@ -37,21 +36,14 @@ public class MythicSpawnMobEventFactory implements EventFactory, StaticEventFact
     private final PrimaryServerThreadData data;
 
     /**
-     * Variable processor to create new variables.
-     */
-    private final VariableProcessor variableProcessor;
-
-    /**
      * Create a new factory for {@link MythicSpawnMobEvent}s.
      *
-     * @param apiHelper         the api helper used get MythicMobs
-     * @param data              the primary server thread data required for main thread checking
-     * @param variableProcessor the variable processor to create new variables with
+     * @param apiHelper the api helper used get MythicMobs
+     * @param data      the primary server thread data required for main thread checking
      */
-    public MythicSpawnMobEventFactory(final BukkitAPIHelper apiHelper, final PrimaryServerThreadData data, final VariableProcessor variableProcessor) {
+    public MythicSpawnMobEventFactory(final BukkitAPIHelper apiHelper, final PrimaryServerThreadData data) {
         this.apiHelper = apiHelper;
         this.data = data;
-        this.variableProcessor = variableProcessor;
     }
 
     @Override
@@ -72,11 +64,7 @@ public class MythicSpawnMobEventFactory implements EventFactory, StaticEventFact
         }
         final boolean targetPlayer = instruction.hasArgument("target");
         final String markedString = instruction.getOptional("marked");
-        final VariableString marked = markedString == null ? null : new VariableString(
-                variableProcessor,
-                instruction.getPackage(),
-                Utils.addPackage(instruction.getPackage(), markedString)
-        );
+        final VariableString marked = instruction.get(markedString, VariableArgument.STRING_WITH_PACKAGE);
         return new PrimaryServerThreadEvent(new MythicSpawnMobEvent(apiHelper, loc, mob, level, amount, privateMob, targetPlayer, marked), data);
     }
 
@@ -91,11 +79,7 @@ public class MythicSpawnMobEventFactory implements EventFactory, StaticEventFact
         final VariableNumber level = instruction.get(mobParts[1], VariableNumber::new);
         final VariableNumber amount = instruction.get(VariableNumber::new);
         final String markedString = instruction.getOptional("marked");
-        final VariableString marked = markedString == null ? null : new VariableString(
-                variableProcessor,
-                instruction.getPackage(),
-                Utils.addPackage(instruction.getPackage(), markedString)
-        );
+        final VariableString marked = instruction.get(markedString, VariableArgument.STRING_WITH_PACKAGE);
         return new PrimaryServerThreadStaticEvent(new MythicSpawnMobEvent(apiHelper, loc, mob, level, amount, false, false, marked), data);
     }
 }

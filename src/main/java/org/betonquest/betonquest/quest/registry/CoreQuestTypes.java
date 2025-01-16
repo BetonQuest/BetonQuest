@@ -259,7 +259,7 @@ public class CoreQuestTypes {
         conditionTypes.register("dayofweek", new DayOfWeekConditionFactory(loggerFactory.create(DayOfWeekConditionFactory.class)));
         conditionTypes.register("effect", new EffectConditionFactory(loggerFactory, data));
         conditionTypes.register("empty", new EmptySlotsConditionFactory(loggerFactory, data));
-        conditionTypes.registerCombined("entities", new EntityConditionFactory(data, variableProcessor));
+        conditionTypes.registerCombined("entities", new EntityConditionFactory(data));
         conditionTypes.register("experience", new ExperienceConditionFactory(loggerFactory, data));
         conditionTypes.register("facing", new FacingConditionFactory(loggerFactory, data));
         conditionTypes.register("fly", new FlyingConditionFactory(loggerFactory, data));
@@ -283,7 +283,7 @@ public class CoreQuestTypes {
         conditionTypes.registerCombined("or", new AlternativeConditionFactory(loggerFactory));
         conditionTypes.register("partialdate", new PartialDateConditionFactory());
         conditionTypes.registerCombined("party", new PartyConditionFactory());
-        conditionTypes.register("permission", new PermissionConditionFactory(loggerFactory, data, variableProcessor));
+        conditionTypes.register("permission", new PermissionConditionFactory(loggerFactory, data));
         conditionTypes.register("point", new PointConditionFactory(dataStorage));
         conditionTypes.registerCombined("random", new RandomConditionFactory(variableProcessor));
         conditionTypes.register("rating", new ArmorRatingConditionFactory(loggerFactory, data));
@@ -292,11 +292,11 @@ public class CoreQuestTypes {
         conditionTypes.register("score", new ScoreboardObjectiveConditionFactory(data));
         conditionTypes.register("scoretag", new ScoreboardTagConditionFactory(data, loggerFactory));
         conditionTypes.register("sneak", new SneakConditionFactory(loggerFactory, data));
-        conditionTypes.register("stage", new StageConditionFactory(variableProcessor, betonQuest));
+        conditionTypes.register("stage", new StageConditionFactory(betonQuest));
         conditionTypes.register("tag", new TagConditionFactory(dataStorage));
         conditionTypes.registerCombined("testforblock", new BlockConditionFactory(data));
         conditionTypes.registerCombined("time", new TimeConditionFactory(data, variableProcessor));
-        conditionTypes.registerCombined("variable", new VariableConditionFactory(loggerFactory, data, variableProcessor));
+        conditionTypes.registerCombined("variable", new VariableConditionFactory(loggerFactory, data));
         conditionTypes.registerCombined("weather", new WeatherConditionFactory(data, variableProcessor));
         conditionTypes.register("world", new WorldConditionFactory(loggerFactory, data, variableProcessor));
     }
@@ -336,29 +336,29 @@ public class CoreQuestTypes {
         eventTypes.register("language", new LanguageEventFactory(dataStorage));
         eventTypes.registerCombined("lever", new LeverEventFactory(data));
         eventTypes.registerCombined("lightning", new LightningEventFactory(data));
-        eventTypes.registerCombined("log", new LogEventFactory(loggerFactory, variableProcessor));
-        eventTypes.register("notify", new NotifyEventFactory(loggerFactory, data, variableProcessor, dataStorage));
-        eventTypes.registerCombined("notifyall", new NotifyAllEventFactory(loggerFactory, data, variableProcessor, dataStorage));
+        eventTypes.registerCombined("log", new LogEventFactory(loggerFactory));
+        eventTypes.register("notify", new NotifyEventFactory(loggerFactory, data, dataStorage));
+        eventTypes.registerCombined("notifyall", new NotifyAllEventFactory(loggerFactory, data, dataStorage));
         eventTypes.registerCombined("objective", new ObjectiveEventFactory(betonQuest, loggerFactory));
         eventTypes.register("opsudo", new OpSudoEventFactory(loggerFactory, data));
         eventTypes.register("party", new PartyEventFactory(loggerFactory));
         eventTypes.registerCombined("pickrandom", new PickRandomEventFactory());
         eventTypes.register("point", new PointEventFactory(loggerFactory, variableProcessor, dataStorage));
-        eventTypes.registerCombined("removeentity", new RemoveEntityEventFactory(data, variableProcessor));
+        eventTypes.registerCombined("removeentity", new RemoveEntityEventFactory(data));
         eventTypes.registerCombined("run", new RunEventFactory(betonQuest));
         eventTypes.register("runForAll", new RunForAllEventFactory());
         eventTypes.register("runIndependent", new RunIndependentEventFactory());
         eventTypes.registerCombined("setblock", new SetBlockEventFactory(data));
         eventTypes.register("score", new ScoreboardObjectiveEventFactory(data, variableProcessor));
         eventTypes.register("scoretag", new ScoreboardTagEventFactory(loggerFactory, data));
-        eventTypes.registerCombined("spawn", new SpawnMobEventFactory(data, variableProcessor));
-        eventTypes.register("stage", new StageEventFactory(betonQuest, variableProcessor));
+        eventTypes.registerCombined("spawn", new SpawnMobEventFactory(data));
+        eventTypes.register("stage", new StageEventFactory(betonQuest));
         eventTypes.register("sudo", new SudoEventFactory(loggerFactory, data));
         eventTypes.registerCombined("tag", new TagPlayerEventFactory(dataStorage, betonQuest.getSaver()));
         eventTypes.register("take", new TakeEventFactory(loggerFactory));
         eventTypes.register("teleport", new TeleportEventFactory(loggerFactory, data));
         eventTypes.registerCombined("time", new TimeEventFactory(server, data, variableProcessor));
-        eventTypes.register("variable", new VariableEventFactory(betonQuest, variableProcessor));
+        eventTypes.register("variable", new VariableEventFactory(betonQuest));
         eventTypes.register("velocity", new VelocityEventFactory(loggerFactory, data));
         eventTypes.registerCombined("weather", new WeatherEventFactory(loggerFactory, data));
     }

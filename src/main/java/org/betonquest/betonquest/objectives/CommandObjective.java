@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -34,7 +35,7 @@ public class CommandObjective extends Objective implements Listener {
 
     public CommandObjective(final Instruction instruction) throws QuestException {
         super(instruction);
-        command = new VariableString(instruction.getPackage(), instruction.next(), true);
+        command = instruction.get(VariableArgument.STRING_REPLACE_UNDERSCORES);
         ignoreCase = instruction.hasArgument("ignoreCase");
         exact = instruction.hasArgument("exact");
         cancel = instruction.hasArgument("cancel");

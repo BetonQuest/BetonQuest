@@ -46,7 +46,7 @@ public class MythicMobsIntegrator implements Integrator {
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
         questRegistries.getConditionTypes().register("mythicmobdistance", new MythicMobDistanceConditionFactory(apiHelper, data));
         plugin.registerObjectives("mmobkill", MythicMobKillObjective.class);
-        questRegistries.getEventTypes().registerCombined("mspawnmob", new MythicSpawnMobEventFactory(apiHelper, data, plugin.getVariableProcessor()));
+        questRegistries.getEventTypes().registerCombined("mspawnmob", new MythicSpawnMobEventFactory(apiHelper, data));
     }
 
     /**

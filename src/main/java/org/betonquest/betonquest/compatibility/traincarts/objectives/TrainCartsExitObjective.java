@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.traincarts.objectives;
 import com.bergerkiller.bukkit.tc.events.seat.MemberSeatExitEvent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -41,9 +40,7 @@ public class TrainCartsExitObjective extends Objective implements Listener {
     public TrainCartsExitObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-
-        final QuestPackage pack = instruction.getPackage();
-        this.name = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, instruction.getOptional("name", ""));
+        this.name = instruction.get(instruction.getOptional("name", ""), VariableString::new);
     }
 
     /**

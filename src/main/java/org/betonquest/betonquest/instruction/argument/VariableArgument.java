@@ -33,6 +33,12 @@ public interface VariableArgument<T> {
             new VariableString(variableProcessor, pack, Utils.addPackage(pack, input));
 
     /**
+     * {@link VariableString} argument with the {@code replaceUnderscores} flag set.
+     */
+    VariableArgument<VariableString> STRING_REPLACE_UNDERSCORES = (variableProcessor, pack, input) ->
+            new VariableString(variableProcessor, pack, input, true);
+
+    /**
      * Gets a {@link T} from string.
      *
      * @param variableProcessor the variable processor for resolving

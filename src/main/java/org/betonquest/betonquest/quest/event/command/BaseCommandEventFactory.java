@@ -68,7 +68,7 @@ public abstract class BaseCommandEventFactory implements EventFactory {
                 .map(String::trim)
                 .toList();
         for (final String rawCommand : rawCommands) {
-            commands.add(new VariableString(instruction.getPackage(), rawCommand));
+            commands.add(instruction.get(rawCommand, VariableString::new));
         }
         return commands;
     }

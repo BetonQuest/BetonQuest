@@ -16,7 +16,6 @@ import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
-import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.Nullable;
@@ -31,19 +30,12 @@ public class SpawnMobEventFactory implements EventFactory, StaticEventFactory {
     private final PrimaryServerThreadData data;
 
     /**
-     * Processor to create new variables.
-     */
-    private final VariableProcessor variableProcessor;
-
-    /**
      * Create a new factory for {@link SpawnMobEvent}s.
      *
-     * @param data              the primary server thread data required for main thread checking
-     * @param variableProcessor the variable processor to create new variables with
+     * @param data the primary server thread data required for main thread checking
      */
-    public SpawnMobEventFactory(final PrimaryServerThreadData data, final VariableProcessor variableProcessor) {
+    public SpawnMobEventFactory(final PrimaryServerThreadData data) {
         this.data = data;
-        this.variableProcessor = variableProcessor;
     }
 
     @Override
@@ -68,15 +60,11 @@ public class SpawnMobEventFactory implements EventFactory, StaticEventFactory {
         final EntityType type = instruction.getEnum(EntityType.class);
         final VariableNumber amount = instruction.get(VariableNumber::new);
         final String nameString = instruction.getOptional("name");
-        final VariableString name = nameString == null ? null : new VariableString(variableProcessor,
-                instruction.getPackage(),
-                Utils.format(nameString, true, false).replace('_', ' ')
-        );
+        final VariableString name = nameString == null ? null : instruction.get(Utils.format(
+                nameString, true, false).replace('_', ' '), VariableString::new);
         final String markedString = instruction.getOptional("marked");
-        final VariableString marked = markedString == null ? null : new VariableString(variableProcessor,
-                instruction.getPackage(),
-                Utils.addPackage(instruction.getPackage(), markedString)
-        );
+        final VariableString marked = markedString == null ? null : instruction.get(
+                Utils.addPackage(instruction.getPackage(), markedString), VariableString::new);
         final QuestItem helmet = getQuestItem(instruction, "h");
         final QuestItem chestplate = getQuestItem(instruction, "c");
         final QuestItem leggings = getQuestItem(instruction, "l");

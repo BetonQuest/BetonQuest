@@ -28,12 +28,12 @@ public class RegionObjective extends AbstractLocationObjective {
      */
     public RegionObjective(final Instruction instruction) throws QuestException {
         super(BetonQuest.getInstance().getLoggerFactory().create(RegionObjective.class), instruction);
-        name = new VariableString(instruction.getPackage(), instruction.next());
+        name = instruction.get(VariableString::new);
     }
 
     @Override
-    protected boolean isInside(final OnlineProfile onlineProfile, final Location location) {
-        return WorldGuardIntegrator.isInsideRegion(location, name.getString(onlineProfile));
+    protected boolean isInside(final OnlineProfile onlineProfile, final Location location) throws QuestException {
+        return WorldGuardIntegrator.isInsideRegion(location, name.getValue(onlineProfile));
     }
 
     @Override

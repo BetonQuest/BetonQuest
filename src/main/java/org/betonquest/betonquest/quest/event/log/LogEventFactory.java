@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableString;
-import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,19 +35,12 @@ public class LogEventFactory implements EventFactory, StaticEventFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Variable processor to create the message variable.
-     */
-    private final VariableProcessor variableProcessor;
-
-    /**
      * Create a new log event factory.
      *
-     * @param loggerFactory     BetonQuest logger factory used to retrieve the {@link BetonQuestLogger} for new events.
-     * @param variableProcessor the variable processor for creating variables
+     * @param loggerFactory BetonQuest logger factory used to retrieve the {@link BetonQuestLogger} for new events.
      */
-    public LogEventFactory(final BetonQuestLoggerFactory loggerFactory, final VariableProcessor variableProcessor) {
+    public LogEventFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;
-        this.variableProcessor = variableProcessor;
     }
 
     @Override
@@ -68,7 +60,7 @@ public class LogEventFactory implements EventFactory, StaticEventFactory {
         final Matcher levelMatcher = LEVEL_REGEX.matcher(raw);
         final int msgStart = levelMatcher.find() ? levelMatcher.end() : 0;
         final int msgEnd = conditionsMatcher.find() ? conditionsMatcher.start() : raw.length();
-        final VariableString message = new VariableString(variableProcessor, instruction.getPackage(), raw.substring(msgStart, msgEnd));
+        final VariableString message = instruction.get(raw.substring(msgStart, msgEnd), VariableString::new);
         return new NullableEventAdapter(new LogEvent(loggerFactory.create(LogEvent.class), level, message));
     }
 }

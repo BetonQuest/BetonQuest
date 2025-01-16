@@ -13,7 +13,6 @@ import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
-import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.entity.EntityType;
 
@@ -32,19 +31,12 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
     private final PrimaryServerThreadData data;
 
     /**
-     * Processor to create new variables.
-     */
-    private final VariableProcessor variableProcessor;
-
-    /**
      * Create the entity condition factory.
      *
-     * @param data              the data used for checking the condition on the main thread
-     * @param variableProcessor the variable processor to create new variables with
+     * @param data the data used for checking the condition on the main thread
      */
-    public EntityConditionFactory(final PrimaryServerThreadData data, final VariableProcessor variableProcessor) {
+    public EntityConditionFactory(final PrimaryServerThreadData data) {
         this.data = data;
-        this.variableProcessor = variableProcessor;
     }
 
     @Override
@@ -62,15 +54,11 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
         final VariableLocation location = instruction.get(VariableLocation::new);
         final VariableNumber range = instruction.get(VariableNumber::new);
         final String nameString = instruction.getOptional("name");
-        final VariableString name = nameString == null ? null : new VariableString(variableProcessor,
-                instruction.getPackage(),
-                Utils.format(nameString, true, false).replace('_', ' ')
-        );
+        final VariableString name = nameString == null ? null : instruction.get(
+                Utils.format(nameString, true, false).replace('_', ' '), VariableString::new);
         final String markedString = instruction.getOptional("marked");
-        final VariableString marked = markedString == null ? null : new VariableString(variableProcessor,
-                instruction.getPackage(),
-                Utils.addPackage(instruction.getPackage(), markedString)
-        );
+        final VariableString marked = markedString == null ? null : instruction.get(
+                Utils.addPackage(instruction.getPackage(), markedString), VariableString::new);
         return new EntityCondition(entityAmounts, location, range, name, marked);
     }
 

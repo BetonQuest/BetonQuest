@@ -5,7 +5,6 @@ import com.bergerkiller.bukkit.tc.events.seat.MemberSeatExitEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -65,8 +64,7 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         this.startTimes = new HashMap<>();
 
-        final QuestPackage pack = instruction.getPackage();
-        this.name = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, instruction.getOptional("name", ""));
+        this.name = instruction.get(instruction.getOptional("name", ""), VariableString::new);
         targetAmount = instruction.get(instruction.getOptional("amount", "0"), VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
     }
 
