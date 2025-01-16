@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.event.stage;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ObjectiveID;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.objectives.StageObjective;
@@ -42,7 +42,7 @@ public class StageEventFactory implements EventFactory {
 
     @Override
     public Event parseEvent(final Instruction instruction) throws QuestException {
-        final ObjectiveID objectiveID = instruction.getObjective();
+        final ObjectiveID objectiveID = instruction.getID(ObjectiveID::new);
         final String action = instruction.next();
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "set" -> createSetEvent(instruction, objectiveID);

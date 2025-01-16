@@ -4,10 +4,10 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
 import com.gamingmesh.jobs.container.Job;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -62,5 +62,4 @@ public class ObjectiveLevelUpEvent extends Objective implements Listener {
     public String getProperty(final String name, final Profile profile) {
         return "";
     }
-
 }

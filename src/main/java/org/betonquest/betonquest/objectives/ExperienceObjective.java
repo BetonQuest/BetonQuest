@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.objectives;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -34,7 +34,7 @@ public class ExperienceObjective extends Objective implements Listener {
 
     public ExperienceObjective(final Instruction instruction) throws QuestException {
         super(instruction);
-        this.amount = instruction.getVarNum();
+        this.amount = instruction.get(VariableNumber::new);
     }
 
     private void onExperienceChange(final OnlineProfile onlineProfile, final double newAmount, final boolean notify) {

@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.event.run;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.instruction.Instruction;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class RunIndependentEventFactory implements StaticEventFactory {
 
     @Override
     public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
-        final List<EventID> events = instruction.getList(instruction.getOptional("events"), instruction::getEvent);
+        final List<EventID> events = List.of(instruction.getIDArray(instruction.getOptional("events"), EventID::new));
         return new RunIndependentEvent(events);
     }
 }

@@ -63,7 +63,7 @@ public final class GlobalVariableResolver {
 
     private static String getReplacement(final QuestPackage pack, final String variable) {
         try {
-            return new GlobalVariableID(pack, variable).getInstruction().getInstruction();
+            return new GlobalVariableID(pack, variable).getInstruction().toString();
         } catch (final ObjectNotFoundException e) {
             LOG.warn(pack, e.getMessage(), e);
             return variable + "(not found)";

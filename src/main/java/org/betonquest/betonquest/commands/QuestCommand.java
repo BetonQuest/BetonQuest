@@ -5,7 +5,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.Pointer;
@@ -31,6 +30,7 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.ObjectiveID;
+import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.modules.data.PlayerDataStorage;
@@ -441,7 +441,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 return;
             }
             final OnlineEvent give = new GiveEvent(
-                    new Instruction.Item[]{new Instruction.Item(itemID, new VariableNumber(itemID.getPackage(), "1"))},
+                    new Item[]{new Item(itemID, new VariableNumber(itemID.getPackage(), "1"))},
                     new NoNotificationSender(),
                     new IngameNotificationSender(log, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR, "inventory_full_backpack", "inventory_full"),
                     new IngameNotificationSender(log, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR, "inventory_full_drop", "inventory_full"),
@@ -1295,7 +1295,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 // rename objective in the file
                 final MultiConfiguration configuration = nameID.getPackage().getConfig();
                 final String newPath = "objectives." + rename.split("\\.")[1];
-                configuration.set(newPath, nameID.getInstruction().getInstruction());
+                configuration.set(newPath, nameID.getInstruction().toString());
                 try {
                     final ConfigurationSection sourceConfigurationSection = configuration.getSourceConfigurationSection(nameID.getBaseID());
                     if (sourceConfigurationSection == null) {

@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.condition.health;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
@@ -39,7 +39,7 @@ public class HealthConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final VariableNumber health = instruction.getVarNum();
+        final VariableNumber health = instruction.get(VariableNumber::new);
         final BetonQuestLogger log = loggerFactory.create(HealthCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new HealthCondition(health), log, instruction.getPackage()), data);

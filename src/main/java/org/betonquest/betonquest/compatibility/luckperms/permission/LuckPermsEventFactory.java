@@ -3,11 +3,12 @@ package org.betonquest.betonquest.compatibility.luckperms.permission;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.data.NodeMap;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
@@ -66,8 +67,8 @@ public class LuckPermsEventFactory implements EventFactory {
         final List<VariableString> permissions = parseList(pack, unparsedPermissions);
         final List<VariableString> contexts = parseList(pack, instruction.getOptional("context", ""));
         final VariableString value = new VariableString(variableProcessor, pack, instruction.getOptional("value", ""));
-        final VariableNumber expiry = instruction.getVarNum(instruction.getOptional("expiry", "0"),
-                VariableNumber.NOT_LESS_THAN_ZERO_CHECKER);
+        final VariableNumber expiry = instruction.get(instruction.getOptional("expiry", "0"),
+                VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
         final VariableString timeUnit = new VariableString(variableProcessor, pack,
                 instruction.getOptional("unit", TimeUnit.DAYS.name()));
 

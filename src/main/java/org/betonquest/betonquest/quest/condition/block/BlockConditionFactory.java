@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.condition.block;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
@@ -42,8 +42,8 @@ public class BlockConditionFactory implements PlayerConditionFactory, Playerless
     }
 
     private NullableConditionAdapter parseBlockCondition(final Instruction instruction) throws QuestException {
-        final VariableLocation loc = instruction.getLocation();
-        final BlockSelector selector = instruction.getBlockSelector();
+        final VariableLocation loc = instruction.get(VariableLocation::new);
+        final BlockSelector selector = instruction.get(BlockSelector::new);
         final boolean exactMatch = instruction.hasArgument("exactMatch");
         return new NullableConditionAdapter(new BlockCondition(loc, selector, exactMatch));
     }

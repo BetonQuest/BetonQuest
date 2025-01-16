@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.compatibility.fabled;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import studio.magemonkey.fabled.Fabled;
 import studio.magemonkey.fabled.api.player.PlayerClass;
@@ -26,7 +26,7 @@ public class FabledLevelCondition extends Condition {
         if (!Fabled.isClassRegistered(className)) {
             throw new QuestException("Class '" + className + "' is not registered");
         }
-        level = instruction.getVarNum();
+        level = instruction.get(VariableNumber::new);
     }
 
     @Override

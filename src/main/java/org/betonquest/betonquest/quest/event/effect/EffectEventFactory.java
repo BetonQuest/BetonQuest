@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.event.effect;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -43,8 +43,8 @@ public class EffectEventFactory implements EventFactory {
             throw new QuestException("Unknown effect type: " + instruction.current());
         }
         try {
-            final VariableNumber duration = instruction.getVarNum();
-            final VariableNumber level = instruction.getVarNum();
+            final VariableNumber duration = instruction.get(VariableNumber::new);
+            final VariableNumber level = instruction.get(VariableNumber::new);
             final boolean ambient = instruction.hasArgument("ambient");
             final boolean hidden = instruction.hasArgument("hidden");
             final boolean icon = !instruction.hasArgument("noicon");

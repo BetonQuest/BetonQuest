@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.compatibility.mythicmobs.conditions;
 
 import io.lumine.mythic.bukkit.BukkitAPIHelper;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
@@ -41,7 +41,7 @@ public class MythicMobDistanceConditionFactory implements PlayerConditionFactory
             throw new QuestException("MythicMob with internal name '" + internalName + "' does not exist");
         }
 
-        final VariableNumber distance = instruction.getVarNum();
+        final VariableNumber distance = instruction.get(VariableNumber::new);
         return new PrimaryServerThreadPlayerCondition(new MythicMobDistanceCondition(apiHelper, internalName, distance), data);
     }
 }

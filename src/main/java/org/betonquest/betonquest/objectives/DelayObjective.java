@@ -1,12 +1,13 @@
 package org.betonquest.betonquest.objectives;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -49,7 +50,7 @@ public class DelayObjective extends Objective {
         log = BetonQuest.getInstance().getLoggerFactory().create(this.getClass());
         template = DelayData.class;
 
-        delay = instruction.getVarNum(VariableNumber.NOT_LESS_THAN_ZERO_CHECKER);
+        delay = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ZERO);
         interval = instruction.getInt(instruction.getOptional("interval"), 20 * 10);
         if (interval <= 0) {
             throw new QuestException("Interval cannot be less than 1 tick");

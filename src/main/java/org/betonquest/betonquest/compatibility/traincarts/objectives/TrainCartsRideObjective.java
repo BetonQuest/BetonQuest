@@ -4,7 +4,6 @@ import com.bergerkiller.bukkit.tc.events.seat.MemberSeatEnterEvent;
 import com.bergerkiller.bukkit.tc.events.seat.MemberSeatExitEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -12,7 +11,8 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 import org.betonquest.betonquest.exceptions.QuestException;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -67,7 +67,7 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
 
         final QuestPackage pack = instruction.getPackage();
         this.name = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, instruction.getOptional("name", ""));
-        targetAmount = instruction.getVarNum(instruction.getOptional("amount", "0"), VariableNumber.NOT_LESS_THAN_ZERO_CHECKER);
+        targetAmount = instruction.get(instruction.getOptional("amount", "0"), VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
     }
 
     /**

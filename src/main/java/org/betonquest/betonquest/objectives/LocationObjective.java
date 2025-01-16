@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.objectives;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Bukkit;
@@ -38,8 +38,8 @@ public class LocationObjective extends AbstractLocationObjective {
      */
     public LocationObjective(final Instruction instruction) throws QuestException {
         super(BetonQuest.getInstance().getLoggerFactory().create(LocationObjective.class), instruction);
-        loc = instruction.getLocation();
-        range = instruction.getVarNum();
+        loc = instruction.get(VariableLocation::new);
+        range = instruction.get(VariableNumber::new);
     }
 
     @Override

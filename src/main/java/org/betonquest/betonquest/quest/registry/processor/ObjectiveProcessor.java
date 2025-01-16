@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.registry.processor;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -9,6 +8,7 @@ import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ObjectiveID;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 

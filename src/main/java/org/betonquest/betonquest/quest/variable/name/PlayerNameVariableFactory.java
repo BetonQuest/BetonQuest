@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.variable.name;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 
 /**
  * Factory to create {@link PlayerNameVariable}s from {@link Instruction}s.

@@ -3,11 +3,11 @@ package org.betonquest.betonquest.compatibility.citizens.objective;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -72,7 +72,7 @@ public class NPCRangeObjective extends Objective {
         final Trigger trigger = instruction.getEnum(Trigger.class);
         playersInRange = new HashMap<>();
         checkStuff = getStuff(trigger);
-        radius = instruction.getVarNum();
+        radius = instruction.get(VariableNumber::new);
     }
 
     private BiPredicate<UUID, Boolean> getStuff(final Trigger trigger) {

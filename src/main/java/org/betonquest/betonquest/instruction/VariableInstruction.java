@@ -1,4 +1,4 @@
-package org.betonquest.betonquest;
+package org.betonquest.betonquest.instruction;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -54,6 +54,6 @@ public class VariableInstruction extends Instruction {
 
     @Override
     public VariableInstruction copy(final ID newID) {
-        return new VariableInstruction(getPackage(), newID, instruction, getParts());
+        return new VariableInstruction(getPackage(), newID, instructionString, getParts());
     }
 }

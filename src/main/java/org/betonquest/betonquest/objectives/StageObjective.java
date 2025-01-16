@@ -3,11 +3,11 @@ package org.betonquest.betonquest.objectives;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 
 import java.util.List;
 import java.util.Locale;

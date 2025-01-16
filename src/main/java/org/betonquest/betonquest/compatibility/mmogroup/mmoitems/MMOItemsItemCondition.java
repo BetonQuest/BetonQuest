@@ -2,11 +2,11 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
 import net.Indyuce.mmoitems.api.Type;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.inventory.ItemStack;
 
@@ -26,7 +26,7 @@ public class MMOItemsItemCondition extends Condition {
         itemType = MMOItemsUtils.getMMOItemType(instruction.next());
         itemID = instruction.next();
 
-        amount = instruction.hasNext() ? instruction.getVarNum() : instruction.getVarNum("1");
+        amount = instruction.hasNext() ? instruction.get(VariableNumber::new) : instruction.get("1", VariableNumber::new);
     }
 
     @Override

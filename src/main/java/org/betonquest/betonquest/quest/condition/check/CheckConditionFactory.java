@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.condition.check;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -13,6 +12,7 @@ import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionA
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.NoID;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
 import org.jetbrains.annotations.Nullable;
 

@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.legacy;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.jetbrains.annotations.Nullable;
 
 /**

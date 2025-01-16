@@ -1,4 +1,4 @@
-package org.betonquest.betonquest;
+package org.betonquest.betonquest.instruction;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -42,7 +42,7 @@ class VariableInstructionTest {
     void copyShouldReturnNewVariableInstructionWithSameProperties(final BetonQuestLogger log) throws ObjectNotFoundException {
         final VariableInstruction original = new VariableInstruction(log, questPackage, null, "%instruction%");
         final VariableInstruction copy = original.copy();
-        assertEquals(original.getInstruction(), copy.getInstruction(), "Should have the same instruction");
+        assertEquals(original.toString(), copy.toString(), "Should have the same instruction");
         assertEquals(original.getID(), copy.getID(), "Should have the same ID");
     }
 
@@ -50,7 +50,7 @@ class VariableInstructionTest {
     void copyWithNewIDShouldReturnNewVariableInstructionWithNewID(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory) throws ObjectNotFoundException {
         final VariableInstruction original = new VariableInstruction(log, questPackage, null, "%instruction%");
         final Instruction copy = original.copy(new VariableID(loggerFactory, questPackage, "%newID%"));
-        assertEquals(original.getInstruction(), copy.getInstruction(), "Should have the same instruction");
+        assertEquals(original.toString(), copy.toString(), "Should have the same instruction");
         assertNotEquals(original.getID(), copy.getID(), "Should have different ID");
     }
 

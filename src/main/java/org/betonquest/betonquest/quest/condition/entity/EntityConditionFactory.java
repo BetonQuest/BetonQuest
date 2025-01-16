@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.condition.entity;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -59,8 +59,8 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
 
     private EntityCondition parseEntityCondition(final Instruction instruction) throws QuestException {
         final Map<EntityType, VariableNumber> entityAmounts = getEntityAmounts(instruction);
-        final VariableLocation location = instruction.getLocation();
-        final VariableNumber range = instruction.getVarNum();
+        final VariableLocation location = instruction.get(VariableLocation::new);
+        final VariableNumber range = instruction.get(VariableNumber::new);
         final String nameString = instruction.getOptional("name");
         final VariableString name = nameString == null ? null : new VariableString(variableProcessor,
                 instruction.getPackage(),
@@ -81,7 +81,7 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
             final String[] typeParts = rawType.split(":");
             try {
                 final EntityType type = EntityType.valueOf(typeParts[0].toUpperCase(Locale.ROOT));
-                final VariableNumber amount = typeParts.length == 2 ? instruction.getVarNum(typeParts[1]) : new VariableNumber(variableProcessor, instruction.getPackage(), "1");
+                final VariableNumber amount = instruction.get(typeParts.length == 2 ? typeParts[1] : "1", VariableNumber::new);
                 entityAmounts.put(type, amount);
             } catch (final IllegalArgumentException e) {
                 throw new QuestException("Invalid entity type: " + typeParts[0], e);

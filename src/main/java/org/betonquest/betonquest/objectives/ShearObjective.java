@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.objectives;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.QuestException;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
@@ -36,7 +36,7 @@ public class ShearObjective extends CountingObjective implements Listener {
 
     public ShearObjective(final Instruction instruction) throws QuestException {
         super(instruction, "sheep_to_shear");
-        targetAmount = instruction.getVarNum(VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
+        targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
         final String rawName = instruction.getOptional("name");
         name = rawName != null ? ESCAPED_UNDERSCORE.matcher(UNDERSCORE.matcher(rawName).replaceAll(" ")).replaceAll("_") : null;
         color = instruction.getEnum(instruction.getOptional("color"), DyeColor.class, null);

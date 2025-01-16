@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.bstats;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.id.ID;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.modules.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.modules.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;

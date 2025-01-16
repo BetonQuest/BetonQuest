@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.compatibility.citizens.condition.distance;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
@@ -41,7 +41,7 @@ public class NPCDistanceConditionFactory implements PlayerConditionFactory {
         if (npcId < 0) {
             throw new QuestException("NPC ID cannot be less than 0");
         }
-        final VariableNumber distance = instruction.getVarNum();
+        final VariableNumber distance = instruction.get(VariableNumber::new);
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(
                 new NPCDistanceCondition(npcId, distance),
                 loggerFactory.create(NPCDistanceCondition.class),

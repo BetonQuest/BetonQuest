@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.objectives;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -45,7 +45,7 @@ public class DieObjective extends Objective implements Listener {
         super(instruction);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         cancel = instruction.hasArgument("cancel");
-        location = instruction.getLocation(instruction.getOptional("respawn"));
+        location = instruction.get(instruction.getOptional("respawn"), VariableLocation::new);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

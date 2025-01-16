@@ -4,7 +4,6 @@ import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.hologram.PlaceholderSetting;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -14,6 +13,7 @@ import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
 import org.betonquest.betonquest.exceptions.HookException;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -70,7 +70,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
                 final Variable variable = BetonQuest.getInstance().getVariableProcessor().create(pack, group);
                 final Instruction instruction = variable.getInstruction();
                 final String prefix = variable.isStaticness() ? "{bqg:" : "{bq:";
-                return prefix + instruction.getPackage().getQuestPath() + ":" + instruction.getInstruction() + "}";
+                return prefix + instruction.getPackage().getQuestPath() + ":" + instruction + "}";
             } catch (final QuestException exception) {
                 log.warn("Could not create variable '" + group + "' variable: " + exception.getMessage(), exception);
             }

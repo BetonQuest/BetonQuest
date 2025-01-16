@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.legacy;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 
 /**
  * Factory to create {@link T}s from {@link Instruction}s.

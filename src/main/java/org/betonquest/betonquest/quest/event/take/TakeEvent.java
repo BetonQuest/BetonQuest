@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.event.take;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 import org.bukkit.inventory.ItemStack;
@@ -23,7 +23,7 @@ public class TakeEvent extends AbstractTakeEvent {
     /**
      * The items to be removed.
      */
-    private final Instruction.Item[] questItems;
+    private final Item[] questItems;
 
     /**
      * A map to keep track of the needed deletions for each player.
@@ -37,14 +37,14 @@ public class TakeEvent extends AbstractTakeEvent {
      * @param checkOrder         the order in which the checks should be performed
      * @param notificationSender the notification sender to use
      */
-    public TakeEvent(final Instruction.Item[] questItems, final List<CheckType> checkOrder, final NotificationSender notificationSender) {
+    public TakeEvent(final Item[] questItems, final List<CheckType> checkOrder, final NotificationSender notificationSender) {
         super(checkOrder, notificationSender);
         this.questItems = questItems.clone();
     }
 
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
-        for (final Instruction.Item item : questItems) {
+        for (final Item item : questItems) {
             final QuestItem questItem = item.getItem();
             final int deleteAmount = item.getAmount().getValue(profile).intValue();
             neededDeletions.put(profile.getProfileUUID(), Pair.of(questItem, deleteAmount));

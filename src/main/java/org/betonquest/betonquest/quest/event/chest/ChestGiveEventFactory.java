@@ -1,12 +1,13 @@
 package org.betonquest.betonquest.quest.event.chest;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
@@ -41,7 +42,7 @@ public class ChestGiveEventFactory implements EventFactory, StaticEventFactory {
 
     private NullableEventAdapter createChestGiveEvent(final Instruction instruction) throws QuestException {
         return new NullableEventAdapter(
-                new ChestGiveEvent(instruction.getLocation(), instruction.getItemList())
+                new ChestGiveEvent(instruction.get(VariableLocation::new), instruction.getItemList())
         );
     }
 }

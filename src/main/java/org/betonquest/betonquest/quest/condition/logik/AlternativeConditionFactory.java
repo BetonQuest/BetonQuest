@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.condition.logik;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -10,6 +9,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
+import org.betonquest.betonquest.instruction.Instruction;
 
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class AlternativeConditionFactory implements PlayerConditionFactory, Play
 
     private AlternativeCondition parseAlternative(final Instruction instruction) throws QuestException {
         final BetonQuestLogger log = loggerFactory.create(AlternativeCondition.class);
-        final List<ConditionID> conditionIDs = instruction.getList(instruction::getCondition);
+        final List<ConditionID> conditionIDs = List.of(instruction.getIDArray(ConditionID::new));
         return new AlternativeCondition(log, conditionIDs, instruction.getPackage());
     }
 }

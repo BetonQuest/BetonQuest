@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.event.cancel;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
@@ -11,6 +10,7 @@ import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.QuestCancelerID;
+import org.betonquest.betonquest.instruction.Instruction;
 
 /**
  * Factory for the cancel event.

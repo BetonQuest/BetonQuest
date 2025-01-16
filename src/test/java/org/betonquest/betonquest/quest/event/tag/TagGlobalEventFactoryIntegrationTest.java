@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.event.tag;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.modules.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.modules.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;

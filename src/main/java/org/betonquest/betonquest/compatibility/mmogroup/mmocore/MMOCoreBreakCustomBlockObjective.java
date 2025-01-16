@@ -6,11 +6,11 @@ import net.Indyuce.mmocore.api.block.VanillaBlockType;
 import net.Indyuce.mmocore.api.event.CustomBlockMineEvent;
 import net.Indyuce.mmoitems.comp.mmocore.load.MMOItemsBlockType;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.QuestException;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -27,7 +27,7 @@ public class MMOCoreBreakCustomBlockObjective extends CountingObjective implemen
         super(instruction, "blocks_to_break");
         desiredBlockId = instruction.getOptionalArgument("block")
                 .orElseThrow(() -> new QuestException("Missing required argument: block"));
-        targetAmount = instruction.getVarNum(VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
+        targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -48,10 +48,8 @@ public class MMOCoreBreakCustomBlockObjective extends CountingObjective implemen
 
         if (blockType instanceof final VanillaBlockType vanillaBlock) {
             actualBlockId = vanillaBlock.getType().toString();
-
         } else if (blockType instanceof final MMOItemsBlockType mmoItemsBlock) {
             actualBlockId = String.valueOf(mmoItemsBlock.getBlockId());
-
         } else if (blockType instanceof final SkullBlockType skullBlock) {
             actualBlockId = skullBlock.getValue();
         }

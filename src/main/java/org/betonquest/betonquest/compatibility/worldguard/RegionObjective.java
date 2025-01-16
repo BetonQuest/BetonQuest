@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.compatibility.worldguard;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.objectives.AbstractLocationObjective;
 import org.bukkit.Bukkit;
@@ -55,5 +55,4 @@ public class RegionObjective extends AbstractLocationObjective {
     public String getProperty(final String name, final Profile profile) {
         return "";
     }
-
 }

@@ -3,10 +3,10 @@ package org.betonquest.betonquest.compatibility.heroes;
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.classes.HeroClass;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,7 +51,7 @@ public class HeroesClassCondition extends Condition {
                 throw new QuestException("Class '" + string + "' does not exist");
             }
         }
-        level = instruction.getVarNum(instruction.getOptional("level"));
+        level = instruction.get(instruction.getOptional("level"), VariableNumber::new);
     }
 
     @Override

@@ -16,7 +16,7 @@ import java.util.Set;
  *
  * @param <P> the player variant of the type
  * @param <S> the playerless variant of the type
- * @param <L> the legacy structure based on the {@link org.betonquest.betonquest.Instruction Instruction}
+ * @param <L> the legacy structure based on the {@link org.betonquest.betonquest.instruction.Instruction Instruction}
  *            as defined in the {@link org.betonquest.betonquest.api API package}
  */
 public abstract class QuestTypeRegistry<P, S, L> {

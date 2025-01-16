@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.event.drop;
 
-import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Item;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;

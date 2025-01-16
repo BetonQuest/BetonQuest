@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.objectives;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.BlockSelector;
@@ -47,14 +47,13 @@ public class FishObjective extends CountingObjective implements Listener {
         super(instruction, "fish_to_catch");
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         blockSelector = new BlockSelector(instruction.next());
-        targetAmount = instruction.getVarNum(VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
+        targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
 
-        final QuestPackage pack = instruction.getPackage();
         final String loc = instruction.getOptional("hookLocation");
         final String range = instruction.getOptional("range");
         if (loc != null && range != null) {
-            hookTargetLocation = new VariableLocation(BetonQuest.getInstance().getVariableProcessor(), pack, loc);
-            rangeVar = new VariableNumber(pack, range);
+            hookTargetLocation = instruction.get(loc, VariableLocation::new);
+            rangeVar = instruction.get(range, VariableNumber::new);
         } else {
             hookTargetLocation = null;
             rangeVar = null;

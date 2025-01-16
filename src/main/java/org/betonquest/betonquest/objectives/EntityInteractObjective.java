@@ -1,17 +1,17 @@
 package org.betonquest.betonquest.objectives;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.PlayerConverter;
-import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -89,18 +89,14 @@ public class EntityInteractObjective extends CountingObjective {
         template = EntityInteractData.class;
         interaction = instruction.getEnum(Interaction.class);
         mobType = instruction.getEnum(EntityType.class);
-        targetAmount = instruction.getVarNum(VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
+        targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
         customName = parseName(instruction.getOptional("name"));
         realName = parseName(instruction.getOptional("realname"));
-        final String markedString = instruction.getOptional("marked");
-        marked = markedString == null ? null : new VariableString(
-                instruction.getPackage(),
-                Utils.addPackage(instruction.getPackage(), markedString)
-        );
+        marked = instruction.get(instruction.getOptional("marked"), VariableArgument.STRING_WITH_PACKAGE);
         cancel = instruction.hasArgument("cancel");
-        loc = instruction.getLocation(instruction.getOptional("loc"));
+        loc = instruction.get(instruction.getOptional("loc"), VariableLocation::new);
         final String stringRange = instruction.getOptional("range");
-        range = instruction.getVarNum(stringRange == null ? "1" : stringRange);
+        range = instruction.get(stringRange == null ? "1" : stringRange, VariableNumber::new);
         final String handString = instruction.getOptional("hand");
         if (handString == null || handString.equalsIgnoreCase(EquipmentSlot.HAND.toString())) {
             slot = EquipmentSlot.HAND;

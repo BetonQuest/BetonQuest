@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.event.effect;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.bukkit.potion.PotionEffectType;
@@ -43,9 +43,6 @@ public class DeleteEffectEventFactory implements EventFactory {
         List<PotionEffectType> effects = Collections.emptyList();
         if (!instruction.hasArgument("any") && instruction.size() > 1) {
             effects = instruction.getList(type -> {
-                if (type == null) {
-                    throw new QuestException("Effect type cannot be null");
-                }
                 final PotionEffectType effect = PotionEffectType.getByName(type);
                 if (effect == null) {
                     throw new QuestException("Unknown effect type: " + type);

@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.condition.number;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
@@ -31,9 +31,9 @@ public class NumberCompareConditionFactory implements PlayerConditionFactory, Pl
     }
 
     private NumberCompareCondition parse(final Instruction instruction) throws QuestException {
-        final VariableNumber first = instruction.getVarNum();
+        final VariableNumber first = instruction.get(VariableNumber::new);
         final Operation operation = Operation.fromSymbol(instruction.next());
-        final VariableNumber second = instruction.getVarNum();
+        final VariableNumber second = instruction.get(VariableNumber::new);
         return new NumberCompareCondition(first, second, operation);
     }
 }

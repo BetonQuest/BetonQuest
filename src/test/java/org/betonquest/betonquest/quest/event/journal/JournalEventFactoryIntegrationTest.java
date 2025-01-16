@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.event.journal;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.SingletonLoggerFactory;
@@ -8,6 +7,7 @@ import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.NoID;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.modules.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.modules.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.modules.data.PlayerDataStorage;

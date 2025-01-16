@@ -1,11 +1,12 @@
 package org.betonquest.betonquest.compatibility.traincarts.objectives;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.objectives.AbstractLocationObjective;
@@ -36,8 +37,8 @@ public class TrainCartsLocationObjective extends AbstractLocationObjective imple
      */
     public TrainCartsLocationObjective(final Instruction instruction) throws QuestException {
         super(BetonQuest.getInstance().getLoggerFactory().create(TrainCartsLocationObjective.class), instruction);
-        this.loc = instruction.getLocation();
-        this.range = instruction.getVarNum(instruction.getOptional("range", "1"), VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
+        this.loc = instruction.get(VariableLocation::new);
+        this.range = instruction.get(instruction.getOptional("range", "1"), VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
     }
 
     @Override

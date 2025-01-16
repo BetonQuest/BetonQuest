@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.event.door;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -43,14 +43,13 @@ public class DoorEventFactory implements EventFactory, StaticEventFactory {
     }
 
     private NullableEventAdapter createDoorEvent(final Instruction instruction) throws QuestException {
-        final VariableLocation location = instruction.getLocation();
+        final VariableLocation location = instruction.get(VariableLocation::new);
         final String action = instruction.next();
         final DoorEvent doorEvent = switch (action.toLowerCase(Locale.ROOT)) {
             case "on" -> createOpenDoorEvent(location);
             case "off" -> createCloseDoorEvent(location);
             case "toggle" -> createToggleDoorEvent(location);
-            default ->
-                    throw new QuestException("Unknown door action (valid options are: on, off, toggle): " + action);
+            default -> throw new QuestException("Unknown door action (valid options are: on, off, toggle): " + action);
         };
         return new NullableEventAdapter(doorEvent);
     }

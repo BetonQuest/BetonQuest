@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.objectives;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.BlockSelector;
@@ -76,11 +76,11 @@ public class ActionObjective extends Objective implements Listener {
         if (ANY.equalsIgnoreCase(instruction.next())) {
             selector = null;
         } else {
-            selector = instruction.getBlockSelector(instruction.current());
+            selector = instruction.get(instruction.current(), BlockSelector::new);
         }
         exactMatch = instruction.hasArgument("exactMatch");
-        loc = instruction.getLocation(instruction.getOptional("loc"));
-        range = instruction.getVarNum(instruction.getOptional("range", "0"));
+        loc = instruction.get(instruction.getOptional("loc"), VariableLocation::new);
+        range = instruction.get(instruction.getOptional("range", "0"), VariableNumber::new);
         cancel = instruction.hasArgument("cancel");
         final String handString = instruction.getOptional("hand");
         if (handString == null || handString.equalsIgnoreCase(EquipmentSlot.HAND.toString())) {

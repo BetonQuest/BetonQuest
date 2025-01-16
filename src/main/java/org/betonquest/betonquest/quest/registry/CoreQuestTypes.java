@@ -342,7 +342,7 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("objective", new ObjectiveEventFactory(betonQuest, loggerFactory));
         eventTypes.register("opsudo", new OpSudoEventFactory(loggerFactory, data));
         eventTypes.register("party", new PartyEventFactory(loggerFactory));
-        eventTypes.registerCombined("pickrandom", new PickRandomEventFactory(variableProcessor));
+        eventTypes.registerCombined("pickrandom", new PickRandomEventFactory());
         eventTypes.register("point", new PointEventFactory(loggerFactory, variableProcessor, dataStorage));
         eventTypes.registerCombined("removeentity", new RemoveEntityEventFactory(data, variableProcessor));
         eventTypes.registerCombined("run", new RunEventFactory(betonQuest));
