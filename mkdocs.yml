@@ -110,6 +110,7 @@ nav:
       - 'Obtaining API': API/Obtaining-API.md
       - APIs:
           - 'Legacy API': API/Legacy-API.md
+          - 'Instruction': API/Instruction.md
           - 'Logging': API/Logging.md
           - 'Configuration Files': API/ConfigurationFiles.md
           - 'Bukkit Configurations': API/BukkitConfigurations.md
