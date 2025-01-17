@@ -1,5 +1,6 @@
-package org.betonquest.betonquest.api.profiles;
+package org.betonquest.betonquest.api.bukkit.event;
 
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.bukkit.event.HandlerList;
 import org.junit.jupiter.api.Test;
 
@@ -7,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests for {@link ProfileEvent}
+ * Tests for {@link ProfileEvent}.
  */
 class ProfileEventTest {
 
@@ -36,7 +37,7 @@ class ProfileEventTest {
     }
 
     /**
-     * Test implementation of {@link ProfileEvent}
+     * Test implementation of {@link ProfileEvent}.
      */
     @SuppressWarnings("PMD.CommentRequired")
     private static class ProfileEventMock extends ProfileEvent {

@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.Variable;
-import org.betonquest.betonquest.api.bukkit.events.LoadDataEvent;
+import org.betonquest.betonquest.api.bukkit.event.LoadDataEvent;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.ConfigurationFile;

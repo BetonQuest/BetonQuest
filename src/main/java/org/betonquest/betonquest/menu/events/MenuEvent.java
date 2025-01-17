@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.menu.events;
 
+import org.betonquest.betonquest.api.bukkit.event.ProfileEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.betonquest.betonquest.menu.MenuID;
 
 /**

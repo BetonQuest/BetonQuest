@@ -1,5 +1,6 @@
-package org.betonquest.betonquest.api.profiles;
+package org.betonquest.betonquest.api.bukkit.event;
 
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.bukkit.event.Event;
 
 /**

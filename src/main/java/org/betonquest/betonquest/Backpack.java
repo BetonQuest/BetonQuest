@@ -1,7 +1,7 @@
 package org.betonquest.betonquest;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.betonquest.betonquest.api.bukkit.events.QuestCompassTargetChangeEvent;
+import org.betonquest.betonquest.api.bukkit.event.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
