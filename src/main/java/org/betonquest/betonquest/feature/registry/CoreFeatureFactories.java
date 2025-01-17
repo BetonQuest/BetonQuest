@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.feature.registry;
 
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.message.MessageParserRegistry;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.conversation.InventoryConvIO;
 import org.betonquest.betonquest.conversation.NonInterceptingInterceptor;
@@ -8,6 +10,7 @@ import org.betonquest.betonquest.conversation.SimpleConvIO;
 import org.betonquest.betonquest.conversation.SimpleInterceptor;
 import org.betonquest.betonquest.conversation.SlowTellrawConvIO;
 import org.betonquest.betonquest.conversation.TellrawConvIO;
+import org.betonquest.betonquest.message.parser.MiniMessageParser;
 import org.betonquest.betonquest.notify.ActionBarNotifyIO;
 import org.betonquest.betonquest.notify.AdvancementNotifyIO;
 import org.betonquest.betonquest.notify.BossBarNotifyIO;
@@ -89,5 +92,8 @@ public class CoreFeatureFactories {
                 loggerFactory.create(RealtimeDailyScheduler.class, "Schedules"), questTypeAPI, lastExecutionCache));
         eventSchedulingTypes.register("realtime-cron", RealtimeCronSchedule.class, new RealtimeCronScheduler(
                 loggerFactory.create(RealtimeCronScheduler.class, "Schedules"), questTypeAPI, lastExecutionCache));
+
+        final MessageParserRegistry messageParserRegistry = registries.messageParser();
+        messageParserRegistry.registerParser("minimessage", new MiniMessageParser(MiniMessage.miniMessage()));
     }
 }
