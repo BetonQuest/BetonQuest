@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Notifies the MobKillObjective about the mob being killed. If your plugin
@@ -32,7 +33,7 @@ public final class MobKillNotifier {
     /**
      * Already counted entities.
      */
-    private final List<Entity> entities = new ArrayList<>();
+    private final List<UUID> entities = new ArrayList<>();
 
     private MobKillNotifier() {
         final BukkitRunnable cleaner = new BukkitRunnable() {
@@ -57,10 +58,10 @@ public final class MobKillNotifier {
             if (instance == null) {
                 instance = new MobKillNotifier();
             }
-            if (instance.entities.contains(killed)) {
+            if (instance.entities.contains(killed.getUniqueId())) {
                 return;
             }
-            instance.entities.add(killed);
+            instance.entities.add(killed.getUniqueId());
         }
         final MobKilledEvent event = new MobKilledEvent(killer, killed);
         Bukkit.getPluginManager().callEvent(event);
