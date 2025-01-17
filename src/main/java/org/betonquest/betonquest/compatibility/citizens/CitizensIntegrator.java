@@ -95,7 +95,7 @@ public class CitizensIntegrator implements Integrator {
         plugin.registerConversationIO("chest", CitizensInventoryConvIO.class);
         plugin.registerConversationIO("combined", CitizensInventoryConvIO.CitizensCombined.class);
 
-        questRegistries.getVariableTypes().register("citizen", new CitizensVariableFactory(loggerFactory));
+        questRegistries.getVariableTypes().register("citizen", new CitizensVariableFactory());
 
         final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
         conditionTypes.register("npcdistance", new NPCDistanceConditionFactory(data, loggerFactory));
