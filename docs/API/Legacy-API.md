@@ -12,9 +12,14 @@ icon: octicons/gear-16
     This is the case because we prefer to delete outdated content from this page instead of updating it.
     New APIs will instead get their own page.
 
-# (Re-)Moved Methods in 3.0
+## (Re-)Moved Methods in 3.0
 
-## Variable getting
+### Instruction
+
+Hard coded get methods were removed in favor of a more dynamic approach. 
+Read how to use them in the [Instruction Arguments](Instruction.md#argument) section.
+
+### Variable getting
 
 Creating and parsing variables is now done in the `VariableProcessor`.
 It is accessed from the BetonQuest instance with `#getVariableProcessor()`.
@@ -102,28 +107,6 @@ Then you have to override the `String getValue(String playerID)` method.
 It should return the value of the variable for the supplied player.
 If it's impossible, in the old it should return an empty String and in the new throw with a descriptive message.
 Registering variables is done via `BetonQuest.registerVariable(String name, Class<? extends Variable> variable)` method.
-
-## Reading `Instruction` object
-The `Instruction` object parses the instruction string defined by the user and splits it into arguments.
-You can ask it for required arguments one by one with `next()` method or a parser method like `getQuestItem()`.
-Required arguments are the ones specified at the very beginning of an instruction string, for example `add someTag` in `tag` event.
-It will automatically throw `QuestException` for you if it encounters an error,
-for example when there were no more arguments in user's instruction or it can't parse the argument to the type you asked for.
-
-You can also ask for optional arguments: if the instruction string contains argument `arg:something`
-and you ask for optional `arg`, it will give you `something`. If there is no optional argument, it will return `null`.
-Don't worry about passing that `null` to parser methods like `getLocation(String)`,
-they won't throw an error, they'll simply return that `null`.
-
-Parser methods are there for your convenience.
-You could write a location parser for yourself, but there's no need for that,
-you can just use `getLocation()` or `getLocation(String)` method and receive `LocationData` object.
-The former method is simply `getLocation(next())`.
-
-If your instruction is more complicated and `Instruction` class doesn't provide necessary methods,
-you can still parse the instruction string manually. You can get it with `getInstruction()` method.
-Just remember to throw `QuestException` when the instruction supplied by the user is incorrect.
-BetonQuest will catch them and display a message in the console.
 
 ## Firing events
 The plugin has a static method for firing events - `event(String playerID, EventID eventID)`.

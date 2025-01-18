@@ -3,10 +3,11 @@ package org.betonquest.betonquest.compatibility.jobsreborn;
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.container.CurrencyType;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -24,7 +25,7 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
     public ObjectivePaymentEvent(final Instruction instructions) throws QuestException {
         super(instructions);
         template = PaymentData.class;
-        targetAmount = instructions.getVarNum(VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
+        targetAmount = instructions.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
     }
 
     @EventHandler(ignoreCancelled = true)

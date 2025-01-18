@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.event.compass;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -9,6 +8,7 @@ import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;

@@ -3,11 +3,11 @@ package org.betonquest.betonquest.compatibility.magic;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
@@ -52,7 +52,7 @@ public class WandCondition extends Condition {
         putSpells(array, instruction.getPackage());
         name = instruction.getOptional("name");
         api = Utils.getNN((MagicAPI) Bukkit.getPluginManager().getPlugin("Magic"), "Magic plugin not found!");
-        amount = instruction.getVarNum(instruction.getOptional("amount"));
+        amount = instruction.get(instruction.getOptional("amount"), VariableNumber::new);
     }
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
@@ -149,5 +149,4 @@ public class WandCondition extends Condition {
     private enum CheckType {
         IS_LOST, IN_HAND, IN_INVENTORY
     }
-
 }

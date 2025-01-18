@@ -3,10 +3,10 @@ package org.betonquest.betonquest.compatibility.shopkeepers;
 import com.nisovin.shopkeepers.api.ShopkeepersAPI;
 import com.nisovin.shopkeepers.api.shopkeeper.Shopkeeper;
 import com.nisovin.shopkeepers.api.shopkeeper.player.PlayerShopkeeper;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
@@ -20,7 +20,7 @@ public class HavingShopCondition extends Condition {
     public HavingShopCondition(final Instruction instruction) throws QuestException {
         super(instruction, true);
         persistent = true;
-        amount = instruction.getVarNum();
+        amount = instruction.get(VariableNumber::new);
     }
 
     @Override

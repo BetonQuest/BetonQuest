@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.variable.name;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 
 /**

@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.condition.moon;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableWorld;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -43,7 +43,7 @@ public class MoonCycleConditionFactory implements PlayerConditionFactory, Player
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final VariableNumber moonCycle = instruction.getVarNum();
+        final VariableNumber moonCycle = instruction.get(VariableNumber::new);
         final VariableWorld world = new VariableWorld(variableProcessor, instruction.getPackage(), instruction.getOptional("world", "%location.world%"));
         return new PrimaryServerThreadPlayerCondition(
                 new NullableConditionAdapter(new MoonCycleCondition(world, moonCycle)), data);
@@ -55,7 +55,7 @@ public class MoonCycleConditionFactory implements PlayerConditionFactory, Player
         if (worldString == null) {
             return new ThrowExceptionPlayerlessCondition();
         }
-        final VariableNumber moonCycle = instruction.getVarNum();
+        final VariableNumber moonCycle = instruction.get(VariableNumber::new);
         final VariableWorld world = new VariableWorld(variableProcessor, instruction.getPackage(), worldString);
         return new PrimaryServerThreadPlayerlessCondition(
                 new NullableConditionAdapter(new MoonCycleCondition(world, moonCycle)), data);

@@ -1,7 +1,5 @@
 package org.betonquest.betonquest.quest.event.drop;
 
-import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
 import org.betonquest.betonquest.api.quest.event.Event;
@@ -10,6 +8,9 @@ import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -17,6 +18,8 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+
+import java.util.Optional;
 
 /**
  * Factory to create {@link Event}s that drop items from instructions.
@@ -61,7 +64,7 @@ public class DropEventFactory implements EventFactory, StaticEventFactory {
     }
 
     private Item[] parseItemList(final Instruction instruction) throws QuestException {
-        final Item[] items = instruction.getItemListArgument("items");
+        final Item[] items = instruction.getItemList(instruction.getOptional("items"));
         if (items.length == 0) {
             throw new QuestException("No items to drop defined");
         }
@@ -69,8 +72,11 @@ public class DropEventFactory implements EventFactory, StaticEventFactory {
     }
 
     private Selector<Location> parseLocationSelector(final Instruction instruction) throws QuestException {
-        return instruction.getLocationArgument("location")
-                .map(loc -> (Selector<Location>) loc::getValue)
-                .orElse(Selectors.fromPlayer(Player::getLocation));
+        final Optional<String> location = instruction.getOptionalArgument("location");
+        if (location.isPresent()) {
+            return instruction.get(location.get(), VariableLocation::new)::getValue;
+        } else {
+            return Selectors.fromPlayer(Player::getLocation);
+        }
     }
 }

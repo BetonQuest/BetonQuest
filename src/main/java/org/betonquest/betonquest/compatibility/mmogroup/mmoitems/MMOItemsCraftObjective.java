@@ -8,11 +8,11 @@ import net.Indyuce.mmoitems.api.crafting.recipe.Recipe;
 import net.Indyuce.mmoitems.api.event.PlayerUseCraftingStationEvent;
 import net.Indyuce.mmoitems.api.util.message.FFPMMOItems;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.QuestException;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
@@ -39,7 +39,7 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
         itemType = MMOItemsUtils.getMMOItemType(instruction.next());
         itemId = instruction.next();
 
-        targetAmount = instruction.getVarNum(instruction.getOptional("amount", "1"), VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
+        targetAmount = instruction.get(instruction.getOptional("amount", "1"), VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
     }
 
     /**

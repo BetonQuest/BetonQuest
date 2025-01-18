@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.item;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ItemID;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.item.typehandler.BookHandler;
 import org.betonquest.betonquest.item.typehandler.ColorHandler;
 import org.betonquest.betonquest.item.typehandler.CustomModelDataHandler;
@@ -95,7 +95,7 @@ public class QuestItem {
      * @throws QuestException when item parsing goes wrong
      */
     public QuestItem(final Instruction instruction) throws QuestException {
-        this(instruction.getInstruction());
+        this(instruction.toString());
     }
 
     /**

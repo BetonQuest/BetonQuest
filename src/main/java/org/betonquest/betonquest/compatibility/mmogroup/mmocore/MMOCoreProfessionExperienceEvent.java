@@ -4,10 +4,10 @@ import net.Indyuce.mmocore.MMOCore;
 import net.Indyuce.mmocore.api.player.PlayerData;
 import net.Indyuce.mmocore.experience.EXPSource;
 import net.Indyuce.mmocore.experience.Profession;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 @SuppressWarnings("PMD.CommentRequired")
@@ -28,7 +28,7 @@ public class MMOCoreProfessionExperienceEvent extends QuestEvent {
             throw new QuestException("The profession could not be found!");
         }
 
-        amountVar = instruction.getVarNum();
+        amountVar = instruction.get(VariableNumber::new);
         isLevel = instruction.hasArgument("level");
     }
 

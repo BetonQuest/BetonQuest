@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.condition.variable;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -9,11 +8,12 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
-import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 
 /**
  * Factory for {@link VariableCondition}s.
@@ -31,21 +31,14 @@ public class VariableConditionFactory implements PlayerConditionFactory, Playerl
     private final PrimaryServerThreadData data;
 
     /**
-     * Processor to create new variables.
-     */
-    private final VariableProcessor variableProcessor;
-
-    /**
      * Creates a new factory for {@link VariableCondition}s.
      *
-     * @param loggerFactory     the logger factory
-     * @param data              the data used for primary server access
-     * @param variableProcessor the processor to create new variables
+     * @param loggerFactory the logger factory
+     * @param data          the data used for primary server access
      */
-    public VariableConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data, final VariableProcessor variableProcessor) {
+    public VariableConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
         this.loggerFactory = loggerFactory;
         this.data = data;
-        this.variableProcessor = variableProcessor;
     }
 
     @Override
@@ -67,8 +60,8 @@ public class VariableConditionFactory implements PlayerConditionFactory, Playerl
     }
 
     private VariableCondition parse(final Instruction instruction) throws QuestException {
-        final VariableString variable = new VariableString(variableProcessor, instruction.getPackage(), instruction.next());
-        final VariableString regex = new VariableString(variableProcessor, instruction.getPackage(), instruction.next(), true);
+        final VariableString variable = instruction.get(VariableString::new);
+        final VariableString regex = instruction.get(VariableArgument.STRING_REPLACE_UNDERSCORES);
         final String variableAddress = instruction.getID().toString();
         final BetonQuestLogger log = loggerFactory.create(VariableCondition.class);
         return new VariableCondition(log, variable, regex, variableAddress);

@@ -1,12 +1,13 @@
 package org.betonquest.betonquest.quest.condition.hand;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.id.ItemID;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
@@ -39,7 +40,7 @@ public class HandConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final QuestItem questItem = new QuestItem(instruction.getItem());
+        final QuestItem questItem = new QuestItem(instruction.getID(ItemID::new));
         final boolean offhand = instruction.hasArgument("offhand");
         final BetonQuestLogger log = loggerFactory.create(HandCondition.class);
         return new PrimaryServerThreadPlayerCondition(

@@ -4,11 +4,11 @@ import com.comphenix.packetwrapper.WrapperPlayServerMount;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
@@ -26,7 +26,7 @@ public class FreezeEvent extends QuestEvent {
     public FreezeEvent(final Instruction instruction) throws QuestException {
         super(instruction, true);
 
-        ticksVar = instruction.getVarNum();
+        ticksVar = instruction.get(VariableNumber::new);
     }
 
     public static void cleanup() {

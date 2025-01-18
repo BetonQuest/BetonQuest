@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.registry.processor;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -10,6 +9,7 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.VariableID;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
 import org.betonquest.betonquest.quest.registry.type.VariableTypeRegistry;
 import org.jetbrains.annotations.Nullable;

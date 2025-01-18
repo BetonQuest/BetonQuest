@@ -1,19 +1,18 @@
 package org.betonquest.betonquest.quest.condition.entity;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
-import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.entity.EntityType;
 
@@ -32,19 +31,12 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
     private final PrimaryServerThreadData data;
 
     /**
-     * Processor to create new variables.
-     */
-    private final VariableProcessor variableProcessor;
-
-    /**
      * Create the entity condition factory.
      *
-     * @param data              the data used for checking the condition on the main thread
-     * @param variableProcessor the variable processor to create new variables with
+     * @param data the data used for checking the condition on the main thread
      */
-    public EntityConditionFactory(final PrimaryServerThreadData data, final VariableProcessor variableProcessor) {
+    public EntityConditionFactory(final PrimaryServerThreadData data) {
         this.data = data;
-        this.variableProcessor = variableProcessor;
     }
 
     @Override
@@ -59,18 +51,14 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
 
     private EntityCondition parseEntityCondition(final Instruction instruction) throws QuestException {
         final Map<EntityType, VariableNumber> entityAmounts = getEntityAmounts(instruction);
-        final VariableLocation location = instruction.getLocation();
-        final VariableNumber range = instruction.getVarNum();
+        final VariableLocation location = instruction.get(VariableLocation::new);
+        final VariableNumber range = instruction.get(VariableNumber::new);
         final String nameString = instruction.getOptional("name");
-        final VariableString name = nameString == null ? null : new VariableString(variableProcessor,
-                instruction.getPackage(),
-                Utils.format(nameString, true, false).replace('_', ' ')
-        );
+        final VariableString name = nameString == null ? null : instruction.get(
+                Utils.format(nameString, true, false).replace('_', ' '), VariableString::new);
         final String markedString = instruction.getOptional("marked");
-        final VariableString marked = markedString == null ? null : new VariableString(variableProcessor,
-                instruction.getPackage(),
-                Utils.addPackage(instruction.getPackage(), markedString)
-        );
+        final VariableString marked = markedString == null ? null : instruction.get(
+                Utils.addPackage(instruction.getPackage(), markedString), VariableString::new);
         return new EntityCondition(entityAmounts, location, range, name, marked);
     }
 
@@ -81,7 +69,7 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
             final String[] typeParts = rawType.split(":");
             try {
                 final EntityType type = EntityType.valueOf(typeParts[0].toUpperCase(Locale.ROOT));
-                final VariableNumber amount = typeParts.length == 2 ? instruction.getVarNum(typeParts[1]) : new VariableNumber(variableProcessor, instruction.getPackage(), "1");
+                final VariableNumber amount = instruction.get(typeParts.length == 2 ? typeParts[1] : "1", VariableNumber::new);
                 entityAmounts.put(type, amount);
             } catch (final IllegalArgumentException e) {
                 throw new QuestException("Invalid entity type: " + typeParts[0], e);

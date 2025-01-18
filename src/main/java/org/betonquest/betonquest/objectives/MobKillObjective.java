@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.objectives;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.QuestException;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
@@ -38,16 +38,12 @@ public class MobKillObjective extends CountingObjective implements Listener {
     public MobKillObjective(final Instruction instruction) throws QuestException {
         super(instruction, "mobs_to_kill");
         entities = instruction.getList(mob -> instruction.getEnum(mob, EntityType.class));
-        targetAmount = instruction.getVarNum(VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
+        targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
         name = instruction.getOptional("name");
         if (name != null) {
             name = Utils.format(name, true, false).replace('_', ' ');
         }
-        final String markedString = instruction.getOptional("marked");
-        marked = markedString == null ? null : new VariableString(
-                instruction.getPackage(),
-                Utils.addPackage(instruction.getPackage(), markedString)
-        );
+        marked = instruction.get(instruction.getOptional("marked"), VariableArgument.STRING_WITH_PACKAGE);
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})

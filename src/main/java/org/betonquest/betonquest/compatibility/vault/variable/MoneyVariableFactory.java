@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.compatibility.vault.variable;
 
 import net.milkbowl.vault.economy.Economy;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 import java.util.Locale;
@@ -46,7 +46,7 @@ public class MoneyVariableFactory implements PlayerVariableFactory {
         if (MONEY_AMOUNT.equalsIgnoreCase(instructionString)) {
             function = profile -> String.valueOf(economy.getBalance(profile.getPlayer()));
         } else if (instructionString.toLowerCase(Locale.ROOT).startsWith(MONEY_LEFT)) {
-            final VariableNumber amount = instruction.getVarNum(instructionString.substring(MONEY_LEFT.length()));
+            final VariableNumber amount = instruction.get(instructionString.substring(MONEY_LEFT.length()), VariableNumber::new);
             function = profile -> String.valueOf(amount.getValue(profile).doubleValue() - economy.getBalance(profile.getPlayer()));
         } else {
             throw new QuestException("No type specified");

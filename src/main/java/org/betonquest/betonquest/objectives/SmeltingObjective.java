@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.objectives;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.QuestException;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.InventoryUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -30,7 +30,7 @@ public class SmeltingObjective extends CountingObjective implements Listener {
     public SmeltingObjective(final Instruction instruction) throws QuestException {
         super(instruction, "items_to_smelt");
         item = instruction.getQuestItem();
-        targetAmount = instruction.getVarNum(VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
+        targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
     }
 
     @EventHandler(ignoreCancelled = true)

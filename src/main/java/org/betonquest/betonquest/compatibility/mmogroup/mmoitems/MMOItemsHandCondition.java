@@ -2,10 +2,10 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
 import io.lumine.mythic.lib.api.item.NBTItem;
 import net.Indyuce.mmoitems.api.Type;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -31,13 +31,13 @@ public class MMOItemsHandCondition extends Condition {
         itemType = MMOItemsUtils.getMMOItemType(instruction.next());
         itemID = instruction.next();
 
-        amount = instruction.getVarNum("1");
+        amount = instruction.get("1", VariableNumber::new);
         while (instruction.hasNext()) {
             final String next = instruction.next();
             if (OFFHAND_KEY.equals(next)) {
                 offhand = true;
             } else {
-                amount = instruction.getVarNum(next);
+                amount = instruction.get(next, VariableNumber::new);
             }
         }
     }

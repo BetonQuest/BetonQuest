@@ -4,10 +4,10 @@ import dev.aurelium.auraskills.api.AuraSkillsApi;
 import dev.aurelium.auraskills.api.registry.NamespacedId;
 import dev.aurelium.auraskills.api.skill.Skill;
 import dev.aurelium.auraskills.api.user.SkillsUser;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.Utils;
 
@@ -26,7 +26,7 @@ public class AuraSkillsExperienceEvent extends QuestEvent {
         super(instruction, true);
 
         final String skillName = instruction.next();
-        amountVar = instruction.getVarNum();
+        amountVar = instruction.get(VariableNumber::new);
         isLevel = instruction.hasArgument("level");
 
         final NamespacedId namespacedId = NamespacedId.fromDefault(skillName);

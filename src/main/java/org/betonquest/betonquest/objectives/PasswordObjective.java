@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.objectives;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -42,7 +42,7 @@ public class PasswordObjective extends Objective implements Listener {
         regex = Pattern.compile(pattern, regexFlags);
         final String prefix = instruction.getOptional("prefix");
         passwordPrefix = prefix == null || prefix.isEmpty() ? prefix : prefix + ": ";
-        failEvents = instruction.getList(instruction.getOptional("fail"), instruction::getEvent).toArray(new EventID[0]);
+        failEvents = instruction.getIDArray(instruction.getOptional("fail"), EventID::new);
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)

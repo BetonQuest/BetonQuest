@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.event.item;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -44,7 +44,7 @@ public class ItemDurabilityEventFactory implements EventFactory {
     public Event parseEvent(final Instruction instruction) throws QuestException {
         final EquipmentSlot slot = instruction.getEnum(EquipmentSlot.class);
         final Point operation = instruction.getEnum(Point.class);
-        final VariableNumber amount = instruction.getVarNum();
+        final VariableNumber amount = instruction.get(VariableNumber::new);
         final boolean ignoreUnbreakable = instruction.hasArgument("ignoreUnbreakable");
         final boolean ignoreEvents = instruction.hasArgument("ignoreEvents");
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(

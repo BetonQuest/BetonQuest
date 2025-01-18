@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.event.setblock;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -42,8 +42,8 @@ public class SetBlockEventFactory implements EventFactory, StaticEventFactory {
     }
 
     private NullableEventAdapter createSetBlockEvent(final Instruction instruction) throws QuestException {
-        final BlockSelector blockSelector = instruction.getBlockSelector(instruction.next());
-        final VariableLocation variableLocation = instruction.getLocation();
+        final BlockSelector blockSelector = instruction.get(BlockSelector::new);
+        final VariableLocation variableLocation = instruction.get(VariableLocation::new);
         final boolean applyPhysics = !instruction.hasArgument("ignorePhysics");
         return new NullableEventAdapter(new SetBlockEvent(blockSelector, variableLocation, applyPhysics));
     }

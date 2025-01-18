@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.api.quest.variable;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 
 /**
  * Factory to create a specific {@link PlayerVariable} from {@link Instruction}s.

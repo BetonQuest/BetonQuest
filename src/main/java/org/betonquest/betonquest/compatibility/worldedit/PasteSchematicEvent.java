@@ -14,11 +14,11 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.transform.AffineTransform;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Bukkit;
@@ -51,8 +51,8 @@ public class PasteSchematicEvent extends QuestEvent {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         staticness = true;
         persistent = true;
-        loc = instruction.getLocation();
-        rotation = instruction.getVarNum(instruction.getOptional("rotation", "0"));
+        loc = instruction.get(VariableLocation::new);
+        rotation = instruction.get(instruction.getOptional("rotation", "0"), VariableNumber::new);
 
         final WorldEditPlugin worldEdit = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
         final File folder = new File(worldEdit.getDataFolder(), "schematics");

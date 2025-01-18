@@ -3,10 +3,10 @@ package org.betonquest.betonquest.compatibility.heroes;
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.attributes.AttributeType;
 import com.herocraftonline.heroes.characters.Hero;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
@@ -21,7 +21,7 @@ public class HeroesAttributeCondition extends Condition {
     public HeroesAttributeCondition(final Instruction instruction) throws QuestException {
         super(instruction, true);
         attribute = findAttribute(instruction.next());
-        level = instruction.getVarNum(instruction.next());
+        level = instruction.get(VariableNumber::new);
     }
 
     private AttributeType findAttribute(final String string) throws QuestException {

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.event.command;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.bukkit.command.SilentCommandSender;
 import org.betonquest.betonquest.api.bukkit.command.SilentConsoleCommandSender;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -9,6 +8,7 @@ import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;

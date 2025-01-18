@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.event.spawn;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Mob;

@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 
 import net.Indyuce.mmocore.api.player.PlayerData;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,7 +20,7 @@ public class MMOCoreClassCondition extends Condition {
     public MMOCoreClassCondition(final Instruction instruction) throws QuestException {
         super(instruction, true);
         targetClassName = instruction.next();
-        targetClassLevel = instruction.hasNext() ? instruction.getVarNum() : null;
+        targetClassLevel = instruction.hasNext() ? instruction.get(VariableNumber::new) : null;
         mustBeEqual = instruction.hasArgument("equal");
     }
 

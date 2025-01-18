@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.compatibility.placeholderapi;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.Nullable;
 

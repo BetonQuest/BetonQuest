@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.objectives;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -34,7 +34,7 @@ public class ResourcePackObjective extends Objective implements Listener {
      */
     public ResourcePackObjective(final Instruction instruction) throws QuestException {
         super(instruction);
-        targetStatus = new VariableString(instruction.getPackage(), instruction.next());
+        targetStatus = instruction.get(VariableString::new);
     }
 
     @Override

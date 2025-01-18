@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.compatibility.citizens.event.teleport;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -45,7 +45,7 @@ public class NPCTeleportEventFactory implements EventFactory, StaticEventFactory
         if (npcId < 0) {
             throw new QuestException("NPC ID cannot be less than 0");
         }
-        final VariableLocation location = instruction.getLocation();
+        final VariableLocation location = instruction.get(VariableLocation::new);
         return new NullableEventAdapter(new NPCTeleportEvent(npcId, location));
     }
 }

@@ -11,8 +11,8 @@ import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
+import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.menu.config.SimpleYMLSection;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Material;
@@ -286,24 +286,5 @@ public class MenuItem extends SimpleYMLSection {
         }
 
         return descriptions;
-    }
-
-    /**
-     * Extended, static copy of org.betonquest.betonquest.Instruction.Item for easier quest item handling
-     */
-    @SuppressWarnings({"PMD.ShortClassName", "PMD.CommentRequired"})
-    public static class Item {
-        private final QuestItem questItem;
-
-        private final VariableNumber amount;
-
-        public Item(final ItemID itemID, final VariableNumber amount) throws QuestException {
-            this.questItem = new QuestItem(itemID);
-            this.amount = amount;
-        }
-
-        public ItemStack generate(final Profile profile) throws QuestException {
-            return questItem.generate(amount.getValue(profile).intValue(), profile);
-        }
     }
 }

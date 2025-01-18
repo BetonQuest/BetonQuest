@@ -1,8 +1,6 @@
 package org.betonquest.betonquest.objectives;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -11,6 +9,8 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.condition.chest.ChestItemCondition;
 import org.betonquest.betonquest.quest.event.chest.ChestTakeEvent;
@@ -61,7 +61,7 @@ public class ChestPutObjective extends Objective implements Listener {
         final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
         this.log = loggerFactory.create(getClass());
         // extract location
-        loc = instruction.getLocation();
+        loc = instruction.get(VariableLocation::new);
         final Item[] items = instruction.getItemList();
         multipleAccess = Boolean.parseBoolean(instruction.getOptional("multipleaccess"));
         chestItemCondition = new ChestItemCondition(loc, items);

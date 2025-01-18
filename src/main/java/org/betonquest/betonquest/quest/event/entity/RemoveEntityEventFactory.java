@@ -1,19 +1,19 @@
 package org.betonquest.betonquest.quest.event.entity;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
-import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.entity.EntityType;
 
@@ -30,19 +30,12 @@ public class RemoveEntityEventFactory implements EventFactory, StaticEventFactor
     private final PrimaryServerThreadData data;
 
     /**
-     * Variable processor to create the marker variable.
-     */
-    private final VariableProcessor variableProcessor;
-
-    /**
      * Creates a new KillMobEventFactory.
      *
-     * @param data              the data for primary server thread access
-     * @param variableProcessor the variable processor for creating variables
+     * @param data the data for primary server thread access
      */
-    public RemoveEntityEventFactory(final PrimaryServerThreadData data, final VariableProcessor variableProcessor) {
+    public RemoveEntityEventFactory(final PrimaryServerThreadData data) {
         this.data = data;
-        this.variableProcessor = variableProcessor;
     }
 
     @Override
@@ -65,18 +58,14 @@ public class RemoveEntityEventFactory implements EventFactory, StaticEventFactor
                 throw new QuestException("Entity type '" + entities[i] + "' does not exist", e);
             }
         }
-        final VariableLocation loc = instruction.getLocation();
-        final VariableNumber range = instruction.getVarNum();
+        final VariableLocation loc = instruction.get(VariableLocation::new);
+        final VariableNumber range = instruction.get(VariableNumber::new);
         final boolean kill = instruction.hasArgument("kill");
         final String nameString = instruction.getOptional("name");
-        final VariableString name = nameString == null ? null : new VariableString(variableProcessor,
-                instruction.getPackage(),
-                Utils.format(nameString, true, false).replace('_', ' ')
-        );
+        final VariableString name = nameString == null ? null : instruction.get(
+                Utils.format(nameString, true, false).replace('_', ' '), VariableString::new);
         final String markedString = instruction.getOptional("marked");
-        final VariableString marked = markedString == null ? null : new VariableString(variableProcessor,
-                instruction.getPackage(), Utils.addPackage(instruction.getPackage(), markedString)
-        );
+        final VariableString marked = markedString == null ? null : instruction.get(markedString, VariableArgument.STRING_WITH_PACKAGE);
         return new NullableEventAdapter(new RemoveEntityEvent(types, loc, range, name, marked, kill));
     }
 }

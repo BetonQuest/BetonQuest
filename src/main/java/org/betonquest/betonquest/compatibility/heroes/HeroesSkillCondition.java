@@ -2,10 +2,10 @@ package org.betonquest.betonquest.compatibility.heroes;
 
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.characters.Hero;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 
 /**
  * Checks if the player has access to specified Heroes skill.
@@ -25,5 +25,4 @@ public class HeroesSkillCondition extends Condition {
         final Hero hero = Heroes.getInstance().getCharacterManager().getHero(profile.getOnlineProfile().get().getPlayer());
         return hero != null && hero.canUseSkill(skillName);
     }
-
 }

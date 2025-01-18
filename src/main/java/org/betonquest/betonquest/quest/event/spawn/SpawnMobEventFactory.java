@@ -1,7 +1,5 @@
 package org.betonquest.betonquest.quest.event.spawn;
 
-import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
@@ -9,6 +7,8 @@ import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ItemID;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -16,7 +16,6 @@ import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
-import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.Nullable;
@@ -31,19 +30,12 @@ public class SpawnMobEventFactory implements EventFactory, StaticEventFactory {
     private final PrimaryServerThreadData data;
 
     /**
-     * Processor to create new variables.
-     */
-    private final VariableProcessor variableProcessor;
-
-    /**
      * Create a new factory for {@link SpawnMobEvent}s.
      *
-     * @param data              the primary server thread data required for main thread checking
-     * @param variableProcessor the variable processor to create new variables with
+     * @param data the primary server thread data required for main thread checking
      */
-    public SpawnMobEventFactory(final PrimaryServerThreadData data, final VariableProcessor variableProcessor) {
+    public SpawnMobEventFactory(final PrimaryServerThreadData data) {
         this.data = data;
-        this.variableProcessor = variableProcessor;
     }
 
     @Override
@@ -64,19 +56,15 @@ public class SpawnMobEventFactory implements EventFactory, StaticEventFactory {
      * @throws QuestException if the instruction could not be parsed
      */
     public NullableEventAdapter createSpawnMobEvent(final Instruction instruction) throws QuestException {
-        final VariableLocation loc = instruction.getLocation();
-        final EntityType type = instruction.getEntity();
-        final VariableNumber amount = instruction.getVarNum();
+        final VariableLocation loc = instruction.get(VariableLocation::new);
+        final EntityType type = instruction.getEnum(EntityType.class);
+        final VariableNumber amount = instruction.get(VariableNumber::new);
         final String nameString = instruction.getOptional("name");
-        final VariableString name = nameString == null ? null : new VariableString(variableProcessor,
-                instruction.getPackage(),
-                Utils.format(nameString, true, false).replace('_', ' ')
-        );
+        final VariableString name = nameString == null ? null : instruction.get(Utils.format(
+                nameString, true, false).replace('_', ' '), VariableString::new);
         final String markedString = instruction.getOptional("marked");
-        final VariableString marked = markedString == null ? null : new VariableString(variableProcessor,
-                instruction.getPackage(),
-                Utils.addPackage(instruction.getPackage(), markedString)
-        );
+        final VariableString marked = markedString == null ? null : instruction.get(
+                Utils.addPackage(instruction.getPackage(), markedString), VariableString::new);
         final QuestItem helmet = getQuestItem(instruction, "h");
         final QuestItem chestplate = getQuestItem(instruction, "c");
         final QuestItem leggings = getQuestItem(instruction, "l");
@@ -91,7 +79,7 @@ public class SpawnMobEventFactory implements EventFactory, StaticEventFactory {
 
     @Nullable
     private QuestItem getQuestItem(final Instruction instruction, final String key) throws QuestException {
-        final ItemID item = instruction.getItem(instruction.getOptional(key));
+        final ItemID item = instruction.getID(instruction.getOptional(key), ItemID::new);
         return item == null ? null : new QuestItem(item);
     }
 }

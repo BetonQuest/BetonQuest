@@ -2,10 +2,10 @@ package org.betonquest.betonquest.compatibility.jobsreborn;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.Job;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class EventLeaveJob extends QuestEvent {

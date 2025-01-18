@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.condition.location;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -40,8 +40,8 @@ public class LocationConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final VariableLocation loc = instruction.getLocation();
-        final VariableNumber range = instruction.getVarNum();
+        final VariableLocation loc = instruction.get(VariableLocation::new);
+        final VariableNumber range = instruction.get(VariableNumber::new);
         final BetonQuestLogger log = loggerFactory.create(LocationCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new LocationCondition(loc, range), log, instruction.getPackage()), data);

@@ -1,12 +1,13 @@
 package org.betonquest.betonquest.objectives;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -66,12 +67,12 @@ public class BlockObjective extends CountingObjective implements Listener {
     public BlockObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         logger = BetonQuest.getInstance().getLoggerFactory().create(BetonQuest.getInstance());
-        selector = instruction.getBlockSelector();
+        selector = instruction.get(BlockSelector::new);
         exactMatch = instruction.hasArgument("exactMatch");
-        targetAmount = instruction.getVarNum();
+        targetAmount = instruction.get(VariableNumber::new);
         noSafety = instruction.hasArgument("noSafety");
-        location = instruction.getLocation(instruction.getOptional("loc"));
-        region = instruction.getLocation(instruction.getOptional("region"));
+        location = instruction.get(instruction.getOptional("loc"), VariableLocation::new);
+        region = instruction.get(instruction.getOptional("region"), VariableLocation::new);
         ignorecancel = instruction.hasArgument("ignorecancel");
     }
 

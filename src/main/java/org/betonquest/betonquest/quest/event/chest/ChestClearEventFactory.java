@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.event.chest;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -41,7 +41,7 @@ public class ChestClearEventFactory implements EventFactory, StaticEventFactory 
     }
 
     private NullableEventAdapter createChestClearEvent(final Instruction instruction) throws QuestException {
-        final VariableLocation variableLocation = instruction.getLocation();
+        final VariableLocation variableLocation = instruction.get(VariableLocation::new);
         return new NullableEventAdapter(new ChestClearEvent(variableLocation));
     }
 }

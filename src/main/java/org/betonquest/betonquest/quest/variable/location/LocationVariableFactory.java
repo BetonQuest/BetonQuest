@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.variable.location;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.online.OnlineVariableAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 
 /**
  * Factory to create location variables from {@link Instruction}s.
@@ -28,7 +28,7 @@ public class LocationVariableFactory implements PlayerVariableFactory {
 
         final int decimalPlaces;
         if (instruction.hasNext()) {
-            decimalPlaces = Integer.parseInt(instruction.next());
+            decimalPlaces = instruction.getInt();
         } else {
             decimalPlaces = 0;
         }

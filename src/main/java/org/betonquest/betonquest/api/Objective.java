@@ -2,7 +2,6 @@ package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.GlobalObjectives;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.bukkit.event.QuestDataUpdateEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -17,6 +16,7 @@ import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ObjectiveID;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.bukkit.Server;
 import org.jetbrains.annotations.Nullable;
 
@@ -249,7 +249,9 @@ public abstract class Objective {
             Config.sendNotify(instruction.getPackage(), onlineProfile, messageName, stringVariables, messageName + ",info");
         } catch (final QuestException exception) {
             try {
-                log.warn(instruction.getPackage(), "The notify system was unable to play a sound for the '" + messageName + "' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                log.warn(instruction.getPackage(), "The notify system was unable to play a sound for the '"
+                        + messageName + "' category in '" + instruction.getID(ObjectiveID::new)
+                        + "'. Error was: '" + exception.getMessage() + "'");
             } catch (final QuestException e) {
                 log.reportException(instruction.getPackage(), e);
             }

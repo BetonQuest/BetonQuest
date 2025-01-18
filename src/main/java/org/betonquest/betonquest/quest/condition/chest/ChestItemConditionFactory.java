@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.quest.condition.chest;
 
-import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
@@ -43,7 +43,7 @@ public class ChestItemConditionFactory implements PlayerConditionFactory, Player
     }
 
     private ChestItemCondition parse(final Instruction instruction) throws QuestException {
-        final VariableLocation loc = instruction.getLocation();
+        final VariableLocation loc = instruction.get(VariableLocation::new);
         final Item[] questItems = instruction.getItemList();
         return new ChestItemCondition(loc, questItems);
     }

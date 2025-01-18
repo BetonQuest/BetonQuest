@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.legacy;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 
 import java.lang.reflect.InvocationTargetException;
 

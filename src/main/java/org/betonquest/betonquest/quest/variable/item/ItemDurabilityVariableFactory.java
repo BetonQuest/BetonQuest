@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.variable.item;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.online.OnlineVariableAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.bukkit.inventory.EquipmentSlot;
 
 /**

@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.objectives;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -38,8 +38,8 @@ public class ArrowShootObjective extends Objective implements Listener {
     public ArrowShootObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        loc = instruction.getLocation();
-        range = instruction.getVarNum();
+        loc = instruction.get(VariableLocation::new);
+        range = instruction.get(VariableNumber::new);
     }
 
     @EventHandler(ignoreCancelled = true)

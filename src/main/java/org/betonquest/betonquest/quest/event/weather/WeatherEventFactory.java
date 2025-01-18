@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.event.weather;
 
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.common.function.ConstantSelector;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
@@ -12,6 +11,7 @@ import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
@@ -78,7 +78,7 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
     private NullableEventAdapter parseWeatherEvent(final Instruction instruction) throws QuestException {
         final Weather weather = Weather.parseWeather(instruction.next());
         final Selector<World> worldSelector = parseWorld(instruction.getOptional("world"));
-        final VariableNumber duration = instruction.getVarNum(instruction.getOptional("duration", "0"));
+        final VariableNumber duration = instruction.get(instruction.getOptional("duration", "0"), VariableNumber::new);
         return new NullableEventAdapter(new WeatherEvent(weather, worldSelector, duration));
     }
 

@@ -4,10 +4,10 @@ import dev.aurelium.auraskills.api.AuraSkillsApi;
 import dev.aurelium.auraskills.api.registry.NamespacedId;
 import dev.aurelium.auraskills.api.skill.Skill;
 import dev.aurelium.auraskills.api.user.SkillsUser;
-import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.utils.Utils;
 
@@ -29,7 +29,7 @@ public class AuraSkillsLevelCondition extends Condition {
         super(instruction, true);
 
         final String skillName = instruction.next();
-        targetLevelVar = instruction.getVarNum();
+        targetLevelVar = instruction.get(VariableNumber::new);
         mustBeEqual = instruction.hasArgument("equal");
 
         final NamespacedId namespacedId = NamespacedId.fromDefault(skillName);
