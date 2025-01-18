@@ -75,7 +75,6 @@ Just specify the time of the day when the events should run, and they will run e
         type: realtime-daily
         time: '22:00'
         events: bell_ring,notify_goodNight
-        events:
     ```
 ---
 

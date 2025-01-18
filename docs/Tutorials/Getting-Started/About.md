@@ -7,7 +7,7 @@ The "Getting Started" section will teach you the very basics of BetonQuest.
 At first, you will:
 
   1. :material-server: Set up a local test server for quest development
-  2. :simple-visualstudiocode: Install Visual Studio Code for editing quests
+  2. :material-microsoft-visual-studio-code: Install Visual Studio Code for editing quests
   3. :fontawesome-solid-graduation-cap: Learn all BetonQuest basics by creating a questline
 
 Additionally, there are many more tutorials that you can do later on.
