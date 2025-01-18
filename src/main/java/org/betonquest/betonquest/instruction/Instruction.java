@@ -32,7 +32,7 @@ import java.util.Optional;
 /**
  * The Instruction. Primary object for input parsing.
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired", "PMD.GodClass"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass"})
 public class Instruction implements ArgumentParser, EnumParser, CollectionParser, IDParser, ItemParser, NumberParser {
     /**
      * The raw instruction string.
@@ -54,13 +54,30 @@ public class Instruction implements ArgumentParser, EnumParser, CollectionParser
      */
     private final String[] parts;
 
+    /**
+     * The index pointer for {@link #next()} method.
+     */
     private int nextIndex = 1;
 
+    /**
+     * The position used for a more detailed exception message with {@link PartParseException}.
+     */
     private int currentIndex = 1;
 
+    /**
+     * Key for the last requested {@link #getOptionalArgument(String)}.
+     */
     @Nullable
     private String lastOptional;
 
+    /**
+     * Create an instruction using the quoting tokenizer.
+     *
+     * @param log         logger to log failures when parsing the instruction string
+     * @param pack        quest package the instruction belongs to
+     * @param identifier  identifier of the instruction
+     * @param instruction instruction string to parse
+     */
     public Instruction(final BetonQuestLogger log, final QuestPackage pack, @Nullable final ID identifier, final String instruction) {
         this(new QuotingTokenizer(), log, pack, useFallbackIdIfNecessary(pack, identifier), instruction);
     }
@@ -142,18 +159,38 @@ public class Instruction implements ArgumentParser, EnumParser, CollectionParser
         return remainingParts;
     }
 
+    /**
+     * Get the instruction size.
+     *
+     * @return amount of arguments
+     */
     public int size() {
         return parts.length;
     }
 
+    /**
+     * Get the source QuestPackage.
+     *
+     * @return the package containing this instruction
+     */
     public QuestPackage getPackage() {
         return pack;
     }
 
+    /**
+     * Get the id.
+     *
+     * @return the instruction identifier
+     */
     public ID getID() {
         return identifier;
     }
 
+    /**
+     * Get all instruction parts.
+     *
+     * @return parts inclusive first argument
+     */
     protected String[] getParts() {
         return Arrays.copyOf(parts, parts.length);
     }
@@ -177,6 +214,11 @@ public class Instruction implements ArgumentParser, EnumParser, CollectionParser
         return new Instruction(getPackage(), newID, instructionString, getParts());
     }
 
+    /**
+     * Check if there is a {@link #next()} argument.
+     *
+     * @return true if there are arguments left
+     */
     public boolean hasNext() {
         return currentIndex < parts.length - 1;
     }
@@ -188,12 +230,25 @@ public class Instruction implements ArgumentParser, EnumParser, CollectionParser
         return getPart(nextIndex++);
     }
 
+    /**
+     * Gets the current string.
+     *
+     * @return the current string
+     * @throws QuestException when there are no parts
+     */
     public String current() throws QuestException {
         lastOptional = null;
         currentIndex = nextIndex - 1;
         return getPart(currentIndex);
     }
 
+    /**
+     * Get the instruction part at the specified position.
+     *
+     * @param index the position to get
+     * @return the argument at the position
+     * @throws QuestException when index greater or equal to {@link #size}
+     */
     public String getPart(final int index) throws QuestException {
         if (parts.length <= index) {
             throw new QuestException("Not enough arguments");

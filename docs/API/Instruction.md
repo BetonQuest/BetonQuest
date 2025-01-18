@@ -31,7 +31,8 @@ All methods are overloaded to accept either a provided string as first argument 
 
 To get a primitive number you can use the `getInt()` and `getDouble()` methods.
 Parsing Enums is also easy, just pass the class you want into the `getEnum` method.
-Keep attention that this method requires the enum to match the style standard, namely be in uppercase.
+Please make sure that the enum must follow the default Java coding style when using this method:
+All letters used for the enum values must be uppercase.
 
 ```JAVA title="Own parsing vs. getEnum(Enum)"
 try {
@@ -51,7 +52,7 @@ in `getList(Argument<T>)` which splits the string by `,` and converts every spli
 
 ```JAVA title="Getting a List of Primitives"
 List<String> strings = instruction.getList(string -> string);
-List<String> ints = instruction.getList(string -> instruction.getInt(string, 0));
+List<Integer> ints = instruction.getList(string -> instruction.getInt(string, 0));
 ```
 
 ```JAVA title="Own parsing vs. getList(Argument)"
