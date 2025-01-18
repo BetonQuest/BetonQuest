@@ -3,41 +3,47 @@ icon: material/text-account
 ---
 @snippet:api-state:draft@
 
-The Instruction is the user provided string defining conditions, events, items and the like.
+# Instruction Overview
+
+The **Instruction** refers to the user-defined string that specifies conditions, events, items, and similar elements.
 
 !!! info Package
-    The `org.betonquest.betonquest.instruction` package contains the Instruction and related objects.
+    The `org.betonquest.betonquest.instruction` package contains the `Instruction` class and related objects.
 
-## Reading `Instruction` object
-The `Instruction` object parses the instruction string defined by the user and splits it into arguments.
-You can ask it for required arguments one by one with `next()` method or a parser method like `get(Argument<T>)`.
-Required arguments are the ones specified at the very beginning of an instruction string, for example `add someTag` in `tag` event.
-It will automatically throw `QuestException` for you if it encounters an error,
-for example when there were no more arguments in user's instruction, or it can't parse the argument to the type you asked for.
+## Reading the `Instruction` Object
 
-You can also ask for optional arguments: if the instruction string contains argument `arg:something`
-and you ask for optional `arg`, it will give you `something`. If there is no optional argument, it will return `null`.
-Don't worry about passing that `null` to parser methods like `get(String, Argument<T>)`,
-they won't throw an error, they'll simply return that `null`.
+The `Instruction` object is responsible for parsing the instruction string provided by the user and splitting it into 
+arguments. You can retrieve required arguments one at a time using the `next()` method or through a parser method
+like `get(Argument<T>)`. Required arguments are those specified at the beginning of an instruction string, 
+such as `add someTag` in the `tag` event.
+
+If an error occurs—such as when there are no more arguments in the user's instruction or if the argument cannot 
+be parsed into the requested type—the `Instruction` object will automatically throw a `QuestException`.
+
+You can also request optional arguments. If the instruction string contains an argument formatted as `arg:something`, 
+and you request the optional `arg`, it will return `something`. If there is no optional argument, it will return `null`. 
+You can safely pass this `null` to parser methods like `get(String, Argument<T>)`, which will not throw an error 
+but will simply return `null`.
 
 ## Parser
 
-Instead of having methods like `getLocation()` or `getLocation(String)` which return a `VariableLocation` object,
-or `getBlockSelector()` and `getEventID()` and the like for all `ID`s, you provide them in the `get` method yourself.
+Instead of having separate methods like `getLocation()` or `getLocation(String)` that return a `VariableLocation` 
+object, as well as methods for fetching various `ID`s, you can provide these directly within the `get` method.
 
-All methods are overloaded to accept either a provided string as first argument to parse or fetch that using `next()`.
+All methods are overloaded to accept either a provided string as the first argument to parse, or, to fetch the next
+argument using `next()`, directly an argument.
 
 ### Primitive & Enum
 
-To get a primitive number you can use the `getInt()` and `getDouble()` methods.
-Parsing Enums is also easy, just pass the class you want into the `getEnum` method.
-Please make sure that the enum must follow the default Java coding style when using this method:
-All letters used for the enum values must be uppercase.
+To retrieve a primitive number, you can use the `getInt()` and `getDouble()` methods.
+Parsing Enums is straightforward; simply pass the desired class into the `getEnum` method. 
+Ensure that the enum values adhere to the default Java naming conventions,
+meaning all letters used for the enum values must be uppercase.
 
 ```JAVA title="Own parsing vs. getEnum(Enum)"
 try {
   EntityType entity = EntityType.valueOf(instruction.next().toUpperCase(Locale.ROOT));
-} catch(IllegalArgumentException e) {
+} catch (IllegalArgumentException e) {
   throw new QuestException("Unknown mob type: " + mob);
 }
   
@@ -46,9 +52,9 @@ EntityType entity = instruction.getEnum(EntityType.class);
 
 ### Argument
 
-The `Argument<T>` is a simple interface which provides constructing an object from a single string.
-The usage in `get(Argument<T>)` is equivalent to `Argument<T>.apply(next())` but allows the in method construction
-in `getList(Argument<T>)` which splits the string by `,` and converts every split part to the requested `T`.
+The `Argument<T>` interface provides a simple way to construct an object from a single string.
+Using `get(Argument<T>)` is equivalent to `Argument<T>.apply(next())`, but it allows for in-method construction 
+in `getList(Argument<T>)`, which splits the string by `,` and converts each part to the requested type `T`.
 
 ```JAVA title="Getting a List of Primitives"
 List<String> strings = instruction.getList(string -> string);
@@ -63,38 +69,39 @@ for (String mob : instruction.next().split(",")) {
 
 List<EntityType> entities = instruction.getList(mob -> instruction.getEnum(mob, EntityType.class));
 ```
-!!! warning Overloaded methods in Lambdas
-    You need to pay attention to use the method which accepts the string as first argument inside the Lambda,
-    otherwise the method is calling with `next()` for each split resulting in converting the wrong parts!
+
+!!! warning Overloaded Methods in Lambdas
+    Be cautious to use the method that accepts a string as the first argument within the lambda; otherwise, 
+    the method will call `next()` for each split segment, (potentially) resulting in incorrect conversions.
 
 ### VariableArgument
 
-The `VariableArgument` interface provides a very easy way to parse Variables (from the `instruction.variable` package),
-where you simply use the Constructor as Method Reference (as line 2 in the example below).
+The `VariableArgument` interface provides an easy way to parse variables (from the `instruction.variable` package) 
+by utilizing the constructor as a method reference (as shown in line 2 of the example below).
 
-You could write a location parser for yourself, but there's no need for that,
-you can just use `get(VariableLocation::new)` or `get(String, VariableLocation::new)` method and receive `VariableLocation` object.
-The former method is simply `get(next(), VariableLocation::new)`.
+You can create a location parser manually, but it's unnecessary since you can simply use the 
+`get(VariableLocation::new)` or `get(String, VariableLocation::new)` methods to obtain a `VariableLocation` object. 
+The former method is effectively `get(next(), VariableLocation::new)`.
 
 ```JAVA title="Own parsing vs. get(VariableArgument)"
-VariableLocation locaction = new VariableLocation(variableProcessor, instruction.getPackage(), instruction.next());
-VariableLocation locaction = instruction.get(VariableLocation::new);
+VariableLocation location = new VariableLocation(variableProcessor, instruction.getPackage(), instruction.next());
+VariableLocation location = instruction.get(VariableLocation::new);
 ```
 
-Additionally, there are common non-standard-constructor implementation in the `VariableArgument` which can be 
-simply passed as argument too.
-The following example shows how a number, when resolving it, is guaranteed to be positive or 0.
+Additionally, there are common non-standard constructor implementations in the `VariableArgument` that can also be 
+passed as arguments. The following example demonstrates how a number can be validated to ensure it is positive or zero.
 
 ```JAVA title="Example for number validation"
 VariableNumber number = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ZERO);
 VariableNumber number = instruction.get((variableProcessor, pack, input) ->
-  new VariableNumber(variableProcessor, pack, input, (value) -> {
-   if (value.doubleValue() < 0) {
-       throw new QuestException("Value must be greater than or equal to 0: " + value);
-   }}));
+  new VariableNumber(variableProcessor, pack, input, value -> {
+    if (value.doubleValue() < 0) {
+      throw new QuestException("Value must be greater than or equal to 0: " + value);
+    }
+  }));
 ```
 
-Utilizing the different possibilities lead to a quite easy way to parse for example a List of VariableLocations:
+Utilizing these various options simplifies the process of parsing, for instance, a list of `VariableLocation` objects:
 
 ```JAVA title="Equivalant calls"
 List<VariableLocation> locs = instruction.getList(instruction.next(), string -> instruction.get(string, VariableLocation::new)); 
@@ -103,15 +110,17 @@ List<VariableLocation> locs = instruction.getList(instruction.next(), VariableLo
 List<VariableLocation> locs = instruction.getList(VariableLocation::new); 
 ```
 
-There are also common implementations inside the VariableArgument interface:
+Common implementations are also available within the `VariableArgument` interface:
+
 ```JAVA title="Number above 0"
 VariableNumber number = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
 ```
 
-## Own parsing
+## Custom Parsing
 
-If your instruction is more complicated and the `Instruction` class doesn't provide necessary methods,
-you can still parse the instruction string manually.
-Already split parts are available by `getParts()` and the raw instruction by `toString()` method.
-Just remember to throw `QuestException` with an informative message when the instruction supplied by the user is 
-incorrect,  BetonQuest will catch them properly and display it in the console.
+If your instruction is more complex and the `Instruction` class does not provide the necessary methods, you can still 
+parse the instruction string manually. The already split parts are accessible through the `getParts()` method, 
+and the raw instruction can be retrieved using the `toString()` method. 
+
+Remember to throw a `QuestException` with an informative message if the instruction provided by the user is incorrect; 
+BetonQuest will handle these exceptions appropriately and display them in the console.
