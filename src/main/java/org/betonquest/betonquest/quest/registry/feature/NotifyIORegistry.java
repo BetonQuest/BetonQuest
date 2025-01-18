@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.notify.NotifyIO;
+import org.betonquest.betonquest.quest.registry.FromClassFactoryRegistry;
 
 import java.lang.reflect.Constructor;
 import java.util.Map;

@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.compatibility.citizens;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
@@ -20,11 +19,11 @@ import org.betonquest.betonquest.compatibility.citizens.variable.npc.CitizensVar
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.registry.FactoryRegistry;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
+import org.betonquest.betonquest.quest.registry.type.ObjectiveTypeRegistry;
 import org.bukkit.Server;
 import org.bukkit.event.HandlerList;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -80,7 +79,7 @@ public class CitizensIntegrator implements Integrator {
         new CitizensWalkingListener();
 
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
-        final FactoryRegistry<Class<? extends Objective>> objectiveTypes = questRegistries.objective();
+        final ObjectiveTypeRegistry objectiveTypes = questRegistries.objective();
         objectiveTypes.register("npckill", NPCKillObjective.class);
         objectiveTypes.register("npcinteract", NPCInteractObjective.class);
         objectiveTypes.register("npcrange", NPCRangeObjective.class);

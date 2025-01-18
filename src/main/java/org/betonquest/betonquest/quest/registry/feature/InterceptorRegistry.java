@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.Interceptor;
 import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.quest.registry.FromClassFactoryRegistry;
 
 import java.lang.reflect.Constructor;
 import java.util.Map;

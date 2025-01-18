@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.registry;
 
-import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
+import org.betonquest.betonquest.quest.registry.type.ObjectiveTypeRegistry;
 import org.betonquest.betonquest.quest.registry.type.VariableTypeRegistry;
 
 /**
@@ -11,12 +11,13 @@ import org.betonquest.betonquest.quest.registry.type.VariableTypeRegistry;
  *
  * @param condition The Registry holding registered condition types.
  * @param event     The Registry holding registered event types.
+ * @param objective The Registry holding registered objective types.
  * @param variable  The Registry holding registered variable types.
  */
 public record QuestTypeRegistries(
         ConditionTypeRegistry condition,
         EventTypeRegistry event,
-        FactoryRegistry<Class<? extends Objective>> objective,
+        ObjectiveTypeRegistry objective,
         VariableTypeRegistry variable
 ) {
 
@@ -30,7 +31,7 @@ public record QuestTypeRegistries(
         return new QuestTypeRegistries(
                 new ConditionTypeRegistry(loggerFactory.create(ConditionTypeRegistry.class), loggerFactory),
                 new EventTypeRegistry(loggerFactory.create(EventTypeRegistry.class), loggerFactory),
-                new FactoryRegistry<>(loggerFactory.create(FactoryRegistry.class), "objective"),
+                new ObjectiveTypeRegistry(loggerFactory.create(ObjectiveTypeRegistry.class)),
                 new VariableTypeRegistry(loggerFactory.create(VariableTypeRegistry.class), loggerFactory)
         );
     }

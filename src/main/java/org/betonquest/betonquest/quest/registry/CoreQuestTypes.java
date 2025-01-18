@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.registry;
 
 import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.GlobalData;
@@ -151,6 +150,7 @@ import org.betonquest.betonquest.quest.event.weather.WeatherEventFactory;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
+import org.betonquest.betonquest.quest.registry.type.ObjectiveTypeRegistry;
 import org.betonquest.betonquest.quest.registry.type.VariableTypeRegistry;
 import org.betonquest.betonquest.quest.variable.condition.ConditionVariableFactory;
 import org.betonquest.betonquest.quest.variable.eval.EvalVariableFactory;
@@ -364,7 +364,7 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("weather", new WeatherEventFactory(loggerFactory, data));
     }
 
-    private void registerObjectives(final FactoryRegistry<Class<? extends Objective>> objectiveTypes) {
+    private void registerObjectives(final ObjectiveTypeRegistry objectiveTypes) {
         objectiveTypes.register("action", ActionObjective.class);
         objectiveTypes.register("arrow", ArrowShootObjective.class);
         objectiveTypes.register("block", BlockObjective.class);

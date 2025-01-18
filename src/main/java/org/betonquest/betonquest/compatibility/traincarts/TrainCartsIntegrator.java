@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.compatibility.traincarts;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.traincarts.conditions.TrainCartsRideConditionFactory;
 import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsExitObjective;
@@ -9,7 +8,7 @@ import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsL
 import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsRideObjective;
 import org.betonquest.betonquest.exception.HookException;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.registry.FactoryRegistry;
+import org.betonquest.betonquest.quest.registry.type.ObjectiveTypeRegistry;
 
 /**
  * The TrainCarts integration.
@@ -29,7 +28,7 @@ public class TrainCartsIntegrator implements Integrator {
 
     @Override
     public void hook() throws HookException {
-        final FactoryRegistry<Class<? extends Objective>> objectiveTypes = plugin.getQuestRegistries().objective();
+        final ObjectiveTypeRegistry objectiveTypes = plugin.getQuestRegistries().objective();
         objectiveTypes.register("traincartslocation", TrainCartsLocationObjective.class);
         objectiveTypes.register("traincartsride", TrainCartsRideObjective.class);
         objectiveTypes.register("traincartsexit", TrainCartsExitObjective.class);

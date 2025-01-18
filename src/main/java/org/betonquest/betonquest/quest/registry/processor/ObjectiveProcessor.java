@@ -4,47 +4,26 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.exception.ObjectNotFoundException;
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.id.ObjectiveID;
-import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.quest.registry.FactoryRegistry;
-import org.bukkit.configuration.ConfigurationSection;
+import org.betonquest.betonquest.quest.registry.type.ObjectiveTypeRegistry;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Stores Objectives and starts/stops/resumes them.
  */
-public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
-    /**
-     * Available Objective types.
-     */
-    private final FactoryRegistry<Class<? extends Objective>> types;
-
+public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objective> {
     /**
      * Create a new Objective Processor to store Objectives and starts/stops/resumes them.
      *
      * @param log            the custom logger for this class
      * @param objectiveTypes the available objective types
      */
-    public ObjectiveProcessor(final BetonQuestLogger log, final FactoryRegistry<Class<? extends Objective>> objectiveTypes) {
-        super(log);
-        this.types = objectiveTypes;
-    }
-
-    /**
-     * Gets the bstats metric supplier for registered and active types.
-     *
-     * @return the metric with its type identifier
-     */
-    public Map.Entry<String, CompositeInstructionMetricsSupplier<?>> metricsSupplier() {
-        return Map.entry("objectives", new CompositeInstructionMetricsSupplier<>(values::keySet, types::keySet));
+    public ObjectiveProcessor(final BetonQuestLogger log, final ObjectiveTypeRegistry objectiveTypes) {
+        super(log, objectiveTypes, "Objective", "objectives");
     }
 
     @Override
@@ -55,54 +34,9 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
         super.clear();
     }
 
-    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
     @Override
-    public void load(final QuestPackage pack) {
-        final ConfigurationSection oConfig = pack.getConfig().getConfigurationSection("objectives");
-        if (oConfig != null) {
-            final String packName = pack.getQuestPath();
-            for (final String key : oConfig.getKeys(false)) {
-                if (key.contains(" ")) {
-                    log.warn(pack, "Objective name cannot contain spaces: '" + key + "' (in " + packName + " package)");
-                    continue;
-                }
-                final ObjectiveID identifier;
-                try {
-                    identifier = new ObjectiveID(pack, key);
-                } catch (final ObjectNotFoundException e) {
-                    log.warn(pack, "Error while loading objective '" + packName + "." + key + "': " + e.getMessage(), e);
-                    continue;
-                }
-                final String type;
-                try {
-                    type = identifier.getInstruction().getPart(0);
-                } catch (final QuestException e) {
-                    log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
-                    continue;
-                }
-                final Class<? extends Objective> objectiveClass = types.getFactory(type);
-                if (objectiveClass == null) {
-                    log.warn(pack,
-                            "Objective type " + type + " is not registered, check if it's"
-                                    + " spelled correctly in '" + identifier + "' objective.");
-                    continue;
-                }
-                try {
-                    final Objective objective = objectiveClass.getConstructor(Instruction.class)
-                            .newInstance(identifier.getInstruction());
-                    values.put(identifier, objective);
-                    log.debug(pack, "  Objective '" + identifier + "' loaded");
-                } catch (final InvocationTargetException e) {
-                    if (e.getCause() instanceof QuestException) {
-                        log.warn(pack, "Error in '" + identifier + "' objective (" + type + "): " + e.getCause().getMessage(), e);
-                    } else {
-                        log.reportException(pack, e);
-                    }
-                } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-                    log.reportException(pack, e);
-                }
-            }
-        }
+    protected ObjectiveID getIdentifier(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
+        return new ObjectiveID(pack, identifier);
     }
 
     /**

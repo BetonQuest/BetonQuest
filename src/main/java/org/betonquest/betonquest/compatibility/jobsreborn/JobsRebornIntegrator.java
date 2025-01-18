@@ -1,13 +1,12 @@
 package org.betonquest.betonquest.compatibility.jobsreborn;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.quest.registry.FactoryRegistry;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
+import org.betonquest.betonquest.quest.registry.type.ObjectiveTypeRegistry;
 
 /**
  * Integrator for JobsReborn.
@@ -50,7 +49,7 @@ public class JobsRebornIntegrator implements Integrator {
         eventTypes.register("nujobs_setlevel", EventSetLevel.class);
         log.info("Registered Events [nujobs_addexp,nujobs_addlevel,nujobs_dellevel,nujobs_joinjob,nujobs_leavejob,nujobs_setlevel]");
 
-        final FactoryRegistry<Class<? extends Objective>> objectiveTypes = questRegistries.objective();
+        final ObjectiveTypeRegistry objectiveTypes = questRegistries.objective();
         objectiveTypes.register("nujobs_joinjob", ObjectiveJoinJob.class);
         objectiveTypes.register("nujobs_leavejob", ObjectiveLeaveJob.class);
         objectiveTypes.register("nujobs_levelup", ObjectiveLevelUpEvent.class);
