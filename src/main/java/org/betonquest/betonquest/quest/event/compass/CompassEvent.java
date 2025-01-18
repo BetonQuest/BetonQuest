@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.compass;
 
-import org.betonquest.betonquest.api.bukkit.events.QuestCompassTargetChangeEvent;
+import org.betonquest.betonquest.api.bukkit.event.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;

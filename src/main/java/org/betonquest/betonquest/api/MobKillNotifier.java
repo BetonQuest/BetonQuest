@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.bukkit.event.ProfileEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.HandlerList;

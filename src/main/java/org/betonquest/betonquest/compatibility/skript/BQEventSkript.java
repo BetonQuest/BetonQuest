@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.skript;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.bukkit.event.ProfileEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;

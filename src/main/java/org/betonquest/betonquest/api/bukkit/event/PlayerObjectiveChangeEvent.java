@@ -1,8 +1,7 @@
-package org.betonquest.betonquest.api.bukkit.events;
+package org.betonquest.betonquest.api.bukkit.event;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.betonquest.betonquest.id.ID;
 import org.bukkit.event.HandlerList;
 
