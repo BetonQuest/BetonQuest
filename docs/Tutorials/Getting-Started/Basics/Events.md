@@ -218,4 +218,4 @@ You've learned what events are and how to create them. You can now give a player
 even teleport him through the whole town! More events can be found in the [events list](../../../Documentation/Scripting/Building-Blocks/Events-List.md).
 Next you will learn how to give tasks to the player using **objectives**. 
 ---
-[Objectives Tutorial](./Objectives.md){ .md-button .md-button--primary}
+[:octicons-arrow-right-16: Objectives Tutorial](./Objectives.md){ .md-button .md-button--primary}

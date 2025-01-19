@@ -107,4 +107,4 @@ Now that we have created a proper setup for writing quests, we will talk a bit a
 for quests!
 
 ---
-[:material-arrow-right: Next Step: YAML Basics](../Basics/YAML-Basics.md){ .md-button .md-button--primary }
+[:octicons-arrow-right-16: Next Step: YAML Basics](../Basics/YAML-Basics.md){ .md-button .md-button--primary }
