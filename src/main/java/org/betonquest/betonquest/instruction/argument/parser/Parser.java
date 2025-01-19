@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.instruction.argument.parser;
 
 import org.apache.commons.lang3.StringUtils;
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.exception.QuestException;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 

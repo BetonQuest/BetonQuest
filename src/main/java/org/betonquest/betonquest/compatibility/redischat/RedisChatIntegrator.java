@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.redischat;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.exceptions.HookException;
+import org.betonquest.betonquest.exception.HookException;
 import org.bukkit.event.Listener;
 
 /**

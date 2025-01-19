@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.notify;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.utils.PlayerConverter;
-import org.betonquest.betonquest.utils.Utils;
+import org.betonquest.betonquest.util.PlayerConverter;
+import org.betonquest.betonquest.util.Utils;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

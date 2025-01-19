@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exceptions.QuestException;
-import org.betonquest.betonquest.utils.Utils;
+import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.util.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.meta.BookMeta;
 import org.jetbrains.annotations.Nullable;

@@ -5,21 +5,21 @@ import net.citizensnpcs.api.event.NPCLeftClickEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.objectives.EntityInteractObjective.Interaction;
-import org.betonquest.betonquest.utils.PlayerConverter;
+import org.betonquest.betonquest.objective.EntityInteractObjective.Interaction;
+import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
-import static org.betonquest.betonquest.objectives.EntityInteractObjective.Interaction.ANY;
-import static org.betonquest.betonquest.objectives.EntityInteractObjective.Interaction.LEFT;
-import static org.betonquest.betonquest.objectives.EntityInteractObjective.Interaction.RIGHT;
+import static org.betonquest.betonquest.objective.EntityInteractObjective.Interaction.ANY;
+import static org.betonquest.betonquest.objective.EntityInteractObjective.Interaction.LEFT;
+import static org.betonquest.betonquest.objective.EntityInteractObjective.Interaction.RIGHT;
 
 /**
  * An objective that requires the player to interact with a specific NPC.

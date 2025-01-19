@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.condition.point;
 
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.exceptions.QuestException;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.data.PlayerDataStorage;
+import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 import java.util.Optional;
 

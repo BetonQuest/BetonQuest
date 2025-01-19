@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.web.updater;
 
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.web.DownloadSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.bstats;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Compatibility;
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.id.ID;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;

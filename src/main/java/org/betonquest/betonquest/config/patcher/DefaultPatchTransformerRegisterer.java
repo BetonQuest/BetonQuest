@@ -2,14 +2,14 @@ package org.betonquest.betonquest.config.patcher;
 
 import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegisterer;
 import org.betonquest.betonquest.config.Patcher;
-import org.betonquest.betonquest.config.patcher.transformers.KeyRenameTransformer;
-import org.betonquest.betonquest.config.patcher.transformers.ListEntryAddTransformer;
-import org.betonquest.betonquest.config.patcher.transformers.ListEntryRemoveTransformer;
-import org.betonquest.betonquest.config.patcher.transformers.ListEntryRenameTransformer;
-import org.betonquest.betonquest.config.patcher.transformers.RemoveTransformer;
-import org.betonquest.betonquest.config.patcher.transformers.SetTransformer;
-import org.betonquest.betonquest.config.patcher.transformers.TypeTransformer;
-import org.betonquest.betonquest.config.patcher.transformers.ValueRenameTransformer;
+import org.betonquest.betonquest.config.patcher.transformer.KeyRenameTransformer;
+import org.betonquest.betonquest.config.patcher.transformer.ListEntryAddTransformer;
+import org.betonquest.betonquest.config.patcher.transformer.ListEntryRemoveTransformer;
+import org.betonquest.betonquest.config.patcher.transformer.ListEntryRenameTransformer;
+import org.betonquest.betonquest.config.patcher.transformer.RemoveTransformer;
+import org.betonquest.betonquest.config.patcher.transformer.SetTransformer;
+import org.betonquest.betonquest.config.patcher.transformer.TypeTransformer;
+import org.betonquest.betonquest.config.patcher.transformer.ValueRenameTransformer;
 
 /**
  * Default implementation of {@link PatchTransformerRegisterer} containing all transformers of BetonQuest.

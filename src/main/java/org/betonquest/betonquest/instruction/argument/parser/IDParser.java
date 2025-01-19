@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.instruction.argument.parser;
 
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.instruction.argument.IDArgument;
 import org.jetbrains.annotations.Contract;

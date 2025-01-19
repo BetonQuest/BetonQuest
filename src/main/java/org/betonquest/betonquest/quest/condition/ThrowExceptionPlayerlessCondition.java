@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition;
 
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.exception.QuestException;
 
 /**
  * A playerless condition placeholder that throws an exception when checked.

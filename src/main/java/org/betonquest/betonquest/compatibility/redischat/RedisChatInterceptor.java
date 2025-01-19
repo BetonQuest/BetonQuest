@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.redischat;
 import dev.unnm3d.redischat.api.RedisChatAPI;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.Interceptor;
 import org.bukkit.entity.Player;

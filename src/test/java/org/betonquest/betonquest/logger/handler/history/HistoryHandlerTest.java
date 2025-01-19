@@ -2,7 +2,7 @@ package org.betonquest.betonquest.logger.handler.history;
 
 import org.betonquest.betonquest.logger.handler.ResettableHandler;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
-import org.betonquest.betonquest.utils.WriteOperation;
+import org.betonquest.betonquest.util.WriteOperation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;

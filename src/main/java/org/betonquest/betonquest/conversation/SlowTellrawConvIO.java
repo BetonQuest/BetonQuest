@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.conversation;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.utils.LocalChatPaginator;
-import org.betonquest.betonquest.utils.Utils;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.util.LocalChatPaginator;
+import org.betonquest.betonquest.util.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

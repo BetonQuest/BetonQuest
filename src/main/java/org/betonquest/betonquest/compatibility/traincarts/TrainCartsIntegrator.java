@@ -6,7 +6,7 @@ import org.betonquest.betonquest.compatibility.traincarts.conditions.TrainCartsR
 import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsExitObjective;
 import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsLocationObjective;
 import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsRideObjective;
-import org.betonquest.betonquest.exceptions.HookException;
+import org.betonquest.betonquest.exception.HookException;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 
 /**

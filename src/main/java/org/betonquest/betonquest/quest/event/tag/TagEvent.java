@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.tag;
 
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.database.TagData;
 

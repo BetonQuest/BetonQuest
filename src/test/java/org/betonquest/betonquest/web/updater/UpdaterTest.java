@@ -3,7 +3,7 @@ package org.betonquest.betonquest.web.updater;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.util.scheduler.BukkitSchedulerMock;
 import org.betonquest.betonquest.versioning.Version;
 import org.bukkit.entity.Player;

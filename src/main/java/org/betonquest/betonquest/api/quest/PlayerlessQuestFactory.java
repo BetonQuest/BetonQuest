@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.api.quest;
 
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 
 /**
  * Factory to create a specific {@link T}.
  * <p>
  * Opposed to the {@link PlayerQuestFactory} it is used without a
- * {@link org.betonquest.betonquest.api.profiles.Profile Profile}.
+ * {@link org.betonquest.betonquest.api.profile.Profile Profile}.
  *
  * @param <T> quest type executed without a player
  */

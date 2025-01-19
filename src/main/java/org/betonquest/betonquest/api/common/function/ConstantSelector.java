@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.common.function;
 
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.jetbrains.annotations.Nullable;
 
 /**

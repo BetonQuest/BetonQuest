@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.quest.variable;
 
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.exception.QuestException;
 
 /**
  * Interface for "static" quest-variables.

@@ -40,7 +40,7 @@ IntelliJ may also show something like `Failed to execute goal`. Here's a guide h
         ````
         If your log contains such a message, it will also contain another message that looks like this:
         ````
-        [ERROR] Medium: Null passed for non-null parameter of org.betonquest.betonquest.utils.PlayerConverter.getPlayer(String) in org.betonquest.betonquest.BetonQuest.condition(String, ConditionID) [org.betonquest.betonquest.BetonQuest, org.betonquest.betonquest.BetonQuest] Method invoked at BetonQuest.java:[line 349]Known null at BetonQuest.java:[line 344] NP_NULL_PARAM_DEREF
+        [ERROR] Medium: Null passed for non-null parameter of org.betonquest.betonquest.util.PlayerConverter.getPlayer(String) in org.betonquest.betonquest.BetonQuest.condition(String, ConditionID) [org.betonquest.betonquest.BetonQuest, org.betonquest.betonquest.BetonQuest] Method invoked at BetonQuest.java:[line 349]Known null at BetonQuest.java:[line 344] NP_NULL_PARAM_DEREF
         ````
         SpotBugs errors are a little complicated to read,
         but if you find e.g. `NP_NULL_PARAM_DEREF` at the end of the line you can simply search it on the

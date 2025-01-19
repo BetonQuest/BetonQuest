@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.item.typehandler;
 
-import org.betonquest.betonquest.exceptions.QuestException;
-import org.betonquest.betonquest.utils.Utils;
+import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.util.Utils;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.item.typehandler;
 
-import org.betonquest.betonquest.exceptions.QuestException;
-import org.betonquest.betonquest.utils.Utils;
+import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;

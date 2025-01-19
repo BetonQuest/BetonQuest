@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.compatibility.traincarts.conditions;
 
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.exception.QuestException;
 
 /**
  * The TrainCarts ride condition checks if a player is currently riding a train from TrainCarts.

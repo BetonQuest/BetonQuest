@@ -2,9 +2,9 @@ package org.betonquest.betonquest.item.typehandler;
 
 import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.QuestException;
-import org.betonquest.betonquest.utils.PlayerConverter;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.meta.SkullMeta;

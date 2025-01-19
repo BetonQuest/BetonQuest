@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.logger.handler.history;
 
 import org.betonquest.betonquest.logger.handler.ResettableHandler;
-import org.betonquest.betonquest.utils.WriteOperation;
+import org.betonquest.betonquest.util.WriteOperation;
 
 import java.io.IOException;
 import java.util.concurrent.locks.Lock;
