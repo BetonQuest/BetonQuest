@@ -15,6 +15,24 @@ If any requirements are not met, `./mvnw verify` will fail with this log message
 IntelliJ may also show something like `Failed to execute goal`. Here's a guide how to fix any requirement violations:
 
 !!! note ""
+    === "NullAway"
+        Visit the **[NullAway Page](http://t.uber.com/nullaway)** for general info.
+        <br><br>
+        NullAway checks for null pointer exceptions. NullAway's errors look like compilation errors:
+        ````
+        [INFO] -------------------------------------------------------------
+        [ERROR] COMPILATION ERROR : 
+        [INFO] -------------------------------------------------------------
+        ````
+        If you have this message you also have messages, that looks like this right after the above message:
+        ````
+        [ERROR] /C:/Users/gabri/IdeaProjects/BetonQuest/src/main/java/org/betonquest/betonquest/Backpack.java:[575,41] [NullAway] dereferenced expression name is @Nullable (see http://t.uber.com/nullaway )
+        ````
+        If you only read this without understanding what we try to enforce here, you may be a bit lost.
+        Therefore, you should understand that we try to avoid `null` completely.  
+        To achieve this, by default everything is annotated with `@NotNull`, disallowing `null` values.
+        If you want to allow `null` values, you have to annotate the field or method with `@Nullable`.  
+        With this knowledge, you may understand the error a bit better, but if not give it a read in the NullAway documentation.
     === "PMD"
         Visit the **[PMD Page](https://pmd.github.io/latest/)** for general info.
         <br><br>
