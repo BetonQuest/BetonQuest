@@ -4367,8 +4367,25 @@ GitHub Actions (automated code check on GitHub) will also verify these requireme
 </code></pre></div>
 IntelliJ may also show something like <code>Failed to execute goal</code>. Here's a guide how to fix any requirement violations:</p>
 <div class="admonition note">
-<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">PMD</label><label for="__tabbed_1_2">SpotBugs</label><label for="__tabbed_1_3">CheckStyle</label><label for="__tabbed_1_4">EditorConfig</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:5"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><input id="__tabbed_1_5" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">NullAway</label><label for="__tabbed_1_2">PMD</label><label for="__tabbed_1_3">SpotBugs</label><label for="__tabbed_1_4">CheckStyle</label><label for="__tabbed_1_5">EditorConfig</label></div>
 <div class="tabbed-content">
+<div class="tabbed-block">
+<p>Visit the <strong><a href="http://t.uber.com/nullaway">NullAway Page</a></strong> for general info.
+<br><br>
+NullAway checks for null pointer exceptions. NullAway's errors look like compilation errors:
+<div class="highlight"><pre><span></span><code>[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+</code></pre></div>
+If you have this message you also have messages, that looks like this right after the above message:
+<div class="highlight"><pre><span></span><code>[ERROR] /C:/Users/gabri/IdeaProjects/BetonQuest/src/main/java/org/betonquest/betonquest/Backpack.java:[575,41] [NullAway] dereferenced expression name is @Nullable (see http://t.uber.com/nullaway )
+</code></pre></div>
+If you only read this without understanding what we try to enforce here, you may be a bit lost.
+Therefore, you should understand that we try to avoid <code>null</code> completely.<br />
+To achieve this, by default everything is annotated with <code>@NotNull</code>, disallowing <code>null</code> values.
+If you want to allow <code>null</code> values, you have to annotate the field or method with <code>@Nullable</code>.<br />
+With this knowledge, you may understand the error a bit better, but if not give it a read in the NullAway documentation.</p>
+</div>
 <div class="tabbed-block">
 <p>Visit the <strong><a href="https://pmd.github.io/latest/">PMD Page</a></strong> for general info.
 <br><br>
