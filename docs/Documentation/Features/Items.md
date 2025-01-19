@@ -133,19 +133,11 @@ This applies to heads with custom texture (Base64 encoded).
 
 **Examples**:
 
-On Paper, the metadata will be automatically extracted from an item in your hand when using the item command and produce something like the following item data:
+The metadata will be automatically extracted from an item in your hand when using the item command and produce something like the following item data:
 
 ```YAML
 player-id:66ab473e-d118-4e55-9717-431dfe7a69bc
 texture:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmIwNmIxOGQzZGZlZGFiNDQ0NjZlMGE3NGUxNTVhOGYyMTc4NzIwNDBhMDg1NTIwYTVhMGYzMGU4Y2QxODg1YyJ9fX0=
-```
-
-On Spigot/Bukkit, player-id and texture must be manually configured in the item.yml file. It must be in the same format as the example above.
-
-**Note:** _The texture data is Base64 encoded version of the following JSON, which is the same as the minecraft built-in give command and what is available on heads websites:_
-
-```JSON
-{"textures":{"SKIN":{"url":"http://textures.minecraft.net/texture/bb06b18d3dfedab44466e0a74e155a8f217872040a085520a5a0f30e8cd1885c"}}}
 ```
 
 ### Leather armor

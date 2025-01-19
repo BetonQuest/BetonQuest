@@ -246,7 +246,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
     
 ### 2.0.0-DEV-485 - Experience changes :exclamation:
 
-Due to a misuse of the Spigot API, all code regarding player experience (`experience` event, condition and objective) had to be changed.
+Due to a misuse of the Server API, all code regarding player experience (`experience` event, condition and objective) had to be changed.
 It is not possible to obtain the amount of experience points a player has, only their level can be obtained.
   
 If you used any of these elements you might have to adjust the configured values because the behaviour changed as follows:
