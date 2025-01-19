@@ -97,11 +97,9 @@ thead span {
 
 ## What server owners say
 
-By rating, BetonQuest is in the **top 10 out of 57.000 Spigot plugins**.
-<br>
 Sometimes, user reviews describe a plugin better than the author can:
 
-!!! quote "Spigot Reviews"
+!!! quote "Reviews"
     === "Esron"
         Quick Facts:
         <ul>
