@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.language;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.exceptions.QuestException;
-import org.betonquest.betonquest.modules.data.PlayerDataStorage;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 
 import java.util.Set;
 

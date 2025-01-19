@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.commands;
 
-import org.betonquest.betonquest.modules.data.PlayerDataStorage;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

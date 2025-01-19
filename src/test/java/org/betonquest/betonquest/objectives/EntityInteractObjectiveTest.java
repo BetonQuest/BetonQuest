@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.objectives;
 
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
+import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 

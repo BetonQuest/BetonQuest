@@ -4,7 +4,7 @@ import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.modules.data.PlayerDataStorage;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 
 /**

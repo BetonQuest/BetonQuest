@@ -6,9 +6,9 @@ import org.betonquest.betonquest.compatibility.protocollib.conversation.MenuConv
 import org.betonquest.betonquest.compatibility.protocollib.conversation.PacketInterceptor;
 import org.betonquest.betonquest.exceptions.HookException;
 import org.betonquest.betonquest.exceptions.UnsupportedVersionException;
-import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
-import org.betonquest.betonquest.modules.versioning.Version;
-import org.betonquest.betonquest.modules.versioning.VersionComparator;
+import org.betonquest.betonquest.versioning.UpdateStrategy;
+import org.betonquest.betonquest.versioning.Version;
+import org.betonquest.betonquest.versioning.VersionComparator;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 

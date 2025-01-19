@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.utils;
 
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
+import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockedStatic;

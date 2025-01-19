@@ -2,11 +2,11 @@ package org.betonquest.betonquest.bstats;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
+import org.betonquest.betonquest.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.modules.config.DefaultConfigAccessorFactory;
-import org.betonquest.betonquest.modules.config.quest.QuestPackageImpl;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
+import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.CustomChart;
 import org.bukkit.Server;

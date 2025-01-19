@@ -11,7 +11,7 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Backup;
 import org.betonquest.betonquest.exceptions.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.modules.config.Zipper;
+import org.betonquest.betonquest.config.Zipper;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;

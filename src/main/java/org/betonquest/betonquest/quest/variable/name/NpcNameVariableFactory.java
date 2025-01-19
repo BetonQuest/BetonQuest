@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.variable.name;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.modules.data.PlayerDataStorage;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 
 /**
  * Factory to create {@link NpcNameVariable}s from {@link Instruction}s.

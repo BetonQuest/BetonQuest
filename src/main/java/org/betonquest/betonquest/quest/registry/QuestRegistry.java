@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.id.ID;
-import org.betonquest.betonquest.modules.schedule.EventScheduling;
+import org.betonquest.betonquest.schedule.EventScheduling;
 import org.betonquest.betonquest.quest.registry.processor.CancellerProcessor;
 import org.betonquest.betonquest.quest.registry.processor.ConditionProcessor;
 import org.betonquest.betonquest.quest.registry.processor.ConversationProcessor;
