@@ -24,6 +24,7 @@ icon: octicons/info-16
 ## Work with us on BetonQuest
 
 <div class="grid cards" markdown>
+
  -   :material-file-document-edit:  __Write better Documentation or Tutorials__
  
      ---
@@ -35,5 +36,6 @@ icon: octicons/info-16
      ---
      Please follow our detailed [Contributing Guide](Setup-Project.md) to obtain a local working environment. 
      A good starting point should be the [API documentation](../API/Overview.md).
+
 </div>
 

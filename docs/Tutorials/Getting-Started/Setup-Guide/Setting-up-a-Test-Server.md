@@ -71,4 +71,4 @@ Once you joined the server, enter the following command in your server's console
 This will give you all permissions on the server, which is required for the following steps.
 
 ---
-[:material-arrow-right: Next Step: Install Dependencies](Installing-BetonQuest.md){ .md-button .md-button--primary }
+[:octicons-arrow-right-16: Next Step: Install Dependencies](./Installing-BetonQuest.md){ .md-button .md-button--primary }

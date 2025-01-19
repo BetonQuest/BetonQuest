@@ -33,5 +33,5 @@ This page will guide you through the installation process for all plugins that a
 **Once you have installed these, restart your server!**
 
 ---
-[:material-arrow-right: Next Step: Setting up Visual Studio Code](./Setting-up-VSCode.md){ .md-button .md-button--primary }
+[:octicons-arrow-right-16: Next Step: Setting up Visual Studio Code](./Setting-up-VSCode.md){ .md-button .md-button--primary }
 
