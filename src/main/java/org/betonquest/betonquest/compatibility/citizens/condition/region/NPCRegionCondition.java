@@ -4,7 +4,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.compatibility.worldguard.WorldGuardIntegrator;
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.exception.QuestException;
 
 /**
  * Checks if a npc is inside a WorldGuard region.

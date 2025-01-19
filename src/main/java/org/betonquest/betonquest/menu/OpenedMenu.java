@@ -2,9 +2,9 @@ package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.menu.events.MenuClickEvent;
-import org.betonquest.betonquest.menu.events.MenuCloseEvent;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.menu.event.MenuClickEvent;
+import org.betonquest.betonquest.menu.event.MenuCloseEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

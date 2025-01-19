@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.luckperms;
 import net.luckperms.api.context.ContextCalculator;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.utils.PlayerConverter;
+import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.entity.Player;
 
 import java.util.List;

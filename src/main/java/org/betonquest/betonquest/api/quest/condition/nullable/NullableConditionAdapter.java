@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.api.quest.condition.nullable;
 
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.exception.QuestException;
 
 /**
  * An adapter to handle both the {@link PlayerCondition} and {@link PlayerlessCondition}

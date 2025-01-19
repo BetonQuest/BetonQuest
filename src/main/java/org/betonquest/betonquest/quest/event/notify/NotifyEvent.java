@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.event.notify;
 
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.data.PlayerDataStorage;
+import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
-import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.notify.NotifyIO;
 
 import java.util.Map;

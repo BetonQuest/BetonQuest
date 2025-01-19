@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.menu;
 
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serial;

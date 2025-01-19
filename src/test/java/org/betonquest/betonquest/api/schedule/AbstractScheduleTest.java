@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.exceptions.QuestException;
-import org.betonquest.betonquest.modules.schedule.ScheduleID;
+import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.schedule.ScheduleID;
 import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;

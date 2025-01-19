@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.variable.point;
 
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
-import org.betonquest.betonquest.modules.data.PlayerDataStorage;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 
 /**
  * Allows you to display total amount of points or amount of points remaining to

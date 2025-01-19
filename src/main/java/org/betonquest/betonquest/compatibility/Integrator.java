@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.compatibility;
 
-import org.betonquest.betonquest.exceptions.HookException;
+import org.betonquest.betonquest.exception.HookException;
 
 /**
  * Integrator object performs integration with other plugins.

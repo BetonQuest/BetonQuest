@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.condition.conversation;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.conversation.ConversationData;
-import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.exception.ObjectNotFoundException;
+import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.id.ConversationID;
 
 /**

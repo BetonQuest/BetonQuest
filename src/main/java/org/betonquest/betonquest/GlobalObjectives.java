@@ -1,10 +1,10 @@
 package org.betonquest.betonquest;
 
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.id.ObjectiveID;
-import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 
 import java.util.ArrayList;
 import java.util.HashSet;

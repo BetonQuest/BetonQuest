@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.quest.condition;
 
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.exception.QuestException;
 
 /**
  * Interface for playerless quest-conditions.

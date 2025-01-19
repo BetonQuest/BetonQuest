@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.scoreboard;
 
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 
 import java.util.function.BiConsumer;
 

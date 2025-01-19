@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.event.command;
 
 import org.betonquest.betonquest.api.bukkit.command.SilentConsoleCommandSender;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;

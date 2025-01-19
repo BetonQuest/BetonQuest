@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.variable.tag;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
-import org.betonquest.betonquest.exceptions.QuestException;
-import org.betonquest.betonquest.modules.data.PlayerDataStorage;
+import org.betonquest.betonquest.data.PlayerDataStorage;
+import org.betonquest.betonquest.exception.QuestException;
 
 /**
  * Exposes the presence of tags as a variable.

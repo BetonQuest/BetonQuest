@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.Journal;
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.modules.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.event.NotificationSender;
-import org.betonquest.betonquest.utils.PlayerConverter;
+import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

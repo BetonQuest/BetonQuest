@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.condition.block;
 
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.betonquest.betonquest.utils.BlockSelector;
+import org.betonquest.betonquest.util.BlockSelector;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.Nullable;
 

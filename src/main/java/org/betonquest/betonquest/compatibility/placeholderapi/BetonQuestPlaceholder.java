@@ -3,10 +3,10 @@ package org.betonquest.betonquest.compatibility.placeholderapi;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
-import org.betonquest.betonquest.utils.PlayerConverter;
+import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 

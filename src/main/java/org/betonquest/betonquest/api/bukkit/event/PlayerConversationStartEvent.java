@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.bukkit.event;
 
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;

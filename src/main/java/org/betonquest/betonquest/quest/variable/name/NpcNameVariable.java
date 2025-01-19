@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.variable.name;
 
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.conversation.Conversation;
-import org.betonquest.betonquest.modules.data.PlayerDataStorage;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 
 /**
  * This variable resolves into the name of the NPC.

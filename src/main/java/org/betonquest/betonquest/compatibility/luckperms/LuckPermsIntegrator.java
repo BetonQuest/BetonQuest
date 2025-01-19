@@ -5,7 +5,7 @@ import net.luckperms.api.context.ContextCalculator;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.luckperms.permission.LuckPermsEventFactory;
-import org.betonquest.betonquest.exceptions.HookException;
+import org.betonquest.betonquest.exception.HookException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;

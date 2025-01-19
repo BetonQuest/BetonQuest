@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.variable.location;
 
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.variable.online.OnlineVariable;
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.exception.QuestException;
 
 /**
  * Provides information about a Player's Location.

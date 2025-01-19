@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.api.quest.event.nullable;
 
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.exception.QuestException;
 
 /**
  * An adapter to handle both the {@link Event} and {@link StaticEvent} with one

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.quest.event;
 
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.exception.QuestException;
 
 /**
  * Interface for quest-events that are executed for a profile. It represents the normal event as described in the

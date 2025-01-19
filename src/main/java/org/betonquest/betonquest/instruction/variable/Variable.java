@@ -2,8 +2,8 @@ package org.betonquest.betonquest.instruction.variable;
 
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.jetbrains.annotations.Nullable;
 

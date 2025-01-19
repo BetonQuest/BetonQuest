@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.item;
 
 import org.betonquest.betonquest.Journal;
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.modules.data.PlayerDataStorage;
-import org.betonquest.betonquest.utils.PlayerConverter;
-import org.betonquest.betonquest.utils.Utils;
+import org.betonquest.betonquest.data.PlayerDataStorage;
+import org.betonquest.betonquest.util.PlayerConverter;
+import org.betonquest.betonquest.util.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.enchantments.EnchantmentTarget;

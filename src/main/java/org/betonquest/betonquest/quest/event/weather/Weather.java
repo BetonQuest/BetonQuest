@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.weather;
 
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.exception.QuestException;
 import org.bukkit.World;
 
 import java.util.Locale;

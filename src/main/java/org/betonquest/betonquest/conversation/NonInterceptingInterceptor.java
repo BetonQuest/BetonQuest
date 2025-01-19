@@ -2,7 +2,7 @@ package org.betonquest.betonquest.conversation;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("PMD.CommentRequired")

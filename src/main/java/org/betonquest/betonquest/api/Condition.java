@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.api;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.instruction.Instruction;
 
@@ -66,7 +66,7 @@ public abstract class Condition extends ForceSyncHandler<Boolean> {
 
     /**
      * If a condition is persistent it can be checked for {@link Profile}s.
-     * If it's neither persistent nor static an {@link org.betonquest.betonquest.api.profiles.OnlineProfile} must be used.
+     * If it's neither persistent nor static an {@link org.betonquest.betonquest.api.profile.OnlineProfile} must be used.
      * Persistent conditions can be checked in folder events after the player logs out.
      *
      * @return if the condition is persistent or not.

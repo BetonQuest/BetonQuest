@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.variable.tag;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
 import org.betonquest.betonquest.database.GlobalData;
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.exception.QuestException;
 
 /**
  * Exposes the presence of global tags as a variable.

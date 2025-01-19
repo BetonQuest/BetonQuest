@@ -3,7 +3,7 @@ package org.betonquest.betonquest.variables;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.GlobalVariableID;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;

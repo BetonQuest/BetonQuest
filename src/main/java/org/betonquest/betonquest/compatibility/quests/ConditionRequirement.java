@@ -3,10 +3,10 @@ package org.betonquest.betonquest.compatibility.quests;
 import me.pikamug.quests.module.BukkitCustomRequirement;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.utils.PlayerConverter;
+import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

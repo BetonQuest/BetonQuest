@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.quest.variable.online;
 
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.exceptions.QuestException;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.exception.QuestException;
 
 /**
  * Player Variable that needs an online profile to function correctly.

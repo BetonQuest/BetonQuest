@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.fabled;
 
 import org.betonquest.betonquest.api.MobKillNotifier;
-import org.betonquest.betonquest.utils.PlayerConverter;
+import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
