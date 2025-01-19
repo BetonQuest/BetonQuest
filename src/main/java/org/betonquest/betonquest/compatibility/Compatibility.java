@@ -214,7 +214,7 @@ public class Compatibility implements Listener {
                     + "You can turn it off by setting 'hook." + name.toLowerCase(Locale.ROOT)
                     + "' to false in config.yml file.");
         } catch (final RuntimeException | LinkageError exception) {
-            final String message = String.format("There was an unexpected error while hooking into %s %s (BetonQuest %s, Spigot %s)! %s",
+            final String message = String.format("There was an unexpected error while hooking into %s %s (BetonQuest %s, Server %s)! %s",
                     hookedPlugin.getName(),
                     hookedPlugin.getDescription().getVersion(),
                     betonQuest.getDescription().getVersion(),
