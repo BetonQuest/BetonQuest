@@ -221,7 +221,7 @@ Please let us know if there is any outdated information.
     While BetonQuest can be used for scripting, it stays a quest plugin. It's a compromise, the best of both worlds.
     Plugins with a full focus on scripting - such as
     [Denizen](https://www.spigotmc.org/resources/21039/)
-    and [Skript](https://github.com/SkriptLang/Skript/)
+    and [Skript](https://www.spigotmc.org/resources/114544/)
     are suited better in certain scenarios. Many users even use these alongside BetonQuest as there is
     integration for such scripting plugins.
 
