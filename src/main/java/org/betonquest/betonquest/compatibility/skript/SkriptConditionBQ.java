@@ -7,9 +7,9 @@ import ch.njol.util.Kleenean;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
@@ -51,7 +51,8 @@ public class SkriptConditionBQ extends Condition {
     public boolean check(final Event event) {
         final String conditionID = condition.getSingle(event);
         try {
-            return BetonQuest.getInstance().getQuestTypeAPI().condition(PlayerConverter.getID(player.getSingle(event)), new ConditionID(null, conditionID));
+            final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+            return BetonQuest.getInstance().getQuestTypeAPI().condition(profileProvider.getProfile(player.getSingle(event)), new ConditionID(null, conditionID));
         } catch (final QuestException e) {
             log.warn("Error while checking Skript condition - could not load condition with ID '" + conditionID + "': " + e.getMessage(), e);
             return false;

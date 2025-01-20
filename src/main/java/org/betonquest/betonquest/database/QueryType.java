@@ -14,6 +14,7 @@ public enum QueryType {
     SELECT_JOURNAL(prefix -> "SELECT pointer, date FROM " + prefix + "journal WHERE profileID = ?;"),
     SELECT_BACKPACK(prefix -> "SELECT instruction, amount FROM " + prefix + "backpack WHERE profileID = ?;"),
     SELECT_PLAYER(prefix -> "SELECT language, conversation FROM " + prefix + "player WHERE playerID = ?;"),
+    SELECT_PLAYER_PROFILE(prefix -> "SELECT name FROM " + prefix + "player_profile WHERE profileID = ?;"),
 
     SELECT_PLAYERS_TAGS(prefix -> "SELECT profileID FROM " + prefix + "tags GROUP BY profileID;"),
     SELECT_PLAYERS_JOURNAL(prefix -> "SELECT profileID FROM " + prefix + "journal GROUP BY profileID;"),

@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -39,7 +38,7 @@ public class MMOItemsApplyGemObjective extends Objective implements Listener {
         if (!gemStone.getId().equals(gemID)) {
             return;
         }
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
         if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }

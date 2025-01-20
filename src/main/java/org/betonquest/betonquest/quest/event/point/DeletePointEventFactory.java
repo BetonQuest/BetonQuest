@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.quest.event.point;
 
+import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -12,7 +14,6 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.event.DatabaseSaverStaticEvent;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
 import org.betonquest.betonquest.quest.event.SequentialStaticEvent;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.betonquest.betonquest.util.Utils;
 
 /**
@@ -49,13 +50,12 @@ public class DeletePointEventFactory implements EventFactory, StaticEventFactory
     @Override
     public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
         final String category = getCategory(instruction);
+        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
         return new SequentialStaticEvent(
                 new OnlineProfileGroupStaticEventAdapter(
-                        PlayerConverter::getOnlineProfiles,
-                        new DeletePointEvent(dataStorage::getOffline, category)
-                ),
-                new DatabaseSaverStaticEvent(saver, () -> new Saver.Record(UpdateType.REMOVE_ALL_POINTS, category))
-        );
+                        profileProvider::getOnlineProfiles,
+                        new DeletePointEvent(dataStorage::getOffline, category)),
+                new DatabaseSaverStaticEvent(saver, () -> new Saver.Record(UpdateType.REMOVE_ALL_POINTS, category)));
     }
 
     private String getCategory(final Instruction instruction) throws QuestException {

@@ -58,7 +58,7 @@ public class PlayerDataStorage {
     public void initProfiles(final Collection<OnlineProfile> onlineProfiles) {
         for (final OnlineProfile onlineProfile : onlineProfiles) {
             final PlayerData playerData = new PlayerData(pluginMessage, onlineProfile);
-            playerDataMap.put(onlineProfile, playerData);
+            put(onlineProfile, playerData);
             playerData.startObjectives();
             playerData.getJournal().update();
             if (playerData.getActiveConversation() != null) {
@@ -122,7 +122,9 @@ public class PlayerDataStorage {
      * @throws IllegalArgumentException when there is no data and the player is offline
      */
     public PlayerData get(final Profile profile) {
+        log.debug("get: " + profile.getProfileName() + " " + profile.getProfileUUID() + " " + profile.getPlayer().getName());
         PlayerData playerData = playerDataMap.get(profile);
+        log.debug("playerData loaded: " + playerData);
         if (playerData == null) {
             if (profile.getOnlineProfile().isPresent()) {
                 playerData = new PlayerData(pluginMessage, profile);

@@ -1,11 +1,12 @@
 package org.betonquest.betonquest.compatibility.holograms.holographicdisplays;
 
 import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholder;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,7 +46,8 @@ public class HologramPlaceholder implements IndividualPlaceholder {
         if (arguments == null) {
             return "";
         }
-        final Profile profile = PlayerConverter.getID(player);
+        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+        final Profile profile = profileProvider.getProfile(player);
         try {
             return variableProcessor.getValue(arguments, profile);
         } catch (final QuestException e) {

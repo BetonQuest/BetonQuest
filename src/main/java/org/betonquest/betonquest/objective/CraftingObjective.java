@@ -8,7 +8,6 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.util.InventoryUtils;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -52,7 +51,7 @@ public class CraftingObjective extends CountingObjective implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCrafting(final CraftItemEvent event) {
         if (event.getWhoClicked() instanceof final Player player) {
-            final OnlineProfile onlineProfile = PlayerConverter.getID(player);
+            final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
             if (containsPlayer(onlineProfile) && item.compare(event.getInventory().getResult()) && checkConditions(onlineProfile)) {
                 getCountingData(onlineProfile).progress(calculateCraftAmount(event));
                 completeIfDoneOrNotify(onlineProfile);

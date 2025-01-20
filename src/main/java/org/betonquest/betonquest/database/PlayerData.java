@@ -88,6 +88,7 @@ public class PlayerData implements TagData {
         this.pluginMessage = pluginMessage;
         this.profile = profile;
         this.profileID = profile.getProfileUUID().toString();
+        BetonQuest.getInstance().getLogger().info("Loading player data for " + profile.getProfileUUID().toString());
         loadAllPlayerData();
     }
 
@@ -105,7 +106,8 @@ public class PlayerData implements TagData {
                  ResultSet journalResults = con.querySQL(QueryType.SELECT_JOURNAL, profileID);
                  ResultSet pointResults = con.querySQL(QueryType.SELECT_POINTS, profileID);
                  ResultSet backpackResults = con.querySQL(QueryType.SELECT_BACKPACK, profileID);
-                 ResultSet profileResult = con.querySQL(QueryType.SELECT_PLAYER, profileID)) {
+                 ResultSet profileResult = con.querySQL(QueryType.SELECT_PLAYER_PROFILE, profileID);
+                 ResultSet playerResult = con.querySQL(QueryType.SELECT_PLAYER, profile.getPlayerUUID().toString())) {
 
                 while (objectiveResults.next()) {
                     objectives.put(objectiveResults.getString("objective"), objectiveResults.getString("instructions"));
@@ -128,8 +130,8 @@ public class PlayerData implements TagData {
                 }
 
                 if (profileResult.next()) {
-                    loadLanguage(profileResult);
-                    loadActiveConversation(profileResult);
+                    loadLanguage(playerResult);
+                    loadActiveConversation(playerResult);
                 } else {
                     setupProfile();
                 }
@@ -169,7 +171,7 @@ public class PlayerData implements TagData {
         saver.add(new Record(UpdateType.ADD_PLAYER, profile.getPlayer().getUniqueId().toString(),
                 profileID, "default"));
         saver.add(new Record(UpdateType.ADD_PLAYER_PROFILE, profile.getPlayer().getUniqueId().toString(),
-                profileID, BetonQuest.getInstance().getPluginConfig().getString("profiles.initial_name", "default")));
+                profileID, profile.getProfileName()));
     }
 
     private void addItemToBackpack(final ResultSet backpackResults) throws SQLException {

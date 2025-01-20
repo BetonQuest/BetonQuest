@@ -4,7 +4,6 @@ import io.lumine.mythic.bukkit.events.MythicMobDeathEvent;
 import io.lumine.mythic.bukkit.events.MythicMobDespawnEvent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
@@ -76,7 +75,7 @@ public final class MythicHider extends BukkitRunnable implements Listener {
      * Updates the visibility of tracked mobs for all players.
      */
     public void applyVisibility() {
-        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+        for (final OnlineProfile onlineProfile : BetonQuest.getInstance().getProfileProvider().getOnlineProfiles()) {
             for (final Entity mob : mythicmobs.keySet()) {
                 applyVisibility(onlineProfile, mob);
             }
@@ -115,7 +114,7 @@ public final class MythicHider extends BukkitRunnable implements Listener {
      * @param mythicMob the mob to update the visibility for
      */
     public void applyVisibility(final Entity mythicMob) {
-        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+        for (final OnlineProfile onlineProfile : BetonQuest.getInstance().getProfileProvider().getOnlineProfiles()) {
             applyVisibility(onlineProfile, mythicMob);
         }
     }
@@ -130,7 +129,7 @@ public final class MythicHider extends BukkitRunnable implements Listener {
         final Set<UUID> profileUUIDS = new HashSet<>();
         profileUUIDS.add(onlineProfile.getProfileUUID());
         mythicmobs.put(mythicMob, profileUUIDS);
-        for (final OnlineProfile onlinePlayer : PlayerConverter.getOnlineProfiles()) { //Hiding the mob for all players besides passed in online
+        for (final OnlineProfile onlinePlayer : BetonQuest.getInstance().getProfileProvider().getOnlineProfiles()) { // Hiding the mob for all players besides passed in online
             if (!onlinePlayer.equals(onlineProfile)) {
                 applyVisibility(onlinePlayer, mythicMob);
             }
@@ -155,7 +154,7 @@ public final class MythicHider extends BukkitRunnable implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-        applyVisibility(PlayerConverter.getID(event.getPlayer()));
+        applyVisibility(BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer()));
     }
 
     @EventHandler(ignoreCancelled = true)

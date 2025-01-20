@@ -14,6 +14,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.CachingBetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.bstats.BStatsMetrics;
@@ -56,12 +57,12 @@ import org.betonquest.betonquest.logger.handler.history.HistoryHandler;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.playerhider.PlayerHider;
+import org.betonquest.betonquest.profile.UUIDProfileProvider;
 import org.betonquest.betonquest.quest.registry.CoreQuestTypes;
 import org.betonquest.betonquest.quest.registry.QuestRegistry;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.schedule.LastExecutionCache;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.java.JREVersionPrinter;
 import org.betonquest.betonquest.web.DownloadSource;
@@ -235,6 +236,11 @@ public class BetonQuest extends JavaPlugin {
     private LastExecutionCache lastExecutionCache;
 
     /**
+     * The profile provider instance
+     */
+    private ProfileProvider profileProvider;
+
+    /**
      * The required default constructor without arguments for plugin creation.
      */
     public BetonQuest() {
@@ -248,6 +254,15 @@ public class BetonQuest extends JavaPlugin {
      */
     public static BetonQuest getInstance() {
         return instance;
+    }
+
+    /**
+     * Get the profile provider.
+     *
+     * @return The profile provider.
+     */
+    public ProfileProvider getProfileProvider() {
+        return profileProvider;
     }
 
     /**
@@ -350,6 +365,7 @@ public class BetonQuest extends JavaPlugin {
         this.configAccessorFactory = registerAndGetService(ConfigAccessorFactory.class, new DefaultConfigAccessorFactory());
         this.configurationFileFactory = registerAndGetService(ConfigurationFileFactory.class, new DefaultConfigurationFileFactory(
                 loggerFactory, loggerFactory.create(DefaultConfigurationFileFactory.class), configAccessorFactory));
+        this.profileProvider = registerAndGetService(ProfileProvider.class, new UUIDProfileProvider());
 
         this.log = loggerFactory.create(this);
         pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
@@ -465,7 +481,7 @@ public class BetonQuest extends JavaPlugin {
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
             Compatibility.postHook();
             loadData();
-            playerDataStorage.initProfiles(PlayerConverter.getOnlineProfiles());
+            playerDataStorage.initProfiles(profileProvider.getOnlineProfiles());
 
             try {
                 playerHider = new PlayerHider(this, questTypeAPI);
@@ -617,7 +633,7 @@ public class BetonQuest extends JavaPlugin {
         Compatibility.reload();
         // load all events, conditions, objectives, conversations etc.
         loadData();
-        playerDataStorage.reloadProfiles(PlayerConverter.getOnlineProfiles());
+        playerDataStorage.reloadProfiles(getProfileProvider().getOnlineProfiles());
 
         if (playerHider != null) {
             playerHider.stop();
@@ -636,7 +652,7 @@ public class BetonQuest extends JavaPlugin {
             questRegistry.stopAllEventSchedules();
         }
         // suspend all conversations
-        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+        for (final OnlineProfile onlineProfile : getProfileProvider().getOnlineProfiles()) {
             final Conversation conv = Conversation.getConversation(onlineProfile);
             if (conv != null) {
                 conv.suspend();

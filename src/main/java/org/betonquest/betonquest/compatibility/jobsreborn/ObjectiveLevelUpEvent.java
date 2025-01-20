@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -36,7 +35,7 @@ public class ObjectiveLevelUpEvent extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onJobsLevelUpEvent(final JobsLevelUpEvent event) {
         if (event.getJobName().equalsIgnoreCase(this.sJobName)) {
-            final Profile profile = PlayerConverter.getID(event.getPlayer().getPlayer());
+            final Profile profile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer().getPlayer());
             if (containsPlayer(profile) && checkConditions(profile)) {
                 completeObjective(profile);
             }

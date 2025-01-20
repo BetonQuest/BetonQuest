@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableString;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -53,7 +52,7 @@ public class TrainCartsExitObjective extends Objective implements Listener {
         if (!(event.getEntity() instanceof final Player player)) {
             return;
         }
-        final OnlineProfile onlineProfile = PlayerConverter.getID(player);
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
         if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }

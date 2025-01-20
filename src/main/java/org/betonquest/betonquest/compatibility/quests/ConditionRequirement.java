@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.compatibility.quests;
 
 import me.pikamug.quests.module.BukkitCustomRequirement;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -57,7 +57,7 @@ public class ConditionRequirement extends BukkitCustomRequirement {
                 log.warn("Error while running quest reward - Player with UUID '" + uuid + "' not found.");
                 return false;
             }
-            final OnlineProfile onlineProfile = PlayerConverter.getID(player);
+            final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
             final ConditionID condition = new ConditionID(null, string);
             return questTypeAPI.condition(onlineProfile, condition);
         } catch (final QuestException e) {

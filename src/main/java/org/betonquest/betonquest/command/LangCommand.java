@@ -3,6 +3,7 @@ package org.betonquest.betonquest.command;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -10,7 +11,6 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.notify.Notify;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -71,7 +71,8 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
         if (!(sender instanceof final Player player)) {
             return true;
         }
-        final OnlineProfile onlineProfile = PlayerConverter.getID(player);
+        final ProfileProvider profileProvider = betonQuest.getProfileProvider();
+        final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         if (args.length == 0) {
             sender.sendMessage(pluginMessage.getMessage(onlineProfile, "language_missing"));
             return true;

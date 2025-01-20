@@ -13,7 +13,6 @@ import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableString;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -81,7 +80,7 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
         if (!(event.getEntity() instanceof final Player player)) {
             return;
         }
-        final OnlineProfile onlineProfile = PlayerConverter.getID(player);
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
         if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }
@@ -101,7 +100,7 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
         if (!(event.getEntity() instanceof final Player player)) {
             return;
         }
-        final OnlineProfile onlineProfile = PlayerConverter.getID(player);
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
         stopCount(onlineProfile);
     }
 
@@ -112,7 +111,7 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
      */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onQuit(final PlayerQuitEvent event) {
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
         stopCount(onlineProfile);
     }
 
@@ -127,7 +126,7 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
         while (!startTimes.isEmpty()) {
             final Player player = Bukkit.getPlayer(startTimes.keySet().iterator().next());
             if (player != null) {
-                final OnlineProfile profile = PlayerConverter.getID(player);
+                final OnlineProfile profile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
                 stopCount(profile);
             }
         }
