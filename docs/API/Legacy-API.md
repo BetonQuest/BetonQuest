@@ -30,7 +30,7 @@ Currently, profiles are in development. So at the moment you can use the `Player
 ## Base concepts
 How to write and register new base concepts (events, conditions, objectives, variables) in BetonQuest.
 
-For Conditions, Events and Variables there is the [new API](Writing-Implementations.md#writing-new-quest-type-implementations-) available.
+For Conditions, Events and Variables there is the [new API](Writing-Implementations.md#writing-new-quest-type-implementations) available.
 
 ### Writing objectives
 Objectives are more complicated because they use event handlers and they must store players' data.
