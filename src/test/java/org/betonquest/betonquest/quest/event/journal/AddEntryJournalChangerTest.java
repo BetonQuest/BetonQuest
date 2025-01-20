@@ -32,7 +32,7 @@ class AddEntryJournalChangerTest {
         verify(journal).addPointer(captor.capture());
         verifyNoMoreInteractions(journal);
         final Pointer pointer = captor.getValue();
-        assertEquals(entryName, pointer.getPointer(), "The added entry should be the one provided.");
-        assertEquals(now.toEpochMilli(), pointer.getTimestamp(), "The added entry should be dated to the time from the InstantSource.");
+        assertEquals(entryName, pointer.pointer(), "The added entry should be the one provided.");
+        assertEquals(now.toEpochMilli(), pointer.timestamp(), "The added entry should be dated to the time from the InstantSource.");
     }
 }

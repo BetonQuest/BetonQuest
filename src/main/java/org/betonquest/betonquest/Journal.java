@@ -141,10 +141,10 @@ public class Journal {
         // SQLite doesn't accept formatted date and MySQL doesn't accept numeric
         // timestamp
         final String date = betonQuest.isMySQLUsed()
-                ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.getTimestamp()))
-                : Long.toString(pointer.getTimestamp());
+                ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.timestamp()))
+                : Long.toString(pointer.timestamp());
         betonQuest.getSaver()
-                .add(new Record(UpdateType.ADD_JOURNAL, profile.getProfileUUID().toString(), pointer.getPointer(), date));
+                .add(new Record(UpdateType.ADD_JOURNAL, profile.getProfileUUID().toString(), pointer.pointer(), date));
     }
 
     /**
@@ -154,14 +154,14 @@ public class Journal {
      */
     public void removePointer(final String pointerName) {
         for (final Pointer pointer : pointers) {
-            if (pointer.getPointer().equalsIgnoreCase(pointerName)) {
+            if (pointer.pointer().equalsIgnoreCase(pointerName)) {
                 final BetonQuest betonQuest = BetonQuest.getInstance();
                 betonQuest.callSyncBukkitEvent(new PlayerJournalDeleteEvent(profile, this, pointer));
                 final String date = betonQuest.isMySQLUsed()
-                        ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.getTimestamp()))
-                        : Long.toString(pointer.getTimestamp());
+                        ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.timestamp()))
+                        : Long.toString(pointer.timestamp());
                 betonQuest.getSaver()
-                        .add(new Record(UpdateType.REMOVE_JOURNAL, profile.getProfileUUID().toString(), pointer.getPointer(), date));
+                        .add(new Record(UpdateType.REMOVE_JOURNAL, profile.getProfileUUID().toString(), pointer.pointer(), date));
                 pointers.remove(pointer);
                 break;
             }
@@ -204,7 +204,7 @@ public class Journal {
             String datePrefix = "";
             if ("false".equalsIgnoreCase(config.getString("journal.hide_date"))) {
                 final String date = new SimpleDateFormat(config.getString("date_format"), Locale.ROOT)
-                        .format(pointer.getTimestamp());
+                        .format(pointer.timestamp());
                 final String[] dateParts = date.split(" ");
                 final String day = "§" + config.getString("journal_colors.date.day") + dateParts[0];
                 String hour = "";
@@ -214,7 +214,7 @@ public class Journal {
                 datePrefix = day + " " + hour + "\n";
             }
             // get package and name of the pointer
-            final String[] parts = pointer.getPointer().split("\\.");
+            final String[] parts = pointer.pointer().split("\\.");
             final String packName = parts[0];
             final QuestPackage pack = Config.getPackages().get(packName);
             if (pack == null) {

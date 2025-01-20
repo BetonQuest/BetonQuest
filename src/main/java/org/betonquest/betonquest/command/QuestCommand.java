@@ -528,14 +528,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // if there are no arguments then list player's pointers
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
             log.debug("Listing journal pointers");
-            final Predicate<Pointer> shouldDisplay = createListFilter(args, 3, Pointer::getPointer);
+            final Predicate<Pointer> shouldDisplay = createListFilter(args, 3, Pointer::pointer);
             sendMessage(sender, "player_journal");
             journal.getPointers().stream()
                     .filter(shouldDisplay)
                     .forEach(pointer -> {
                         final String date = new SimpleDateFormat(Config.getConfigString("date_format"), Locale.ROOT)
-                                .format(new Date(pointer.getTimestamp()));
-                        sender.sendMessage("§b- " + pointer.getPointer() + " §c(§2" + date + "§c)");
+                                .format(new Date(pointer.timestamp()));
+                        sender.sendMessage("§b- " + pointer.pointer() + " §c(§2" + date + "§c)");
                     });
             return;
         }
@@ -1311,7 +1311,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     final Journal journal = dataStorage.get(onlineProfile).getJournal();
                     Pointer journalPointer = null;
                     for (final Pointer pointer : journal.getPointers()) {
-                        if (pointer.getPointer().equals(name)) {
+                        if (pointer.pointer().equals(name)) {
                             journalPointer = pointer;
                         }
                     }
@@ -1320,7 +1320,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         continue;
                     }
                     journal.removePointer(name);
-                    journal.addPointer(new Pointer(rename, journalPointer.getTimestamp()));
+                    journal.addPointer(new Pointer(rename, journalPointer.timestamp()));
                     journal.update();
                 }
                 break;
