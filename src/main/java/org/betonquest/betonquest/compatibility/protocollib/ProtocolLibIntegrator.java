@@ -49,6 +49,6 @@ public class ProtocolLibIntegrator implements Integrator {
 
     @Override
     public void close() {
-        // Empty
+        FreezeEvent.cleanup();
     }
 }

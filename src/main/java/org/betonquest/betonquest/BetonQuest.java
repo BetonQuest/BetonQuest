@@ -24,7 +24,6 @@ import org.betonquest.betonquest.command.JournalCommand;
 import org.betonquest.betonquest.command.LangCommand;
 import org.betonquest.betonquest.command.QuestCommand;
 import org.betonquest.betonquest.compatibility.Compatibility;
-import org.betonquest.betonquest.compatibility.protocollib.FreezeEvent;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.config.DefaultConfigurationFileFactory;
@@ -705,7 +704,6 @@ public class BetonQuest extends JavaPlugin {
         if (rpgMenu != null) {
             rpgMenu.onDisable();
         }
-        FreezeEvent.cleanup();
     }
 
     /**
