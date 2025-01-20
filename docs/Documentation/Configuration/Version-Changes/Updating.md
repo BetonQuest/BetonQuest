@@ -25,9 +25,11 @@ Read the [update](../Configuration.md#updating) section to correctly set up the 
 For a production/live system it is recommended to [disable automatic updates](#enable-or-disable-automatic-updates)
 and to check out the [CHANGELOG](../../CHANGELOG.md) before you execute `/q update` for manual updates.
 
-!!! warning "Updating to 2.0"
-    If you update to BetonQuest 2.0 you should read the [Migration](Migration.md) guide to see, what you need to do
-    manually.
+!!! warning "Updating BetonQuest"
+    If you update BetonQuest from a previous Major version you should check what you need to update manually.
+    
+    From 1.X to 2.X you should read the [Migration-1-2](Migration-1-2.md) guide.  
+    From 2.X to 3.X you should read the [Migration-2-3](Migration-2-3.md) guide.
 
 ## Understanding Versioning
 <div class="table" markdown="block">

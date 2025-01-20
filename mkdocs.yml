@@ -100,7 +100,8 @@ nav:
           - 'Permissions & Commands': Documentation/Configuration/Commands-and-permissions.md
           - 'Version Changes':
               - 'Updating': Documentation/Configuration/Version-Changes/Updating.md
-              - 'Migration': Documentation/Configuration/Version-Changes/Migration.md
+              - 'Migration 1.X to 2.X': Documentation/Configuration/Version-Changes/Migration-1-2.md
+              - 'Migration 2.X to 3.X': Documentation/Configuration/Version-Changes/Migration-2-3.md
               - 'Changelog': Documentation/CHANGELOG.md
 
       - 'Frequently Asked Questions':
