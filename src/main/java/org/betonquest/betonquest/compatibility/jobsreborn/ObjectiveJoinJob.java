@@ -7,9 +7,9 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -37,7 +37,8 @@ public class ObjectiveJoinJob extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onJobsJoinEvent(final JobsJoinEvent event) {
         if (event.getJob().getName().equalsIgnoreCase(this.sJobName)) {
-            final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer().getPlayer());
+            final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+            final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer().getPlayer());
             if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
                 completeObjective(onlineProfile);
             }

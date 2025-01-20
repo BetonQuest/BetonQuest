@@ -58,7 +58,7 @@ public class PlayerDataStorage {
     public void initProfiles(final Collection<OnlineProfile> onlineProfiles) {
         for (final OnlineProfile onlineProfile : onlineProfiles) {
             final PlayerData playerData = new PlayerData(pluginMessage, onlineProfile);
-            playerDataMap.put(onlineProfile, playerData);
+            put(onlineProfile, playerData);
             playerData.startObjectives();
             playerData.getJournal().update();
             if (playerData.getActiveConversation() != null) {

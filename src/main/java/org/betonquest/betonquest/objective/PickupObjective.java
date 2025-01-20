@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,7 +29,7 @@ public class PickupObjective extends CountingObjective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPickup(final EntityPickupItemEvent event) {
         if (isValidItem(event.getItem().getItemStack()) && event.getEntity() instanceof Player) {
-            final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getEntity());
+            final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile((Player) event.getEntity());
 
             if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
                 final ItemStack pickupItem = event.getItem().getItemStack();

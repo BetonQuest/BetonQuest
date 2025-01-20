@@ -1,7 +1,9 @@
 package org.betonquest.betonquest.quest.event.drop;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -15,7 +17,6 @@ import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -52,7 +53,8 @@ public class DropEventFactory implements EventFactory, StaticEventFactory {
     private StaticEvent createStaticDropEvent(final Instruction instruction) throws QuestException {
         final NullableEventAdapter dropEvent = createDropEvent(instruction);
         if (!instruction.hasArgument("location")) {
-            return new OnlineProfileGroupStaticEventAdapter(PlayerConverter::getOnlineProfiles, dropEvent);
+            final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+            return new OnlineProfileGroupStaticEventAdapter(profileProvider::getOnlineProfiles, dropEvent);
         }
         return dropEvent;
     }

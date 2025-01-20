@@ -7,9 +7,9 @@ import ch.njol.util.Kleenean;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -55,7 +55,8 @@ public class SkriptEffectBQ extends Effect {
             public void run() {
                 final String eventID = SkriptEffectBQ.this.event.getSingle(event);
                 try {
-                    BetonQuest.getInstance().getQuestTypeAPI().event(PlayerConverter.getID(player.getSingle(event)), new EventID(null, eventID));
+                    final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+                    BetonQuest.getInstance().getQuestTypeAPI().event(profileProvider.getProfile(player.getSingle(event)), new EventID(null, eventID));
                 } catch (final QuestException e) {
                     log.warn("Error when running Skript event - could not load '" + eventID + "' event: " + e.getMessage(), e);
                 }

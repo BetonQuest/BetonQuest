@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
@@ -13,7 +14,6 @@ import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.id.ObjectiveID;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
 
@@ -106,7 +106,8 @@ public class ObjectiveEvent implements NullableEvent {
 
     private void handleStatic(final ObjectiveID objectiveID, final Objective objective) {
         if ("delete".equals(action) || "remove".equals(action)) {
-            PlayerConverter.getOnlineProfiles().forEach(onlineProfile -> cancelObjectiveForOnlinePlayer(onlineProfile, objectiveID, objective));
+            final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+            profileProvider.getOnlineProfiles().forEach(onlineProfile -> cancelObjectiveForOnlinePlayer(onlineProfile, objectiveID, objective));
             betonQuest.getSaver().add(new Saver.Record(UpdateType.REMOVE_ALL_OBJECTIVES, objectiveID.toString()));
         } else {
             log.warn(questPackage, "You tried to call an objective add / finish event in a static context! Only objective delete works here.");

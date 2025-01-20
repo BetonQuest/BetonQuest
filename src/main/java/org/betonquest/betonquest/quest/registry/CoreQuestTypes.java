@@ -350,7 +350,7 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("if", new IfElseEventFactory(questTypeAPI));
         eventTypes.register("itemdurability", new ItemDurabilityEventFactory(loggerFactory, data));
         eventTypes.registerCombined("journal", new JournalEventFactory(loggerFactory, pluginMessage, dataStorage,
-                InstantSource.system(), betonQuest.getSaver()));
+                InstantSource.system(), betonQuest.getSaver(), betonQuest.getProfileProvider()));
         eventTypes.register("kill", new KillEventFactory(loggerFactory, data));
         eventTypes.register("language", new LanguageEventFactory(dataStorage));
         eventTypes.registerCombined("lever", new LeverEventFactory(data));

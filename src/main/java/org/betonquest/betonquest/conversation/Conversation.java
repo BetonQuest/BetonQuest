@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -23,7 +24,6 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.notify.Notify;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -532,9 +532,10 @@ public class Conversation implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onDamage(final EntityDamageByEntityEvent event) {
-        if (event.getEntity() instanceof Player && PlayerConverter.getID((Player) event.getEntity()).equals(onlineProfile)
-                || event.getDamager() instanceof Player
-                && PlayerConverter.getID((Player) event.getDamager()).equals(onlineProfile)) {
+        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+        if (event.getEntity() instanceof Player && profileProvider.getProfile((Player) event.getEntity()).equals(onlineProfile)
+            || event.getDamager() instanceof Player
+            && profileProvider.getProfile((Player) event.getDamager()).equals(onlineProfile)) {
             event.setCancelled(true);
         }
     }
@@ -775,7 +776,8 @@ public class Conversation implements Listener {
                 }
 
                 printNPCText();
-                final ConversationOptionEvent optionEvent = new ConversationOptionEvent(PlayerConverter.getID(player), conv, nextNPCOption, conv.nextNPCOption);
+                final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+                final ConversationOptionEvent optionEvent = new ConversationOptionEvent(profileProvider.getProfile(player), conv, nextNPCOption, conv.nextNPCOption);
 
                 new BukkitRunnable() {
 
@@ -887,7 +889,8 @@ public class Conversation implements Listener {
                 selectOption(resolvePointers(playerOption), false);
                 printNPCText();
 
-                final ConversationOptionEvent event = new ConversationOptionEvent(PlayerConverter.getID(player), conv, playerOption, conv.nextNPCOption);
+                final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+                final ConversationOptionEvent event = new ConversationOptionEvent(profileProvider.getProfile(player), conv, playerOption, conv.nextNPCOption);
 
                 new BukkitRunnable() {
                     @Override

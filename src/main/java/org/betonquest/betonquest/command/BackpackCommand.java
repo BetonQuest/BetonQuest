@@ -1,10 +1,11 @@
 package org.betonquest.betonquest.command;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.feature.Backpack;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -41,7 +42,8 @@ public class BackpackCommand implements CommandExecutor {
         if ("backpack".equalsIgnoreCase(cmd.getName())) {
             // command sender must be a player, console can't have a backpack
             if (sender instanceof Player) {
-                final OnlineProfile onlineProfile = PlayerConverter.getID((Player) sender);
+                final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+                final OnlineProfile onlineProfile = profileProvider.getProfile((Player) sender);
                 log.debug("Executing /backpack command for " + onlineProfile);
                 new Backpack(pluginMessage, onlineProfile);
             }

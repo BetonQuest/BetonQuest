@@ -11,7 +11,6 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -29,7 +28,6 @@ import java.util.Set;
 /**
  * Player has to kill MythicMobs monster.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class MythicMobKillObjective extends CountingObjective implements Listener {
     /**
      * The names of all mobs that this objective should count.
@@ -103,7 +101,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
         if (deathRadiusAllPlayers > 0) {
             executeForEveryoneInRange(event, deathRadiusAllPlayers, key);
         } else if (event.getKiller() instanceof Player) {
-            checkKill(event, PlayerConverter.getID((Player) event.getKiller()), key);
+            checkKill(event, BetonQuest.getInstance().getProfileProvider().getProfile((Player) event.getKiller()), key);
         } else if (neutralDeathRadiusAllPlayers > 0) {
             executeForEveryoneInRange(event, neutralDeathRadiusAllPlayers, key);
         }
@@ -113,7 +111,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
         final Location center = BukkitAdapter.adapt(event.getMob().getLocation());
         for (final Player player : center.getWorld().getPlayers()) {
             if (isValidPlayer(player) && player.getLocation().distanceSquared(center) <= range) {
-                checkKill(event, PlayerConverter.getID(player), key);
+                checkKill(event, BetonQuest.getInstance().getProfileProvider().getProfile(player), key);
             }
         }
     }

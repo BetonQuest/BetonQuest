@@ -1,13 +1,14 @@
 package org.betonquest.betonquest.quest.event.party;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.betonquest.betonquest.util.Utils;
 import org.jetbrains.annotations.Nullable;
 
@@ -77,7 +78,8 @@ public class PartyEvent implements OnlineEvent {
 
     private Set<OnlineProfile> getMemberList(final OnlineProfile profile) throws QuestException {
         final int toExecute = amount != null ? amount.getValue(profile).intValue() : -1;
-        final Map<OnlineProfile, Double> members = Utils.getParty(questTypeAPI, PlayerConverter.getOnlineProfiles(),
+        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+        final Map<OnlineProfile, Double> members = Utils.getParty(questTypeAPI, profileProvider.getOnlineProfiles(),
                 profile.getPlayer().getLocation(), range.getValue(profile).doubleValue(), conditions);
 
         if (toExecute < 0) {

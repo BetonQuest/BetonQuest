@@ -1,14 +1,15 @@
 package org.betonquest.betonquest.quest.condition.party;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
@@ -81,7 +82,8 @@ public class PartyCondition implements NullableCondition {
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        final Set<OnlineProfile> partyMembers = Utils.getParty(questTypeAPI, PlayerConverter.getOnlineProfiles(),
+        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+        final Set<OnlineProfile> partyMembers = Utils.getParty(questTypeAPI, profileProvider.getOnlineProfiles(),
                 location.getValue(profile), range.getValue(profile).doubleValue(), conditions).keySet();
 
         final int pCount = count == null ? 0 : count.getValue(profile).intValue();
