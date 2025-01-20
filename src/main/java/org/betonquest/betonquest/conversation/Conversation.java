@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.ConversationData.OptionType;
@@ -22,7 +23,6 @@ import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.quest.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.quest.registry.feature.InterceptorRegistry;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -463,7 +463,7 @@ public class Conversation implements Listener {
         if (blacklist.contains(cmdName)) {
             event.setCancelled(true);
             try {
-                Config.sendNotify(getPackage(), PlayerConverter.getID(event.getPlayer()), "command_blocked", "command_blocked,error");
+                Config.sendNotify(getPackage(), BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer()), "command_blocked", "command_blocked,error");
             } catch (final QuestException e) {
                 log.warn(pack, "The notify system was unable to play a sound for the 'command_blocked' category. Error was: '" + e.getMessage() + "'", e);
             }
@@ -473,9 +473,7 @@ public class Conversation implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onDamage(final EntityDamageByEntityEvent event) {
         // prevent damage to (or from) player while in conversation
-        if (event.getEntity() instanceof Player && PlayerConverter.getID((Player) event.getEntity()).equals(onlineProfile)
-                || event.getDamager() instanceof Player
-                && PlayerConverter.getID((Player) event.getDamager()).equals(onlineProfile)) {
+        if (event.getEntity() instanceof Player && BetonQuest.getInstance().getProfileProvider().getProfile((Player) event.getEntity()).equals(onlineProfile) || event.getDamager() instanceof Player && BetonQuest.getInstance().getProfileProvider().getProfile((Player) event.getDamager()).equals(onlineProfile)) {
             event.setCancelled(true);
         }
     }
@@ -722,7 +720,8 @@ public class Conversation implements Listener {
                 }
 
                 printNPCText();
-                final ConversationOptionEvent optionEvent = new ConversationOptionEvent(PlayerConverter.getID(player), conv, nextNPCOption, conv.nextNPCOption);
+                final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+                final ConversationOptionEvent optionEvent = new ConversationOptionEvent(profileProvider.getProfile(player), conv, nextNPCOption, conv.nextNPCOption);
 
                 new BukkitRunnable() {
 
@@ -835,7 +834,8 @@ public class Conversation implements Listener {
                 selectOption(resolvePointers(playerOption), false);
                 printNPCText();
 
-                final ConversationOptionEvent event = new ConversationOptionEvent(PlayerConverter.getID(player), conv, playerOption, conv.nextNPCOption);
+                final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+                final ConversationOptionEvent event = new ConversationOptionEvent(profileProvider.getProfile(player), conv, playerOption, conv.nextNPCOption);
 
                 new BukkitRunnable() {
                     @Override

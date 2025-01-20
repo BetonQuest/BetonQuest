@@ -10,7 +10,6 @@ import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableString;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -47,7 +46,7 @@ public class CommandObjective extends Objective implements Listener {
     @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     @EventHandler(priority = EventPriority.LOWEST)
     public void onCommand(final PlayerCommandPreprocessEvent event) {
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
             final String replaceCommand = command.getString(onlineProfile);
             if (foundMatch(event.getMessage(), replaceCommand)) {

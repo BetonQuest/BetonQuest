@@ -15,7 +15,6 @@ import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.menu.command.SimpleCommand;
 import org.betonquest.betonquest.menu.config.SimpleYMLSection;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -249,7 +248,7 @@ public class Menu extends SimpleYMLSection implements Listener {
             return;
         }
         event.setCancelled(true);
-        final OnlineProfile onlineprofile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile onlineprofile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
         if (!mayOpen(onlineprofile)) {
             rpgMenu.getConfiguration().sendMessage(event.getPlayer(), "menu_do_not_open");
             return;
@@ -281,7 +280,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     public void runCloseEvents(final Player player) {
         log.debug(pack, "Menu " + menuID + ": Running close events");
         for (final EventID event : this.closeEvents) {
-            BetonQuest.event(PlayerConverter.getID(player), event);
+            BetonQuest.event(BetonQuest.getInstance().getProfileProvider().getProfile(player), event);
             log.debug(pack, "Menu " + menuID + ": Run event " + event);
         }
     }
@@ -366,7 +365,7 @@ public class Menu extends SimpleYMLSection implements Listener {
                 sender.sendMessage("Command can only be run by players!");
                 return false;
             }
-            final OnlineProfile onlineProfile = PlayerConverter.getID(player);
+            final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
             if (mayOpen(onlineProfile)) {
                 log.debug(pack, onlineProfile + " run bound command of " + menuID);
                 rpgMenu.openMenu(onlineProfile, menuID);

@@ -15,6 +15,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.CachingBetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.profile.UUIDProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.bstats.BStatsMetrics;
 import org.betonquest.betonquest.command.BackpackCommand;
@@ -64,7 +66,6 @@ import org.betonquest.betonquest.quest.registry.feature.CoreFeatureFactories;
 import org.betonquest.betonquest.quest.registry.feature.FeatureRegistries;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.schedule.LastExecutionCache;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.java.JREVersionPrinter;
 import org.betonquest.betonquest.web.DownloadSource;
@@ -225,6 +226,11 @@ public class BetonQuest extends JavaPlugin {
     private LastExecutionCache lastExecutionCache;
 
     /**
+     * The profile provider instance
+     */
+    private ProfileProvider profileProvider;
+
+    /**
      * The required default constructor without arguments for plugin creation.
      */
     public BetonQuest() {
@@ -238,6 +244,24 @@ public class BetonQuest extends JavaPlugin {
      */
     public static BetonQuest getInstance() {
         return instance;
+    }
+
+    /**
+     * Get the profile provider.
+     *
+     * @return The profile provider.
+     */
+    public ProfileProvider getProfileProvider() {
+        return profileProvider;
+    }
+
+    /**
+     * Set the profile provider.
+     *
+     * @param profileProvider The profile provider to set.
+     */
+    public void setProfileProvider(final ProfileProvider profileProvider) {
+        this.profileProvider = profileProvider;
     }
 
     /**
@@ -407,6 +431,8 @@ public class BetonQuest extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        profileProvider = new UUIDProfileProvider();
+
         this.loggerFactory = registerAndGetService(BetonQuestLoggerFactory.class, new CachingBetonQuestLoggerFactory(new DefaultBetonQuestLoggerFactory()));
         this.configAccessorFactory = registerAndGetService(ConfigAccessorFactory.class, new DefaultConfigAccessorFactory());
         this.configurationFileFactory = registerAndGetService(ConfigurationFileFactory.class, new DefaultConfigurationFileFactory(
@@ -509,7 +535,7 @@ public class BetonQuest extends JavaPlugin {
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
             Compatibility.postHook();
             loadData();
-            playerDataStorage.initProfiles(PlayerConverter.getOnlineProfiles());
+            playerDataStorage.initProfiles(profileProvider.getOnlineProfiles());
 
             try {
                 playerHider = new PlayerHider(this);
@@ -656,7 +682,7 @@ public class BetonQuest extends JavaPlugin {
         Compatibility.reload();
         // load all events, conditions, objectives, conversations etc.
         loadData();
-        playerDataStorage.reloadProfiles(PlayerConverter.getOnlineProfiles());
+        playerDataStorage.reloadProfiles(getProfileProvider().getOnlineProfiles());
 
         if (playerHider != null) {
             playerHider.stop();
@@ -675,7 +701,7 @@ public class BetonQuest extends JavaPlugin {
             questRegistry.stopAllEventSchedules();
         }
         // suspend all conversations
-        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+        for (final OnlineProfile onlineProfile : getProfileProvider().getOnlineProfiles()) {
             final Conversation conv = Conversation.getConversation(onlineProfile);
             if (conv != null) {
                 conv.suspend();

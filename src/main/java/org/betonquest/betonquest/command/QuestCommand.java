@@ -17,6 +17,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.compatibility.Compatibility;
@@ -43,7 +44,6 @@ import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NoNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.quest.event.give.GiveEvent;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.betonquest.betonquest.util.Utils;
 import org.betonquest.betonquest.web.downloader.DownloadFailedException;
 import org.betonquest.betonquest.web.downloader.Downloader;
@@ -450,9 +450,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                             "inventory_full_backpack", "inventory_full"),
                     new IngameNotificationSender(log, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR,
                             "inventory_full_drop", "inventory_full"),
-                    false, dataStorage
-            );
-            give.execute(PlayerConverter.getID((Player) sender));
+                    false, dataStorage);
+            final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+            give.execute(profileProvider.getProfile((Player) sender));
         } catch (final QuestException e) {
             sendMessage(sender, "error", e.getMessage());
             log.warn("Error while creating an item: " + e.getMessage(), e);
@@ -506,7 +506,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_player");
             return null;
         }
-        return PlayerConverter.getID(Bukkit.getOfflinePlayer(args[1]));
+        return BetonQuest.getInstance().getProfileProvider().getProfile(Bukkit.getOfflinePlayer(args[1]));
     }
 
     /**
@@ -863,7 +863,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         // fire the event
-        final Profile profile = "-".equals(args[1]) ? null : PlayerConverter.getID(Bukkit.getOfflinePlayer(args[1]));
+        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+        final Profile profile = "-".equals(args[1]) ? null : profileProvider.getProfile(Bukkit.getOfflinePlayer(args[1]));
         BetonQuest.event(profile, eventID);
         sendMessage(sender, "player_event", eventID.getInstruction().toString());
     }
@@ -907,7 +908,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         // display message about condition
-        final Profile profile = "-".equals(args[1]) ? null : PlayerConverter.getID(Bukkit.getOfflinePlayer(args[1]));
+        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+        final Profile profile = "-".equals(args[1]) ? null : profileProvider.getProfile(Bukkit.getOfflinePlayer(args[1]));
         sendMessage(sender, "player_condition", (conditionID.inverted() ? "! " : "") + conditionID.getInstruction(),
                 Boolean.toString(BetonQuest.condition(profile, conditionID)));
     }
@@ -1208,12 +1210,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final String name = args[2];
         final String rename = args[3];
         final UpdateType updateType;
+        final List<OnlineProfile> onlineProfiles = BetonQuest.getInstance().getProfileProvider().getOnlineProfiles();
         switch (type) {
             case "tags":
             case "tag":
             case "t":
                 updateType = UpdateType.RENAME_ALL_TAGS;
-                for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final PlayerData playerData = dataStorage.get(onlineProfile);
                     playerData.removeTag(name);
                     playerData.addTag(rename);
@@ -1223,7 +1226,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "point":
             case "p":
                 updateType = UpdateType.RENAME_ALL_POINTS;
-                for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final PlayerData playerData = dataStorage.get(onlineProfile);
                     int points = 0;
                     for (final Point point : playerData.getPoints()) {
@@ -1307,7 +1310,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "entry":
             case "e":
                 updateType = UpdateType.RENAME_ALL_ENTRIES;
-                for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final Journal journal = dataStorage.get(onlineProfile).getJournal();
                     Pointer journalPointer = null;
                     for (final Pointer pointer : journal.getPointers()) {
@@ -1357,12 +1360,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final String type = args[1].toLowerCase(Locale.ROOT);
         final String name = args[2];
         final UpdateType updateType;
+        final List<OnlineProfile> onlineProfiles = BetonQuest.getInstance().getProfileProvider().getOnlineProfiles();
         switch (type) {
             case "tags":
             case "tag":
             case "t":
                 updateType = UpdateType.REMOVE_ALL_TAGS;
-                for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final PlayerData playerData = dataStorage.get(onlineProfile);
                     playerData.removeTag(name);
                 }
@@ -1371,7 +1375,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "point":
             case "p":
                 updateType = UpdateType.REMOVE_ALL_POINTS;
-                for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final PlayerData playerData = dataStorage.get(onlineProfile);
                     playerData.removePointsCategory(name);
                 }
@@ -1388,7 +1392,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     log.warn("Could not find objective: " + e.getMessage(), e);
                     return;
                 }
-                for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final Objective objective = instance.getObjective(objectiveID);
                     if (objective == null) {
                         break;
@@ -1404,7 +1408,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "entry":
             case "e":
                 updateType = UpdateType.REMOVE_ALL_ENTRIES;
-                for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final Journal journal = dataStorage.get(onlineProfile).getJournal();
                     journal.removePointer(name);
                     journal.update();
@@ -1490,7 +1494,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // display them
         sender.sendMessage("§e----- §aBetonQuest §e-----");
         if (sender instanceof Player) {
-            final String lang = dataStorage.get(PlayerConverter.getID((Player) sender)).getLanguage();
+            final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+            final String lang = dataStorage.get(profileProvider.getProfile((Player) sender)).getLanguage();
             for (final Map.Entry<String, String> entry : cmds.entrySet()) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
                         "tellraw " + sender.getName() + " {\"text\":\"\",\"extra\":[{\"text\":\"§c/" + alias + ' '
@@ -1510,8 +1515,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final Updater updater = instance.getUpdater();
         final String updateCommand = "/" + commandAlias + " update";
 
+        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
         final String lang = sender instanceof Player
-                ? dataStorage.get(PlayerConverter.getID((Player) sender)).getLanguage()
+                ? dataStorage.get(profileProvider.getProfile((Player) sender)).getLanguage()
                 : Config.getLanguage();
 
         final String key = "command_version_context.";
@@ -1887,7 +1893,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     private void sendMessage(final CommandSender sender, final String messageName, @Nullable final String... variables) {
         if (sender instanceof Player) {
-            Config.sendMessage(null, PlayerConverter.getID((Player) sender), messageName, variables);
+            final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+            Config.sendMessage(null, profileProvider.getProfile((Player) sender), messageName, variables);
         } else {
             final String message = Config.getMessage(Config.getLanguage(), messageName, variables);
             if (message == null) {

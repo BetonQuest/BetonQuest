@@ -4,11 +4,11 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -77,7 +77,8 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
         }
         if (sender instanceof Player) {
             final String lang = args[0];
-            final OnlineProfile onlineProfile = PlayerConverter.getID((Player) sender);
+            final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+            final OnlineProfile onlineProfile = profileProvider.getProfile((Player) sender);
             final PlayerData playerData = dataStorage.get(onlineProfile);
             final Journal journal = playerData.getJournal();
             playerData.setLanguage(lang);

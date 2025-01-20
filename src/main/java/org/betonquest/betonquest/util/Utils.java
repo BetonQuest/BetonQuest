@@ -180,7 +180,7 @@ public final class Utils {
         final World world = location.getWorld();
         final double squared = range * range;
 
-        final Stream<OnlineProfile> players = PlayerConverter.getOnlineProfiles().stream();
+        final Stream<OnlineProfile> players = BetonQuest.getInstance().getProfileProvider().getOnlineProfiles().stream();
         final Stream<OnlineProfile> worldPlayers = range == -1 ? players : players.filter(profile -> world.equals(profile.getPlayer().getWorld()));
         final Stream<Pair<OnlineProfile, Double>> distancePlayers = worldPlayers.map(profile -> Pair.of(profile, getDistanceSquared(profile, location)));
         final Stream<Pair<OnlineProfile, Double>> rangePlayers = range <= 0 ? distancePlayers : distancePlayers.filter(pair -> pair.right() <= squared);

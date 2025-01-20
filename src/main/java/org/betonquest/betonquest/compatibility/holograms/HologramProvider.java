@@ -4,11 +4,11 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.citizens.CitizensHologramLoop;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -210,7 +210,8 @@ public final class HologramProvider implements Integrator {
          */
         @EventHandler
         public void onPlayerJoin(final PlayerJoinEvent event) {
-            HologramRunner.refresh(PlayerConverter.getID(event.getPlayer()));
+            final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+            HologramRunner.refresh(profileProvider.getProfile(event.getPlayer()));
         }
     }
 }

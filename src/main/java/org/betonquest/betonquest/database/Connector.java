@@ -52,7 +52,7 @@ public class Connector {
      *
      * @return true if the connection is refreshed successfully
      */
-    @SuppressFBWarnings({"ODR_OPEN_DATABASE_RESOURCE", "OBL_UNSATISFIED_OBLIGATION"})
+    @SuppressFBWarnings({"ODR_OPEN_DATABASE_RESOURCE", "OBL_UNSATISFIED_OBLIGATION", "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"})
     public final boolean refresh() {
         if (connection == null) {
             connection = database.getConnection();

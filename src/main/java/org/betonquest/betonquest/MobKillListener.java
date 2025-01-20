@@ -1,7 +1,7 @@
 package org.betonquest.betonquest;
 
 import org.betonquest.betonquest.api.MobKillNotifier;
-import org.betonquest.betonquest.util.PlayerConverter;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,8 +21,9 @@ public class MobKillListener implements Listener {
     public void onKill(final EntityDeathEvent event) {
         final LivingEntity entity = event.getEntity();
         final Player killer = entity.getKiller();
+        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
         if (killer != null) {
-            MobKillNotifier.addKill(PlayerConverter.getID(killer), entity);
+            MobKillNotifier.addKill(profileProvider.getProfile(killer), entity);
         }
     }
 }

@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
@@ -46,7 +45,7 @@ public class EnchantObjective extends CountingObjective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEnchant(final EnchantItemEvent event) {
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getEnchanter());
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getEnchanter());
         if (!containsPlayer(onlineProfile)) {
             return;
         }

@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BrewingStand;
@@ -47,7 +46,7 @@ public class BrewObjective extends CountingObjective implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onIngredientPut(final InventoryClickEvent event) {
-        final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getWhoClicked());
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile((Player) event.getWhoClicked());
         if (!containsPlayer(onlineProfile)) {
             return;
         }

@@ -88,7 +88,7 @@ You can't fire an event directly using an instruction string.
 
 ```JAVA title="Example"
 final QuestPackage questPackage = Config.getPackages().get("myPackage") //(1)!
-final Profile playerProfile = PlayerConverter.getID(player); //(2)!
+final Profile playerProfile = BetonQuest.getInstance().getProfileProvider().getProfile(player); //(2)!
 
 BetonQuest.event(playerProfile, new EventID(questPackage, eventID)); 
 ```

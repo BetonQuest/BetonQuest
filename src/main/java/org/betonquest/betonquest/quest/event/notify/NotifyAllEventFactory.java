@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.quest.event.notify;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -11,7 +13,6 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.CallStaticEventAdapter;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
-import org.betonquest.betonquest.util.PlayerConverter;
 
 /**
  * Factory for the notify all event.
@@ -37,6 +38,7 @@ public class NotifyAllEventFactory extends NotifyEventFactory implements EventFa
 
     @Override
     public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
-        return new OnlineProfileGroupStaticEventAdapter(PlayerConverter::getOnlineProfiles, super.parseEvent(instruction));
+        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+        return new OnlineProfileGroupStaticEventAdapter(profileProvider::getOnlineProfiles, super.parseEvent(instruction));
     }
 }
