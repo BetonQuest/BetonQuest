@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.quest.variable;
 
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
-import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 
 /**

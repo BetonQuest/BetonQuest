@@ -3,9 +3,9 @@ package org.betonquest.betonquest.quest.registry.feature;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.Interceptor;
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.quest.registry.FromClassFactoryRegistry;
 
 import java.lang.reflect.Constructor;

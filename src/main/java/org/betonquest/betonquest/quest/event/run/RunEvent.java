@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.event.run;
 
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
-import org.betonquest.betonquest.exception.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;

@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.condition.language;
 
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 
 import java.util.Arrays;

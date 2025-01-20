@@ -2,9 +2,9 @@ package org.betonquest.betonquest.quest.legacy;
 
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.jetbrains.annotations.Nullable;
 

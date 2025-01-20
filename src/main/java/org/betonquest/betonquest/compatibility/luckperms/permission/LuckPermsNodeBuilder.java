@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.luckperms.permission;
 import net.luckperms.api.context.MutableContextSet;
 import net.luckperms.api.node.Node;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.jetbrains.annotations.NotNull;

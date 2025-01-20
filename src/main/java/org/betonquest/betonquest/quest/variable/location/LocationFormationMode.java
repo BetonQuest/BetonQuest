@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.variable.location;
 
-import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.Location;
 
 import java.math.RoundingMode;

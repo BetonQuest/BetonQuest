@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.run;
 
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;

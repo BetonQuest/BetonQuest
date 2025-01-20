@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.schedule;
 
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.exception.ObjectNotFoundException;
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.schedule.ScheduleID;
 import org.bukkit.configuration.ConfigurationSection;

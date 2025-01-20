@@ -2,11 +2,11 @@ package org.betonquest.betonquest.quest.event.tag;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.bukkit.configuration.InvalidConfigurationException;

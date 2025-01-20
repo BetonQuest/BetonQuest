@@ -5,7 +5,7 @@ import com.bergerkiller.bukkit.tc.controller.MinecartMemberStore;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.entity.Entity;

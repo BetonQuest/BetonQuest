@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.schedule;
 
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.exception.ObjectNotFoundException;
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -2,9 +2,9 @@ package org.betonquest.betonquest.quest.registry.processor;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.exception.ObjectNotFoundException;
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.quest.registry.FactoryRegistry;
 import org.betonquest.betonquest.quest.registry.type.TypeFactory;

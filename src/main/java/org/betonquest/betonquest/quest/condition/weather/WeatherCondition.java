@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.condition.weather;
 
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableWorld;
 import org.betonquest.betonquest.quest.event.weather.Weather;
 import org.bukkit.World;

@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.condition.stage;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableString;

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.variables;
 
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.jetbrains.annotations.Nullable;

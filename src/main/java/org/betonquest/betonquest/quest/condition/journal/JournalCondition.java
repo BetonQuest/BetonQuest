@@ -2,9 +2,9 @@ package org.betonquest.betonquest.quest.condition.journal;
 
 import org.betonquest.betonquest.Pointer;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.exception.QuestException;
 
 /**
  * A condition to check if a player has a specified pointer in his journal.

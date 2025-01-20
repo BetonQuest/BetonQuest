@@ -3,9 +3,9 @@ package org.betonquest.betonquest.compatibility.vault.variable;
 import net.milkbowl.vault.economy.Economy;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 

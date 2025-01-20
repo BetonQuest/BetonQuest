@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.citizens.event.move;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.exception.QuestException;
 
 /**
  * Stop the NPC when he is walking.

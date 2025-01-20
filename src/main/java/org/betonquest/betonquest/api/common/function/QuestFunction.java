@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.common.function;
 
-import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
  * A simple {@link java.util.function.Function} that can throw a {@link QuestException}.

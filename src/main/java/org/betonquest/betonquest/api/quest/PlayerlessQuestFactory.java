@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.api.quest;
 
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 
 /**
