@@ -18,6 +18,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+import java.util.List;
+
 /**
  * Requires the player to execute a specific command.
  */
@@ -31,7 +33,7 @@ public class CommandObjective extends Objective implements Listener {
 
     private final boolean cancel;
 
-    private final EventID[] failEvents;
+    private final List<EventID> failEvents;
 
     public CommandObjective(final Instruction instruction) throws QuestException {
         super(instruction);
@@ -39,7 +41,7 @@ public class CommandObjective extends Objective implements Listener {
         ignoreCase = instruction.hasArgument("ignoreCase");
         exact = instruction.hasArgument("exact");
         cancel = instruction.hasArgument("cancel");
-        failEvents = instruction.getIDArray(instruction.getOptional("failEvents"), EventID::new);
+        failEvents = instruction.getIDList(instruction.getOptional("failEvents"), EventID::new);
     }
 
     @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")

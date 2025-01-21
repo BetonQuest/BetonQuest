@@ -15,18 +15,20 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 @SuppressWarnings("PMD.CommentRequired")
 public class KillPlayerObjective extends CountingObjective implements Listener {
     @Nullable
     private final String name;
 
-    private final ConditionID[] required;
+    private final List<ConditionID> required;
 
     public KillPlayerObjective(final Instruction instruction) throws QuestException {
         super(instruction, "players_to_kill");
         targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
         name = instruction.getOptional("name");
-        required = instruction.getIDArray(instruction.getOptional("required"), ConditionID::new);
+        required = instruction.getIDList(instruction.getOptional("required"), ConditionID::new);
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")

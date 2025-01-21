@@ -168,21 +168,6 @@ public final class Utils {
     }
 
     /**
-     * Gets the party of the player.
-     * A range of 0 means worldwide and -1 means server-wide.
-     *
-     * @param onlineProfile the player to get the party of
-     * @param range         the range of the party
-     * @param conditions    conditions that the party members must meet
-     * @return the party of the player
-     * @deprecated use {@link #getParty(Location, double, ConditionID...)} instead
-     */
-    @Deprecated
-    public static Map<OnlineProfile, Double> getParty(final OnlineProfile onlineProfile, final double range, final ConditionID... conditions) {
-        return getParty(onlineProfile.getPlayer().getLocation(), range, conditions);
-    }
-
-    /**
      * Gets the party of the location.
      * A range of 0 means worldwide and -1 means server-wide.
      *
@@ -191,7 +176,7 @@ public final class Utils {
      * @param conditions conditions that the party members must meet
      * @return the party of the location
      */
-    public static Map<OnlineProfile, Double> getParty(final Location location, final double range, final ConditionID... conditions) {
+    public static Map<OnlineProfile, Double> getParty(final Location location, final double range, final List<ConditionID> conditions) {
         final World world = location.getWorld();
         final double squared = range * range;
 

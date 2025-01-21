@@ -9,8 +9,6 @@ import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionA
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.Instruction;
 
-import java.util.List;
-
 /**
  * Factory for the {@link ConjunctionCondition} class.
  */
@@ -33,6 +31,6 @@ public class ConjunctionConditionFactory implements PlayerConditionFactory, Play
     }
 
     private ConjunctionCondition parse(final Instruction instruction) throws QuestException {
-        return new ConjunctionCondition(List.of(instruction.getIDArray(ConditionID::new)));
+        return new ConjunctionCondition(instruction.getIDList(ConditionID::new));
     }
 }

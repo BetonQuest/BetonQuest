@@ -14,6 +14,8 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.plugin.PluginManager;
 
+import java.util.List;
+
 /**
  * Factory to create {@link FolderEvent} instances.
  */
@@ -59,13 +61,13 @@ public class FolderEventFactory implements EventFactory, StaticEventFactory {
     }
 
     private NullableEventAdapter createFolderEvent(final Instruction instruction) throws QuestException {
-        final EventID[] events = instruction.getIDArray(EventID::new);
+        final List<EventID> events = instruction.getIDList(EventID::new);
         final VariableNumber delay = instruction.get(instruction.getOptional("delay"), VariableNumber::new);
         final VariableNumber period = instruction.get(instruction.getOptional("period"), VariableNumber::new);
         final VariableNumber random = instruction.get(instruction.getOptional("random"), VariableNumber::new);
         final TimeUnit timeUnit = getTimeUnit(instruction);
         final boolean cancelOnLogout = instruction.hasArgument("cancelOnLogout");
-        final ConditionID[] cancelConditions = instruction.getIDArray(instruction.getOptional("cancelConditions"), ConditionID::new);
+        final List<ConditionID> cancelConditions = instruction.getIDList(instruction.getOptional("cancelConditions"), ConditionID::new);
         return new NullableEventAdapter(new FolderEvent(betonQuest, loggerFactory.create(FolderEvent.class), pluginManager,
                 events, delay, period, random, timeUnit, cancelOnLogout, cancelConditions));
     }
