@@ -32,7 +32,7 @@ public class FirstEventFactory implements EventFactory, StaticEventFactory {
     }
 
     private NullableEventAdapter createFirstEvent(final Instruction instruction) throws QuestException {
-        final List<EventID> list = List.of(instruction.getIDArray(EventID::new));
+        final List<EventID> list = instruction.getIDList(EventID::new);
         return new NullableEventAdapter(new FirstEvent(list));
     }
 }

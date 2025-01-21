@@ -12,10 +12,10 @@ import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.IDArgument;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.argument.parser.ArgumentParser;
-import org.betonquest.betonquest.instruction.argument.parser.CollectionParser;
 import org.betonquest.betonquest.instruction.argument.parser.EnumParser;
 import org.betonquest.betonquest.instruction.argument.parser.IDParser;
 import org.betonquest.betonquest.instruction.argument.parser.ItemParser;
+import org.betonquest.betonquest.instruction.argument.parser.ListParser;
 import org.betonquest.betonquest.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.instruction.tokenizer.QuotingTokenizer;
 import org.betonquest.betonquest.instruction.tokenizer.Tokenizer;
@@ -26,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.Serial;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ import java.util.Optional;
  * The Instruction. Primary object for input parsing.
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass"})
-public class Instruction implements ArgumentParser, EnumParser, CollectionParser, IDParser, ItemParser, NumberParser {
+public class Instruction implements ArgumentParser, EnumParser, ListParser, IDParser, ItemParser, NumberParser {
     /**
      * The raw instruction string.
      */
@@ -310,8 +311,8 @@ public class Instruction implements ArgumentParser, EnumParser, CollectionParser
     }
 
     @Override
-    public <T extends ID> T[] getIDArray(@Nullable final String string, final IDArgument<T> argument) throws QuestException {
-        return getArray(string, value -> getID(value, argument));
+    public <T extends ID> List<T> getIDList(@Nullable final String string, final IDArgument<T> argument) throws QuestException {
+        return getList(string, value -> getID(value, argument));
     }
 
     @Override

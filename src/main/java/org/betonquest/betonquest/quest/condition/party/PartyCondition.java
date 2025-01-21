@@ -12,7 +12,7 @@ import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -33,17 +33,17 @@ public class PartyCondition implements NullableCondition {
     /**
      * The conditions to check for to be a party member.
      */
-    private final ConditionID[] conditions;
+    private final List<ConditionID> conditions;
 
     /**
      * The conditions that everyone in the party must meet.
      */
-    private final ConditionID[] everyone;
+    private final List<ConditionID> everyone;
 
     /**
      * The conditions that at least one party member must meet.
      */
-    private final ConditionID[] anyone;
+    private final List<ConditionID> anyone;
 
     /**
      * The minimum number of party members.
@@ -61,13 +61,13 @@ public class PartyCondition implements NullableCondition {
      * @param anyone     the conditions that at least one party member must meet
      * @param count      the minimum number of party members
      */
-    public PartyCondition(final VariableLocation location, final VariableNumber range, final ConditionID[] conditions, final ConditionID[] everyone,
-                          final ConditionID[] anyone, @Nullable final VariableNumber count) {
+    public PartyCondition(final VariableLocation location, final VariableNumber range, final List<ConditionID> conditions, final List<ConditionID> everyone,
+                          final List<ConditionID> anyone, @Nullable final VariableNumber count) {
         this.location = location;
         this.range = range;
-        this.conditions = Arrays.copyOf(conditions, conditions.length);
-        this.everyone = Arrays.copyOf(everyone, everyone.length);
-        this.anyone = Arrays.copyOf(anyone, anyone.length);
+        this.conditions = List.copyOf(conditions);
+        this.everyone = List.copyOf(everyone);
+        this.anyone = List.copyOf(anyone);
         this.count = count;
     }
 
@@ -89,7 +89,7 @@ public class PartyCondition implements NullableCondition {
     }
 
     private boolean meetAnyoneConditions(final Set<OnlineProfile> partyMembers) {
-        final Stream<ConditionID> anyoneStream = Bukkit.isPrimaryThread() ? Arrays.stream(anyone) : Arrays.stream(anyone).parallel();
+        final Stream<ConditionID> anyoneStream = Bukkit.isPrimaryThread() ? anyone.stream() : anyone.stream().parallel();
         return anyoneStream.allMatch(condition -> {
             final Stream<OnlineProfile> memberStream = Bukkit.isPrimaryThread() ? partyMembers.stream() : partyMembers.parallelStream();
             return memberStream.anyMatch(member -> BetonQuest.condition(member, condition));

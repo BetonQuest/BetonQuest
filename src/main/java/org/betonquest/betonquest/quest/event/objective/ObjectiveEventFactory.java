@@ -52,7 +52,7 @@ public class ObjectiveEventFactory implements EventFactory, StaticEventFactory {
 
     private NullableEventAdapter createObjectiveEvent(final Instruction instruction) throws QuestException {
         final String action = instruction.next().toLowerCase(Locale.ROOT);
-        final List<ObjectiveID> objectives = List.of(instruction.getIDArray(ObjectiveID::new));
+        final List<ObjectiveID> objectives = instruction.getIDList(ObjectiveID::new);
         return new NullableEventAdapter(new ObjectiveEvent(betonQuest, loggerFactory.create(ObjectiveEvent.class), instruction.getPackage(), objectives, action));
     }
 }

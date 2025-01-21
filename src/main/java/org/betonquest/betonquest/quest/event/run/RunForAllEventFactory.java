@@ -23,8 +23,8 @@ public class RunForAllEventFactory implements StaticEventFactory {
 
     @Override
     public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
-        final List<EventID> events = List.of(instruction.getIDArray(instruction.getOptional("events"), EventID::new));
-        final List<ConditionID> conditions = List.of(instruction.getIDArray(instruction.getOptional("where"), ConditionID::new));
+        final List<EventID> events = instruction.getIDList(instruction.getOptional("events"), EventID::new);
+        final List<ConditionID> conditions = instruction.getIDList(instruction.getOptional("where"), ConditionID::new);
         return new RunForAllEvent(PlayerConverter::getOnlineProfiles, events, conditions);
     }
 }

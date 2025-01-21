@@ -12,6 +12,8 @@ import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.condition.ThrowExceptionPlayerlessCondition;
 
+import java.util.List;
+
 /**
  * Factory to create party conditions from {@link Instruction}s.
  */
@@ -41,9 +43,9 @@ public class PartyConditionFactory implements PlayerConditionFactory, Playerless
 
     private PartyCondition parse(final Instruction instruction, final VariableLocation location) throws QuestException {
         final VariableNumber range = instruction.get(VariableNumber::new);
-        final ConditionID[] conditions = instruction.getIDArray(ConditionID::new);
-        final ConditionID[] everyone = instruction.getIDArray(instruction.getOptional("every"), ConditionID::new);
-        final ConditionID[] anyone = instruction.getIDArray(instruction.getOptional("any"), ConditionID::new);
+        final List<ConditionID> conditions = instruction.getIDList(ConditionID::new);
+        final List<ConditionID> everyone = instruction.getIDList(instruction.getOptional("every"), ConditionID::new);
+        final List<ConditionID> anyone = instruction.getIDList(instruction.getOptional("any"), ConditionID::new);
         final VariableNumber count = instruction.get(instruction.getOptional("count"), VariableNumber::new);
 
         return new PartyCondition(location, range, conditions, everyone, anyone, count);

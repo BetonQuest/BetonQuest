@@ -19,6 +19,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -33,7 +34,7 @@ public class PasswordObjective extends Objective implements Listener {
     @Nullable
     private final String passwordPrefix;
 
-    private final EventID[] failEvents;
+    private final List<EventID> failEvents;
 
     public PasswordObjective(final Instruction instruction) throws QuestException {
         super(instruction);
@@ -42,7 +43,7 @@ public class PasswordObjective extends Objective implements Listener {
         regex = Pattern.compile(pattern, regexFlags);
         final String prefix = instruction.getOptional("prefix");
         passwordPrefix = prefix == null || prefix.isEmpty() ? prefix : prefix + ": ";
-        failEvents = instruction.getIDArray(instruction.getOptional("fail"), EventID::new);
+        failEvents = instruction.getIDList(instruction.getOptional("fail"), EventID::new);
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)

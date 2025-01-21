@@ -153,8 +153,8 @@ public class CitizensMoveController implements Listener {
      * @param blockConversations if the NPC will block conversation interaction while moving (includes wait time)
      * @param sourcePackage      the quest package that started the movement, used for debug logging
      */
-    public record MoveData(List<VariableLocation> locations, int waitTicks, EventID[] doneEvents,
-                           EventID[] failEvents, boolean blockConversations, QuestPackage sourcePackage) {
+    public record MoveData(List<VariableLocation> locations, int waitTicks, List<EventID> doneEvents,
+                           List<EventID> failEvents, boolean blockConversations, QuestPackage sourcePackage) {
     }
 
     /**

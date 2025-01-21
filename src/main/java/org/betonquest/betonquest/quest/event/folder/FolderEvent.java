@@ -17,7 +17,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
@@ -70,7 +69,7 @@ public class FolderEvent implements NullableEvent {
     /**
      * The events to run.
      */
-    private final EventID[] events;
+    private final List<EventID> events;
 
     /**
      * The time unit to use for the delay and period.
@@ -85,7 +84,7 @@ public class FolderEvent implements NullableEvent {
     /**
      * Conditions to check if the event should be canceled.
      */
-    private final ConditionID[] cancelConditions;
+    private final List<ConditionID> cancelConditions;
 
     /**
      * Create a folder event with the given parameters.
@@ -101,23 +100,23 @@ public class FolderEvent implements NullableEvent {
      * @param cancelOnLogout   whether the event should be canceled on logout
      * @param cancelConditions conditions to check if the event should be canceled
      */
-    public FolderEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final PluginManager pluginManager, final EventID[] events, @Nullable final VariableNumber delay,
-                       @Nullable final VariableNumber period, @Nullable final VariableNumber random,
-                       final TimeUnit timeUnit, final boolean cancelOnLogout, final ConditionID... cancelConditions) {
+    public FolderEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final PluginManager pluginManager, final List<EventID> events,
+                       @Nullable final VariableNumber delay, @Nullable final VariableNumber period, @Nullable final VariableNumber random,
+                       final TimeUnit timeUnit, final boolean cancelOnLogout, final List<ConditionID> cancelConditions) {
         this.betonQuest = betonQuest;
         this.log = log;
         this.pluginManager = pluginManager;
         this.delay = delay;
         this.period = period;
         this.random = random;
-        this.events = Arrays.copyOf(events, events.length);
+        this.events = List.copyOf(events);
         this.timeUnit = timeUnit;
         this.cancelOnLogout = cancelOnLogout;
-        this.cancelConditions = cancelConditions.clone();
+        this.cancelConditions = List.copyOf(cancelConditions);
     }
 
     private boolean checkCancelConditions(@Nullable final Profile profile) {
-        return cancelConditions.length != 0 && BetonQuest.conditions(profile, cancelConditions);
+        return !cancelConditions.isEmpty() && BetonQuest.conditions(profile, cancelConditions);
     }
 
     private void executeAllEvents(@Nullable final Profile profile, final Deque<EventID> chosenList) {
@@ -186,9 +185,9 @@ public class FolderEvent implements NullableEvent {
         final Deque<EventID> chosenList = new LinkedList<>();
         // choose randomly which events should be fired
         final int randomInt = random == null ? 0 : random.getValue(profile).intValue();
-        if (randomInt > 0 && randomInt <= events.length) {
+        if (randomInt > 0 && randomInt <= events.size()) {
             // copy events into the modifiable ArrayList
-            final List<EventID> eventsList = new ArrayList<>(Arrays.asList(events));
+            final List<EventID> eventsList = new ArrayList<>(events);
             // remove chosen events from that ArrayList and place them in a new
             // list
             for (int i = randomInt; i > 0; i--) {
@@ -196,7 +195,7 @@ public class FolderEvent implements NullableEvent {
                 chosenList.add(eventsList.remove(chosen));
             }
         } else {
-            chosenList.addAll(Arrays.asList(events));
+            chosenList.addAll(events);
         }
         return chosenList;
     }
