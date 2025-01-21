@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 public class ValueRenameTransformer implements PatchTransformer {
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public ValueRenameTransformer() {
     }

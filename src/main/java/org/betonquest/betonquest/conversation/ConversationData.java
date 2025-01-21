@@ -32,14 +32,13 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
 /**
  * Represents the data of the conversation.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.CommentRequired", "PMD.TooManyFields",
-        "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals", "NullAway"})
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals", "NullAway"})
 public class ConversationData {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(ConversationData.class);
+    private final BetonQuestLogger log;
 
     /**
      * All references made by this conversation's pointers to other conversations.
@@ -122,12 +121,13 @@ public class ConversationData {
      * @throws QuestException          when there is a syntax error in the defined conversation
      * @throws ObjectNotFoundException when conversation options cannot be resolved or {@code convSection} is null
      */
-    @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     public ConversationData(final BetonQuest plugin, final ConversationID conversationID, final ConfigurationSection convSection) throws QuestException, ObjectNotFoundException {
         this.plugin = plugin;
         this.conversationID = conversationID;
         this.pack = conversationID.getPackage();
         this.convName = conversationID.getBaseID();
+        this.log = plugin.getLoggerFactory().create(ConversationData.class);
         log.debug(pack, String.format("Loading conversation '%s'.", convName));
 
         if (convSection.get("quester") == null) {
@@ -379,6 +379,8 @@ public class ConversationData {
     }
 
     /**
+     * Gets the conversation name.
+     *
      * @return the name of this conversation
      */
     public String getName() {
@@ -608,8 +610,14 @@ public class ConversationData {
          */
         PLAYER("player_options", "player option");
 
+        /**
+         * The section name.
+         */
         private final String identifier;
 
+        /**
+         * The name to use in logging.
+         */
         private final String readable;
 
         OptionType(final String identifier, final String readable) {
@@ -617,10 +625,20 @@ public class ConversationData {
             this.readable = readable;
         }
 
+        /**
+         * Get the section name.
+         *
+         * @return section identifier
+         */
         public String getIdentifier() {
             return identifier;
         }
 
+        /**
+         * Gets the readable type name.
+         *
+         * @return name to use in log messages
+         */
         public String getReadable() {
             return readable;
         }
@@ -629,6 +647,7 @@ public class ConversationData {
     /**
      * Represents a conversation option.
      */
+    @SuppressWarnings("PMD.GodClass")
     private class ConversationOption {
 
         /**
@@ -690,7 +709,7 @@ public class ConversationData {
          * @param convSection    the {@link ConfigurationSection} of the option
          * @throws QuestException if the configuration is invalid
          */
-        @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+        @SuppressWarnings("PMD.CognitiveComplexity")
         protected ConversationOption(final ConversationID conversationID, final String name, final OptionType type, final ConfigurationSection convSection) throws QuestException {
             this.pack = conversationID.getPackage();
             this.conversationName = conversationID.getBaseID();
@@ -770,7 +789,6 @@ public class ConversationData {
             }
         }
 
-        @SuppressWarnings("PMD.CognitiveComplexity")
         private void parseText(final String name, final OptionType type, final ConfigurationSection conv, final String defaultLang) throws QuestException {
             if (conv.contains("text")) {
                 if (conv.isConfigurationSection("text")) {
@@ -803,13 +821,19 @@ public class ConversationData {
             return optionName;
         }
 
+        /**
+         * Gets the inline prefix. Falls back to default language prefix.
+         *
+         * @param lang the language to get the prefix for
+         * @return the prefix or null
+         */
         @Nullable
         public String getInlinePrefix(final String lang) {
-            String thePrefix = inlinePrefix.get(lang);
-            if (thePrefix == null) {
-                thePrefix = inlinePrefix.get(Config.getLanguage());
+            final String langPrefix = inlinePrefix.get(lang);
+            if (langPrefix != null) {
+                return langPrefix;
             }
-            return thePrefix;
+            return inlinePrefix.get(Config.getLanguage());
         }
 
         /**

@@ -5,19 +5,19 @@ import org.bukkit.plugin.Plugin;
 import java.io.Serial;
 
 /**
- * Thrown if BetonQuest tries to hook a plugin
+ * Thrown if BetonQuest tries to hook a plugin.
  */
 public class HookException extends Exception {
     @Serial
     private static final long serialVersionUID = 7965553395053833302L;
 
     /**
-     * The plugin
+     * The related plugin.
      */
     private final Plugin plugin;
 
     /**
-     * Constructs a new exception related to a plugin
+     * Constructs a new exception related to a plugin.
      * {@link Exception#Exception(String)}
      *
      * @param plugin  The plugin
@@ -29,7 +29,7 @@ public class HookException extends Exception {
     }
 
     /**
-     * Constructs a new exception related to a plugin
+     * Constructs a new exception related to a plugin.
      * {@link Exception#Exception(String, Throwable)}
      *
      * @param plugin  The plugin
@@ -42,7 +42,7 @@ public class HookException extends Exception {
     }
 
     /**
-     * Constructs a new exception related to a plugin
+     * Constructs a new exception related to a plugin.
      * {@link Exception#Exception(Throwable)}
      *
      * @param plugin The plugin
@@ -54,21 +54,27 @@ public class HookException extends Exception {
     }
 
     /**
-     * @return Get the {@link Plugin}
+     * Get the {@link Plugin}.
+     *
+     * @return related plugin
      */
     public Plugin getPlugin() {
         return plugin;
     }
 
     /**
-     * @return Get the name of the {@link Plugin}
+     * Get the name of the {@link Plugin}.
+     *
+     * @return name of related plugin
      */
     public String getPluginName() {
         return plugin.getName();
     }
 
     /**
-     * @return Get the version of the {@link Plugin}
+     * Get the version of the {@link Plugin}.
+     *
+     * @return version of related plugin
      */
     public String getPluginVersion() {
         return getPlugin().getDescription().getVersion();

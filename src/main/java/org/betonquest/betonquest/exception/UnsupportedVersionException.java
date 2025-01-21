@@ -5,20 +5,19 @@ import org.bukkit.plugin.Plugin;
 import java.io.Serial;
 
 /**
- * Thrown if BetonQuest tries to hook a version of a plugin that is not
- * supported
+ * Thrown if BetonQuest tries to hook a version of a plugin that is not supported.
  */
 public class UnsupportedVersionException extends HookException {
     @Serial
     private static final long serialVersionUID = 7965553395053833302L;
 
     /**
-     * The supported version of the plugin
+     * The supported version of the plugin.
      */
     private final String requiredVersion;
 
     /**
-     * Constructs a new exception
+     * Constructs a new exception.
      *
      * @param plugin          The plugin, in the wrong version
      * @param requiredVersion The expected version
@@ -32,6 +31,8 @@ public class UnsupportedVersionException extends HookException {
     }
 
     /**
+     * Get the version that is required for the hook.
+     *
      * @return Get the required version of the {@link Plugin}
      */
     public String getRequiredPluginVersion() {

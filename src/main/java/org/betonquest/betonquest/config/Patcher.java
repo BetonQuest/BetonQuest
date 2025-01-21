@@ -184,7 +184,7 @@ public class Patcher {
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     private void buildVersionIndex(final ConfigurationSection section, final String previousKeys) throws InvalidConfigurationException {
         for (final String key : section.getKeys(false)) {
-            final String currentKey = "".equals(previousKeys) ? key : previousKeys + "." + key;
+            final String currentKey = previousKeys.isEmpty() ? key : previousKeys + "." + key;
 
             if (section.getList(key) == null) {
                 final ConfigurationSection nestedSection = section.getConfigurationSection(key);

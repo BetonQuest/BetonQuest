@@ -11,21 +11,29 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Notifies the MobKillObjective about the mob being killed. If your plugin
  * allows players to kill mobs without direct contact (like spells), call
  * addKill method each time the player kills a mob like that.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public final class MobKillNotifier {
+    /**
+     * A list of all handlers for this event.
+     */
+    private static final HandlerList HANDLER_LIST = new HandlerList();
 
-    private static final HandlerList HANDLERS = new HandlerList();
-
+    /**
+     * The static Notifier instance.
+     */
     @Nullable
     private static MobKillNotifier instance;
 
-    private final List<Entity> entities = new ArrayList<>();
+    /**
+     * Already counted entities.
+     */
+    private final List<UUID> entities = new ArrayList<>();
 
     private MobKillNotifier() {
         final BukkitRunnable cleaner = new BukkitRunnable() {
@@ -50,10 +58,10 @@ public final class MobKillNotifier {
             if (instance == null) {
                 instance = new MobKillNotifier();
             }
-            if (instance.entities.contains(killed)) {
+            if (instance.entities.contains(killed.getUniqueId())) {
                 return;
             }
-            instance.entities.add(killed);
+            instance.entities.add(killed.getUniqueId());
         }
         final MobKilledEvent event = new MobKilledEvent(killer, killed);
         Bukkit.getPluginManager().callEvent(event);
@@ -64,18 +72,34 @@ public final class MobKillNotifier {
      */
     public static class MobKilledEvent extends ProfileEvent {
 
+        /**
+         * Killed entity.
+         */
         private final Entity killed;
 
+        /**
+         * Create a new Mob killed event.
+         *
+         * @param killer the profile to progress
+         * @param killed the entity to count as progress
+         */
         public MobKilledEvent(final Profile killer, final Entity killed) {
             super(killer);
             this.killed = killed;
         }
 
+        /**
+         * Get the HandlerList of this event.
+         *
+         * @return the HandlerList.
+         */
         public static HandlerList getHandlerList() {
-            return HANDLERS;
+            return HANDLER_LIST;
         }
 
         /**
+         * Get the entity to progress.
+         *
          * @return the entity that was killed
          */
         public Entity getEntity() {
@@ -84,7 +108,7 @@ public final class MobKillNotifier {
 
         @Override
         public HandlerList getHandlers() {
-            return HANDLERS;
+            return HANDLER_LIST;
         }
     }
 }

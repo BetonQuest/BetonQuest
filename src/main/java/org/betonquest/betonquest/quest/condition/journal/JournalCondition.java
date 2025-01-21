@@ -35,7 +35,7 @@ public class JournalCondition implements OnlineCondition {
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
         for (final Pointer pointer : dataStorage.get(profile).getJournal().getPointers()) {
-            if (pointer.getPointer().equalsIgnoreCase(targetPointer)) {
+            if (pointer.pointer().equalsIgnoreCase(targetPointer)) {
                 return true;
             }
         }

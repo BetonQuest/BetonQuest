@@ -23,7 +23,7 @@ public class AsyncSaver extends Thread implements Listener, Saver {
     private final BetonQuestLogger log;
 
     /**
-     * The connector that conntects to the database.
+     * The connector that connects to the database.
      */
     private final Connector con;
 
@@ -33,7 +33,7 @@ public class AsyncSaver extends Thread implements Listener, Saver {
     private final Queue<Record> queue;
 
     /**
-     * The amount of time, until the AsyncSaver tries to reconnect if there was an connection los
+     * The amount of time, until the AsyncSaver tries to reconnect if there was a connection loss.
      */
     private final long reconnectInterval;
 

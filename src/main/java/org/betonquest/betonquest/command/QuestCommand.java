@@ -87,7 +87,7 @@ import java.util.stream.Stream;
  * Main admin command for quest editing.
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.NPathComplexity", "PMD.TooManyMethods",
-        "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition",
+        "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition",
         "PMD.CognitiveComplexity", "PMD.CouplingBetweenObjects"})
 public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
@@ -110,8 +110,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      */
     private final PlayerDataStorage dataStorage;
 
+    /**
+     * Accessor to create config to back up.
+     */
     private final ConfigAccessorFactory configAccessorFactory;
 
+    /**
+     * Audiences to send downloader ingame logging.
+     */
     private final BukkitAudiences bukkitAudiences;
 
     /**
@@ -136,8 +142,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param plugin                the BetonQuest plugin instance
      * @param dataStorage           the storage providing player data
      */
-    public QuestCommand(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory,
-                        final BukkitAudiences bukkitAudiences, final PlayerLogWatcher logWatcher, final LogPublishingController debuggingController,
+    public QuestCommand(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
+                        final ConfigAccessorFactory configAccessorFactory, final BukkitAudiences bukkitAudiences,
+                        final PlayerLogWatcher logWatcher, final LogPublishingController debuggingController,
                         final BetonQuest plugin, final PlayerDataStorage dataStorage) {
         this.loggerFactory = loggerFactory;
         this.log = log;
@@ -157,7 +164,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             log.debug("Executing /betonquest command for user " + sender.getName()
                     + " with arguments: " + Arrays.toString(args));
             // if the command is empty, display help message
-            if (args.length <= 0) {
+            if (args.length == 0) {
                 displayHelp(sender, alias);
                 return true;
             }
@@ -356,8 +363,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     /**
      * Returns a list of all packages for the tab completer.
-     *
-     * @return
      */
     private Optional<List<String>> completePackage() {
         return Optional.of(new ArrayList<>(Config.getPackages().keySet()));
@@ -366,10 +371,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Returns a list including all possible tab complete options for ids.
      *
-     * @param args
-     * @param type - the type of the Id (item/event/journal/condition/objective),
-     *             null for unspecific
-     * @return
+     * @param type - the type of the ID, null for unspecific
      */
     private Optional<List<String>> completeId(final String[] args, @Nullable final AccessorType type) {
         final String last = args[args.length - 1];
@@ -441,10 +443,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 return;
             }
             final OnlineEvent give = new GiveEvent(
-                    new Item[]{new Item(itemID, new VariableNumber(itemID.getPackage(), "1"))},
+                    new Item[]{new Item(itemID, new VariableNumber(instance.getVariableProcessor(),
+                            itemID.getPackage(), "1"))},
                     new NoNotificationSender(),
-                    new IngameNotificationSender(log, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR, "inventory_full_backpack", "inventory_full"),
-                    new IngameNotificationSender(log, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR, "inventory_full_drop", "inventory_full"),
+                    new IngameNotificationSender(log, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR,
+                            "inventory_full_backpack", "inventory_full"),
+                    new IngameNotificationSender(log, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR,
+                            "inventory_full_drop", "inventory_full"),
                     false, dataStorage
             );
             give.execute(PlayerConverter.getID((Player) sender));
@@ -523,14 +528,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // if there are no arguments then list player's pointers
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
             log.debug("Listing journal pointers");
-            final Predicate<Pointer> shouldDisplay = createListFilter(args, 3, Pointer::getPointer);
+            final Predicate<Pointer> shouldDisplay = createListFilter(args, 3, Pointer::pointer);
             sendMessage(sender, "player_journal");
             journal.getPointers().stream()
                     .filter(shouldDisplay)
                     .forEach(pointer -> {
                         final String date = new SimpleDateFormat(Config.getConfigString("date_format"), Locale.ROOT)
-                                .format(new Date(pointer.getTimestamp()));
-                        sender.sendMessage("§b- " + pointer.getPointer() + " §c(§2" + date + "§c)");
+                                .format(new Date(pointer.timestamp()));
+                        sender.sendMessage("§b- " + pointer.pointer() + " §c(§2" + date + "§c)");
                     });
             return;
         }
@@ -557,8 +562,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 } else {
                     log.debug("Adding pointer with date " + args[4].replaceAll("_", " "));
                     try {
-                        pointer = new Pointer(pointerName, new SimpleDateFormat(Config.getConfigString("date_format"), Locale.ROOT)
-                                .parse(args[4].replaceAll("_", " ")).getTime());
+                        pointer = new Pointer(pointerName,
+                                new SimpleDateFormat(Config.getConfigString("date_format"), Locale.ROOT)
+                                        .parse(args[4].replaceAll("_", " ")).getTime());
                     } catch (final ParseException e) {
                         sendMessage(sender, "specify_date");
                         log.warn("Could not parse date: " + e.getMessage(), e);
@@ -592,9 +598,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Returns a list including all possible options for tab complete of the
      * /betonquest journal command.
-     *
-     * @param args
-     * @return
      */
     private Optional<List<String>> completeJournals(final String... args) {
         if (args.length == 2) {
@@ -678,9 +681,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     /**
      * Lists, adds, removes or purges all global points.
-     *
-     * @param sender
-     * @param args
      */
     private void handleGlobalPoints(final CommandSender sender, final String... args) {
         final GlobalData data = instance.getGlobalData();
@@ -742,9 +742,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Returns a list including all possible options for tab complete of the
      * /betonquest points command.
-     *
-     * @param args
-     * @return
      */
     private Optional<List<String>> completePoints(final String... args) {
         if (args.length == 2) {
@@ -762,9 +759,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Returns a list including all possible options for tab complete of the
      * /betonquest globalpoints command.
-     *
-     * @param args
-     * @return
      */
     private Optional<List<String>> completeGlobalPoints(final String... args) {
         if (args.length == 2) {
@@ -837,9 +831,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Returns a list including all possible options for tab complete of the
      * /betonquest item command.
-     *
-     * @param args
-     * @return
      */
     private Optional<List<String>> completeItems(final String... args) {
         if (args.length == 2) {
@@ -880,9 +871,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Returns a list including all possible options for tab complete of the
      * /betonquest event command.
-     *
-     * @param args
-     * @return
      */
     private Optional<List<String>> completeEvents(final String... args) {
         if (args.length == 2) {
@@ -927,9 +915,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Returns a list including all possible options for tab complete of the
      * /betonquest condition command.
-     *
-     * @param args
-     * @return
      */
     private Optional<List<String>> completeConditions(final String... args) {
         if (args.length == 2) {
@@ -1061,11 +1046,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     /**
-     * Returns a list including all possible options for tab complete of the
-     * /betonquest tags command
-     *
-     * @param args
-     * @return
+     * Returns a list including all possible options for tab complete of the {@code /betonquest tags} command.
      */
     private Optional<List<String>> completeTags(final String... args) {
         if (args.length == 2) {
@@ -1081,11 +1062,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     /**
-     * Returns a list including all possible options for tab complete of the
-     * /betonquest globaltags command
-     *
-     * @param args
-     * @return
+     * Returns a list including all possible options for tab complete of the {@code /betonquest globaltags} command.
      */
     private Optional<List<String>> completeGlobalTags(final String... args) {
         if (args.length == 2) {
@@ -1203,11 +1180,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     /**
-     * Returns a list including all possible options for tab complete of the
-     * /betonquest objectives command
-     *
-     * @param args
-     * @return
+     * Returns a list including all possible options for tab complete of the {@code /betonquest objectives} command.
      */
     private Optional<List<String>> completeObjectives(final String... args) {
         if (args.length == 2) {
@@ -1338,7 +1311,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     final Journal journal = dataStorage.get(onlineProfile).getJournal();
                     Pointer journalPointer = null;
                     for (final Pointer pointer : journal.getPointers()) {
-                        if (pointer.getPointer().equals(name)) {
+                        if (pointer.pointer().equals(name)) {
                             journalPointer = pointer;
                         }
                     }
@@ -1347,7 +1320,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         continue;
                     }
                     journal.removePointer(name);
-                    journal.addPointer(new Pointer(rename, journalPointer.getTimestamp()));
+                    journal.addPointer(new Pointer(rename, journalPointer.timestamp()));
                     journal.update();
                 }
                 break;
@@ -1360,11 +1333,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     /**
-     * Returns a list including all possible options for tab complete of the
-     * /betonquest rename command.
-     *
-     * @param args
-     * @return
+     * Returns a list including all possible options for tab complete of the {@code /betonquest rename} command.
      */
     private Optional<List<String>> completeRenaming(final String... args) {
         if (args.length <= 3) {
@@ -1450,11 +1419,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     /**
-     * Returns a list including all possible options for tab complete of the
-     * /betonquest delete command.
-     *
-     * @param args
-     * @return
+     * Returns a list including all possible options for tab complete of the {@code /betonquest delete} command.
      */
     private Optional<List<String>> completeDeleting(final String... args) {
         if (args.length == 2) {
@@ -1488,11 +1453,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     /**
-     * Displays help to the user.
+     * Specify all commands.
      */
-    private void displayHelp(final CommandSender sender, final String alias) {
-        log.debug("Just displaying help");
-        // specify all commands
+    private Map<String, String> getCommandHelpMap(final CommandSender sender) {
         final Map<String, String> cmds = new HashMap<>();
         cmds.put("reload", "reload");
         cmds.put("objectives", "objective <player> [list/add/del] [objective]");
@@ -1515,6 +1478,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (!(sender instanceof Player)) {
             cmds.put("backup", "backup");
         }
+        return cmds;
+    }
+
+    /**
+     * Displays help to the user.
+     */
+    private void displayHelp(final CommandSender sender, final String alias) {
+        log.debug("Just displaying help");
+        final Map<String, String> cmds = getCommandHelpMap(sender);
         // display them
         sender.sendMessage("§e----- §aBetonQuest §e-----");
         if (sender instanceof Player) {
@@ -1718,8 +1690,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
 
         //run download
-        final Downloader downloader = new Downloader(loggerFactory.create(Downloader.class, "Downloader"), instance.getDataFolder(), githubNamespace, ref,
-                offsetPath, sourcePath, targetPath, recursive, overwrite);
+        final Downloader downloader = new Downloader(loggerFactory.create(Downloader.class, "Downloader"),
+                instance.getDataFolder(), githubNamespace, ref, offsetPath, sourcePath, targetPath, recursive, overwrite);
         sendMessage(sender, "download_scheduled");
         Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
             try {
@@ -1851,11 +1823,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     /**
-     * Returns a list including all possible options for tab complete of the
-     * /betonquest variables command
-     *
-     * @param args
-     * @return
+     * Returns a list including all possible options for tab complete of the {@code /betonquest variables} command.
      */
     private Optional<List<String>> completeVariables(final String... args) {
         if (args.length == 2) {
@@ -1914,9 +1882,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     private void sendMessageSync(final CommandSender sender, final String messageName, @Nullable final String... variables) {
-        Bukkit.getScheduler().runTask(instance, () -> {
-            sendMessage(sender, messageName, variables);
-        });
+        Bukkit.getScheduler().runTask(instance, () -> sendMessage(sender, messageName, variables));
     }
 
     private void sendMessage(final CommandSender sender, final String messageName, @Nullable final String... variables) {
@@ -1944,7 +1910,29 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         return element -> getId.apply(element).regionMatches(true, 0, prefix, 0, prefix.length());
     }
 
+    /**
+     * Accessor Type for ID completion.
+     */
     private enum AccessorType {
-        EVENTS, CONDITIONS, OBJECTIVES, ITEMS, JOURNAL
+        /**
+         * EventID.
+         */
+        EVENTS,
+        /**
+         * ConditionID.
+         */
+        CONDITIONS,
+        /**
+         * ObjectiveID.
+         */
+        OBJECTIVES,
+        /**
+         * ItemID.
+         */
+        ITEMS,
+        /**
+         * JournalID.
+         */
+        JOURNAL
     }
 }

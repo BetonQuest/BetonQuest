@@ -13,17 +13,26 @@ import java.util.Optional;
 /**
  * Represents an object storing all player-related data, which can load and save it.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
+@SuppressWarnings("PMD.TooManyMethods")
 public class GlobalData implements TagData {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
+    /**
+     * The database saver for player data.
+     */
     private final Saver saver;
 
+    /**
+     * The set global tags.
+     */
     private final List<String> globalTags = new ArrayList<>();
 
+    /**
+     * The set global points.
+     */
     private final List<Point> globalPoints = new ArrayList<>();
 
     /**
@@ -61,7 +70,7 @@ public class GlobalData implements TagData {
     }
 
     /**
-     * Returns the List of Tags
+     * Returns the List of Tags.
      *
      * @return the List of Tags
      */
@@ -71,7 +80,7 @@ public class GlobalData implements TagData {
     }
 
     /**
-     * Checks if the there is a global tag set
+     * Checks if the there is a global tag set.
      *
      * @param tag tag to check
      * @return true if the tag is set
@@ -199,7 +208,7 @@ public class GlobalData implements TagData {
     }
 
     /**
-     * Purges all global tags from the database and from this object
+     * Purges all global tags from the database and from this object.
      */
     public void purgeTags() {
         // clear all lists
@@ -209,7 +218,7 @@ public class GlobalData implements TagData {
     }
 
     /**
-     * Purges all global points from the database and from this object
+     * Purges all global points from the database and from this object.
      */
     public void purgePoints() {
         // clear all lists

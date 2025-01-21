@@ -12,7 +12,7 @@ import java.util.Map;
 public class KeyRenameTransformer implements PatchTransformer {
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public KeyRenameTransformer() {
     }

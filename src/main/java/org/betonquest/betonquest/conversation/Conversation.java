@@ -823,12 +823,12 @@ public class Conversation implements Listener {
 
         @Override
         public void run() {
-            if (!state.isActive()) {
+            if (state.isInactive()) {
                 return;
             }
             lock.readLock().lock();
             try {
-                if (!state.isActive()) {
+                if (state.isInactive()) {
                     return;
                 }
 
@@ -869,12 +869,12 @@ public class Conversation implements Listener {
 
         @Override
         public void run() {
-            if (!state.isActive()) {
+            if (state.isInactive()) {
                 return;
             }
             lock.readLock().lock();
             try {
-                if (!state.isActive()) {
+                if (state.isInactive()) {
                     return;
                 }
                 printOptions(resolvePointers(npcOption));

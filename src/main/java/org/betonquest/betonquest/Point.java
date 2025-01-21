@@ -27,7 +27,7 @@ public class Point {
     }
 
     /**
-     * Returns the category of these points
+     * Returns the category of these points.
      *
      * @return the category of these points
      */
@@ -36,7 +36,7 @@ public class Point {
     }
 
     /**
-     * Returns the amount of these points
+     * Returns the amount of these points.
      *
      * @return the count of these points
      */
@@ -45,7 +45,7 @@ public class Point {
     }
 
     /**
-     * Adds points in this category
+     * Adds points in this category.
      *
      * @param add amount of the points to add
      */
