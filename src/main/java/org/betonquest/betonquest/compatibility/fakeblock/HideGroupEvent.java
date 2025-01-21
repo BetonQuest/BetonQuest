@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.fakeblock;
 
 import com.briarcraft.fakeblock.api.service.PlayerGroupService;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.exception.QuestException;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.util.List;

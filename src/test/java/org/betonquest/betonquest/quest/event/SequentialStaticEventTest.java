@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event;
 
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.exception.QuestException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InOrder;

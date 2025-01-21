@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.setblock;
 
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.util.BlockSelector;
 import org.bukkit.Location;

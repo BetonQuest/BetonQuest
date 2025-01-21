@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.variable.item;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariableAdapter;
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.item.QuestItem;
 

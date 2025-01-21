@@ -5,7 +5,7 @@ import com.comphenix.packetwrapper.WrapperPlayServerSetSlot;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;

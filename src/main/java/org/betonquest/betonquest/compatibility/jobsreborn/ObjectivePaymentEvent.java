@@ -5,7 +5,7 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;

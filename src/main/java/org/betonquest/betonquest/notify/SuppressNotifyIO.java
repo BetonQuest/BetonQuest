@@ -2,7 +2,7 @@ package org.betonquest.betonquest.notify;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.api.quest.QuestException;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.Nullable;

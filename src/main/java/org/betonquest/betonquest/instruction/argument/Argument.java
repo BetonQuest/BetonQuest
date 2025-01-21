@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.instruction.argument;
 
 import org.betonquest.betonquest.api.common.function.QuestFunction;
-import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
  * Objectified parser for the Instruction to get a {@link T} from string.

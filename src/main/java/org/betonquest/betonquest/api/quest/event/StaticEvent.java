@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.quest.event;
 
-import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
  * Interface for "static" quest-events.

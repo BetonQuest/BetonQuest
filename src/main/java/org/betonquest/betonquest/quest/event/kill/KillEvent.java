@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.kill;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
-import org.betonquest.betonquest.exception.QuestException;
 
 /**
  * Kills the player.

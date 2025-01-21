@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.event.give;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.quest.event.NotificationSender;

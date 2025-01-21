@@ -2,7 +2,7 @@ package org.betonquest.betonquest.api;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.instruction.Instruction;
 

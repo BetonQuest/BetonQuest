@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.condition.point;
 
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.database.GlobalData;
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.util.Utils;

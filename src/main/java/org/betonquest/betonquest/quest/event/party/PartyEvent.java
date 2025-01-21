@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.event.party;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;

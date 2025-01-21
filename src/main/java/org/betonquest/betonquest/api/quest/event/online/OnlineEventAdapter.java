@@ -4,8 +4,8 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.exception.QuestException;
 
 import java.util.Optional;
 

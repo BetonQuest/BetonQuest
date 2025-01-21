@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.quests;
 import me.pikamug.quests.quests.Quest;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 
 import java.util.Set;

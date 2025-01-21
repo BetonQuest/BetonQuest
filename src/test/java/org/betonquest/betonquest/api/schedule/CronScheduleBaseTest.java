@@ -2,7 +2,7 @@ package org.betonquest.betonquest.api.schedule;
 
 import com.cronutils.builder.CronBuilder;
 import com.cronutils.model.Cron;
-import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.junit.jupiter.api.Test;
 
 import java.time.ZonedDateTime;

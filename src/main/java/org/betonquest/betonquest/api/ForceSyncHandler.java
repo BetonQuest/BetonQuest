@@ -2,7 +2,7 @@ package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;

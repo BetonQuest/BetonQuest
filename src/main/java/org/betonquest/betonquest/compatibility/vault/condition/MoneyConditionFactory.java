@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.compatibility.vault.condition;
 
 import net.milkbowl.vault.economy.Economy;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;

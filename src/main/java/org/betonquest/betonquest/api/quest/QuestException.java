@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.exception;
+package org.betonquest.betonquest.api.quest;
 
 import org.jetbrains.annotations.Nullable;
 

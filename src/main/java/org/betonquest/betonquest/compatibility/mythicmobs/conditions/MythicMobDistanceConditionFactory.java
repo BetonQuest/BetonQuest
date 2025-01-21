@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.compatibility.mythicmobs.conditions;
 
 import io.lumine.mythic.bukkit.BukkitAPIHelper;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;

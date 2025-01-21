@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.condition.time;
 
-import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.jetbrains.annotations.NotNull;
 
 /**

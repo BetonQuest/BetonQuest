@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.event.point;
 
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.exception.QuestException;
 
 import java.util.function.Function;
 

@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.event.command;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;

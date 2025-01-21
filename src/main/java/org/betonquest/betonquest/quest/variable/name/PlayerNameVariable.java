@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.variable.name;
 
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
-import org.betonquest.betonquest.exception.QuestException;
 
 /**
  * This variable resolves into the player's name. It can have optional "display"

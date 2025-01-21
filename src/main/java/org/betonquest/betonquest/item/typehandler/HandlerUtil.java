@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
-import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.util.Utils;
 import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.Nullable;

@@ -2,9 +2,9 @@ package org.betonquest.betonquest.compatibility.fakeblock;
 
 import com.briarcraft.fakeblock.api.service.GroupService;
 import com.briarcraft.fakeblock.api.service.PlayerGroupService;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;

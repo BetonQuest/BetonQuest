@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.protocollib.hider;
 
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 
 @SuppressWarnings("PMD.CommentRequired")
