@@ -20,7 +20,10 @@ import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.quest.registry.feature.ConversationIORegistry;
+import org.betonquest.betonquest.quest.registry.feature.InterceptorRegistry;
 import org.betonquest.betonquest.util.PlayerConverter;
+import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -34,7 +37,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -620,6 +622,7 @@ public class Conversation implements Listener {
             super();
         }
 
+        @SuppressWarnings("PMD.NcssCount")
         @Override
         public void run() {
             if (state.isStarted()) {
@@ -663,11 +666,12 @@ public class Conversation implements Listener {
                 // started, causing it to display "null" all the time
                 try {
                     final String name = data.getConversationIO();
-                    final Class<? extends ConversationIO> convIO = plugin.getConvIO(name);
-                    conv.inOut = convIO.getConstructor(Conversation.class, OnlineProfile.class).newInstance(conv, onlineProfile);
-                } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
-                               | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                    log.warn(pack, "Error when loading conversation IO", e);
+                    final ConversationIORegistry.ConversationIOFactory factory = Utils.getNN(
+                            plugin.getFeatureRegistries().conversationIO().getFactory(name),
+                            "No '" + name + "' registered!");
+                    conv.inOut = factory.parse(conv, onlineProfile);
+                } catch (final QuestException e) {
+                    log.warn(pack, "Error when loading conversation IO: " + e.getMessage(), e);
                     return;
                 }
 
@@ -678,11 +682,12 @@ public class Conversation implements Listener {
                 if (messagesDelaying) {
                     try {
                         final String name = data.getInterceptor();
-                        final Class<? extends Interceptor> interceptor = plugin.getInterceptor(name);
-                        conv.interceptor = interceptor.getConstructor(Conversation.class, OnlineProfile.class).newInstance(conv, onlineProfile);
-                    } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
-                                   | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                        log.warn(pack, "Error when loading interceptor", e);
+                        final InterceptorRegistry.InterceptorFactory factory = Utils.getNN(
+                                plugin.getFeatureRegistries().interceptor().getFactory(name),
+                                "No '" + name + "' registered!");
+                        conv.interceptor = factory.parse(conv, onlineProfile);
+                    } catch (final QuestException e) {
+                        log.warn(pack, "Error when loading interceptor: " + e.getMessage(), e);
                         return;
                     }
                 }

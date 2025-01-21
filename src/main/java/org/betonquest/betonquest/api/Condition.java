@@ -13,8 +13,7 @@ import org.betonquest.betonquest.instruction.Instruction;
  *
  * <p>
  * Registering your condition is done through
- * {@link org.betonquest.betonquest.BetonQuest#registerConditions(String, Class)
- * registerConditions()} method.
+ * {@code BetonQuest.getQuestRegistries().getConditionTypes().register(String, Class)} method.
  * </p>
  */
 public abstract class Condition extends ForceSyncHandler<Boolean> {

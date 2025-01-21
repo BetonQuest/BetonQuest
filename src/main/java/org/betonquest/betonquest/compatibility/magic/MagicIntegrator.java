@@ -27,7 +27,7 @@ public class MagicIntegrator implements Integrator, Listener {
 
     @Override
     public void hook() {
-        plugin.getQuestRegistries().getConditionTypes().register("wand", WandCondition.class);
+        plugin.getQuestRegistries().condition().register("wand", WandCondition.class);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 

@@ -30,11 +30,7 @@ Currently, profiles are in development. So at the moment you can use the `Player
 ## Base concepts
 How to write and register new base concepts (events, conditions, objectives, variables) in BetonQuest.
 
-### Writing events
-Use the `BetonQuest.registerEvent(String name, EventFactory eventFactory, StaticEventFactory staticEventFactory)`
-and `BetonQuest.registerNonStaticEvent(String name, EventFactory eventFactory)` method.
-Read the Javadocs for more information and see the implementation of the existing events.
-to call an event, you need to use the `BetonQuest.event(Profile profile, EventID eventID)` method.
+For Conditions, Events and Variables there is the [new API](Writing-Implementations.md#writing-new-quest-type-implementations) available.
 
 ### Writing objectives
 Objectives are more complicated because they use event handlers and they must store players' data.
@@ -84,29 +80,6 @@ using `registerObjective(String name, Class<? extends Objective>)` method.
 
 !!! warning
     IDE's typically autocomplete the wrong constructor. A correct constructor takes a single `Instruction` argument.
-
-### Writing conditions
-Writing conditions is easy too.
-They must extend `Condition` and override `execute(String playerID)` method, which should return `true` or `false`,
-depending on if the condition was met.
-You register them using `registerConditions(String name, Class<? extends Condition)` method from BetonQuest instance as well.
-The rest is almost the same, you're defining the constructor which will parse the `Instruction` object
-and overriding `execute(String playerID)` method to check if the player meets the condition.
-Don't worry about inverting it, as it's automatically done by BetonQuest.
-
-Conditions are always getting an online player in the `execute(String playerID)` method, so you don't need to check that manually.
-
-!!! warning
-    IDE's typically autocomplete the wrong constructor. A correct constructor takes a single `Instruction` argument.
-
-
-### Writing variables
-All variables need to extend `Variable` class.
-In the constructor you must parse the instruction and extract all information about your variable's behavior.
-Then you have to override the `String getValue(String playerID)` method.
-It should return the value of the variable for the supplied player.
-If it's impossible, in the old it should return an empty String and in the new throw with a descriptive message.
-Registering variables is done via `BetonQuest.registerVariable(String name, Class<? extends Variable> variable)` method.
 
 ## Firing events
 The plugin has a static method for firing events - `event(String playerID, EventID eventID)`.

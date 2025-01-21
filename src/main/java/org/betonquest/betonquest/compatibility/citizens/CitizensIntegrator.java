@@ -20,8 +20,10 @@ import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
+import org.betonquest.betonquest.quest.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
+import org.betonquest.betonquest.quest.registry.type.ObjectiveTypeRegistry;
 import org.bukkit.Server;
 import org.bukkit.event.HandlerList;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -76,9 +78,11 @@ public class CitizensIntegrator implements Integrator {
         citizensConversationStarter = new CitizensConversationStarter(loggerFactory, loggerFactory.create(CitizensConversationStarter.class), citizensMoveController);
         new CitizensWalkingListener();
 
-        plugin.registerObjectives("npckill", NPCKillObjective.class);
-        plugin.registerObjectives("npcinteract", NPCInteractObjective.class);
-        plugin.registerObjectives("npcrange", NPCRangeObjective.class);
+        final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
+        final ObjectiveTypeRegistry objectiveTypes = questRegistries.objective();
+        objectiveTypes.register("npckill", NPCKillObjective.class);
+        objectiveTypes.register("npcinteract", NPCInteractObjective.class);
+        objectiveTypes.register("npcrange", NPCRangeObjective.class);
 
         final Server server = plugin.getServer();
         final BukkitScheduler scheduler = server.getScheduler();
@@ -86,18 +90,18 @@ public class CitizensIntegrator implements Integrator {
 
         server.getPluginManager().registerEvents(citizensMoveController, plugin);
 
-        final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
-        final EventTypeRegistry eventTypes = questRegistries.getEventTypes();
+        final EventTypeRegistry eventTypes = questRegistries.event();
         eventTypes.register("movenpc", new CitizensMoveEventFactory(data, citizensMoveController));
         eventTypes.register("stopnpc", new CitizensStopEventFactory(data, citizensMoveController));
         eventTypes.registerCombined("teleportnpc", new NPCTeleportEventFactory(data));
 
-        plugin.registerConversationIO("chest", CitizensInventoryConvIO.class);
-        plugin.registerConversationIO("combined", CitizensInventoryConvIO.CitizensCombined.class);
+        final ConversationIORegistry conversationIOTypes = plugin.getFeatureRegistries().conversationIO();
+        conversationIOTypes.register("chest", CitizensInventoryConvIO.class);
+        conversationIOTypes.register("combined", CitizensInventoryConvIO.CitizensCombined.class);
 
-        questRegistries.getVariableTypes().register("citizen", new CitizensVariableFactory());
+        questRegistries.variable().register("citizen", new CitizensVariableFactory());
 
-        final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
+        final ConditionTypeRegistry conditionTypes = questRegistries.condition();
         conditionTypes.register("npcdistance", new NPCDistanceConditionFactory(data, loggerFactory));
         conditionTypes.registerCombined("npclocation", new NPCLocationConditionFactory(data));
     }
@@ -106,12 +110,12 @@ public class CitizensIntegrator implements Integrator {
     public void postHook() {
         if (Compatibility.getHooked().contains("ProtocolLib")) {
             NPCHider.start(plugin.getLoggerFactory().create(NPCHider.class));
-            plugin.getQuestRegistries().getEventTypes().register("updatevisibility", UpdateVisibilityNowEvent.class);
+            plugin.getQuestRegistries().event().register("updatevisibility", UpdateVisibilityNowEvent.class);
         }
         if (Compatibility.getHooked().contains("WorldGuard")) {
             final Server server = plugin.getServer();
             final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
-            plugin.getQuestRegistries().getConditionTypes().register("npcregion", new NPCRegionConditionFactory(data));
+            plugin.getQuestRegistries().condition().register("npcregion", new NPCRegionConditionFactory(data));
         }
     }
 

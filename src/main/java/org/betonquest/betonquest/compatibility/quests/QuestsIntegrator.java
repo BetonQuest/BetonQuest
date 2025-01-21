@@ -43,8 +43,8 @@ public class QuestsIntegrator implements Integrator {
         questsInstance = (Quests) Bukkit.getPluginManager().getPlugin("Quests");
 
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
-        questRegistries.getConditionTypes().register("quest", QuestsCondition.class);
-        questRegistries.getEventTypes().register("quest", QuestsEvent.class);
+        questRegistries.condition().register("quest", QuestsCondition.class);
+        questRegistries.event().register("quest", QuestsEvent.class);
 
         final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
         questsInstance.getCustomRewards().add(new EventReward(loggerFactory.create(EventReward.class)));

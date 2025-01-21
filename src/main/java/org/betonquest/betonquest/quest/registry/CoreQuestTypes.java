@@ -150,6 +150,7 @@ import org.betonquest.betonquest.quest.event.weather.WeatherEventFactory;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
+import org.betonquest.betonquest.quest.registry.type.ObjectiveTypeRegistry;
 import org.betonquest.betonquest.quest.registry.type.VariableTypeRegistry;
 import org.betonquest.betonquest.quest.variable.condition.ConditionVariableFactory;
 import org.betonquest.betonquest.quest.variable.eval.EvalVariableFactory;
@@ -241,10 +242,10 @@ public class CoreQuestTypes {
      */
     public void register(final QuestTypeRegistries questTypeRegistries) {
         // When adding new types they need to be ordered by name in the corresponding method!
-        registerConditions(questTypeRegistries.getConditionTypes());
-        registerEvents(questTypeRegistries.getEventTypes());
-        registerObjectives();
-        registerVariables(questTypeRegistries.getVariableTypes());
+        registerConditions(questTypeRegistries.condition());
+        registerEvents(questTypeRegistries.event());
+        registerObjectives(questTypeRegistries.objective());
+        registerVariables(questTypeRegistries.variable());
     }
 
     private void registerConditions(final ConditionTypeRegistry conditionTypes) {
@@ -363,40 +364,40 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("weather", new WeatherEventFactory(loggerFactory, data));
     }
 
-    private void registerObjectives() {
-        betonQuest.registerObjectives("action", ActionObjective.class);
-        betonQuest.registerObjectives("arrow", ArrowShootObjective.class);
-        betonQuest.registerObjectives("block", BlockObjective.class);
-        betonQuest.registerObjectives("breed", BreedObjective.class);
-        betonQuest.registerObjectives("brew", BrewObjective.class);
-        betonQuest.registerObjectives("chestput", ChestPutObjective.class);
-        betonQuest.registerObjectives("command", CommandObjective.class);
-        betonQuest.registerObjectives("consume", ConsumeObjective.class);
-        betonQuest.registerObjectives("craft", CraftingObjective.class);
-        betonQuest.registerObjectives("delay", DelayObjective.class);
-        betonQuest.registerObjectives("die", DieObjective.class);
-        betonQuest.registerObjectives("enchant", EnchantObjective.class);
-        betonQuest.registerObjectives("experience", ExperienceObjective.class);
-        betonQuest.registerObjectives("fish", FishObjective.class);
-        betonQuest.registerObjectives("interact", EntityInteractObjective.class);
-        betonQuest.registerObjectives("kill", KillPlayerObjective.class);
-        betonQuest.registerObjectives("location", LocationObjective.class);
-        betonQuest.registerObjectives("login", LoginObjective.class);
-        betonQuest.registerObjectives("logout", LogoutObjective.class);
-        betonQuest.registerObjectives("mobkill", MobKillObjective.class);
-        betonQuest.registerObjectives("password", PasswordObjective.class);
-        betonQuest.registerObjectives("pickup", PickupObjective.class);
-        betonQuest.registerObjectives("ride", RideObjective.class);
-        betonQuest.registerObjectives("shear", ShearObjective.class);
-        betonQuest.registerObjectives("smelt", SmeltingObjective.class);
-        betonQuest.registerObjectives("stage", StageObjective.class);
-        betonQuest.registerObjectives("step", StepObjective.class);
-        betonQuest.registerObjectives("tame", TameObjective.class);
-        betonQuest.registerObjectives("variable", VariableObjective.class);
+    private void registerObjectives(final ObjectiveTypeRegistry objectiveTypes) {
+        objectiveTypes.register("action", ActionObjective.class);
+        objectiveTypes.register("arrow", ArrowShootObjective.class);
+        objectiveTypes.register("block", BlockObjective.class);
+        objectiveTypes.register("breed", BreedObjective.class);
+        objectiveTypes.register("brew", BrewObjective.class);
+        objectiveTypes.register("chestput", ChestPutObjective.class);
+        objectiveTypes.register("command", CommandObjective.class);
+        objectiveTypes.register("consume", ConsumeObjective.class);
+        objectiveTypes.register("craft", CraftingObjective.class);
+        objectiveTypes.register("delay", DelayObjective.class);
+        objectiveTypes.register("die", DieObjective.class);
+        objectiveTypes.register("enchant", EnchantObjective.class);
+        objectiveTypes.register("experience", ExperienceObjective.class);
+        objectiveTypes.register("fish", FishObjective.class);
+        objectiveTypes.register("interact", EntityInteractObjective.class);
+        objectiveTypes.register("kill", KillPlayerObjective.class);
+        objectiveTypes.register("location", LocationObjective.class);
+        objectiveTypes.register("login", LoginObjective.class);
+        objectiveTypes.register("logout", LogoutObjective.class);
+        objectiveTypes.register("mobkill", MobKillObjective.class);
+        objectiveTypes.register("password", PasswordObjective.class);
+        objectiveTypes.register("pickup", PickupObjective.class);
+        objectiveTypes.register("ride", RideObjective.class);
+        objectiveTypes.register("shear", ShearObjective.class);
+        objectiveTypes.register("smelt", SmeltingObjective.class);
+        objectiveTypes.register("stage", StageObjective.class);
+        objectiveTypes.register("step", StepObjective.class);
+        objectiveTypes.register("tame", TameObjective.class);
+        objectiveTypes.register("variable", VariableObjective.class);
         if (PaperLib.isPaper()) {
-            betonQuest.registerObjectives("equip", EquipItemObjective.class);
-            betonQuest.registerObjectives("jump", JumpObjective.class);
-            betonQuest.registerObjectives("resourcepack", ResourcePackObjective.class);
+            objectiveTypes.register("equip", EquipItemObjective.class);
+            objectiveTypes.register("jump", JumpObjective.class);
+            objectiveTypes.register("resourcepack", ResourcePackObjective.class);
         }
     }
 

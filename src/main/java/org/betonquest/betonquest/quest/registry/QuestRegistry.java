@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.registry;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.id.ID;
+import org.betonquest.betonquest.quest.registry.feature.FeatureRegistries;
 import org.betonquest.betonquest.quest.registry.processor.CancellerProcessor;
 import org.betonquest.betonquest.quest.registry.processor.ConditionProcessor;
 import org.betonquest.betonquest.quest.registry.processor.ConversationProcessor;
@@ -69,20 +69,17 @@ public class QuestRegistry {
      * @param log                 the custom logger for this registry
      * @param loggerFactory       the logger factory used for new custom logger instances
      * @param plugin              the plugin used to create new conversation data
-     * @param scheduleTypes       the available schedule types
+     * @param otherRegistries     the available other types
      * @param questTypeRegistries the available quest types
-     * @param objectiveTypes      the available objective types
      */
     public QuestRegistry(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuest plugin,
-                         final Map<String, EventScheduling.ScheduleType<?, ?>> scheduleTypes,
-                         final QuestTypeRegistries questTypeRegistries,
-                         final Map<String, Class<? extends Objective>> objectiveTypes) {
+                         final FeatureRegistries otherRegistries, final QuestTypeRegistries questTypeRegistries) {
         this.log = log;
-        this.eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), scheduleTypes);
-        this.conditionProcessor = new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), questTypeRegistries.getConditionTypes());
-        this.eventProcessor = new EventProcessor(loggerFactory.create(EventProcessor.class), questTypeRegistries.getEventTypes());
-        this.objectiveProcessor = new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), objectiveTypes);
-        this.variableProcessor = new VariableProcessor(loggerFactory.create(VariableProcessor.class), questTypeRegistries.getVariableTypes(), loggerFactory);
+        this.eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), otherRegistries.eventScheduling());
+        this.conditionProcessor = new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), questTypeRegistries.condition());
+        this.eventProcessor = new EventProcessor(loggerFactory.create(EventProcessor.class), questTypeRegistries.event());
+        this.objectiveProcessor = new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), questTypeRegistries.objective());
+        this.variableProcessor = new VariableProcessor(loggerFactory.create(VariableProcessor.class), questTypeRegistries.variable(), loggerFactory);
         this.cancellerProcessor = new CancellerProcessor(loggerFactory.create(CancellerProcessor.class));
         this.conversationProcessor = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), plugin);
     }

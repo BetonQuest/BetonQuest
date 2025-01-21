@@ -6,10 +6,10 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.quest.registry.feature.NotifyIORegistry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -108,25 +108,18 @@ public final class Notify {
     private static List<String> getIOs(final Map<String, String> categoryData) {
         final List<String> ios = new ArrayList<>();
         if (categoryData.containsKey("io")) {
-            ios.addAll(
-                    Arrays.stream(categoryData.get("io").split(","))
-                            .map(String::trim)
-                            .map(o -> o.toLowerCase(Locale.ROOT))
-                            .toList());
+            for (final String part : categoryData.get("io").split(",")) {
+                ios.add(part.trim().toLowerCase(Locale.ROOT));
+            }
         }
         return ios;
     }
 
     private static NotifyIO getNotifyIO(final QuestPackage pack, final List<String> ios, final Map<String, String> categoryData) throws QuestException {
         for (final String name : ios) {
-            final Class<? extends NotifyIO> clazz = BetonQuest.getNotifyIO(name);
-            if (clazz != null) {
-                try {
-                    return clazz.getConstructor(QuestPackage.class, Map.class).newInstance(pack, categoryData);
-                } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException
-                               | InvocationTargetException exception) {
-                    throw new QuestException("Couldn't load Notify IO '" + name + "': " + exception.getMessage(), exception);
-                }
+            final NotifyIORegistry.NotifyIOFactory factory = BetonQuest.getInstance().getFeatureRegistries().notifyIO().getFactory(name);
+            if (factory != null) {
+                return factory.parse(pack, categoryData);
             }
         }
         throw new QuestException("No Notify IO could be found, searched for '" + ios + "'!");

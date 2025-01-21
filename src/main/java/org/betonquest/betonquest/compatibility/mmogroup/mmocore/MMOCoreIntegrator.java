@@ -5,6 +5,7 @@ import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
+import org.betonquest.betonquest.quest.registry.type.ObjectiveTypeRegistry;
 
 /**
  * Integrator for MMO CORE.
@@ -24,16 +25,17 @@ public class MMOCoreIntegrator implements Integrator {
 
         final BetonQuest plugin = BetonQuest.getInstance();
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
-        final ConditionTypeRegistry conditionTypes = questRegistries.getConditionTypes();
+        final ConditionTypeRegistry conditionTypes = questRegistries.condition();
         conditionTypes.register("mmoclass", MMOCoreClassCondition.class);
         conditionTypes.register("mmoattribute", MMOCoreAttributeCondition.class);
         conditionTypes.register("mmoprofession", MMOCoreProfessionLevelCondition.class);
 
-        plugin.registerObjectives("mmoprofessionlevelup", MMOCoreProfessionObjective.class);
-        plugin.registerObjectives("mmochangeclass", MMOCoreChangeClassObjective.class);
-        plugin.registerObjectives("mmocorebreakblock", MMOCoreBreakCustomBlockObjective.class);
+        final ObjectiveTypeRegistry objectiveTypes = questRegistries.objective();
+        objectiveTypes.register("mmoprofessionlevelup", MMOCoreProfessionObjective.class);
+        objectiveTypes.register("mmochangeclass", MMOCoreChangeClassObjective.class);
+        objectiveTypes.register("mmocorebreakblock", MMOCoreBreakCustomBlockObjective.class);
 
-        final EventTypeRegistry eventTypes = questRegistries.getEventTypes();
+        final EventTypeRegistry eventTypes = questRegistries.event();
         eventTypes.register("mmoclassexperience", MMOCoreClassExperienceEvent.class);
         eventTypes.register("mmoprofessionexperience", MMOCoreProfessionExperienceEvent.class);
         eventTypes.register("mmocoreclasspoints", MMOCoreClassPointsEvent.class);

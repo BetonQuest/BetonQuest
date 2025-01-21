@@ -6,8 +6,8 @@ import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.exception.QuestException;
 import org.betonquest.betonquest.id.ID;
-import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
-import org.betonquest.betonquest.quest.registry.type.QuestTypeRegistry;
+import org.betonquest.betonquest.quest.registry.FactoryRegistry;
+import org.betonquest.betonquest.quest.registry.type.TypeFactory;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Map;
@@ -23,7 +23,7 @@ public abstract class TypedQuestProcessor<I extends ID, T> extends QuestProcesso
     /**
      * Available types.
      */
-    protected final QuestTypeRegistry<?, ?, T> types;
+    protected final FactoryRegistry<TypeFactory<T>> types;
 
     /**
      * Type name used for logging.
@@ -43,7 +43,7 @@ public abstract class TypedQuestProcessor<I extends ID, T> extends QuestProcesso
      * @param readable the type name used for logging, with the first letter in upper case
      * @param internal the section name and/or bstats topic identifier
      */
-    public TypedQuestProcessor(final BetonQuestLogger log, final QuestTypeRegistry<?, ?, T> types,
+    public TypedQuestProcessor(final BetonQuestLogger log, final FactoryRegistry<TypeFactory<T>> types,
                                final String readable, final String internal) {
         super(log);
         this.types = types;
@@ -91,7 +91,7 @@ public abstract class TypedQuestProcessor<I extends ID, T> extends QuestProcesso
             log.warn(pack, readable + " type not defined in '" + packName + "." + key + "'", e);
             return;
         }
-        final LegacyTypeFactory<T> factory = types.getFactory(type);
+        final TypeFactory<T> factory = types.getFactory(type);
         if (factory == null) {
             log.warn(pack, readable + " type " + type + " is not registered, check if it's"
                     + " spelled correctly in '" + identifier + "' " + readable + ".");

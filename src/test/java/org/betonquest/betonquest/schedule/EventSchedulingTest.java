@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.schedule.FictiveTime;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.exception.QuestException;
+import org.betonquest.betonquest.quest.registry.feature.ScheduleRegistry;
 import org.betonquest.betonquest.schedule.EventScheduling.ScheduleType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -21,9 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.IntStream;
 
 import static org.mockito.ArgumentMatchers.*;
@@ -40,27 +39,27 @@ class EventSchedulingTest {
     private EventScheduling scheduling;
 
     /**
-     * Map holding all schedule types for {@link #scheduling}.
+     * Registry holding all schedule types for {@link #scheduling}.
      */
-    private Map<String, ScheduleType<?, ?>> scheduleTypes;
+    private ScheduleRegistry scheduleTypes;
 
     @BeforeEach
     void setUp() {
-        scheduleTypes = new HashMap<>();
+        scheduleTypes = new ScheduleRegistry(mock(BetonQuestLogger.class));
         scheduling = new EventScheduling(mock(BetonQuestLogger.class), scheduleTypes);
     }
 
     @SuppressWarnings("unchecked")
     private Scheduler<?, FictiveTime> registerMockedType(final String name) {
         final Scheduler<MockedSchedule, FictiveTime> mockedScheduler = mock(Scheduler.class);
-        scheduleTypes.put(name, new ScheduleType<>(MockedSchedule.class, mockedScheduler));
+        scheduleTypes.register(name, new ScheduleType<>(MockedSchedule.class, mockedScheduler));
         return mockedScheduler;
     }
 
     @SuppressWarnings("unchecked")
     private ScheduleType<?, FictiveTime> registerSpyType(final String name) {
         final ScheduleType<Schedule, FictiveTime> spyType = spy(new ScheduleType<Schedule, FictiveTime>(Schedule.class, mock(Scheduler.class)));
-        scheduleTypes.put(name, spyType);
+        scheduleTypes.register(name, spyType);
         return spyType;
     }
 
