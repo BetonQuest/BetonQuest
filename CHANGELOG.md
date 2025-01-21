@@ -12,6 +12,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 - Reloading plugin did not reload Menu config
 - potions generated not extended/upgraded since 2.2.1
+- Biome condition on mc 1.21.4 could not parse the biome from the instruction anymore
 ### Security
 
 ## [2.2.1] - 2025-01-12

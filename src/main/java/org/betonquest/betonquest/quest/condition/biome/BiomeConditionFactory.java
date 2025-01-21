@@ -39,7 +39,12 @@ public class BiomeConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Biome biome = instruction.getEnum(Biome.class);
+        final Biome biome;
+        try {
+            biome = Biome.valueOf(instruction.next());
+        } catch (final IllegalStateException e) {
+            throw new QuestException("Invalid biome name: " + instruction.current(), e);
+        }
         final BetonQuestLogger log = loggerFactory.create(BiomeCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new BiomeCondition(biome), log, instruction.getPackage()), data
