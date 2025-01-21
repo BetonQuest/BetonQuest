@@ -3348,29 +3348,6 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#writing-events">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Writing events
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
   <a class="md-nav__link" href="#writing-objectives">
     <span class="md-ellipsis">
 
@@ -3378,52 +3355,6 @@
       
         <span class="md-typeset">
           Writing objectives
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#writing-conditions">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Writing conditions
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#writing-variables">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Writing variables
         </span>
 
       
@@ -3582,6 +3513,35 @@
     
   
     Instruction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Writing-Implementations/" class="md-nav__link">
+        
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13h-4v4h-2v-4H7v-2h4V7h2v4h4m2-8H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing Implementations
   
 
     
@@ -4661,29 +4621,6 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#writing-events">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Writing events
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
   <a class="md-nav__link" href="#writing-objectives">
     <span class="md-ellipsis">
 
@@ -4691,52 +4628,6 @@
       
         <span class="md-typeset">
           Writing objectives
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#writing-conditions">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Writing conditions
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#writing-variables">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Writing variables
         </span>
 
       
@@ -4982,11 +4873,7 @@ It is accessed from the BetonQuest instance with <code>#getVariableProcessor()</
 <p>Currently, profiles are in development. So at the moment you can use the <code>PlayerConverter</code> class to get a profile.</p>
 <h2 id="base-concepts">Base concepts<a class="headerlink" href="#base-concepts" title="Permanent link">🔗</a></h2>
 <p>How to write and register new base concepts (events, conditions, objectives, variables) in BetonQuest.</p>
-<h3 id="writing-events">Writing events<a class="headerlink" href="#writing-events" title="Permanent link">🔗</a></h3>
-<p>Use the <code>BetonQuest.registerEvent(String name, EventFactory eventFactory, StaticEventFactory staticEventFactory)</code>
-and <code>BetonQuest.registerNonStaticEvent(String name, EventFactory eventFactory)</code> method.
-Read the Javadocs for more information and see the implementation of the existing events.
-to call an event, you need to use the <code>BetonQuest.event(Profile profile, EventID eventID)</code> method.</p>
+<p>For Conditions, Events and Variables there is the <a href="../Writing-Implementations/#writing-new-quest-type-implementations">new API</a> available.</p>
 <h3 id="writing-objectives">Writing objectives<a class="headerlink" href="#writing-objectives" title="Permanent link">🔗</a></h3>
 <p>Objectives are more complicated because they use event handlers and they must store players' data.
 They extend <code>Objective</code> class.
@@ -5028,26 +4915,6 @@ using <code>registerObjective(String name, Class&lt;? extends Objective&gt;)</co
 <p class="admonition-title">Warning</p>
 <p>IDE's typically autocomplete the wrong constructor. A correct constructor takes a single <code>Instruction</code> argument.</p>
 </div>
-<h3 id="writing-conditions">Writing conditions<a class="headerlink" href="#writing-conditions" title="Permanent link">🔗</a></h3>
-<p>Writing conditions is easy too.
-They must extend <code>Condition</code> and override <code>execute(String playerID)</code> method, which should return <code>true</code> or <code>false</code>,
-depending on if the condition was met.
-You register them using <code>registerConditions(String name, Class&lt;? extends Condition)</code> method from BetonQuest instance as well.
-The rest is almost the same, you're defining the constructor which will parse the <code>Instruction</code> object
-and overriding <code>execute(String playerID)</code> method to check if the player meets the condition.
-Don't worry about inverting it, as it's automatically done by BetonQuest.</p>
-<p>Conditions are always getting an online player in the <code>execute(String playerID)</code> method, so you don't need to check that manually.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>IDE's typically autocomplete the wrong constructor. A correct constructor takes a single <code>Instruction</code> argument.</p>
-</div>
-<h3 id="writing-variables">Writing variables<a class="headerlink" href="#writing-variables" title="Permanent link">🔗</a></h3>
-<p>All variables need to extend <code>Variable</code> class.
-In the constructor you must parse the instruction and extract all information about your variable's behavior.
-Then you have to override the <code>String getValue(String playerID)</code> method.
-It should return the value of the variable for the supplied player.
-If it's impossible, in the old it should return an empty String and in the new throw with a descriptive message.
-Registering variables is done via <code>BetonQuest.registerVariable(String name, Class&lt;? extends Variable&gt; variable)</code> method.</p>
 <h2 id="firing-events">Firing events<a class="headerlink" href="#firing-events" title="Permanent link">🔗</a></h2>
 <p>The plugin has a static method for firing events - <code>event(String playerID, EventID eventID)</code>.</p>
 <p>You can't fire an event directly using an instruction string.</p>

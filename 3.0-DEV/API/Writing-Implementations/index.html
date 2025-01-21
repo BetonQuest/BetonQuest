@@ -10,13 +10,13 @@
         <meta name="author" content="BetonQuest Organisation">
       
       
-        <link rel="canonical" href="https://betonquest.org/3.0-DEV/API/BukkitConfigurations/">
+        <link rel="canonical" href="https://betonquest.org/3.0-DEV/API/Writing-Implementations/">
       
       
-        <link rel="prev" href="../ConfigurationFiles/">
+        <link rel="prev" href="../Instruction/">
       
       
-        <link rel="next" href="../Schedules/">
+        <link rel="next" href="../Logging/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Bukkit Configurations - BetonQuest</title>
+        <title>Writing Implementations - BetonQuest</title>
       
     
     
@@ -98,7 +98,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#decorator" class="md-skip">
+        <a href="#summary" class="md-skip">
           Skip to content
         </a>
       
@@ -149,7 +149,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Bukkit Configurations
+              Writing Implementations
             
           </span>
         </div>
@@ -3214,10 +3214,36 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../Writing-Implementations/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13h-4v4h-2v-4H7v-2h4V7h2v4h4m2-8H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing Implementations
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13h-4v4h-2v-4H7v-2h4V7h2v4h4m2-8H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z"/></svg>
@@ -3234,6 +3260,266 @@
   
 
       </a>
+      
+        
+
+
+
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+  
+
+  
+  
+
+  
+  <label class="md-nav__title" for="__toc">
+    <span class="md-nav__icon md-icon"></span>
+    Table of contents
+  </label>
+  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#summary">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Summary
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#writing-new-quest-type-implementations">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Writing New Quest Type Implementations
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+  <nav aria-label="Writing New Quest Type Implementations" class="md-nav">
+    <ul class="md-nav__list">
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#factory-pattern">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Factory Pattern
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#playerless">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Playerless
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#profile">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Profile
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#onlineprofile-player">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          OnlineProfile / Player
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#mixed">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Mixed
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#executing-on-bukkit-main-thread">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Executing on (Bukkit) Main Thread
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#legacy">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Legacy
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+    </ul>
+  </nav>
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#registry">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Registry
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+  </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -3301,36 +3587,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.04 12.13c-.14 0-.28.06-.39.17l-1 1 2.05 2.05 1-1c.22-.21.22-.56 0-.77l-1.28-1.28a.533.533 0 0 0-.38-.17m-1.97 1.75L13 19.94V22h2.06l6.06-6.07-2.05-2.05M19 11.12l-7.09 7.08c-.41-.25-.91-.4-1.41-.4-1.5 0-2.7 1.2-2.7 2.7V22H4a2 2 0 0 1-2-2v-3.8h1.5c1.5 0 2.7-1.2 2.7-2.7S5 10.8 3.5 10.8H2V7c0-1.1.9-2 2-2h4V3.5a2.5 2.5 0 0 1 5 0V5h4a2 2 0 0 1 2 2v4.12Z"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Bukkit Configurations
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../BukkitConfigurations/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.04 12.13c-.14 0-.28.06-.39.17l-1 1 2.05 2.05 1-1c.22-.21.22-.56 0-.77l-1.28-1.28a.533.533 0 0 0-.38-.17m-1.97 1.75L13 19.94V22h2.06l6.06-6.07-2.05-2.05M19 11.12l-7.09 7.08c-.41-.25-.91-.4-1.41-.4-1.5 0-2.7 1.2-2.7 2.7V22H4a2 2 0 0 1-2-2v-3.8h1.5c1.5 0 2.7-1.2 2.7-2.7S5 10.8 3.5 10.8H2V7c0-1.1.9-2 2-2h4V3.5a2.5 2.5 0 0 1 5 0V5h4a2 2 0 0 1 2 2v4.12Z"/></svg>
@@ -3347,190 +3607,6 @@
   
 
       </a>
-      
-        
-
-
-
-<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
-  
-
-  
-  
-
-  
-  <label class="md-nav__title" for="__toc">
-    <span class="md-nav__icon md-icon"></span>
-    Table of contents
-  </label>
-  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#decorator">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Decorator
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#handle">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Handle
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#unmodifiable">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Unmodifiable
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#lazy">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Lazy
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#fallback">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Fallback
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#multi">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Multi
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#multi-fallback">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Multi Fallback
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-  </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -4392,13 +4468,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#decorator">
+  <a class="md-nav__link" href="#summary">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Decorator
+          Summary
         </span>
 
       
@@ -4415,13 +4491,37 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#handle">
+  <a class="md-nav__link" href="#writing-new-quest-type-implementations">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Handle
+          Writing New Quest Type Implementations
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+  <nav aria-label="Writing New Quest Type Implementations" class="md-nav">
+    <ul class="md-nav__list">
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#factory-pattern">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Factory Pattern
         </span>
 
       
@@ -4432,19 +4532,19 @@
   
   
 </li>
-    
-    
-    
-    
+      
+      
+      
+      
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#unmodifiable">
+  <a class="md-nav__link" href="#playerless">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Unmodifiable
+          Playerless
         </span>
 
       
@@ -4455,19 +4555,19 @@
   
   
 </li>
-    
-    
-    
-    
+      
+      
+      
+      
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#lazy">
+  <a class="md-nav__link" href="#profile">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Lazy
+          Profile
         </span>
 
       
@@ -4478,19 +4578,19 @@
   
   
 </li>
-    
-    
-    
-    
+      
+      
+      
+      
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#fallback">
+  <a class="md-nav__link" href="#onlineprofile-player">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Fallback
+          OnlineProfile / Player
         </span>
 
       
@@ -4501,19 +4601,19 @@
   
   
 </li>
-    
-    
-    
-    
+      
+      
+      
+      
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#multi">
+  <a class="md-nav__link" href="#mixed">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Multi
+          Mixed
         </span>
 
       
@@ -4524,19 +4624,71 @@
   
   
 </li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#executing-on-bukkit-main-thread">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Executing on (Bukkit) Main Thread
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#legacy">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Legacy
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+    </ul>
+  </nav>
+  
+</li>
     
     
     
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#multi-fallback">
+  <a class="md-nav__link" href="#registry">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Multi Fallback
+          Registry
         </span>
 
       
@@ -4629,7 +4781,7 @@
 
 
   
-    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/API/BukkitConfigurations.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/API/Writing-Implementations.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
     </a>
@@ -4637,10 +4789,10 @@
   
 
 
-  <h1>Bukkit Configurations</h1>
+  <h1>Writing Implementations</h1>
 
 <details class="warning">
-<summary>API State: <code>Stable</code></summary>
+<summary>API State: <code>Draft</code></summary>
 <p><h3><u>Unfinished</u> </h3>
 This part of the API is brand-new.
 It will be changed if there are any bugs, missing features or usability improvements.</p>
@@ -4656,66 +4808,86 @@ Both our own and third party testing showed that this part of the API is complet
 Only bugs and major conceptual problems would lead to more changes.</p>
 <p><strong>This part of the API should be safe to use. We try to keep it compatible with previous versions if changes are needed.</strong></p>
 </details>
-<p>We implemented multiple different <code>org.bukkit.configuration.ConfigurationSection</code>'s and <code>Configuration</code>'s to make it 
-easier to work with configurations and to implement some new features.</p>
-<p>We have the following implementations:</p>
-<h2 id="decorator">Decorator<a class="headerlink" href="#decorator" title="Permanent link">🔗</a></h2>
-<p>Basically a wrapper for a <code>ConfigurationSection</code> simply delegating all calls to the wrapped section.
-In that way, you can override specific methods without having to override all methods for custom implementations.
-Mainly used for internal purposes, but can be used to create even more custom implementations.</p>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">🔗</a></h2>
+<p>This page covers the creation of new Quest Types (e.g., Event) and Soon™ Features (e.g., Conversation IO) 
+implementations and how they are <a href="#registry">registered</a> in BetonQuest so that they can be used on the server.</p>
+<h2 id="writing-new-quest-type-implementations">Writing New Quest Type Implementations<a class="headerlink" href="#writing-new-quest-type-implementations" title="Permanent link">🔗</a></h2>
+<p>The following concepts are defined as "Quest Types", as they build the core of BetonQuest.</p>
 <ul>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDecorator</code></li>
+<li><code>Condition</code></li>
+<li><code>Event</code></li>
+<li><code>Objective</code></li>
+<li><code>Variable</code></li>
 </ul>
-<h2 id="handle">Handle<a class="headerlink" href="#handle" title="Permanent link">🔗</a></h2>
-<p>Based on <code>Decorator</code>. Handles any modifications to the configuration and wraps all values that are an instance
-of <code>ConfigurationSection</code> with the same implementation. This should prevent any modifications to the configuration
-that are not done through the handler. This is the implementation actually used to create more custom implementations.</p>
+<p>The API is located in the <code>org.betonquest.betonquest.api.quest</code> package.
+From the list above the <code>Objective</code> is still part of the <a href="../Legacy-API/#writing-objectives">LegacyAPI</a>.
+The sub-packages contain the core quest types that are registered in their respective <code>QuestTypeRegistry</code> using
+the <code>register</code> method.</p>
+<p>For an easy event implementation see the
+<a href="https://github.com/BetonQuest/BetonQuest/tree/main/src/main/java/org/betonquest/betonquest/quest/event/burn">Burn Event Package</a>.</p>
+<h3 id="factory-pattern">Factory Pattern<a class="headerlink" href="#factory-pattern" title="Permanent link">🔗</a></h3>
+<p>To create Quest Type instances, the <strong>Factory Pattern</strong> is used.
+This allows the constructing factory to provide any required objects that the specific implementation needs to function
+and enables more advanced compositions. For example in <a href="#onlineprofile-player">Online</a>, <a href="#mixed">Mixed</a>,
+and <a href="#executing-on-bukkit-main-thread">Main Thread</a>.</p>
+<p>In this context, you register not the actual implementation, but a factory that will create it.
+Into the factory you inject the dependencies that are required for creating the implementation.
+The <code>Instruction</code>, providing the "configuration", will be parsed in the factory's <code>parse</code> method,
+where the implementation is actually constructed.
+With that the implementation usually does not need the <code>Instruction</code>, allowing much cleaner object orientation 
+implementations.</p>
+<h3 id="playerless">Playerless<a class="headerlink" href="#playerless" title="Permanent link">🔗</a></h3>
+<p>To create a quest type that works without any player or profile reference, you can use the <code>Playerless</code> variant,
+where the resolving does not take a profile parameter (e.g., real-time references).</p>
+<p>You simply implement the respective <code>PlayerlessQuestFactory</code> and register the instance.</p>
+<h3 id="profile">Profile<a class="headerlink" href="#profile" title="Permanent link">🔗</a></h3>
+<p>To create a quest type that works with a profile (documentation required) reference, you can use the <code>Profile</code> variant
+where the resolving takes the player profile as a parameter (e.g., points).</p>
+<p>You simply implement the respective <code>PlayerQuestFactory</code> and register the instance.</p>
+<h3 id="onlineprofile-player">OnlineProfile / Player<a class="headerlink" href="#onlineprofile-player" title="Permanent link">🔗</a></h3>
+<p>To create a quest type that works with a player object reference, you can use the <code>OnlineProfile</code> variant,
+where the resolving requires an <code>OnlineProfile</code> as a parameter (e.g., inventory access).</p>
+<p>You can obtain the <code>Player</code> from the <code>OnlineProfile</code> using the <code>getPlayer()</code> method.</p>
+<p><code>Online&lt;Quest&gt;Adapter</code> serves as a facade for the <a href="#profile">Profile</a>, allowing the same methods to register and use.</p>
+<p>To create the instance to register, simply implement the respective <code>PlayerQuestFactory</code> and wrap the implementation
+created in the <code>parse</code> method with the <code>Online&lt;Quest&gt;Adapter</code>.</p>
+<h3 id="mixed">Mixed<a class="headerlink" href="#mixed" title="Permanent link">🔗</a></h3>
+<p>You can also create a quest type that allows both a <code>Profile</code> and <code>null</code> as arguments using the <code>Nullable&lt;Quest&gt;</code>
+interface. The primary difference from the <a href="#profile">Profile</a> variant is the nullability of the parameter.</p>
+<p>This is commonly used when the type does not require a profile but uses variables that accept a profile for resolution
+Typically, the <code>Instruction</code> is parsed in a method that creates the <code>Nullable&lt;Type&gt;</code>, which is then wrapped in the
+overridden methods with their <code>Nullable&lt;Type&gt;Adapter</code>.</p>
+<p>Additionally, you can create two independent types returned by different <code>parse</code> methods by the factory,
+for example, to utilize the <code>Online&lt;Quest&gt;Adapter</code> for the profile part.</p>
+<p>You simply implement the corresponding <code>PlayerQuestFactory</code> and <code>PlayerlessQuestFactory</code>.
+However, due to Java's Runtime Type Erasure, the register method for this is <code>registerCombined</code>.</p>
+<h3 id="executing-on-bukkit-main-thread">Executing on (Bukkit) Main Thread<a class="headerlink" href="#executing-on-bukkit-main-thread" title="Permanent link">🔗</a></h3>
+<p>BetonQuest attempts to run heavy operations asynchronously to avoid impacting the server's tick rate.
+To ensure your code runs on the Bukkit main thread (e.g., when interacting with world state), you can wrap it
+with a <code>PrimaryServerThread&lt;Type&gt;</code> (located in the <code>org.betonquest.betonquest.quest.&lt;type&gt;</code> package).
+Simply provide the Type to sync and a <code>PrimaryServerThreadData</code> (in the <code>org.betonquest.betonquest.quest</code> package).</p>
+<h3 id="legacy">Legacy<a class="headerlink" href="#legacy" title="Permanent link">🔗</a></h3>
+<p>Currently, you can still register the legacy implementation (from <code>&lt;QuestType&gt;.class</code>).</p>
+<h2 id="registry">Registry<a class="headerlink" href="#registry" title="Permanent link">🔗</a></h2>
+<p>Registering implementations is accomplished through various <code>Registry</code> objects,
+which store them and make them accessible on the server by different parts of BetonQuest.</p>
+<p>The separation is as follows:</p>
 <ul>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfiguration</code></li>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfigurationSection</code></li>
+<li><strong>QuestTypeRegistries</strong>, which provide instruction-based object creation:</li>
+<li><code>Condition</code></li>
+<li><code>Event</code></li>
+<li><code>Objective</code></li>
+<li><code>Variable</code></li>
+<li><strong>FeatureRegistries</strong>, which cover more complex and varied creation patterns:</li>
+<li><code>ConversationIO</code></li>
+<li><code>Interceptor</code></li>
+<li><code>NotifyIO</code></li>
+<li><code>Schedule</code></li>
 </ul>
-<h2 id="unmodifiable">Unmodifiable<a class="headerlink" href="#unmodifiable" title="Permanent link">🔗</a></h2>
-<p>Based on <code>Handle</code>. Makes the configuration unmodifiable. This means no values can be added, removed or modified.
-Also, no new Sections can be created. All modifications throw a <code>UnsupportedOperationException</code>.</p>
-<ul>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfiguration</code></li>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfigurationSection</code></li>
-</ul>
-<h2 id="lazy">Lazy<a class="headerlink" href="#lazy" title="Permanent link">🔗</a></h2>
-<p>Based on <code>Handle</code>.
-This configuration does only create a MemorySection that is not registered to the parent, until a value is set.
-This means it can be read without creating a new section in the parent configuration.</p>
-<ul>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.lazy.LazyConfigurationSection</code></li>
-</ul>
-<h2 id="fallback">Fallback<a class="headerlink" href="#fallback" title="Permanent link">🔗</a></h2>
-<p>This is a configuration buildup from two <code>ConfigurationSection</code>'s.
-One is the original where all modifications are done, and the other one is the fallback configuration.
-The fallback configuration is used to look up values that are not contained in the original configuration.
-This is useful for default values or global configurations.</p>
-<ul>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfiguration</code></li>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfigurationSection</code></li>
-</ul>
-<h2 id="multi">Multi<a class="headerlink" href="#multi" title="Permanent link">🔗</a></h2>
-<p>This is not a ConfigurationSection of bukkit, it is an additional interface.
-This interface adds methods to manage configs that are build from <strong>multiple</strong> <code>ConfigurationSection</code>'s.
-The MultiSectionConfiguration is an implementation of this interface that implements a merging method that does not
-allow any conflicting values resulting in a <code>KeyConflictException</code>.
-If mismatching states or settings are found in one <code>ConfigurationSection</code> a <code>InvalidSubConfigurationException</code> is thrown.</p>
-<ul>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration</code></li>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration</code></li>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.multi.KeyConflictException</code></li>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.multi.InvalidSubConfigurationException</code></li>
-</ul>
-<h2 id="multi-fallback">Multi Fallback<a class="headerlink" href="#multi-fallback" title="Permanent link">🔗</a></h2>
-<p>This is a Fallback configuration that also implements the MultiConfiguration interface.
-In this way, a multi configuration can have the advantage of a fallback configuration to look up values that are not
-contained in the original configuration.</p>
-<ul>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.multi.fallback.MultiFallbackConfiguration</code></li>
-</ul>
+<p>These can be accessed through the <code>getQuestRegistries()</code> and <code>getFeatureRegistries()</code> methods on the plugin.</p>
+<p>The <code>QuestItem</code> will be added to the <code>QuestTypeRegistries</code> after its overhaul.</p>
+<p>For writing new features, you currently need to reference existing code.
+See also <a href="../Legacy-API/#creating-additional-conversation-inputoutput-methods">Legacy creating ConversationIO</a>.</p>
 
 
 
