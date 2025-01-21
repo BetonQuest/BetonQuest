@@ -5,10 +5,10 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Factory for creating a random number variable.
@@ -16,27 +16,19 @@ import java.text.DecimalFormat;
 public class RandomNumberVariableFactory implements PlayerVariableFactory, PlayerlessVariableFactory {
 
     /**
-     * Used for check if fractional uses limited decimal places.
-     */
-    private static final int DECIMAL_LENGTH = "decimal".length();
-
-    /**
      * The argument for whole numbers.
      */
     private static final String WHOLE_NUMBER = "whole";
 
     /**
-     * The {@link VariableProcessor} to use for variable processing.
+     * Used for check if fractional uses limited decimal places.
      */
-    private final VariableProcessor processor;
+    private static final int DECIMAL_LENGTH = "decimal".length();
 
     /**
      * Creates a new {@link RandomNumberVariableFactory}.
-     *
-     * @param processor the {@link VariableProcessor} to use for variable processing
      */
-    public RandomNumberVariableFactory(final VariableProcessor processor) {
-        this.processor = processor;
+    public RandomNumberVariableFactory() {
     }
 
     @Override
@@ -64,7 +56,7 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
         }
         final VariableNumber low = parseFirst(instruction);
         final VariableNumber high = parseSecond(instruction);
-        return new NullableVariableAdapter(new RandomNumberVariable(low, high, fractional, format));
+        return new NullableVariableAdapter(new RandomNumberVariable(ThreadLocalRandom.current(), low, high, fractional, format));
     }
 
     @Nullable
@@ -88,10 +80,10 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
             return parseToVariable(start, instruction);
         } else {
             if (start.contains("~")) {
-                return new VariableNumber(processor, instruction.getPackage(), start.substring(0, start.indexOf('~')));
+                return instruction.get(start.substring(0, start.indexOf('~')), VariableNumber::new);
             } else {
                 final String next = instruction.next();
-                return new VariableNumber(processor, instruction.getPackage(), start + '.' + next.substring(0, next.indexOf('~')));
+                return instruction.get(start + '.' + next.substring(0, next.indexOf('~')), VariableNumber::new);
             }
         }
     }
@@ -101,8 +93,7 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
         if (start.startsWith("{")) {
             return parseToVariable(start, instruction);
         } else {
-            return new VariableNumber(processor, instruction.getPackage(), instruction.hasNext()
-                    ? start + '.' + instruction.next() : start);
+            return instruction.get(instruction.hasNext() ? start + '.' + instruction.next() : start, VariableNumber::new);
         }
     }
 
@@ -121,7 +112,7 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
             final String current = instruction.next();
             if (current.contains("}")) {
                 builder.append(current, 0, current.indexOf('}')).append('%');
-                return new VariableNumber(processor, instruction.getPackage(), builder.toString());
+                return instruction.get(builder.toString(), VariableNumber::new);
             } else {
                 builder.append(current).append('.');
             }

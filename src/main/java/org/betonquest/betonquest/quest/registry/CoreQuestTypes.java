@@ -414,7 +414,7 @@ public class CoreQuestTypes {
         variables.register("objective", ObjectivePropertyVariable.class);
         variables.register("point", new PointVariableFactory(dataStorage, loggerFactory.create(PointVariableFactory.class)));
         variables.register("player", new PlayerNameVariableFactory());
-        variables.registerCombined("randomnumber", new RandomNumberVariableFactory(variableProcessor));
+        variables.registerCombined("randomnumber", new RandomNumberVariableFactory());
         variables.register("tag", new TagVariableFactory(dataStorage));
         variables.register("version", VersionVariable.class);
     }
