@@ -1,8 +1,11 @@
-package org.betonquest.betonquest.variables;
+package org.betonquest.betonquest.quest.variable.random;
 
-import org.betonquest.betonquest.api.Variable;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
+import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
+import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
+import org.betonquest.betonquest.api.quest.variable.PlayerlessVariableFactory;
+import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariableAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.jetbrains.annotations.Nullable;
@@ -11,63 +14,52 @@ import java.text.DecimalFormat;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * This variable resolves into a random value (inclusive arguments)
- * Note that it will return a different value for each call.
+ * Factory for creating a random number variable.
  */
-public class RandomNumberVariable extends Variable {
+public class RandomNumberVariableFactory implements PlayerVariableFactory, PlayerlessVariableFactory {
+
     /**
-     * The argument for whole numbers
+     * The argument for whole numbers.
      */
     private static final String WHOLE_NUMBER = "whole";
 
     /**
-     * Used for check if fractional uses limited decimal places
+     * Used for check if fractional uses limited decimal places.
      */
     private static final int DECIMAL_LENGTH = "decimal".length();
 
     /**
-     * The lower bar of the random amount
+     * Creates a new {@link RandomNumberVariableFactory}.
      */
-    private final VariableNumber low;
+    public RandomNumberVariableFactory() {
+    }
 
-    /**
-     * The higher bar of the random amount
-     */
-    private final VariableNumber high;
+    @Override
+    public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
+        return parseInstruction(instruction);
+    }
 
-    /**
-     * If the value should be returned as {@code double}
-     */
-    private final boolean fractional;
+    @Override
+    public PlayerlessVariable parsePlayerless(final Instruction instruction) throws QuestException {
+        return parseInstruction(instruction);
+    }
 
-    /**
-     * The digit amount to round to in fractional mode stored in pattern
-     */
-    @Nullable
-    private final DecimalFormat format;
-
-    /**
-     * Creates a new {@link RandomNumberVariable}
-     *
-     * @param instruction the {@link Instruction} used to create the Variable
-     * @throws QuestException When an error occurs
-     */
-    public RandomNumberVariable(final Instruction instruction) throws QuestException {
-        super(instruction);
-        staticness = true;
+    private NullableVariableAdapter parseInstruction(final Instruction instruction) throws QuestException {
         final String type = instruction.next();
+        final boolean fractional;
+        final DecimalFormat format;
         if (WHOLE_NUMBER.equalsIgnoreCase(type)) {
-            this.fractional = false;
-            this.format = null;
+            fractional = false;
+            format = null;
         } else if (type.startsWith("decimal")) {
-            this.fractional = true;
-            this.format = getFormat(type);
+            fractional = true;
+            format = getFormat(type);
         } else {
-            throw new QuestException(String.format("Unknown argument type: '%s'", type));
+            throw new QuestException("Invalid type for random number variable");
         }
-
-        this.low = parseFirst(instruction);
-        this.high = parseSecond(instruction);
+        final VariableNumber low = parseFirst(instruction);
+        final VariableNumber high = parseSecond(instruction);
+        return new NullableVariableAdapter(new RandomNumberVariable(ThreadLocalRandom.current(), low, high, fractional, format));
     }
 
     @Nullable
@@ -91,10 +83,10 @@ public class RandomNumberVariable extends Variable {
             return parseToVariable(start, instruction);
         } else {
             if (start.contains("~")) {
-                return new VariableNumber(instruction.getPackage(), start.substring(0, start.indexOf('~')));
+                return instruction.get(start.substring(0, start.indexOf('~')), VariableNumber::new);
             } else {
                 final String next = instruction.next();
-                return new VariableNumber(instruction.getPackage(), start + '.' + next.substring(0, next.indexOf('~')));
+                return instruction.get(start + '.' + next.substring(0, next.indexOf('~')), VariableNumber::new);
             }
         }
     }
@@ -104,13 +96,12 @@ public class RandomNumberVariable extends Variable {
         if (start.startsWith("{")) {
             return parseToVariable(start, instruction);
         } else {
-            return new VariableNumber(instruction.getPackage(), instruction.hasNext()
-                    ? start + '.' + instruction.next() : start);
+            return instruction.get(instruction.hasNext() ? start + '.' + instruction.next() : start, VariableNumber::new);
         }
     }
 
     /**
-     * Converts a variable part into the a {@link VariableNumber}
+     * Converts a variable part into the a {@link VariableNumber}.
      *
      * @param start       The String to start with, including '{'
      * @param instruction The {@link Instruction} to retrieve a Variable
@@ -124,28 +115,10 @@ public class RandomNumberVariable extends Variable {
             final String current = instruction.next();
             if (current.contains("}")) {
                 builder.append(current, 0, current.indexOf('}')).append('%');
-                return new VariableNumber(instruction.getPackage(), builder.toString());
+                return instruction.get(builder.toString(), VariableNumber::new);
             } else {
                 builder.append(current).append('.');
             }
-        }
-    }
-
-    @Override
-    public String getValue(@Nullable final Profile profile) {
-        try {
-            if (fractional) {
-                final double value = ThreadLocalRandom.current().nextDouble(low.getDouble(profile), high.getDouble(profile));
-                if (format != null) {
-                    return format.format(value);
-                }
-                return String.valueOf(value);
-            } else {
-                return String.valueOf(ThreadLocalRandom.current().nextInt(
-                        low.getInt(profile), high.getInt(profile) + 1));
-            }
-        } catch (final IllegalArgumentException e) {
-            return "";
         }
     }
 }
