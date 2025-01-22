@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.registry.feature;
 
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -9,7 +8,6 @@ import org.betonquest.betonquest.conversation.Interceptor;
 import org.betonquest.betonquest.quest.registry.FromClassFactoryRegistry;
 
 import java.lang.reflect.Constructor;
-import java.util.Map;
 
 /**
  * Stores the Interceptors that can be used in BetonQuest.
@@ -27,7 +25,7 @@ public class InterceptorRegistry extends FromClassFactoryRegistry<Interceptor, I
 
     @Override
     protected InterceptorFactory createFactory(final Class<? extends Interceptor> clazz) throws NoSuchMethodException {
-        return new FactoryImpl(clazz.getConstructor(QuestPackage.class, Map.class));
+        return new FactoryImpl(clazz.getConstructor(Conversation.class, OnlineProfile.class));
     }
 
     /**
