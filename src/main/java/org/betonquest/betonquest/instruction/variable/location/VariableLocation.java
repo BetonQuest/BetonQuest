@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.instruction.variable.location;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
@@ -85,18 +84,5 @@ public class VariableLocation extends Variable<Location> {
             throw new QuestException("Could not parse a number in the location. " + e.getMessage(), e);
         }
         return new Location(world, locX, locY, locZ, yaw, pitch);
-    }
-
-    /**
-     * Get the location value of the variable.
-     *
-     * @param profile the profile to get the value for
-     * @return the location value of the variable
-     * @throws QuestException if the value could not be resolved
-     * @deprecated use {@link #getValue(Profile)}} instead
-     */
-    @Deprecated
-    public Location getLocation(final Profile profile) throws QuestException {
-        return getValue(profile);
     }
 }
