@@ -13,23 +13,6 @@ import org.bukkit.scheduler.BukkitScheduler;
  * Wrapper for {@link Event}s to be executed on the primary server thread.
  */
 public class PrimaryServerThreadEvent extends PrimaryServerThreadType<Event, Void> implements Event {
-    /**
-     * Wrap the given {@link Event} for execution on the primary server thread.
-     * The {@link Server}, {@link BukkitScheduler} and {@link Plugin} are used to
-     * determine if the current thread is the primary server thread and to
-     * schedule the execution onto it in case it isn't.
-     *
-     * @param syncedEvent event to synchronize
-     * @param server      server for primary thread identification
-     * @param scheduler   scheduler for primary thread scheduling
-     * @param plugin      plugin to associate with the scheduled task
-     * @deprecated use constructor with {@link PrimaryServerThreadData}
-     */
-    @Deprecated
-    public PrimaryServerThreadEvent(final Event syncedEvent, final Server server,
-                                    final BukkitScheduler scheduler, final Plugin plugin) {
-        super(syncedEvent, server, scheduler, plugin);
-    }
 
     /**
      * Wrap the given {@link Event} for execution on the primary server thread.

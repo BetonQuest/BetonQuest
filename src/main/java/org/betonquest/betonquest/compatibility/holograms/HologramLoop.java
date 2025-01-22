@@ -109,7 +109,7 @@ public abstract class HologramLoop {
         } catch (final NumberFormatException e) {
             throw new QuestException("Could not parse check interval", e);
         }
-        final VariableNumber maxRange = new VariableNumber(pack, section.getString("max_range", "0"));
+        final VariableNumber maxRange = new VariableNumber(BetonQuest.getInstance().getVariableProcessor(), pack, section.getString("max_range", "0"));
 
         final List<String> lines = GlobalVariableResolver.resolve(pack, section.getStringList("lines"));
         final String rawConditions = GlobalVariableResolver.resolve(pack, section.getString("conditions"));

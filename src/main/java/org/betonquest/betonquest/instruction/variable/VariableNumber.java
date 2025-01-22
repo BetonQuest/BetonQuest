@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.instruction.variable;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -28,34 +27,6 @@ public class VariableNumber extends Variable<Number> {
             throw new QuestException("Value must be greater than or equal to 1: " + value);
         }
     };
-
-    /**
-     * Resolves a string that may contain variables to a variable of the given type.
-     *
-     * @param pack  the package in which the variable is used in
-     * @param input the string that may contain variables
-     * @throws QuestException if the variables could not be created or resolved to the given type
-     * @deprecated use {@link #VariableNumber(VariableProcessor, QuestPackage, String)} instead
-     */
-    @Deprecated
-    public VariableNumber(final QuestPackage pack, final String input) throws QuestException {
-        this(BetonQuest.getInstance().getVariableProcessor(), pack, input, (value) -> {
-        });
-    }
-
-    /**
-     * Resolves a string that may contain variables to a variable of the given type.
-     *
-     * @param pack         the package in which the variable is used in
-     * @param input        the string that may contain variables
-     * @param valueChecker the checker to verify valid values
-     * @throws QuestException if the variables could not be created or resolved to the given type
-     * @deprecated use {@link #VariableNumber(VariableProcessor, QuestPackage, String, ValueChecker)} instead
-     */
-    @Deprecated
-    public VariableNumber(final QuestPackage pack, final String input, final ValueChecker<Number> valueChecker) throws QuestException {
-        this(BetonQuest.getInstance().getVariableProcessor(), pack, input, valueChecker);
-    }
 
     /**
      * Resolves a string that may contain variables to a variable of the given type.

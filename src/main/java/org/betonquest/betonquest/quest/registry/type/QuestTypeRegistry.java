@@ -54,7 +54,9 @@ public abstract class QuestTypeRegistry<P, S, L> extends FactoryRegistry<TypeFac
      * @param log    the log to use in the factory
      * @param lClass the class object for the type
      * @return the legacy factory to store
+     * @deprecated the legacy system is subject to removal
      */
+    @Deprecated
     protected abstract LegacyTypeFactory<L> getFromClassLegacyTypeFactory(BetonQuestLogger log, Class<? extends L> lClass);
 
     /**

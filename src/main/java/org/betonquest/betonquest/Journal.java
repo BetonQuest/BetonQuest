@@ -245,7 +245,7 @@ public class Journal {
             }
 
             try {
-                text = new VariableString(pack, text).getString(profile);
+                text = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, text).getValue(profile);
             } catch (final QuestException e) {
                 log.warn(pack, "Error while creating variable on journal page '" + pointerName + "' in "
                         + profile + " journal: " + e.getMessage(), e);
@@ -311,7 +311,7 @@ public class Journal {
                     }
                     text = GlobalVariableResolver.resolve(pack, text);
                     try {
-                        text = new VariableString(pack, text).getString(profile);
+                        text = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, text).getValue(profile);
                     } catch (final QuestException e) {
                         log.warn(pack, "Error while creating variable on main page in "
                                 + profile + " journal: " + e.getMessage(), e);

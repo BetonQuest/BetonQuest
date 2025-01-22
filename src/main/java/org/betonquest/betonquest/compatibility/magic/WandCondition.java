@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.magic;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -64,7 +65,7 @@ public class WandCondition extends Condition {
             }
             final VariableNumber level;
             try {
-                level = new VariableNumber(questPackage, spellParts[1]);
+                level = new VariableNumber(BetonQuest.getInstance().getVariableProcessor(), questPackage, spellParts[1]);
             } catch (final QuestException e) {
                 throw new QuestException("Could not parse spell level", e);
             }

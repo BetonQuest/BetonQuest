@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.instruction.variable.location;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
@@ -78,18 +77,5 @@ public class VariableVector extends Variable<Vector> {
         } catch (final NumberFormatException e) {
             throw new QuestException("Could not parse a number in the vector. " + e.getMessage(), e);
         }
-    }
-
-    /**
-     * Gets the value of the variable.
-     *
-     * @param profile the profile to get the value from
-     * @return the value of the variable
-     * @throws QuestException if the value could not be resolved
-     * @deprecated use {@link #getValue(Profile)} instead
-     */
-    @Deprecated
-    public Vector get(final Profile profile) throws QuestException {
-        return getValue(profile);
     }
 }
