@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.config.patcher.migration.migrators;
+package org.betonquest.betonquest.config.patcher.migration.migrators.from1to2;
 
 import org.betonquest.betonquest.config.patcher.migration.FileConfigurationProvider;
 import org.betonquest.betonquest.config.patcher.migration.Migration;
@@ -9,21 +9,20 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Handles the Ride migration.
+ * Handles the aura_skills rename migration.
  */
-public class RideUpdates implements Migration {
-
+public class AuraSkillsRename implements Migration {
     /**
-     * The configs to migrate.
+     * The config producer.
      */
     private final FileConfigurationProvider producer;
 
     /**
-     * Creates a new ride migrator.
+     * Creates a new aura_skills migrator.
      *
      * @param provider The config provider
      */
-    public RideUpdates(final FileConfigurationProvider provider) {
+    public AuraSkillsRename(final FileConfigurationProvider provider) {
         this.producer = provider;
     }
 
@@ -33,9 +32,10 @@ public class RideUpdates implements Migration {
         for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
             final File file = entry.getKey();
             final YamlConfiguration config = entry.getValue();
-            final boolean objReplaced = replaceStartValueInSection(config, "objectives", "vehicle", "ride");
-            final boolean condReplaced = replaceStartValueInSection(config, "conditions", "riding", "ride");
-            if (objReplaced || condReplaced) {
+            final boolean cond1Replaced = replaceStartValueInSection(config, "conditions", "aureliumskillslevel", "auraskillslevel");
+            final boolean cond2Replaced = replaceStartValueInSection(config, "conditions", "aureliumstatslevel", "auraskillsstatslevel");
+            final boolean objReplaced = replaceStartValueInSection(config, "events", "aureliumskillsxp", "auraskillsxp");
+            if (cond1Replaced || cond2Replaced || objReplaced) {
                 config.save(file);
             }
         }

@@ -1,8 +1,7 @@
-package org.betonquest.betonquest.config.patcher.migration.migrators;
+package org.betonquest.betonquest.config.patcher.migration.migrators.from1to2;
 
 import org.betonquest.betonquest.config.patcher.migration.FileConfigurationProvider;
 import org.betonquest.betonquest.config.patcher.migration.Migration;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -10,9 +9,14 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Handles the EventScheduling migration.
+ * Handles the PackageSection migration.
  */
-public class EventScheduling implements Migration {
+public class PackageSection implements Migration {
+
+    /**
+     * The enabled string.
+     */
+    public static final String ENABLED = "enabled";
 
     /**
      * The config producer.
@@ -20,11 +24,11 @@ public class EventScheduling implements Migration {
     private final FileConfigurationProvider producer;
 
     /**
-     * Creates a new EventScheduling migrator.
+     * Creates a new PackageSection migrator.
      *
      * @param provider The config provider
      */
-    public EventScheduling(final FileConfigurationProvider provider) {
+    public PackageSection(final FileConfigurationProvider provider) {
         this.producer = provider;
     }
 
@@ -34,14 +38,10 @@ public class EventScheduling implements Migration {
         for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
             final File file = entry.getKey();
             final YamlConfiguration config = entry.getValue();
-            final ConfigurationSection staticSection = config.getConfigurationSection("static");
-            if (staticSection != null) {
-                staticSection.getValues(false).forEach((key, value) -> {
-                    config.set("schedules." + key + ".type", "realtime-daily");
-                    config.set("schedules." + key + ".time", key);
-                    config.set("schedules." + key + ".events", value);
-                });
-                config.set("static", null);
+            if (config.contains(ENABLED, true)) {
+                final boolean section = config.getBoolean(ENABLED);
+                config.set("package.enabled", section);
+                config.set(ENABLED, null);
                 config.save(file);
             }
         }
