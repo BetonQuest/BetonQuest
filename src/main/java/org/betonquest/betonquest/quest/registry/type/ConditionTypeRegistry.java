@@ -27,6 +27,7 @@ public class ConditionTypeRegistry extends QuestTypeRegistry<PlayerCondition, Pl
     }
 
     @Override
+    @Deprecated
     protected LegacyTypeFactory<Condition> getFromClassLegacyTypeFactory(
             final BetonQuestLogger log, final Class<? extends Condition> conditionClass) {
         return new FromClassLegacyTypeFactory<>(log, conditionClass, "condition");

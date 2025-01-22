@@ -27,6 +27,7 @@ public class EventTypeRegistry extends QuestTypeRegistry<Event, StaticEvent, Que
     }
 
     @Override
+    @Deprecated
     protected LegacyTypeFactory<QuestEvent> getFromClassLegacyTypeFactory(final BetonQuestLogger log, final Class<? extends QuestEvent> questEventClass) {
         return new FromClassLegacyTypeFactory<>(log, questEventClass, "event");
     }

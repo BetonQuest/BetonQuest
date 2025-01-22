@@ -33,6 +33,7 @@ public class VariableTypeRegistry extends QuestTypeRegistry<PlayerVariable, Play
     }
 
     @Override
+    @Deprecated
     protected LegacyTypeFactory<Variable> getFromClassLegacyTypeFactory(
             final BetonQuestLogger log, final Class<? extends Variable> lClass) {
         return new FromClassLegacyTypeFactory<>(log, lClass, "variable");
