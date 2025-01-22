@@ -64,7 +64,8 @@ public class RandomNumberVariable implements NullableVariable {
         final double highValue = high.getValue(profile).doubleValue();
 
         if (lowValue >= highValue) {
-            return fractional ? String.valueOf(lowValue) : String.valueOf((int) lowValue);
+            return fractional ? format != null ? format.format(lowValue) : String.valueOf(lowValue)
+                    : String.valueOf((int) lowValue);
         }
 
         try {
@@ -75,7 +76,7 @@ public class RandomNumberVariable implements NullableVariable {
                 return String.valueOf(random.nextInt((int) lowValue, (int) highValue + 1));
             }
         } catch (final IllegalArgumentException e) {
-            return "";
+            throw new QuestException("Could not generate random number", e);
         }
     }
 }
