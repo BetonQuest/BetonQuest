@@ -305,7 +305,7 @@ public final class Config {
         }
         if (pack != null) {
             try {
-                message = new VariableString(pack, message).getString(onlineProfile);
+                message = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, message).getValue(onlineProfile);
             } catch (final QuestException e) {
                 LOG.warn("Could not parse message: " + message, e);
             }

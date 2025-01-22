@@ -809,7 +809,7 @@ public class ConversationData {
             if (convText == null) {
                 throw new QuestException("No text for " + name + " " + type.getReadable());
             }
-            text.put(lang, new VariableString(pack, convText));
+            text.put(lang, new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, convText));
         }
 
         /**
