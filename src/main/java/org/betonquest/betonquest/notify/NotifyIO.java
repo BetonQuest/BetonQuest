@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.notify;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -66,7 +67,8 @@ public abstract class NotifyIO {
         if (dataString == null) {
             return defaultData;
         } else if (dataString.startsWith("%")) {
-            return new VariableNumber(pack, dataString).getValue(PlayerConverter.getID(player)).floatValue();
+            return new VariableNumber(BetonQuest.getInstance().getVariableProcessor(), pack, dataString)
+                    .getValue(PlayerConverter.getID(player)).floatValue();
         }
         try {
             return Float.parseFloat(dataString);
