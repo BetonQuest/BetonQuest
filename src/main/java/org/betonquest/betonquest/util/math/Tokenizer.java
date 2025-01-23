@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
+import org.betonquest.betonquest.quest.variable.math.MathVariable;
 import org.betonquest.betonquest.util.math.tokens.AbsoluteValue;
 import org.betonquest.betonquest.util.math.tokens.Negation;
 import org.betonquest.betonquest.util.math.tokens.Number;
@@ -11,7 +12,6 @@ import org.betonquest.betonquest.util.math.tokens.Operation;
 import org.betonquest.betonquest.util.math.tokens.Parenthesis;
 import org.betonquest.betonquest.util.math.tokens.Token;
 import org.betonquest.betonquest.util.math.tokens.Variable;
-import org.betonquest.betonquest.variables.MathVariable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.Matcher;
