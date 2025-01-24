@@ -157,6 +157,7 @@ import org.betonquest.betonquest.quest.variable.eval.EvalVariableFactory;
 import org.betonquest.betonquest.quest.variable.item.ItemDurabilityVariableFactory;
 import org.betonquest.betonquest.quest.variable.item.ItemVariableFactory;
 import org.betonquest.betonquest.quest.variable.location.LocationVariableFactory;
+import org.betonquest.betonquest.quest.variable.math.MathVariableFactory;
 import org.betonquest.betonquest.quest.variable.name.NpcNameVariableFactory;
 import org.betonquest.betonquest.quest.variable.name.PlayerNameVariableFactory;
 import org.betonquest.betonquest.quest.variable.point.GlobalPointVariableFactory;
@@ -165,7 +166,6 @@ import org.betonquest.betonquest.quest.variable.random.RandomNumberVariableFacto
 import org.betonquest.betonquest.quest.variable.tag.GlobalTagVariableFactory;
 import org.betonquest.betonquest.quest.variable.tag.TagVariableFactory;
 import org.betonquest.betonquest.quest.variable.version.VersionVariableFactory;
-import org.betonquest.betonquest.variables.MathVariable;
 import org.betonquest.betonquest.variables.ObjectivePropertyVariable;
 import org.bukkit.Server;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -409,7 +409,7 @@ public class CoreQuestTypes {
         variables.registerCombined("item", new ItemVariableFactory());
         variables.register("itemdurability", new ItemDurabilityVariableFactory());
         variables.register("location", new LocationVariableFactory());
-        variables.register("math", MathVariable.class);
+        variables.registerCombined("math", new MathVariableFactory(variableProcessor));
         variables.register("npc", new NpcNameVariableFactory(dataStorage));
         variables.register("objective", ObjectivePropertyVariable.class);
         variables.register("point", new PointVariableFactory(dataStorage, loggerFactory.create(PointVariableFactory.class)));
