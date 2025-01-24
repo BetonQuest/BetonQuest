@@ -164,9 +164,9 @@ import org.betonquest.betonquest.quest.variable.point.PointVariableFactory;
 import org.betonquest.betonquest.quest.variable.random.RandomNumberVariableFactory;
 import org.betonquest.betonquest.quest.variable.tag.GlobalTagVariableFactory;
 import org.betonquest.betonquest.quest.variable.tag.TagVariableFactory;
+import org.betonquest.betonquest.quest.variable.version.VersionVariableFactory;
 import org.betonquest.betonquest.variables.MathVariable;
 import org.betonquest.betonquest.variables.ObjectivePropertyVariable;
-import org.betonquest.betonquest.variables.VersionVariable;
 import org.bukkit.Server;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -416,6 +416,6 @@ public class CoreQuestTypes {
         variables.register("player", new PlayerNameVariableFactory());
         variables.registerCombined("randomnumber", new RandomNumberVariableFactory());
         variables.register("tag", new TagVariableFactory(dataStorage));
-        variables.register("version", VersionVariable.class);
+        variables.register("version", new VersionVariableFactory(betonQuest));
     }
 }
