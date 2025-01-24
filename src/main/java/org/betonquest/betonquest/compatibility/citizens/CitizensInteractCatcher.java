@@ -8,7 +8,7 @@ import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.event.NPCTeleportEvent;
 import net.citizensnpcs.api.npc.NPC;
-import org.betonquest.betonquest.api.NpcExternalVisibilityChange;
+import org.betonquest.betonquest.api.bukkit.event.npc.NpcExternalVisibilityChange;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcInteractCatcher;
 import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveController;
 import org.betonquest.betonquest.objective.EntityInteractObjective;
