@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.NpcExternalVisibilityChange;
+import org.betonquest.betonquest.api.bukkit.event.npc.NpcExternalVisibilityChange;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
