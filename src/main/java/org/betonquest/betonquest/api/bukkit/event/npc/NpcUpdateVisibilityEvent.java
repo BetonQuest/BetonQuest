@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api;
+package org.betonquest.betonquest.api.bukkit.event.npc;
 
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.bukkit.entity.Player;

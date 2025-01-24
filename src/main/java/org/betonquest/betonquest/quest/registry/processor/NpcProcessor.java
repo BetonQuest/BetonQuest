@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.registry.processor;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.NpcInteractEvent;
+import org.betonquest.betonquest.api.bukkit.event.npc.NpcInteractEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
