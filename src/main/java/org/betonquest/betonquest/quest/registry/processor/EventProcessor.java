@@ -25,7 +25,7 @@ public class EventProcessor extends TypedQuestProcessor<EventID, QuestEvent> {
     }
 
     @Override
-    protected EventID getIdentifier(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
+    protected EventID getIdentifier(final QuestPackage pack, final String identifier) throws ObjectNotFoundException, QuestException {
         return new EventID(pack, identifier);
     }
 

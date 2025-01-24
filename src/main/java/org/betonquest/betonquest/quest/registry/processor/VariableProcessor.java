@@ -34,7 +34,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable>
     }
 
     @Override
-    protected VariableID getIdentifier(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
+    protected VariableID getIdentifier(final QuestPackage pack, final String identifier) throws ObjectNotFoundException, QuestException {
         return new VariableID(pack, identifier);
     }
 

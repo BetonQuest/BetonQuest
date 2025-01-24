@@ -32,7 +32,7 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
     }
 
     @Override
-    protected ConditionID getIdentifier(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
+    protected ConditionID getIdentifier(final QuestPackage pack, final String identifier) throws ObjectNotFoundException, QuestException {
         return new ConditionID(pack, identifier);
     }
 

@@ -8,6 +8,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
@@ -99,7 +100,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
                 for (final String condition : conditionsString.split(",")) {
                     try {
                         conditions.add(new ConditionID(cfgPackage, condition));
-                    } catch (final ObjectNotFoundException e) {
+                    } catch (final ObjectNotFoundException | QuestException e) {
                         log.warn(cfgPackage, "Condition '" + condition + "' does not exist, in hide_npcs with ID " + npcIds, e);
                         continue npcs;
                     }

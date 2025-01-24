@@ -2,6 +2,7 @@ package org.betonquest.betonquest.bstats;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.id.ID;
@@ -115,7 +116,7 @@ class BStatsMetricsTest {
 
     @Test
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    void testCustomChartCallableGetsUpdates(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    void testCustomChartCallableGetsUpdates(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         setupLogger();
         final Plugin plugin = mock(Plugin.class);
 
@@ -133,7 +134,7 @@ class BStatsMetricsTest {
         final Map<ID, Void> ids = new HashMap<>();
 
         final ID firstId = mock(ID.class);
-        final Instruction firstInstruction = new Instruction(logger, questPackage, firstId, TEST_INSTRUCTION);
+        final Instruction firstInstruction = new Instruction(questPackage, firstId, TEST_INSTRUCTION);
         when(firstId.getInstruction()).thenReturn(firstInstruction);
 
         ids.put(firstId, null);
@@ -158,7 +159,7 @@ class BStatsMetricsTest {
         assertCollectedChartData("{\"chartId\":\"idEnabled\",\"data\":{\"values\":{\"test\":1}}}", enabledChart);
 
         final ID secondId = mock(ID.class);
-        final Instruction secondInstruction = new Instruction(logger, questPackage, secondId, TEST_INSTRUCTION);
+        final Instruction secondInstruction = new Instruction(questPackage, secondId, TEST_INSTRUCTION);
         when(secondId.getInstruction()).thenReturn(secondInstruction);
         ids.put(secondId, null);
 
@@ -166,7 +167,7 @@ class BStatsMetricsTest {
         assertCollectedChartData("{\"chartId\":\"idEnabled\",\"data\":{\"values\":{\"test\":1}}}", enabledChart);
 
         final ID thirdId = mock(ID.class);
-        final Instruction thirdInstruction = new Instruction(logger, questPackage, thirdId, OTHER_INSTRUCTION);
+        final Instruction thirdInstruction = new Instruction(questPackage, thirdId, OTHER_INSTRUCTION);
         when(thirdId.getInstruction()).thenReturn(thirdInstruction);
         ids.put(thirdId, null);
 

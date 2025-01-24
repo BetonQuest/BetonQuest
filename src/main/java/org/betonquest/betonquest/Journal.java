@@ -288,7 +288,7 @@ public class Journal {
                             if (!BetonQuest.conditions(profile, pageConditions)) {
                                 continue;
                             }
-                        } catch (final ObjectNotFoundException e) {
+                        } catch (final ObjectNotFoundException | QuestException e) {
                             log.warn(pack, "Error while generating main page in " + profile + " journal: " + e.getMessage(), e);
                             continue;
                         }
