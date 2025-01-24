@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.quest.npc.feature;
 
-import org.betonquest.betonquest.api.NpcInteractEvent;
+import org.betonquest.betonquest.api.bukkit.event.npc.NpcInteractEvent;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.id.NpcID;

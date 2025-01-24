@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.objective;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.NpcInteractEvent;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.bukkit.event.npc.NpcInteractEvent;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.NpcID;
