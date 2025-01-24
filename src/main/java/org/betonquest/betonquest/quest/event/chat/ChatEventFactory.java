@@ -36,7 +36,7 @@ public class ChatEventFactory implements EventFactory {
 
     @Override
     public Event parseEvent(final Instruction instruction) throws QuestException {
-        final String[] messages = String.join(" ", instruction.getAllParts()).split("\\|");
+        final String[] messages = String.join(" ", instruction.getValueParts()).split("\\|");
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new ChatEvent(messages),
                 loggerFactory.create(ChatEvent.class),

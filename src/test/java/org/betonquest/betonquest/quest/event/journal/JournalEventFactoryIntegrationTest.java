@@ -76,56 +76,56 @@ class JournalEventFactoryIntegrationTest {
     }
 
     @Test
-    void constructJournalUpdateEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException {
+    void constructJournalUpdateEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException, QuestException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(logger, questPackage, new NoID(questPackage), "journal update");
+        final Instruction instruction = new Instruction(questPackage, new NoID(questPackage), "journal update");
         assertDoesNotThrow(() -> journalFactory.parseInstruction(instruction), "journal event update action could not be created");
     }
 
     @Test
-    void constructJournalAddEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException {
+    void constructJournalAddEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException, QuestException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(logger, questPackage, new NoID(questPackage), "journal add quest_started");
+        final Instruction instruction = new Instruction(questPackage, new NoID(questPackage), "journal add quest_started");
         assertDoesNotThrow(() -> journalFactory.parseInstruction(instruction), "journal event add action could not be created");
     }
 
     @Test
-    void constructJournalAddEventWithoutPageReference(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException {
+    void constructJournalAddEventWithoutPageReference(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException, QuestException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(logger, questPackage, new NoID(questPackage), "journal add");
+        final Instruction instruction = new Instruction(questPackage, new NoID(questPackage), "journal add");
         assertThrows(QuestException.class, () -> journalFactory.parseInstruction(instruction), "journal event add action without page reference should throw an exception when created");
     }
 
     @Test
-    void constructJournalDeleteEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException {
+    void constructJournalDeleteEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException, QuestException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(logger, questPackage, new NoID(questPackage), "journal delete quest_available");
+        final Instruction instruction = new Instruction(questPackage, new NoID(questPackage), "journal delete quest_available");
         assertDoesNotThrow(() -> journalFactory.parseInstruction(instruction), "journal event delete action could not be created");
     }
 
     @Test
-    void constructJournalDeleteEventWithoutPageReference(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException {
+    void constructJournalDeleteEventWithoutPageReference(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException, QuestException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(logger, questPackage, new NoID(questPackage), "journal delete");
+        final Instruction instruction = new Instruction(questPackage, new NoID(questPackage), "journal delete");
         assertThrows(QuestException.class, () -> journalFactory.parseInstruction(instruction), "journal event delete action without page reference should throw an exception when created");
     }
 
     @Test
-    void constructInvalidJournalEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException {
+    void constructInvalidJournalEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException, QuestException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(logger, questPackage, new NoID(questPackage), "journal invalid");
+        final Instruction instruction = new Instruction(questPackage, new NoID(questPackage), "journal invalid");
         assertThrows(QuestException.class, () -> journalFactory.parseInstruction(instruction), "invalid action of journal event should throw an exception when created");
     }
 }

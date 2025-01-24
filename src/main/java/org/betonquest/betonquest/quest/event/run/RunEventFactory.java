@@ -22,17 +22,9 @@ import java.util.List;
 public class RunEventFactory implements EventFactory, StaticEventFactory {
 
     /**
-     * The BetonQuest instance.
-     */
-    private final BetonQuest betonQuest;
-
-    /**
      * Create a run event factory with the given BetonQuest instance.
-     *
-     * @param betonQuest the BetonQuest instance
      */
-    public RunEventFactory(final BetonQuest betonQuest) {
-        this.betonQuest = betonQuest;
+    public RunEventFactory() {
     }
 
     @Override
@@ -46,7 +38,7 @@ public class RunEventFactory implements EventFactory, StaticEventFactory {
     }
 
     private NullableEventAdapter createEvent(final Instruction instruction) throws QuestException {
-        final String[] parts = instruction.getAllParts();
+        final List<String> parts = instruction.getValueParts();
         final List<QuestEvent> events = new ArrayList<>();
         StringBuilder builder = new StringBuilder();
         for (final String part : parts) {
@@ -76,7 +68,7 @@ public class RunEventFactory implements EventFactory, StaticEventFactory {
             throw new QuestException("Event type " + parts[0] + " is not registered, check if it's"
                     + " spelled correctly in internal event");
         }
-        final Instruction eventInstruction = new Instruction(betonQuest.getLoggerFactory().create(Instruction.class), questPackage, null, instruction);
+        final Instruction eventInstruction = new Instruction(questPackage, null, instruction);
         return eventFactory.parseInstruction(eventInstruction);
     }
 }

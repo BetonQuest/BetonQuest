@@ -4,6 +4,7 @@ import me.pikamug.quests.module.BukkitCustomRequirement;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.util.PlayerConverter;
@@ -48,7 +49,7 @@ public class ConditionRequirement extends BukkitCustomRequirement {
             final OnlineProfile onlineProfile = PlayerConverter.getID(player);
             final ConditionID condition = new ConditionID(null, string);
             return BetonQuest.condition(onlineProfile, condition);
-        } catch (final ObjectNotFoundException e) {
+        } catch (final ObjectNotFoundException | QuestException e) {
             log.warn("Error while checking quest requirement - BetonQuest condition '" + string + "' not found: " + e.getMessage(), e);
             return false;
         }

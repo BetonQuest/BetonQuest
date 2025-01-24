@@ -152,7 +152,7 @@ public class EffectLibParticleManager {
         for (final String rawConditionID : settings.getStringList("conditions")) {
             try {
                 conditions.add(new ConditionID(pack, GlobalVariableResolver.resolve(pack, rawConditionID)));
-            } catch (final ObjectNotFoundException exception) {
+            } catch (final ObjectNotFoundException | QuestException exception) {
                 log.warn(pack, "Error while loading npc_effects '" + key + "': " + exception.getMessage(), exception);
             }
         }

@@ -346,7 +346,7 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("pickrandom", new PickRandomEventFactory());
         eventTypes.register("point", new PointEventFactory(loggerFactory, variableProcessor, dataStorage));
         eventTypes.registerCombined("removeentity", new RemoveEntityEventFactory(data));
-        eventTypes.registerCombined("run", new RunEventFactory(betonQuest));
+        eventTypes.registerCombined("run", new RunEventFactory());
         eventTypes.register("runForAll", new RunForAllEventFactory());
         eventTypes.register("runIndependent", new RunIndependentEventFactory());
         eventTypes.registerCombined("setblock", new SetBlockEventFactory(data));

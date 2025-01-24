@@ -82,7 +82,7 @@ public class NotifyEventFactory implements EventFactory {
      * @throws QuestException if the instruction is invalid
      */
     protected NotifyIO processInstruction(final Instruction instruction, final Map<String, VariableString> translations) throws QuestException {
-        final String rawInstruction = String.join(" ", instruction.getAllParts());
+        final String rawInstruction = String.join(" ", instruction.getValueParts());
 
         final Matcher keyValueMatcher = KEY_VALUE_PATTERN.matcher(rawInstruction);
         final int indexEnd = keyValueMatcher.find() ? keyValueMatcher.start() : rawInstruction.length();

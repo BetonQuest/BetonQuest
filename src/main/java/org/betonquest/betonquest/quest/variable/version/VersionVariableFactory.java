@@ -31,7 +31,7 @@ public class VersionVariableFactory implements PlayerlessVariableFactory {
     public PlayerlessVariable parsePlayerless(final Instruction instruction) throws QuestException {
         final Plugin plugin;
         if (instruction.hasNext()) {
-            final String pluginName = String.join(".", instruction.getAllParts());
+            final String pluginName = String.join(".", instruction.getValueParts());
             plugin = Utils.getNN(Bukkit.getPluginManager().getPlugin(pluginName),
                     "Plugin " + pluginName + "does not exist!");
         } else {

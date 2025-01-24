@@ -353,7 +353,7 @@ public class PlayerData implements TagData {
             try {
                 final ObjectiveID objectiveID = new ObjectiveID(null, objective);
                 BetonQuest.resumeObjective(profile, objectiveID, entry.getValue());
-            } catch (final ObjectNotFoundException e) {
+            } catch (final ObjectNotFoundException | QuestException e) {
                 log.warn("Loaded '" + objective
                         + "' objective from the database, but it is not defined in configuration. Skipping.", e);
             }

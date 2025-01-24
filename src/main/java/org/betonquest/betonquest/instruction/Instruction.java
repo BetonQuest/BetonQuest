@@ -2,7 +2,6 @@ package org.betonquest.betonquest.instruction;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ID;
@@ -24,8 +23,6 @@ import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.Serial;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -33,13 +30,8 @@ import java.util.Optional;
 /**
  * The Instruction. Primary object for input parsing.
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass"})
-public class Instruction implements ArgumentParser, EnumParser, ListParser, IDParser, ItemParser, NumberParser {
-    /**
-     * The raw instruction string.
-     */
-    protected final String instructionString;
-
+@SuppressWarnings("PMD.TooManyMethods")
+public class Instruction implements InstructionParts, ArgumentParser, EnumParser, ListParser, IDParser, ItemParser, NumberParser {
     /**
      * The quest package that this instruction belongs to.
      */
@@ -51,67 +43,58 @@ public class Instruction implements ArgumentParser, EnumParser, ListParser, IDPa
     private final ID identifier;
 
     /**
-     * The parts of the instruction. This is the result after tokenizing the raw instruction string.
+     * The raw instruction string.
      */
-    private final String[] parts;
+    private final String instructionString;
 
     /**
-     * The index pointer for {@link #next()} method.
+     * The parts of the instruction.
      */
-    private int nextIndex = 1;
-
-    /**
-     * The position used for a more detailed exception message with {@link PartParseException}.
-     */
-    private int currentIndex = 1;
-
-    /**
-     * Key for the last requested {@link #getOptionalArgument(String)}.
-     */
-    @Nullable
-    private String lastOptional;
+    private final InstructionParts instructionParts;
 
     /**
      * Create an instruction using the quoting tokenizer.
      *
-     * @param log         logger to log failures when parsing the instruction string
      * @param pack        quest package the instruction belongs to
      * @param identifier  identifier of the instruction
      * @param instruction instruction string to parse
+     * @throws QuestException if the instruction could not be tokenized
      */
-    public Instruction(final BetonQuestLogger log, final QuestPackage pack, @Nullable final ID identifier, final String instruction) {
-        this(new QuotingTokenizer(), log, pack, useFallbackIdIfNecessary(pack, identifier), instruction);
+    public Instruction(final QuestPackage pack, @Nullable final ID identifier, final String instruction) throws QuestException {
+        this(new QuotingTokenizer(), pack, useFallbackIdIfNecessary(pack, identifier), instruction);
     }
 
     /**
      * Create an instruction using the given tokenizer.
      *
      * @param tokenizer   Tokenizer that can split on spaces but interpret quotes and escapes.
-     * @param log         logger to log failures when parsing the instruction string
      * @param pack        quest package the instruction belongs to
      * @param identifier  identifier of the instruction
      * @param instruction instruction string to parse
+     * @throws QuestException if the instruction could not be tokenized
      */
-    public Instruction(final Tokenizer tokenizer, final BetonQuestLogger log, final QuestPackage pack, final ID identifier, final String instruction) {
+    public Instruction(final Tokenizer tokenizer, final QuestPackage pack, final ID identifier, final String instruction) throws QuestException {
         this.pack = pack;
         this.identifier = identifier;
         this.instructionString = instruction;
-        this.parts = tokenizeInstruction(tokenizer, pack, instruction, log);
+        try {
+            this.instructionParts = new InstructionPartsArray(tokenizer, instruction);
+        } catch (final TokenizerException e) {
+            throw new QuestException("Could not tokenize instruction '" + instruction + "': " + e.getMessage(), e);
+        }
     }
 
     /**
-     * Create an instruction using the given tokenizer.
+     * Copies an instruction using the given instruction and a new identifier.
      *
-     * @param pack        quest package the instruction belongs to
-     * @param identifier  identifier of the instruction
-     * @param instruction raw instruction string
-     * @param parts       parts that the instruction consists of
+     * @param instruction instruction to copy
+     * @param identifier  identifier of the new instruction
      */
-    public Instruction(final QuestPackage pack, final ID identifier, final String instruction, final String... parts) {
-        this.pack = pack;
+    public Instruction(final Instruction instruction, final ID identifier) {
+        this.pack = instruction.pack;
         this.identifier = identifier;
-        this.instructionString = instruction;
-        this.parts = Arrays.copyOf(parts, parts.length);
+        this.instructionString = instruction.instructionString;
+        this.instructionParts = new InstructionPartsArray(instruction.instructionParts);
     }
 
     private static ID useFallbackIdIfNecessary(final QuestPackage pack, @Nullable final ID identifier) {
@@ -125,50 +108,6 @@ public class Instruction implements ArgumentParser, EnumParser, ListParser, IDPa
         }
     }
 
-    private String[] tokenizeInstruction(final Tokenizer tokenizer, final QuestPackage pack, final String instruction, final BetonQuestLogger log) {
-        try {
-            return tokenizer.tokens(instruction);
-        } catch (final TokenizerException e) {
-            log.warn(pack, "Could not tokenize instruction '" + instruction + "': " + e.getMessage(), e);
-            return new String[0];
-        }
-    }
-
-    @Override
-    public String toString() {
-        return instructionString;
-    }
-
-    /**
-     * Get all parts of the instruction. The instruction type is omitted.
-     *
-     * @return all arguments
-     */
-    public String[] getAllParts() {
-        return Arrays.copyOfRange(parts, 1, parts.length);
-    }
-
-    /**
-     * Get remaining parts of the instruction. The instruction type is omitted, even if no parts have been consumed yet.
-     *
-     * @return all arguments joined together
-     */
-    public String[] getRemainingParts() {
-        final String[] remainingParts = Arrays.copyOfRange(parts, nextIndex, parts.length);
-        nextIndex = parts.length;
-        currentIndex = parts.length - 1;
-        return remainingParts;
-    }
-
-    /**
-     * Get the instruction size.
-     *
-     * @return amount of arguments
-     */
-    public int size() {
-        return parts.length;
-    }
-
     /**
      * Get the source QuestPackage.
      *
@@ -179,7 +118,7 @@ public class Instruction implements ArgumentParser, EnumParser, ListParser, IDPa
     }
 
     /**
-     * Get the id.
+     * Get the {@link ID} of this instruction.
      *
      * @return the instruction identifier
      */
@@ -188,12 +127,43 @@ public class Instruction implements ArgumentParser, EnumParser, ListParser, IDPa
     }
 
     /**
-     * Get all instruction parts.
+     * Get the raw instruction string as it was passed to the constructor.
      *
-     * @return parts inclusive first argument
+     * @return the instruction string
      */
-    protected String[] getParts() {
-        return Arrays.copyOf(parts, parts.length);
+    @Override
+    public String toString() {
+        return instructionString;
+    }
+
+    @Override
+    public String next() throws QuestException {
+        return instructionParts.next();
+    }
+
+    @Override
+    public String current() {
+        return instructionParts.current();
+    }
+
+    @Override
+    public boolean hasNext() {
+        return instructionParts.hasNext();
+    }
+
+    @Override
+    public int size() {
+        return instructionParts.size();
+    }
+
+    @Override
+    public String getPart(final int index) throws QuestException {
+        return instructionParts.getPart(index);
+    }
+
+    @Override
+    public List<String> getParts() {
+        return instructionParts.getParts();
     }
 
     /**
@@ -212,63 +182,15 @@ public class Instruction implements ArgumentParser, EnumParser, ListParser, IDPa
      * @return copy of this instruction with the new ID
      */
     public Instruction copy(final ID newID) {
-        return new Instruction(getPackage(), newID, instructionString, getParts());
-    }
-
-    /**
-     * Check if there is a {@link #next()} argument.
-     *
-     * @return true if there are arguments left
-     */
-    public boolean hasNext() {
-        return currentIndex < parts.length - 1;
-    }
-
-    @Override
-    public String next() throws QuestException {
-        lastOptional = null;
-        currentIndex = nextIndex;
-        return getPart(nextIndex++);
-    }
-
-    /**
-     * Gets the current string.
-     *
-     * @return the current string
-     * @throws QuestException when there are no parts
-     */
-    public String current() throws QuestException {
-        lastOptional = null;
-        currentIndex = nextIndex - 1;
-        return getPart(currentIndex);
-    }
-
-    /**
-     * Get the instruction part at the specified position.
-     *
-     * @param index the position to get
-     * @return the argument at the position
-     * @throws QuestException when index greater or equal to {@link #size}
-     */
-    public String getPart(final int index) throws QuestException {
-        if (parts.length <= index) {
-            throw new QuestException("Not enough arguments");
-        }
-        lastOptional = null;
-        currentIndex = index;
-        return parts[index];
+        return new Instruction(this, newID);
     }
 
     @Override
     public Optional<String> getOptionalArgument(final String prefix) {
-        for (final String part : parts) {
-            if (part.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT) + ":")) {
-                lastOptional = prefix;
-                currentIndex = -1;
-                return Optional.of(part.substring(prefix.length() + 1));
-            }
-        }
-        return Optional.empty();
+        return getParts().stream()
+                .filter(part -> part.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT) + ":"))
+                .findFirst()
+                .map(part -> part.substring(prefix.length() + 1));
     }
 
     /**
@@ -278,12 +200,7 @@ public class Instruction implements ArgumentParser, EnumParser, ListParser, IDPa
      * @return if the instruction contains that argument, ignoring cases
      */
     public boolean hasArgument(final String argument) {
-        for (final String part : parts) {
-            if (part.equalsIgnoreCase(argument)) {
-                return true;
-            }
-        }
-        return false;
+        return getParts().stream().anyMatch(part -> part.equalsIgnoreCase(argument));
     }
 
     @Override
@@ -306,7 +223,7 @@ public class Instruction implements ArgumentParser, EnumParser, ListParser, IDPa
         try {
             return argument.convert(pack, string);
         } catch (final ObjectNotFoundException e) {
-            throw new PartParseException("Error while loading id: " + e.getMessage(), e);
+            throw new QuestException("Error while loading '" + string + "' id: " + e.getMessage(), e);
         }
     }
 
@@ -325,7 +242,7 @@ public class Instruction implements ArgumentParser, EnumParser, ListParser, IDPa
         try {
             return Enum.valueOf(clazz, string.toUpperCase(Locale.ROOT));
         } catch (final IllegalArgumentException e) {
-            throw new PartParseException("There is no such " + clazz.getSimpleName() + ": " + string, e);
+            throw new QuestException("Error while parsing '" + string + "' enum class '" + clazz.getSimpleName() + "': " + e.getMessage(), e);
         }
     }
 
@@ -349,7 +266,7 @@ public class Instruction implements ArgumentParser, EnumParser, ListParser, IDPa
             }
             return new Item(item, number);
         } catch (final QuestException | NumberFormatException e) {
-            throw new Instruction.PartParseException("Error while parsing '" + string + "' item: " + e.getMessage(), e);
+            throw new QuestException("Error while parsing '" + string + "' item: " + e.getMessage(), e);
         }
     }
 
@@ -358,36 +275,7 @@ public class Instruction implements ArgumentParser, EnumParser, ListParser, IDPa
         try {
             return argument.apply(string);
         } catch (final NumberFormatException e) {
-            throw new PartParseException("Could not parse a number: " + string, e);
-        }
-    }
-
-    /**
-     * {@link QuestException} with detailed part arguments for instruction parsing.
-     */
-    public class PartParseException extends QuestException {
-        @Serial
-        private static final long serialVersionUID = 2007556828888605511L;
-
-        /**
-         * Create a new Exception with a message.
-         *
-         * @param message The message
-         * @see Exception#Exception(String)
-         */
-        public PartParseException(final String message) {
-            super("Error while parsing " + (lastOptional == null ? currentIndex : lastOptional + " optional") + " argument: " + message);
-        }
-
-        /**
-         * Create a new exception with a message and cause.
-         *
-         * @param message The message
-         * @param cause   The Throwable
-         * @see Exception#Exception(String, Throwable)
-         */
-        public PartParseException(final String message, final Throwable cause) {
-            super("Error while parsing " + (lastOptional == null ? currentIndex : lastOptional + " optional") + " argument: " + message, cause);
+            throw new QuestException("Could not parsing '" + string + "' number: " + e.getMessage(), e);
         }
     }
 }

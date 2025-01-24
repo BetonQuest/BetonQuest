@@ -50,8 +50,8 @@ public class CheckConditionFactory implements PlayerConditionFactory, Playerless
 
     private List<Condition> parseConditions(final Instruction instruction) throws QuestException {
         final List<Condition> internalConditions = new ArrayList<>();
-        final String[] parts = instruction.getAllParts();
-        if (parts.length == 0) {
+        final List<String> parts = instruction.getValueParts();
+        if (parts.isEmpty()) {
             throw new QuestException("Not enough arguments");
         }
         final QuestPackage questPackage = instruction.getPackage();
@@ -87,7 +87,7 @@ public class CheckConditionFactory implements PlayerConditionFactory, Playerless
                     + " spelled correctly in internal condition");
         }
         try {
-            final Instruction innerInstruction = new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), questPackage, new NoID(questPackage), instruction);
+            final Instruction innerInstruction = new Instruction(questPackage, new NoID(questPackage), instruction);
             return conditionFactory.parseInstruction(innerInstruction);
         } catch (final ObjectNotFoundException e) {
             if (e.getCause() instanceof QuestException) {

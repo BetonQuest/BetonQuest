@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.registry.processor;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
@@ -18,22 +17,15 @@ import org.jetbrains.annotations.Nullable;
  * Stores Variables and resolve them.
  */
 public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable> {
-    /**
-     * Logger Factory for new custom logger.
-     */
-    private final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * Create a new Variable Processor to store variables, resolves them and create new.
      *
      * @param log           the custom logger for this class
      * @param variableTypes the available variable types
-     * @param loggerFactory the logger factory used in variable ids
      */
-    public VariableProcessor(final BetonQuestLogger log, final VariableTypeRegistry variableTypes,
-                             final BetonQuestLoggerFactory loggerFactory) {
+    public VariableProcessor(final BetonQuestLogger log, final VariableTypeRegistry variableTypes) {
         super(log, variableTypes, "Variable", "variables");
-        this.loggerFactory = loggerFactory;
     }
 
     @Override
@@ -42,8 +34,8 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable>
     }
 
     @Override
-    protected VariableID getIdentifier(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
-        return new VariableID(loggerFactory, pack, identifier);
+    protected VariableID getIdentifier(final QuestPackage pack, final String identifier) throws ObjectNotFoundException, QuestException {
+        return new VariableID(pack, identifier);
     }
 
     /**
@@ -59,7 +51,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, Variable>
             throws QuestException {
         final VariableID variableID;
         try {
-            variableID = new VariableID(loggerFactory, pack, instruction);
+            variableID = new VariableID(pack, instruction);
         } catch (final ObjectNotFoundException e) {
             throw new QuestException("Could not load variable: " + e.getMessage(), e);
         }

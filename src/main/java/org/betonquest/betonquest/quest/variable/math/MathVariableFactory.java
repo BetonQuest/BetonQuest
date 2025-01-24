@@ -51,7 +51,7 @@ public class MathVariableFactory implements PlayerVariableFactory, PlayerlessVar
 
     @SuppressWarnings("deprecation")
     private NullableVariableAdapter parseInstruction(final Instruction instruction) throws QuestException {
-        final Matcher expressionMatcher = CALC_REGEX.matcher(String.join(".", instruction.getAllParts()));
+        final Matcher expressionMatcher = CALC_REGEX.matcher(String.join(".", instruction.getValueParts()));
         if (!expressionMatcher.matches()) {
             throw new QuestException("invalid format");
         }

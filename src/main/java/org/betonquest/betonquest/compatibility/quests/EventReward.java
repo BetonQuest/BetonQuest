@@ -4,6 +4,7 @@ import me.pikamug.quests.module.BukkitCustomReward;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.util.PlayerConverter;
@@ -48,7 +49,7 @@ public class EventReward extends BukkitCustomReward {
             final OnlineProfile onlineProfile = PlayerConverter.getID(player);
             final EventID event = new EventID(null, string);
             BetonQuest.event(onlineProfile, event);
-        } catch (final ObjectNotFoundException e) {
+        } catch (final ObjectNotFoundException | QuestException e) {
             log.warn("Error while running quest reward - BetonQuest event '" + string + "' not found: " + e.getMessage(), e);
         }
     }

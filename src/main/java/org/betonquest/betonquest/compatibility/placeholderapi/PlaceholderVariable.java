@@ -24,7 +24,7 @@ public class PlaceholderVariable extends Variable {
     public PlaceholderVariable(final Instruction instruction) {
         super(instruction);
         staticness = true;
-        placeholder = String.join(".", instruction.getAllParts());
+        placeholder = String.join(".", instruction.getValueParts());
     }
 
     @Override

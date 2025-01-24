@@ -80,7 +80,7 @@ public abstract class TypedQuestProcessor<I extends ID, T> extends QuestProcesso
         final I identifier;
         try {
             identifier = getIdentifier(pack, key);
-        } catch (final ObjectNotFoundException e) {
+        } catch (final ObjectNotFoundException | QuestException e) {
             log.warn(pack, "Error while loading " + readable + " '" + packName + "." + key + "': " + e.getMessage(), e);
             return;
         }
@@ -114,6 +114,7 @@ public abstract class TypedQuestProcessor<I extends ID, T> extends QuestProcesso
      * @param identifier the id instruction string
      * @return the new typed ID
      * @throws ObjectNotFoundException if the ID could not be parsed
+     * @throws QuestException          if the instruction of the identifier could not be created.
      */
-    protected abstract I getIdentifier(QuestPackage pack, String identifier) throws ObjectNotFoundException;
+    protected abstract I getIdentifier(QuestPackage pack, String identifier) throws ObjectNotFoundException, QuestException;
 }

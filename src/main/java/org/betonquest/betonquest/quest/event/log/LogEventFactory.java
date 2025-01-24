@@ -55,7 +55,7 @@ public class LogEventFactory implements EventFactory, StaticEventFactory {
 
     private NullableEventAdapter createLogEvent(final Instruction instruction) throws QuestException {
         final LogEventLevel level = instruction.getEnum(instruction.getOptional("level"), LogEventLevel.class, LogEventLevel.INFO);
-        final String raw = String.join(" ", instruction.getAllParts());
+        final String raw = String.join(" ", instruction.getValueParts());
         final Matcher conditionsMatcher = CONDITIONS_REGEX.matcher(raw);
         final Matcher levelMatcher = LEVEL_REGEX.matcher(raw);
         final int msgStart = levelMatcher.find() ? levelMatcher.end() : 0;
