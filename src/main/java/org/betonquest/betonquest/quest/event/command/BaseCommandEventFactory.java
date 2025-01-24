@@ -59,7 +59,7 @@ public abstract class BaseCommandEventFactory implements EventFactory {
      */
     public List<VariableString> parseCommands(final Instruction instruction) throws QuestException {
         final List<VariableString> commands = new ArrayList<>();
-        final String string = String.join(" ", instruction.getAllParts());
+        final String string = String.join(" ", instruction.getValueParts());
         final Matcher conditionsMatcher = CONDITIONS_REGEX.matcher(string);
         final int end = conditionsMatcher.find() ? conditionsMatcher.start() : string.length();
         final String command = (String) string.subSequence(0, end);

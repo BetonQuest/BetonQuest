@@ -1,48 +1,45 @@
 package org.betonquest.betonquest.instruction;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ID;
-
-import java.util.regex.Pattern;
+import org.betonquest.betonquest.instruction.tokenizer.Tokenizer;
 
 /**
- * This class represents the variable-related instructions in BetonQuest.
+ * The variable instruction. Primary object for variable input parsing.
  */
 public class VariableInstruction extends Instruction {
     /**
      * Regular expression that can be used to split variables correctly.
      */
-    private static final Pattern DOT_PATTERN = Pattern.compile("\\.");
+    private static final Tokenizer DOT_TOKENIZER = (instruction) -> instruction.split("\\.");
 
     /**
-     * Constructs a new VariableInstruction with the given logger, quest package, variable identifier, and instruction.
+     * Constructs a new VariableInstruction with the given quest package, variable identifier, and instruction.
      *
-     * @param log                The logger used for logging.
-     * @param pack               The quest package that this instruction belongs to.
-     * @param variableIdentifier The identifier of the variable.
-     * @param instruction        The instruction string. It should start and end with '%' character.
-     * @throws IllegalArgumentException if the instruction string does not start and end with '%' character.
+     * @param pack        The quest package that this instruction belongs to.
+     * @param identifier  The identifier of the variable.
+     * @param instruction The instruction string. It should start and end with '%' character.
+     * @throws QuestException if the instruction could not be tokenized,
+     *                        or if the instruction does not start and end with '%' character.
      */
-    public VariableInstruction(final BetonQuestLogger log, final QuestPackage pack, final ID variableIdentifier, final String instruction) {
-        super(DOT_PATTERN::split, log, pack, variableIdentifier, cleanInstruction(instruction));
+    public VariableInstruction(final QuestPackage pack, final ID identifier, final String instruction) throws QuestException {
+        super(DOT_TOKENIZER, pack, identifier, cleanInstruction(instruction));
     }
 
     /**
-     * Constructs a new VariableInstruction with the given logger, quest package, variable identifier, and instruction.
+     * Constructs a new VariableInstruction with the given quest package, variable identifier, and instruction.
      *
-     * @param pack               The quest package that this instruction belongs to.
-     * @param variableIdentifier The identifier of the variable.
-     * @param instruction        The raw instruction string for this variable.
-     * @param parts              The variable instruction parts.
+     * @param instruction The raw instruction string for this variable.
+     * @param identifier  The identifier for this variable.
      */
-    public VariableInstruction(final QuestPackage pack, final ID variableIdentifier, final String instruction, final String... parts) {
-        super(pack, variableIdentifier, instruction, parts);
+    public VariableInstruction(final VariableInstruction instruction, final ID identifier) {
+        super(instruction, identifier);
     }
 
-    private static String cleanInstruction(final String instruction) {
+    private static String cleanInstruction(final String instruction) throws QuestException {
         if (!instruction.isEmpty() && instruction.charAt(0) != '%' && !instruction.endsWith("%")) {
-            throw new IllegalArgumentException("Variable instruction does not start and end with '%' character");
+            throw new QuestException("Variable instruction does not start and end with '%' character");
         }
         return instruction.substring(1, instruction.length() - 1);
     }
@@ -54,6 +51,6 @@ public class VariableInstruction extends Instruction {
 
     @Override
     public VariableInstruction copy(final ID newID) {
-        return new VariableInstruction(getPackage(), newID, instructionString, getParts());
+        return new VariableInstruction(this, newID);
     }
 }

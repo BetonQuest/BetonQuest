@@ -90,7 +90,7 @@ public abstract class ID {
         if (rawInstruction == null) {
             throw new ObjectNotFoundException(readable + " '" + getFullID() + "' is not defined");
         }
-        instruction = new Instruction(BetonQuest.getInstance().getLoggerFactory().create(Instruction.class), this.pack, this, rawInstruction);
+        instruction = new Instruction(this.pack, this, rawInstruction);
     }
 
     @Nullable

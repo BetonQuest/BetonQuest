@@ -457,7 +457,7 @@ public abstract class Objective {
      * @param newID new ID of the objective
      */
     public void setLabel(final ObjectiveID newID) {
-        instruction = instruction.copy(newID);
+        instruction = new Instruction(instruction, newID);
     }
 
     /**
