@@ -223,7 +223,7 @@ public class Instruction implements InstructionParts, ArgumentParser, EnumParser
         try {
             return argument.convert(pack, string);
         } catch (final ObjectNotFoundException e) {
-            throw new QuestException("Error while loading id: " + e.getMessage(), e);
+            throw new QuestException("Error while loading '" + string + "' id: " + e.getMessage(), e);
         }
     }
 
@@ -242,7 +242,7 @@ public class Instruction implements InstructionParts, ArgumentParser, EnumParser
         try {
             return Enum.valueOf(clazz, string.toUpperCase(Locale.ROOT));
         } catch (final IllegalArgumentException e) {
-            throw new QuestException("There is no such " + clazz.getSimpleName() + ": " + string, e);
+            throw new QuestException("Error while parsing '" + string + "' enum class '" + clazz.getSimpleName() + "': " + e.getMessage(), e);
         }
     }
 
@@ -275,7 +275,7 @@ public class Instruction implements InstructionParts, ArgumentParser, EnumParser
         try {
             return argument.apply(string);
         } catch (final NumberFormatException e) {
-            throw new QuestException("Could not parse a number: " + string, e);
+            throw new QuestException("Could not parsing '" + string + "' number: " + e.getMessage(), e);
         }
     }
 }

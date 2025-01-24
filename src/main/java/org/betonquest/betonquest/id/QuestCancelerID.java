@@ -16,7 +16,7 @@ public class QuestCancelerID extends ID {
      * @param pack       the package where the identifier was used in
      * @param identifier the identifier of the quest canceler
      * @throws ObjectNotFoundException when the quest canceler could not be resolved with the given identifier
-     * @throws QuestException
+     * @throws QuestException          if the instruction could not be created
      */
     public QuestCancelerID(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException, QuestException {
         super(pack, identifier, "cancel", "Quest Canceler");

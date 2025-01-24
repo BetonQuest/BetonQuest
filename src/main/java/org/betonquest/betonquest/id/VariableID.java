@@ -17,6 +17,7 @@ public class VariableID extends ID {
      * @param pack       The quest package that this identifier belongs to.
      * @param identifier The identifier string. It should start and end with '%' character.
      * @throws ObjectNotFoundException if the identifier string does not start and end with '%' character.
+     * @throws QuestException          if the instruction could not be created.
      */
     public VariableID(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException, QuestException {
         super(pack, identifier.substring(1, identifier.length() - 1));

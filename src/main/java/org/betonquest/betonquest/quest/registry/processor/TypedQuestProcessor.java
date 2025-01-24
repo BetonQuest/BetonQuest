@@ -114,6 +114,7 @@ public abstract class TypedQuestProcessor<I extends ID, T> extends QuestProcesso
      * @param identifier the id instruction string
      * @return the new typed ID
      * @throws ObjectNotFoundException if the ID could not be parsed
+     * @throws QuestException          if the instruction of the identifier could not be created.
      */
     protected abstract I getIdentifier(QuestPackage pack, String identifier) throws ObjectNotFoundException, QuestException;
 }
