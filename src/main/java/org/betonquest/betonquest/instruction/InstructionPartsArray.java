@@ -57,7 +57,7 @@ public class InstructionPartsArray implements InstructionParts {
 
     @Override
     public boolean hasNext() {
-        return this.index < this.parts.length;
+        return this.index < this.parts.length - 1;
     }
 
     @Override
