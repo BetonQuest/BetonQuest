@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.exception;
+package org.betonquest.betonquest.compatibility;
 
 import org.bukkit.plugin.Plugin;
 

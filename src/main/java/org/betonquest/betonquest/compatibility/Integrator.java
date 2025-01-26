@@ -1,7 +1,5 @@
 package org.betonquest.betonquest.compatibility;
 
-import org.betonquest.betonquest.exception.HookException;
-
 /**
  * Integrator object performs integration with other plugins.
  */
@@ -33,5 +31,4 @@ public interface Integrator {
      * Clean up everything.
      */
     void close();
-
 }
