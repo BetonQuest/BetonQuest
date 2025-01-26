@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.event.conversation;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.quest.ObjectNotFoundException;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;

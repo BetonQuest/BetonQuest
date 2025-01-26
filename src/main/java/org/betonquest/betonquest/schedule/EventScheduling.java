@@ -3,10 +3,10 @@ package org.betonquest.betonquest.schedule;
 import org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfigurationSection;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.quest.ObjectNotFoundException;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.quest.registry.feature.ScheduleRegistry;
 import org.bukkit.configuration.ConfigurationSection;
 

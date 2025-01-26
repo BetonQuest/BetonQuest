@@ -5,11 +5,11 @@ import org.betonquest.betonquest.api.bukkit.event.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.ObjectNotFoundException;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
@@ -289,7 +289,7 @@ public class Backpack implements Listener {
                 if (!checkDefault || !"DEFAULT".equalsIgnoreCase(buttonString)) {
                     try {
                         stack = new QuestItem(new ItemID(null, buttonString)).generate(1);
-                    } catch (final ObjectNotFoundException | QuestException e) {
+                    } catch (final QuestException e) {
                         log.warn("Could not load " + button + " button: " + e.getMessage(), e);
                     }
                 }

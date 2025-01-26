@@ -4,7 +4,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.GlobalVariableID;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
@@ -65,7 +64,7 @@ public final class GlobalVariableResolver {
     private static String getReplacement(final QuestPackage pack, final String variable) {
         try {
             return new GlobalVariableID(pack, variable).getInstruction().toString();
-        } catch (final ObjectNotFoundException | QuestException e) {
+        } catch (final QuestException e) {
             LOG.warn(pack, e.getMessage(), e);
             return variable + "(not found)";
         }

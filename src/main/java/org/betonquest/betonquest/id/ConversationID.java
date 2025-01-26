@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.id;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
+import org.betonquest.betonquest.api.quest.ObjectNotFoundException;
 
 /**
  * Represents a conversation ID.

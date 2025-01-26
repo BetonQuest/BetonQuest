@@ -17,6 +17,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.ObjectNotFoundException;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.compatibility.Compatibility;
@@ -26,7 +27,6 @@ import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
@@ -857,7 +857,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final EventID eventID;
         try {
             eventID = new EventID(null, args[2]);
-        } catch (final ObjectNotFoundException | QuestException e) {
+        } catch (final QuestException e) {
             sendMessage(sender, "error", e.getMessage());
             log.warn("Could not find event: " + e.getMessage(), e);
             return;
@@ -901,7 +901,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final ConditionID conditionID;
         try {
             conditionID = new ConditionID(null, args[2]);
-        } catch (final ObjectNotFoundException | QuestException e) {
+        } catch (final QuestException e) {
             sendMessage(sender, "error", e.getMessage());
             log.warn("Could not find condition: " + e.getMessage(), e);
             return;
@@ -1124,7 +1124,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final ObjectiveID objectiveID;
         try {
             objectiveID = new ObjectiveID(null, args[3]);
-        } catch (final ObjectNotFoundException | QuestException e) {
+        } catch (final QuestException e) {
             sendMessage(sender, "error", e.getMessage());
             log.warn("Could not find objective: " + e.getMessage(), e);
             return;
@@ -1260,7 +1260,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 final ObjectiveID nameID;
                 try {
                     nameID = new ObjectiveID(null, name);
-                } catch (final ObjectNotFoundException | QuestException e) {
+                } catch (final QuestException e) {
                     sendMessage(sender, "error", e.getMessage());
                     log.warn("Could not find Objective: " + e.getMessage(), e);
                     return;
@@ -1286,7 +1286,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 final ObjectiveID renameID;
                 try {
                     renameID = new ObjectiveID(null, rename);
-                } catch (final ObjectNotFoundException | QuestException e) {
+                } catch (final QuestException e) {
                     sender.sendMessage("§4There was an unexpected error: " + e.getMessage());
                     log.reportException(e);
                     return;
@@ -1383,7 +1383,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 final ObjectiveID objectiveID;
                 try {
                     objectiveID = new ObjectiveID(null, name);
-                } catch (final ObjectNotFoundException | QuestException e) {
+                } catch (final QuestException e) {
                     sendMessage(sender, "error", e.getMessage());
                     log.warn("Could not find objective: " + e.getMessage(), e);
                     return;
@@ -1754,7 +1754,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final ObjectiveID objectiveID;
         try {
             objectiveID = new ObjectiveID(null, args[2]);
-        } catch (final ObjectNotFoundException | QuestException e) {
+        } catch (final QuestException e) {
             sendMessage(sender, "error", e.getMessage());
             log.warn("Could not find objective: " + e.getMessage(), e);
             return;

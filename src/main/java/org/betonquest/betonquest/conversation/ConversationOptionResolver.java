@@ -2,8 +2,8 @@ package org.betonquest.betonquest.conversation;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.quest.ObjectNotFoundException;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConversationID;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,7 +52,7 @@ public class ConversationOptionResolver {
      */
     public ConversationOptionResolver(final BetonQuest plugin, final QuestPackage currentPackage,
                                       final String currentConversationName, final ConversationData.OptionType optionType,
-                                      final String option) throws QuestException, ObjectNotFoundException {
+                                      final String option) throws QuestException {
         this.plugin = plugin;
         this.optionType = optionType;
 

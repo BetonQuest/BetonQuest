@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
@@ -152,7 +151,7 @@ public class EffectLibParticleManager {
         for (final String rawConditionID : settings.getStringList("conditions")) {
             try {
                 conditions.add(new ConditionID(pack, GlobalVariableResolver.resolve(pack, rawConditionID)));
-            } catch (final ObjectNotFoundException | QuestException exception) {
+            } catch (final QuestException exception) {
                 log.warn(pack, "Error while loading npc_effects '" + key + "': " + exception.getMessage(), exception);
             }
         }

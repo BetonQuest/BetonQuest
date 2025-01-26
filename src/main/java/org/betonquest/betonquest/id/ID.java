@@ -3,9 +3,9 @@ package org.betonquest.betonquest.id;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.quest.ObjectNotFoundException;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.jetbrains.annotations.Nullable;
 
@@ -83,10 +83,10 @@ public abstract class ID {
      * @param identifier the id instruction string
      * @param section    the section of the config file
      * @param readable   the readable name of the object
-     * @throws ObjectNotFoundException if the ID could not be parsed.
      * @throws QuestException          if the instruction could not be created.
+     * @throws ObjectNotFoundException if the ID could not be parsed.
      */
-    protected ID(@Nullable final QuestPackage pack, final String identifier, final String section, final String readable) throws ObjectNotFoundException, QuestException {
+    protected ID(@Nullable final QuestPackage pack, final String identifier, final String section, final String readable) throws QuestException {
         this(pack, identifier);
         final String rawInstruction = this.pack.getString(section + "." + this.identifier);
         if (rawInstruction == null) {

@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.conversation;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.quest.ObjectNotFoundException;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConversationID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

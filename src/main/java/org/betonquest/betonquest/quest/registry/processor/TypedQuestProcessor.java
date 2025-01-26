@@ -2,9 +2,9 @@ package org.betonquest.betonquest.quest.registry.processor;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.quest.ObjectNotFoundException;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.quest.registry.FactoryRegistry;
 import org.betonquest.betonquest.quest.registry.type.TypeFactory;
@@ -80,7 +80,7 @@ public abstract class TypedQuestProcessor<I extends ID, T> extends QuestProcesso
         final I identifier;
         try {
             identifier = getIdentifier(pack, key);
-        } catch (final ObjectNotFoundException | QuestException e) {
+        } catch (final QuestException e) {
             log.warn(pack, "Error while loading " + readable + " '" + packName + "." + key + "': " + e.getMessage(), e);
             return;
         }
@@ -113,8 +113,8 @@ public abstract class TypedQuestProcessor<I extends ID, T> extends QuestProcesso
      * @param pack       the package the ID is in
      * @param identifier the id instruction string
      * @return the new typed ID
-     * @throws ObjectNotFoundException if the ID could not be parsed
      * @throws QuestException          if the instruction of the identifier could not be created.
+     * @throws ObjectNotFoundException if the ID could not be parsed
      */
-    protected abstract I getIdentifier(QuestPackage pack, String identifier) throws ObjectNotFoundException, QuestException;
+    protected abstract I getIdentifier(QuestPackage pack, String identifier) throws QuestException;
 }

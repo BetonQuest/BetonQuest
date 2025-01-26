@@ -3,9 +3,9 @@ package org.betonquest.betonquest.quest.registry.processor;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.quest.ObjectNotFoundException;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.conversation.ConversationData;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConversationID;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
@@ -44,7 +44,7 @@ public class ConversationProcessor extends QuestProcessor<ConversationID, Conver
                     }
                     final ConversationID convID = new ConversationID(pack, convName);
                     values.put(convID, new ConversationData(plugin, convID, convSection));
-                } catch (final QuestException | ObjectNotFoundException e) {
+                } catch (final QuestException e) {
                     log.warn(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
                 }
             }

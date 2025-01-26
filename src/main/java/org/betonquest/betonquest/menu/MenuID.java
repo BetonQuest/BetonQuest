@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
+import org.betonquest.betonquest.api.quest.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ID;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;

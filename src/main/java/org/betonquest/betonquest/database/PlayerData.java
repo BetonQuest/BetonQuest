@@ -11,11 +11,11 @@ import org.betonquest.betonquest.api.bukkit.event.PlayerTagRemoveEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerUpdatePointEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.ObjectNotFoundException;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.PlayerConversationState;
 import org.betonquest.betonquest.database.Saver.Record;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemStack;
@@ -353,7 +353,7 @@ public class PlayerData implements TagData {
             try {
                 final ObjectiveID objectiveID = new ObjectiveID(null, objective);
                 BetonQuest.resumeObjective(profile, objectiveID, entry.getValue());
-            } catch (final ObjectNotFoundException | QuestException e) {
+            } catch (final QuestException e) {
                 log.warn("Loaded '" + objective
                         + "' objective from the database, but it is not defined in configuration. Skipping.", e);
             }

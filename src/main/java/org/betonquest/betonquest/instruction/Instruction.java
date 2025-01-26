@@ -2,8 +2,8 @@ package org.betonquest.betonquest.instruction;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.quest.ObjectNotFoundException;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.NoID;
