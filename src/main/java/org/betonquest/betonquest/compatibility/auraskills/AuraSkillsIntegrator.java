@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.compatibility.auraskills;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.exception.HookException;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 

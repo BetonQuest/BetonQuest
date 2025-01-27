@@ -33,7 +33,6 @@ import org.betonquest.betonquest.compatibility.traincarts.TrainCartsIntegrator;
 import org.betonquest.betonquest.compatibility.vault.VaultIntegrator;
 import org.betonquest.betonquest.compatibility.worldedit.WorldEditIntegrator;
 import org.betonquest.betonquest.compatibility.worldguard.WorldGuardIntegrator;
-import org.betonquest.betonquest.exception.HookException;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

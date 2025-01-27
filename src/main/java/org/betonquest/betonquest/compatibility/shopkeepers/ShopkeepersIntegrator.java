@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.compatibility.shopkeepers;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.exception.HookException;
-import org.betonquest.betonquest.exception.UnsupportedVersionException;
+import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
