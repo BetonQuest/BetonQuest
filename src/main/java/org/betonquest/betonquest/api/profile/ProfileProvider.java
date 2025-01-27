@@ -4,6 +4,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Interface for implementing a profile provider.
@@ -20,6 +21,14 @@ public interface ProfileProvider {
      * @return the profile
      */
     Profile getProfile(OfflinePlayer offlinePlayer);
+
+    /**
+     * Get a {@link Profile} for a player uuid.
+     *
+     * @param uuid the uuid of the player to get the profile for
+     * @return the profile
+     */
+    Profile getProfile(UUID uuid);
 
     /**
      * Get an {@link OnlineProfile} for a player.

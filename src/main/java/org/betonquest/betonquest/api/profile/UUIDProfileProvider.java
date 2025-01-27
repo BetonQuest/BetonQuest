@@ -108,6 +108,11 @@ public class UUIDProfileProvider implements ProfileProvider {
     }
 
     @Override
+    public Profile getProfile(final UUID uuid) {
+        return getProfile(Bukkit.getOfflinePlayer(uuid));
+    }
+
+    @Override
     public List<OnlineProfile> getOnlineProfiles() {
         return Bukkit.getOnlinePlayers().stream().map(this::getProfile).toList();
     }

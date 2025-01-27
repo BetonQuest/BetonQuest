@@ -63,6 +63,7 @@ public class JoinQuitListener implements Listener {
             return;
         }
         final Profile profile = BetonQuest.getInstance().getProfileProvider().getProfile(Bukkit.getOfflinePlayer(event.getUniqueId()));
+        BetonQuest.getInstance().getLogger().info("Loading player data for " + profile.getProfileName());
         playerDataStorage.put(profile, new PlayerData(profile));
     }
 
