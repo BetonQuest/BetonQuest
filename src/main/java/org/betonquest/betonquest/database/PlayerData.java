@@ -101,7 +101,7 @@ public class PlayerData implements TagData {
                  ResultSet journalResults = con.querySQL(QueryType.SELECT_JOURNAL, profileID);
                  ResultSet pointResults = con.querySQL(QueryType.SELECT_POINTS, profileID);
                  ResultSet backpackResults = con.querySQL(QueryType.SELECT_BACKPACK, profileID);
-                 ResultSet profileResult = con.querySQL(QueryType.SELECT_PLAYER, profileID)) {
+                 ResultSet profileResult = con.querySQL(QueryType.SELECT_PLAYER, profile.getPlayerUUID().toString())) {
 
                 while (objectiveResults.next()) {
                     objectives.put(objectiveResults.getString("objective"), objectiveResults.getString("instructions"));

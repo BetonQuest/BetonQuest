@@ -9,13 +9,13 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveController;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConversationID;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
@@ -146,7 +146,8 @@ public class CitizensConversationStarter {
         if (citizensMoveController.blocksTalking(npc)) {
             return;
         }
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getClicker());
+        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getClicker());
         if (CombatTagger.isTagged(onlineProfile)) {
             try {
                 Config.sendNotify(null, onlineProfile, "busy", "busy,error");

@@ -1,7 +1,8 @@
 package org.betonquest.betonquest.command;
 
+import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -37,7 +38,8 @@ public class JournalCommand implements CommandExecutor {
             // command sender must be a player, console can't have journal
             if (sender instanceof Player) {
                 // giving the player his journal
-                dataStorage.get(PlayerConverter.getID((Player) sender)).getJournal().addToInv();
+                final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+                dataStorage.get(profileProvider.getProfile((Player) sender)).getJournal().addToInv();
             }
             return true;
         }

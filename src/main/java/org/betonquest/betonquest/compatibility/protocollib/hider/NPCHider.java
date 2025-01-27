@@ -8,11 +8,11 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -188,7 +188,8 @@ public final class NPCHider extends BukkitRunnable implements Listener {
         if (!npcID.getOwningRegistry().equals(CitizensAPI.getNPCRegistry())) {
             return;
         }
-        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+        for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
             applyVisibility(onlineProfile, npcID.getId());
         }
     }
@@ -197,7 +198,8 @@ public final class NPCHider extends BukkitRunnable implements Listener {
      * Updates the visibility of all NPCs for all onlineProfiles.
      */
     public void applyVisibility() {
-        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+        for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
             for (final Integer npcID : npcs.keySet()) {
                 applyVisibility(onlineProfile, npcID);
             }
@@ -222,6 +224,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-        Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> applyVisibility(PlayerConverter.getID(event.getPlayer())));
+        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+        Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> applyVisibility(profileProvider.getProfile(event.getPlayer())));
     }
 }

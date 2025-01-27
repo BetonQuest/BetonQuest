@@ -1,7 +1,8 @@
 package org.betonquest.betonquest.compatibility.fabled;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.MobKillNotifier;
-import org.betonquest.betonquest.util.PlayerConverter;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -25,6 +26,7 @@ public class FabledKillListener implements Listener {
         if (event.getTarget().getHealth() > event.getDamage()) {
             return;
         }
-        MobKillNotifier.addKill(PlayerConverter.getID((Player) event.getDamager()), event.getTarget());
+        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+        MobKillNotifier.addKill(profileProvider.getProfile((Player) event.getDamager()), event.getTarget());
     }
 }

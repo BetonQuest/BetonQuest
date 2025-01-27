@@ -5,9 +5,9 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.util.LocalChatPaginator;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -146,7 +146,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> player.closeInventory());
             final Interceptor interceptor = conv.getInterceptor();
             if (interceptor != null) {
-                interceptor.sendMessage(Config.getMessage(PlayerConverter.getID(player).getProfileUUID().toString(), "conversation_spectator"));
+                interceptor.sendMessage(Config.getMessage(BetonQuest.getInstance().getProfileProvider().getProfile(player).getProfileUUID().toString(), "conversation_spectator"));
             }
             return;
         }
@@ -362,7 +362,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
     @EventHandler
     public void onConsume(final PlayerItemConsumeEvent event) {
-        if (Conversation.containsPlayer(PlayerConverter.getID(event.getPlayer()))) {
+        final Profile profile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
+        if (Conversation.containsPlayer(profile)) {
             event.setCancelled(true);
         }
     }

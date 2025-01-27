@@ -6,10 +6,10 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -119,19 +119,21 @@ public class NPCRangeObjective extends Objective {
 
     private void loop() throws QuestException {
         final List<UUID> profilesInside = new ArrayList<>();
+        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
         for (final int npcId : npcIds) {
             final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
             if (npc == null) {
                 throw new QuestException("NPC with ID " + npcId + " does not exist");
             }
-            for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+            for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
                 if (!profilesInside.contains(onlineProfile.getProfileUUID()) && isInside(onlineProfile, npc.getStoredLocation())) {
                     profilesInside.add(onlineProfile.getProfileUUID());
                 }
             }
         }
-        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
-            checkPlayer(onlineProfile.getProfileUUID(), onlineProfile, profilesInside.contains(onlineProfile.getProfileUUID()));
+        for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
+            checkPlayer(onlineProfile.getProfileUUID(), onlineProfile,
+                    profilesInside.contains(onlineProfile.getProfileUUID()));
         }
     }
 

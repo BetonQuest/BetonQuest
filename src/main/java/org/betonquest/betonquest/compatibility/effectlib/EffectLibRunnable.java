@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -75,7 +74,7 @@ public class EffectLibRunnable extends BukkitRunnable {
 
     private List<OnlineProfile> checkActiveEffects() {
         final List<OnlineProfile> activePlayerEffects = new ArrayList<>();
-        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+        for (final OnlineProfile onlineProfile : BetonQuest.getInstance().getProfileProvider().getOnlineProfiles()) {
             if (!BetonQuest.conditions(onlineProfile, effectConfiguration.conditions())) {
                 continue;
             }
