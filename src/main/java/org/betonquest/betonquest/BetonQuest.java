@@ -262,6 +262,9 @@ public class BetonQuest extends JavaPlugin {
      */
     public void setProfileProvider(final ProfileProvider profileProvider) {
         this.profileProvider = profileProvider;
+        log.info("Loading profile provider " + profileProvider.getClass().getName());
+        playerDataStorage.initProfiles(profileProvider.getOnlineProfiles());
+        log.info("Profile provider " + profileProvider.getClass().getName() + " loaded");
     }
 
     /**

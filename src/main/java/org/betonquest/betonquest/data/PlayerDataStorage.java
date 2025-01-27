@@ -1,12 +1,17 @@
 package org.betonquest.betonquest.data;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.GlobalObjectives;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.profile.ActiveProfileChangedEvent;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.conversation.ConversationResumer;
 import org.betonquest.betonquest.database.PlayerData;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 
 import java.util.Collection;
 import java.util.Map;
@@ -15,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Stores loaded {@link PlayerData}.
  */
-public class PlayerDataStorage {
+public class PlayerDataStorage implements Listener {
     /**
      * LoggerFactory to create new custom logger.
      */
@@ -37,9 +42,23 @@ public class PlayerDataStorage {
      * @param loggerFactory the logger factory to use in Conversation Resumer
      * @param log           the logger for debug messages
      */
-    public PlayerDataStorage(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
+    public PlayerDataStorage(final Plugin plugin, final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
         this.loggerFactory = loggerFactory;
         this.log = log;
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
+
+    @EventHandler
+    public void onActiveProfileChanged(final ActiveProfileChangedEvent event) {
+        final OnlineProfile newProfile = event.getNewProfile();
+        final PlayerData playerData = get(newProfile);
+        remove(event.getOldProfile());
+        put(newProfile, playerData);
+        playerData.startObjectives(); 
+        playerData.getJournal().update();
+        if (playerData.getActiveConversation() != null) {
+            new ConversationResumer(loggerFactory, newProfile, playerData.getActiveConversation());
+        }
     }
 
     /**
@@ -50,7 +69,7 @@ public class PlayerDataStorage {
     public void initProfiles(final Collection<OnlineProfile> onlineProfiles) {
         for (final OnlineProfile onlineProfile : onlineProfiles) {
             final PlayerData playerData = new PlayerData(onlineProfile);
-            playerDataMap.put(onlineProfile, playerData);
+            put(onlineProfile, playerData);
             playerData.startObjectives();
             playerData.getJournal().update();
             if (playerData.getActiveConversation() != null) {
@@ -114,7 +133,9 @@ public class PlayerDataStorage {
      * @throws IllegalArgumentException when there is no data and the player is offline
      */
     public PlayerData get(final Profile profile) {
+        BetonQuest.getInstance().getLogger().info("get: " + profile.getProfileName() + " " + profile.getProfileUUID() + " " + profile.getPlayer().getName());
         PlayerData playerData = playerDataMap.get(profile);
+        BetonQuest.getInstance().getLogger().info("playerData loaded: " + playerData);
         if (playerData == null) {
             if (profile.getOnlineProfile().isPresent()) {
                 playerData = new PlayerData(profile);
