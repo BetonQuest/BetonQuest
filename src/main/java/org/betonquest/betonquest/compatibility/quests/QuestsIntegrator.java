@@ -47,8 +47,9 @@ public class QuestsIntegrator implements Integrator {
         questRegistries.event().register("quest", QuestsEvent.class);
 
         final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
-        questsInstance.getCustomRewards().add(new EventReward(loggerFactory.create(EventReward.class)));
-        questsInstance.getCustomRequirements().add(new ConditionRequirement(loggerFactory.create(ConditionRequirement.class)));
+        questsInstance.getCustomRewards().add(new EventReward(loggerFactory.create(EventReward.class), plugin.getQuestTypeAPI()));
+        questsInstance.getCustomRequirements().add(new ConditionRequirement(
+                loggerFactory.create(ConditionRequirement.class), plugin.getQuestTypeAPI()));
     }
 
     @Override

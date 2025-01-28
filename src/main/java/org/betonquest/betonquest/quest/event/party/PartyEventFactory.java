@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.party;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
@@ -22,12 +23,19 @@ public class PartyEventFactory implements EventFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
+     * Quest Type API.
+     */
+    private final QuestTypeAPI questTypeAPI;
+
+    /**
      * Creates a PartyEventFactory instance.
      *
      * @param loggerFactory logger factory to use
+     * @param questTypeAPI  the Quest Type API
      */
-    public PartyEventFactory(final BetonQuestLoggerFactory loggerFactory) {
+    public PartyEventFactory(final BetonQuestLoggerFactory loggerFactory, final QuestTypeAPI questTypeAPI) {
         this.loggerFactory = loggerFactory;
+        this.questTypeAPI = questTypeAPI;
     }
 
     @Override
@@ -37,7 +45,7 @@ public class PartyEventFactory implements EventFactory {
         final List<ConditionID> conditions = instruction.getIDList(ConditionID::new);
         final List<EventID> events = instruction.getIDList(EventID::new);
         return new OnlineEventAdapter(
-                new PartyEvent(range, amount, conditions, events),
+                new PartyEvent(questTypeAPI, range, amount, conditions, events),
                 loggerFactory.create(PartyEvent.class),
                 instruction.getPackage()
         );

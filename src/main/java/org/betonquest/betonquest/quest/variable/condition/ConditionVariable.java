@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.variable.condition;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -22,6 +22,11 @@ public class ConditionVariable implements PlayerVariable {
     private final boolean papiMode;
 
     /**
+     * Quest Type API.
+     */
+    private final QuestTypeAPI questTypeAPI;
+
+    /**
      * Storage for player data.
      */
     private final PlayerDataStorage dataStorage;
@@ -29,13 +34,16 @@ public class ConditionVariable implements PlayerVariable {
     /**
      * Create a new Condition variable.
      *
-     * @param conditionId the condition to get the "fulfillment" status
-     * @param papiMode    if the return value should be in PAPI mode as defined in the documentation
-     * @param dataStorage the storage providing player data
+     * @param conditionId  the condition to get the "fulfillment" status
+     * @param papiMode     if the return value should be in PAPI mode as defined in the documentation
+     * @param questTypeAPI the Quest Type API
+     * @param dataStorage  the storage providing player data
      */
-    public ConditionVariable(final ConditionID conditionId, final boolean papiMode, final PlayerDataStorage dataStorage) {
+    public ConditionVariable(final ConditionID conditionId, final boolean papiMode, final QuestTypeAPI questTypeAPI,
+                             final PlayerDataStorage dataStorage) {
         this.conditionId = conditionId;
         this.papiMode = papiMode;
+        this.questTypeAPI = questTypeAPI;
         this.dataStorage = dataStorage;
     }
 
@@ -43,7 +51,7 @@ public class ConditionVariable implements PlayerVariable {
     public String getValue(final Profile profile) {
         final String lang = dataStorage.get(profile).getLanguage();
 
-        if (BetonQuest.condition(profile, conditionId)) {
+        if (questTypeAPI.condition(profile, conditionId)) {
             return papiMode ? Config.getMessage(lang, "condition_variable_met") : "true";
         }
         return papiMode ? Config.getMessage(lang, "condition_variable_not_met") : "false";

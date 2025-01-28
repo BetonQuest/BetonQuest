@@ -4,18 +4,18 @@ import io.papermc.lib.PaperLib;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
-import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.bukkit.event.LoadDataEvent;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.ConfigurationFileFactory;
+import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.CachingBetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.bstats.BStatsMetrics;
 import org.betonquest.betonquest.command.BackpackCommand;
 import org.betonquest.betonquest.command.CancelQuestCommand;
@@ -27,13 +27,11 @@ import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.config.DefaultConfigurationFileFactory;
-import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.config.patcher.migration.Migrator;
 import org.betonquest.betonquest.conversation.AnswerFilter;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
-import org.betonquest.betonquest.conversation.ConversationData;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.AsyncSaver;
 import org.betonquest.betonquest.database.Backup;
@@ -42,11 +40,6 @@ import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.MySQL;
 import org.betonquest.betonquest.database.SQLite;
 import org.betonquest.betonquest.database.Saver;
-import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.id.ConversationID;
-import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.id.ObjectiveID;
-import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.item.QuestItemHandler;
 import org.betonquest.betonquest.logger.DefaultBetonQuestLoggerFactory;
 import org.betonquest.betonquest.logger.HandlerFactory;
@@ -89,7 +82,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -99,7 +91,6 @@ import java.nio.file.Path;
 import java.time.InstantSource;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Handler;
 
@@ -220,6 +211,16 @@ public class BetonQuest extends JavaPlugin {
     private RPGMenu rpgMenu;
 
     /**
+     * Quest Type API.
+     */
+    private QuestTypeAPI questTypeAPI;
+
+    /**
+     * Feature API.
+     */
+    private FeatureAPI featureAPI;
+
+    /**
      * Cache for event schedulers, holding the last execution of an event.
      */
     private LastExecutionCache lastExecutionCache;
@@ -238,86 +239,6 @@ public class BetonQuest extends JavaPlugin {
      */
     public static BetonQuest getInstance() {
         return instance;
-    }
-
-    /**
-     * Checks if the conditions described by conditionID are met.
-     *
-     * @param profile      the {@link Profile} of the player which should be checked
-     * @param conditionIDs IDs of the conditions to check
-     * @return if all conditions are met
-     */
-    public static boolean conditions(@Nullable final Profile profile, final Collection<ConditionID> conditionIDs) {
-        final ConditionID[] ids = new ConditionID[conditionIDs.size()];
-        int index = 0;
-        for (final ConditionID id : conditionIDs) {
-            ids[index++] = id;
-        }
-        return conditions(profile, ids);
-    }
-
-    /**
-     * Checks if the conditions described by conditionID are met.
-     *
-     * @param profile      the {@link Profile} of the player which should be checked
-     * @param conditionIDs IDs of the conditions to check
-     * @return if all conditions are met
-     */
-    public static boolean conditions(@Nullable final Profile profile, final ConditionID... conditionIDs) {
-        return instance.questRegistry.conditions().checks(profile, conditionIDs);
-    }
-
-    /**
-     * Checks if the condition described by conditionID is met.
-     *
-     * @param conditionID ID of the condition to check
-     * @param profile     the {@link Profile} of the player which should be checked
-     * @return if the condition is met
-     */
-    public static boolean condition(@Nullable final Profile profile, final ConditionID conditionID) {
-        return instance.questRegistry.conditions().check(profile, conditionID);
-    }
-
-    /**
-     * Fires an event for the {@link Profile} if it meets the event's conditions.
-     * If the profile is null, the event will be fired as a static event.
-     *
-     * @param profile the {@link Profile} for which the event must be executed or null
-     * @param eventID ID of the event to fire
-     * @return true if the event was run even if there was an exception during execution
-     */
-    public static boolean event(@Nullable final Profile profile, final EventID eventID) {
-        return instance.questRegistry.events().execute(profile, eventID);
-    }
-
-    /**
-     * Creates new objective for given player.
-     *
-     * @param profile     the {@link Profile} of the player
-     * @param objectiveID ID of the objective
-     */
-    public static void newObjective(final Profile profile, final ObjectiveID objectiveID) {
-        instance.questRegistry.objectives().start(profile, objectiveID);
-    }
-
-    /**
-     * Resumes the existing objective for given player.
-     *
-     * @param profile     the {@link Profile} of the player
-     * @param objectiveID ID of the objective
-     * @param instruction data instruction string
-     */
-    public static void resumeObjective(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
-        instance.questRegistry.objectives().resume(profile, objectiveID, instruction);
-    }
-
-    /**
-     * Get the loaded Quest Canceller.
-     *
-     * @return quest cancellers in a new map
-     */
-    public static Map<QuestCancelerID, QuestCanceler> getCanceler() {
-        return instance.questRegistry.questCanceller().getCancelers();
     }
 
     /**
@@ -462,7 +383,6 @@ public class BetonQuest extends JavaPlugin {
         playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class));
 
         final PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents(new JoinQuitListener(loggerFactory, this, playerDataStorage), this);
         pluginManager.registerEvents(new QuestItemHandler(playerDataStorage), this);
 
         final ConfigAccessor cache;
@@ -497,10 +417,14 @@ public class BetonQuest extends JavaPlugin {
         questRegistry = new QuestRegistry(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
                 featureRegistries, questTypeRegistries);
 
-        new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
-                questRegistry.variables(), globalData, playerDataStorage).register(questTypeRegistries);
+        questTypeAPI = new QuestTypeAPI(questRegistry);
+        featureAPI = new FeatureAPI(questRegistry);
+        pluginManager.registerEvents(new JoinQuitListener(loggerFactory, questTypeAPI, playerDataStorage), this);
 
-        new CoreFeatureFactories(loggerFactory, lastExecutionCache).register(featureRegistries);
+        new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
+                questTypeAPI, questRegistry.variables(), globalData, playerDataStorage).register(questTypeRegistries);
+
+        new CoreFeatureFactories(loggerFactory, lastExecutionCache, questTypeAPI).register(featureRegistries);
 
         new Compatibility(this, loggerFactory.create(Compatibility.class));
 
@@ -512,7 +436,7 @@ public class BetonQuest extends JavaPlugin {
             playerDataStorage.initProfiles(PlayerConverter.getOnlineProfiles());
 
             try {
-                playerHider = new PlayerHider(this);
+                playerHider = new PlayerHider(this, questTypeAPI);
             } catch (final QuestException e) {
                 log.error("Could not start PlayerHider! " + e.getMessage(), e);
             }
@@ -662,7 +586,7 @@ public class BetonQuest extends JavaPlugin {
             playerHider.stop();
         }
         try {
-            playerHider = new PlayerHider(this);
+            playerHider = new PlayerHider(this, questTypeAPI);
         } catch (final QuestException e) {
             log.error("Could not start PlayerHider! " + e.getMessage(), e);
         }
@@ -707,6 +631,24 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
+     * Returns the Quest Type API.
+     *
+     * @return the api for Quest Type logic
+     */
+    public QuestTypeAPI getQuestTypeAPI() {
+        return questTypeAPI;
+    }
+
+    /**
+     * Returns the Feature API.
+     *
+     * @return the api for feature logic
+     */
+    public FeatureAPI getFeatureAPI() {
+        return featureAPI;
+    }
+
+    /**
      * Returns the database instance.
      *
      * @return Database instance
@@ -735,39 +677,6 @@ public class BetonQuest extends JavaPlugin {
      */
     public GlobalData getGlobalData() {
         return globalData;
-    }
-
-    /**
-     * Returns the list of objectives of this player.
-     *
-     * @param profile the {@link Profile} of the player
-     * @return list of this player's active objectives
-     */
-    public List<Objective> getPlayerObjectives(final Profile profile) {
-        return questRegistry.objectives().getActive(profile);
-    }
-
-    /**
-     * Gets stored Conversation Data.
-     * <p>
-     * The conversation data can be null if there was an error loading it.
-     *
-     * @param conversationID package name, dot and name of the conversation
-     * @return ConversationData object for this conversation or null if it does
-     * not exist
-     */
-    @Nullable
-    public ConversationData getConversation(final ConversationID conversationID) {
-        return instance.questRegistry.conversations().getConversation(conversationID);
-    }
-
-    /**
-     * @param objectiveID package name, dot and ID of the objective
-     * @return Objective object or null if it does not exist
-     */
-    @Nullable
-    public Objective getObjective(final ObjectiveID objectiveID) {
-        return instance.questRegistry.objectives().getObjective(objectiveID);
     }
 
     /**
@@ -804,16 +713,6 @@ public class BetonQuest extends JavaPlugin {
      */
     public FeatureRegistries getFeatureRegistries() {
         return featureRegistries;
-    }
-
-    /**
-     * Renames the objective instance.
-     *
-     * @param name   the current name
-     * @param rename the name it should have now
-     */
-    public void renameObjective(final ObjectiveID name, final ObjectiveID rename) {
-        questRegistry.objectives().renameObjective(name, rename);
     }
 
     /**

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.conversation;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ConversationID;
 import org.jetbrains.annotations.Nullable;
@@ -12,9 +12,9 @@ import org.jetbrains.annotations.Nullable;
 public class ConversationOptionResolver {
 
     /**
-     * The {@link BetonQuest} instance.
+     * Feature API.
      */
-    private final BetonQuest plugin;
+    private final FeatureAPI featureAPI;
 
     /**
      * The {@link ConversationData.OptionType} of the option.
@@ -41,7 +41,7 @@ public class ConversationOptionResolver {
      * Prepares the given information for resolving a conversation option inside a conversation.
      * Use {@link #resolve()} to resolve the information.
      *
-     * @param plugin                  the plugin instance
+     * @param featureAPI              the feature API
      * @param currentPackage          the package from which we are searching for the conversation
      * @param currentConversationName the current conversation data
      * @param optionType              the {@link ConversationData.OptionType} of the option
@@ -49,10 +49,10 @@ public class ConversationOptionResolver {
      * @throws QuestException when the option string is incorrectly formatted or
      *                        when the conversation could not be found
      */
-    public ConversationOptionResolver(final BetonQuest plugin, final QuestPackage currentPackage,
+    public ConversationOptionResolver(final FeatureAPI featureAPI, final QuestPackage currentPackage,
                                       final String currentConversationName, final ConversationData.OptionType optionType,
                                       final String option) throws QuestException {
-        this.plugin = plugin;
+        this.featureAPI = featureAPI;
         this.optionType = optionType;
 
         final String[] parts = option.split("\\.", -1);
@@ -93,7 +93,7 @@ public class ConversationOptionResolver {
         final ConversationID conversationWithNextOption = new ConversationID(pack, convName);
 
         //Since the conversation might be in another package we must load this again
-        final ConversationData newData = plugin.getConversation(conversationWithNextOption);
+        final ConversationData newData = featureAPI.getConversation(conversationWithNextOption);
         if (newData == null) {
             throw new QuestException("Tried to load conversation '" + conversationWithNextOption.getFullID()
                     + "' but it is not loaded! Ensure it was loaded without errors.");

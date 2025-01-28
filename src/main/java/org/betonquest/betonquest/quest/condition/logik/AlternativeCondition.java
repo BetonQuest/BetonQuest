@@ -53,7 +53,7 @@ public class AlternativeCondition implements NullableCondition {
     public boolean check(@Nullable final Profile profile) throws QuestException {
         if (Bukkit.isPrimaryThread()) {
             for (final ConditionID id : conditionIDs) {
-                if (BetonQuest.condition(profile, id)) {
+                if (BetonQuest.getInstance().getQuestTypeAPI().condition(profile, id)) {
                     return true;
                 }
             }
@@ -61,7 +61,7 @@ public class AlternativeCondition implements NullableCondition {
             final List<CompletableFuture<Boolean>> conditions = new ArrayList<>();
             for (final ConditionID id : conditionIDs) {
                 final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
-                        () -> BetonQuest.condition(profile, id));
+                        () -> BetonQuest.getInstance().getQuestTypeAPI().condition(profile, id));
                 conditions.add(future);
             }
             for (final CompletableFuture<Boolean> condition : conditions) {

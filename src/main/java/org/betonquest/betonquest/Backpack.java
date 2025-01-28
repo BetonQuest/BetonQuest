@@ -413,7 +413,7 @@ public class Backpack implements Listener {
             super();
             final List<QuestCanceler> cancelers = new ArrayList<>();
             // get all quest cancelers that can be shown to the player
-            for (final QuestCanceler canceler : BetonQuest.getCanceler().values()) {
+            for (final QuestCanceler canceler : BetonQuest.getInstance().getFeatureAPI().getCanceler().values()) {
                 if (canceler.show(onlineProfile)) {
                     cancelers.add(canceler);
                 }

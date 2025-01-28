@@ -55,7 +55,7 @@ public class SkriptEffectBQ extends Effect {
             public void run() {
                 final String eventID = SkriptEffectBQ.this.event.getSingle(event);
                 try {
-                    BetonQuest.event(PlayerConverter.getID(player.getSingle(event)), new EventID(null, eventID));
+                    BetonQuest.getInstance().getQuestTypeAPI().event(PlayerConverter.getID(player.getSingle(event)), new EventID(null, eventID));
                 } catch (final QuestException e) {
                     log.warn("Error when running Skript event - could not load '" + eventID + "' event: " + e.getMessage(), e);
                 }

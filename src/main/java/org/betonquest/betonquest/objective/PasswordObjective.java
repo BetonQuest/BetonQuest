@@ -79,7 +79,7 @@ public class PasswordObjective extends Objective implements Listener {
                 return !fromCommand || !prefix.isEmpty();
             } else {
                 for (final EventID event : failEvents) {
-                    BetonQuest.event(onlineProfile, event);
+                    BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, event);
                 }
             }
         }

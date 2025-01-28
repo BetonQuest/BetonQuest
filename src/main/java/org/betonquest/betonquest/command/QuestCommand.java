@@ -863,7 +863,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         // fire the event
         final Profile profile = "-".equals(args[1]) ? null : PlayerConverter.getID(Bukkit.getOfflinePlayer(args[1]));
-        BetonQuest.event(profile, eventID);
+        instance.getQuestTypeAPI().event(profile, eventID);
         sendMessage(sender, "player_event", eventID.getInstruction().toString());
     }
 
@@ -908,7 +908,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // display message about condition
         final Profile profile = "-".equals(args[1]) ? null : PlayerConverter.getID(Bukkit.getOfflinePlayer(args[1]));
         sendMessage(sender, "player_condition", (conditionID.inverted() ? "! " : "") + conditionID.getInstruction(),
-                Boolean.toString(BetonQuest.condition(profile, conditionID)));
+                Boolean.toString(instance.getQuestTypeAPI().condition(profile, conditionID)));
     }
 
     /**
@@ -1101,7 +1101,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             final Stream<String> objectives;
             if (isOnline) {
                 // if the player is online then just retrieve tags from his active objectives
-                objectives = instance.getPlayerObjectives(profile).stream()
+                objectives = instance.getQuestTypeAPI().getPlayerObjectives(profile).stream()
                         .map(Objective::getLabel);
             } else {
                 // if player is offline then convert his raw objective strings to tags
@@ -1128,7 +1128,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             log.warn("Could not find objective: " + e.getMessage(), e);
             return;
         }
-        final Objective objective = instance.getObjective(objectiveID);
+        final Objective objective = instance.getQuestTypeAPI().getObjective(objectiveID);
         if (objective == null) {
             sendMessage(sender, "specify_objective");
             return;
@@ -1142,7 +1142,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         "Adding new objective " + objectiveID + " for " + profile);
                 // add the objective
                 if (isOnline) {
-                    BetonQuest.newObjective(profile, objectiveID);
+                    instance.getQuestTypeAPI().newObjective(profile, objectiveID);
                 } else {
                     playerData.addNewRawObjective(objectiveID);
                 }
@@ -1290,7 +1290,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     log.reportException(e);
                     return;
                 }
-                instance.renameObjective(nameID, renameID);
+                instance.getQuestTypeAPI().renameObjective(nameID, renameID);
                 nameID.getPackage().getConfig().set(nameID.getBaseID(), null);
                 try {
                     nameID.getPackage().saveAll();
@@ -1388,7 +1388,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     return;
                 }
                 for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
-                    final Objective objective = instance.getObjective(objectiveID);
+                    final Objective objective = instance.getQuestTypeAPI().getObjective(objectiveID);
                     if (objective == null) {
                         break;
                     }
@@ -1758,7 +1758,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             log.warn("Could not find objective: " + e.getMessage(), e);
             return;
         }
-        final Objective tmp = instance.getObjective(objectiveID);
+        final Objective tmp = instance.getQuestTypeAPI().getObjective(objectiveID);
         if (!(tmp instanceof final VariableObjective variableObjective)) {
             if (tmp == null) {
                 log.debug("Missing objective instruction string");

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.schedule.impl;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
@@ -20,6 +21,7 @@ import java.util.function.Supplier;
  * Starting and stopping the executor as well as adding/removing schedules is already implemented.
  *
  * @param <S> Type of Schedule
+ * @param <T> Type of time used by the scheduler
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
 public abstract class ExecutorServiceScheduler<S extends Schedule, T> extends Scheduler<S, T> {
@@ -48,20 +50,23 @@ public abstract class ExecutorServiceScheduler<S extends Schedule, T> extends Sc
     /**
      * Constructor to create a new instance of this scheduler.
      *
-     * @param log the logger that will be used for logging
+     * @param log          the logger that will be used for logging
+     * @param questTypeAPI the class for executing events
      */
-    public ExecutorServiceScheduler(final BetonQuestLogger log) {
-        this(log, Executors::newSingleThreadScheduledExecutor);
+    public ExecutorServiceScheduler(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI) {
+        this(log, questTypeAPI, Executors::newSingleThreadScheduledExecutor);
     }
 
     /**
      * Constructor to create a new instance of this scheduler with a custom executor.
      *
-     * @param log      the logger that will be used for logging
-     * @param executor supplier used to create new instances of the executor used by this scheduler
+     * @param log          the logger that will be used for logging
+     * @param executor     supplier used to create new instances of the executor used by this scheduler
+     * @param questTypeAPI the class for executing events
      */
-    public ExecutorServiceScheduler(final BetonQuestLogger log, final Supplier<ScheduledExecutorService> executor) {
-        super(log);
+    public ExecutorServiceScheduler(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI,
+                                    final Supplier<ScheduledExecutorService> executor) {
+        super(log, questTypeAPI);
         this.log = log;
         this.executorServiceSupplier = executor;
     }
@@ -106,7 +111,7 @@ public abstract class ExecutorServiceScheduler<S extends Schedule, T> extends Sc
     /**
      * <p>
      * Stop the scheduler and unregister all schedules that belong to this scheduler.
-     * Typically this method is called on reload and server shutdown.
+     * Typically, this method is called on reload and server shutdown.
      * </p>
      * <p><b>
      * When overriding this method, make sure to call {@code super.stop()} at some point to remove schedules

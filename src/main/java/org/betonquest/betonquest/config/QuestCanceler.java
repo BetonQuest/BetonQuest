@@ -152,7 +152,7 @@ public class QuestCanceler {
      * @return true if all conditions are met, false otherwise
      */
     public boolean show(final Profile profile) {
-        return conditions == null || BetonQuest.conditions(profile, conditions);
+        return conditions == null || BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, conditions);
     }
 
     /**
@@ -169,7 +169,7 @@ public class QuestCanceler {
         if (objectives != null) {
             for (final ObjectiveID objectiveID : objectives) {
                 log.debug(objectiveID.getPackage(), "  Removing objective " + objectiveID);
-                final Objective objective = BetonQuest.getInstance().getObjective(objectiveID);
+                final Objective objective = BetonQuest.getInstance().getQuestTypeAPI().getObjective(objectiveID);
                 if (objective == null) {
                     log.warn("Could not find objective " + objectiveID + " in QuestCanceler " + name);
                 } else {
@@ -191,7 +191,7 @@ public class QuestCanceler {
         // fire all events
         if (events != null) {
             for (final EventID event : events) {
-                BetonQuest.event(onlineProfile, event);
+                BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, event);
             }
         }
         // done

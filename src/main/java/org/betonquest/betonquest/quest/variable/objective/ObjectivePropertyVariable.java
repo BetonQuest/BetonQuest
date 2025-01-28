@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.variable.objective;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.id.ObjectiveID;
 
@@ -13,9 +13,9 @@ import org.betonquest.betonquest.id.ObjectiveID;
 public class ObjectivePropertyVariable implements PlayerVariable {
 
     /**
-     * The BetonQuest instance.
+     * Quest Type API.
      */
-    private final BetonQuest betonQuest;
+    private final QuestTypeAPI questTypeAPI;
 
     /**
      * The objective ID.
@@ -30,19 +30,19 @@ public class ObjectivePropertyVariable implements PlayerVariable {
     /**
      * Create a new objective property variable.
      *
-     * @param betonQuest   The BetonQuest instance.
+     * @param questTypeAPI the Quest Type API
      * @param objectiveID  The objective ID.
      * @param propertyName The property name.
      */
-    public ObjectivePropertyVariable(final BetonQuest betonQuest, final ObjectiveID objectiveID, final String propertyName) {
-        this.betonQuest = betonQuest;
+    public ObjectivePropertyVariable(final QuestTypeAPI questTypeAPI, final ObjectiveID objectiveID, final String propertyName) {
+        this.questTypeAPI = questTypeAPI;
         this.objectiveID = objectiveID;
         this.propertyName = propertyName;
     }
 
     @Override
     public String getValue(final Profile profile) throws QuestException {
-        final Objective objective = betonQuest.getObjective(objectiveID);
+        final Objective objective = questTypeAPI.getObjective(objectiveID);
         if (objective == null) {
             throw new QuestException("Objective not found: " + objectiveID);
         }

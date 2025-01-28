@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.objective;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.id.ObjectiveID;
@@ -13,21 +13,21 @@ import org.betonquest.betonquest.instruction.Instruction;
 public class ObjectiveConditionFactory implements PlayerConditionFactory {
 
     /**
-     * The BetonQuest instance.
+     * Quest Type API.
      */
-    private final BetonQuest betonQuest;
+    private final QuestTypeAPI questTypeAPI;
 
     /**
      * Creates a new ObjectiveConditionFactory.
      *
-     * @param betonQuest the BetonQuest instance
+     * @param questTypeAPI the Quest Type API
      */
-    public ObjectiveConditionFactory(final BetonQuest betonQuest) {
-        this.betonQuest = betonQuest;
+    public ObjectiveConditionFactory(final QuestTypeAPI questTypeAPI) {
+        this.questTypeAPI = questTypeAPI;
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        return new ObjectiveCondition(instruction.getID(ObjectiveID::new), betonQuest);
+        return new ObjectiveCondition(questTypeAPI, instruction.getID(ObjectiveID::new));
     }
 }

@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.conversation.ConversationResumer;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
@@ -31,9 +32,9 @@ public class JoinQuitListener implements Listener {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Stores the {@link PlayerData}.
+     * Quest Type API.
      */
-    private final BetonQuest betonQuest;
+    private final QuestTypeAPI questTypeAPI;
 
     /**
      * Holds loaded PlayerData.
@@ -44,12 +45,12 @@ public class JoinQuitListener implements Listener {
      * Creates new listener, which will handle the data loading/saving.
      *
      * @param loggerFactory     used for logger creation in ConversationResumer
-     * @param betonQuest        the object to store and remove {@link PlayerData}
+     * @param questTypeAPI      the object to get player Objectives
      * @param playerDataStorage the storage for un-/loading player data
      */
-    public JoinQuitListener(final BetonQuestLoggerFactory loggerFactory, final BetonQuest betonQuest, final PlayerDataStorage playerDataStorage) {
+    public JoinQuitListener(final BetonQuestLoggerFactory loggerFactory, final QuestTypeAPI questTypeAPI, final PlayerDataStorage playerDataStorage) {
         this.loggerFactory = loggerFactory;
-        this.betonQuest = betonQuest;
+        this.questTypeAPI = questTypeAPI;
         this.playerDataStorage = playerDataStorage;
     }
 
@@ -94,7 +95,7 @@ public class JoinQuitListener implements Listener {
         }
         final PlayerResourcePackStatusEvent.Status resourcePackStatus = event.getPlayer().getResourcePackStatus();
         if (resourcePackStatus != null) {
-            betonQuest.getPlayerObjectives(onlineProfile).stream()
+            questTypeAPI.getPlayerObjectives(onlineProfile).stream()
                     .filter(objective -> objective instanceof ResourcePackObjective)
                     .map(objective -> (ResourcePackObjective) objective)
                     .forEach(objective -> objective.processObjective(onlineProfile, resourcePackStatus));
@@ -109,7 +110,7 @@ public class JoinQuitListener implements Listener {
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent event) {
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
-        for (final Objective objective : betonQuest.getPlayerObjectives(onlineProfile)) {
+        for (final Objective objective : questTypeAPI.getPlayerObjectives(onlineProfile)) {
             objective.pauseObjectiveForPlayer(onlineProfile);
         }
         playerDataStorage.remove(onlineProfile);

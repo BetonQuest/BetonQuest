@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.random;
 
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
@@ -32,9 +33,17 @@ public class PickRandomEventFactory implements EventFactory, StaticEventFactory 
     private static final int NUMBER_OF_MAXIMUM_PERCENTAGES = 3;
 
     /**
-     * Creates the PickRandomEventFactory.
+     * Quest Type API.
      */
-    public PickRandomEventFactory() {
+    private final QuestTypeAPI questTypeAPI;
+
+    /**
+     * Creates the PickRandomEventFactory.
+     *
+     * @param questTypeAPI the Quest Type API
+     */
+    public PickRandomEventFactory(final QuestTypeAPI questTypeAPI) {
+        this.questTypeAPI = questTypeAPI;
     }
 
     @Override
@@ -86,6 +95,6 @@ public class PickRandomEventFactory implements EventFactory, StaticEventFactory 
             throw new QuestException("Error while loading event: '" + instruction.getID(EventID::new).getFullID() + "'. Wrong number of % detected. Check your event.");
         });
         final VariableNumber amount = instruction.get(instruction.getOptional("amount"), VariableNumber::new);
-        return new NullableEventAdapter(new PickRandomEvent(events, amount));
+        return new NullableEventAdapter(new PickRandomEvent(events, amount, questTypeAPI));
     }
 }

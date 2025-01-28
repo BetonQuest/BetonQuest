@@ -284,7 +284,7 @@ public class Journal {
                                 }
                             }
 
-                            if (!BetonQuest.conditions(profile, pageConditions)) {
+                            if (!BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, pageConditions)) {
                                 continue;
                             }
                         } catch (final QuestException e) {
