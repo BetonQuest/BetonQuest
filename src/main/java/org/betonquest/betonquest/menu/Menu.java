@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
@@ -129,7 +128,7 @@ public class Menu extends SimpleYMLSection implements Listener {
             protected QuestItem of() throws Missing, Invalid {
                 try {
                     return new QuestItem(new ItemID(Menu.this.pack, getString("bind")));
-                } catch (final ObjectNotFoundException | QuestException e) {
+                } catch (final QuestException e) {
                     throw new Invalid("bind", e);
                 }
             }

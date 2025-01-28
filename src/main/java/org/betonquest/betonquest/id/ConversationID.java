@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.id;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
+import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
  * Represents a conversation ID.
@@ -13,12 +13,12 @@ public class ConversationID extends ID {
      *
      * @param pack       the package where the identifier was used in
      * @param identifier the identifier of the conversation
-     * @throws ObjectNotFoundException when the conversation could not be resolved with the given identifier
+     * @throws QuestException when the conversation could not be resolved with the given identifier
      */
-    public ConversationID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
+    public ConversationID(final QuestPackage pack, final String identifier) throws QuestException {
         super(pack, identifier);
         if (!super.pack.getConfig().contains("conversations." + super.identifier)) {
-            throw new ObjectNotFoundException("Conversation '" + pack.getQuestPath() + "." + identifier + "' does not"
+            throw new QuestException("Conversation '" + pack.getQuestPath() + "." + identifier + "' does not"
                     + " exist. Ensure it was loaded without errors.");
         }
     }

@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.conversation.ConversationData;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConversationID;
 
 /**
@@ -36,7 +35,7 @@ public class ConversationCondition implements PlayerCondition {
         }
         try {
             return conversation.isReady(profile);
-        } catch (final ObjectNotFoundException e) {
+        } catch (final QuestException e) {
             throw new QuestException(e.getMessage(), e);
         }
     }

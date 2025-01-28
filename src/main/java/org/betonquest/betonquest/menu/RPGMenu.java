@@ -6,8 +6,8 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.menu.betonquest.MenuCondition;
 import org.betonquest.betonquest.menu.betonquest.MenuObjective;
 import org.betonquest.betonquest.menu.betonquest.MenuQuestEvent;
@@ -178,7 +178,7 @@ public class RPGMenu {
                     log.warn(pack, e.getMessage());
                     info.addError(e);
                     info.result = ReloadResult.SUCCESS;
-                } catch (final ObjectNotFoundException e) {
+                } catch (final QuestException e) {
                     log.error(pack, "Strange unhandled exception during loading: " + e);
                     info.result = ReloadResult.FAILED;
                     return info;

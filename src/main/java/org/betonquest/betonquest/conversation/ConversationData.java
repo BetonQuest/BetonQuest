@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
@@ -118,11 +117,11 @@ public class ConversationData {
      * @param plugin         the plugin instance
      * @param conversationID the {@link ConversationID} of the conversation holding this data
      * @param convSection    the configuration section of the conversation
-     * @throws QuestException          when there is a syntax error in the defined conversation
-     * @throws ObjectNotFoundException when conversation options cannot be resolved or {@code convSection} is null
+     * @throws QuestException when there is a syntax error in the defined conversation or
+     *                        when conversation options cannot be resolved or {@code convSection} is null
      */
     @SuppressWarnings({"PMD.NPathComplexity", "PMD.CognitiveComplexity"})
-    public ConversationData(final BetonQuest plugin, final ConversationID conversationID, final ConfigurationSection convSection) throws QuestException, ObjectNotFoundException {
+    public ConversationData(final BetonQuest plugin, final ConversationID conversationID, final ConfigurationSection convSection) throws QuestException {
         this.plugin = plugin;
         this.conversationID = conversationID;
         this.pack = conversationID.getPackage();
@@ -204,10 +203,10 @@ public class ConversationData {
      * <p>
      * This method should be called when all conversations are loaded.
      *
-     * @throws ObjectNotFoundException when a pointer to an external conversation could not be resolved
+     * @throws QuestException when a pointer to an external conversation could not be resolved
      */
     @SuppressWarnings("PMD.ExceptionAsFlowControl")
-    public void checkExternalPointers() throws ObjectNotFoundException {
+    public void checkExternalPointers() throws QuestException {
         for (final CrossConversationReference externalPointer : externalPointers) {
 
             final ResolvedOption resolvedPointer = externalPointer.resolver().resolve();
@@ -231,9 +230,9 @@ public class ConversationData {
             try {
                 conv = plugin.getConversation(new ConversationID(targetPack, targetConvName));
                 if (conv == null) {
-                    throw new ObjectNotFoundException("No Conversation for conversationID '" + conversationID.getFullID() + "'! Check for errors on /bq reload!");
+                    throw new QuestException("No Conversation for conversationID '" + conversationID.getFullID() + "'! Check for errors on /bq reload!");
                 }
-            } catch (final ObjectNotFoundException e) {
+            } catch (final QuestException e) {
                 log.warn("Cross-conversation pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
                         + sourceOption + " points to the '" + targetConvName
                         + "' conversation in the package '" + targetPack.getQuestPath() + "' but that conversation does not exist. Check your spelling!", e);
@@ -259,19 +258,19 @@ public class ConversationData {
      * @return a {@link CrossConversationReference} pointing to the option
      * @throws QuestException when the conversation could not be resolved
      */
-    private CrossConversationReference resolvePointer(final QuestPackage pack, final String currentConversationName, @Nullable final String currentOptionName, final OptionType optionType, final String option) throws QuestException, ObjectNotFoundException {
+    private CrossConversationReference resolvePointer(final QuestPackage pack, final String currentConversationName, @Nullable final String currentOptionName, final OptionType optionType, final String option) throws QuestException {
         final ConversationOptionResolver resolver = new ConversationOptionResolver(plugin, pack, currentConversationName, optionType, option);
         return new CrossConversationReference(pack, currentConversationName, currentOptionName, resolver);
     }
 
-    private void parseOptions(final QuestPackage pack, final ConfigurationSection convSection) throws QuestException, ObjectNotFoundException {
+    private void parseOptions(final QuestPackage pack, final ConfigurationSection convSection) throws QuestException {
         final String rawFinalEvents = pack.getString("conversations." + convName + ".final_events");
         if (rawFinalEvents != null && !rawFinalEvents.isEmpty()) {
             final String[] array = rawFinalEvents.split(",");
             for (final String identifier : array) {
                 try {
                     finalEvents.add(new EventID(pack, identifier));
-                } catch (final ObjectNotFoundException e) {
+                } catch (final QuestException e) {
                     throw new QuestException("Error while loading final events: " + e.getMessage(), e);
                 }
             }
@@ -285,7 +284,7 @@ public class ConversationData {
         validatePlayerOptions(pack);
     }
 
-    private void validatePlayerOptions(final QuestPackage pack) throws QuestException, ObjectNotFoundException {
+    private void validatePlayerOptions(final QuestPackage pack) throws QuestException {
         for (final ConversationOption option : playerOptions.values()) {
             for (final String pointer : option.getPointers(null)) {
                 if (pointer.contains(".")) {
@@ -300,7 +299,7 @@ public class ConversationData {
         }
     }
 
-    private void validateExtends(final QuestPackage pack, final ConversationOption option, final OptionType optionType) throws QuestException, ObjectNotFoundException {
+    private void validateExtends(final QuestPackage pack, final ConversationOption option, final OptionType optionType) throws QuestException {
         final Map<String, ConversationData.ConversationOption> optionMap;
         if (optionType == PLAYER) {
             optionMap = playerOptions;
@@ -319,7 +318,7 @@ public class ConversationData {
         }
     }
 
-    private void validateNpcOptions() throws QuestException, ObjectNotFoundException {
+    private void validateNpcOptions() throws QuestException {
         for (final ConversationOption option : npcOptions.values()) {
             for (final String pointer : option.getPointers(null)) {
                 if (pointer.contains(".")) {
@@ -340,7 +339,7 @@ public class ConversationData {
      * @param pack the package containing this conversation
      * @throws QuestException when the conversation could not be resolved
      */
-    private void loadStartingOptions(final QuestPackage pack) throws QuestException, ObjectNotFoundException {
+    private void loadStartingOptions(final QuestPackage pack) throws QuestException {
         final String rawStartingOptions = pack.getString("conversations." + convName + ".first");
         if (rawStartingOptions == null || rawStartingOptions.isEmpty()) {
             throw new QuestException("Starting options are not defined");
@@ -573,10 +572,10 @@ public class ConversationData {
      *
      * @param profile the {@link Profile} of the player
      * @return True, if the player can star the conversation.
-     * @throws QuestException          if an external pointer reference has an invalid format
-     * @throws ObjectNotFoundException if an external pointer inside the conversation could not be resolved
+     * @throws QuestException if an external pointer reference has an invalid format or
+     *                        if an external pointer inside the conversation could not be resolved
      */
-    public boolean isReady(final Profile profile) throws QuestException, ObjectNotFoundException {
+    public boolean isReady(final Profile profile) throws QuestException {
         for (final String option : getStartingOptions()) {
             final ConversationData sourceData;
             final String optionName;
@@ -746,7 +745,7 @@ public class ConversationData {
                         events.add(new EventID(pack, rawEvent.trim()));
                     }
                 }
-            } catch (final ObjectNotFoundException e) {
+            } catch (final QuestException e) {
                 throw new QuestException("Error in '" + name + "' " + type.getReadable() + " option's events: "
                         + e.getMessage(), e);
             }
@@ -759,7 +758,7 @@ public class ConversationData {
                         conditions.add(new ConditionID(pack, rawCondition.trim()));
                     }
                 }
-            } catch (final ObjectNotFoundException e) {
+            } catch (final QuestException e) {
                 throw new QuestException("Error in '" + name + "' " + type.getReadable() + " option's conditions: "
                         + e.getMessage(), e);
             }
@@ -945,7 +944,7 @@ public class ConversationData {
                     final ResolvedOption resolvedExtend;
                     try {
                         resolvedExtend = new ConversationOptionResolver(plugin, pack, convName, type, extend).resolve();
-                    } catch (final QuestException | ObjectNotFoundException e) {
+                    } catch (final QuestException e) {
                         log.reportException(pack, e);
                         throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable pointers.", e);
                     }

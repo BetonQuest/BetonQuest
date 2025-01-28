@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -42,7 +41,7 @@ public class ConversationEventFactory implements EventFactory {
         final ConversationID conversationID;
         try {
             conversationID = new ConversationID(instruction.getPackage(), instruction.next());
-        } catch (final ObjectNotFoundException e) {
+        } catch (final QuestException e) {
             throw new QuestException(e.getMessage(), e);
         }
         final String startingOption = getStartOption(instruction, conversationID);

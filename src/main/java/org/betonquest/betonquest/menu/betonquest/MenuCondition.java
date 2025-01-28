@@ -3,7 +3,6 @@ package org.betonquest.betonquest.menu.betonquest;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
@@ -23,7 +22,7 @@ public class MenuCondition extends Condition {
         final String menuID = instruction.getOptional("id");
         try {
             this.menu = (menuID == null) ? null : new MenuID(instruction.getPackage(), menuID);
-        } catch (final ObjectNotFoundException e) {
+        } catch (final QuestException e) {
             throw new QuestException("Error while parsing id optional: Error while loading menu: " + e.getMessage(), e);
         }
     }

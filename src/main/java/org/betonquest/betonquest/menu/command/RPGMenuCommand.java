@@ -7,8 +7,8 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.menu.config.RPGMenuConfig;
@@ -103,7 +103,7 @@ public class RPGMenuCommand extends SimpleCommand {
                 if (args.length >= 2) {
                     try {
                         menu = new MenuID(null, args[1]);
-                    } catch (final ObjectNotFoundException e) {
+                    } catch (final QuestException e) {
                         this.menu.getConfiguration().sendMessage(sender, "command_invalid_menu", args[1]);
                         return false;
                     }

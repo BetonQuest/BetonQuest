@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.variable.point;
 import org.apache.commons.lang3.tuple.Triple;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.instruction.Instruction;
 
@@ -65,7 +64,7 @@ public abstract class AbstractPointVariableFactory<T> {
                 final ID packageId = new ID(instruction.getPackage(), questPath + "." + pointCategory) {
                 };
                 category = packageId.getPackage().getQuestPath() + "." + pointCategory;
-            } catch (final ObjectNotFoundException e) {
+            } catch (final QuestException e) {
                 logger.warn(instruction.getPackage(), e.getMessage());
             }
         } else if (instruction.size() == 3) {

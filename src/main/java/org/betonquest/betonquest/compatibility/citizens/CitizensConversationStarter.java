@@ -13,7 +13,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveController;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.CombatTagger;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -188,7 +187,7 @@ public class CitizensConversationStarter {
                 try {
                     conversationID = new ConversationID(pack, conversationIDPath);
                     assignedConversations.put(npcID, conversationID);
-                } catch (final ObjectNotFoundException e) {
+                } catch (final QuestException e) {
                     log.warn("Conversation '" + conversationIDPath + "' assigned to NPC '" + npcID + "' in package '" + pack.getQuestPath() + "' does not exist.", e);
                 }
             }

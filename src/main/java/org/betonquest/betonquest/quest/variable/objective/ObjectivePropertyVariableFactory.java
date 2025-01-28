@@ -4,7 +4,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
 
@@ -46,7 +45,7 @@ public class ObjectivePropertyVariableFactory implements PlayerVariableFactory {
         final ObjectiveID objectiveID;
         try {
             objectiveID = new ObjectiveID(instruction.getPackage(), objectiveString.toString());
-        } catch (final ObjectNotFoundException e) {
+        } catch (final QuestException e) {
             throw new QuestException("Error in objective property variable '" + instruction + "' " + e.getMessage(), e);
         }
         return new ObjectivePropertyVariable(betonQuest, objectiveID, propertyName);

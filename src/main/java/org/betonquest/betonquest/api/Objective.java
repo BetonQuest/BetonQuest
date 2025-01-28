@@ -12,7 +12,6 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ObjectiveID;
@@ -101,7 +100,7 @@ public abstract class Objective {
             final String event = i >= tempEvents1.length ? tempEvents2[i - tempEvents1.length] : tempEvents1[i];
             try {
                 events[i] = new EventID(instruction.getPackage(), event);
-            } catch (final ObjectNotFoundException e) {
+            } catch (final QuestException e) {
                 if (length == 1 && "ID is null".equals(e.getMessage())) {
                     throw new QuestException("Error while parsing objective events: No events are defined!", e);
                 }
@@ -117,7 +116,7 @@ public abstract class Objective {
                     : tempConditions1[i];
             try {
                 conditions[i] = new ConditionID(instruction.getPackage(), condition);
-            } catch (final ObjectNotFoundException e) {
+            } catch (final QuestException e) {
                 throw new QuestException("Error while parsing objective conditions: " + e.getMessage(), e);
             }
         }

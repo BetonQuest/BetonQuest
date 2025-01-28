@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
@@ -153,7 +152,7 @@ public class MenuItem extends SimpleYMLSection {
                     return getBoolean("close");
                 }
             }.get();
-        } catch (final ObjectNotFoundException | QuestException e) {
+        } catch (final QuestException e) {
             throw new InvalidConfigurationException(e.getMessage(), e);
         }
     }
