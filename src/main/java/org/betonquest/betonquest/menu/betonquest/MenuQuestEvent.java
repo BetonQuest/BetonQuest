@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
@@ -34,7 +33,7 @@ public class MenuQuestEvent extends QuestEvent {
             try {
                 final MenuID menu = new MenuID(instruction.getPackage(), instruction.next());
                 doStuff = profile -> BetonQuest.getInstance().getRpgMenu().openMenu(profile, menu);
-            } catch (final ObjectNotFoundException e) {
+            } catch (final QuestException e) {
                 throw new QuestException("Error while parsing 2 argument: Error while loading menu: " + e.getMessage(), e);
             }
         } else {

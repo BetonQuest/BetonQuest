@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -76,7 +75,7 @@ public class PlayerHider {
         for (int i = 0; i < rawConditionsList.length; i++) {
             try {
                 conditionList[i] = new ConditionID(pack, rawConditionsList[i]);
-            } catch (final ObjectNotFoundException e) {
+            } catch (final QuestException e) {
                 throw new QuestException("Error while loading " + rawConditionsList[i]
                         + " condition for player_hider " + pack.getQuestPath() + "." + key + ": " + e.getMessage(), e);
             }

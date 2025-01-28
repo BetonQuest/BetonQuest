@@ -2,7 +2,6 @@ package org.betonquest.betonquest.menu.config;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
@@ -185,7 +184,7 @@ public abstract class SimpleYMLSection {
         for (final String string : strings) {
             try {
                 ids.add(argument.convert(pack, string));
-            } catch (final ObjectNotFoundException | QuestException e) {
+            } catch (final QuestException e) {
                 throw new Invalid(key, e);
             }
         }

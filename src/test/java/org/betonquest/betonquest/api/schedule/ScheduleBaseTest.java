@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,7 +65,7 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
     void testEventsNotFound() {
         when(questPackage.getString("events.bell_ring")).thenReturn(null);
         final QuestException exception = assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid event names");
-        assertInstanceOf(ObjectNotFoundException.class, exception.getCause(), "Cause should be ObjectNotFoundException");
+        assertInstanceOf(QuestException.class, exception.getCause(), "Cause should be QuestException");
     }
 
     @Test

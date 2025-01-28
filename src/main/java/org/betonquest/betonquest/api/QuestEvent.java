@@ -4,7 +4,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.jetbrains.annotations.Nullable;
@@ -70,7 +69,7 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
             final String condition = i >= tempConditions1.length ? tempConditions2[i - tempConditions1.length] : tempConditions1[i];
             try {
                 conditions[i] = new ConditionID(instruction.getPackage(), condition);
-            } catch (final ObjectNotFoundException exception) {
+            } catch (final QuestException exception) {
                 throw new QuestException("Error while parsing event conditions: " + exception.getMessage(), exception);
             }
         }

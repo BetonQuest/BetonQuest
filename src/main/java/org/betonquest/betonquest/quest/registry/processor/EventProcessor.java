@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -25,7 +24,7 @@ public class EventProcessor extends TypedQuestProcessor<EventID, QuestEvent> {
     }
 
     @Override
-    protected EventID getIdentifier(final QuestPackage pack, final String identifier) throws ObjectNotFoundException, QuestException {
+    protected EventID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
         return new EventID(pack, identifier);
     }
 

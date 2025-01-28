@@ -2,7 +2,6 @@ package org.betonquest.betonquest.instruction;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.VariableID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,7 +42,7 @@ class VariableInstructionTest {
     }
 
     @Test
-    void copyWithNewIDShouldReturnNewVariableInstructionWithNewID() throws ObjectNotFoundException, QuestException {
+    void copyWithNewIDShouldReturnNewVariableInstructionWithNewID() throws QuestException {
         final VariableInstruction original = new VariableInstruction(questPackage, null, "%instruction%");
         final Instruction copy = original.copy(new VariableID(questPackage, "%newID%"));
         assertEquals(original.toString(), copy.toString(), "Should have the same instruction");

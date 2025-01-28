@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
@@ -289,7 +288,7 @@ public class Backpack implements Listener {
                 if (!checkDefault || !"DEFAULT".equalsIgnoreCase(buttonString)) {
                     try {
                         stack = new QuestItem(new ItemID(null, buttonString)).generate(1);
-                    } catch (final ObjectNotFoundException | QuestException e) {
+                    } catch (final QuestException e) {
                         log.warn("Could not load " + button + " button: " + e.getMessage(), e);
                     }
                 }
@@ -567,7 +566,7 @@ public class Backpack implements Listener {
                 ItemStack compass;
                 try {
                     compass = new QuestItem(new ItemID(item.getKey(), item.getValue())).generate(1);
-                } catch (final ObjectNotFoundException e) {
+                } catch (final QuestException e) {
                     log.warn("Could not find item: " + e.getMessage(), e);
                     compass = new ItemStack(Material.COMPASS);
                 }

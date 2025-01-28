@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.conversation;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConversationID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -33,9 +33,9 @@ public record PlayerConversationState(ConversationID currentConversation, String
      *
      * @param string the string representation of {@link PlayerConversationState}
      * @return the conversation state represented by the string
-     * @throws ObjectNotFoundException if the conversation ID is invalid
+     * @throws QuestException if the conversation ID is invalid
      */
-    public static Optional<PlayerConversationState> fromString(@Nullable final String string) throws ObjectNotFoundException {
+    public static Optional<PlayerConversationState> fromString(@Nullable final String string) throws QuestException {
         if (string == null || string.isEmpty()) {
             return Optional.empty();
         }
@@ -50,7 +50,7 @@ public record PlayerConversationState(ConversationID currentConversation, String
         final String packName = splitID[0];
         final QuestPackage questPackage = Config.getPackages().get(packName);
         if (questPackage == null) {
-            throw new ObjectNotFoundException("The package " + packName + " does not exist!");
+            throw new QuestException("The package " + packName + " does not exist!");
         }
         final String identifier = splitID[1];
         final ConversationID currentConversation = new ConversationID(questPackage, identifier);

@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.bukkit.Bukkit;
@@ -32,7 +31,7 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
     }
 
     @Override
-    protected ConditionID getIdentifier(final QuestPackage pack, final String identifier) throws ObjectNotFoundException, QuestException {
+    protected ConditionID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
         return new ConditionID(pack, identifier);
     }
 

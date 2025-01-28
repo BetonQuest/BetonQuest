@@ -254,7 +254,7 @@ public class CoreQuestTypes {
         conditionTypes.register("armor", new ArmorConditionFactory(loggerFactory, data));
         conditionTypes.register("biome", new BiomeConditionFactory(loggerFactory, data));
         conditionTypes.register("burning", new BurningConditionFactory(loggerFactory, data));
-        conditionTypes.registerCombined("check", new CheckConditionFactory(loggerFactory.create(CheckConditionFactory.class)));
+        conditionTypes.registerCombined("check", new CheckConditionFactory());
         conditionTypes.registerCombined("chestitem", new ChestItemConditionFactory(data));
         conditionTypes.register("conversation", new ConversationConditionFactory());
         conditionTypes.register("dayofweek", new DayOfWeekConditionFactory(loggerFactory.create(DayOfWeekConditionFactory.class)));

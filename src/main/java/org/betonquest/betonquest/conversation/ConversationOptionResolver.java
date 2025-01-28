@@ -3,7 +3,6 @@ package org.betonquest.betonquest.conversation;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConversationID;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,12 +46,12 @@ public class ConversationOptionResolver {
      * @param currentConversationName the current conversation data
      * @param optionType              the {@link ConversationData.OptionType} of the option
      * @param option                  the option string to resolve
-     * @throws QuestException          when the option string is incorrectly formatted
-     * @throws ObjectNotFoundException when the conversation could not be found
+     * @throws QuestException when the option string is incorrectly formatted or
+     *                        when the conversation could not be found
      */
     public ConversationOptionResolver(final BetonQuest plugin, final QuestPackage currentPackage,
                                       final String currentConversationName, final ConversationData.OptionType optionType,
-                                      final String option) throws QuestException, ObjectNotFoundException {
+                                      final String option) throws QuestException {
         this.plugin = plugin;
         this.optionType = optionType;
 
@@ -88,15 +87,15 @@ public class ConversationOptionResolver {
      * Resolves the given information to a {@link ResolvedOption}.
      *
      * @return a {@link ResolvedOption}
-     * @throws ObjectNotFoundException when the conversation containing the option could not be found
+     * @throws QuestException when the conversation containing the option could not be found
      */
-    public ResolvedOption resolve() throws ObjectNotFoundException {
+    public ResolvedOption resolve() throws QuestException {
         final ConversationID conversationWithNextOption = new ConversationID(pack, convName);
 
         //Since the conversation might be in another package we must load this again
         final ConversationData newData = plugin.getConversation(conversationWithNextOption);
         if (newData == null) {
-            throw new ObjectNotFoundException("Tried to load conversation '" + conversationWithNextOption.getFullID()
+            throw new QuestException("Tried to load conversation '" + conversationWithNextOption.getFullID()
                     + "' but it is not loaded! Ensure it was loaded without errors.");
         }
         return new ResolvedOption(newData, optionType, optionName);

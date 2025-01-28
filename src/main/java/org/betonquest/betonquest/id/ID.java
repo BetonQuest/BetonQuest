@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,11 +50,11 @@ public abstract class ID {
      *
      * @param pack       the package the ID is in
      * @param identifier the id instruction string
-     * @throws ObjectNotFoundException if the ID could not be parsed
+     * @throws QuestException if the ID could not be parsed
      */
-    protected ID(@Nullable final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
+    protected ID(@Nullable final QuestPackage pack, final String identifier) throws QuestException {
         if (identifier.isEmpty()) {
-            throw new ObjectNotFoundException("ID is null");
+            throw new QuestException("ID is null");
         }
         if (identifier.contains(".")) {
             final int dotIndex = identifier.indexOf('.');
@@ -66,11 +65,11 @@ public abstract class ID {
                 return;
             }
             if (pack == null) {
-                throw new ObjectNotFoundException("Package in ID '" + identifier + "' does not exist");
+                throw new QuestException("Package in ID '" + identifier + "' does not exist");
             }
         }
         if (pack == null) {
-            throw new ObjectNotFoundException("No package specified for id '" + identifier + "'!");
+            throw new QuestException("No package specified for id '" + identifier + "'!");
         }
         this.pack = pack;
         this.identifier = identifier;
@@ -83,20 +82,19 @@ public abstract class ID {
      * @param identifier the id instruction string
      * @param section    the section of the config file
      * @param readable   the readable name of the object
-     * @throws ObjectNotFoundException if the ID could not be parsed.
-     * @throws QuestException          if the instruction could not be created.
+     * @throws QuestException if the instruction or ID could not be created.
      */
-    protected ID(@Nullable final QuestPackage pack, final String identifier, final String section, final String readable) throws ObjectNotFoundException, QuestException {
+    protected ID(@Nullable final QuestPackage pack, final String identifier, final String section, final String readable) throws QuestException {
         this(pack, identifier);
         final String rawInstruction = this.pack.getString(section + "." + this.identifier);
         if (rawInstruction == null) {
-            throw new ObjectNotFoundException(readable + " '" + getFullID() + "' is not defined");
+            throw new QuestException(readable + " '" + getFullID() + "' is not defined");
         }
         instruction = new Instruction(this.pack, this, rawInstruction);
     }
 
     @Nullable
-    private QuestPackage parsePackageFromIdentifier(@Nullable final QuestPackage pack, final String identifier, final int dotIndex) throws ObjectNotFoundException {
+    private QuestPackage parsePackageFromIdentifier(@Nullable final QuestPackage pack, final String identifier, final int dotIndex) throws QuestException {
         final String packName = identifier.substring(0, dotIndex);
         if (pack != null) {
             if (packName.startsWith(UP_STR + "-")) {
@@ -111,7 +109,7 @@ public abstract class ID {
             return packFromDot;
         }
         if (identifier.length() == dotIndex + 1) {
-            throw new ObjectNotFoundException("ID of the pack is null");
+            throw new QuestException("ID of the pack is null");
         }
         return null;
     }
@@ -130,7 +128,7 @@ public abstract class ID {
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    private QuestPackage resolveRelativePathUp(final QuestPackage pack, final String identifier, final String packName) throws ObjectNotFoundException {
+    private QuestPackage resolveRelativePathUp(final QuestPackage pack, final String identifier, final String packName) throws QuestException {
         final String[] root = pack.getQuestPath().split("-");
         final String[] path = packName.split("-");
         int stepsUp = 0;
@@ -138,7 +136,7 @@ public abstract class ID {
             stepsUp++;
         }
         if (stepsUp > root.length) {
-            throw new ObjectNotFoundException("Relative path goes out of package scope! Consider removing a few '"
+            throw new QuestException("Relative path goes out of package scope! Consider removing a few '"
                     + UP_STR + "'s in ID " + identifier);
         }
         final StringBuilder builder = new StringBuilder();
@@ -152,22 +150,22 @@ public abstract class ID {
             final String absolute = builder.substring(0, builder.length() - 1);
             final QuestPackage resolved = Config.getPackages().get(absolute);
             if (resolved == null) {
-                throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' resolved to '"
+                throw new QuestException("Relative path in ID '" + identifier + "' resolved to '"
                         + absolute + "', but this package does not exist!");
             }
             return resolved;
         } catch (final StringIndexOutOfBoundsException e) {
-            throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' is invalid!", e);
+            throw new QuestException("Relative path in ID '" + identifier + "' is invalid!", e);
         }
     }
 
-    private QuestPackage resolveRelativePathDown(final QuestPackage pack, final String identifier, final String packName) throws ObjectNotFoundException {
+    private QuestPackage resolveRelativePathDown(final QuestPackage pack, final String identifier, final String packName) throws QuestException {
         final String currentPath = pack.getQuestPath();
         final String fullPath = currentPath + packName;
 
         final QuestPackage resolved = Config.getPackages().get(fullPath);
         if (resolved == null) {
-            throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' resolved to '"
+            throw new QuestException("Relative path in ID '" + identifier + "' resolved to '"
                     + fullPath + "', but this package does not exist!");
         }
         return resolved;

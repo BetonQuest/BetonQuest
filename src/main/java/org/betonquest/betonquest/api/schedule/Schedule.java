@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.schedule.ScheduleID;
 import org.bukkit.configuration.ConfigurationSection;
@@ -69,7 +68,7 @@ public abstract class Schedule {
         for (final String eventId : eventsString.split(",")) {
             try {
                 events.add(new EventID(scheduleID.getPackage(), eventId));
-            } catch (final ObjectNotFoundException e) {
+            } catch (final QuestException e) {
                 throw new QuestException("Error while loading events: " + e.getMessage(), e);
             }
         }

@@ -3,7 +3,6 @@ package org.betonquest.betonquest.instruction;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.NoID;
@@ -103,7 +102,7 @@ public class Instruction implements InstructionParts, ArgumentParser, EnumParser
         }
         try {
             return new NoID(pack);
-        } catch (final ObjectNotFoundException e) {
+        } catch (final QuestException e) {
             throw new IllegalStateException("Could not find instruction: " + e.getMessage(), e);
         }
     }
@@ -222,7 +221,7 @@ public class Instruction implements InstructionParts, ArgumentParser, EnumParser
         }
         try {
             return argument.convert(pack, string);
-        } catch (final ObjectNotFoundException e) {
+        } catch (final QuestException e) {
             throw new QuestException("Error while loading '" + string + "' id: " + e.getMessage(), e);
         }
     }

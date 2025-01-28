@@ -8,7 +8,6 @@ import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
@@ -76,7 +75,7 @@ class JournalEventFactoryIntegrationTest {
     }
 
     @Test
-    void constructJournalUpdateEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException, QuestException {
+    void constructJournalUpdateEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
@@ -85,7 +84,7 @@ class JournalEventFactoryIntegrationTest {
     }
 
     @Test
-    void constructJournalAddEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException, QuestException {
+    void constructJournalAddEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
@@ -94,7 +93,7 @@ class JournalEventFactoryIntegrationTest {
     }
 
     @Test
-    void constructJournalAddEventWithoutPageReference(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException, QuestException {
+    void constructJournalAddEventWithoutPageReference(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
@@ -103,7 +102,7 @@ class JournalEventFactoryIntegrationTest {
     }
 
     @Test
-    void constructJournalDeleteEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException, QuestException {
+    void constructJournalDeleteEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
@@ -112,7 +111,7 @@ class JournalEventFactoryIntegrationTest {
     }
 
     @Test
-    void constructJournalDeleteEventWithoutPageReference(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException, QuestException {
+    void constructJournalDeleteEventWithoutPageReference(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 
@@ -121,7 +120,7 @@ class JournalEventFactoryIntegrationTest {
     }
 
     @Test
-    void constructInvalidJournalEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, ObjectNotFoundException, QuestException {
+    void constructInvalidJournalEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
 

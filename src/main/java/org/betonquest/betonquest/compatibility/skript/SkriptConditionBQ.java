@@ -8,7 +8,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.entity.Player;
@@ -53,7 +52,7 @@ public class SkriptConditionBQ extends Condition {
         final String conditionID = condition.getSingle(event);
         try {
             return BetonQuest.condition(PlayerConverter.getID(player.getSingle(event)), new ConditionID(null, conditionID));
-        } catch (final ObjectNotFoundException | QuestException e) {
+        } catch (final QuestException e) {
             log.warn("Error while checking Skript condition - could not load condition with ID '" + conditionID + "': " + e.getMessage(), e);
             return false;
         }

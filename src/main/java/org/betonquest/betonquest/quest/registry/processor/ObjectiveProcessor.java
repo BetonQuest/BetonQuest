@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.quest.registry.type.ObjectiveTypeRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -36,7 +35,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
     }
 
     @Override
-    protected ObjectiveID getIdentifier(final QuestPackage pack, final String identifier) throws ObjectNotFoundException, QuestException {
+    protected ObjectiveID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
         return new ObjectiveID(pack, identifier);
     }
 

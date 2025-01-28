@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
@@ -70,7 +69,7 @@ public class PickRandomEventFactory implements EventFactory, StaticEventFactory 
             if (NUMBER_OF_MINIMUM_PERCENTAGES == count) {
                 try {
                     eventID = new EventID(instruction.getPackage(), parts[1]);
-                } catch (final ObjectNotFoundException e) {
+                } catch (final QuestException e) {
                     throw new QuestException("Error while loading event: " + e.getMessage(), e);
                 }
                 final VariableNumber chance = instruction.get(parts[0], VariableNumber::new);
@@ -78,7 +77,7 @@ public class PickRandomEventFactory implements EventFactory, StaticEventFactory 
             } else if (NUMBER_OF_MAXIMUM_PERCENTAGES == count) {
                 try {
                     eventID = new EventID(instruction.getPackage(), parts[3]);
-                } catch (final ObjectNotFoundException e) {
+                } catch (final QuestException e) {
                     throw new QuestException("Error while loading event: " + e.getMessage(), e);
                 }
                 final VariableNumber chance = instruction.get("%" + parts[1] + "%", VariableNumber::new);

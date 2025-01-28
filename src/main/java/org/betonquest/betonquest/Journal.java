@@ -13,7 +13,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.util.Utils;
@@ -288,7 +287,7 @@ public class Journal {
                             if (!BetonQuest.conditions(profile, pageConditions)) {
                                 continue;
                             }
-                        } catch (final ObjectNotFoundException | QuestException e) {
+                        } catch (final QuestException e) {
                             log.warn(pack, "Error while generating main page in " + profile + " journal: " + e.getMessage(), e);
                             continue;
                         }

@@ -15,7 +15,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.PlayerConversationState;
 import org.betonquest.betonquest.database.Saver.Record;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemStack;
@@ -152,7 +151,7 @@ public class PlayerData implements TagData {
         try {
             final Optional<PlayerConversationState> playerConversationState = PlayerConversationState.fromString(fullInstruction);
             playerConversationState.ifPresent(conversationState -> activeConversation = conversationState);
-        } catch (final ObjectNotFoundException e) {
+        } catch (final QuestException e) {
             log.debug("The profile" + profile + " is in a conversation that does not exist anymore ("
                     + fullInstruction + ").", e);
             saver.add(new Record(UpdateType.UPDATE_CONVERSATION, "null", profileID));
@@ -353,7 +352,7 @@ public class PlayerData implements TagData {
             try {
                 final ObjectiveID objectiveID = new ObjectiveID(null, objective);
                 BetonQuest.resumeObjective(profile, objectiveID, entry.getValue());
-            } catch (final ObjectNotFoundException | QuestException e) {
+            } catch (final QuestException e) {
                 log.warn("Loaded '" + objective
                         + "' objective from the database, but it is not defined in configuration. Skipping.", e);
             }

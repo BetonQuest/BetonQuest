@@ -8,7 +8,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.entity.Player;
@@ -57,7 +56,7 @@ public class SkriptEffectBQ extends Effect {
                 final String eventID = SkriptEffectBQ.this.event.getSingle(event);
                 try {
                     BetonQuest.event(PlayerConverter.getID(player.getSingle(event)), new EventID(null, eventID));
-                } catch (final ObjectNotFoundException | QuestException e) {
+                } catch (final QuestException e) {
                     log.warn("Error when running Skript event - could not load '" + eventID + "' event: " + e.getMessage(), e);
                 }
             }

@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.menu.Menu;
 import org.betonquest.betonquest.menu.MenuID;
@@ -37,7 +36,7 @@ public class MenuObjective extends Objective implements Listener {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         try {
             this.menuID = new MenuID(instruction.getPackage(), instruction.next());
-        } catch (final ObjectNotFoundException e) {
+        } catch (final QuestException e) {
             throw new QuestException("Error while parsing 1 argument: Error while loading menu: " + e.getMessage(), e);
         }
     }

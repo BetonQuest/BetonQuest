@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.quest.registry.feature.ScheduleRegistry;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -76,7 +75,7 @@ public class EventScheduling {
                                | IllegalAccessException e) {
                     log.reportException(questPackage, e);
                 }
-            } catch (final ObjectNotFoundException e) {
+            } catch (final QuestException e) {
                 log.warn(questPackage, "Cannot load schedule with name '" + key + "': " + e.getMessage(), e);
             }
         }

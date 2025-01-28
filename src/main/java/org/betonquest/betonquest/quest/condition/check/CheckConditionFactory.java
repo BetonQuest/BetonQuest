@@ -3,14 +3,12 @@ package org.betonquest.betonquest.quest.condition.check;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.registry.type.TypeFactory;
@@ -25,17 +23,9 @@ import java.util.List;
 public class CheckConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
 
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
-
-    /**
      * Create the check condition factory.
-     *
-     * @param log the logger
      */
-    public CheckConditionFactory(final BetonQuestLogger log) {
-        this.log = log;
+    public CheckConditionFactory() {
     }
 
     @Override
@@ -89,13 +79,8 @@ public class CheckConditionFactory implements PlayerConditionFactory, Playerless
         try {
             final Instruction innerInstruction = new Instruction(questPackage, new NoID(questPackage), instruction);
             return conditionFactory.parseInstruction(innerInstruction);
-        } catch (final ObjectNotFoundException e) {
-            if (e.getCause() instanceof QuestException) {
-                throw new QuestException("Error in internal condition: " + e.getCause().getMessage(), e);
-            } else {
-                log.reportException(questPackage, e);
-            }
+        } catch (final QuestException e) {
+            throw new QuestException("Error in internal condition: " + e.getMessage(), e);
         }
-        return null;
     }
 }

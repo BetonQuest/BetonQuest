@@ -16,7 +16,6 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.ConversationData.OptionType;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
@@ -583,7 +582,7 @@ public class Conversation implements Listener {
         return interceptor;
     }
 
-    private List<ResolvedOption> resolvePointers(final ResolvedOption option) throws ObjectNotFoundException, QuestException {
+    private List<ResolvedOption> resolvePointers(final ResolvedOption option) throws QuestException {
         final ConversationData nextConvData = option.conversationData();
         final List<String> rawPointers = nextConvData.getPointers(onlineProfile, option);
         final List<ResolvedOption> pointers = new ArrayList<>();
@@ -743,7 +742,7 @@ public class Conversation implements Listener {
                 final ResolvedOption resolvedOption;
                 try {
                     resolvedOption = new ConversationOptionResolver(plugin, pack, identifier.getBaseID(), NPC, startingOption).resolve();
-                } catch (final QuestException | ObjectNotFoundException e) {
+                } catch (final QuestException e) {
                     log.reportException(pack, e);
                     throw new IllegalStateException("Cannot continue starting conversation without options.", e);
                 }
@@ -843,7 +842,7 @@ public class Conversation implements Listener {
                         Bukkit.getServer().getPluginManager().callEvent(event);
                     }
                 }.runTask(BetonQuest.getInstance());
-            } catch (final QuestException | ObjectNotFoundException e) {
+            } catch (final QuestException e) {
                 log.reportException(pack, e);
                 throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable pointers.", e);
             } finally {
@@ -878,7 +877,7 @@ public class Conversation implements Listener {
                     return;
                 }
                 printOptions(resolvePointers(npcOption));
-            } catch (final QuestException | ObjectNotFoundException e) {
+            } catch (final QuestException e) {
                 log.reportException(pack, e);
                 throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable options.", e);
             } finally {

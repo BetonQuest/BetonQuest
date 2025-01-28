@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
@@ -140,7 +139,7 @@ public class QuestCanceler {
                 converted[i] = argument.convert(pack, rawObjectives[i]);
             }
             return converted;
-        } catch (final ObjectNotFoundException e) {
+        } catch (final QuestException e) {
             throw new QuestException("Error while parsing quest canceler " + path + ": " + e.getMessage(), e);
         }
     }
@@ -247,7 +246,7 @@ public class QuestCanceler {
             try {
                 final ItemID itemID = new ItemID(pack, item);
                 stack = new QuestItem(itemID).generate(1);
-            } catch (final QuestException | ObjectNotFoundException e) {
+            } catch (final QuestException e) {
                 log.warn("Could not load cancel button: " + e.getMessage(), e);
             }
         }

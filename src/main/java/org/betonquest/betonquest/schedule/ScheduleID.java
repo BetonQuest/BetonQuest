@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.schedule;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.schedule.Schedule;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ID;
 
 /**
@@ -15,13 +15,13 @@ public class ScheduleID extends ID {
      *
      * @param pack       package where the id is defined
      * @param identifier string that defines the id
-     * @throws ObjectNotFoundException if no schedule with this id exists
+     * @throws QuestException if no schedule with this id exists
      */
     @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
-    public ScheduleID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
+    public ScheduleID(final QuestPackage pack, final String identifier) throws QuestException {
         super(pack, identifier);
         if (!getPackage().getConfig().isConfigurationSection("schedules." + getBaseID())) {
-            throw new ObjectNotFoundException("Schedule '" + getFullID() + "' is not defined");
+            throw new QuestException("Schedule '" + getFullID() + "' is not defined");
         }
     }
 }

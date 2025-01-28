@@ -11,7 +11,6 @@ import org.betonquest.betonquest.compatibility.holograms.lines.TextLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopXObject;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
@@ -160,7 +159,7 @@ public abstract class HologramLoop {
             for (int i = 0; i < conditions.length; i++) {
                 try {
                     conditions[i] = new ConditionID(pack, parts[i]);
-                } catch (final ObjectNotFoundException e) {
+                } catch (final QuestException e) {
                     throw new QuestException("Error while loading condition '" + parts[i] + "': " + e.getMessage(), e);
                 }
             }
@@ -184,7 +183,7 @@ public abstract class HologramLoop {
                 stackSize = 1;
             }
             return new ItemLine(new QuestItem(itemID).generate(stackSize));
-        } catch (final ObjectNotFoundException | QuestException e) {
+        } catch (final QuestException e) {
             throw new QuestException("Error while loading item: " + e.getMessage(), e);
         }
     }

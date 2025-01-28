@@ -4,7 +4,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.QuestCanceler;
-import org.betonquest.betonquest.exception.ObjectNotFoundException;
 import org.betonquest.betonquest.id.QuestCancelerID;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -31,7 +30,7 @@ public class CancellerProcessor extends QuestProcessor<QuestCancelerID, QuestCan
             for (final String key : cancelSection.getKeys(false)) {
                 try {
                     values.put(new QuestCancelerID(pack, key), new QuestCanceler(pack, key));
-                } catch (final QuestException | ObjectNotFoundException e) {
+                } catch (final QuestException e) {
                     log.warn(pack, "Could not load '" + pack.getQuestPath() + "." + key + "' quest canceler: " + e.getMessage(), e);
                 }
             }
