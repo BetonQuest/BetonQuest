@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ObjectiveID;
+import org.betonquest.betonquest.quest.registry.QuestRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -13,7 +14,21 @@ import java.util.List;
 /**
  * The Core Quest Type logic.
  */
-public interface QuestTypeAPI {
+public final class QuestTypeAPI {
+
+    /**
+     * Quest Registry providing processors.
+     */
+    private final QuestRegistry questRegistry;
+
+    /**
+     * Create a new Quest API.
+     *
+     * @param questRegistry the registry containing processors
+     */
+    public QuestTypeAPI(final QuestRegistry questRegistry) {
+        this.questRegistry = questRegistry;
+    }
 
     /**
      * Checks if the conditions described by conditionID are met.
@@ -22,7 +37,7 @@ public interface QuestTypeAPI {
      * @param conditionIDs IDs of the conditions to check
      * @return if all conditions are met
      */
-    default boolean conditions(@Nullable final Profile profile, final Collection<ConditionID> conditionIDs) {
+    public boolean conditions(@Nullable final Profile profile, final Collection<ConditionID> conditionIDs) {
         final ConditionID[] ids = new ConditionID[conditionIDs.size()];
         int index = 0;
         for (final ConditionID id : conditionIDs) {
@@ -38,7 +53,9 @@ public interface QuestTypeAPI {
      * @param conditionIDs IDs of the conditions to check
      * @return if all conditions are met
      */
-    boolean conditions(@Nullable Profile profile, ConditionID... conditionIDs);
+    public boolean conditions(@Nullable final Profile profile, final ConditionID... conditionIDs) {
+        return questRegistry.conditions().checks(profile, conditionIDs);
+    }
 
     /**
      * Checks if the condition described by conditionID is met.
@@ -47,7 +64,9 @@ public interface QuestTypeAPI {
      * @param profile     the {@link Profile} of the player which should be checked
      * @return if the condition is met
      */
-    boolean condition(@Nullable Profile profile, ConditionID conditionID);
+    public boolean condition(@Nullable final Profile profile, final ConditionID conditionID) {
+        return questRegistry.conditions().check(profile, conditionID);
+    }
 
     /**
      * Fires an event for the {@link Profile} if it meets the event's conditions.
@@ -57,7 +76,9 @@ public interface QuestTypeAPI {
      * @param eventID ID of the event to fire
      * @return true if the event was run even if there was an exception during execution
      */
-    boolean event(@Nullable Profile profile, EventID eventID);
+    public boolean event(@Nullable final Profile profile, final EventID eventID) {
+        return questRegistry.events().execute(profile, eventID);
+    }
 
     /**
      * Creates new objective for given player.
@@ -65,7 +86,9 @@ public interface QuestTypeAPI {
      * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
      */
-    void newObjective(Profile profile, ObjectiveID objectiveID);
+    public void newObjective(final Profile profile, final ObjectiveID objectiveID) {
+        questRegistry.objectives().start(profile, objectiveID);
+    }
 
     /**
      * Resumes the existing objective for given player.
@@ -74,7 +97,9 @@ public interface QuestTypeAPI {
      * @param objectiveID ID of the objective
      * @param instruction data instruction string
      */
-    void resumeObjective(Profile profile, ObjectiveID objectiveID, String instruction);
+    public void resumeObjective(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
+        questRegistry.objectives().resume(profile, objectiveID, instruction);
+    }
 
     /**
      * Renames the objective instance.
@@ -82,7 +107,9 @@ public interface QuestTypeAPI {
      * @param name   the current name
      * @param rename the name it should have now
      */
-    void renameObjective(ObjectiveID name, ObjectiveID rename);
+    public void renameObjective(final ObjectiveID name, final ObjectiveID rename) {
+        questRegistry.objectives().renameObjective(name, rename);
+    }
 
     /**
      * Returns the list of objectives of this player.
@@ -90,7 +117,9 @@ public interface QuestTypeAPI {
      * @param profile the {@link Profile} of the player
      * @return list of this player's active objectives
      */
-    List<Objective> getPlayerObjectives(Profile profile);
+    public List<Objective> getPlayerObjectives(final Profile profile) {
+        return questRegistry.objectives().getActive(profile);
+    }
 
     /**
      * Gets stored Objective.
@@ -101,5 +130,7 @@ public interface QuestTypeAPI {
      * @return Objective object or null if it does not exist
      */
     @Nullable
-    Objective getObjective(ObjectiveID objectiveID);
+    public Objective getObjective(final ObjectiveID objectiveID) {
+        return questRegistry.objectives().getObjective(objectiveID);
+    }
 }

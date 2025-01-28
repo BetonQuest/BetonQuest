@@ -50,7 +50,6 @@ import org.betonquest.betonquest.logger.handler.history.HistoryHandler;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.playerhider.PlayerHider;
-import org.betonquest.betonquest.quest.QuestRegistryAPI;
 import org.betonquest.betonquest.quest.registry.CoreQuestTypes;
 import org.betonquest.betonquest.quest.registry.QuestRegistry;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
@@ -212,9 +211,14 @@ public class BetonQuest extends JavaPlugin {
     private RPGMenu rpgMenu;
 
     /**
-     * Quest Type and Feature API.
+     * Quest Type API.
      */
-    private QuestRegistryAPI questTypeAPI;
+    private QuestTypeAPI questTypeAPI;
+
+    /**
+     * Feature API.
+     */
+    private FeatureAPI featureAPI;
 
     /**
      * Cache for event schedulers, holding the last execution of an event.
@@ -413,7 +417,8 @@ public class BetonQuest extends JavaPlugin {
         questRegistry = new QuestRegistry(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
                 featureRegistries, questTypeRegistries);
 
-        questTypeAPI = new QuestRegistryAPI(questRegistry);
+        questTypeAPI = new QuestTypeAPI(questRegistry);
+        featureAPI = new FeatureAPI(questRegistry);
         pluginManager.registerEvents(new JoinQuitListener(loggerFactory, questTypeAPI, playerDataStorage), this);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
@@ -640,7 +645,7 @@ public class BetonQuest extends JavaPlugin {
      * @return the api for feature logic
      */
     public FeatureAPI getFeatureAPI() {
-        return questTypeAPI;
+        return featureAPI;
     }
 
     /**
