@@ -9,8 +9,10 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.id.ConditionID;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -43,6 +45,11 @@ public class EffectLibParticleManager {
     private final BetonQuestLogger log;
 
     /**
+     * The {@link VariableProcessor} to use.
+     */
+    private final VariableProcessor variableProcessor;
+
+    /**
      * Effect Manager starting and controlling particles.
      */
     private final EffectManager manager;
@@ -55,13 +62,15 @@ public class EffectLibParticleManager {
     /**
      * Loads the particle configuration and starts the effects.
      *
-     * @param loggerFactory the logger factory to create new custom loggers
-     * @param log           the custom logger for this class
-     * @param manager       the effect manager starting and controlling particles
+     * @param loggerFactory     the logger factory to create new custom loggers
+     * @param log               the custom logger for this class
+     * @param variableProcessor the {@link VariableProcessor} to use
+     * @param manager           the effect manager starting and controlling particles
      */
-    public EffectLibParticleManager(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final EffectManager manager) {
+    public EffectLibParticleManager(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final VariableProcessor variableProcessor, final EffectManager manager) {
         this.loggerFactory = loggerFactory;
         this.log = log;
+        this.variableProcessor = variableProcessor;
         this.manager = manager;
         loadParticleConfiguration();
     }
@@ -136,7 +145,7 @@ public class EffectLibParticleManager {
                     continue;
                 }
                 try {
-                    locations.add(new VariableLocation(BetonQuest.getInstance().getVariableProcessor(), pack, GlobalVariableResolver.resolve(pack, rawLocation)));
+                    locations.add(new VariableLocation(variableProcessor, pack, rawLocation));
                 } catch (final QuestException exception) {
                     log.warn(pack, "Could not load npc effect '" + key + "' in package " + pack.getQuestPath() + ": "
                             + "Location is invalid:" + exception.getMessage());
@@ -150,7 +159,7 @@ public class EffectLibParticleManager {
         final List<ConditionID> conditions = new ArrayList<>();
         for (final String rawConditionID : settings.getStringList("conditions")) {
             try {
-                conditions.add(new ConditionID(pack, GlobalVariableResolver.resolve(pack, rawConditionID)));
+                conditions.add(new ConditionID(pack, new VariableString(variableProcessor, pack, rawConditionID).getValue(null)));
             } catch (final QuestException exception) {
                 log.warn(pack, "Error while loading npc_effects '" + key + "': " + exception.getMessage(), exception);
             }
@@ -164,8 +173,8 @@ public class EffectLibParticleManager {
             final List<String> rawIds = settings.getStringList(NPCS_CONFIG_SECTION);
             for (final String rawId : rawIds) {
                 try {
-                    npcs.add(Integer.parseInt(GlobalVariableResolver.resolve(pack, rawId)));
-                } catch (final NumberFormatException exception) {
+                    npcs.add(new VariableNumber(variableProcessor, pack, rawId).getValue(null).intValue());
+                } catch (final NumberFormatException | QuestException exception) {
                     log.warn(pack, "Error while loading npc id '" + rawId + "': " + exception.getMessage(), exception);
                 }
             }

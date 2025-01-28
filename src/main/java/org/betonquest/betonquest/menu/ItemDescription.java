@@ -1,7 +1,5 @@
 package org.betonquest.betonquest.menu;
 
-import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableString;
@@ -20,11 +18,8 @@ import java.util.List;
 public class ItemDescription {
     private final List<VariableString> lines;
 
-    public ItemDescription(final QuestPackage pack, final Collection<String> content) throws QuestException {
-        this.lines = new ArrayList<>();
-        for (final String line : content) {
-            this.lines.add(new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, line));
-        }
+    public ItemDescription(final Collection<VariableString> content) throws QuestException {
+        this.lines = List.copyOf(content);
     }
 
     /**

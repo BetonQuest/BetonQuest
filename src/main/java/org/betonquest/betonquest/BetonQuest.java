@@ -489,13 +489,13 @@ public class BetonQuest extends JavaPlugin {
 
         pluginManager.registerEvents(new CustomDropListener(loggerFactory.create(CustomDropListener.class)), this);
 
-        registerCommands(receiverSelector, debugHistoryHandler);
-
         questTypeRegistries = QuestTypeRegistries.create(loggerFactory);
         featureRegistries = FeatureRegistries.create(loggerFactory);
 
         questRegistry = new QuestRegistry(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
                 featureRegistries, questTypeRegistries);
+
+        registerCommands(receiverSelector, debugHistoryHandler);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
                 questRegistry.variables(), globalData, playerDataStorage).register(questTypeRegistries);
@@ -571,9 +571,9 @@ public class BetonQuest extends JavaPlugin {
         getCommand("betonquest").setExecutor(questCommand);
         getCommand("betonquest").setTabCompleter(questCommand);
         getCommand("journal").setExecutor(new JournalCommand(playerDataStorage));
-        getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class)));
-        getCommand("cancelquest").setExecutor(new CancelQuestCommand());
-        getCommand("compass").setExecutor(new CompassCommand());
+        getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class), getVariableProcessor()));
+        getCommand("cancelquest").setExecutor(new CancelQuestCommand(getVariableProcessor()));
+        getCommand("compass").setExecutor(new CompassCommand(getVariableProcessor()));
         final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), this, playerDataStorage);
         getCommand("questlang").setExecutor(langCommand);
         getCommand("questlang").setTabCompleter(langCommand);

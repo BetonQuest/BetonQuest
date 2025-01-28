@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.conversation;
 
-import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -11,7 +10,8 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
+import org.betonquest.betonquest.util.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +31,7 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
 /**
  * Represents the data of the conversation.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals", "NullAway"})
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals", "PMD.CouplingBetweenObjects", "NullAway"})
 public class ConversationData {
 
     /**
@@ -48,6 +48,11 @@ public class ConversationData {
      * The {@link BetonQuest} instance.
      */
     private final BetonQuest plugin;
+
+    /**
+     * The {@link VariableProcessor} to use.
+     */
+    private final VariableProcessor variableProcessor;
 
     /**
      * The {@link ConversationID} of the conversation holding this data.
@@ -123,6 +128,7 @@ public class ConversationData {
     @SuppressWarnings({"PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     public ConversationData(final BetonQuest plugin, final ConversationID conversationID, final ConfigurationSection convSection) throws QuestException {
         this.plugin = plugin;
+        this.variableProcessor = plugin.getVariableProcessor();
         this.conversationID = conversationID;
         this.pack = conversationID.getPackage();
         this.convName = conversationID.getBaseID();
@@ -134,27 +140,32 @@ public class ConversationData {
         }
         if (convSection.isConfigurationSection("quester")) {
             for (final String lang : convSection.getConfigurationSection("quester").getKeys(false)) {
-                quester.put(lang, ChatColor.translateAlternateColorCodes('&', pack.getString("conversations." + convName + ".quester." + lang)));
+                final String questerName = new VariableString(variableProcessor, pack, pack.getConfig().getString("conversations." + convName + ".quester." + lang)).getValue(null);
+                quester.put(lang, ChatColor.translateAlternateColorCodes('&', questerName));
             }
         } else {
-            quester.put(Config.getLanguage(), ChatColor.translateAlternateColorCodes('&', pack.getString("conversations." + convName + ".quester")));
+            final String questerName = new VariableString(variableProcessor, pack, pack.getConfig().getString("conversations." + convName + ".quester")).getValue(null);
+            quester.put(Config.getLanguage(), ChatColor.translateAlternateColorCodes('&', questerName));
         }
         if (convSection.isConfigurationSection("prefix")) {
             for (final String lang : convSection.getConfigurationSection("prefix").getKeys(false)) {
-                final String pref = pack.getString("conversations." + convName + ".prefix." + lang);
+                final String pref = pack.getConfig().getString("conversations." + convName + ".prefix." + lang);
                 if (pref != null && !pref.isEmpty()) {
-                    prefix.put(lang, pref);
+                    prefix.put(lang, new VariableString(variableProcessor, pack, pref).getValue(null));
                 }
             }
         } else {
-            final String pref = pack.getString("conversations." + convName + ".prefix");
+            final String pref = pack.getConfig().getString("conversations." + convName + ".prefix");
             if (pref != null && !pref.isEmpty()) {
-                prefix.put(Config.getLanguage(), pref);
+                prefix.put(Config.getLanguage(), new VariableString(variableProcessor, pack, pref).getValue(null));
             }
         }
-        final String stop = pack.getString("conversations." + convName + ".stop");
+        final String stop = pack.getConfig().getString("conversations." + convName + ".stop");
         blockMovement = Boolean.parseBoolean(stop);
-        final String rawConvIOs = pack.getString("conversations." + convName + ".conversationIO", plugin.getPluginConfig().getString("default_conversation_IO", "menu,tellraw"));
+        final String rawConvIOs = new VariableString(variableProcessor, pack,
+                pack.getConfig().getString("conversations." + convName + ".conversationIO",
+                        plugin.getPluginConfig().getString("default_conversation_IO", "menu,tellraw")))
+                .getValue(null);
 
         // check if all data is valid (or at least exist)
         for (final String rawConvIOPart : rawConvIOs.split(",")) {
@@ -170,7 +181,10 @@ public class ConversationData {
             throw new QuestException("No registered conversation IO found: " + rawConvIOs);
         }
 
-        final String rawInterceptor = pack.getString("conversations." + convName + ".interceptor", plugin.getPluginConfig().getString("default_interceptor", "simple"));
+        final String rawInterceptor = new VariableString(variableProcessor, pack,
+                pack.getConfig().getString("conversations." + convName + ".interceptor",
+                        plugin.getPluginConfig().getString("default_interceptor", "simple")))
+                .getValue(null);
         for (final String s : rawInterceptor.split(",")) {
             if (plugin.getFeatureRegistries().interceptor().getFactory(s.trim()) != null) {
                 interceptor = s.trim();
@@ -264,9 +278,9 @@ public class ConversationData {
     }
 
     private void parseOptions(final QuestPackage pack, final ConfigurationSection convSection) throws QuestException {
-        final String rawFinalEvents = pack.getString("conversations." + convName + ".final_events");
+        final String rawFinalEvents = pack.getConfig().getString("conversations." + convName + ".final_events");
         if (rawFinalEvents != null && !rawFinalEvents.isEmpty()) {
-            final String[] array = rawFinalEvents.split(",");
+            final String[] array = new VariableString(variableProcessor, pack, rawFinalEvents).getValue(null).split(",");
             for (final String identifier : array) {
                 try {
                     finalEvents.add(new EventID(pack, identifier));
@@ -340,12 +354,12 @@ public class ConversationData {
      * @throws QuestException when the conversation could not be resolved
      */
     private void loadStartingOptions(final QuestPackage pack) throws QuestException {
-        final String rawStartingOptions = pack.getString("conversations." + convName + ".first");
+        final String rawStartingOptions = pack.getConfig().getString("conversations." + convName + ".first");
         if (rawStartingOptions == null || rawStartingOptions.isEmpty()) {
             throw new QuestException("Starting options are not defined");
         }
 
-        startingOptions = Arrays.stream(rawStartingOptions.split(",")).map(String::trim).toList();
+        startingOptions = Arrays.stream(new VariableString(variableProcessor, pack, rawStartingOptions).getValue(null).split(",")).map(String::trim).toList();
 
         for (final String startingOption : startingOptions) {
             if (startingOption.contains(".")) {
@@ -398,10 +412,7 @@ public class ConversationData {
     public String getPrefix(final String lang, @Nullable final ResolvedOption option) {
         // get prefix from an option
         if (option != null) {
-            String pref = option.conversationData().npcOptions.get(option.name()).getInlinePrefix(lang);
-            if (pref == null) {
-                pref = option.conversationData().npcOptions.get(option.name()).getInlinePrefix(Config.getLanguage());
-            }
+            final String pref = option.conversationData().npcOptions.get(option.name()).getInlinePrefix(lang);
             if (pref != null) {
                 return pref;
             }
@@ -692,12 +703,12 @@ public class ConversationData {
         /**
          * Other options that are available after this option is selected.
          */
-        private final List<String> pointers;
+        private final List<String> pointers = new ArrayList<>();
 
         /**
          * Other options that this option extends from.
          */
-        private final List<String> extendLinks;
+        private final List<String> extendLinks = new ArrayList<>();
 
         /**
          * Creates a ConversationOption.
@@ -717,30 +728,33 @@ public class ConversationData {
             final ConfigurationSection conv = convSection.getConfigurationSection(type.getIdentifier() + "." + name);
 
             if (conv == null) {
-                pointers = new ArrayList<>();
-                extendLinks = new ArrayList<>();
                 return;
             }
 
             final String defaultLang = Config.getLanguage();
-
             parsePrefix(name, type, conv, defaultLang);
             parseText(name, type, conv, defaultLang);
             parseConditions(name, type, conv);
             parseEvents(name, type, conv);
+            parseStringToList(conv.getString("pointers", conv.getString("pointer", "")), pointers);
+            parseStringToList(conv.getString("extends", conv.getString("extend", "")), extendLinks);
+        }
 
-            pointers = Arrays.stream(GlobalVariableResolver.resolve(pack, conv.getString("pointers", conv.getString("pointer", ""))).split(","))
-                    .filter(StringUtils::isNotEmpty)
-                    .map(String::trim).toList();
-
-            extendLinks = Arrays.stream(GlobalVariableResolver.resolve(pack, conv.getString("extends", conv.getString("extend", ""))).split(","))
-                    .filter(StringUtils::isNotEmpty)
-                    .map(String::trim).toList();
+        private void parseStringToList(final String string, final List<String> list) throws QuestException {
+            final String rawPointers = new VariableString(variableProcessor, pack,
+                    string).getValue(null);
+            for (final String pointer : rawPointers.split(",")) {
+                if (!pointer.isEmpty()) {
+                    list.add(pointer.trim());
+                }
+            }
         }
 
         private void parseEvents(final String name, final OptionType type, final ConfigurationSection conv) throws QuestException {
             try {
-                for (final String rawEvent : GlobalVariableResolver.resolve(pack, conv.getString("events", conv.getString("event", ""))).split(",")) {
+                final String rawEvents = new VariableString(variableProcessor, pack,
+                        conv.getString("events", conv.getString("event", ""))).getValue(null);
+                for (final String rawEvent : rawEvents.split(",")) {
                     if (!Objects.equals(rawEvent, "")) {
                         events.add(new EventID(pack, rawEvent.trim()));
                     }
@@ -753,7 +767,9 @@ public class ConversationData {
 
         private void parseConditions(final String name, final OptionType type, final ConfigurationSection conv) throws QuestException {
             try {
-                for (final String rawCondition : GlobalVariableResolver.resolve(pack, conv.getString("conditions", conv.getString("condition", ""))).split(",")) {
+                final String rawConditions = new VariableString(variableProcessor, pack,
+                        conv.getString("conditions", conv.getString("condition", ""))).getValue(null);
+                for (final String rawCondition : rawConditions.split(",")) {
                     if (!rawCondition.isEmpty()) {
                         conditions.add(new ConditionID(pack, rawCondition.trim()));
                     }
@@ -770,9 +786,10 @@ public class ConversationData {
             if (conv.contains("prefix")) {
                 if (conv.isConfigurationSection("prefix")) {
                     for (final String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
-                        final String pref = GlobalVariableResolver.resolve(pack, conv.getConfigurationSection("prefix").getString(lang));
+                        final String pref = conv.getConfigurationSection("prefix").getString(lang);
                         if (pref != null && !pref.isEmpty()) {
-                            inlinePrefix.put(lang, pref);
+                            final String value = new VariableString(variableProcessor, pack, pref).getValue(null);
+                            inlinePrefix.put(lang, value);
                         }
                     }
                     if (!inlinePrefix.containsKey(defaultLang)) {
@@ -780,9 +797,10 @@ public class ConversationData {
                                 + " prefix");
                     }
                 } else {
-                    final String pref = GlobalVariableResolver.resolve(pack, conv.getString("prefix"));
+                    final String pref = conv.getString("prefix");
                     if (pref != null && !pref.isEmpty()) {
-                        inlinePrefix.put(defaultLang, pref);
+                        final String value = new VariableString(variableProcessor, pack, pref).getValue(null);
+                        inlinePrefix.put(defaultLang, value);
                     }
                 }
             }
@@ -804,7 +822,7 @@ public class ConversationData {
         }
 
         private void addConversationText(final String name, final OptionType type, final String lang, final String suffix) throws QuestException {
-            final String convText = pack.getFormattedString("conversations." + conversationName + "." + type.getIdentifier() + "." + name + ".text" + suffix);
+            final String convText = Utils.format(pack.getConfig().getString("conversations." + conversationName + "." + type.getIdentifier() + "." + name + ".text" + suffix));
             if (convText == null) {
                 throw new QuestException("No text for " + name + " " + type.getReadable());
             }
