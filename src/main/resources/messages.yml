@@ -1,63 +1,4 @@
 configVersion: ""
-pl:
-  conversation_prefix: '&2[&9{1}&2] '
-  conversation_start: '&e====&bRozpoczales rozmowe z {1}&b!&e===='
-  conversation_end: '&e====&bZakonczyles rozmowe z {1}&b!&e===='
-  no_permission: '&cNie masz permisji.'
-  new_journal_entry: '&e*&bDziennik zostal zaktualizowany!&e*'
-  journal_title: Dziennik
-  journal_lore: Twoj dziennik, zawierajacy informacje o questach
-  quest_item: '&2Przedmiot zwiazany z zadaniem'
-  backpack_title: Plecak
-  previous: '&2Poprzednia strona'
-  next: '&2Nastepna strona'
-  inventory_full_backpack: '&e*&bTwoj ekwipunek jest pelny! The item was moved to your backpack.&e*' # TODO: missing translation
-  inventory_full_drop: '&e*&bTwoj ekwipunek jest pelny! The item was dropped on the ground.&e*' # TODO: missing translation
-  pullback: '&cMusisz dokonczyc swoja rozmowe!'
-  items_given: '&2Otrzymano {1}&2 x{2}'
-  items_taken: '&2Utracono {1}&2 x{2}'
-  money_given: '&2Received {1} {2}' # TODO: missing translation
-  money_taken: '&2Lost {1} {2}' # TODO: missing translation
-  point_given: '&2You received {1} points to {2}' # TODO: missing translation
-  point_taken: '&2You lost {1} points to {2}' # TODO: missing translation
-  point_set: '&2Your points {2} are set to {1}' #TODO: missing translation
-  point_multiplied: '&2Your points {2} are multiplied by {1}' # TODO: missing translation
-  blocks_to_break: '&2Pozostalo {1} blokow do zniszczenia'
-  blocks_to_place: '&2Pozostalo {1} blokow do postawienia'
-  mobs_to_kill: '&2Pozostalo {1} stworzen do zabicia'
-  mobs_to_click: '&2{1} mobs left to click' # TODO: missing translation
-  players_to_kill: '&2Pozostalo {1} graczy do zabicia'
-  fish_to_catch: '&2Pozostalo {1} ryb do zlowienia'
-  sheep_to_shear: '&2Pozostalo {1} owiec do ogolenia'
-  potions_to_brew: '&2Pozostalo {1} mikstur do zrobienia'
-  animals_to_breed: '&2Pozostalo {1} zwierzat do rozmnozenia'
-  items_to_pickup: '&2Pozostalo {1} przedmiotow do podniesienia'
-  items_to_smelt: '&2{1} items left to smelt' # TODO: missing translation
-  items_to_craft: '&2{1} items left to craft' # TODO: missing translation
-  items_to_enchant: '&2{1} items left to enchant' # TODO: missing translation
-  level_to_gain: '&2{1} levels left to gain' # TODO: missing translation
-  busy: '&cNie mozesz rozmawiac w trakcie walki.'
-  quest_canceled: '&2Zadanie {1}&2 anulowane!'
-  cancel: '&cAnuluj zadanie'
-  cancel_page: Anulowanie zadania
-  compass: '&cCele kompasu'
-  compass_page: Wybierz cel
-  command_blocked: '&cNie mozesz uzywac tej komendy podczas rozmowy.'
-  language_changed: '&2Jezyk zmieniony!'
-  language_missing: '&cPodaj jezyk'
-  language_not_exist: '&cTen jezyk nie jest zdefiniowany, oto lista dostepnych opcji: '
-  days: 'dni'
-  days_singular: 'dni' # TODO: Missing translation
-  hours: 'godzin'
-  hours_singular: 'godzin' # TODO: Missing translation
-  minutes: 'minut'
-  minutes_singular: 'minut' # TODO: Missing translation
-  seconds: 'sekund'
-  seconds_singular: 'sekund' # TODO: Missing translation
-  password: 'haslo: '
-  condition_variable_met: 'yes' # TODO: missing translation
-  condition_variable_not_met: 'no' # TODO: missing translation
-  chest_occupied: 'This chest is already in use' # TODO: missing translation
 en:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bConversation with {1}&b started!&e===='
@@ -117,6 +58,65 @@ en:
   condition_variable_met: 'yes'
   condition_variable_not_met: 'no'
   chest_occupied: 'This chest is already in use'
+pl:
+  conversation_prefix: '&2[&9{1}&2] '
+  conversation_start: '&e====&bRozpoczales rozmowe z {1}&b!&e===='
+  conversation_end: '&e====&bZakonczyles rozmowe z {1}&b!&e===='
+  no_permission: '&cNie masz permisji.'
+  new_journal_entry: '&e*&bDziennik zostal zaktualizowany!&e*'
+  journal_title: Dziennik
+  journal_lore: Twoj dziennik, zawierajacy informacje o questach
+  quest_item: '&2Przedmiot zwiazany z zadaniem'
+  backpack_title: Plecak
+  previous: '&2Poprzednia strona'
+  next: '&2Nastepna strona'
+  inventory_full_backpack: '&e*&bTwoj ekwipunek jest pelny! The item was moved to your backpack.&e*' # TODO: missing translation
+  inventory_full_drop: '&e*&bTwoj ekwipunek jest pelny! The item was dropped on the ground.&e*' # TODO: missing translation
+  pullback: '&cMusisz dokonczyc swoja rozmowe!'
+  items_given: '&2Otrzymano {1}&2 x{2}'
+  items_taken: '&2Utracono {1}&2 x{2}'
+  money_given: '&2Received {1} {2}' # TODO: missing translation
+  money_taken: '&2Lost {1} {2}' # TODO: missing translation
+  point_given: '&2You received {1} points to {2}' # TODO: missing translation
+  point_taken: '&2You lost {1} points to {2}' # TODO: missing translation
+  point_set: '&2Your points {2} are set to {1}' #TODO: missing translation
+  point_multiplied: '&2Your points {2} are multiplied by {1}' # TODO: missing translation
+  blocks_to_break: '&2Pozostalo {1} blokow do zniszczenia'
+  blocks_to_place: '&2Pozostalo {1} blokow do postawienia'
+  mobs_to_kill: '&2Pozostalo {1} stworzen do zabicia'
+  mobs_to_click: '&2{1} mobs left to click' # TODO: missing translation
+  players_to_kill: '&2Pozostalo {1} graczy do zabicia'
+  fish_to_catch: '&2Pozostalo {1} ryb do zlowienia'
+  sheep_to_shear: '&2Pozostalo {1} owiec do ogolenia'
+  potions_to_brew: '&2Pozostalo {1} mikstur do zrobienia'
+  animals_to_breed: '&2Pozostalo {1} zwierzat do rozmnozenia'
+  items_to_pickup: '&2Pozostalo {1} przedmiotow do podniesienia'
+  items_to_smelt: '&2{1} items left to smelt' # TODO: missing translation
+  items_to_craft: '&2{1} items left to craft' # TODO: missing translation
+  items_to_enchant: '&2{1} items left to enchant' # TODO: missing translation
+  level_to_gain: '&2{1} levels left to gain' # TODO: missing translation
+  busy: '&cNie mozesz rozmawiac w trakcie walki.'
+  quest_canceled: '&2Zadanie {1}&2 anulowane!'
+  cancel: '&cAnuluj zadanie'
+  cancel_page: Anulowanie zadania
+  compass: '&cCele kompasu'
+  compass_page: Wybierz cel
+  command_blocked: '&cNie mozesz uzywac tej komendy podczas rozmowy.'
+  language_changed: '&2Jezyk zmieniony!'
+  language_missing: '&cPodaj jezyk'
+  language_not_exist: '&cTen jezyk nie jest zdefiniowany, oto lista dostepnych opcji: '
+  days: 'dni'
+  days_singular: 'dni' # TODO: Missing translation
+  hours: 'godzin'
+  hours_singular: 'godzin' # TODO: Missing translation
+  minutes: 'minut'
+  minutes_singular: 'minut' # TODO: Missing translation
+  seconds: 'sekund'
+  seconds_singular: 'sekund' # TODO: Missing translation
+  password: 'haslo: '
+  condition_variable_met: 'yes' # TODO: missing translation
+  condition_variable_not_met: 'no' # TODO: missing translation
+  chest_occupied: 'This chest is already in use' # TODO: missing translation
 de:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bGespräch mit {1}&b begonnen!&e===='
