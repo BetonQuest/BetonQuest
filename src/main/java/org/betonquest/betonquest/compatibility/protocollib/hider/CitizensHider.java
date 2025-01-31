@@ -4,15 +4,16 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.HologramTrait;
-import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.bukkit.event.npc.NpcExternalVisibilityChange;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.compatibility.citizens.CitizensAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -29,31 +30,25 @@ public final class CitizensHider implements Listener {
     private static CitizensHider instance;
 
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
-
-    /**
      * Hider hiding NPC entities/parts.
      */
     private final EntityHider hider;
 
-    private CitizensHider(final BetonQuestLogger log) {
-        this.log = log;
-        hider = new EntityHider(BetonQuest.getInstance(), EntityHider.Policy.BLACKLIST);
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+    private CitizensHider(final Plugin plugin) {
+        hider = new EntityHider(plugin, EntityHider.Policy.BLACKLIST);
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     /**
      * Starts (or restarts) the NPCHider. It loads the current configuration for hidden NPCs
      *
-     * @param log the logger that will be used for logging
+     * @param plugin the plugin instance for registering event handler
      */
-    public static void start(final BetonQuestLogger log) {
+    public static void start(final Plugin plugin) {
         if (instance != null) {
             instance.stop();
         }
-        instance = new CitizensHider(log);
+        instance = new CitizensHider(plugin);
     }
 
     /**
@@ -130,9 +125,7 @@ public final class CitizensHider implements Listener {
     public void onNPCSpawn(final NPCSpawnEvent event) {
         final NPC npc = event.getNPC();
         if (npc.getOwningRegistry().equals(CitizensAPI.getNPCRegistry())) {
-            log.debug("Tried to hide Citizens NPC on spawn, but how?");
-            // applyVisibility(new CitizensAdapter(npc));
-            // TODO how do I update it? like the other event?
+            Bukkit.getPluginManager().callEvent(new NpcExternalVisibilityChange(new CitizensAdapter(npc)));
         }
     }
 }
