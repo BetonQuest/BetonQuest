@@ -10,6 +10,7 @@ import org.betonquest.betonquest.config.patcher.transformer.RemoveTransformer;
 import org.betonquest.betonquest.config.patcher.transformer.SetTransformer;
 import org.betonquest.betonquest.config.patcher.transformer.TypeTransformer;
 import org.betonquest.betonquest.config.patcher.transformer.ValueRenameTransformer;
+import org.betonquest.betonquest.config.patcher.transformer.ValueReplaceTransformer;
 
 /**
  * Default implementation of {@link PatchTransformerRegisterer} containing all transformers of BetonQuest.
@@ -27,6 +28,7 @@ public class DefaultPatchTransformerRegisterer implements PatchTransformerRegist
         patcher.registerTransformer("REMOVE", new RemoveTransformer());
         patcher.registerTransformer("KEY_RENAME", new KeyRenameTransformer());
         patcher.registerTransformer("VALUE_RENAME", new ValueRenameTransformer());
+        patcher.registerTransformer("VALUE_REPLACE", new ValueReplaceTransformer());
         patcher.registerTransformer("LIST_ENTRY_ADD", new ListEntryAddTransformer());
         patcher.registerTransformer("LIST_ENTRY_REMOVE", new ListEntryRemoveTransformer());
         patcher.registerTransformer("LIST_ENTRY_RENAME", new ListEntryRenameTransformer());

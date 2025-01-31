@@ -245,6 +245,16 @@ Renames the key's value if it matches the given regex.
   newValue: newTest
 ```
 
+#### VALUE_REPLACE
+
+Replace a value part with another value.
+``` YAML title="Syntax"
+- type: VALUE_REPLACE
+  key: section.testKey
+  oldValue: test
+  newValue: newTest
+```
+
 #### TYPE_TRANSFORM
 
 Transforms the data type of an existing key into the given Java data type. This will result in a different formatting
