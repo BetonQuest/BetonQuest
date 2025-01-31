@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
 import org.bukkit.Bukkit;
@@ -35,6 +36,11 @@ public class ConversationResumer implements Listener {
     private final Player player;
 
     /**
+     * The {@link PluginMessage} instance.
+     */
+    private final PluginMessage pluginMessage;
+
+    /**
      * The profile to resume the conversation for.
      */
     private final OnlineProfile onlineProfile;
@@ -48,11 +54,13 @@ public class ConversationResumer implements Listener {
      * Creates a new ConversationResumer for a profile and a conversation state.
      *
      * @param loggerFactory the logger factory to use for creating loggers
+     * @param pluginMessage the {@link PluginMessage} instance
      * @param onlineProfile the profile to resume the conversation for
      * @param state         the state of a suspended conversation
      */
-    public ConversationResumer(final BetonQuestLoggerFactory loggerFactory, final OnlineProfile onlineProfile, final PlayerConversationState state) {
+    public ConversationResumer(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage, final OnlineProfile onlineProfile, final PlayerConversationState state) {
         this.loggerFactory = loggerFactory;
+        this.pluginMessage = pluginMessage;
         this.onlineProfile = onlineProfile;
         this.player = onlineProfile.getPlayer();
         this.state = state;
@@ -73,7 +81,7 @@ public class ConversationResumer implements Listener {
         if (event.getTo().getWorld().equals(state.center().getWorld()) && event.getTo().distanceSquared(state.center()) < distance * distance) {
             HandlerList.unregisterAll(this);
             BetonQuest.getInstance().getSaver().add(new Record(UpdateType.UPDATE_CONVERSATION, "null", onlineProfile.getProfileUUID().toString()));
-            new Conversation(loggerFactory.create(Conversation.class), onlineProfile, state.currentConversation(), state.center(), state.currentOption());
+            new Conversation(loggerFactory.create(Conversation.class), pluginMessage, onlineProfile, state.currentConversation(), state.center(), state.currentOption());
         }
     }
 

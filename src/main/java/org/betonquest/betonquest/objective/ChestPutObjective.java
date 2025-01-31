@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -89,7 +88,7 @@ public class ChestPutObjective extends Objective implements Listener {
         }
         if (!multipleAccess && !checkForNoOtherPlayer(event)) {
             try {
-                Config.sendNotify(null, onlineProfile, "chest_occupied", null);
+                BetonQuest.getInstance().getPluginMessage().sendNotify(null, onlineProfile, "chest_occupied", null);
             } catch (final QuestException e) {
                 log.warn("The notify system was unable to send the message for 'chest_occupied'. Error was: '"
                         + e.getMessage() + "'", e);

@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
@@ -20,7 +20,6 @@ import org.bukkit.Server;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -240,12 +239,9 @@ public abstract class Objective {
      * @param onlineProfile the {@link OnlineProfile} for which the notification is to be sent
      * @param variables     variables for putting into the message
      */
-    protected void sendNotify(final OnlineProfile onlineProfile, final String messageName, final Object... variables) {
+    protected void sendNotify(final OnlineProfile onlineProfile, final String messageName, final PluginMessage.Replacement... variables) {
         try {
-            final String[] stringVariables = Arrays.stream(variables)
-                    .map(String::valueOf)
-                    .toArray(String[]::new);
-            Config.sendNotify(instruction.getPackage(), onlineProfile, messageName, messageName + ",info", stringVariables);
+            BetonQuest.getInstance().getPluginMessage().sendNotify(instruction.getPackage(), onlineProfile, messageName, messageName + ",info", variables);
         } catch (final QuestException exception) {
             try {
                 log.warn(instruction.getPackage(), "The notify system was unable to play a sound for the '"

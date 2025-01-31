@@ -41,4 +41,13 @@ public class QuestException extends Exception {
     public QuestException(final Throwable cause) {
         super(cause);
     }
+
+    @Override
+    public String getMessage() {
+        final String message = super.getMessage();
+        if (message == null) {
+            throw new IllegalStateException("Message is null");
+        }
+        return message;
+    }
 }

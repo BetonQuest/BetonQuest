@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.variable.condition;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
-import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.ConditionID;
 
@@ -11,6 +11,11 @@ import org.betonquest.betonquest.id.ConditionID;
  * Get the "fulfillment" status of a quest condition.
  */
 public class ConditionVariable implements PlayerVariable {
+    /**
+     * The {@link PluginMessage} instance.
+     */
+    private final PluginMessage pluginMessage;
+
     /**
      * Condition to check.
      */
@@ -34,13 +39,15 @@ public class ConditionVariable implements PlayerVariable {
     /**
      * Create a new Condition variable.
      *
-     * @param conditionId  the condition to get the "fulfillment" status
-     * @param papiMode     if the return value should be in PAPI mode as defined in the documentation
-     * @param questTypeAPI the Quest Type API
-     * @param dataStorage  the storage providing player data
+     * @param pluginMessage the {@link PluginMessage} instance
+     * @param conditionId   the condition to get the "fulfillment" status
+     * @param papiMode      if the return value should be in PAPI mode as defined in the documentation
+     * @param questTypeAPI  the Quest Type API
+     * @param dataStorage   the storage providing player data
      */
-    public ConditionVariable(final ConditionID conditionId, final boolean papiMode, final QuestTypeAPI questTypeAPI,
+    public ConditionVariable(final PluginMessage pluginMessage, final ConditionID conditionId, final boolean papiMode, final QuestTypeAPI questTypeAPI,
                              final PlayerDataStorage dataStorage) {
+        this.pluginMessage = pluginMessage;
         this.conditionId = conditionId;
         this.papiMode = papiMode;
         this.questTypeAPI = questTypeAPI;
@@ -52,8 +59,8 @@ public class ConditionVariable implements PlayerVariable {
         final String lang = dataStorage.get(profile).getLanguage();
 
         if (questTypeAPI.condition(profile, conditionId)) {
-            return papiMode ? Config.getMessage(lang, "condition_variable_met") : "true";
+            return papiMode ? pluginMessage.getMessage(lang, "condition_variable_met") : "true";
         }
-        return papiMode ? Config.getMessage(lang, "condition_variable_not_met") : "false";
+        return papiMode ? pluginMessage.getMessage(lang, "condition_variable_not_met") : "false";
     }
 }

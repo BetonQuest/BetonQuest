@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.util.PlayerConverter;
@@ -39,16 +40,24 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
     private final PlayerDataStorage dataStorage;
 
     /**
+     * The {@link PluginMessage} instance.
+     */
+    private final PluginMessage pluginMessage;
+
+    /**
      * Creates a new executor for the /questlang command.
      *
-     * @param log         the logger that will be used for logging
-     * @param betonQuest  the object to get player data and config from
-     * @param dataStorage the storage providing player data
+     * @param log           the logger that will be used for logging
+     * @param betonQuest    the object to get player data and config from
+     * @param dataStorage   the storage providing player data
+     * @param pluginMessage the {@link PluginMessage} instance
      */
-    public LangCommand(final BetonQuestLogger log, final BetonQuest betonQuest, final PlayerDataStorage dataStorage) {
+    public LangCommand(final BetonQuestLogger log, final BetonQuest betonQuest, final PlayerDataStorage dataStorage,
+                       final PluginMessage pluginMessage) {
         this.log = log;
         this.betonQuest = betonQuest;
         this.dataStorage = dataStorage;
+        this.pluginMessage = pluginMessage;
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
@@ -58,7 +67,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
             return false;
         }
         if (args.length == 0) {
-            sender.sendMessage(Config.getMessage(Config.getLanguage(), "language_missing"));
+            sender.sendMessage(pluginMessage.getMessage(Config.getLanguage(), "language_missing"));
             return true;
         }
         if (!Config.getLanguages().contains(args[0]) && !"default".equalsIgnoreCase(args[0])) {
@@ -72,7 +81,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
                 return false;
             }
             final String finalMessage = builder.substring(0, builder.length() - 2) + ".";
-            sender.sendMessage(Config.getMessage(Config.getLanguage(), "language_not_exist") + finalMessage);
+            sender.sendMessage(pluginMessage.getMessage(Config.getLanguage(), "language_not_exist") + finalMessage);
             return true;
         }
         if (sender instanceof Player) {
@@ -83,13 +92,13 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
             playerData.setLanguage(lang);
             journal.update();
             try {
-                Config.sendNotify(null, onlineProfile, "language_changed", "language_changed,info", lang);
+                pluginMessage.sendNotify(null, onlineProfile, "language_changed", "language_changed,info");
             } catch (final QuestException e) {
                 log.warn("The notify system was unable to play a sound for the 'language_changed' category. Error was: '" + e.getMessage() + "'", e);
             }
         } else {
             betonQuest.getPluginConfig().set("language", args[0]);
-            sender.sendMessage(Config.getMessage(args[0], "default_language_changed"));
+            sender.sendMessage(pluginMessage.getMessage(args[0], "default_language_changed"));
         }
         return true;
     }

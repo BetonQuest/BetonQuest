@@ -53,7 +53,8 @@ public class VaultIntegrator implements Integrator {
             final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
             final QuestTypeRegistries registries = plugin.getQuestRegistries();
 
-            registries.event().register("money", new MoneyEventFactory(economy, loggerFactory, data, plugin.getVariableProcessor()));
+            registries.event().register("money", new MoneyEventFactory(economy, loggerFactory, data,
+                    BetonQuest.getInstance().getPluginMessage(), plugin.getVariableProcessor()));
             registries.condition().register("money", new MoneyConditionFactory(economy, data));
             registries.variable().register("money", new MoneyVariableFactory(economy));
         }

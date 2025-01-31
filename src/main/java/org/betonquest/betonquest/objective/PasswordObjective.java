@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.util.PlayerConverter;
@@ -67,7 +66,7 @@ public class PasswordObjective extends Objective implements Listener {
             return false;
         }
         final String prefix = passwordPrefix == null
-                ? Config.getMessage(BetonQuest.getInstance().getPlayerDataStorage()
+                ? BetonQuest.getInstance().getPluginMessage().getMessage(BetonQuest.getInstance().getPlayerDataStorage()
                 .get(onlineProfile).getLanguage(), "password") : passwordPrefix;
         if (!prefix.isEmpty() && !message.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT))) {
             return false;

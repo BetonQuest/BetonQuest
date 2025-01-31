@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -35,17 +36,24 @@ public class GiveEventFactory implements EventFactory {
     private final PlayerDataStorage dataStorage;
 
     /**
+     * The {@link PluginMessage} instance.
+     */
+    private final PluginMessage pluginMessage;
+
+    /**
      * Create the give event factory.
      *
      * @param loggerFactory logger factory to use
      * @param data          the data for primary server thread access
      * @param dataStorage   the storage providing player backpack
+     * @param pluginMessage the {@link PluginMessage} instance
      */
     public GiveEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data,
-                            final PlayerDataStorage dataStorage) {
+                            final PlayerDataStorage dataStorage, final PluginMessage pluginMessage) {
         this.loggerFactory = loggerFactory;
         this.data = data;
         this.dataStorage = dataStorage;
+        this.pluginMessage = pluginMessage;
     }
 
     @Override
@@ -53,13 +61,13 @@ public class GiveEventFactory implements EventFactory {
         final BetonQuestLogger log = loggerFactory.create(GiveEvent.class);
         final NotificationSender itemsGivenSender;
         if (instruction.hasArgument("notify")) {
-            itemsGivenSender = new IngameNotificationSender(log, instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.INFO, "items_given");
+            itemsGivenSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.INFO, "items_given");
         } else {
             itemsGivenSender = new NoNotificationSender();
         }
 
-        final NotificationSender itemsInBackpackSender = new IngameNotificationSender(log, instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.ERROR, "inventory_full_backpack", "inventory_full");
-        final NotificationSender itemsDroppedSender = new IngameNotificationSender(log, instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.ERROR, "inventory_full_drop", "inventory_full");
+        final NotificationSender itemsInBackpackSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.ERROR, "inventory_full_backpack", "inventory_full");
+        final NotificationSender itemsDroppedSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.ERROR, "inventory_full_drop", "inventory_full");
 
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new GiveEvent(

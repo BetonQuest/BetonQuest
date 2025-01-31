@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.quest.event.NotificationSender;
@@ -20,9 +21,10 @@ public class TakeEventFactory extends AbstractTakeEventFactory {
      * Create the take event factory.
      *
      * @param loggerFactory logger factory to use
+     * @param pluginMessage the {@link PluginMessage} instance
      */
-    public TakeEventFactory(final BetonQuestLoggerFactory loggerFactory) {
-        super(loggerFactory);
+    public TakeEventFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage) {
+        super(loggerFactory, pluginMessage);
     }
 
     @Override

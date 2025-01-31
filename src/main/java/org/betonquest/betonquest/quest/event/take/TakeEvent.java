@@ -4,6 +4,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.quest.event.NotificationSender;
@@ -53,7 +54,9 @@ public class TakeEvent extends AbstractTakeEvent {
             final String itemName = questItem.getName() == null
                     ? new ItemStack(questItem.getMaterial()).getItemMeta().getDisplayName()
                     : questItem.getName();
-            notificationSender.sendNotification(profile, itemName, String.valueOf(deleteAmount - neededDeletions.get(profile.getProfileUUID()).getRight()));
+            notificationSender.sendNotification(profile,
+                    new PluginMessage.Replacement("item", itemName),
+                    new PluginMessage.Replacement("amount", String.valueOf(deleteAmount - neededDeletions.get(profile.getProfileUUID()).getRight())));
         }
     }
 

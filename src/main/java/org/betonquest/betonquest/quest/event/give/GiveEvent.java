@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.event.give;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.item.QuestItem;
@@ -80,7 +81,9 @@ public class GiveEvent implements OnlineEvent {
             final String questItemName = questItem.getName() == null
                     ? questItem.getMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " ")
                     : questItem.getName();
-            itemsGivenSender.sendNotification(profile, questItemName, String.valueOf(amount));
+            itemsGivenSender.sendNotification(profile,
+                    new PluginMessage.Replacement("item", questItemName),
+                    new PluginMessage.Replacement("amount", String.valueOf(amount)));
         }
     }
 

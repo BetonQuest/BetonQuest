@@ -4,6 +4,7 @@ import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.objective.ActionObjective;
@@ -204,6 +205,11 @@ public class CoreQuestTypes {
     private final QuestTypeAPI questTypeAPI;
 
     /**
+     * The {@link PluginMessage} instance.
+     */
+    private final PluginMessage pluginMessage;
+
+    /**
      * Variable processor to create new variables.
      */
     private final VariableProcessor variableProcessor;
@@ -232,12 +238,14 @@ public class CoreQuestTypes {
      */
     public CoreQuestTypes(final BetonQuestLoggerFactory loggerFactory,
                           final Server server, final BukkitScheduler scheduler, final BetonQuest betonQuest,
-                          final QuestTypeAPI questTypeAPI, final VariableProcessor variableProcessor,
-                          final GlobalData globalData, final PlayerDataStorage dataStorage) {
+                          final QuestTypeAPI questTypeAPI, final PluginMessage pluginMessage,
+                          final VariableProcessor variableProcessor, final GlobalData globalData,
+                          final PlayerDataStorage dataStorage) {
         this.loggerFactory = loggerFactory;
         this.server = server;
         this.betonQuest = betonQuest;
         this.questTypeAPI = questTypeAPI;
+        this.pluginMessage = pluginMessage;
         this.variableProcessor = variableProcessor;
         this.globalData = globalData;
         this.dataStorage = dataStorage;
@@ -321,7 +329,7 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("chesttake", new ChestTakeEventFactory(data));
         eventTypes.register("compass", new CompassEventFactory(loggerFactory, dataStorage, server.getPluginManager(), data));
         eventTypes.registerCombined("command", new CommandEventFactory(loggerFactory, data));
-        eventTypes.register("conversation", new ConversationEventFactory(loggerFactory, data));
+        eventTypes.register("conversation", new ConversationEventFactory(loggerFactory, data, pluginMessage));
         eventTypes.register("damage", new DamageEventFactory(loggerFactory, data));
         eventTypes.register("deleffect", new DeleteEffectEventFactory(loggerFactory, data));
         eventTypes.register("deleteglobalpoint", new DeleteGlobalPointEventFactory());
@@ -333,14 +341,14 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("explosion", new ExplosionEventFactory(data));
         eventTypes.registerCombined("folder", new FolderEventFactory(betonQuest, loggerFactory, server.getPluginManager(), questTypeAPI));
         eventTypes.registerCombined("first", new FirstEventFactory(questTypeAPI));
-        eventTypes.register("give", new GiveEventFactory(loggerFactory, data, dataStorage));
+        eventTypes.register("give", new GiveEventFactory(loggerFactory, data, dataStorage, pluginMessage));
         eventTypes.register("givejournal", new GiveJournalEventFactory(loggerFactory, dataStorage, data));
         eventTypes.registerCombined("globaltag", new TagGlobalEventFactory(betonQuest));
         eventTypes.registerCombined("globalpoint", new GlobalPointEventFactory(variableProcessor));
         eventTypes.register("hunger", new HungerEventFactory(loggerFactory, data));
         eventTypes.registerCombined("if", new IfElseEventFactory(questTypeAPI));
         eventTypes.register("itemdurability", new ItemDurabilityEventFactory(loggerFactory, data));
-        eventTypes.registerCombined("journal", new JournalEventFactory(loggerFactory, dataStorage,
+        eventTypes.registerCombined("journal", new JournalEventFactory(loggerFactory, pluginMessage, dataStorage,
                 InstantSource.system(), betonQuest.getSaver()));
         eventTypes.register("kill", new KillEventFactory(loggerFactory, data));
         eventTypes.register("language", new LanguageEventFactory(dataStorage));
@@ -349,11 +357,13 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("log", new LogEventFactory(loggerFactory));
         eventTypes.register("notify", new NotifyEventFactory(loggerFactory, data, dataStorage));
         eventTypes.registerCombined("notifyall", new NotifyAllEventFactory(loggerFactory, data, dataStorage));
-        eventTypes.registerCombined("objective", new ObjectiveEventFactory(betonQuest, loggerFactory, questTypeAPI));
+        eventTypes.registerCombined("objective", new ObjectiveEventFactory(betonQuest, loggerFactory, questTypeAPI,
+                pluginMessage));
         eventTypes.register("opsudo", new OpSudoEventFactory(loggerFactory, data));
         eventTypes.register("party", new PartyEventFactory(loggerFactory, questTypeAPI));
         eventTypes.registerCombined("pickrandom", new PickRandomEventFactory(questTypeAPI));
-        eventTypes.register("point", new PointEventFactory(loggerFactory, variableProcessor, dataStorage));
+        eventTypes.register("point", new PointEventFactory(loggerFactory, variableProcessor, dataStorage,
+                pluginMessage));
         eventTypes.registerCombined("removeentity", new RemoveEntityEventFactory(data));
         eventTypes.registerCombined("run", new RunEventFactory());
         eventTypes.register("runForAll", new RunForAllEventFactory(questTypeAPI));
@@ -365,7 +375,7 @@ public class CoreQuestTypes {
         eventTypes.register("stage", new StageEventFactory(questTypeAPI));
         eventTypes.register("sudo", new SudoEventFactory(loggerFactory, data));
         eventTypes.registerCombined("tag", new TagPlayerEventFactory(dataStorage, betonQuest.getSaver()));
-        eventTypes.register("take", new TakeEventFactory(loggerFactory));
+        eventTypes.register("take", new TakeEventFactory(loggerFactory, pluginMessage));
         eventTypes.register("teleport", new TeleportEventFactory(loggerFactory, data));
         eventTypes.registerCombined("time", new TimeEventFactory(server, data, variableProcessor));
         eventTypes.register("variable", new VariableEventFactory(questTypeAPI));
@@ -411,10 +421,10 @@ public class CoreQuestTypes {
     }
 
     private void registerVariables(final VariableTypeRegistry variables) {
-        variables.register("condition", new ConditionVariableFactory(questTypeAPI, dataStorage));
+        variables.register("condition", new ConditionVariableFactory(questTypeAPI, dataStorage, pluginMessage));
         variables.registerCombined("eval", new EvalVariableFactory(variableProcessor));
         variables.register("globalpoint", new GlobalPointVariableFactory(globalData, loggerFactory.create(GlobalPointVariableFactory.class)));
-        variables.register("globaltag", new GlobalTagVariableFactory(globalData));
+        variables.register("globaltag", new GlobalTagVariableFactory(globalData, pluginMessage));
         variables.registerCombined("item", new ItemVariableFactory());
         variables.register("itemdurability", new ItemDurabilityVariableFactory());
         variables.register("location", new LocationVariableFactory());
@@ -424,7 +434,7 @@ public class CoreQuestTypes {
         variables.register("point", new PointVariableFactory(dataStorage, loggerFactory.create(PointVariableFactory.class)));
         variables.register("player", new PlayerNameVariableFactory());
         variables.registerCombined("randomnumber", new RandomNumberVariableFactory());
-        variables.register("tag", new TagVariableFactory(dataStorage));
+        variables.register("tag", new TagVariableFactory(dataStorage, pluginMessage));
         variables.register("version", new VersionVariableFactory(betonQuest));
     }
 }

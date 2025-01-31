@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.SingletonLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
@@ -27,6 +28,7 @@ import java.time.InstantSource;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Integration test for {@link org.betonquest.betonquest.quest.event.journal}.
@@ -70,7 +72,7 @@ class JournalEventFactoryIntegrationTest {
     }
 
     private QuestEventFactoryAdapter createJournalEventFactory(final BetonQuestLogger logger) {
-        final JournalEventFactory journalEventFactory = new JournalEventFactory(new SingletonLoggerFactory(logger), dataStorage, InstantSource.fixed(now), saver);
+        final JournalEventFactory journalEventFactory = new JournalEventFactory(new SingletonLoggerFactory(logger), mock(PluginMessage.class), dataStorage, InstantSource.fixed(now), saver);
         return new QuestEventFactoryAdapter(journalEventFactory, journalEventFactory);
     }
 

@@ -4,6 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.jetbrains.annotations.Nullable;
@@ -115,7 +116,8 @@ public abstract class CountingObjective extends Objective {
             return true;
         }
         if (notify && notifyMessageName != null && shouldNotify(data) && profile.getOnlineProfile().isPresent()) {
-            sendNotify(profile.getOnlineProfile().get(), notifyMessageName, Math.abs(data.getAmountLeft()));
+            sendNotify(profile.getOnlineProfile().get(), notifyMessageName,
+                    new PluginMessage.Replacement("amount", String.valueOf(Math.abs(data.getAmountLeft()))));
         }
         return false;
     }

@@ -13,6 +13,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.PlayerConversationState;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.id.ObjectiveID;
@@ -34,7 +35,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * Represents an object storing all profile-related data, which can load and save it.
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidSynchronizedStatement"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidSynchronizedStatement",
+        "PMD.CouplingBetweenObjects"})
 @SuppressFBWarnings("JLM_JSR166_UTILCONCURRENT_MONITORENTER")
 public class PlayerData implements TagData {
     /**
@@ -49,6 +51,8 @@ public class PlayerData implements TagData {
 
     @SuppressWarnings("PMD.DoNotUseThreads")
     private final Saver saver = BetonQuest.getInstance().getSaver();
+
+    private final PluginMessage pluginMessage;
 
     private final Profile profile;
 
@@ -80,7 +84,8 @@ public class PlayerData implements TagData {
      *
      * @param profile - the profile to load the data for
      */
-    public PlayerData(final Profile profile) {
+    public PlayerData(final PluginMessage pluginMessage, final Profile profile) {
+        this.pluginMessage = pluginMessage;
         this.profile = profile;
         this.profileID = profile.getProfileUUID().toString();
         loadAllPlayerData();
@@ -336,7 +341,7 @@ public class PlayerData implements TagData {
      */
     public Journal getJournal() {
         if (journal == null) {
-            journal = new Journal(profile, profileLanguage, entries, BetonQuest.getInstance().getPluginConfig());
+            journal = new Journal(pluginMessage, profile, profileLanguage, entries, BetonQuest.getInstance().getPluginConfig());
         }
         return journal;
     }

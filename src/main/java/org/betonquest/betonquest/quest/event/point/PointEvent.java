@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.event.point;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
@@ -68,6 +69,8 @@ public class PointEvent implements Event {
         final PlayerData playerData = dataStorage.getOffline(profile);
         final double countDouble = count.getValue(profile).doubleValue();
         playerData.setPoints(category, pointType.modify(playerData.getPointsFromCategory(category).orElse(0), countDouble));
-        pointSender.sendNotification(profile, String.valueOf(countDouble), categoryName);
+        pointSender.sendNotification(profile,
+                new PluginMessage.Replacement("amount", String.valueOf(countDouble)),
+                new PluginMessage.Replacement("catefory", categoryName));
     }
 }
