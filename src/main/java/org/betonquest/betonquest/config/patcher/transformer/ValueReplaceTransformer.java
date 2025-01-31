@@ -5,18 +5,16 @@ import org.betonquest.betonquest.api.config.patcher.PatchTransformer;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
- * Renames a value for a given key if the given regex matches.
+ * Replace a value part for a given key if the given regex matches.
  */
-public class ValueRenameTransformer implements PatchTransformer {
+public class ValueReplaceTransformer implements PatchTransformer {
 
     /**
      * Default constructor.
      */
-    public ValueRenameTransformer() {
+    public ValueReplaceTransformer() {
     }
 
     @Override
@@ -28,15 +26,15 @@ public class ValueRenameTransformer implements PatchTransformer {
             throw new PatchException("The key '" + key + "' did not exist, skipping transformation.");
         }
 
-        final String regex = options.get("oldValueRegex");
-        final Pattern pattern = Pattern.compile(regex);
-        final String newEntry = options.get("newValue");
+        final String oldValue = options.get("oldValue");
+        final String newValue = options.get("newValue");
 
-        final Matcher matcher = pattern.matcher(value.toString());
-        if (matcher.matches()) {
-            config.set(key, newEntry);
+        final String replaced = value.toString().replace(oldValue, newValue);
+
+        if (replaced.equals(value.toString())) {
+            throw new PatchException("Value does not contain the old value '" + oldValue + "', skipping transformation.");
         } else {
-            throw new PatchException("Value does not match the given regex '" + regex + "', skipping transformation.");
+            config.set(key, replaced);
         }
     }
 }
