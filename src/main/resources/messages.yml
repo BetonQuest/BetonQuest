@@ -601,7 +601,8 @@ pt-br:
   backpack_title: Mochila
   previous: '&2Anterior'
   next: '&2Próximo'
-  inventory_full: '&e*&bSeu inventário está cheio!&e*'
+  inventory_full_backpack: '&e*&bYour inventory is full! The item was moved to your backpack.&e*' #TODO: missing translation
+  inventory_full_drop: '&e*&bYour inventory is full! The item was dropped on the ground.&e*' #TODO: missing translation
   pullback: '&cVocê deve terminar esta conversa!'
   items_given: '&2Recebeu {1}&2 x{2}'
   items_taken: '&2Perdeu {1}&2 x{2}'
@@ -636,10 +637,13 @@ pt-br:
   language_missing: '&cEspecifique uma língua'
   language_not_exist: '&cEsta língua não está disponíveis, linguas aceitas: '
   days: 'dias'
+  days_singular: 'day' #TODO: missing translation
   hours: 'horas'
+  hours_singular: 'hour' #TODO: missing translation
   minutes: 'minutos'
+  minutes_singular: 'minute' #TODO: missing translation
   seconds: 'segundos'
-  and: 'e'
+  seconds_singular: 'second' #TODO: missing translation
   password: 'senha: '
   condition_variable_met: 'sim'
   condition_variable_not_met: 'não'
@@ -656,7 +660,8 @@ pt-pt:
   backpack_title: 'Mochila de missões'
   previous: '&2Anterior'
   next: '&2Seguinte'
-  inventory_full: '&e*&bO teu inventario está cheio.&e*'
+  inventory_full_backpack: '&e*&bYour inventory is full! The item was moved to your backpack.&e*' #TODO: missing translation
+  inventory_full_drop: '&e*&bYour inventory is full! The item was dropped on the ground.&e*' #TODO: missing translation
   pullback: '&cDeves terminar a conversa.'
   items_given: '&2Recebido {1}&2 x{2}'
   items_taken: '&2Perdido {1}&2 x{2}'
@@ -691,10 +696,13 @@ pt-pt:
   language_missing: '&cEspecifica um idioma'
   language_not_exist: '&cEsse idioma não está definido, opções possiveis: '
   days: 'dias'
+  days_singular: 'day' #TODO: missing translation
   hours: 'horas'
+  hours_singular: 'hour' #TODO: missing translation
   minutes: 'minutos'
+  minutes_singular: 'minute' #TODO: missing translation
   seconds: 'segundos'
-  and: 'e'
+  seconds_singular: 'second' #TODO: missing translation
   password: 'password: '
   condition_variable_met: 'sim'
   condition_variable_not_met: 'não'
