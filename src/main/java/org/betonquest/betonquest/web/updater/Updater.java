@@ -185,13 +185,13 @@ public class Updater {
      * Return the new version string.
      *
      * @return The version string or null if there is no newer version.
+     * @throws IllegalStateException If there is no newer version available.
      */
-    @Nullable
     public String getUpdateVersion() {
-        if (latest.getValue() != null) {
-            return latest.getKey().getVersion();
+        if (latest.getValue() == null) {
+            throw new IllegalStateException("There is no newer version available!");
         }
-        return null;
+        return latest.getKey().getVersion();
     }
 
     /**

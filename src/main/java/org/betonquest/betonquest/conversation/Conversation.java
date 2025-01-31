@@ -699,20 +699,12 @@ public class Conversation implements Listener {
                     // knows which is used
                     selectOption(resolvedOptions, false);
 
-                    // check whether to add a prefix
                     final String prefix = data.getPrefix(language, nextNPCOption);
-                    String prefixName = null;
-                    String[] prefixVariables = null;
-                    if (prefix != null) {
-                        prefixName = "conversation_prefix";
-                        prefixVariables = new String[]{prefix};
-                    }
+                    final String resolvedPrefix = prefix == null ? ""
+                            : Config.parseMessage(pack, onlineProfile, "conversation_prefix", prefix);
 
-                    //only display status messages if conversationIO allows it
                     if (conv.inOut.printMessages()) {
-                        // print message about starting a conversation only if it is started, not resumed
-                        conv.inOut.print(Config.parseMessage(pack, onlineProfile, "conversation_start", new String[]{data.getQuester(language)},
-                                prefixName, prefixVariables));
+                        conv.inOut.print(resolvedPrefix + Config.parseMessage(pack, onlineProfile, "conversation_start", data.getQuester(language)));
                     }
 
                     Config.playSound(onlineProfile, "start");

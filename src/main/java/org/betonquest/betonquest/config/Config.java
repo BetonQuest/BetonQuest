@@ -95,8 +95,8 @@ public final class Config {
      * @return message in that language, or message in English, or null if it
      * does not exist
      */
-    @Nullable
-    public static String getMessage(final String lang, final String message, @Nullable final String... variables) {
+    @SuppressWarnings("NullAway")
+    public static String getMessage(final String lang, final String message, final String... variables) {
         String result = messages.getString(lang + "." + message);
         if (result == null) {
             result = messages.getString(getLanguage() + "." + message);
@@ -113,25 +113,10 @@ public final class Config {
         if (result == null) {
             return null;
         }
-        if (variables != null) {
-            for (int i = 0; i < variables.length; i++) {
-                result = result.replace("{" + (i + 1) + "}", variables[i]);
-            }
+        for (int i = 0; i < variables.length; i++) {
+            result = result.replace("{" + (i + 1) + "}", variables[i]);
         }
         return ChatColor.translateAlternateColorCodes('&', result);
-    }
-
-    /**
-     * Retrieves the message from the configuration in the specified language.
-     *
-     * @param message name of the message to retrieve
-     * @param lang    language in which the message should be retrieved
-     * @return message in that language, or message in English, or null if it
-     * does not exist
-     */
-    @SuppressWarnings("NullAway")
-    public static String getMessage(final String lang, final String message) {
-        return getMessage(lang, message, (String[]) null);
     }
 
     /**
@@ -154,97 +139,12 @@ public final class Config {
     }
 
     /**
-     * Get {@link ConfigurationFile} containing all the messages.
-     *
-     * @return messages configuration
-     */
-    public static ConfigurationFile getMessages() {
-        return messages;
-    }
-
-    /**
      * Get the default language.
      *
      * @return the default language
      */
     public static String getLanguage() {
         return lang;
-    }
-
-    /**
-     * Sends a message to player from the {@link OnlineProfile} in his chosen language or default or English
-     * (if previous not found).
-     *
-     * @param pack          the pack
-     * @param onlineProfile the {@link OnlineProfile} of the player
-     * @param messageName   ID of the message
-     */
-    public static void sendMessage(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName) {
-        sendMessage(pack, onlineProfile, messageName, (String[]) null, null, null);
-    }
-
-    /**
-     * Sends a message to player from the {@link OnlineProfile} in his chosen language or default or English
-     * (if previous not found). It will replace all {x} sequences with the
-     * variables.
-     *
-     * @param pack          the pack
-     * @param onlineProfile the {@link OnlineProfile} of the player
-     * @param messageName   ID of the message
-     * @param variables     array of variables which will be inserted into the string
-     */
-    public static void sendMessage(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String... variables) {
-        sendMessage(pack, onlineProfile, messageName, variables, null, null, (String) null);
-    }
-
-    /**
-     * Sends a message to player from the {@link OnlineProfile} in his chosen language or default or English
-     * (if previous not found). It will replace all {x} sequences with the
-     * variables and play the sound.
-     *
-     * @param pack          the pack
-     * @param onlineProfile the {@link OnlineProfile} of the player
-     * @param messageName   ID of the message
-     * @param variables     array of variables which will be inserted into the string
-     * @param soundName     name of the sound to play to the player
-     */
-    public static void sendMessage(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, final String[] variables, final String soundName) {
-        sendMessage(pack, onlineProfile, messageName, variables, soundName, null, (String) null);
-    }
-
-    /**
-     * Sends a message to player from the {@link OnlineProfile} in his chosen language or default or English
-     * (if previous not found). It will replace all {x} sequences with the
-     * variables and play the sound. It will also add a prefix to the message.
-     *
-     * @param pack            the pack
-     * @param onlineProfile   the {@link OnlineProfile} of the player
-     * @param messageName     ID of the message
-     * @param variables       array of variables which will be inserted into the message
-     * @param soundName       name of the sound to play to the player
-     * @param prefixName      ID of the prefix
-     * @param prefixVariables array of variables which will be inserted into the prefix
-     */
-    public static void sendMessage(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String soundName,
-                                   @Nullable final String prefixName, @Nullable final String... prefixVariables) {
-        final String message = parseMessage(pack, onlineProfile, messageName, variables, prefixName, prefixVariables);
-        if (message == null || message.isEmpty()) {
-            return;
-        }
-
-        final Player player = onlineProfile.getPlayer();
-        player.sendMessage(message);
-        if (soundName != null) {
-            playSound(onlineProfile, soundName);
-        }
-    }
-
-    public static void sendNotify(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String category) throws QuestException {
-        sendNotify(pack, onlineProfile, messageName, null, category);
-    }
-
-    public static void sendNotify(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String category) throws QuestException {
-        sendNotify(pack, onlineProfile, messageName, variables, category, null);
     }
 
     /**
@@ -257,51 +157,36 @@ public final class Config {
      * @param messageName   ID of the message
      * @param variables     array of variables which will be inserted into the message
      * @param category      notification category
-     * @param data          custom notifyIO data
      * @throws QuestException thrown if it is not possible to send the notification
      */
     @SuppressWarnings("NullAway")
-    public static void sendNotify(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String[] variables, @Nullable final String category, @Nullable final Map<String, String> data) throws QuestException {
+    public static void sendNotify(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile,
+                                  final String messageName, @Nullable final String category, final String... variables)
+            throws QuestException {
         final String message = parseMessage(pack, onlineProfile, messageName, variables);
         if (message == null || message.isEmpty()) {
             return;
         }
 
-        Notify.get(pack, category, data).sendNotify(message, onlineProfile);
-    }
-
-    @Nullable
-    public static String parseMessage(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String... variables) {
-        return parseMessage(pack, onlineProfile, messageName, variables, null, (String) null);
+        Notify.get(pack, category, null).sendNotify(message, onlineProfile);
     }
 
     /**
      * Retrieve's a message in the language of the player from the {@link OnlineProfile}, replacing variables.
      *
-     * @param pack            the pack
-     * @param onlineProfile   the {@link OnlineProfile} of the player
-     * @param messageName     name of the message to retrieve
-     * @param variables       Variables to replace in the message
-     * @param prefixName      ID of the prefix
-     * @param prefixVariables array of variables which will be inserted into the prefix
+     * @param pack          the pack
+     * @param onlineProfile the {@link OnlineProfile} of the player
+     * @param messageName   name of the message to retrieve
+     * @param variables     Variables to replace in the message
      * @return The parsed message.
      */
-    @SuppressWarnings("NullAway")
     @Nullable
-    public static String parseMessage(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile,
-                                      final String messageName, @Nullable final String[] variables,
-                                      @Nullable final String prefixName, @Nullable final String... prefixVariables) {
+    public static String parseMessage(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String... variables) {
         final PlayerData playerData = plugin.getPlayerDataStorage().get(onlineProfile);
         final String language = playerData.getLanguage();
         String message = getMessage(language, messageName, variables);
         if (message == null || message.isEmpty()) {
             return null;
-        }
-        if (prefixName != null) {
-            final String prefix = getMessage(language, prefixName, prefixVariables);
-            if (prefix != null && !prefix.isEmpty()) {
-                message = prefix + message;
-            }
         }
         if (pack != null) {
             try {

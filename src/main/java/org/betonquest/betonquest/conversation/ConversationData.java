@@ -396,6 +396,7 @@ public class ConversationData {
      *               conversation
      * @return the conversation prefix, or null if not defined
      */
+    @Nullable
     public String getPrefix(final String lang, @Nullable final ResolvedOption option) {
         // get prefix from an option
         if (option != null) {

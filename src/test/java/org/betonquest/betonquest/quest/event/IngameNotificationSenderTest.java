@@ -32,7 +32,7 @@ class IngameNotificationSenderTest {
             final Profile profile = getMockedProfile();
             assertTrue(profile.getOnlineProfile().isPresent(), "Profile should have an online profile.");
             sender.sendNotification(profile);
-            config.verify(() -> Config.sendNotify(questPackage, profile.getOnlineProfile().get(), "message-name", new String[0], "message-name,info"));
+            config.verify(() -> Config.sendNotify(questPackage, profile.getOnlineProfile().get(), "message-name", "message-name,info"));
         }
     }
 
@@ -42,7 +42,7 @@ class IngameNotificationSenderTest {
         final NotificationSender sender = new IngameNotificationSender(logger, questPackage, "full.id", NotificationLevel.INFO, "message-name");
 
         try (MockedStatic<Config> config = mockStatic(Config.class)) {
-            config.when(() -> Config.sendNotify(any(), any(OnlineProfile.class), any(), any(), any()))
+            config.when(() -> Config.sendNotify(any(), any(OnlineProfile.class), any(), any()))
                     .thenThrow(new QuestException("Test cause."));
             assertDoesNotThrow(() -> sender.sendNotification(getMockedProfile()), "Failing to send a notification should not throw an exception.");
         }

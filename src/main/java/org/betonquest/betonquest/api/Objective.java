@@ -245,7 +245,7 @@ public abstract class Objective {
             final String[] stringVariables = Arrays.stream(variables)
                     .map(String::valueOf)
                     .toArray(String[]::new);
-            Config.sendNotify(instruction.getPackage(), onlineProfile, messageName, stringVariables, messageName + ",info");
+            Config.sendNotify(instruction.getPackage(), onlineProfile, messageName, messageName + ",info", stringVariables);
         } catch (final QuestException exception) {
             try {
                 log.warn(instruction.getPackage(), "The notify system was unable to play a sound for the '"
