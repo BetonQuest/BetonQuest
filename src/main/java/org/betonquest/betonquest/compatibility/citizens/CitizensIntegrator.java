@@ -85,7 +85,7 @@ public class CitizensIntegrator implements Integrator {
     @Override
     public void postHook() {
         if (Compatibility.getHooked().contains("ProtocolLib")) {
-            CitizensHider.start(plugin.getLoggerFactory().create(CitizensHider.class));
+            CitizensHider.start(plugin);
         } else {
             plugin.getLoggerFactory().create(CitizensIntegrator.class)
                     .warn("ProtocolLib Integration not found! Hiding Citizens NPCs won't be available.");
@@ -95,7 +95,7 @@ public class CitizensIntegrator implements Integrator {
     @Override
     public void reload() {
         if (CitizensHider.getInstance() != null) {
-            CitizensHider.start(plugin.getLoggerFactory().create(CitizensHider.class));
+            CitizensHider.start(plugin);
         }
     }
 

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.processor.quest;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.bukkit.event.npc.NpcExternalVisibilityChange;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcInteractEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -259,6 +260,23 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
         public void onPlayerJoin(final PlayerJoinEvent event) {
             Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () ->
                     npcHider.applyVisibility(plugin.getProfileProvider().getProfile(event.getPlayer())));
+        }
+
+        /**
+         * Applies the visibility on Extern change Player join.
+         *
+         * @param event the external change event to listen
+         */
+        @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+        public void onExternalChange(final NpcExternalVisibilityChange event) {
+            if (event.getNpc() == null) {
+                npcHider.applyVisibility();
+                return;
+            }
+            final Set<NpcID> identifier = plugin.getQuestRegistries().npc().getIdentifier(event.getNpc());
+            for (final NpcID npcID : identifier) {
+                npcHider.applyVisibility(npcID);
+            }
         }
     }
 }
