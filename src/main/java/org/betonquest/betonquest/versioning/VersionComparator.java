@@ -122,25 +122,24 @@ public class VersionComparator implements Comparator<Version>, Serializable {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ImplicitSwitchFallThrough"})
     private int compareVersionDigits(final int majorVersion, final int minorVersion, final int patchVersion,
                                      final int qualifierVersion, final int buildNumberVersion) {
-        switch (updateStrategy) {
+        return switch (updateStrategy) {
             case MAJOR:
                 if (majorVersion != 0) {
-                    return majorVersion;
+                    yield majorVersion;
                 }
             case MINOR:
                 if (majorVersion == 0 && minorVersion != 0) {
-                    return minorVersion;
+                    yield minorVersion;
                 }
             case PATCH:
                 if (majorVersion == 0 && minorVersion == 0) {
                     if (patchVersion != 0) {
-                        return patchVersion;
+                        yield patchVersion;
                     }
-                    return compareVersionDigitQualifierAndBuildNumber(qualifierVersion, buildNumberVersion);
+                    yield compareVersionDigitQualifierAndBuildNumber(qualifierVersion, buildNumberVersion);
                 }
-            default:
-                return 1;
-        }
+                yield 1;
+        };
     }
 
     private int compareVersionDigitQualifierAndBuildNumber(final int qualifierVersion, final int buildNumberVersion) {
