@@ -19,14 +19,21 @@ public class ConversationProcessor extends QuestProcessor<ConversationID, Conver
     private final BetonQuest plugin;
 
     /**
+     * Processor to get Npcs.
+     */
+    private final NpcProcessor npcProcessor;
+
+    /**
      * Create a new Conversation Data Processor to load and process conversation data.
      *
-     * @param log    the custom logger for this class
-     * @param plugin the plugin instance used for new conversation data
+     * @param log          the custom logger for this class
+     * @param plugin       the plugin instance used for new conversation data
+     * @param npcProcessor the processor to get npcs
      */
-    public ConversationProcessor(final BetonQuestLogger log, final BetonQuest plugin) {
+    public ConversationProcessor(final BetonQuestLogger log, final BetonQuest plugin, final NpcProcessor npcProcessor) {
         super(log);
         this.plugin = plugin;
+        this.npcProcessor = npcProcessor;
     }
 
     @Override
@@ -43,6 +50,7 @@ public class ConversationProcessor extends QuestProcessor<ConversationID, Conver
                     }
                     final ConversationID convID = new ConversationID(pack, convName);
                     values.put(convID, new ConversationData(plugin, convID, convSection));
+                    npcProcessor.loadConversation(convID, convSection);
                 } catch (final QuestException e) {
                     log.warn(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
                 }
