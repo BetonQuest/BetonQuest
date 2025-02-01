@@ -104,7 +104,7 @@ class UpdaterTest {
             assertTrue(scheduler.waitAsyncTasksFinished(), "Expected async tasks to finish");
             scheduler.assertNoExceptions();
             assertFalse(updater.isUpdateAvailable(), "Expected no available update");
-            assertNull(updater.getUpdateVersion(), "Expected no update version");
+            assertThrows(IllegalStateException.class, updater::getUpdateVersion, "Expected no update version");
 
             final InOrder inOrder = inOrder(player);
             inOrder.verify(player, times(1)).sendMessage("§2Started update to version '2.0.0-DEV-5'...");
@@ -138,7 +138,7 @@ class UpdaterTest {
             assertTrue(scheduler.waitAsyncTasksFinished(), "Expected async tasks to finish");
             scheduler.assertNoExceptions();
             assertFalse(updater.isUpdateAvailable(), "Expected no available update");
-            assertNull(updater.getUpdateVersion(), "Expected no update version");
+            assertThrows(IllegalStateException.class, updater::getUpdateVersion, "Expected no update version");
 
             final Player player = mock(Player.class);
             when(player.getUniqueId()).thenReturn(UUID.randomUUID());
@@ -276,7 +276,7 @@ class UpdaterTest {
             assertTrue(scheduler.waitAsyncTasksFinished(), "Expected async tasks to finish");
             scheduler.assertNoExceptions();
             assertFalse(updater.isUpdateAvailable(), "Expected no available update");
-            assertNull(updater.getUpdateVersion(), "Expected no update version");
+            assertThrows(IllegalStateException.class, updater::getUpdateVersion, "Expected no update version");
         }
 
         verify(logger, times(1)).info("The updater did not find an update! This can depend on your update.strategy, check config entry 'update.strategy'.");
@@ -308,7 +308,7 @@ class UpdaterTest {
             assertTrue(scheduler.waitAsyncTasksFinished(), "Expected async tasks to finish");
             scheduler.assertNoExceptions();
             assertFalse(updater.isUpdateAvailable(), "Expected no available update");
-            assertNull(updater.getUpdateVersion(), "Expected no update version");
+            assertThrows(IllegalStateException.class, updater::getUpdateVersion, "Expected no update version");
         }
 
         verify(logger, times(1)).info("The update was already downloaded! Restart the server to update the plugin.");
@@ -336,7 +336,7 @@ class UpdaterTest {
             assertTrue(scheduler.waitAsyncTasksFinished(), "Expected async tasks to finish");
             scheduler.assertNoExceptions();
             assertFalse(updater.isUpdateAvailable(), "Expected no available update");
-            assertNull(updater.getUpdateVersion(), "Expected no update version");
+            assertThrows(IllegalStateException.class, updater::getUpdateVersion, "Expected no update version");
         }
 
         verify(logger, times(1)).info("The updater is disabled! Change config entry 'update.enabled' to 'true' to enable it.");

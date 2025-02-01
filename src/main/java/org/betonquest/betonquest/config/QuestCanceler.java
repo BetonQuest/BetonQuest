@@ -198,7 +198,7 @@ public class QuestCanceler {
         log.debug("Quest removed!");
         final String questName = getName(onlineProfile);
         try {
-            Config.sendNotify(pack, onlineProfile, "quest_canceled", new String[]{questName}, "quest_cancelled,quest_canceled,info");
+            Config.sendNotify(pack, onlineProfile, "quest_canceled", "quest_cancelled,quest_canceled,info", questName);
         } catch (final QuestException exception) {
             log.warn("The notify system was unable to play a sound for the 'quest_canceled' category in quest '" + name + "'. Error was: '" + exception.getMessage() + "'");
         }

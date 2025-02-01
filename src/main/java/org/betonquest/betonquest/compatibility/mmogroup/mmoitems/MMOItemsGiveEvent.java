@@ -86,8 +86,7 @@ public class MMOItemsGiveEvent extends QuestEvent {
         if (notify) {
             try {
                 Config.sendNotify(instruction.getPackage(), profile.getOnlineProfile().get(), "items_given",
-                        new String[]{mmoItem.getItemMeta().getDisplayName(), String.valueOf(amount)},
-                        "items_given,info");
+                        "items_given,info", mmoItem.getItemMeta().getDisplayName(), String.valueOf(amount));
             } catch (final QuestException e) {
                 log.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'items_given' category in '"
                         + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
