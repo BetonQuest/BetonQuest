@@ -107,29 +107,29 @@ public class FireworkEffectHandler {
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.SwitchDensity", "PMD.CognitiveComplexity"})
     public boolean check(@Nullable final FireworkEffect effect) {
-        switch (typeE) {
+        return switch (typeE) {
             case WHATEVER:
-                return true;
+                yield true;
             case REQUIRED:
                 if (effect == null || effect.getType() != type) {
-                    return false;
+                    yield false;
                 }
                 switch (mainE) {
                     case WHATEVER:
                         break;
                     case REQUIRED:
                         if (effect.getColors().size() != mainColors.size()) {
-                            return false;
+                            yield false;
                         }
                         for (final Color c : effect.getColors()) {
                             if (!mainColors.contains(c)) {
-                                return false;
+                                yield false;
                             }
                         }
                         break;
                     case FORBIDDEN:
                         if (!effect.getColors().isEmpty()) {
-                            return false;
+                            yield false;
                         }
                         break;
                 }
@@ -138,17 +138,17 @@ public class FireworkEffectHandler {
                         break;
                     case REQUIRED:
                         if (effect.getFadeColors().size() != fadeColors.size()) {
-                            return false;
+                            yield false;
                         }
                         for (final Color c : effect.getFadeColors()) {
                             if (!fadeColors.contains(c)) {
-                                return false;
+                                yield false;
                             }
                         }
                         break;
                     case FORBIDDEN:
                         if (!effect.getFadeColors().isEmpty()) {
-                            return false;
+                            yield false;
                         }
                         break;
                 }
@@ -157,12 +157,12 @@ public class FireworkEffectHandler {
                         break;
                     case REQUIRED:
                         if (!effect.hasTrail()) {
-                            return false;
+                            yield false;
                         }
                         break;
                     case FORBIDDEN:
                         if (effect.hasTrail()) {
-                            return false;
+                            yield false;
                         }
                         break;
                 }
@@ -171,20 +171,18 @@ public class FireworkEffectHandler {
                         break;
                     case REQUIRED:
                         if (!effect.hasFlicker()) {
-                            return false;
+                            yield false;
                         }
                         break;
                     case FORBIDDEN:
                         if (effect.hasFlicker()) {
-                            return false;
+                            yield false;
                         }
                         break;
                 }
-                return true;
+                yield true;
             case FORBIDDEN:
-                return effect == null || effect.getType() != type;
-            default:
-                return false;
-        }
+                yield effect == null || effect.getType() != type;
+        };
     }
 }
