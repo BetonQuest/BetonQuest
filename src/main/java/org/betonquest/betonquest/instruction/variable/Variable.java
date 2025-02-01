@@ -41,7 +41,7 @@ public class Variable<T> {
      * @param resolver          the resolver to convert the resolved variable to the given type
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
-    public Variable(final VariableProcessor variableProcessor, final QuestPackage pack, final String input,
+    public Variable(final VariableProcessor variableProcessor, @Nullable final QuestPackage pack, final String input,
                     final QuestFunction<String, T> resolver) throws QuestException {
         final Map<String, org.betonquest.betonquest.api.Variable> variables = getVariables(variableProcessor, pack, input);
         if (variables.isEmpty()) {
@@ -53,7 +53,7 @@ public class Variable<T> {
     }
 
     private Map<String, org.betonquest.betonquest.api.Variable> getVariables(final VariableProcessor variableProcessor,
-                                                                             final QuestPackage pack,
+                                                                             @Nullable final QuestPackage pack,
                                                                              final String input)
             throws QuestException {
         final Map<String, org.betonquest.betonquest.api.Variable> variables = new HashMap<>();

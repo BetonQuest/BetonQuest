@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.registry;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -33,7 +34,7 @@ public abstract class FromClassFactoryRegistry<T, F> extends FactoryRegistry<F> 
      * @return the newly created object
      * @throws QuestException when the construction fails
      */
-    protected static <T> T catchConstructionException(final String typeName, final Constructor<T> constructor, final Object... args) throws QuestException {
+    protected static <T> T catchConstructionException(final String typeName, final Constructor<T> constructor, @Nullable final Object... args) throws QuestException {
         try {
             return constructor.newInstance(args);
         } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException

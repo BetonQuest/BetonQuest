@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.betonquest.betonquest.quest.registry.FromClassFactoryRegistry;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.util.Map;
@@ -40,7 +41,7 @@ public class NotifyIORegistry extends FromClassFactoryRegistry<NotifyIO, NotifyI
          * @return the created notify io
          * @throws QuestException when the creation fails
          */
-        NotifyIO parse(QuestPackage pack, Map<String, String> categoryData) throws QuestException;
+        NotifyIO parse(@Nullable QuestPackage pack, Map<String, String> categoryData) throws QuestException;
     }
 
     /**
@@ -51,7 +52,7 @@ public class NotifyIORegistry extends FromClassFactoryRegistry<NotifyIO, NotifyI
     private record FactoryImpl(Constructor<? extends NotifyIO> constructor) implements NotifyIOFactory {
 
         @Override
-        public NotifyIO parse(final QuestPackage pack, final Map<String, String> categoryData) throws QuestException {
+        public NotifyIO parse(@Nullable final QuestPackage pack, final Map<String, String> categoryData) throws QuestException {
             return catchConstructionException("Notify IO", constructor, pack, categoryData);
         }
     }

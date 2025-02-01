@@ -95,7 +95,6 @@ public final class Config {
      * @return message in that language, or message in English, or null if it
      * does not exist
      */
-    @SuppressWarnings("NullAway")
     public static String getMessage(final String lang, final String message, final String... variables) {
         String result = messages.getString(lang + "." + message);
         if (result == null) {
@@ -111,7 +110,7 @@ public final class Config {
             result = internal.getConfig().getString("en." + message);
         }
         if (result == null) {
-            return null;
+            throw new IllegalArgumentException("Message " + message + " not found in the configuration");
         }
         for (int i = 0; i < variables.length; i++) {
             result = result.replace("{" + (i + 1) + "}", variables[i]);
@@ -159,15 +158,10 @@ public final class Config {
      * @param category      notification category
      * @throws QuestException thrown if it is not possible to send the notification
      */
-    @SuppressWarnings("NullAway")
     public static void sendNotify(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile,
                                   final String messageName, @Nullable final String category, final String... variables)
             throws QuestException {
         final String message = parseMessage(pack, onlineProfile, messageName, variables);
-        if (message == null || message.isEmpty()) {
-            return;
-        }
-
         Notify.get(pack, category, null).sendNotify(message, onlineProfile);
     }
 
@@ -180,14 +174,10 @@ public final class Config {
      * @param variables     Variables to replace in the message
      * @return The parsed message.
      */
-    @Nullable
-    public static String parseMessage(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, @Nullable final String... variables) {
+    public static String parseMessage(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile, final String messageName, final String... variables) {
         final PlayerData playerData = plugin.getPlayerDataStorage().get(onlineProfile);
         final String language = playerData.getLanguage();
         String message = getMessage(language, messageName, variables);
-        if (message == null || message.isEmpty()) {
-            return null;
-        }
         if (pack != null) {
             try {
                 message = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, message).getValue(onlineProfile);
