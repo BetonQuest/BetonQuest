@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.NpcID;
@@ -31,11 +30,6 @@ public class NpcHider {
     protected final BetonQuestLogger log;
 
     /**
-     * Quest Type API.
-     */
-    private final QuestTypeAPI questTypeAPI;
-
-    /**
      * Processor to get Npcs.
      */
     private final NpcProcessor npcProcessor;
@@ -59,17 +53,15 @@ public class NpcHider {
      * Create and start a new Npc Hider.
      *
      * @param log          the custom logger for this class
-     * @param questTypeAPI the Quest Type API
      * @param npcProcessor the processor to get nps
      * @param plugin       the plugin to get config and start the task
      * @param packages     the quest packages to load
      */
-    public NpcHider(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final NpcProcessor npcProcessor,
+    public NpcHider(final BetonQuestLogger log, final NpcProcessor npcProcessor,
                     final BetonQuest plugin, final Collection<QuestPackage> packages) {
         this.log = log;
         this.npcProcessor = npcProcessor;
         this.plugin = plugin;
-        this.questTypeAPI = questTypeAPI;
         this.npcs = new HashMap<>();
         load(packages);
     }
@@ -150,7 +142,7 @@ public class NpcHider {
         if (conditions == null || conditions.isEmpty()) {
             return false;
         }
-        return questTypeAPI.conditions(profile, conditions);
+        return plugin.getQuestTypeAPI().conditions(profile, conditions);
     }
 
     /**
@@ -169,7 +161,7 @@ public class NpcHider {
         }
         if (npc.isSpawned()) {
             final Set<ConditionID> conditions = npcs.get(npcId);
-            if (conditions == null || conditions.isEmpty() || !questTypeAPI.conditions(onlineProfile, conditions)) {
+            if (conditions == null || conditions.isEmpty() || !plugin.getQuestTypeAPI().conditions(onlineProfile, conditions)) {
                 npc.show(onlineProfile);
             } else {
                 npc.hide(onlineProfile);
