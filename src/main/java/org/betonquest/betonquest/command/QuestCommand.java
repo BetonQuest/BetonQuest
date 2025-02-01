@@ -387,26 +387,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 completions.add(pack + '.');
                 return Optional.of(completions);
             }
-            final ConfigurationSection configuration;
-            switch (type) {
-                case ITEMS:
-                    configuration = configPack.getConfig().getConfigurationSection("items");
-                    break;
-                case EVENTS:
-                    configuration = configPack.getConfig().getConfigurationSection("events");
-                    break;
-                case JOURNAL:
-                    configuration = configPack.getConfig().getConfigurationSection("journal");
-                    break;
-                case CONDITIONS:
-                    configuration = configPack.getConfig().getConfigurationSection("conditions");
-                    break;
-                case OBJECTIVES:
-                    configuration = configPack.getConfig().getConfigurationSection("objectives");
-                    break;
-                default:
-                    return Optional.of(new ArrayList<>());
-            }
+            final ConfigurationSection configuration = switch (type) {
+                case ITEMS -> configPack.getConfig().getConfigurationSection("items");
+                case EVENTS -> configPack.getConfig().getConfigurationSection("events");
+                case JOURNAL -> configPack.getConfig().getConfigurationSection("journal");
+                case CONDITIONS -> configPack.getConfig().getConfigurationSection("conditions");
+                case OBJECTIVES -> configPack.getConfig().getConfigurationSection("objectives");
+            };
             final List<String> completions = new ArrayList<>();
             if (configuration != null) {
                 for (final String key : configuration.getKeys(false)) {

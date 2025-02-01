@@ -150,18 +150,16 @@ public class Slots {
         if (!containsSlot(slot)) {
             return -1;
         }
-        switch (type) {
+        return switch (type) {
             case SINGLE:
-                return 0;
+                yield 0;
             case ROW:
-                return slot - start;
+                yield slot - start;
             case RECTANGLE:
                 final int rectangleLength = end % 9 - start % 9 + 1;
                 final int rows = slot / 9 - start / 9;
-                return rectangleLength * rows + slot % 9 - start % 9;
-            default:
-                return -1;
-        }
+                yield rectangleLength * rows + slot % 9 - start % 9;
+        };
     }
 
     /**
