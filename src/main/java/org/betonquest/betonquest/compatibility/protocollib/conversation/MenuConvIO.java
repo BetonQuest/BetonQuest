@@ -654,7 +654,6 @@ public class MenuConvIO extends ChatConvIO {
                             }
                             break;
                         case MOVE:
-                        default:
                             break;
                     }
                 } else if (steerEvent.getForward() < 0 && selectedOption < options.size() - 1 && controls.containsKey(CONTROL.MOVE) && !debounce) {
@@ -684,7 +683,6 @@ public class MenuConvIO extends ChatConvIO {
                             }
                             break;
                         case MOVE:
-                        default:
                             break;
                     }
                 } else if (Math.abs(steerEvent.getForward()) < 0.01) {
