@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.meta.BookMeta;
@@ -13,11 +12,13 @@ import java.util.Set;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class BookHandler implements ItemMetaHandler<BookMeta> {
-    private String title = Config.getMessage(Config.getLanguage(), "unknown_title");
+    @Nullable
+    private String title;
 
     private Existence titleE = Existence.WHATEVER;
 
-    private String author = Config.getMessage(Config.getLanguage(), "unknown_author");
+    @Nullable
+    private String author;
 
     private Existence authorE = Existence.WHATEVER;
 
