@@ -83,7 +83,7 @@ public class BossBarNotifyIO extends NotifyIO {
         try {
             resolvedProgress = normalizeBossBarProgress(getFloatData(onlineProfile.getPlayer(), "progress", 1));
         } catch (final QuestException e) {
-            log.warn(pack, "Invalid variable in bossbar notification from package " + pack.getQuestPath() + ": " + e.getMessage(), e);
+            log.warn(pack, "Invalid variable in bossbar notification from package '" + (pack == null ? "null" : pack.getQuestPath()) + "': " + e.getMessage(), e);
         }
         bossBar.setProgress(resolvedProgress);
         bossBar.addPlayer(onlineProfile.getPlayer());

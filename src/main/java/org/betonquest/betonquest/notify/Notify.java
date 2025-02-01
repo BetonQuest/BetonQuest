@@ -56,7 +56,7 @@ public final class Notify {
         return get(pack, null, data);
     }
 
-    public static NotifyIO get(final QuestPackage pack, @Nullable final String category, @Nullable final Map<String, String> data) {
+    public static NotifyIO get(@Nullable final QuestPackage pack, @Nullable final String category, @Nullable final Map<String, String> data) {
         final SortedSet<String> categories = getCategories(category);
 
         final Map<String, String> categoryData = getCategorySettings(categories);
@@ -115,7 +115,7 @@ public final class Notify {
         return ios;
     }
 
-    private static NotifyIO getNotifyIO(final QuestPackage pack, final List<String> ios, final Map<String, String> categoryData) throws QuestException {
+    private static NotifyIO getNotifyIO(@Nullable final QuestPackage pack, final List<String> ios, final Map<String, String> categoryData) throws QuestException {
         for (final String name : ios) {
             final NotifyIORegistry.NotifyIOFactory factory = BetonQuest.getInstance().getFeatureRegistries().notifyIO().getFactory(name);
             if (factory != null) {

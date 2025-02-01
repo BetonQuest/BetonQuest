@@ -1894,10 +1894,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             player.sendMessage(message);
         } else {
             final String message = Config.getMessage(Config.getLanguage(), messageName, variables);
-            if (message == null) {
-                log.warn("Missing message: " + messageName);
-                return;
-            }
             sender.sendMessage(message);
         }
     }

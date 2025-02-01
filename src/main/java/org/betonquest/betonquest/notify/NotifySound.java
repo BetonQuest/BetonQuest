@@ -37,6 +37,7 @@ class NotifySound {
 
     private final QuestConsumer<OnlineProfile> soundPlayer;
 
+    @Nullable
     private final QuestPackage pack;
 
     protected NotifySound(final NotifyIO notify) throws QuestException {

@@ -7,6 +7,7 @@ import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.Pattern;
 
@@ -36,7 +37,7 @@ public class VariableLocation extends Variable<Location> {
      * @param input             the string that may contain variables
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
-    public VariableLocation(final VariableProcessor variableProcessor, final QuestPackage pack, final String input)
+    public VariableLocation(final VariableProcessor variableProcessor, @Nullable final QuestPackage pack, final String input)
             throws QuestException {
         super(variableProcessor, pack, input, VariableLocation::parse);
     }
