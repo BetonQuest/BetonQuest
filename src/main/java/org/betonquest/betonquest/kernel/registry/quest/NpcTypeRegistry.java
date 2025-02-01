@@ -82,7 +82,10 @@ public class NpcTypeRegistry extends FactoryRegistry<TypeFactory<NpcWrapper<?>>>
         final String prefix = entry.getKey() + " ";
         final Set<NpcID> npcIds = new HashSet<>();
         for (final String instruction : factory.getNpcInstructionStrings(npc)) {
-            npcIds.addAll(idsByInstruction.get(prefix + instruction));
+            final Set<NpcID> npcIDS = idsByInstruction.get(prefix + instruction);
+            if (npcIDS != null && !npcIDS.isEmpty()) {
+                npcIds.addAll(npcIDS);
+            }
         }
         return npcIds;
     }
