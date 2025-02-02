@@ -390,7 +390,7 @@ public class Conversation implements Listener {
             //only display status messages if conversationIO allows it
             if (conv.inOut.printMessages()) {
                 // print message
-                conv.inOut.print(pluginMessage.parseMessage(onlineProfile, "conversation_end",
+                conv.inOut.print(pluginMessage.getMessage(language, "conversation_end",
                         new PluginMessage.Replacement("npc", data.getQuester(language))));
             }
             //play conversation end sound
@@ -710,7 +710,7 @@ public class Conversation implements Listener {
                     selectOption(resolvedOptions, false);
 
                     if (conv.inOut.printMessages()) {
-                        conv.inOut.print(pluginMessage.parseMessage(onlineProfile, "conversation_start",
+                        conv.inOut.print(pluginMessage.getMessage(language, "conversation_start",
                                 new PluginMessage.Replacement("npc", data.getQuester(language))));
                     }
 

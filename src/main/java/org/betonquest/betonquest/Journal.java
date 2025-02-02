@@ -429,7 +429,7 @@ public class Journal {
             finalList.addAll(getText());
         } else {
             final String color = config.getString("journal_colors.line");
-            final String separator = pluginMessage.parseMessage(profile.getOnlineProfile().get(), "journal_separator");
+            final String separator = pluginMessage.getMessage(lang, "journal_separator");
 
             final String line;
             if (config.getBoolean("journal.show_separator")) {

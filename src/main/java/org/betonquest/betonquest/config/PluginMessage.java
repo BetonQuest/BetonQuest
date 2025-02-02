@@ -103,20 +103,6 @@ public class PluginMessage {
     }
 
     /**
-     * Retrieve's a message in the language of the player from the {@link OnlineProfile}, replacing variables.
-     *
-     * @param onlineProfile the {@link OnlineProfile} of the player
-     * @param messageName   name of the message to retrieve
-     * @param variables     Variables to replace in the message
-     * @return The parsed message.
-     */
-    public String parseMessage(final OnlineProfile onlineProfile, final String messageName, final Replacement... variables) {
-        final PlayerData playerData = playerDataStorage.get(onlineProfile);
-        final String language = playerData.getLanguage();
-        return getMessage(language, messageName, variables);
-    }
-
-    /**
      * Sends a notification to player in his chosen language or default or English
      * (if previous not found). It will replace all {x} sequences with the
      * variables and play the sound. It will also add a prefix to the message.
@@ -131,7 +117,9 @@ public class PluginMessage {
     public void sendNotify(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile,
                            final String messageName, @Nullable final String category, final Replacement... variables)
             throws QuestException {
-        final String message = parseMessage(onlineProfile, messageName, variables);
+        final PlayerData playerData = playerDataStorage.get(onlineProfile);
+        final String language = playerData.getLanguage();
+        final String message = getMessage(language, messageName, variables);
         Notify.get(pack, category, null).sendNotify(message, onlineProfile);
     }
 
