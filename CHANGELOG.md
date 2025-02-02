@@ -14,6 +14,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - potions generated not extended/upgraded since 2.2.1
 - Biome condition on mc 1.21.4 could not parse the biome from the instruction anymore
 - `randomnumber` variable now correctly returns lower bound
+- `stage` objective 'index' property not working and now also starts at 0
 ### Security
 
 ## [2.2.1] - 2025-01-12
