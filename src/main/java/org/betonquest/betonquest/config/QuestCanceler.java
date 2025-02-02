@@ -17,6 +17,7 @@ import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.argument.IDArgument;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
+import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.util.Utils;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Location;
@@ -201,9 +202,10 @@ public class QuestCanceler {
         // done
         log.debug("Quest removed!");
         final String questName = getName(onlineProfile);
+        final String message = pluginMessage.getMessage(playerData.getLanguage(), "quest_canceled",
+                new PluginMessage.Replacement("name", questName));
         try {
-            pluginMessage.sendNotify(pack, onlineProfile, "quest_canceled", "quest_cancelled,quest_canceled,info",
-                    new PluginMessage.Replacement("name", questName));
+            Notify.get(pack, "quest_cancelled,quest_canceled,info").sendNotify(message, onlineProfile);
         } catch (final QuestException exception) {
             log.warn("The notify system was unable to play a sound for the 'quest_canceled' category in quest '" + name + "'. Error was: '" + exception.getMessage() + "'");
         }

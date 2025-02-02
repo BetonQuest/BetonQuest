@@ -441,9 +441,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     new Item[]{new Item(itemID, new VariableNumber(instance.getVariableProcessor(),
                             itemID.getPackage(), "1"))},
                     new NoNotificationSender(),
-                    new IngameNotificationSender(log, pluginMessage, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR,
+                    new IngameNotificationSender(log, dataStorage, pluginMessage, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR,
                             "inventory_full_backpack", "inventory_full"),
-                    new IngameNotificationSender(log, pluginMessage, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR,
+                    new IngameNotificationSender(log, dataStorage, pluginMessage, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR,
                             "inventory_full_drop", "inventory_full"),
                     false, dataStorage
             );

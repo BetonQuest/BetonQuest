@@ -16,6 +16,7 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.notify.Notify;
 import org.bukkit.Server;
 import org.jetbrains.annotations.Nullable;
 
@@ -240,8 +241,10 @@ public abstract class Objective {
      * @param variables     variables for putting into the message
      */
     protected void sendNotify(final OnlineProfile onlineProfile, final String messageName, final PluginMessage.Replacement... variables) {
+        final String language = BetonQuest.getInstance().getPlayerDataStorage().get(onlineProfile).getLanguage();
+        final String message = BetonQuest.getInstance().getPluginMessage().getMessage(language, messageName, variables);
         try {
-            BetonQuest.getInstance().getPluginMessage().sendNotify(instruction.getPackage(), onlineProfile, messageName, messageName + ",info", variables);
+            Notify.get(instruction.getPackage(), messageName + ",info").sendNotify(message, onlineProfile);
         } catch (final QuestException exception) {
             try {
                 log.warn(instruction.getPackage(), "The notify system was unable to play a sound for the '"

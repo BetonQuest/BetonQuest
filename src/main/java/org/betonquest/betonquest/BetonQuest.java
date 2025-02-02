@@ -365,7 +365,7 @@ public class BetonQuest extends JavaPlugin {
         }
 
         try {
-            pluginMessage = new PluginMessage(configurationFileFactory, configAccessorFactory, this, playerDataStorage);
+            pluginMessage = new PluginMessage(configurationFileFactory, configAccessorFactory, this);
         } catch (final QuestException e) {
             log.error("Could not load the plugin messages!", e);
             return;

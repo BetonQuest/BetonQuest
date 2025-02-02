@@ -9,6 +9,7 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
+import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -91,8 +92,9 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
             final Journal journal = playerData.getJournal();
             playerData.setLanguage(lang);
             journal.update();
+            final String message = pluginMessage.getMessage(playerData.getLanguage(), "language_changed");
             try {
-                pluginMessage.sendNotify(null, onlineProfile, "language_changed", "language_changed,info");
+                Notify.get(null, "language_changed,info").sendNotify(message, onlineProfile);
             } catch (final QuestException e) {
                 log.warn("The notify system was unable to play a sound for the 'language_changed' category. Error was: '" + e.getMessage() + "'", e);
             }

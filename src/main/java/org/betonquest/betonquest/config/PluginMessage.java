@@ -4,16 +4,10 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.ConfigurationFileFactory;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.notify.Notify;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,22 +28,15 @@ public class PluginMessage {
     private final ConfigAccessor internal;
 
     /**
-     * The storage for player data.
-     */
-    private final PlayerDataStorage playerDataStorage;
-
-    /**
      * Creates a new instance of the PluginMessage handler.
      *
      * @param configurationFileFactory the configuration file factory
      * @param configAccessorFactory    the config accessor factory
      * @param plugin                   the plugin instance
-     * @param playerDataStorage        the storage for player data
      * @throws QuestException thrown if the messages could not be loaded
      */
     public PluginMessage(final ConfigurationFileFactory configurationFileFactory,
-                         final ConfigAccessorFactory configAccessorFactory, final Plugin plugin, final PlayerDataStorage playerDataStorage) throws QuestException {
-        this.playerDataStorage = playerDataStorage;
+                         final ConfigAccessorFactory configAccessorFactory, final Plugin plugin) throws QuestException {
         final File root = plugin.getDataFolder();
 
         try {
@@ -100,27 +87,6 @@ public class PluginMessage {
             result = result.replace("{" + variable.variable + "}", variable.replacement);
         }
         return ChatColor.translateAlternateColorCodes('&', result);
-    }
-
-    /**
-     * Sends a notification to player in his chosen language or default or English
-     * (if previous not found). It will replace all {x} sequences with the
-     * variables and play the sound. It will also add a prefix to the message.
-     *
-     * @param pack          the pack
-     * @param onlineProfile the {@link OnlineProfile} of the player
-     * @param messageName   ID of the message
-     * @param variables     array of variables which will be inserted into the message
-     * @param category      notification category
-     * @throws QuestException thrown if it is not possible to send the notification
-     */
-    public void sendNotify(@Nullable final QuestPackage pack, final OnlineProfile onlineProfile,
-                           final String messageName, @Nullable final String category, final Replacement... variables)
-            throws QuestException {
-        final PlayerData playerData = playerDataStorage.get(onlineProfile);
-        final String language = playerData.getLanguage();
-        final String message = getMessage(language, messageName, variables);
-        Notify.get(pack, category, null).sendNotify(message, onlineProfile);
     }
 
     /**

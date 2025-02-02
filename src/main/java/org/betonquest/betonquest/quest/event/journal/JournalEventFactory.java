@@ -103,7 +103,7 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
         final String entryName = Utils.addPackage(instruction.getPackage(), instruction.getPart(2));
         final JournalChanger journalChanger = new AddEntryJournalChanger(instantSource, entryName);
         final NotificationSender notificationSender = new IngameNotificationSender(loggerFactory.create(JournalEvent.class),
-                pluginMessage, instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.INFO, "new_journal_entry");
+                dataStorage, pluginMessage, instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.INFO, "new_journal_entry");
         return new JournalEvent(dataStorage, journalChanger, notificationSender);
     }
 

@@ -375,7 +375,7 @@ public class CoreQuestTypes {
         eventTypes.register("stage", new StageEventFactory(questTypeAPI));
         eventTypes.register("sudo", new SudoEventFactory(loggerFactory, data));
         eventTypes.registerCombined("tag", new TagPlayerEventFactory(dataStorage, betonQuest.getSaver()));
-        eventTypes.register("take", new TakeEventFactory(loggerFactory, pluginMessage));
+        eventTypes.register("take", new TakeEventFactory(loggerFactory, dataStorage, pluginMessage));
         eventTypes.register("teleport", new TeleportEventFactory(loggerFactory, data));
         eventTypes.registerCombined("time", new TimeEventFactory(server, data, variableProcessor));
         eventTypes.register("variable", new VariableEventFactory(questTypeAPI));

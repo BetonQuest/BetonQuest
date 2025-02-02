@@ -16,6 +16,7 @@ import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.util.Utils;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Material;
@@ -387,8 +388,9 @@ public class Journal {
                 }
             }
         } else {
+            final String message = pluginMessage.getMessage(lang, "inventory_full_backpack");
             try {
-                pluginMessage.sendNotify(null, profile.getOnlineProfile().get(), "inventory_full_backpack", "inventory_full_backpack,inventory_full,error");
+                Notify.get(null, "inventory_full_backpack,inventory_full,error").sendNotify(message, profile.getOnlineProfile().get());
             } catch (final QuestException e) {
                 log.warn("The notify system was unable to play a sound for the 'inventory_full_backpack' category. Error was: '" + e.getMessage() + "'", e);
             }

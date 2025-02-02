@@ -20,6 +20,7 @@ import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.quest.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.quest.registry.feature.InterceptorRegistry;
 import org.betonquest.betonquest.util.PlayerConverter;
@@ -471,8 +472,9 @@ public class Conversation implements Listener {
         final String cmdName = event.getMessage().split(" ")[0].substring(1);
         if (blacklist.contains(cmdName)) {
             event.setCancelled(true);
+            final String message = pluginMessage.getMessage(language, "command_blocked");
             try {
-                pluginMessage.sendNotify(getPackage(), PlayerConverter.getID(event.getPlayer()), "command_blocked", "command_blocked,error");
+                Notify.get(getPackage(), "command_blocked,error").sendNotify(message, onlineProfile);
             } catch (final QuestException e) {
                 log.warn(pack, "The notify system was unable to play a sound for the 'command_blocked' category. Error was: '" + e.getMessage() + "'", e);
             }
