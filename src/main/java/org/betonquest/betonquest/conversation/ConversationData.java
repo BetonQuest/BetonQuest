@@ -71,11 +71,6 @@ public class ConversationData {
     private final Map<String, String> quester = new HashMap<>();
 
     /**
-     * A map of the global conversation prefix in different languages.
-     */
-    private final Map<String, String> prefix = new HashMap<>();
-
-    /**
      * If true, the player will not be able to move during this conversation.
      */
     private final boolean blockMovement;
@@ -139,19 +134,6 @@ public class ConversationData {
             }
         } else {
             quester.put(Config.getLanguage(), ChatColor.translateAlternateColorCodes('&', pack.getString("conversations." + convName + ".quester")));
-        }
-        if (convSection.isConfigurationSection("prefix")) {
-            for (final String lang : convSection.getConfigurationSection("prefix").getKeys(false)) {
-                final String pref = pack.getString("conversations." + convName + ".prefix." + lang);
-                if (pref != null && !pref.isEmpty()) {
-                    prefix.put(lang, pref);
-                }
-            }
-        } else {
-            final String pref = pack.getString("conversations." + convName + ".prefix");
-            if (pref != null && !pref.isEmpty()) {
-                prefix.put(Config.getLanguage(), pref);
-            }
         }
         final String stop = pack.getString("conversations." + convName + ".stop");
         blockMovement = Boolean.parseBoolean(stop);
@@ -385,36 +367,6 @@ public class ConversationData {
      */
     public String getName() {
         return convName;
-    }
-
-    /**
-     * Gets the prefix of the conversation. If provided NPC option does not
-     * define one, the global one from the conversation is returned instead.
-     *
-     * @param lang   language of the prefix
-     * @param option the quest starting npc option that defines the prefix of the
-     *               conversation
-     * @return the conversation prefix, or null if not defined
-     */
-    @Nullable
-    public String getPrefix(final String lang, @Nullable final ResolvedOption option) {
-        // get prefix from an option
-        if (option != null) {
-            String pref = option.conversationData().npcOptions.get(option.name()).getInlinePrefix(lang);
-            if (pref == null) {
-                pref = option.conversationData().npcOptions.get(option.name()).getInlinePrefix(Config.getLanguage());
-            }
-            if (pref != null) {
-                return pref;
-            }
-        }
-
-        // otherwise return global prefix
-        String global = prefix.get(lang);
-        if (global == null) {
-            global = prefix.get(Config.getLanguage());
-        }
-        return global;
     }
 
     /**
@@ -672,11 +624,6 @@ public class ConversationData {
         private final OptionType type;
 
         /**
-         * The inline prefix of the option.
-         */
-        private final Map<String, String> inlinePrefix = new HashMap<>();
-
-        /**
          * A map of the text of the option in different languages.
          */
         private final Map<String, VariableString> text = new HashMap<>();
@@ -726,7 +673,6 @@ public class ConversationData {
 
             final String defaultLang = Config.getLanguage();
 
-            parsePrefix(name, type, conv, defaultLang);
             parseText(name, type, conv, defaultLang);
             parseConditions(name, type, conv);
             parseEvents(name, type, conv);
@@ -766,30 +712,6 @@ public class ConversationData {
             }
         }
 
-        //TODO: Consider removing this undocumented feature.
-        @SuppressWarnings("PMD.CognitiveComplexity")
-        private void parsePrefix(final String name, final OptionType type, final ConfigurationSection conv, final String defaultLang) throws QuestException {
-            if (conv.contains("prefix")) {
-                if (conv.isConfigurationSection("prefix")) {
-                    for (final String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
-                        final String pref = GlobalVariableResolver.resolve(pack, conv.getConfigurationSection("prefix").getString(lang));
-                        if (pref != null && !pref.isEmpty()) {
-                            inlinePrefix.put(lang, pref);
-                        }
-                    }
-                    if (!inlinePrefix.containsKey(defaultLang)) {
-                        throw new QuestException("No default language for " + name + " " + type.getReadable()
-                                + " prefix");
-                    }
-                } else {
-                    final String pref = GlobalVariableResolver.resolve(pack, conv.getString("prefix"));
-                    if (pref != null && !pref.isEmpty()) {
-                        inlinePrefix.put(defaultLang, pref);
-                    }
-                }
-            }
-        }
-
         private void parseText(final String name, final OptionType type, final ConfigurationSection conv, final String defaultLang) throws QuestException {
             if (conv.contains("text")) {
                 if (conv.isConfigurationSection("text")) {
@@ -820,21 +742,6 @@ public class ConversationData {
          */
         public String getName() {
             return optionName;
-        }
-
-        /**
-         * Gets the inline prefix. Falls back to default language prefix.
-         *
-         * @param lang the language to get the prefix for
-         * @return the prefix or null
-         */
-        @Nullable
-        public String getInlinePrefix(final String lang) {
-            final String langPrefix = inlinePrefix.get(lang);
-            if (langPrefix != null) {
-                return langPrefix;
-            }
-            return inlinePrefix.get(Config.getLanguage());
         }
 
         /**
