@@ -541,7 +541,7 @@ objectives:
 
 | Name       | Example Output     | Explanation                                                                    |
 |------------|--------------------|--------------------------------------------------------------------------------|
-| _index_    | 2                  | The index of the players current stage beginning at 1.                         |
+| _index_    | 2                  | The index of the players current stage beginning at 0.                         |
 | _current_  | cookCookies        | The current stage name of the player or empty if the objective is not active.  |
 | _next_     | deliverCookies     | The next stage name of the player or empty if the objective is not active.     |
 | _previous_ | collectIngredients | The previous stage name of the player or empty if the objective is not active. |

@@ -71,7 +71,7 @@ public class StageObjective extends Objective {
     public String getProperty(final String name, final Profile profile) {
         try {
             return switch (name.toLowerCase(Locale.ROOT)) {
-                case "index" -> String.valueOf(stageMap.getIndex(getStage(profile) + 1));
+                case "index" -> String.valueOf(stageMap.getIndex(getStage(profile)));
                 case "current" -> getStage(profile);
                 case "next" -> stageMap.nextStage(getStage(profile));
                 case "previous" -> stageMap.previousStage(getStage(profile));
