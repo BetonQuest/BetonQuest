@@ -292,7 +292,7 @@ public class CoreQuestTypes {
         conditionTypes.register("item", new ItemConditionFactory(loggerFactory, data, dataStorage));
         conditionTypes.register("itemdurability", new ItemDurabilityConditionFactory(loggerFactory, data));
         conditionTypes.register("journal", new JournalConditionFactory(dataStorage, loggerFactory));
-        conditionTypes.register("language", new LanguageConditionFactory(dataStorage));
+        conditionTypes.register("language", new LanguageConditionFactory(dataStorage, pluginMessage));
         conditionTypes.register("location", new LocationConditionFactory(data, loggerFactory));
         conditionTypes.register("looking", new LookingAtConditionFactory(loggerFactory, data));
         conditionTypes.registerCombined("mooncycle", new MoonCycleConditionFactory(data, variableProcessor));

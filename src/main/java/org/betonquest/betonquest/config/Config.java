@@ -4,29 +4,19 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Handles the configuration of the plugin.
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired", "NullAway.Init"})
 public final class Config {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(Config.class);
-
-    private static final Set<String> LANGUAGES = new LinkedHashSet<>();
-
     private static QuestManager questManager;
 
     private static BetonQuest plugin;
@@ -45,10 +35,7 @@ public final class Config {
     @SuppressFBWarnings("EI_EXPOSE_STATIC_REP2")
     public static void setup(final BetonQuest plugin, final ConfigurationFile config) {
         Config.plugin = plugin;
-        LANGUAGES.clear();
-
         lang = config.getString("language");
-
         final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
         questManager = new QuestManager(loggerFactory, loggerFactory.create(QuestManager.class), plugin.getConfigAccessorFactory(), plugin.getDataFolder());
     }
@@ -97,14 +84,5 @@ public final class Config {
                 player.playSound(player.getLocation(), rawSound.toLowerCase(Locale.ROOT), 1F, 1F);
             }
         }
-    }
-
-    /**
-     * Get the languages defined for this plugin.
-     *
-     * @return the languages defined for this plugin
-     */
-    public static Set<String> getLanguages() {
-        return LANGUAGES;
     }
 }

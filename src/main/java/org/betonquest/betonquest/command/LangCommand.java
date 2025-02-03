@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Changes the default language for the player.
@@ -71,12 +72,10 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
             sender.sendMessage(pluginMessage.getMessage(Config.getLanguage(), "language_missing"));
             return true;
         }
-        if (!Config.getLanguages().contains(args[0]) && !"default".equalsIgnoreCase(args[0])) {
+        final Set<String> languages = pluginMessage.getLanguages();
+        if (!languages.contains(args[0]) && !"default".equalsIgnoreCase(args[0])) {
             final StringBuilder builder = new StringBuilder();
-            builder.append("default (").append(Config.getLanguage()).append("), ");
-            for (final String lang : Config.getLanguages()) {
-                builder.append(lang).append(", ");
-            }
+            builder.append("default (").append(Config.getLanguage()).append("), ").append(String.join(", ", languages));
             if (builder.length() < 3) {
                 log.warn("No translations loaded, somethings wrong!");
                 return false;
@@ -108,7 +107,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
     @Override
     public Optional<List<String>> simpleTabComplete(final CommandSender sender, final Command command, final String alias, final String[] args) {
         if (args.length == 1) {
-            return Optional.of(Config.getLanguages().stream().toList());
+            return Optional.of(pluginMessage.getLanguages().stream().toList());
         }
         return Optional.of(Collections.emptyList());
     }

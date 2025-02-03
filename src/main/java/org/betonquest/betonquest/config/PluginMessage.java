@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.ConfigurationFileFactory;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -12,6 +13,7 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * Loads and sends messages from the plugins messages.yml file and messages-internal.yml file.
@@ -30,12 +32,13 @@ public class PluginMessage {
     /**
      * Creates a new instance of the PluginMessage handler.
      *
+     * @param log                      the logger that will be used for logging
      * @param configurationFileFactory the configuration file factory
      * @param configAccessorFactory    the config accessor factory
      * @param plugin                   the plugin instance
      * @throws QuestException thrown if the messages could not be loaded
      */
-    public PluginMessage(final ConfigurationFileFactory configurationFileFactory,
+    public PluginMessage(final BetonQuestLogger log, final ConfigurationFileFactory configurationFileFactory,
                          final ConfigAccessorFactory configAccessorFactory, final Plugin plugin) throws QuestException {
         final File root = plugin.getDataFolder();
 
@@ -45,6 +48,19 @@ public class PluginMessage {
         } catch (InvalidConfigurationException | FileNotFoundException e) {
             throw new QuestException("Failed to load messages", e);
         }
+
+        for (final String language : getLanguages()) {
+            log.debug("Loaded " + language + " language");
+        }
+    }
+
+    /**
+     * Retrieves the languages available in the messages configuration.
+     *
+     * @return the {@link Set} of languages
+     */
+    public final Set<String> getLanguages() {
+        return messages.getKeys(false);
     }
 
     /**
