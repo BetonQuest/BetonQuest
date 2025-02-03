@@ -699,12 +699,8 @@ public class Conversation implements Listener {
                     // knows which is used
                     selectOption(resolvedOptions, false);
 
-                    final String prefix = data.getPrefix(language, nextNPCOption);
-                    final String resolvedPrefix = prefix == null ? ""
-                            : Config.parseMessage(pack, onlineProfile, "conversation_prefix", prefix);
-
                     if (conv.inOut.printMessages()) {
-                        conv.inOut.print(resolvedPrefix + Config.parseMessage(pack, onlineProfile, "conversation_start", data.getQuester(language)));
+                        conv.inOut.print(Config.parseMessage(pack, onlineProfile, "conversation_start", data.getQuester(language)));
                     }
 
                     Config.playSound(onlineProfile, "start");

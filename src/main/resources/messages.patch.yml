@@ -1,3 +1,30 @@
+3.0.0.1:
+  - type: REMOVE
+    key: en.conversation_prefix
+  - type: REMOVE
+    key: pl.conversation_prefix
+  - type: REMOVE
+    key: de.conversation_prefix
+  - type: REMOVE
+    key: fr.conversation_prefix
+  - type: REMOVE
+    key: cn.conversation_prefix
+  - type: REMOVE
+    key: es.conversation_prefix
+  - type: REMOVE
+    key: nl.conversation_prefix
+  - type: REMOVE
+    key: it.conversation_prefix
+  - type: REMOVE
+    key: hu.conversation_prefix
+  - type: REMOVE
+    key: vi.conversation_prefix
+  - type: REMOVE
+    key: pt-br.conversation_prefix
+  - type: REMOVE
+    key: pt-pt.conversation_prefix
+  - type: REMOVE
+    key: ru.conversation_prefix
 2.0.2.2:
   - type: VALUE_RENAME
     key: ru.inventory_full_drop
