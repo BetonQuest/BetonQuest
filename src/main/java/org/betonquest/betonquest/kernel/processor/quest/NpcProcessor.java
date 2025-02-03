@@ -39,12 +39,12 @@ import java.util.UUID;
 /**
  * Stores Npcs and starts Npc conversations.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
     /**
-     * The section in which the assignments from Npcs inside conversations are stored.
-     * It is also the section for NpcID definitions.
+     * The section in which the assignments from Npcs to conversations are stored.
      */
-    private static final String NPC_SECTION = "npcs";
+    private static final String NPC_SECTION = "npc_conversations";
 
     /**
      * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
@@ -98,7 +98,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
      */
     public NpcProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final NpcTypeRegistry npcTypes,
                         final PluginMessage pluginMessage, final BetonQuest plugin) {
-        super(log, npcTypes, "Npcs", NPC_SECTION);
+        super(log, npcTypes, "Npcs", "npcs");
         this.loggerFactory = loggerFactory;
         this.pluginMessage = pluginMessage;
         this.plugin = plugin;
@@ -107,21 +107,35 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
                 plugin, plugin.getProfileProvider(), Config.getPackages().values());
     }
 
+    @Override
+    public void load(final QuestPackage pack) {
+        super.load(pack);
+        loadBindings(pack);
+    }
+
     /**
      * Loads the npc references to start the conversation on interaction with them.
      *
-     * @param convID      the conversation to start
-     * @param convSection the section to load the references
+     * @param pack the quest package to load the references
      */
-    public void loadConversation(final ConversationID convID, final ConfigurationSection convSection) {
-        if (convSection.isString(NPC_SECTION)) {
-            for (final String string : Objects.requireNonNull(convSection.getString(NPC_SECTION)).split(",")) {
+    private void loadBindings(final QuestPackage pack) {
+        final ConfigurationSection section = pack.getConfig().getConfigurationSection(NPC_SECTION);
+        if (section == null) {
+            return;
+        }
+        final String packName = pack.getQuestPath();
+        for (final String key : section.getKeys(false)) {
+            if (key.contains(" ")) {
+                log.warn(pack, NPC_SECTION + " name cannot contain spaces: '" + key + "' (in " + packName + " package)");
+            } else if (!section.isString(key)) {
+                log.warn(pack, NPC_SECTION + " value for key '" + key + "' (in " + packName + " package) is not a string");
+            } else {
                 try {
-                    final NpcID npcId = new NpcID(convID.getPackage(), string);
-                    assignedConversations.put(npcId, convID);
+                    final NpcID npcID = new NpcID(pack, key);
+                    final ConversationID conversationID = new ConversationID(pack, Objects.requireNonNull(section.getString(key)));
+                    assignedConversations.put(npcID, conversationID);
                 } catch (final QuestException exception) {
-                    log.warn(convID.getPackage(), "Error while loading Npc in conversation " + convID.getFullID() + "': " + exception.getMessage()
-                            + "! The conversation will still load but the Npc won't start it.", exception);
+                    log.warn(pack, "Error while loading " + NPC_SECTION + " '" + packName + "." + key + "': " + exception.getMessage(), exception);
                 }
             }
         }
