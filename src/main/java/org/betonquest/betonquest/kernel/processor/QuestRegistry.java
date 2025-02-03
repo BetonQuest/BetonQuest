@@ -74,12 +74,12 @@ public record QuestRegistry(
         final ObjectiveProcessor objectives = new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), questTypeRegistries.objective());
         final VariableProcessor variables = new VariableProcessor(loggerFactory.create(VariableProcessor.class), questTypeRegistries.variable());
         final CancelerProcessor cancelers = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class), loggerFactory, pluginMessage, variables);
-        final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, questTypeRegistries.npc(), pluginMessage, plugin);
         final ConversationProcessor conversations = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), loggerFactory, plugin, variables,
-                otherRegistries.conversationIO(), otherRegistries.interceptor(), npcs);
+                otherRegistries.conversationIO(), otherRegistries.interceptor());
         final CompassProcessor compasses = new CompassProcessor(loggerFactory.create(CompassProcessor.class), variables);
         final JournalEntryProcessor journalEntries = new JournalEntryProcessor(loggerFactory.create(JournalEntryProcessor.class), variables);
         final JournalMainPageProcessor journalMainPages = new JournalMainPageProcessor(loggerFactory.create(JournalMainPageProcessor.class), variables);
+        final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, questTypeRegistries.npc(), pluginMessage, plugin);
         return new QuestRegistry(log, eventScheduling, conditions, events, objectives, variables, cancelers, conversations, compasses, journalEntries, journalMainPages, npcs);
     }
 
@@ -96,11 +96,11 @@ public record QuestRegistry(
         events.clear();
         objectives.clear();
         cancelers.clear();
-        npcs.clear();
         conversations.clear();
         compasses.clear();
         journalEntries.clear();
         journalMainPages.clear();
+        npcs.clear();
 
         for (final QuestPackage pack : packages) {
             final String packName = pack.getQuestPath();
@@ -109,11 +109,11 @@ public record QuestRegistry(
             events.load(pack);
             conditions.load(pack);
             objectives.load(pack);
-            npcs.load(pack);
             conversations.load(pack);
             compasses.load(pack);
             journalEntries.load(pack);
             journalMainPages.load(pack);
+            npcs.load(pack);
             eventScheduling.loadData(pack);
 
             log.debug(pack, "Everything in package " + packName + " loaded");
