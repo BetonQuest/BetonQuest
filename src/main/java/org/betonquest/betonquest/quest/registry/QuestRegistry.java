@@ -89,8 +89,8 @@ public class QuestRegistry {
         this.objectiveProcessor = new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), questTypeRegistries.objective());
         this.variableProcessor = new VariableProcessor(loggerFactory.create(VariableProcessor.class), questTypeRegistries.variable());
         this.cancellerProcessor = new CancellerProcessor(loggerFactory.create(CancellerProcessor.class), pluginMessage);
+        this.conversationProcessor = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), plugin);
         this.npcProcessor = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, questTypeRegistries.npc(), pluginMessage, plugin);
-        this.conversationProcessor = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), plugin, npcProcessor);
     }
 
     /**
@@ -107,8 +107,8 @@ public class QuestRegistry {
         objectiveProcessor.clear();
         variableProcessor.clear();
         cancellerProcessor.clear();
-        npcProcessor.clear();
         conversationProcessor.clear();
+        npcProcessor.clear();
 
         for (final QuestPackage pack : packages) {
             final String packName = pack.getQuestPath();
@@ -117,8 +117,8 @@ public class QuestRegistry {
             eventProcessor.load(pack);
             conditionProcessor.load(pack);
             objectiveProcessor.load(pack);
-            npcProcessor.load(pack);
             conversationProcessor.load(pack);
+            npcProcessor.load(pack);
             eventScheduling.loadData(pack);
 
             log.debug(pack, "Everything in package " + packName + " loaded");
