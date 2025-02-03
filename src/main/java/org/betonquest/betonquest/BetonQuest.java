@@ -361,6 +361,7 @@ public class BetonQuest extends JavaPlugin {
             config = configurationFileFactory.create(new File(getDataFolder(), "config.yml"), this, "config.yml");
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
             log.error("Could not load the config.yml file!", e);
+            getServer().getPluginManager().disablePlugin(this);
             return;
         }
 
@@ -368,6 +369,7 @@ public class BetonQuest extends JavaPlugin {
             pluginMessage = new PluginMessage(loggerFactory.create(PluginMessage.class), playerDataStorage, configurationFileFactory, configAccessorFactory, this);
         } catch (final QuestException e) {
             log.error("Could not load the plugin messages!", e);
+            getServer().getPluginManager().disablePlugin(this);
             return;
         }
 
@@ -376,6 +378,7 @@ public class BetonQuest extends JavaPlugin {
             menuConfigAccessor = configAccessorFactory.create(new File(getDataFolder(), "menuConfig.yml"), this, "menuConfig.yml");
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
             log.error("Could not load the menuConfig.yml file!", e);
+            getServer().getPluginManager().disablePlugin(this);
             return;
         }
 
@@ -417,6 +420,7 @@ public class BetonQuest extends JavaPlugin {
             cache = configAccessorFactory.create(cacheFile.toFile());
         } catch (final IOException | InvalidConfigurationException e) {
             log.error("Error while loading schedule cache: " + e.getMessage(), e);
+            getServer().getPluginManager().disablePlugin(this);
             return;
         }
         lastExecutionCache = new LastExecutionCache(loggerFactory.create(LastExecutionCache.class, "Cache"), cache);
