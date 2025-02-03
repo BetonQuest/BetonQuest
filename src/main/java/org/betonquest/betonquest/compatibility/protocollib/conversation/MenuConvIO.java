@@ -237,10 +237,10 @@ public class MenuConvIO extends ChatConvIO {
             }
             state = ConversationState.ACTIVE;
 
-            final Location target = getBlockBelowPlayer(player).add(0, -1, 0);
+            final Location target = getBlockBelowPlayer(onlineProfile.getPlayer()).add(0, -1, 0);
             // TODO version switch:
             //  Remove this code when only 1.20.2+ is supported
-            stand = player.getWorld().spawn(target.add(0, PaperLib.isVersion(20, 2) ? -0.375 : -0.131_25, 0), ArmorStand.class);
+            stand = onlineProfile.getPlayer().getWorld().spawn(target.add(0, PaperLib.isVersion(20, 2) ? -0.375 : -0.131_25, 0), ArmorStand.class);
 
             stand.setGravity(false);
             stand.setVisible(false);
@@ -252,13 +252,13 @@ public class MenuConvIO extends ChatConvIO {
             // Mount the player to it using packets
             final WrapperPlayServerMount mount = new WrapperPlayServerMount();
             mount.setEntityID(stand.getEntityId());
-            mount.setPassengerIds(new int[]{player.getEntityId()});
+            mount.setPassengerIds(new int[]{onlineProfile.getPlayer().getEntityId()});
 
             // Send Packets
-            mount.sendPacket(player);
+            mount.sendPacket(onlineProfile.getPlayer());
 
             // Display Actionbar to hide the dismount message
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(" "));
+            onlineProfile.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(" "));
 
             // Intercept Packets
             packetAdapter = getPacketAdapter();
@@ -617,14 +617,14 @@ public class MenuConvIO extends ChatConvIO {
                     return;
                 }
                 final WrapperPlayServerAnimation animation = new WrapperPlayServerAnimation(event.getPacket());
-                if (animation.getEntityID() == player.getEntityId()) {
+                if (animation.getEntityID() == onlineProfile.getPlayer().getEntityId()) {
                     event.setCancelled(true);
                 }
             }
 
             @Override
             public void onPacketReceiving(final PacketEvent event) {
-                if (!event.getPlayer().equals(player) || options.isEmpty()) {
+                if (!event.getPlayer().equals(onlineProfile.getPlayer()) || options.isEmpty()) {
                     return;
                 }
                 if (!event.getPacketType().equals(PacketType.Play.Client.STEER_VEHICLE)) {
@@ -714,7 +714,7 @@ public class MenuConvIO extends ChatConvIO {
                 return;
             }
 
-            if (!event.getPlayer().equals(player)) {
+            if (!event.getPlayer().equals(onlineProfile.getPlayer())) {
                 return;
             }
 
@@ -747,7 +747,7 @@ public class MenuConvIO extends ChatConvIO {
                 return;
             }
 
-            if (!event.getPlayer().equals(player)) {
+            if (!event.getPlayer().equals(onlineProfile.getPlayer())) {
                 return;
             }
 
@@ -777,7 +777,7 @@ public class MenuConvIO extends ChatConvIO {
                 return;
             }
 
-            if (!event.getDamager().equals(player)) {
+            if (!event.getDamager().equals(onlineProfile.getPlayer())) {
                 return;
             }
 
@@ -816,11 +816,11 @@ public class MenuConvIO extends ChatConvIO {
     }
 
     private boolean isOnCooldown() {
-        if (selectionCooldowns.contains(player)) {
+        if (selectionCooldowns.contains(onlineProfile.getPlayer())) {
             return true;
         } else {
-            selectionCooldowns.add(player);
-            Bukkit.getScheduler().scheduleAsyncDelayedTask(BetonQuest.getInstance(), () -> selectionCooldowns.remove(player), configSelectionCooldown);
+            selectionCooldowns.add(onlineProfile.getPlayer());
+            Bukkit.getScheduler().scheduleAsyncDelayedTask(BetonQuest.getInstance(), () -> selectionCooldowns.remove(onlineProfile.getPlayer()), configSelectionCooldown);
         }
         return false;
     }
@@ -838,7 +838,7 @@ public class MenuConvIO extends ChatConvIO {
                 return;
             }
 
-            if (!event.getPlayer().equals(player)) {
+            if (!event.getPlayer().equals(onlineProfile.getPlayer())) {
                 return;
             }
 

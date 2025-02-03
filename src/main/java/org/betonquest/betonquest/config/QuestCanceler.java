@@ -202,7 +202,7 @@ public class QuestCanceler {
         // done
         log.debug("Quest removed!");
         final String questName = getName(onlineProfile);
-        final String message = pluginMessage.getMessage(playerData.getLanguage(), "quest_canceled",
+        final String message = pluginMessage.getMessage(onlineProfile, "quest_canceled",
                 new PluginMessage.Replacement("name", questName));
         try {
             Notify.get(pack, "quest_cancelled,quest_canceled,info").sendNotify(message, onlineProfile);

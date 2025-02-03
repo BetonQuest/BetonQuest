@@ -54,7 +54,7 @@ public class VaultIntegrator implements Integrator {
             final QuestTypeRegistries registries = plugin.getQuestRegistries();
 
             registries.event().register("money", new MoneyEventFactory(economy, loggerFactory, data,
-                    plugin.getPlayerDataStorage(), plugin.getPluginMessage(), plugin.getVariableProcessor()));
+                    plugin.getPluginMessage(), plugin.getVariableProcessor()));
             registries.condition().register("money", new MoneyConditionFactory(economy, data));
             registries.variable().register("money", new MoneyVariableFactory(economy));
         }

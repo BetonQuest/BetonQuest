@@ -166,7 +166,7 @@ public final class Utils {
             return false;
         }
         return item.hasItemMeta() && item.getItemMeta().hasLore()
-                && item.getItemMeta().getLore().contains(BetonQuest.getInstance().getPluginMessage().getMessage(Config.getLanguage(), "quest_item"));
+                && item.getItemMeta().getLore().contains(BetonQuest.getInstance().getPluginMessage().getMessage("quest_item"));
     }
 
     /**

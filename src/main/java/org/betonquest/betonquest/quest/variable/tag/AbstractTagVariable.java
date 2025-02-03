@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.variable.tag;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
 
 import java.util.List;
@@ -63,11 +62,9 @@ public abstract class AbstractTagVariable<T> {
      * @return the value of the variable
      */
     public String getValueFor(final List<String> tags) {
-        final String lang = Config.getLanguage();
-
         if (tags.contains(questPackage.getQuestPath() + "." + tagName)) {
-            return papiMode ? pluginMessage.getMessage(lang, "condition_variable_met") : "true";
+            return papiMode ? pluginMessage.getMessage("condition_variable_met") : "true";
         }
-        return papiMode ? pluginMessage.getMessage(lang, "condition_variable_not_met") : "false";
+        return papiMode ? pluginMessage.getMessage("condition_variable_not_met") : "false";
     }
 }

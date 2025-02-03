@@ -7,7 +7,6 @@ import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
@@ -22,15 +21,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Base of all chat conversation outputs
+ * Base of all chat conversation outputs.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public abstract class ChatConvIO implements ConversationIO, Listener {
     protected final Conversation conv;
 
-    protected final String name;
-
-    protected final Player player;
+    protected final OnlineProfile onlineProfile;
 
     protected final ConversationColors.Colors colors;
 
@@ -55,8 +52,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     public ChatConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         this.options = new HashMap<>();
         this.conv = conv;
-        this.player = onlineProfile.getPlayer();
-        this.name = player.getName();
+        this.onlineProfile = onlineProfile;
         this.colors = ConversationColors.getColors();
         StringBuilder string = new StringBuilder();
         for (final ChatColor color : colors.npc()) {
@@ -76,7 +72,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         for (final ChatColor color : colors.player()) {
             string.append(color);
         }
-        string.append(name).append(ChatColor.RESET).append(": ");
+        string.append(onlineProfile.getPlayer().getName()).append(ChatColor.RESET).append(": ");
         for (final ChatColor color : colors.answer()) {
             string.append(color);
         }
@@ -87,14 +83,11 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onWalkAway(final PlayerMoveEvent event) {
-        // return if it's someone else
-        if (!event.getPlayer().equals(player)) {
+        if (!event.getPlayer().equals(onlineProfile.getPlayer())) {
             return;
         }
-        // if player passes max distance
         if (!event.getTo().getWorld().equals(conv.getCenter().getWorld()) || event.getTo()
                 .distance(conv.getCenter()) > maxNpcDistance) {
-            // we can stop the player or end conversation
             if (conv.isMovementBlock() || !conv.state.isStarted()) {
                 moveBack(event);
             } else {
@@ -130,14 +123,14 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         newLocation.setYaw(yaw);
         event.getPlayer().teleport(newLocation);
         if (Boolean.parseBoolean(Config.getConfigString("notify_pullback"))) {
-            conv.sendMessage(BetonQuest.getInstance().getPluginMessage().getMessage(Config.getLanguage(), "pullback"));
+            conv.sendMessage(BetonQuest.getInstance().getPluginMessage().getMessage(onlineProfile, "pullback"));
         }
     }
 
     @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onReply(final AsyncPlayerChatEvent event) {
-        if (!event.getPlayer().equals(player)) {
+        if (!event.getPlayer().equals(onlineProfile.getPlayer())) {
             return;
         }
         final String message = event.getMessage().trim();

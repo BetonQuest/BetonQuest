@@ -145,7 +145,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> player.closeInventory());
             final Interceptor interceptor = conv.getInterceptor();
             if (interceptor != null) {
-                interceptor.sendMessage(BetonQuest.getInstance().getPluginMessage().getMessage(PlayerConverter.getID(player).getProfileUUID().toString(), "conversation_spectator"));
+                interceptor.sendMessage(BetonQuest.getInstance().getPluginMessage().getMessage(PlayerConverter.getID(player), "conversation_spectator"));
             }
             return;
         }

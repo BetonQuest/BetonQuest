@@ -88,8 +88,7 @@ public class ChestPutObjective extends Objective implements Listener {
             log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
         }
         if (!multipleAccess && !checkForNoOtherPlayer(event)) {
-            final String language = BetonQuest.getInstance().getPlayerDataStorage().get(onlineProfile).getLanguage();
-            final String message = BetonQuest.getInstance().getPluginMessage().getMessage(language, "chest_occupied");
+            final String message = BetonQuest.getInstance().getPluginMessage().getMessage(onlineProfile, "chest_occupied");
             try {
                 Notify.get(null).sendNotify(message, onlineProfile);
             } catch (final QuestException e) {

@@ -390,8 +390,7 @@ public class Conversation implements Listener {
             }
             //only display status messages if conversationIO allows it
             if (conv.inOut.printMessages()) {
-                // print message
-                conv.inOut.print(pluginMessage.getMessage(language, "conversation_end",
+                conv.inOut.print(pluginMessage.getMessage(onlineProfile, "conversation_end",
                         new PluginMessage.Replacement("npc", data.getQuester(language))));
             }
             //play conversation end sound
@@ -472,7 +471,7 @@ public class Conversation implements Listener {
         final String cmdName = event.getMessage().split(" ")[0].substring(1);
         if (blacklist.contains(cmdName)) {
             event.setCancelled(true);
-            final String message = pluginMessage.getMessage(language, "command_blocked");
+            final String message = pluginMessage.getMessage(onlineProfile, "command_blocked");
             try {
                 Notify.get(getPackage(), "command_blocked,error").sendNotify(message, onlineProfile);
             } catch (final QuestException e) {
@@ -712,7 +711,7 @@ public class Conversation implements Listener {
                     selectOption(resolvedOptions, false);
 
                     if (conv.inOut.printMessages()) {
-                        conv.inOut.print(pluginMessage.getMessage(language, "conversation_start",
+                        conv.inOut.print(pluginMessage.getMessage(onlineProfile, "conversation_start",
                                 new PluginMessage.Replacement("npc", data.getQuester(language))));
                     }
 

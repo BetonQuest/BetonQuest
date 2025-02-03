@@ -441,9 +441,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     new Item[]{new Item(itemID, new VariableNumber(instance.getVariableProcessor(),
                             itemID.getPackage(), "1"))},
                     new NoNotificationSender(),
-                    new IngameNotificationSender(log, dataStorage, pluginMessage, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR,
+                    new IngameNotificationSender(log, pluginMessage, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR,
                             "inventory_full_backpack", "inventory_full"),
-                    new IngameNotificationSender(log, dataStorage, pluginMessage, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR,
+                    new IngameNotificationSender(log, pluginMessage, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR,
                             "inventory_full_drop", "inventory_full"),
                     false, dataStorage
             );
@@ -1495,19 +1495,19 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final Map<String, String> cmds = getCommandHelpMap(sender);
         // display them
         sender.sendMessage("§e----- §aBetonQuest §e-----");
-        if (sender instanceof Player) {
-            final String lang = dataStorage.get(PlayerConverter.getID((Player) sender)).getLanguage();
+        if (sender instanceof final Player player) {
+            final OnlineProfile profile = PlayerConverter.getID(player);
             for (final Map.Entry<String, String> entry : cmds.entrySet()) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
                         "tellraw " + sender.getName() + " {\"text\":\"\",\"extra\":[{\"text\":\"§c/" + alias + ' '
                                 + entry.getValue()
                                 + "\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§b"
-                                + pluginMessage.getMessage(lang, "command_" + entry.getKey()) + "\"}}]}");
+                                + pluginMessage.getMessage(profile, "command_" + entry.getKey()) + "\"}}]}");
             }
         } else {
             for (final Map.Entry<String, String> entry : cmds.entrySet()) {
                 sender.sendMessage("§c/" + alias + ' ' + entry.getValue());
-                sender.sendMessage("§b- " + pluginMessage.getMessage(Config.getLanguage(), "command_" + entry.getKey()));
+                sender.sendMessage("§b- " + pluginMessage.getMessage("command_" + entry.getKey()));
             }
         }
     }
@@ -1516,28 +1516,24 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final Updater updater = instance.getUpdater();
         final String updateCommand = "/" + commandAlias + " update";
 
-        final String lang = sender instanceof Player
-                ? dataStorage.get(PlayerConverter.getID((Player) sender)).getLanguage()
-                : Config.getLanguage();
-
         final String key = "command_version_context.";
-        final String versionInfo = pluginMessage.getMessage(lang, key + "version_info");
-        final String clickToCopyAll = pluginMessage.getMessage(lang, key + "click_to_copy_all");
-        final String clickToCopy = pluginMessage.getMessage(lang, key + "click_to_copy");
-        final String clickToDownloadHint = pluginMessage.getMessage(lang, key + "click_to_download_hint");
-        final String colorValue = pluginMessage.getMessage(lang, key + "color_value");
-        final String colorKey = pluginMessage.getMessage(lang, key + "color_key");
-        final String colorValueVersion = pluginMessage.getMessage(lang, key + "color_value_version");
-        final String versionBetonQuest = pluginMessage.getMessage(lang, key + "version_betonquest");
-        final String versionServer = pluginMessage.getMessage(lang, key + "version_server");
-        final String hookedInto = pluginMessage.getMessage(lang, key + "hooked_into");
+        final String versionInfo = pluginMessage.getMessage(key + "version_info");
+        final String clickToCopyAll = pluginMessage.getMessage(key + "click_to_copy_all");
+        final String clickToCopy = pluginMessage.getMessage(key + "click_to_copy");
+        final String clickToDownloadHint = pluginMessage.getMessage(key + "click_to_download_hint");
+        final String colorValue = pluginMessage.getMessage(key + "color_value");
+        final String colorKey = pluginMessage.getMessage(key + "color_key");
+        final String colorValueVersion = pluginMessage.getMessage(key + "color_value_version");
+        final String versionBetonQuest = pluginMessage.getMessage(key + "version_betonquest");
+        final String versionServer = pluginMessage.getMessage(key + "version_server");
+        final String hookedInto = pluginMessage.getMessage(key + "hooked_into");
 
         final String versionBetonQuestValue = colorValue + instance.getDescription().getVersion();
         final String versionServerValue = colorValue + Bukkit.getServer().getVersion();
 
         final TextComponent clickToDownload = updater.isUpdateAvailable()
                 ? Component.newline().append(Component.text("    "))
-                .append(Component.text(pluginMessage.getMessage(lang, key + "click_to_download",
+                .append(Component.text(pluginMessage.getMessage(key + "click_to_download",
                         new PluginMessage.Replacement("version", updater.getUpdateVersion()))))
                 .hoverEvent(Component.text(clickToDownloadHint)).clickEvent(ClickEvent.runCommand(updateCommand))
                 : Component.empty();
@@ -1903,10 +1899,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private void sendMessage(final CommandSender sender, final String messageName, final PluginMessage.Replacement... variables) {
         if (sender instanceof final Player player) {
             final OnlineProfile profile = PlayerConverter.getID(player);
-            final String message = pluginMessage.getMessage(dataStorage.get(profile).getLanguage(), messageName, variables);
+            final String message = pluginMessage.getMessage(profile, messageName, variables);
             player.sendMessage(message);
         } else {
-            final String message = pluginMessage.getMessage(Config.getLanguage(), messageName, variables);
+            final String message = pluginMessage.getMessage(messageName, variables);
             sender.sendMessage(message);
         }
     }

@@ -78,7 +78,7 @@ public class TellrawConvIO extends ChatConvIO {
 
     @EventHandler(ignoreCancelled = true)
     public void onCommandAnswer(final PlayerCommandPreprocessEvent event) {
-        if (!event.getPlayer().equals(player)) {
+        if (!event.getPlayer().equals(onlineProfile.getPlayer())) {
             return;
         }
         if (!event.getMessage().toLowerCase(Locale.ROOT).startsWith("/betonquestanswer ")) {

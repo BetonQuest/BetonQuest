@@ -5,7 +5,9 @@ import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.ConfigurationFileFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
@@ -20,6 +22,11 @@ import java.util.Set;
  */
 public class PluginMessage {
     /**
+     * The {@link PlayerDataStorage} instance to get the language from.
+     */
+    private final PlayerDataStorage playerDataStorage;
+
+    /**
      * The messages configuration file.
      */
     private final ConfigurationFile messages;
@@ -33,13 +40,16 @@ public class PluginMessage {
      * Creates a new instance of the PluginMessage handler.
      *
      * @param log                      the logger that will be used for logging
+     * @param playerDataStorage        the {@link PlayerDataStorage} instance for the language
      * @param configurationFileFactory the configuration file factory
      * @param configAccessorFactory    the config accessor factory
      * @param plugin                   the plugin instance
      * @throws QuestException thrown if the messages could not be loaded
      */
-    public PluginMessage(final BetonQuestLogger log, final ConfigurationFileFactory configurationFileFactory,
+    public PluginMessage(final BetonQuestLogger log, final PlayerDataStorage playerDataStorage,
+                         final ConfigurationFileFactory configurationFileFactory,
                          final ConfigAccessorFactory configAccessorFactory, final Plugin plugin) throws QuestException {
+        this.playerDataStorage = playerDataStorage;
         final File root = plugin.getDataFolder();
 
         try {
@@ -74,16 +84,33 @@ public class PluginMessage {
     }
 
     /**
-     * Retrieves the message from the configuration in specified language and replaces the variables.
+     * Retrieves the message from the configuration in the profile's language and replaces the variables.
      *
-     * @param lang      language in which the message should be retrieved
+     * @param profile   the profile to get the language from
      * @param message   name of the message to retrieve
      * @param variables array of variables to replace
-     * @return message in that language, or message in English, or null if it
-     * does not exist
+     * @return message with replaced variables in the profile's language or the default language or in english
+     * @throws IllegalArgumentException if the message could not be found in the configuration
      */
-    public String getMessage(final String lang, final String message, final Replacement... variables) {
-        String result = messages.getString(lang + "." + message);
+    public String getMessage(final Profile profile, final String message, final Replacement... variables) {
+        final String language = playerDataStorage.get(profile).getLanguage();
+        return getMessage(language, message, variables);
+    }
+
+    /**
+     * Retrieves the message from the configuration and replaces the variables.
+     *
+     * @param message   the message to retrieve
+     * @param variables the variables to replace
+     * @return the message with replaced variables
+     * @throws IllegalArgumentException if the message could not be found in the configuration
+     */
+    public String getMessage(final String message, final Replacement... variables) {
+        return getMessage(Config.getLanguage(), message, variables);
+    }
+
+    private String getMessage(final String language, final String message, final Replacement... variables) {
+        String result = messages.getString(language + "." + message);
         if (result == null) {
             result = messages.getString(Config.getLanguage() + "." + message);
         }
@@ -91,7 +118,7 @@ public class PluginMessage {
             result = messages.getString("en." + message);
         }
         if (result == null) {
-            result = internal.getConfig().getString(lang + "." + message);
+            result = internal.getConfig().getString(language + "." + message);
         }
         if (result == null) {
             result = internal.getConfig().getString("en." + message);

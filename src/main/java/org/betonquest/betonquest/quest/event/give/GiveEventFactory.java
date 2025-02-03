@@ -61,13 +61,13 @@ public class GiveEventFactory implements EventFactory {
         final BetonQuestLogger log = loggerFactory.create(GiveEvent.class);
         final NotificationSender itemsGivenSender;
         if (instruction.hasArgument("notify")) {
-            itemsGivenSender = new IngameNotificationSender(log, dataStorage, pluginMessage, instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.INFO, "items_given");
+            itemsGivenSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.INFO, "items_given");
         } else {
             itemsGivenSender = new NoNotificationSender();
         }
 
-        final NotificationSender itemsInBackpackSender = new IngameNotificationSender(log, dataStorage, pluginMessage, instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.ERROR, "inventory_full_backpack", "inventory_full");
-        final NotificationSender itemsDroppedSender = new IngameNotificationSender(log, dataStorage, pluginMessage, instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.ERROR, "inventory_full_drop", "inventory_full");
+        final NotificationSender itemsInBackpackSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.ERROR, "inventory_full_backpack", "inventory_full");
+        final NotificationSender itemsDroppedSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.ERROR, "inventory_full_drop", "inventory_full");
 
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new GiveEvent(

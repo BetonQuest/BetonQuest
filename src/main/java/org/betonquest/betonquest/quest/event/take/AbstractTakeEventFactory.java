@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NoNotificationSender;
@@ -28,11 +27,6 @@ public abstract class AbstractTakeEventFactory implements EventFactory {
     protected final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The {@link PlayerDataStorage} instance.
-     */
-    private final PlayerDataStorage playerDataStorage;
-
-    /**
      * The {@link PluginMessage} instance.
      */
     private final PluginMessage pluginMessage;
@@ -40,13 +34,11 @@ public abstract class AbstractTakeEventFactory implements EventFactory {
     /**
      * Create the abstract take event factory.
      *
-     * @param loggerFactory     logger factory to use
-     * @param playerDataStorage the {@link PlayerDataStorage} instance
-     * @param pluginMessage     the {@link PluginMessage} instance
+     * @param loggerFactory logger factory to use
+     * @param pluginMessage the {@link PluginMessage} instance
      */
-    public AbstractTakeEventFactory(final BetonQuestLoggerFactory loggerFactory, final PlayerDataStorage playerDataStorage, final PluginMessage pluginMessage) {
+    public AbstractTakeEventFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage) {
         this.loggerFactory = loggerFactory;
-        this.playerDataStorage = playerDataStorage;
         this.pluginMessage = pluginMessage;
     }
 
@@ -85,7 +77,7 @@ public abstract class AbstractTakeEventFactory implements EventFactory {
      */
     protected NotificationSender getNotificationSender(final Instruction instruction, final BetonQuestLogger log) {
         return instruction.hasArgument("notify")
-                ? new IngameNotificationSender(log, playerDataStorage, pluginMessage, instruction.getPackage(),
+                ? new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
                 instruction.getID().getFullID(), NotificationLevel.INFO, "items_taken")
                 : new NoNotificationSender();
     }

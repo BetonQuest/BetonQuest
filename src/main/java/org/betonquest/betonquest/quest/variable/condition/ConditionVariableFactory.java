@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.Instruction;
 
@@ -20,11 +19,6 @@ public class ConditionVariableFactory implements PlayerVariableFactory {
     private final QuestTypeAPI questTypeAPI;
 
     /**
-     * Storage for player data.
-     */
-    private final PlayerDataStorage dataStorage;
-
-    /**
      * The {@link PluginMessage} instance.
      */
     private final PluginMessage pluginMessage;
@@ -33,12 +27,10 @@ public class ConditionVariableFactory implements PlayerVariableFactory {
      * Create the Condition Variable Factory.
      *
      * @param questTypeAPI  the Quest Type API
-     * @param dataStorage   the storage providing player data
      * @param pluginMessage the {@link PluginMessage} instance
      */
-    public ConditionVariableFactory(final QuestTypeAPI questTypeAPI, final PlayerDataStorage dataStorage, final PluginMessage pluginMessage) {
+    public ConditionVariableFactory(final QuestTypeAPI questTypeAPI, final PluginMessage pluginMessage) {
         this.questTypeAPI = questTypeAPI;
-        this.dataStorage = dataStorage;
         this.pluginMessage = pluginMessage;
     }
 
@@ -46,6 +38,6 @@ public class ConditionVariableFactory implements PlayerVariableFactory {
     public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
         final ConditionID conditionId = instruction.getID(ConditionID::new);
         final boolean papiMode = instruction.hasArgument("papiMode");
-        return new ConditionVariable(pluginMessage, conditionId, papiMode, questTypeAPI, dataStorage);
+        return new ConditionVariable(pluginMessage, conditionId, papiMode, questTypeAPI);
     }
 }

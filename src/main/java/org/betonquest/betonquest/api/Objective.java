@@ -241,8 +241,7 @@ public abstract class Objective {
      * @param variables     variables for putting into the message
      */
     protected void sendNotify(final OnlineProfile onlineProfile, final String messageName, final PluginMessage.Replacement... variables) {
-        final String language = BetonQuest.getInstance().getPlayerDataStorage().get(onlineProfile).getLanguage();
-        final String message = BetonQuest.getInstance().getPluginMessage().getMessage(language, messageName, variables);
+        final String message = BetonQuest.getInstance().getPluginMessage().getMessage(onlineProfile, messageName, variables);
         try {
             Notify.get(instruction.getPackage(), messageName + ",info").sendNotify(message, onlineProfile);
         } catch (final QuestException exception) {

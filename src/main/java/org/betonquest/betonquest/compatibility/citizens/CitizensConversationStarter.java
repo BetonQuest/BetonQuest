@@ -14,7 +14,6 @@ import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveC
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.CombatTagger;
-import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.util.PlayerConverter;
@@ -34,7 +33,6 @@ import java.util.UUID;
 /**
  * Starts new conversations with Citizen NPCs.
  */
-@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class CitizensConversationStarter {
     /**
      * The section in which the assignments from NPCs to conversations are stored.
@@ -45,11 +43,6 @@ public class CitizensConversationStarter {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
-
-    /**
-     * The {@link PlayerDataStorage} instance.
-     */
-    private final PlayerDataStorage playerDataStorage;
 
     /**
      * The {@link PluginMessage} instance.
@@ -99,15 +92,13 @@ public class CitizensConversationStarter {
      *
      * @param loggerFactory          the logger factory to create new class specific logger
      * @param log                    the custom logger for this class
-     * @param playerDataStorage      the {@link PlayerDataStorage} instance
      * @param pluginMessage          the {@link PluginMessage} instance
      * @param citizensMoveController the move controller to check if the NPC currently blocks conversations
      */
     public CitizensConversationStarter(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                                       final PlayerDataStorage playerDataStorage, final PluginMessage pluginMessage, final CitizensMoveController citizensMoveController) {
+                                       final PluginMessage pluginMessage, final CitizensMoveController citizensMoveController) {
         this.loggerFactory = loggerFactory;
         this.log = log;
-        this.playerDataStorage = playerDataStorage;
         this.pluginMessage = pluginMessage;
         this.citizensMoveController = citizensMoveController;
         reload();
@@ -166,7 +157,7 @@ public class CitizensConversationStarter {
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getClicker());
         if (CombatTagger.isTagged(onlineProfile)) {
 
-            final String message = pluginMessage.getMessage(playerDataStorage.get(onlineProfile).getLanguage(), "busy");
+            final String message = pluginMessage.getMessage(onlineProfile, "busy");
             try {
                 Notify.get(null, "busy,error").sendNotify(message, onlineProfile);
             } catch (final QuestException e) {

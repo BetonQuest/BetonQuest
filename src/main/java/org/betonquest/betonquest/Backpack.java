@@ -254,7 +254,7 @@ public class Backpack implements Listener {
             this.pages = (int) Math.ceil(backpackItems.size() / 45F);
             this.pageOffset = (page - 1) * SLOT_CANCEL;
 
-            final Inventory inv = Bukkit.createInventory(null, INVENTORY_SIZE, pluginMessage.getMessage(lang, "backpack_title")
+            final Inventory inv = Bukkit.createInventory(null, INVENTORY_SIZE, pluginMessage.getMessage(onlineProfile, "backpack_title")
                     + (pages == 0 || pages == 1 ? "" : " (" + page + "/" + pages + ")"));
             final ItemStack[] content = new ItemStack[INVENTORY_SIZE];
 
@@ -306,7 +306,7 @@ public class Backpack implements Listener {
                 stack = new ItemStack(fallback);
             }
             final ItemMeta meta = stack.getItemMeta();
-            meta.setDisplayName(pluginMessage.getMessage(lang, button).replaceAll("&", "§"));
+            meta.setDisplayName(pluginMessage.getMessage(onlineProfile, button).replaceAll("&", "§"));
             stack.setItemMeta(meta);
             return Pair.of(stack, present);
         }
@@ -435,7 +435,7 @@ public class Backpack implements Listener {
                 log.warn(onlineProfile + " has too many active quests, please"
                         + " don't allow for so many of them. It slows down your server!");
             }
-            final Inventory inv = Bukkit.createInventory(null, numberOfRows * 9, pluginMessage.getMessage(lang, "cancel_page"));
+            final Inventory inv = Bukkit.createInventory(null, numberOfRows * 9, pluginMessage.getMessage(onlineProfile, "cancel_page"));
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int index = 0;
             for (final QuestCanceler canceler : cancelers) {
@@ -549,7 +549,7 @@ public class Backpack implements Listener {
                 onlineProfile.getPlayer().closeInventory();
                 return;
             }
-            final Inventory inv = Bukkit.createInventory(null, numberOfRows * 9, pluginMessage.getMessage(lang, "compass_page"));
+            final Inventory inv = Bukkit.createInventory(null, numberOfRows * 9, pluginMessage.getMessage(onlineProfile, "compass_page"));
             final ItemStack[] content;
             try {
                 content = getContent(numberOfRows);

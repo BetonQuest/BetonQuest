@@ -68,8 +68,12 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
         if (!"questlang".equalsIgnoreCase(cmd.getName())) {
             return false;
         }
+        if (!(sender instanceof final Player player)) {
+            return true;
+        }
+        final OnlineProfile onlineProfile = PlayerConverter.getID(player);
         if (args.length == 0) {
-            sender.sendMessage(pluginMessage.getMessage(Config.getLanguage(), "language_missing"));
+            sender.sendMessage(pluginMessage.getMessage(onlineProfile, "language_missing"));
             return true;
         }
         final Set<String> languages = pluginMessage.getLanguages();
@@ -81,25 +85,19 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
                 return false;
             }
             final String finalMessage = builder.substring(0, builder.length() - 2) + ".";
-            sender.sendMessage(pluginMessage.getMessage(Config.getLanguage(), "language_not_exist") + finalMessage);
+            sender.sendMessage(pluginMessage.getMessage(onlineProfile, "language_not_exist") + finalMessage);
             return true;
         }
-        if (sender instanceof Player) {
-            final String lang = args[0];
-            final OnlineProfile onlineProfile = PlayerConverter.getID((Player) sender);
-            final PlayerData playerData = dataStorage.get(onlineProfile);
-            final Journal journal = playerData.getJournal();
-            playerData.setLanguage(lang);
-            journal.update();
-            final String message = pluginMessage.getMessage(playerData.getLanguage(), "language_changed");
-            try {
-                Notify.get(null, "language_changed,info").sendNotify(message, onlineProfile);
-            } catch (final QuestException e) {
-                log.warn("The notify system was unable to play a sound for the 'language_changed' category. Error was: '" + e.getMessage() + "'", e);
-            }
-        } else {
-            betonQuest.getPluginConfig().set("language", args[0]);
-            sender.sendMessage(pluginMessage.getMessage(args[0], "default_language_changed"));
+        final String lang = args[0];
+        final PlayerData playerData = dataStorage.get(onlineProfile);
+        final Journal journal = playerData.getJournal();
+        playerData.setLanguage(lang);
+        journal.update();
+        final String message = pluginMessage.getMessage(onlineProfile, "language_changed");
+        try {
+            Notify.get(null, "language_changed,info").sendNotify(message, onlineProfile);
+        } catch (final QuestException e) {
+            log.warn("The notify system was unable to play a sound for the 'language_changed' category. Error was: '" + e.getMessage() + "'", e);
         }
         return true;
     }

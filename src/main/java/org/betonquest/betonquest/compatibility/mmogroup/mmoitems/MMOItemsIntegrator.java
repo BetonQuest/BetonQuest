@@ -36,7 +36,7 @@ public class MMOItemsIntegrator implements Integrator {
         final EventTypeRegistry eventTypes = questRegistries.event();
         eventTypes.register("mmoitemgive", MMOItemsGiveEvent.class);
         eventTypes.register("mmoitemtake", new MMOItemsTakeEventFactory(plugin.getLoggerFactory(),
-                plugin.getPlayerDataStorage(), plugin.getPluginMessage()));
+                plugin.getPluginMessage()));
     }
 
     @Override

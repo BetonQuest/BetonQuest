@@ -85,8 +85,7 @@ public class MMOItemsGiveEvent extends QuestEvent {
         int amount = amountVar.getInt(profile);
 
         if (notify) {
-            final String language = BetonQuest.getInstance().getPlayerDataStorage().get(profile).getLanguage();
-            final String message = BetonQuest.getInstance().getPluginMessage().getMessage(language, "items_given",
+            final String message = BetonQuest.getInstance().getPluginMessage().getMessage(profile, "items_given",
                     new PluginMessage.Replacement("item", mmoItem.getItemMeta().getDisplayName()),
                     new PluginMessage.Replacement("amount", String.valueOf(amount)));
             try {
