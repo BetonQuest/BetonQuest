@@ -3,6 +3,7 @@ package org.betonquest.betonquest.feature.registry;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.message.MessageParserRegistry;
 import org.betonquest.betonquest.quest.registry.FactoryRegistry;
+import org.betonquest.betonquest.quest.registry.feature.MessageParserRegistryImpl;
 
 /**
  * Registries that are not based on the Instruction to create instances.

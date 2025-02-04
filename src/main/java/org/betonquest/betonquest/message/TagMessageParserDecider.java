@@ -33,8 +33,8 @@ public class TagMessageParserDecider implements MessageParserDecider {
     public Result chooseParser(final String message) throws QuestException {
         final Matcher matcher = TAG_PATTERN.matcher(message);
         if (matcher.matches()) {
-            final var parser = matcher.group("parser");
-            final var messageContent = matcher.group("message");
+            final String parser = matcher.group("parser");
+            final String messageContent = matcher.group("message");
             return new Result(parser == null ? defaultParser : parser, messageContent);
         }
         throw new QuestException("Could not match tag in message: " + message);

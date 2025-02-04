@@ -6,6 +6,9 @@ import org.betonquest.betonquest.api.message.MessageParserRegistry;
 import org.betonquest.betonquest.quest.registry.FactoryRegistry;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * A registry for message parsers.
+ */
 public class MessageParserRegistryImpl extends FactoryRegistry<MessageParser> implements MessageParserRegistry {
     /**
      * Create a new type registry.

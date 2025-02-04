@@ -9,5 +9,12 @@ import org.betonquest.betonquest.api.quest.QuestException;
  * The actual content can depend on the player.
  */
 public interface Message {
+    /**
+     * Returns the message as a component for the given profile.
+     *
+     * @param profile the profile to get the message for
+     * @return the message as a component
+     * @throws QuestException if an error occurs while getting the message
+     */
     Component asComponent(Profile profile) throws QuestException;
 }
