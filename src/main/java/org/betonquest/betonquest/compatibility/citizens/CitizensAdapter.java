@@ -63,14 +63,19 @@ public class CitizensAdapter implements Npc<NPC> {
         npc.getNavigator().cancelNavigation();
         if (npc.isSpawned()) {
             npc.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN);
-        } else {
-            npc.spawn(location, SpawnReason.PLUGIN);
         }
     }
 
     @Override
     public boolean isSpawned() {
         return npc.isSpawned();
+    }
+
+    @Override
+    public void spawn(final Location location) {
+        if (!npc.isSpawned()) {
+            npc.spawn(location, SpawnReason.PLUGIN);
+        }
     }
 
     @Override

@@ -52,6 +52,7 @@ public class NpcTeleportEventFactory implements EventFactory, StaticEventFactory
     private NullableEventAdapter createNpcTeleportEvent(final Instruction instruction) throws QuestException {
         final NpcID npcId = instruction.getID(NpcID::new);
         final VariableLocation location = instruction.get(VariableLocation::new);
-        return new NullableEventAdapter(new NPCTeleportEvent(npcProcessor, npcId, location));
+        final boolean spawn = instruction.hasArgument("spawn");
+        return new NullableEventAdapter(new NPCTeleportEvent(npcProcessor, npcId, location, spawn));
     }
 }

@@ -60,6 +60,13 @@ public interface Npc<T> {
     boolean isSpawned();
 
     /**
+     * Spawns the Npc, if not already in the world.
+     *
+     * @param location the location to spawn the Npc at
+     */
+    void spawn(Location location);
+
+    /**
      * Shows the Npc to the player.
      *
      * @param onlineProfile the online profile of the player
