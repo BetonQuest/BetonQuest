@@ -55,7 +55,7 @@ class IngameNotificationSenderTest {
         try (MockedStatic<Notify> notify = mockStatic(Notify.class)) {
             final NotifyIO notifyIO = mock(NotifyIO.class);
             notify.when(() -> Notify.get(questPackage, "message-name,info")).thenReturn(notifyIO);
-            doThrow(new QuestException("Test cause.")).when(notifyIO).sendNotify(any(), any());
+            doThrow(new QuestException("Test cause.")).when(notifyIO).sendNotify(any(String.class), any());
 
             assertDoesNotThrow(() -> sender.sendNotification(profile), "Failing to send a notification should not throw an exception.");
             verify(logger, times(1)).warn(eq(questPackage), eq("The notify system was unable to play a sound for the 'message-name' message in 'full.id'. Error was: 'Test cause.'"), any(QuestException.class));

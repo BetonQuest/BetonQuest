@@ -10,6 +10,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `point` and `globalpoint` events and conditions now support variables
 - `cancel` event now has `bypass` keyword to ignore conditions in Quest Canceler
 - `quester` in conversation now supports variables
+- Support for Message Parsing Formatter
+  - `notify` event
+  - `notifyall` event
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations

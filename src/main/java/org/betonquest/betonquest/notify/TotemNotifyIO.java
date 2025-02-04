@@ -2,6 +2,7 @@ package org.betonquest.betonquest.notify;
 
 import com.comphenix.packetwrapper.WrapperPlayServerEntityStatus;
 import com.comphenix.packetwrapper.WrapperPlayServerSetSlot;
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -40,6 +41,13 @@ public class TotemNotifyIO extends NotifyIO {
 
     @Override
     protected void notifyPlayer(final String message, final OnlineProfile onlineProfile) {
+        sendOffhandPacket(onlineProfile.getPlayer(), buildFakeTotem());
+        playSilentTotemEffect(onlineProfile.getPlayer());
+        sendOffhandPacket(onlineProfile.getPlayer(), onlineProfile.getPlayer().getInventory().getItemInOffHand());
+    }
+
+    @Override
+    protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) {
         sendOffhandPacket(onlineProfile.getPlayer(), buildFakeTotem());
         playSilentTotemEffect(onlineProfile.getPlayer());
         sendOffhandPacket(onlineProfile.getPlayer(), onlineProfile.getPlayer().getInventory().getItemInOffHand());

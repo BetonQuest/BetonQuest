@@ -3,6 +3,8 @@ package org.betonquest.betonquest.notify;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import io.papermc.lib.PaperLib;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -19,7 +21,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
 public class AdvancementNotifyIO extends NotifyIO {
 
     private final String frame;
@@ -50,13 +52,18 @@ public class AdvancementNotifyIO extends NotifyIO {
         }.runTaskLater(BetonQuest.getInstance(), 10);
     }
 
+    @Override
+    protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) {
+        notifyPlayer(GsonComponentSerializer.gson().serialize(message), onlineProfile);
+    }
+
     @SuppressWarnings("deprecation")
-    private void loadAdvancement(final String message, final NamespacedKey rootKey, final NamespacedKey key) {
+    private void loadAdvancement(final String messageJson, final NamespacedKey rootKey, final NamespacedKey key) {
         new BukkitRunnable() {
             @Override
             public void run() {
                 Bukkit.getUnsafe().loadAdvancement(rootKey, generateJson(null, null));
-                Bukkit.getUnsafe().loadAdvancement(key, generateJson(message, rootKey));
+                Bukkit.getUnsafe().loadAdvancement(key, generateJson(messageJson, rootKey));
             }
         }.runTask(BetonQuest.getInstance());
     }
@@ -95,12 +102,12 @@ public class AdvancementNotifyIO extends NotifyIO {
         }
     }
 
-    private String generateJson(@Nullable final String message, @Nullable final NamespacedKey root) {
+    private String generateJson(@Nullable final String messageJson, @Nullable final NamespacedKey root) {
         final JsonObject json = new JsonObject();
         json.add("criteria", getCriteria());
         if (root != null) {
             json.addProperty("parent", root.toString());
-            json.add("display", getDisplay(message));
+            json.add("display", getDisplay(messageJson));
         }
         return new GsonBuilder().setPrettyPrinting().create().toJson(json);
     }
@@ -117,10 +124,10 @@ public class AdvancementNotifyIO extends NotifyIO {
         return trigger;
     }
 
-    private JsonObject getDisplay(@Nullable final String message) {
+    private JsonObject getDisplay(@Nullable final String messageJson) {
         final JsonObject display = new JsonObject();
         display.add("icon", getIcon());
-        display.addProperty("title", message);
+        display.addProperty("title", messageJson);
         display.addProperty("description", "");
         display.addProperty("frame", this.frame);
         display.addProperty("announce_to_chat", false);

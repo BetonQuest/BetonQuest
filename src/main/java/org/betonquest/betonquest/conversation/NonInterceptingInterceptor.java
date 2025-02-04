@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.conversation;
 
+import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -25,6 +26,11 @@ public class NonInterceptingInterceptor implements Interceptor {
     @Override
     public void sendMessage(final BaseComponent... message) {
         player.spigot().sendMessage(message);
+    }
+
+    @Override
+    public void sendMessage(final Component message) {
+        player.sendMessage(message);
     }
 
     @Override

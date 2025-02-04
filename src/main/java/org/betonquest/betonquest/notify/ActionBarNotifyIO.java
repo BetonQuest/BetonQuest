@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.notify;
 
+import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -20,5 +21,10 @@ public class ActionBarNotifyIO extends NotifyIO {
     protected void notifyPlayer(final String message, final OnlineProfile onlineProfile) {
         final BaseComponent[] textMessage = TextComponent.fromLegacyText(message);
         onlineProfile.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, textMessage);
+    }
+
+    @Override
+    protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) {
+        onlineProfile.getPlayer().sendActionBar(message);
     }
 }

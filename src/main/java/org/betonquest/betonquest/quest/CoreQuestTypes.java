@@ -363,8 +363,8 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("lever", new LeverEventFactory(data));
         eventTypes.registerCombined("lightning", new LightningEventFactory(data));
         eventTypes.registerCombined("log", new LogEventFactory(loggerFactory));
-        eventTypes.register("notify", new NotifyEventFactory(loggerFactory, data, dataStorage));
-        eventTypes.registerCombined("notifyall", new NotifyAllEventFactory(loggerFactory, data, dataStorage, profileProvider));
+        eventTypes.register("notify", new NotifyEventFactory(loggerFactory, data, betonQuest.getMessageParser(), dataStorage));
+        eventTypes.registerCombined("notifyall", new NotifyAllEventFactory(loggerFactory, data, betonQuest.getMessageParser(), dataStorage, profileProvider));
         eventTypes.registerCombined("objective", new ObjectiveEventFactory(betonQuest, loggerFactory, questTypeAPI,
                 pluginMessage));
         eventTypes.register("opsudo", new OpSudoEventFactory(loggerFactory, data));
