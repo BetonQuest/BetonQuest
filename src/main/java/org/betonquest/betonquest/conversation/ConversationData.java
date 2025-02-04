@@ -143,7 +143,7 @@ public class ConversationData {
             final String questerName = new VariableString(variableProcessor, pack, pack.getConfig().getString("conversations." + convName + ".quester")).getValue(null);
             quester.put(Config.getLanguage(), ChatColor.translateAlternateColorCodes('&', questerName));
         }
-        final String stop = pack.getString("conversations." + convName + ".stop");
+        final String stop = pack.getConfig().getString("conversations." + convName + ".stop");
         blockMovement = Boolean.parseBoolean(stop);
         final String rawConvIOs = new VariableString(variableProcessor, pack,
                 pack.getConfig().getString("conversations." + convName + ".conversationIO",
