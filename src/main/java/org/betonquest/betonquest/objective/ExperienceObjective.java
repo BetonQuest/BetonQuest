@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.util.PlayerConverter;
@@ -49,7 +50,8 @@ public class ExperienceObjective extends Objective implements Listener {
         } else if (this.notify && notify) {
             final int level = (int) (amount - newAmount);
             if (level % notifyInterval == 0) {
-                sendNotify(onlineProfile, "level_to_gain", level);
+                sendNotify(onlineProfile, "level_to_gain",
+                        new PluginMessage.Replacement("amount", String.valueOf(level)));
             }
         }
     }

@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
@@ -120,15 +121,15 @@ public class DelayObjective extends Objective {
     }
 
     private String parseVariableLeft(final Profile profile) {
-        final String lang = BetonQuest.getInstance().getPlayerDataStorage().get(profile).getLanguage();
-        final String daysWord = Config.getMessage(lang, "days");
-        final String daysWordSingular = Config.getMessage(lang, "days_singular");
-        final String hoursWord = Config.getMessage(lang, "hours");
-        final String hoursWordSingular = Config.getMessage(lang, "hours_singular");
-        final String minutesWord = Config.getMessage(lang, "minutes");
-        final String minutesWordSingular = Config.getMessage(lang, "minutes_singular");
-        final String secondsWord = Config.getMessage(lang, "seconds");
-        final String secondsWordSingular = Config.getMessage(lang, "seconds_singular");
+        final PluginMessage pluginMessage = BetonQuest.getInstance().getPluginMessage();
+        final String daysWord = pluginMessage.getMessage(profile, "days");
+        final String daysWordSingular = pluginMessage.getMessage(profile, "days_singular");
+        final String hoursWord = pluginMessage.getMessage(profile, "hours");
+        final String hoursWordSingular = pluginMessage.getMessage(profile, "hours_singular");
+        final String minutesWord = pluginMessage.getMessage(profile, "minutes");
+        final String minutesWordSingular = pluginMessage.getMessage(profile, "minutes_singular");
+        final String secondsWord = pluginMessage.getMessage(profile, "seconds");
+        final String secondsWordSingular = pluginMessage.getMessage(profile, "seconds_singular");
 
         final long endTimestamp = (long) getDelayData(profile).getTime();
         final LocalDateTime end = LocalDateTime.ofInstant(Instant.ofEpochMilli(endTimestamp), ZoneId.systemDefault());

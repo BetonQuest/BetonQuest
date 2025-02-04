@@ -13,12 +13,14 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ConversationData.OptionType;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.quest.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.quest.registry.feature.InterceptorRegistry;
 import org.betonquest.betonquest.util.PlayerConverter;
@@ -115,6 +117,11 @@ public class Conversation implements Listener {
 
     private final boolean messagesDelaying;
 
+    /**
+     * The {@link PluginMessage} instance.
+     */
+    private final PluginMessage pluginMessage;
+
     @SuppressWarnings("PMD.AvoidUsingVolatile")
     protected volatile ConversationState state = ConversationState.CREATED;
 
@@ -146,12 +153,13 @@ public class Conversation implements Listener {
      * starting options to determine where to start.
      *
      * @param log            the logger that will be used for logging
+     * @param pluginMessage  the {@link PluginMessage} instance
      * @param onlineProfile  the {@link OnlineProfile} of the player
      * @param conversationID ID of the conversation
      * @param center         location where the conversation has been started
      */
-    public Conversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final ConversationID conversationID, final Location center) {
-        this(log, onlineProfile, conversationID, center, null);
+    public Conversation(final BetonQuestLogger log, final PluginMessage pluginMessage, final OnlineProfile onlineProfile, final ConversationID conversationID, final Location center) {
+        this(log, pluginMessage, onlineProfile, conversationID, center, null);
     }
 
     /**
@@ -160,14 +168,16 @@ public class Conversation implements Listener {
      * from the beginning.
      *
      * @param log            the logger that will be used for logging
+     * @param pluginMessage  the {@link PluginMessage} instance
      * @param onlineProfile  the {@link OnlineProfile} of the player
      * @param conversationID ID of the conversation
      * @param center         location where the conversation has been started
      * @param startingOption name of the option which the conversation should start at
      */
-    public Conversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final ConversationID conversationID,
+    public Conversation(final BetonQuestLogger log, final PluginMessage pluginMessage, final OnlineProfile onlineProfile, final ConversationID conversationID,
                         final Location center, @Nullable final String startingOption) {
         this.log = log;
+        this.pluginMessage = pluginMessage;
         this.conv = this;
         this.plugin = BetonQuest.getInstance();
         this.onlineProfile = onlineProfile;
@@ -380,8 +390,8 @@ public class Conversation implements Listener {
             }
             //only display status messages if conversationIO allows it
             if (conv.inOut.printMessages()) {
-                // print message
-                conv.inOut.print(Config.parseMessage(pack, onlineProfile, "conversation_end", data.getQuester(language)));
+                conv.inOut.print(pluginMessage.getMessage(onlineProfile, "conversation_end",
+                        new PluginMessage.Replacement("npc", data.getQuester(language))));
             }
             //play conversation end sound
             Config.playSound(onlineProfile, "end");
@@ -461,8 +471,9 @@ public class Conversation implements Listener {
         final String cmdName = event.getMessage().split(" ")[0].substring(1);
         if (blacklist.contains(cmdName)) {
             event.setCancelled(true);
+            final String message = pluginMessage.getMessage(onlineProfile, "command_blocked");
             try {
-                Config.sendNotify(getPackage(), PlayerConverter.getID(event.getPlayer()), "command_blocked", "command_blocked,error");
+                Notify.get(getPackage(), "command_blocked,error").sendNotify(message, onlineProfile);
             } catch (final QuestException e) {
                 log.warn(pack, "The notify system was unable to play a sound for the 'command_blocked' category. Error was: '" + e.getMessage() + "'", e);
             }
@@ -700,7 +711,8 @@ public class Conversation implements Listener {
                     selectOption(resolvedOptions, false);
 
                     if (conv.inOut.printMessages()) {
-                        conv.inOut.print(Config.parseMessage(pack, onlineProfile, "conversation_start", data.getQuester(language)));
+                        conv.inOut.print(pluginMessage.getMessage(onlineProfile, "conversation_start",
+                                new PluginMessage.Replacement("npc", data.getQuester(language))));
                     }
 
                     Config.playSound(onlineProfile, "start");

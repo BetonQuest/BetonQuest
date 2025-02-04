@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ConversationResumer;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
@@ -42,16 +43,24 @@ public class JoinQuitListener implements Listener {
     private final PlayerDataStorage playerDataStorage;
 
     /**
+     * The {@link PluginMessage} instance.
+     */
+    private final PluginMessage pluginMessage;
+
+    /**
      * Creates new listener, which will handle the data loading/saving.
      *
      * @param loggerFactory     used for logger creation in ConversationResumer
      * @param questTypeAPI      the object to get player Objectives
      * @param playerDataStorage the storage for un-/loading player data
+     * @param pluginMessage     the {@link PluginMessage} instance
      */
-    public JoinQuitListener(final BetonQuestLoggerFactory loggerFactory, final QuestTypeAPI questTypeAPI, final PlayerDataStorage playerDataStorage) {
+    public JoinQuitListener(final BetonQuestLoggerFactory loggerFactory, final QuestTypeAPI questTypeAPI,
+                            final PlayerDataStorage playerDataStorage, final PluginMessage pluginMessage) {
         this.loggerFactory = loggerFactory;
         this.questTypeAPI = questTypeAPI;
         this.playerDataStorage = playerDataStorage;
+        this.pluginMessage = pluginMessage;
     }
 
     /**
@@ -65,7 +74,7 @@ public class JoinQuitListener implements Listener {
             return;
         }
         final Profile profile = PlayerConverter.getID(Bukkit.getOfflinePlayer(event.getUniqueId()));
-        playerDataStorage.put(profile, new PlayerData(profile));
+        playerDataStorage.put(profile, new PlayerData(pluginMessage, profile));
     }
 
     /**
@@ -85,7 +94,7 @@ public class JoinQuitListener implements Listener {
             playerData.getJournal().update();
         }
         if (playerData.getActiveConversation() != null) {
-            new ConversationResumer(loggerFactory, onlineProfile, playerData.getActiveConversation());
+            new ConversationResumer(loggerFactory, pluginMessage, onlineProfile, playerData.getActiveConversation());
         }
     }
 

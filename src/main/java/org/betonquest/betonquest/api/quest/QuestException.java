@@ -1,7 +1,5 @@
 package org.betonquest.betonquest.api.quest;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.io.Serial;
 
 /**
@@ -29,7 +27,7 @@ public class QuestException extends Exception {
      * @param message the exception message.
      * @param cause   the Throwable that caused this exception.
      */
-    public QuestException(@Nullable final String message, final Throwable cause) {
+    public QuestException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
@@ -40,5 +38,14 @@ public class QuestException extends Exception {
      */
     public QuestException(final Throwable cause) {
         super(cause);
+    }
+
+    @Override
+    public String getMessage() {
+        final String message = super.getMessage();
+        if (message == null) {
+            throw new IllegalStateException("Message is null");
+        }
+        return message;
     }
 }

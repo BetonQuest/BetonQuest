@@ -237,6 +237,7 @@ public class MenuConvIO extends ChatConvIO {
             }
             state = ConversationState.ACTIVE;
 
+            final Player player = onlineProfile.getPlayer();
             final Location target = getBlockBelowPlayer(player).add(0, -1, 0);
             // TODO version switch:
             //  Remove this code when only 1.20.2+ is supported
@@ -617,14 +618,14 @@ public class MenuConvIO extends ChatConvIO {
                     return;
                 }
                 final WrapperPlayServerAnimation animation = new WrapperPlayServerAnimation(event.getPacket());
-                if (animation.getEntityID() == player.getEntityId()) {
+                if (animation.getEntityID() == onlineProfile.getPlayer().getEntityId()) {
                     event.setCancelled(true);
                 }
             }
 
             @Override
             public void onPacketReceiving(final PacketEvent event) {
-                if (!event.getPlayer().equals(player) || options.isEmpty()) {
+                if (!event.getPlayer().equals(onlineProfile.getPlayer()) || options.isEmpty()) {
                     return;
                 }
                 if (!event.getPacketType().equals(PacketType.Play.Client.STEER_VEHICLE)) {
@@ -714,7 +715,7 @@ public class MenuConvIO extends ChatConvIO {
                 return;
             }
 
-            if (!event.getPlayer().equals(player)) {
+            if (!event.getPlayer().equals(onlineProfile.getPlayer())) {
                 return;
             }
 
@@ -747,7 +748,7 @@ public class MenuConvIO extends ChatConvIO {
                 return;
             }
 
-            if (!event.getPlayer().equals(player)) {
+            if (!event.getPlayer().equals(onlineProfile.getPlayer())) {
                 return;
             }
 
@@ -777,7 +778,7 @@ public class MenuConvIO extends ChatConvIO {
                 return;
             }
 
-            if (!event.getDamager().equals(player)) {
+            if (!event.getDamager().equals(onlineProfile.getPlayer())) {
                 return;
             }
 
@@ -816,6 +817,7 @@ public class MenuConvIO extends ChatConvIO {
     }
 
     private boolean isOnCooldown() {
+        final Player player = onlineProfile.getPlayer();
         if (selectionCooldowns.contains(player)) {
             return true;
         } else {
@@ -838,7 +840,7 @@ public class MenuConvIO extends ChatConvIO {
                 return;
             }
 
-            if (!event.getPlayer().equals(player)) {
+            if (!event.getPlayer().equals(onlineProfile.getPlayer())) {
                 return;
             }
 

@@ -12,8 +12,10 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveController;
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.id.ConversationID;
+import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -41,6 +43,11 @@ public class CitizensConversationStarter {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
+
+    /**
+     * The {@link PluginMessage} instance.
+     */
+    private final PluginMessage pluginMessage;
 
     /**
      * Move Controller to check if the NPC blocks conversations while moving.
@@ -81,16 +88,18 @@ public class CitizensConversationStarter {
     private int interactionLimit;
 
     /**
-     * Initializes the listener
+     * Initializes the listener.
      *
      * @param loggerFactory          the logger factory to create new class specific logger
      * @param log                    the custom logger for this class
+     * @param pluginMessage          the {@link PluginMessage} instance
      * @param citizensMoveController the move controller to check if the NPC currently blocks conversations
      */
     public CitizensConversationStarter(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                                       final CitizensMoveController citizensMoveController) {
+                                       final PluginMessage pluginMessage, final CitizensMoveController citizensMoveController) {
         this.loggerFactory = loggerFactory;
         this.log = log;
+        this.pluginMessage = pluginMessage;
         this.citizensMoveController = citizensMoveController;
         reload();
     }
@@ -147,8 +156,10 @@ public class CitizensConversationStarter {
         }
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getClicker());
         if (CombatTagger.isTagged(onlineProfile)) {
+
+            final String message = pluginMessage.getMessage(onlineProfile, "busy");
             try {
-                Config.sendNotify(null, onlineProfile, "busy", "busy,error");
+                Notify.get(null, "busy,error").sendNotify(message, onlineProfile);
             } catch (final QuestException e) {
                 log.warn("The notify system was unable to play a sound for the 'busy' category. Error was: '" + e.getMessage() + "'", e);
             }
@@ -167,7 +178,8 @@ public class CitizensConversationStarter {
             log.debug("Player '" + event.getClicker().getName() + "' clicked NPC '" + npcId + "' but there is no conversation assigned to it.");
         } else {
             event.setCancelled(true);
-            new CitizensConversation(loggerFactory.create(CitizensConversation.class), onlineProfile, conversationID, event.getNPC().getEntity().getLocation(), event.getNPC());
+            new CitizensConversation(loggerFactory.create(CitizensConversation.class), pluginMessage, onlineProfile,
+                    conversationID, event.getNPC().getEntity().getLocation(), event.getNPC());
         }
     }
 

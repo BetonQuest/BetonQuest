@@ -18,15 +18,15 @@ en:
   package_created: '&2Package created'
   package_exists: '&cPackage already exists'
   config_set_error: '&cCould not set specified path.'
-  item_created: '&2Item saved to configuration as {1}.'
-  value_set: '&aValue {1} set for key {2}.'
-  key_remove: '&aRemoved key {1}.'
-  player_variables: '&aPlayer''s variables in &b{1}&a:'
+  item_created: '&2Item saved to configuration as {item}.'
+  value_set: '&aValue {value} set for key {key}.'
+  key_remove: '&aRemoved key {key}.'
+  player_variables: '&aPlayer''s variables in &b{objective}&a:'
   player_no_property: '&cNo property stored for Player.'
   player_objectives: '&aPlayer''s objectives:'
   player_tags: '&aPlayer''s tags:'
-  player_condition: '&aCondition {1}: {2}'
-  player_event: '&aEvent fired: {1}'
+  player_condition: '&aCondition {condition}: {result}'
+  player_event: '&aEvent fired: {event}'
   player_points: '&aPlayer''s points:'
   player_journal: '&ePointers in journal:'
   points_added: '&2Points added!'
@@ -44,7 +44,7 @@ en:
   pointer_removed: '&2Pointer removed!'
   everything_renamed: '&2Every occurrence renamed!'
   everything_removed: '&2Every occurrence removed!'
-  purged: '&4{1}''s data purged!'
+  purged: '&4{player}''s data purged!'
   command_reload: reloads the plugin
   command_objectives: displays active objectives
   command_tags: displays tags
@@ -60,7 +60,7 @@ en:
   command_version: displays version information
   command_version_context:
     version_info: '&eVersion Information'
-    click_to_download: '&a (Version ''&2{1}&a'' is available. Click to download!)'
+    click_to_download: '&a (Version ''&2{version}&a'' is available. Click to download!)'
     click_to_copy_all: '&eClick to copy everything to clipboard!'
     click_to_copy: 'Click to copy!'
     click_to_download_hint: 'Click to download!'
@@ -79,10 +79,10 @@ en:
   command_debug: select debug mode
   offline: '&4All players must be offline in order to make a backup!'
   default_language_changed: '&2Default language changed!'
-  error: '&cThere has been an error: {1}'
+  error: '&cThere has been an error: {error}'
   download_scheduled: '&bInitiated download...'
   download_success: '&aDownload completed!'
-  download_failed: "&4Download failed due to the following error:\n&c{1}"
+  download_failed: "&4Download failed due to the following error:\n&c{error}"
   download_failed_offset: '&cInvalid offset path.'
   download_failed_whitelist: '&cRepository not whitelisted.'
   download_failed_pr: '&cDownloading of pull requests is disabled to prevent exploits.'

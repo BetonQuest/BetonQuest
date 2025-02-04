@@ -6,6 +6,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
@@ -39,7 +40,8 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
             if (playerData.isCompleted()) {
                 completeObjective(profile);
             } else if (notify && ((int) playerData.amount) / notifyInterval != ((int) previousAmount) / notifyInterval && profile.getOnlineProfile().isPresent()) {
-                sendNotify(profile.getOnlineProfile().get(), "payment_to_receive", playerData.amount);
+                sendNotify(profile.getOnlineProfile().get(), "payment_to_receive",
+                        new PluginMessage.Replacement("amount", String.valueOf(playerData.targetAmount - playerData.amount)));
             }
         }
     }

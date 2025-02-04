@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsUtils;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.event.NotificationSender;
@@ -24,9 +25,10 @@ public class MMOItemsTakeEventFactory extends AbstractTakeEventFactory {
      * Create the MMOItems take event factory.
      *
      * @param loggerFactory logger factory to use
+     * @param pluginMessage the {@link PluginMessage} instance
      */
-    public MMOItemsTakeEventFactory(final BetonQuestLoggerFactory loggerFactory) {
-        super(loggerFactory);
+    public MMOItemsTakeEventFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage) {
+        super(loggerFactory, pluginMessage);
     }
 
     @Override

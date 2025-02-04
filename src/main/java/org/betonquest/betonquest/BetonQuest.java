@@ -27,6 +27,7 @@ import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.config.DefaultConfigurationFileFactory;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.config.patcher.migration.Migrator;
 import org.betonquest.betonquest.conversation.AnswerFilter;
 import org.betonquest.betonquest.conversation.CombatTagger;
@@ -170,6 +171,11 @@ public class BetonQuest extends JavaPlugin {
     private ConfigurationFile config;
 
     /**
+     * The plugin messages provider.
+     */
+    private PluginMessage pluginMessage;
+
+    /**
      * The adventure instance.
      */
     private BukkitAudiences adventure;
@@ -296,6 +302,15 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
+     * Get the plugin messages provider.
+     *
+     * @return plugin messages provider
+     */
+    public PluginMessage getPluginMessage() {
+        return pluginMessage;
+    }
+
+    /**
      * Get the plugin tag used for command feedback.
      *
      * @return plugin tag
@@ -346,6 +361,15 @@ public class BetonQuest extends JavaPlugin {
             config = configurationFileFactory.create(new File(getDataFolder(), "config.yml"), this, "config.yml");
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
             log.error("Could not load the config.yml file!", e);
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        try {
+            pluginMessage = new PluginMessage(loggerFactory.create(PluginMessage.class), this, configurationFileFactory, configAccessorFactory);
+        } catch (final QuestException e) {
+            log.error("Could not load the plugin messages!", e);
+            getServer().getPluginManager().disablePlugin(this);
             return;
         }
 
@@ -354,6 +378,7 @@ public class BetonQuest extends JavaPlugin {
             menuConfigAccessor = configAccessorFactory.create(new File(getDataFolder(), "menuConfig.yml"), this, "menuConfig.yml");
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
             log.error("Could not load the menuConfig.yml file!", e);
+            getServer().getPluginManager().disablePlugin(this);
             return;
         }
 
@@ -380,7 +405,7 @@ public class BetonQuest extends JavaPlugin {
 
         globalData = new GlobalData(loggerFactory.create(GlobalData.class), saver);
 
-        playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class));
+        playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class), pluginMessage);
 
         final PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new QuestItemHandler(playerDataStorage), this);
@@ -395,6 +420,7 @@ public class BetonQuest extends JavaPlugin {
             cache = configAccessorFactory.create(cacheFile.toFile());
         } catch (final IOException | InvalidConfigurationException e) {
             log.error("Error while loading schedule cache: " + e.getMessage(), e);
+            getServer().getPluginManager().disablePlugin(this);
             return;
         }
         lastExecutionCache = new LastExecutionCache(loggerFactory.create(LastExecutionCache.class, "Cache"), cache);
@@ -415,14 +441,14 @@ public class BetonQuest extends JavaPlugin {
         featureRegistries = FeatureRegistries.create(loggerFactory);
 
         questRegistry = new QuestRegistry(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
-                featureRegistries, questTypeRegistries);
+                featureRegistries, questTypeRegistries, pluginMessage);
 
         questTypeAPI = new QuestTypeAPI(questRegistry);
         featureAPI = new FeatureAPI(questRegistry);
-        pluginManager.registerEvents(new JoinQuitListener(loggerFactory, questTypeAPI, playerDataStorage), this);
+        pluginManager.registerEvents(new JoinQuitListener(loggerFactory, questTypeAPI, playerDataStorage, pluginMessage), this);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
-                questTypeAPI, questRegistry.variables(), globalData, playerDataStorage).register(questTypeRegistries);
+                questTypeAPI, pluginMessage, questRegistry.variables(), globalData, playerDataStorage).register(questTypeRegistries);
 
         new CoreFeatureFactories(loggerFactory, lastExecutionCache, questTypeAPI).register(featureRegistries);
 
@@ -491,14 +517,14 @@ public class BetonQuest extends JavaPlugin {
     private void registerCommands(final AccumulatingReceiverSelector receiverSelector, final HistoryHandler debugHistoryHandler) {
         final QuestCommand questCommand = new QuestCommand(loggerFactory, loggerFactory.create(QuestCommand.class),
                 configAccessorFactory, adventure, new PlayerLogWatcher(receiverSelector), debugHistoryHandler,
-                this, playerDataStorage);
+                this, playerDataStorage, pluginMessage);
         getCommand("betonquest").setExecutor(questCommand);
         getCommand("betonquest").setTabCompleter(questCommand);
         getCommand("journal").setExecutor(new JournalCommand(playerDataStorage));
-        getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class)));
-        getCommand("cancelquest").setExecutor(new CancelQuestCommand());
-        getCommand("compass").setExecutor(new CompassCommand());
-        final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), this, playerDataStorage);
+        getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class), pluginMessage));
+        getCommand("cancelquest").setExecutor(new CancelQuestCommand(pluginMessage));
+        getCommand("compass").setExecutor(new CompassCommand(pluginMessage));
+        final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), this, playerDataStorage, pluginMessage);
         getCommand("questlang").setExecutor(langCommand);
         getCommand("questlang").setTabCompleter(langCommand);
     }
@@ -567,6 +593,11 @@ public class BetonQuest extends JavaPlugin {
             log.warn("Could not reload config! " + e.getMessage(), e);
         }
         Config.setup(this, config);
+        try {
+            pluginMessage.reload();
+        } catch (final IOException e) {
+            log.error("Could not reload the plugin messages!", e);
+        }
         Notify.load(config);
         lastExecutionCache.reload();
 

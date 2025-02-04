@@ -75,7 +75,8 @@ public class CitizensIntegrator implements Integrator {
     public void hook() {
         final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
         citizensMoveController = new CitizensMoveController(loggerFactory.create(CitizensMoveController.class), plugin.getQuestTypeAPI());
-        citizensConversationStarter = new CitizensConversationStarter(loggerFactory, loggerFactory.create(CitizensConversationStarter.class), citizensMoveController);
+        citizensConversationStarter = new CitizensConversationStarter(loggerFactory,
+                loggerFactory.create(CitizensConversationStarter.class), plugin.getPluginMessage(), citizensMoveController);
         new CitizensWalkingListener();
 
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();

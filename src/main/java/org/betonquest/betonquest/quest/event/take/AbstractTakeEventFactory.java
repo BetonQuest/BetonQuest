@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NoNotificationSender;
@@ -26,12 +27,19 @@ public abstract class AbstractTakeEventFactory implements EventFactory {
     protected final BetonQuestLoggerFactory loggerFactory;
 
     /**
+     * The {@link PluginMessage} instance.
+     */
+    private final PluginMessage pluginMessage;
+
+    /**
      * Create the abstract take event factory.
      *
      * @param loggerFactory logger factory to use
+     * @param pluginMessage the {@link PluginMessage} instance
      */
-    public AbstractTakeEventFactory(final BetonQuestLoggerFactory loggerFactory) {
+    public AbstractTakeEventFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage) {
         this.loggerFactory = loggerFactory;
+        this.pluginMessage = pluginMessage;
     }
 
     /**
@@ -69,7 +77,8 @@ public abstract class AbstractTakeEventFactory implements EventFactory {
      */
     protected NotificationSender getNotificationSender(final Instruction instruction, final BetonQuestLogger log) {
         return instruction.hasArgument("notify")
-                ? new IngameNotificationSender(log, instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.INFO, "items_taken")
+                ? new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
+                instruction.getID().getFullID(), NotificationLevel.INFO, "items_taken")
                 : new NoNotificationSender();
     }
 }

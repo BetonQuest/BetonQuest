@@ -17,6 +17,7 @@ import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.argument.IDArgument;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
+import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.util.Utils;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Location;
@@ -34,7 +35,7 @@ import java.util.function.Consumer;
 /**
  * Represents a quest canceler, which cancels quests for players.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.CouplingBetweenObjects"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.CouplingBetweenObjects", "PMD.AvoidDuplicateLiterals"})
 public class QuestCanceler {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -63,6 +64,8 @@ public class QuestCanceler {
 
     private final QuestPackage pack;
 
+    private final PluginMessage pluginMessage;
+
     private final String cancelerID;
 
     @Nullable
@@ -74,12 +77,14 @@ public class QuestCanceler {
     /**
      * Creates a new canceler with given name.
      *
-     * @param pack       the {@link QuestPackage} of the canceler
-     * @param cancelerID ID of the canceler (package.name)
+     * @param pluginMessage the {@link PluginMessage} instance
+     * @param pack          the {@link QuestPackage} of the canceler
+     * @param cancelerID    ID of the canceler (package.name)
      * @throws QuestException when parsing, the canceler fails for some reason
      */
     @SuppressWarnings("PMD.LocalVariableCouldBeFinal")
-    public QuestCanceler(final QuestPackage pack, final String cancelerID) throws QuestException {
+    public QuestCanceler(final PluginMessage pluginMessage, final QuestPackage pack, final String cancelerID) throws QuestException {
+        this.pluginMessage = pluginMessage;
         this.cancelerID = Utils.getNN(cancelerID, "Name is null");
         this.pack = Utils.getNN(pack, "Package does not exist");
         final ConfigurationSection section = pack.getConfig().getConfigurationSection("cancel." + cancelerID);
@@ -197,8 +202,10 @@ public class QuestCanceler {
         // done
         log.debug("Quest removed!");
         final String questName = getName(onlineProfile);
+        final String message = pluginMessage.getMessage(onlineProfile, "quest_canceled",
+                new PluginMessage.Replacement("name", questName));
         try {
-            Config.sendNotify(pack, onlineProfile, "quest_canceled", "quest_cancelled,quest_canceled,info", questName);
+            Notify.get(pack, "quest_cancelled,quest_canceled,info").sendNotify(message, onlineProfile);
         } catch (final QuestException exception) {
             log.warn("The notify system was unable to play a sound for the 'quest_canceled' category in quest '" + name + "'. Error was: '" + exception.getMessage() + "'");
         }

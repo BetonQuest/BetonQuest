@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.citizens;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.id.ConversationID;
 import org.bukkit.Location;
@@ -20,13 +21,16 @@ public class CitizensConversation extends Conversation {
      * Starts a new conversation between player and npc at given location.
      *
      * @param log            the logger that will be used for logging
+     * @param pluginMessage  the {@link PluginMessage} instance
      * @param onlineProfile  the {@link OnlineProfile} of the player
      * @param conversationID ID of the conversation
      * @param center         location where the conversation has been started
      * @param npc            the NPC used for this conversation
      */
-    public CitizensConversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final ConversationID conversationID, final Location center, final NPC npc) {
-        super(log, onlineProfile, conversationID, center);
+    public CitizensConversation(final BetonQuestLogger log, final PluginMessage pluginMessage,
+                                final OnlineProfile onlineProfile, final ConversationID conversationID,
+                                final Location center, final NPC npc) {
+        super(log, pluginMessage, onlineProfile, conversationID, center);
         this.npc = npc;
     }
 

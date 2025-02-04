@@ -8,9 +8,10 @@ import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -84,9 +85,11 @@ public class MMOItemsGiveEvent extends QuestEvent {
         int amount = amountVar.getInt(profile);
 
         if (notify) {
+            final String message = BetonQuest.getInstance().getPluginMessage().getMessage(profile, "items_given",
+                    new PluginMessage.Replacement("item", mmoItem.getItemMeta().getDisplayName()),
+                    new PluginMessage.Replacement("amount", String.valueOf(amount)));
             try {
-                Config.sendNotify(instruction.getPackage(), profile.getOnlineProfile().get(), "items_given",
-                        "items_given,info", mmoItem.getItemMeta().getDisplayName(), String.valueOf(amount));
+                Notify.get(instruction.getPackage(), "items_given,info").sendNotify(message, profile.getOnlineProfile().get());
             } catch (final QuestException e) {
                 log.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'items_given' category in '"
                         + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);

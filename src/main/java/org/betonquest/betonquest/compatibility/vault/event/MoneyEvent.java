@@ -4,6 +4,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.bukkit.OfflinePlayer;
@@ -78,12 +79,16 @@ public class MoneyEvent implements Event {
         if (difference > 0) {
             economy.depositPlayer(player, difference);
             if (givenSender != null) {
-                givenSender.sendNotification(profile, decimalFormat.format(difference), currencyName);
+                givenSender.sendNotification(profile,
+                        new PluginMessage.Replacement("amount", decimalFormat.format(difference)),
+                        new PluginMessage.Replacement("currency", currencyName));
             }
         } else if (difference < 0) {
             economy.withdrawPlayer(player, -difference);
             if (takenSender != null) {
-                takenSender.sendNotification(profile, decimalFormat.format(difference), currencyName);
+                takenSender.sendNotification(profile,
+                        new PluginMessage.Replacement("amount", decimalFormat.format(difference)),
+                        new PluginMessage.Replacement("currency", currencyName));
             }
         }
     }

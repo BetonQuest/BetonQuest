@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.id.ItemID;
@@ -49,6 +50,11 @@ public class Backpack implements Listener {
     private final BetonQuestLogger log;
 
     /**
+     * The {@link PluginMessage} instance.
+     */
+    private final PluginMessage pluginMessage;
+
+    /**
      * The {@link OnlineProfile} of the player.
      */
     private final OnlineProfile onlineProfile;
@@ -71,10 +77,12 @@ public class Backpack implements Listener {
     /**
      * Creates new backpack GUI opened at given page type.
      *
+     * @param pluginMessage the {@link PluginMessage} instance
      * @param onlineProfile the {@link OnlineProfile} of the player
      * @param type          type of the display
      */
-    public Backpack(final OnlineProfile onlineProfile, final DisplayType type) {
+    public Backpack(final PluginMessage pluginMessage, final OnlineProfile onlineProfile, final DisplayType type) {
+        this.pluginMessage = pluginMessage;
         final BetonQuest instance = BetonQuest.getInstance();
         this.log = instance.getLoggerFactory().create(getClass());
         this.onlineProfile = onlineProfile;
@@ -90,10 +98,11 @@ public class Backpack implements Listener {
     /**
      * Creates new backpack GUI.
      *
+     * @param pluginMessage the {@link PluginMessage} instance
      * @param onlineProfile the {@link OnlineProfile} of the player
      */
-    public Backpack(final OnlineProfile onlineProfile) {
-        this(onlineProfile, DisplayType.DEFAULT);
+    public Backpack(final PluginMessage pluginMessage, final OnlineProfile onlineProfile) {
+        this(pluginMessage, onlineProfile, DisplayType.DEFAULT);
     }
 
     /**
@@ -245,7 +254,7 @@ public class Backpack implements Listener {
             this.pages = (int) Math.ceil(backpackItems.size() / 45F);
             this.pageOffset = (page - 1) * SLOT_CANCEL;
 
-            final Inventory inv = Bukkit.createInventory(null, INVENTORY_SIZE, Config.getMessage(lang, "backpack_title")
+            final Inventory inv = Bukkit.createInventory(null, INVENTORY_SIZE, pluginMessage.getMessage(onlineProfile, "backpack_title")
                     + (pages == 0 || pages == 1 ? "" : " (" + page + "/" + pages + ")"));
             final ItemStack[] content = new ItemStack[INVENTORY_SIZE];
 
@@ -297,7 +306,7 @@ public class Backpack implements Listener {
                 stack = new ItemStack(fallback);
             }
             final ItemMeta meta = stack.getItemMeta();
-            meta.setDisplayName(Config.getMessage(lang, button).replaceAll("&", "§"));
+            meta.setDisplayName(pluginMessage.getMessage(onlineProfile, button).replaceAll("&", "§"));
             stack.setItemMeta(meta);
             return Pair.of(stack, present);
         }
@@ -426,7 +435,7 @@ public class Backpack implements Listener {
                 log.warn(onlineProfile + " has too many active quests, please"
                         + " don't allow for so many of them. It slows down your server!");
             }
-            final Inventory inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "cancel_page"));
+            final Inventory inv = Bukkit.createInventory(null, numberOfRows * 9, pluginMessage.getMessage(onlineProfile, "cancel_page"));
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int index = 0;
             for (final QuestCanceler canceler : cancelers) {
@@ -540,7 +549,7 @@ public class Backpack implements Listener {
                 onlineProfile.getPlayer().closeInventory();
                 return;
             }
-            final Inventory inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "compass_page"));
+            final Inventory inv = Bukkit.createInventory(null, numberOfRows * 9, pluginMessage.getMessage(onlineProfile, "compass_page"));
             final ItemStack[] content;
             try {
                 content = getContent(numberOfRows);

@@ -11,10 +11,12 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.util.Utils;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Material;
@@ -48,6 +50,8 @@ public class Journal {
      */
     private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
+    private final PluginMessage pluginMessage;
+
     private final Profile profile;
 
     private final List<Pointer> pointers;
@@ -56,7 +60,7 @@ public class Journal {
 
     private final ConfigurationFile config;
 
-    private String lang;
+    private final String lang;
 
     @Nullable
     private String mainPage;
@@ -64,12 +68,14 @@ public class Journal {
     /**
      * Creates new Journal instance from List of Pointers.
      *
-     * @param profile the {@link OnlineProfile} of the player whose journal is created
-     * @param lang    default language to use when generating the journal
-     * @param list    list of pointers to journal entries
-     * @param config  a {@link ConfigurationFile} that contains the plugin's configuration
+     * @param pluginMessage the {@link PluginMessage} instance
+     * @param profile       the {@link OnlineProfile} of the player whose journal is created
+     * @param lang          default language to use when generating the journal
+     * @param list          list of pointers to journal entries
+     * @param config        a {@link ConfigurationFile} that contains the plugin's configuration
      */
-    public Journal(final Profile profile, final String lang, final List<Pointer> list, final ConfigurationFile config) {
+    public Journal(final PluginMessage pluginMessage, final Profile profile, final String lang, final List<Pointer> list, final ConfigurationFile config) {
+        this.pluginMessage = pluginMessage;
         // generate texts from list of pointers
         this.profile = profile;
         this.lang = lang;
@@ -85,21 +91,17 @@ public class Journal {
      * @return true if the ItemStack is the journal, false otherwise
      */
     public static boolean isJournal(final OnlineProfile onlineProfile, @Nullable final ItemStack item) {
-        // if there is no item then it's not a journal
         if (item == null) {
             return false;
         }
-        // get language
-        final String playerLang = BetonQuest.getInstance().getPlayerDataStorage().get(onlineProfile).getLanguage();
-        // check all properties of the item and return the result
         return item.getType().equals(Material.WRITTEN_BOOK) && ((BookMeta) item.getItemMeta()).hasTitle()
-                && ((BookMeta) item.getItemMeta()).getTitle().equals(Config.getMessage(playerLang, "journal_title"))
+                && ((BookMeta) item.getItemMeta()).getTitle().equals(BetonQuest.getInstance().getPluginMessage().getMessage(onlineProfile, "journal_title"))
                 && item.getItemMeta().hasLore()
-                && Objects.equals(item.getItemMeta().getLore(), getJournalLore(playerLang));
+                && Objects.equals(item.getItemMeta().getLore(), getJournalLore(onlineProfile));
     }
 
-    private static List<String> getJournalLore(final String lang) {
-        return Arrays.asList(Utils.format(Config.getMessage(lang, "journal_lore")).split("\n"));
+    private static List<String> getJournalLore(final Profile profile) {
+        return Arrays.asList(Utils.format(BetonQuest.getInstance().getPluginMessage().getMessage(profile, "journal_lore")).split("\n"));
     }
 
     /**
@@ -188,14 +190,11 @@ public class Journal {
 
     /**
      * Generates texts for every pointer and places them inside a List.
-     *
-     * @param lang the language to use while generating text
      */
     @SuppressWarnings("PMD.CognitiveComplexity")
-    public void generateTexts(final String lang) {
+    public void generateTexts() {
         // remove previous texts
         texts.clear();
-        this.lang = lang;
         // generate the first page
         mainPage = generateMainPage();
         for (final Pointer pointer : pointers) {
@@ -368,7 +367,7 @@ public class Journal {
      */
     public void addToInv() {
         final int targetSlot = getJournalSlot();
-        generateTexts(lang);
+        generateTexts();
         final Inventory inventory = profile.getOnlineProfile().get().getPlayer().getInventory();
         final ItemStack item = getAsItem();
         if (inventory.firstEmpty() >= 0) {
@@ -382,8 +381,9 @@ public class Journal {
                 }
             }
         } else {
+            final String message = pluginMessage.getMessage(profile, "inventory_full_backpack");
             try {
-                Config.sendNotify(null, profile.getOnlineProfile().get(), "inventory_full_backpack", null, "inventory_full_backpack,inventory_full,error");
+                Notify.get(null, "inventory_full_backpack,inventory_full,error").sendNotify(message, profile.getOnlineProfile().get());
             } catch (final QuestException e) {
                 log.warn("The notify system was unable to play a sound for the 'inventory_full_backpack' category. Error was: '" + e.getMessage() + "'", e);
             }
@@ -410,10 +410,10 @@ public class Journal {
     public ItemStack getAsItem() {
         final ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
         final BookMeta meta = (BookMeta) item.getItemMeta();
-        meta.setTitle(Utils.format(Config.getMessage(lang, "journal_title")));
+        meta.setTitle(Utils.format(pluginMessage.getMessage(profile, "journal_title")));
         meta.setAuthor(profile.getPlayer().getName());
         meta.setCustomModelData(config.getInt("journal.custom_model_data"));
-        meta.setLore(getJournalLore(lang));
+        meta.setLore(getJournalLore(profile));
 
         // add main page and generate pages from texts
         final List<String> finalList = new ArrayList<>();
@@ -424,10 +424,7 @@ public class Journal {
             finalList.addAll(getText());
         } else {
             final String color = config.getString("journal_colors.line");
-            String separator = Config.parseMessage(null, profile.getOnlineProfile().get(), "journal_separator");
-            if (separator == null) {
-                separator = "---------------";
-            }
+            final String separator = pluginMessage.getMessage(profile, "journal_separator");
 
             final String line;
             if (config.getBoolean("journal.show_separator")) {

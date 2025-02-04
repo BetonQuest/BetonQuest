@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ConversationResumer;
 import org.betonquest.betonquest.database.PlayerData;
 
@@ -27,6 +28,11 @@ public class PlayerDataStorage {
     private final BetonQuestLogger log;
 
     /**
+     * The {@link PluginMessage} instance.
+     */
+    private final PluginMessage pluginMessage;
+
+    /**
      * Stored player data for online players.
      */
     private final Map<Profile, PlayerData> playerDataMap = new ConcurrentHashMap<>();
@@ -35,11 +41,13 @@ public class PlayerDataStorage {
      * Create a new Storage for Player Data.
      *
      * @param loggerFactory the logger factory to use in Conversation Resumer
+     * @param pluginMessage the {@link PluginMessage} instance
      * @param log           the logger for debug messages
      */
-    public PlayerDataStorage(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
+    public PlayerDataStorage(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final PluginMessage pluginMessage) {
         this.loggerFactory = loggerFactory;
         this.log = log;
+        this.pluginMessage = pluginMessage;
     }
 
     /**
@@ -49,12 +57,12 @@ public class PlayerDataStorage {
      */
     public void initProfiles(final Collection<OnlineProfile> onlineProfiles) {
         for (final OnlineProfile onlineProfile : onlineProfiles) {
-            final PlayerData playerData = new PlayerData(onlineProfile);
+            final PlayerData playerData = new PlayerData(pluginMessage, onlineProfile);
             playerDataMap.put(onlineProfile, playerData);
             playerData.startObjectives();
             playerData.getJournal().update();
             if (playerData.getActiveConversation() != null) {
-                new ConversationResumer(loggerFactory, onlineProfile, playerData.getActiveConversation());
+                new ConversationResumer(loggerFactory, pluginMessage, onlineProfile, playerData.getActiveConversation());
             }
         }
     }
@@ -117,7 +125,7 @@ public class PlayerDataStorage {
         PlayerData playerData = playerDataMap.get(profile);
         if (playerData == null) {
             if (profile.getOnlineProfile().isPresent()) {
-                playerData = new PlayerData(profile);
+                playerData = new PlayerData(pluginMessage, profile);
                 put(profile, playerData);
             } else {
                 throw new IllegalArgumentException("The profile has no online player!");
@@ -138,7 +146,7 @@ public class PlayerDataStorage {
         if (profile.getOnlineProfile().isPresent()) {
             return get(profile);
         }
-        return new PlayerData(profile);
+        return new PlayerData(pluginMessage, profile);
     }
 
     /**

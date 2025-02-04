@@ -33,7 +33,7 @@ Optional arguments are displayed as such: `[argument]`.
 * `/q version`: Displays the versions of BetonQuest, the server and all hooked plugins
 * `/q debug [true/false/ingame]`: Enable debug mode and write all down in a log file or disable the debug mode
 * `/q download <gitHubNamespace> <ref> <type> <sourcePath> [targetPath] [recursive] [overwrite]`: Download quests and templates from a GitHub repository
-* `/questlang <lang>` - Changes the language for the player (and globally if used from console). `default` language will use the language defined in _config.yml_.
+* `/questlang <lang>` - Changes the language for the player. `default` language will use the language defined in _config.yml_.
 * `/rpgmenu reload <menu>` - Allows reloading all configuration files or just reloading the configuration of one specific menu.
 * `/rpgmenu list` - Lists all currently loaded menus and allows opening them just by clicking on them.
 * `/rpgmenu open <menu> [player]` - Opens a menu for you or another player. [Opening conditions](../Features/Menus/Menu.md#general-menu-settings) of the menu will be ignored when using this command.

@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -26,14 +27,22 @@ public class ConversationEventFactory implements EventFactory {
     private final PrimaryServerThreadData data;
 
     /**
+     * The {@link PluginMessage} instance.
+     */
+    private final PluginMessage pluginMessage;
+
+    /**
      * Create the conversation event factory.
      *
      * @param loggerFactory logger factory to use
      * @param data          the data for primary server thread access
+     * @param pluginMessage the {@link PluginMessage} instance
      */
-    public ConversationEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public ConversationEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data,
+                                    final PluginMessage pluginMessage) {
         this.loggerFactory = loggerFactory;
         this.data = data;
+        this.pluginMessage = pluginMessage;
     }
 
     @Override
@@ -46,7 +55,7 @@ public class ConversationEventFactory implements EventFactory {
         }
         final String startingOption = getStartOption(instruction, conversationID);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
-                new ConversationEvent(loggerFactory, conversationID, startingOption),
+                new ConversationEvent(loggerFactory, pluginMessage, conversationID, startingOption),
                 loggerFactory.create(ConversationEvent.class),
                 instruction.getPackage()
         ), data);

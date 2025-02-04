@@ -2,6 +2,7 @@ package org.betonquest.betonquest.command;
 
 import org.betonquest.betonquest.Backpack;
 import org.betonquest.betonquest.Backpack.DisplayType;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,16 +16,24 @@ import org.bukkit.entity.Player;
 public class CancelQuestCommand implements CommandExecutor {
 
     /**
-     * Creates a new executor for the /cancelquest command.
+     * The {@link PluginMessage} instance.
      */
-    public CancelQuestCommand() {
+    private final PluginMessage pluginMessage;
+
+    /**
+     * Creates a new executor for the /cancelquest command.
+     *
+     * @param pluginMessage the {@link PluginMessage} instance
+     */
+    public CancelQuestCommand(final PluginMessage pluginMessage) {
+        this.pluginMessage = pluginMessage;
     }
 
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
         if ("cancelquest".equalsIgnoreCase(cmd.getName())) {
             if (sender instanceof Player) {
-                new Backpack(PlayerConverter.getID((Player) sender), DisplayType.CANCEL);
+                new Backpack(pluginMessage, PlayerConverter.getID((Player) sender), DisplayType.CANCEL);
             }
             return true;
         }

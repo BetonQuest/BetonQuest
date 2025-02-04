@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.variable.tag;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.config.PluginMessage;
 
 import java.util.List;
 
@@ -34,14 +34,21 @@ public abstract class AbstractTagVariable<T> {
     protected final boolean papiMode;
 
     /**
+     * The {@link PluginMessage} instance.
+     */
+    private final PluginMessage pluginMessage;
+
+    /**
      * Constructs a new GlobalTagVariable.
      *
-     * @param data         the data holder
-     * @param tagName      the tag to check for
-     * @param questPackage the quest package to check for the tag
-     * @param papiMode     whether to return true/false or the configured messages
+     * @param pluginMessage the {@link PluginMessage} instance
+     * @param data          the data holder
+     * @param tagName       the tag to check for
+     * @param questPackage  the quest package to check for the tag
+     * @param papiMode      whether to return true/false or the configured messages
      */
-    public AbstractTagVariable(final T data, final String tagName, final QuestPackage questPackage, final boolean papiMode) {
+    public AbstractTagVariable(final PluginMessage pluginMessage, final T data, final String tagName, final QuestPackage questPackage, final boolean papiMode) {
+        this.pluginMessage = pluginMessage;
         this.data = data;
         this.tagName = tagName;
         this.questPackage = questPackage;
@@ -55,11 +62,9 @@ public abstract class AbstractTagVariable<T> {
      * @return the value of the variable
      */
     public String getValueFor(final List<String> tags) {
-        final String lang = Config.getLanguage();
-
         if (tags.contains(questPackage.getQuestPath() + "." + tagName)) {
-            return papiMode ? Config.getMessage(lang, "condition_variable_met") : "true";
+            return papiMode ? pluginMessage.getMessage("condition_variable_met") : "true";
         }
-        return papiMode ? Config.getMessage(lang, "condition_variable_not_met") : "false";
+        return papiMode ? pluginMessage.getMessage("condition_variable_not_met") : "false";
     }
 }

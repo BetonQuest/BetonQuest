@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
@@ -34,6 +35,11 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
+     * The {@link PluginMessage} instance.
+     */
+    private final PluginMessage pluginMessage;
+
+    /**
      * BetonQuest instance to provide to events.
      */
     private final PlayerDataStorage dataStorage;
@@ -52,12 +58,14 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
      * Create the journal event factory.
      *
      * @param loggerFactory logger factory to use
+     * @param pluginMessage the {@link PluginMessage} instance
      * @param dataStorage   storage for used player data
      * @param instantSource instant source to pass on
      * @param saver         database saver to use
      */
-    public JournalEventFactory(final BetonQuestLoggerFactory loggerFactory, final PlayerDataStorage dataStorage, final InstantSource instantSource, final Saver saver) {
+    public JournalEventFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage, final PlayerDataStorage dataStorage, final InstantSource instantSource, final Saver saver) {
         this.loggerFactory = loggerFactory;
+        this.pluginMessage = pluginMessage;
         this.dataStorage = dataStorage;
         this.instantSource = instantSource;
         this.saver = saver;
@@ -94,7 +102,8 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
     private JournalEvent createJournalAddEvent(final Instruction instruction) throws QuestException {
         final String entryName = Utils.addPackage(instruction.getPackage(), instruction.getPart(2));
         final JournalChanger journalChanger = new AddEntryJournalChanger(instantSource, entryName);
-        final NotificationSender notificationSender = new IngameNotificationSender(loggerFactory.create(JournalEvent.class), instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.INFO, "new_journal_entry");
+        final NotificationSender notificationSender = new IngameNotificationSender(loggerFactory.create(JournalEvent.class),
+                pluginMessage, instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.INFO, "new_journal_entry");
         return new JournalEvent(dataStorage, journalChanger, notificationSender);
     }
 

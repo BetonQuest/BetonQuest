@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -35,6 +36,11 @@ public class MoneyEventFactory implements EventFactory {
     private final PrimaryServerThreadData data;
 
     /**
+     * The {@link PluginMessage} instance.
+     */
+    private final PluginMessage pluginMessage;
+
+    /**
      * Processor to create new variables.
      */
     private final VariableProcessor variableProcessor;
@@ -45,13 +51,15 @@ public class MoneyEventFactory implements EventFactory {
      * @param economy           the economy where the balance will be modified
      * @param loggerFactory     the logger factory to create new logger instances.
      * @param data              the data used for primary server access
+     * @param pluginMessage     the {@link PluginMessage} instance
      * @param variableProcessor the processor to create new variables
      */
     public MoneyEventFactory(final Economy economy, final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data,
-                             final VariableProcessor variableProcessor) {
+                             final PluginMessage pluginMessage, final VariableProcessor variableProcessor) {
         this.economy = economy;
         this.loggerFactory = loggerFactory;
         this.data = data;
+        this.pluginMessage = pluginMessage;
         this.variableProcessor = variableProcessor;
     }
 
@@ -78,8 +86,8 @@ public class MoneyEventFactory implements EventFactory {
             final QuestPackage pack = instruction.getPackage();
             final String fullID = instruction.getID().getFullID();
             final BetonQuestLogger log = loggerFactory.create(MoneyEvent.class);
-            givenSender = new IngameNotificationSender(log, pack, fullID, NotificationLevel.INFO, "money_given");
-            takenSender = new IngameNotificationSender(log, pack, fullID, NotificationLevel.INFO, "money_taken");
+            givenSender = new IngameNotificationSender(log, pluginMessage, pack, fullID, NotificationLevel.INFO, "money_given");
+            takenSender = new IngameNotificationSender(log, pluginMessage, pack, fullID, NotificationLevel.INFO, "money_taken");
         } else {
             givenSender = null;
             takenSender = null;

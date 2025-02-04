@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsUtils;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 import org.betonquest.betonquest.quest.event.take.AbstractTakeEvent;
@@ -73,7 +74,9 @@ public class MMOItemsTakeEvent extends AbstractTakeEvent {
 
         final ItemStack item = MMOItemsUtils.getMMOItemStack(itemType, itemID);
         final String itemName = item.getItemMeta().getDisplayName();
-        notificationSender.sendNotification(profile, itemName, String.valueOf(deleteAmount - neededDeletions.get(profile.getProfileUUID())));
+        notificationSender.sendNotification(profile,
+                new PluginMessage.Replacement("item", itemName),
+                new PluginMessage.Replacement("amount", String.valueOf(deleteAmount - neededDeletions.get(profile.getProfileUUID()))));
     }
 
     /**

@@ -44,15 +44,15 @@ public final class Notify {
         defaultNotifyIO = config.getString("default_notify_IO");
     }
 
-    public static NotifyIO get(final QuestPackage pack) {
+    public static NotifyIO get(@Nullable final QuestPackage pack) {
         return get(pack, null, null);
     }
 
-    public static NotifyIO get(final QuestPackage pack, final String category) {
+    public static NotifyIO get(@Nullable final QuestPackage pack, @Nullable final String category) {
         return get(pack, category, null);
     }
 
-    public static NotifyIO get(final QuestPackage pack, @Nullable final Map<String, String> data) {
+    public static NotifyIO get(@Nullable final QuestPackage pack, @Nullable final Map<String, String> data) {
         return get(pack, null, data);
     }
 
