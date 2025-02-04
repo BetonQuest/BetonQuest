@@ -54,6 +54,7 @@ en:
   command_event: fires an event for the player
   command_item: creates an item from the one you're holding
   command_give: gives you the specified item
+  command_variable: displays and modifies the variable objective
   command_rename: renames all specified objects entries in the database
   command_delete: deletes all specified objects from the database
   command_config: reads, sets or appends strings to config files
