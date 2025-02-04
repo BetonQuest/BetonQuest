@@ -13,6 +13,7 @@ import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.CachingBetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.message.MessageParser;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
@@ -54,6 +55,8 @@ import org.betonquest.betonquest.logger.handler.chat.AccumulatingReceiverSelecto
 import org.betonquest.betonquest.logger.handler.chat.ChatHandler;
 import org.betonquest.betonquest.logger.handler.history.HistoryHandler;
 import org.betonquest.betonquest.menu.RPGMenu;
+import org.betonquest.betonquest.message.DecidingMessageParser;
+import org.betonquest.betonquest.message.TagMessageParserDecider;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.playerhider.PlayerHider;
 import org.betonquest.betonquest.quest.registry.CoreQuestTypes;
@@ -173,6 +176,11 @@ public class BetonQuest extends JavaPlugin {
      * The plugin configuration file.
      */
     private ConfigurationFile config;
+
+    /**
+     * The message parser.
+     */
+    private MessageParser messageParser;
 
     /**
      * The plugin messages provider.
@@ -306,6 +314,15 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
+     * Get the message parser.
+     *
+     * @return message parser
+     */
+    public MessageParser getMessageParser() {
+        return messageParser;
+    }
+
+    /**
      * Get the plugin messages provider.
      *
      * @return plugin messages provider
@@ -375,6 +392,7 @@ public class BetonQuest extends JavaPlugin {
             return;
         }
 
+        messageParser = new DecidingMessageParser(getFeatureRegistries().messageParser(), new TagMessageParserDecider("legacyminimessage"));
         try {
             pluginMessage = new PluginMessage(this, configurationFileFactory, configAccessorFactory);
             for (final String language : pluginMessage.getLanguages()) {
