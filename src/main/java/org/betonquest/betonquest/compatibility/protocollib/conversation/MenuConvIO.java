@@ -237,10 +237,11 @@ public class MenuConvIO extends ChatConvIO {
             }
             state = ConversationState.ACTIVE;
 
-            final Location target = getBlockBelowPlayer(onlineProfile.getPlayer()).add(0, -1, 0);
+            final Player player = onlineProfile.getPlayer();
+            final Location target = getBlockBelowPlayer(player).add(0, -1, 0);
             // TODO version switch:
             //  Remove this code when only 1.20.2+ is supported
-            stand = onlineProfile.getPlayer().getWorld().spawn(target.add(0, PaperLib.isVersion(20, 2) ? -0.375 : -0.131_25, 0), ArmorStand.class);
+            stand = player.getWorld().spawn(target.add(0, PaperLib.isVersion(20, 2) ? -0.375 : -0.131_25, 0), ArmorStand.class);
 
             stand.setGravity(false);
             stand.setVisible(false);
@@ -252,13 +253,13 @@ public class MenuConvIO extends ChatConvIO {
             // Mount the player to it using packets
             final WrapperPlayServerMount mount = new WrapperPlayServerMount();
             mount.setEntityID(stand.getEntityId());
-            mount.setPassengerIds(new int[]{onlineProfile.getPlayer().getEntityId()});
+            mount.setPassengerIds(new int[]{player.getEntityId()});
 
             // Send Packets
-            mount.sendPacket(onlineProfile.getPlayer());
+            mount.sendPacket(player);
 
             // Display Actionbar to hide the dismount message
-            onlineProfile.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(" "));
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(" "));
 
             // Intercept Packets
             packetAdapter = getPacketAdapter();
@@ -816,11 +817,12 @@ public class MenuConvIO extends ChatConvIO {
     }
 
     private boolean isOnCooldown() {
-        if (selectionCooldowns.contains(onlineProfile.getPlayer())) {
+        final Player player = onlineProfile.getPlayer();
+        if (selectionCooldowns.contains(player)) {
             return true;
         } else {
-            selectionCooldowns.add(onlineProfile.getPlayer());
-            Bukkit.getScheduler().scheduleAsyncDelayedTask(BetonQuest.getInstance(), () -> selectionCooldowns.remove(onlineProfile.getPlayer()), configSelectionCooldown);
+            selectionCooldowns.add(player);
+            Bukkit.getScheduler().scheduleAsyncDelayedTask(BetonQuest.getInstance(), () -> selectionCooldowns.remove(player), configSelectionCooldown);
         }
         return false;
     }
