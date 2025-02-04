@@ -14,10 +14,10 @@ import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,10 +132,7 @@ public class EffectLibRunnable extends BukkitRunnable {
                 continue;
             }
 
-            final Entity entity = npc.getEntity();
-            final DynamicLocation location = entity == null ? new DynamicLocation(npc.getLocation()) : new DynamicLocation(entity);
-
-            manager.start(effect.effectClass(), effect.settings(), location,
+            manager.start(effect.effectClass(), effect.settings(), new NpcDynamicLocation(npc),
                     new DynamicLocation(null, null), (ConfigurationSection) null, player);
         }
     }
@@ -149,6 +146,38 @@ public class EffectLibRunnable extends BukkitRunnable {
             } catch (final QuestException exception) {
                 log.warn("Error while resolving a location of an EffectLib particle effect of type '" + effect.effectClass() + "'. Check that your location (variables) are correct. Error:", exception);
             }
+        }
+    }
+
+    /**
+     * A dynamic location that has a Npc instead a Bukkit Entity.
+     */
+    private static class NpcDynamicLocation extends DynamicLocation {
+        /**
+         * The Npc reference.
+         */
+        private final WeakReference<Npc<?>> npcWeakReference;
+
+        /**
+         * Create a new Dynamic Location with a Npc as "Entity".
+         *
+         * @param npc the npc to get the position
+         */
+        public NpcDynamicLocation(final Npc<?> npc) {
+            super(npc.getEyeLocation());
+            this.npcWeakReference = new WeakReference<>(npc);
+        }
+
+        @Override
+        public void update() {
+            final Npc<?> entityReference = npcWeakReference.get();
+            if (entityReference == null) {
+                return;
+            }
+
+            final Location currentLocation = entityReference.getEyeLocation();
+            setDirection(currentLocation.getDirection());
+            updateFrom(currentLocation);
         }
     }
 }
