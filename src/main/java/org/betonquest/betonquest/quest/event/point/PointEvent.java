@@ -71,6 +71,6 @@ public class PointEvent implements Event {
         playerData.setPoints(category, pointType.modify(playerData.getPointsFromCategory(category).orElse(0), countDouble));
         pointSender.sendNotification(profile,
                 new PluginMessage.Replacement("amount", String.valueOf(countDouble)),
-                new PluginMessage.Replacement("catefory", categoryName));
+                new PluginMessage.Replacement("category", categoryName));
     }
 }

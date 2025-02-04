@@ -44,7 +44,7 @@ public class PluginMessage {
      * @param configurationFileFactory the configuration file factory
      * @param configAccessorFactory    the config accessor factory
      * @param plugin                   the plugin instance
-     * @throws QuestException thrown if the messages could not be loaded
+     * @throws QuestException if the messages could not be loaded
      */
     public PluginMessage(final BetonQuestLogger log, final PlayerDataStorage playerDataStorage,
                          final ConfigurationFileFactory configurationFileFactory,

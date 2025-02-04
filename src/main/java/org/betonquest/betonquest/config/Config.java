@@ -15,12 +15,21 @@ import java.util.Map;
 /**
  * Handles the configuration of the plugin.
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired", "NullAway.Init"})
+@SuppressWarnings("NullAway.Init")
 public final class Config {
+    /**
+     * The quest manager.
+     */
     private static QuestManager questManager;
 
+    /**
+     * The plugin instance.
+     */
     private static BetonQuest plugin;
 
+    /**
+     * The default language.
+     */
     private static String lang;
 
     private Config() {
