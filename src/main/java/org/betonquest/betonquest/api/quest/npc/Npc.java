@@ -2,8 +2,6 @@ package org.betonquest.betonquest.api.quest.npc;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * NPC Plugin Adapter for general BetonQuest NPC behaviour.
@@ -18,14 +16,6 @@ public interface Npc<T> {
      * @return the adapted object
      */
     T getOriginal();
-
-    /**
-     * Gets the bukkit entity presenting this Npc.
-     *
-     * @return the core entity, if present
-     */
-    @Nullable
-    Entity getEntity();
 
     /**
      * Gets the name of the NPC.
@@ -47,6 +37,13 @@ public interface Npc<T> {
      * @return the location the NPC is at
      */
     Location getLocation();
+
+    /**
+     * Get a Location detailing the current eye position of the living entity.
+     *
+     * @return a location at the eyes of the npc
+     */
+    Location getEyeLocation();
 
     /**
      * Teleports the NPC to a position or spawns it there.
