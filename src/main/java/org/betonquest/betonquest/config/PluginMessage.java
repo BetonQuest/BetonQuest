@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.config;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
@@ -7,10 +8,8 @@ import org.betonquest.betonquest.api.config.ConfigurationFileFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,9 +21,9 @@ import java.util.Set;
  */
 public class PluginMessage {
     /**
-     * The {@link PlayerDataStorage} instance to get the language from.
+     * The BetonQuest instance.
      */
-    private final PlayerDataStorage playerDataStorage;
+    private final BetonQuest instance;
 
     /**
      * The messages configuration file.
@@ -40,21 +39,20 @@ public class PluginMessage {
      * Creates a new instance of the PluginMessage handler.
      *
      * @param log                      the logger that will be used for logging
-     * @param playerDataStorage        the {@link PlayerDataStorage} instance for the language
+     * @param instance                 the BetonQuest instance
      * @param configurationFileFactory the configuration file factory
      * @param configAccessorFactory    the config accessor factory
-     * @param plugin                   the plugin instance
      * @throws QuestException if the messages could not be loaded
      */
-    public PluginMessage(final BetonQuestLogger log, final PlayerDataStorage playerDataStorage,
+    public PluginMessage(final BetonQuestLogger log, final BetonQuest instance,
                          final ConfigurationFileFactory configurationFileFactory,
-                         final ConfigAccessorFactory configAccessorFactory, final Plugin plugin) throws QuestException {
-        this.playerDataStorage = playerDataStorage;
-        final File root = plugin.getDataFolder();
+                         final ConfigAccessorFactory configAccessorFactory) throws QuestException {
+        this.instance = instance;
+        final File root = instance.getDataFolder();
 
         try {
-            messages = configurationFileFactory.create(new File(root, "messages.yml"), plugin, "messages.yml");
-            internal = configAccessorFactory.create(plugin, "messages-internal.yml");
+            messages = configurationFileFactory.create(new File(root, "messages.yml"), instance, "messages.yml");
+            internal = configAccessorFactory.create(instance, "messages-internal.yml");
         } catch (InvalidConfigurationException | FileNotFoundException e) {
             throw new QuestException("Failed to load messages", e);
         }
@@ -93,7 +91,7 @@ public class PluginMessage {
      * @throws IllegalArgumentException if the message could not be found in the configuration
      */
     public String getMessage(final Profile profile, final String message, final Replacement... variables) {
-        final String language = playerDataStorage.get(profile).getLanguage();
+        final String language = instance.getPlayerDataStorage().get(profile).getLanguage();
         return getMessage(language, message, variables);
     }
 
