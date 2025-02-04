@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.registry.feature;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.message.MessageParserRegistry;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
@@ -10,6 +11,7 @@ import org.betonquest.betonquest.conversation.SimpleConvIO;
 import org.betonquest.betonquest.conversation.SimpleInterceptor;
 import org.betonquest.betonquest.conversation.SlowTellrawConvIO;
 import org.betonquest.betonquest.conversation.TellrawConvIO;
+import org.betonquest.betonquest.message.parser.LegacyParser;
 import org.betonquest.betonquest.message.parser.MiniMessageParser;
 import org.betonquest.betonquest.notify.ActionBarNotifyIO;
 import org.betonquest.betonquest.notify.AdvancementNotifyIO;
@@ -94,6 +96,10 @@ public class CoreFeatureFactories {
                 loggerFactory.create(RealtimeCronScheduler.class, "Schedules"), questTypeAPI, lastExecutionCache));
 
         final MessageParserRegistry messageParserRegistry = registries.messageParser();
+        messageParserRegistry.registerParser("legacy", new LegacyParser());
         messageParserRegistry.registerParser("minimessage", new MiniMessageParser(MiniMessage.miniMessage()));
+        final MiniMessage legacyMiniMessage = MiniMessage.builder().preProcessor(input -> MiniMessage.miniMessage().serialize(
+                LegacyComponentSerializer.legacySection().deserialize(input))).build();
+        messageParserRegistry.registerParser("legacyminimessage", new MiniMessageParser(legacyMiniMessage));
     }
 }
