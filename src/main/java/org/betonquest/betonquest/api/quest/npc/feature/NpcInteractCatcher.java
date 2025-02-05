@@ -28,7 +28,7 @@ public abstract class NpcInteractCatcher<T> implements Listener {
     private final NpcTypeRegistry npcTypeRegistry;
 
     /**
-     * Initializes the conversation starter. // TODO rephrase
+     * Create a new Interaction catcher.
      *
      * @param npcTypeRegistry the registry to identify the clicked Npc
      */

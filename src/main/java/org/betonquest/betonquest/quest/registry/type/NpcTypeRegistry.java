@@ -46,7 +46,7 @@ public class NpcTypeRegistry extends FactoryRegistry<TypeFactory<NpcWrapper<?>>>
      * @param <T>     the original npc type
      */
     public <T> void register(final String name, final NpcFactory<T> factory) {
-        register(name, factory::parseInstruction); // TODO irgendwas mit generics…
+        register(name, factory::parseInstruction);
         mapping.put(factory.factoredClass(), Map.entry(name, factory));
     }
 

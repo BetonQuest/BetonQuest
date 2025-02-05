@@ -116,7 +116,11 @@ To acquire the NPCs ID select the NPC using `/npc select`, then run `/npc id`.
 
 You can also get a NPC by its name with the `byName` argument.
 That is useful when you have many NPCs which should all start the same conversation.
-TODO use additional fail like ẃith MM?
+
+!!! warning
+    When more than one npc with that name exists, it will give an exception when used in like `npcteleport` events
+    or `npcrange` objective.  
+    This is still useful when you have 5 Npcs with the same name bound to a conversation.
 
 ```YAML title="Example"
 npcs:

@@ -6,6 +6,9 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Citizens wrapper to get a Npc.
  */
@@ -26,11 +29,19 @@ public class CitizensNameWrapper implements NpcWrapper<NPC> {
 
     @Override
     public Npc<NPC> getNpc() throws QuestException {
+        final List<NPC> npcsWithName = new ArrayList<>();
         for (final NPC npc : CitizensAPI.getNPCRegistry()) {
             if (npc.getName().equals(npcName)) {
-                return new CitizensAdapter(npc);
+                if (npcsWithName.isEmpty()) {
+                    npcsWithName.add(npc);
+                } else {
+                    throw new QuestException("Multiple NPCs with the same name: " + npcName);
+                }
             }
         }
-        throw new QuestException("NPC with name '" + npcName + "' not found");
+        if (npcsWithName.isEmpty()) {
+            throw new QuestException("NPC with name '" + npcName + "' not found");
+        }
+        return new CitizensAdapter(npcsWithName.get(0));
     }
 }
