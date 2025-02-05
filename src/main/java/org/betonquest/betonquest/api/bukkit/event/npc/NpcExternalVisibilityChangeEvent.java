@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Event to call if a Npc is externally modified and its BetonQuest features needs recalibration.
  */
-public class NpcExternalVisibilityChange extends Event {
+public class NpcExternalVisibilityChangeEvent extends Event {
     /**
      * Static HandlerList to register listeners on the event.
      */
@@ -25,7 +25,7 @@ public class NpcExternalVisibilityChange extends Event {
      *
      * @param npc the npc to update, or null if every Npc should be updated.
      */
-    public NpcExternalVisibilityChange(@Nullable final Npc<?> npc) {
+    public NpcExternalVisibilityChangeEvent(@Nullable final Npc<?> npc) {
         super();
         this.npc = npc;
     }

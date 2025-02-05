@@ -1,12 +1,13 @@
 package org.betonquest.betonquest.kernel.processor.quest;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.bukkit.event.npc.NpcExternalVisibilityChange;
+import org.betonquest.betonquest.api.bukkit.event.npc.NpcExternalVisibilityChangeEvent;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcInteractEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
@@ -90,21 +91,22 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
     /**
      * Create a new Quest Npc Processor to store them.
      *
-     * @param log           the custom logger for this class
-     * @param npcTypes      the available npc types
-     * @param loggerFactory the logger factory used to create logger for the started conversations
-     * @param pluginMessage the {@link PluginMessage} instance
-     * @param plugin        the plugin to load config
+     * @param log             the custom logger for this class
+     * @param npcTypes        the available npc types
+     * @param loggerFactory   the logger factory used to create logger for the started conversations
+     * @param pluginMessage   the {@link PluginMessage} instance
+     * @param plugin          the plugin to load config
+     * @param profileProvider the profile provider instance
      */
     public NpcProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final NpcTypeRegistry npcTypes,
-                        final PluginMessage pluginMessage, final BetonQuest plugin) {
+                        final PluginMessage pluginMessage, final BetonQuest plugin, final ProfileProvider profileProvider) {
         super(log, npcTypes, "Npcs", "npcs");
         this.loggerFactory = loggerFactory;
         this.pluginMessage = pluginMessage;
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(new NpcListener(), plugin);
         this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), plugin.getQuestTypeAPI(), this,
-                plugin, plugin.getProfileProvider(), Config.getPackages().values());
+                plugin, profileProvider, Config.getPackages().values());
     }
 
     @Override
@@ -282,7 +284,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
          * @param event the external change event to listen
          */
         @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-        public void onExternalChange(final NpcExternalVisibilityChange event) {
+        public void onExternalChange(final NpcExternalVisibilityChangeEvent event) {
             if (event.getNpc() == null) {
                 npcHider.applyVisibility();
                 return;

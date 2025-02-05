@@ -32,12 +32,12 @@ public class CitizensNpcFactory implements NpcFactory<NPC> {
     }
 
     @Override
-    public Set<String> npcInstructionStrings(final Npc<NPC> npc) {
+    public Set<String> getNpcInstructionStrings(final Npc<NPC> npc) {
         return Set.of(String.valueOf(npc.getOriginal().getId()), npc.getOriginal().getName() + " byName");
     }
 
     @Override
-    public Class<? extends Npc<NPC>> factoredClass() {
+    public Class<? extends Npc<NPC>> getFactoriesNpcClass() {
         return CitizensAdapter.class;
     }
 }

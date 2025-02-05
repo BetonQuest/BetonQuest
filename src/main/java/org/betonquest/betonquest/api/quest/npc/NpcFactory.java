@@ -23,17 +23,17 @@ public interface NpcFactory<T> extends TypeFactory<NpcWrapper<T>> {
     NpcWrapper<T> parseInstruction(Instruction instruction) throws QuestException;
 
     /**
-     * Gets the instruction strings which could be used to identify this Npc.
+     * Gets the instruction strings which could be used to identify the Npc.
      *
      * @param npc the Npc to get its identifier from
      * @return all identifying string possible used inside {@link org.betonquest.betonquest.id.NpcID NpcId}s.
      */
-    Set<String> npcInstructionStrings(Npc<T> npc);
+    Set<String> getNpcInstructionStrings(Npc<T> npc);
 
     /**
-     * Gets the class of the Npc.
+     * Gets the class of the accessed Npc.
      *
      * @return the class of {@link T}
      */
-    Class<? extends Npc<T>> factoredClass();
+    Class<? extends Npc<T>> getFactoriesNpcClass();
 }

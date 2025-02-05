@@ -8,7 +8,8 @@ import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.event.NPCTeleportEvent;
 import net.citizensnpcs.api.npc.NPC;
-import org.betonquest.betonquest.api.bukkit.event.npc.NpcExternalVisibilityChange;
+import org.betonquest.betonquest.api.bukkit.event.npc.NpcExternalVisibilityChangeEvent;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcInteractCatcher;
 import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveController;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
@@ -28,11 +29,12 @@ public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
     /**
      * Initializes the catcher for Citizens.
      *
+     * @param profileProvider        the profile provider instance
      * @param npcTypeRegistry        the registry to identify the clicked Npc
      * @param citizensMoveController the move controller to check if the NPC currently blocks conversations
      */
-    public CitizensInteractCatcher(final NpcTypeRegistry npcTypeRegistry, final CitizensMoveController citizensMoveController) {
-        super(npcTypeRegistry);
+    public CitizensInteractCatcher(final ProfileProvider profileProvider, final NpcTypeRegistry npcTypeRegistry, final CitizensMoveController citizensMoveController) {
+        super(profileProvider, npcTypeRegistry);
         this.citizensMoveController = citizensMoveController;
     }
 
@@ -71,7 +73,7 @@ public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
      */
     @EventHandler
     public void onCitizensReload(final CitizensReloadEvent event) {
-        Bukkit.getPluginManager().callEvent(new NpcExternalVisibilityChange(null));
+        Bukkit.getPluginManager().callEvent(new NpcExternalVisibilityChangeEvent(null));
     }
 
     /**
@@ -105,6 +107,6 @@ public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
     }
 
     private void updateHologram(final NPC npc) {
-        Bukkit.getPluginManager().callEvent(new NpcExternalVisibilityChange(new CitizensAdapter(npc)));
+        Bukkit.getPluginManager().callEvent(new NpcExternalVisibilityChangeEvent(new CitizensAdapter(npc)));
     }
 }
