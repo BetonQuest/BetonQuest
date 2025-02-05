@@ -4,6 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.id.ID;
@@ -38,7 +39,9 @@ import java.util.Map;
  * @param compasses        Compasses.
  * @param journalEntries   Journal Entries.
  * @param journalMainPages Journal Main Pages.
+ * @param npcs             Npc getting.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public record QuestRegistry(
         BetonQuestLogger log,
         EventScheduling eventScheduling,
@@ -64,10 +67,12 @@ public record QuestRegistry(
      * @param otherRegistries     the available other types
      * @param questTypeRegistries the available quest types
      * @param pluginMessage       the {@link PluginMessage} instance
+     * @param profileProvider     the profile provider instance
      * @return the newly created
      */
     public static QuestRegistry create(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuest plugin,
-                                       final FeatureRegistries otherRegistries, final QuestTypeRegistries questTypeRegistries, final PluginMessage pluginMessage) {
+                                       final FeatureRegistries otherRegistries, final QuestTypeRegistries questTypeRegistries,
+                                       final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
         final EventScheduling eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), otherRegistries.eventScheduling());
         final ConditionProcessor conditions = new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), questTypeRegistries.condition());
         final EventProcessor events = new EventProcessor(loggerFactory.create(EventProcessor.class), questTypeRegistries.event());
@@ -79,7 +84,7 @@ public record QuestRegistry(
         final CompassProcessor compasses = new CompassProcessor(loggerFactory.create(CompassProcessor.class), variables);
         final JournalEntryProcessor journalEntries = new JournalEntryProcessor(loggerFactory.create(JournalEntryProcessor.class), variables);
         final JournalMainPageProcessor journalMainPages = new JournalMainPageProcessor(loggerFactory.create(JournalMainPageProcessor.class), variables);
-        final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, questTypeRegistries.npc(), pluginMessage, plugin);
+        final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, questTypeRegistries.npc(), pluginMessage, plugin, profileProvider);
         return new QuestRegistry(log, eventScheduling, conditions, events, objectives, variables, cancelers, conversations, compasses, journalEntries, journalMainPages, npcs);
     }
 
