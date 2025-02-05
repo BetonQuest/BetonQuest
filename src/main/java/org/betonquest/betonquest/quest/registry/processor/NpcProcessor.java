@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.registry.processor;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.bukkit.event.npc.NpcExternalVisibilityChange;
+import org.betonquest.betonquest.api.bukkit.event.npc.NpcExternalVisibilityChangeEvent;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcInteractEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -280,7 +280,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
          * @param event the external change event to listen
          */
         @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-        public void onExternalChange(final NpcExternalVisibilityChange event) {
+        public void onExternalChange(final NpcExternalVisibilityChangeEvent event) {
             if (event.getNpc() == null) {
                 npcHider.applyVisibility();
                 return;
