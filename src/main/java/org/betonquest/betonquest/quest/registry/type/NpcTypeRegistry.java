@@ -46,8 +46,13 @@ public class NpcTypeRegistry extends FactoryRegistry<TypeFactory<NpcWrapper<?>>>
      * @param <T>     the original npc type
      */
     public <T> void register(final String name, final NpcFactory<T> factory) {
-        register(name, factory::parseInstruction);
+        super.register(name, factory::parseInstruction);
         mapping.put(factory.factoredClass(), Map.entry(name, factory));
+    }
+
+    @Override
+    public void register(final String name, final TypeFactory<NpcWrapper<?>> factory) {
+        throw new UnsupportedOperationException("Use the register method that accepts a NpcFactory!");
     }
 
     /**
