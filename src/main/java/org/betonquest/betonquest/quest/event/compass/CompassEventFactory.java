@@ -61,7 +61,7 @@ public class CompassEventFactory implements EventFactory {
     @Override
     public Event parseEvent(final Instruction instruction) throws QuestException {
         final CompassTargetAction action = instruction.getEnum(CompassTargetAction.class);
-        final String compass = instruction.next();
+        final String compass = Utils.addPackage(instruction.getPackage(), instruction.next());
         final VariableLocation compassLocation = getCompassLocation(compass);
         return new PrimaryServerThreadEvent(
                 new CompassEvent(log, dataStorage, pluginManager, action, compass, compassLocation, instruction.getPackage()),
@@ -69,18 +69,17 @@ public class CompassEventFactory implements EventFactory {
     }
 
     private VariableLocation getCompassLocation(final String compass) throws QuestException {
-        for (final QuestPackage pack : Config.getPackages().values()) {
-            final ConfigurationSection section = pack.getConfig().getConfigurationSection("compass");
-            if (section == null) {
-                continue;
-            }
-            final ConfigurationSection compassSection = section.getConfigurationSection(compass);
-            if (compassSection != null) {
-                final String location = GlobalVariableResolver.resolve(pack, compassSection.getString("location"));
-                return new VariableLocation(BetonQuest.getInstance().getVariableProcessor(), pack,
-                        Utils.getNN(location, "Missing location in compass section"));
-            }
+        final String[] split = compass.split("\\.", 2);
+        final QuestPackage targetPack = Config.getPackages().get(split[0]);
+        if (targetPack == null) {
+            throw new QuestException("QuestPackage '" + split[0] + "' not found");
         }
-        throw new QuestException("Invalid compass location: " + compass);
+        final ConfigurationSection section = targetPack.getConfig().getConfigurationSection("compass." + split[1]);
+        if (section == null) {
+            throw new QuestException("The compass '" + compass + "' does not exist");
+        }
+        final String location = GlobalVariableResolver.resolve(targetPack, section.getString("location"));
+        return new VariableLocation(BetonQuest.getInstance().getVariableProcessor(), targetPack,
+                Utils.getNN(location, "Missing location in compass section"));
     }
 }
