@@ -19,6 +19,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `stage` objective 'index' property not working and now also starts at 0
 - betonquest command without arguments did not work anymore
 - the Fabled hook not working properly
+- `compass` event did not work with variables in `compass` location
 ### Security
 
 ## [2.2.1] - 2025-01-12

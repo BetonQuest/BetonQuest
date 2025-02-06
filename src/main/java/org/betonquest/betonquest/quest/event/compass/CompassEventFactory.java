@@ -14,6 +14,7 @@ import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.util.Utils;
+import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.PluginManager;
 
@@ -75,9 +76,9 @@ public class CompassEventFactory implements EventFactory {
             }
             final ConfigurationSection compassSection = section.getConfigurationSection(compass);
             if (compassSection != null) {
+                final String location = GlobalVariableResolver.resolve(pack, compassSection.getString("location"));
                 return new VariableLocation(BetonQuest.getInstance().getVariableProcessor(), pack,
-                        Utils.getNN(compassSection.getString("location"),
-                                "Missing location in compass section"));
+                        Utils.getNN(location, "Missing location in compass section"));
             }
         }
         throw new QuestException("Invalid compass location: " + compass);
