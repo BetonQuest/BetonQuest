@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.compatibility.brewery.condition;
 
 import com.dre.brewery.recipe.BRecipe;
-import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
+import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.compatibility.brewery.BreweryUtils;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 /**
  * Condition to check if a player has a certain amount of a specific brew.
  */
-public class HasBrewCondition implements PlayerCondition {
+public class HasBrewCondition implements OnlineCondition {
     /**
      * The {@link VariableNumber} for the amount of brews to check.
      */
@@ -36,20 +36,16 @@ public class HasBrewCondition implements PlayerCondition {
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestException {
+    public boolean check(final OnlineProfile profile) throws QuestException {
         final int count = countVar.getValue(profile).intValue();
-        final BreweryUtils breweryUtils = new BreweryUtils();
-        breweryUtils.validateCountOrThrow(count, "You cant check for less then 1 Brew!");
-
         final String name = nameVar.getValue(profile).replace("_", " ");
-        final BRecipe recipe = breweryUtils.getRecipeOrThrow(name);
+        final BRecipe recipe = BreweryUtils.getRecipeOrThrow(name);
 
-        final Player player = profile.getOnlineProfile().get().getPlayer();
+        final Player player = profile.getPlayer();
         int remaining = count;
 
-        for (int i = 0; i < player.getInventory().getSize(); i++) {
-            final ItemStack item = player.getInventory().getItem(i);
-            if (!breweryUtils.isValidBrewItem(item, recipe)) {
+        for (final ItemStack item : player.getInventory().getContents()) {
+            if (BreweryUtils.isNotValidBrewItem(item, recipe)) {
                 continue;
             }
 

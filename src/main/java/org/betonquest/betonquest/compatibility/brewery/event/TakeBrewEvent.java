@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.compatibility.brewery.event;
 
 import com.dre.brewery.recipe.BRecipe;
-import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.compatibility.brewery.BreweryUtils;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
@@ -14,7 +14,7 @@ import org.bukkit.inventory.PlayerInventory;
 /**
  * Event to take a certain amount of brews from a player.
  */
-public class TakeBrewEvent implements Event {
+public class TakeBrewEvent implements OnlineEvent {
     /**
      * The {@link VariableNumber} for the amount of brews to take.
      */
@@ -37,14 +37,12 @@ public class TakeBrewEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestException {
-        final Player player = profile.getOnlineProfile().get().getPlayer();
+    public void execute(final OnlineProfile profile) throws QuestException {
+        final Player player = profile.getPlayer();
         final int count = countVar.getValue(profile).intValue();
         final String name = nameVar.getValue(profile).replace("_", " ");
-        final BreweryUtils breweryUtils = new BreweryUtils();
 
-        breweryUtils.validateCountOrThrow(count, "Can't take less than one brew!");
-        final BRecipe recipe = breweryUtils.getRecipeOrThrow(name);
+        final BRecipe recipe = BreweryUtils.getRecipeOrThrow(name);
 
         int remaining = count;
         final PlayerInventory inventory = player.getInventory();
@@ -52,7 +50,7 @@ public class TakeBrewEvent implements Event {
 
         for (int i = 0; i < invSize && remaining > 0; i++) {
             final ItemStack item = inventory.getItem(i);
-            if (!breweryUtils.isValidBrewItem(item, recipe)) {
+            if (BreweryUtils.isNotValidBrewItem(item, recipe)) {
                 continue;
             }
 

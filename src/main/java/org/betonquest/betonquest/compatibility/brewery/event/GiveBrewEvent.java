@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.compatibility.brewery.event;
 
 import com.dre.brewery.recipe.BRecipe;
-import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.compatibility.brewery.BreweryUtils;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 /**
  * Event to give a player a certain amount of brews with a specific quality.
  */
-public class GiveBrewEvent implements Event {
+public class GiveBrewEvent implements OnlineEvent {
     /**
      * The {@link VariableNumber} for the amount of brews to give.
      */
@@ -46,15 +46,13 @@ public class GiveBrewEvent implements Event {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestException {
-        final Player player = profile.getOnlineProfile().get().getPlayer();
-        final BreweryUtils breweryUtils = new BreweryUtils();
-
+    public void execute(final OnlineProfile profile) throws QuestException {
+        final Player player = profile.getPlayer();
         final int quality = qualityVar.getValue(profile).intValue();
-        breweryUtils.validateQualityOrThrow(quality);
+        BreweryUtils.validateQualityOrThrow(quality);
 
         final String name = nameVar.getValue(profile).replace("_", " ");
-        final BRecipe recipe = breweryUtils.getRecipeOrThrow(name);
+        final BRecipe recipe = BreweryUtils.getRecipeOrThrow(name);
 
         final int amount = amountVar.getValue(profile).intValue();
         final ItemStack[] brews = IntStream.range(0, amount)
