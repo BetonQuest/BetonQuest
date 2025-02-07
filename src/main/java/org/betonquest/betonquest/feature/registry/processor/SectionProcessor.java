@@ -70,26 +70,28 @@ public abstract class SectionProcessor<I extends ID, T> extends QuestProcessor<I
      *
      * @param pack    the pack to resolve variables
      * @param section the section to load from
-     * @param name    the key to load the values
+     * @param path    where the value(s) are stored
      * @return the values identified by the language key
      * @throws QuestException if there is no value
      */
-    protected Map<String, String> parseWithLanguage(final QuestPackage pack, final ConfigurationSection section, final String name)
+    protected Map<String, String> parseWithLanguage(final QuestPackage pack, final ConfigurationSection section, final String path)
             throws QuestException {
         final Map<String, String> map = new HashMap<>();
-        if (section.isConfigurationSection(name)) {
-            final ConfigurationSection subSection = section.getConfigurationSection(name);
+        if (section.isConfigurationSection(path)) {
+            final ConfigurationSection subSection = section.getConfigurationSection(path);
             if (subSection == null) {
-                throw new QuestException("No configuration section for '" + name + "'!");
+                throw new QuestException("No configuration section for '" + path + "'!");
             }
             for (final String key : subSection.getKeys(false)) {
                 map.put(key, GlobalVariableResolver.resolve(pack, subSection.getString(key)));
             }
+        } else if (section.isString(path)) {
+            map.put(Config.getLanguage(), GlobalVariableResolver.resolve(pack, section.getString(path)));
         } else {
-            map.put(Config.getLanguage(), GlobalVariableResolver.resolve(pack, section.getString(name)));
+            throw new QuestException("The '" + path + "' is missing!");
         }
         if (map.isEmpty()) {
-            throw new QuestException("No values in " + name);
+            throw new QuestException("No values defined for '" + path + "'!");
         }
         return map;
     }

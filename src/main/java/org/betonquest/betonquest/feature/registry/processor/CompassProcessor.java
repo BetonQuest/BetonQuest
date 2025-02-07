@@ -1,10 +1,9 @@
-package org.betonquest.betonquest.feature.registry;
+package org.betonquest.betonquest.feature.registry.processor;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.feature.QuestCompass;
-import org.betonquest.betonquest.feature.registry.processor.SectionProcessor;
 import org.betonquest.betonquest.id.CompassID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -20,7 +19,7 @@ import java.util.Map;
 public class CompassProcessor extends SectionProcessor<CompassID, QuestCompass> {
 
     /**
-     * Variable to create new variables.
+     * Variable processor to create new variables.
      */
     private final VariableProcessor variableProcessor;
 
@@ -28,7 +27,7 @@ public class CompassProcessor extends SectionProcessor<CompassID, QuestCompass> 
      * Create a new QuestProcessor to store {@link QuestCompass}es.
      *
      * @param log               the custom logger for this class
-     * @param variableProcessor the variable to create new variables
+     * @param variableProcessor the variable processor to create new variables
      */
     public CompassProcessor(final BetonQuestLogger log, final VariableProcessor variableProcessor) {
         super(log, "Compass", "compass");
@@ -38,9 +37,6 @@ public class CompassProcessor extends SectionProcessor<CompassID, QuestCompass> 
     @Override
     protected QuestCompass loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final Map<String, String> names = parseWithLanguage(pack, section, "name");
-        if (names.isEmpty()) {
-            throw new QuestException("Name not defined");
-        }
         final String location = section.getString("location");
         if (location == null) {
             throw new QuestException("Location not defined");

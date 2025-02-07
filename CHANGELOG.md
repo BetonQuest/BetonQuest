@@ -21,6 +21,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - betonquest command without arguments did not work anymore
 - the Fabled hook not working properly
 - `compass` event did not work with variables in `compass` location
+- `quest canceler` did not resolve global variables
 ### Security
 
 ## [2.2.1] - 2025-01-12
