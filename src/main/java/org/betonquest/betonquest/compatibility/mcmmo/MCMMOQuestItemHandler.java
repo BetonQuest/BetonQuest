@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.mcmmo;
 
 import com.gmail.nossr50.events.skills.salvage.McMMOPlayerSalvageCheckEvent;
 import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
-import org.betonquest.betonquest.Journal;
+import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.util.PlayerConverter;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.event.EventHandler;

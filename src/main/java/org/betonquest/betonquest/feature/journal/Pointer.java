@@ -1,4 +1,4 @@
-package org.betonquest.betonquest;
+package org.betonquest.betonquest.feature.journal;
 
 /**
  * Represents the journal pointer.

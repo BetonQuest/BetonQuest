@@ -2,9 +2,7 @@ package org.betonquest.betonquest.database;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Point;
-import org.betonquest.betonquest.Pointer;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.bukkit.event.PlayerTagAddEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerTagRemoveEvent;
@@ -16,6 +14,8 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.PlayerConversationState;
 import org.betonquest.betonquest.database.Saver.Record;
+import org.betonquest.betonquest.feature.journal.Journal;
+import org.betonquest.betonquest.feature.journal.Pointer;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemStack;

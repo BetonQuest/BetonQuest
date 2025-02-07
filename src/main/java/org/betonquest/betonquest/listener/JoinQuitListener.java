@@ -1,6 +1,7 @@
-package org.betonquest.betonquest;
+package org.betonquest.betonquest.listener;
 
 import io.papermc.lib.PaperLib;
+import org.betonquest.betonquest.GlobalObjectives;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -11,6 +12,7 @@ import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ConversationResumer;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
+import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.objective.ResourcePackObjective;
 import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;

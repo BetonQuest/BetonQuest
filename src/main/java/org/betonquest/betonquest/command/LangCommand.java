@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.command;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -9,6 +8,7 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
+import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.command.Command;
