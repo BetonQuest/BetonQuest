@@ -376,6 +376,41 @@ will make it run in "persistent" mode, since the player is offline on the next t
     logout events:delete_objective
     ```
 
+## NPC Interact: `npcinteract`
+
+The player has to interact with a Npc. 
+
+| Parameter     | Syntax              | Default Value          | Explanation                                                                         |
+|---------------|---------------------|------------------------|-------------------------------------------------------------------------------------|
+| _Npc_         | Npc                 | :octicons-x-circle-16: | The ID of the Npc.                                                                  |
+| _Cancel_      | `cancel`            | False                  | If the interaction with the Npc should be cancelled, so a conversation won't start. |
+| _Interaction_ | interaction:Keyword | `right`                | The interaction type. Either `left`, `right` or `any`.                              |
+
+```YAML title="Example"
+stealItem: npcinteract mayor cancel conditions:sneak events:steal
+punchThief: npcinteract thief interaction:left events:poke
+```
+
+## NPC Range: `npcrange`
+
+The player has to enter/leave a circle with the given radius around the NPC to complete this objective.
+It is also possible to define multiple NPCs separated with `,`.
+The objective will be completed as soon as you meet the requirement of just one npc.
+
+| Parameter | Syntax   | Default Value          | Explanation                                                          |
+|-----------|----------|------------------------|----------------------------------------------------------------------|
+| _Npcs_    | Npc List | :octicons-x-circle-16: | The IDs of the Npcs                                                  |
+| _Action_  | Keyword  | :octicons-x-circle-16: | The required action. Either `enter`, `leave`, `inside` or `outside`. |
+| _Range_   | Number   | :octicons-x-circle-16: | The maximum distance to a Npc                                        |
+
+!!! info
+    The types `enter`, `leave` force the player to actually enter the radius after you were outside of it and vice versa.
+    This means that `enter` is not completed when the player gets the objective and is already in the range, while `inside` is instantly completed.
+
+```YAML title="Example"
+goToVillage: npcrange farmer,guard enter 20 events:master_inRange
+```
+
 ## Password: `password`
 
 This objective requires the player to write a certain password in chat. All attempts of a player will be hidden from public chat.

@@ -321,6 +321,35 @@ fullMoon: "mooncycle 1"
 newMoonHub: "mooncycle 5 world:hub"
 ```
 
+## NPC distance: `npcdistance`
+
+This condition will check if a Npc is close to the player.
+
+| Parameter  | Syntax   | Default Value          | Explanation          |
+|------------|----------|------------------------|----------------------|
+| _Npc_      | Npc      | :octicons-x-circle-16: | The ID of the Npc    |
+| _Distance_ | Variable | :octicons-x-circle-16: | The maximum distance |
+
+```YAML title="Example"
+canHearBandit: npcdistance bandit 22
+```
+
+## NPC location: `npclocation`
+
+**persistent**, **static**
+
+This condition will check if a Npc is close to a location.
+
+| Parameter  | Syntax   | Default Value          | Explanation          |
+|------------|----------|------------------------|----------------------|
+| _Npc_      | Npc      | :octicons-x-circle-16: | The ID of the Npc    |
+| _Location_ | Location | :octicons-x-circle-16: | The location         |
+| _Distance_ | Number   | :octicons-x-circle-16: | The maximum distance |
+
+```YAML title="Example"
+nearTarget: npclocation merchant 4.0;14.0;-20.0;world 22
+```
+
 ## Number compare: `numbercompare`
 
 This condition compares two numbers.

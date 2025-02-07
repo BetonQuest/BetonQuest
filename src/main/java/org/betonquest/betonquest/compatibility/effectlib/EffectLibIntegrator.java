@@ -46,8 +46,8 @@ public class EffectLibIntegrator implements Integrator {
     @Override
     public void postHook() {
         if (manager != null) {
-            final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
-            particleManager = new EffectLibParticleManager(loggerFactory, loggerFactory.create(EffectLibParticleManager.class), manager);
+            final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
+            particleManager = new EffectLibParticleManager(loggerFactory, loggerFactory.create(EffectLibParticleManager.class), manager, plugin.getNpcProcessor());
         }
     }
 
