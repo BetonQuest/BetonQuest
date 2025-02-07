@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.feature.registry.CompassProcessor;
 import org.betonquest.betonquest.feature.registry.FeatureRegistries;
 import org.betonquest.betonquest.feature.registry.processor.CancellerProcessor;
 import org.betonquest.betonquest.feature.registry.processor.ConversationProcessor;
@@ -64,6 +65,11 @@ public class QuestRegistry {
     private final ConversationProcessor conversationProcessor;
 
     /**
+     * Compasses.
+     */
+    private final CompassProcessor compassProcessor;
+
+    /**
      * Create a new Registry for storing and using Conditions, Events, Objectives, Variables,
      * Conversations and Quest canceller.
      *
@@ -84,6 +90,7 @@ public class QuestRegistry {
         this.variableProcessor = new VariableProcessor(loggerFactory.create(VariableProcessor.class), questTypeRegistries.variable());
         this.cancellerProcessor = new CancellerProcessor(loggerFactory.create(CancellerProcessor.class), pluginMessage);
         this.conversationProcessor = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), plugin);
+        this.compassProcessor = new CompassProcessor(loggerFactory.create(CompassProcessor.class), variableProcessor);
     }
 
     /**
@@ -197,5 +204,14 @@ public class QuestRegistry {
      */
     public ConversationProcessor conversations() {
         return conversationProcessor;
+    }
+
+    /**
+     * Gets the class processing compass logic.
+     *
+     * @return compass logic
+     */
+    public CompassProcessor compasses() {
+        return compassProcessor;
     }
 }
