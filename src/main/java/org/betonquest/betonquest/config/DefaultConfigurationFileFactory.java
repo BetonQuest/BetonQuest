@@ -68,8 +68,8 @@ public class DefaultConfigurationFileFactory implements ConfigurationFileFactory
         } else {
             final BetonQuestLogger patcherLogger = BetonQuest.getInstance().getLoggerFactory().create(Patcher.class, "ConfigurationFile Patcher");
             patcher = new Patcher(patcherLogger, accessor.getConfig(), patchAccessor.getConfig());
+            (patchTransformerRegisterer == null ? new DefaultPatchTransformerRegisterer() : patchTransformerRegisterer).registerTransformers(patcher);
         }
-        (patchTransformerRegisterer == null ? new DefaultPatchTransformerRegisterer() : patchTransformerRegisterer).registerTransformers(patcher);
         final BetonQuestLogger logger = loggerFactory.create(ConfigurationFileImpl.class, "ConfigurationFile");
         return new ConfigurationFileImpl(logger, accessor, patcher, plugin.getDataFolder().getParentFile().toURI());
     }

@@ -1,0 +1,59 @@
+configVersion: ""
+conversation_start: '&e====&bBeszélgetés a következővel {npc}&b elkezdve!&e===='
+conversation_end: '&e====&bBeszélgetés a következővel {npc}&b befejezve!&e===='
+no_permission: '&cNincs jogod ehhez.'
+new_journal_entry: '&e*&bA folyóirat frissítve!&e*'
+journal_title: 'Folyóirat'
+journal_lore: 'A folyóirat, amely minden információt tartalmaz'
+quest_item: '&2Küldetés tárgy'
+backpack_title: 'Hátizsák'
+previous: '&2Előző'
+next: '&2Következő'
+inventory_full_backpack: '&e*&bAz eszköztárad tele van! The item was moved to your backpack.&e*' # TODO: missing translation
+inventory_full_drop: '&e*&bAz eszköztárad tele van! The item was dropped on the ground.&e*' # TODO: missing translation
+pullback: '&cBe kell fejeznie a beszélgetést!'
+items_given: '&2Kapott {item}&2 x{amount}'
+items_taken: '&2Veszített {item}&2 x{amount}'
+money_given: '&2Kapott {amount} {currency}'
+money_taken: '&2Lost {amount} {currency}' # TODO: missing translation
+point_given: '&2You received {amount} points to {category}' # TODO: missing translation
+point_taken: '&2You lost {amount} points to {category}' # TODO: missing translation
+point_set: '&2Your points {category} are set to {amount}' #TODO: missing translation
+point_multiplied: '&2Your points {category} are multiplied by {amount}' # TODO: missing translation
+blocks_to_break: '&2{amount} blokkot hagyott kitörni'
+blocks_to_place: '&2{amount} blokkot hagyott lerakni'
+mobs_to_kill: '&2{amount} a szörnyek megmaradtak'
+mobs_to_click: '&2{amount} mobs left to click' # TODO: missing translation
+players_to_kill: '&2{amount} a játékosok ölni hagytak'
+fish_to_catch: '&2{amount} a halak elkaptak'
+sheep_to_shear: '&2{amount} juhok nyírni'
+potions_to_brew: '&2{amount} italokat főzni'
+animals_to_breed: '&2{amount} állatokat hagytak szaporodni'
+items_to_pickup: '&2{amount} items left to pickup' # TODO: missing translation
+items_to_smelt: '&2{amount} items left to smelt' # TODO: missing translation
+items_to_craft: '&2{amount} items left to craft' # TODO: missing translation
+items_to_enchant: '&2{amount} items left to enchant' # TODO: missing translation
+level_to_gain: '&2{amount} levels left to gain' # TODO: missing translation
+payment_to_receive: '&2{amount} money left to receive' # TODO: missing translation
+busy: '&cNem harcolhat harc közben.'
+quest_canceled: '&2Küldetés {name}&2 törölve!'
+cancel: '&cTörölje a küldetést'
+cancel_page: 'A küldetések visszavonása'
+compass: '&cIránytű célok'
+compass_page: 'Válasszon célt'
+command_blocked: '&cEzt a parancsot nem használhatja beszélgetés közben.'
+language_changed: '&2A nyelv megváltoztatva!'
+language_missing: '&cAdja meg a nyelvet'
+language_not_exist: '&cEz a nyelv nincs meghatározva, lehetséges opciók: '
+days: 'nap'
+days_singular: 'nap'
+hours: 'óra'
+hours_singular: 'óra'
+minutes: 'perc'
+minutes_singular: 'perc'
+seconds: 'másodperc'
+seconds_singular: 'másodperc'
+password: 'jelszó: '
+condition_variable_met: 'igen'
+condition_variable_not_met: 'nem'
+chest_occupied: 'This chest is already in use' # TODO: missing translation

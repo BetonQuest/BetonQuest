@@ -1,0 +1,59 @@
+configVersion: ""
+conversation_start: '&e====&bRozpoczales rozmowe z {npc}&b!&e===='
+conversation_end: '&e====&bZakonczyles rozmowe z {npc}&b!&e===='
+no_permission: '&cNie masz permisji.'
+new_journal_entry: '&e*&bDziennik zostal zaktualizowany!&e*'
+journal_title: 'Dziennik'
+journal_lore: 'Twoj dziennik, zawierajacy informacje o questach'
+quest_item: '&2Przedmiot zwiazany z zadaniem'
+backpack_title: 'Plecak'
+previous: '&2Poprzednia strona'
+next: '&2Nastepna strona'
+inventory_full_backpack: '&e*&bTwoj ekwipunek jest pelny! The item was moved to your backpack.&e*' # TODO: missing translation
+inventory_full_drop: '&e*&bTwoj ekwipunek jest pelny! The item was dropped on the ground.&e*' # TODO: missing translation
+pullback: '&cMusisz dokonczyc swoja rozmowe!'
+items_given: '&2Otrzymano {item}&2 x{amount}'
+items_taken: '&2Utracono {item}&2 x{amount}'
+money_given: '&2Received {amount} {currency}' # TODO: missing translation
+money_taken: '&2Lost {amount} {currency}' # TODO: missing translation
+point_given: '&2You received {amount} points to {category}' # TODO: missing translation
+point_taken: '&2You lost {amount} points to {category}' # TODO: missing translation
+point_set: '&2Your points {category} are set to {amount}' #TODO: missing translation
+point_multiplied: '&2Your points {category} are multiplied by {amount}' # TODO: missing translation
+blocks_to_break: '&2Pozostalo {amount} blokow do zniszczenia'
+blocks_to_place: '&2Pozostalo {amount} blokow do postawienia'
+mobs_to_kill: '&2Pozostalo {amount} stworzen do zabicia'
+mobs_to_click: '&2{amount} mobs left to click' # TODO: missing translation
+players_to_kill: '&2Pozostalo {amount} graczy do zabicia'
+fish_to_catch: '&2Pozostalo {amount} ryb do zlowienia'
+sheep_to_shear: '&2Pozostalo {amount} owiec do ogolenia'
+potions_to_brew: '&2Pozostalo {amount} mikstur do zrobienia'
+animals_to_breed: '&2Pozostalo {amount} zwierzat do rozmnozenia'
+items_to_pickup: '&2Pozostalo {amount} przedmiotow do podniesienia'
+items_to_smelt: '&2{amount} items left to smelt' # TODO: missing translation
+items_to_craft: '&2{amount} items left to craft' # TODO: missing translation
+items_to_enchant: '&2{amount} items left to enchant' # TODO: missing translation
+level_to_gain: '&2{amount} levels left to gain' # TODO: missing translation
+payment_to_receive: '&2{amount} money left to receive' # TODO: missing translation
+busy: '&cNie mozesz rozmawiac w trakcie walki.'
+quest_canceled: '&2Zadanie {name}&2 anulowane!'
+cancel: '&cAnuluj zadanie'
+cancel_page: 'Anulowanie zadania'
+compass: '&cCele kompasu'
+compass_page: 'Wybierz cel'
+command_blocked: '&cNie mozesz uzywac tej komendy podczas rozmowy.'
+language_changed: '&2Jezyk zmieniony!'
+language_missing: '&cPodaj jezyk'
+language_not_exist: '&cTen jezyk nie jest zdefiniowany, oto lista dostepnych opcji: '
+days: 'dni'
+days_singular: 'dni' # TODO: Missing translation
+hours: 'godzin'
+hours_singular: 'godzin' # TODO: Missing translation
+minutes: 'minut'
+minutes_singular: 'minut' # TODO: Missing translation
+seconds: 'sekund'
+seconds_singular: 'sekund' # TODO: Missing translation
+password: 'haslo: '
+condition_variable_met: 'yes' # TODO: missing translation
+condition_variable_not_met: 'no' # TODO: missing translation
+chest_occupied: 'This chest is already in use' # TODO: missing translation

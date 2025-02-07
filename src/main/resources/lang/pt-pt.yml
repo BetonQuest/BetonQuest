@@ -1,0 +1,59 @@
+configVersion: ""
+conversation_start: '&e====&bA conversa com {npc}&b começou.&e===='
+conversation_end: '&e====&bA conversa com {npc}&b terminou.&e===='
+no_permission: '&cNão tens permissão para isso.'
+new_journal_entry: '&e*&bO teu diario foi atualizado.&e*'
+journal_title: 'Diario'
+journal_lore: 'É o teu diario, contem informação de todas as tuas missões.'
+quest_item: '&2Item de missão'
+backpack_title: 'Mochila de missões'
+previous: '&2Anterior'
+next: '&2Seguinte'
+inventory_full_backpack: '&e*&bYour inventory is full! The item was moved to your backpack.&e*' #TODO: missing translation
+inventory_full_drop: '&e*&bYour inventory is full! The item was dropped on the ground.&e*' #TODO: missing translation
+pullback: '&cDeves terminar a conversa.'
+items_given: '&2Recebido {item}&2 x{amount}'
+items_taken: '&2Perdido {item}&2 x{amount}'
+money_given: '&2Recebido {amount} {currency}'
+money_taken: '&2Perdido {amount} {currency}'
+point_given: '&2Tu recebeste {amount} pontos para {category}'
+point_taken: '&2Tu perdeste {amount} pontos para {category}'
+point_set: '&2Your points {category} are set to {amount}' #TODO: missing translation
+point_multiplied: '&2Os teus pontos {category} foram multiplicados por {amount}'
+blocks_to_break: '&2{amount} blocos restantes para quebrar'
+blocks_to_place: '&2{amount} blocos restantes para colocar'
+mobs_to_kill: '&2{amount} mobs restantes para matar'
+mobs_to_click: '&2{amount} mobs restantes para clicar'
+players_to_kill: '&2{amount} jogadores restantes para matar'
+fish_to_catch: '&2{amount} peixes restantes para pescar'
+sheep_to_shear: '&2{amount} ovelhas restantes para aparar'
+potions_to_brew: '&2{amount} poções restantes para criar'
+animals_to_breed: '&2{amount} animais restantes para procriar'
+items_to_pickup: '&2{amount} itens restantes para coletar'
+items_to_smelt: '&2{amount} itens restantes para fundir'
+items_to_craft: '&2{amount} items restantes para criar'
+items_to_enchant: '&2{amount} items left to enchant' # TODO: missing translation
+level_to_gain: '&2{amount} levels left to gain' # TODO: missing translation
+payment_to_receive: '&2{amount} money left to receive' # TODO: missing translation
+busy: '&cNão podes falar enquanto lutas!'
+quest_canceled: '&2Missão {name}&2 cancelada!'
+cancel: '&cCancelar a missão'
+cancel_page: 'Cancelar missões'
+compass: '&cObjetivos da bússola'
+compass_page: 'Escolhe um objetivo'
+command_blocked: '&cNão podes usar este comando durante uma conversa.'
+language_changed: '&2Idioma foi alterado!'
+language_missing: '&cEspecifica um idioma'
+language_not_exist: '&cEsse idioma não está definido, opções possiveis: '
+days: 'dias'
+days_singular: 'day' #TODO: missing translation
+hours: 'horas'
+hours_singular: 'hour' #TODO: missing translation
+minutes: 'minutos'
+minutes_singular: 'minute' #TODO: missing translation
+seconds: 'segundos'
+seconds_singular: 'second' #TODO: missing translation
+password: 'password: '
+condition_variable_met: 'sim'
+condition_variable_not_met: 'não'
+chest_occupied: 'Este bau já se encontra em uso'
