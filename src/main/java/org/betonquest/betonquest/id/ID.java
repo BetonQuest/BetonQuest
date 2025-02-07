@@ -86,7 +86,7 @@ public abstract class ID {
      */
     protected ID(@Nullable final QuestPackage pack, final String identifier, final String section, final String readable) throws QuestException {
         this(pack, identifier);
-        final String rawInstruction = this.pack.getString(section + "." + this.identifier);
+        final String rawInstruction = this.pack.getConfig().getString(section + "." + this.identifier);
         if (rawInstruction == null) {
             throw new QuestException(readable + " '" + getFullID() + "' is not defined");
         }

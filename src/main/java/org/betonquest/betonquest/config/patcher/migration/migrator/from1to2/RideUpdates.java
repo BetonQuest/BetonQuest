@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.config.patcher.migration.migrators.from1to2;
+package org.betonquest.betonquest.config.patcher.migration.migrator.from1to2;
 
 import org.betonquest.betonquest.config.patcher.migration.FileConfigurationProvider;
 import org.betonquest.betonquest.config.patcher.migration.Migration;
@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Handles the remove entity migration.
+ * Handles the Ride migration.
  */
-public class RemoveEntity implements Migration {
+public class RideUpdates implements Migration {
 
     /**
      * The configs to migrate.
@@ -19,11 +19,11 @@ public class RemoveEntity implements Migration {
     private final FileConfigurationProvider producer;
 
     /**
-     * Creates a new mmo_updates migrator.
+     * Creates a new ride migrator.
      *
      * @param provider The config provider
      */
-    public RemoveEntity(final FileConfigurationProvider provider) {
+    public RideUpdates(final FileConfigurationProvider provider) {
         this.producer = provider;
     }
 
@@ -33,9 +33,9 @@ public class RemoveEntity implements Migration {
         for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
             final File file = entry.getKey();
             final YamlConfiguration config = entry.getValue();
-            final boolean event1Replaced = replaceStartValueInSection(config, "events", "clear", "removeentity");
-            final boolean event2Replaced = replaceStartValueInSection(config, "events", "killmob", "removeentity");
-            if (event1Replaced || event2Replaced) {
+            final boolean objReplaced = replaceStartValueInSection(config, "objectives", "vehicle", "ride");
+            final boolean condReplaced = replaceStartValueInSection(config, "conditions", "riding", "ride");
+            if (objReplaced || condReplaced) {
                 config.save(file);
             }
         }

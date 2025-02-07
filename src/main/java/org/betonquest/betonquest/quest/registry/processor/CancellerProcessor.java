@@ -16,6 +16,11 @@ import java.util.Map;
  */
 public class CancellerProcessor extends QuestProcessor<QuestCancelerID, QuestCanceler> {
     /**
+     * The {@link VariableProcessor} to use.
+     */
+    private final VariableProcessor variableProcessor;
+
+    /**
      * The {@link PluginMessage} instance.
      */
     private final PluginMessage pluginMessage;
@@ -23,11 +28,13 @@ public class CancellerProcessor extends QuestProcessor<QuestCancelerID, QuestCan
     /**
      * Create a new Quest Canceler Processor to store them.
      *
-     * @param log           the custom logger for this class
+     * @param log               the custom logger for this class
+     * @param variableProcessor the {@link VariableProcessor} to use
      * @param pluginMessage the {@link PluginMessage} instance
      */
-    public CancellerProcessor(final BetonQuestLogger log, final PluginMessage pluginMessage) {
+    public CancellerProcessor(final BetonQuestLogger log, final VariableProcessor variableProcessor, final PluginMessage pluginMessage) {
         super(log);
+        this.variableProcessor = variableProcessor;
         this.pluginMessage = pluginMessage;
     }
 
@@ -37,7 +44,7 @@ public class CancellerProcessor extends QuestProcessor<QuestCancelerID, QuestCan
         if (cancelSection != null) {
             for (final String key : cancelSection.getKeys(false)) {
                 try {
-                    values.put(new QuestCancelerID(pack, key), new QuestCanceler(pluginMessage, pack, key));
+                    values.put(new QuestCancelerID(pack, key), new QuestCanceler(variableProcessor, pluginMessage, pack, key));
                 } catch (final QuestException e) {
                     log.warn(pack, "Could not load '" + pack.getQuestPath() + "." + key + "' quest canceler: " + e.getMessage(), e);
                 }

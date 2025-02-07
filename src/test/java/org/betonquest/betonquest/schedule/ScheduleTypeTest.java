@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.schedule;
 
+import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.schedule.FictiveTime;
@@ -45,9 +46,11 @@ class ScheduleTypeTest {
 
     @BeforeEach
     void prepareConfig() {
-        lenient().when(questPackage.getString("events.bell_ring"))
+        final MultiConfiguration mockConfig = mock(MultiConfiguration.class);
+        lenient().when(questPackage.getConfig()).thenReturn(mockConfig);
+        lenient().when(mockConfig.getString("events.bell_ring"))
                 .thenReturn("folder bell_lever_toggle,bell_lever_toggle period:0.5");
-        lenient().when(questPackage.getString("events.notify_goodNight"))
+        lenient().when(mockConfig.getString("events.notify_goodNight"))
                 .thenReturn("notify &6Good night, sleep well!");
 
         lenient().when(scheduleID.getPackage()).thenReturn(questPackage);

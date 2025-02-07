@@ -18,7 +18,6 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.util.Utils;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -56,7 +55,7 @@ public class Journal {
 
     private final List<Pointer> pointers;
 
-    private final List<String> texts = new ArrayList<>();
+    private final List<VariableString> texts = new ArrayList<>();
 
     private final ConfigurationFile config;
 
@@ -175,15 +174,19 @@ public class Journal {
      * @return list of Strings - texts for every journal entry
      */
     public List<String> getText() {
-        final List<String> list;
+        final List<VariableString> list;
         if (Boolean.parseBoolean(config.getString("journal.reversed_order"))) {
             list = Lists.reverse(texts);
         } else {
             list = new ArrayList<>(texts);
         }
         final List<String> pagesList = new ArrayList<>();
-        for (final String entry : list) {
-            pagesList.addAll(Utils.pagesFromString(entry));
+        for (final VariableString entry : list) {
+            try {
+                pagesList.addAll(Utils.pagesFromString(entry.getValue(profile)));
+            } catch (final QuestException e) {
+                log.warn("Error while generating journal page: " + e.getMessage(), e);
+            }
         }
         return pagesList;
     }
@@ -224,33 +227,28 @@ public class Journal {
             final ConfigurationSection journal = pack.getConfig().getConfigurationSection("journal");
             if (journal != null && journal.contains(pointerName)) {
                 if (journal.isConfigurationSection(pointerName)) {
-                    text = pack.getFormattedString("journal." + pointerName + "." + lang);
+                    text = pack.getConfig().getString("journal." + pointerName + "." + lang);
                     if (text == null) {
-                        text = pack.getFormattedString("journal." + pointerName + "." + Config.getLanguage());
+                        text = pack.getConfig().getString("journal." + pointerName + "." + Config.getLanguage());
                     }
                 } else {
-                    text = pack.getFormattedString("journal." + pointerName);
+                    text = pack.getConfig().getString("journal." + pointerName);
                 }
             } else {
                 log.warn(pack, "No defined journal entry " + pointerName + " in package " + pack.getQuestPath());
                 text = "error";
             }
-
-            // handle case when the text isn't defined
             if (text == null) {
                 log.warn(pack, "No text defined for journal entry " + pointerName + " in language " + lang);
                 text = "error";
             }
 
             try {
-                text = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, text).getValue(profile);
+                texts.add(new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, datePrefix + "§" + config.getString("journal_colors.text") + Utils.format(text)));
             } catch (final QuestException e) {
                 log.warn(pack, "Error while creating variable on journal page '" + pointerName + "' in "
                         + profile + " journal: " + e.getMessage(), e);
             }
-
-            // add the entry to the list
-            texts.add(datePrefix + "§" + config.getString("journal_colors.text") + text);
         }
     }
 
@@ -273,11 +271,12 @@ public class Journal {
             for (final String key : section.getKeys(false)) {
                 final int number = section.getInt(key + ".priority", -1);
                 if (number >= 0) {
-                    final String rawConditions = GlobalVariableResolver.resolve(pack, section.getString(key + ".conditions"));
+                    final String rawConditions = section.getString(key + ".conditions");
                     if (rawConditions != null && !rawConditions.isEmpty()) {
                         try {
+                            final String conditionsString = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, rawConditions).getValue(profile);
                             final List<ConditionID> pageConditions = new ArrayList<>();
-                            for (final String conditionString : rawConditions.split(",")) {
+                            for (final String conditionString : conditionsString.split(",")) {
                                 if (!conditionString.isEmpty()) {
                                     pageConditions.add(new ConditionID(pack, conditionString));
                                 }
@@ -307,7 +306,6 @@ public class Journal {
                     if (text == null || text.isEmpty()) {
                         continue;
                     }
-                    text = GlobalVariableResolver.resolve(pack, text);
                     try {
                         text = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, text).getValue(profile);
                     } catch (final QuestException e) {

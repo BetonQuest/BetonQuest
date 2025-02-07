@@ -15,12 +15,12 @@ import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.argument.IDArgument;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.notify.Notify;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.util.Utils;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -64,6 +64,8 @@ public class QuestCanceler {
 
     private final QuestPackage pack;
 
+    private final VariableProcessor variableProcessor;
+
     private final PluginMessage pluginMessage;
 
     private final String cancelerID;
@@ -72,18 +74,20 @@ public class QuestCanceler {
     private final String item;
 
     @Nullable
-    private final Location loc;
+    private final VariableLocation loc;
 
     /**
      * Creates a new canceler with given name.
      *
-     * @param pluginMessage the {@link PluginMessage} instance
-     * @param pack          the {@link QuestPackage} of the canceler
-     * @param cancelerID    ID of the canceler (package.name)
+     * @param variableProcessor the {@link VariableProcessor} to use for parsing
+     * @param pluginMessage     the {@link PluginMessage} instance
+     * @param pack              the {@link QuestPackage} of the canceler
+     * @param cancelerID        ID of the canceler (package.name)
      * @throws QuestException when parsing, the canceler fails for some reason
      */
     @SuppressWarnings("PMD.LocalVariableCouldBeFinal")
-    public QuestCanceler(final PluginMessage pluginMessage, final QuestPackage pack, final String cancelerID) throws QuestException {
+    public QuestCanceler(final VariableProcessor variableProcessor, final PluginMessage pluginMessage, final QuestPackage pack, final String cancelerID) throws QuestException {
+        this.variableProcessor = variableProcessor;
         this.pluginMessage = pluginMessage;
         this.cancelerID = Utils.getNN(cancelerID, "Name is null");
         this.pack = Utils.getNN(pack, "Package does not exist");
@@ -100,7 +104,7 @@ public class QuestCanceler {
         }
         // get the item
         final String itemString = section.getString("item");
-        item = itemString == null ? pack.getRawString("items.cancel_button") : itemString;
+        item = itemString == null ? pack.getConfig().getString("items.cancel_button") : itemString;
         // parse it to get the data
         events = parseID(section, "events", EventID::new);
         conditions = parseID(section, "conditions", ConditionID::new);
@@ -108,25 +112,14 @@ public class QuestCanceler {
         tags = split(section, "tags");
         points = split(section, "points");
         journal = split(section, "journal");
-        final String rawLoc = GlobalVariableResolver.resolve(pack, section.getString("loc"));
-        if (rawLoc != null) {
-            Location tmp;
-            try {
-                tmp = VariableLocation.parse(rawLoc);
-            } catch (final QuestException e) {
-                log.warn(pack, "Could not parse location in quest canceler '" + name + "': " + e.getMessage(), e);
-                tmp = null;
-            }
-            loc = tmp;
-        } else {
-            loc = null;
-        }
+        final String rawLoc = section.getString("loc");
+        loc = rawLoc == null ? null : new VariableLocation(variableProcessor, pack, rawLoc);
     }
 
     @Nullable
-    private String[] split(final ConfigurationSection section, final String path) {
+    private String[] split(final ConfigurationSection section, final String path) throws QuestException {
         final String raw = section.getString(path);
-        return raw == null ? null : GlobalVariableResolver.resolve(pack, raw).split(",");
+        return raw == null ? null : new VariableString(variableProcessor, pack, raw).getValue(null).split(",");
     }
 
     @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
@@ -165,6 +158,7 @@ public class QuestCanceler {
      *
      * @param onlineProfile the {@link OnlineProfile} of the player
      */
+    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
     public void cancel(final OnlineProfile onlineProfile) {
         log.debug("Canceling the quest " + name + " for " + onlineProfile);
         final PlayerData playerData = BetonQuest.getInstance().getPlayerDataStorage().get(onlineProfile);
@@ -191,7 +185,11 @@ public class QuestCanceler {
         // teleport player to the location
         if (loc != null) {
             log.debug("  Teleporting to new location");
-            onlineProfile.getPlayer().teleport(loc);
+            try {
+                onlineProfile.getPlayer().teleport(loc.getValue(onlineProfile));
+            } catch (final QuestException e) {
+                log.warn("Could not teleport player to location in quest canceler '" + name + "': " + e.getMessage(), e);
+            }
         }
         // fire all events
         if (events != null) {

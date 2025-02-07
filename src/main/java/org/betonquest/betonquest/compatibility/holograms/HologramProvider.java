@@ -8,6 +8,7 @@ import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.citizens.CitizensHologramLoop;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -48,6 +49,11 @@ public final class HologramProvider implements Integrator {
     private static HologramProvider instance;
 
     /**
+     * The {@link VariableProcessor} to use.
+     */
+    private final VariableProcessor variableProcessor;
+
+    /**
      * The currently hooked integrator, this may change during runtime during a reload
      */
     private HologramIntegrator integrator;
@@ -65,16 +71,18 @@ public final class HologramProvider implements Integrator {
     private CitizensHologramLoop citizensHologramLoop;
 
     /**
-     * Creates a new HologramProvider object and assigns it to singleton instance if not already
+     * Creates a new HologramProvider object.
      *
-     * @param integrator The initial integrator to hook into
+     * @param variableProcessor the {@link VariableProcessor} to use
+     * @param integrator        the initial integrator to hook into
      */
-    private HologramProvider(final HologramIntegrator integrator) {
+    private HologramProvider(final VariableProcessor variableProcessor, final HologramIntegrator integrator) {
+        this.variableProcessor = variableProcessor;
         this.integrator = integrator;
     }
 
     /**
-     * Adds a possible integrator for this provider
+     * Adds a possible integrator for this provider.
      *
      * @param integrator The integrator itself
      */
@@ -85,12 +93,14 @@ public final class HologramProvider implements Integrator {
     /**
      * Called only once after all plugins have been hooked as to allow HologramIntegrators to add themselves to this
      * provider's {@link #ATTEMPTED_INTEGRATIONS} list.
+     *
+     * @param variableProcessor the {@link VariableProcessor} to use
      */
-    public static void init() {
+    public static void init(final VariableProcessor variableProcessor) {
         synchronized (HologramProvider.class) {
             if (instance == null && !ATTEMPTED_INTEGRATIONS.isEmpty()) {
                 Collections.sort(ATTEMPTED_INTEGRATIONS);
-                instance = new HologramProvider(ATTEMPTED_INTEGRATIONS.get(0));
+                instance = new HologramProvider(variableProcessor, ATTEMPTED_INTEGRATIONS.get(0));
                 try {
                     instance.hook();
                     LOG.info("Using " + ATTEMPTED_INTEGRATIONS.get(0).getPluginName() + " as dedicated hologram provider!");
@@ -152,9 +162,9 @@ public final class HologramProvider implements Integrator {
     @Override
     public void hook() throws HookException {
         final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
-        this.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class));
+        this.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class), variableProcessor);
         if (Compatibility.getHooked().contains("Citizens")) {
-            this.citizensHologramLoop = new CitizensHologramLoop(loggerFactory, loggerFactory.create(CitizensHologramLoop.class));
+            this.citizensHologramLoop = new CitizensHologramLoop(loggerFactory, loggerFactory.create(CitizensHologramLoop.class), variableProcessor);
         }
         new HologramListener();
     }
@@ -169,10 +179,10 @@ public final class HologramProvider implements Integrator {
 
                 instance.integrator = ATTEMPTED_INTEGRATIONS.get(0);
                 final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
-                instance.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class));
+                instance.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class), variableProcessor);
                 if (instance.citizensHologramLoop != null) {
                     instance.citizensHologramLoop.close();
-                    instance.citizensHologramLoop = new CitizensHologramLoop(loggerFactory, loggerFactory.create(CitizensHologramLoop.class));
+                    instance.citizensHologramLoop = new CitizensHologramLoop(loggerFactory, loggerFactory.create(CitizensHologramLoop.class), variableProcessor);
                 }
             }
         }

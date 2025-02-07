@@ -435,8 +435,6 @@ public class BetonQuest extends JavaPlugin {
 
         pluginManager.registerEvents(new CustomDropListener(loggerFactory.create(CustomDropListener.class)), this);
 
-        registerCommands(receiverSelector, debugHistoryHandler);
-
         questTypeRegistries = QuestTypeRegistries.create(loggerFactory);
         featureRegistries = FeatureRegistries.create(loggerFactory);
 
@@ -446,6 +444,8 @@ public class BetonQuest extends JavaPlugin {
         questTypeAPI = new QuestTypeAPI(questRegistry);
         featureAPI = new FeatureAPI(questRegistry);
         pluginManager.registerEvents(new JoinQuitListener(loggerFactory, questTypeAPI, playerDataStorage, pluginMessage), this);
+
+        registerCommands(receiverSelector, debugHistoryHandler);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
                 questTypeAPI, pluginMessage, questRegistry.variables(), globalData, playerDataStorage).register(questTypeRegistries);
@@ -521,9 +521,9 @@ public class BetonQuest extends JavaPlugin {
         getCommand("betonquest").setExecutor(questCommand);
         getCommand("betonquest").setTabCompleter(questCommand);
         getCommand("journal").setExecutor(new JournalCommand(playerDataStorage));
-        getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class), pluginMessage));
-        getCommand("cancelquest").setExecutor(new CancelQuestCommand(pluginMessage));
-        getCommand("compass").setExecutor(new CompassCommand(pluginMessage));
+        getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class), getVariableProcessor(), pluginMessage));
+        getCommand("cancelquest").setExecutor(new CancelQuestCommand(getVariableProcessor(), pluginMessage));
+        getCommand("compass").setExecutor(new CompassCommand(getVariableProcessor(), pluginMessage));
         final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), this, playerDataStorage, pluginMessage);
         getCommand("questlang").setExecutor(langCommand);
         getCommand("questlang").setTabCompleter(langCommand);
