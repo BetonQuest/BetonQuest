@@ -6,6 +6,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
+- `quest compass` location now allows variables
 ### Changed
 - message.yml file was deleted and instead the lang folder now contains all translations
 ### Deprecated

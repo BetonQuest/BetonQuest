@@ -1,7 +1,9 @@
 package org.betonquest.betonquest.api.feature;
 
 import org.betonquest.betonquest.conversation.ConversationData;
+import org.betonquest.betonquest.feature.QuestCompass;
 import org.betonquest.betonquest.feature.QuestCanceler;
+import org.betonquest.betonquest.id.CompassID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.quest.registry.QuestRegistry;
@@ -49,5 +51,14 @@ public final class FeatureAPI {
      */
     public Map<QuestCancelerID, QuestCanceler> getCanceler() {
         return questRegistry.questCanceller().getCancelers();
+    }
+
+    /**
+     * Get the loaded Compasses.
+     *
+     * @return compasses in a new map
+     */
+    public Map<CompassID, QuestCompass> getCompasses() {
+        return questRegistry.compasses().getCompasses();
     }
 }
