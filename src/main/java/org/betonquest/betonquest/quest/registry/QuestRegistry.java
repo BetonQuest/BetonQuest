@@ -6,9 +6,9 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.feature.registry.CompassProcessor;
 import org.betonquest.betonquest.feature.registry.FeatureRegistries;
 import org.betonquest.betonquest.feature.registry.processor.CancellerProcessor;
+import org.betonquest.betonquest.feature.registry.processor.CompassProcessor;
 import org.betonquest.betonquest.feature.registry.processor.ConversationProcessor;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.quest.registry.processor.ConditionProcessor;
@@ -88,7 +88,7 @@ public class QuestRegistry {
         this.eventProcessor = new EventProcessor(loggerFactory.create(EventProcessor.class), questTypeRegistries.event());
         this.objectiveProcessor = new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), questTypeRegistries.objective());
         this.variableProcessor = new VariableProcessor(loggerFactory.create(VariableProcessor.class), questTypeRegistries.variable());
-        this.cancellerProcessor = new CancellerProcessor(loggerFactory.create(CancellerProcessor.class), pluginMessage);
+        this.cancellerProcessor = new CancellerProcessor(loggerFactory.create(CancellerProcessor.class), loggerFactory, pluginMessage, variableProcessor);
         this.conversationProcessor = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), plugin);
         this.compassProcessor = new CompassProcessor(loggerFactory.create(CompassProcessor.class), variableProcessor);
     }
