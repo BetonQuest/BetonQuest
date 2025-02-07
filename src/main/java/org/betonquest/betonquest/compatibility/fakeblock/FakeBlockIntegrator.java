@@ -1,9 +1,12 @@
 package org.betonquest.betonquest.compatibility.fakeblock;
 
+import com.briarcraft.fakeblock.api.service.GroupService;
+import com.briarcraft.fakeblock.api.service.PlayerGroupService;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
+import org.betonquest.betonquest.compatibility.fakeblock.event.FakeBlockEventFactory;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
@@ -11,6 +14,7 @@ import org.betonquest.betonquest.versioning.VersionComparator;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 
 /**
  * Integrates with FakeBlock.
@@ -38,8 +42,12 @@ public class FakeBlockIntegrator implements Integrator {
         checkRequiredVersion();
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
+
+        final RegisteredServiceProvider<GroupService> groupService = getServiceProvider(GroupService.class);
+        final RegisteredServiceProvider<PlayerGroupService> playerGroupService = getServiceProvider(PlayerGroupService.class);
+
         plugin.getQuestRegistries().event().register("fakeblock",
-                new FakeBlockEventFactory(server.getServicesManager(), data));
+                new FakeBlockEventFactory(groupService, playerGroupService, data));
     }
 
     private void checkRequiredVersion() throws UnsupportedVersionException {
@@ -51,6 +59,14 @@ public class FakeBlockIntegrator implements Integrator {
                 throw new UnsupportedVersionException(plugin, REQUIRED_VERSION);
             }
         }
+    }
+
+    private <T> RegisteredServiceProvider<T> getServiceProvider(final Class<T> service) throws HookException {
+        final RegisteredServiceProvider<T> provider = plugin.getServer().getServicesManager().getRegistration(service);
+        if (provider == null) {
+            throw new HookException(plugin, "Could not find service provider for " + service.getName());
+        }
+        return provider;
     }
 
     @Override

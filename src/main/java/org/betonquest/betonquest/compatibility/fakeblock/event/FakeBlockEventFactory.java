@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.fakeblock;
+package org.betonquest.betonquest.compatibility.fakeblock.event;
 
 import com.briarcraft.fakeblock.api.service.GroupService;
 import com.briarcraft.fakeblock.api.service.PlayerGroupService;
@@ -9,7 +9,6 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicesManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,13 +37,16 @@ public class FakeBlockEventFactory implements EventFactory {
     /**
      * Creates the FakeBlock event factory.
      *
-     * @param servicesManager servicesManager to get services from
-     * @param data            the data for primary server thread access
+     * @param groupService       the {@link GroupService} service.
+     * @param playerGroupService the {@link PlayerGroupService}.
+     * @param data               the data for primary server thread access
      */
-    public FakeBlockEventFactory(final ServicesManager servicesManager, final PrimaryServerThreadData data) {
+    public FakeBlockEventFactory(final RegisteredServiceProvider<GroupService> groupService,
+                                 final RegisteredServiceProvider<PlayerGroupService> playerGroupService,
+                                 final PrimaryServerThreadData data) {
         this.data = data;
-        this.groupService = servicesManager.getRegistration(GroupService.class);
-        this.playerGroupService = servicesManager.getRegistration(PlayerGroupService.class);
+        this.groupService = groupService;
+        this.playerGroupService = playerGroupService;
     }
 
     @Override
