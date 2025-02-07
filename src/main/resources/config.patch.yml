@@ -1,4 +1,8 @@
-# Put patches for BetonQuest's config here. The syntax is documented in the docs/API/ConfigPatcher.md
+# Put patches for BetonQuest's config here. The syntax is documented in the docs/API/ConfigurationFiles.md
+3.0.0.1:
+  - type: KEY_RENAME
+    oldKey: hook.proskillapi
+    newKey: hook.fabled
 2.1.0.1:
   - type: KEY_RENAME
     oldKey: hooks.aureliumskills

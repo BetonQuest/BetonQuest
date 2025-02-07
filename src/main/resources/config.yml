@@ -60,7 +60,7 @@ hook:
   heroes: true
   magic: true
   denizen: true
-  proskillapi: true
+  fabled: true
   quests: true
   shopkeepers: true
   placeholderapi: true
