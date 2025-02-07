@@ -1,14 +1,15 @@
 package org.betonquest.betonquest.api.feature;
 
 import org.betonquest.betonquest.conversation.ConversationData;
-import org.betonquest.betonquest.feature.QuestCompass;
 import org.betonquest.betonquest.feature.QuestCanceler;
+import org.betonquest.betonquest.feature.QuestCompass;
 import org.betonquest.betonquest.id.CompassID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.quest.registry.QuestRegistry;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -41,7 +42,7 @@ public final class FeatureAPI {
      */
     @Nullable
     public ConversationData getConversation(final ConversationID conversationID) {
-        return questRegistry.conversations().getConversation(conversationID);
+        return questRegistry.conversations().getValues().get(conversationID);
     }
 
     /**
@@ -50,7 +51,7 @@ public final class FeatureAPI {
      * @return quest cancellers in a new map
      */
     public Map<QuestCancelerID, QuestCanceler> getCanceler() {
-        return questRegistry.questCanceller().getCancelers();
+        return new HashMap<>(questRegistry.questCanceller().getValues());
     }
 
     /**
@@ -59,6 +60,6 @@ public final class FeatureAPI {
      * @return compasses in a new map
      */
     public Map<CompassID, QuestCompass> getCompasses() {
-        return questRegistry.compasses().getCompasses();
+        return new HashMap<>(questRegistry.compasses().getValues());
     }
 }

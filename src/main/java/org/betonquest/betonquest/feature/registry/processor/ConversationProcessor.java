@@ -6,14 +6,12 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.conversation.ConversationData;
 import org.betonquest.betonquest.id.ConversationID;
-import org.betonquest.betonquest.quest.registry.processor.QuestProcessor;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Stores Conversation Data and validates it.
  */
-public class ConversationProcessor extends QuestProcessor<ConversationID, ConversationData> {
+public class ConversationProcessor extends SectionProcessor<ConversationID, ConversationData> {
     /**
      * Plugin instance used for new Conversation Data.
      */
@@ -26,29 +24,18 @@ public class ConversationProcessor extends QuestProcessor<ConversationID, Conver
      * @param plugin the plugin instance used for new conversation data
      */
     public ConversationProcessor(final BetonQuestLogger log, final BetonQuest plugin) {
-        super(log);
+        super(log, "Conversation", "conversations");
         this.plugin = plugin;
     }
 
     @Override
-    public void load(final QuestPackage pack) {
-        final ConfigurationSection conversationsConfig = pack.getConfig().getConfigurationSection("conversations");
-        if (conversationsConfig != null) {
-            final String packName = pack.getQuestPath();
-            for (final String convName : conversationsConfig.getKeys(false)) {
-                try {
-                    final ConfigurationSection convSection = conversationsConfig.getConfigurationSection(convName);
-                    if (convSection == null) {
-                        log.warn(pack, "No configuration section for '" + packName + "." + convName + "' conversation!");
-                        continue;
-                    }
-                    final ConversationID convID = new ConversationID(pack, convName);
-                    values.put(convID, new ConversationData(plugin, convID, convSection));
-                } catch (final QuestException e) {
-                    log.warn(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
-                }
-            }
-        }
+    protected ConversationData loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
+        return new ConversationData(plugin, new ConversationID(pack, section.getName()), section);
+    }
+
+    @Override
+    protected ConversationID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
+        return new ConversationID(pack, identifier);
     }
 
     /**
@@ -70,18 +57,5 @@ public class ConversationProcessor extends QuestProcessor<ConversationID, Conver
             }
             return false;
         });
-    }
-
-    /**
-     * Gets stored Conversation Data.
-     * <p>
-     * The conversation data can be null if there was an error loading it.
-     *
-     * @param conversationID package name, dot and name of the conversation
-     * @return ConversationData object for this conversation or null if it does not exist
-     */
-    @Nullable
-    public ConversationData getConversation(final ConversationID conversationID) {
-        return values.get(conversationID);
     }
 }
