@@ -369,7 +369,10 @@ public class BetonQuest extends JavaPlugin {
         }
 
         try {
-            pluginMessage = new PluginMessage(loggerFactory.create(PluginMessage.class), this, configurationFileFactory, configAccessorFactory);
+            pluginMessage = new PluginMessage(this, configurationFileFactory, configAccessorFactory);
+            for (final String language : pluginMessage.getLanguages()) {
+                log.debug("Loaded " + language + " language");
+            }
         } catch (final QuestException e) {
             log.error("Could not load the plugin messages!", e);
             getServer().getPluginManager().disablePlugin(this);
@@ -534,7 +537,7 @@ public class BetonQuest extends JavaPlugin {
 
     private void migratePackages() {
         try {
-            new Migrator().migrate();
+            new Migrator(loggerFactory).migrate();
         } catch (final IOException e) {
             log.error("There was an exception while migrating from a previous version! Reason: " + e.getMessage(), e);
         }

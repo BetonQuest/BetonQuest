@@ -1,0 +1,59 @@
+configVersion: ""
+conversation_start: '&e====&bĐối thoại với {npc}&b bắt đầu!&e===='
+conversation_end: '&e====&bĐối thoại với {npc}&b đã xong!&e===='
+no_permission: '&Bạn không có quyền.'
+new_journal_entry: '&e*&bNhật ký đã được cập nhật!&e*'
+journal_title: 'Nhật ký'
+journal_lore: 'Nhật ký của bạn, chứa tất cả thông tin về nhiệm vụ'
+quest_item: '&2Vật phẩm nhiệm vụ'
+backpack_title: 'Balô'
+previous: '&2Trước'
+next: '&2Sau'
+inventory_full_backpack: '&e*&bTúi đồ của bạn đã đầy! The item was moved to your backpack.&e*' # TODO: missing translation
+inventory_full_drop: '&e*&bTúi đồ của bạn đã đầy! The item was dropped on the ground.&e*' # TODO: missing translation
+pullback: '&cBạn phải hoàn thành cuộc đối thoại trước!'
+items_given: '&2Đã nhận {item}&2 x{amount}'
+items_taken: '&2Đã mất {item}&2 x{amount}'
+money_given: '&2Đã nhận {amount} {currency}'
+money_taken: '&2Đã mất {amount} {currency}'
+point_given: '&2Bạn đã nhận {amount} points từ {category}'
+point_taken: '&2Bạn đã mất {amount} points từ {category}'
+point_set: '&2Your points {category} are set to {amount}' #TODO: missing translation
+point_multiplied: '&2Points của bạn {category} sẽ được nhân {amount} lần'
+blocks_to_break: '&2{amount} khối cần phá còn lại'
+blocks_to_place: '&2{amount} khối cần đặt còn lại'
+mobs_to_kill: '&2{amount} mobs cần giết còn lại'
+mobs_to_click: '&2{amount} mobs cần nhấn vào còn lại'
+players_to_kill: '&2{amount} người chơi cần giết còn lại'
+fish_to_catch: '&2{amount} cá cần bắt còn lại'
+sheep_to_shear: '&2{amount} cừu cần cạo lông còn lại'
+potions_to_brew: '&2{amount} lọ thuốc cần pha chế còn lại'
+animals_to_breed: '&2{amount} động vật cần nhân giống còn lại'
+items_to_pickup: '&2{amount} vật phẩm cần nhặt lên còn lại'
+items_to_smelt: '&2{amount} vật phẩm cần nung chảy còn lại'
+items_to_craft: '&2{amount} vật phẩm cần chế tạo còn lại'
+items_to_enchant: '&2{amount} items left to enchant' # TODO: missing translation
+level_to_gain: '&2{amount} levels left to gain' # TODO: missing translation
+payment_to_receive: '&2{amount} money left to receive' # TODO: missing translation
+busy: '&cBạn không được nói khi đang đánh nhau.'
+quest_canceled: '&2Nhiệm vụ {name}&2 đã bị hủy!'
+cancel: '&cHủy nhiệm vụ'
+cancel_page: 'Hủy nhiệm vụ'
+compass: '&cLa bàn mục tiêu'
+compass_page: 'Chọn mục tiêu'
+command_blocked: '&cBạn không được dùng lệnh khi đang trong đối thoại.'
+language_changed: '&2Đã đổi ngôn ngữ!'
+language_missing: '&cHãy chọn ngôn ngữ'
+language_not_exist: '&cNgôn ngữ không hợp lệ, các ngôn ngữ hiện có: '
+days: 'ngày'
+days_singular: 'ngày' # TODO: missing translation
+hours: 'giờ'
+hours_singular: 'giờ' # TODO: missing translation
+minutes: 'phút'
+minutes_singular: 'phút' # TODO: missing translation
+seconds: 'giây'
+seconds_singular: 'giây' # TODO: missing translation
+password: 'mật khẩu: '
+condition_variable_met: 'có'
+condition_variable_not_met: 'không'
+chest_occupied: 'This chest is already in use' # TODO: missing translation

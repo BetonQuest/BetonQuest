@@ -7,6 +7,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
 ### Changed
+- message.yml file was deleted and instead the lang folder now contains all translations
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation

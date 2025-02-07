@@ -11,3 +11,13 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 ## Changes
 
 Steps marked with :gear: are migrated automatically. Steps marked with :exclamation: must be done manually.
+
+- [3.0.0-DEV-58 - Delete messages.yml](#300-dev-58-delete-messagesyml) :exclamation:
+
+### 3.0.0-DEV-58 - Delete messages.yml :exclamation:
+
+The `messages.yml` file has been removed.
+All messages are now stored in the `lang` folder, you can also customize them there and add new languages.
+If you still have the old messages.yml file, you get a warning in the console.
+If you dont have any custom messages,
+you can delete the file safely otherwise you should move the messages to the new location.

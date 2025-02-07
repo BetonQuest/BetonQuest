@@ -1,91 +1,90 @@
-en:
-  unknown_argument: '&cWrong argument.'
-  reloaded: '&aConfiguration reloaded!'
-  arguments: '&cNot enough arguments.'
-  specify_condition: '&cSpecify correct condition name.'
-  specify_event: '&cSpecify correct event name.'
-  specify_player: '&cSpecify player''s name.'
-  specify_item: '&cSpecify correct item''s name.'
-  specify_tag: '&cSpecify tag.'
-  specify_objective: '&cSpecify correct objective name.'
-  specify_category_and_amount: '&cSpecify category name and amount of points to modify.'
-  specify_pointer: '&cSpecify correct pointer name.'
-  specify_date: '&cSpecify pointer date (formatted like in date_format)'
-  specify_action: '&cSpecify action (read, set or add)'
-  specify_path: '&cSpecify path (separated by dots)'
-  specify_package: '&cSpecify package name'
-  specify_key: '&cSpecify valid key'
-  package_created: '&2Package created'
-  package_exists: '&cPackage already exists'
-  config_set_error: '&cCould not set specified path.'
-  item_created: '&2Item saved to configuration as {item}.'
-  value_set: '&aValue {value} set for key {key}.'
-  key_remove: '&aRemoved key {key}.'
-  player_variables: '&aPlayer''s variables in &b{objective}&a:'
-  player_no_property: '&cNo property stored for Player.'
-  player_objectives: '&aPlayer''s objectives:'
-  player_tags: '&aPlayer''s tags:'
-  player_condition: '&aCondition {condition}: {result}'
-  player_event: '&aEvent fired: {event}'
-  player_points: '&aPlayer''s points:'
-  player_journal: '&ePointers in journal:'
-  points_added: '&2Points added!'
-  points_removed: '&2Points subtracted!'
-  tag_added: '&2Tag added!'
-  tag_removed: '&2Tag removed!'
-  global_points: '&aGlobal points:'
-  global_tags: '&aGlobal tags:'
-  global_points_purged: '&4Global points purged!'
-  global_tags_purged: '&4Global tags purged!'
-  objective_added: '&2Objective started!'
-  objective_removed: '&2Objective deleted!'
-  objective_completed: '&2Objective completed!'
-  pointer_added: '&2Pointer added!'
-  pointer_removed: '&2Pointer removed!'
-  everything_renamed: '&2Every occurrence renamed!'
-  everything_removed: '&2Every occurrence removed!'
-  purged: '&4{player}''s data purged!'
-  command_reload: reloads the plugin
-  command_objectives: displays active objectives
-  command_tags: displays tags
-  command_points: displays points
-  command_journal: displays journal pointers
-  command_condition: checks if the player meet the condition
-  command_event: fires an event for the player
-  command_item: creates an item from the one you're holding
-  command_give: gives you the specified item
-  command_variable: displays and modifies the variable objective
-  command_rename: renames all specified objects entries in the database
-  command_delete: deletes all specified objects from the database
-  command_config: reads, sets or appends strings to config files
-  command_version: displays version information
-  command_version_context:
-    version_info: '&eVersion Information'
-    click_to_download: '&a (Version ''&2{version}&a'' is available. Click to download!)'
-    click_to_copy_all: '&eClick to copy everything to clipboard!'
-    click_to_copy: 'Click to copy!'
-    click_to_download_hint: 'Click to download!'
-    color_value: '&7'
-    color_key: '&6'
-    color_value_version: '&f'
-    version_betonquest: 'BetonQuest version: '
-    version_server: 'Server version: '
-    hooked_into: 'Hooked into: '
-  command_vector: calculates a vector from first variable and saves it to the second
-  command_purge: deletes all data about the player
-  command_backup: creates configuration and database backup. Use only from console on empty server!
-  command_globaltags: displays global tags
-  command_globalpoints: displays global points
-  command_download: download quests and templates from a github repository
-  command_debug: select debug mode
-  offline: '&4All players must be offline in order to make a backup!'
-  default_language_changed: '&2Default language changed!'
-  error: '&cThere has been an error: {error}'
-  download_scheduled: '&bInitiated download...'
-  download_success: '&aDownload completed!'
-  download_failed: "&4Download failed due to the following error:\n&c{error}"
-  download_failed_offset: '&cInvalid offset path.'
-  download_failed_whitelist: '&cRepository not whitelisted.'
-  download_failed_pr: '&cDownloading of pull requests is disabled to prevent exploits.'
-  conversation_spectator: '&4Spectator mode is not supported for this conversation type!'
-  offline_invalid: '&cInvalid target: offline'
+unknown_argument: '&cWrong argument.'
+reloaded: '&aConfiguration reloaded!'
+arguments: '&cNot enough arguments.'
+specify_condition: '&cSpecify correct condition name.'
+specify_event: '&cSpecify correct event name.'
+specify_player: '&cSpecify player''s name.'
+specify_item: '&cSpecify correct item''s name.'
+specify_tag: '&cSpecify tag.'
+specify_objective: '&cSpecify correct objective name.'
+specify_category_and_amount: '&cSpecify category name and amount of points to modify.'
+specify_pointer: '&cSpecify correct pointer name.'
+specify_date: '&cSpecify pointer date (formatted like in date_format)'
+specify_action: '&cSpecify action (read, set or add)'
+specify_path: '&cSpecify path (separated by dots)'
+specify_package: '&cSpecify package name'
+specify_key: '&cSpecify valid key'
+package_created: '&2Package created'
+package_exists: '&cPackage already exists'
+config_set_error: '&cCould not set specified path.'
+item_created: '&2Item saved to configuration as {item}.'
+value_set: '&aValue {value} set for key {key}.'
+key_remove: '&aRemoved key {key}.'
+player_variables: '&aPlayer''s variables in &b{objective}&a:'
+player_no_property: '&cNo property stored for Player.'
+player_objectives: '&aPlayer''s objectives:'
+player_tags: '&aPlayer''s tags:'
+player_condition: '&aCondition {condition}: {result}'
+player_event: '&aEvent fired: {event}'
+player_points: '&aPlayer''s points:'
+player_journal: '&ePointers in journal:'
+points_added: '&2Points added!'
+points_removed: '&2Points subtracted!'
+tag_added: '&2Tag added!'
+tag_removed: '&2Tag removed!'
+global_points: '&aGlobal points:'
+global_tags: '&aGlobal tags:'
+global_points_purged: '&4Global points purged!'
+global_tags_purged: '&4Global tags purged!'
+objective_added: '&2Objective started!'
+objective_removed: '&2Objective deleted!'
+objective_completed: '&2Objective completed!'
+pointer_added: '&2Pointer added!'
+pointer_removed: '&2Pointer removed!'
+everything_renamed: '&2Every occurrence renamed!'
+everything_removed: '&2Every occurrence removed!'
+purged: '&4{player}''s data purged!'
+command_reload: reloads the plugin
+command_objectives: displays active objectives
+command_tags: displays tags
+command_points: displays points
+command_journal: displays journal pointers
+command_condition: checks if the player meet the condition
+command_event: fires an event for the player
+command_item: creates an item from the one you're holding
+command_give: gives you the specified item
+command_variable: displays and modifies the variable objective
+command_rename: renames all specified objects entries in the database
+command_delete: deletes all specified objects from the database
+command_config: reads, sets or appends strings to config files
+command_version: displays version information
+command_version_context:
+  version_info: '&eVersion Information'
+  click_to_download: '&a (Version ''&2{version}&a'' is available. Click to download!)'
+  click_to_copy_all: '&eClick to copy everything to clipboard!'
+  click_to_copy: 'Click to copy!'
+  click_to_download_hint: 'Click to download!'
+  color_value: '&7'
+  color_key: '&6'
+  color_value_version: '&f'
+  version_betonquest: 'BetonQuest version: '
+  version_server: 'Server version: '
+  hooked_into: 'Hooked into: '
+command_vector: calculates a vector from first variable and saves it to the second
+command_purge: deletes all data about the player
+command_backup: creates configuration and database backup. Use only from console on empty server!
+command_globaltags: displays global tags
+command_globalpoints: displays global points
+command_download: download quests and templates from a github repository
+command_debug: select debug mode
+offline: '&4All players must be offline in order to make a backup!'
+default_language_changed: '&2Default language changed!'
+error: '&cThere has been an error: {error}'
+download_scheduled: '&bInitiated download...'
+download_success: '&aDownload completed!'
+download_failed: "&4Download failed due to the following error:\n&c{error}"
+download_failed_offset: '&cInvalid offset path.'
+download_failed_whitelist: '&cRepository not whitelisted.'
+download_failed_pr: '&cDownloading of pull requests is disabled to prevent exploits.'
+conversation_spectator: '&4Spectator mode is not supported for this conversation type!'
+offline_invalid: '&cInvalid target: offline'

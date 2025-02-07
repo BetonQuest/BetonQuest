@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.config.patcher.migration;
 
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.AuraSkillsRename;
 import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.EffectLib;
 import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.EventScheduling;
@@ -11,6 +12,7 @@ import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.Pac
 import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.RPGMenuMerge;
 import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.RemoveEntity;
 import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.RideUpdates;
+import org.betonquest.betonquest.config.patcher.migration.migrators.from2to3.DeleteMessagesYml;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -28,14 +30,15 @@ public class Migrator {
     /**
      * Creates a new migration process.
      *
+     * @param loggerFactory the logger factory.
      * @throws IOException If an I/O error occurs
      */
-    public Migrator() throws IOException {
+    public Migrator(final BetonQuestLoggerFactory loggerFactory) throws IOException {
         this.migrations = new LinkedList<>();
         final FileConfigurationProvider provider = new FileConfigurationProvider();
 
         addMigratorsFrom1to2(provider);
-        addMigratorsFrom2to3(provider);
+        addMigratorsFrom2to3(loggerFactory, provider);
     }
 
     private void addMigratorsFrom1to2(final FileConfigurationProvider provider) {
@@ -52,9 +55,9 @@ public class Migrator {
         migrations.add(new FabledRename(provider));
     }
 
-    @SuppressWarnings({"PMD.UnusedFormalParameter", "PMD.UncommentedEmptyMethodBody"})
-    private void addMigratorsFrom2to3(final FileConfigurationProvider provider) {
-
+    @SuppressWarnings("PMD.UnusedFormalParameter")
+    private void addMigratorsFrom2to3(final BetonQuestLoggerFactory loggerFactory, final FileConfigurationProvider provider) {
+        migrations.add(new DeleteMessagesYml(loggerFactory.create(DeleteMessagesYml.class)));
     }
 
     /**
