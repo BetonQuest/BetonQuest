@@ -151,7 +151,7 @@ You will get a zip file containing all your data, ready to be unzipped for resto
 
 ### Update the plugin: `update`
 Update command ('`/q update`') will try to download the newest version of the plugin and save it to the update folder.
-This folder is then handled by Spigot to update the plugin. If you accidentally use this command but do not wish to update the plugin,
+This folder is then handled by the server to update the plugin. If you accidentally use this command but do not wish to update the plugin,
 you should remove `BetonQuest.jar` file from the `plugins/update` folder before restarting/reloading the server.
 
 ### Debug quests and BetonQuest: `debug`
