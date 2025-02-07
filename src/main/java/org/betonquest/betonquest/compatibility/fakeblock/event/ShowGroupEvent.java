@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.fakeblock;
+package org.betonquest.betonquest.compatibility.fakeblock.event;
 
 import com.briarcraft.fakeblock.api.service.PlayerGroupService;
 import org.betonquest.betonquest.api.profile.Profile;
