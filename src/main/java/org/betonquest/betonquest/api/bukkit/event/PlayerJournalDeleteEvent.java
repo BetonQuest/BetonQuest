@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.api.bukkit.event;
 
-import org.betonquest.betonquest.Journal;
-import org.betonquest.betonquest.Pointer;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.feature.journal.Journal;
+import org.betonquest.betonquest.feature.journal.Pointer;
 import org.bukkit.event.HandlerList;
 
 /**

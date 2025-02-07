@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.journal;
 
-import org.betonquest.betonquest.Journal;
-import org.betonquest.betonquest.Pointer;
+import org.betonquest.betonquest.feature.journal.Journal;
+import org.betonquest.betonquest.feature.journal.Pointer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;

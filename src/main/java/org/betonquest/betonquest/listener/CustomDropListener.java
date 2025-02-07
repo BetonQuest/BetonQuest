@@ -1,5 +1,6 @@
-package org.betonquest.betonquest;
+package org.betonquest.betonquest.listener;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ItemID;

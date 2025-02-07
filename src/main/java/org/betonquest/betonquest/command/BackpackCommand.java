@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.command;
 
-import org.betonquest.betonquest.Backpack;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.feature.Backpack;
 import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

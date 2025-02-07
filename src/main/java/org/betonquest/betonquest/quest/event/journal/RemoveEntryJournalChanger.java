@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.journal;
 
-import org.betonquest.betonquest.Journal;
+import org.betonquest.betonquest.feature.journal.Journal;
 
 /**
  * A journal changer that will remove a specified entry.

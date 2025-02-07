@@ -1,4 +1,4 @@
-package org.betonquest.betonquest;
+package org.betonquest.betonquest.listener;
 
 import org.betonquest.betonquest.api.MobKillNotifier;
 import org.betonquest.betonquest.util.PlayerConverter;

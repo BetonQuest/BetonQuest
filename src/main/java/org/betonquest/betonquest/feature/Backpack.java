@@ -1,6 +1,7 @@
-package org.betonquest.betonquest;
+package org.betonquest.betonquest.feature;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -10,6 +11,7 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.database.PlayerData;
+import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;

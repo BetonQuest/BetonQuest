@@ -1,7 +1,8 @@
-package org.betonquest.betonquest;
+package org.betonquest.betonquest.feature.journal;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.PlayerJournalAddEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerJournalDeleteEvent;
 import org.betonquest.betonquest.api.config.ConfigurationFile;

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.journal;
 
-import org.betonquest.betonquest.Journal;
+import org.betonquest.betonquest.feature.journal.Journal;
 
 /**
  * A journal changer that will not change anything.
@@ -16,5 +16,4 @@ public class NoActionJournalChanger implements JournalChanger {
     public void changeJournal(final Journal journal) {
         // null object pattern
     }
-
 }
