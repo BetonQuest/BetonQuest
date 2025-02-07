@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.config;
+package org.betonquest.betonquest.feature;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
@@ -7,6 +7,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.id.ConditionID;

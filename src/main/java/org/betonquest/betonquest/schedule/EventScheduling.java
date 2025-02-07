@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
-import org.betonquest.betonquest.quest.registry.feature.ScheduleRegistry;
+import org.betonquest.betonquest.feature.registry.ScheduleRegistry;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.lang.reflect.InvocationTargetException;

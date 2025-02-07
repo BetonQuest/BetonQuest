@@ -18,9 +18,9 @@ import org.betonquest.betonquest.compatibility.citizens.objective.NPCRangeObject
 import org.betonquest.betonquest.compatibility.citizens.variable.npc.CitizensVariableFactory;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
+import org.betonquest.betonquest.feature.registry.ConversationIORegistry;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
-import org.betonquest.betonquest.quest.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
 import org.betonquest.betonquest.quest.registry.type.ObjectiveTypeRegistry;

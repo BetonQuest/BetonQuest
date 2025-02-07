@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.registry.processor;
+package org.betonquest.betonquest.feature.registry.processor;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.conversation.ConversationData;
 import org.betonquest.betonquest.id.ConversationID;
+import org.betonquest.betonquest.quest.registry.processor.QuestProcessor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 

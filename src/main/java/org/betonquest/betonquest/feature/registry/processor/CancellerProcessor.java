@@ -1,11 +1,12 @@
-package org.betonquest.betonquest.quest.registry.processor;
+package org.betonquest.betonquest.feature.registry.processor;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.config.QuestCanceler;
+import org.betonquest.betonquest.feature.QuestCanceler;
 import org.betonquest.betonquest.id.QuestCancelerID;
+import org.betonquest.betonquest.quest.registry.processor.QuestProcessor;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.HashMap;

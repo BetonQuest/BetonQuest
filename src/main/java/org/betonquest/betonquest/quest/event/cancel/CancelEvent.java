@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.cancel;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
-import org.betonquest.betonquest.config.QuestCanceler;
+import org.betonquest.betonquest.feature.QuestCanceler;
 
 /**
  * The cancel event.

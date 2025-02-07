@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.id.ItemID;

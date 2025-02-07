@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.registry.feature;
+package org.betonquest.betonquest.feature.registry;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;

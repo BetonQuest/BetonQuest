@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.quest.registry.feature.NotifyIORegistry;
+import org.betonquest.betonquest.feature.registry.NotifyIORegistry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
