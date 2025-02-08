@@ -1,10 +1,12 @@
 package org.betonquest.betonquest.compatibility.heroes.event;
 
+import com.herocraftonline.heroes.characters.CharacterManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.compatibility.heroes.HeroesClassType;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -25,21 +27,31 @@ public class HeroesExperienceEventFactory implements EventFactory {
     private final PrimaryServerThreadData data;
 
     /**
+     * The {@link CharacterManager} of the Heroes plugin.
+     */
+    private final CharacterManager characterManager;
+
+    /**
      * Create a new Factory to create Give Brew Events.
      *
-     * @param loggerFactory the logger factory.
-     * @param data          the data used for primary server access.
+     * @param loggerFactory    the logger factory.
+     * @param data             the data used for primary server access.
+     * @param characterManager the {@link CharacterManager} of the Heroes plugin.
      */
-    public HeroesExperienceEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public HeroesExperienceEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data,
+                                        final CharacterManager characterManager) {
         this.loggerFactory = loggerFactory;
         this.data = data;
+        this.characterManager = characterManager;
     }
 
     @Override
     public Event parseEvent(final Instruction instruction) throws QuestException {
-        final boolean primary = "primary".equalsIgnoreCase(instruction.next());
+        final HeroesClassType classType = instruction.getEnum(HeroesClassType.class);
         final VariableNumber amountVar = instruction.get(VariableNumber::new);
-        return new PrimaryServerThreadEvent(new OnlineEventAdapter(new HeroesExperienceEvent(primary, amountVar),
+        final boolean isPrimary = classType.equals(HeroesClassType.PRIMARY);
+
+        return new PrimaryServerThreadEvent(new OnlineEventAdapter(new HeroesExperienceEvent(characterManager, isPrimary, amountVar),
                 loggerFactory.create(HeroesExperienceEvent.class), instruction.getPackage()), data);
     }
 }

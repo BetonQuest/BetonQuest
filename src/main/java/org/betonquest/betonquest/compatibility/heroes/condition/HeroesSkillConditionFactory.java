@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.heroes.condition;
 
+import com.herocraftonline.heroes.characters.CharacterManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -25,20 +26,28 @@ public class HeroesSkillConditionFactory implements PlayerConditionFactory {
     private final PrimaryServerThreadData data;
 
     /**
+     * The {@link CharacterManager} of the Heroes plugin.
+     */
+    private final CharacterManager characterManager;
+
+    /**
      * Create a new Factory to create Give Brew Events.
      *
-     * @param loggerFactory the logger factory.
-     * @param data          the data used for primary server access.
+     * @param loggerFactory    the logger factory.
+     * @param data             the data used for primary server access.
+     * @param characterManager the {@link CharacterManager} of the Heroes plugin.
      */
-    public HeroesSkillConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public HeroesSkillConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data,
+                                       final CharacterManager characterManager) {
         this.loggerFactory = loggerFactory;
         this.data = data;
+        this.characterManager = characterManager;
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final VariableString skillNameVar = instruction.get(VariableString::new);
-        return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(new HeroesSkillCondition(skillNameVar),
+        return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(new HeroesSkillCondition(characterManager, skillNameVar),
                 loggerFactory.create(HeroesSkillCondition.class), instruction.getPackage()), data);
     }
 }

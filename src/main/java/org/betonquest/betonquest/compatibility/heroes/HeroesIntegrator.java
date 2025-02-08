@@ -1,5 +1,8 @@
 package org.betonquest.betonquest.compatibility.heroes;
 
+import com.herocraftonline.heroes.Heroes;
+import com.herocraftonline.heroes.characters.CharacterManager;
+import com.herocraftonline.heroes.characters.classes.HeroClassManager;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Integrator;
@@ -33,14 +36,16 @@ public class HeroesIntegrator implements Integrator {
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
         final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
+        final CharacterManager characterManager = Heroes.getInstance().getCharacterManager();
+        final HeroClassManager classManager = Heroes.getInstance().getClassManager();
 
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
         final ConditionTypeRegistry conditionTypes = questRegistries.condition();
-        conditionTypes.register("heroesattribute", new HeroesAttributeConditionFactory(loggerFactory, data));
-        conditionTypes.register("heroesclass", new HeroesClassConditionFactory(loggerFactory, data));
-        conditionTypes.register("heroesskill", new HeroesSkillConditionFactory(loggerFactory, data));
+        conditionTypes.register("heroesattribute", new HeroesAttributeConditionFactory(loggerFactory, data, characterManager));
+        conditionTypes.register("heroesclass", new HeroesClassConditionFactory(loggerFactory, data, characterManager, classManager));
+        conditionTypes.register("heroesskill", new HeroesSkillConditionFactory(loggerFactory, data, characterManager));
 
-        questRegistries.event().register("heroesexp", new HeroesExperienceEventFactory(loggerFactory, data));
+        questRegistries.event().register("heroesexp", new HeroesExperienceEventFactory(loggerFactory, data, characterManager));
 
         plugin.getServer().getPluginManager().registerEvents(new HeroesMobKillListener(), plugin);
     }

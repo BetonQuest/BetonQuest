@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.heroes.condition;
 
-import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.attributes.AttributeType;
+import com.herocraftonline.heroes.characters.CharacterManager;
 import com.herocraftonline.heroes.characters.Hero;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -13,6 +13,11 @@ import org.betonquest.betonquest.instruction.variable.VariableString;
  * Checks an attribute of a player and if greater than or equal to a level.
  */
 public class HeroesAttributeCondition implements OnlineCondition {
+    /**
+     * The {@link CharacterManager} of the Heroes plugin.
+     */
+    private final CharacterManager characterManager;
+
     /**
      * The {@link VariableString} of the attribute name.
      */
@@ -26,10 +31,12 @@ public class HeroesAttributeCondition implements OnlineCondition {
     /**
      * Create a new Heroes Attribute Condition.
      *
-     * @param attributeVar The {@link VariableString} of the attribute name.
-     * @param levelVar     The {@link VariableNumber} of the level.
+     * @param characterManager The {@link CharacterManager} of the Heroes plugin.
+     * @param attributeVar     The {@link VariableString} of the attribute name.
+     * @param levelVar         The {@link VariableNumber} of the level.
      */
-    public HeroesAttributeCondition(final VariableString attributeVar, final VariableNumber levelVar) {
+    public HeroesAttributeCondition(final CharacterManager characterManager, final VariableString attributeVar, final VariableNumber levelVar) {
+        this.characterManager = characterManager;
         this.attributeVar = attributeVar;
         this.levelVar = levelVar;
     }
@@ -45,7 +52,7 @@ public class HeroesAttributeCondition implements OnlineCondition {
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
         final String name = attributeVar.getValue(profile);
-        final Hero hero = Heroes.getInstance().getCharacterManager().getHero(profile.getPlayer());
+        final Hero hero = characterManager.getHero(profile.getPlayer());
         return hero.getAttributeValue(findAttribute(name)) >= levelVar.getValue(profile).intValue();
     }
 }
