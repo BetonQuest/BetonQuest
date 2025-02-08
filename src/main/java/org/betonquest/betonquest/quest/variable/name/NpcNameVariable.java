@@ -30,6 +30,6 @@ public class NpcNameVariable implements PlayerVariable {
         if (conv == null) {
             return "";
         }
-        return conv.getData().getQuester(dataStorage.get(profile).getLanguage());
+        return conv.getData().getPublicData().getQuester(dataStorage.get(profile).getLanguage());
     }
 }

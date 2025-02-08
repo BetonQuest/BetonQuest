@@ -59,10 +59,18 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
  * Manages an active conversation between a player and a NPC.
  * Handles the conversation flow based on {@link ConversationData}.
  */
-@SuppressWarnings({"PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired",
-        "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.AvoidDuplicateLiterals",
-        "PMD.CouplingBetweenObjects", "NullAway"})
+@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods", "PMD.CouplingBetweenObjects", "NullAway"})
 public class Conversation implements Listener {
+
+    /**
+     * The option separator.
+     */
+    private static final String DOT = ".";
+
+    /**
+     * Common log message identifier separator.
+     */
+    private static final String FOR = "' for '";
 
     /**
      * The map of all active conversations.
@@ -79,17 +87,29 @@ public class Conversation implements Listener {
      */
     private final BetonQuestLogger log;
 
+    /**
+     * The pack of this conversation.
+     */
     private final QuestPackage pack;
 
     /**
-     * Thread safety
+     * Thread safety.
      */
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
+    /**
+     * Profile taking this conversation.
+     */
     private final OnlineProfile onlineProfile;
 
+    /**
+     * Player taking this conversation.
+     */
     private final Player player;
 
+    /**
+     * Conversation language.
+     */
     private final String language;
 
     /**
@@ -103,8 +123,14 @@ public class Conversation implements Listener {
      */
     private final ConversationID identifier;
 
+    /**
+     * List of blocked commands while in conversation.
+     */
     private final List<String> blacklist;
 
+    /**
+     * This, a reference for sub-objects.
+     */
     private final Conversation conv;
 
     /**
@@ -115,6 +141,9 @@ public class Conversation implements Listener {
      */
     private final Map<Integer, ResolvedOption> availablePlayerOptions = new HashMap<>();
 
+    /**
+     * If an interceptor should delay non-conversation messages.
+     */
     private final boolean messagesDelaying;
 
     /**
@@ -122,6 +151,9 @@ public class Conversation implements Listener {
      */
     private final PluginMessage pluginMessage;
 
+    /**
+     * The current conversation state.
+     */
     @SuppressWarnings("PMD.AvoidUsingVolatile")
     protected volatile ConversationState state = ConversationState.CREATED;
 
@@ -203,14 +235,14 @@ public class Conversation implements Listener {
         ACTIVE_CONVERSATIONS.put(onlineProfile, conv);
 
         if (startingOption == null) {
-            log.debug(pack, "Starting conversation '" + conversationID.getFullID() + "' for '" + onlineProfile + "'.");
+            log.debug(pack, "Starting conversation '" + conversationID.getFullID() + FOR + onlineProfile + "'.");
             new Starter().runTaskAsynchronously(BetonQuest.getInstance());
         } else {
             String firstOption = startingOption;
-            if (!startingOption.contains(".")) {
-                firstOption = conversationID.getBaseID() + "." + startingOption;
+            if (!startingOption.contains(DOT)) {
+                firstOption = conversationID.getBaseID() + DOT + startingOption;
             }
-            log.debug(pack, "Starting conversation '" + conversationID.getFullID() + "' for '" + onlineProfile + "'.");
+            log.debug(pack, "Starting conversation '" + conversationID.getFullID() + FOR + onlineProfile + "'.");
             new Starter(firstOption).runTaskAsynchronously(BetonQuest.getInstance());
         }
     }
@@ -243,6 +275,7 @@ public class Conversation implements Listener {
      * @param force   setting it to true will force the first option, even if
      *                conditions are not met
      */
+    @SuppressWarnings("PMD.CognitiveComplexity")
     private void selectOption(final List<ResolvedOption> options, final boolean force) {
         final List<ResolvedOption> inputOptions = force ? List.of(options.get(0)) : options;
 
@@ -286,7 +319,7 @@ public class Conversation implements Listener {
         text = ChatColor.translateAlternateColorCodes('&', text);
 
         // print option to the player
-        inOut.setNpcResponse(data.getQuester(language), text);
+        inOut.setNpcResponse(data.getPublicData().getQuester(language), text);
 
         new NPCEventRunner(nextNPCOption).runTask(BetonQuest.getInstance());
     }
@@ -362,7 +395,7 @@ public class Conversation implements Listener {
 
     /**
      * Ends conversation, firing final events and removing it from the list of
-     * active conversations
+     * active conversations.
      */
     public void endConversation() {
         if (state.isInactive()) {
@@ -382,16 +415,16 @@ public class Conversation implements Listener {
             }
             state = ConversationState.ENDED;
 
-            log.debug(pack, "Ending conversation '" + conv.getID().getFullID() + "' for '" + onlineProfile + "'.");
+            log.debug(pack, "Ending conversation '" + conv.getID().getFullID() + FOR + onlineProfile + "'.");
             inOut.end();
             // fire final events
-            for (final EventID event : data.getFinalEvents()) {
+            for (final EventID event : data.getPublicData().finalEvents()) {
                 BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, event);
             }
             //only display status messages if conversationIO allows it
             if (conv.inOut.printMessages()) {
                 conv.inOut.print(pluginMessage.getMessage(onlineProfile, "conversation_end",
-                        new PluginMessage.Replacement("npc", data.getQuester(language))));
+                        new PluginMessage.Replacement("npc", data.getPublicData().getQuester(language))));
             }
             //play conversation end sound
             Config.playSound(onlineProfile, "end");
@@ -422,6 +455,8 @@ public class Conversation implements Listener {
     }
 
     /**
+     * If the conversation is ended.
+     *
      * @return whenever this conversation has already ended
      */
     public boolean isEnded() {
@@ -434,7 +469,7 @@ public class Conversation implements Listener {
     }
 
     /**
-     * Send message to player, bypassing any message delaying if needed
+     * Send message to player, bypassing any message delaying if needed.
      *
      * @param message The message to send
      */
@@ -446,6 +481,11 @@ public class Conversation implements Listener {
         }
     }
 
+    /**
+     * Send message to player, bypassing any message delaying if needed.
+     *
+     * @param message The message to send
+     */
     public void sendMessage(final BaseComponent... message) {
         if (interceptor == null) {
             player.spigot().sendMessage(message);
@@ -460,9 +500,14 @@ public class Conversation implements Listener {
      * @return true if the movement should be blocked, false otherwise
      */
     public boolean isMovementBlock() {
-        return data.isMovementBlocked();
+        return data.getPublicData().blockMovement();
     }
 
+    /**
+     * Blocks blacklisted commands.
+     *
+     * @param event the preprocess event to eventually cancel
+     */
     @EventHandler(ignoreCancelled = true)
     public void onCommand(final PlayerCommandPreprocessEvent event) {
         if (!event.getPlayer().equals(player)) {
@@ -480,9 +525,13 @@ public class Conversation implements Listener {
         }
     }
 
+    /**
+     * Prevent damage to (or from) player while in conversation.
+     *
+     * @param event the damage event to cancel
+     */
     @EventHandler(ignoreCancelled = true)
     public void onDamage(final EntityDamageByEntityEvent event) {
-        // prevent damage to (or from) player while in conversation
         if (event.getEntity() instanceof Player && PlayerConverter.getID((Player) event.getEntity()).equals(onlineProfile)
                 || event.getDamager() instanceof Player
                 && PlayerConverter.getID((Player) event.getDamager()).equals(onlineProfile)) {
@@ -490,9 +539,13 @@ public class Conversation implements Listener {
         }
     }
 
+    /**
+     * End conversation if player quits (why keep listeners running?).
+     *
+     * @param event the quit event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onQuit(final PlayerQuitEvent event) {
-        // if player quits, end conversation (why keep listeners running?)
         if (event.getPlayer().equals(player)) {
             if (isMovementBlock()) {
                 suspend();
@@ -600,7 +653,7 @@ public class Conversation implements Listener {
         for (final String pointer : rawPointers) {
             final OptionType nextType = option.type() == PLAYER ? NPC : PLAYER;
             pointers.add(new ConversationOptionResolver(plugin.getFeatureAPI(), nextConvData.getPack(),
-                    nextConvData.getName(), nextType, pointer).resolve());
+                    nextConvData.getPublicData().convName(), nextType, pointer).resolve());
         }
         return pointers;
     }
@@ -665,7 +718,7 @@ public class Conversation implements Listener {
 
                 // stop the conversation if it's canceled
                 if (event.isCancelled()) {
-                    log.debug(pack, "Conversation '" + conv.getID().getFullID() + "' for '" + player.getPlayerProfile() + "' has been "
+                    log.debug(pack, "Conversation '" + conv.getID().getFullID() + FOR + player.getPlayerProfile() + "' has been "
                             + "canceled because it's PlayerConversationStartEvent has been canceled.");
                     ACTIVE_CONVERSATIONS.remove(onlineProfile);
                     return;
@@ -676,7 +729,7 @@ public class Conversation implements Listener {
                 // would leave it active while the conversation is not
                 // started, causing it to display "null" all the time
                 try {
-                    final String name = data.getConversationIO();
+                    final String name = data.getPublicData().convIO();
                     final ConversationIORegistry.ConversationIOFactory factory = Utils.getNN(
                             plugin.getFeatureRegistries().conversationIO().getFactory(name),
                             "No '" + name + "' registered!");
@@ -692,7 +745,7 @@ public class Conversation implements Listener {
                 // start interceptor if needed
                 if (messagesDelaying) {
                     try {
-                        final String name = data.getInterceptor();
+                        final String name = data.getPublicData().interceptor();
                         final InterceptorRegistry.InterceptorFactory factory = Utils.getNN(
                                 plugin.getFeatureRegistries().interceptor().getFactory(name),
                                 "No '" + name + "' registered!");
@@ -712,7 +765,7 @@ public class Conversation implements Listener {
 
                     if (conv.inOut.printMessages()) {
                         conv.inOut.print(pluginMessage.getMessage(onlineProfile, "conversation_start",
-                                new PluginMessage.Replacement("npc", data.getQuester(language))));
+                                new PluginMessage.Replacement("npc", data.getPublicData().getQuester(language))));
                     }
 
                     Config.playSound(onlineProfile, "start");
@@ -736,7 +789,6 @@ public class Conversation implements Listener {
             }
         }
 
-        @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
         private List<ResolvedOption> resolveOptions(final List<String> startingOptions) {
             final List<ResolvedOption> resolvedOptions = new ArrayList<>();
             for (final String startingOption : startingOptions) {
@@ -756,14 +808,14 @@ public class Conversation implements Listener {
     /**
      * Fires events from an NPC option. Should be called on the main thread.
      */
-    private class NPCEventRunner extends BukkitRunnable {
+    private final class NPCEventRunner extends BukkitRunnable {
 
         /**
          * The NPC option that has been selected and should be printed.
          */
         private final ResolvedOption npcOption;
 
-        public NPCEventRunner(final ResolvedOption npcOption) {
+        private NPCEventRunner(final ResolvedOption npcOption) {
             super();
             this.npcOption = npcOption;
         }
@@ -809,14 +861,14 @@ public class Conversation implements Listener {
     /**
      * Prints the NPC response to the player. Should be called asynchronously.
      */
-    private class ResponsePrinter extends BukkitRunnable {
+    private final class ResponsePrinter extends BukkitRunnable {
 
         /**
          * The option that has been selected by the player and should be printed.
          */
         private final ResolvedOption playerOption;
 
-        public ResponsePrinter(final ResolvedOption playerOption) {
+        private ResponsePrinter(final ResolvedOption playerOption) {
             super();
             this.playerOption = playerOption;
         }
@@ -855,14 +907,14 @@ public class Conversation implements Listener {
     /**
      * Prints possible player options to a NPC option to the player. Should be called asynchronously.
      */
-    private class OptionPrinter extends BukkitRunnable {
+    private final class OptionPrinter extends BukkitRunnable {
 
         /**
          * The option that has been selected and should be printed.
          */
         private final ResolvedOption npcOption;
 
-        public OptionPrinter(final ResolvedOption npcOption) {
+        private OptionPrinter(final ResolvedOption npcOption) {
             super();
             this.npcOption = npcOption;
         }
@@ -890,8 +942,8 @@ public class Conversation implements Listener {
     /**
      * Ends the conversation. Should be called in the main thread.
      */
-    private class ConversationEnder extends BukkitRunnable {
-        public ConversationEnder() {
+    private final class ConversationEnder extends BukkitRunnable {
+        private ConversationEnder() {
             super();
         }
 
