@@ -9,12 +9,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * HolographicDisplays specific implementation of BetonHologram
+ * HolographicDisplays specific implementation of BetonHologram.
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class HolographicDisplaysHologram implements BetonHologram {
     /**
-     * The hologram object from HolographicDisplays
+     * The hologram object from HolographicDisplays.
      */
     private final Hologram hologram;
 
@@ -24,7 +24,7 @@ public class HolographicDisplaysHologram implements BetonHologram {
     private boolean disabled;
 
     /**
-     * Create a BetonHologram to wrap the given HolographicDisplays hologram
+     * Create a BetonHologram to wrap the given HolographicDisplays hologram.
      *
      * @param hologram The hologram object to wrap
      */

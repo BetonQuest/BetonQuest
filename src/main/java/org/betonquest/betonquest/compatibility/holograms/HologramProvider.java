@@ -22,17 +22,17 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Singleton class which provides Hologram
+ * Singleton class which provides Hologram.
  */
 @SuppressWarnings("PMD.AvoidSynchronizedStatement")
 public final class HologramProvider implements Integrator {
     /**
-     * Pattern to match an instruction variable in string
+     * Pattern to match an instruction variable in string.
      */
     public static final Pattern VARIABLE_VALIDATOR = Pattern.compile("%[^ %\\s]+%");
 
     /**
-     * HologramIntegrators when 'hooked' add themselves to this list
+     * HologramIntegrators when 'hooked' add themselves to this list.
      */
     private static final List<HologramIntegrator> ATTEMPTED_INTEGRATIONS = new ArrayList<>();
 
@@ -42,13 +42,13 @@ public final class HologramProvider implements Integrator {
     private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(HologramProvider.class);
 
     /**
-     * Singleton instance of this HologramProvider, only ever null if not initialised.
+     * Singleton instance of this HologramProvider, only ever null if not initialized.
      */
     @Nullable
     private static HologramProvider instance;
 
     /**
-     * The currently hooked integrator, this may change during runtime during a reload
+     * The currently hooked integrator, this may change during runtime during a reload.
      */
     private HologramIntegrator integrator;
 
@@ -65,18 +65,18 @@ public final class HologramProvider implements Integrator {
     private CitizensHologramLoop citizensHologramLoop;
 
     /**
-     * Creates a new HologramProvider object and assigns it to singleton instance if not already
+     * Creates a new HologramProvider object and assigns it to singleton instance if not already.
      *
-     * @param integrator The initial integrator to hook into
+     * @param integrator The initial integrator to hook into.
      */
     private HologramProvider(final HologramIntegrator integrator) {
         this.integrator = integrator;
     }
 
     /**
-     * Adds a possible integrator for this provider
+     * Adds a possible integrator for this provider.
      *
-     * @param integrator The integrator itself
+     * @param integrator The integrator itself.
      */
     public static void addIntegrator(final HologramIntegrator integrator) {
         ATTEMPTED_INTEGRATIONS.add(integrator);
@@ -105,8 +105,8 @@ public final class HologramProvider implements Integrator {
     /**
      * Get an instance of this HologramProvider.
      *
-     * @return An instance of Hologram Provider
-     * @throws IllegalStateException Thrown if this method has been used at the incorrect time
+     * @return An instance of Hologram Provider.
+     * @throws IllegalStateException Thrown if this method has been used at the incorrect time.
      */
     public static HologramProvider getInstance() {
         if (instance == null) {
@@ -116,9 +116,11 @@ public final class HologramProvider implements Integrator {
     }
 
     /**
-     * @param pluginName The name of the plugin to check
-     * @return True if plugin is currently hooked to this provider
-     * @throws IllegalStateException Thrown if this method has been used at the incorrect time
+     * Checks if a plugin is currently hooked to this provider.
+     *
+     * @param pluginName The name of the plugin to check.
+     * @return True if plugin is currently hooked to this provider.
+     * @throws IllegalStateException Thrown if this method has been used at the incorrect time.
      */
     public boolean isHooked(final String pluginName) {
         if (this.integrator == null) {
@@ -128,10 +130,10 @@ public final class HologramProvider implements Integrator {
     }
 
     /**
-     * Creates a wrapped hologram using a hooked hologram plugin
+     * Creates a wrapped hologram using a hooked hologram plugin.
      *
-     * @param location Location of where the hologram should be spawned
-     * @return The hologram
+     * @param location Location of where the hologram should be spawned.
+     * @return The hologram.
      */
     public BetonHologram createHologram(final Location location) {
         return integrator.createHologram(location);
@@ -139,11 +141,11 @@ public final class HologramProvider implements Integrator {
 
     /**
      * Parses a string containing an instruction variable and converts it to the appropriate format for the given
-     * plugin implementation
+     * plugin implementation.
      *
-     * @param pack The quest pack where the variable resides
-     * @param text The raw text
-     * @return The parsed and formatted full string
+     * @param pack The quest pack where the variable resides.
+     * @param text The raw text.
+     * @return The parsed and formatted full string.
      */
     public String parseVariable(final QuestPackage pack, final String text) {
         return integrator.parseVariable(pack, text);
@@ -193,20 +195,20 @@ public final class HologramProvider implements Integrator {
     }
 
     /**
-     * A listener class for bukkit events that are used by holograms
+     * A listener class for bukkit events that holograms use.
      */
     public static class HologramListener implements Listener {
         /**
-         * Creates and registers a new HologramListener
+         * Creates and registers a new HologramListener.
          */
         public HologramListener() {
             Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
         }
 
         /**
-         * Called when a player joins the server
+         * Called when a player joins the server.
          *
-         * @param event The event
+         * @param event The event.
          */
         @EventHandler
         public void onPlayerJoin(final PlayerJoinEvent event) {

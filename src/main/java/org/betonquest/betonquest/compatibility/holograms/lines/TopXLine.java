@@ -9,10 +9,10 @@ package org.betonquest.betonquest.compatibility.holograms.lines;
 public record TopXLine(String playerName, long count) {
 
     /**
-     * Creates a new instance of TopXLine
+     * Creates a new instance of TopXLine.
      *
-     * @param playerName Name of player
-     * @param count      Value of point
+     * @param playerName Name of player.
+     * @param count      Value of point.
      */
     public TopXLine {
     }

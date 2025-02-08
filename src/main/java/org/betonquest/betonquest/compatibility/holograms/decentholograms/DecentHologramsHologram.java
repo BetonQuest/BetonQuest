@@ -11,17 +11,17 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 /**
- * DecentHolograms specific implementation of BetonHologram
+ * DecentHolograms specific implementation of BetonHologram.
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class DecentHologramsHologram implements BetonHologram {
     /**
-     * The hologram object from DecentHolograms
+     * The hologram object from DecentHolograms.
      */
     private final Hologram hologram;
 
     /**
-     * Create a BetonHologram to wrap the given DecentHolograms hologram
+     * Create a BetonHologram to wrap the given DecentHolograms hologram.
      *
      * @param hologram The hologram object to wrap
      */
