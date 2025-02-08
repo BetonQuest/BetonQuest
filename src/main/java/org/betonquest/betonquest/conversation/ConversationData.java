@@ -1,21 +1,23 @@
 package org.betonquest.betonquest.conversation;
 
 import org.apache.commons.lang3.StringUtils;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.id.ID;
+import org.betonquest.betonquest.instruction.argument.IDArgument;
 import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -24,7 +26,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static org.betonquest.betonquest.conversation.ConversationData.OptionType.NPC;
 import static org.betonquest.betonquest.conversation.ConversationData.OptionType.PLAYER;
@@ -32,7 +33,7 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
 /**
  * Represents the data of the conversation.
  */
-@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.CyclomaticComplexity", "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals", "NullAway"})
+@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods"})
 public class ConversationData {
 
     /**
@@ -46,14 +47,19 @@ public class ConversationData {
     private final List<CrossConversationReference> externalPointers = new ArrayList<>();
 
     /**
+     * Quest Type API.
+     */
+    private final QuestTypeAPI questTypeAPI;
+
+    /**
      * Feature API.
      */
     private final FeatureAPI featureAPI;
 
     /**
-     * The {@link ConversationID} of the conversation holding this data.
+     * Processor to create new variables.
      */
-    private final ConversationID conversationID;
+    private final VariableProcessor variableProcessor;
 
     /**
      * The {@link QuestPackage} this conversation is in.
@@ -66,114 +72,63 @@ public class ConversationData {
     private final String convName;
 
     /**
-     * A map of the questers name in different languages.
+     * The external used data.
      */
-    private final Map<String, String> quester = new HashMap<>();
-
-    /**
-     * If true, the player will not be able to move during this conversation.
-     */
-    private final boolean blockMovement;
-
-    /**
-     * All events that will be executed once the conversation has ended.
-     */
-    private final List<EventID> finalEvents = new ArrayList<>();
+    private final PublicData publicData;
 
     /**
      * The NPC options that the conversation can start from.
      */
-    private List<String> startingOptions;
+    private final List<String> startingOptions;
 
     /**
      * A map of all things the NPC can say during this conversation.
      * The key is the option name that can be pointed to.
      */
-    private Map<String, ConversationOption> npcOptions;
+    private final Map<String, ConversationOption> npcOptions;
 
     /**
      * A map of all things the player can say during this conversation.
      * The key is the option name that can be pointed to.
      */
-    private Map<String, ConversationOption> playerOptions;
-
-    /**
-     * The conversation IO that should be used for this conversation.
-     */
-    private String convIO;
-
-    /**
-     * The interceptor that should be used for this conversation.
-     */
-    private String interceptor;
+    private final Map<String, ConversationOption> playerOptions;
 
     /**
      * Loads conversation from package.
      *
-     * @param plugin         the plugin instance
-     * @param conversationID the {@link ConversationID} of the conversation holding this data
-     * @param convSection    the configuration section of the conversation
+     * @param log               the custom logger for this class
+     * @param questTypeAPI      the quest type api
+     * @param featureAPI        the feature api
+     * @param variableProcessor the variable processor to create new variables
+     * @param pack              the package of the conversation this data represents
+     * @param convSection       the configuration section of the conversation
+     * @param publicData        the external used data
      * @throws QuestException when there is a syntax error in the defined conversation or
      *                        when conversation options cannot be resolved or {@code convSection} is null
      */
-    @SuppressWarnings({"PMD.NPathComplexity", "PMD.CognitiveComplexity"})
-    public ConversationData(final BetonQuest plugin, final ConversationID conversationID, final ConfigurationSection convSection) throws QuestException {
-        this.featureAPI = plugin.getFeatureAPI();
-        this.conversationID = conversationID;
-        this.pack = conversationID.getPackage();
-        this.convName = conversationID.getBaseID();
-        this.log = plugin.getLoggerFactory().create(ConversationData.class);
-        log.debug(pack, String.format("Loading conversation '%s'.", convName));
-
-        if (convSection.get("quester") == null) {
-            throw new QuestException("The 'quester' name is missing in the conversation file!");
-        }
-        if (convSection.isConfigurationSection("quester")) {
-            for (final String lang : convSection.getConfigurationSection("quester").getKeys(false)) {
-                quester.put(lang, ChatColor.translateAlternateColorCodes('&', pack.getString("conversations." + convName + ".quester." + lang)));
-            }
-        } else {
-            quester.put(Config.getLanguage(), ChatColor.translateAlternateColorCodes('&', pack.getString("conversations." + convName + ".quester")));
-        }
-        final String stop = pack.getString("conversations." + convName + ".stop");
-        blockMovement = Boolean.parseBoolean(stop);
-        final String rawConvIOs = pack.getString("conversations." + convName + ".conversationIO", plugin.getPluginConfig().getString("default_conversation_IO", "menu,tellraw"));
-
-        // check if all data is valid (or at least exist)
-        for (final String rawConvIOPart : rawConvIOs.split(",")) {
-            final String rawConvIO = rawConvIOPart.trim();
-            if (plugin.getFeatureRegistries().conversationIO().getFactory(rawConvIO) != null) {
-                convIO = rawConvIO;
-                break;
-            } else {
-                log.debug(pack, "Conversation IO '" + rawConvIO + "' not found. Trying next one...");
-            }
-        }
-        if (convIO == null) {
-            throw new QuestException("No registered conversation IO found: " + rawConvIOs);
-        }
-
-        final String rawInterceptor = pack.getString("conversations." + convName + ".interceptor", plugin.getPluginConfig().getString("default_interceptor", "simple"));
-        for (final String s : rawInterceptor.split(",")) {
-            if (plugin.getFeatureRegistries().interceptor().getFactory(s.trim()) != null) {
-                interceptor = s.trim();
-                break;
-            }
-        }
-        if (interceptor == null) {
-            throw new QuestException("No registered interceptor found: " + rawInterceptor);
-        }
-
-        if (quester.isEmpty()) {
+    public ConversationData(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI, final VariableProcessor variableProcessor,
+                            final QuestPackage pack, final ConfigurationSection convSection, final PublicData publicData) throws QuestException {
+        this.log = log;
+        this.questTypeAPI = questTypeAPI;
+        this.featureAPI = featureAPI;
+        this.variableProcessor = variableProcessor;
+        this.pack = pack;
+        this.convName = publicData.convName();
+        this.publicData = publicData;
+        if (publicData.quester.isEmpty()) {
             throw new QuestException("Quester's name is not defined");
         }
-        for (final String value : quester.values()) {
+        for (final String value : publicData.quester.values()) {
             if (value == null) {
                 throw new QuestException("Quester's name is not defined");
             }
         }
 
-        parseOptions(pack, convSection);
+        this.npcOptions = loadNpcOptions(convSection);
+        this.startingOptions = loadStartingOptions(convSection);
+        this.playerOptions = loadPlayerOptions(convSection);
+        validateNpcOptions();
+        validatePlayerOptions();
 
         log.debug(pack, String.format("Conversation loaded: %d NPC options and %d player options", npcOptions.size(),
                 playerOptions.size()));
@@ -211,9 +166,10 @@ public class ConversationData {
 
             final ConversationData conv;
             try {
-                conv = featureAPI.getConversation(new ConversationID(targetPack, targetConvName));
+                final ConversationID targetConv = new ConversationID(targetPack, targetConvName);
+                conv = featureAPI.getConversation(targetConv);
                 if (conv == null) {
-                    throw new QuestException("No Conversation for conversationID '" + conversationID.getFullID() + "'! Check for errors on /bq reload!");
+                    throw new QuestException("No Conversation for conversationID '" + targetConv.getFullID() + "'! Check for errors on /bq reload!");
                 }
             } catch (final QuestException e) {
                 log.warn("Cross-conversation pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
@@ -241,33 +197,14 @@ public class ConversationData {
      * @return a {@link CrossConversationReference} pointing to the option
      * @throws QuestException when the conversation could not be resolved
      */
-    private CrossConversationReference resolvePointer(final QuestPackage pack, final String currentConversationName, @Nullable final String currentOptionName, final OptionType optionType, final String option) throws QuestException {
+    private CrossConversationReference resolvePointer(final QuestPackage pack, final String currentConversationName,
+                                                      @Nullable final String currentOptionName, final OptionType optionType,
+                                                      final String option) throws QuestException {
         final ConversationOptionResolver resolver = new ConversationOptionResolver(featureAPI, pack, currentConversationName, optionType, option);
         return new CrossConversationReference(pack, currentConversationName, currentOptionName, resolver);
     }
 
-    private void parseOptions(final QuestPackage pack, final ConfigurationSection convSection) throws QuestException {
-        final String rawFinalEvents = pack.getString("conversations." + convName + ".final_events");
-        if (rawFinalEvents != null && !rawFinalEvents.isEmpty()) {
-            final String[] array = rawFinalEvents.split(",");
-            for (final String identifier : array) {
-                try {
-                    finalEvents.add(new EventID(pack, identifier));
-                } catch (final QuestException e) {
-                    throw new QuestException("Error while loading final events: " + e.getMessage(), e);
-                }
-            }
-        }
-
-        loadNpcOptions(convSection);
-        loadStartingOptions(pack);
-
-        loadPlayerOptions(convSection);
-        validateNpcOptions();
-        validatePlayerOptions(pack);
-    }
-
-    private void validatePlayerOptions(final QuestPackage pack) throws QuestException {
+    private void validatePlayerOptions() throws QuestException {
         for (final ConversationOption option : playerOptions.values()) {
             for (final String pointer : option.getPointers(null)) {
                 if (pointer.contains(".")) {
@@ -319,16 +256,16 @@ public class ConversationData {
     /**
      * Checks if all starting options point to existing NPC options.
      *
-     * @param pack the package containing this conversation
+     * @return the loaded starting options
      * @throws QuestException when the conversation could not be resolved
      */
-    private void loadStartingOptions(final QuestPackage pack) throws QuestException {
-        final String rawStartingOptions = pack.getString("conversations." + convName + ".first");
+    private List<String> loadStartingOptions(final ConfigurationSection convSection) throws QuestException {
+        final String rawStartingOptions = GlobalVariableResolver.resolve(pack, convSection.getString("first"));
         if (rawStartingOptions == null || rawStartingOptions.isEmpty()) {
             throw new QuestException("Starting options are not defined");
         }
 
-        startingOptions = Arrays.stream(rawStartingOptions.split(",")).map(String::trim).toList();
+        final List<String> startingOptions = Arrays.stream(rawStartingOptions.split(",")).map(String::trim).toList();
 
         for (final String startingOption : startingOptions) {
             if (startingOption.contains(".")) {
@@ -337,47 +274,30 @@ public class ConversationData {
                 throw new QuestException("Starting option " + startingOption + " does not exist");
             }
         }
+        return startingOptions;
     }
 
-    private void loadPlayerOptions(final ConfigurationSection conv) throws QuestException {
+    private Map<String, ConversationOption> loadPlayerOptions(final ConfigurationSection conv) throws QuestException {
         final ConfigurationSection playerSection = conv.getConfigurationSection("player_options");
-        playerOptions = new HashMap<>();
+        final Map<String, ConversationOption> playerOptions = new HashMap<>();
         if (playerSection != null) {
             for (final String name : playerSection.getKeys(false)) {
-                playerOptions.put(name, new ConversationOption(conversationID, name, PLAYER, conv));
+                playerOptions.put(name, new ConversationOption(name, PLAYER, conv));
             }
         }
+        return playerOptions;
     }
 
-    private void loadNpcOptions(final ConfigurationSection convSection) throws QuestException {
+    private Map<String, ConversationOption> loadNpcOptions(final ConfigurationSection convSection) throws QuestException {
         final ConfigurationSection npcSection = convSection.getConfigurationSection("NPC_options");
         if (npcSection == null) {
             throw new QuestException("NPC_options section not defined");
         }
-        npcOptions = new HashMap<>();
+        final Map<String, ConversationOption> npcOptions = new HashMap<>();
         for (final String name : npcSection.getKeys(false)) {
-            npcOptions.put(name, new ConversationOption(conversationID, name, NPC, convSection));
+            npcOptions.put(name, new ConversationOption(name, NPC, convSection));
         }
-    }
-
-    /**
-     * Gets the conversation name.
-     *
-     * @return the name of this conversation
-     */
-    public String getName() {
-        return convName;
-    }
-
-    /**
-     * Gets the quester's name in the specified language.
-     * If the name is not translated the default language will be used.
-     *
-     * @param lang language key
-     * @return the quester's name in the specified language
-     */
-    public String getQuester(final String lang) {
-        return quester.get(lang) != null ? quester.get(lang) : quester.get(Config.getLanguage());
+        return npcOptions;
     }
 
     /**
@@ -387,6 +307,7 @@ public class ConversationData {
      * @param option  the option to get the pointers for
      * @return a list of pointer addresses
      */
+    @SuppressWarnings("NullAway")
     public List<String> getPointers(final Profile profile, final ResolvedOption option) {
         final Map<String, ConversationOption> optionMaps;
         if (option.type() == NPC) {
@@ -398,10 +319,12 @@ public class ConversationData {
     }
 
     /**
-     * @return the final events
+     * Get the public data.
+     *
+     * @return external used data
      */
-    public List<EventID> getFinalEvents() {
-        return new ArrayList<>(finalEvents);
+    public PublicData getPublicData() {
+        return publicData;
     }
 
     /**
@@ -411,27 +334,6 @@ public class ConversationData {
      */
     public List<String> getStartingOptions() {
         return new ArrayList<>(startingOptions);
-    }
-
-    /**
-     * @return true if movement should be blocked
-     */
-    public boolean isMovementBlocked() {
-        return blockMovement;
-    }
-
-    /**
-     * @return the conversationIO
-     */
-    public String getConversationIO() {
-        return convIO;
-    }
-
-    /**
-     * @return the Interceptor
-     */
-    public String getInterceptor() {
-        return interceptor;
     }
 
     /**
@@ -489,6 +391,7 @@ public class ConversationData {
      * @param type   the type of the option
      * @return the conditions required for the specified option to be selected
      */
+    @SuppressWarnings("NullAway")
     public List<ConditionID> getConditionIDs(final String option, final OptionType type) {
         final Map<String, ConversationOption> options = type == NPC ? npcOptions : playerOptions;
         return options.get(option).getConditions();
@@ -516,6 +419,7 @@ public class ConversationData {
         }
     }
 
+    @SuppressWarnings("NullAway")
     private ConversationOption getOption(@Nullable final String option, final OptionType type) {
         return type == NPC ? npcOptions.get(option) : playerOptions.get(option);
     }
@@ -529,6 +433,7 @@ public class ConversationData {
      * @throws QuestException if an external pointer reference has an invalid format or
      *                        if an external pointer inside the conversation could not be resolved
      */
+    @SuppressWarnings("NullAway")
     public boolean isReady(final Profile profile) throws QuestException {
         for (final String option : getStartingOptions()) {
             final ConversationData sourceData;
@@ -541,7 +446,7 @@ public class ConversationData {
                 sourceData = this;
                 optionName = option;
             }
-            if (BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, sourceData.getConditionIDs(optionName, NPC))) {
+            if (questTypeAPI.conditions(profile, sourceData.getConditionIDs(optionName, NPC))) {
                 return true;
             }
         }
@@ -598,20 +503,41 @@ public class ConversationData {
     }
 
     /**
+     * The external used data.
+     *
+     * @param convName      The name of this conversation.
+     * @param quester       A map of the quester's name in different languages.
+     * @param blockMovement If true, the player will not be able to move during this conversation.
+     * @param finalEvents   All events that will be executed when the conversation ends.
+     * @param convIO        The conversation IO that should be used for this conversation.
+     * @param interceptor   The interceptor that should be used for this conversation.
+     */
+    public record PublicData(String convName, Map<String, String> quester, boolean blockMovement,
+                             List<EventID> finalEvents,
+                             String convIO, String interceptor) {
+
+        /**
+         * Gets the quester's name in the specified language.
+         * If the name is not translated the default language will be used.
+         *
+         * @param lang language key
+         * @return the quester's name in the specified language
+         */
+        public String getQuester(final String lang) {
+            return ChatColor.translateAlternateColorCodes('&',
+                    quester.get(lang) != null ? quester.get(lang) : quester.get(Config.getLanguage()));
+        }
+    }
+
+    /**
      * Represents a conversation option.
      */
-    @SuppressWarnings("PMD.GodClass")
     private class ConversationOption {
 
         /**
-         * The {@link QuestPackage} in which the conversation this option belongs to is defined.
+         * Option text section.
          */
-        private final QuestPackage pack;
-
-        /**
-         * The name of the conversation this option belongs to.
-         */
-        private final String conversationName;
+        private static final String TEXT = "text";
 
         /**
          * The name of the option, as defined in the config.
@@ -626,17 +552,17 @@ public class ConversationData {
         /**
          * A map of the text of the option in different languages.
          */
-        private final Map<String, VariableString> text = new HashMap<>();
+        private final Map<String, VariableString> text;
 
         /**
          * Conditions that must be met for the option to be available.
          */
-        private final List<ConditionID> conditions = new ArrayList<>();
+        private final List<ConditionID> conditions;
 
         /**
          * Events that are triggered when the option is selected.
          */
-        private final List<EventID> events = new ArrayList<>();
+        private final List<EventID> events;
 
         /**
          * Other options that are available after this option is selected.
@@ -651,88 +577,86 @@ public class ConversationData {
         /**
          * Creates a ConversationOption.
          *
-         * @param conversationID the {@link ConversationID} of the conversation this option belongs to
-         * @param name           the name of the option, as defined in the config
-         * @param type           the {@link OptionType} of the option
-         * @param convSection    the {@link ConfigurationSection} of the option
+         * @param name        the name of the option, as defined in the config
+         * @param type        the {@link OptionType} of the option
+         * @param convSection the {@link ConfigurationSection} of the option
          * @throws QuestException if the configuration is invalid
          */
-        @SuppressWarnings("PMD.CognitiveComplexity")
-        protected ConversationOption(final ConversationID conversationID, final String name, final OptionType type, final ConfigurationSection convSection) throws QuestException {
-            this.pack = conversationID.getPackage();
-            this.conversationName = conversationID.getBaseID();
+        protected ConversationOption(final String name, final OptionType type, final ConfigurationSection convSection) throws QuestException {
             this.optionName = name;
             this.type = type;
             final ConfigurationSection conv = convSection.getConfigurationSection(type.getIdentifier() + "." + name);
 
             if (conv == null) {
-                pointers = new ArrayList<>();
-                extendLinks = new ArrayList<>();
+                text = Map.of();
+                conditions = List.of();
+                events = List.of();
+                pointers = List.of();
+                extendLinks = List.of();
                 return;
             }
 
             final String defaultLang = Config.getLanguage();
 
-            parseText(name, type, conv, defaultLang);
-            parseConditions(name, type, conv);
-            parseEvents(name, type, conv);
+            this.text = parseText(conv, defaultLang);
+            this.conditions = parseID(conv, "condition", ConditionID::new);
+            this.events = parseID(conv, "event", EventID::new);
 
-            pointers = Arrays.stream(GlobalVariableResolver.resolve(pack, conv.getString("pointers", conv.getString("pointer", ""))).split(","))
+            pointers = Arrays.stream(splitPlural(conv, "pointer"))
                     .filter(StringUtils::isNotEmpty)
                     .map(String::trim).toList();
 
-            extendLinks = Arrays.stream(GlobalVariableResolver.resolve(pack, conv.getString("extends", conv.getString("extend", ""))).split(","))
+            extendLinks = Arrays.stream(splitPlural(conv, "extend"))
                     .filter(StringUtils::isNotEmpty)
                     .map(String::trim).toList();
         }
 
-        private void parseEvents(final String name, final OptionType type, final ConfigurationSection conv) throws QuestException {
+        private String[] splitPlural(final ConfigurationSection conv, final String singular) {
+            return GlobalVariableResolver.resolve(pack, conv.getString(singular + "s", conv.getString(singular, ""))).split(",");
+        }
+
+        private <T extends ID> List<T> parseID(final ConfigurationSection conv, final String singularPath, final IDArgument<T> argument) throws QuestException {
             try {
-                for (final String rawEvent : GlobalVariableResolver.resolve(pack, conv.getString("events", conv.getString("event", ""))).split(",")) {
-                    if (!Objects.equals(rawEvent, "")) {
-                        events.add(new EventID(pack, rawEvent.trim()));
+                final String[] split = splitPlural(conv, singularPath);
+                final List<T> list = new ArrayList<>(split.length);
+                for (final String raw : split) {
+                    if (!raw.isEmpty()) {
+                        list.add(argument.convert(pack, raw.trim()));
                     }
                 }
+                return list;
             } catch (final QuestException e) {
-                throw new QuestException("Error in '" + name + "' " + type.getReadable() + " option's events: "
+                throw new QuestException("Error in '" + optionName + "' " + type.getReadable() + " option's " + singularPath + "s: "
                         + e.getMessage(), e);
             }
         }
 
-        private void parseConditions(final String name, final OptionType type, final ConfigurationSection conv) throws QuestException {
-            try {
-                for (final String rawCondition : GlobalVariableResolver.resolve(pack, conv.getString("conditions", conv.getString("condition", ""))).split(",")) {
-                    if (!rawCondition.isEmpty()) {
-                        conditions.add(new ConditionID(pack, rawCondition.trim()));
-                    }
+        private Map<String, VariableString> parseText(final ConfigurationSection conv, final String defaultLang) throws QuestException {
+            if (!conv.contains(TEXT)) {
+                return Map.of();
+            }
+            if (conv.isConfigurationSection(TEXT)) {
+                final Map<String, VariableString> map = new HashMap<>();
+                for (final String lang : conv.getConfigurationSection(TEXT).getKeys(false)) {
+                    final Map.Entry<String, VariableString> entry = getConversationText(conv, lang, "." + lang);
+                    map.put(entry.getKey(), entry.getValue());
                 }
-            } catch (final QuestException e) {
-                throw new QuestException("Error in '" + name + "' " + type.getReadable() + " option's conditions: "
-                        + e.getMessage(), e);
+                if (!map.containsKey(defaultLang)) {
+                    throw new QuestException("No default language for " + optionName + " " + type.getReadable());
+                }
+                return map;
+            } else {
+                return Map.ofEntries(getConversationText(conv, defaultLang, ""));
             }
         }
 
-        private void parseText(final String name, final OptionType type, final ConfigurationSection conv, final String defaultLang) throws QuestException {
-            if (conv.contains("text")) {
-                if (conv.isConfigurationSection("text")) {
-                    for (final String lang : conv.getConfigurationSection("text").getKeys(false)) {
-                        addConversationText(name, type, lang, "." + lang);
-                    }
-                    if (!text.containsKey(defaultLang)) {
-                        throw new QuestException("No default language for " + name + " " + type.getReadable());
-                    }
-                } else {
-                    addConversationText(name, type, defaultLang, "");
-                }
-            }
-        }
-
-        private void addConversationText(final String name, final OptionType type, final String lang, final String suffix) throws QuestException {
-            final String convText = pack.getFormattedString("conversations." + conversationName + "." + type.getIdentifier() + "." + name + ".text" + suffix);
+        private Map.Entry<String, VariableString> getConversationText(final ConfigurationSection conv,
+                                                                      final String lang, final String suffix) throws QuestException {
+            final String convText = conv.getString(TEXT + suffix);
             if (convText == null) {
-                throw new QuestException("No text for " + name + " " + type.getReadable());
+                throw new QuestException("No text for " + optionName + " " + type.getReadable());
             }
-            text.put(lang, new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, convText));
+            return Map.entry(lang, new VariableString(variableProcessor, pack, GlobalVariableResolver.resolve(pack, convText)));
         }
 
         /**
@@ -766,7 +690,7 @@ public class ConversationData {
 
             if (profile != null) {
                 for (final String extend : extendLinks) {
-                    if (BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, getOption(extend, type).getConditions())) {
+                    if (questTypeAPI.conditions(profile, getOption(extend, type).getConditions())) {
                         text.append(getOption(extend, type).getText(profile, lang, optionPath));
                         break;
                     }
@@ -776,16 +700,22 @@ public class ConversationData {
             return text.toString();
         }
 
-        private @NotNull String getText(final String lang, @Nullable final Profile profile) {
-            VariableString langText = this.text.get(lang);
-            if (langText != null) {
-                return langText.getString(profile);
+        private String getText(final String lang, @Nullable final Profile profile) {
+            try {
+                VariableString langText = this.text.get(lang);
+                if (langText != null) {
+                    return langText.getValue(profile);
+                }
+                langText = this.text.get(Config.getLanguage());
+                if (langText != null) {
+                    return langText.getValue(profile);
+                }
+                log.warn(pack, "No text in conversation '" + convName + "' for lang '" + lang + " or default'!");
+                return "";
+            } catch (final QuestException e) {
+                log.warn(pack, "Could not resolve message in conversation '" + convName + "': " + e.getMessage(), e);
+                return "";
             }
-            langText = this.text.get(Config.getLanguage());
-            if (langText != null) {
-                return langText.getString(profile);
-            }
-            return "";
         }
 
         /**
@@ -819,7 +749,7 @@ public class ConversationData {
             final List<EventID> events = new ArrayList<>(this.events);
 
             for (final String extend : extendLinks) {
-                if (BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, getOption(extend, type).getConditions())) {
+                if (questTypeAPI.conditions(profile, getOption(extend, type).getConditions())) {
                     events.addAll(getOption(extend, type).getEvents(profile, optionPath));
                     break;
                 }
@@ -859,7 +789,7 @@ public class ConversationData {
                     }
 
                     final ConversationData targetConvData = resolvedExtend.conversationData();
-                    if (BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, targetConvData.getOption(resolvedExtend.name(), type).getConditions())) {
+                    if (questTypeAPI.conditions(profile, targetConvData.getOption(resolvedExtend.name(), type).getConditions())) {
                         pointers.addAll(targetConvData.getOption(resolvedExtend.name(), type).getPointers(profile, optionPath));
                         break;
                     }
