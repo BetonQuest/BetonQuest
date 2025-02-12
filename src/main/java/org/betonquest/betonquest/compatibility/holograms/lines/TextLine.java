@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.holograms.lines;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 
 /**
- * Displays a simple text line with optional color codes
+ * Displays a simple text line with optional color codes.
  */
 public class TextLine extends AbstractLine {
     /**

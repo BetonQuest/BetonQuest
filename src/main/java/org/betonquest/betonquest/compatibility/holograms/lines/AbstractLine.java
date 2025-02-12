@@ -13,12 +13,12 @@ import org.betonquest.betonquest.compatibility.holograms.HologramLoop;
  */
 public abstract class AbstractLine {
     /**
-     * False if this line needs to be updated
+     * False if this line needs to be updated.
      */
     protected final boolean staticText;
 
     /**
-     * The amount of lines added by this line
+     * The amount of lines added by this line.
      */
     protected final int linesAdded;
 
@@ -52,7 +52,9 @@ public abstract class AbstractLine {
     }
 
     /**
-     * @return True if this line's content does not need to be updated, false if it does.
+     * Checks if this line's content does not need to be updated.
+     *
+     * @return {@code true} if this line's content does not need to be updated, {@code false} if it does.
      */
     public boolean isNotStaticText() {
         return !staticText;

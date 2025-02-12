@@ -55,6 +55,11 @@ public class TopXObject {
         this.orderType = orderType;
     }
 
+    /**
+     * Returns the entries of the last database request.
+     *
+     * @return List of {@link TopXLine} entries.
+     */
     public List<TopXLine> getEntries() {
         return entries;
     }
@@ -113,10 +118,20 @@ public class TopXObject {
          */
         private final QueryType type;
 
+        /**
+         * Creates a new instance of OrderType.
+         *
+         * @param type The {@link QueryType} for descending or ascending order.
+         */
         OrderType(final QueryType type) {
             this.type = type;
         }
 
+        /**
+         * Returns the {@link QueryType}.
+         *
+         * @return The {@link QueryType} for descending or ascending order.
+         */
         public QueryType getType() {
             return type;
         }

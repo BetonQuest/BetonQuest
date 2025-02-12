@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public class ItemLine extends AbstractLine {
     /**
-     * The item to be displayed with all its metadata
+     * The item to be displayed with all its metadata.
      */
     private final ItemStack item;
 

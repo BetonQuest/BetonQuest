@@ -51,7 +51,7 @@ public final class HologramRunner {
      * Adds a new HologramWrapper to the execution cycle. Decides whether to create a new runner or add the
      * Hologram to an existing runner that shares the same cycle in ticks.
      *
-     * @param hologram Hologram to be added
+     * @param hologram Hologram to be added.
      */
     static /* default */ void addHologram(final HologramWrapper hologram) {
         RUNNERS.computeIfAbsent(hologram.interval(),
@@ -63,9 +63,9 @@ public final class HologramRunner {
     }
 
     /**
-     * Refreshes all HologramRunners for a single player
+     * Refreshes all HologramRunners for a single player.
      *
-     * @param profile The online player's profile
+     * @param profile The online player's profile.
      */
     public static void refresh(final OnlineProfile profile) {
         for (final HologramRunner hologramRunner : RUNNERS.values()) {
@@ -86,16 +86,16 @@ public final class HologramRunner {
     /**
      * Adds a new hologram to the runner.
      *
-     * @param hologramWrapper The hologram to add
+     * @param hologramWrapper The hologram to add.
      */
     private void addRunnerHologram(final HologramWrapper hologramWrapper) {
         holograms.add(hologramWrapper);
     }
 
     /**
-     * Refreshes all HologramRunners for a single player
+     * Refreshes all HologramRunners for a single player.
      *
-     * @param profile The online player's profile
+     * @param profile The online player's profile.
      */
     private void refreshRunner(final OnlineProfile profile) {
         for (final HologramWrapper wrapper : holograms) {

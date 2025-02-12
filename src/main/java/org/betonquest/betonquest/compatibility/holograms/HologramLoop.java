@@ -130,6 +130,7 @@ public abstract class HologramLoop {
             hologram.hideAll();
         }
         final HologramWrapper hologramWrapper = new HologramWrapper(
+                loggerFactory.create(HologramWrapper.class),
                 checkInterval,
                 holograms,
                 isStaticHologram(cleanedLines),
@@ -171,7 +172,6 @@ public abstract class HologramLoop {
         return lines.stream().noneMatch(AbstractLine::isNotStaticText);
     }
 
-    @SuppressWarnings("PMD.LocalVariableCouldBeFinal")
     private ItemLine parseItemLine(final QuestPackage pack, final String line) throws QuestException {
         try {
             final String[] args = line.substring(5).split(":");
