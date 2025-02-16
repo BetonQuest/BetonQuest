@@ -10,7 +10,6 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.util.BlockSelector;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -97,7 +96,7 @@ public class ActionObjective extends Objective implements Listener {
     @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(final PlayerInteractEvent event) {
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
         if (!containsPlayer(onlineProfile) || !action.match(event.getAction()) || slot != null && slot != event.getHand()) {
             return;
         }

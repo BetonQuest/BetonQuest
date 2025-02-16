@@ -3,9 +3,9 @@ package org.betonquest.betonquest.notify;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -39,7 +39,8 @@ public abstract class NotifyIO {
     }
 
     public void sendNotify(final String message) throws QuestException {
-        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+        for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
             sendNotify(message, onlineProfile);
         }
     }
@@ -69,8 +70,9 @@ public abstract class NotifyIO {
         if (dataString == null) {
             return defaultData;
         }
+        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
         return new VariableNumber(BetonQuest.getInstance().getVariableProcessor(), pack, dataString)
-                .getValue(PlayerConverter.getID(player)).floatValue();
+                .getValue(profileProvider.getProfile(player)).floatValue();
     }
 
     protected final int getIntegerData(final String dataKey, final int defaultData) throws QuestException {

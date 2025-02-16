@@ -41,7 +41,7 @@ public enum UpdateType {
     /**
      * Add single player to the database. PlayerID, active_profile, language.
      */
-    ADD_PLAYER(prefix -> "INSERT INTO " + prefix + "player (playerID, active_profile, language) VALUES (?, ?, ?);"),
+    ADD_PLAYER(prefix -> "INSERT OR IGNORE INTO " + prefix + "player (playerID, active_profile, language) VALUES (?, ?, ?);"),
     /**
      * Add single profile to the database. ProfileID.
      */

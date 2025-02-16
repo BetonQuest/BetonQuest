@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -35,8 +34,8 @@ public class KillPlayerObjective extends CountingObjective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onKill(final PlayerDeathEvent event) {
         if (event.getEntity().getKiller() != null) {
-            final OnlineProfile victim = PlayerConverter.getID(event.getEntity());
-            final OnlineProfile killer = PlayerConverter.getID(event.getEntity().getKiller());
+            final OnlineProfile victim = BetonQuest.getInstance().getProfileProvider().getProfile(event.getEntity());
+            final OnlineProfile killer = BetonQuest.getInstance().getProfileProvider().getProfile(event.getEntity().getKiller());
 
             if (containsPlayer(killer)
                     && (name == null || event.getEntity().getName().equalsIgnoreCase(name))

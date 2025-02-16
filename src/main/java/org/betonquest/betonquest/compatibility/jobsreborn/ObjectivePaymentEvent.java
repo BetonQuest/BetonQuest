@@ -5,12 +5,12 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -31,7 +31,8 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onJobsPaymentEvent(final JobsPaymentEvent event) {
-        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+        final Profile profile = profileProvider.getProfile(event.getPlayer());
         if (containsPlayer(profile) && checkConditions(profile)) {
             final PaymentData playerData = getPaymentData(profile);
             final double previousAmount = playerData.amount;

@@ -13,7 +13,6 @@ import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.menu.config.SimpleYMLSection;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -176,7 +175,7 @@ public class MenuItem extends SimpleYMLSection {
     }
 
     private boolean executeEvents(final List<EventID> variables, final Player player) {
-        final OnlineProfile profile = PlayerConverter.getID(player);
+        final OnlineProfile profile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
         for (final EventID eventID : variables) {
             log.debug(pack, "Item " + name + ": Run event " + eventID);
             BetonQuest.getInstance().getQuestTypeAPI().event(profile, eventID);

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.listener;
 
 import io.papermc.lib.PaperLib;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.GlobalObjectives;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -14,7 +15,6 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.objective.ResourcePackObjective;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -75,7 +75,7 @@ public class JoinQuitListener implements Listener {
         if (event.getLoginResult() != Result.ALLOWED) {
             return;
         }
-        final Profile profile = PlayerConverter.getID(Bukkit.getOfflinePlayer(event.getUniqueId()));
+        final Profile profile = BetonQuest.getInstance().getProfileProvider().getProfile(Bukkit.getOfflinePlayer(event.getUniqueId()));
         playerDataStorage.put(profile, new PlayerData(pluginMessage, profile));
     }
 
@@ -86,7 +86,7 @@ public class JoinQuitListener implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
         final PlayerData playerData = playerDataStorage.get(onlineProfile);
         playerData.startObjectives();
         GlobalObjectives.startAll(onlineProfile, playerDataStorage);
@@ -120,7 +120,7 @@ public class JoinQuitListener implements Listener {
      */
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent event) {
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
         for (final Objective objective : questTypeAPI.getPlayerObjectives(onlineProfile)) {
             objective.pauseObjectiveForPlayer(onlineProfile);
         }

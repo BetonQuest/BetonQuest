@@ -13,7 +13,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -50,7 +49,7 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
      */
     @EventHandler
     public void onItemCraft(final CraftItemEvent event) {
-        final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getWhoClicked());
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile((Player) event.getWhoClicked());
         final ItemStack craftedItem = event.getRecipe().getResult();
         if (event.getSlotType() == InventoryType.SlotType.RESULT
                 && containsPlayer(onlineProfile)
@@ -69,7 +68,7 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
     public void onRecipeUse(final MythicCraftItemEvent event) {
         final HumanEntity humanEntity = event.getTrigger().getWhoClicked();
         final Player crafter = (Player) humanEntity;
-        final OnlineProfile onlineProfile = PlayerConverter.getID(crafter);
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(crafter);
         final ItemStack craftedItem = event.getCache().getResultOfOperation().getResultInventory().getFirst();
 
         if (containsPlayer(onlineProfile)
@@ -86,7 +85,7 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
      */
     @EventHandler(ignoreCancelled = true)
     public void onRecipeUse(final PlayerUseCraftingStationEvent event) {
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
         final StationAction action = event.getInteraction();
         final Recipe usedRecipe = event.getRecipe();
 

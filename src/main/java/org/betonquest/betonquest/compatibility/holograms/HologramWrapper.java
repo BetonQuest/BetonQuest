@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
@@ -54,7 +53,7 @@ public record HologramWrapper(BetonQuestLogger log, int interval, List<BetonHolo
             return;
         }
 
-        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+        for (final OnlineProfile onlineProfile : BetonQuest.getInstance().getProfileProvider().getOnlineProfiles()) {
             updateVisibilityForPlayer(onlineProfile);
         }
     }

@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scheduler.BukkitTask;
@@ -95,7 +94,7 @@ public class PlayerHider {
      * Trigger an update for the visibility.
      */
     public void updateVisibility() {
-        final Collection<? extends OnlineProfile> onlineProfiles = PlayerConverter.getOnlineProfiles();
+        final Collection<? extends OnlineProfile> onlineProfiles = BetonQuest.getInstance().getProfileProvider().getOnlineProfiles();
         final Map<OnlineProfile, List<OnlineProfile>> profilesToHide = getProfilesToHide(onlineProfiles);
         for (final OnlineProfile source : onlineProfiles) {
             updateVisibilityForProfiles(onlineProfiles, source, profilesToHide.get(source));

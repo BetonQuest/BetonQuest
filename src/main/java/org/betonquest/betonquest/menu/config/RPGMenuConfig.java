@@ -3,7 +3,6 @@ package org.betonquest.betonquest.menu.config;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -111,7 +110,7 @@ public class RPGMenuConfig extends SimpleYMLSection {
     public String getMessage(final CommandSender sender, final String key, final String... replace) {
         String lang = null;
         if (sender instanceof Player) {
-            lang = BetonQuest.getInstance().getPlayerDataStorage().get(PlayerConverter.getID((Player) sender)).getLanguage();
+            lang = BetonQuest.getInstance().getPlayerDataStorage().get(BetonQuest.getInstance().getProfileProvider().getProfile((Player) sender)).getLanguage();
         }
         return getMessage(lang, key, replace);
     }

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -19,7 +20,6 @@ import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
 import org.betonquest.betonquest.quest.event.SequentialStaticEvent;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.betonquest.betonquest.util.Utils;
 
 import java.time.InstantSource;
@@ -55,6 +55,11 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
     private final Saver saver;
 
     /**
+     * The current active profile provider instance
+     */
+    private final ProfileProvider profileProvider;
+
+    /**
      * Create the journal event factory.
      *
      * @param loggerFactory logger factory to use
@@ -63,12 +68,13 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
      * @param instantSource instant source to pass on
      * @param saver         database saver to use
      */
-    public JournalEventFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage, final PlayerDataStorage dataStorage, final InstantSource instantSource, final Saver saver) {
+    public JournalEventFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage, final PlayerDataStorage dataStorage, final InstantSource instantSource, final Saver saver, final ProfileProvider profileProvider) {
         this.loggerFactory = loggerFactory;
         this.pluginMessage = pluginMessage;
         this.dataStorage = dataStorage;
         this.instantSource = instantSource;
         this.saver = saver;
+        this.profileProvider = profileProvider;
     }
 
     @Override
@@ -117,8 +123,7 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
         final JournalEvent journalDeleteEvent = createJournalDeleteEvent(instruction.copy());
         final String entryName = Utils.addPackage(instruction.getPackage(), instruction.getPart(2));
         return new SequentialStaticEvent(
-                new OnlineProfileGroupStaticEventAdapter(PlayerConverter::getOnlineProfiles, journalDeleteEvent),
-                new DatabaseSaverStaticEvent(saver, () -> new Saver.Record(UpdateType.REMOVE_ALL_ENTRIES, entryName))
-        );
+                new OnlineProfileGroupStaticEventAdapter(profileProvider::getOnlineProfiles, journalDeleteEvent),
+                new DatabaseSaverStaticEvent(saver, () -> new Saver.Record(UpdateType.REMOVE_ALL_ENTRIES, entryName)));
     }
 }

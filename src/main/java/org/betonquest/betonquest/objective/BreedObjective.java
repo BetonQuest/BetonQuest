@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -29,7 +28,7 @@ public class BreedObjective extends CountingObjective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onBreeding(final EntityBreedEvent event) {
         if (event.getEntityType() == type && event.getBreeder() instanceof Player) {
-            final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getBreeder());
+            final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile((Player) event.getBreeder());
             if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
                 getCountingData(onlineProfile).progress();
                 completeIfDoneOrNotify(onlineProfile);

@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -50,7 +49,7 @@ public class RideObjective extends Objective implements Listener {
         if (!(event.getEntered() instanceof Player)) {
             return;
         }
-        final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getEntered());
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile((Player) event.getEntered());
         if (containsPlayer(onlineProfile) && (any || event.getVehicle().getType() == vehicle) && checkConditions(onlineProfile)) {
             completeObjective(onlineProfile);
         }

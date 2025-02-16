@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -108,7 +107,7 @@ public class ExperienceObjective extends Objective implements Listener {
     public void onLevelChangeEvent(final PlayerLevelChangeEvent event) {
         final Player player = event.getPlayer();
         final double newAmount = player.getLevel() + player.getExp();
-        onExperienceChange(PlayerConverter.getID(player), newAmount, true);
+        onExperienceChange(BetonQuest.getInstance().getProfileProvider().getProfile(player), newAmount, true);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -116,14 +115,14 @@ public class ExperienceObjective extends Objective implements Listener {
         final Player player = event.getPlayer();
         Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
             final double newAmount = player.getLevel() + player.getExp();
-            onExperienceChange(PlayerConverter.getID(player), newAmount, false);
+            onExperienceChange(BetonQuest.getInstance().getProfileProvider().getProfile(player), newAmount, false);
         });
     }
 
     @EventHandler
     public void onPlayerJoin(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
-        final OnlineProfile onlineProfile = PlayerConverter.getID(player);
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
         final double newAmount = player.getLevel() + player.getExp();
         onExperienceChange(onlineProfile, newAmount, false);
     }

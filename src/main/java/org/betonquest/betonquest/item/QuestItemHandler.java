@@ -1,10 +1,11 @@
 package org.betonquest.betonquest.item;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.journal.Journal;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -40,7 +41,7 @@ import java.util.ListIterator;
 /**
  * Handler for Journals.
  */
-@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.CyclomaticComplexity"})
+@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.CyclomaticComplexity", "PMD.CouplingBetweenObjects"})
 public class QuestItemHandler implements Listener {
     /**
      * Storage for player data.
@@ -61,7 +62,8 @@ public class QuestItemHandler implements Listener {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
             return;
         }
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         final ItemStack item = event.getItemDrop().getItemStack();
         if (Journal.isJournal(onlineProfile, item)) {
             if (isJournalSlotLocked()) {
@@ -84,7 +86,7 @@ public class QuestItemHandler implements Listener {
         if (event.getWhoClicked().getGameMode() == GameMode.CREATIVE) {
             return;
         }
-        final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getWhoClicked());
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile((Player) event.getWhoClicked());
         ItemStack item = null;
         switch (event.getAction()) {
             case PICKUP_ALL:
@@ -150,7 +152,7 @@ public class QuestItemHandler implements Listener {
         if (event.getWhoClicked().getGameMode() == GameMode.CREATIVE) {
             return;
         }
-        final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getWhoClicked());
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile((Player) event.getWhoClicked());
         if (Journal.isJournal(onlineProfile, event.getOldCursor()) || Utils.isQuestItem(event.getOldCursor())) {
             event.setCancelled(true);
         }
@@ -162,7 +164,7 @@ public class QuestItemHandler implements Listener {
             return;
         }
         final ItemStack item = event.getPlayerItem();
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
         if (Journal.isJournal(onlineProfile, item) || Utils.isQuestItem(item)) {
             event.setCancelled(true);
         }
@@ -173,7 +175,7 @@ public class QuestItemHandler implements Listener {
         if (event.getEntity().getGameMode() == GameMode.CREATIVE) {
             return;
         }
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getEntity());
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getEntity());
         // check if there is data for this player; NPCs don't have data
         if (onlineProfile.getOnlineProfile().isEmpty()) {
             return;
@@ -213,7 +215,7 @@ public class QuestItemHandler implements Listener {
             }
         }
         if (Boolean.parseBoolean(Config.getConfigString("journal.give_on_respawn"))) {
-            dataStorage.get(PlayerConverter.getID(event.getPlayer())).getJournal().addToInv();
+            dataStorage.get(BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer())).getJournal().addToInv();
         }
     }
 
@@ -227,7 +229,7 @@ public class QuestItemHandler implements Listener {
             final ItemStack item = (event.getHand() == EquipmentSlot.HAND) ? event.getPlayer().getInventory().getItemInMainHand()
                     : event.getPlayer().getInventory().getItemInOffHand();
 
-            final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+            final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
             if (Journal.isJournal(onlineProfile, item) || Utils.isQuestItem(item)) {
                 event.setCancelled(true);
             }
@@ -279,7 +281,8 @@ public class QuestItemHandler implements Listener {
             return;
         }
         if (item.getType() == Material.WRITTEN_BOOK) {
-            if (Utils.isQuestItem(item) || Journal.isJournal(PlayerConverter.getID(event.getPlayer()), item)) {
+            final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+            if (Utils.isQuestItem(item) || Journal.isJournal(profileProvider.getProfile(event.getPlayer()), item)) {
                 event.setUseInteractedBlock(Event.Result.DENY);
             }
         } else if (!EnchantmentTarget.TOOL.includes(item.getType()) && Utils.isQuestItem(item)) {
@@ -313,7 +316,7 @@ public class QuestItemHandler implements Listener {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
             return;
         }
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
         if (isJournalSlotLocked() && (Journal.isJournal(onlineProfile, event.getMainHandItem())
                 || Journal.isJournal(onlineProfile, event.getOffHandItem()))) {
             event.setCancelled(true);

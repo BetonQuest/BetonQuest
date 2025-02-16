@@ -14,7 +14,6 @@ import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.quest.condition.chest.ChestItemCondition;
 import org.betonquest.betonquest.quest.event.chest.ChestTakeEvent;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -79,7 +78,7 @@ public class ChestPutObjective extends Objective implements Listener {
      */
     @EventHandler
     public void onChestOpen(final InventoryOpenEvent event) {
-        final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getPlayer());
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile((Player) event.getPlayer());
         try {
             if (!checkIsInventory(loc.getValue(onlineProfile))) {
                 return;
@@ -115,7 +114,7 @@ public class ChestPutObjective extends Objective implements Listener {
         if (!(event.getPlayer() instanceof Player)) {
             return;
         }
-        final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getPlayer());
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile((Player) event.getPlayer());
         if (!containsPlayer(onlineProfile)) {
             return;
         }

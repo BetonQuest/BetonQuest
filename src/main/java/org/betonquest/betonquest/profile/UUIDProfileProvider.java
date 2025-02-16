@@ -1,7 +1,8 @@
-package org.betonquest.betonquest.util;
+package org.betonquest.betonquest.profile;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -12,21 +13,17 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Converts the player to the Profile
+ * Default implementation for {@link ProfileProvider}.
  */
-@SuppressWarnings({"PMD.ClassNamingConventions", "PMD.CommentRequired"})
-public final class PlayerConverter {
-
-    private PlayerConverter() {
+public class UUIDProfileProvider implements ProfileProvider {
+    /**
+     * Default profile provider constructor.
+     */
+    public UUIDProfileProvider() {
     }
 
-    /**
-     * Returns the {@link Profile} of the passed {@link OfflinePlayer}.
-     *
-     * @param player - Player object to get the Profile from
-     * @return profile of the player
-     */
-    public static Profile getID(final OfflinePlayer player) {
+    @Override
+    public Profile getProfile(final OfflinePlayer player) {
         return new Profile() {
             @Override
             public OfflinePlayer getPlayer() {
@@ -50,7 +47,7 @@ public final class PlayerConverter {
                 if (onlinePlayer == null) {
                     return Optional.empty();
                 }
-                return Optional.of(getID(onlinePlayer));
+                return Optional.of(getProfile(onlinePlayer));
             }
 
             @Override
@@ -70,13 +67,8 @@ public final class PlayerConverter {
         };
     }
 
-    /**
-     * Returns the {@link OnlineProfile} of the passed {@link Player}.
-     *
-     * @param player - Player object to get the Profile from
-     * @return profile of the player
-     */
-    public static OnlineProfile getID(final Player player) {
+    @Override
+    public OnlineProfile getProfile(final Player player) {
         return new OnlineProfile() {
             @Override
             public Player getPlayer() {
@@ -118,12 +110,8 @@ public final class PlayerConverter {
         };
     }
 
-    /**
-     * Get all online {@link OnlineProfile}s.
-     *
-     * @return A list of {@link OnlineProfile}s
-     */
-    public static List<OnlineProfile> getOnlineProfiles() {
-        return Bukkit.getOnlinePlayers().stream().map(PlayerConverter::getID).toList();
+    @Override
+    public List<OnlineProfile> getOnlineProfiles() {
+        return Bukkit.getOnlinePlayers().stream().map(this::getProfile).toList();
     }
 }

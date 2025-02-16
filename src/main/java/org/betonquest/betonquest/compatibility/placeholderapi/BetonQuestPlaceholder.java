@@ -2,11 +2,11 @@ package org.betonquest.betonquest.compatibility.placeholderapi;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -111,8 +111,11 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
      */
     @Override
     public String onPlaceholderRequest(@Nullable final Player player, final String identifier) {
-        final Profile profile = player == null ? null : PlayerConverter.getID(player);
         try {
+            if (player == null) {
+                return variableProcessor.getValue(identifier, null);
+            }
+            final Profile profile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
             return variableProcessor.getValue(identifier, profile);
         } catch (final QuestException e) {
             log.warn("Could not parse through PAPI requested variable: " + identifier, e);

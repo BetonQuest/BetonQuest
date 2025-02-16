@@ -8,7 +8,6 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.util.InventoryUtils;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,7 +36,7 @@ public class SmeltingObjective extends CountingObjective implements Listener {
     public void onSmelting(final InventoryClickEvent event) {
         final InventoryType inventoryType = event.getInventory().getType();
         if (isSmeltingResultExtraction(event, inventoryType)) {
-            final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getWhoClicked());
+            final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile((Player) event.getWhoClicked());
             if (containsPlayer(onlineProfile) && item.compare(event.getCurrentItem()) && checkConditions(onlineProfile)) {
                 final int taken = calculateTakeAmount(event);
                 getCountingData(onlineProfile).progress(taken);

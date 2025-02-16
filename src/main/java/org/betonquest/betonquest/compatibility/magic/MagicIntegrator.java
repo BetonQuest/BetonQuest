@@ -4,7 +4,6 @@ import com.elmakers.mine.bukkit.api.event.SpellInventoryEvent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -49,7 +48,7 @@ public class MagicIntegrator implements Integrator, Listener {
     @EventHandler(ignoreCancelled = true)
     public void onSpellInventoryEvent(final SpellInventoryEvent event) {
         if (!event.isOpening()) {
-            final OnlineProfile onlineProfile = PlayerConverter.getID(event.getMage().getPlayer());
+            final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getMage().getPlayer());
             plugin.getPlayerDataStorage().get(onlineProfile).getJournal().update();
         }
     }
