@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.registry.processor;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ID;
 
 import java.util.HashMap;
@@ -25,13 +26,27 @@ public abstract class QuestProcessor<I extends ID, T> {
     protected final Map<I, T> values;
 
     /**
+     * Type name used for logging.
+     */
+    protected final String readable;
+
+    /**
+     * Section name.
+     */
+    protected final String internal;
+
+    /**
      * Create a new QuestProcessor to store and execute {@link T} logic.
      *
-     * @param log the custom logger for this class
+     * @param log      the custom logger for this class
+     * @param readable the type name used for logging, with the first letter in upper case
+     * @param internal the section name and/or bstats topic identifier
      */
-    public QuestProcessor(final BetonQuestLogger log) {
+    public QuestProcessor(final BetonQuestLogger log, final String readable, final String internal) {
         this.log = log;
         this.values = new HashMap<>();
+        this.readable = readable;
+        this.internal = internal;
     }
 
     /**
@@ -58,4 +73,15 @@ public abstract class QuestProcessor<I extends ID, T> {
      * @param pack to load the {@link T} from
      */
     public abstract void load(QuestPackage pack);
+
+    /**
+     * Creates a new type ID to store the created {@link T} with it.
+     *
+     * @param pack       the package the ID is in
+     * @param identifier the id instruction string
+     * @return the new typed ID
+     * @throws QuestException if the instruction of the identifier could not be created or
+     *                        if the ID could not be parsed
+     */
+    protected abstract I getIdentifier(QuestPackage pack, String identifier) throws QuestException;
 }

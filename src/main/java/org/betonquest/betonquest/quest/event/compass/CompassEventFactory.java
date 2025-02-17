@@ -1,21 +1,14 @@
 package org.betonquest.betonquest.quest.event.compass;
 
-import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.data.PlayerDataStorage;
+import org.betonquest.betonquest.id.CompassID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
-import org.betonquest.betonquest.util.Utils;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.PluginManager;
 
 /**
@@ -23,9 +16,9 @@ import org.bukkit.plugin.PluginManager;
  */
 public class CompassEventFactory implements EventFactory {
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
+     * Feature API.
      */
-    private final BetonQuestLogger log;
+    private final FeatureAPI featureAPI;
 
     /**
      * Storage to get the offline player data.
@@ -45,14 +38,14 @@ public class CompassEventFactory implements EventFactory {
     /**
      * Create the compass event factory.
      *
-     * @param loggerFactory logger factory to use
+     * @param featureAPI    the Feature API
      * @param dataStorage   the storage for used player data
      * @param pluginManager plugin manager to use
      * @param data          the data for primary server thread access
      */
-    public CompassEventFactory(final BetonQuestLoggerFactory loggerFactory, final PlayerDataStorage dataStorage,
+    public CompassEventFactory(final FeatureAPI featureAPI, final PlayerDataStorage dataStorage,
                                final PluginManager pluginManager, final PrimaryServerThreadData data) {
-        this.log = loggerFactory.create(CompassEvent.class);
+        this.featureAPI = featureAPI;
         this.dataStorage = dataStorage;
         this.pluginManager = pluginManager;
         this.data = data;
@@ -61,26 +54,9 @@ public class CompassEventFactory implements EventFactory {
     @Override
     public Event parseEvent(final Instruction instruction) throws QuestException {
         final CompassTargetAction action = instruction.getEnum(CompassTargetAction.class);
-        final String compass = instruction.next();
-        final VariableLocation compassLocation = getCompassLocation(compass);
+        final CompassID compassId = instruction.getID(CompassID::new);
         return new PrimaryServerThreadEvent(
-                new CompassEvent(log, dataStorage, pluginManager, action, compass, compassLocation, instruction.getPackage()),
+                new CompassEvent(featureAPI, dataStorage, pluginManager, action, compassId),
                 data);
-    }
-
-    private VariableLocation getCompassLocation(final String compass) throws QuestException {
-        for (final QuestPackage pack : Config.getPackages().values()) {
-            final ConfigurationSection section = pack.getConfig().getConfigurationSection("compass");
-            if (section == null) {
-                continue;
-            }
-            final ConfigurationSection compassSection = section.getConfigurationSection(compass);
-            if (compassSection != null) {
-                final String location = GlobalVariableResolver.resolve(pack, compassSection.getString("location"));
-                return new VariableLocation(BetonQuest.getInstance().getVariableProcessor(), pack,
-                        Utils.getNN(location, "Missing location in compass section"));
-            }
-        }
-        throw new QuestException("Invalid compass location: " + compass);
     }
 }

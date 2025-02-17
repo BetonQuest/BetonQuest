@@ -3,7 +3,6 @@ package org.betonquest.betonquest.feature;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.QuestCompassTargetChangeEvent;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -11,15 +10,13 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
+import org.betonquest.betonquest.id.CompassID;
 import org.betonquest.betonquest.id.ItemID;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.util.Utils;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -466,83 +463,26 @@ public class Backpack implements Listener {
      */
     private class Compass extends Display {
         /**
-         * Maps the slot to a location.
+         * Maps the slot to a compass.
          */
-        private final Map<Integer, Location> locations = new HashMap<>();
-
-        /**
-         * Maps the slot to a QuestCanceler.
-         */
-        private final Map<Integer, String> names = new HashMap<>();
-
-        /**
-         * Maps the slot to an optional Pair of ItemID parts.
-         */
-        private final Map<Integer, Pair<QuestPackage, String>> items = new HashMap<>();
+        private final Map<Integer, QuestCompass> compasses = new HashMap<>();
 
         /**
          * Creates a page with selectable compass targets and displays it to the player.
          */
-        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
         public Compass() {
             super();
             int counter = 0;
-            // for every package
-            for (final QuestPackage pack : Config.getPackages().values()) {
-                final String packName = pack.getQuestPath();
-                // loop all compass locations
-                final ConfigurationSection section = pack.getConfig().getConfigurationSection("compass");
-                if (section != null) {
-                    for (final String key : section.getKeys(false)) {
-                        final ConfigurationSection keySection = section.getConfigurationSection(key);
-                        final String location = keySection.getString("location");
-                        String name;
-                        if (keySection.isConfigurationSection("name")) {
-                            name = keySection.getString("name." + lang);
-                            if (name == null) {
-                                name = keySection.getString("name." + Config.getLanguage());
-                            }
-                            if (name == null) {
-                                name = keySection.getString("name.en");
-                            }
-                        } else {
-                            name = keySection.getString("name");
-                        }
-                        if (name == null) {
-                            log.warn("Name not defined in a compass pointer in " + packName + " package: " + key);
-                            continue;
-                        }
-                        if (location == null) {
-                            log.warn("Location not defined in a compass pointer in " + packName + " package: " + key);
-                            continue;
-                        }
-                        // check if the player has special compass tag
-                        if (!playerData.hasTag(packName + ".compass-" + key)) {
-                            continue;
-                        }
-                        // if the tag is present, continue
-                        final Location loc;
-                        try {
-                            loc = VariableLocation.parse(GlobalVariableResolver.resolve(pack, location));
-                        } catch (final QuestException e) {
-                            log.warn("Could not parse location in a compass pointer in " + packName
-                                    + " package: " + key, e);
-                            onlineProfile.getPlayer().closeInventory();
-                            return;
-                        }
-                        // put location with next number
-                        locations.put(counter, loc);
-                        names.put(counter, GlobalVariableResolver.resolve(pack, name));
-                        final String itemName = keySection.getString("item");
-                        if (itemName != null) {
-                            items.put(counter, Pair.of(pack, GlobalVariableResolver.resolve(pack, itemName)));
-                        }
-                        counter++;
-                    }
+            for (final Map.Entry<CompassID, QuestCompass> entry : BetonQuest.getInstance().getFeatureAPI().getCompasses().entrySet()) {
+                final CompassID compassId = entry.getKey();
+                if (playerData.hasTag(compassId.getCompassTag())) {
+                    compasses.put(counter, entry.getValue());
+                    counter++;
                 }
             }
+
             // solve number of needed rows
-            final int size = locations.size();
+            final int size = compasses.size();
             final int numberOfRows = (size - size % 9) / 9 + 1;
             if (numberOfRows > MAXIMUM_ROWS) {
                 log.warn(onlineProfile + " has too many compass pointers, please"
@@ -568,20 +508,27 @@ public class Backpack implements Listener {
         private ItemStack[] getContent(final int numberOfRows) throws QuestException {
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int index = 0;
-            for (final Integer slot : locations.keySet()) {
-                final Pair<QuestPackage, String> item = items.get(slot);
+            for (final Map.Entry<Integer, QuestCompass> entry : compasses.entrySet()) {
+                final QuestCompass comp = entry.getValue();
+                final ItemID item = comp.itemID();
                 if (item == null) {
                     continue;
                 }
                 ItemStack compass;
                 try {
-                    compass = new QuestItem(new ItemID(item.getKey(), item.getValue())).generate(1);
+                    compass = new QuestItem(item).generate(1);
                 } catch (final QuestException e) {
                     log.warn("Could not find item: " + e.getMessage(), e);
                     compass = new ItemStack(Material.COMPASS);
                 }
+                final String name;
+                try {
+                    name = name(entry.getKey(), comp);
+                } catch (final QuestException e) {
+                    log.warn(e.getMessage(), e);
+                    continue;
+                }
                 final ItemMeta meta = compass.getItemMeta();
-                final String name = names.get(slot);
                 meta.setDisplayName(name.replace("_", " ").replace("&", "§"));
                 compass.setItemMeta(meta);
                 content[index] = compass;
@@ -590,10 +537,33 @@ public class Backpack implements Listener {
             return content;
         }
 
+        private String name(final int slot, final QuestCompass compass) throws QuestException {
+            String name = compass.names().get(lang);
+            if (name != null) {
+                return name;
+            }
+            name = compass.names().get(Config.getLanguage());
+            if (name != null) {
+                return name;
+            }
+            name = compass.names().get("en");
+            if (name != null) {
+                return name;
+            }
+            throw new QuestException("No matching Name not defined for compass '" + slot + "', skipping it.");
+        }
+
         @Override
         protected void click(final int slot, final int layerSlot, final ClickType click) {
-            final Location loc = locations.get(slot);
-            if (loc == null) {
+            final QuestCompass compass = compasses.get(slot);
+            if (compass == null) {
+                return;
+            }
+            final Location loc;
+            try {
+                loc = compass.location().getValue(onlineProfile);
+            } catch (final QuestException e) {
+                log.warn("Could not resolve compass location for '" + compass + "': " + e.getMessage(), e);
                 return;
             }
             // set the location of the compass
