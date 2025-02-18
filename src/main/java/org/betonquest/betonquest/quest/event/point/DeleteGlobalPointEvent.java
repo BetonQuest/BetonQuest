@@ -1,18 +1,20 @@
 package org.betonquest.betonquest.quest.event.point;
 
-import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.database.GlobalData;
+import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Deletes a category from the global points.
  */
-public class DeleteGlobalPointEvent implements StaticEvent {
+public class DeleteGlobalPointEvent implements NullableEvent {
     /**
      * The category to delete.
      */
-    private final String category;
+    private final VariableString category;
 
     /**
      * The global data.
@@ -22,15 +24,16 @@ public class DeleteGlobalPointEvent implements StaticEvent {
     /**
      * Creates a new DeleteGlobalPointEvent.
      *
-     * @param category the category to delete
+     * @param globalData the global data
+     * @param category   the category to delete
      */
-    public DeleteGlobalPointEvent(final String category) {
+    public DeleteGlobalPointEvent(final GlobalData globalData, final VariableString category) {
         this.category = category;
-        this.globalData = BetonQuest.getInstance().getGlobalData();
+        this.globalData = globalData;
     }
 
     @Override
-    public void execute() throws QuestException {
-        globalData.removePointsCategory(category);
+    public void execute(@Nullable final Profile profile) throws QuestException {
+        globalData.removePointsCategory(category.getValue(profile));
     }
 }
