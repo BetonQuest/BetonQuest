@@ -91,6 +91,7 @@ journal:
   lock_default_journal_slot: false
   give_on_respawn: false
   custom_model_data: -1
+  separator: ---------------
 journal_colors:
   date:
     day: 9

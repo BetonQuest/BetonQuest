@@ -418,17 +418,16 @@ public class Journal {
 
         // add main page and generate pages from texts
         final List<String> finalList = new ArrayList<>();
+        final String color = config.getString("journal_colors.line");
         if (config.getBoolean("journal.one_entry_per_page")) {
             if (mainPage != null && !mainPage.isEmpty()) {
                 finalList.addAll(Utils.pagesFromString(mainPage));
             }
             finalList.addAll(getText());
         } else {
-            final String color = config.getString("journal_colors.line");
-            final String separator = pluginMessage.getMessage(profile, "journal_separator");
-
             final String line;
             if (config.getBoolean("journal.show_separator")) {
+                final String separator = config.getString("journal.separator");
                 line = "\n§" + color + separator + "\n";
             } else {
                 line = "\n";
@@ -451,7 +450,7 @@ public class Journal {
         if (finalList.isEmpty()) {
             meta.addPage("");
         } else {
-            meta.setPages(Utils.multiLineColorCodes(finalList, "§" + config.getString("journal_colors.line")));
+            meta.setPages(Utils.multiLineColorCodes(finalList, "§" + color));
         }
         item.setItemMeta(meta);
         return item;
