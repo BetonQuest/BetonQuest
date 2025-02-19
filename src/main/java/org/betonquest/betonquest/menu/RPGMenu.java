@@ -8,16 +8,18 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.menu.betonquest.MenuCondition;
+import org.betonquest.betonquest.menu.betonquest.MenuConditionFactory;
+import org.betonquest.betonquest.menu.betonquest.MenuEventFactory;
 import org.betonquest.betonquest.menu.betonquest.MenuObjective;
-import org.betonquest.betonquest.menu.betonquest.MenuQuestEvent;
-import org.betonquest.betonquest.menu.betonquest.MenuVariable;
+import org.betonquest.betonquest.menu.betonquest.MenuVariableFactory;
 import org.betonquest.betonquest.menu.command.RPGMenuCommand;
 import org.betonquest.betonquest.menu.config.RPGMenuConfig;
 import org.betonquest.betonquest.menu.event.MenuOpenEvent;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Server;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.HandlerList;
@@ -31,6 +33,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The RPGMenu instance.
+ */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.CouplingBetweenObjects"})
 public class RPGMenu {
     /**
@@ -63,10 +68,12 @@ public class RPGMenu {
         final BetonQuest betonQuest = BetonQuest.getInstance();
         final String menu = "menu";
         final QuestTypeRegistries questRegistries = betonQuest.getQuestRegistries();
-        questRegistries.condition().register(menu, MenuCondition.class);
+        final Server server = betonQuest.getServer();
+        final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), betonQuest);
+        questRegistries.condition().register(menu, new MenuConditionFactory(loggerFactory, data));
         questRegistries.objective().register(menu, MenuObjective.class);
-        questRegistries.event().register(menu, MenuQuestEvent.class);
-        questRegistries.variable().register(menu, MenuVariable.class);
+        questRegistries.event().register(menu, new MenuEventFactory(loggerFactory, data, this));
+        questRegistries.variable().register(menu, new MenuVariableFactory());
         this.pluginCommand = new RPGMenuCommand(loggerFactory.create(RPGMenuCommand.class), this);
     }
 

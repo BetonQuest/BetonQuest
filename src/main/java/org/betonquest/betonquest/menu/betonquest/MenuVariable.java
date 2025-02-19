@@ -1,28 +1,23 @@
 package org.betonquest.betonquest.menu.betonquest;
 
-import org.betonquest.betonquest.api.Variable;
-import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.variable.online.OnlineVariable;
 import org.betonquest.betonquest.menu.OpenedMenu;
-import org.jetbrains.annotations.Nullable;
 
 /**
- * Returns the title of the players currently opened menu
+ * Returns the title of the players currently opened menu.
  */
-@SuppressWarnings("PMD.CommentRequired")
-public class MenuVariable extends Variable {
+public class MenuVariable implements OnlineVariable {
 
-    public MenuVariable(final Instruction instruction) throws QuestException {
-        super(instruction);
+    /**
+     * Create a new opened menu variable.
+     */
+    public MenuVariable() {
     }
 
     @Override
-    public String getValue(@Nullable final Profile profile) {
-        if (profile == null) {
-            return "";
-        }
-        final OpenedMenu menu = OpenedMenu.getMenu(profile.getOnlineProfile().get());
+    public String getValue(final OnlineProfile profile) {
+        final OpenedMenu menu = OpenedMenu.getMenu(profile);
         if (menu == null) {
             return "";
         }

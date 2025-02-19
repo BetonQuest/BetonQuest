@@ -1,20 +1,18 @@
 package org.betonquest.betonquest.menu.betonquest;
 
-import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
 /**
- * Event to open or close menus
+ * Event to open or close menus.
  */
-public class MenuQuestEvent extends QuestEvent {
+public class MenuQuestEvent implements OnlineEvent {
     /**
      * The stuff to do with the profile.
      */
@@ -23,41 +21,19 @@ public class MenuQuestEvent extends QuestEvent {
     /**
      * Creates a new MenuQuestEvent.
      *
-     * @param instruction the instruction to parse
-     * @throws QuestException if the instruction is invalid
+     * @param rpgMenu the rpg menu instance to open and close menus
+     * @param menuID  the menu id to open or null if open menus should be closed
      */
-    public MenuQuestEvent(final Instruction instruction) throws QuestException {
-        super(instruction, true);
-        final Operation operation = instruction.getEnum(Operation.class);
-        if (operation == Operation.OPEN) {
-            try {
-                final MenuID menu = new MenuID(instruction.getPackage(), instruction.next());
-                doStuff = profile -> BetonQuest.getInstance().getRpgMenu().openMenu(profile, menu);
-            } catch (final QuestException e) {
-                throw new QuestException("Error while parsing 2 argument: Error while loading menu: " + e.getMessage(), e);
-            }
+    public MenuQuestEvent(final RPGMenu rpgMenu, @Nullable final MenuID menuID) {
+        if (menuID != null) {
+            doStuff = profile -> rpgMenu.openMenu(profile, menuID);
         } else {
             doStuff = RPGMenu::closeMenu;
         }
     }
 
     @Override
-    public Void execute(final Profile profile) throws QuestException {
-        doStuff.accept(profile.getOnlineProfile().get());
-        return null;
-    }
-
-    /**
-     * The action of the event.
-     */
-    public enum Operation {
-        /**
-         * Opens a menu.
-         */
-        OPEN,
-        /**
-         * Closes any open menu.
-         */
-        CLOSE
+    public void execute(final OnlineProfile profile) throws QuestException {
+        doStuff.accept(profile);
     }
 }
