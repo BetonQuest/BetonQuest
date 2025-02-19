@@ -546,7 +546,7 @@ public class Backpack implements Listener {
             if (name != null) {
                 return name;
             }
-            name = compass.names().get("en");
+            name = compass.names().get("en-US");
             if (name != null) {
                 return name;
             }
