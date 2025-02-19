@@ -437,7 +437,7 @@ public class BetonQuest extends JavaPlugin {
         questTypeRegistries = QuestTypeRegistries.create(loggerFactory);
         featureRegistries = FeatureRegistries.create(loggerFactory);
 
-        questRegistry = new QuestRegistry(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
+        questRegistry = QuestRegistry.create(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
                 featureRegistries, questTypeRegistries, pluginMessage);
 
         questTypeAPI = new QuestTypeAPI(questRegistry);
@@ -624,7 +624,7 @@ public class BetonQuest extends JavaPlugin {
     @Override
     public void onDisable() {
         if (questRegistry != null) {
-            questRegistry.stopAllEventSchedules();
+            questRegistry.eventScheduling().stopAll();
         }
         // suspend all conversations
         for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
