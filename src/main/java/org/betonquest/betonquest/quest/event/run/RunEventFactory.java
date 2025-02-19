@@ -11,7 +11,7 @@ import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.item.typehandler.HandlerUtil;
-import org.betonquest.betonquest.quest.registry.type.TypeFactory;
+import org.betonquest.betonquest.kernel.registry.TypeFactory;
 
 import java.util.ArrayList;
 import java.util.List;

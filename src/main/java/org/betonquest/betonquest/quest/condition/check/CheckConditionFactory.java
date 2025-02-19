@@ -11,7 +11,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.quest.registry.type.TypeFactory;
+import org.betonquest.betonquest.kernel.registry.TypeFactory;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;

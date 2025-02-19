@@ -3,10 +3,10 @@ package org.betonquest.betonquest.compatibility.jobsreborn;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
-import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
-import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
-import org.betonquest.betonquest.quest.registry.type.ObjectiveTypeRegistry;
+import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
+import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
+import org.betonquest.betonquest.kernel.registry.quest.ObjectiveTypeRegistry;
+import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
 
 /**
  * Integrator for JobsReborn.

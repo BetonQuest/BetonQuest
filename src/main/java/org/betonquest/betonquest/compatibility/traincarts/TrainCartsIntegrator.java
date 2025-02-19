@@ -7,8 +7,8 @@ import org.betonquest.betonquest.compatibility.traincarts.conditions.TrainCartsR
 import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsExitObjective;
 import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsLocationObjective;
 import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsRideObjective;
+import org.betonquest.betonquest.kernel.registry.quest.ObjectiveTypeRegistry;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.registry.type.ObjectiveTypeRegistry;
 
 /**
  * The TrainCarts integration.

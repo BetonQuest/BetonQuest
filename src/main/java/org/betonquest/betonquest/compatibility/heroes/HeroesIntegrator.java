@@ -10,9 +10,9 @@ import org.betonquest.betonquest.compatibility.heroes.condition.HeroesAttributeC
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesClassConditionFactory;
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesSkillConditionFactory;
 import org.betonquest.betonquest.compatibility.heroes.event.HeroesExperienceEventFactory;
+import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
+import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
-import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.bukkit.Server;
 
 /**
