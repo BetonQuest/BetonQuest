@@ -57,3 +57,18 @@ password: 'haslo: '
 condition_variable_met: 'yes' # TODO: missing translation
 condition_variable_not_met: 'no' # TODO: missing translation
 chest_occupied: 'This chest is already in use' # TODO: missing translation
+menu:
+  command_no_permission: '&7[&c&l!&7] No permission!' # TODO: missing translation
+  command_usage: '&cUsage:\n&7{usage}' # TODO: missing translation
+  command_info_reload: '&breloads all/one menu(s)' # TODO: missing translation
+  command_info_list: '&bopens specific menu [for a player]' # TODO: missing translation
+  command_info_open: '&blists all loaded menus' # TODO: missing translation
+  command_invalid_menu: '&7[&c&l!&7] &c{menu}&7 is not a loaded menu!' # TODO: missing translation
+  command_no_player: '&7[&c&l!&7] Please specify a player!' # TODO: missing translation
+  command_invalid_player: '&7[&c&l!&7] There is no player with the name &c{player}&7!' # TODO: missing translation
+  command_no_menu: '&7[&c&l!&7] Please specify a menu!' # TODO: missing translation
+  command_open_successful: '&7[&a&li&7]&a Successfully opened &7{menu}&a!' # TODO: missing translation
+  command_reload_successful: '&7[{color}&li&7]{color} Successfully reloaded &7{amount}{color} menu(s)!' # TODO: missing translation
+  command_reload_failed: '&7[&4&l!&7]&4 Reload failed!' # TODO: missing translation
+  command_list: '&e----- &aRPGMenu &e-----\n&aLoaded menus:&e ' # TODO: missing translation
+  click_to_open: '&bclick to open menu' # TODO: missing translation

@@ -2,13 +2,16 @@ package org.betonquest.betonquest.menu.command;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.menu.util.Utils;
+import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginIdentifiableCommand;
+import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.Nullable;
@@ -93,7 +96,11 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
      * @return the message to send
      */
     protected String noPermissionMessage(final CommandSender sender) {
-        return getPlugin().getRpgMenu().getConfiguration().getMessage(sender, "command_no_permission");
+        final PluginMessage pluginMessage = getPlugin().getPluginMessage();
+        if (sender instanceof final Player player) {
+            return pluginMessage.getMessage(PlayerConverter.getID(player), "command_no_permission");
+        }
+        return pluginMessage.getMessage("command_no_permission");
     }
 
     @Override
@@ -105,7 +112,13 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     @Override
     public boolean execute(final CommandSender sender, final String label, final String[] args) {
         if (args.length < minimalArgs) {
-            getPlugin().getRpgMenu().getConfiguration().sendMessage(sender, "command_usage", usage);
+            final PluginMessage.Replacement usageReplacement = new PluginMessage.Replacement("usage", usage);
+            final PluginMessage pluginMessage = getPlugin().getPluginMessage();
+            if (sender instanceof final Player player) {
+                sender.sendMessage(pluginMessage.getMessage(PlayerConverter.getID(player), "command_usage", usageReplacement));
+            } else {
+                pluginMessage.getMessage("command_usage", usageReplacement);
+            }
             return false;
         }
         if (perimssion != null && !sender.hasPermission(perimssion)) {

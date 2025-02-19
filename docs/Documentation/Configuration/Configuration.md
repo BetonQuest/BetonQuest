@@ -247,6 +247,10 @@ items:
 4. The quest cancelers. Can be removed from the backpack by setting the value to `""`.
 5. The quest compass. Can be removed from the backpack by setting the value to `""`.
 
+### Menu
+* `default_close`:  Sets if menus should close by default when an item is clicked (`true`) or if they should stay open (`false`).
+  Each menu can also override this.
+
 ### Misc settings
 
 * `date_format` is the Java [date format](https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html)
