@@ -199,19 +199,6 @@ public class RPGMenuCommand extends SimpleCommand {
         return true;
     }
 
-    private void sendMessage(final CommandSender sender, final String message, final PluginMessage.Replacement... replacements) {
-        sender.sendMessage(getMessage(sender, message, replacements));
-    }
-
-    private String getMessage(final CommandSender sender, final String message, final PluginMessage.Replacement... replacements) {
-        final PluginMessage pluginMessage = getPlugin().getPluginMessage();
-        if (sender instanceof final Player player) {
-            return pluginMessage.getMessage(PlayerConverter.getID(player), message, replacements);
-        } else {
-            return pluginMessage.getMessage(message, replacements);
-        }
-    }
-
     /**
      * Displays the full help message to the command sender.
      *

@@ -88,21 +88,6 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
      */
     public abstract boolean simpleCommand(CommandSender sender, String alias, String... args);
 
-    /**
-     * Override this method to specify the message which is sent
-     * when the command sender doesn't have the required Permission.
-     *
-     * @param sender the CommandSender performing the command
-     * @return the message to send
-     */
-    protected String noPermissionMessage(final CommandSender sender) {
-        final PluginMessage pluginMessage = getPlugin().getPluginMessage();
-        if (sender instanceof final Player player) {
-            return pluginMessage.getMessage(PlayerConverter.getID(player), "command_no_permission");
-        }
-        return pluginMessage.getMessage("command_no_permission");
-    }
-
     @Override
     public final Command setUsage(final String usage) {
         this.usage = usage;
@@ -112,17 +97,11 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     @Override
     public boolean execute(final CommandSender sender, final String label, final String[] args) {
         if (args.length < minimalArgs) {
-            final PluginMessage.Replacement usageReplacement = new PluginMessage.Replacement("usage", usage);
-            final PluginMessage pluginMessage = getPlugin().getPluginMessage();
-            if (sender instanceof final Player player) {
-                sender.sendMessage(pluginMessage.getMessage(PlayerConverter.getID(player), "command_usage", usageReplacement));
-            } else {
-                pluginMessage.getMessage("command_usage", usageReplacement);
-            }
+            sendMessage(sender, "command_usage", new PluginMessage.Replacement("usage", usage));
             return false;
         }
         if (perimssion != null && !sender.hasPermission(perimssion)) {
-            sender.sendMessage(noPermissionMessage(sender));
+            sendMessage(sender, "command_no_permission");
             return false;
         }
         return simpleCommand(sender, label, args);
@@ -215,5 +194,18 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     @Override
     public BetonQuest getPlugin() {
         return BetonQuest.getInstance();
+    }
+
+    protected void sendMessage(final CommandSender sender, final String message, final PluginMessage.Replacement... replacements) {
+        sender.sendMessage(getMessage(sender, message, replacements));
+    }
+
+    protected String getMessage(final CommandSender sender, final String message, final PluginMessage.Replacement... replacements) {
+        final PluginMessage pluginMessage = getPlugin().getPluginMessage();
+        if (sender instanceof final Player player) {
+            return pluginMessage.getMessage(PlayerConverter.getID(player), message, replacements);
+        } else {
+            return pluginMessage.getMessage(message, replacements);
+        }
     }
 }

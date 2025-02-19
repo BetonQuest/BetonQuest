@@ -387,7 +387,7 @@ public class Menu extends SimpleYMLSection implements Listener {
                 rpgMenu.openMenu(onlineProfile, menuID);
                 return true;
             } else {
-                player.sendMessage(this.noPermissionMessage(sender));
+                sendMessage(sender, "command_no_permission");
                 return false;
             }
         }

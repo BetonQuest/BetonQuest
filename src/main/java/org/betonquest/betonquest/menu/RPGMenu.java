@@ -55,7 +55,6 @@ public class RPGMenu {
 
     private final RPGMenuCommand pluginCommand;
 
-    @SuppressWarnings("NullAway.Init")
     public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final ConfigurationFile config, final PluginMessage pluginMessage) {
         this.log = log;
         this.loggerFactory = loggerFactory;
