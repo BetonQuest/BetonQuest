@@ -1,34 +1,33 @@
 package org.betonquest.betonquest.menu.betonquest;
 
-import org.betonquest.betonquest.api.Condition;
-import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Checks if a player has opened a menu
+ * Checks if a player has opened a menu.
  */
-@SuppressWarnings("PMD.CommentRequired")
-public class MenuCondition extends Condition {
+public class MenuCondition implements OnlineCondition {
 
+    /**
+     * MenuID to check, null if any matches.
+     */
     @Nullable
-    private final MenuID menu;
+    private final MenuID menuID;
 
-    public MenuCondition(final Instruction instruction) throws QuestException {
-        super(instruction, true);
-        final String menuID = instruction.getOptional("id");
-        try {
-            this.menu = (menuID == null) ? null : new MenuID(instruction.getPackage(), menuID);
-        } catch (final QuestException e) {
-            throw new QuestException("Error while parsing id optional: Error while loading menu: " + e.getMessage(), e);
-        }
+    /**
+     * Create a new menu condition.
+     *
+     * @param menuID the menu id to check for or null if matches any
+     */
+    public MenuCondition(@Nullable final MenuID menuID) {
+        this.menuID = menuID;
     }
 
     @Override
-    public Boolean execute(final Profile profile) {
-        return RPGMenu.hasOpenedMenu(profile.getOnlineProfile().get(), menu);
+    public boolean check(final OnlineProfile profile) {
+        return RPGMenu.hasOpenedMenu(profile, menuID);
     }
 }

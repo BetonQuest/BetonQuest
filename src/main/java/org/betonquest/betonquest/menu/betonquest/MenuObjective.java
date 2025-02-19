@@ -11,13 +11,13 @@ import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.event.MenuOpenEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 /**
- * Completed if menu with given id is opened
+ * Completed if menu with given id is opened.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class MenuObjective extends Objective implements Listener {
     /**
      * The key for the menu property.
@@ -29,19 +29,29 @@ public class MenuObjective extends Objective implements Listener {
      */
     private final BetonQuestLogger log;
 
+    /**
+     * The menu to open.
+     */
     private final MenuID menuID;
 
+    /**
+     * Construct a new Menu Objective from Instruction.
+     *
+     * @param instruction the instruction to get the id from
+     * @throws QuestException if the menu id does not exist
+     */
     public MenuObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        try {
-            this.menuID = new MenuID(instruction.getPackage(), instruction.next());
-        } catch (final QuestException e) {
-            throw new QuestException("Error while parsing 1 argument: Error while loading menu: " + e.getMessage(), e);
-        }
+        this.menuID = instruction.getID(MenuID::new);
     }
 
-    @EventHandler
+    /**
+     * Completes the objective when the matching menu is opened.
+     *
+     * @param event the open menu event
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onMenuOpen(final MenuOpenEvent event) {
         final Profile profile = event.getProfile();
         if (!containsPlayer(profile)) {
