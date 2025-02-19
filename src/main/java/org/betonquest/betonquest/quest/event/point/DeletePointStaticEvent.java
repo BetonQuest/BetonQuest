@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.util.PlayerConverter;
 
 /**
@@ -26,7 +26,7 @@ public class DeletePointStaticEvent implements StaticEvent {
     /**
      * Point category to remove.
      */
-    private final VariableString category;
+    private final VariableIdentifier category;
 
     /**
      * Create a new Point remove event for every player, online and offline.
@@ -35,7 +35,7 @@ public class DeletePointStaticEvent implements StaticEvent {
      * @param saver       the saver to use
      * @param category    the category to remove
      */
-    public DeletePointStaticEvent(final PlayerDataStorage dataStorage, final Saver saver, final VariableString category) {
+    public DeletePointStaticEvent(final PlayerDataStorage dataStorage, final Saver saver, final VariableIdentifier category) {
         this.dataStorage = dataStorage;
         this.saver = saver;
         this.category = category;

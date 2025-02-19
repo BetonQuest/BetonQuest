@@ -4,8 +4,8 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.database.GlobalData;
+import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -23,7 +23,7 @@ public class GlobalPointCondition implements NullableCondition {
     /**
      * The category of the points.
      */
-    private final VariableString category;
+    private final VariableIdentifier category;
 
     /**
      * The amount of points.
@@ -43,7 +43,7 @@ public class GlobalPointCondition implements NullableCondition {
      * @param count      the amount of points
      * @param equal      whether the points should be equal to the specified amount
      */
-    public GlobalPointCondition(final GlobalData globalData, final VariableString category, final VariableNumber count, final boolean equal) {
+    public GlobalPointCondition(final GlobalData globalData, final VariableIdentifier category, final VariableNumber count, final boolean equal) {
         this.globalData = globalData;
         this.category = category;
         this.count = count;

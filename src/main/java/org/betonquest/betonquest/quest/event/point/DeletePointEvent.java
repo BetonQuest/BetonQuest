@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 
 import java.util.function.Function;
 
@@ -20,7 +20,7 @@ public class DeletePointEvent implements Event {
     /**
      * The category to delete.
      */
-    private final VariableString category;
+    private final VariableIdentifier category;
 
     /**
      * Creates a new DeletePointsEvent.
@@ -28,7 +28,7 @@ public class DeletePointEvent implements Event {
      * @param playerDataSource the source to get a profiles player data
      * @param category         the category to delete
      */
-    public DeletePointEvent(final Function<Profile, PlayerData> playerDataSource, final VariableString category) {
+    public DeletePointEvent(final Function<Profile, PlayerData> playerDataSource, final VariableIdentifier category) {
         this.playerDataSource = playerDataSource;
         this.category = category;
     }

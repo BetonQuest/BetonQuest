@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
-import org.betonquest.betonquest.util.Utils;
 
 /**
  * Objectified parser for the Instruction.
@@ -25,12 +24,6 @@ public interface VariableArgument<T> {
      */
     VariableArgument<VariableNumber> NUMBER_NOT_LESS_THAN_ONE = (variableProcessor, pack, input) ->
             new VariableNumber(variableProcessor, pack, input, VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
-
-    /**
-     * {@link VariableString} argument which adds the package as identifier, if not already present.
-     */
-    VariableArgument<VariableString> STRING_WITH_PACKAGE = (variableProcessor, pack, input) ->
-            new VariableString(variableProcessor, pack, Utils.addPackage(pack, input));
 
     /**
      * {@link VariableString} argument with the {@code replaceUnderscores} flag set.

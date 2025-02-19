@@ -9,8 +9,8 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
+import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -60,7 +60,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      * The text with which the mob must have been marked to count.
      */
     @Nullable
-    protected VariableString marked;
+    protected VariableIdentifier marked;
 
     /**
      * Creates a new MythicMobKillObjective.
@@ -84,16 +84,17 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
 
         minMobLevel = instruction.get(unsafeMinMobLevel == null ? String.valueOf(Double.NEGATIVE_INFINITY) : unsafeMinMobLevel, VariableNumber::new);
         maxMobLevel = instruction.get(unsafeMaxMobLevel == null ? String.valueOf(Double.POSITIVE_INFINITY) : unsafeMaxMobLevel, VariableNumber::new);
-        marked = instruction.get(instruction.getOptional("marked"), VariableArgument.STRING_WITH_PACKAGE);
+        marked = instruction.get(instruction.getOptional("marked"), VariableIdentifier::new);
     }
 
     /**
      * Registers a listener for the MythicMobDeathEvent and handles all incoming ones.
      *
      * @param event the MythicMobDeathEvent
+     * @throws QuestException if a variable could not be resolved
      */
     @EventHandler(ignoreCancelled = true)
-    public void onBossKill(final MythicMobDeathEvent event) {
+    public void onBossKill(final MythicMobDeathEvent event) throws QuestException {
         final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
         if (!names.contains(event.getMobType().getInternalName())
                 || marked != null && !event.getEntity().getPersistentDataContainer().has(key)) {
@@ -108,7 +109,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
         }
     }
 
-    private void executeForEveryoneInRange(final MythicMobDeathEvent event, final double range, final NamespacedKey key) {
+    private void executeForEveryoneInRange(final MythicMobDeathEvent event, final double range, final NamespacedKey key) throws QuestException {
         final Location center = BukkitAdapter.adapt(event.getMob().getLocation());
         for (final Player player : center.getWorld().getPlayers()) {
             if (isValidPlayer(player) && player.getLocation().distanceSquared(center) <= range) {
@@ -117,9 +118,9 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
         }
     }
 
-    private void checkKill(final MythicMobDeathEvent event, final OnlineProfile onlineProfile, final NamespacedKey key) {
+    private void checkKill(final MythicMobDeathEvent event, final OnlineProfile onlineProfile, final NamespacedKey key) throws QuestException {
         if (marked != null) {
-            final String value = marked.getString(onlineProfile);
+            final String value = marked.getValue(onlineProfile);
             final String dataContainerValue = event.getEntity().getPersistentDataContainer().get(key, PersistentDataType.STRING);
             if (dataContainerValue == null || !dataContainerValue.equals(value)) {
                 return;
@@ -134,16 +135,17 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
                 && player.isValid();
     }
 
-    private void handlePlayerKill(final OnlineProfile onlineProfile, final ActiveMob mob) {
+    private void handlePlayerKill(final OnlineProfile onlineProfile, final ActiveMob mob) throws QuestException {
         if (containsPlayer(onlineProfile) && matchesMobLevel(onlineProfile, mob) && checkConditions(onlineProfile)) {
             getCountingData(onlineProfile).progress();
             completeIfDoneOrNotify(onlineProfile);
         }
     }
 
-    private boolean matchesMobLevel(final OnlineProfile onlineProfile, final ActiveMob mob) {
+    private boolean matchesMobLevel(final OnlineProfile onlineProfile, final ActiveMob mob) throws QuestException {
         final double actualMobLevel = mob.getLevel();
-        return minMobLevel.getDouble(onlineProfile) <= actualMobLevel && maxMobLevel.getDouble(onlineProfile) >= actualMobLevel;
+        return minMobLevel.getValue(onlineProfile).doubleValue() <= actualMobLevel
+                && maxMobLevel.getValue(onlineProfile).doubleValue() >= actualMobLevel;
     }
 
     @Override

@@ -8,9 +8,8 @@ import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
+import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -64,7 +63,7 @@ public class MythicSpawnMobEventFactory implements EventFactory, StaticEventFact
         }
         final boolean targetPlayer = instruction.hasArgument("target");
         final String markedString = instruction.getOptional("marked");
-        final VariableString marked = instruction.get(markedString, VariableArgument.STRING_WITH_PACKAGE);
+        final VariableIdentifier marked = instruction.get(markedString, VariableIdentifier::new);
         return new PrimaryServerThreadEvent(new MythicSpawnMobEvent(apiHelper, loc, mob, level, amount, privateMob, targetPlayer, marked), data);
     }
 
@@ -79,7 +78,7 @@ public class MythicSpawnMobEventFactory implements EventFactory, StaticEventFact
         final VariableNumber level = instruction.get(mobParts[1], VariableNumber::new);
         final VariableNumber amount = instruction.get(VariableNumber::new);
         final String markedString = instruction.getOptional("marked");
-        final VariableString marked = instruction.get(markedString, VariableArgument.STRING_WITH_PACKAGE);
+        final VariableIdentifier marked = instruction.get(markedString, VariableIdentifier::new);
         return new PrimaryServerThreadStaticEvent(new MythicSpawnMobEvent(apiHelper, loc, mob, level, amount, false, false, marked), data);
     }
 }

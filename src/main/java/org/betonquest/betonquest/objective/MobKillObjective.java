@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -33,7 +33,7 @@ public class MobKillObjective extends CountingObjective implements Listener {
     protected String name;
 
     @Nullable
-    protected VariableString marked;
+    protected VariableIdentifier marked;
 
     public MobKillObjective(final Instruction instruction) throws QuestException {
         super(instruction, "mobs_to_kill");
@@ -43,7 +43,7 @@ public class MobKillObjective extends CountingObjective implements Listener {
         if (name != null) {
             name = Utils.format(name, true, false).replace('_', ' ');
         }
-        marked = instruction.get(instruction.getOptional("marked"), VariableArgument.STRING_WITH_PACKAGE);
+        marked = instruction.get(instruction.getOptional("marked"), VariableIdentifier::new);
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
@@ -57,11 +57,15 @@ public class MobKillObjective extends CountingObjective implements Listener {
             return;
         }
         if (marked != null) {
-            final String value = marked.getString(onlineProfile);
-            final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
-            final String dataContainerValue = event.getEntity().getPersistentDataContainer().get(key, PersistentDataType.STRING);
-            if (dataContainerValue == null || !dataContainerValue.equals(value)) {
-                return;
+            try {
+                final String value = marked.getValue(onlineProfile);
+                final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
+                final String dataContainerValue = event.getEntity().getPersistentDataContainer().get(key, PersistentDataType.STRING);
+                if (dataContainerValue == null || !dataContainerValue.equals(value)) {
+                    return;
+                }
+            } catch (final QuestException ignored) {
+                // Empty
             }
         }
 

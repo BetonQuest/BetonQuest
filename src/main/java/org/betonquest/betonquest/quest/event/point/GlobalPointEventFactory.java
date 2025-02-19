@@ -8,9 +8,8 @@ import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
+import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 
 import java.util.Locale;
 
@@ -47,7 +46,7 @@ public class GlobalPointEventFactory implements EventFactory, StaticEventFactory
     }
 
     private GlobalPointEvent createGlobalPointEvent(final Instruction instruction) throws QuestException {
-        final VariableString category = instruction.get(VariableArgument.STRING_WITH_PACKAGE);
+        final VariableIdentifier category = instruction.get(VariableIdentifier::new);
         final String number = instruction.next();
         final String action = instruction.getOptional("action");
         if (action != null) {

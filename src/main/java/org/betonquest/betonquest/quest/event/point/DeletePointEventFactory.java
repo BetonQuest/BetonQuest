@@ -8,8 +8,7 @@ import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 
 /**
  * Factory to create delete points events from {@link Instruction}s.
@@ -39,12 +38,12 @@ public class DeletePointEventFactory implements EventFactory, StaticEventFactory
 
     @Override
     public Event parseEvent(final Instruction instruction) throws QuestException {
-        return new DeletePointEvent(dataStorage::getOffline, instruction.get(VariableArgument.STRING_WITH_PACKAGE));
+        return new DeletePointEvent(dataStorage::getOffline, instruction.get(VariableIdentifier::new));
     }
 
     @Override
     public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
-        final VariableString category = instruction.get(VariableArgument.STRING_WITH_PACKAGE);
+        final VariableIdentifier category = instruction.get(VariableIdentifier::new);
         return new DeletePointStaticEvent(dataStorage, saver, category);
     }
 }
