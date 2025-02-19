@@ -180,7 +180,7 @@ And sounds can be disabled by setting them to `false`.
   * `hide_date` hides the date of each entry. Set it to true if you don't want this functionality.
   * `full_main_page` makes the main page always take a full page. If a lot of information is being displayed, it is advised to make this true.
    If you use the main page only for small notifications, set it to false, so the entries can follow immediately.
-  * `show_separator` shows a separator between journal entries (default: true). Customize the separator in `messages.yml` with the key `journal_separator`.
+  * `show_separator` shows a separator between journal entries (default: true). Customize the separator in `config.yml` with the key `journal.separator`.
   * `show_in_backpack` whether to display the journal in the backpack when there is no journal in the player's inventory.
   * `lock_default_journal_slot` locks the journal to the `default_journal_slot`.
   * `give_on_respawn` adds the journal to the player inventory.
