@@ -84,4 +84,13 @@ public abstract class QuestProcessor<I extends ID, T> {
      *                        if the ID could not be parsed
      */
     protected abstract I getIdentifier(QuestPackage pack, String identifier) throws QuestException;
+
+    /**
+     * Gets the amount of current loaded {@link T} with their readable name.
+     *
+     * @return the value size with the identifier
+     */
+    public String readableSize() {
+        return size() + " " + readable;
+    }
 }

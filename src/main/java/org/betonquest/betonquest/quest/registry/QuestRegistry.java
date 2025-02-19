@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * Stores the active Quest Types, Conversations, Quest Canceler and Event Scheduler.
+ * Stores the active Processors to store and execute type logic.
  *
  * @param log             The custom {@link BetonQuestLogger} instance for this class.
  * @param eventScheduling Event scheduling module.
@@ -29,14 +29,21 @@ import java.util.Map;
  * @param events          Event logic.
  * @param objectives      Objective logic.
  * @param variables       Variable logic.
- * @param cancelers Quest Canceler logic.
+ * @param cancelers       Quest Canceler logic.
  * @param conversations   Conversation Data logic.
  * @param compasses       Compasses.
  */
-public record QuestRegistry(BetonQuestLogger log, EventScheduling eventScheduling, ConditionProcessor conditions,
-                            EventProcessor events, ObjectiveProcessor objectives, VariableProcessor variables,
-                            CancelerProcessor cancelers, ConversationProcessor conversations,
-                            CompassProcessor compasses) {
+public record QuestRegistry(
+        BetonQuestLogger log,
+        EventScheduling eventScheduling,
+        ConditionProcessor conditions,
+        EventProcessor events,
+        ObjectiveProcessor objectives,
+        VariableProcessor variables,
+        CancelerProcessor cancelers,
+        ConversationProcessor conversations,
+        CompassProcessor compasses
+) {
 
     /**
      * Create a new Registry for storing and using Conditions, Events, Objectives, Variables,
@@ -76,7 +83,6 @@ public record QuestRegistry(BetonQuestLogger log, EventScheduling eventSchedulin
         conditions.clear();
         events.clear();
         objectives.clear();
-        variables.clear();
         cancelers.clear();
         conversations.clear();
         compasses.clear();
@@ -89,17 +95,17 @@ public record QuestRegistry(BetonQuestLogger log, EventScheduling eventSchedulin
             conditions.load(pack);
             objectives.load(pack);
             conversations.load(pack);
-            eventScheduling.loadData(pack);
             compasses.load(pack);
+            eventScheduling.loadData(pack);
 
             log.debug(pack, "Everything in package " + packName + " loaded");
         }
 
         conversations.checkExternalPointers();
 
-        log.info("There are " + conditions.size() + " conditions, " + events.size() + " events, "
-                + objectives.size() + " objectives and " + conversations.size() + " conversations loaded from "
-                + packages.size() + " packages.");
+        log.info("There are " + String.join(", ", conditions.readableSize(), events.readableSize(),
+                objectives.readableSize(), cancelers.readableSize(), compasses.readableSize())
+                + " and " + conversations.readableSize() + " loaded from " + packages.size() + " packages.");
 
         eventScheduling.startAll();
     }
