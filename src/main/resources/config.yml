@@ -114,3 +114,4 @@ items:
     compass_button: "DEFAULT"
 profiles:
   initial_name: 'default'
+default_close: true

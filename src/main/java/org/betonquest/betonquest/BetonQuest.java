@@ -379,15 +379,6 @@ public class BetonQuest extends JavaPlugin {
             return;
         }
 
-        final ConfigAccessor menuConfigAccessor;
-        try {
-            menuConfigAccessor = configAccessorFactory.create(new File(getDataFolder(), "menuConfig.yml"), this, "menuConfig.yml");
-        } catch (final InvalidConfigurationException | FileNotFoundException e) {
-            log.error("Could not load the menuConfig.yml file!", e);
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
-
         final HistoryHandler debugHistoryHandler = HandlerFactory.createHistoryHandler(loggerFactory, this,
                 this.getServer().getScheduler(), config, new File(getDataFolder(), "/logs"), InstantSource.system());
         registerLogHandler(getServer(), debugHistoryHandler);
@@ -487,7 +478,7 @@ public class BetonQuest extends JavaPlugin {
 
         setupUpdater();
 
-        rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, menuConfigAccessor);
+        rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, config, pluginMessage);
 
         PaperLib.suggestPaper(this);
         log.info("BetonQuest successfully enabled!");

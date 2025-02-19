@@ -2,13 +2,16 @@ package org.betonquest.betonquest.menu.command;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.menu.util.Utils;
+import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginIdentifiableCommand;
+import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.Nullable;
@@ -85,17 +88,6 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
      */
     public abstract boolean simpleCommand(CommandSender sender, String alias, String... args);
 
-    /**
-     * Override this method to specify the message which is sent
-     * when the command sender doesn't have the required Permission.
-     *
-     * @param sender the CommandSender performing the command
-     * @return the message to send
-     */
-    protected String noPermissionMessage(final CommandSender sender) {
-        return getPlugin().getRpgMenu().getConfiguration().getMessage(sender, "command_no_permission");
-    }
-
     @Override
     public final Command setUsage(final String usage) {
         this.usage = usage;
@@ -105,11 +97,11 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     @Override
     public boolean execute(final CommandSender sender, final String label, final String[] args) {
         if (args.length < minimalArgs) {
-            getPlugin().getRpgMenu().getConfiguration().sendMessage(sender, "command_usage", usage);
+            sendMessage(sender, "command_usage", new PluginMessage.Replacement("usage", usage));
             return false;
         }
         if (perimssion != null && !sender.hasPermission(perimssion)) {
-            sender.sendMessage(noPermissionMessage(sender));
+            sendMessage(sender, "command_no_permission");
             return false;
         }
         return simpleCommand(sender, label, args);
@@ -202,5 +194,18 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     @Override
     public BetonQuest getPlugin() {
         return BetonQuest.getInstance();
+    }
+
+    protected void sendMessage(final CommandSender sender, final String message, final PluginMessage.Replacement... replacements) {
+        sender.sendMessage(getMessage(sender, message, replacements));
+    }
+
+    protected String getMessage(final CommandSender sender, final String message, final PluginMessage.Replacement... replacements) {
+        final PluginMessage pluginMessage = getPlugin().getPluginMessage();
+        if (sender instanceof final Player player) {
+            return pluginMessage.getMessage(PlayerConverter.getID(player), message, replacements);
+        } else {
+            return pluginMessage.getMessage(message, replacements);
+        }
     }
 }

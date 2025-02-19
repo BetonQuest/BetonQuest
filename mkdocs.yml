@@ -78,7 +78,6 @@ nav:
               - 'Menus': Documentation/Features/Menus/Menu.md
               - 'Menu Example': Documentation/Features/Menus/Example.md
               - 'Elements': Documentation/Features/Menus/Elements.md
-              - 'Menu Settings': Documentation/Features/Menus/Config.md
           - 'Additional Features':
               - 'Journal': Documentation/Features/Journal.md
               - 'Quest Items': Documentation/Features/Items.md

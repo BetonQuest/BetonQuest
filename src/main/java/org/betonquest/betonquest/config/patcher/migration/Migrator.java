@@ -12,6 +12,7 @@ import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.Pac
 import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.RPGMenuMerge;
 import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.RemoveEntity;
 import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.RideUpdates;
+import org.betonquest.betonquest.config.patcher.migration.migrators.from2to3.DeleteMenuConfigYml;
 import org.betonquest.betonquest.config.patcher.migration.migrators.from2to3.DeleteMessagesYml;
 
 import java.io.IOException;
@@ -58,6 +59,7 @@ public class Migrator {
     @SuppressWarnings("PMD.UnusedFormalParameter")
     private void addMigratorsFrom2to3(final BetonQuestLoggerFactory loggerFactory, final FileConfigurationProvider provider) {
         migrations.add(new DeleteMessagesYml(loggerFactory.create(DeleteMessagesYml.class)));
+        migrations.add(new DeleteMenuConfigYml(loggerFactory.create(DeleteMenuConfigYml.class)));
     }
 
     /**

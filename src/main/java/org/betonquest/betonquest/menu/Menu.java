@@ -1,12 +1,14 @@
 package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
@@ -40,6 +42,16 @@ public class Menu extends SimpleYMLSection implements Listener {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
+
+    /**
+     * The plugin configuration file.
+     */
+    private final ConfigurationFile pluginConfig;
+
+    /**
+     * The plugin message instance.
+     */
+    private final PluginMessage pluginMessage;
 
     /**
      * The internal id of the menu.
@@ -99,13 +111,17 @@ public class Menu extends SimpleYMLSection implements Listener {
      * @param rpgMenu       the rpg menu instance to open menus
      * @param loggerFactory the logger factory for new class specific custom logger
      * @param log           the custom logger for this class
+     * @param config        the configuration file of the plugin
+     * @param pluginMessage the plugin message instance
      * @param menuID        the id of the menu
      * @throws InvalidConfigurationException if config options are missing or invalid
      */
-    public Menu(final RPGMenu rpgMenu, final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final MenuID menuID) throws InvalidConfigurationException {
+    public Menu(final RPGMenu rpgMenu, final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final ConfigurationFile config, final PluginMessage pluginMessage, final MenuID menuID) throws InvalidConfigurationException {
         super(menuID.getPackage(), menuID.getFullID(), menuID.getConfig());
         this.rpgMenu = rpgMenu;
         this.log = log;
+        pluginConfig = config;
+        this.pluginMessage = pluginMessage;
         this.menuID = menuID;
         //load size
         this.height = getInt("height");
@@ -171,7 +187,7 @@ public class Menu extends SimpleYMLSection implements Listener {
         final Map<String, MenuItem> itemsMap = new HashMap<>();
         for (final String key : config.getConfigurationSection(itemsSection).getKeys(false)) {
             itemsMap.put(key, new MenuItem(loggerFactory.create(MenuItem.class), pack, menuID, key,
-                    config.getConfigurationSection("items." + key), rpgMenu.getConfiguration().defaultCloseOnClick));
+                    config.getConfigurationSection("items." + key), pluginConfig.getBoolean("default_close")));
         }
 
         //load slots
@@ -250,7 +266,7 @@ public class Menu extends SimpleYMLSection implements Listener {
         event.setCancelled(true);
         final OnlineProfile onlineprofile = PlayerConverter.getID(event.getPlayer());
         if (!mayOpen(onlineprofile)) {
-            rpgMenu.getConfiguration().sendMessage(event.getPlayer(), "menu_do_not_open");
+            event.getPlayer().sendMessage(pluginMessage.getMessage(onlineprofile, "menu_do_not_open"));
             return;
         }
         //open the menu
@@ -371,14 +387,9 @@ public class Menu extends SimpleYMLSection implements Listener {
                 rpgMenu.openMenu(onlineProfile, menuID);
                 return true;
             } else {
-                player.sendMessage(this.noPermissionMessage(sender));
+                sendMessage(sender, "command_no_permission");
                 return false;
             }
-        }
-
-        @Override
-        protected String noPermissionMessage(final CommandSender sender) {
-            return rpgMenu.getConfiguration().getMessage(sender, "menu_do_not_open");
         }
     }
 }
