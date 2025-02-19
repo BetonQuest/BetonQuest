@@ -8,8 +8,8 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
+import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -71,7 +71,7 @@ public class EntityInteractObjective extends CountingObjective {
     protected EntityType mobType;
 
     @Nullable
-    protected VariableString marked;
+    protected VariableIdentifier marked;
 
     protected Interaction interaction;
 
@@ -92,7 +92,7 @@ public class EntityInteractObjective extends CountingObjective {
         targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
         customName = parseName(instruction.getOptional("name"));
         realName = parseName(instruction.getOptional("realname"));
-        marked = instruction.get(instruction.getOptional("marked"), VariableArgument.STRING_WITH_PACKAGE);
+        marked = instruction.get(instruction.getOptional("marked"), VariableIdentifier::new);
         cancel = instruction.hasArgument("cancel");
         loc = instruction.get(instruction.getOptional("loc"), VariableLocation::new);
         final String stringRange = instruction.getOptional("range");
@@ -147,11 +147,15 @@ public class EntityInteractObjective extends CountingObjective {
         }
         // check if the entity is correctly marked
         if (marked != null) {
-            final String value = marked.getString(PlayerConverter.getID(player));
-            final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
-            final String dataContainerValue = entity.getPersistentDataContainer().get(key, PersistentDataType.STRING);
-            if (dataContainerValue == null || !dataContainerValue.equals(value)) {
-                return false;
+            try {
+                final String value = marked.getValue(PlayerConverter.getID(player));
+                final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
+                final String dataContainerValue = entity.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+                if (dataContainerValue == null || !dataContainerValue.equals(value)) {
+                    return false;
+                }
+            } catch (final QuestException ignored) {
+                // Empty
             }
         }
         // check if the profile has this objective

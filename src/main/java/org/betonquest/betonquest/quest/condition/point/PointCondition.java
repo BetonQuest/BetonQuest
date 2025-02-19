@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.data.PlayerDataStorage;
+import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 import java.util.Optional;
@@ -21,7 +22,7 @@ public class PointCondition implements PlayerCondition {
     /**
      * The category of the points.
      */
-    private final String category;
+    private final VariableIdentifier category;
 
     /**
      * The amount of points.
@@ -41,7 +42,7 @@ public class PointCondition implements PlayerCondition {
      * @param count       the amount of points
      * @param equal       whether the points should be equal to the specified amount
      */
-    public PointCondition(final PlayerDataStorage dataStorage, final String category, final VariableNumber count, final boolean equal) {
+    public PointCondition(final PlayerDataStorage dataStorage, final VariableIdentifier category, final VariableNumber count, final boolean equal) {
         this.dataStorage = dataStorage;
         this.category = category;
         this.count = count;
@@ -50,7 +51,7 @@ public class PointCondition implements PlayerCondition {
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
-        final Optional<Integer> amount = dataStorage.get(profile).getPointsFromCategory(category);
+        final Optional<Integer> amount = dataStorage.get(profile).getPointsFromCategory(category.getValue(profile));
         return amount.isPresent() && checkPoints(amount.get(), profile);
     }
 

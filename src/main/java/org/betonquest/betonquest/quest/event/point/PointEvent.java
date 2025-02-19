@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
+import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 
@@ -20,14 +21,9 @@ public class PointEvent implements Event {
     private final NotificationSender pointSender;
 
     /**
-     * The plain name of the category.
-     */
-    private final String categoryName;
-
-    /**
      * The category name.
      */
-    private final String category;
+    private final VariableIdentifier category;
 
     /**
      * The count.
@@ -47,17 +43,15 @@ public class PointEvent implements Event {
     /**
      * Creates a new point event.
      *
-     * @param pointSender  the notification sender to use
-     * @param categoryName the plain name of the category
-     * @param category     the category name
-     * @param count        the count
-     * @param pointType    the point type
-     * @param dataStorage  the storage providing player data
+     * @param pointSender the notification sender to use
+     * @param category    the category name
+     * @param count       the count
+     * @param pointType   the point type
+     * @param dataStorage the storage providing player data
      */
-    public PointEvent(final NotificationSender pointSender, final String categoryName, final String category, final VariableNumber count,
+    public PointEvent(final NotificationSender pointSender, final VariableIdentifier category, final VariableNumber count,
                       final Point pointType, final PlayerDataStorage dataStorage) {
         this.pointSender = pointSender;
-        this.categoryName = categoryName;
         this.category = category;
         this.count = count;
         this.pointType = pointType;
@@ -68,9 +62,10 @@ public class PointEvent implements Event {
     public void execute(final Profile profile) throws QuestException {
         final PlayerData playerData = dataStorage.getOffline(profile);
         final double countDouble = count.getValue(profile).doubleValue();
+        final String category = this.category.getValue(profile);
         playerData.setPoints(category, pointType.modify(playerData.getPointsFromCategory(category).orElse(0), countDouble));
         pointSender.sendNotification(profile,
                 new PluginMessage.Replacement("amount", String.valueOf(countDouble)),
-                new PluginMessage.Replacement("category", categoryName));
+                new PluginMessage.Replacement("category", category));
     }
 }

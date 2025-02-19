@@ -6,10 +6,10 @@ import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
-import org.betonquest.betonquest.util.Utils;
 
 import java.util.Locale;
 
@@ -18,17 +18,17 @@ import java.util.Locale;
  */
 public class GlobalPointEventFactory implements EventFactory, StaticEventFactory {
     /**
-     * Variable processor to create variables required by the event.
+     * The global data.
      */
-    private final VariableProcessor variableProcessor;
+    private final GlobalData globalData;
 
     /**
      * Create the global points event factory.
      *
-     * @param variableProcessor variable processor for creating variables
+     * @param globalData the global data
      */
-    public GlobalPointEventFactory(final VariableProcessor variableProcessor) {
-        this.variableProcessor = variableProcessor;
+    public GlobalPointEventFactory(final GlobalData globalData) {
+        this.globalData = globalData;
     }
 
     @Override
@@ -46,20 +46,20 @@ public class GlobalPointEventFactory implements EventFactory, StaticEventFactory
     }
 
     private GlobalPointEvent createGlobalPointEvent(final Instruction instruction) throws QuestException {
-        final String category = Utils.addPackage(instruction.getPackage(), instruction.next());
+        final VariableIdentifier category = instruction.get(VariableIdentifier::new);
         final String number = instruction.next();
         final String action = instruction.getOptional("action");
         if (action != null) {
             try {
                 final Point type = Point.valueOf(action.toUpperCase(Locale.ROOT));
-                return new GlobalPointEvent(category, new VariableNumber(variableProcessor, instruction.getPackage(), number), type);
+                return new GlobalPointEvent(globalData, category, instruction.get(number, VariableNumber::new), type);
             } catch (final IllegalArgumentException e) {
                 throw new QuestException("Unknown modification action: " + instruction.current(), e);
             }
         }
         if (!number.isEmpty() && number.charAt(0) == '*') {
-            return new GlobalPointEvent(category, new VariableNumber(variableProcessor, instruction.getPackage(), number.replace("*", "")), Point.MULTIPLY);
+            return new GlobalPointEvent(globalData, category, instruction.get(number.replace("*", ""), VariableNumber::new), Point.MULTIPLY);
         }
-        return new GlobalPointEvent(category, new VariableNumber(variableProcessor, instruction.getPackage(), number), Point.ADD);
+        return new GlobalPointEvent(globalData, category, instruction.get(number, VariableNumber::new), Point.ADD);
     }
 }

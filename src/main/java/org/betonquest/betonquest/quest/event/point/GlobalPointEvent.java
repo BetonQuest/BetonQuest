@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.event.point;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.database.GlobalData;
+import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,7 +22,7 @@ public class GlobalPointEvent implements NullableEvent {
     /**
      * The category name.
      */
-    private final String category;
+    private final VariableIdentifier category;
 
     /**
      * The count.
@@ -37,12 +37,13 @@ public class GlobalPointEvent implements NullableEvent {
     /**
      * Creates a new global point event.
      *
-     * @param category  the category name
-     * @param count     the count
-     * @param pointType the point type
+     * @param globalData the global data
+     * @param category   the category name
+     * @param count      the count
+     * @param pointType  the point type
      */
-    public GlobalPointEvent(final String category, final VariableNumber count, final Point pointType) {
-        this.globalData = BetonQuest.getInstance().getGlobalData();
+    public GlobalPointEvent(final GlobalData globalData, final VariableIdentifier category, final VariableNumber count, final Point pointType) {
+        this.globalData = globalData;
         this.category = category;
         this.count = count;
         this.pointType = pointType;
@@ -50,6 +51,7 @@ public class GlobalPointEvent implements NullableEvent {
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
+        final String category = this.category.getValue(profile);
         final Optional<org.betonquest.betonquest.Point> globalPoint = globalData.getPoints().stream()
                 .filter(p -> p.getCategory().equalsIgnoreCase(category))
                 .findFirst();

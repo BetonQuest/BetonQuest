@@ -32,7 +32,8 @@ public class VariableString extends Variable<String> {
      * @param replaceUnderscores whether underscores should be replaced
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
-    public VariableString(final VariableProcessor variableProcessor, final QuestPackage pack, final String input, final boolean replaceUnderscores) throws QuestException {
+    public VariableString(final VariableProcessor variableProcessor, final QuestPackage pack, final String input,
+                          final boolean replaceUnderscores) throws QuestException {
         super(variableProcessor, pack, replaceUnderscores(input, replaceUnderscores), (value) -> value);
     }
 

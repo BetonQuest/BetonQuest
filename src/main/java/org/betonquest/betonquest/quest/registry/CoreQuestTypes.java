@@ -232,6 +232,7 @@ public class CoreQuestTypes {
      * @param scheduler         the scheduler used for primary server thread access
      * @param betonQuest        the plugin used for primary server access and type registration
      * @param questTypeAPI      the Quest Type API
+     * @param pluginMessage     the plugin message instance
      * @param variableProcessor the variable processor to create new variables
      * @param globalData        the storage providing global data
      * @param dataStorage       the storage providing player data
@@ -332,7 +333,7 @@ public class CoreQuestTypes {
         eventTypes.register("conversation", new ConversationEventFactory(loggerFactory, data, pluginMessage));
         eventTypes.register("damage", new DamageEventFactory(loggerFactory, data));
         eventTypes.register("deleffect", new DeleteEffectEventFactory(loggerFactory, data));
-        eventTypes.register("deleteglobalpoint", new DeleteGlobalPointEventFactory());
+        eventTypes.registerCombined("deleteglobalpoint", new DeleteGlobalPointEventFactory(globalData));
         eventTypes.registerCombined("deletepoint", new DeletePointEventFactory(dataStorage, betonQuest.getSaver()));
         eventTypes.registerCombined("door", new DoorEventFactory(data));
         eventTypes.registerCombined("drop", new DropEventFactory(data));
@@ -344,7 +345,7 @@ public class CoreQuestTypes {
         eventTypes.register("give", new GiveEventFactory(loggerFactory, data, dataStorage, pluginMessage));
         eventTypes.register("givejournal", new GiveJournalEventFactory(loggerFactory, dataStorage, data));
         eventTypes.registerCombined("globaltag", new TagGlobalEventFactory(betonQuest));
-        eventTypes.registerCombined("globalpoint", new GlobalPointEventFactory(variableProcessor));
+        eventTypes.registerCombined("globalpoint", new GlobalPointEventFactory(globalData));
         eventTypes.register("hunger", new HungerEventFactory(loggerFactory, data));
         eventTypes.registerCombined("if", new IfElseEventFactory(questTypeAPI));
         eventTypes.register("itemdurability", new ItemDurabilityEventFactory(loggerFactory, data));

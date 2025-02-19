@@ -7,13 +7,8 @@ import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
-import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.quest.event.DatabaseSaverStaticEvent;
-import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
-import org.betonquest.betonquest.quest.event.SequentialStaticEvent;
-import org.betonquest.betonquest.util.PlayerConverter;
-import org.betonquest.betonquest.util.Utils;
+import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 
 /**
  * Factory to create delete points events from {@link Instruction}s.
@@ -43,22 +38,12 @@ public class DeletePointEventFactory implements EventFactory, StaticEventFactory
 
     @Override
     public Event parseEvent(final Instruction instruction) throws QuestException {
-        return new DeletePointEvent(dataStorage::getOffline, getCategory(instruction));
+        return new DeletePointEvent(dataStorage::getOffline, instruction.get(VariableIdentifier::new));
     }
 
     @Override
     public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
-        final String category = getCategory(instruction);
-        return new SequentialStaticEvent(
-                new OnlineProfileGroupStaticEventAdapter(
-                        PlayerConverter::getOnlineProfiles,
-                        new DeletePointEvent(dataStorage::getOffline, category)
-                ),
-                new DatabaseSaverStaticEvent(saver, () -> new Saver.Record(UpdateType.REMOVE_ALL_POINTS, category))
-        );
-    }
-
-    private String getCategory(final Instruction instruction) throws QuestException {
-        return Utils.addPackage(instruction.getPackage(), instruction.next());
+        final VariableIdentifier category = instruction.get(VariableIdentifier::new);
+        return new DeletePointStaticEvent(dataStorage, saver, category);
     }
 }

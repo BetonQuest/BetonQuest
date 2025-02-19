@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
+import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -64,8 +64,7 @@ public class RemoveEntityEventFactory implements EventFactory, StaticEventFactor
         final String nameString = instruction.getOptional("name");
         final VariableString name = nameString == null ? null : instruction.get(
                 Utils.format(nameString, true, false).replace('_', ' '), VariableString::new);
-        final String markedString = instruction.getOptional("marked");
-        final VariableString marked = markedString == null ? null : instruction.get(markedString, VariableArgument.STRING_WITH_PACKAGE);
+        final VariableIdentifier marked = instruction.get(instruction.getOptional("marked"), VariableIdentifier::new);
         return new NullableEventAdapter(new RemoveEntityEvent(types, loc, range, name, marked, kill));
     }
 }
