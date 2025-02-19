@@ -6,6 +6,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
+- `quest compass` location now allows variables
 ### Changed
 - message.yml file was deleted and instead the lang folder now contains all translations
 ### Deprecated
@@ -20,6 +21,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - betonquest command without arguments did not work anymore
 - the Fabled hook not working properly
 - `compass` event did not work with variables in `compass` location
+- `quest canceler` did not resolve global variables
 ### Security
 
 ## [2.2.1] - 2025-01-12

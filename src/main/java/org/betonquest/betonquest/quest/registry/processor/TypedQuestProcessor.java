@@ -25,16 +25,6 @@ public abstract class TypedQuestProcessor<I extends ID, T> extends QuestProcesso
     protected final FactoryRegistry<TypeFactory<T>> types;
 
     /**
-     * Type name used for logging.
-     */
-    private final String readable;
-
-    /**
-     * Section name and/or BStats topic identifier.
-     */
-    private final String internal;
-
-    /**
      * Create a new QuestProcessor to store and execute type logic.
      *
      * @param log      the custom logger for this class
@@ -44,10 +34,8 @@ public abstract class TypedQuestProcessor<I extends ID, T> extends QuestProcesso
      */
     public TypedQuestProcessor(final BetonQuestLogger log, final FactoryRegistry<TypeFactory<T>> types,
                                final String readable, final String internal) {
-        super(log);
+        super(log, readable, internal);
         this.types = types;
-        this.readable = readable;
-        this.internal = internal;
     }
 
     /**
@@ -105,15 +93,4 @@ public abstract class TypedQuestProcessor<I extends ID, T> extends QuestProcesso
             log.warn(pack, "Error in '" + identifier + "' " + readable + " (" + type + "): " + e.getMessage(), e);
         }
     }
-
-    /**
-     * Creates a new type ID to store the created {@link T} with it.
-     *
-     * @param pack       the package the ID is in
-     * @param identifier the id instruction string
-     * @return the new typed ID
-     * @throws QuestException if the instruction of the identifier could not be created or
-     *                        if the ID could not be parsed
-     */
-    protected abstract I getIdentifier(QuestPackage pack, String identifier) throws QuestException;
 }

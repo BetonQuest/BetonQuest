@@ -8,6 +8,7 @@ import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.feature.registry.FeatureRegistries;
 import org.betonquest.betonquest.feature.registry.processor.CancellerProcessor;
+import org.betonquest.betonquest.feature.registry.processor.CompassProcessor;
 import org.betonquest.betonquest.feature.registry.processor.ConversationProcessor;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.quest.registry.processor.ConditionProcessor;
@@ -64,6 +65,11 @@ public class QuestRegistry {
     private final ConversationProcessor conversationProcessor;
 
     /**
+     * Compasses.
+     */
+    private final CompassProcessor compassProcessor;
+
+    /**
      * Create a new Registry for storing and using Conditions, Events, Objectives, Variables,
      * Conversations and Quest canceller.
      *
@@ -82,8 +88,10 @@ public class QuestRegistry {
         this.eventProcessor = new EventProcessor(loggerFactory.create(EventProcessor.class), questTypeRegistries.event());
         this.objectiveProcessor = new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), questTypeRegistries.objective());
         this.variableProcessor = new VariableProcessor(loggerFactory.create(VariableProcessor.class), questTypeRegistries.variable());
-        this.cancellerProcessor = new CancellerProcessor(loggerFactory.create(CancellerProcessor.class), pluginMessage);
-        this.conversationProcessor = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), plugin);
+        this.cancellerProcessor = new CancellerProcessor(loggerFactory.create(CancellerProcessor.class), loggerFactory, pluginMessage, variableProcessor);
+        this.conversationProcessor = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), loggerFactory, plugin, variableProcessor,
+                otherRegistries.conversationIO(), otherRegistries.interceptor());
+        this.compassProcessor = new CompassProcessor(loggerFactory.create(CompassProcessor.class), variableProcessor);
     }
 
     /**
@@ -101,6 +109,7 @@ public class QuestRegistry {
         variableProcessor.clear();
         cancellerProcessor.clear();
         conversationProcessor.clear();
+        compassProcessor.clear();
 
         for (final QuestPackage pack : packages) {
             final String packName = pack.getQuestPath();
@@ -111,6 +120,7 @@ public class QuestRegistry {
             objectiveProcessor.load(pack);
             conversationProcessor.load(pack);
             eventScheduling.loadData(pack);
+            compassProcessor.load(pack);
 
             log.debug(pack, "Everything in package " + packName + " loaded");
         }
@@ -197,5 +207,14 @@ public class QuestRegistry {
      */
     public ConversationProcessor conversations() {
         return conversationProcessor;
+    }
+
+    /**
+     * Gets the class processing compass logic.
+     *
+     * @return compass logic
+     */
+    public CompassProcessor compasses() {
+        return compassProcessor;
     }
 }

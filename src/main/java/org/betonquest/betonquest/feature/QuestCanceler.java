@@ -13,142 +13,80 @@ import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.ObjectiveID;
-import org.betonquest.betonquest.instruction.argument.IDArgument;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.notify.Notify;
-import org.betonquest.betonquest.util.Utils;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Array;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
 /**
  * Represents a quest canceler, which cancels quests for players.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.CouplingBetweenObjects", "PMD.AvoidDuplicateLiterals"})
 public class QuestCanceler {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-
-    @Nullable
-    private final String[] tags;
-
-    @Nullable
-    private final String[] points;
-
-    @Nullable
-    private final String[] journal;
-
-    @Nullable
-    private final ConditionID[] conditions;
-
-    @Nullable
-    private final EventID[] events;
-
-    @Nullable
-    private final ObjectiveID[] objectives;
-
-    private final Map<String, String> name = new HashMap<>();
-
-    private final QuestPackage pack;
-
-    private final PluginMessage pluginMessage;
-
-    private final String cancelerID;
-
-    @Nullable
-    private final String item;
-
-    @Nullable
-    private final Location loc;
+    private final BetonQuestLogger log;
 
     /**
-     * Creates a new canceler with given name.
-     *
-     * @param pluginMessage the {@link PluginMessage} instance
-     * @param pack          the {@link QuestPackage} of the canceler
-     * @param cancelerID    ID of the canceler (package.name)
-     * @throws QuestException when parsing, the canceler fails for some reason
+     * Identifier of the canceler.
      */
-    @SuppressWarnings("PMD.LocalVariableCouldBeFinal")
-    public QuestCanceler(final PluginMessage pluginMessage, final QuestPackage pack, final String cancelerID) throws QuestException {
+    private final String cancelerID;
+
+    /**
+     * The {@link PluginMessage} instance.
+     */
+    private final PluginMessage pluginMessage;
+
+    /**
+     * Names to displaying in different languages.
+     */
+    private final Map<String, String> names;
+
+    /**
+     * Relevant data to cancel.
+     */
+    private final CancelData data;
+
+    /**
+     * Source package.
+     */
+    private final QuestPackage pack;
+
+    /**
+     * Custom item used for displaying.
+     */
+    @Nullable
+    private final ItemID item;
+
+    /**
+     * Creates a new canceler.
+     *
+     * @param log           the custom logger for this class
+     * @param cancelerID    the log identifier
+     * @param pluginMessage the {@link PluginMessage} instance
+     * @param names         the names used for displaying in different languages
+     * @param item          the custom item used for displaying
+     * @param pack          the {@link QuestPackage} of the canceler
+     * @param cancelData    the relevant data to cancel a quest
+     */
+    public QuestCanceler(final BetonQuestLogger log, final String cancelerID, final PluginMessage pluginMessage,
+                         final Map<String, String> names, @Nullable final ItemID item,
+                         final QuestPackage pack, final CancelData cancelData) {
+        this.log = log;
+        this.cancelerID = cancelerID;
+        this.names = names;
+        this.item = item;
+        this.data = cancelData;
+        this.pack = pack;
         this.pluginMessage = pluginMessage;
-        this.cancelerID = Utils.getNN(cancelerID, "Name is null");
-        this.pack = Utils.getNN(pack, "Package does not exist");
-        final ConfigurationSection section = pack.getConfig().getConfigurationSection("cancel." + cancelerID);
-        Utils.getNN(section, "Missing Canceler section!");
-        // get the name
-        if (section.isConfigurationSection("name")) {
-            for (final String lang : section.getConfigurationSection("name")
-                    .getKeys(false)) {
-                name.put(lang, section.getString("name." + lang));
-            }
-        } else {
-            name.put(Config.getLanguage(), section.getString("name"));
-        }
-        // get the item
-        final String itemString = section.getString("item");
-        item = itemString == null ? pack.getRawString("items.cancel_button") : itemString;
-        // parse it to get the data
-        events = parseID(section, "events", EventID::new);
-        conditions = parseID(section, "conditions", ConditionID::new);
-        objectives = parseID(section, "objectives", ObjectiveID::new);
-        tags = split(section, "tags");
-        points = split(section, "points");
-        journal = split(section, "journal");
-        final String rawLoc = GlobalVariableResolver.resolve(pack, section.getString("loc"));
-        if (rawLoc != null) {
-            Location tmp;
-            try {
-                tmp = VariableLocation.parse(rawLoc);
-            } catch (final QuestException e) {
-                log.warn(pack, "Could not parse location in quest canceler '" + name + "': " + e.getMessage(), e);
-                tmp = null;
-            }
-            loc = tmp;
-        } else {
-            loc = null;
-        }
-    }
-
-    @Nullable
-    private String[] split(final ConfigurationSection section, final String path) {
-        final String raw = section.getString(path);
-        return raw == null ? null : GlobalVariableResolver.resolve(pack, raw).split(",");
-    }
-
-    @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
-    @Nullable
-    private <T extends ID> T[] parseID(final ConfigurationSection section, final String path, final IDArgument<T> argument) throws QuestException {
-        final String[] rawObjectives = split(section, path);
-        if (rawObjectives == null || rawObjectives.length == 0) {
-            return null;
-        }
-        try {
-            final T first = argument.convert(pack, rawObjectives[0]);
-            @SuppressWarnings("unchecked") final T[] converted = (T[]) Array.newInstance(first.getClass(), rawObjectives.length);
-            converted[0] = first;
-            for (int i = 1; i < rawObjectives.length; i++) {
-                converted[i] = argument.convert(pack, rawObjectives[i]);
-            }
-            return converted;
-        } catch (final QuestException e) {
-            throw new QuestException("Error while parsing quest canceler " + path + ": " + e.getMessage(), e);
-        }
     }
 
     /**
@@ -159,45 +97,39 @@ public class QuestCanceler {
      * @return true if all conditions are met, false otherwise
      */
     public boolean show(final Profile profile) {
-        return conditions == null || BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, conditions);
+        return data.conditions == null || BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, data.conditions);
     }
 
     /**
      * Cancels the quest for specified player.
+     * The conditions need to be checked with {@link #show(Profile)}.
      *
      * @param onlineProfile the {@link OnlineProfile} of the player
      */
     public void cancel(final OnlineProfile onlineProfile) {
-        log.debug("Canceling the quest " + name + " for " + onlineProfile);
+        log.debug("Canceling the quest " + cancelerID + " for " + onlineProfile);
         final PlayerData playerData = BetonQuest.getInstance().getPlayerDataStorage().get(onlineProfile);
         // remove tags, points, objectives and journals
-        removeSimple(tags, "tag", playerData::removeTag);
-        removeSimple(points, "point", playerData::removePointsCategory);
-        if (objectives != null) {
-            for (final ObjectiveID objectiveID : objectives) {
-                log.debug(objectiveID.getPackage(), "  Removing objective " + objectiveID);
-                final Objective objective = BetonQuest.getInstance().getQuestTypeAPI().getObjective(objectiveID);
-                if (objective == null) {
-                    log.warn("Could not find objective " + objectiveID + " in QuestCanceler " + name);
-                } else {
-                    objective.cancelObjectiveForPlayer(onlineProfile);
-                }
-                playerData.removeRawObjective(objectiveID);
-            }
-        }
-        if (journal != null) {
+        removeSimple(data.tags, "tag", playerData::removeTag);
+        removeSimple(data.points, "point", playerData::removePointsCategory);
+        cancelObjectives(onlineProfile, playerData);
+        if (data.journal != null) {
             final Journal journal = playerData.getJournal();
-            removeSimple(this.journal, "journal entry", journal::removePointer);
+            removeSimple(data.journal, "journal entry", journal::removePointer);
             journal.update();
         }
         // teleport player to the location
-        if (loc != null) {
-            log.debug("  Teleporting to new location");
-            onlineProfile.getPlayer().teleport(loc);
+        if (data.location != null) {
+            try {
+                log.debug("  Teleporting to new location");
+                onlineProfile.getPlayer().teleport(data.location.getValue(onlineProfile));
+            } catch (final QuestException e) {
+                log.warn("Could not teleport to " + data.location, e);
+            }
         }
         // fire all events
-        if (events != null) {
-            for (final EventID event : events) {
+        if (data.events != null) {
+            for (final EventID event : data.events) {
                 BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, event);
             }
         }
@@ -209,7 +141,23 @@ public class QuestCanceler {
         try {
             Notify.get(pack, "quest_cancelled,quest_canceled,info").sendNotify(message, onlineProfile);
         } catch (final QuestException exception) {
-            log.warn("The notify system was unable to play a sound for the 'quest_canceled' category in quest '" + name + "'. Error was: '" + exception.getMessage() + "'");
+            log.warn("The notify system was unable to play a sound for the 'quest_canceled' category in quest '"
+                    + cancelerID + "'. Error was: '" + exception.getMessage() + "'");
+        }
+    }
+
+    private void cancelObjectives(final OnlineProfile onlineProfile, final PlayerData playerData) {
+        if (data.objectives != null) {
+            for (final ObjectiveID objectiveID : data.objectives) {
+                log.debug(objectiveID.getPackage(), "  Removing objective " + objectiveID);
+                final Objective objective = BetonQuest.getInstance().getQuestTypeAPI().getObjective(objectiveID);
+                if (objective == null) {
+                    log.warn("Could not find objective " + objectiveID + " in QuestCanceler " + cancelerID);
+                } else {
+                    objective.cancelObjectiveForPlayer(onlineProfile);
+                }
+                playerData.removeRawObjective(objectiveID);
+            }
         }
     }
 
@@ -235,12 +183,12 @@ public class QuestCanceler {
      * @return the name of the quest canceler
      */
     public String getName(final Profile profile) {
-        String questName = name.get(BetonQuest.getInstance().getPlayerDataStorage().get(profile).getLanguage());
+        String questName = names.get(BetonQuest.getInstance().getPlayerDataStorage().get(profile).getLanguage());
         if (questName == null) {
-            questName = name.get(Config.getLanguage());
+            questName = names.get(Config.getLanguage());
         }
         if (questName == null) {
-            questName = name.get("en");
+            questName = names.get("en");
         }
         if (questName == null) {
             log.warn("Quest name is not defined in canceler " + pack.getQuestPath() + "." + cancelerID);
@@ -249,12 +197,17 @@ public class QuestCanceler {
         return questName.replace("_", " ").replace("&", "§");
     }
 
+    /**
+     * Get the representing Item.
+     *
+     * @param profile the profile to build the item for
+     * @return built item to visualize this canceler
+     */
     public ItemStack getItem(final Profile profile) {
         ItemStack stack = new ItemStack(Material.BONE);
         if (item != null) {
             try {
-                final ItemID itemID = new ItemID(pack, item);
-                stack = new QuestItem(itemID).generate(1);
+                stack = new QuestItem(item).generate(1);
             } catch (final QuestException e) {
                 log.warn("Could not load cancel button: " + e.getMessage(), e);
             }
@@ -263,5 +216,21 @@ public class QuestCanceler {
         meta.setDisplayName(getName(profile));
         stack.setItemMeta(meta);
         return stack;
+    }
+
+    /**
+     * Relevant data for the cancel process.
+     *
+     * @param conditions the conditions which need to be fulfilled to use the canceler
+     * @param location   the location to teleport the player to
+     * @param events     the events to fire when the canceler is used
+     * @param objectives the objectives to stop
+     * @param tags       the tags  to remove
+     * @param points     the points to remove
+     * @param journal    the journal entries to remove
+     */
+    public record CancelData(@Nullable ConditionID[] conditions, @Nullable VariableLocation location,
+                             @Nullable EventID[] events, @Nullable ObjectiveID[] objectives, @Nullable String[] tags,
+                             @Nullable String[] points, @Nullable String[] journal) {
     }
 }
