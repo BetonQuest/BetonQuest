@@ -46,12 +46,12 @@ public final class FeatureAPI {
     }
 
     /**
-     * Get the loaded Quest Canceller.
+     * Get the loaded Quest Canceler.
      *
-     * @return quest cancellers in a new map
+     * @return quest cancelers in a new map
      */
     public Map<QuestCancelerID, QuestCanceler> getCancelers() {
-        return new HashMap<>(questRegistry.questCancellers().getValues());
+        return new HashMap<>(questRegistry.cancelers().getValues());
     }
 
     /**
@@ -64,7 +64,7 @@ public final class FeatureAPI {
      */
     @Nullable
     public QuestCanceler getCanceler(final QuestCancelerID cancelerID) {
-        return questRegistry.questCancellers().getValues().get(cancelerID);
+        return questRegistry.cancelers().getValues().get(cancelerID);
     }
 
     /**

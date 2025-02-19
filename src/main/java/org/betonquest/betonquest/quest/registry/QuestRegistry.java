@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.feature.registry.FeatureRegistries;
-import org.betonquest.betonquest.feature.registry.processor.CancellerProcessor;
+import org.betonquest.betonquest.feature.registry.processor.CancelerProcessor;
 import org.betonquest.betonquest.feature.registry.processor.CompassProcessor;
 import org.betonquest.betonquest.feature.registry.processor.ConversationProcessor;
 import org.betonquest.betonquest.id.ID;
@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * Stores the active Quest Types, Conversations, Quest Canceller and Event Scheduler.
+ * Stores the active Quest Types, Conversations, Quest Canceler and Event Scheduler.
  *
  * @param log             The custom {@link BetonQuestLogger} instance for this class.
  * @param eventScheduling Event scheduling module.
@@ -29,18 +29,18 @@ import java.util.Map;
  * @param events          Event logic.
  * @param objectives      Objective logic.
  * @param variables       Variable logic.
- * @param questCancellers Quest Canceller logic.
+ * @param cancelers Quest Canceler logic.
  * @param conversations   Conversation Data logic.
  * @param compasses       Compasses.
  */
 public record QuestRegistry(BetonQuestLogger log, EventScheduling eventScheduling, ConditionProcessor conditions,
                             EventProcessor events, ObjectiveProcessor objectives, VariableProcessor variables,
-                            CancellerProcessor questCancellers, ConversationProcessor conversations,
+                            CancelerProcessor cancelers, ConversationProcessor conversations,
                             CompassProcessor compasses) {
 
     /**
      * Create a new Registry for storing and using Conditions, Events, Objectives, Variables,
-     * Conversations and Quest canceller.
+     * Conversations and Quest canceler.
      *
      * @param log                 the custom logger for this registry
      * @param loggerFactory       the logger factory used for new custom logger instances
@@ -57,15 +57,15 @@ public record QuestRegistry(BetonQuestLogger log, EventScheduling eventSchedulin
         final EventProcessor events = new EventProcessor(loggerFactory.create(EventProcessor.class), questTypeRegistries.event());
         final ObjectiveProcessor objectives = new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), questTypeRegistries.objective());
         final VariableProcessor variables = new VariableProcessor(loggerFactory.create(VariableProcessor.class), questTypeRegistries.variable());
-        final CancellerProcessor cancellers = new CancellerProcessor(loggerFactory.create(CancellerProcessor.class), loggerFactory, pluginMessage, variables);
+        final CancelerProcessor cancelers = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class), loggerFactory, pluginMessage, variables);
         final ConversationProcessor conversations = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), loggerFactory, plugin, variables,
                 otherRegistries.conversationIO(), otherRegistries.interceptor());
         final CompassProcessor compasses = new CompassProcessor(loggerFactory.create(CompassProcessor.class), variables);
-        return new QuestRegistry(log, eventScheduling, conditions, events, objectives, variables, cancellers, conversations, compasses);
+        return new QuestRegistry(log, eventScheduling, conditions, events, objectives, variables, cancelers, conversations, compasses);
     }
 
     /**
-     * Loads Conditions, Events, Objectives, Variables, Conversations, Quest Canceller and Event Scheduler.
+     * Loads the Processors with the QuestPackages.
      * <p>
      * Removes previous data and loads the given QuestPackages.
      *
@@ -77,14 +77,14 @@ public record QuestRegistry(BetonQuestLogger log, EventScheduling eventSchedulin
         events.clear();
         objectives.clear();
         variables.clear();
-        questCancellers.clear();
+        cancelers.clear();
         conversations.clear();
         compasses.clear();
 
         for (final QuestPackage pack : packages) {
             final String packName = pack.getQuestPath();
             log.debug(pack, "Loading stuff in package " + packName);
-            questCancellers.load(pack);
+            cancelers.load(pack);
             events.load(pack);
             conditions.load(pack);
             objectives.load(pack);

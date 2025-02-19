@@ -162,13 +162,13 @@ public class FolderEvent implements NullableEvent {
             questTypeAPI.event(profile, event);
         }
         if (!chosenList.isEmpty()) {
-            final FolderEventCanceller eventCanceller = createFolderEventCanceller(profile);
+            final FolderEventCanceler eventCanceler = createFolderEventCanceler(profile);
             callSameSyncAsyncContext(new BukkitRunnable() {
                 @Override
                 public void run() {
                     final EventID event = chosenList.pollFirst();
-                    if (eventCanceller.isCancelled() || event == null || checkCancelConditions(profile)) {
-                        eventCanceller.destroy();
+                    if (eventCanceler.isCancelled() || event == null || checkCancelConditions(profile)) {
+                        eventCanceler.destroy();
                         this.cancel();
                         return;
                     }
@@ -179,12 +179,12 @@ public class FolderEvent implements NullableEvent {
     }
 
     private void handleDelayNoPeriod(@Nullable final Profile profile, final Deque<EventID> chosenList, final long delayTicks) {
-        final FolderEventCanceller eventCanceller = createFolderEventCanceller(profile);
+        final FolderEventCanceler eventCanceler = createFolderEventCanceler(profile);
         callSameSyncAsyncContext(new BukkitRunnable() {
             @Override
             public void run() {
-                eventCanceller.destroy();
-                if (eventCanceller.isCancelled()) {
+                eventCanceler.destroy();
+                if (eventCanceler.isCancelled()) {
                     return;
                 }
                 executeAllEvents(profile, chosenList);
@@ -211,7 +211,7 @@ public class FolderEvent implements NullableEvent {
         return chosenList;
     }
 
-    private FolderEventCanceller createFolderEventCanceller(@Nullable final Profile profile) {
+    private FolderEventCanceler createFolderEventCanceler(@Nullable final Profile profile) {
         if (cancelOnLogout && profile != null) {
             return new QuitListener(betonQuest, log, pluginManager, profile);
         } else {
@@ -238,7 +238,7 @@ public class FolderEvent implements NullableEvent {
     /**
      * Interface to check if an execution of a folder event is cancelled.
      */
-    private interface FolderEventCanceller {
+    private interface FolderEventCanceler {
         /**
          * Whether the execution of the folder event should be cancelled.
          *
@@ -247,7 +247,7 @@ public class FolderEvent implements NullableEvent {
         boolean isCancelled();
 
         /**
-         * Clean up any resources used by the canceller if necessary.
+         * Clean up any resources used by the canceler if necessary.
          */
         default void destroy() {
             // Empty
@@ -257,7 +257,7 @@ public class FolderEvent implements NullableEvent {
     /**
      * Registers the quit listener if the event should be cancelled on logout.
      */
-    private static class QuitListener implements FolderEventCanceller, Listener {
+    private static class QuitListener implements FolderEventCanceler, Listener {
         /**
          * Custom {@link BetonQuestLogger} instance for this class.
          */
