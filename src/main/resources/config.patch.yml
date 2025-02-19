@@ -1,4 +1,57 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.0.0.2:
+  - type: VALUE_RENAME
+    key: language
+    oldValueRegex: 'en'
+    newValue: 'en-US'
+  - type: VALUE_RENAME
+    key: language
+    oldValueRegex: 'de'
+    newValue: 'de-DE'
+  - type: VALUE_RENAME
+    key: language
+    oldValueRegex: 'es'
+    newValue: 'es-ES'
+  - type: VALUE_RENAME
+    key: language
+    oldValueRegex: 'fr'
+    newValue: 'fr-FR'
+  - type: VALUE_RENAME
+    key: language
+    oldValueRegex: 'hu'
+    newValue: 'hu-HU'
+  - type: VALUE_RENAME
+    key: language
+    oldValueRegex: 'it'
+    newValue: 'it-IT'
+  - type: VALUE_RENAME
+    key: language
+    oldValueRegex: 'nl'
+    newValue: 'nl-NL'
+  - type: VALUE_RENAME
+    key: language
+    oldValueRegex: 'pl'
+    newValue: 'pl-PL'
+  - type: VALUE_RENAME
+    key: language
+    oldValueRegex: 'pt-br'
+    newValue: 'pt-BR'
+  - type: VALUE_RENAME
+    key: language
+    oldValueRegex: 'pt-pt'
+    newValue: 'pt-PT'
+  - type: VALUE_RENAME
+    key: language
+    oldValueRegex: 'ru'
+    newValue: 'ru-RU'
+  - type: VALUE_RENAME
+    key: language
+    oldValueRegex: 'vi'
+    newValue: 'vi-VN'
+  - type: VALUE_RENAME
+    key: language
+    oldValueRegex: 'cn'
+    newValue: 'zh-CN'
 3.0.0.1:
   - type: KEY_RENAME
     oldKey: hook.proskillapi
