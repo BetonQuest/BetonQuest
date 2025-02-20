@@ -7,13 +7,12 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.instruction.argument.IDArgument;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.message.ParsedSectionMessage;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.ChatColor;
@@ -115,14 +114,6 @@ public class ConversationData {
         this.pack = pack;
         this.convName = publicData.convName();
         this.publicData = publicData;
-        if (publicData.quester.isEmpty()) {
-            throw new QuestException("Quester's name is not defined");
-        }
-        for (final String value : publicData.quester.values()) {
-            if (value == null) {
-                throw new QuestException("Quester's name is not defined");
-            }
-        }
 
         this.npcOptions = loadNpcOptions(convSection);
         this.startingOptions = loadStartingOptions(convSection);
@@ -512,20 +503,28 @@ public class ConversationData {
      * @param convIO        The conversation IO that should be used for this conversation.
      * @param interceptor   The interceptor that should be used for this conversation.
      */
-    public record PublicData(String convName, Map<String, String> quester, boolean blockMovement,
+    public record PublicData(String convName, ParsedSectionMessage quester, boolean blockMovement,
                              List<EventID> finalEvents,
                              String convIO, String interceptor) {
 
         /**
          * Gets the quester's name in the specified language.
          * If the name is not translated the default language will be used.
+         * <p>
+         * Returns "Quester" in case of an exception.
          *
-         * @param lang language key
+         * @param log     the logger used when the name could not be resolved
+         * @param lang    language key
+         * @param profile the profile to resolve the variable
          * @return the quester's name in the specified language
          */
-        public String getQuester(final String lang) {
-            return ChatColor.translateAlternateColorCodes('&',
-                    quester.get(lang) != null ? quester.get(lang) : quester.get(Config.getLanguage()));
+        public String getQuester(final BetonQuestLogger log, final String lang, final Profile profile) {
+            try {
+                return ChatColor.translateAlternateColorCodes('&', quester.getResolved(lang, profile));
+            } catch (final QuestException e) {
+                log.warn("Could not get Quester's name! Using 'Quester' instead, reason: " + e.getMessage(), e);
+                return "Quester";
+            }
         }
     }
 
@@ -533,11 +532,6 @@ public class ConversationData {
      * Represents a conversation option.
      */
     private class ConversationOption {
-
-        /**
-         * Option text section.
-         */
-        private static final String TEXT = "text";
 
         /**
          * The name of the option, as defined in the config.
@@ -552,7 +546,8 @@ public class ConversationData {
         /**
          * A map of the text of the option in different languages.
          */
-        private final Map<String, VariableString> text;
+        @Nullable
+        private final ParsedSectionMessage text;
 
         /**
          * Conditions that must be met for the option to be available.
@@ -588,7 +583,7 @@ public class ConversationData {
             final ConfigurationSection conv = convSection.getConfigurationSection(type.getIdentifier() + "." + name);
 
             if (conv == null) {
-                text = Map.of();
+                text = null;
                 conditions = List.of();
                 events = List.of();
                 pointers = List.of();
@@ -629,33 +624,18 @@ public class ConversationData {
             }
         }
 
-        private Map<String, VariableString> parseText(final ConfigurationSection conv) throws QuestException {
-            if (!conv.contains(TEXT)) {
-                return Map.of();
+        @Nullable
+        private ParsedSectionMessage parseText(final ConfigurationSection conv) throws QuestException {
+            if (!conv.contains("text")) {
+                return null;
             }
-            final String defaultLang = Config.getLanguage();
-            if (conv.isConfigurationSection(TEXT)) {
-                final Map<String, VariableString> map = new HashMap<>();
-                for (final String lang : conv.getConfigurationSection(TEXT).getKeys(false)) {
-                    final Map.Entry<String, VariableString> entry = getConversationText(conv, lang, "." + lang);
-                    map.put(entry.getKey(), entry.getValue());
-                }
-                if (!map.containsKey(defaultLang)) {
-                    throw new QuestException("No default language for " + optionName + " " + type.getReadable());
-                }
-                return map;
-            } else {
-                return Map.ofEntries(getConversationText(conv, defaultLang, ""));
+            final ParsedSectionMessage text;
+            try {
+                text = new ParsedSectionMessage(variableProcessor, pack, conv, "text");
+            } catch (final QuestException e) {
+                throw new QuestException("Could not load text for " + optionName + " " + type.getReadable() + ": " + e.getMessage(), e);
             }
-        }
-
-        private Map.Entry<String, VariableString> getConversationText(final ConfigurationSection conv,
-                                                                      final String lang, final String suffix) throws QuestException {
-            final String convText = conv.getString(TEXT + suffix);
-            if (convText == null) {
-                throw new QuestException("No text for " + optionName + " " + type.getReadable());
-            }
-            return Map.entry(lang, new VariableString(variableProcessor, pack, GlobalVariableResolver.resolve(pack, convText)));
+            return text;
         }
 
         /**
@@ -700,17 +680,12 @@ public class ConversationData {
         }
 
         private String getText(final String lang, @Nullable final Profile profile) {
-            try {
-                VariableString langText = this.text.get(lang);
-                if (langText != null) {
-                    return langText.getValue(profile);
-                }
-                langText = this.text.get(Config.getLanguage());
-                if (langText != null) {
-                    return langText.getValue(profile);
-                }
-                log.warn(pack, "No text in conversation '" + convName + "' for lang '" + lang + " or default'!");
+            if (text == null) {
+                log.warn(pack, "No text in conversation '" + convName + "'!");
                 return "";
+            }
+            try {
+                return text.getResolved(lang, profile);
             } catch (final QuestException e) {
                 log.warn(pack, "Could not resolve message in conversation '" + convName + "': " + e.getMessage(), e);
                 return "";

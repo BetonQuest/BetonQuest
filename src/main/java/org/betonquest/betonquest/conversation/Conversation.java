@@ -319,7 +319,7 @@ public class Conversation implements Listener {
         text = ChatColor.translateAlternateColorCodes('&', text);
 
         // print option to the player
-        inOut.setNpcResponse(data.getPublicData().getQuester(language), text);
+        inOut.setNpcResponse(data.getPublicData().getQuester(log, language, onlineProfile), text);
 
         new NPCEventRunner(nextNPCOption).runTask(BetonQuest.getInstance());
     }
@@ -424,7 +424,7 @@ public class Conversation implements Listener {
             //only display status messages if conversationIO allows it
             if (conv.inOut.printMessages()) {
                 conv.inOut.print(pluginMessage.getMessage(onlineProfile, "conversation_end",
-                        new PluginMessage.Replacement("npc", data.getPublicData().getQuester(language))));
+                        new PluginMessage.Replacement("npc", data.getPublicData().getQuester(log, language, onlineProfile))));
             }
             //play conversation end sound
             Config.playSound(onlineProfile, "end");
@@ -766,7 +766,7 @@ public class Conversation implements Listener {
 
                     if (conv.inOut.printMessages()) {
                         conv.inOut.print(pluginMessage.getMessage(onlineProfile, "conversation_start",
-                                new PluginMessage.Replacement("npc", data.getPublicData().getQuester(language))));
+                                new PluginMessage.Replacement("npc", data.getPublicData().getQuester(log, language, onlineProfile))));
                     }
 
                     Config.playSound(onlineProfile, "start");

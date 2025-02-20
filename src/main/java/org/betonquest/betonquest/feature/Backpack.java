@@ -522,9 +522,9 @@ public class Backpack implements Listener {
                 }
                 final String name;
                 try {
-                    name = name(entry.getKey(), comp);
+                    name = comp.names().getResolved(lang, onlineProfile);
                 } catch (final QuestException e) {
-                    log.warn(e.getMessage(), e);
+                    log.warn("Could not get name for compass '" + entry.getKey() + "', skipping it: " + e.getMessage(), e);
                     continue;
                 }
                 final ItemMeta meta = compass.getItemMeta();
@@ -534,22 +534,6 @@ public class Backpack implements Listener {
                 index++;
             }
             return content;
-        }
-
-        private String name(final int slot, final QuestCompass compass) throws QuestException {
-            String name = compass.names().get(lang);
-            if (name != null) {
-                return name;
-            }
-            name = compass.names().get(Config.getLanguage());
-            if (name != null) {
-                return name;
-            }
-            name = compass.names().get("en-US");
-            if (name != null) {
-                return name;
-            }
-            throw new QuestException("No matching Name not defined for compass '" + slot + "', skipping it.");
         }
 
         @Override
