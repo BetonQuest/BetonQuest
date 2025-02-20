@@ -58,7 +58,7 @@ condition_variable_met: 'yes'
 condition_variable_not_met: 'no'
 chest_occupied: 'This chest is already in use'
 menu:
-  command_no_permission: '&7[&c&l!&7] No permission!'
+  no_permission: '&7[&c&l!&7] No permission!'
   command_usage: '&cUsage:\n&7{usage}'
   command_info_reload: '&breloads all/one menu(s)'
   command_info_list: '&bopens specific menu [for a player]'

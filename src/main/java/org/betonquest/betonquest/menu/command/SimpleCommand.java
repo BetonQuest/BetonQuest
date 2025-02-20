@@ -40,7 +40,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     private final BetonQuestLogger log;
 
     @Nullable
-    private final Permission perimssion;
+    private final Permission permission;
 
     @Nullable
     private CommandMap commandMap;
@@ -51,14 +51,14 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
         super(name);
         this.log = log;
         this.minimalArgs = minimalArgs;
-        this.perimssion = null;
+        this.permission = null;
     }
 
     public SimpleCommand(final BetonQuestLogger log, final String name, final Permission reqPermission, final int minimalArgs, final String... alises) {
         super(name, "", "", Arrays.asList(alises));
         this.log = log;
         this.minimalArgs = minimalArgs;
-        this.perimssion = reqPermission;
+        this.permission = reqPermission;
     }
 
     private static String cbClass(final String className) {
@@ -100,8 +100,8 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
             sendMessage(sender, "command_usage", new PluginMessage.Replacement("usage", usage));
             return false;
         }
-        if (perimssion != null && !sender.hasPermission(perimssion)) {
-            sendMessage(sender, "command_no_permission");
+        if (permission != null && !sender.hasPermission(permission)) {
+            sendMessage(sender, "no_permission");
             return false;
         }
         return simpleCommand(sender, label, args);
@@ -203,9 +203,9 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     protected String getMessage(final CommandSender sender, final String message, final PluginMessage.Replacement... replacements) {
         final PluginMessage pluginMessage = getPlugin().getPluginMessage();
         if (sender instanceof final Player player) {
-            return pluginMessage.getMessage(PlayerConverter.getID(player), message, replacements);
+            return pluginMessage.getMessage(PlayerConverter.getID(player), "menu." + message, replacements);
         } else {
-            return pluginMessage.getMessage(message, replacements);
+            return pluginMessage.getMessage("menu." + message, replacements);
         }
     }
 }

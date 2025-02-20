@@ -58,7 +58,7 @@ condition_variable_met: 'ja'
 condition_variable_not_met: 'nein'
 chest_occupied: 'Die Truhe wird bereits benutzt'
 menu:
-  command_no_permission: '&7[&c&l!&7] Fehlende Berechtigung!'
+  no_permission: '&7[&c&l!&7] Fehlende Berechtigung!'
   command_usage: '&cVerwendung:\n&7{usage}'
   command_info_reload: '&blaedt alle/ein Menue(s) neu  '
   command_info_list: '&boeffnet ein Menue[fuer einen Spieler]'

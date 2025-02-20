@@ -266,7 +266,7 @@ public class Menu extends SimpleYMLSection implements Listener {
         event.setCancelled(true);
         final OnlineProfile onlineprofile = PlayerConverter.getID(event.getPlayer());
         if (!mayOpen(onlineprofile)) {
-            event.getPlayer().sendMessage(pluginMessage.getMessage(onlineprofile, "menu_do_not_open"));
+            event.getPlayer().sendMessage(pluginMessage.getMessage(onlineprofile, "menu.no_permission"));
             return;
         }
         //open the menu
@@ -387,7 +387,7 @@ public class Menu extends SimpleYMLSection implements Listener {
                 rpgMenu.openMenu(onlineProfile, menuID);
                 return true;
             } else {
-                sendMessage(sender, "command_no_permission");
+                sendMessage(sender, "no_permission");
                 return false;
             }
         }

@@ -58,7 +58,7 @@ condition_variable_met: 'ja'
 condition_variable_not_met: 'nee'
 chest_occupied: 'This chest is already in use' # TODO: missing translation
 menu:
-  command_no_permission: '&7[&c&l!&7] No permission!' # TODO: missing translation
+  no_permission: '&7[&c&l!&7] No permission!' # TODO: missing translation
   command_usage: '&cUsage:\n&7{usage}' # TODO: missing translation
   command_info_reload: '&breloads all/one menu(s)' # TODO: missing translation
   command_info_list: '&bopens specific menu [for a player]' # TODO: missing translation

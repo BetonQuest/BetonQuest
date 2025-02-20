@@ -58,7 +58,7 @@ condition_variable_met: 'oui'
 condition_variable_not_met: 'non'
 chest_occupied: 'Ce coffre est déjà en cours d''utilisation'
 menu:
-  command_no_permission: '&7[&c&l!&7] Pas de permissions!'
+  no_permission: '&7[&c&l!&7] Pas de permissions!'
   command_usage: '&cusage:\n&7{usage}'
   command_info_reload: '&brecharges tous/un menu(s)'
   command_info_list: '&bouvre un menu [pour un joueur]'
