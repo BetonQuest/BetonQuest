@@ -4,8 +4,6 @@ toc_depth: 2
 ---
 # Events List
 
-@snippet:events:cancel@
-
 ## Burn: `burn`
 
 | Parameter  | Syntax            | Default Value               | Explanation                                                        |
@@ -17,6 +15,8 @@ events:
   burn: "burn duration:4"
   punishing_fire: "burn duration:%point.punishment.amount%"
 ```
+
+@snippet:events:cancel@
 
 ## Cancel the Conversation: `cancelconversation`
 

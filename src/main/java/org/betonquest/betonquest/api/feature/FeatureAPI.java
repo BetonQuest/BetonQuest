@@ -50,8 +50,21 @@ public final class FeatureAPI {
      *
      * @return quest cancellers in a new map
      */
-    public Map<QuestCancelerID, QuestCanceler> getCanceler() {
+    public Map<QuestCancelerID, QuestCanceler> getCancelers() {
         return new HashMap<>(questRegistry.questCanceller().getValues());
+    }
+
+    /**
+     * Gets stored Quest Canceler.
+     * <p>
+     * The canceler data can be null if there was an error loading it.
+     *
+     * @param cancelerID package name, dot and name of the conversation
+     * @return QuestCanceler or null if it does not exist
+     */
+    @Nullable
+    public QuestCanceler getCanceler(final QuestCancelerID cancelerID) {
+        return questRegistry.questCanceller().getValues().get(cancelerID);
     }
 
     /**

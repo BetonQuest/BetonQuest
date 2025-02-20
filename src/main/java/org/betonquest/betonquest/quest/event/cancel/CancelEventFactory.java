@@ -1,13 +1,11 @@
 package org.betonquest.betonquest.quest.event.cancel;
 
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
-import org.betonquest.betonquest.feature.QuestCanceler;
 import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.instruction.Instruction;
 
@@ -38,14 +36,9 @@ public class CancelEventFactory implements EventFactory {
 
     @Override
     public Event parseEvent(final Instruction instruction) throws QuestException {
-        final QuestPackage pack = instruction.getPackage();
-        final String identifier = instruction.next();
-        final QuestCancelerID cancelerID = new QuestCancelerID(pack, identifier);
-        final QuestCanceler canceler = featureAPI.getCanceler().get(cancelerID);
-        if (canceler == null) {
-            throw new QuestException("Quest canceler '" + cancelerID.getFullID() + "' does not exist."
-                    + " Ensure it was loaded without errors.");
-        }
-        return new OnlineEventAdapter(new CancelEvent(canceler), loggerFactory.create(CancelEvent.class), pack);
+        final QuestCancelerID cancelerID = instruction.getID(QuestCancelerID::new);
+        final boolean bypass = instruction.hasArgument("bypass");
+        return new OnlineEventAdapter(new CancelEvent(featureAPI, cancelerID, bypass),
+                loggerFactory.create(CancelEvent.class), instruction.getPackage());
     }
 }

@@ -105,9 +105,15 @@ public class QuestCanceler {
      * The conditions need to be checked with {@link #show(Profile)}.
      *
      * @param onlineProfile the {@link OnlineProfile} of the player
+     * @param bypass        whether the defined conditions should be ignored
      */
-    public void cancel(final OnlineProfile onlineProfile) {
-        log.debug("Canceling the quest " + cancelerID + " for " + onlineProfile);
+    public void cancel(final OnlineProfile onlineProfile, final boolean bypass) {
+        if (!bypass && !show(onlineProfile)) {
+            log.debug(pack, "Attempted to cancel the quest " + cancelerID + " for " + onlineProfile
+                    + ", but the conditions are note met");
+            return;
+        }
+        log.debug(pack, "Canceling the quest " + cancelerID + " for " + onlineProfile);
         final PlayerData playerData = BetonQuest.getInstance().getPlayerDataStorage().get(onlineProfile);
         // remove tags, points, objectives and journals
         removeSimple(data.tags, "tag", playerData::removeTag);
@@ -121,10 +127,10 @@ public class QuestCanceler {
         // teleport player to the location
         if (data.location != null) {
             try {
-                log.debug("  Teleporting to new location");
+                log.debug(pack, "  Teleporting to new location");
                 onlineProfile.getPlayer().teleport(data.location.getValue(onlineProfile));
             } catch (final QuestException e) {
-                log.warn("Could not teleport to " + data.location, e);
+                log.warn(pack, "Could not teleport to " + data.location, e);
             }
         }
         // fire all events
@@ -141,7 +147,7 @@ public class QuestCanceler {
         try {
             Notify.get(pack, "quest_cancelled,quest_canceled,info").sendNotify(message, onlineProfile);
         } catch (final QuestException exception) {
-            log.warn("The notify system was unable to play a sound for the 'quest_canceled' category in quest '"
+            log.warn(pack, "The notify system was unable to play a sound for the 'quest_canceled' category in quest '"
                     + cancelerID + "'. Error was: '" + exception.getMessage() + "'");
         }
     }
@@ -152,7 +158,7 @@ public class QuestCanceler {
                 log.debug(objectiveID.getPackage(), "  Removing objective " + objectiveID);
                 final Objective objective = BetonQuest.getInstance().getQuestTypeAPI().getObjective(objectiveID);
                 if (objective == null) {
-                    log.warn("Could not find objective " + objectiveID + " in QuestCanceler " + cancelerID);
+                    log.warn(pack, "Could not find objective " + objectiveID + " in QuestCanceler " + cancelerID);
                 } else {
                     objective.cancelObjectiveForPlayer(onlineProfile);
                 }
@@ -164,7 +170,7 @@ public class QuestCanceler {
     private void removeSimple(@Nullable final String[] toRemove, final String logIdentifier, final Consumer<String> action) {
         if (toRemove != null) {
             for (final String entry : toRemove) {
-                log.debug("  Removing " + logIdentifier + " " + entry);
+                log.debug(pack, "  Removing " + logIdentifier + " " + entry);
                 if (entry.contains(".")) {
                     action.accept(entry);
                 } else {
@@ -209,7 +215,7 @@ public class QuestCanceler {
             try {
                 stack = new QuestItem(item).generate(1);
             } catch (final QuestException e) {
-                log.warn("Could not load cancel button: " + e.getMessage(), e);
+                log.warn(pack, "Could not load cancel button: " + e.getMessage(), e);
             }
         }
         final ItemMeta meta = stack.getItemMeta();
