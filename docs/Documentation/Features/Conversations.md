@@ -278,7 +278,7 @@ This means that it first tries to use the `packet` interceptor. If that fails it
 
 BetonQuest adds following interceptors: `simple`, `packet` and `none`:
   
-The `simple` interceptor works with every Spigot server but only supports very basic functionality and may not work with plugins like Herochat.
+The `simple` interceptor works with every server but only supports very basic functionality and may not work with plugins like Herochat.
 
 The `packet` interceptor requires the ProtocolLib plugin to be installed. It will work well in any kind of situation.
 

@@ -97,11 +97,9 @@ thead span {
 
 ## What server owners say
 
-By rating, BetonQuest is in the **top 10 out of 57.000 Spigot plugins**.
-<br>
 Sometimes, user reviews describe a plugin better than the author can:
 
-!!! quote "Spigot Reviews"
+!!! quote "Reviews"
     === "Esron"
         Quick Facts:
         <ul>
@@ -159,7 +157,7 @@ Sometimes, user reviews describe a plugin better than the author can:
 | Free                     |                :white_check_mark:                |        :white_check_mark:         |         :white_check_mark:         | :white_check_mark: |     :white_check_mark:     | :white_check_mark: |       :x:  (14.99€)        |       :x:  (14.99$)        |
 | OpenSource               |                :white_check_mark:                |        :white_check_mark:         |         :white_check_mark:         | :white_check_mark: |     :white_check_mark:     | :white_check_mark: |            :x:             |            :x:             |
 | API                      |                :white_check_mark:                |        :white_check_mark:         |         :white_check_mark:         | :white_check_mark: |     :white_check_mark:     | :white_check_mark: | :material-check-bold: [^1] | :material-check-bold: [^1] |
-| Version Support          |                   1.18 - 1.21                    |            1.8 - 1.21             |             1.8 - 1.21             |    1.17 - 1.21     |         1.8 - 1.21         |        1.21        |         1.17-1.21          |         1.7 - 1.21         |
+| Version Support          |                   1.19 - 1.21                    |            1.8 - 1.21             |             1.8 - 1.21             |    1.17 - 1.21     |         1.8 - 1.21         |        1.21        |         1.17-1.21          |         1.7 - 1.21         |
 | Integrated Plugins       | @snippet:constants:totalIntegratedPluginsNumber@ |                12                 |                 27                 |         22         |             31             |         3          |             40             |             1              |
 | BetonQuest integration   |                                                  |    :material-check-bold: [^5]     |                :x:                 | :white_check_mark: |            :x:             |        :x:         |            :x:             |            :x:             |
 | In-game Editor           |                     :x: [^6]                     |         Chat & GUI(Paid)          |                :x:                 |        Chat        |            GUI             |        :x:         |            GUI             |            GUI             |
