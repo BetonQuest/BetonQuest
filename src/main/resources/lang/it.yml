@@ -58,7 +58,7 @@ condition_variable_met: 'si'
 condition_variable_not_met: 'no'
 chest_occupied: 'Questo baule è già in uso'
 menu:
-  command_no_permission: '&7[&c&l!&7] Non hai i permessi!'
+  no_permission: '&7[&c&l!&7] Non hai i permessi!'
   command_usage: '&cUso:\n&7{usage}'
   command_info_reload: '&bricarica tutti/un menu'
   command_info_list: '&bapre un menu specifico [per un giocatore]'

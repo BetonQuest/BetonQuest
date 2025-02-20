@@ -58,7 +58,7 @@ condition_variable_met: 'да'
 condition_variable_not_met: 'нет'
 chest_occupied: 'Этот сундук уже кем-то используется!'
 menu:
-  command_no_permission: '&7[&c&l!&7] У вас нет разрешения!'
+  no_permission: '&7[&c&l!&7] У вас нет разрешения!'
   command_usage: '&cИспользуйте:\n&7{usage}'
   command_info_reload: '&bперезагрузить все/одно меню'
   command_info_list: '&bоткрывает определенное меню [для игрока]'
