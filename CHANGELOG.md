@@ -7,9 +7,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
 - `quest compass` location now allows variables
-- variable support in `point` and `globalpoint` events and conditions
+- `point` and `globalpoint` events and conditions now support variables
+- `cancel` event now has `bypass` keyword to ignore conditions in Quest Canceler
 ### Changed
 - message.yml file was deleted and instead the lang folder now contains all translations
+- `cancel` event now respects by default canceler conditions
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
@@ -23,6 +25,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - the Fabled hook not working properly
 - `compass` event did not work with variables in `compass` location
 - `quest canceler` did not resolve global variables
+- `quest canceler` used `loc` instead of `location` key for teleportation
 ### Security
 
 ## [2.2.1] - 2025-01-12

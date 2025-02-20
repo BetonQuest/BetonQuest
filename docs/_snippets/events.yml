@@ -4,10 +4,14 @@ cancel: |-
   This event works in the same way as a [quest canceler in the backpack](Documentation/Features/Quest-Cancelers.md).
 
   Running this event is equal to the player canceling a quest using the backpack.
-  The only argument is the identifier of a quest canceler, as defined in the `cancel` section.
+
+  | Parameter  | Syntax             | Default Value          | Explanation                                                                                                                  |
+  |------------|--------------------|------------------------|------------------------------------------------------------------------------------------------------------------------------|
+  | _canceler_ | CancelerID         | :octicons-x-circle-16: | The Quest Canceler to execute.                                                                                               |
+  | _bypass_   | Keyword (`bypass`) | Disabled               | If the canceler conditions should be ignored. If enabled the canceler will be executed, even when its conditions are not met.|
 
   ```YAML title="Example"
-  cancelQuest: "cancel woodQuest"
+  cancelQuest: "cancel woodQuest bypass"
   ```
 
 notify: |-
