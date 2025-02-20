@@ -71,10 +71,10 @@ public class CancellerProcessor extends SectionProcessor<QuestCancelerID, QuestC
         final String[] tags = helper.split("tags");
         final String[] points = helper.split("points");
         final String[] journal = helper.split("journal");
-        final String rawLoc = GlobalVariableResolver.resolve(pack, section.getString("loc"));
+        final String rawLoc = GlobalVariableResolver.resolve(pack, section.getString("location"));
         final VariableLocation location = rawLoc == null ? null : new VariableLocation(variableProcessor, pack, rawLoc);
         final QuestCanceler.CancelData cancelData = new QuestCanceler.CancelData(conditions, location, events, objectives, tags, points, journal);
-        final BetonQuestLogger logger = loggerFactory.create(getClass());
+        final BetonQuestLogger logger = loggerFactory.create(QuestCanceler.class);
         return new QuestCanceler(logger, section.getName(), pluginMessage, names, item, pack, cancelData);
     }
 
