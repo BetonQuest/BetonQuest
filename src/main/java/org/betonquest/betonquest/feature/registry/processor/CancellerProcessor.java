@@ -15,12 +15,12 @@ import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.instruction.argument.IDArgument;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
+import org.betonquest.betonquest.util.LanguagedMessage;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
-import java.util.Map;
 
 /**
  * Stores Quest Canceller.
@@ -60,7 +60,7 @@ public class CancellerProcessor extends SectionProcessor<QuestCancelerID, QuestC
 
     @Override
     protected QuestCanceler loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
-        final Map<String, String> names = parseWithLanguage(pack, section, "name");
+        final LanguagedMessage names = new LanguagedMessage(variableProcessor, pack, section, "name");
         final String itemString = section.getString("item");
         final String rawItem = itemString == null ? pack.getConfig().getString("items.cancel_button") : itemString;
         final ItemID item = rawItem == null ? null : new ItemID(pack, rawItem);

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.variable.name;
 
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -25,11 +26,11 @@ public class NpcNameVariable implements PlayerVariable {
     }
 
     @Override
-    public String getValue(final Profile profile) {
+    public String getValue(final Profile profile) throws QuestException {
         final Conversation conv = Conversation.getConversation(profile);
         if (conv == null) {
             return "";
         }
-        return conv.getData().getPublicData().getQuester(dataStorage.get(profile).getLanguage());
+        return conv.getData().getPublicData().quester().getResolved(dataStorage.get(profile).getLanguage(), profile);
     }
 }

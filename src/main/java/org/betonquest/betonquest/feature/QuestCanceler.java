@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
@@ -18,12 +17,12 @@ import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.notify.Notify;
+import org.betonquest.betonquest.util.LanguagedMessage;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -48,7 +47,7 @@ public class QuestCanceler {
     /**
      * Names to displaying in different languages.
      */
-    private final Map<String, String> names;
+    private final LanguagedMessage names;
 
     /**
      * Relevant data to cancel.
@@ -78,7 +77,7 @@ public class QuestCanceler {
      * @param cancelData    the relevant data to cancel a quest
      */
     public QuestCanceler(final BetonQuestLogger log, final String cancelerID, final PluginMessage pluginMessage,
-                         final Map<String, String> names, @Nullable final ItemID item,
+                         final LanguagedMessage names, @Nullable final ItemID item,
                          final QuestPackage pack, final CancelData cancelData) {
         this.log = log;
         this.cancelerID = cancelerID;
@@ -183,18 +182,14 @@ public class QuestCanceler {
      * @return the name of the quest canceler
      */
     public String getName(final Profile profile) {
-        String questName = names.get(BetonQuest.getInstance().getPlayerDataStorage().get(profile).getLanguage());
-        if (questName == null) {
-            questName = names.get(Config.getLanguage());
+        final String language = BetonQuest.getInstance().getPlayerDataStorage().get(profile).getLanguage();
+        try {
+            return names.getResolved(language, profile).replace("_", " ").replace("&", "§");
+        } catch (final QuestException e) {
+            log.warn(pack, "Could not resolve Quest name in canceler '" + pack.getQuestPath() + "." + cancelerID + "': "
+                    + e.getMessage(), e);
+            return "Quest";
         }
-        if (questName == null) {
-            questName = names.get("en");
-        }
-        if (questName == null) {
-            log.warn("Quest name is not defined in canceler " + pack.getQuestPath() + "." + cancelerID);
-            questName = "Quest";
-        }
-        return questName.replace("_", " ").replace("&", "§");
     }
 
     /**

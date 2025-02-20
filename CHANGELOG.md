@@ -8,6 +8,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 - `quest compass` location now allows variables
 - variable support in `point` and `globalpoint` events and conditions
+- variable support in conversation `quester`
 ### Changed
 - message.yml file was deleted and instead the lang folder now contains all translations
 ### Deprecated

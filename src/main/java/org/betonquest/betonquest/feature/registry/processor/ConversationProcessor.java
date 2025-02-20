@@ -11,13 +11,13 @@ import org.betonquest.betonquest.feature.registry.InterceptorRegistry;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
+import org.betonquest.betonquest.util.LanguagedMessage;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -74,7 +74,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         final String convName = section.getName();
         log.debug(pack, String.format("Loading conversation '%s'.", convName));
 
-        final Map<String, String> quester = parseWithLanguage(pack, section, "quester");
+        final LanguagedMessage quester = new LanguagedMessage(variableProcessor, pack, section, "quester");
         final CreationHelper helper = new CreationHelper(pack, section);
         final boolean blockMovement = Boolean.parseBoolean(helper.opt("stop"));
         final String convIO = helper.parseConvIO();
