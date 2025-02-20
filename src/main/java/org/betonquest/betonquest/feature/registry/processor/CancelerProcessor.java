@@ -23,9 +23,9 @@ import java.lang.reflect.Array;
 import java.util.Map;
 
 /**
- * Stores Quest Canceller.
+ * Stores Quest Canceler.
  */
-public class CancellerProcessor extends SectionProcessor<QuestCancelerID, QuestCanceler> {
+public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCanceler> {
 
     /**
      * Logger factory to create new class specific logger.
@@ -50,8 +50,8 @@ public class CancellerProcessor extends SectionProcessor<QuestCancelerID, QuestC
      * @param pluginMessage     the {@link PluginMessage} instance
      * @param variableProcessor the variable processor to create new variables
      */
-    public CancellerProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                              final PluginMessage pluginMessage, final VariableProcessor variableProcessor) {
+    public CancelerProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
+                             final PluginMessage pluginMessage, final VariableProcessor variableProcessor) {
         super(log, "Quest Canceler", "cancel");
         this.loggerFactory = loggerFactory;
         this.pluginMessage = pluginMessage;

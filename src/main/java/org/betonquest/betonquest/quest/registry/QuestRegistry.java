@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.feature.registry.FeatureRegistries;
-import org.betonquest.betonquest.feature.registry.processor.CancellerProcessor;
+import org.betonquest.betonquest.feature.registry.processor.CancelerProcessor;
 import org.betonquest.betonquest.feature.registry.processor.CompassProcessor;
 import org.betonquest.betonquest.feature.registry.processor.ConversationProcessor;
 import org.betonquest.betonquest.id.ID;
@@ -21,57 +21,33 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * Stores the active Quest Types, Conversations, Quest Canceller and Event Scheduler.
+ * Stores the active Processors to store and execute type logic.
+ *
+ * @param log             The custom {@link BetonQuestLogger} instance for this class.
+ * @param eventScheduling Event scheduling module.
+ * @param conditions      Condition logic.
+ * @param events          Event logic.
+ * @param objectives      Objective logic.
+ * @param variables       Variable logic.
+ * @param cancelers       Quest Canceler logic.
+ * @param conversations   Conversation Data logic.
+ * @param compasses       Compasses.
  */
-public class QuestRegistry {
-    /**
-     * The custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
-
-    /**
-     * Event scheduling module.
-     */
-    private final EventScheduling eventScheduling;
-
-    /**
-     * Condition logic.
-     */
-    private final ConditionProcessor conditionProcessor;
-
-    /**
-     * Event logic.
-     */
-    private final EventProcessor eventProcessor;
-
-    /**
-     * Objective logic.
-     */
-    private final ObjectiveProcessor objectiveProcessor;
-
-    /**
-     * Variable logic.
-     */
-    private final VariableProcessor variableProcessor;
-
-    /**
-     * Quest Canceller logic.
-     */
-    private final CancellerProcessor cancellerProcessor;
-
-    /**
-     * Conversation Data logic.
-     */
-    private final ConversationProcessor conversationProcessor;
-
-    /**
-     * Compasses.
-     */
-    private final CompassProcessor compassProcessor;
+public record QuestRegistry(
+        BetonQuestLogger log,
+        EventScheduling eventScheduling,
+        ConditionProcessor conditions,
+        EventProcessor events,
+        ObjectiveProcessor objectives,
+        VariableProcessor variables,
+        CancelerProcessor cancelers,
+        ConversationProcessor conversations,
+        CompassProcessor compasses
+) {
 
     /**
      * Create a new Registry for storing and using Conditions, Events, Objectives, Variables,
-     * Conversations and Quest canceller.
+     * Conversations and Quest canceler.
      *
      * @param log                 the custom logger for this registry
      * @param loggerFactory       the logger factory used for new custom logger instances
@@ -79,23 +55,24 @@ public class QuestRegistry {
      * @param otherRegistries     the available other types
      * @param questTypeRegistries the available quest types
      * @param pluginMessage       the {@link PluginMessage} instance
+     * @return the newly created
      */
-    public QuestRegistry(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuest plugin,
-                         final FeatureRegistries otherRegistries, final QuestTypeRegistries questTypeRegistries, final PluginMessage pluginMessage) {
-        this.log = log;
-        this.eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), otherRegistries.eventScheduling());
-        this.conditionProcessor = new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), questTypeRegistries.condition());
-        this.eventProcessor = new EventProcessor(loggerFactory.create(EventProcessor.class), questTypeRegistries.event());
-        this.objectiveProcessor = new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), questTypeRegistries.objective());
-        this.variableProcessor = new VariableProcessor(loggerFactory.create(VariableProcessor.class), questTypeRegistries.variable());
-        this.cancellerProcessor = new CancellerProcessor(loggerFactory.create(CancellerProcessor.class), loggerFactory, pluginMessage, variableProcessor);
-        this.conversationProcessor = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), loggerFactory, plugin, variableProcessor,
+    public static QuestRegistry create(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuest plugin,
+                                       final FeatureRegistries otherRegistries, final QuestTypeRegistries questTypeRegistries, final PluginMessage pluginMessage) {
+        final EventScheduling eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), otherRegistries.eventScheduling());
+        final ConditionProcessor conditions = new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), questTypeRegistries.condition());
+        final EventProcessor events = new EventProcessor(loggerFactory.create(EventProcessor.class), questTypeRegistries.event());
+        final ObjectiveProcessor objectives = new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), questTypeRegistries.objective());
+        final VariableProcessor variables = new VariableProcessor(loggerFactory.create(VariableProcessor.class), questTypeRegistries.variable());
+        final CancelerProcessor cancelers = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class), loggerFactory, pluginMessage, variables);
+        final ConversationProcessor conversations = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), loggerFactory, plugin, variables,
                 otherRegistries.conversationIO(), otherRegistries.interceptor());
-        this.compassProcessor = new CompassProcessor(loggerFactory.create(CompassProcessor.class), variableProcessor);
+        final CompassProcessor compasses = new CompassProcessor(loggerFactory.create(CompassProcessor.class), variables);
+        return new QuestRegistry(log, eventScheduling, conditions, events, objectives, variables, cancelers, conversations, compasses);
     }
 
     /**
-     * Loads Conditions, Events, Objectives, Variables, Conversations, Quest Canceller and Event Scheduler.
+     * Loads the Processors with the QuestPackages.
      * <p>
      * Removes previous data and loads the given QuestPackages.
      *
@@ -103,33 +80,32 @@ public class QuestRegistry {
      */
     public void loadData(final Collection<QuestPackage> packages) {
         eventScheduling.stopAll();
-        conditionProcessor.clear();
-        eventProcessor.clear();
-        objectiveProcessor.clear();
-        variableProcessor.clear();
-        cancellerProcessor.clear();
-        conversationProcessor.clear();
-        compassProcessor.clear();
+        conditions.clear();
+        events.clear();
+        objectives.clear();
+        cancelers.clear();
+        conversations.clear();
+        compasses.clear();
 
         for (final QuestPackage pack : packages) {
             final String packName = pack.getQuestPath();
             log.debug(pack, "Loading stuff in package " + packName);
-            cancellerProcessor.load(pack);
-            eventProcessor.load(pack);
-            conditionProcessor.load(pack);
-            objectiveProcessor.load(pack);
-            conversationProcessor.load(pack);
+            cancelers.load(pack);
+            events.load(pack);
+            conditions.load(pack);
+            objectives.load(pack);
+            conversations.load(pack);
+            compasses.load(pack);
             eventScheduling.loadData(pack);
-            compassProcessor.load(pack);
 
             log.debug(pack, "Everything in package " + packName + " loaded");
         }
 
-        conversationProcessor.checkExternalPointers();
+        conversations.checkExternalPointers();
 
-        log.info("There are " + conditionProcessor.size() + " conditions, " + eventProcessor.size() + " events, "
-                + objectiveProcessor.size() + " objectives and " + conversationProcessor.size() + " conversations loaded from "
-                + packages.size() + " packages.");
+        log.info("There are " + String.join(", ", conditions.readableSize(), events.readableSize(),
+                objectives.readableSize(), cancelers.readableSize(), compasses.readableSize())
+                + " and " + conversations.readableSize() + " loaded from " + packages.size() + " packages.");
 
         eventScheduling.startAll();
     }
@@ -141,80 +117,10 @@ public class QuestRegistry {
      */
     public Map<String, InstructionMetricsSupplier<? extends ID>> metricsSupplier() {
         return Map.ofEntries(
-                conditionProcessor.metricsSupplier(),
-                eventProcessor.metricsSupplier(),
-                objectiveProcessor.metricsSupplier(),
-                variableProcessor.metricsSupplier()
+                conditions.metricsSupplier(),
+                events.metricsSupplier(),
+                objectives.metricsSupplier(),
+                variables.metricsSupplier()
         );
-    }
-
-    /**
-     * Stops the {@link EventScheduling} module.
-     */
-    public void stopAllEventSchedules() {
-        eventScheduling.stopAll();
-    }
-
-    /**
-     * Gets the class processing condition logic.
-     *
-     * @return condition logic
-     */
-    public ConditionProcessor conditions() {
-        return conditionProcessor;
-    }
-
-    /**
-     * Gets the class processing event logic.
-     *
-     * @return event logic
-     */
-    public EventProcessor events() {
-        return eventProcessor;
-    }
-
-    /**
-     * Gets the class processing objective logic.
-     *
-     * @return objective logic
-     */
-    public ObjectiveProcessor objectives() {
-        return objectiveProcessor;
-    }
-
-    /**
-     * Gets the class processing variable logic.
-     *
-     * @return variable logic
-     */
-    public VariableProcessor variables() {
-        return variableProcessor;
-    }
-
-    /**
-     * Gets the class processing quest canceller logic.
-     *
-     * @return canceller logic
-     */
-    public CancellerProcessor questCanceller() {
-        return cancellerProcessor;
-    }
-
-    /**
-     * Gets the class processing quest conversation logic.
-     *
-     * @return conversation logic
-     */
-    public ConversationProcessor conversations() {
-        return conversationProcessor;
-    }
-
-    /**
-     * Gets the class processing compass logic.
-     *
-     * @return compass logic
-     */
-    public CompassProcessor compasses() {
-        return compassProcessor;
     }
 }

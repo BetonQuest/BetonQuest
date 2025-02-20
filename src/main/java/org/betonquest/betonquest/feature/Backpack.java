@@ -143,7 +143,7 @@ public class Backpack implements Listener {
          */
         DEFAULT,
         /**
-         * The 'usable' QuestCanceller.
+         * The 'usable' QuestCanceler.
          */
         CANCEL,
         /**
