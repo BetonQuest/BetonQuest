@@ -1578,13 +1578,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#cancel-a-quest-cancel">
+  <a class="md-nav__link" href="#burn-burn">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Cancel a quest: <code>cancel</code>
+          Burn: <code>burn</code>
         </span>
 
       
@@ -1603,13 +1603,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#burn-burn">
+  <a class="md-nav__link" href="#cancel-a-quest-cancel">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Burn: <code>burn</code>
+          Cancel a quest: <code>cancel</code>
         </span>
 
       
@@ -5694,13 +5694,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#cancel-a-quest-cancel">
+  <a class="md-nav__link" href="#burn-burn">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Cancel a quest: <code>cancel</code>
+          Burn: <code>burn</code>
         </span>
 
       
@@ -5719,13 +5719,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#burn-burn">
+  <a class="md-nav__link" href="#cancel-a-quest-cancel">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Burn: <code>burn</code>
+          Cancel a quest: <code>cancel</code>
         </span>
 
       
@@ -7222,12 +7222,6 @@
 
 
 <h1 id="events-list">Events List<a class="headerlink" href="#events-list" title="Permanent link">🔗</a></h1>
-<h2 id="cancel-a-quest-cancel">Cancel a quest: <code>cancel</code><a class="headerlink" href="#cancel-a-quest-cancel" title="Permanent link">🔗</a></h2>
-<p>This event works in the same way as a <a href="../../../Features/Quest-Cancelers/">quest canceler in the backpack</a>.</p>
-<p>Running this event is equal to the player canceling a quest using the backpack.
-The only argument is the identifier of a quest canceler, as defined in the <code>cancel</code> section.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">cancelQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cancel</span><span class="nv"> </span><span class="s">woodQuest&quot;</span>
-</code></pre></div>
 <h2 id="burn-burn">Burn: <code>burn</code><a class="headerlink" href="#burn-burn" title="Permanent link">🔗</a></h2>
 <table>
 <thead>
@@ -7250,6 +7244,35 @@ The only argument is the identifier of a quest canceler, as defined in the <code
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">burn</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;burn</span><span class="nv"> </span><span class="s">duration:4&quot;</span>
 <span class="w">  </span><span class="nt">punishing_fire</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;burn</span><span class="nv"> </span><span class="s">duration:%point.punishment.amount%&quot;</span>
+</code></pre></div>
+<h2 id="cancel-a-quest-cancel">Cancel a quest: <code>cancel</code><a class="headerlink" href="#cancel-a-quest-cancel" title="Permanent link">🔗</a></h2>
+<p>This event works in the same way as a <a href="../../../Features/Quest-Cancelers/">quest canceler in the backpack</a>.</p>
+<p>Running this event is equal to the player canceling a quest using the backpack.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Syntax</th>
+<th>Default Value</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>canceler</em></td>
+<td>CancelerID</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
+<td>The Quest Canceler to execute.</td>
+</tr>
+<tr>
+<td><em>bypass</em></td>
+<td>Keyword (<code>bypass</code>)</td>
+<td>Disabled</td>
+<td>If the canceler conditions should be ignored. If enabled the canceler will be executed, even when its conditions are not met.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">cancelQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cancel</span><span class="nv"> </span><span class="s">woodQuest</span><span class="nv"> </span><span class="s">bypass&quot;</span>
 </code></pre></div>
 <h2 id="cancel-the-conversation-cancelconversation">Cancel the Conversation: <code>cancelconversation</code><a class="headerlink" href="#cancel-the-conversation-cancelconversation" title="Permanent link">🔗</a></h2>
 <p>Cancels the active conversation of the player.</p>
