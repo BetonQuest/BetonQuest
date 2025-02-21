@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,8 +52,7 @@ public final class Backup {
                 return false;
             }
             boolean done = true;
-            final ConfigAccessor accessor = configAccessorFactory.create(databaseBackupFile);
-            final FileConfiguration config = accessor.getConfig();
+            final ConfigAccessor config = configAccessorFactory.create(databaseBackupFile);
             // prepare the database and map
             final Map<String, ResultSet> map = new HashMap<>();
             final String[] tables = {"objectives", "tags", "points", "journals", "player", "backpack", "global_points",
@@ -104,7 +102,7 @@ public final class Backup {
                 }
             }
             // save the config at the end
-            accessor.save();
+            config.save();
             return done;
         } catch (final IOException | SQLException | InvalidConfigurationException e) {
             LOG.warn("There was an error during database backup: " + e.getMessage(), e);
@@ -149,14 +147,13 @@ public final class Backup {
                     + "forever. Because of that the loading of backup was aborted!");
             return;
         }
-        final ConfigAccessor accessor;
+        final ConfigAccessor config;
         try {
-            accessor = configAccessorFactory.create(file);
+            config = configAccessorFactory.create(file);
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
             LOG.warn(e.getMessage(), e);
             return;
         }
-        final FileConfiguration config = accessor.getConfig();
         final Database database = instance.getDB();
         // create tables if they don't exist, so we can be 100% sure
         // that we can drop them without an error (should've been done

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.notify;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.ConfigurationFile;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -37,9 +37,9 @@ public final class Notify {
     /**
      * Loads the notification settings.
      *
-     * @param config the {@link ConfigurationFile} to load from
+     * @param config the {@link ConfigAccessor} to load from
      */
-    public static void load(final ConfigurationFile config) {
+    public static void load(final ConfigAccessor config) {
         loadCategorySettings();
         defaultNotifyIO = config.getString("default_notify_IO");
     }

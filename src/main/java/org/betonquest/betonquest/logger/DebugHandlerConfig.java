@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.logger;
 
-import org.betonquest.betonquest.api.config.ConfigurationFile;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 /**
- * Configuration facade for the debug {@link Handler} backed by a {@link ConfigurationFile}.
+ * Configuration facade for the debug {@link Handler} backed by a {@link ConfigAccessor}.
  */
 public class DebugHandlerConfig {
     /**
@@ -37,9 +37,9 @@ public class DebugHandlerConfig {
     private static final String CONFIG_HISTORY_PATH = CONFIG_SECTION + ".history_in_minutes";
 
     /**
-     * The {@link ConfigurationFile} where to configure debugging.
+     * The {@link ConfigAccessor} where to configure debugging.
      */
-    private final ConfigurationFile config;
+    private final ConfigAccessor config;
 
     /**
      * The {@link File} where to log logger messages.
@@ -47,12 +47,12 @@ public class DebugHandlerConfig {
     private final File logFile;
 
     /**
-     * Wrap the given {@link ConfigurationFile} to easily access the relevant options for the debug {@link Handler}.
+     * Wrap the given {@link ConfigAccessor} to easily access the relevant options for the debug {@link Handler}.
      *
-     * @param config        the related {@link ConfigurationFile}
+     * @param config        the related {@link ConfigAccessor}
      * @param logFileFolder the folder where to write the logfile.
      */
-    public DebugHandlerConfig(final ConfigurationFile config, final File logFileFolder) {
+    public DebugHandlerConfig(final ConfigAccessor config, final File logFileFolder) {
         this.config = config;
         this.logFile = new File(logFileFolder, LOG_FILE_PATH);
     }

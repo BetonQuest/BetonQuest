@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.config;
 
+import org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDecorator;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -14,31 +16,23 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Objects;
 
 /**
  * Represents a {@link YamlConfiguration} that is a file or a resource from a plugin.
  */
-@SuppressWarnings("PMD.GodClass")
-public class ConfigAccessorImpl implements ConfigAccessor {
+public class StandardConfigAccessor extends ConfigurationSectionDecorator implements ConfigAccessor {
 
     /**
-     * The file from which the {@link ConfigAccessorImpl#configuration} was loaded and will be saved to.
+     * The file from which the configuration was loaded and will be saved to.
      */
     @Nullable
     private final File configurationFile;
 
     /**
-     * The loaded configurationFile represented by this {@link ConfigAccessorImpl}.
-     */
-    @SuppressWarnings("NullAway.Init")
-    private YamlConfiguration configuration;
-
-    /**
      * Tries to load the configurationFile.
-     * If the configurationFile does not exist the resourceFile will be loaded and then saved to the configurationFile.
+     * If the configurationFile does not exist, the resourceFile will be loaded and then saved to the configurationFile.
      *
-     * @param configurationFile the {@link File} that is represented by this {@link ConfigAccessorImpl}
+     * @param configurationFile the {@link File} that is represented by this {@link StandardConfigAccessor}
      * @param plugin            the plugin which is the source of the resource file
      * @param resourceFile      the resource file to load from the plugin
      * @throws InvalidConfigurationException thrown if the configurationFile or the resourceFile could not be loaded,
@@ -46,45 +40,46 @@ public class ConfigAccessorImpl implements ConfigAccessor {
      * @throws FileNotFoundException         thrown if the {@code configurationFile} or the {@code resourceFile}
      *                                       could not be found
      */
-    public ConfigAccessorImpl(@Nullable final File configurationFile, @Nullable final Plugin plugin, @Nullable final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
+    public StandardConfigAccessor(@Nullable final File configurationFile, @Nullable final Plugin plugin, @Nullable final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
+        super(new YamlConfiguration());
+        loadConfig(configurationFile, plugin, resourceFile);
+        this.configurationFile = configurationFile;
+    }
+
+    private void loadConfig(@Nullable final File configurationFile, @Nullable final Plugin plugin, @Nullable final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
         if (configurationFile == null && plugin == null && resourceFile == null) {
             throw new IllegalArgumentException("The configurationsFile, plugin and resourceFile are null. Pass either a configurationFile or a plugin and a resourceFile.");
         }
-        this.configurationFile = configurationFile;
         if (configurationFile != null && configurationFile.exists()) {
-            this.configuration = readFromFile(configurationFile);
+            readFromFile(configurationFile);
+        } else if (plugin != null && resourceFile != null) {
+            saveFromResource(plugin, resourceFile);
         } else {
-            savePluginImpl(plugin, resourceFile);
-        }
-    }
-
-    private void savePluginImpl(@Nullable final Plugin plugin, @Nullable final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
-        if ((plugin != null) == (resourceFile == null)) {
             throw new IllegalArgumentException("Both the plugin and the resourceFile must be defined or null!");
         }
-        if (plugin != null) {
-            this.configuration = readFromResource(plugin, resourceFile);
-            try {
-                this.save();
-            } catch (final IOException e) {
-                throw new InvalidConfigurationException(buildExceptionMessage(true, resourceFile,
-                        "could not be saved to the representing file! Reason: " + e.getMessage()), e);
-            }
+    }
+
+    private void saveFromResource(final Plugin plugin, final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
+        readFromResource(plugin, resourceFile);
+        try {
+            this.save();
+        } catch (final IOException e) {
+            throw new InvalidConfigurationException(buildExceptionMessage(true, resourceFile,
+                    "could not be saved to the representing file! Reason: " + e.getMessage()), e);
         }
     }
 
-    private YamlConfiguration readFromFile(final File configurationFile) throws InvalidConfigurationException, FileNotFoundException {
-        return load(configurationFile, false, configurationFile.getPath());
+    private void readFromFile(final File configurationFile) throws InvalidConfigurationException, FileNotFoundException {
+        load(configurationFile, false, configurationFile.getPath());
     }
 
-    @SuppressWarnings("PMD.AvoidRethrowingException")
-    private YamlConfiguration readFromResource(final Plugin plugin, final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
-        try (InputStream str = plugin.getResource(resourceFile)) {
-            if (str == null) {
+    private void readFromResource(final Plugin plugin, final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
+        try (InputStream stream = plugin.getResource(resourceFile)) {
+            if (stream == null) {
                 throw new FileNotFoundException(buildExceptionMessage(true, resourceFile, "could not be found!"));
             }
-            try (InputStreamReader reader = new InputStreamReader(str, StandardCharsets.UTF_8)) {
-                return load(reader, true, resourceFile);
+            try (InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
+                load(reader, true, resourceFile);
             }
         } catch (final FileNotFoundException e) {
             throw e;
@@ -93,12 +88,9 @@ public class ConfigAccessorImpl implements ConfigAccessor {
         }
     }
 
-    @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.AvoidThrowingNewInstanceOfSameException"})
-    private YamlConfiguration load(@Nullable final Object input, final boolean isResource, final String sourcePath) throws InvalidConfigurationException, FileNotFoundException {
+    private void load(@Nullable final Object input, final boolean isResource, final String sourcePath) throws InvalidConfigurationException, FileNotFoundException {
         try {
-            final YamlConfiguration config = new YamlConfiguration();
-            loadFromObject(input, config);
-            return config;
+            loadFromObject(input, (YamlConfiguration) original);
         } catch (final FileNotFoundException e) {
             throw new FileNotFoundException(buildExceptionMessage(isResource, sourcePath,
                     "could not be found! Reason: " + e.getMessage()));
@@ -111,7 +103,6 @@ public class ConfigAccessorImpl implements ConfigAccessor {
         }
     }
 
-    @SuppressWarnings("PMD.CloseResource")
     private void loadFromObject(@Nullable final Object input, final YamlConfiguration config) throws IOException, InvalidConfigurationException {
         if (input instanceof final File file) {
             config.load(file);
@@ -123,8 +114,8 @@ public class ConfigAccessorImpl implements ConfigAccessor {
     }
 
     @Override
-    public YamlConfiguration getConfig() {
-        return configuration;
+    public Configuration getConfig() {
+        return (Configuration) original;
     }
 
     @Override
@@ -133,7 +124,7 @@ public class ConfigAccessorImpl implements ConfigAccessor {
             return false;
         }
         try {
-            configuration.save(configurationFile);
+            ((YamlConfiguration) original).save(configurationFile);
             return true;
         } catch (final IOException e) {
             throw new IOException(buildExceptionMessage(false, configurationFile.getPath(),
@@ -161,7 +152,7 @@ public class ConfigAccessorImpl implements ConfigAccessor {
             return false;
         }
         try {
-            this.configuration = readFromFile(configurationFile);
+            readFromFile(configurationFile);
             return true;
         } catch (InvalidConfigurationException | FileNotFoundException e) {
             throw new IOException(buildExceptionMessage(false, configurationFile.getPath(),
@@ -170,8 +161,9 @@ public class ConfigAccessorImpl implements ConfigAccessor {
     }
 
     @Override
+    @Nullable
     public File getConfigurationFile() {
-        return Objects.requireNonNull(configurationFile);
+        return configurationFile;
     }
 
     private String buildExceptionMessage(final boolean isResource, final String sourcePath, final String message) {

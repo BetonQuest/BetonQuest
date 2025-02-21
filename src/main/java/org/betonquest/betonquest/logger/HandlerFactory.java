@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.logger;
 
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import org.betonquest.betonquest.api.config.ConfigurationFile;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.logger.filter.LogRecordTypeFilter;
@@ -62,12 +62,12 @@ public final class HandlerFactory {
      * @param loggerFactory logger factory to use
      * @param plugin        {@link Plugin} instance
      * @param scheduler     {@link BukkitScheduler} instance
-     * @param config        {@link ConfigurationFile} instance
+     * @param config        {@link ConfigAccessor} instance
      * @param logFileFolder {@link File} to the log folder
      * @param instantSource {@link InstantSource} instance
      * @return a new {@link HistoryHandler}
      */
-    public static HistoryHandler createHistoryHandler(final BetonQuestLoggerFactory loggerFactory, final Plugin plugin, final BukkitScheduler scheduler, final ConfigurationFile config, final File logFileFolder, final InstantSource instantSource) {
+    public static HistoryHandler createHistoryHandler(final BetonQuestLoggerFactory loggerFactory, final Plugin plugin, final BukkitScheduler scheduler, final ConfigAccessor config, final File logFileFolder, final InstantSource instantSource) {
         final DebugHandlerConfig debugHandlerConfig = new DebugHandlerConfig(config, logFileFolder);
         final LogRecordQueue logQueue = createLogRecordQueue(plugin, scheduler, instantSource, debugHandlerConfig.getExpireAfterMinutes());
         final ResettableHandler targetHandler = createDebugLogFileHandler(loggerFactory, debugHandlerConfig.getLogFile(), instantSource);

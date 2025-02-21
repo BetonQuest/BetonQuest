@@ -7,8 +7,6 @@ import org.apache.logging.log4j.core.Logger;
 import org.betonquest.betonquest.api.bukkit.event.LoadDataEvent;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
-import org.betonquest.betonquest.api.config.ConfigurationFile;
-import org.betonquest.betonquest.api.config.ConfigurationFileFactory;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -26,7 +24,6 @@ import org.betonquest.betonquest.command.QuestCommand;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
-import org.betonquest.betonquest.config.DefaultConfigurationFileFactory;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.config.patcher.migration.Migrator;
 import org.betonquest.betonquest.conversation.AnswerFilter;
@@ -154,11 +151,6 @@ public class BetonQuest extends JavaPlugin {
     private ConfigAccessorFactory configAccessorFactory;
 
     /**
-     * Factory to create new Configuration Files.
-     */
-    private ConfigurationFileFactory configurationFileFactory;
-
-    /**
      * The custom logger for the plugin.
      */
     private BetonQuestLogger log;
@@ -171,7 +163,7 @@ public class BetonQuest extends JavaPlugin {
     /**
      * The plugin configuration file.
      */
-    private ConfigurationFile config;
+    private ConfigAccessor config;
 
     /**
      * The plugin messages provider.
@@ -269,15 +261,6 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Get the ConfigurationFile factory.
-     *
-     * @return The ConfigurationFile factory.
-     */
-    public ConfigurationFileFactory getConfigurationFileFactory() {
-        return configurationFileFactory;
-    }
-
-    /**
      * Get the adventure instance.
      *
      * @return The adventure instance.
@@ -300,7 +283,7 @@ public class BetonQuest extends JavaPlugin {
      *
      * @return config file
      */
-    public ConfigurationFile getPluginConfig() {
+    public ConfigAccessor getPluginConfig() {
         return config;
     }
 
@@ -347,9 +330,7 @@ public class BetonQuest extends JavaPlugin {
         instance = this;
 
         this.loggerFactory = registerAndGetService(BetonQuestLoggerFactory.class, new CachingBetonQuestLoggerFactory(new DefaultBetonQuestLoggerFactory()));
-        this.configAccessorFactory = registerAndGetService(ConfigAccessorFactory.class, new DefaultConfigAccessorFactory());
-        this.configurationFileFactory = registerAndGetService(ConfigurationFileFactory.class, new DefaultConfigurationFileFactory(
-                loggerFactory, loggerFactory.create(DefaultConfigurationFileFactory.class), configAccessorFactory));
+        this.configAccessorFactory = registerAndGetService(ConfigAccessorFactory.class, new DefaultConfigAccessorFactory(loggerFactory, loggerFactory.create(ConfigAccessorFactory.class)));
 
         this.log = loggerFactory.create(this);
         pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
@@ -361,7 +342,7 @@ public class BetonQuest extends JavaPlugin {
         migratePackages();
 
         try {
-            config = configurationFileFactory.create(new File(getDataFolder(), "config.yml"), this, "config.yml");
+            config = configAccessorFactory.create(new File(getDataFolder(), "config.yml"), this, "config.yml");
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
             log.error("Could not load the config.yml file!", e);
             getServer().getPluginManager().disablePlugin(this);
@@ -369,7 +350,7 @@ public class BetonQuest extends JavaPlugin {
         }
 
         try {
-            pluginMessage = new PluginMessage(this, configurationFileFactory, configAccessorFactory);
+            pluginMessage = new PluginMessage(this, configAccessorFactory);
             for (final String language : pluginMessage.getLanguages()) {
                 log.debug("Loaded " + language + " language");
             }

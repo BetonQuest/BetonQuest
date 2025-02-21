@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.api.config;
 
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,14 +10,14 @@ import java.io.IOException;
 /**
  * This interface defines methods to load, get, save and delete a config file or a resource from a plugin jar.
  */
-public interface ConfigAccessor {
+public interface ConfigAccessor extends ConfigurationSection {
 
     /**
-     * Gets the {@link YamlConfiguration} that was loaded by this {@link ConfigAccessor}.
+     * Gets the {@link Configuration} that was loaded by this {@link ConfigAccessor}.
      *
      * @return the configuration.
      */
-    YamlConfiguration getConfig();
+    Configuration getConfig();
 
     /**
      * Saves the file that is represented by this {@link ConfigAccessor}.
@@ -46,9 +48,10 @@ public interface ConfigAccessor {
 
     /**
      * Gets the {@link File}, that is represented by this {@link ConfigAccessor}.
-     * Returns null, if the file is a resource from a plugin that is not saved as a file in the file system.
+     * Returns null, if the file is a resource from a plugin, that is not saved as a file in the file system.
      *
      * @return the {@link File} if it exists
      */
+    @Nullable
     File getConfigurationFile();
 }
