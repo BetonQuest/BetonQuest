@@ -5,6 +5,8 @@ icon: material/note-edit
 
 !!! abstract "[ServicesManager](Obtaining-API.md) API Classes"
     * `org.betonquest.betonquest.api.config.ConfigAccessorFactory`
+    * `org.betonquest.betonquest.api.config.ConfigAccessor`
+    * `org.betonquest.betonquest.api.config.FileConfigAccessor`
 ---
 
 BetonQuest provides the `ConfigAccessor`, a simple API to load, reload, save and delete configuration files.
