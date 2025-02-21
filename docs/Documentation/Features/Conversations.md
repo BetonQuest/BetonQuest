@@ -52,7 +52,7 @@ conversations: #(1)!
 5. `stop` determines if player can move away from an NPC while in this conversation (false) or if he's stopped every time
     he tries to (true). If enabled, it will also suspend the conversation when the player quits, and resume it after he 
     joins back in. This way he will have to finish his conversation no matter what. You can modify
-    the distance at which the conversation is automatically stopped / player is teleported back with `max_npc_distance` option in _config.yml_.
+    the distance at which the conversation is automatically stopped / player is teleported back with `max_conversation_distance` option in _config.yml_.
 6. `final_events` are events that will fire when the conversation ends, no matter how it ends (so you can create e.g. guards attacking
     the player if he tries to run). You can leave this option out if you don't need any final events.
 7. `interceptor` optionally set a chat interceptor for this conversation. Multiple interceptors can be provided in a comma-separated list with the first valid one used. It's better to set this as a global config setting in _config.yml_.
@@ -89,7 +89,7 @@ npc_conversations:
 1. The key is the NpcID, the value a ConversationID.
 
 A Npc will only react to right clicks by default. 
-This can be changed by setting `acceptNPCLeftClick` in the config.yml to `true`.
+This can be changed by setting `npcs.accept_left_click` in the config.yml to `true`.
 
 You can assign the same conversation to multiple NPCs.
 It is not possible to assign multiple conversations to one npc. For this

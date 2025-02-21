@@ -78,7 +78,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         }
         answerFormat = string.toString();
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-        maxNpcDistance = Double.parseDouble(Config.getConfigString("max_npc_distance"));
+        maxNpcDistance = Double.parseDouble(Config.getConfigString("max_conversation_distance"));
     }
 
     @EventHandler(ignoreCancelled = true)
