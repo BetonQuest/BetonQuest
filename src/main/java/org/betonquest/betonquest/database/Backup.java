@@ -4,6 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
+import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -52,7 +53,7 @@ public final class Backup {
                 return false;
             }
             boolean done = true;
-            final ConfigAccessor config = configAccessorFactory.create(databaseBackupFile);
+            final FileConfigAccessor config = configAccessorFactory.create(databaseBackupFile);
             // prepare the database and map
             final Map<String, ResultSet> map = new HashMap<>();
             final String[] tables = {"objectives", "tags", "points", "journals", "player", "backpack", "global_points",

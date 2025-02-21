@@ -3,6 +3,7 @@ package org.betonquest.betonquest.config;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
+import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.ChatColor;
@@ -43,7 +44,7 @@ public class PluginMessage {
     /**
      * The messages configuration file.
      */
-    private final Map<String, ConfigAccessor> messages;
+    private final Map<String, FileConfigAccessor> messages;
 
     /**
      * The internal messages configuration file.
@@ -68,9 +69,9 @@ public class PluginMessage {
         }
     }
 
-    private Map<String, ConfigAccessor> loadMessages(final Plugin plugin, final ConfigAccessorFactory configAccessorFactory) throws URISyntaxException, IOException, InvalidConfigurationException {
+    private Map<String, FileConfigAccessor> loadMessages(final Plugin plugin, final ConfigAccessorFactory configAccessorFactory) throws URISyntaxException, IOException, InvalidConfigurationException {
         final File root = plugin.getDataFolder();
-        final Map<String, ConfigAccessor> messages = new HashMap<>();
+        final Map<String, FileConfigAccessor> messages = new HashMap<>();
         for (final Map.Entry<String, String> entry : loadMessages(plugin).entrySet()) {
             messages.put(entry.getKey(), configAccessorFactory.create(new File(root, entry.getValue()), plugin, entry.getValue()));
         }
@@ -123,10 +124,9 @@ public class PluginMessage {
      * @throws IOException if the configuration could not be reloaded
      */
     public void reload() throws IOException {
-        for (final ConfigAccessor config : messages.values()) {
+        for (final FileConfigAccessor config : messages.values()) {
             config.reload();
         }
-        internal.reload();
     }
 
     /**

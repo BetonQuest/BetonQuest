@@ -7,6 +7,7 @@ import org.apache.logging.log4j.core.Logger;
 import org.betonquest.betonquest.api.bukkit.event.LoadDataEvent;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
+import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -163,7 +164,7 @@ public class BetonQuest extends JavaPlugin {
     /**
      * The plugin configuration file.
      */
-    private ConfigAccessor config;
+    private FileConfigAccessor config;
 
     /**
      * The plugin messages provider.
@@ -388,7 +389,7 @@ public class BetonQuest extends JavaPlugin {
         final PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new QuestItemHandler(playerDataStorage), this);
 
-        final ConfigAccessor cache;
+        final FileConfigAccessor cache;
         try {
             final Path cacheFile = new File(getDataFolder(), CACHE_FILE).toPath();
             if (!Files.exists(cacheFile)) {

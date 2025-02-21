@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.logger;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.FileConfigAccessor;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,7 +40,7 @@ public class DebugHandlerConfig {
     /**
      * The {@link ConfigAccessor} where to configure debugging.
      */
-    private final ConfigAccessor config;
+    private final FileConfigAccessor config;
 
     /**
      * The {@link File} where to log logger messages.
@@ -52,7 +53,7 @@ public class DebugHandlerConfig {
      * @param config        the related {@link ConfigAccessor}
      * @param logFileFolder the folder where to write the logfile.
      */
-    public DebugHandlerConfig(final ConfigAccessor config, final File logFileFolder) {
+    public DebugHandlerConfig(final FileConfigAccessor config, final File logFileFolder) {
         this.config = config;
         this.logFile = new File(logFileFolder, LOG_FILE_PATH);
     }

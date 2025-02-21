@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.config;
 
 import org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDecorator;
-import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -20,7 +20,8 @@ import java.nio.file.Files;
 /**
  * Represents a {@link YamlConfiguration} that is a file or a resource from a plugin.
  */
-public class StandardConfigAccessor extends ConfigurationSectionDecorator implements ConfigAccessor {
+@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods"})
+public class StandardConfigAccessor extends ConfigurationSectionDecorator implements FileConfigAccessor {
 
     /**
      * The file from which the configuration was loaded and will be saved to.
@@ -42,14 +43,14 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
      */
     public StandardConfigAccessor(@Nullable final File configurationFile, @Nullable final Plugin plugin, @Nullable final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
         super(new YamlConfiguration());
+        if (configurationFile == null && plugin == null && resourceFile == null) {
+            throw new IllegalArgumentException("The configurationsFile, plugin and resourceFile are null. Pass either a configurationFile or a plugin and a resourceFile.");
+        }
         loadConfig(configurationFile, plugin, resourceFile);
         this.configurationFile = configurationFile;
     }
 
     private void loadConfig(@Nullable final File configurationFile, @Nullable final Plugin plugin, @Nullable final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
-        if (configurationFile == null && plugin == null && resourceFile == null) {
-            throw new IllegalArgumentException("The configurationsFile, plugin and resourceFile are null. Pass either a configurationFile or a plugin and a resourceFile.");
-        }
         if (configurationFile != null && configurationFile.exists()) {
             readFromFile(configurationFile);
         } else if (plugin != null && resourceFile != null) {
@@ -73,6 +74,7 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
         load(configurationFile, false, configurationFile.getPath());
     }
 
+    @SuppressWarnings("PMD.AvoidRethrowingException")
     private void readFromResource(final Plugin plugin, final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
         try (InputStream stream = plugin.getResource(resourceFile)) {
             if (stream == null) {
@@ -88,6 +90,7 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
         }
     }
 
+    @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.AvoidThrowingNewInstanceOfSameException"})
     private void load(@Nullable final Object input, final boolean isResource, final String sourcePath) throws InvalidConfigurationException, FileNotFoundException {
         try {
             loadFromObject(input, (YamlConfiguration) original);
@@ -103,6 +106,7 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
         }
     }
 
+    @SuppressWarnings("PMD.CloseResource")
     private void loadFromObject(@Nullable final Object input, final YamlConfiguration config) throws IOException, InvalidConfigurationException {
         if (input instanceof final File file) {
             config.load(file);
@@ -161,8 +165,10 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
     }
 
     @Override
-    @Nullable
     public File getConfigurationFile() {
+        if (configurationFile == null) {
+            throw new IllegalStateException("The configuration file is null!");
+        }
         return configurationFile;
     }
 

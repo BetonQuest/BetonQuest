@@ -2,6 +2,7 @@ package org.betonquest.betonquest.config;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
+import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegisterer;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -41,13 +42,23 @@ public class DefaultConfigAccessorFactory implements ConfigAccessorFactory {
     }
 
     @Override
-    public ConfigAccessor create(@Nullable final File configurationFile, @Nullable final Plugin plugin, @Nullable final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
+    public ConfigAccessor create(final Plugin plugin, final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
+        return create(null, plugin, resourceFile);
+    }
+
+    @Override
+    public FileConfigAccessor create(final File configurationFile) throws InvalidConfigurationException, FileNotFoundException {
+        return create(configurationFile, null, null);
+    }
+
+    @Override
+    public FileConfigAccessor create(@Nullable final File configurationFile, @Nullable final Plugin plugin, @Nullable final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
         return new StandardConfigAccessor(configurationFile, plugin, resourceFile);
     }
 
     @Override
-    public ConfigAccessor createPatching(final File configurationFile, final Plugin plugin, final String resourceFile, @Nullable final PatchTransformerRegisterer patchTransformerRegisterer) throws InvalidConfigurationException, FileNotFoundException {
-        final ConfigAccessor accessor = create(configurationFile, plugin, resourceFile);
+    public FileConfigAccessor createPatching(final File configurationFile, final Plugin plugin, final String resourceFile, @Nullable final PatchTransformerRegisterer patchTransformerRegisterer) throws InvalidConfigurationException, FileNotFoundException {
+        final FileConfigAccessor accessor = create(configurationFile, plugin, resourceFile);
         final ConfigAccessor resourceAccessor = create(plugin, resourceFile);
         accessor.getConfig().setDefaults(resourceAccessor.getConfig());
         accessor.getConfig().options().copyDefaults(true);
