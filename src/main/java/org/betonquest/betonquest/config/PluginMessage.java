@@ -73,7 +73,7 @@ public class PluginMessage {
         final File root = plugin.getDataFolder();
         final Map<String, FileConfigAccessor> messages = new HashMap<>();
         for (final Map.Entry<String, String> entry : loadMessages(plugin).entrySet()) {
-            messages.put(entry.getKey(), configAccessorFactory.create(new File(root, entry.getValue()), plugin, entry.getValue()));
+            messages.put(entry.getKey(), configAccessorFactory.createPatching(new File(root, entry.getValue()), plugin, entry.getValue()));
         }
         for (final Map.Entry<String, String> file : loadMessages(root).entrySet()) {
             if (!messages.containsKey(file.getKey())) {

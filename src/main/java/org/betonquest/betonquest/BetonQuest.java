@@ -343,7 +343,7 @@ public class BetonQuest extends JavaPlugin {
         migratePackages();
 
         try {
-            config = configAccessorFactory.create(new File(getDataFolder(), "config.yml"), this, "config.yml");
+            config = configAccessorFactory.createPatching(new File(getDataFolder(), "config.yml"), this, "config.yml");
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
             log.error("Could not load the config.yml file!", e);
             getServer().getPluginManager().disablePlugin(this);
