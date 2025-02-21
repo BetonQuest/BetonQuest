@@ -113,7 +113,7 @@ nav:
           - 'Instruction': API/Instruction.md
           - 'Writing Implementations': API/Writing-Implementations.md
           - 'Logging': API/Logging.md
-          - 'Configuration Files': API/ConfigurationFiles.md
+          - 'Configuration Files': API/Configuration-Files.md
           - 'Bukkit Configurations': API/BukkitConfigurations.md
           - 'Schedules': API/Schedules.md
   - 'Participate':
