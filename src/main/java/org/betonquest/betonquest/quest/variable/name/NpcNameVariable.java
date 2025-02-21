@@ -6,7 +6,7 @@ import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 
 /**
- * This variable resolves into the name of the NPC.
+ * This variable resolves into the name of the Npc in the conversation.
  */
 public class NpcNameVariable implements PlayerVariable {
 
