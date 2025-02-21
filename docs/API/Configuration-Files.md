@@ -34,7 +34,7 @@ public void loadPluginConfig(Plugin plugin, ConfigAccessorFactory configAccessor
 
 The `create` method is overloaded.
 One only to access a configuration file from the resources and one to only load an actual file.
-And one more to a file from the resources and safe it to the file system.
+And one more to a file from the resources and save it to the file system.
 None of this methods will patch the config file.
 
 If you want to patch the config file, you can use the `createPatching` method.
