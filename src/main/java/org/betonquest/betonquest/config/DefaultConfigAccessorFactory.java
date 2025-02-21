@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegisterer;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.config.patcher.DefaultPatchTransformerRegisterer;
+import org.betonquest.betonquest.config.patcher.Patcher;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;

@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.config.patcher;
 
 import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegisterer;
-import org.betonquest.betonquest.config.Patcher;
 import org.betonquest.betonquest.config.patcher.transformer.KeyRenameTransformer;
 import org.betonquest.betonquest.config.patcher.transformer.ListEntryAddTransformer;
 import org.betonquest.betonquest.config.patcher.transformer.ListEntryRemoveTransformer;
