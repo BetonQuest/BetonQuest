@@ -14,7 +14,7 @@ import java.util.Optional;
  * Represents an object storing all player-related data, which can load and save it.
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public class GlobalData implements TagData {
+public class GlobalData implements TagData, PointData {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -69,32 +69,16 @@ public class GlobalData implements TagData {
         }
     }
 
-    /**
-     * Returns the List of Tags.
-     *
-     * @return the List of Tags
-     */
     @Override
     public List<String> getTags() {
         return globalTags;
     }
 
-    /**
-     * Checks if the there is a global tag set.
-     *
-     * @param tag tag to check
-     * @return true if the tag is set
-     */
     @Override
     public boolean hasTag(final String tag) {
         return globalTags.contains(tag);
     }
 
-    /**
-     * Adds the specified tag to global list. It won't double it, however.
-     *
-     * @param tag tag to add
-     */
     @Override
     public void addTag(final String tag) {
         if (!globalTags.contains(tag)) {
@@ -103,33 +87,18 @@ public class GlobalData implements TagData {
         }
     }
 
-    /**
-     * Removes the specified tag from global list. If there is no tag, nothing
-     * happens.
-     *
-     * @param tag tag to remove
-     */
     @Override
     public void removeTag(final String tag) {
         globalTags.remove(tag);
         saver.add(new Record(UpdateType.REMOVE_GLOBAL_TAGS, tag));
     }
 
-    /**
-     * Returns the List of Points.
-     *
-     * @return the List of Points
-     */
+    @Override
     public List<Point> getPoints() {
         return globalPoints;
     }
 
-    /**
-     * Returns the amount of point the in specified category.
-     *
-     * @param category name of the category
-     * @return amount of global_points
-     */
+    @Override
     public Optional<Integer> getPointsFromCategory(final String category) {
         for (final Point p : globalPoints) {
             if (p.getCategory().equals(category)) {
@@ -139,13 +108,7 @@ public class GlobalData implements TagData {
         return Optional.empty();
     }
 
-    /**
-     * Adds or subtracts global_points to/from specified category. If there is no such category it will
-     * be created.
-     *
-     * @param category global_points will be added to this category
-     * @param count    how much global_points will be added (or subtracted if negative)
-     */
+    @Override
     public void modifyPoints(final String category, final int count) {
         saver.add(new Record(UpdateType.REMOVE_GLOBAL_POINTS, category));
         // check if the category already exists
@@ -163,13 +126,7 @@ public class GlobalData implements TagData {
         saver.add(new Record(UpdateType.ADD_GLOBAL_POINTS, category, String.valueOf(count)));
     }
 
-    /**
-     * Sets the amount of global_points in specified category. If there is no such category it will
-     * be created.
-     *
-     * @param category global_points will be added to this category
-     * @param count    how much global_points will be set
-     */
+    @Override
     public void setPoints(final String category, final int count) {
         saver.add(new Record(UpdateType.REMOVE_GLOBAL_POINTS, category));
         globalPoints.removeIf(point -> point.getCategory().equalsIgnoreCase(category));
@@ -177,11 +134,7 @@ public class GlobalData implements TagData {
         saver.add(new Record(UpdateType.ADD_GLOBAL_POINTS, category, String.valueOf(count)));
     }
 
-    /**
-     * Removes the whole category of global_points.
-     *
-     * @param category name of a point category
-     */
+    @Override
     public void removePointsCategory(final String category) {
         Point pointToRemove = null;
         for (final Point point : globalPoints) {
