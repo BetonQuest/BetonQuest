@@ -1,61 +1,56 @@
 package org.betonquest.betonquest.config;
 
-import org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDecorator;
-import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.config.patcher.Patcher;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 
 /**
  * Facade for easy loading and saving of configs.
  */
-public final class ConfigurationFileImpl extends ConfigurationSectionDecorator implements ConfigurationFile {
+public final class StandardPatchingConfigAccessor extends StandardConfigAccessor {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
     /**
-     * Holds the config file.
-     */
-    private final ConfigAccessor accessor;
-
-    /**
-     * Creates a new {@link ConfigurationFileImpl}.
+     * Creates a new {@link StandardPatchingConfigAccessor}.
      * Patches the configuration file held by the {@code accessor} with the patch file from the {@code patchAccessor}.
      *
-     * @param log          a {@link BetonQuestLogger} instance
-     * @param accessor     a {@link ConfigAccessor} that holds the config file
-     * @param patcher      a {@link Patcher} instance that holds the patches to apply
-     * @param relativeRoot the root to relativize the config accessors to for logging
+     * @param log               a {@link BetonQuestLogger} instance
+     * @param configurationFile the {@link File} that is represented by this {@link StandardConfigAccessor}
+     * @param plugin            the plugin which is the source of the resource file
+     * @param resourceFile      the resource file to load from the plugin
+     * @param patcher           a {@link Patcher} instance that holds the patches to apply
+     * @param relativeRoot      the root to relativize the config accessors to for logging
      * @throws InvalidConfigurationException if patch modifications couldn't be saved
+     * @throws FileNotFoundException         thrown if the {@code configurationFile} or the {@code resourceFile}
+     *                                       could not be found
      */
-    public ConfigurationFileImpl(final BetonQuestLogger log, final ConfigAccessor accessor, @Nullable final Patcher patcher, final URI relativeRoot) throws InvalidConfigurationException {
-        super(accessor.getConfig());
+    public StandardPatchingConfigAccessor(final BetonQuestLogger log, final File configurationFile, final Plugin plugin,
+                                          final String resourceFile, @Nullable final Patcher patcher, final URI relativeRoot)
+            throws InvalidConfigurationException, FileNotFoundException {
+        super(configurationFile, plugin, resourceFile);
         this.log = log;
-        this.accessor = accessor;
-        if (patcher != null && patchConfig(patcher, relativeRoot)) {
+        if (patcher != null && patchConfig(configurationFile, patcher, relativeRoot)) {
             try {
-                accessor.save();
+                save();
             } catch (final IOException e) {
                 throw new InvalidConfigurationException("The configuration file was patched but could not be saved! Reason: " + e.getMessage(), e);
             }
         }
     }
 
-    /**
-     * Patches the config with the given patch config.
-     *
-     * @param patcher the patcher to use
-     * @return if the file was modified
-     */
-    private boolean patchConfig(final Patcher patcher, final URI relativeRoot) {
+    private boolean patchConfig(final File configurationFile, final Patcher patcher, final URI relativeRoot) {
         if (patcher.hasUpdate()) {
-            final URI configPath = accessor.getConfigurationFile().getAbsoluteFile().toURI();
+            final URI configPath = configurationFile.getAbsoluteFile().toURI();
             final String relativePath = relativeRoot.relativize(configPath).getPath();
 
             log.info("Updating config file '" + relativePath + "' from version '" + patcher.getCurrentConfigVersion()
@@ -74,24 +69,5 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
         log.debug("No patch found.");
 
         return patcher.updateVersion();
-    }
-
-    @Override
-    public boolean save() throws IOException {
-        return accessor.save();
-    }
-
-    @Override
-    public boolean delete() throws IOException {
-        return accessor.delete();
-    }
-
-    @Override
-    public boolean reload() throws IOException {
-        if (accessor.reload()) {
-            original = accessor.getConfig();
-            return true;
-        }
-        return false;
     }
 }

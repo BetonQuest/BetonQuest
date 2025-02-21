@@ -1,4 +1,4 @@
-# Put patches for BetonQuest's config here. The syntax is documented in the docs/API/ConfigurationFiles.md
+# Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
 3.0.0.1:
   - type: KEY_RENAME
     oldKey: hook.proskillapi

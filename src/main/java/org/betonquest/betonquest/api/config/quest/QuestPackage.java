@@ -50,7 +50,8 @@ public interface QuestPackage {
      * Tries to save all modifications in the {@link MultiConfiguration} to their files.
      *
      * @return true, and only true if there are no unsaved changes
-     * @throws IOException thrown if an exception was thrown by calling {@link ConfigAccessor#save()}
+     * @throws IOException thrown if an exception was thrown by calling
+     *                     {@link org.betonquest.betonquest.api.config.FileConfigAccessor#save()}
      *                     or {@link MultiConfiguration#getUnsavedConfigs()} returned a {@link ConfigurationSection},
      *                     that is not represented by this {@link QuestPackage}
      */

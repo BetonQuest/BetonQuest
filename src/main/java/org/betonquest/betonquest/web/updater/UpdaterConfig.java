@@ -13,12 +13,12 @@ import java.util.Locale;
 @SuppressWarnings("PMD.DataClass")
 public class UpdaterConfig {
     /**
-     * The string prefix of the path to the settings in the given {@link ConfigurationSection}
+     * The string prefix of the path to the settings in the given {@link ConfigurationSection}.
      */
     private static final String UPDATE_SECTION = "update.";
 
     /**
-     * The separator between the {@link UpdateStrategy} and a given dev indicator
+     * The separator between the {@link UpdateStrategy} and a given dev indicator.
      */
     private static final String DEV_SEPARATOR = "_";
 
@@ -28,42 +28,42 @@ public class UpdaterConfig {
     private final BetonQuestLogger log;
 
     /**
-     * The configuration section that contains the `update` section for all settings
+     * The configuration section that contains the `update` section for all settings.
      */
     private final ConfigurationSection config;
 
     /**
-     * The indicator for a dev version
+     * The indicator for a dev version.
      */
     private final String devIndicator;
 
     /**
-     * The current installed version
+     * The current installed version.
      */
     private final Version current;
 
     /**
-     * True if the updater is enabled
+     * True if the updater is enabled.
      */
     private boolean enabled;
 
     /**
-     * True if ingame notifications are enabled
+     * True if ingame notifications are enabled.
      */
     private boolean ingameNotification;
 
     /**
-     * True if an automatic updates are enabled
+     * True if an automatic updates are enabled.
      */
     private boolean automatic;
 
     /**
-     * The configured {@link UpdateStrategy}
+     * The configured {@link UpdateStrategy}.
      */
     private UpdateStrategy strategy = UpdateStrategy.MINOR;
 
     /**
-     * True if the update for development versions are enabled
+     * True if the update for development versions are enabled.
      */
     private boolean devDownloadEnabled;
 
@@ -109,6 +109,8 @@ public class UpdaterConfig {
     }
 
     /**
+     * Get weather the updater is enabled.
+     *
      * @return true if the updater is enabled
      */
     public boolean isEnabled() {
@@ -116,6 +118,8 @@ public class UpdaterConfig {
     }
 
     /**
+     * Get weather admins should be notified ingame.
+     *
      * @return true if admins should be notified ingame
      */
     public boolean isIngameNotification() {
@@ -123,17 +127,26 @@ public class UpdaterConfig {
     }
 
     /**
+     * Get the configured {@link UpdateStrategy}.
+     *
      * @return the {@link UpdateStrategy}
      */
     public UpdateStrategy getStrategy() {
         return strategy;
     }
 
+    /**
+     * Get the dev indicator.
+     *
+     * @return the dev indicator
+     */
     public String getDevIndicator() {
         return devIndicator;
     }
 
     /**
+     * Get weather dev-versions should be downloaded.
+     *
      * @return true if dev-versions should be downloaded
      */
     public boolean isDevDownloadEnabled() {
@@ -141,6 +154,8 @@ public class UpdaterConfig {
     }
 
     /**
+     * Get weather updates should be downloaded automatically.
+     *
      * @return true if updates should be downloaded automatically
      */
     public boolean isAutomatic() {
@@ -148,6 +163,8 @@ public class UpdaterConfig {
     }
 
     /**
+     * Get weather the {@link UpdateStrategy} is forced by the plugin.
+     *
      * @return true if the {@link UpdateStrategy} forced by the plugin
      */
     public boolean isForcedStrategy() {

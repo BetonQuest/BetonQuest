@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.ConfigurationFile;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -47,7 +47,7 @@ public class RPGMenu {
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
-    private final ConfigurationFile config;
+    private final ConfigAccessor config;
 
     private final PluginMessage pluginMessage;
 
@@ -55,7 +55,7 @@ public class RPGMenu {
 
     private final RPGMenuCommand pluginCommand;
 
-    public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final ConfigurationFile config, final PluginMessage pluginMessage) {
+    public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor config, final PluginMessage pluginMessage) {
         this.log = log;
         this.loggerFactory = loggerFactory;
         this.config = config;

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.conversation;
 
 import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.ConfigurationFile;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.util.LocalChatPaginator;
@@ -106,7 +106,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         answerPrefix = string.toString();
         loc = player.getLocation();
 
-        final ConfigurationFile pluginConfig = BetonQuest.getInstance().getPluginConfig();
+        final ConfigAccessor pluginConfig = BetonQuest.getInstance().getPluginConfig();
         showNumber = pluginConfig.getBoolean("conversation_IO_config.chest.show_number", true);
         showNPCText = pluginConfig.getBoolean("conversation_IO_config.chest.show_npc_text", true);
 

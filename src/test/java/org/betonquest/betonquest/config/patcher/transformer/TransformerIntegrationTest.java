@@ -2,8 +2,8 @@ package org.betonquest.betonquest.config.patcher.transformer;
 
 import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegisterer;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.config.Patcher;
 import org.betonquest.betonquest.config.patcher.DefaultPatchTransformerRegisterer;
+import org.betonquest.betonquest.config.patcher.Patcher;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Nested;

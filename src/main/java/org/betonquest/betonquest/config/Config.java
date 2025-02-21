@@ -2,7 +2,7 @@ package org.betonquest.betonquest.config;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.ConfigurationFile;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -39,10 +39,10 @@ public final class Config {
      * Creates new instance of the Config handler.
      *
      * @param plugin the {@link BetonQuest} plugin instance
-     * @param config the {@link ConfigurationFile} to load from
+     * @param config the {@link ConfigAccessor} to load from
      */
     @SuppressFBWarnings("EI_EXPOSE_STATIC_REP2")
-    public static void setup(final BetonQuest plugin, final ConfigurationFile config) {
+    public static void setup(final BetonQuest plugin, final ConfigAccessor config) {
         Config.plugin = plugin;
         lang = config.getString("language");
         final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();

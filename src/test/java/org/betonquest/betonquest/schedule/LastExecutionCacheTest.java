@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.schedule;
 
-import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,7 +44,7 @@ class LastExecutionCacheTest {
      * Config Accessor used by the cache to access the file.
      */
     @Mock
-    private ConfigAccessor cacheAccessor;
+    private FileConfigAccessor cacheAccessor;
 
     /**
      * Config provided by the {@link #cacheAccessor} to write & read from the cache.

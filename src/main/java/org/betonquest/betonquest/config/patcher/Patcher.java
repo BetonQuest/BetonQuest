@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.config;
+package org.betonquest.betonquest.config.patcher;
 
 import org.betonquest.betonquest.api.config.patcher.PatchException;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformer;
