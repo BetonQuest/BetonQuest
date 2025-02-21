@@ -109,6 +109,8 @@ public class UpdaterConfig {
     }
 
     /**
+     * Get weather the updater is enabled.
+     *
      * @return true if the updater is enabled
      */
     public boolean isEnabled() {
@@ -116,6 +118,8 @@ public class UpdaterConfig {
     }
 
     /**
+     * Get weather admins should be notified ingame.
+     *
      * @return true if admins should be notified ingame
      */
     public boolean isIngameNotification() {
@@ -123,6 +127,8 @@ public class UpdaterConfig {
     }
 
     /**
+     * Get the configured {@link UpdateStrategy}.
+     *
      * @return the {@link UpdateStrategy}
      */
     public UpdateStrategy getStrategy() {
@@ -130,6 +136,8 @@ public class UpdaterConfig {
     }
 
     /**
+     * Get the dev indicator.
+     *
      * @return the dev indicator
      */
     public String getDevIndicator() {
@@ -137,6 +145,8 @@ public class UpdaterConfig {
     }
 
     /**
+     * Get weather dev-versions should be downloaded.
+     *
      * @return true if dev-versions should be downloaded
      */
     public boolean isDevDownloadEnabled() {
@@ -144,6 +154,8 @@ public class UpdaterConfig {
     }
 
     /**
+     * Get weather updates should be downloaded automatically.
+     *
      * @return true if updates should be downloaded automatically
      */
     public boolean isAutomatic() {
@@ -151,6 +163,8 @@ public class UpdaterConfig {
     }
 
     /**
+     * Get weather the {@link UpdateStrategy} is forced by the plugin.
+     *
      * @return true if the {@link UpdateStrategy} forced by the plugin
      */
     public boolean isForcedStrategy() {
