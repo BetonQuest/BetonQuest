@@ -4,35 +4,50 @@ icon: material/note-edit
 @snippet:api-state:draft@
 
 !!! abstract "[ServicesManager](Obtaining-API.md) API Classes"
-    * `org.betonquest.betonquest.api.config.ConfigurationFileFactory`
+    * `org.betonquest.betonquest.api.config.ConfigAccessorFactory`
 ---
 
-BetonQuest provides the `ConfigurationFile`, a simple API to load, reload, save and delete configuration files.
+BetonQuest provides the `ConfigAccessor`, a simple API to load, reload, save and delete configuration files.
 It extends `ConfigurationSection` and therefore also provides the well-known Bukkit methods to access and modify the configuration.
 Additionally, it takes care of patching the config whenever syntax or content changes need to be made.
 
 ## Loading a config
 
-By creating a ConfigurationFile you either load an existing config or create the default one from your plugin's resources.
+By creating a ConfigAccessor you either load an existing config or create the default one from your plugin's resources.
+Here is an example method that loads a `config.yml` file from your plugin's resources:
 ```java
-ConfigurationFileFactory configurationFileFactory; //(1)!
-Plugin plugin = MyBQAddonPlugin.getInstance();
-File configFile = new File(plugin.getDataFolder(), "config.yml"); // (2)!
-ConfigurationFile config = configurationFileFactory.create(configFile, plugin, "defaultConfig.yml");
+public void loadPluginConfig(Plugin plugin, ConfigAccessorFactory configAccessorFactory) { //(1)!
+    File targetConfigFile = new File(plugin.getDataFolder(), "config.yml"); //(2)!
+    String sourceResourceFile = "config.yml"; //(3)!
+    
+    ConfigAccessor config1 = configAccessorFactory.create(targetConfigFile, plugin, sourceResourceFile);
+    // or
+    ConfigAccessor config2 = configAccessorFactory.createPatching(targetConfigFile, plugin, sourceResourceFile);
+}
 ```
 
-1. Obtained via the ServicesManager, see the [Obtaining API](Obtaining-API.md) page.
+1. Inject the `Plugin` and the `ConfigAccessorFactory`, obtained via the ServicesManager, see the [Obtaining API](Obtaining-API.md) page.
 2. This is the location the config will be saved to. In this case it's a file named "_config.yml_" in your plugin's folder.
+3. This is the name of the resource file in your plugin's resources. Here is is also "_config.yml_" but it could be different.
 
-Additionally, the ConfigurationFile will attempt to patch itself with a patch file. See [updating ConfigurationFiles](#updating-configurationfiles) for more information.
+The `create` method is overloaded.
+One only to access a configuration file from the resources and one to only load an actual file.
+And one more to a file from the resources and safe it to the file system.
+None of this methods will patch the config file.
 
-## Working with the ConfigurationFile
+If you want to patch the config file, you can use the `createPatching` method.
+This will load the config file and apply all patches that are needed.
+Also this method is overloaded and has a variant to use custom patches. 
 
-The `ConfigurationFile` extends `ConfigurationSection` and therefore provides all known Bukkit methods to access and modify the configuration.
-You can reload, save and delete the ConfigurationFile by calling it's corresponding `reload()`, `save()` and `delete()`
+## Working with the ConfigAccessor
+
+The `ConfigAccessor` extends `ConfigurationSection` and therefore provides all known Bukkit methods
+to access and modify the configuration.
+You can reload, save and delete the configuration by calling it's corresponding `reload()`, `save()` and `delete()`
 methods.
 
-Make sure to add a `configVersion` key with an empty string as it's value when adding a new config resource file.
+Make sure to add a `configVersion` key with an empty string as it's value when adding a new config resource file,
+that should get patched.
 
 ``` YAML title="Example config.yml"
 configVersion: ""
@@ -44,25 +59,24 @@ The patcher will then automatically set the version to the newest available patc
 This frees you from the hassle of updating the `configVersion` key in the default resource file every time you add a patch.
  
 !!! warning "Reloading Behaviour"
-    When reloading the `ConfigurationFile`, it loads a new `ConfigurationSection` from the related file and replaces the old root.
+    When reloading the `ConfigAccessor`, it loads a new `ConfigurationSection` from the related file and replaces the old root.
     This means that all references to old child `ConfigurationSection` in your code will be outdated and need to be updated.
-    Therefore, the best way to work with the `ConfigurationFile` is to pass it to your classes. Don't pass its children.
-    While querying the `ConfigurationFile` you can use child `ConfigurationSection` as usual, just don't store them.
- 
+    Therefore, the best way to work with the `ConfigAccessor` is to pass it to your classes. Don't pass its children.
+    While querying the `ConfigAccessor` you can use child `ConfigurationSection` as usual, just don't store them.
 
-## Updating ConfigurationFiles
+## Updating Configurations
 
 When you just want to add a new option to the config, you can simply add it to your config's resource file. It will 
-automatically be added to the users existing config. However, if you want to edit existing options you need to use the config patcher.
+automatically be added to the users existing config. However, if you want to edit existing options, you need to use the config patcher.
 
-The config patcher automatically updates all configs loaded using the `ConfigurationFile` API.
+The config patcher automatically updates all configs loaded using the `ConfigAccessor` APIs `createPatching` methods.
 This is needed when changes are made to the existing config format.
-This patcher only works on configuration files! It's not used for files that contain quests as these should not be loaded 
-with the `ConfigurationFile` API. 
+This patcher only works on configuration files!
+It's not used for files that contain quests as these should not be loaded with the `createPatching` methods.
 The patching progress is configured in a dedicated patch file per config file.
 
 ### The Patch File
-Whenever a resource file is loaded using BetonQuest's `ConfigurationFile` API, a "_resourceFileName.patch.yml_" file 
+Whenever a resource file is loaded using BetonQuest's `createPatching` method, a "_resourceFileName.patch.yml_" file 
 is searched in the same directory the resource file is located. It contains the configuration for all patches
 that need to be applied. Each patch contains configurations for "transformers" that apply changes to the resource
 file before it's loaded. Let's take a look at an example:
@@ -277,17 +291,20 @@ Removes both sections and keys (including all nested contents).
 ```
 
 ### Adding additional Transformers
-If you want to use your own transformers, you can pass them to the create method in the form of a `PatchTransformerRegisterer`.
+If you want to use your own transformers, you can pass them to the `createPatching` method in the form of a `PatchTransformerRegisterer`.
 This is just a functional interface, that registers additional transformers.
-Utilizing this possibility will however override the default transformers. You need to re-add them explicitly. 
+Utilizing this possibility will, however, override the default transformers. You need to re-add them explicitly. 
 
 ```JAVA title="Anonymous PatchTransformerRegisterer Example"
-PatchTransformerRegisterer defaultTransformers = new DefaultPatchTransformerRegisterer();
-config = ConfigurationFile.create(configFile, MyPlugin.getInstance(), "config.yml", patcher -> {
-    defaultTransformers.registerTransformers(patcher); //(1)!
-    // Register your own transformers here:
-    patcher.registerTransformer("myTransformer", new MyTransformer()); 
-});
+public void loadPluginConfig(Plugin plugin, ConfigAccessorFactory configAccessorFactory) {
+    File targetConfigFile = new File(plugin.getDataFolder(), "config.yml");
+    PatchTransformerRegisterer defaultTransformers = new DefaultPatchTransformerRegisterer();
+    ConfigAccessor config = configAccessorFactory.createPatching(targetConfigFile, plugin, "config.yml", patcher -> {
+        defaultTransformers.registerTransformers(patcher); //(1)!
+        // Register your own transformers here:
+        patcher.registerTransformer("myTransformer", new MyTransformer());
+    });
+}
 ```
 
 1. Call this if you want to use the default transformers alongside your own.
