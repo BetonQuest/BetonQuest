@@ -10,7 +10,7 @@
         <meta name="author" content="BetonQuest Organisation">
       
       
-        <link rel="canonical" href="https://betonquest.org/3.0-DEV/API/ConfigurationFiles/">
+        <link rel="canonical" href="https://betonquest.org/3.0-DEV/API/Configuration-Files/">
       
       
         <link rel="prev" href="../Logging/">
@@ -3364,13 +3364,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#working-with-the-configurationfile">
+  <a class="md-nav__link" href="#working-with-the-configaccessor">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Working with the ConfigurationFile
+          Working with the ConfigAccessor
         </span>
 
       
@@ -3387,13 +3387,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#updating-configurationfiles">
+  <a class="md-nav__link" href="#updating-configurations">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Updating ConfigurationFiles
+          Updating Configurations
         </span>
 
       
@@ -3403,7 +3403,7 @@
 
   
   
-  <nav aria-label="Updating ConfigurationFiles" class="md-nav">
+  <nav aria-label="Updating Configurations" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -4636,13 +4636,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#working-with-the-configurationfile">
+  <a class="md-nav__link" href="#working-with-the-configaccessor">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Working with the ConfigurationFile
+          Working with the ConfigAccessor
         </span>
 
       
@@ -4659,13 +4659,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#updating-configurationfiles">
+  <a class="md-nav__link" href="#updating-configurations">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Updating ConfigurationFiles
+          Updating Configurations
         </span>
 
       
@@ -4675,7 +4675,7 @@
 
   
   
-  <nav aria-label="Updating ConfigurationFiles" class="md-nav">
+  <nav aria-label="Updating Configurations" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -5071,7 +5071,7 @@
 
 
   
-    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/API/ConfigurationFiles.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/API/Configuration-Files.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -5101,30 +5101,46 @@ Only bugs and major conceptual problems would lead to more changes.</p>
 <div class="admonition abstract">
 <p class="admonition-title"><a href="../Obtaining-API/">ServicesManager</a> API Classes</p>
 <ul>
-<li><code>org.betonquest.betonquest.api.config.ConfigurationFileFactory</code></li>
+<li><code>org.betonquest.betonquest.api.config.ConfigAccessorFactory</code></li>
+<li><code>org.betonquest.betonquest.api.config.ConfigAccessor</code></li>
+<li><code>org.betonquest.betonquest.api.config.FileConfigAccessor</code></li>
 </ul>
 </div>
 <hr />
-<p>BetonQuest provides the <code>ConfigurationFile</code>, a simple API to load, reload, save and delete configuration files.
+<p>BetonQuest provides the <code>ConfigAccessor</code>, a simple API to load, reload, save and delete configuration files.
 It extends <code>ConfigurationSection</code> and therefore also provides the well-known Bukkit methods to access and modify the configuration.
 Additionally, it takes care of patching the config whenever syntax or content changes need to be made.</p>
 <h2 id="loading-a-config">Loading a config<a class="headerlink" href="#loading-a-config" title="Permanent link">🔗</a></h2>
-<p>By creating a ConfigurationFile you either load an existing config or create the default one from your plugin's resources.
-<div class="highlight"><pre><span></span><code><span class="n">ConfigurationFileFactory</span><span class="w"> </span><span class="n">configurationFileFactory</span><span class="p">;</span><span class="w"> </span><span class="c1">//(1)!</span>
-<span class="n">Plugin</span><span class="w"> </span><span class="n">plugin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MyBQAddonPlugin</span><span class="p">.</span><span class="na">getInstance</span><span class="p">();</span>
-<span class="n">File</span><span class="w"> </span><span class="n">configFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">File</span><span class="p">(</span><span class="n">plugin</span><span class="p">.</span><span class="na">getDataFolder</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;config.yml&quot;</span><span class="p">);</span><span class="w"> </span><span class="c1">// (2)!</span>
-<span class="n">ConfigurationFile</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">configurationFileFactory</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="n">configFile</span><span class="p">,</span><span class="w"> </span><span class="n">plugin</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;defaultConfig.yml&quot;</span><span class="p">);</span>
+<p>By creating a ConfigAccessor you either load an existing config or create the default one from your plugin's resources.
+Here is an example method that loads a <code>config.yml</code> file from your plugin's resources:
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">loadPluginConfig</span><span class="p">(</span><span class="n">Plugin</span><span class="w"> </span><span class="n">plugin</span><span class="p">,</span><span class="w"> </span><span class="n">ConfigAccessorFactory</span><span class="w"> </span><span class="n">configAccessorFactory</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//(1)!</span>
+<span class="w">    </span><span class="n">File</span><span class="w"> </span><span class="n">targetConfigFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">File</span><span class="p">(</span><span class="n">plugin</span><span class="p">.</span><span class="na">getDataFolder</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;config.yml&quot;</span><span class="p">);</span><span class="w"> </span><span class="c1">//(2)!</span>
+<span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">sourceResourceFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;config.yml&quot;</span><span class="p">;</span><span class="w"> </span><span class="c1">//(3)!</span>
+
+<span class="w">    </span><span class="n">ConfigAccessor</span><span class="w"> </span><span class="n">config1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">configAccessorFactory</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="n">targetConfigFile</span><span class="p">,</span><span class="w"> </span><span class="n">plugin</span><span class="p">,</span><span class="w"> </span><span class="n">sourceResourceFile</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// or</span>
+<span class="w">    </span><span class="n">ConfigAccessor</span><span class="w"> </span><span class="n">config2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">configAccessorFactory</span><span class="p">.</span><span class="na">createPatching</span><span class="p">(</span><span class="n">targetConfigFile</span><span class="p">,</span><span class="w"> </span><span class="n">plugin</span><span class="p">,</span><span class="w"> </span><span class="n">sourceResourceFile</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div></p>
 <ol>
-<li>Obtained via the ServicesManager, see the <a href="../Obtaining-API/">Obtaining API</a> page.</li>
+<li>Inject the <code>Plugin</code> and the <code>ConfigAccessorFactory</code>, obtained via the ServicesManager, see the <a href="../Obtaining-API/">Obtaining API</a> page.</li>
 <li>This is the location the config will be saved to. In this case it's a file named "<em>config.yml</em>" in your plugin's folder.</li>
+<li>This is the name of the resource file in your plugin's resources. Here is is also "<em>config.yml</em>" but it could be different.</li>
 </ol>
-<p>Additionally, the ConfigurationFile will attempt to patch itself with a patch file. See <a href="#updating-configurationfiles">updating ConfigurationFiles</a> for more information.</p>
-<h2 id="working-with-the-configurationfile">Working with the ConfigurationFile<a class="headerlink" href="#working-with-the-configurationfile" title="Permanent link">🔗</a></h2>
-<p>The <code>ConfigurationFile</code> extends <code>ConfigurationSection</code> and therefore provides all known Bukkit methods to access and modify the configuration.
-You can reload, save and delete the ConfigurationFile by calling it's corresponding <code>reload()</code>, <code>save()</code> and <code>delete()</code>
+<p>The <code>create</code> method is overloaded.
+One only to access a configuration file from the resources and one to only load an actual file.
+And one more to a file from the resources and save it to the file system.
+None of this methods will patch the config file.</p>
+<p>If you want to patch the config file, you can use the <code>createPatching</code> method.
+This will load the config file and apply all patches that are needed.
+Also this method is overloaded and has a variant to use custom patches. </p>
+<h2 id="working-with-the-configaccessor">Working with the ConfigAccessor<a class="headerlink" href="#working-with-the-configaccessor" title="Permanent link">🔗</a></h2>
+<p>The <code>ConfigAccessor</code> extends <code>ConfigurationSection</code> and therefore provides all known Bukkit methods
+to access and modify the configuration.
+You can reload, save and delete the configuration by calling it's corresponding <code>reload()</code>, <code>save()</code> and <code>delete()</code>
 methods.</p>
-<p>Make sure to add a <code>configVersion</code> key with an empty string as it's value when adding a new config resource file.</p>
+<p>Make sure to add a <code>configVersion</code> key with an empty string as it's value when adding a new config resource file,
+that should get patched.</p>
 <div class="highlight"><span class="filename">Example config.yml</span><pre><span></span><code><span class="nt">configVersion</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
 <span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">en</span>
 <span class="c1"># ...</span>
@@ -5133,21 +5149,21 @@ methods.</p>
 This frees you from the hassle of updating the <code>configVersion</code> key in the default resource file every time you add a patch.</p>
 <div class="admonition warning">
 <p class="admonition-title">Reloading Behaviour</p>
-<p>When reloading the <code>ConfigurationFile</code>, it loads a new <code>ConfigurationSection</code> from the related file and replaces the old root.
+<p>When reloading the <code>ConfigAccessor</code>, it loads a new <code>ConfigurationSection</code> from the related file and replaces the old root.
 This means that all references to old child <code>ConfigurationSection</code> in your code will be outdated and need to be updated.
-Therefore, the best way to work with the <code>ConfigurationFile</code> is to pass it to your classes. Don't pass its children.
-While querying the <code>ConfigurationFile</code> you can use child <code>ConfigurationSection</code> as usual, just don't store them.</p>
+Therefore, the best way to work with the <code>ConfigAccessor</code> is to pass it to your classes. Don't pass its children.
+While querying the <code>ConfigAccessor</code> you can use child <code>ConfigurationSection</code> as usual, just don't store them.</p>
 </div>
-<h2 id="updating-configurationfiles">Updating ConfigurationFiles<a class="headerlink" href="#updating-configurationfiles" title="Permanent link">🔗</a></h2>
+<h2 id="updating-configurations">Updating Configurations<a class="headerlink" href="#updating-configurations" title="Permanent link">🔗</a></h2>
 <p>When you just want to add a new option to the config, you can simply add it to your config's resource file. It will 
-automatically be added to the users existing config. However, if you want to edit existing options you need to use the config patcher.</p>
-<p>The config patcher automatically updates all configs loaded using the <code>ConfigurationFile</code> API.
+automatically be added to the users existing config. However, if you want to edit existing options, you need to use the config patcher.</p>
+<p>The config patcher automatically updates all configs loaded using the <code>ConfigAccessor</code> APIs <code>createPatching</code> methods.
 This is needed when changes are made to the existing config format.
-This patcher only works on configuration files! It's not used for files that contain quests as these should not be loaded 
-with the <code>ConfigurationFile</code> API. 
+This patcher only works on configuration files!
+It's not used for files that contain quests as these should not be loaded with the <code>createPatching</code> methods.
 The patching progress is configured in a dedicated patch file per config file.</p>
 <h3 id="the-patch-file">The Patch File<a class="headerlink" href="#the-patch-file" title="Permanent link">🔗</a></h3>
-<p>Whenever a resource file is loaded using BetonQuest's <code>ConfigurationFile</code> API, a "<em>resourceFileName.patch.yml</em>" file 
+<p>Whenever a resource file is loaded using BetonQuest's <code>createPatching</code> method, a "<em>resourceFileName.patch.yml</em>" file 
 is searched in the same directory the resource file is located. It contains the configuration for all patches
 that need to be applied. Each patch contains configurations for "transformers" that apply changes to the resource
 file before it's loaded. Let's take a look at an example:</p>
@@ -5342,15 +5358,18 @@ in the YAML file. E.g. strings will be surrounded by quotes, numbers and boolean
 <span class="w">  </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">section.myList</span>
 </code></pre></div></p>
 <h3 id="adding-additional-transformers">Adding additional Transformers<a class="headerlink" href="#adding-additional-transformers" title="Permanent link">🔗</a></h3>
-<p>If you want to use your own transformers, you can pass them to the create method in the form of a <code>PatchTransformerRegisterer</code>.
+<p>If you want to use your own transformers, you can pass them to the <code>createPatching</code> method in the form of a <code>PatchTransformerRegisterer</code>.
 This is just a functional interface, that registers additional transformers.
-Utilizing this possibility will however override the default transformers. You need to re-add them explicitly. </p>
-<div class="highlight"><span class="filename">Anonymous PatchTransformerRegisterer Example</span><pre><span></span><code><span class="n">PatchTransformerRegisterer</span><span class="w"> </span><span class="n">defaultTransformers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DefaultPatchTransformerRegisterer</span><span class="p">();</span>
-<span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ConfigurationFile</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="n">configFile</span><span class="p">,</span><span class="w"> </span><span class="n">MyPlugin</span><span class="p">.</span><span class="na">getInstance</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;config.yml&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">patcher</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">defaultTransformers</span><span class="p">.</span><span class="na">registerTransformers</span><span class="p">(</span><span class="n">patcher</span><span class="p">);</span><span class="w"> </span><span class="c1">//(1)!</span>
-<span class="w">    </span><span class="c1">// Register your own transformers here:</span>
-<span class="w">    </span><span class="n">patcher</span><span class="p">.</span><span class="na">registerTransformer</span><span class="p">(</span><span class="s">&quot;myTransformer&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MyTransformer</span><span class="p">());</span><span class="w"> </span>
-<span class="p">});</span>
+Utilizing this possibility will, however, override the default transformers. You need to re-add them explicitly. </p>
+<div class="highlight"><span class="filename">Anonymous PatchTransformerRegisterer Example</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">loadPluginConfig</span><span class="p">(</span><span class="n">Plugin</span><span class="w"> </span><span class="n">plugin</span><span class="p">,</span><span class="w"> </span><span class="n">ConfigAccessorFactory</span><span class="w"> </span><span class="n">configAccessorFactory</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">File</span><span class="w"> </span><span class="n">targetConfigFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">File</span><span class="p">(</span><span class="n">plugin</span><span class="p">.</span><span class="na">getDataFolder</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;config.yml&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">PatchTransformerRegisterer</span><span class="w"> </span><span class="n">defaultTransformers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DefaultPatchTransformerRegisterer</span><span class="p">();</span>
+<span class="w">    </span><span class="n">ConfigAccessor</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">configAccessorFactory</span><span class="p">.</span><span class="na">createPatching</span><span class="p">(</span><span class="n">targetConfigFile</span><span class="p">,</span><span class="w"> </span><span class="n">plugin</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;config.yml&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">patcher</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">defaultTransformers</span><span class="p">.</span><span class="na">registerTransformers</span><span class="p">(</span><span class="n">patcher</span><span class="p">);</span><span class="w"> </span><span class="c1">//(1)!</span>
+<span class="w">        </span><span class="c1">// Register your own transformers here:</span>
+<span class="w">        </span><span class="n">patcher</span><span class="p">.</span><span class="na">registerTransformer</span><span class="p">(</span><span class="s">&quot;myTransformer&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MyTransformer</span><span class="p">());</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="p">}</span>
 </code></pre></div>
 <ol>
 <li>Call this if you want to use the default transformers alongside your own.</li>
