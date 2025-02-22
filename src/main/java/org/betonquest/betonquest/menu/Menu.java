@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.ConfigurationFile;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -46,7 +46,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     /**
      * The plugin configuration file.
      */
-    private final ConfigurationFile pluginConfig;
+    private final ConfigAccessor pluginConfig;
 
     /**
      * The plugin message instance.
@@ -116,7 +116,7 @@ public class Menu extends SimpleYMLSection implements Listener {
      * @param menuID        the id of the menu
      * @throws InvalidConfigurationException if config options are missing or invalid
      */
-    public Menu(final RPGMenu rpgMenu, final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final ConfigurationFile config, final PluginMessage pluginMessage, final MenuID menuID) throws InvalidConfigurationException {
+    public Menu(final RPGMenu rpgMenu, final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final ConfigAccessor config, final PluginMessage pluginMessage, final MenuID menuID) throws InvalidConfigurationException {
         super(menuID.getPackage(), menuID.getFullID(), menuID.getConfig());
         this.rpgMenu = rpgMenu;
         this.log = log;

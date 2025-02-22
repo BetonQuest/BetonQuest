@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
+import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.configuration.ConfigurationSection;
@@ -51,7 +52,7 @@ public abstract class Quest {
     /**
      * The list of all {@link ConfigAccessor}s of this {@link Quest}.
      */
-    private final List<ConfigAccessor> configs;
+    private final List<FileConfigAccessor> configs;
 
     /**
      * Creates a new {@link Quest}. The {@code questPath} represents the address of this {@link Quest}.
@@ -77,7 +78,7 @@ public abstract class Quest {
 
         final Map<ConfigurationSection, String> configurations = new HashMap<>();
         for (final File file : files) {
-            final ConfigAccessor configAccessor = configAccessorFactory.create(file);
+            final FileConfigAccessor configAccessor = configAccessorFactory.create(file);
             configs.add(configAccessor);
             configurations.put(configAccessor.getConfig(), getRelativePath(root, file));
         }
@@ -105,7 +106,7 @@ public abstract class Quest {
      * Tries to save all modifications in the {@link MultiSectionConfiguration} to files.
      *
      * @return true, and only true if there are no unsaved changes
-     * @throws IOException thrown if an exception was thrown by calling {@link ConfigAccessor#save()}
+     * @throws IOException thrown if an exception was thrown by calling {@link FileConfigAccessor#save()}
      *                     or {@link MultiSectionConfiguration#getUnsavedConfigs()} returned a {@link ConfigurationSection},
      *                     that is not represented by this {@link QuestPackage}
      */
@@ -113,7 +114,7 @@ public abstract class Quest {
         boolean exceptionOccurred = false;
         unsaved:
         for (final ConfigurationSection unsavedConfig : config.getUnsavedConfigs()) {
-            for (final ConfigAccessor configAccessor : configs) {
+            for (final FileConfigAccessor configAccessor : configs) {
                 if (unsavedConfig.equals(configAccessor.getConfig())) {
                     try {
                         configAccessor.save();
@@ -143,7 +144,7 @@ public abstract class Quest {
      * @throws FileNotFoundException         thrown if the file for the new {@link ConfigAccessor} could not be found
      */
     public ConfigAccessor getOrCreateConfigAccessor(final String relativePath) throws InvalidConfigurationException, FileNotFoundException {
-        for (final ConfigAccessor configAccessor : configs) {
+        for (final FileConfigAccessor configAccessor : configs) {
             if (root.toURI().relativize(configAccessor.getConfigurationFile().toURI()).getPath().equals(relativePath)) {
                 return configAccessor;
             }
@@ -164,7 +165,7 @@ public abstract class Quest {
         } catch (final IOException e) {
             throw new InvalidConfigurationException(e.getMessage(), e);
         }
-        final ConfigAccessor newAccessor = configAccessorFactory.create(newConfig);
+        final FileConfigAccessor newAccessor = configAccessorFactory.create(newConfig);
         configs.add(newAccessor);
         return newAccessor;
     }

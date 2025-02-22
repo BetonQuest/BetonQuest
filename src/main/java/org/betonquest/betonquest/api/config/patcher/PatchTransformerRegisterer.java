@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.config.patcher;
 
-import org.betonquest.betonquest.config.Patcher;
+import org.betonquest.betonquest.config.patcher.Patcher;
 
 /**
  * Functional interface for registering all transformers of a {@link Patcher}.

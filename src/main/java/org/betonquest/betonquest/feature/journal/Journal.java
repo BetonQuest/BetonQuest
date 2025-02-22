@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.PlayerJournalAddEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerJournalDeleteEvent;
-import org.betonquest.betonquest.api.config.ConfigurationFile;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -59,7 +59,7 @@ public class Journal {
 
     private final List<String> texts = new ArrayList<>();
 
-    private final ConfigurationFile config;
+    private final ConfigAccessor config;
 
     private final String lang;
 
@@ -73,11 +73,10 @@ public class Journal {
      * @param profile       the {@link OnlineProfile} of the player whose journal is created
      * @param lang          default language to use when generating the journal
      * @param list          list of pointers to journal entries
-     * @param config        a {@link ConfigurationFile} that contains the plugin's configuration
+     * @param config        a {@link ConfigAccessor} that contains the plugin's configuration
      */
-    public Journal(final PluginMessage pluginMessage, final Profile profile, final String lang, final List<Pointer> list, final ConfigurationFile config) {
+    public Journal(final PluginMessage pluginMessage, final Profile profile, final String lang, final List<Pointer> list, final ConfigAccessor config) {
         this.pluginMessage = pluginMessage;
-        // generate texts from list of pointers
         this.profile = profile;
         this.lang = lang;
         this.pointers = list;

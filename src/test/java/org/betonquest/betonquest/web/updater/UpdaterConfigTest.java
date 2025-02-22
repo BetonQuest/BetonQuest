@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.web.updater;
 
-import org.betonquest.betonquest.api.config.ConfigurationFile;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
@@ -171,7 +171,7 @@ final class UpdaterConfigTest {
 
     @SuppressWarnings("PMD.CommentDefaultAccessModifier")
     static UpdaterConfig getMockedConfig(final BetonQuestLogger logger, final Input input, final Version version) {
-        final ConfigurationFile config = mock(ConfigurationFile.class);
+        final ConfigAccessor config = mock(ConfigAccessor.class);
         when(config.getBoolean("update.enabled", true)).thenReturn(input.enabled);
         when(config.getBoolean("update.ingameNotification", true)).thenReturn(input.ingameNotification);
         when(config.getString("update.strategy", null)).thenReturn(input.strategy);

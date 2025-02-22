@@ -3,8 +3,7 @@ package org.betonquest.betonquest.config;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
-import org.betonquest.betonquest.api.config.ConfigurationFile;
-import org.betonquest.betonquest.api.config.ConfigurationFileFactory;
+import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.ChatColor;
@@ -25,6 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -45,7 +45,7 @@ public class PluginMessage {
     /**
      * The messages configuration file.
      */
-    private final Map<String, ConfigurationFile> messages;
+    private final Map<String, FileConfigAccessor> messages;
 
     /**
      * The internal messages configuration file.
@@ -55,33 +55,30 @@ public class PluginMessage {
     /**
      * Creates a new instance of the PluginMessage handler.
      *
-     * @param instance                 the BetonQuest instance
-     * @param configurationFileFactory the configuration file factory
-     * @param configAccessorFactory    the config accessor factory
+     * @param instance              the BetonQuest instance
+     * @param configAccessorFactory the config accessor factory
      * @throws QuestException if the messages could not be loaded
      */
-    public PluginMessage(final BetonQuest instance,
-                         final ConfigurationFileFactory configurationFileFactory,
-                         final ConfigAccessorFactory configAccessorFactory) throws QuestException {
+    public PluginMessage(final BetonQuest instance, final ConfigAccessorFactory configAccessorFactory) throws QuestException {
         this.instance = instance;
 
         try {
-            messages = loadMessages(instance, configurationFileFactory);
+            messages = loadMessages(instance, configAccessorFactory);
             internal = configAccessorFactory.create(instance, "messages-internal.yml");
         } catch (InvalidConfigurationException | URISyntaxException | IOException e) {
             throw new QuestException("Failed to load messages", e);
         }
     }
 
-    private Map<String, ConfigurationFile> loadMessages(final Plugin plugin, final ConfigurationFileFactory configurationFileFactory) throws URISyntaxException, IOException, InvalidConfigurationException {
+    private Map<String, FileConfigAccessor> loadMessages(final Plugin plugin, final ConfigAccessorFactory configAccessorFactory) throws URISyntaxException, IOException, InvalidConfigurationException {
         final File root = plugin.getDataFolder();
-        final Map<String, ConfigurationFile> messages = new HashMap<>();
+        final Map<String, FileConfigAccessor> messages = new HashMap<>();
         for (final Map.Entry<String, String> entry : loadMessages(plugin).entrySet()) {
-            messages.put(entry.getKey(), configurationFileFactory.create(new File(root, entry.getValue()), plugin, entry.getValue()));
+            messages.put(entry.getKey(), configAccessorFactory.createPatching(new File(root, entry.getValue()), plugin, entry.getValue()));
         }
         for (final Map.Entry<String, String> file : loadMessages(root).entrySet()) {
             if (!messages.containsKey(file.getKey())) {
-                messages.put(file.getKey(), configurationFileFactory.create(new File(root, file.getValue()), plugin, file.getValue()));
+                messages.put(file.getKey(), configAccessorFactory.create(new File(root, file.getValue())));
             }
         }
         return messages;
@@ -91,25 +88,26 @@ public class PluginMessage {
         final URI uri = plugin.getClass().getResource("/lang").toURI();
         if (SCHEME_JAR.equals(uri.getScheme())) {
             try (FileSystem fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
-                return loadMessages(fileSystem.getPath("/lang"));
+                return loadMessages(fileSystem.getPath("lang"), Path::toString);
             }
         } else {
-            return loadMessages(Paths.get(uri));
+            return loadMessages(Paths.get(uri), Path::toString);
         }
     }
 
     private Map<String, String> loadMessages(final File root) throws IOException {
-        return loadMessages(new File(root, "lang").toPath());
+        final Path langFolder = new File(root, "lang").toPath();
+        return loadMessages(langFolder, path -> root.toPath().relativize(path).toString());
     }
 
-    private Map<String, String> loadMessages(final Path path) throws IOException {
+    private Map<String, String> loadMessages(final Path path, final Function<Path, String> valueResolver) throws IOException {
         try (Stream<Path> files = Files.list(path)) {
             return files
                     .filter(Files::isRegularFile)
                     .filter(file -> file.getFileName().toString().endsWith(".yml"))
                     .filter(file -> !file.getFileName().toString().endsWith(".patch.yml"))
                     .collect(Collectors.toMap(file -> file.getFileName().toString().replace(".yml", ""),
-                            file -> file.toString().substring(1)));
+                            valueResolver));
         }
     }
 
@@ -128,10 +126,9 @@ public class PluginMessage {
      * @throws IOException if the configuration could not be reloaded
      */
     public void reload() throws IOException {
-        for (final ConfigurationFile config : messages.values()) {
+        for (final FileConfigAccessor config : messages.values()) {
             config.reload();
         }
-        internal.reload();
     }
 
     /**
@@ -182,11 +179,11 @@ public class PluginMessage {
 
     @Nullable
     private String getMessageFromSpecificLanguage(final String language, final String message) {
-        final ConfigurationFile configurationFile = messages.get(language);
-        if (configurationFile == null) {
+        final ConfigAccessor config = messages.get(language);
+        if (config == null) {
             return null;
         }
-        return configurationFile.getString(message);
+        return config.getString(message);
     }
 
     /**

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.schedule;
 
-import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class LastExecutionCache {
     /**
      * Config accessor for the cache.
      */
-    private final ConfigAccessor cache;
+    private final FileConfigAccessor cache;
 
     /**
      * Create a new execution cache instance for a given schedule.
@@ -31,7 +31,7 @@ public class LastExecutionCache {
      * @param log   the logger that will be used for logging
      * @param cache the config accessor for the cache
      */
-    public LastExecutionCache(final BetonQuestLogger log, final ConfigAccessor cache) {
+    public LastExecutionCache(final BetonQuestLogger log, final FileConfigAccessor cache) {
         this.log = log;
         this.cache = cache;
     }

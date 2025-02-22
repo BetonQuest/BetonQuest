@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.SingletonLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
@@ -59,7 +60,7 @@ class JournalEventFactoryIntegrationTest {
     public JournalEventFactoryIntegrationTest() {
     }
 
-    private QuestPackage setupQuestPackage(final BetonQuestLogger logger, final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    private QuestPackage setupQuestPackage(final BetonQuestLoggerFactory factory, final BetonQuestLogger logger, final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final Path packageDirectory = questPackagesDirectory.resolve("test");
         if (!packageDirectory.toFile().mkdir()) {
             throw new IOException("Failed to create test package directory.");
@@ -68,7 +69,7 @@ class JournalEventFactoryIntegrationTest {
         if (!packageConfigFile.createNewFile()) {
             throw new IOException("Failed to create test package main configuration file.");
         }
-        return new QuestPackageImpl(logger, new DefaultConfigAccessorFactory(), "test", packageConfigFile, Collections.emptyList());
+        return new QuestPackageImpl(logger, new DefaultConfigAccessorFactory(factory, logger), "test", packageConfigFile, Collections.emptyList());
     }
 
     private QuestEventFactoryAdapter createJournalEventFactory(final BetonQuestLogger logger) {
@@ -77,54 +78,54 @@ class JournalEventFactoryIntegrationTest {
     }
 
     @Test
-    void constructJournalUpdateEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void constructJournalUpdateEvent(final BetonQuestLoggerFactory factory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
-        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, new NoID(questPackage), "journal update");
         assertDoesNotThrow(() -> journalFactory.parseInstruction(instruction), "journal event update action could not be created");
     }
 
     @Test
-    void constructJournalAddEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void constructJournalAddEvent(final BetonQuestLoggerFactory factory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
-        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, new NoID(questPackage), "journal add quest_started");
         assertDoesNotThrow(() -> journalFactory.parseInstruction(instruction), "journal event add action could not be created");
     }
 
     @Test
-    void constructJournalAddEventWithoutPageReference(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void constructJournalAddEventWithoutPageReference(final BetonQuestLoggerFactory factory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
-        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, new NoID(questPackage), "journal add");
         assertThrows(QuestException.class, () -> journalFactory.parseInstruction(instruction), "journal event add action without page reference should throw an exception when created");
     }
 
     @Test
-    void constructJournalDeleteEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void constructJournalDeleteEvent(final BetonQuestLoggerFactory factory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
-        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, new NoID(questPackage), "journal delete quest_available");
         assertDoesNotThrow(() -> journalFactory.parseInstruction(instruction), "journal event delete action could not be created");
     }
 
     @Test
-    void constructJournalDeleteEventWithoutPageReference(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void constructJournalDeleteEventWithoutPageReference(final BetonQuestLoggerFactory factory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
-        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, new NoID(questPackage), "journal delete");
         assertThrows(QuestException.class, () -> journalFactory.parseInstruction(instruction), "journal event delete action without page reference should throw an exception when created");
     }
 
     @Test
-    void constructInvalidJournalEvent(final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void constructInvalidJournalEvent(final BetonQuestLoggerFactory factory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
-        final QuestPackage questPackage = setupQuestPackage(logger, questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, new NoID(questPackage), "journal invalid");
         assertThrows(QuestException.class, () -> journalFactory.parseInstruction(instruction), "invalid action of journal event should throw an exception when created");

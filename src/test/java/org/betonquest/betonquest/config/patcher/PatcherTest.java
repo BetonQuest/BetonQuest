@@ -1,8 +1,7 @@
-package org.betonquest.betonquest.config;
+package org.betonquest.betonquest.config.patcher;
 
 import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegisterer;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.config.patcher.DefaultPatchTransformerRegisterer;
 import org.betonquest.betonquest.versioning.Version;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
