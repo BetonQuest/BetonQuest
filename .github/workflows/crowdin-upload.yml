@@ -1,0 +1,23 @@
+name: Crowdin Action
+
+on:
+  push:
+    paths: [ 'src/main/resources/lang/**' ]
+    branches: [ main ]
+
+jobs:
+  crowdin-upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Crowdin upload
+        uses: crowdin/github-action@v2
+        with:
+          upload_sources: true
+          upload_translations: true
+          source: /src/main/resources/lang/en-US.yml
+          translation: /src/main/resources/lang/%locale%.yml
+          project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
+          token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
