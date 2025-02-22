@@ -3,6 +3,8 @@ package org.betonquest.betonquest.instruction.argument;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ID;
+import org.betonquest.betonquest.instruction.variable.Variable;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -12,6 +14,30 @@ import org.jetbrains.annotations.Nullable;
  */
 @FunctionalInterface
 public interface IDArgument<T extends ID> {
+    /**
+     * A variable interpreted as ID when resolved.
+     *
+     * @param argument the argument to parse the id
+     * @param <I>      the ID type
+     * @return the variables of the id
+     */
+    static <I extends ID> VariableArgument<Variable<I>> ofSingle(final IDArgument<I> argument) {
+        return (variableProcessor, pack, string)
+                -> new Variable<>(variableProcessor, pack, string, arg -> argument.convert(pack, arg));
+    }
+
+    /**
+     * A variable interpreted as list of ID when resolved.
+     *
+     * @param argument the argument to parse the id
+     * @param <I>      the ID type
+     * @return the variables of the ids
+     */
+    static <I extends ID> VariableArgument<VariableList<I>> ofList(final IDArgument<I> argument) {
+        return (variableProcessor, pack, string)
+                -> new VariableList<>(variableProcessor, pack, string, arg -> argument.convert(pack, arg));
+    }
+
     /**
      * Creates a new ID.
      *
