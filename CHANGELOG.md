@@ -11,6 +11,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `cancel` event now has `bypass` keyword to ignore conditions in Quest Canceler
 ### Changed
 - message.yml file was deleted and instead the lang folder now contains all translations
+- menuConfig.yml file was deleted, translations are in the lang folder and the config is part of config.yml 
 - `cancel` event now respects by default canceler conditions
 ### Deprecated
 ### Removed

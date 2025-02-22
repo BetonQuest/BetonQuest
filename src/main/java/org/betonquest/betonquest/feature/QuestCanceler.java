@@ -194,7 +194,7 @@ public class QuestCanceler {
             questName = names.get(Config.getLanguage());
         }
         if (questName == null) {
-            questName = names.get("en");
+            questName = names.get("en-US");
         }
         if (questName == null) {
             log.warn("Quest name is not defined in canceler " + pack.getQuestPath() + "." + cancelerID);

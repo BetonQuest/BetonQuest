@@ -596,9 +596,7 @@ public class ConversationData {
                 return;
             }
 
-            final String defaultLang = Config.getLanguage();
-
-            this.text = parseText(conv, defaultLang);
+            this.text = parseText(conv);
             this.conditions = parseID(conv, "condition", ConditionID::new);
             this.events = parseID(conv, "event", EventID::new);
 
@@ -631,10 +629,11 @@ public class ConversationData {
             }
         }
 
-        private Map<String, VariableString> parseText(final ConfigurationSection conv, final String defaultLang) throws QuestException {
+        private Map<String, VariableString> parseText(final ConfigurationSection conv) throws QuestException {
             if (!conv.contains(TEXT)) {
                 return Map.of();
             }
+            final String defaultLang = Config.getLanguage();
             if (conv.isConfigurationSection(TEXT)) {
                 final Map<String, VariableString> map = new HashMap<>();
                 for (final String lang : conv.getConfigurationSection(TEXT).getKeys(false)) {

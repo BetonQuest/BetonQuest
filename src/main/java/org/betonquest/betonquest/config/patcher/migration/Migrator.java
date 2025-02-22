@@ -14,6 +14,7 @@ import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.Rem
 import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.RideUpdates;
 import org.betonquest.betonquest.config.patcher.migration.migrators.from2to3.DeleteMenuConfigYml;
 import org.betonquest.betonquest.config.patcher.migration.migrators.from2to3.DeleteMessagesYml;
+import org.betonquest.betonquest.config.patcher.migration.migrators.from2to3.LanguageRename;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -56,10 +57,10 @@ public class Migrator {
         migrations.add(new FabledRename(provider));
     }
 
-    @SuppressWarnings("PMD.UnusedFormalParameter")
     private void addMigratorsFrom2to3(final BetonQuestLoggerFactory loggerFactory, final FileConfigurationProvider provider) {
         migrations.add(new DeleteMessagesYml(loggerFactory.create(DeleteMessagesYml.class)));
         migrations.add(new DeleteMenuConfigYml(loggerFactory.create(DeleteMenuConfigYml.class)));
+        migrations.add(new LanguageRename(provider));
     }
 
     /**

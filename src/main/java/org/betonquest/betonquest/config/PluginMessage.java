@@ -163,7 +163,7 @@ public class PluginMessage {
             result = getMessageFromSpecificLanguage(Config.getLanguage(), message);
         }
         if (result == null) {
-            result = getMessageFromSpecificLanguage("en", message);
+            result = getMessageFromSpecificLanguage("en-US", message);
         }
         if (result == null) {
             result = internal.getConfig().getString(message);
