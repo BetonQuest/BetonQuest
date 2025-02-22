@@ -3,6 +3,10 @@ name: Crowdin Download Action
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   crowdin-download:
     runs-on: ubuntu-latest
@@ -23,3 +27,5 @@ jobs:
           translation: src/main/resources/lang/%locale%.yml
           project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
           token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
