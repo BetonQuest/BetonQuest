@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -87,25 +88,26 @@ public class PluginMessage {
         final URI uri = plugin.getClass().getResource("/lang").toURI();
         if (SCHEME_JAR.equals(uri.getScheme())) {
             try (FileSystem fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
-                return loadMessages(fileSystem.getPath("/lang"));
+                return loadMessages(fileSystem.getPath("lang"), Path::toString);
             }
         } else {
-            return loadMessages(Paths.get(uri));
+            return loadMessages(Paths.get(uri), Path::toString);
         }
     }
 
     private Map<String, String> loadMessages(final File root) throws IOException {
-        return loadMessages(new File(root, "lang").toPath());
+        final Path langFolder = new File(root, "lang").toPath();
+        return loadMessages(langFolder, path -> root.toPath().relativize(path).toString());
     }
 
-    private Map<String, String> loadMessages(final Path path) throws IOException {
+    private Map<String, String> loadMessages(final Path path, final Function<Path, String> valueResolver) throws IOException {
         try (Stream<Path> files = Files.list(path)) {
             return files
                     .filter(Files::isRegularFile)
                     .filter(file -> file.getFileName().toString().endsWith(".yml"))
                     .filter(file -> !file.getFileName().toString().endsWith(".patch.yml"))
                     .collect(Collectors.toMap(file -> file.getFileName().toString().replace(".yml", ""),
-                            file -> file.toString().substring(1)));
+                            valueResolver));
         }
     }
 
