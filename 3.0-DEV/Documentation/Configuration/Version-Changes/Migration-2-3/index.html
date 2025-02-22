@@ -2953,6 +2953,52 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-65-delete-menuconfigyml">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-65 - Delete menuConfig.yml <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-71-renamed-translation-keys">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-71 - Renamed Translation Keys <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2699.svg" title=":gear:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -4341,6 +4387,52 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-65-delete-menuconfigyml">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-65 - Delete menuConfig.yml <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-71-renamed-translation-keys">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-71 - Renamed Translation Keys <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2699.svg" title=":gear:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -4464,6 +4556,8 @@
 <p>Steps marked with <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2699.svg" title=":gear:" /> are migrated automatically. Steps marked with <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" /> must be done manually.</p>
 <ul>
 <li><a href="#300-dev-58-delete-messagesyml">3.0.0-DEV-58 - Delete messages.yml</a> <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" /></li>
+<li><a href="#300-dev-65-delete-menuconfigyml">3.0.0-DEV-65 - Delete menuConfig.yml</a> <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" /></li>
+<li><a href="#300-dev-71-renamed-translation-keys">3.0.0-DEV-71 - Renamed Translation Keys</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2699.svg" title=":gear:" /></li>
 </ul>
 <h3 id="300-dev-58-delete-messagesyml">3.0.0-DEV-58 - Delete messages.yml <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" /><a class="headerlink" href="#300-dev-58-delete-messagesyml" title="Permanent link">🔗</a></h3>
 <p>The <code>messages.yml</code> file has been removed.
@@ -4471,6 +4565,114 @@ All messages are now stored in the <code>lang</code> folder, you can also custom
 If you still have the old messages.yml file, you get a warning in the console.
 If you dont have any custom messages,
 you can delete the file safely otherwise you should move the messages to the new location.</p>
+<h3 id="300-dev-65-delete-menuconfigyml">3.0.0-DEV-65 - Delete menuConfig.yml <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" /><a class="headerlink" href="#300-dev-65-delete-menuconfigyml" title="Permanent link">🔗</a></h3>
+<p>The <code>menuConfig.yml</code> file has been removed.
+If you had the option <code>default_close</code> configured, you can now find this option in the <code>config.yml</code> file.
+All translations in the config where also moved to the <code>lang</code> folder,
+so also here you need to move your custom translations.</p>
+<h3 id="300-dev-71-renamed-translation-keys">3.0.0-DEV-71 - Renamed Translation Keys <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2699.svg" title=":gear:" /><a class="headerlink" href="#300-dev-71-renamed-translation-keys" title="Permanent link">🔗</a></h3>
+<details class="info">
+<summary>Automated Migration</summary>
+<p><em>The migration is automated. You shouldn't have to do anything.</em></p>
+<hr />
+<p>All translations where moved from the messages.yml file to individual files in the <code>lang</code> folder.
+Also all keys for the langusges have been renamed to match the new lang-region format, where lang and region are always two letters.<br />
+So the mapping of the old to the new keys is as follows:</p>
+<table>
+<thead>
+<tr>
+<th>Old Key</th>
+<th>New Key</th>
+<th>Old Key</th>
+<th>New Key</th>
+<th>Old Key</th>
+<th>New Key</th>
+<th>Old Key</th>
+<th>New Key</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>en</td>
+<td>en-US</td>
+<td>de</td>
+<td>de-DE</td>
+<td>es</td>
+<td>es-ES</td>
+<td>fr</td>
+<td>fr-FR</td>
+</tr>
+<tr>
+<td>hu</td>
+<td>hu-HU</td>
+<td>it</td>
+<td>it-IT</td>
+<td>nl</td>
+<td>nl-NL</td>
+<td>pl</td>
+<td>pl-PL</td>
+</tr>
+<tr>
+<td>pt-br</td>
+<td>pt-BR</td>
+<td>pt-pt</td>
+<td>pt-PT</td>
+<td>ru</td>
+<td>ru-RU</td>
+<td>vi</td>
+<td>vi-VN</td>
+</tr>
+<tr>
+<td>cn</td>
+<td>zh-CN</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>If you have custom translations, you need to move them to the new <code>lang</code> folder.
+Because the keys have been renamed, you need to rename the keys in some parts of config files and scripts.</p>
+<div class="highlight"><span class="filename">new config.yml</span><pre><span></span><code><span class="w">    </span><span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">en-US</span>
+</code></pre></div>
+<div class="grid" markdown>
+<div class="highlight"><span class="filename">Old Syntax Events</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">notify</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notify {en} English text {de} Deutscher text</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New Syntax Events</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">notify</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notify {en-US} English text {de-DE} Deutscher text</span>
+</code></pre></div>
+</div>
+<p>And the most complicated change is everywhere you used multiple languages in sections, here is only one example:</p>
+<div class="grid" markdown>
+<div class="highlight"><span class="filename">Old Conversation</span><pre><span></span><code><span class="nt">conversations</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">unkown</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">quester</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">en</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Jane Doe</span>
+<span class="w">      </span><span class="nt">de</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Erika Mustermann</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New Conversation</span><pre><span></span><code><span class="nt">conversations</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">unkown</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">quester</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">en-US</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Jane Doe</span>
+<span class="w">      </span><span class="nt">de-DE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Erika Mustermann</span>
+</code></pre></div>
+</div>
+<p>The same applies to all other sections where you used multiple languages, this should be a complete list:</p>
+<ul>
+<li><code>conversations.*.quester</code></li>
+<li><code>conversations.*.NPC_options.*.text</code></li>
+<li><code>conversations.*.player_options.*.text</code></li>
+<li><code>compass.*.name</code></li>
+<li><code>cancel.*.name</code></li>
+<li><code>journal.*</code></li>
+<li><code>journal_main_page.*.text</code></li>
+<li><code>menus.*.items.*.text</code></li>
+</ul>
+</details>
 
 
 
