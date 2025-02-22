@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Handles the aura_skills rename migration.
+ * Handles the migration of language keys.
  */
 public class LanguageRename implements Migration {
     /**
@@ -19,7 +19,7 @@ public class LanguageRename implements Migration {
     private final FileConfigurationProvider producer;
 
     /**
-     * Creates a new aura_skills migrator.
+     * Creates a new language rename migration.
      *
      * @param provider The config provider
      */
