@@ -13,6 +13,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 Steps marked with :gear: are migrated automatically. Steps marked with :exclamation: must be done manually.
 
 - [3.0.0-DEV-58 - Delete messages.yml](#300-dev-58-delete-messagesyml) :exclamation:
+- [3.0.0-DEV-65 - Delete menuConfig.yml](#300-dev-65-delete-menuconfigyml) :exclamation:
 - [3.0.0-DEV-71 - Renamed Translation Keys](#300-dev-71-renamed-translation-keys) :gear:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :exclamation:
@@ -22,6 +23,13 @@ All messages are now stored in the `lang` folder, you can also customize them th
 If you still have the old messages.yml file, you get a warning in the console.
 If you dont have any custom messages,
 you can delete the file safely otherwise you should move the messages to the new location.
+
+### 3.0.0-DEV-65 - Delete menuConfig.yml :exclamation:
+
+The `menuConfig.yml` file has been removed.
+If you had the option `default_close` configured, you can now find this option in the `config.yml` file.
+All translations in the config where also moved to the `lang` folder,
+so also here you need to move your custom translations.
 
 ### 3.0.0-DEV-71 - Renamed Translation Keys :gear:
 
