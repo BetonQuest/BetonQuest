@@ -56,7 +56,7 @@ public final class StandardPatchingConfigAccessor extends StandardConfigAccessor
             log.info("Updating config file '" + relativePath + "' from version '" + patcher.getCurrentConfigVersion()
                     + "' to version '" + patcher.getNextConfigVersion().getVersion() + "'");
 
-            final boolean flawless = patcher.patch();
+            final boolean flawless = patcher.patch(original);
             if (flawless) {
                 log.info("Patching complete!");
             } else {
@@ -68,6 +68,6 @@ public final class StandardPatchingConfigAccessor extends StandardConfigAccessor
         }
         log.debug("No patch found.");
 
-        return patcher.updateVersion();
+        return patcher.updateVersion(original);
     }
 }

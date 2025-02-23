@@ -1,8 +1,7 @@
 package org.betonquest.betonquest.config.patcher.transformer;
 
-import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegisterer;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.config.patcher.DefaultPatchTransformerRegisterer;
+import org.betonquest.betonquest.config.patcher.DefaultPatchTransformerRegistry;
 import org.betonquest.betonquest.config.patcher.Patcher;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -20,13 +19,6 @@ import static org.mockito.Mockito.*;
  * This test tests all config transformers.
  */
 class TransformerIntegrationTest extends TransformersFixture {
-
-    /**
-     * Anonymous {@link PatchTransformerRegisterer} for testing.
-     */
-    public final PatchTransformerRegisterer registerer = new DefaultPatchTransformerRegisterer() {
-    };
-
     private void assertAfterPatch(final String patch) throws InvalidConfigurationException, IOException {
         final YamlConfiguration patchConfig = new YamlConfiguration();
         patchConfig.loadFromString(patch);
@@ -36,9 +28,8 @@ class TransformerIntegrationTest extends TransformersFixture {
 
         CONFIG.set("configVersion", "2.0.0-CONFIG-1");
 
-        final Patcher patcher = new Patcher(mock(BetonQuestLogger.class), questConfig, patchConfig);
-        registerer.registerTransformers(patcher);
-        patcher.patch();
+        final Patcher patcher = new Patcher(mock(BetonQuestLogger.class), questConfig, patchConfig, new DefaultPatchTransformerRegistry());
+        patcher.patch(questConfig);
 
         assertEquals(CONFIG.saveToString(), questConfig.saveToString(), "Patch was not applied correctly.");
     }

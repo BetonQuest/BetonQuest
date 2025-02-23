@@ -3,9 +3,12 @@ package org.betonquest.betonquest.api.config.patcher;
 import java.io.Serial;
 
 /**
- *
+ * Exception to be thrown when a patch fails.
  */
 public class PatchException extends Exception {
+    /**
+     * Serial version UID.
+     */
     @Serial
     private static final long serialVersionUID = -3188700840301371500L;
 

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.config.patcher;
 
 import org.betonquest.betonquest.api.config.patcher.PatchException;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformer;
+import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegistry;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
@@ -53,17 +54,17 @@ public class Patcher {
     private final BetonQuestLogger log;
 
     /**
-     * The config to patch.
-     */
-    private final ConfigurationSection pluginConfig;
-
-    /**
      * A config that contains one or more patches that will be applied to the pluginConfig.
      * <br>
      * A patch consists of one or multiple list entries of which each contains options for a {@link PatchTransformer}.
      * Additionally, each patch has a version that determines if the patch will be applied.
      */
     private final ConfigurationSection patchConfig;
+
+    /**
+     * Registry for all {@link PatchTransformer}s.
+     */
+    private final PatchTransformerRegistry transformerRegistry;
 
     /**
      * Contains all versions that are newer then the config's current version.
@@ -82,25 +83,21 @@ public class Patcher {
     private final Version configVersion;
 
     /**
-     * A map with the ID's and instances of all registered {@link PatchTransformer}s.
-     */
-    private final Map<String, PatchTransformer> transformers = new HashMap<>();
-
-    /**
      * Creates a new Patcher.
      * <br>
      * Check for available patches using {@link Patcher#hasUpdate()}.
      * <br>
-     * Updates can be applied using {@link Patcher#patch()}.
+     * Updates can be applied using {@link Patcher#patch(ConfigurationSection)}.
      *
-     * @param log         the logger that will be used for logging
-     * @param config      the config that must be patched
-     * @param patchConfig the patchConfig that contains patches
+     * @param log                 the logger that will be used for logging
+     * @param config              the config that must be patched
+     * @param patchConfig         the patchConfig that contains patches
+     * @param transformerRegistry the registry for all {@link PatchTransformer}s
      */
-    public Patcher(final BetonQuestLogger log, final ConfigurationSection config, final ConfigurationSection patchConfig) {
+    public Patcher(final BetonQuestLogger log, final ConfigurationSection config, final ConfigurationSection patchConfig, final PatchTransformerRegistry transformerRegistry) {
         this.log = log;
-        this.pluginConfig = config;
         this.patchConfig = patchConfig;
+        this.transformerRegistry = transformerRegistry;
         try {
             buildVersionIndex(this.patchConfig, "");
         } catch (final InvalidConfigurationException e) {
@@ -157,28 +154,29 @@ public class Patcher {
      * Updates the configVersion to the version of the newest available patch if it is an empty string.
      * This is useful to set the current config version when a default resource file is freshly copied to the plugin's folder.
      *
+     * @param config the config to set the new version in
      * @return if the version was updated
      */
-    public boolean updateVersion() {
-        final String currentVersion = pluginConfig.getString(CONFIG_VERSION_PATH);
+    public boolean updateVersion(final ConfigurationSection config) {
+        final String currentVersion = config.getString(CONFIG_VERSION_PATH);
         if (currentVersion == null) {
-            setConfigVersion(TECHNICAL_DEFAULT_VERSION);
+            setConfigVersion(config, TECHNICAL_DEFAULT_VERSION);
             return true;
         }
         if (currentVersion.isEmpty()) {
             if (patchableVersions.isEmpty()) {
-                setConfigVersion(TECHNICAL_DEFAULT_VERSION);
+                setConfigVersion(config, TECHNICAL_DEFAULT_VERSION);
             } else {
-                setConfigVersion(patchableVersions.lastEntry().getKey().getVersion());
+                setConfigVersion(config, patchableVersions.lastEntry().getKey().getVersion());
             }
             return true;
         }
         return false;
     }
 
-    private void setConfigVersion(final String technicalDefaultVersion) {
-        pluginConfig.set(CONFIG_VERSION_PATH, technicalDefaultVersion);
-        pluginConfig.setInlineComments(CONFIG_VERSION_PATH, List.of(VERSION_CONFIG_COMMENT));
+    private void setConfigVersion(final ConfigurationSection config, final String newVersion) {
+        config.set(CONFIG_VERSION_PATH, newVersion);
+        config.setInlineComments(CONFIG_VERSION_PATH, List.of(VERSION_CONFIG_COMMENT));
     }
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
@@ -213,9 +211,10 @@ public class Patcher {
     /**
      * Patches the given config with the given patch file.
      *
+     * @param config the config to patch
      * @return whether the patch could be applied successfully
      */
-    public boolean patch() {
+    public boolean patch(final ConfigurationSection config) {
         boolean noErrors = true;
         for (final Map.Entry<Version, String> versionData : patchableVersions.entrySet()) {
             final Version version = versionData.getKey();
@@ -224,8 +223,8 @@ public class Patcher {
             }
             log.info("Applying patches to update to '" + version.getVersion() + "'...");
             final String patchDataPath = versionData.getValue();
-            setConfigVersion(getNewVersion(patchDataPath));
-            if (!applyPatch(patchDataPath)) {
+            setConfigVersion(config, getNewVersion(patchDataPath));
+            if (!applyPatch(config, patchDataPath)) {
                 noErrors = false;
             }
         }
@@ -245,7 +244,7 @@ public class Patcher {
      * @param patchDataPath the path to the patches to apply
      * @return whether the patches were applied successfully
      */
-    private boolean applyPatch(final String patchDataPath) {
+    private boolean applyPatch(final ConfigurationSection config, final String patchDataPath) {
         final List<Map<?, ?>> patchData = patchConfig.getMapList(patchDataPath);
 
         boolean noErrors = true;
@@ -259,7 +258,7 @@ public class Patcher {
             }
             final String transformationType = raw.toUpperCase(Locale.ROOT);
             try {
-                applyTransformation(typeSafeTransformationData, transformationType);
+                applyTransformation(config, typeSafeTransformationData, transformationType);
             } catch (final PatchException e) {
                 noErrors = false;
                 log.info("Applying patch of type '" + transformationType + "'...");
@@ -269,20 +268,11 @@ public class Patcher {
         return noErrors;
     }
 
-    private void applyTransformation(final Map<String, String> transformationData, final String transformationType) throws PatchException {
+    private void applyTransformation(final ConfigurationSection config, final Map<String, String> transformationData, final String transformationType) throws PatchException {
+        final Map<String, PatchTransformer> transformers = transformerRegistry.getTransformers();
         if (!transformers.containsKey(transformationType)) {
             throw new PatchException("Unknown transformation type '" + transformationType + "' used!");
         }
-        transformers.get(transformationType).transform(transformationData, pluginConfig);
-    }
-
-    /**
-     * Registers a new {@link PatchTransformer} that can be applied by the patcher.
-     *
-     * @param typeName    the name of the transformation type
-     * @param transformer the transformer
-     */
-    public void registerTransformer(final String typeName, final PatchTransformer transformer) {
-        transformers.put(typeName, transformer);
+        transformers.get(transformationType).transform(transformationData, config);
     }
 }
