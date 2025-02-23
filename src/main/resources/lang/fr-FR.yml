@@ -18,7 +18,7 @@ money_given: '&2{amount} {currency} reçu'
 money_taken: '&2{amount} {currency} perdu'
 point_given: '&2Vous avez reçu {amount} points à {category}'
 point_taken: '&2Vous avez perdu {amount} points à {category}'
-point_set: '&2Your points {category} are set to {amount}' #TODO: missing translation
+point_set: '&2Your points {category} are set to {amount}'
 point_multiplied: '&2Vos points {category} sont multipliés par {amount}'
 blocks_to_break: '&2Encore {amount} blocs à casser'
 blocks_to_place: '&2Encore {amount} blocs à poser'
@@ -34,7 +34,7 @@ items_to_smelt: '&2{amount} objets restant à cuire'
 items_to_craft: '&2{amount} objets restant à fabriquer'
 items_to_enchant: '&2{amount} objets restant à enchanter'
 level_to_gain: '&2{amount} niveaux restant à gagner'
-payment_to_receive: '&2{amount} money left to receive' # TODO: missing translation
+payment_to_receive: '&2{amount} money left to receive'
 busy: '&cVous ne pouvez pas parler pendant un combat.'
 quest_canceled: '&2Quête {name}&2 annulée!'
 cancel: '&cAnnuler cette quête'
@@ -59,7 +59,7 @@ condition_variable_not_met: 'non'
 chest_occupied: 'Ce coffre est déjà en cours d''utilisation'
 menu:
   no_permission: '&7[&c&l!&7] Pas de permissions!'
-  command_usage: '&cusage:\n&7{usage}'
+  command_usage: "&cusage:\n&7{usage}"
   command_info_reload: '&brecharges tous/un menu(s)'
   command_info_list: '&bouvre un menu [pour un joueur]'
   command_info_open: '&bliste tous les menus'
@@ -70,5 +70,5 @@ menu:
   command_open_successful: '&7[&a&li&7]&7{menu}&a a ete ouvert!'
   command_reload_successful: '&7[{color}&li&7]{color} Recharge &7{amount}{color} menu(s) avec succes!'
   command_reload_failed: '&7[&4&l!&7]&4 Le rechargement a echoue!'
-  command_list: '&e----- &aRPGMenu &e-----\n&aMenus connu:&e '
+  command_list: "&e----- &aRPGMenu &e-----\n&aMenus connu:&e "
   click_to_open: '&bcliquez pour ouvrir le menu'

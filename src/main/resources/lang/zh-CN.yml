@@ -18,7 +18,7 @@ money_given: '&2收到 {amount} {currency}'
 money_taken: '&2丢失 {amount} {currency}'
 point_given: '&2你收到了 {amount} 点券，来自 {category}'
 point_taken: '&2你花费了 {amount} 点券，在 {category}'
-point_set: '&2Your points {category} are set to {amount}' #TODO: missing translation
+point_set: '&2Your points {category} are set to {amount}'
 point_multiplied: '&2你的点券 {category} 被乘以 {amount}'
 blocks_to_break: '&2还需要再破坏{amount}个方块'
 blocks_to_place: '&2还需要再放置{amount}个方块'
@@ -34,7 +34,7 @@ items_to_smelt: '&2{amount} 个物品需要熔炼'
 items_to_craft: '&2{amount} 个物品需要制作'
 items_to_enchant: '&2{amount} 个物品需要附魔'
 level_to_gain: '&2{amount} 级经验还需要获取'
-payment_to_receive: '&2{amount} money left to receive' # TODO: missing translation
+payment_to_receive: '&2{amount} money left to receive'
 busy: '&c你还在战斗中'
 quest_canceled: '&2任务 {name}&2 已取消!'
 cancel: '&c取消任务'
@@ -58,17 +58,17 @@ condition_variable_met: '是'
 condition_variable_not_met: '否'
 chest_occupied: '这个箱子已经在使用了'
 menu:
-  no_permission: '&7[&c&l!&7] No permission!' # TODO: missing translation
-  command_usage: '&cUsage:\n&7{usage}' # TODO: missing translation
-  command_info_reload: '&breloads all/one menu(s)' # TODO: missing translation
-  command_info_list: '&bopens specific menu [for a player]' # TODO: missing translation
-  command_info_open: '&blists all loaded menus' # TODO: missing translation
-  command_invalid_menu: '&7[&c&l!&7] &c{menu}&7 is not a loaded menu!' # TODO: missing translation
-  command_no_player: '&7[&c&l!&7] Please specify a player!' # TODO: missing translation
-  command_invalid_player: '&7[&c&l!&7] There is no player with the name &c{player}&7!' # TODO: missing translation
-  command_no_menu: '&7[&c&l!&7] Please specify a menu!' # TODO: missing translation
-  command_open_successful: '&7[&a&li&7]&a Successfully opened &7{menu}&a!' # TODO: missing translation
-  command_reload_successful: '&7[{color}&li&7]{color} Successfully reloaded &7{amount}{color} menu(s)!' # TODO: missing translation
-  command_reload_failed: '&7[&4&l!&7]&4 Reload failed!' # TODO: missing translation
-  command_list: '&e----- &aRPGMenu &e-----\n&aLoaded menus:&e ' # TODO: missing translation
-  click_to_open: '&bclick to open menu' # TODO: missing translation
+  no_permission: '&7[&c&l!&7] No permission!'
+  command_usage: "&cUsage:\n&7{usage}"
+  command_info_reload: '&breloads all/one menu(s)'
+  command_info_list: '&bopens specific menu [for a player]'
+  command_info_open: '&blists all loaded menus'
+  command_invalid_menu: '&7[&c&l!&7] &c{menu}&7 is not a loaded menu!'
+  command_no_player: '&7[&c&l!&7] Please specify a player!'
+  command_invalid_player: '&7[&c&l!&7] There is no player with the name &c{player}&7!'
+  command_no_menu: '&7[&c&l!&7] Please specify a menu!'
+  command_open_successful: '&7[&a&li&7]&a Successfully opened &7{menu}&a!'
+  command_reload_successful: '&7[{color}&li&7]{color} Successfully reloaded &7{amount}{color} menu(s)!'
+  command_reload_failed: '&7[&4&l!&7]&4 Reload failed!'
+  command_list: "&e----- &aRPGMenu &e-----\n&aLoaded menus:&e "
+  click_to_open: '&bclick to open menu'
