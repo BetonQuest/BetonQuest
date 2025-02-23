@@ -18,7 +18,7 @@ money_given: '&2Hai ricevuto {amount} {currency}'
 money_taken: '&2Hai perso {amount} {currency}'
 point_given: '&2Hai ricevuto {amount} punti da {category}'
 point_taken: '&2Hai perso {amount} punti da {category}'
-point_set: '&2Your points {category} are set to {amount}' #TODO: missing translation
+point_set: '&2Your points {category} are set to {amount}'
 point_multiplied: '&2I tuoi punti {category} sono moltiplicati di {amount}'
 blocks_to_break: '&2{amount} blocchi rimasti da rompere'
 blocks_to_place: '&2{amount} blocchi rimasti da piazzare'
@@ -32,9 +32,9 @@ animals_to_breed: '&2{amount} animali rimasti da far accoppiare'
 items_to_pickup: '&2{amount} oggetti rimasti da raccogliere'
 items_to_smelt: '&2{amount} oggetti rimasti da cuocere'
 items_to_craft: '&2{amount} oggetti da creare'
-items_to_enchant: '&2{amount} items left to enchant' # TODO: missing translation
-level_to_gain: '&2{amount} levels left to gain' # TODO: missing translation
-payment_to_receive: '&2{amount} money left to receive' # TODO: missing translation
+items_to_enchant: '&2{amount} items left to enchant'
+level_to_gain: '&2{amount} levels left to gain'
+payment_to_receive: '&2{amount} money left to receive'
 busy: '&cNon puoi parlare mentre stai combattendo.'
 quest_canceled: '&2Quest {name}&2 annullata!'
 cancel: '&cAnnulla quest'
@@ -59,7 +59,7 @@ condition_variable_not_met: 'no'
 chest_occupied: 'Questo baule è già in uso'
 menu:
   no_permission: '&7[&c&l!&7] Non hai i permessi!'
-  command_usage: '&cUso:\n&7{usage}'
+  command_usage: "&cUso:\n&7{usage}"
   command_info_reload: '&bricarica tutti/un menu'
   command_info_list: '&bapre un menu specifico [per un giocatore]'
   command_info_open: '&belenca tutti i menu conosciuti'
@@ -70,5 +70,5 @@ menu:
   command_open_successful: '&7[&a&li&7]&a &7{menu}&a aperto con successo!'
   command_reload_successful: '&7[{color}&li&7]{color} Ricaricati con successo &7{amount}{color} menu!'
   command_reload_failed: '&7[&4&l!&7]&4 Ricaricamento fallito!'
-  command_list: '&e----- &aRPGMenu &e-----\n&aMenu caricati:&e '
+  command_list: "&e----- &aRPGMenu &e-----\n&aMenu caricati:&e "
   click_to_open: '&bclicca per aprire il menu'

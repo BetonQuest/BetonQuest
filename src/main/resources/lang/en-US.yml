@@ -59,7 +59,7 @@ condition_variable_not_met: 'no'
 chest_occupied: 'This chest is already in use'
 menu:
   no_permission: '&7[&c&l!&7] No permission!'
-  command_usage: '&cUsage:\n&7{usage}'
+  command_usage: "&cUsage:\n&7{usage}"
   command_info_reload: '&breloads all/one menu(s)'
   command_info_list: '&bopens specific menu [for a player]'
   command_info_open: '&blists all loaded menus'
@@ -70,5 +70,5 @@ menu:
   command_open_successful: '&7[&a&li&7]&a Successfully opened &7{menu}&a!'
   command_reload_successful: '&7[{color}&li&7]{color} Successfully reloaded &7{amount}{color} menu(s)!'
   command_reload_failed: '&7[&4&l!&7]&4 Reload failed!'
-  command_list: '&e----- &aRPGMenu &e-----\n&aLoaded menus:&e '
+  command_list: "&e----- &aRPGMenu &e-----\n&aLoaded menus:&e "
   click_to_open: '&bclick to open menu'

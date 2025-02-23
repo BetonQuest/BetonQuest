@@ -34,7 +34,7 @@ items_to_smelt: '&2Осталось переплавить {amount} предме
 items_to_craft: '&2Осталось скрафтить {amount} предметов'
 items_to_enchant: '&2Осталось зачаровать {amount} предметов'
 level_to_gain: '&2Осталось получить {amount} уровней'
-payment_to_receive: '&2{amount} money left to receive' # TODO: missing translation
+payment_to_receive: '&2{amount} money left to receive'
 busy: '&cВы не можете разговаривать во время боя!'
 quest_canceled: '&2Квест {name}&2 отменён!'
 cancel: '&cОтменить квест'
@@ -59,7 +59,7 @@ condition_variable_not_met: 'нет'
 chest_occupied: 'Этот сундук уже кем-то используется!'
 menu:
   no_permission: '&7[&c&l!&7] У вас нет разрешения!'
-  command_usage: '&cИспользуйте:\n&7{usage}'
+  command_usage: "&cИспользуйте:\n&7{usage}"
   command_info_reload: '&bперезагрузить все/одно меню'
   command_info_list: '&bоткрывает определенное меню [для игрока]'
   command_info_open: '&bсписок всех меню'
@@ -70,5 +70,5 @@ menu:
   command_open_successful: '&7[&a&li&7]&a Меню &7{menu}&a успешно открыто!'
   command_reload_successful: '&7[{color}&li&7]{color} Успешно перезагружено &7{amount}{color} меню!'
   command_reload_failed: '&7[&4&l!&7]&4 Ошибка перезагрузки!'
-  command_list: '&e----- &aRPGMenu &e-----\n&aМеню загружено:&e '
+  command_list: "&e----- &aRPGMenu &e-----\n&aМеню загружено:&e "
   click_to_open: '&bнажмите для открытия меню'
