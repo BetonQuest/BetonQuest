@@ -9,8 +9,8 @@ quest_item: '&2Item de mision'
 backpack_title: 'Mochila de misiones'
 previous: '&2Anterior'
 next: '&2Siguiente'
-inventory_full_backpack: '&e*&bTu inventario esta lleno! The item was moved to your backpack.&e*' # TODO: missing translation
-inventory_full_drop: '&e*&bTu inventario esta lleno! The item was dropped on the ground.&e*' # TODO: missing translation
+inventory_full_backpack: '&e*&bTu inventario esta lleno! The item was moved to your backpack.&e*'
+inventory_full_drop: '&e*&bTu inventario esta lleno! The item was dropped on the ground.&e*'
 pullback: '&cDebes finalizar la conversacion.'
 items_given: '&2Recibido {item}&2 x{amount}'
 items_taken: '&2Perdido {item}&2 x{amount}'
@@ -18,7 +18,7 @@ money_given: '&2Recibido {amount} {currency}'
 money_taken: '&2Perdido {amount} {currency}'
 point_given: '&2Recibiste {amount} puntos para {category}'
 point_taken: '&2Perdiste {amount} puntos por {category}'
-point_set: '&2Your points {category} are set to {amount}' #TODO: missing translation
+point_set: '&2Your points {category} are set to {amount}'
 point_multiplied: '&2Tus puntos {category} se multiplican por {amount}'
 blocks_to_break: '&2{amount} bloques restantes que romper'
 blocks_to_place: '&2{amount} bloques restantes que colocar'
@@ -32,9 +32,9 @@ animals_to_breed: '&2{amount} animales restantes para criar'
 items_to_pickup: '&2{amount} objetos restantes para recoger'
 items_to_smelt: '&2{amount} objetos restantes para fundir'
 items_to_craft: '&2{amount} objetos restantes para crear'
-items_to_enchant: '&2{amount} items left to enchant' # TODO: missing translation
-level_to_gain: '&2{amount} levels left to gain' # TODO: missing translation
-payment_to_receive: '&2{amount} money left to receive' # TODO: missing translation
+items_to_enchant: '&2{amount} items left to enchant'
+level_to_gain: '&2{amount} levels left to gain'
+payment_to_receive: '&2{amount} money left to receive'
 busy: '&cNo puedes hablar mientras luchas!'
 quest_canceled: '&2Mision {name}&2 cancelada!'
 cancel: '&cCancelar la mision'
@@ -56,10 +56,10 @@ seconds_singular: 'segundo'
 password: 'clave: '
 condition_variable_met: 'si'
 condition_variable_not_met: 'no'
-chest_occupied: 'This chest is already in use' # TODO: missing translation
+chest_occupied: 'This chest is already in use'
 menu:
   no_permission: '&7[&c&l!&7] No tienes permisos!'
-  command_usage: '&cUso:\n&7{usage}'
+  command_usage: "&cUso:\n&7{usage}"
   command_info_reload: '&brecargar todo/un menu(s)'
   command_info_list: '&babre un menu especifico [para un jugador]'
   command_info_open: '&bLista todos los menus cargados'
@@ -70,5 +70,5 @@ menu:
   command_open_successful: '&7[&a&li&7]&a Abierto con exito &7{menu}&a!'
   command_reload_successful: '&7[{color}&li&7]{color} Recargado con exito &7{amount}{color} menu(s)!'
   command_reload_failed: '&7[&4&l!&7]&4 Recarga fallida!'
-  command_list: '&e----- &aRPGMenu &e-----\n&aMenus cargados:&e '
+  command_list: "&e----- &aRPGMenu &e-----\n&aMenus cargados:&e "
   click_to_open: '&bHaz clic para abrir el menu'
