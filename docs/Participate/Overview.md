@@ -36,6 +36,13 @@ icon: octicons/info-16
      ---
      Please follow our detailed [Contributing Guide](Setup-Project.md) to obtain a local working environment. 
      A good starting point should be the [API documentation](../API/Overview.md).
+ 
+ -   :material-translate:  __Write Translations__ 
+ 
+     ---
+     Crowdin is our translation platform.
+     It is easier to use than GitHub, as you don't need to know how to use Git.
+     You can find the project [here](https://crowdin.com/project/betonquest-betonquest).
 
 </div>
 
