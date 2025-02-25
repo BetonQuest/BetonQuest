@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.betonquest</groupId>
     <artifactId>parent</artifactId>
-    <version>1.4.0</version>
+    <version>1.5.0</version>
   </parent>
 
   <properties>
@@ -14,8 +14,8 @@
     <changelist>-SNAPSHOT</changelist>
     <betonquest.version>${revision}-DEV-UNOFFICIAL</betonquest.version>
     <minecraft.api.version>1.18</minecraft.api.version>
-    <Test-All/>
-    <Test-ConfigurationSection/>
+    <excludedSurefireGroups>ConfigurationSection</excludedSurefireGroups>
+    <excludedFailsafeGroups>ConfigurationSection</excludedFailsafeGroups>
   </properties>
 
   <name>BetonQuest</name>
@@ -495,14 +495,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <parallel>all</parallel>
-          <groups>none()${Test-All}${Test-ConfigurationSection}</groups>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>versions-maven-plugin</artifactId>
         <configuration>
@@ -669,19 +661,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>Test-All</id>
-      <properties>
-        <Test-All>| any()</Test-All>
-      </properties>
-    </profile>
-    <profile>
-      <id>Test-ConfigurationSection</id>
-      <properties>
-        <Test-ConfigurationSection>| ConfigurationSection</Test-ConfigurationSection>
-      </properties>
-    </profile>
-  </profiles>
 </project>
