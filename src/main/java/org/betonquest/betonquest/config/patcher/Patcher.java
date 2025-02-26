@@ -9,8 +9,9 @@ import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.VersionComparator;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -18,6 +19,7 @@ import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Patches BetonQuest's configuration file.
@@ -34,14 +36,9 @@ public class Patcher {
     private static final String CONFIG_VERSION_PATH = "configVersion";
 
     /**
-     * Default version that is used for logging when no configVersion is set.
-     */
-    private static final String USER_DEFAULT_VERSION = "Legacy config";
-
-    /**
      * Default version that is used when no configVersion is set.
      */
-    private static final String TECHNICAL_DEFAULT_VERSION = "0.0.0-CONFIG-0";
+    private static final Version TECHNICAL_DEFAULT_VERSION = new Version("0.0.0-CONFIG-0");
 
     /**
      * Regex pattern of the internal config version schema.
@@ -49,17 +46,14 @@ public class Patcher {
     private static final Pattern VERSION_PATTERN = Pattern.compile("(\\d*\\.\\d*\\.\\d*)\\.(\\d*)");
 
     /**
+     * Comparator for {@link Version} with the qualifier CONFIG.
+     */
+    private static final VersionComparator VERSION_COMPARATOR = new VersionComparator(UpdateStrategy.MAJOR, "CONFIG-");
+
+    /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
-
-    /**
-     * A config that contains one or more patches that will be applied to the pluginConfig.
-     * <br>
-     * A patch consists of one or multiple list entries of which each contains options for a {@link PatchTransformer}.
-     * Additionally, each patch has a version that determines if the patch will be applied.
-     */
-    private final ConfigurationSection patchConfig;
 
     /**
      * Registry for all {@link PatchTransformer}s.
@@ -67,212 +61,142 @@ public class Patcher {
     private final PatchTransformerRegistry transformerRegistry;
 
     /**
-     * Contains all versions that are newer then the config's current version.
-     * A pair of patchable versions with the corresponding config path in the patch file.
+     * Contains all versions that are patchable.
      */
-    private final NavigableMap<Version, String> patchableVersions = new TreeMap<>(new VersionComparator(UpdateStrategy.MAJOR, "CONFIG-"));
-
-    /**
-     * The {@link VersionComparator} that compares the versions of patches.
-     */
-    private final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR, "CONFIG-");
-
-    /**
-     * The current version of the plugin's config.
-     */
-    private final Version configVersion;
+    private final NavigableMap<Version, List<Map<?, ?>>> patches;
 
     /**
      * Creates a new Patcher.
      * <br>
-     * Check for available patches using {@link Patcher#hasUpdate()}.
-     * <br>
-     * Updates can be applied using {@link Patcher#patch(ConfigurationSection)}.
+     * Updates can be applied using {@link Patcher#patch(String, ConfigurationSection)}.
      *
      * @param log                 the logger that will be used for logging
-     * @param config              the config that must be patched
-     * @param patchConfig         the patchConfig that contains patches
      * @param transformerRegistry the registry for all {@link PatchTransformer}s
+     * @param patchConfig         the patchConfig that contains patches
+     * @throws InvalidConfigurationException if the patchConfig is malformed
      */
-    public Patcher(final BetonQuestLogger log, final ConfigurationSection config, final ConfigurationSection patchConfig, final PatchTransformerRegistry transformerRegistry) {
+    public Patcher(final BetonQuestLogger log, final PatchTransformerRegistry transformerRegistry, final ConfigurationSection patchConfig) throws InvalidConfigurationException {
         this.log = log;
-        this.patchConfig = patchConfig;
         this.transformerRegistry = transformerRegistry;
-        try {
-            buildVersionIndex(this.patchConfig, "");
-        } catch (final InvalidConfigurationException e) {
-            this.log.error("Invalid patch file! " + e.getMessage(), e);
-        }
-        final String configVersion = config.getString(CONFIG_VERSION_PATH, TECHNICAL_DEFAULT_VERSION);
-        if (configVersion.isEmpty()) {
-            if (patchableVersions.isEmpty()) {
-                this.configVersion = new Version(TECHNICAL_DEFAULT_VERSION);
-            } else {
-                final Map.Entry<Version, String> newestVersion = patchableVersions.lastEntry();
-                this.configVersion = newestVersion.getKey();
-            }
-        } else {
-            this.configVersion = new Version(configVersion);
-        }
-    }
-
-    /**
-     * Gets the highest available patch version.
-     * This is the version that the config can be patched to if {@link Patcher#hasUpdate()} is true.
-     *
-     * @return the highest available patch version
-     */
-    public Version getNextConfigVersion() {
-        return patchableVersions.lastEntry().getKey();
-    }
-
-    /**
-     * Gets the version that the config is currently at.
-     * Will return {@link Patcher#USER_DEFAULT_VERSION} if the currentVersion is {@link Patcher#TECHNICAL_DEFAULT_VERSION}.
-     *
-     * @return the version that the config is currently at
-     */
-    public String getCurrentConfigVersion() {
-        if (TECHNICAL_DEFAULT_VERSION.equals(configVersion.getVersion())) {
-            return USER_DEFAULT_VERSION;
-        } else {
-            return configVersion.getVersion();
-        }
-    }
-
-    /**
-     * Checks if the Patcher has a patch that is newer than the configs current version.
-     *
-     * @return if there is a patch newer than the config
-     */
-    public boolean hasUpdate() {
-        return patchableVersions.keySet().stream()
-                .anyMatch((patchVersion) -> comparator.isOtherNewerThanCurrent(configVersion, patchVersion));
-    }
-
-    /**
-     * Updates the configVersion to the version of the newest available patch if it is an empty string.
-     * This is useful to set the current config version when a default resource file is freshly copied to the plugin's folder.
-     *
-     * @param config the config to set the new version in
-     * @return if the version was updated
-     */
-    public boolean updateVersion(final ConfigurationSection config) {
-        final String currentVersion = config.getString(CONFIG_VERSION_PATH);
-        if (currentVersion == null) {
-            setConfigVersion(config, TECHNICAL_DEFAULT_VERSION);
-            return true;
-        }
-        if (currentVersion.isEmpty()) {
-            if (patchableVersions.isEmpty()) {
-                setConfigVersion(config, TECHNICAL_DEFAULT_VERSION);
-            } else {
-                setConfigVersion(config, patchableVersions.lastEntry().getKey().getVersion());
-            }
-            return true;
-        }
-        return false;
-    }
-
-    private void setConfigVersion(final ConfigurationSection config, final String newVersion) {
-        config.set(CONFIG_VERSION_PATH, newVersion);
-        config.setInlineComments(CONFIG_VERSION_PATH, List.of(VERSION_CONFIG_COMMENT));
+        this.patches = new TreeMap<>(VERSION_COMPARATOR);
+        buildVersionIndex(patchConfig, "");
     }
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     private void buildVersionIndex(final ConfigurationSection section, final String previousKeys) throws InvalidConfigurationException {
         for (final String key : section.getKeys(false)) {
             final String currentKey = previousKeys.isEmpty() ? key : previousKeys + "." + key;
-
-            if (section.getList(key) == null) {
+            if (section.isConfigurationSection(key)) {
                 final ConfigurationSection nestedSection = section.getConfigurationSection(key);
                 if (nestedSection == null) {
-                    throw new InvalidConfigurationException("The patch is malformed.");
-                } else {
-                    buildVersionIndex(nestedSection, currentKey);
+                    throw new InvalidConfigurationException("The patch file at '" + currentKey + "' is not a list or a section.");
                 }
+                buildVersionIndex(nestedSection, currentKey);
             } else if (currentKey.split("\\.").length == 4) {
-                collectVersion(currentKey);
+                collectVersion(currentKey, section.getMapList(key));
             } else {
-                throw new InvalidConfigurationException("A version number is too short or too long.");
+                throw new InvalidConfigurationException("The patch file at '" + currentKey + "' is too long or too short.");
             }
         }
     }
 
-    private void collectVersion(final String currentKey) {
+    private void collectVersion(final String currentKey, @NotNull final List<Map<?, ?>> mapList) throws InvalidConfigurationException {
         final Matcher matcher = VERSION_PATTERN.matcher(currentKey);
-        if (matcher.matches()) {
-            final String result = matcher.group(1) + "-CONFIG-" + matcher.group(2);
-            final Version discoveredVersion = new Version(result);
-            patchableVersions.put(discoveredVersion, currentKey);
+        if (!matcher.matches()) {
+            throw new InvalidConfigurationException("The patch file at '" + currentKey + "' has an invalid version format.");
         }
+        final String result = matcher.group(1) + "-CONFIG-" + matcher.group(2);
+        final Version discoveredVersion = new Version(result);
+        patches.put(discoveredVersion, mapList);
     }
 
     /**
      * Patches the given config with the given patch file.
      *
-     * @param config the config to patch
-     * @return whether the patch could be applied successfully
+     * @param configPath the path to the config file
+     * @param config     the config to patch
+     * @return whether changes were applied
      */
-    public boolean patch(final ConfigurationSection config) {
+    public boolean patch(final String configPath, final ConfigurationSection config) {
+        final Version version = getConfigVersion(config);
+        if (!patches.isEmpty() && !VERSION_COMPARATOR.isOtherNewerOrEqualThanCurrent(version, patches.lastEntry().getKey())) {
+            log.debug("The config file '" + configPath + "' is already up to date.");
+            return false;
+        }
+        log.info("Updating config file '" + configPath + "' from version '" + version.getVersion() + "'...");
         boolean noErrors = true;
-        for (final Map.Entry<Version, String> versionData : patchableVersions.entrySet()) {
-            final Version version = versionData.getKey();
-            if (!comparator.isOtherNewerThanCurrent(configVersion, version)) {
+        boolean patched = false;
+        for (final Map.Entry<Version, List<Map<?, ?>>> patch : patches.entrySet()) {
+            if (!VERSION_COMPARATOR.isOtherNewerThanCurrent(version, patch.getKey())) {
                 continue;
             }
-            log.info("Applying patches to update to '" + version.getVersion() + "'...");
-            final String patchDataPath = versionData.getValue();
-            setConfigVersion(config, getNewVersion(patchDataPath));
-            if (!applyPatch(config, patchDataPath)) {
+            log.info("Applying patches to update to '" + patch.getKey().getVersion() + "'...");
+            setConfigVersion(config, patch.getKey());
+            if (!applyPatch(config, patch.getValue())) {
                 noErrors = false;
             }
+            patched = true;
         }
-        return noErrors;
+        if (noErrors) {
+            log.info("Patching complete!");
+        } else {
+            log.warn("The patching progress did not go flawlessly. However, this does not mean your configs "
+                    + "are now corrupted. Please check the errors above to see what the patcher did. "
+                    + "You might want to adjust your config manually depending on that information.");
+        }
+        if (!patched) {
+            if (patches.isEmpty()) {
+                setConfigVersion(config, TECHNICAL_DEFAULT_VERSION);
+            } else {
+                setConfigVersion(config, patches.lastEntry().getKey());
+            }
+            return true;
+        }
+        return patched;
     }
 
-    private String getNewVersion(final String key) {
-        final int lastPoint = key.lastIndexOf('.');
-        final String first = key.substring(0, lastPoint);
-        final String second = key.substring(lastPoint + 1);
-        return first + "-CONFIG-" + second;
+    private Version getConfigVersion(final ConfigurationSection config) {
+        final String configVersion = config.getString(CONFIG_VERSION_PATH);
+        if (configVersion == null) {
+            return TECHNICAL_DEFAULT_VERSION;
+        } else if (configVersion.isEmpty()) {
+            return patches.lastEntry().getKey();
+        } else {
+            return new Version(configVersion);
+        }
     }
 
-    /**
-     * Applies the patches from the given patchDataPath.
-     *
-     * @param patchDataPath the path to the patches to apply
-     * @return whether the patches were applied successfully
-     */
-    private boolean applyPatch(final ConfigurationSection config, final String patchDataPath) {
-        final List<Map<?, ?>> patchData = patchConfig.getMapList(patchDataPath);
-
+    private boolean applyPatch(final ConfigurationSection config, final List<Map<?, ?>> patchData) {
         boolean noErrors = true;
         for (final Map<?, ?> transformationData : patchData) {
-            final Map<String, String> typeSafeTransformationData = new HashMap<>();
-            transformationData.forEach((key, value) -> typeSafeTransformationData.put(String.valueOf(key), String.valueOf(value)));
-            final String raw = typeSafeTransformationData.get("type");
-            if (raw == null) {
-                log.warn("Missing transformation type for patcher '" + patchDataPath + "'!");
-                continue;
-            }
-            final String transformationType = raw.toUpperCase(Locale.ROOT);
+            final Map<String, String> typeSafeTransformationData = transformationData.entrySet().stream()
+                    .map(entry -> Map.entry(String.valueOf(entry.getKey()), String.valueOf(entry.getValue())))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
             try {
-                applyTransformation(config, typeSafeTransformationData, transformationType);
+                getPatchTransformer(typeSafeTransformationData.get("type")).transform(typeSafeTransformationData, config);
             } catch (final PatchException e) {
                 noErrors = false;
-                log.info("Applying patch of type '" + transformationType + "'...");
-                log.warn("There has been an issue while applying the patches for '" + patchDataPath + "': " + e.getMessage());
+                log.warn("There has been an issue while applying the patches: " + e.getMessage());
             }
         }
         return noErrors;
     }
 
-    private void applyTransformation(final ConfigurationSection config, final Map<String, String> transformationData, final String transformationType) throws PatchException {
-        final Map<String, PatchTransformer> transformers = transformerRegistry.getTransformers();
-        if (!transformers.containsKey(transformationType)) {
-            throw new PatchException("Unknown transformation type '" + transformationType + "' used!");
+    private PatchTransformer getPatchTransformer(@Nullable final String transformationType) throws PatchException {
+        if (transformationType == null) {
+            throw new PatchException("Missing transformation type for patcher!");
         }
-        transformers.get(transformationType).transform(transformationData, config);
+
+        final String transformationTypeUpperCase = transformationType.toUpperCase(Locale.ROOT);
+        final PatchTransformer patchTransformer = transformerRegistry.getTransformers().get(transformationTypeUpperCase);
+        if (patchTransformer == null) {
+            throw new PatchException("Unknown transformation type '" + transformationTypeUpperCase + "' used!");
+        }
+        return patchTransformer;
+    }
+
+    private void setConfigVersion(final ConfigurationSection config, final Version newVersion) {
+        config.set(CONFIG_VERSION_PATH, newVersion.getVersion());
+        config.setInlineComments(CONFIG_VERSION_PATH, List.of(VERSION_CONFIG_COMMENT));
     }
 }

@@ -85,19 +85,25 @@ public class DefaultConfigAccessorFactory implements ConfigAccessorFactory {
         } catch (final IOException e) {
             throw new InvalidConfigurationException("Default values were applied to the config but could not be saved! Reason: " + e.getMessage(), e);
         }
-        final Patcher patcher = createPatcher(patchTransformerRegisterer, createPatchAccessor(plugin, resourceFile), accessor);
-        final BetonQuestLogger logger = loggerFactory.create(StandardPatchingConfigAccessor.class, "Config");
-        return new StandardPatchingConfigAccessor(logger, configurationFile, plugin, resourceFile, patcher, plugin.getDataFolder().getParentFile().toURI());
+        final Patcher patcher = createPatcher(patchTransformerRegisterer, createPatchAccessor(plugin, resourceFile));
+        return new StandardPatchingConfigAccessor(configurationFile, plugin, resourceFile, patcher, plugin.getDataFolder().getParentFile().toURI());
     }
 
     @Nullable
-    private Patcher createPatcher(@Nullable final PatchTransformerRegistry patchTransformerRegistry, @Nullable final ConfigAccessor patchAccessor, final ConfigAccessor accessor) {
+    private Patcher createPatcher(@Nullable final PatchTransformerRegistry patchTransformerRegistry,
+                                  @Nullable final ConfigAccessor patchAccessor) {
         if (patchAccessor == null) {
             return null;
         }
         final BetonQuestLogger patcherLogger = loggerFactory.create(Patcher.class, "Config Patcher");
-        return new Patcher(patcherLogger, accessor.getConfig(), patchAccessor.getConfig(),
-                patchTransformerRegistry == null ? defaultPatchTransformerRegistry : patchTransformerRegistry);
+        try {
+            return new Patcher(patcherLogger,
+                    patchTransformerRegistry == null ? defaultPatchTransformerRegistry : patchTransformerRegistry,
+                    patchAccessor.getConfig());
+        } catch (final InvalidConfigurationException e) {
+            this.log.error("Invalid patch file! " + e.getMessage(), e);
+            return null;
+        }
     }
 
     @Nullable
