@@ -145,14 +145,9 @@ public class Patcher {
                     + "You might want to adjust your config manually depending on that information.");
         }
         if (!patched) {
-            if (patches.isEmpty()) {
-                setConfigVersion(config, TECHNICAL_DEFAULT_VERSION);
-            } else {
-                setConfigVersion(config, patches.lastEntry().getKey());
-            }
-            return true;
+            setConfigVersion(config, patches.isEmpty() ? TECHNICAL_DEFAULT_VERSION : patches.lastEntry().getKey());
         }
-        return patched;
+        return true;
     }
 
     private Version getConfigVersion(final ConfigurationSection config) {
