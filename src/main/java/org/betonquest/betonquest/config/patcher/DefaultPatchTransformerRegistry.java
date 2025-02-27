@@ -12,6 +12,7 @@ import org.betonquest.betonquest.config.patcher.transformer.TypeTransformer;
 import org.betonquest.betonquest.config.patcher.transformer.ValueRenameTransformer;
 import org.betonquest.betonquest.config.patcher.transformer.ValueReplaceTransformer;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -21,21 +22,22 @@ public class DefaultPatchTransformerRegistry implements PatchTransformerRegistry
     /**
      * A map of transformers to use for patching and their names.
      */
-    private final Map<String, PatchTransformer> transformers;
+    protected final Map<String, PatchTransformer> transformers;
 
     /**
      * Creates a new {@link DefaultPatchTransformerRegistry}.
      */
     public DefaultPatchTransformerRegistry() {
-        transformers = Map.of("SET", new SetTransformer(),
-                "REMOVE", new RemoveTransformer(),
-                "KEY_RENAME", new KeyRenameTransformer(),
-                "VALUE_RENAME", new ValueRenameTransformer(),
-                "VALUE_REPLACE", new ValueReplaceTransformer(),
-                "LIST_ENTRY_ADD", new ListEntryAddTransformer(),
-                "LIST_ENTRY_REMOVE", new ListEntryRemoveTransformer(),
-                "LIST_ENTRY_RENAME", new ListEntryRenameTransformer(),
-                "TYPE_TRANSFORM", new TypeTransformer());
+        transformers = new HashMap<>();
+        transformers.put("SET", new SetTransformer());
+        transformers.put("REMOVE", new RemoveTransformer());
+        transformers.put("KEY_RENAME", new KeyRenameTransformer());
+        transformers.put("VALUE_RENAME", new ValueRenameTransformer());
+        transformers.put("VALUE_REPLACE", new ValueReplaceTransformer());
+        transformers.put("LIST_ENTRY_ADD", new ListEntryAddTransformer());
+        transformers.put("LIST_ENTRY_REMOVE", new ListEntryRemoveTransformer());
+        transformers.put("LIST_ENTRY_RENAME", new ListEntryRenameTransformer());
+        transformers.put("TYPE_TRANSFORM", new TypeTransformer());
     }
 
     @Override
