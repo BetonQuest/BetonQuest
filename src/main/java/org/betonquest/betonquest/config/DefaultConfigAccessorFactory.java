@@ -3,10 +3,10 @@ package org.betonquest.betonquest.config;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
-import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegisterer;
+import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegistry;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.config.patcher.DefaultPatchTransformerRegisterer;
+import org.betonquest.betonquest.config.patcher.DefaultPatchTransformerRegistry;
 import org.betonquest.betonquest.config.patcher.Patcher;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
@@ -31,14 +31,32 @@ public class DefaultConfigAccessorFactory implements ConfigAccessorFactory {
     private final BetonQuestLogger log;
 
     /**
+     * The default patch transformer registry.
+     */
+    private final PatchTransformerRegistry defaultPatchTransformerRegistry;
+
+    /**
      * Creates a new DefaultConfigAccessorFactory instance.
      *
      * @param loggerFactory logger factory to use
      * @param log           the logger that will be used for logging
      */
     public DefaultConfigAccessorFactory(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
+        this(loggerFactory, log, new DefaultPatchTransformerRegistry());
+    }
+
+    /**
+     * Creates a new DefaultConfigAccessorFactory instance.
+     *
+     * @param loggerFactory            logger factory to use
+     * @param log                      the logger that will be used for logging
+     * @param patchTransformerRegistry the patch transformer registry to use
+     */
+    public DefaultConfigAccessorFactory(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
+                                        final PatchTransformerRegistry patchTransformerRegistry) {
         this.loggerFactory = loggerFactory;
         this.log = log;
+        this.defaultPatchTransformerRegistry = patchTransformerRegistry;
     }
 
     @Override
@@ -57,7 +75,7 @@ public class DefaultConfigAccessorFactory implements ConfigAccessorFactory {
     }
 
     @Override
-    public FileConfigAccessor createPatching(final File configurationFile, final Plugin plugin, final String resourceFile, @Nullable final PatchTransformerRegisterer patchTransformerRegisterer) throws InvalidConfigurationException, FileNotFoundException {
+    public FileConfigAccessor createPatching(final File configurationFile, final Plugin plugin, final String resourceFile, @Nullable final PatchTransformerRegistry patchTransformerRegisterer) throws InvalidConfigurationException, FileNotFoundException {
         final FileConfigAccessor accessor = create(configurationFile, plugin, resourceFile);
         final ConfigAccessor resourceAccessor = create(plugin, resourceFile);
         accessor.getConfig().setDefaults(resourceAccessor.getConfig());
@@ -67,20 +85,25 @@ public class DefaultConfigAccessorFactory implements ConfigAccessorFactory {
         } catch (final IOException e) {
             throw new InvalidConfigurationException("Default values were applied to the config but could not be saved! Reason: " + e.getMessage(), e);
         }
-        final Patcher patcher = createPatcher(patchTransformerRegisterer, createPatchAccessor(plugin, resourceFile), accessor);
-        final BetonQuestLogger logger = loggerFactory.create(StandardPatchingConfigAccessor.class, "Config");
-        return new StandardPatchingConfigAccessor(logger, configurationFile, plugin, resourceFile, patcher, plugin.getDataFolder().getParentFile().toURI());
+        final Patcher patcher = createPatcher(patchTransformerRegisterer, createPatchAccessor(plugin, resourceFile));
+        return new StandardPatchingConfigAccessor(configurationFile, plugin, resourceFile, patcher, plugin.getDataFolder().getParentFile().toURI());
     }
 
     @Nullable
-    private Patcher createPatcher(@Nullable final PatchTransformerRegisterer patchTransformerRegisterer, @Nullable final ConfigAccessor patchAccessor, final ConfigAccessor accessor) {
+    private Patcher createPatcher(@Nullable final PatchTransformerRegistry patchTransformerRegistry,
+                                  @Nullable final ConfigAccessor patchAccessor) {
         if (patchAccessor == null) {
             return null;
         }
         final BetonQuestLogger patcherLogger = loggerFactory.create(Patcher.class, "Config Patcher");
-        final Patcher patcher = new Patcher(patcherLogger, accessor.getConfig(), patchAccessor.getConfig());
-        (patchTransformerRegisterer == null ? new DefaultPatchTransformerRegisterer() : patchTransformerRegisterer).registerTransformers(patcher);
-        return patcher;
+        try {
+            return new Patcher(patcherLogger,
+                    patchTransformerRegistry == null ? defaultPatchTransformerRegistry : patchTransformerRegistry,
+                    patchAccessor.getConfig());
+        } catch (final InvalidConfigurationException e) {
+            this.log.error("Invalid patch file! " + e.getMessage(), e);
+            return null;
+        }
     }
 
     @Nullable

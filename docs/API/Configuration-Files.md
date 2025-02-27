@@ -293,20 +293,24 @@ Removes both sections and keys (including all nested contents).
 ```
 
 ### Adding additional Transformers
-If you want to use your own transformers, you can pass them to the `createPatching` method in the form of a `PatchTransformerRegisterer`.
-This is just a functional interface, that registers additional transformers.
-Utilizing this possibility will, however, override the default transformers. You need to re-add them explicitly. 
+If you want to use your own transformers, you can pass them to the `createPatching` method in the form of a `PatchTransformerRegistry`.
+Using this possibility will override the default transformers. You need to re-add them explicitly.
+Reading them can be simplified by using the class  `DefaultPatchTransformerRegistry`, however,
+this is internal code like the default patcher itself, so it's not recommended to use and also not guaranteed to work in future versions.
 
 ```JAVA title="Anonymous PatchTransformerRegisterer Example"
 public void loadPluginConfig(Plugin plugin, ConfigAccessorFactory configAccessorFactory) {
     File targetConfigFile = new File(plugin.getDataFolder(), "config.yml");
-    PatchTransformerRegisterer defaultTransformers = new DefaultPatchTransformerRegisterer();
-    ConfigAccessor config = configAccessorFactory.createPatching(targetConfigFile, plugin, "config.yml", patcher -> {
-        defaultTransformers.registerTransformers(patcher); //(1)!
-        // Register your own transformers here:
-        patcher.registerTransformer("myTransformer", new MyTransformer());
-    });
+    PatchTransformerRegistry patchTransformerRegistry = new MyTransformerRegistry();
+    ConfigAccessor config = configAccessorFactory.createPatching(targetConfigFile, plugin, "config.yml", patchTransformerRegistry);
+}
+
+public class MyTransformerRegistry extends DefaultPatchTransformerRegistry { //(1)!
+    public MyTransformerRegistry() {
+        super();
+        transformers.put("MY_TRANSFORMER", new MyTransformer());
+    }
 }
 ```
 
-1. Call this if you want to use the default transformers alongside your own.
+1. extend the `DefaultPatchTransformerRegistry` if you want to use the default transformers as well and add more in the constructor.

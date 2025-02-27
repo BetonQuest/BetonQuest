@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.config;
 
-import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegisterer;
+import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegistry;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
@@ -62,7 +62,7 @@ public interface ConfigAccessorFactory {
      * {@code  config.yml & config.patch.yml}
      * <br><br>
      * This method uses the default patches, to override them
-     * use {@link #createPatching(File, Plugin, String, PatchTransformerRegisterer)} instead.
+     * use {@link #createPatching(File, Plugin, String, PatchTransformerRegistry)} instead.
      * <br><br>
      *
      * @param configurationFile the {@link File} that is represented by this {@link FileConfigAccessor}
@@ -89,7 +89,7 @@ public interface ConfigAccessorFactory {
      * E.g:
      * {@code  config.yml & config.patch.yml}
      * <br><br>
-     * This method uses the passed {@link PatchTransformerRegisterer},
+     * This method uses the passed {@link PatchTransformerRegistry},
      * if you want to use the default patches use {@link #createPatching(File, Plugin, String)} instead.
      * <br><br>
      *
@@ -103,5 +103,5 @@ public interface ConfigAccessorFactory {
      * @throws FileNotFoundException         thrown if the {@code configurationFile} or the {@code resourceFile}
      *                                       could not be found
      */
-    FileConfigAccessor createPatching(File configurationFile, Plugin plugin, String resourceFile, @Nullable PatchTransformerRegisterer patchTransformerRegisterer) throws InvalidConfigurationException, FileNotFoundException;
+    FileConfigAccessor createPatching(File configurationFile, Plugin plugin, String resourceFile, @Nullable PatchTransformerRegistry patchTransformerRegisterer) throws InvalidConfigurationException, FileNotFoundException;
 }
