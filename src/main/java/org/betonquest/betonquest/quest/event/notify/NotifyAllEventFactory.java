@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.event.notify;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -18,17 +17,23 @@ import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapte
  * Factory for the notify all event.
  */
 public class NotifyAllEventFactory extends NotifyEventFactory implements EventFactory, StaticEventFactory {
+    /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
 
     /**
      * Creates the notify all event factory.
      *
-     * @param loggerFactory the logger factory to use for creating the event logger
-     * @param data          the data for primary server thread access
-     * @param dataStorage   the storage providing player data
+     * @param loggerFactory   the logger factory to use for creating the event logger
+     * @param data            the data for primary server thread access
+     * @param dataStorage     the storage providing player data
+     * @param profileProvider the profile provider instance
      */
     public NotifyAllEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data,
-                                 final PlayerDataStorage dataStorage) {
+                                 final PlayerDataStorage dataStorage, final ProfileProvider profileProvider) {
         super(loggerFactory, data, dataStorage);
+        this.profileProvider = profileProvider;
     }
 
     @Override
@@ -38,7 +43,6 @@ public class NotifyAllEventFactory extends NotifyEventFactory implements EventFa
 
     @Override
     public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
-        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
         return new OnlineProfileGroupStaticEventAdapter(profileProvider::getOnlineProfiles, super.parseEvent(instruction));
     }
 }

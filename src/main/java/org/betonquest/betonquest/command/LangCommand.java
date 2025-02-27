@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.command;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -32,11 +31,6 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
     private final BetonQuestLogger log;
 
     /**
-     * Object to get player data and config.
-     */
-    private final BetonQuest betonQuest;
-
-    /**
      * Storage for player data.
      */
     private final PlayerDataStorage dataStorage;
@@ -47,19 +41,24 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
     private final PluginMessage pluginMessage;
 
     /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
+
+    /**
      * Creates a new executor for the /questlang command.
      *
-     * @param log           the logger that will be used for logging
-     * @param betonQuest    the object to get player data and config from
-     * @param dataStorage   the storage providing player data
-     * @param pluginMessage the {@link PluginMessage} instance
+     * @param log             the logger that will be used for logging
+     * @param dataStorage     the storage providing player data
+     * @param pluginMessage   the {@link PluginMessage} instance
+     * @param profileProvider the profile provider instance
      */
-    public LangCommand(final BetonQuestLogger log, final BetonQuest betonQuest, final PlayerDataStorage dataStorage,
-                       final PluginMessage pluginMessage) {
+    public LangCommand(final BetonQuestLogger log, final PlayerDataStorage dataStorage,
+                       final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
         this.log = log;
-        this.betonQuest = betonQuest;
         this.dataStorage = dataStorage;
         this.pluginMessage = pluginMessage;
+        this.profileProvider = profileProvider;
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
@@ -71,7 +70,6 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
         if (!(sender instanceof final Player player)) {
             return true;
         }
-        final ProfileProvider profileProvider = betonQuest.getProfileProvider();
         final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         if (args.length == 0) {
             sender.sendMessage(pluginMessage.getMessage(onlineProfile, "language_missing"));

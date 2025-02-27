@@ -4,11 +4,11 @@ import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.util.DynamicLocation;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Bukkit;
@@ -28,6 +28,16 @@ public class EffectLibRunnable extends BukkitRunnable {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
+
+    /**
+     * The Quest Type API.
+     */
+    private final QuestTypeAPI questTypeAPI;
+
+    /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
 
     /**
      * Effect manager which will create and control the particles.
@@ -53,12 +63,16 @@ public class EffectLibRunnable extends BukkitRunnable {
      * Constructs this runnable with the given effect.
      *
      * @param log                 the logger that will be used for logging
+     * @param questTypeAPI        the Quest Type API
+     * @param profileProvider     the profile provider instance
      * @param manager             the effect manager which will create and control the particles
      * @param effectConfiguration the effect to show
      */
-    public EffectLibRunnable(final BetonQuestLogger log, final EffectManager manager, final EffectConfiguration effectConfiguration) {
+    public EffectLibRunnable(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider, final EffectManager manager, final EffectConfiguration effectConfiguration) {
         super();
         this.log = log;
+        this.questTypeAPI = questTypeAPI;
+        this.profileProvider = profileProvider;
         this.manager = manager;
         this.effectConfiguration = effectConfiguration;
         this.activeProfiles = new ArrayList<>();
@@ -75,9 +89,8 @@ public class EffectLibRunnable extends BukkitRunnable {
 
     private List<OnlineProfile> checkActiveEffects() {
         final List<OnlineProfile> activePlayerEffects = new ArrayList<>();
-        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
         for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
-            if (!BetonQuest.getInstance().getQuestTypeAPI().conditions(onlineProfile, effectConfiguration.conditions())) {
+            if (!questTypeAPI.conditions(onlineProfile, effectConfiguration.conditions())) {
                 continue;
             }
             activePlayerEffects.add(onlineProfile);

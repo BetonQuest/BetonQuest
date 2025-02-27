@@ -2,12 +2,13 @@ package org.betonquest.betonquest.compatibility.mcmmo;
 
 import com.gmail.nossr50.events.skills.salvage.McMMOPlayerSalvageCheckEvent;
 import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
-import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * Prevents affecting QuestItems with MCMMO skills
@@ -17,7 +18,13 @@ import org.bukkit.event.Listener;
 @SuppressWarnings("PMD.CommentRequired")
 public class MCMMOQuestItemHandler implements Listener {
 
-    public MCMMOQuestItemHandler() {
+    /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
+
+    public MCMMOQuestItemHandler(final ProfileProvider profileProvider) {
+        this.profileProvider = profileProvider;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -29,9 +36,8 @@ public class MCMMOQuestItemHandler implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onQuestItemDisarm(final McMMOPlayerDisarmEvent event) {
-        if (Utils.isQuestItem(event.getPlayer().getInventory().getItemInMainHand())) {
-            event.setCancelled(true);
-        } else if (Journal.isJournal(BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer()), event.getPlayer().getInventory().getItemInMainHand())) {
+        final ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
+        if (Utils.isQuestItem(itemInMainHand) || Journal.isJournal(profileProvider.getProfile(event.getPlayer()), itemInMainHand)) {
             event.setCancelled(true);
         }
     }

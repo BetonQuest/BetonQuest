@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.event.drop;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -27,6 +26,11 @@ import java.util.Optional;
  */
 public class DropEventFactory implements EventFactory, StaticEventFactory {
     /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
+
+    /**
      * Data for primary server thread access.
      */
     private final PrimaryServerThreadData data;
@@ -34,9 +38,11 @@ public class DropEventFactory implements EventFactory, StaticEventFactory {
     /**
      * Creates the drop event factory.
      *
-     * @param data the data for primary server thread access
+     * @param profileProvider the profile provider instance
+     * @param data            the data for primary server thread access
      */
-    public DropEventFactory(final PrimaryServerThreadData data) {
+    public DropEventFactory(final ProfileProvider profileProvider, final PrimaryServerThreadData data) {
+        this.profileProvider = profileProvider;
         this.data = data;
     }
 
@@ -53,7 +59,6 @@ public class DropEventFactory implements EventFactory, StaticEventFactory {
     private StaticEvent createStaticDropEvent(final Instruction instruction) throws QuestException {
         final NullableEventAdapter dropEvent = createDropEvent(instruction);
         if (!instruction.hasArgument("location")) {
-            final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
             return new OnlineProfileGroupStaticEventAdapter(profileProvider::getOnlineProfiles, dropEvent);
         }
         return dropEvent;

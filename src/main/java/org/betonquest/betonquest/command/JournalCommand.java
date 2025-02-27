@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.command;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.bukkit.command.Command;
@@ -24,12 +23,19 @@ public class JournalCommand implements CommandExecutor {
     private final PlayerDataStorage dataStorage;
 
     /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
+
+    /**
      * Create a new executor for the /journal command.
      *
-     * @param dataStorage the storage providing player data
+     * @param dataStorage     the storage providing player data
+     * @param profileProvider the profile provider instance
      */
-    public JournalCommand(final PlayerDataStorage dataStorage) {
+    public JournalCommand(final PlayerDataStorage dataStorage, final ProfileProvider profileProvider) {
         this.dataStorage = dataStorage;
+        this.profileProvider = profileProvider;
     }
 
     @Override
@@ -38,7 +44,6 @@ public class JournalCommand implements CommandExecutor {
             // command sender must be a player, console can't have journal
             if (sender instanceof Player) {
                 // giving the player his journal
-                final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
                 dataStorage.get(profileProvider.getProfile((Player) sender)).getJournal().addToInv();
             }
             return true;

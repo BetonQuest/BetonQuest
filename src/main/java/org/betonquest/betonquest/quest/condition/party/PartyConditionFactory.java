@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.condition.party;
 
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -26,12 +27,19 @@ public class PartyConditionFactory implements PlayerConditionFactory, Playerless
     private final QuestTypeAPI questTypeAPI;
 
     /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
+
+    /**
      * Create the party condition factory.
      *
-     * @param questTypeAPI the Quest Type API
+     * @param questTypeAPI    the Quest Type API
+     * @param profileProvider the profile provider instance
      */
-    public PartyConditionFactory(final QuestTypeAPI questTypeAPI) {
+    public PartyConditionFactory(final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider) {
         this.questTypeAPI = questTypeAPI;
+        this.profileProvider = profileProvider;
     }
 
     @Override
@@ -57,6 +65,6 @@ public class PartyConditionFactory implements PlayerConditionFactory, Playerless
         final List<ConditionID> anyone = instruction.getIDList(instruction.getOptional("any"), ConditionID::new);
         final VariableNumber count = instruction.get(instruction.getOptional("count"), VariableNumber::new);
 
-        return new PartyCondition(location, range, conditions, everyone, anyone, count, questTypeAPI);
+        return new PartyCondition(location, range, conditions, everyone, anyone, count, questTypeAPI, profileProvider);
     }
 }

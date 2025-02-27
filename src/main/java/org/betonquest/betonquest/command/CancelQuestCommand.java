@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.command;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.feature.Backpack;
@@ -22,19 +21,25 @@ public class CancelQuestCommand implements CommandExecutor {
     private final PluginMessage pluginMessage;
 
     /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
+
+    /**
      * Creates a new executor for the /cancelquest command.
      *
-     * @param pluginMessage the {@link PluginMessage} instance
+     * @param pluginMessage   the {@link PluginMessage} instance
+     * @param profileProvider the profile provider instance
      */
-    public CancelQuestCommand(final PluginMessage pluginMessage) {
+    public CancelQuestCommand(final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
         this.pluginMessage = pluginMessage;
+        this.profileProvider = profileProvider;
     }
 
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
         if ("cancelquest".equalsIgnoreCase(cmd.getName())) {
             if (sender instanceof Player) {
-                final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
                 new Backpack(pluginMessage, profileProvider.getProfile((Player) sender), DisplayType.CANCEL);
             }
             return true;

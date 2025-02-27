@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.condition.party;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -59,18 +58,24 @@ public class PartyCondition implements NullableCondition {
     private final QuestTypeAPI questTypeAPI;
 
     /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
+
+    /**
      * Create a new party condition.
      *
-     * @param location     the location to check for party members
-     * @param range        the range to check for party members
-     * @param conditions   the conditions to check for to be a party member
-     * @param everyone     the conditions that everyone in the party must meet
-     * @param anyone       the conditions that at least one party member must meet
-     * @param count        the minimum number of party members
-     * @param questTypeAPI the Quest Type API
+     * @param location        the location to check for party members
+     * @param range           the range to check for party members
+     * @param conditions      the conditions to check for to be a party member
+     * @param everyone        the conditions that everyone in the party must meet
+     * @param anyone          the conditions that at least one party member must meet
+     * @param count           the minimum number of party members
+     * @param questTypeAPI    the Quest Type API
+     * @param profileProvider the profile provider instance
      */
     public PartyCondition(final VariableLocation location, final VariableNumber range, final List<ConditionID> conditions, final List<ConditionID> everyone,
-                          final List<ConditionID> anyone, @Nullable final VariableNumber count, final QuestTypeAPI questTypeAPI) {
+                          final List<ConditionID> anyone, @Nullable final VariableNumber count, final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider) {
         this.location = location;
         this.range = range;
         this.conditions = List.copyOf(conditions);
@@ -78,11 +83,11 @@ public class PartyCondition implements NullableCondition {
         this.anyone = List.copyOf(anyone);
         this.count = count;
         this.questTypeAPI = questTypeAPI;
+        this.profileProvider = profileProvider;
     }
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
         final Set<OnlineProfile> partyMembers = Utils.getParty(questTypeAPI, profileProvider.getOnlineProfiles(),
                 location.getValue(profile), range.getValue(profile).doubleValue(), conditions).keySet();
 

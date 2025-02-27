@@ -40,6 +40,11 @@ public final class NPCHider extends BukkitRunnable implements Listener {
      */
     private final BetonQuestLogger log;
 
+    /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
+
     private final EntityHider hider;
 
     private final Map<Integer, Set<ConditionID>> npcs;
@@ -47,12 +52,14 @@ public final class NPCHider extends BukkitRunnable implements Listener {
     private NPCHider(final BetonQuestLogger log) {
         super();
         this.log = log;
+        final BetonQuest plugin = BetonQuest.getInstance();
+        this.profileProvider = plugin.getProfileProvider();
         npcs = new HashMap<>();
-        final int updateInterval = BetonQuest.getInstance().getPluginConfig().getInt("npc_hider_check_interval", 5 * 20);
-        hider = new EntityHider(BetonQuest.getInstance(), EntityHider.Policy.BLACKLIST);
+        final int updateInterval = plugin.getPluginConfig().getInt("npc_hider_check_interval", 5 * 20);
+        hider = new EntityHider(plugin, EntityHider.Policy.BLACKLIST);
         loadFromConfig();
-        runTaskTimer(BetonQuest.getInstance(), 0, updateInterval);
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        runTaskTimer(plugin, 0, updateInterval);
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     /**
@@ -187,7 +194,6 @@ public final class NPCHider extends BukkitRunnable implements Listener {
         if (!npcID.getOwningRegistry().equals(CitizensAPI.getNPCRegistry())) {
             return;
         }
-        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
         for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
             applyVisibility(onlineProfile, npcID.getId());
         }
@@ -197,7 +203,6 @@ public final class NPCHider extends BukkitRunnable implements Listener {
      * Updates the visibility of all NPCs for all onlineProfiles.
      */
     public void applyVisibility() {
-        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
         for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
             for (final Integer npcID : npcs.keySet()) {
                 applyVisibility(onlineProfile, npcID);
@@ -223,7 +228,6 @@ public final class NPCHider extends BukkitRunnable implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
         Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> applyVisibility(profileProvider.getProfile(event.getPlayer())));
     }
 }

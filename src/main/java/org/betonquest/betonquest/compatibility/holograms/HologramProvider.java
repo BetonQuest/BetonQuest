@@ -153,12 +153,13 @@ public final class HologramProvider implements Integrator {
 
     @Override
     public void hook() throws HookException {
-        final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
+        final BetonQuest plugin = BetonQuest.getInstance();
+        final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
         this.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class));
         if (Compatibility.getHooked().contains("Citizens")) {
             this.citizensHologramLoop = new CitizensHologramLoop(loggerFactory, loggerFactory.create(CitizensHologramLoop.class));
         }
-        new HologramListener();
+        Bukkit.getPluginManager().registerEvents(new HologramListener(plugin.getProfileProvider()), plugin);
     }
 
     @Override
@@ -199,10 +200,18 @@ public final class HologramProvider implements Integrator {
      */
     public static class HologramListener implements Listener {
         /**
-         * Creates and registers a new HologramListener.
+         * The profile provider instance.
          */
-        public HologramListener() {
-            Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        private final ProfileProvider profileProvider;
+
+        /**
+         * Creates and registers a new HologramListener.
+         *
+         * @param profileProvider the profile provider instance
+         */
+        public HologramListener(final ProfileProvider profileProvider) {
+
+            this.profileProvider = profileProvider;
         }
 
         /**
@@ -212,7 +221,6 @@ public final class HologramProvider implements Integrator {
          */
         @EventHandler
         public void onPlayerJoin(final PlayerJoinEvent event) {
-            final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
             HologramRunner.refresh(profileProvider.getProfile(event.getPlayer()));
         }
     }

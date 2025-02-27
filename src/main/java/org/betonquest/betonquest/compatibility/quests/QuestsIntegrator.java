@@ -3,6 +3,8 @@ package org.betonquest.betonquest.compatibility.quests;
 import me.pikamug.quests.Quests;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
 import org.bukkit.Bukkit;
@@ -47,9 +49,11 @@ public class QuestsIntegrator implements Integrator {
         questRegistries.event().register("quest", QuestsEvent.class);
 
         final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
-        questsInstance.getCustomRewards().add(new EventReward(loggerFactory.create(EventReward.class), plugin.getQuestTypeAPI()));
+        final QuestTypeAPI questTypeAPI = plugin.getQuestTypeAPI();
+        final ProfileProvider profileProvider = plugin.getProfileProvider();
+        questsInstance.getCustomRewards().add(new EventReward(loggerFactory.create(EventReward.class), questTypeAPI, profileProvider));
         questsInstance.getCustomRequirements().add(new ConditionRequirement(
-                loggerFactory.create(ConditionRequirement.class), plugin.getQuestTypeAPI()));
+                loggerFactory.create(ConditionRequirement.class), questTypeAPI, profileProvider));
     }
 
     @Override

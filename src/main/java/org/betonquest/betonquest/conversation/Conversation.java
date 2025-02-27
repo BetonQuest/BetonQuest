@@ -532,10 +532,10 @@ public class Conversation implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onDamage(final EntityDamageByEntityEvent event) {
-        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+        final ProfileProvider profileProvider = plugin.getProfileProvider();
         if (event.getEntity() instanceof Player && profileProvider.getProfile((Player) event.getEntity()).equals(onlineProfile)
-            || event.getDamager() instanceof Player
-            && profileProvider.getProfile((Player) event.getDamager()).equals(onlineProfile)) {
+                || event.getDamager() instanceof Player
+                && profileProvider.getProfile((Player) event.getDamager()).equals(onlineProfile)) {
             event.setCancelled(true);
         }
     }
@@ -776,8 +776,8 @@ public class Conversation implements Listener {
                 }
 
                 printNPCText();
-                final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
-                final ConversationOptionEvent optionEvent = new ConversationOptionEvent(profileProvider.getProfile(player), conv, nextNPCOption, conv.nextNPCOption);
+                final OnlineProfile profile = plugin.getProfileProvider().getProfile(player);
+                final ConversationOptionEvent optionEvent = new ConversationOptionEvent(profile, conv, nextNPCOption, conv.nextNPCOption);
 
                 new BukkitRunnable() {
 
@@ -785,7 +785,7 @@ public class Conversation implements Listener {
                     public void run() {
                         Bukkit.getPluginManager().callEvent(optionEvent);
                     }
-                }.runTask(BetonQuest.getInstance());
+                }.runTask(plugin);
             } finally {
                 lock.writeLock().unlock();
             }
@@ -889,15 +889,15 @@ public class Conversation implements Listener {
                 selectOption(resolvePointers(playerOption), false);
                 printNPCText();
 
-                final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
-                final ConversationOptionEvent event = new ConversationOptionEvent(profileProvider.getProfile(player), conv, playerOption, conv.nextNPCOption);
+                final OnlineProfile profile = plugin.getProfileProvider().getProfile(player);
+                final ConversationOptionEvent event = new ConversationOptionEvent(profile, conv, playerOption, conv.nextNPCOption);
 
                 new BukkitRunnable() {
                     @Override
                     public void run() {
                         Bukkit.getServer().getPluginManager().callEvent(event);
                     }
-                }.runTask(BetonQuest.getInstance());
+                }.runTask(plugin);
             } catch (final QuestException e) {
                 log.reportException(pack, e);
                 throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable pointers.", e);

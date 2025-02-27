@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.event.party;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -28,6 +27,11 @@ public class PartyEvent implements OnlineEvent {
     private final QuestTypeAPI questTypeAPI;
 
     /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
+
+    /**
      * The range of the party.
      */
     private final VariableNumber range;
@@ -51,16 +55,18 @@ public class PartyEvent implements OnlineEvent {
     /**
      * Creates a new PartyEvent instance.
      *
-     * @param questTypeAPI the Quest Type API
-     * @param range        the range of the party
-     * @param amount       the optional maximum amount of players affected by this party,
-     *                     null or negative values sets no maximum amount
-     * @param conditions   the conditions that must be met by the party members
-     * @param events       the events to fire
+     * @param questTypeAPI    the Quest Type API
+     * @param profileProvider the profile provider instance
+     * @param range           the range of the party
+     * @param amount          the optional maximum amount of players affected by this party,
+     *                        null or negative values sets no maximum amount
+     * @param conditions      the conditions that must be met by the party members
+     * @param events          the events to fire
      */
-    public PartyEvent(final QuestTypeAPI questTypeAPI, final VariableNumber range, @Nullable final VariableNumber amount, final List<ConditionID> conditions,
-                      final List<EventID> events) {
+    public PartyEvent(final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider, final VariableNumber range,
+                      @Nullable final VariableNumber amount, final List<ConditionID> conditions, final List<EventID> events) {
         this.questTypeAPI = questTypeAPI;
+        this.profileProvider = profileProvider;
         this.range = range;
         this.amount = amount;
         this.conditions = List.copyOf(conditions);
@@ -78,7 +84,6 @@ public class PartyEvent implements OnlineEvent {
 
     private Set<OnlineProfile> getMemberList(final OnlineProfile profile) throws QuestException {
         final int toExecute = amount != null ? amount.getValue(profile).intValue() : -1;
-        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
         final Map<OnlineProfile, Double> members = Utils.getParty(questTypeAPI, profileProvider.getOnlineProfiles(),
                 profile.getPlayer().getLocation(), range.getValue(profile).doubleValue(), conditions);
 
