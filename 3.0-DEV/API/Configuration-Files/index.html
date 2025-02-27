@@ -5358,21 +5358,25 @@ in the YAML file. E.g. strings will be surrounded by quotes, numbers and boolean
 <span class="w">  </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">section.myList</span>
 </code></pre></div></p>
 <h3 id="adding-additional-transformers">Adding additional Transformers<a class="headerlink" href="#adding-additional-transformers" title="Permanent link">🔗</a></h3>
-<p>If you want to use your own transformers, you can pass them to the <code>createPatching</code> method in the form of a <code>PatchTransformerRegisterer</code>.
-This is just a functional interface, that registers additional transformers.
-Utilizing this possibility will, however, override the default transformers. You need to re-add them explicitly. </p>
+<p>If you want to use your own transformers, you can pass them to the <code>createPatching</code> method in the form of a <code>PatchTransformerRegistry</code>.
+Using this possibility will override the default transformers. You need to re-add them explicitly.
+Reading them can be simplified by using the class  <code>DefaultPatchTransformerRegistry</code>, however,
+this is internal code like the default patcher itself, so it's not recommended to use and also not guaranteed to work in future versions.</p>
 <div class="highlight"><span class="filename">Anonymous PatchTransformerRegisterer Example</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">loadPluginConfig</span><span class="p">(</span><span class="n">Plugin</span><span class="w"> </span><span class="n">plugin</span><span class="p">,</span><span class="w"> </span><span class="n">ConfigAccessorFactory</span><span class="w"> </span><span class="n">configAccessorFactory</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">File</span><span class="w"> </span><span class="n">targetConfigFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">File</span><span class="p">(</span><span class="n">plugin</span><span class="p">.</span><span class="na">getDataFolder</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;config.yml&quot;</span><span class="p">);</span>
-<span class="w">    </span><span class="n">PatchTransformerRegisterer</span><span class="w"> </span><span class="n">defaultTransformers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DefaultPatchTransformerRegisterer</span><span class="p">();</span>
-<span class="w">    </span><span class="n">ConfigAccessor</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">configAccessorFactory</span><span class="p">.</span><span class="na">createPatching</span><span class="p">(</span><span class="n">targetConfigFile</span><span class="p">,</span><span class="w"> </span><span class="n">plugin</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;config.yml&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">patcher</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">defaultTransformers</span><span class="p">.</span><span class="na">registerTransformers</span><span class="p">(</span><span class="n">patcher</span><span class="p">);</span><span class="w"> </span><span class="c1">//(1)!</span>
-<span class="w">        </span><span class="c1">// Register your own transformers here:</span>
-<span class="w">        </span><span class="n">patcher</span><span class="p">.</span><span class="na">registerTransformer</span><span class="p">(</span><span class="s">&quot;myTransformer&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MyTransformer</span><span class="p">());</span>
-<span class="w">    </span><span class="p">});</span>
+<span class="w">    </span><span class="n">PatchTransformerRegistry</span><span class="w"> </span><span class="n">patchTransformerRegistry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MyTransformerRegistry</span><span class="p">();</span>
+<span class="w">    </span><span class="n">ConfigAccessor</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">configAccessorFactory</span><span class="p">.</span><span class="na">createPatching</span><span class="p">(</span><span class="n">targetConfigFile</span><span class="p">,</span><span class="w"> </span><span class="n">plugin</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;config.yml&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">patchTransformerRegistry</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MyTransformerRegistry</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">DefaultPatchTransformerRegistry</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//(1)!</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">MyTransformerRegistry</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kd">super</span><span class="p">();</span>
+<span class="w">        </span><span class="n">transformers</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;MY_TRANSFORMER&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MyTransformer</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
 <ol>
-<li>Call this if you want to use the default transformers alongside your own.</li>
+<li>extend the <code>DefaultPatchTransformerRegistry</code> if you want to use the default transformers as well and add more in the constructor.</li>
 </ol>
 
 
