@@ -42,8 +42,7 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
     }
 
     /**
-     * This is just Spigots basic crafting event for
-     * MMOItems vanilla crafting functionality.
+     * This is just the basic crafting event for MMOItems vanilla crafting functionality.
      *
      * @param event The event
      */
