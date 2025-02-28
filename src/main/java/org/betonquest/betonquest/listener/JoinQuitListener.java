@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ConversationResumer;
@@ -14,7 +15,6 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.objective.ResourcePackObjective;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -50,19 +50,26 @@ public class JoinQuitListener implements Listener {
     private final PluginMessage pluginMessage;
 
     /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
+
+    /**
      * Creates new listener, which will handle the data loading/saving.
      *
      * @param loggerFactory     used for logger creation in ConversationResumer
      * @param questTypeAPI      the object to get player Objectives
      * @param playerDataStorage the storage for un-/loading player data
      * @param pluginMessage     the {@link PluginMessage} instance
+     * @param profileProvider   the profile provider instance
      */
     public JoinQuitListener(final BetonQuestLoggerFactory loggerFactory, final QuestTypeAPI questTypeAPI,
-                            final PlayerDataStorage playerDataStorage, final PluginMessage pluginMessage) {
+                            final PlayerDataStorage playerDataStorage, final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
         this.loggerFactory = loggerFactory;
         this.questTypeAPI = questTypeAPI;
         this.playerDataStorage = playerDataStorage;
         this.pluginMessage = pluginMessage;
+        this.profileProvider = profileProvider;
     }
 
     /**
@@ -75,7 +82,7 @@ public class JoinQuitListener implements Listener {
         if (event.getLoginResult() != Result.ALLOWED) {
             return;
         }
-        final Profile profile = PlayerConverter.getID(Bukkit.getOfflinePlayer(event.getUniqueId()));
+        final Profile profile = profileProvider.getProfile(Bukkit.getOfflinePlayer(event.getUniqueId()));
         playerDataStorage.put(profile, new PlayerData(pluginMessage, profile));
     }
 
@@ -86,7 +93,7 @@ public class JoinQuitListener implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         final PlayerData playerData = playerDataStorage.get(onlineProfile);
         playerData.startObjectives();
         GlobalObjectives.startAll(onlineProfile, playerDataStorage);
@@ -120,7 +127,7 @@ public class JoinQuitListener implements Listener {
      */
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent event) {
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         for (final Objective objective : questTypeAPI.getPlayerObjectives(onlineProfile)) {
             objective.pauseObjectiveForPlayer(onlineProfile);
         }

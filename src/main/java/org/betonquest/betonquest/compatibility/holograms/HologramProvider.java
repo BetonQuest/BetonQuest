@@ -4,11 +4,11 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.citizens.CitizensHologramLoop;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -153,12 +153,13 @@ public final class HologramProvider implements Integrator {
 
     @Override
     public void hook() throws HookException {
-        final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
+        final BetonQuest plugin = BetonQuest.getInstance();
+        final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
         this.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class));
         if (Compatibility.getHooked().contains("Citizens")) {
             this.citizensHologramLoop = new CitizensHologramLoop(loggerFactory, loggerFactory.create(CitizensHologramLoop.class));
         }
-        new HologramListener();
+        Bukkit.getPluginManager().registerEvents(new HologramListener(plugin.getProfileProvider()), plugin);
     }
 
     @Override
@@ -199,10 +200,18 @@ public final class HologramProvider implements Integrator {
      */
     public static class HologramListener implements Listener {
         /**
-         * Creates and registers a new HologramListener.
+         * The profile provider instance.
          */
-        public HologramListener() {
-            Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        private final ProfileProvider profileProvider;
+
+        /**
+         * Creates and registers a new HologramListener.
+         *
+         * @param profileProvider the profile provider instance
+         */
+        public HologramListener(final ProfileProvider profileProvider) {
+
+            this.profileProvider = profileProvider;
         }
 
         /**
@@ -212,7 +221,7 @@ public final class HologramProvider implements Integrator {
          */
         @EventHandler
         public void onPlayerJoin(final PlayerJoinEvent event) {
-            HologramRunner.refresh(PlayerConverter.getID(event.getPlayer()));
+            HologramRunner.refresh(profileProvider.getProfile(event.getPlayer()));
         }
     }
 }

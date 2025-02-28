@@ -3,7 +3,7 @@ package org.betonquest.betonquest.conversation;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.util.PlayerConverter;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -29,6 +29,11 @@ public class CombatTagger implements Listener {
     private static final Map<Profile, BukkitRunnable> TAGGERS = new HashMap<>();
 
     /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
+
+    /**
      * Delay in seconds after a player profile is untagged from "in combat".
      */
     private final int delay;
@@ -36,9 +41,11 @@ public class CombatTagger implements Listener {
     /**
      * Create the combat listener.
      *
-     * @param delay the delay in seconds after a player profile is untagged from "in combat"
+     * @param profileProvider the profile provider instance
+     * @param delay           the delay in seconds after a player profile is untagged from "in combat"
      */
-    public CombatTagger(final int delay) {
+    public CombatTagger(final ProfileProvider profileProvider, final int delay) {
+        this.profileProvider = profileProvider;
         this.delay = delay;
     }
 
@@ -61,10 +68,10 @@ public class CombatTagger implements Listener {
     public void onDamage(final EntityDamageByEntityEvent event) {
         final List<Profile> profiles = new ArrayList<>();
         if (event.getEntity() instanceof Player) {
-            profiles.add(PlayerConverter.getID((Player) event.getEntity()));
+            profiles.add(profileProvider.getProfile((Player) event.getEntity()));
         }
         if (event.getDamager() instanceof Player) {
-            profiles.add(PlayerConverter.getID((Player) event.getDamager()));
+            profiles.add(profileProvider.getProfile((Player) event.getDamager()));
         }
         for (final Profile profile : profiles) {
             final BukkitRunnable run = TAGGERS.get(profile);
@@ -88,7 +95,7 @@ public class CombatTagger implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDeath(final PlayerDeathEvent event) {
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getEntity());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getEntity());
         final BukkitRunnable runnable = TAGGERS.remove(onlineProfile);
         if (runnable != null) {
             runnable.cancel();

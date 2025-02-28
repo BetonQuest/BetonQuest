@@ -7,7 +7,9 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
@@ -16,7 +18,6 @@ import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.menu.command.SimpleCommand;
 import org.betonquest.betonquest.menu.config.SimpleYMLSection;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -52,6 +53,16 @@ public class Menu extends SimpleYMLSection implements Listener {
      * The plugin message instance.
      */
     private final PluginMessage pluginMessage;
+
+    /**
+     * Quest Type API.
+     */
+    private final QuestTypeAPI questTypeAPI;
+
+    /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
 
     /**
      * The internal id of the menu.
@@ -108,20 +119,26 @@ public class Menu extends SimpleYMLSection implements Listener {
     /**
      * Creates a new Menu.
      *
-     * @param rpgMenu       the rpg menu instance to open menus
-     * @param loggerFactory the logger factory for new class specific custom logger
-     * @param log           the custom logger for this class
-     * @param config        the configuration file of the plugin
-     * @param pluginMessage the plugin message instance
-     * @param menuID        the id of the menu
+     * @param log             the custom logger for this class
+     * @param loggerFactory   the logger factory for new class specific custom logger
+     * @param rpgMenu         the rpg menu instance to open menus
+     * @param config          the configuration file of the plugin
+     * @param pluginMessage   the plugin message instance
+     * @param questTypeAPI    the Quest Type API
+     * @param profileProvider the profile provider instance
+     * @param menuID          the id of the menu
      * @throws InvalidConfigurationException if config options are missing or invalid
      */
-    public Menu(final RPGMenu rpgMenu, final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final ConfigAccessor config, final PluginMessage pluginMessage, final MenuID menuID) throws InvalidConfigurationException {
+    public Menu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final RPGMenu rpgMenu,
+                final ConfigAccessor config, final PluginMessage pluginMessage, final QuestTypeAPI questTypeAPI,
+                final ProfileProvider profileProvider, final MenuID menuID) throws InvalidConfigurationException {
         super(menuID.getPackage(), menuID.getFullID(), menuID.getConfig());
         this.rpgMenu = rpgMenu;
         this.log = log;
         pluginConfig = config;
         this.pluginMessage = pluginMessage;
+        this.questTypeAPI = questTypeAPI;
+        this.profileProvider = profileProvider;
         this.menuID = menuID;
         //load size
         this.height = getInt("height");
@@ -230,7 +247,7 @@ public class Menu extends SimpleYMLSection implements Listener {
      */
     public boolean mayOpen(final Profile profile) {
         for (final ConditionID conditionID : openConditions) {
-            if (!BetonQuest.getInstance().getQuestTypeAPI().condition(profile, conditionID)) {
+            if (!questTypeAPI.condition(profile, conditionID)) {
                 log.debug(pack, "Denied opening of " + name + ": Condition " + conditionID + "returned false.");
                 return false;
             }
@@ -264,7 +281,7 @@ public class Menu extends SimpleYMLSection implements Listener {
             return;
         }
         event.setCancelled(true);
-        final OnlineProfile onlineprofile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile onlineprofile = profileProvider.getProfile(event.getPlayer());
         if (!mayOpen(onlineprofile)) {
             event.getPlayer().sendMessage(pluginMessage.getMessage(onlineprofile, "menu.no_permission"));
             return;
@@ -283,7 +300,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     public void runOpenEvents(final Profile profile) {
         log.debug(pack, "Menu " + menuID + ": Running open events");
         for (final EventID event : this.openEvents) {
-            BetonQuest.getInstance().getQuestTypeAPI().event(profile, event);
+            questTypeAPI.event(profile, event);
             log.debug(pack, "Menu " + menuID + ": Run event " + event);
         }
     }
@@ -296,7 +313,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     public void runCloseEvents(final Player player) {
         log.debug(pack, "Menu " + menuID + ": Running close events");
         for (final EventID event : this.closeEvents) {
-            BetonQuest.getInstance().getQuestTypeAPI().event(PlayerConverter.getID(player), event);
+            questTypeAPI.event(profileProvider.getProfile(player), event);
             log.debug(pack, "Menu " + menuID + ": Run event " + event);
         }
     }
@@ -381,7 +398,7 @@ public class Menu extends SimpleYMLSection implements Listener {
                 sender.sendMessage("Command can only be run by players!");
                 return false;
             }
-            final OnlineProfile onlineProfile = PlayerConverter.getID(player);
+            final OnlineProfile onlineProfile = profileProvider.getProfile(player);
             if (mayOpen(onlineProfile)) {
                 log.debug(pack, onlineProfile + " run bound command of " + menuID);
                 rpgMenu.openMenu(onlineProfile, menuID);

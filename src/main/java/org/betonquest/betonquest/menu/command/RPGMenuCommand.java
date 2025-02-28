@@ -5,6 +5,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -12,7 +13,6 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -159,7 +159,7 @@ public class RPGMenuCommand extends SimpleCommand {
                     return false;
                 }
                 //open the menu and send feedback
-                this.menu.openMenu(PlayerConverter.getID(player), menu);
+                this.menu.openMenu(BetonQuest.getInstance().getProfileProvider().getProfile(player), menu);
                 sendMessage(sender, "command_open_successful", new PluginMessage.Replacement("menu", menu.toString()));
                 break;
             case "reload":

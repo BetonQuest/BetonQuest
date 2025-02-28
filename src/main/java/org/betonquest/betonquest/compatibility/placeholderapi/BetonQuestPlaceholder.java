@@ -4,9 +4,9 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,6 +19,11 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
+
+    /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
 
     /**
      * The variable processor to use for creating the placeholder variables.
@@ -39,14 +44,16 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
      * Create a new BetonQuest PAPI Placeholder.
      *
      * @param log               the custom logger for this class
+     * @param profileProvider   the profile provider instance
      * @param variableProcessor the processor to create new variables
      * @param authors           the combined author string
      * @param version           the version string
      */
-    public BetonQuestPlaceholder(final BetonQuestLogger log, final VariableProcessor variableProcessor,
+    public BetonQuestPlaceholder(final BetonQuestLogger log, final ProfileProvider profileProvider, final VariableProcessor variableProcessor,
                                  final String authors, final String version) {
         super();
         this.log = log;
+        this.profileProvider = profileProvider;
         this.variableProcessor = variableProcessor;
         this.authors = authors;
         this.version = version;
@@ -111,7 +118,7 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
      */
     @Override
     public String onPlaceholderRequest(@Nullable final Player player, final String identifier) {
-        final Profile profile = player == null ? null : PlayerConverter.getID(player);
+        final Profile profile = player == null ? null : profileProvider.getProfile(player);
         try {
             return variableProcessor.getValue(identifier, profile);
         } catch (final QuestException e) {

@@ -4,11 +4,11 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scheduler.BukkitTask;
@@ -41,13 +41,20 @@ public class PlayerHider {
     private final QuestTypeAPI questTypeAPI;
 
     /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
+
+    /**
      * Initialize and start a new {@link PlayerHider}.
      *
-     * @param betonQuest   the plugin instance to get config and start the bukkit task
-     * @param questTypeAPI the Quest Type API
+     * @param betonQuest      the plugin instance to get config and start the bukkit task
+     * @param questTypeAPI    the Quest Type API
+     * @param profileProvider the profile provider instance
      * @throws QuestException Thrown if there is a configuration error.
      */
-    public PlayerHider(final BetonQuest betonQuest, final QuestTypeAPI questTypeAPI) throws QuestException {
+    public PlayerHider(final BetonQuest betonQuest, final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider) throws QuestException {
+        this.profileProvider = profileProvider;
         hiders = new HashMap<>();
         this.questTypeAPI = questTypeAPI;
 
@@ -95,7 +102,7 @@ public class PlayerHider {
      * Trigger an update for the visibility.
      */
     public void updateVisibility() {
-        final Collection<? extends OnlineProfile> onlineProfiles = PlayerConverter.getOnlineProfiles();
+        final Collection<? extends OnlineProfile> onlineProfiles = profileProvider.getOnlineProfiles();
         final Map<OnlineProfile, List<OnlineProfile>> profilesToHide = getProfilesToHide(onlineProfiles);
         for (final OnlineProfile source : onlineProfiles) {
             updateVisibilityForProfiles(onlineProfiles, source, profilesToHide.get(source));

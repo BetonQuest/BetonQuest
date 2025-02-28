@@ -10,7 +10,6 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.util.BlockSelector;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -81,7 +80,7 @@ public class BlockObjective extends CountingObjective implements Listener {
         if (event.isCancelled() && !ignorecancel) {
             return;
         }
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
         if (containsPlayer(onlineProfile) && selector.match(event.getBlock(), exactMatch) && checkConditions(onlineProfile)) {
             if (!checkLocation(event.getBlock().getLocation(), onlineProfile)) {
                 return;
@@ -98,7 +97,7 @@ public class BlockObjective extends CountingObjective implements Listener {
         if (event.isCancelled() && !ignorecancel) {
             return;
         }
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
         if (containsPlayer(onlineProfile) && selector.match(event.getBlock(), exactMatch) && checkConditions(onlineProfile)) {
             if (!checkLocation(event.getBlock().getLocation(), onlineProfile)) {
                 return;

@@ -2,9 +2,9 @@ package org.betonquest.betonquest.command;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.feature.Backpack;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,14 +26,21 @@ public class BackpackCommand implements CommandExecutor {
     private final PluginMessage pluginMessage;
 
     /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
+
+    /**
      * Creates a new executor for the /backpack command.
      *
-     * @param log           the logger that will be used for logging
-     * @param pluginMessage the {@link PluginMessage} instance
+     * @param log             the logger that will be used for logging
+     * @param pluginMessage   the {@link PluginMessage} instance
+     * @param profileProvider the profile provider instance
      */
-    public BackpackCommand(final BetonQuestLogger log, final PluginMessage pluginMessage) {
+    public BackpackCommand(final BetonQuestLogger log, final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
         this.log = log;
         this.pluginMessage = pluginMessage;
+        this.profileProvider = profileProvider;
     }
 
     @Override
@@ -41,7 +48,7 @@ public class BackpackCommand implements CommandExecutor {
         if ("backpack".equalsIgnoreCase(cmd.getName())) {
             // command sender must be a player, console can't have a backpack
             if (sender instanceof Player) {
-                final OnlineProfile onlineProfile = PlayerConverter.getID((Player) sender);
+                final OnlineProfile onlineProfile = profileProvider.getProfile((Player) sender);
                 log.debug("Executing /backpack command for " + onlineProfile);
                 new Backpack(pluginMessage, onlineProfile);
             }

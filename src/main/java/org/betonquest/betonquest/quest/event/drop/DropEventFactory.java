@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.drop;
 
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -15,7 +16,6 @@ import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -26,6 +26,11 @@ import java.util.Optional;
  */
 public class DropEventFactory implements EventFactory, StaticEventFactory {
     /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
+
+    /**
      * Data for primary server thread access.
      */
     private final PrimaryServerThreadData data;
@@ -33,9 +38,11 @@ public class DropEventFactory implements EventFactory, StaticEventFactory {
     /**
      * Creates the drop event factory.
      *
-     * @param data the data for primary server thread access
+     * @param profileProvider the profile provider instance
+     * @param data            the data for primary server thread access
      */
-    public DropEventFactory(final PrimaryServerThreadData data) {
+    public DropEventFactory(final ProfileProvider profileProvider, final PrimaryServerThreadData data) {
+        this.profileProvider = profileProvider;
         this.data = data;
     }
 
@@ -52,7 +59,7 @@ public class DropEventFactory implements EventFactory, StaticEventFactory {
     private StaticEvent createStaticDropEvent(final Instruction instruction) throws QuestException {
         final NullableEventAdapter dropEvent = createDropEvent(instruction);
         if (!instruction.hasArgument("location")) {
-            return new OnlineProfileGroupStaticEventAdapter(PlayerConverter::getOnlineProfiles, dropEvent);
+            return new OnlineProfileGroupStaticEventAdapter(profileProvider::getOnlineProfiles, dropEvent);
         }
         return dropEvent;
     }

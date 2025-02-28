@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.util.BlockSelector;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
@@ -70,7 +69,7 @@ public class StepObjective extends Objective implements Listener {
             return;
         }
         try {
-            final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+            final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
             final Block block = loc.getValue(onlineProfile).getBlock();
             if (!clickedBlock.equals(block)) {
                 return;

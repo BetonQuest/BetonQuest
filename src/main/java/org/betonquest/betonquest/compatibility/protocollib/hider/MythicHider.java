@@ -4,7 +4,7 @@ import io.lumine.mythic.bukkit.events.MythicMobDeathEvent;
 import io.lumine.mythic.bukkit.events.MythicMobDespawnEvent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.util.PlayerConverter;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
@@ -27,17 +27,24 @@ public final class MythicHider extends BukkitRunnable implements Listener {
     @Nullable
     private static MythicHider instance;
 
+    /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
+
     private final EntityHider hider;
 
     private final Map<Entity, Set<UUID>> mythicmobs;
 
     private MythicHider() {
         super();
+        final BetonQuest plugin = BetonQuest.getInstance();
+        this.profileProvider = plugin.getProfileProvider();
         mythicmobs = new HashMap<>();
-        final int updateInterval = BetonQuest.getInstance().getPluginConfig().getInt("npc_hider_check_interval", 5 * 20);
-        hider = new EntityHider(BetonQuest.getInstance(), EntityHider.Policy.BLACKLIST);
-        runTaskTimer(BetonQuest.getInstance(), 0, updateInterval);
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        final int updateInterval = plugin.getPluginConfig().getInt("npc_hider_check_interval", 5 * 20);
+        hider = new EntityHider(plugin, EntityHider.Policy.BLACKLIST);
+        runTaskTimer(plugin, 0, updateInterval);
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     /**
@@ -76,7 +83,7 @@ public final class MythicHider extends BukkitRunnable implements Listener {
      * Updates the visibility of tracked mobs for all players.
      */
     public void applyVisibility() {
-        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+        for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
             for (final Entity mob : mythicmobs.keySet()) {
                 applyVisibility(onlineProfile, mob);
             }
@@ -115,7 +122,7 @@ public final class MythicHider extends BukkitRunnable implements Listener {
      * @param mythicMob the mob to update the visibility for
      */
     public void applyVisibility(final Entity mythicMob) {
-        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+        for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
             applyVisibility(onlineProfile, mythicMob);
         }
     }
@@ -130,7 +137,7 @@ public final class MythicHider extends BukkitRunnable implements Listener {
         final Set<UUID> profileUUIDS = new HashSet<>();
         profileUUIDS.add(onlineProfile.getProfileUUID());
         mythicmobs.put(mythicMob, profileUUIDS);
-        for (final OnlineProfile onlinePlayer : PlayerConverter.getOnlineProfiles()) { //Hiding the mob for all players besides passed in online
+        for (final OnlineProfile onlinePlayer : profileProvider.getOnlineProfiles()) { // Hiding the mob for all players besides passed in online
             if (!onlinePlayer.equals(onlineProfile)) {
                 applyVisibility(onlinePlayer, mythicMob);
             }
@@ -149,13 +156,13 @@ public final class MythicHider extends BukkitRunnable implements Listener {
     }
 
     /**
-     * Checks if the player logging in can see any of the mobs in the list of tracked mobs, if not hides the mob
+     * Checks if the player logging in can see any of the mobs in the list of tracked mobs, if not hides the mob.
      *
      * @param event the event of the player joining
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-        applyVisibility(PlayerConverter.getID(event.getPlayer()));
+        applyVisibility(profileProvider.getProfile(event.getPlayer()));
     }
 
     @EventHandler(ignoreCancelled = true)

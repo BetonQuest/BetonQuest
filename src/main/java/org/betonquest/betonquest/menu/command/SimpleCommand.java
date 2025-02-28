@@ -2,9 +2,9 @@ package org.betonquest.betonquest.menu.command;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.menu.util.Utils;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -203,7 +203,8 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     protected String getMessage(final CommandSender sender, final String message, final PluginMessage.Replacement... replacements) {
         final PluginMessage pluginMessage = getPlugin().getPluginMessage();
         if (sender instanceof final Player player) {
-            return pluginMessage.getMessage(PlayerConverter.getID(player), "menu." + message, replacements);
+            final OnlineProfile profile = getPlugin().getProfileProvider().getProfile(player);
+            return pluginMessage.getMessage(profile, "menu." + message, replacements);
         } else {
             return pluginMessage.getMessage("menu." + message, replacements);
         }

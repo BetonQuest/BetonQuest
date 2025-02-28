@@ -11,8 +11,8 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.papermc.lib.PaperLib;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -241,7 +241,7 @@ public class EntityHider implements Listener {
                     final int index = event.getPacketType().equals(PacketType.Play.Server.PLAYER_COMBAT_KILL) ? 1 : 0;
 
                     final Integer entityID = event.getPacket().getIntegers().readSafely(index);
-                    if (entityID != null && !isVisible(PlayerConverter.getID(event.getPlayer()), entityID)) {
+                    if (entityID != null && !isVisible(BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer()), entityID)) {
                         event.setCancelled(true);
                     }
                 }

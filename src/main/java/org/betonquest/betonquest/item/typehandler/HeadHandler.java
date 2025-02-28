@@ -4,7 +4,6 @@ import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -173,7 +172,7 @@ public abstract class HeadHandler implements ItemMetaHandler<SkullMeta> {
         }
         if (owner != null) {
             final OfflinePlayer player = Bukkit.getOfflinePlayer(owner);
-            return PlayerConverter.getID(player);
+            return BetonQuest.getInstance().getProfileProvider().getProfile(player);
         }
         return null;
     }

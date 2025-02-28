@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.tag;
 
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -13,7 +14,6 @@ import org.betonquest.betonquest.quest.event.DatabaseSaverStaticEvent;
 import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
 import org.betonquest.betonquest.quest.event.SequentialStaticEvent;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.betonquest.betonquest.util.Utils;
 
 import java.util.ArrayList;
@@ -36,14 +36,21 @@ public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
     private final Saver saver;
 
     /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
+
+    /**
      * Create the tag player event factory.
      *
-     * @param dataStorage the storage providing player data
-     * @param saver       database saver to use
+     * @param dataStorage     the storage providing player data
+     * @param saver           database saver to use
+     * @param profileProvider the profile provider instance
      */
-    public TagPlayerEventFactory(final PlayerDataStorage dataStorage, final Saver saver) {
+    public TagPlayerEventFactory(final PlayerDataStorage dataStorage, final Saver saver, final ProfileProvider profileProvider) {
         this.dataStorage = dataStorage;
         this.saver = saver;
+        this.profileProvider = profileProvider;
     }
 
     @Override
@@ -90,7 +97,7 @@ public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
     private StaticEvent createStaticDeleteTagEvent(final String... tags) {
         final TagEvent deleteTagEvent = createDeleteTagEvent(tags);
         final List<StaticEvent> staticEvents = new ArrayList<>(tags.length + 1);
-        staticEvents.add(new OnlineProfileGroupStaticEventAdapter(PlayerConverter::getOnlineProfiles, deleteTagEvent));
+        staticEvents.add(new OnlineProfileGroupStaticEventAdapter(profileProvider::getOnlineProfiles, deleteTagEvent));
         for (final String tag : tags) {
             staticEvents.add(new DatabaseSaverStaticEvent(saver, () -> new Saver.Record(UpdateType.REMOVE_ALL_TAGS, tag)));
         }

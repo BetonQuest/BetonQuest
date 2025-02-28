@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.point;
 
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -26,14 +27,21 @@ public class DeletePointEventFactory implements EventFactory, StaticEventFactory
     private final Saver saver;
 
     /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
+
+    /**
      * Create the delete points event factory.
      *
-     * @param dataStorage the storage providing player data
-     * @param saver       the saver to use
+     * @param dataStorage     the storage providing player data
+     * @param saver           the saver to use
+     * @param profileProvider the profile provider instance
      */
-    public DeletePointEventFactory(final PlayerDataStorage dataStorage, final Saver saver) {
+    public DeletePointEventFactory(final PlayerDataStorage dataStorage, final Saver saver, final ProfileProvider profileProvider) {
         this.dataStorage = dataStorage;
         this.saver = saver;
+        this.profileProvider = profileProvider;
     }
 
     @Override
@@ -44,6 +52,6 @@ public class DeletePointEventFactory implements EventFactory, StaticEventFactory
     @Override
     public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
         final VariableIdentifier category = instruction.get(VariableIdentifier::new);
-        return new DeletePointStaticEvent(dataStorage, saver, category);
+        return new DeletePointStaticEvent(dataStorage, saver, profileProvider, category);
     }
 }

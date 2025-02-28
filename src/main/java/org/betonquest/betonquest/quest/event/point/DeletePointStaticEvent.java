@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.quest.event.point;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
-import org.betonquest.betonquest.util.PlayerConverter;
 
 /**
  * Deletes the points in the category from all online players and database entries.
@@ -24,6 +24,11 @@ public class DeletePointStaticEvent implements StaticEvent {
     private final Saver saver;
 
     /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
+
+    /**
      * Point category to remove.
      */
     private final VariableIdentifier category;
@@ -31,20 +36,22 @@ public class DeletePointStaticEvent implements StaticEvent {
     /**
      * Create a new Point remove event for every player, online and offline.
      *
-     * @param dataStorage the storage providing player data
-     * @param saver       the saver to use
-     * @param category    the category to remove
+     * @param dataStorage     the storage providing player data
+     * @param saver           the saver to use
+     * @param profileProvider the profile provider instance
+     * @param category        the category to remove
      */
-    public DeletePointStaticEvent(final PlayerDataStorage dataStorage, final Saver saver, final VariableIdentifier category) {
+    public DeletePointStaticEvent(final PlayerDataStorage dataStorage, final Saver saver, final ProfileProvider profileProvider, final VariableIdentifier category) {
         this.dataStorage = dataStorage;
         this.saver = saver;
+        this.profileProvider = profileProvider;
         this.category = category;
     }
 
     @Override
     public void execute() throws QuestException {
         final String category = this.category.getValue(null);
-        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+        for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
             dataStorage.get(onlineProfile).removePointsCategory(category);
         }
         saver.add(new Saver.Record(UpdateType.REMOVE_ALL_POINTS, category));

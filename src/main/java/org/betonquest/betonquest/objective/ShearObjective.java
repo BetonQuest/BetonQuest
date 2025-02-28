@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.entity.EntityType;
@@ -47,7 +46,7 @@ public class ShearObjective extends CountingObjective implements Listener {
         if (event.getEntity().getType() != EntityType.SHEEP) {
             return;
         }
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
         if (containsPlayer(onlineProfile)
                 && (name == null || name.equals(event.getEntity().getCustomName()))
                 && (color == null || color.equals(((Sheep) event.getEntity()).getColor()))

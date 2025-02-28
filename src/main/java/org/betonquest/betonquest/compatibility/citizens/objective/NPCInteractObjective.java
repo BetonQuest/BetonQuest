@@ -7,10 +7,10 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.objective.EntityInteractObjective.Interaction;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -82,7 +82,8 @@ public class NPCInteractObjective extends Objective implements Listener {
     }
 
     private void onNPCClick(final NPCClickEvent event) {
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getClicker());
+        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getClicker());
         if (event.getNPC().getId() != npcId || !containsPlayer(onlineProfile)) {
             return;
         }

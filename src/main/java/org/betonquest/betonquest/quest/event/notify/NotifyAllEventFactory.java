@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.notify;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -11,23 +12,28 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.CallStaticEventAdapter;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
-import org.betonquest.betonquest.util.PlayerConverter;
 
 /**
  * Factory for the notify all event.
  */
 public class NotifyAllEventFactory extends NotifyEventFactory implements EventFactory, StaticEventFactory {
+    /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
 
     /**
      * Creates the notify all event factory.
      *
-     * @param loggerFactory the logger factory to use for creating the event logger
-     * @param data          the data for primary server thread access
-     * @param dataStorage   the storage providing player data
+     * @param loggerFactory   the logger factory to use for creating the event logger
+     * @param data            the data for primary server thread access
+     * @param dataStorage     the storage providing player data
+     * @param profileProvider the profile provider instance
      */
     public NotifyAllEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data,
-                                 final PlayerDataStorage dataStorage) {
+                                 final PlayerDataStorage dataStorage, final ProfileProvider profileProvider) {
         super(loggerFactory, data, dataStorage);
+        this.profileProvider = profileProvider;
     }
 
     @Override
@@ -37,6 +43,6 @@ public class NotifyAllEventFactory extends NotifyEventFactory implements EventFa
 
     @Override
     public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
-        return new OnlineProfileGroupStaticEventAdapter(PlayerConverter::getOnlineProfiles, super.parseEvent(instruction));
+        return new OnlineProfileGroupStaticEventAdapter(profileProvider::getOnlineProfiles, super.parseEvent(instruction));
     }
 }

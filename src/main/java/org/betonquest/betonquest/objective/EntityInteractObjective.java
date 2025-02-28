@@ -11,7 +11,6 @@ import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -148,7 +147,7 @@ public class EntityInteractObjective extends CountingObjective {
         // check if the entity is correctly marked
         if (marked != null) {
             try {
-                final String value = marked.getValue(PlayerConverter.getID(player));
+                final String value = marked.getValue(BetonQuest.getInstance().getProfileProvider().getProfile(player));
                 final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
                 final String dataContainerValue = entity.getPersistentDataContainer().get(key, PersistentDataType.STRING);
                 if (dataContainerValue == null || !dataContainerValue.equals(value)) {
@@ -159,7 +158,7 @@ public class EntityInteractObjective extends CountingObjective {
             }
         }
         // check if the profile has this objective
-        final OnlineProfile onlineProfile = PlayerConverter.getID(player);
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
         if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return false;
         }

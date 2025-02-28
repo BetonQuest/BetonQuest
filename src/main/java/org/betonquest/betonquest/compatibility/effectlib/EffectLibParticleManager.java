@@ -5,7 +5,9 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.id.ConditionID;
@@ -33,14 +35,24 @@ public class EffectLibParticleManager {
     private static final String NPCS_CONFIG_SECTION = "npcs";
 
     /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
      * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
+     * The Quest Type API.
      */
-    private final BetonQuestLogger log;
+    private final QuestTypeAPI questTypeAPI;
+
+    /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
 
     /**
      * Effect Manager starting and controlling particles.
@@ -55,13 +67,18 @@ public class EffectLibParticleManager {
     /**
      * Loads the particle configuration and starts the effects.
      *
-     * @param loggerFactory the logger factory to create new custom loggers
-     * @param log           the custom logger for this class
-     * @param manager       the effect manager starting and controlling particles
+     * @param log             the custom logger for this class
+     * @param loggerFactory   the logger factory to create new custom loggers
+     * @param questTypeAPI    the Quest Type API
+     * @param profileProvider the profile provider instance
+     * @param manager         the effect manager starting and controlling particles
      */
-    public EffectLibParticleManager(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final EffectManager manager) {
+    public EffectLibParticleManager(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
+                                    final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider, final EffectManager manager) {
         this.loggerFactory = loggerFactory;
         this.log = log;
+        this.questTypeAPI = questTypeAPI;
+        this.profileProvider = profileProvider;
         this.manager = manager;
         loadParticleConfiguration();
     }
@@ -109,7 +126,8 @@ public class EffectLibParticleManager {
                 final List<ConditionID> conditions = loadConditions(pack, key, settings);
 
                 final EffectConfiguration effect = new EffectConfiguration(effectClass, locations, npcs, conditions, settings, conditionsCheckInterval);
-                final EffectLibRunnable particleRunnable = new EffectLibRunnable(loggerFactory.create(EffectLibRunnable.class), manager, effect);
+                final EffectLibRunnable particleRunnable = new EffectLibRunnable(loggerFactory.create(EffectLibRunnable.class),
+                        questTypeAPI, profileProvider, manager, effect);
 
                 activeParticles.add(particleRunnable);
                 particleRunnable.runTaskTimer(BetonQuest.getInstance(), 1, interval);

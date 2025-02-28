@@ -13,6 +13,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.CachingBetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.bstats.BStatsMetrics;
@@ -54,12 +55,12 @@ import org.betonquest.betonquest.logger.handler.history.HistoryHandler;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.playerhider.PlayerHider;
+import org.betonquest.betonquest.profile.UUIDProfileProvider;
 import org.betonquest.betonquest.quest.registry.CoreQuestTypes;
 import org.betonquest.betonquest.quest.registry.QuestRegistry;
 import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 import org.betonquest.betonquest.schedule.LastExecutionCache;
-import org.betonquest.betonquest.util.PlayerConverter;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.java.JREVersionPrinter;
 import org.betonquest.betonquest.web.DownloadSource;
@@ -228,6 +229,11 @@ public class BetonQuest extends JavaPlugin {
     private LastExecutionCache lastExecutionCache;
 
     /**
+     * The profile provider instance.
+     */
+    private ProfileProvider profileProvider;
+
+    /**
      * The required default constructor without arguments for plugin creation.
      */
     public BetonQuest() {
@@ -307,6 +313,15 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
+     * Get the profile provider.
+     *
+     * @return The profile provider.
+     */
+    public ProfileProvider getProfileProvider() {
+        return profileProvider;
+    }
+
+    /**
      * Ensures that the given event is called on the main server thread.
      *
      * @param event the event to call
@@ -332,6 +347,7 @@ public class BetonQuest extends JavaPlugin {
 
         this.loggerFactory = registerAndGetService(BetonQuestLoggerFactory.class, new CachingBetonQuestLoggerFactory(new DefaultBetonQuestLoggerFactory()));
         this.configAccessorFactory = registerAndGetService(ConfigAccessorFactory.class, new DefaultConfigAccessorFactory(loggerFactory, loggerFactory.create(ConfigAccessorFactory.class)));
+        this.profileProvider = registerAndGetService(ProfileProvider.class, new UUIDProfileProvider());
 
         this.log = loggerFactory.create(this);
         pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
@@ -387,7 +403,7 @@ public class BetonQuest extends JavaPlugin {
         playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class), pluginMessage);
 
         final PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents(new QuestItemHandler(playerDataStorage), this);
+        pluginManager.registerEvents(new QuestItemHandler(playerDataStorage, profileProvider), this);
 
         final FileConfigAccessor cache;
         try {
@@ -406,7 +422,7 @@ public class BetonQuest extends JavaPlugin {
 
         new GlobalObjectives();
 
-        pluginManager.registerEvents(new CombatTagger(config.getInt("combat_delay")), this);
+        pluginManager.registerEvents(new CombatTagger(profileProvider, config.getInt("combat_delay")), this);
 
         ConversationColors.loadColors();
 
@@ -424,10 +440,12 @@ public class BetonQuest extends JavaPlugin {
 
         questTypeAPI = new QuestTypeAPI(questRegistry);
         featureAPI = new FeatureAPI(questRegistry);
-        pluginManager.registerEvents(new JoinQuitListener(loggerFactory, questTypeAPI, playerDataStorage, pluginMessage), this);
+        pluginManager.registerEvents(new JoinQuitListener(loggerFactory, questTypeAPI, playerDataStorage, pluginMessage,
+                profileProvider), this);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
-                questTypeAPI, pluginMessage, questRegistry.variables(), globalData, playerDataStorage).register(questTypeRegistries);
+                questTypeAPI, pluginMessage, questRegistry.variables(), globalData, playerDataStorage, profileProvider)
+                .register(questTypeRegistries);
 
         new CoreFeatureFactories(loggerFactory, lastExecutionCache, questTypeAPI).register(featureRegistries);
 
@@ -438,10 +456,10 @@ public class BetonQuest extends JavaPlugin {
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
             Compatibility.postHook();
             loadData();
-            playerDataStorage.initProfiles(PlayerConverter.getOnlineProfiles());
+            playerDataStorage.initProfiles(profileProvider.getOnlineProfiles());
 
             try {
-                playerHider = new PlayerHider(this, questTypeAPI);
+                playerHider = new PlayerHider(this, questTypeAPI, profileProvider);
             } catch (final QuestException e) {
                 log.error("Could not start PlayerHider! " + e.getMessage(), e);
             }
@@ -460,7 +478,7 @@ public class BetonQuest extends JavaPlugin {
 
         setupUpdater();
 
-        rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, config, pluginMessage);
+        rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, config, pluginMessage, questTypeAPI, profileProvider);
 
         PaperLib.suggestPaper(this);
         log.info("BetonQuest successfully enabled!");
@@ -499,11 +517,11 @@ public class BetonQuest extends JavaPlugin {
                 this, playerDataStorage, pluginMessage);
         getCommand("betonquest").setExecutor(questCommand);
         getCommand("betonquest").setTabCompleter(questCommand);
-        getCommand("journal").setExecutor(new JournalCommand(playerDataStorage));
-        getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class), pluginMessage));
-        getCommand("cancelquest").setExecutor(new CancelQuestCommand(pluginMessage));
-        getCommand("compass").setExecutor(new CompassCommand(pluginMessage));
-        final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), this, playerDataStorage, pluginMessage);
+        getCommand("journal").setExecutor(new JournalCommand(playerDataStorage, profileProvider));
+        getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class), pluginMessage, profileProvider));
+        getCommand("cancelquest").setExecutor(new CancelQuestCommand(pluginMessage, profileProvider));
+        getCommand("compass").setExecutor(new CompassCommand(pluginMessage, profileProvider));
+        final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), playerDataStorage, pluginMessage, profileProvider);
         getCommand("questlang").setExecutor(langCommand);
         getCommand("questlang").setTabCompleter(langCommand);
     }
@@ -590,31 +608,33 @@ public class BetonQuest extends JavaPlugin {
         Compatibility.reload();
         // load all events, conditions, objectives, conversations etc.
         loadData();
-        playerDataStorage.reloadProfiles(PlayerConverter.getOnlineProfiles());
+        playerDataStorage.reloadProfiles(profileProvider.getOnlineProfiles());
 
         if (playerHider != null) {
             playerHider.stop();
         }
         try {
-            playerHider = new PlayerHider(this, questTypeAPI);
+            playerHider = new PlayerHider(this, questTypeAPI, profileProvider);
         } catch (final QuestException e) {
             log.error("Could not start PlayerHider! " + e.getMessage(), e);
         }
     }
 
-    @SuppressWarnings("PMD.DoNotUseThreads")
+    @SuppressWarnings({"PMD.DoNotUseThreads", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @Override
     public void onDisable() {
         if (questRegistry != null) {
             questRegistry.eventScheduling().stopAll();
         }
         // suspend all conversations
-        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
-            final Conversation conv = Conversation.getConversation(onlineProfile);
-            if (conv != null) {
-                conv.suspend();
+        if (profileProvider != null) {
+            for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
+                final Conversation conv = Conversation.getConversation(onlineProfile);
+                if (conv != null) {
+                    conv.suspend();
+                }
+                onlineProfile.getPlayer().closeInventory();
             }
-            onlineProfile.getPlayer().closeInventory();
         }
         // cancel database saver
         if (saver != null) {

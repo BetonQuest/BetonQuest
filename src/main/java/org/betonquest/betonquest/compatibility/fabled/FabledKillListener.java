@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.fabled;
 
 import org.betonquest.betonquest.api.MobKillNotifier;
-import org.betonquest.betonquest.util.PlayerConverter;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,12 +13,18 @@ import studio.magemonkey.fabled.api.event.SkillDamageEvent;
  * Listens to kills by Fabled skills.
  */
 public class FabledKillListener implements Listener {
+    /**
+     * The profile provider instance.
+     */
+    private final ProfileProvider profileProvider;
 
     /**
      * The default constructor.
+     *
+     * @param profileProvider the profile provider instance
      */
-    public FabledKillListener() {
-        // Empty
+    public FabledKillListener(final ProfileProvider profileProvider) {
+        this.profileProvider = profileProvider;
     }
 
     /**
@@ -35,6 +41,6 @@ public class FabledKillListener implements Listener {
         if (target.getHealth() > event.getDamage()) {
             return;
         }
-        MobKillNotifier.addKill(PlayerConverter.getID(player), target);
+        MobKillNotifier.addKill(profileProvider.getProfile(player), target);
     }
 }
