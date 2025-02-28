@@ -81,21 +81,14 @@ public class ParsedSectionMessage {
      * @param language the preferred language to get the message
      * @param profile  the profile to resolve the variable
      * @return the resolved message for the language
-     * @throws QuestException when there is no message for the requested language and default language
-     *                        or the variable can't be resolved
+     * @throws IllegalStateException when there is no message for the requested language and default language
+     * @throws QuestException        or the variable can't be resolved
      */
     public String getResolved(final String language, @Nullable final Profile profile) throws QuestException {
         return get(language).getValue(profile);
     }
 
-    /**
-     * Returns the message in the language or default language.
-     *
-     * @param language the preferred language to get the message
-     * @return the message for the language
-     * @throws QuestException when there is no message for the requested language and default language
-     */
-    public VariableString get(final String language) throws QuestException {
+    private VariableString get(final String language) {
         VariableString name = messages.get(language);
         if (name != null) {
             return name;
@@ -104,6 +97,6 @@ public class ParsedSectionMessage {
         if (name != null) {
             return name;
         }
-        throw new QuestException("No text for language '" + language + "' or default!");
+        throw new IllegalStateException("No text for language '" + language + "' or default!");
     }
 }
