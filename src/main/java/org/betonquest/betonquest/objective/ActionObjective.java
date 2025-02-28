@@ -24,11 +24,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.Nullable;
 
-import static org.bukkit.event.block.Action.LEFT_CLICK_AIR;
-import static org.bukkit.event.block.Action.LEFT_CLICK_BLOCK;
-import static org.bukkit.event.block.Action.RIGHT_CLICK_AIR;
-import static org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK;
-
 /**
  * Player has to click on a block (or air). Left click, right click and any one of
  * them is supported.
@@ -176,8 +171,7 @@ public class ActionObjective extends Objective implements Listener {
             if (action == Action.PHYSICAL) {
                 return false;
             }
-            return this == ANY || this == RIGHT && (action == RIGHT_CLICK_AIR || action == RIGHT_CLICK_BLOCK)
-                    || this == LEFT && (action == LEFT_CLICK_AIR || action == LEFT_CLICK_BLOCK);
+            return this == ANY || this == RIGHT && action.isRightClick() || this == LEFT && action.isLeftClick();
         }
     }
 }

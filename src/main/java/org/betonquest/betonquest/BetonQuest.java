@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.CachingBetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.message.MessageParser;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -53,6 +54,8 @@ import org.betonquest.betonquest.logger.handler.chat.AccumulatingReceiverSelecto
 import org.betonquest.betonquest.logger.handler.chat.ChatHandler;
 import org.betonquest.betonquest.logger.handler.history.HistoryHandler;
 import org.betonquest.betonquest.menu.RPGMenu;
+import org.betonquest.betonquest.message.DecidingMessageParser;
+import org.betonquest.betonquest.message.TagMessageParserDecider;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.playerhider.PlayerHider;
 import org.betonquest.betonquest.profile.UUIDProfileProvider;
@@ -96,6 +99,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Handler;
+import java.util.logging.Level;
 
 /**
  * Represents BetonQuest plugin.
@@ -166,6 +170,11 @@ public class BetonQuest extends JavaPlugin {
      * The plugin configuration file.
      */
     private FileConfigAccessor config;
+
+    /**
+     * The message parser.
+     */
+    private MessageParser messageParser;
 
     /**
      * The plugin messages provider.
@@ -295,6 +304,15 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
+     * Get the message parser.
+     *
+     * @return message parser
+     */
+    public MessageParser getMessageParser() {
+        return messageParser;
+    }
+
+    /**
      * Get the plugin messages provider.
      *
      * @return plugin messages provider
@@ -344,12 +362,18 @@ public class BetonQuest extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-
         this.loggerFactory = registerAndGetService(BetonQuestLoggerFactory.class, new CachingBetonQuestLoggerFactory(new DefaultBetonQuestLoggerFactory()));
+        this.log = loggerFactory.create(this);
+        if (!PaperLib.isPaper()) {
+            PaperLib.suggestPaper(this, Level.WARNING);
+            log.warn("Only Paper is supported! Disabling BetonQuest...");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
         this.configAccessorFactory = registerAndGetService(ConfigAccessorFactory.class, new DefaultConfigAccessorFactory(loggerFactory, loggerFactory.create(ConfigAccessorFactory.class)));
         this.profileProvider = registerAndGetService(ProfileProvider.class, new UUIDProfileProvider());
 
-        this.log = loggerFactory.create(this);
         pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
 
         final JREVersionPrinter jreVersionPrinter = new JREVersionPrinter();
@@ -366,6 +390,7 @@ public class BetonQuest extends JavaPlugin {
             return;
         }
 
+        messageParser = new DecidingMessageParser(getFeatureRegistries().messageParser(), new TagMessageParserDecider("legacyminimessage"));
         try {
             pluginMessage = new PluginMessage(this, configAccessorFactory);
             for (final String language : pluginMessage.getLanguages()) {
@@ -480,7 +505,6 @@ public class BetonQuest extends JavaPlugin {
 
         rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, config, pluginMessage, questTypeAPI, profileProvider);
 
-        PaperLib.suggestPaper(this);
         log.info("BetonQuest successfully enabled!");
     }
 
