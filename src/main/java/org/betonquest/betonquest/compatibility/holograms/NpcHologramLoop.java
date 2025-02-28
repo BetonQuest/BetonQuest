@@ -196,7 +196,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
             npcHolograms.forEach(this::updateHologram);
             return;
         }
-        final Set<NpcID> ids = npcTypeRegistry.getIdentifier(npc);
+        final Set<NpcID> ids = npcTypeRegistry.getIdentifier(npc, null);
         if (ids.isEmpty()) {
             return;
         }

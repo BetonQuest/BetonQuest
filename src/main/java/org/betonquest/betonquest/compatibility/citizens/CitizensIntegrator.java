@@ -12,6 +12,7 @@ import org.betonquest.betonquest.compatibility.citizens.objective.NPCKillObjecti
 import org.betonquest.betonquest.compatibility.protocollib.hider.CitizensHider;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
+import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.bukkit.Server;
@@ -78,8 +79,10 @@ public class CitizensIntegrator implements Integrator {
         conversationIOTypes.register("chest", CitizensInventoryConvIO.class);
         conversationIOTypes.register("combined", CitizensInventoryConvIO.CitizensCombined.class);
 
-        manager.registerEvents(new CitizensInteractCatcher(plugin.getProfileProvider(), questRegistries.npc(), citizensMoveController), plugin);
-        questRegistries.npc().register("citizens", new CitizensNpcFactory());
+        final NpcTypeRegistry npcTypes = questRegistries.npc();
+        manager.registerEvents(new CitizensInteractCatcher(plugin.getProfileProvider(), npcTypes, citizensMoveController), plugin);
+        npcTypes.register("citizens", new CitizensNpcFactory());
+        npcTypes.registerIdentifier(new CitizensReverseIdentifier());
     }
 
     @Override

@@ -146,6 +146,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
     @Override
     public void clear() {
         super.clear();
+        ((NpcTypeRegistry) types).resetIdentifier();
         interactionLimit = plugin.getPluginConfig().getInt("npcs.interaction_limit", 500);
         acceptNpcLeftClick = plugin.getPluginConfig().getBoolean("npcs.accept_left_click");
         npcHider.reload(Config.getPackages().values());
@@ -289,7 +290,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
                 npcHider.applyVisibility();
                 return;
             }
-            final Set<NpcID> identifier = plugin.getQuestRegistries().npc().getIdentifier(event.getNpc());
+            final Set<NpcID> identifier = ((NpcTypeRegistry) types).getIdentifier(event.getNpc(), null);
             for (final NpcID npcID : identifier) {
                 npcHider.applyVisibility(npcID);
             }
