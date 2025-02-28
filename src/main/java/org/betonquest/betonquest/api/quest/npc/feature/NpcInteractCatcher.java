@@ -59,7 +59,7 @@ public abstract class NpcInteractCatcher<T> implements Listener {
     protected boolean interactLogic(final Player clicker, final Npc<T> npc, final Interaction interaction,
                                     final boolean cancelled, final boolean isAsync) {
         final OnlineProfile profile = profileProvider.getProfile(clicker);
-        final Set<NpcID> identifier = npcTypeRegistry.getIdentifier(npc);
+        final Set<NpcID> identifier = npcTypeRegistry.getIdentifier(npc, profile);
         final NpcInteractEvent npcInteractEvent = new NpcInteractEvent(profile, clicker, npc, identifier, interaction, isAsync);
         if (cancelled) {
             npcInteractEvent.setCancelled(true);

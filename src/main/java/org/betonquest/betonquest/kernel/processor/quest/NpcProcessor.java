@@ -289,7 +289,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
                 npcHider.applyVisibility();
                 return;
             }
-            final Set<NpcID> identifier = plugin.getQuestRegistries().npc().getIdentifier(event.getNpc());
+            final Set<NpcID> identifier = plugin.getQuestRegistries().npc().getIdentifier(event.getNpc(), null);
             for (final NpcID npcID : identifier) {
                 npcHider.applyVisibility(npcID);
             }
