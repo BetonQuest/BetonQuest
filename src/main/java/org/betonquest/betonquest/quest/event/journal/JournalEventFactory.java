@@ -11,6 +11,7 @@ import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
+import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.event.DatabaseSaverStaticEvent;
 import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
@@ -20,7 +21,6 @@ import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
 import org.betonquest.betonquest.quest.event.SequentialStaticEvent;
-import org.betonquest.betonquest.util.Utils;
 
 import java.time.InstantSource;
 import java.util.Locale;
@@ -99,15 +99,15 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
     }
 
     private JournalEvent createJournalDeleteEvent(final Instruction instruction) throws QuestException {
-        final String entryName = Utils.addPackage(instruction.getPackage(), instruction.getPart(2));
-        final JournalChanger journalChanger = new RemoveEntryJournalChanger(entryName);
+        final JournalEntryID entryID = instruction.getID(instruction.getPart(2), JournalEntryID::new);
+        final JournalChanger journalChanger = new RemoveEntryJournalChanger(entryID);
         final NotificationSender notificationSender = new NoNotificationSender();
         return new JournalEvent(dataStorage, journalChanger, notificationSender);
     }
 
     private JournalEvent createJournalAddEvent(final Instruction instruction) throws QuestException {
-        final String entryName = Utils.addPackage(instruction.getPackage(), instruction.getPart(2));
-        final JournalChanger journalChanger = new AddEntryJournalChanger(instantSource, entryName);
+        final JournalEntryID entryID = instruction.getID(instruction.getPart(2), JournalEntryID::new);
+        final JournalChanger journalChanger = new AddEntryJournalChanger(instantSource, entryID);
         final NotificationSender notificationSender = new IngameNotificationSender(loggerFactory.create(JournalEvent.class),
                 pluginMessage, instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.INFO, "new_journal_entry");
         return new JournalEvent(dataStorage, journalChanger, notificationSender);
@@ -121,9 +121,9 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
 
     private StaticEvent createStaticJournalDeleteEvent(final Instruction instruction) throws QuestException {
         final JournalEvent journalDeleteEvent = createJournalDeleteEvent(instruction.copy());
-        final String entryName = Utils.addPackage(instruction.getPackage(), instruction.getPart(2));
+        final JournalEntryID entryID = instruction.getID(instruction.getPart(2), JournalEntryID::new);
         return new SequentialStaticEvent(
                 new OnlineProfileGroupStaticEventAdapter(profileProvider::getOnlineProfiles, journalDeleteEvent),
-                new DatabaseSaverStaticEvent(saver, () -> new Saver.Record(UpdateType.REMOVE_ALL_ENTRIES, entryName)));
+                new DatabaseSaverStaticEvent(saver, () -> new Saver.Record(UpdateType.REMOVE_ALL_ENTRIES, entryID.getFullID())));
     }
 }

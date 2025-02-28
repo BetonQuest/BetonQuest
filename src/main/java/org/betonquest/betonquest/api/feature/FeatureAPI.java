@@ -3,9 +3,13 @@ package org.betonquest.betonquest.api.feature;
 import org.betonquest.betonquest.conversation.ConversationData;
 import org.betonquest.betonquest.feature.QuestCanceler;
 import org.betonquest.betonquest.feature.QuestCompass;
+import org.betonquest.betonquest.feature.journal.JournalMainPageEntry;
 import org.betonquest.betonquest.id.CompassID;
 import org.betonquest.betonquest.id.ConversationID;
+import org.betonquest.betonquest.id.JournalEntryID;
+import org.betonquest.betonquest.id.JournalMainPageID;
 import org.betonquest.betonquest.id.QuestCancelerID;
+import org.betonquest.betonquest.message.ParsedSectionMessage;
 import org.betonquest.betonquest.quest.registry.QuestRegistry;
 import org.jetbrains.annotations.Nullable;
 
@@ -74,5 +78,37 @@ public final class FeatureAPI {
      */
     public Map<CompassID, QuestCompass> getCompasses() {
         return new HashMap<>(questRegistry.compasses().getValues());
+    }
+
+    /**
+     * Gets stored Journal Entry.
+     * <p>
+     * The journal entry can be null if there was an error loading it.
+     *
+     * @param journalEntryID package name, dot and name of the journal entry
+     * @return JournalEntry or null if it does not exist
+     */
+    @Nullable
+    public ParsedSectionMessage getJournalEntry(final JournalEntryID journalEntryID) {
+        return questRegistry.journalEntries().getValues().get(journalEntryID);
+    }
+
+    /**
+     * Renames the Journal Entry instance.
+     *
+     * @param name   the current name
+     * @param rename the name it should have now
+     */
+    public void renameJournalEntry(final JournalEntryID name, final JournalEntryID rename) {
+        questRegistry.journalEntries().renameJournalEntry(name, rename);
+    }
+
+    /**
+     * Get the loaded Journal Main Page Entries.
+     *
+     * @return pages in a new map
+     */
+    public Map<JournalMainPageID, JournalMainPageEntry> getJournalMainPages() {
+        return new HashMap<>(questRegistry.journalMainPages().getValues());
     }
 }

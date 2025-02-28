@@ -10,6 +10,7 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ItemID;
+import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.instruction.argument.IDArgument;
@@ -70,7 +71,7 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
         final ObjectiveID[] objectives = helper.parseID("objectives", ObjectiveID::new);
         final String[] tags = helper.split("tags");
         final String[] points = helper.split("points");
-        final String[] journal = helper.split("journal");
+        final JournalEntryID[] journal = helper.parseID("journal", JournalEntryID::new);
         final String rawLoc = GlobalVariableResolver.resolve(pack, section.getString("location"));
         final VariableLocation location = rawLoc == null ? null : new VariableLocation(variableProcessor, pack, rawLoc);
         final QuestCanceler.CancelData cancelData = new QuestCanceler.CancelData(conditions, location, events, objectives, tags, points, journal);

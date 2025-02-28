@@ -6,22 +6,21 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.PlayerJournalAddEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerJournalDeleteEvent;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
-import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.id.JournalEntryID;
+import org.betonquest.betonquest.id.JournalMainPageID;
+import org.betonquest.betonquest.message.ParsedSectionMessage;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.util.Utils;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -43,8 +42,7 @@ import java.util.Set;
 /**
  * Represents player's journal.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.CyclomaticComplexity",
-        "PMD.TooManyMethods"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods", "PMD.CouplingBetweenObjects"})
 public class Journal {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -139,13 +137,12 @@ public class Journal {
         final BetonQuest betonQuest = BetonQuest.getInstance();
         betonQuest.callSyncBukkitEvent(new PlayerJournalAddEvent(profile, this, pointer));
         pointers.add(pointer);
-        // SQLite doesn't accept formatted date and MySQL doesn't accept numeric
-        // timestamp
+        // SQLite doesn't accept formatted date and MySQL doesn't accept numeric timestamp
         final String date = betonQuest.isMySQLUsed()
                 ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.timestamp()))
                 : Long.toString(pointer.timestamp());
-        betonQuest.getSaver()
-                .add(new Record(UpdateType.ADD_JOURNAL, profile.getProfileUUID().toString(), pointer.pointer(), date));
+        betonQuest.getSaver().add(new Record(UpdateType.ADD_JOURNAL, profile.getProfileUUID().toString(),
+                pointer.pointer().getFullID(), date));
     }
 
     /**
@@ -153,16 +150,16 @@ public class Journal {
      *
      * @param pointerName the name of the pointer to remove
      */
-    public void removePointer(final String pointerName) {
+    public void removePointer(final JournalEntryID pointerName) {
         for (final Pointer pointer : pointers) {
-            if (pointer.pointer().equalsIgnoreCase(pointerName)) {
+            if (pointer.pointer().equals(pointerName)) {
                 final BetonQuest betonQuest = BetonQuest.getInstance();
                 betonQuest.callSyncBukkitEvent(new PlayerJournalDeleteEvent(profile, this, pointer));
                 final String date = betonQuest.isMySQLUsed()
                         ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.timestamp()))
                         : Long.toString(pointer.timestamp());
-                betonQuest.getSaver()
-                        .add(new Record(UpdateType.REMOVE_JOURNAL, profile.getProfileUUID().toString(), pointer.pointer(), date));
+                betonQuest.getSaver().add(new Record(UpdateType.REMOVE_JOURNAL, profile.getProfileUUID().toString(),
+                        pointer.pointer().getFullID(), date));
                 pointers.remove(pointer);
                 break;
             }
@@ -191,65 +188,29 @@ public class Journal {
     /**
      * Generates texts for every pointer and places them inside a List.
      */
-    @SuppressWarnings("PMD.CognitiveComplexity")
     public void generateTexts() {
-        // remove previous texts
         texts.clear();
-        // generate the first page
         mainPage = generateMainPage();
+        final boolean displayDatePrefix = "false".equalsIgnoreCase(config.getString("journal.hide_date"));
+        final FeatureAPI featureAPI = BetonQuest.getInstance().getFeatureAPI();
         for (final Pointer pointer : pointers) {
-            // if date should not be hidden, generate the date prefix
-            String datePrefix = "";
-            if ("false".equalsIgnoreCase(config.getString("journal.hide_date"))) {
-                final String date = new SimpleDateFormat(config.getString("date_format"), Locale.ROOT)
-                        .format(pointer.timestamp());
-                final String[] dateParts = date.split(" ");
-                final String day = "§" + config.getString("journal_colors.date.day") + dateParts[0];
-                String hour = "";
-                if (dateParts.length > 1) {
-                    hour = "§" + config.getString("journal_colors.date.hour") + dateParts[1];
-                }
-                datePrefix = day + " " + hour + "\n";
-            }
-            // get package and name of the pointer
-            final String[] parts = pointer.pointer().split("\\.");
-            final String packName = parts[0];
-            final QuestPackage pack = Config.getPackages().get(packName);
-            if (pack == null) {
+            final String datePrefix = displayDatePrefix ? pointer.generateDatePrefix(config) + "\n" : "";
+            final JournalEntryID entryID = pointer.pointer();
+            final ParsedSectionMessage journalEntry = featureAPI.getJournalEntry(entryID);
+            if (journalEntry == null) {
+                log.warn("No journal entry " + entryID + " for " + profile);
                 continue;
             }
-            final String pointerName = parts[1];
-            // resolve the text in player's language
+
             String text;
-            final ConfigurationSection journal = pack.getConfig().getConfigurationSection("journal");
-            if (journal != null && journal.contains(pointerName)) {
-                if (journal.isConfigurationSection(pointerName)) {
-                    text = pack.getFormattedString("journal." + pointerName + "." + lang);
-                    if (text == null) {
-                        text = pack.getFormattedString("journal." + pointerName + "." + Config.getLanguage());
-                    }
-                } else {
-                    text = pack.getFormattedString("journal." + pointerName);
-                }
-            } else {
-                log.warn(pack, "No defined journal entry " + pointerName + " in package " + pack.getQuestPath());
-                text = "error";
-            }
-
-            // handle case when the text isn't defined
-            if (text == null) {
-                log.warn(pack, "No text defined for journal entry " + pointerName + " in language " + lang);
-                text = "error";
-            }
-
             try {
-                text = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, text).getValue(profile);
+                text = journalEntry.getResolved(lang, profile);
             } catch (final QuestException e) {
-                log.warn(pack, "Error while creating variable on journal page '" + pointerName + "' in "
+                log.warn(entryID.getPackage(), "Error while creating variable on journal page '" + entryID + "' in "
                         + profile + " journal: " + e.getMessage(), e);
+                text = "error";
             }
 
-            // add the entry to the list
             texts.add(datePrefix + "§" + config.getString("journal_colors.text") + text);
         }
     }
@@ -259,76 +220,36 @@ public class Journal {
      *
      * @return the main page string or null, if there is no main page
      */
-    @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @Nullable
     private String generateMainPage() {
         final Map<Integer, List<String>> lines = new HashMap<>(); // holds text lines with their priority
         final Set<Integer> numbers = new HashSet<>(); // stores numbers that are used, so there's no need to search them
-        for (final QuestPackage pack : Config.getPackages().values()) {
-            final String packName = pack.getQuestPath();
-            final ConfigurationSection section = pack.getConfig().getConfigurationSection("journal_main_page");
-            if (section == null) {
+        final BetonQuest betonQuest = BetonQuest.getInstance();
+        final FeatureAPI featureAPI = betonQuest.getFeatureAPI();
+        final QuestTypeAPI questTypeAPI = betonQuest.getQuestTypeAPI();
+        for (final Map.Entry<JournalMainPageID, JournalMainPageEntry> entry : featureAPI.getJournalMainPages().entrySet()) {
+            final JournalMainPageEntry mainPageEntry = entry.getValue();
+            if (!mainPageEntry.conditions().isEmpty() && !questTypeAPI.conditions(profile, mainPageEntry.conditions())) {
                 continue;
             }
-            for (final String key : section.getKeys(false)) {
-                final int number = section.getInt(key + ".priority", -1);
-                if (number >= 0) {
-                    final String rawConditions = GlobalVariableResolver.resolve(pack, section.getString(key + ".conditions"));
-                    if (rawConditions != null && !rawConditions.isEmpty()) {
-                        try {
-                            final List<ConditionID> pageConditions = new ArrayList<>();
-                            for (final String conditionString : rawConditions.split(",")) {
-                                if (!conditionString.isEmpty()) {
-                                    pageConditions.add(new ConditionID(pack, conditionString));
-                                }
-                            }
-
-                            if (!BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, pageConditions)) {
-                                continue;
-                            }
-                        } catch (final QuestException e) {
-                            log.warn(pack, "Error while generating main page in " + profile + " journal: " + e.getMessage(), e);
-                            continue;
-                        }
-                    }
-                    // here conditions are met, get the text in player's language
-                    String text;
-                    if (section.isConfigurationSection(key + ".text")) {
-                        text = section.getString(key + ".text." + lang);
-                        if (text == null) {
-                            text = section.getString(key + ".text." + Config.getLanguage());
-                        }
-                        if (text == null) {
-                            text = section.getString(key + ".text.en");
-                        }
-                    } else {
-                        text = section.getString(key + ".text");
-                    }
-                    if (text == null || text.isEmpty()) {
-                        continue;
-                    }
-                    text = GlobalVariableResolver.resolve(pack, text);
-                    try {
-                        text = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, text).getValue(profile);
-                    } catch (final QuestException e) {
-                        log.warn(pack, "Error while creating variable on main page in "
-                                + profile + " journal: " + e.getMessage(), e);
-                    }
-                    // add the text to HashMap
-                    numbers.add(number);
-                    final List<String> linesOrder;
-                    if (lines.containsKey(number)) {
-                        linesOrder = lines.get(number);
-                    } else {
-                        linesOrder = new ArrayList<>();
-                        lines.put(number, linesOrder);
-                    }
-                    linesOrder.add(text + "§r"); // reset the formatting
-                } else {
-                    log.warn(pack, "Priority of " + packName + "." + key
-                            + " journal main page line is not defined");
-                }
+            String text;
+            try {
+                text = mainPageEntry.entry().getResolved(lang, profile);
+            } catch (final QuestException e) {
+                log.warn(entry.getKey().getPackage(), "Error while creating variable on main page in "
+                        + profile + " journal: " + e.getMessage(), e);
+                text = "error";
             }
+            final int number = mainPageEntry.priority();
+            numbers.add(number);
+            final List<String> linesOrder;
+            if (lines.containsKey(number)) {
+                linesOrder = lines.get(number);
+            } else {
+                linesOrder = new ArrayList<>();
+                lines.put(number, linesOrder);
+            }
+            linesOrder.add(text + "§r"); // reset the formatting
         }
         if (numbers.isEmpty()) {
             return null;
@@ -406,7 +327,7 @@ public class Journal {
      *
      * @return the journal ItemStack
      */
-    @SuppressWarnings("PMD.CognitiveComplexity")
+    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
     public ItemStack getAsItem() {
         final ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
         final BookMeta meta = (BookMeta) item.getItemMeta();
@@ -471,9 +392,10 @@ public class Journal {
      */
     public int removeFromInv() {
         // loop all items and check if any of them is a journal
-        final Inventory inventory = profile.getOnlineProfile().get().getPlayer().getInventory();
+        final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
+        final Inventory inventory = onlineProfile.getPlayer().getInventory();
         for (int i = 0; i < inventory.getSize(); i++) {
-            if (isJournal(profile.getOnlineProfile().get(), inventory.getItem(i))) {
+            if (isJournal(onlineProfile, inventory.getItem(i))) {
                 inventory.setItem(i, new ItemStack(Material.AIR));
                 return i;
             }

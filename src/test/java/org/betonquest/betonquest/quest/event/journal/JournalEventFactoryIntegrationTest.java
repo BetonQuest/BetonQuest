@@ -29,6 +29,7 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.time.InstantSource;
 import java.util.Collections;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -71,7 +72,10 @@ class JournalEventFactoryIntegrationTest {
         if (!packageConfigFile.createNewFile()) {
             throw new IOException("Failed to create test package main configuration file.");
         }
-        return new QuestPackageImpl(logger, new DefaultConfigAccessorFactory(factory, logger), "test", packageConfigFile, Collections.emptyList());
+        final QuestPackageImpl test = new QuestPackageImpl(logger, new DefaultConfigAccessorFactory(factory, logger), "test", packageConfigFile, Collections.emptyList());
+        test.applyQuestTemplates(Map.of());
+        test.getConfig().set("journal.quest_started", "?");
+        return test;
     }
 
     private QuestEventFactoryAdapter createJournalEventFactory(final BetonQuestLogger logger) {
@@ -112,7 +116,7 @@ class JournalEventFactoryIntegrationTest {
         final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(questPackage, new NoID(questPackage), "journal delete quest_available");
+        final Instruction instruction = new Instruction(questPackage, new NoID(questPackage), "journal delete quest_started");
         assertDoesNotThrow(() -> journalFactory.parseInstruction(instruction), "journal event delete action could not be created");
     }
 

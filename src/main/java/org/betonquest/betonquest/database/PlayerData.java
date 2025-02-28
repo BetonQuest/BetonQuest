@@ -16,6 +16,7 @@ import org.betonquest.betonquest.conversation.PlayerConversationState;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.feature.journal.Pointer;
+import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemStack;
@@ -47,11 +48,17 @@ public class PlayerData implements TagData {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
+    private final BetonQuestLogger log;
 
+    /**
+     * The database saver for player data.
+     */
     @SuppressWarnings("PMD.DoNotUseThreads")
-    private final Saver saver = BetonQuest.getInstance().getSaver();
+    private final Saver saver;
 
+    /**
+     * The {@link PluginMessage} instance.
+     */
     private final PluginMessage pluginMessage;
 
     private final Profile profile;
@@ -82,9 +89,12 @@ public class PlayerData implements TagData {
     /**
      * Loads the PlayerData of the given {@link Profile}.
      *
-     * @param profile - the profile to load the data for
+     * @param pluginMessage the {@link PluginMessage} instance
+     * @param profile       the profile to load the data for
      */
     public PlayerData(final PluginMessage pluginMessage, final Profile profile) {
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
+        this.saver = BetonQuest.getInstance().getSaver();
         this.pluginMessage = pluginMessage;
         this.profile = profile;
         this.profileID = profile.getProfileUUID().toString();
@@ -116,7 +126,7 @@ public class PlayerData implements TagData {
                 }
 
                 while (journalResults.next()) {
-                    entries.add(new Pointer(journalResults.getString("pointer"), journalResults.getTimestamp("date").getTime()));
+                    loadJournalPointer(journalResults.getString("pointer"), journalResults.getTimestamp("date").getTime());
                 }
 
                 while (pointResults.next()) {
@@ -140,6 +150,16 @@ public class PlayerData implements TagData {
             }
         } catch (final SQLException e) {
             log.error("There was an exception with SQL", e);
+        }
+    }
+
+    private void loadJournalPointer(final String pointer, final long date) {
+        try {
+            final JournalEntryID entryID = new JournalEntryID(null, pointer);
+            entries.add(new Pointer(entryID, date));
+        } catch (final QuestException e) {
+            log.warn("Loaded '" + pointer
+                    + "' journal entry from the database, but it is not defined in configuration. Skipping.", e);
         }
     }
 

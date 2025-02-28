@@ -48,7 +48,8 @@ public class QuestTemplate extends Quest {
      * @throws FileNotFoundException         thrown if a file could not be found during the creation
      *                                       of a {@link org.betonquest.betonquest.api.config.ConfigAccessor}
      */
-    public QuestTemplate(final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final String questPath, final File root, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
+    public QuestTemplate(final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final String questPath,
+                         final File root, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
         super(log, configAccessorFactory, questPath, root, files);
         templates = new HashSet<>();
     }

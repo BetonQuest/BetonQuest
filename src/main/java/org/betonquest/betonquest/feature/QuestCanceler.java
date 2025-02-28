@@ -13,6 +13,7 @@ import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
+import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
@@ -118,11 +119,7 @@ public class QuestCanceler {
         removeSimple(data.tags, "tag", playerData::removeTag);
         removeSimple(data.points, "point", playerData::removePointsCategory);
         cancelObjectives(onlineProfile, playerData);
-        if (data.journal != null) {
-            final Journal journal = playerData.getJournal();
-            removeSimple(data.journal, "journal entry", journal::removePointer);
-            journal.update();
-        }
+        removeEntries(playerData);
         // teleport player to the location
         if (data.location != null) {
             try {
@@ -163,6 +160,17 @@ public class QuestCanceler {
                 }
                 playerData.removeRawObjective(objectiveID);
             }
+        }
+    }
+
+    private void removeEntries(final PlayerData playerData) {
+        if (data.journal != null) {
+            final Journal journal = playerData.getJournal();
+            for (final JournalEntryID entry : data.journal) {
+                log.debug(pack, "  Removing journal entry " + entry);
+                journal.removePointer(entry);
+            }
+            journal.update();
         }
     }
 
@@ -232,6 +240,6 @@ public class QuestCanceler {
      */
     public record CancelData(@Nullable ConditionID[] conditions, @Nullable VariableLocation location,
                              @Nullable EventID[] events, @Nullable ObjectiveID[] objectives, @Nullable String[] tags,
-                             @Nullable String[] points, @Nullable String[] journal) {
+                             @Nullable String[] points, @Nullable JournalEntryID[] journal) {
     }
 }
