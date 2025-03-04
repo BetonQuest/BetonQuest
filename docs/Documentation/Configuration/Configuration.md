@@ -255,6 +255,11 @@ items:
 
 * `date_format` is the Java [date format](https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html)
   used in journal dates. It needs to have a space between the day and hour.
-* `debug` is responsible for logging the plugin's activity to _debug.log_ file in _logs_ directory. Turning this on can
-  slow your server down. However, if you experience any errors, turn this on and let the plugin gather the data and send
-  logs to the developer. Note that the first run of the plugin will be logged anyway, just as a precaution.
+* `debug` control debug log settings. The debug log contains a lot of additional information about the plugin's activity.
+    * `enabled` if enabled the debug log is printed to the _latest.log_ file in the _BetonQuest/logs_ directory.
+      Turning this on can slow your server down.
+    * `history_in_minutes` the plugin always caches debugging activity to the memory.
+       Once `debug` is enabled this history is printed to the log file and no longer stored in memory.
+       This is invaluable for debugging issues that happened in the past without having debug enabled all the time.
+       The downside is that depending on the amount of scripts and players this can be a lot of data occupying your memory.
+       So if you have memory issues, you can reduce the time the history is stored in memory down to 0 minutes to disable it.
