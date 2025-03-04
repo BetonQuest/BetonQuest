@@ -536,11 +536,15 @@ public class PlayerData implements TagData {
      * @param lang language to set
      */
     public void setLanguage(final String lang) {
+        if (profileLanguage.equals(lang)) {
+            return;
+        }
         if (DEFAULT_LANGUAGE_KEY.equalsIgnoreCase(lang)) {
             this.profileLanguage = Config.getLanguage();
         } else {
             this.profileLanguage = lang;
         }
+        this.journal = null;
         saver.add(new Record(UpdateType.UPDATE_PLAYER_LANGUAGE, lang, profileID));
     }
 
