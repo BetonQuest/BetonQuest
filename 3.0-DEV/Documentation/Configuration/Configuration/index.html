@@ -6099,9 +6099,16 @@ All items you specify here need to be defined in a package. You need to referenc
 <ul>
 <li><code>date_format</code> is the Java <a href="https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html">date format</a>
   used in journal dates. It needs to have a space between the day and hour.</li>
-<li><code>debug</code> is responsible for logging the plugin's activity to <em>debug.log</em> file in <em>logs</em> directory. Turning this on can
-  slow your server down. However, if you experience any errors, turn this on and let the plugin gather the data and send
-  logs to the developer. Note that the first run of the plugin will be logged anyway, just as a precaution.</li>
+<li><code>debug</code> control debug log settings. The debug log contains a lot of additional information about the plugin's activity.<ul>
+<li><code>enabled</code> if enabled the debug log is printed to the <em>latest.log</em> file in the <em>BetonQuest/logs</em> directory.
+  Turning this on can slow your server down.</li>
+<li><code>history_in_minutes</code> the plugin always caches debugging activity to the memory.
+   Once <code>debug</code> is enabled this history is printed to the log file and no longer stored in memory.
+   This is invaluable for debugging issues that happened in the past without having debug enabled all the time.
+   The downside is that depending on the amount of scripts and players this can be a lot of data occupying your memory.
+   So if you have memory issues, you can reduce the time the history is stored in memory down to 0 minutes to disable it.</li>
+</ul>
+</li>
 </ul>
 
 
