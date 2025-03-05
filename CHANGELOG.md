@@ -14,6 +14,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - message.yml file was deleted and instead the lang folder now contains all translations
 - menuConfig.yml file was deleted, translations are in the lang folder and the config is part of config.yml 
 - `cancel` event now respects by default canceler conditions
+- `objectives` can now be removed from database via command even when it does not exist
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
@@ -28,7 +29,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `compass` event did not work with variables in `compass` location
 - `quest canceler` did not resolve global variables
 - `quest canceler` used `loc` instead of `location` key for teleportation
-- `journal` language only changed after rejoin when changing player language 
+- `journal` language only changed after rejoin when changing player language
+- `journal` entry renaming or deleting via command now affects all specified pointers and not only one
 ### Security
 
 ## [2.2.1] - 2025-01-12
