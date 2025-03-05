@@ -31,6 +31,7 @@ import org.betonquest.betonquest.feature.journal.Pointer;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
+import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
@@ -500,7 +501,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // if there are no arguments then list player's pointers
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
             log.debug("Listing journal pointers");
-            final Predicate<Pointer> shouldDisplay = createListFilter(args, 3, Pointer::pointer);
+            final Predicate<Pointer> shouldDisplay = createListFilter(args, 3, pointer -> pointer.pointer().getFullID());
             sendMessage(sender, "player_journal");
             journal.getPointers().stream()
                     .filter(shouldDisplay)
@@ -524,15 +525,25 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         switch (args[2].toLowerCase(Locale.ROOT)) {
             case "add", "a" -> {
+                final JournalEntryID entryID;
+                try {
+                    entryID = new JournalEntryID(null, pointerName);
+                } catch (final QuestException e) {
+                    sendMessage(sender, "error",
+                            new PluginMessage.Replacement("error", e.getMessage()));
+                    log.warn("The journal entry'" + pointerName + "' does not exist!");
+                    log.debug("Tried to add non existing journal entry: " + e.getMessage(), e);
+                    return;
+                }
                 final Pointer pointer;
                 if (args.length < 5) {
                     final long timestamp = new Date().getTime();
                     log.debug("Adding pointer with current date: " + timestamp);
-                    pointer = new Pointer(pointerName, timestamp);
+                    pointer = new Pointer(entryID, timestamp);
                 } else {
                     log.debug("Adding pointer with date " + args[4].replaceAll("_", " "));
                     try {
-                        pointer = new Pointer(pointerName,
+                        pointer = new Pointer(entryID,
                                 new SimpleDateFormat(Config.getConfigString("date_format"), Locale.ROOT)
                                         .parse(args[4].replaceAll("_", " ")).getTime());
                     } catch (final ParseException e) {
@@ -547,7 +558,17 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             }
             case "remove", "delete", "del", "r", "d" -> {
                 log.debug("Removing pointer");
-                journal.removePointer(pointerName);
+                final JournalEntryID entryID;
+                try {
+                    entryID = new JournalEntryID(null, pointerName);
+                } catch (final QuestException e) {
+                    sendMessage(sender, "error",
+                            new PluginMessage.Replacement("error", e.getMessage()));
+                    log.warn("The journal entry'" + pointerName + "' does not exist!");
+                    log.debug("Tried to remove non existing journal entry: " + e.getMessage(), e);
+                    return;
+                }
+                journal.removePointer(entryID);
                 journal.update();
                 sendMessage(sender, "pointer_removed");
             }
@@ -1205,11 +1226,41 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             }
             case "journals", "journal", "j", "entries", "entry", "e" -> {
                 updateType = UpdateType.RENAME_ALL_ENTRIES;
+                final QuestPackage newPackage = Config.getPackages().get(rename.split("\\.")[0]);
+                if (newPackage == null) {
+                    final String message = "You can't rename into non-existent package!";
+                    sendMessage(sender, "error", new PluginMessage.Replacement("error", message));
+                    log.error(message);
+                    return;
+                }
+
+                final JournalEntryID newEntryID;
+                try {
+                    newEntryID = new JournalEntryID(null, rename);
+                } catch (final QuestException e) {
+                    final String message = "You can't rename into non-existent id!";
+                    sendMessage(sender, "error", new PluginMessage.Replacement("error", message));
+                    log.error(message);
+                    return;
+                }
+
+                final JournalEntryID oldEntryID;
+                try {
+                    oldEntryID = new JournalEntryID(null, name);
+                } catch (final QuestException e) {
+                    final String message = "Old journal entry " + name + " does not exist, renaming only database entries!";
+                    log.warn(message, e);
+                    log.debug("Renaming non existent journal entry only from database: " + e.getMessage(), e);
+                    sender.sendMessage("§2" + message);
+                    break;
+                }
+
+                instance.getFeatureAPI().renameJournalEntry(oldEntryID, newEntryID);
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final Journal journal = dataStorage.get(onlineProfile).getJournal();
                     final List<Pointer> journalPointers = new ArrayList<>();
                     for (final Pointer pointer : journal.getPointers()) {
-                        if (pointer.pointer().equals(name)) {
+                        if (pointer.pointer().equals(oldEntryID)) {
                             journalPointers.add(pointer);
                         }
                     }
@@ -1217,8 +1268,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         continue;
                     }
                     for (final Pointer pointer : journalPointers) {
-                        journal.removePointer(name);
-                        journal.addPointer(new Pointer(rename, pointer.timestamp()));
+                        journal.removePointer(oldEntryID);
+                        journal.addPointer(new Pointer(newEntryID, pointer.timestamp()));
                     }
                     journal.update();
                 }
@@ -1297,11 +1348,21 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             }
             case "journals", "journal", "j", "entries", "entry", "e" -> {
                 updateType = UpdateType.REMOVE_ALL_ENTRIES;
+                final JournalEntryID entryID;
+                try {
+                    entryID = new JournalEntryID(null, name);
+                } catch (final QuestException e) {
+                    final String message = "The journal entry '" + name + "' does not exist, it will still be removed from the database!";
+                    log.warn(message, e);
+                    log.debug("Removing non existent journal entry only from database: " + e.getMessage(), e);
+                    sender.sendMessage("§2" + message);
+                    break;
+                }
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final Journal journal = dataStorage.get(onlineProfile).getJournal();
                     int count = 0;
                     for (final Pointer pointer : journal.getPointers()) {
-                        if (pointer.pointer().equals(name)) {
+                        if (pointer.pointer().equals(entryID)) {
                             count++;
                         }
                     }
@@ -1309,7 +1370,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         continue;
                     }
                     for (int i = 0; i < count; i++) {
-                        journal.removePointer(name);
+                        journal.removePointer(entryID);
                     }
                     journal.update();
                 }

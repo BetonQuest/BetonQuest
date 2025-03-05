@@ -33,7 +33,8 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
      * @throws FileNotFoundException         thrown if a file could not be found during the creation
      *                                       of a {@link ConfigAccessor}
      */
-    public QuestPackageImpl(final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final String questPath, final File root, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
+    public QuestPackageImpl(final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final String questPath,
+                            final File root, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
         super(log, configAccessorFactory, questPath, root, files);
     }
 

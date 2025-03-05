@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.feature.journal.Journal;
+import org.betonquest.betonquest.id.JournalEntryID;
 
 /**
  * A journal changer that will remove a specified entry.
@@ -10,19 +11,19 @@ public class RemoveEntryJournalChanger implements JournalChanger {
     /**
      * Entry to remove from the journal.
      */
-    private final String entryName;
+    private final JournalEntryID entryID;
 
     /**
      * Create the entry-removing journal changer.
      *
-     * @param entryName entry to remove
+     * @param entryID entry to remove
      */
-    public RemoveEntryJournalChanger(final String entryName) {
-        this.entryName = entryName;
+    public RemoveEntryJournalChanger(final JournalEntryID entryID) {
+        this.entryID = entryID;
     }
 
     @Override
     public void changeJournal(final Journal journal) {
-        journal.removePointer(entryName);
+        journal.removePointer(entryID);
     }
 }

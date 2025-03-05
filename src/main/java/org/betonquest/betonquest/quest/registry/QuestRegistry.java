@@ -10,6 +10,8 @@ import org.betonquest.betonquest.feature.registry.FeatureRegistries;
 import org.betonquest.betonquest.feature.registry.processor.CancelerProcessor;
 import org.betonquest.betonquest.feature.registry.processor.CompassProcessor;
 import org.betonquest.betonquest.feature.registry.processor.ConversationProcessor;
+import org.betonquest.betonquest.feature.registry.processor.JournalEntryProcessor;
+import org.betonquest.betonquest.feature.registry.processor.JournalMainPageProcessor;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.quest.registry.processor.ConditionProcessor;
 import org.betonquest.betonquest.quest.registry.processor.EventProcessor;
@@ -23,15 +25,17 @@ import java.util.Map;
 /**
  * Stores the active Processors to store and execute type logic.
  *
- * @param log             The custom {@link BetonQuestLogger} instance for this class.
- * @param eventScheduling Event scheduling module.
- * @param conditions      Condition logic.
- * @param events          Event logic.
- * @param objectives      Objective logic.
- * @param variables       Variable logic.
- * @param cancelers       Quest Canceler logic.
- * @param conversations   Conversation Data logic.
- * @param compasses       Compasses.
+ * @param log              The custom {@link BetonQuestLogger} instance for this class.
+ * @param eventScheduling  Event scheduling module.
+ * @param conditions       Condition logic.
+ * @param events           Event logic.
+ * @param objectives       Objective logic.
+ * @param variables        Variable logic.
+ * @param cancelers        Quest Canceler logic.
+ * @param conversations    Conversation Data logic.
+ * @param compasses        Compasses.
+ * @param journalEntries   Journal Entries.
+ * @param journalMainPages Journal Main Pages.
  */
 public record QuestRegistry(
         BetonQuestLogger log,
@@ -42,7 +46,9 @@ public record QuestRegistry(
         VariableProcessor variables,
         CancelerProcessor cancelers,
         ConversationProcessor conversations,
-        CompassProcessor compasses
+        CompassProcessor compasses,
+        JournalEntryProcessor journalEntries,
+        JournalMainPageProcessor journalMainPages
 ) {
 
     /**
@@ -68,7 +74,9 @@ public record QuestRegistry(
         final ConversationProcessor conversations = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), loggerFactory, plugin, variables,
                 otherRegistries.conversationIO(), otherRegistries.interceptor());
         final CompassProcessor compasses = new CompassProcessor(loggerFactory.create(CompassProcessor.class), variables);
-        return new QuestRegistry(log, eventScheduling, conditions, events, objectives, variables, cancelers, conversations, compasses);
+        final JournalEntryProcessor journalEntries = new JournalEntryProcessor(loggerFactory.create(JournalEntryProcessor.class), variables);
+        final JournalMainPageProcessor journalMainPages = new JournalMainPageProcessor(loggerFactory.create(JournalMainPageProcessor.class), variables);
+        return new QuestRegistry(log, eventScheduling, conditions, events, objectives, variables, cancelers, conversations, compasses, journalEntries, journalMainPages);
     }
 
     /**
@@ -86,6 +94,8 @@ public record QuestRegistry(
         cancelers.clear();
         conversations.clear();
         compasses.clear();
+        journalEntries.clear();
+        journalMainPages.clear();
 
         for (final QuestPackage pack : packages) {
             final String packName = pack.getQuestPath();
@@ -96,6 +106,8 @@ public record QuestRegistry(
             objectives.load(pack);
             conversations.load(pack);
             compasses.load(pack);
+            journalEntries.load(pack);
+            journalMainPages.load(pack);
             eventScheduling.loadData(pack);
 
             log.debug(pack, "Everything in package " + packName + " loaded");
@@ -104,7 +116,8 @@ public record QuestRegistry(
         conversations.checkExternalPointers();
 
         log.info("There are " + String.join(", ", conditions.readableSize(), events.readableSize(),
-                objectives.readableSize(), cancelers.readableSize(), compasses.readableSize())
+                objectives.readableSize(), cancelers.readableSize(), compasses.readableSize(),
+                journalEntries.readableSize(), journalMainPages.readableSize())
                 + " and " + conversations.readableSize() + " loaded from " + packages.size() + " packages.");
 
         eventScheduling.startAll();

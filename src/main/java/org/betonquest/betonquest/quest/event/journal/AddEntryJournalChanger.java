@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.feature.journal.Pointer;
+import org.betonquest.betonquest.id.JournalEntryID;
 
 import java.time.InstantSource;
 
@@ -18,21 +19,21 @@ public class AddEntryJournalChanger implements JournalChanger {
     /**
      * Entry to add to the journal.
      */
-    private final String entryName;
+    private final JournalEntryID entryID;
 
     /**
      * Create the entry-adding journal changer.
      *
      * @param instantSource source to get the journal entry date from
-     * @param entryName     entry to add
+     * @param entryID       entry to add
      */
-    public AddEntryJournalChanger(final InstantSource instantSource, final String entryName) {
+    public AddEntryJournalChanger(final InstantSource instantSource, final JournalEntryID entryID) {
         this.instantSource = instantSource;
-        this.entryName = entryName;
+        this.entryID = entryID;
     }
 
     @Override
     public void changeJournal(final Journal journal) {
-        journal.addPointer(new Pointer(entryName, instantSource.millis()));
+        journal.addPointer(new Pointer(entryID, instantSource.millis()));
     }
 }

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.feature.journal.Pointer;
+import org.betonquest.betonquest.id.JournalEntryID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -23,8 +24,8 @@ class AddEntryJournalChangerTest {
     @Test
     void testChangeJournalAddsPointer(@Mock final Journal journal) {
         final Instant now = Instant.now();
-        final String entryName = "test_entry";
-        final AddEntryJournalChanger changer = new AddEntryJournalChanger(InstantSource.fixed(now), entryName);
+        final JournalEntryID entryID = mock(JournalEntryID.class);
+        final AddEntryJournalChanger changer = new AddEntryJournalChanger(InstantSource.fixed(now), entryID);
         final ArgumentCaptor<Pointer> captor = ArgumentCaptor.forClass(Pointer.class);
 
         changer.changeJournal(journal);
@@ -32,7 +33,7 @@ class AddEntryJournalChangerTest {
         verify(journal).addPointer(captor.capture());
         verifyNoMoreInteractions(journal);
         final Pointer pointer = captor.getValue();
-        assertEquals(entryName, pointer.pointer(), "The added entry should be the one provided.");
+        assertEquals(entryID, pointer.pointer(), "The added entry should be the one provided.");
         assertEquals(now.toEpochMilli(), pointer.timestamp(), "The added entry should be dated to the time from the InstantSource.");
     }
 }
