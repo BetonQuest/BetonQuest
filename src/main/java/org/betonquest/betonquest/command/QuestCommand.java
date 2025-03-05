@@ -293,79 +293,59 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     "globalpoint", "tag", "point", "journal", "delete", "rename", "version", "purge",
                     "update", "reload", "backup", "debug", "download", "variable"));
         }
-        switch (args[0].toLowerCase(Locale.ROOT)) {
-            case "conditions":
-            case "condition":
-            case "c":
-                return completeConditions(args);
-            case "events":
-            case "event":
-            case "e":
-                return completeEvents(args);
-            case "items":
-            case "item":
-            case "i":
-            case "give":
-            case "g":
-                return completeItems(args);
-            case "objectives":
-            case "objective":
-            case "o":
-                return completeObjectives(args);
-            case "globaltags":
-            case "globaltag":
-            case "gtag":
-            case "gtags":
-            case "gt":
-                return completeGlobalTags(args);
-            case "globalpoints":
-            case "globalpoint":
-            case "gpoints":
-            case "gpoint":
-            case "gp":
-                return completeGlobalPoints(args);
-            case "tags":
-            case "tag":
-            case "t":
-                return completeTags(args);
-            case "points":
-            case "point":
-            case "p":
-                return completePoints(args);
-            case "journals":
-            case "journal":
-            case "j":
-                return completeJournals(args);
-            case "delete":
-            case "del":
-            case "d":
-                return completeDeleting(args);
-            case "rename":
-            case "r":
-                return completeRenaming(args);
-            case "purge":
-                if (args.length == 2) {
-                    return Optional.empty();
-                } else {
-                    return Optional.of(new ArrayList<>());
-                }
-            case "debug":
-                return completeDebug(args);
-            case "download":
-                return completeDownload(args);
-            case "variable":
-            case "var":
-                return completeVariables(args);
-            case "version":
-            case "ver":
-            case "v":
-            case "update":
-            case "reload":
-            case "backup":
-            case "package":
-            default:
-                return Optional.of(new ArrayList<>());
-        }
+        return switch (args[0].toLowerCase(Locale.ROOT)) {
+            case "conditions",
+                 "condition",
+                 "c" -> completeConditions(args);
+            case "events",
+                 "event",
+                 "e" -> completeEvents(args);
+            case "items",
+                 "item",
+                 "i",
+                 "give",
+                 "g" -> completeItems(args);
+            case "objectives",
+                 "objective",
+                 "o" -> completeObjectives(args);
+            case "globaltags",
+                 "globaltag",
+                 "gtag",
+                 "gtags",
+                 "gt" -> completeGlobalTags(args);
+            case "globalpoints",
+                 "globalpoint",
+                 "gpoints",
+                 "gpoint",
+                 "gp" -> completeGlobalPoints(args);
+            case "tags",
+                 "tag",
+                 "t" -> completeTags(args);
+            case "points",
+                 "point",
+                 "p" -> completePoints(args);
+            case "journals",
+                 "journal",
+                 "j" -> completeJournals(args);
+            case "delete",
+                 "del",
+                 "d" -> completeDeleting(args);
+            case "rename",
+                 "r" -> completeRenaming(args);
+            case "purge" -> args.length == 2 ? Optional.empty() : Optional.of(new ArrayList<>());
+            case "debug" -> completeDebug(args);
+            case "download" -> completeDownload(args);
+            case "variable",
+                 "var" -> completeVariables(args);
+            case "version",
+                 "ver",
+                 "v",
+                 "update",
+                 "reload",
+                 "backup",
+                 "package" -> Optional.of(new ArrayList<>());
+            default -> Optional.of(new ArrayList<>());
+        };
     }
 
     /**
@@ -547,10 +527,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_pointer");
             return;
         }
-        // if there are arguments, handle them
         switch (args[2].toLowerCase(Locale.ROOT)) {
-            case "add":
-            case "a":
+            case "add", "a" -> {
                 final Pointer pointer;
                 if (args.length < 5) {
                     final long timestamp = new Date().getTime();
@@ -568,27 +546,20 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         return;
                     }
                 }
-                // add the pointer
                 journal.addPointer(pointer);
                 journal.update();
                 sendMessage(sender, "pointer_added");
-                break;
-            case "remove":
-            case "delete":
-            case "del":
-            case "r":
-            case "d":
-                // remove the pointer
+            }
+            case "remove", "delete", "del", "r", "d" -> {
                 log.debug("Removing pointer");
                 journal.removePointer(pointerName);
                 journal.update();
                 sendMessage(sender, "pointer_removed");
-                break;
-            default:
-                // if there was something else, display error message
+            }
+            default -> {
                 log.debug("The argument was unknown");
                 sendMessage(sender, "unknown_argument");
-                break;
+            }
         }
     }
 
@@ -643,36 +614,25 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final String category = args[3];
         // if there are arguments, handle them
         switch (args[2].toLowerCase(Locale.ROOT)) {
-            case "add":
-            case "a":
+            case "add", "a" -> {
                 if (args.length < 5 || !args[4].matches("-?\\d+")) {
                     log.debug("Missing amount");
                     sendMessage(sender, "specify_amount");
                     return;
                 }
-                // add the point
                 log.debug("Adding points");
                 playerData.modifyPoints(category, Integer.parseInt(args[4]));
                 sendMessage(sender, "points_added");
-                break;
-            case "remove":
-            case "delete":
-            case "del":
-            case "r":
-            case "d":
-                // remove the point (this is unnecessary as adding negative
-                // amounts
-                // subtracts points, but for the sake of users let's leave it
-                // here)
+            }
+            case "remove", "delete", "del", "r", "d" -> {
                 log.debug("Removing points");
                 playerData.removePointsCategory(category);
                 sendMessage(sender, "points_removed");
-                break;
-            default:
-                // if there was something else, display error message
+            }
+            default -> {
                 log.debug("The argument was unknown");
                 sendMessage(sender, "unknown_argument");
-                break;
+            }
         }
     }
 
@@ -707,32 +667,25 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final String category = args[2];
         // if there are arguments, handle them
         switch (args[1].toLowerCase(Locale.ROOT)) {
-            case "add":
-            case "a":
+            case "add", "a" -> {
                 if (args.length < 4 || !args[3].matches("-?\\d+")) {
                     log.debug("Missing amount");
                     sendMessage(sender, "specify_amount");
                     return;
                 }
-                // add the point
                 log.debug("Adding global points");
                 data.modifyPoints(category, Integer.parseInt(args[3]));
                 sendMessage(sender, "points_added");
-                break;
-            case "remove":
-            case "delete":
-            case "del":
-            case "r":
-            case "d":
+            }
+            case "remove", "delete", "del", "r", "d" -> {
                 log.debug("Removing global points");
                 data.removePointsCategory(category);
                 sendMessage(sender, "points_removed");
-                break;
-            default:
-                // if there was something else, display error message
+            }
+            default -> {
                 log.debug("The argument was unknown");
                 sendMessage(sender, "unknown_argument");
-                break;
+            }
         }
     }
 
@@ -965,30 +918,20 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final String tag = args[3];
         // if there are arguments, handle them
         switch (args[2].toLowerCase(Locale.ROOT)) {
-            case "add":
-            case "a":
-                // add the tag
-                log.debug(
-                        "Adding tag " + tag + " for " + profile);
+            case "add", "a" -> {
+                log.debug("Adding tag " + tag + " for " + profile);
                 playerData.addTag(tag);
                 sendMessage(sender, "tag_added");
-                break;
-            case "remove":
-            case "delete":
-            case "del":
-            case "r":
-            case "d":
-                // remove the tag
-                log.debug(
-                        "Removing tag " + tag + " from " + profile);
+            }
+            case "remove", "delete", "del", "r", "d" -> {
+                log.debug("Removing tag " + tag + " from " + profile);
                 playerData.removeTag(tag);
                 sendMessage(sender, "tag_removed");
-                break;
-            default:
-                // if there was something else, display error message
+            }
+            default -> {
                 log.debug("The argument was unknown");
                 sendMessage(sender, "unknown_argument");
-                break;
+            }
         }
     }
 
@@ -1024,28 +967,20 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final String tag = args[2];
         // if there are arguments, handle them
         switch (args[1].toLowerCase(Locale.ROOT)) {
-            case "add":
-            case "a":
-                // add the tag
+            case "add", "a" -> {
                 log.debug("Adding global tag " + tag);
                 data.addTag(tag);
                 sendMessage(sender, "tag_added");
-                break;
-            case "remove":
-            case "delete":
-            case "del":
-            case "r":
-            case "d":
-                // remove the tag
+            }
+            case "remove", "delete", "del", "r", "d" -> {
                 log.debug("Removing global tag " + tag);
                 data.removeTag(tag);
                 sendMessage(sender, "tag_removed");
-                break;
-            default:
-                // if there was something else, display error message
+            }
+            default -> {
                 log.debug("The argument was unknown");
                 sendMessage(sender, "unknown_argument");
-                break;
+            }
         }
     }
 
@@ -1140,33 +1075,23 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         switch (args[2].toLowerCase(Locale.ROOT)) {
-            case "start":
-            case "s":
-            case "add":
-            case "a":
-                log.debug(
-                        "Adding new objective " + objectiveID + " for " + profile);
-                // add the objective
+            case "start", "s", "add", "a" -> {
+                log.debug("Adding new objective " + objectiveID + " for " + profile);
                 if (isOnline) {
                     instance.getQuestTypeAPI().newObjective(profile, objectiveID);
                 } else {
                     playerData.addNewRawObjective(objectiveID);
                 }
                 sendMessage(sender, "objective_added");
-                break;
-            case "remove":
-            case "delete":
-            case "del":
-            case "r":
-            case "d":
+            }
+            case "remove", "delete", "del", "r", "d" -> {
                 log.debug(
                         "Deleting objective " + objectiveID + " for " + profile);
                 objective.cancelObjectiveForPlayer(profile);
                 playerData.removeRawObjective(objectiveID);
                 sendMessage(sender, "objective_removed");
-                break;
-            case "complete":
-            case "c":
+            }
+            case "complete", "c" -> {
                 log.debug(
                         "Completing objective " + objectiveID + " for " + profile);
                 if (isOnline) {
@@ -1175,12 +1100,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     playerData.removeRawObjective(objectiveID);
                 }
                 sendMessage(sender, "objective_completed");
-                break;
-            default:
-                // if there was something else, display error message
+            }
+            default -> {
                 log.debug("The argument was unknown");
                 sendMessage(sender, "unknown_argument");
-                break;
+            }
         }
     }
 
@@ -1215,19 +1139,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final UpdateType updateType;
         final List<OnlineProfile> onlineProfiles = BetonQuest.getInstance().getProfileProvider().getOnlineProfiles();
         switch (type) {
-            case "tags":
-            case "tag":
-            case "t":
+            case "tags", "tag", "t" -> {
                 updateType = UpdateType.RENAME_ALL_TAGS;
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final PlayerData playerData = dataStorage.get(onlineProfile);
                     playerData.removeTag(name);
                     playerData.addTag(rename);
                 }
-                break;
-            case "points":
-            case "point":
-            case "p":
+            }
+            case "points", "point", "p" -> {
                 updateType = UpdateType.RENAME_ALL_POINTS;
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final PlayerData playerData = dataStorage.get(onlineProfile);
@@ -1241,12 +1161,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     playerData.removePointsCategory(name);
                     playerData.modifyPoints(rename, points);
                 }
-                break;
-            case "globalpoints":
-            case "globalpoint":
-            case "gpoints":
-            case "gpoint":
-            case "gp":
+            }
+            case "globalpoints", "globalpoint", "gpoints", "gpoint", "gp" -> {
                 updateType = UpdateType.RENAME_ALL_GLOBAL_POINTS;
                 int globalpoints = 0;
                 for (final Point globalpoint : instance.getGlobalData().getPoints()) {
@@ -1257,10 +1173,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 }
                 instance.getGlobalData().removePointsCategory(name);
                 instance.getGlobalData().modifyPoints(rename, globalpoints);
-                break;
-            case "objectives":
-            case "objective":
-            case "o":
+            }
+            case "objectives", "objective", "o" -> {
                 updateType = UpdateType.RENAME_ALL_OBJECTIVES;
                 // get ID and package
                 final ObjectiveID nameID;
@@ -1307,13 +1221,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     log.warn(nameID.getPackage(), e.getMessage(), e);
                     return;
                 }
-                break;
-            case "journals":
-            case "journal":
-            case "j":
-            case "entries":
-            case "entry":
-            case "e":
+            }
+            case "journals", "journal", "j", "entries", "entry", "e" -> {
                 updateType = UpdateType.RENAME_ALL_ENTRIES;
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final Journal journal = dataStorage.get(onlineProfile).getJournal();
@@ -1331,10 +1240,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     journal.addPointer(new Pointer(rename, journalPointer.timestamp()));
                     journal.update();
                 }
-                break;
-            default:
+            }
+            default -> {
                 sendMessage(sender, "unknown_argument");
                 return;
+            }
         }
         instance.getSaver().add(new Record(updateType, rename, name));
         sendMessage(sender, "everything_renamed");
@@ -1367,27 +1277,21 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final UpdateType updateType;
         final List<OnlineProfile> onlineProfiles = BetonQuest.getInstance().getProfileProvider().getOnlineProfiles();
         switch (type) {
-            case "tags":
-            case "tag":
-            case "t":
+            case "tags", "tag", "t" -> {
                 updateType = UpdateType.REMOVE_ALL_TAGS;
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final PlayerData playerData = dataStorage.get(onlineProfile);
                     playerData.removeTag(name);
                 }
-                break;
-            case "points":
-            case "point":
-            case "p":
+            }
+            case "points", "point", "p" -> {
                 updateType = UpdateType.REMOVE_ALL_POINTS;
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final PlayerData playerData = dataStorage.get(onlineProfile);
                     playerData.removePointsCategory(name);
                 }
-                break;
-            case "objectives":
-            case "objective":
-            case "o":
+            }
+            case "objectives", "objective", "o" -> {
                 updateType = UpdateType.REMOVE_ALL_OBJECTIVES;
                 final ObjectiveID objectiveID;
                 try {
@@ -1406,23 +1310,19 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     objective.cancelObjectiveForPlayer(onlineProfile);
                     dataStorage.get(onlineProfile).removeRawObjective(objectiveID);
                 }
-                break;
-            case "journals":
-            case "journal":
-            case "j":
-            case "entries":
-            case "entry":
-            case "e":
+            }
+            case "journals", "journal", "j", "entries", "entry", "e" -> {
                 updateType = UpdateType.REMOVE_ALL_ENTRIES;
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final Journal journal = dataStorage.get(onlineProfile).getJournal();
                     journal.removePointer(name);
                     journal.update();
                 }
-                break;
-            default:
+            }
+            default -> {
                 sendMessage(sender, "unknown_argument");
                 return;
+            }
         }
         instance.getSaver().add(new Record(updateType, name));
         sendMessage(sender, "everything_removed");
@@ -1436,28 +1336,24 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return Optional.of(Arrays.asList("tag", "point", "objective", "entry"));
         }
         if (args.length == 3) {
-            switch (args[1].toLowerCase(Locale.ROOT)) {
-                case "tags":
-                case "tag":
-                case "t":
-                case "points":
-                case "point":
-                case "p":
-                    return completeId(args, null);
-                case "objectives":
-                case "objective":
-                case "o":
-                    return completeId(args, AccessorType.OBJECTIVES);
-                case "journals":
-                case "journal":
-                case "j":
-                case "entries":
-                case "entry":
-                case "e":
-                    return completeId(args, AccessorType.JOURNAL);
-                default:
-                    break;
-            }
+            return switch (args[1].toLowerCase(Locale.ROOT)) {
+                case "tags",
+                     "tag",
+                     "t",
+                     "points",
+                     "point",
+                     "p" -> completeId(args, null);
+                case "objectives",
+                     "objective",
+                     "o" -> completeId(args, AccessorType.OBJECTIVES);
+                case "journals",
+                     "journal",
+                     "j",
+                     "entries",
+                     "entry",
+                     "e" -> completeId(args, AccessorType.JOURNAL);
+                default -> Optional.of(new ArrayList<>());
+            };
         }
         return Optional.of(new ArrayList<>());
     }
@@ -1785,8 +1681,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
         final String subCommand = args.length == 3 ? "list" : args[3].toLowerCase(Locale.ROOT);
         switch (subCommand) {
-            case "list":
-            case "l":
+            case "list", "l" -> {
                 // check for actual values
                 final Map<String, String> properties = variableObjective.getProperties(profile);
                 if (properties == null) {
@@ -1803,9 +1698,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         .filter(entry -> shouldDisplay.test(entry.getKey()))
                         .sorted((o1, o2) -> o1.getKey().compareToIgnoreCase(o2.getKey()))
                         .forEach(entry -> sender.sendMessage("§b- " + entry.getKey() + "§e: §a" + entry.getValue()));
-                break;
-            case "set":
-            case "s":
+            }
+            case "set", "s" -> {
                 if (args.length < 6) {
                     log.debug("Missing amount");
                     sendMessage(sender, "arguments");
@@ -1817,9 +1711,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 sendMessage(sender, "value_set",
                         new PluginMessage.Replacement("value", value),
                         new PluginMessage.Replacement("key", args[4]));
-                break;
-            case "del":
-            case "d":
+            }
+            case "del", "d" -> {
                 if (args.length < 5) {
                     log.debug("Missing amount");
                     sendMessage(sender, "arguments");
@@ -1829,12 +1722,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 variableObjective.store(profile, args[4], null);
                 sendMessage(sender, "key_remove",
                         new PluginMessage.Replacement("key", args[4]));
-                break;
-            default:
-                // if there was something else, display error message
+            }
+            default -> {
                 log.debug("The argument was unknown");
                 sendMessage(sender, "unknown_argument");
-                break;
+            }
         }
     }
 
