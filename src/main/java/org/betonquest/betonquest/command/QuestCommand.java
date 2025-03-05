@@ -1207,18 +1207,19 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 updateType = UpdateType.RENAME_ALL_ENTRIES;
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final Journal journal = dataStorage.get(onlineProfile).getJournal();
-                    Pointer journalPointer = null;
+                    final List<Pointer> journalPointers = new ArrayList<>();
                     for (final Pointer pointer : journal.getPointers()) {
                         if (pointer.pointer().equals(name)) {
-                            journalPointer = pointer;
+                            journalPointers.add(pointer);
                         }
                     }
-                    // skip the player if he does not have this entry
-                    if (journalPointer == null) {
+                    if (journalPointers.isEmpty()) {
                         continue;
                     }
-                    journal.removePointer(name);
-                    journal.addPointer(new Pointer(rename, journalPointer.timestamp()));
+                    for (final Pointer pointer : journalPointers) {
+                        journal.removePointer(name);
+                        journal.addPointer(new Pointer(rename, pointer.timestamp()));
+                    }
                     journal.update();
                 }
             }
@@ -1296,7 +1297,18 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 updateType = UpdateType.REMOVE_ALL_ENTRIES;
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final Journal journal = dataStorage.get(onlineProfile).getJournal();
-                    journal.removePointer(name);
+                    int count = 0;
+                    for (final Pointer pointer : journal.getPointers()) {
+                        if (pointer.pointer().equals(name)) {
+                            count++;
+                        }
+                    }
+                    if (count == 0) {
+                        continue;
+                    }
+                    for (int i = 0; i < count; i++) {
+                        journal.removePointer(name);
+                    }
                     journal.update();
                 }
             }
