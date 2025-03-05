@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.id;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
@@ -9,7 +8,6 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -23,12 +21,6 @@ public abstract class ID {
      * The string used to go "up the hierarchy" in relative paths.
      */
     public static final String UP_STR = "_";
-
-    /**
-     * A list of all objects that can be addressed via this ID.
-     */
-    public static final List<String> PATHS = List.of("events", "conditions", "objectives", "variables",
-            "conversations", "cancel", "items", "compass", "journal", "journal_main_page");
 
     /**
      * The package the object is in.
@@ -105,9 +97,9 @@ public abstract class ID {
                 return resolveRelativePathDown(pack, identifier, packName);
             }
         }
-        final QuestPackage packFromDot = getDotIndex(identifier, packName);
-        if (packFromDot != null) {
-            return packFromDot;
+        final QuestPackage packFromName = packFromName(packName);
+        if (packFromName != null) {
+            return packFromName;
         }
         if (identifier.length() == dotIndex + 1) {
             throw new QuestException("ID of the pack is null");
@@ -116,14 +108,13 @@ public abstract class ID {
     }
 
     @Nullable
-    private QuestPackage getDotIndex(final String identifier, final String packName) {
+    private QuestPackage packFromName(final String packName) throws QuestException {
         final QuestPackage potentialPack = Config.getPackages().get(packName);
         if (potentialPack == null) {
             return null;
         }
-        final String[] parts = identifier.split(":")[0].split("\\.");
-        if (BetonQuest.getInstance().getQuestRegistries().variable().getFactory(packName) != null) {
-            return resolveIdOfVariable(parts, potentialPack);
+        if (this instanceof VariableID && BetonQuest.getInstance().getQuestRegistries().variable().getFactory(packName) != null) {
+            throw new QuestException("You can't have a package with the name of a variable!");
         }
         return potentialPack;
     }
@@ -170,43 +161,6 @@ public abstract class ID {
                     + fullPath + "', but this package does not exist!");
         }
         return resolved;
-    }
-
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    @Nullable
-    private QuestPackage resolveIdOfVariable(final String[] parts, final QuestPackage potentialPack) {
-        if (parts.length == 2 && isIdFromPack(potentialPack, parts[1])) {
-            return potentialPack;
-        } else if (parts.length > 2) {
-            if (BetonQuest.getInstance().getQuestRegistries().variable().getFactory(parts[1]) != null
-                    && isIdFromPack(potentialPack, parts[2])) {
-                return potentialPack;
-            } else if (isIdFromPack(potentialPack, parts[1])) {
-                return null;
-            } else {
-                return potentialPack;
-            }
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Checks if an ID belongs to a provided QuestPackage. This checks all events, conditions, objectives and variables
-     * for any ID matching the provided string
-     *
-     * @param pack       The quest package to search
-     * @param identifier The id
-     * @return true if the id exists in the quest package
-     */
-    private boolean isIdFromPack(final QuestPackage pack, final String identifier) {
-        final MultiConfiguration config = pack.getConfig();
-        for (final String path : PATHS) {
-            if (config.getString(path + "." + identifier, null) != null) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
