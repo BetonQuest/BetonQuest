@@ -1279,16 +1279,18 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 try {
                     objectiveID = new ObjectiveID(null, name);
                 } catch (final QuestException e) {
+                    final String message = "The objective '" + name + "' does not exist, it will still be removed from the database!";
                     sendMessage(sender, "error",
                             new PluginMessage.Replacement("error", e.getMessage()));
-                    log.warn("Could not find objective: " + e.getMessage(), e);
-                    return;
+                    log.warn(message, e);
+                    log.debug("Removing non existent objective only from database: " + e.getMessage(), e);
+                    break;
+                }
+                final Objective objective = instance.getQuestTypeAPI().getObjective(objectiveID);
+                if (objective == null) {
+                    break;
                 }
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
-                    final Objective objective = instance.getQuestTypeAPI().getObjective(objectiveID);
-                    if (objective == null) {
-                        break;
-                    }
                     objective.cancelObjectiveForPlayer(onlineProfile);
                     dataStorage.get(onlineProfile).removeRawObjective(objectiveID);
                 }
