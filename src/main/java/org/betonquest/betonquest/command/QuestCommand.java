@@ -434,16 +434,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Purges profile's data.
      */
     private void purgePlayer(final CommandSender sender, final String... args) {
-        final Profile profile = getTargetProfile(sender, args);
-        if (profile == null) {
+        final PlayerData playerData = getTargetPlayerData(sender, args);
+        if (playerData == null) {
             return;
-        }
-        final PlayerData playerData;
-        if (profile.getOnlineProfile().isPresent()) {
-            playerData = dataStorage.get(profile);
-        } else {
-            log.debug("Profile is offline, loading his data");
-            playerData = new PlayerData(pluginMessage, profile);
         }
         log.debug("Purging player " + args[1]);
         playerData.purgePlayer();
@@ -481,20 +474,27 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         return BetonQuest.getInstance().getProfileProvider().getProfile(Bukkit.getOfflinePlayer(args[1]));
     }
 
+    @Nullable
+    private PlayerData getTargetPlayerData(final CommandSender sender, final String... args) {
+        final Profile profile = getTargetProfile(sender, args);
+        if (profile == null) {
+            return null;
+        }
+        if (profile.getOnlineProfile().isPresent()) {
+            return dataStorage.get(profile);
+        } else {
+            log.debug("Profile is offline, loading his data");
+            return new PlayerData(pluginMessage, profile);
+        }
+    }
+
     /**
      * Lists, adds or removes journal entries of certain profile.
      */
     private void handleJournals(final CommandSender sender, final String... args) {
-        final Profile profile = getTargetProfile(sender, args);
-        if (profile == null) {
+        final PlayerData playerData = getTargetPlayerData(sender, args);
+        if (playerData == null) {
             return;
-        }
-        final PlayerData playerData;
-        if (profile.getOnlineProfile().isPresent()) {
-            playerData = dataStorage.get(profile);
-        } else {
-            log.debug("Profile is offline, loading his data");
-            playerData = new PlayerData(pluginMessage, profile);
         }
         final Journal journal = playerData.getJournal();
         // if there are no arguments then list player's pointers
@@ -579,16 +579,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Lists, adds or removes points of certain profile.
      */
     private void handlePoints(final CommandSender sender, final String... args) {
-        final Profile profile = getTargetProfile(sender, args);
-        if (profile == null) {
+        final PlayerData playerData = getTargetPlayerData(sender, args);
+        if (playerData == null) {
             return;
-        }
-        final PlayerData playerData;
-        if (profile.getOnlineProfile().isPresent()) {
-            playerData = dataStorage.get(profile);
-        } else {
-            log.debug("Profile is offline, loading his data");
-            playerData = new PlayerData(pluginMessage, profile);
         }
         // if there are no arguments then list player's points
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
@@ -882,16 +875,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Lists, adds or removes tags.
      */
     private void handleTags(final CommandSender sender, final String... args) {
-        final Profile profile = getTargetProfile(sender, args);
-        if (profile == null) {
+        final PlayerData playerData = getTargetPlayerData(sender, args);
+        if (playerData == null) {
             return;
-        }
-        final PlayerData playerData;
-        if (profile.getOnlineProfile().isPresent()) {
-            playerData = dataStorage.get(profile);
-        } else {
-            log.debug("Profile is offline, loading his data");
-            playerData = new PlayerData(pluginMessage, profile);
         }
         // if there are no arguments then list player's tags
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
@@ -914,12 +900,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // if there are arguments, handle them
         switch (args[2].toLowerCase(Locale.ROOT)) {
             case "add", "a" -> {
-                log.debug("Adding tag " + tag + " for " + profile);
+                log.debug("Adding tag");
                 playerData.addTag(tag);
                 sendMessage(sender, "tag_added");
             }
             case "remove", "delete", "del", "r", "d" -> {
-                log.debug("Removing tag " + tag + " from " + profile);
+                log.debug("Removing tag");
                 playerData.removeTag(tag);
                 sendMessage(sender, "tag_removed");
             }
