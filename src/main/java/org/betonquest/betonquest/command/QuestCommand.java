@@ -375,13 +375,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 completions.add(pack + '.');
                 return Optional.of(completions);
             }
-            final ConfigurationSection configuration = switch (type) {
-                case ITEMS -> configPack.getConfig().getConfigurationSection("items");
-                case EVENTS -> configPack.getConfig().getConfigurationSection("events");
-                case JOURNAL -> configPack.getConfig().getConfigurationSection("journal");
-                case CONDITIONS -> configPack.getConfig().getConfigurationSection("conditions");
-                case OBJECTIVES -> configPack.getConfig().getConfigurationSection("objectives");
-            };
+            final ConfigurationSection configuration = configPack.getConfig()
+                    .getConfigurationSection(type.name().toLowerCase(Locale.ROOT));
             final List<String> completions = new ArrayList<>();
             if (configuration != null) {
                 for (final String key : configuration.getKeys(false)) {
@@ -1819,6 +1814,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     /**
      * Accessor Type for ID completion.
+     * The enum in lower case is the used section.
      */
     private enum AccessorType {
         /**
