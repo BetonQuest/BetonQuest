@@ -9,8 +9,8 @@ import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.id.JournalMainPageID;
 import org.betonquest.betonquest.id.QuestCancelerID;
+import org.betonquest.betonquest.kernel.processor.QuestRegistry;
 import org.betonquest.betonquest.message.ParsedSectionMessage;
-import org.betonquest.betonquest.quest.registry.QuestRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;

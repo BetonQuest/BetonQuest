@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
+import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
 import org.bukkit.Bukkit;
 
 /**

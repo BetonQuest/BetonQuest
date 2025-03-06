@@ -40,9 +40,12 @@ import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.MySQL;
 import org.betonquest.betonquest.database.SQLite;
 import org.betonquest.betonquest.database.Saver;
-import org.betonquest.betonquest.feature.registry.CoreFeatureFactories;
-import org.betonquest.betonquest.feature.registry.FeatureRegistries;
+import org.betonquest.betonquest.feature.CoreFeatureFactories;
 import org.betonquest.betonquest.item.QuestItemHandler;
+import org.betonquest.betonquest.kernel.processor.QuestRegistry;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
+import org.betonquest.betonquest.kernel.registry.feature.FeatureRegistries;
+import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.listener.CustomDropListener;
 import org.betonquest.betonquest.listener.JoinQuitListener;
 import org.betonquest.betonquest.listener.MobKillListener;
@@ -56,10 +59,7 @@ import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.playerhider.PlayerHider;
 import org.betonquest.betonquest.profile.UUIDProfileProvider;
-import org.betonquest.betonquest.quest.registry.CoreQuestTypes;
-import org.betonquest.betonquest.quest.registry.QuestRegistry;
-import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
-import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
+import org.betonquest.betonquest.quest.CoreQuestTypes;
 import org.betonquest.betonquest.schedule.LastExecutionCache;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.java.JREVersionPrinter;
@@ -431,7 +431,7 @@ public class BetonQuest extends JavaPlugin {
 
         pluginManager.registerEvents(new CombatTagger(profileProvider, config.getInt("combat_delay")), this);
 
-        ConversationColors.loadColors();
+        ConversationColors.loadColors(loggerFactory.create(ConversationColors.class), config);
 
         pluginManager.registerEvents(new MobKillListener(), this);
 
@@ -610,7 +610,7 @@ public class BetonQuest extends JavaPlugin {
         // and start new one with reloaded configs
         log.debug("Restarting global locations");
         new GlobalObjectives();
-        ConversationColors.loadColors();
+        ConversationColors.loadColors(loggerFactory.create(ConversationColors.class), config);
         Compatibility.reload();
         // load all events, conditions, objectives, conversations etc.
         loadData();
@@ -693,6 +693,11 @@ public class BetonQuest extends JavaPlugin {
         return database;
     }
 
+    /**
+     * Returns the updater instance.
+     *
+     * @return Updater instance
+     */
     public Updater getUpdater() {
         return updater;
     }

@@ -7,9 +7,9 @@ import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.auraskills.condition.AuraSkillsLevelConditionFactory;
 import org.betonquest.betonquest.compatibility.auraskills.condition.AuraSkillsStatsConditionFactory;
 import org.betonquest.betonquest.compatibility.auraskills.event.AuraSkillsExperienceEventFactory;
+import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
+import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
-import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
 import org.bukkit.Server;
 
 /**

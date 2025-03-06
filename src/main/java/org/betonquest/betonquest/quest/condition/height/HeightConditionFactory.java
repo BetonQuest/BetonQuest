@@ -9,9 +9,9 @@ import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapt
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
-import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
 
 /**
  * Factory for {@link HeightCondition}s.

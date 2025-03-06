@@ -10,8 +10,8 @@ import org.betonquest.betonquest.compatibility.vault.condition.MoneyConditionFac
 import org.betonquest.betonquest.compatibility.vault.event.MoneyEventFactory;
 import org.betonquest.betonquest.compatibility.vault.event.PermissionEventFactory;
 import org.betonquest.betonquest.compatibility.vault.variable.MoneyVariableFactory;
+import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.plugin.RegisteredServiceProvider;

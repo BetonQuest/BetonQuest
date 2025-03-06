@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ObjectiveID;
-import org.betonquest.betonquest.quest.registry.QuestRegistry;
+import org.betonquest.betonquest.kernel.processor.QuestRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;

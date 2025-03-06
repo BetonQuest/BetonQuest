@@ -8,10 +8,10 @@ import org.betonquest.betonquest.compatibility.brewery.condition.DrunkQualityCon
 import org.betonquest.betonquest.compatibility.brewery.condition.HasBrewConditionFactory;
 import org.betonquest.betonquest.compatibility.brewery.event.GiveBrewEventFactory;
 import org.betonquest.betonquest.compatibility.brewery.event.TakeBrewEventFactory;
+import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
+import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
+import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.registry.QuestTypeRegistries;
-import org.betonquest.betonquest.quest.registry.type.ConditionTypeRegistry;
-import org.betonquest.betonquest.quest.registry.type.EventTypeRegistry;
 import org.bukkit.Server;
 
 /**
