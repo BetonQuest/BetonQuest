@@ -1,22 +1,16 @@
 package org.betonquest.betonquest.conversation;
 
-import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.config.Config;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Locale;
 
 /**
- * Holds the colors of the conversations
+ * Holds the colors of the conversations.
  */
-@SuppressWarnings({"PMD.ClassNamingConventions", "PMD.CommentRequired"})
 public final class ConversationColors {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(ConversationColors.class);
-
     /**
      * The empty fallback ChatColors.
      */
@@ -30,42 +24,38 @@ public final class ConversationColors {
     private ConversationColors() {
     }
 
-    public static void loadColors() {
+    /**
+     * Loads the conversation colors.
+     *
+     * @param log    the custom logger used when the config contains error
+     * @param config the config to load the colors from
+     */
+    public static void loadColors(final BetonQuestLogger log, final FileConfigAccessor config) {
         try {
-            final String[] text = Config.getConfigString("conversation_colors.text").split(",");
-            final ChatColor[] textColors = new ChatColor[text.length];
-            for (int i = 0; i < text.length; i++) {
-                textColors[i] = ChatColor.valueOf(text[i].toUpperCase(Locale.ROOT).trim().replace(" ", "_"));
+            final ConfigurationSection section = config.getConfigurationSection("conversation_colors");
+            if (section == null) {
+                log.warn("Conversation colors do not exist in the config, everything will be white!");
+                return;
             }
-            final String[] npc = Config.getConfigString("conversation_colors.npc").split(",");
-            final ChatColor[] npcColors = new ChatColor[npc.length];
-            for (int i = 0; i < npc.length; i++) {
-                npcColors[i] = ChatColor.valueOf(npc[i].toUpperCase(Locale.ROOT).trim().replace(" ", "_"));
+            final String[] sections = {"text", "npc", "player", "number", "answer", "option"};
+            final ChatColor[][] rawColors = new ChatColor[sections.length][];
+            for (int k = 0; k < sections.length; k++) {
+                final String colorString = section.getString(sections[k]);
+                if (colorString == null) {
+                    log.warn("Conversation color " + sections[k] + " does not exist in the config, it will be white!");
+                    continue;
+                }
+                final String[] text = colorString.split(",");
+                final ChatColor[] textColors = new ChatColor[text.length];
+                for (int i = 0; i < text.length; i++) {
+                    textColors[i] = ChatColor.valueOf(text[i].toUpperCase(Locale.ROOT).trim().replace(" ", "_"));
+                }
+                rawColors[k] = textColors;
             }
-            final String[] player = Config.getConfigString("conversation_colors.player").split(",");
-            final ChatColor[] playerColors = new ChatColor[player.length];
-            for (int i = 0; i < player.length; i++) {
-                playerColors[i] = ChatColor.valueOf(player[i].toUpperCase(Locale.ROOT).trim().replace(" ", "_"));
-            }
-            final String[] number = Config.getConfigString("conversation_colors.number").split(",");
-            final ChatColor[] numberColors = new ChatColor[number.length];
-            for (int i = 0; i < number.length; i++) {
-                numberColors[i] = ChatColor.valueOf(number[i].toUpperCase(Locale.ROOT).trim().replace(" ", "_"));
-            }
-            final String[] answer = Config.getConfigString("conversation_colors.answer").split(",");
-            final ChatColor[] answerColors = new ChatColor[answer.length];
-            for (int i = 0; i < answer.length; i++) {
-                answerColors[i] = ChatColor.valueOf(answer[i].toUpperCase(Locale.ROOT).trim().replace(" ", "_"));
-            }
-            final String[] option = Config.getConfigString("conversation_colors.option").split(",");
-            final ChatColor[] optionColors = new ChatColor[option.length];
-            for (int i = 0; i < option.length; i++) {
-                optionColors[i] = ChatColor.valueOf(option[i].toUpperCase(Locale.ROOT).trim().replace(" ", "_"));
-            }
-            colors = new Colors(textColors, npcColors, playerColors, numberColors, answerColors, optionColors);
+            colors = new Colors(rawColors[0], rawColors[1], rawColors[2], rawColors[3], rawColors[4], rawColors[5]);
         } catch (final IllegalArgumentException e) {
             colors = new Colors(EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY);
-            LOG.warn("Could not parse conversation colors, everything will be white!", e);
+            log.warn("Could not parse conversation colors, everything will be white!", e);
         }
     }
 

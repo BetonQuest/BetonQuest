@@ -431,7 +431,7 @@ public class BetonQuest extends JavaPlugin {
 
         pluginManager.registerEvents(new CombatTagger(profileProvider, config.getInt("combat_delay")), this);
 
-        ConversationColors.loadColors();
+        ConversationColors.loadColors(loggerFactory.create(ConversationColors.class), config);
 
         pluginManager.registerEvents(new MobKillListener(), this);
 
@@ -610,7 +610,7 @@ public class BetonQuest extends JavaPlugin {
         // and start new one with reloaded configs
         log.debug("Restarting global locations");
         new GlobalObjectives();
-        ConversationColors.loadColors();
+        ConversationColors.loadColors(loggerFactory.create(ConversationColors.class), config);
         Compatibility.reload();
         // load all events, conditions, objectives, conversations etc.
         loadData();
@@ -693,6 +693,11 @@ public class BetonQuest extends JavaPlugin {
         return database;
     }
 
+    /**
+     * Returns the updater instance.
+     *
+     * @return Updater instance
+     */
     public Updater getUpdater() {
         return updater;
     }
