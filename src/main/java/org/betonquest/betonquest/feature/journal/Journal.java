@@ -211,7 +211,7 @@ public class Journal {
                 text = "error";
             }
 
-            texts.add(datePrefix + "§" + config.getString("journal_colors.text") + text);
+            texts.add(datePrefix + "§" + config.getString("journal_colors.text") + Utils.format(text));
         }
     }
 
