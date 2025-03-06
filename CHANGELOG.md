@@ -11,6 +11,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `cancel` event now has `bypass` keyword to ignore conditions in Quest Canceler
 - `quester` in conversation now supports variables
 ### Changed
+- Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations
 - menuConfig.yml file was deleted, translations are in the lang folder and the config is part of config.yml 
 - `cancel` event now respects by default canceler conditions
