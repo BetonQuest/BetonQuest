@@ -14,7 +14,7 @@ import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.id.CompassID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -558,11 +558,10 @@ public class Backpack implements Listener {
                 log.warn("Could not resolve compass location for '" + compass + "': " + e.getMessage(), e);
                 return;
             }
-            final Location location = variableLocation.getValue(onlineProfile);
-            final QuestCompassTargetChangeEvent event = new QuestCompassTargetChangeEvent(onlineProfile, location);
+            final QuestCompassTargetChangeEvent event = new QuestCompassTargetChangeEvent(onlineProfile, loc);
             Bukkit.getServer().getPluginManager().callEvent(event);
             if (!event.isCancelled()) {
-                onlineProfile.getPlayer().setCompassTarget(location);
+                onlineProfile.getPlayer().setCompassTarget(loc);
             }
             onlineProfile.getPlayer().closeInventory();
         }

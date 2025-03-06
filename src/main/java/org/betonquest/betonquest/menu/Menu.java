@@ -129,6 +129,7 @@ public class Menu extends SimpleYMLSection implements Listener {
      * @param menuID          the id of the menu
      * @throws InvalidConfigurationException if config options are missing or invalid
      */
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public Menu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final RPGMenu rpgMenu,
                 final ConfigAccessor config, final PluginMessage pluginMessage, final QuestTypeAPI questTypeAPI,
                 final ProfileProvider profileProvider, final MenuID menuID) throws InvalidConfigurationException {

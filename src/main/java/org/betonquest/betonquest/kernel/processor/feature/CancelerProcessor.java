@@ -20,7 +20,6 @@ import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.message.ParsedSectionMessage;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
@@ -91,7 +90,7 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
         final String[] tags = helper.split("tags");
         final String[] points = helper.split("points");
         final JournalEntryID[] journal = helper.parseID("journal", JournalEntryID::new);
-        final String rawLoc = GlobalVariableResolver.resolve(pack, section.getString("location"));
+        final String rawLoc = section.getString("location");
         final VariableLocation location = rawLoc == null ? null : new VariableLocation(variableProcessor, pack, rawLoc);
         final QuestCanceler.CancelData cancelData = new QuestCanceler.CancelData(conditions, location, events, objectives, tags, points, journal);
         final BetonQuestLogger logger = loggerFactory.create(QuestCanceler.class);
@@ -114,7 +113,7 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
         @Nullable
         private String[] split(final String path) {
             final String raw = section.getString(path);
-            return raw == null ? null : GlobalVariableResolver.resolve(pack, raw).split(",");
+            return raw == null ? null : raw.split(",");
         }
 
         @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")

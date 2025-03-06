@@ -9,7 +9,7 @@ import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.citizens.CitizensHologramLoop;
-import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -74,7 +74,7 @@ public final class HologramProvider implements Integrator {
      * Creates a new HologramProvider object and assigns it to singleton instance if not already.
      *
      * @param variableProcessor the {@link VariableProcessor} to use
-     * @param integrator The initial integrator to hook into.
+     * @param integrator        The initial integrator to hook into.
      */
     private HologramProvider(final VariableProcessor variableProcessor, final HologramIntegrator integrator) {
         this.variableProcessor = variableProcessor;

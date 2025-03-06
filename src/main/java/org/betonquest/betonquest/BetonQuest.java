@@ -545,9 +545,9 @@ public class BetonQuest extends JavaPlugin {
         getCommand("betonquest").setExecutor(questCommand);
         getCommand("betonquest").setTabCompleter(questCommand);
         getCommand("journal").setExecutor(new JournalCommand(playerDataStorage, profileProvider));
-        getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class), pluginMessage, profileProvider));
-        getCommand("cancelquest").setExecutor(new CancelQuestCommand(pluginMessage, profileProvider));
-        getCommand("compass").setExecutor(new CompassCommand(pluginMessage, profileProvider));
+        getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class), getVariableProcessor(), pluginMessage, profileProvider));
+        getCommand("cancelquest").setExecutor(new CancelQuestCommand(getVariableProcessor(), pluginMessage, profileProvider));
+        getCommand("compass").setExecutor(new CompassCommand(getVariableProcessor(), pluginMessage, profileProvider));
         final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), playerDataStorage, pluginMessage, profileProvider);
         getCommand("questlang").setExecutor(langCommand);
         getCommand("questlang").setTabCompleter(langCommand);

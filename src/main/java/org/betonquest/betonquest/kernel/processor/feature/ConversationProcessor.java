@@ -15,7 +15,6 @@ import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
 import org.betonquest.betonquest.message.ParsedSectionMessage;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
@@ -95,7 +94,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
 
         final ParsedSectionMessage quester = new ParsedSectionMessage(variableProcessor, messageParser, playerDataStorage, pack, section, "quester");
         final CreationHelper helper = new CreationHelper(pack, section);
-        final boolean blockMovement = Boolean.parseBoolean(helper.opt("stop"));
+        final boolean blockMovement = section.getBoolean("stop", false);
         final String convIO = helper.parseConvIO();
         final String interceptor = helper.parseInterceptor();
         final List<EventID> finalEvents = helper.parseFinalEvents();
@@ -152,7 +151,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
 
         @Nullable
         private String opt(final String path) {
-            return GlobalVariableResolver.resolve(pack, section.getString(path));
+            return section.getString(path);
         }
 
         private String defaulting(final String path, final String configPath, final String defaultConfig) {
