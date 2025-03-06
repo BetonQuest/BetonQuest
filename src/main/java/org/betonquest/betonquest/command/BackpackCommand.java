@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.feature.Backpack;
-import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -39,10 +39,10 @@ public class BackpackCommand implements CommandExecutor {
     /**
      * Creates a new executor for the /backpack command.
      *
-     * @param log             the logger that will be used for logging
+     * @param log               the logger that will be used for logging
      * @param variableProcessor the {@link VariableProcessor} to use
-     * @param pluginMessage   the {@link PluginMessage} instance
-     * @param profileProvider the profile provider instance
+     * @param pluginMessage     the {@link PluginMessage} instance
+     * @param profileProvider   the profile provider instance
      */
     public BackpackCommand(final BetonQuestLogger log, final VariableProcessor variableProcessor, final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
         this.log = log;

@@ -15,6 +15,7 @@ import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.Ride
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.DeleteMenuConfigYml;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.DeleteMessagesYml;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.LanguageRename;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.VariablesRename;
 
 import java.io.IOException;
 import java.util.LinkedList;

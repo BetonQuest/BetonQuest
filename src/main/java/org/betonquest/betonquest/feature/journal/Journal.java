@@ -55,7 +55,7 @@ public class Journal {
 
     private final List<Pointer> pointers;
 
-    private final List<VariableString> texts = new ArrayList<>();
+    private final List<String> texts = new ArrayList<>();
 
     private final ConfigAccessor config;
 
@@ -172,19 +172,15 @@ public class Journal {
      * @return list of Strings - texts for every journal entry
      */
     public List<String> getText() {
-        final List<VariableString> list;
+        final List<String> list;
         if (Boolean.parseBoolean(config.getString("journal.reversed_order"))) {
             list = Lists.reverse(texts);
         } else {
             list = new ArrayList<>(texts);
         }
         final List<String> pagesList = new ArrayList<>();
-        for (final VariableString entry : list) {
-            try {
-                pagesList.addAll(Utils.pagesFromString(entry.getValue(profile)));
-            } catch (final QuestException e) {
-                log.warn("Error while generating journal page: " + e.getMessage(), e);
-            }
+        for (final String entry : list) {
+            pagesList.addAll(Utils.pagesFromString(entry));
         }
         return pagesList;
     }

@@ -17,7 +17,7 @@ import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
 import org.betonquest.betonquest.compatibility.holograms.HologramWrapper;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableVector;
-import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
