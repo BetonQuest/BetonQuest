@@ -14,6 +14,7 @@ import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.instruction.argument.IDArgument;
 import org.betonquest.betonquest.message.ParsedSectionMessage;
 import org.betonquest.betonquest.quest.registry.processor.VariableProcessor;
+import org.betonquest.betonquest.util.Utils;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -685,7 +686,7 @@ public class ConversationData {
                 return "";
             }
             try {
-                return text.getResolved(lang, profile);
+                return Utils.format(text.getResolved(lang, profile));
             } catch (final QuestException e) {
                 log.warn(pack, "Could not resolve message in conversation '" + convName + "': " + e.getMessage(), e);
                 return "";
