@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.objective.consume;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -19,6 +20,11 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 public class ConsumeObjective extends CountingObjective implements Listener {
 
     /**
+     * Custom logger for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
      * The item to consume.
      */
     private final Item item;
@@ -28,11 +34,14 @@ public class ConsumeObjective extends CountingObjective implements Listener {
      *
      * @param instruction  the instruction out of a quest package
      * @param targetAmount the amount of items to consume
+     * @param log          the logger for this objective
      * @param item         the item to consume
      * @throws QuestException if the instruction is invalid
      */
-    public ConsumeObjective(final Instruction instruction, final VariableNumber targetAmount, final Item item) throws QuestException {
+    public ConsumeObjective(final Instruction instruction, final VariableNumber targetAmount, final BetonQuestLogger log,
+                            final Item item) throws QuestException {
         super(instruction, targetAmount, null);
+        this.log = log;
         this.item = item;
     }
 
@@ -44,9 +53,13 @@ public class ConsumeObjective extends CountingObjective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onConsume(final PlayerItemConsumeEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
-        if (containsPlayer(onlineProfile) && item.matches(event.getItem()) && checkConditions(onlineProfile)) {
-            getCountingData(onlineProfile).progress();
-            completeIfDoneOrNotify(onlineProfile);
+        try {
+            if (containsPlayer(onlineProfile) && item.matches(event.getItem()) && checkConditions(onlineProfile)) {
+                getCountingData(onlineProfile).progress();
+                completeIfDoneOrNotify(onlineProfile);
+            }
+        } catch (final QuestException e) {
+            log.warn(instruction.getPackage(), "Exception while processing Consume Objective: " + e.getMessage(), e);
         }
     }
 

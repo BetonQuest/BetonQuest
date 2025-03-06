@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.quest.objective.enchant;
 
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -20,9 +22,17 @@ public class EnchantObjectiveFactory implements ObjectiveFactory {
     private static final String JUST_ONE_ENCHANT = "one";
 
     /**
-     * Creates a new instance of the EnchantObjectiveFactory.
+     * Logger factory to create a logger for the objectives.
      */
-    public EnchantObjectiveFactory() {
+    private final BetonQuestLoggerFactory loggerFactory;
+
+    /**
+     * Creates a new instance of the EnchantObjectiveFactory.
+     *
+     * @param loggerFactory the logger factory to create a logger for the objectives
+     */
+    public EnchantObjectiveFactory(final BetonQuestLoggerFactory loggerFactory) {
+        this.loggerFactory = loggerFactory;
     }
 
     @Override
@@ -34,6 +44,7 @@ public class EnchantObjectiveFactory implements ObjectiveFactory {
             throw new QuestException("No enchantments were given! You must specify at least one enchantment.");
         }
         final boolean requireOne = instruction.getOptionalArgument("requirementMode").map(JUST_ONE_ENCHANT::equalsIgnoreCase).orElse(false);
-        return new EnchantObjective(instruction, targetAmount, item, desiredEnchantments, requireOne);
+        final BetonQuestLogger log = loggerFactory.create(EnchantObjective.class);
+        return new EnchantObjective(instruction, targetAmount, log, item, desiredEnchantments, requireOne);
     }
 }

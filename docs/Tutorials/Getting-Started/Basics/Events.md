@@ -70,7 +70,7 @@ npc_conversations:
   JackNpc: "Jack"
 
 items:
-  steak: "COOKED_BEEF" # (1)!
+  steak: "simple COOKED_BEEF" # (1)!
 ```
 
 1. Links the `steak` item name from your BetonQuest configs to the ingame `minecraft:COOKED_BEEF` item.

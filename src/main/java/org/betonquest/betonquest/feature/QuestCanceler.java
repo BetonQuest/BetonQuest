@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -17,13 +18,11 @@ import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.message.ParsedSectionMessage;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
@@ -41,6 +40,11 @@ public class QuestCanceler {
      * Identifier of the canceler.
      */
     private final String cancelerID;
+
+    /**
+     * Feature API.
+     */
+    private final FeatureAPI featureAPI;
 
     /**
      * The {@link PluginMessage} instance.
@@ -78,17 +82,19 @@ public class QuestCanceler {
      *
      * @param log           the custom logger for this class
      * @param cancelerID    the log identifier
+     * @param featureAPI    the Feature API
      * @param pluginMessage the {@link PluginMessage} instance
      * @param names         the names used for displaying in different languages
      * @param item          the custom item used for displaying
      * @param pack          the {@link QuestPackage} of the canceler
      * @param cancelData    the relevant data to cancel a quest
      */
-    public QuestCanceler(final BetonQuestLogger log, final String cancelerID, final PluginMessage pluginMessage,
+    public QuestCanceler(final BetonQuestLogger log, final String cancelerID, final FeatureAPI featureAPI, final PluginMessage pluginMessage,
                          final ParsedSectionMessage names, @Nullable final ItemID item,
                          final QuestPackage pack, final CancelData cancelData) {
         this.log = log;
         this.cancelerID = cancelerID;
+        this.featureAPI = featureAPI;
         this.pluginMessage = pluginMessage;
         this.names = names;
         this.item = item;
@@ -216,14 +222,12 @@ public class QuestCanceler {
         ItemStack stack = new ItemStack(Material.BONE);
         if (item != null) {
             try {
-                stack = new QuestItem(item).generate(1);
+                stack = featureAPI.getItem(item).generate(1);
             } catch (final QuestException e) {
                 log.warn(pack, "Could not load cancel button: " + e.getMessage(), e);
             }
         }
-        final ItemMeta meta = stack.getItemMeta();
-        meta.displayName(getName(profile));
-        stack.setItemMeta(meta);
+        stack.editMeta(meta -> meta.displayName(getName(profile)));
         return stack;
     }
 

@@ -4,6 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -58,6 +59,11 @@ public class Menu extends SimpleYMLSection implements Listener {
      * Quest Type API.
      */
     private final QuestTypeAPI questTypeAPI;
+
+    /**
+     * Feature API.
+     */
+    private final FeatureAPI featureAPI;
 
     /**
      * The profile provider instance.
@@ -135,13 +141,14 @@ public class Menu extends SimpleYMLSection implements Listener {
      * @param config           the configuration file of the plugin
      * @param pluginMessage    the plugin message instance
      * @param questTypeAPI     the Quest Type API
+     * @param featureAPI       the Feature API
      * @param profileProvider  the profile provider instance
      * @param menuID           the id of the menu
      * @param languageProvider the language provider to get the default language
      * @throws InvalidConfigurationException if config options are missing or invalid
      */
     public Menu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final RPGMenu rpgMenu,
-                final ConfigAccessor config, final PluginMessage pluginMessage, final QuestTypeAPI questTypeAPI,
+                final ConfigAccessor config, final PluginMessage pluginMessage, final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI,
                 final ProfileProvider profileProvider, final MenuID menuID, final LanguageProvider languageProvider)
             throws InvalidConfigurationException {
         super(menuID.getPackage(), menuID.getFullID(), menuID.getConfig());
@@ -149,6 +156,7 @@ public class Menu extends SimpleYMLSection implements Listener {
         this.log = log;
         pluginConfig = config;
         this.questTypeAPI = questTypeAPI;
+        this.featureAPI = featureAPI;
         this.profileProvider = profileProvider;
         this.menuID = menuID;
         this.languageProvider = languageProvider;
@@ -173,7 +181,7 @@ public class Menu extends SimpleYMLSection implements Listener {
             @SuppressWarnings("PMD.ShortMethodName")
             protected Item of() throws Missing, Invalid {
                 try {
-                    return new Item(new ItemID(Menu.this.pack, getString("bind")), new VariableNumber(variableProcessor, null, "1"));
+                    return new Item(featureAPI, new ItemID(Menu.this.pack, getString("bind")), new VariableNumber(variableProcessor, null, "1"));
                 } catch (final QuestException e) {
                     throw new Invalid("bind", e);
                 }
@@ -292,8 +300,12 @@ public class Menu extends SimpleYMLSection implements Listener {
     @EventHandler
     public void onItemClick(final PlayerInteractEvent event) {
         //check if item is bound item
-        if (boundItem == null || !boundItem.matches(event.getItem())) {
-            return;
+        try {
+            if (boundItem == null || !boundItem.matches(event.getItem())) {
+                return;
+            }
+        } catch (final QuestException e) {
+            log.warn(pack, "Exception while getting Menu Interaction Item: " + e.getMessage(), e);
         }
         event.setCancelled(true);
         final OnlineProfile onlineprofile = profileProvider.getProfile(event.getPlayer());

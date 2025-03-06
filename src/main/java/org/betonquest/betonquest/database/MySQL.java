@@ -4,7 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.item.QuestItem;
+import org.betonquest.betonquest.item.SimpleQuestItemFactory;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
@@ -291,7 +291,7 @@ public class MySQL extends Database {
                     final int amount = resultSet.getInt("amount");
                     final byte[] bytes;
                     try {
-                        bytes = new QuestItem(instruction).generate(1).serializeAsBytes();
+                        bytes = new SimpleQuestItemFactory().parseInstruction(instruction).generate(1).serializeAsBytes();
                     } catch (final QuestException e) {
                         log.warn("Could not generate QuestItem from Instruction: " + e.getMessage(), e);
                         continue;

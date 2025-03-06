@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.quest.objective.smelt;
 
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -13,15 +15,24 @@ import org.betonquest.betonquest.instruction.variable.VariableNumber;
  */
 public class SmeltingObjectiveFactory implements ObjectiveFactory {
     /**
-     * Creates a new instance of the SmeltingObjectiveFactory.
+     * Logger factory to create a logger for the objectives.
      */
-    public SmeltingObjectiveFactory() {
+    private final BetonQuestLoggerFactory loggerFactory;
+
+    /**
+     * Creates a new instance of the SmeltingObjectiveFactory.
+     *
+     * @param loggerFactory the logger factory to create a logger for the objectives
+     */
+    public SmeltingObjectiveFactory(final BetonQuestLoggerFactory loggerFactory) {
+        this.loggerFactory = loggerFactory;
     }
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Item item = instruction.getItem();
         final VariableNumber targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
-        return new SmeltingObjective(instruction, targetAmount, item);
+        final BetonQuestLogger log = loggerFactory.create(SmeltingObjective.class);
+        return new SmeltingObjective(instruction, targetAmount, log, item);
     }
 }

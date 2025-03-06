@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.objective.smelt;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -23,6 +24,11 @@ import org.bukkit.inventory.PlayerInventory;
  */
 public class SmeltingObjective extends CountingObjective implements Listener {
     /**
+     * Custom logger for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
      * The item to be smelted.
      */
     private final Item item;
@@ -32,12 +38,14 @@ public class SmeltingObjective extends CountingObjective implements Listener {
      *
      * @param instruction  the instruction that created this objective
      * @param targetAmount the target amount of items to be smelted
+     * @param log          the logger for this objective
      * @param item         the item to be smelted
      * @throws QuestException if there is an error in the instruction
      */
-    public SmeltingObjective(final Instruction instruction, final VariableNumber targetAmount, final Item item)
+    public SmeltingObjective(final Instruction instruction, final VariableNumber targetAmount, final BetonQuestLogger log, final Item item)
             throws QuestException {
         super(instruction, targetAmount, "items_to_smelt");
+        this.log = log;
         this.item = item;
     }
 
@@ -51,10 +59,14 @@ public class SmeltingObjective extends CountingObjective implements Listener {
         final InventoryType inventoryType = event.getInventory().getType();
         if (isSmeltingResultExtraction(event, inventoryType)) {
             final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getWhoClicked());
-            if (containsPlayer(onlineProfile) && item.matches(event.getCurrentItem()) && checkConditions(onlineProfile)) {
-                final int taken = calculateTakeAmount(event);
-                getCountingData(onlineProfile).progress(taken);
-                completeIfDoneOrNotify(onlineProfile);
+            try {
+                if (containsPlayer(onlineProfile) && item.matches(event.getCurrentItem()) && checkConditions(onlineProfile)) {
+                    final int taken = calculateTakeAmount(event);
+                    getCountingData(onlineProfile).progress(taken);
+                    completeIfDoneOrNotify(onlineProfile);
+                }
+            } catch (final QuestException e) {
+                log.warn(instruction.getPackage(), "Exception while processing Smelting Objective: " + e.getMessage(), e);
             }
         }
     }

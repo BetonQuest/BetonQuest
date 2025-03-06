@@ -12,6 +12,7 @@ import org.betonquest.betonquest.conversation.SlowTellrawConvIO;
 import org.betonquest.betonquest.conversation.TellrawConvIO;
 import org.betonquest.betonquest.conversation.interceptor.NonInterceptingInterceptorFactory;
 import org.betonquest.betonquest.conversation.interceptor.SimpleInterceptorFactory;
+import org.betonquest.betonquest.item.SimpleQuestItemFactory;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.FeatureRegistries;
 import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
@@ -85,6 +86,8 @@ public class CoreFeatureFactories {
         final InterceptorRegistry interceptorTypes = registries.interceptor();
         interceptorTypes.register("simple", new SimpleInterceptorFactory());
         interceptorTypes.register("none", new NonInterceptingInterceptorFactory());
+
+        registries.item().register("simple", new SimpleQuestItemFactory());
 
         final NotifyIORegistry notifyIOTypes = registries.notifyIO();
         notifyIOTypes.register("suppress", new SuppressNotifyIOFactory());

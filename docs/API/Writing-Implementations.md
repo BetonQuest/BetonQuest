@@ -93,7 +93,7 @@ which store them and make them accessible on the server by different parts of Be
 
 The separation is as follows:
 
-- **QuestTypeRegistries**, which provide instruction-based object creation:
+- **QuestTypeRegistries**, which provide the instruction-based core features object creation:
   - `Condition`
   - `Event`
   - `Objective`
@@ -101,13 +101,12 @@ The separation is as follows:
 - **FeatureRegistries**, which cover more complex and varied creation patterns:
   - `ConversationIO`
   - `Interceptor`
+  - `Item`
   - `MessageParser`
   - `NotifyIO`
   - `Schedule`
 
 These can be accessed through the `getQuestRegistries()` and `getFeatureRegistries()` methods on the plugin.
-
-The `QuestItem` will be added to the `QuestTypeRegistries` after its overhaul.
 
 For writing new features, you currently need to reference existing code.
 See also [Legacy creating ConversationIO](Legacy-API.md#creating-additional-conversation-inputoutput-methods).

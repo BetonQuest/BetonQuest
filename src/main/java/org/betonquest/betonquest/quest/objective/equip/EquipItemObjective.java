@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.objective.equip;
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -18,6 +19,11 @@ import org.bukkit.event.Listener;
  */
 public class EquipItemObjective extends Objective implements Listener {
     /**
+     * Custom logger for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
      * The item that needs to be equipped.
      */
     private final Item item;
@@ -31,12 +37,14 @@ public class EquipItemObjective extends Objective implements Listener {
      * Constructor for the EquipItemObjective.
      *
      * @param instruction the instruction that created this objective
+     * @param log         the logger for this objective
      * @param item        the item that needs to be equipped
      * @param slotType    the slot type where the item needs to be equipped
      * @throws QuestException if there is an error in the instruction
      */
-    public EquipItemObjective(final Instruction instruction, final Item item, final PlayerArmorChangeEvent.SlotType slotType) throws QuestException {
+    public EquipItemObjective(final Instruction instruction, final BetonQuestLogger log, final Item item, final PlayerArmorChangeEvent.SlotType slotType) throws QuestException {
         super(instruction);
+        this.log = log;
         this.item = item;
         this.slotType = slotType;
     }
@@ -54,11 +62,15 @@ public class EquipItemObjective extends Objective implements Listener {
     @EventHandler
     public void onEquipmentChange(final PlayerArmorChangeEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
-        if (containsPlayer(onlineProfile)
-                && event.getSlotType() == slotType
-                && item.matches(event.getNewItem())
-                && checkConditions(onlineProfile)) {
-            completeObjective(onlineProfile);
+        try {
+            if (containsPlayer(onlineProfile)
+                    && event.getSlotType() == slotType
+                    && item.matches(event.getNewItem())
+                    && checkConditions(onlineProfile)) {
+                completeObjective(onlineProfile);
+            }
+        } catch (final QuestException e) {
+            log.warn(instruction.getPackage(), "Exception while processing EquipItem Objective: " + e.getMessage(), e);
         }
     }
 

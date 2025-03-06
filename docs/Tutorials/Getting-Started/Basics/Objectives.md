@@ -92,8 +92,8 @@ npc_conversations:
   JackNpc: "Jack"
 
 items:
-  steak: "COOKED_BEEF"
-  cod: "COD" # (1)!
+  steak: "simple COOKED_BEEF"
+  cod: "simple COD" # (1)!
 ```
 
 1. Links the `cod` item name from your BetonQuest configs to the ingame `minecraft:COD` item.
