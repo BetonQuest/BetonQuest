@@ -5,6 +5,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Keyed;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
@@ -141,7 +142,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
                     .error("Could not initialize Methods to get Potion Data!", e);
             return null;
         }
-        final String minimalString = type.getKey().asMinimalString();
+        final String minimalString = asMinimalString(type.getKey());
         final String longPrefix = "long_";
         final String strongPrefix = "strong_";
         final String effects;
@@ -153,6 +154,15 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
             effects = minimalString;
         }
         return "type:" + effects;
+    }
+
+    // TODO version switch:
+    //  remove when paper use a Adventure version >= 4.15.0 This is the case in paper 1.19.0+
+    private String asMinimalString(final NamespacedKey key) {
+        if (NamespacedKey.MINECRAFT_NAMESPACE.equals(key.namespace())) {
+            return key.value();
+        }
+        return key.asString();
     }
 
     @Override

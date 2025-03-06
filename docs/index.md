@@ -97,11 +97,9 @@ thead span {
 
 ## What server owners say
 
-By rating, BetonQuest is in the **top 10 out of 57.000 Spigot plugins**.
-<br>
 Sometimes, user reviews describe a plugin better than the author can:
 
-!!! quote "Spigot Reviews"
+!!! quote "Reviews"
     === "Esron"
         Quick Facts:
         <ul>
@@ -223,7 +221,7 @@ Please let us know if there is any outdated information.
     While BetonQuest can be used for scripting, it stays a quest plugin. It's a compromise, the best of both worlds.
     Plugins with a full focus on scripting - such as
     [Denizen](https://www.spigotmc.org/resources/21039/)
-    and [Skript](https://github.com/SkriptLang/Skript/)
+    and [Skript](https://www.spigotmc.org/resources/114544/)
     are suited better in certain scenarios. Many users even use these alongside BetonQuest as there is
     integration for such scripting plugins.
 

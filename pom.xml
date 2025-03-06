@@ -304,23 +304,6 @@
       <optional>true</optional>
     </dependency>
 
-    <!-- from sonatype repository -->
-    <dependency>
-      <groupId>net.kyori</groupId>
-      <artifactId>adventure-api</artifactId>
-      <version>4.17.0</version>
-    </dependency>
-    <dependency>
-      <groupId>net.kyori</groupId>
-      <artifactId>adventure-platform-bukkit</artifactId>
-      <version>4.3.3</version>
-    </dependency>
-    <dependency>
-      <groupId>net.kyori</groupId>
-      <artifactId>adventure-text-serializer-plain</artifactId>
-      <version>4.17.0</version>
-    </dependency>
-
     <!-- from minecraft repository -->
     <dependency>
       <groupId>com.mojang</groupId>
@@ -464,14 +447,6 @@
       <url>https://jitpack.io</url>
     </repository>
     <repository>
-      <id>betonquest-sonatype-releases-repo</id>
-      <url>https://oss.sonatype.org/content/repositories/releases/</url>
-    </repository>
-    <repository>
-      <id>betonquest-sonatype-snapshots-repo</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-    </repository>
-    <repository>
       <id>betonquest-mg-dev-everything-repo</id>
       <name>ci.mg-dev.eu repository</name>
       <url>https://ci.mg-dev.eu/plugin/repository/everything</url>
@@ -569,7 +544,6 @@
                   <include>com.google.guava</include>
                   <include>commons-io</include>
                   <include>org.json</include>
-                  <include>net.kyori</include>
                   <include>com.comphenix.packetwrapper</include>
                   <include>io.papermc:paperlib</include>
                   <include>com.cronutils:cron-utils</include>
@@ -586,12 +560,6 @@
                   <artifact>com.comphenix.packetwrapper</artifact>
                   <excludes>
                     <exclude>plugin.yml</exclude>
-                  </excludes>
-                </filter>
-                <filter>
-                  <artifact>net.kyori</artifact>
-                  <excludes>
-                    <exclude>classpath.index</exclude>
                   </excludes>
                 </filter>
               </filters>
@@ -616,10 +584,6 @@
                 <relocation>
                   <pattern>org.json</pattern>
                   <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.json</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>net.kyori</pattern>
-                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.net.kyori</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>com.comphenix.packetwrapper</pattern>

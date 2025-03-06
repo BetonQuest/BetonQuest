@@ -24,9 +24,8 @@ change plugin configurations as you wish, etc.
 
 ## Setup of your local server
 
-- **Step 1**    
-You have probably heard of Spigot, the biggest server software for 
-Minecraft. We are going to install Paper (an improved version of Spigot) on your computer. 
+- **Step 1**  
+As BetonQuest requires paper as server software, we need to install it first. 
 Head over to [Papers download page](https://papermc.io/downloads/paper) and download the latest version of Paper.
 
 - **Step 2**  
@@ -55,18 +54,18 @@ Make sure to save it as a "_.bat_" file (for Linux and Mac: "_.sh_")! If you sav
         (`1G` = 1 GigaByte RAM, `2G` = 2 GigaByte RAM, `700M` for 700 MegaBytes, etc.). You should not need more then 1GB in most
         cases.      
 
-- **Step 5**    
+- **Step 5**  
 Start the server by double-clicking on the start file. Please wait until the server tells you to accept the EULA.
 Now check the server's folder. You will find a bunch of new folders and files that have been generated.
 You need to accept the EULA (Minecraft's End-User-License-Agreement) to be able to run a Minecraft server.
 Open up the "_eula.txt_" file, read the terms and agree by setting `eula=false` to `eula=true`.
 
-- **Step 6**    
+- **Step 6**  
 From now on, the start file can be used to start the server.  
 You can stop your server by typing `stop`. Alternatively, you can press ++ctrl+c++ (for Mac: ++cmd+c++).  
 Restart the server and connect to it via the server address `localhost` with your Minecraft game.
 
-- **Step 7**    
+- **Step 7**  
 Once you joined the server, enter the following command in your server's console: `op <YOUR-NAME>`    
 This will give you all permissions on the server, which is required for the following steps.
 

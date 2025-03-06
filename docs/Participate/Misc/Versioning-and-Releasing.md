@@ -16,7 +16,7 @@ We adapt the specification with these version types:
 Only use the three digits(Major, Minor, Patch) to specify versions in files like the pom.xml. All suffixes are set
 by the build-pipeline.
 
-The officially distributed jar does not contain the version in its name due to limits with the Spigot updater.
+The officially distributed jar does not contain the version in its name due to limits with the server update mechanism.
 Therefore, it's named `BetonQuest.jar`. The version can only be seen ingame by using `/q version`.
 
 ##Releasing
