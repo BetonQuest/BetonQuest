@@ -13,7 +13,6 @@ import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.id.CompassID;
 import org.betonquest.betonquest.id.ItemID;
-import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -127,6 +126,10 @@ public class Backpack implements Listener {
         if (event.getPlayer().equals(onlineProfile.getPlayer())) {
             HandlerList.unregisterAll(this);
         }
+    }
+
+    private ItemStack itemFromId(final ItemID itemId) throws QuestException {
+        return BetonQuest.getInstance().getFeatureAPI().getItem(itemId).generate(1);
     }
 
     /**
@@ -303,7 +306,7 @@ public class Backpack implements Listener {
                 present = true;
                 if (!checkDefault || !"DEFAULT".equalsIgnoreCase(buttonString)) {
                     try {
-                        stack = new QuestItem(new ItemID(null, buttonString)).generate(1);
+                        stack = itemFromId(new ItemID(null, buttonString));
                     } catch (final QuestException e) {
                         log.warn("Could not load " + button + " button: " + e.getMessage(), e);
                     }
@@ -541,7 +544,7 @@ public class Backpack implements Listener {
                 }
                 ItemStack compass;
                 try {
-                    compass = new QuestItem(item).generate(1);
+                    compass = itemFromId(item);
                 } catch (final QuestException e) {
                     log.warn("Could not find item: " + e.getMessage(), e);
                     compass = new ItemStack(Material.COMPASS);

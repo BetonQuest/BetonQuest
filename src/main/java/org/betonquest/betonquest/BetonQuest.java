@@ -406,7 +406,8 @@ public class BetonQuest extends JavaPlugin {
 
         setupUpdater();
 
-        rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, config, pluginMessage, questTypeAPI, profileProvider);
+        rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, config, pluginMessage,
+                questTypeAPI, featureAPI, profileProvider);
 
         log.info("BetonQuest successfully enabled!");
     }
@@ -443,7 +444,7 @@ public class BetonQuest extends JavaPlugin {
         List.of(
                 new CombatTagger(profileProvider, config.getInt("combat_delay")),
                 new MobKillListener(profileProvider),
-                new CustomDropListener(loggerFactory.create(CustomDropListener.class), this),
+                new CustomDropListener(loggerFactory.create(CustomDropListener.class), this, featureAPI),
                 new QuestItemHandler(config, playerDataStorage, pluginMessage, profileProvider),
                 new JoinQuitListener(loggerFactory, coreQuestRegistry.objectives(), playerDataStorage,
                         pluginMessage, profileProvider)

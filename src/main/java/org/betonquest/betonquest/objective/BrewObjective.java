@@ -82,7 +82,7 @@ public class BrewObjective extends CountingObjective implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onBrew(final BrewEvent event) {
+    public void onBrew(final BrewEvent event) throws QuestException {
         final Profile profile = locations.remove(event.getBlock().getLocation());
         if (profile == null) {
             return;
