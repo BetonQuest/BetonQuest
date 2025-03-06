@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.config.patcher.migration.migrators.from1to2;
+package org.betonquest.betonquest.config.patcher.migration.migrator.from1to2;
 
 import org.betonquest.betonquest.config.patcher.migration.FileConfigurationProvider;
 import org.betonquest.betonquest.config.patcher.migration.Migration;
@@ -9,20 +9,26 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Handles the aura_skills rename migration.
+ * Handles the PackageSection migration.
  */
-public class AuraSkillsRename implements Migration {
+public class PackageSection implements Migration {
+
+    /**
+     * The enabled string.
+     */
+    public static final String ENABLED = "enabled";
+
     /**
      * The config producer.
      */
     private final FileConfigurationProvider producer;
 
     /**
-     * Creates a new aura_skills migrator.
+     * Creates a new PackageSection migrator.
      *
      * @param provider The config provider
      */
-    public AuraSkillsRename(final FileConfigurationProvider provider) {
+    public PackageSection(final FileConfigurationProvider provider) {
         this.producer = provider;
     }
 
@@ -32,10 +38,10 @@ public class AuraSkillsRename implements Migration {
         for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
             final File file = entry.getKey();
             final YamlConfiguration config = entry.getValue();
-            final boolean cond1Replaced = replaceStartValueInSection(config, "conditions", "aureliumskillslevel", "auraskillslevel");
-            final boolean cond2Replaced = replaceStartValueInSection(config, "conditions", "aureliumstatslevel", "auraskillsstatslevel");
-            final boolean objReplaced = replaceStartValueInSection(config, "events", "aureliumskillsxp", "auraskillsxp");
-            if (cond1Replaced || cond2Replaced || objReplaced) {
+            if (config.contains(ENABLED, true)) {
+                final boolean section = config.getBoolean(ENABLED);
+                config.set("package.enabled", section);
+                config.set(ENABLED, null);
                 config.save(file);
             }
         }

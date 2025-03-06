@@ -1,20 +1,20 @@
 package org.betonquest.betonquest.config.patcher.migration;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.AuraSkillsRename;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.EffectLib;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.EventScheduling;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.FabledRename;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.MmoUpdates;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.NpcHolograms;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.PackageSection;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.PackageStructure;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.RPGMenuMerge;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.RemoveEntity;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from1to2.RideUpdates;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from2to3.DeleteMenuConfigYml;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from2to3.DeleteMessagesYml;
-import org.betonquest.betonquest.config.patcher.migration.migrators.from2to3.LanguageRename;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.AuraSkillsRename;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.EffectLib;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.EventScheduling;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.FabledRename;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.MmoUpdates;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.NpcHolograms;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.PackageSection;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.PackageStructure;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.RPGMenuMerge;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.RemoveEntity;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.RideUpdates;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.DeleteMenuConfigYml;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.DeleteMessagesYml;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.LanguageRename;
 
 import java.io.IOException;
 import java.util.LinkedList;

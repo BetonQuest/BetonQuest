@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.config.patcher.migration.migrators.from1to2;
+package org.betonquest.betonquest.config.patcher.migration.migrator.from1to2;
 
 import org.betonquest.betonquest.config.patcher.migration.Migration;
 import org.bukkit.configuration.file.YamlConfiguration;
