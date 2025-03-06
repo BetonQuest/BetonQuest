@@ -263,7 +263,7 @@ public class Instruction implements InstructionParts, ArgumentParser, EnumParser
                 item = getID(string, ItemID::new);
                 number = get("1", VariableNumber::new);
             }
-            return new Item(item, number);
+            return new Item(BetonQuest.getInstance().getFeatureAPI(), item, number);
         } catch (final QuestException | NumberFormatException e) {
             throw new QuestException("Error while parsing '" + string + "' item: " + e.getMessage(), e);
         }

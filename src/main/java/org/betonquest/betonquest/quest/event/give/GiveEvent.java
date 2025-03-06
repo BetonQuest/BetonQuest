@@ -15,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
-import java.util.Locale;
 
 /**
  * Gives the player items.
@@ -79,11 +78,8 @@ public class GiveEvent implements OnlineEvent {
             final QuestItem questItem = item.getItem();
             final int amount = item.getAmount().getValue(profile).intValue();
             giveItems(profile, player, questItem, amount);
-            final String questItemName = questItem.getName() == null
-                    ? questItem.getMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " ")
-                    : questItem.getName();
             itemsGivenSender.sendNotification(profile,
-                    new PluginMessage.Replacement("item", Component.text(questItemName)),
+                    new PluginMessage.Replacement("item", Component.text(questItem.getName())),
                     new PluginMessage.Replacement("amount", Component.text(amount)));
         }
     }

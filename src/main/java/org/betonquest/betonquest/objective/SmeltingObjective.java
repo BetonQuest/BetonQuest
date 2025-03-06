@@ -33,7 +33,7 @@ public class SmeltingObjective extends CountingObjective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onSmelting(final InventoryClickEvent event) {
+    public void onSmelting(final InventoryClickEvent event) throws QuestException {
         final InventoryType inventoryType = event.getInventory().getType();
         if (isSmeltingResultExtraction(event, inventoryType)) {
             final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getWhoClicked());

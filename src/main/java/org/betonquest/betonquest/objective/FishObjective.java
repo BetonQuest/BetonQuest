@@ -11,7 +11,6 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -35,7 +34,7 @@ public class FishObjective extends CountingObjective implements Listener {
      */
     private final BetonQuestLogger log;
 
-    private final QuestItem questItem;
+    private final ItemID itemID;
 
     @Nullable
     private final VariableLocation hookTargetLocation;
@@ -46,7 +45,7 @@ public class FishObjective extends CountingObjective implements Listener {
     public FishObjective(final Instruction instruction) throws QuestException {
         super(instruction, "fish_to_catch");
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        questItem = new QuestItem(instruction.getID(ItemID::new));
+        this.itemID = instruction.getID(ItemID::new);
         targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
 
         final String loc = instruction.getOptional("hookLocation");
@@ -61,7 +60,7 @@ public class FishObjective extends CountingObjective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onFishCatch(final PlayerFishEvent event) {
+    public void onFishCatch(final PlayerFishEvent event) throws QuestException {
         if (event.getState() != State.CAUGHT_FISH) {
             return;
         }
@@ -73,13 +72,13 @@ public class FishObjective extends CountingObjective implements Listener {
             return;
         }
         final ItemStack item = ((Item) event.getCaught()).getItemStack();
-        if (questItem.matches(item) && checkConditions(onlineProfile)) {
+        if (BetonQuest.getInstance().getFeatureAPI().getItem(itemID).matches(item) && checkConditions(onlineProfile)) {
             getCountingData(onlineProfile).progress(item.getAmount());
             completeIfDoneOrNotify(onlineProfile);
         }
     }
 
-    private boolean isInvalidLocation(final PlayerFishEvent event, final Profile profile) {
+    private boolean isInvalidLocation(final PlayerFishEvent event, final Profile profile) throws QuestException {
         if (hookTargetLocation == null || rangeVar == null) {
             return false;
         }
@@ -91,7 +90,7 @@ public class FishObjective extends CountingObjective implements Listener {
             log.warn(e.getMessage(), e);
             return true;
         }
-        final int range = rangeVar.getInt(profile);
+        final int range = rangeVar.getValue(profile).intValue();
         final Location hookLocation = event.getHook().getLocation();
         return !hookLocation.getWorld().equals(targetLocation.getWorld()) || targetLocation.distanceSquared(hookLocation) > range * range;
     }
