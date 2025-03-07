@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.compatibility.worldguard.npc;
 
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
 
@@ -13,10 +13,11 @@ import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCo
  * Factory to create {@link NpcRegionCondition}s from {@link Instruction}s.
  */
 public class NpcRegionConditionFactory implements PlayerlessConditionFactory {
+
     /**
-     * Processor to get npc.
+     * Quest Type API.
      */
-    private final NpcProcessor npcProcessor;
+    private final QuestTypeAPI questTypeAPI;
 
     /**
      * Data used for primary server thread access.
@@ -26,11 +27,11 @@ public class NpcRegionConditionFactory implements PlayerlessConditionFactory {
     /**
      * Create a new factory for NPC Region Conditions.
      *
-     * @param npcProcessor the processor to get npc
+     * @param questTypeAPI the Quest Type API
      * @param data         the data for primary server thread access
      */
-    public NpcRegionConditionFactory(final NpcProcessor npcProcessor, final PrimaryServerThreadData data) {
-        this.npcProcessor = npcProcessor;
+    public NpcRegionConditionFactory(final QuestTypeAPI questTypeAPI, final PrimaryServerThreadData data) {
+        this.questTypeAPI = questTypeAPI;
         this.data = data;
     }
 
@@ -38,6 +39,6 @@ public class NpcRegionConditionFactory implements PlayerlessConditionFactory {
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
         final NpcID npcId = instruction.getID(NpcID::new);
         final String region = instruction.next();
-        return new PrimaryServerThreadPlayerlessCondition(new NpcRegionCondition(npcProcessor, npcId, region), data);
+        return new PrimaryServerThreadPlayerlessCondition(new NpcRegionCondition(questTypeAPI, npcId, region), data);
     }
 }

@@ -60,7 +60,7 @@ public class WorldGuardIntegrator implements Integrator {
         questRegistries.objective().register("region", RegionObjective.class);
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
-        questRegistries.condition().register("npcregion", new NpcRegionConditionFactory(plugin.getNpcProcessor(), data));
+        questRegistries.condition().register("npcregion", new NpcRegionConditionFactory(plugin.getQuestTypeAPI(), data));
     }
 
     @Override

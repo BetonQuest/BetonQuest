@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.npc;
 
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
@@ -9,7 +10,6 @@ import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
@@ -18,10 +18,11 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
  * Factory for {@link NPCTeleportEvent} from the {@link Instruction}.
  */
 public class NpcTeleportEventFactory implements EventFactory, StaticEventFactory {
+
     /**
-     * Processor to get npc.
+     * Quest Type API.
      */
-    private final NpcProcessor npcProcessor;
+    private final QuestTypeAPI questTypeAPI;
 
     /**
      * Data to use for syncing to the primary server thread.
@@ -31,11 +32,11 @@ public class NpcTeleportEventFactory implements EventFactory, StaticEventFactory
     /**
      * Create a new factory for Npc Teleport Events.
      *
-     * @param npcProcessor the processor to get npc
+     * @param questTypeAPI the Quest Type API
      * @param data         the data to use for syncing to the primary server thread
      */
-    public NpcTeleportEventFactory(final NpcProcessor npcProcessor, final PrimaryServerThreadData data) {
-        this.npcProcessor = npcProcessor;
+    public NpcTeleportEventFactory(final QuestTypeAPI questTypeAPI, final PrimaryServerThreadData data) {
+        this.questTypeAPI = questTypeAPI;
         this.data = data;
     }
 
@@ -53,6 +54,6 @@ public class NpcTeleportEventFactory implements EventFactory, StaticEventFactory
         final NpcID npcId = instruction.getID(NpcID::new);
         final VariableLocation location = instruction.get(VariableLocation::new);
         final boolean spawn = instruction.hasArgument("spawn");
-        return new NullableEventAdapter(new NPCTeleportEvent(npcProcessor, npcId, location, spawn));
+        return new NullableEventAdapter(new NPCTeleportEvent(questTypeAPI, npcId, location, spawn));
     }
 }

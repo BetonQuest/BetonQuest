@@ -2,10 +2,10 @@ package org.betonquest.betonquest.quest.condition.npc;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -13,10 +13,11 @@ import org.bukkit.entity.Player;
  * Checks if the player is close to a npc.
  */
 public class NpcDistanceCondition implements OnlineCondition {
+
     /**
-     * Processor to get npc.
+     * Quest Type API.
      */
-    private final NpcProcessor npcProcessor;
+    private final QuestTypeAPI questTypeAPI;
 
     /**
      * Id of the npc.
@@ -31,19 +32,19 @@ public class NpcDistanceCondition implements OnlineCondition {
     /**
      * Create a new Npc Distance Condition.
      *
-     * @param npcProcessor the processor to get npc
+     * @param questTypeAPI the Quest Type API
      * @param npcID        the id of the npc
      * @param distance     the maximal distance between player and npc
      */
-    public NpcDistanceCondition(final NpcProcessor npcProcessor, final NpcID npcID, final VariableNumber distance) {
-        this.npcProcessor = npcProcessor;
+    public NpcDistanceCondition(final QuestTypeAPI questTypeAPI, final NpcID npcID, final VariableNumber distance) {
+        this.questTypeAPI = questTypeAPI;
         this.npcID = npcID;
         this.distance = distance;
     }
 
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
-        final Location npcLocation = npcProcessor.getNpc(npcID).getLocation();
+        final Location npcLocation = questTypeAPI.getNpc(npcID).getLocation();
         final Player player = profile.getPlayer();
         if (!player.getWorld().equals(npcLocation.getWorld())) {
             return false;
