@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -23,10 +22,6 @@ import java.util.function.BiPredicate;
  * The player has to reach certain radius around a specified Npc.
  */
 public class NpcRangeObjective extends Objective {
-    /**
-     * Processor to get npc.
-     */
-    private final NpcProcessor npcProcessor;
 
     /**
      * Stores the relevant Npc Ids to get their locations.
@@ -61,7 +56,6 @@ public class NpcRangeObjective extends Objective {
      */
     public NpcRangeObjective(final Instruction instruction) throws QuestException {
         super(instruction);
-        this.npcProcessor = BetonQuest.getInstance().getNpcProcessor();
         this.npcIds = instruction.getIDList(NpcID::new);
         this.playersInRange = new HashMap<>();
         this.checkStuff = getStuff(instruction.getEnum(Trigger.class));
@@ -114,7 +108,7 @@ public class NpcRangeObjective extends Objective {
         final List<UUID> profilesInside = new ArrayList<>();
         final List<OnlineProfile> allOnlineProfiles = BetonQuest.getInstance().getProfileProvider().getOnlineProfiles();
         for (final NpcID npcId : npcIds) {
-            final Location npcLocation = npcProcessor.getNpc(npcId).getLocation();
+            final Location npcLocation = BetonQuest.getInstance().getQuestTypeAPI().getNpc(npcId).getLocation();
             for (final OnlineProfile onlineProfile : allOnlineProfiles) {
                 if (!profilesInside.contains(onlineProfile.getProfileUUID()) && isInside(onlineProfile, npcLocation)) {
                     profilesInside.add(onlineProfile.getProfileUUID());

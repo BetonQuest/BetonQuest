@@ -152,7 +152,7 @@ public final class HologramProvider implements Integrator {
         final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
         this.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class));
         this.npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class),
-                plugin.getNpcProcessor(), plugin.getQuestRegistries().npc());
+                plugin.getQuestTypeAPI(), plugin.getQuestRegistries().npc());
         Bukkit.getPluginManager().registerEvents(new HologramListener(plugin.getProfileProvider()), plugin);
     }
 
@@ -171,7 +171,7 @@ public final class HologramProvider implements Integrator {
                 if (instance.npcHologramLoop != null) {
                     instance.npcHologramLoop.close();
                     instance.npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class),
-                            plugin.getNpcProcessor(), plugin.getQuestRegistries().npc());
+                            plugin.getQuestTypeAPI(), plugin.getQuestRegistries().npc());
                 }
             }
         }

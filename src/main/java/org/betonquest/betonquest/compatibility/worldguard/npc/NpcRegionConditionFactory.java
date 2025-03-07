@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.worldguard.npc;
 
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -9,7 +10,6 @@ import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionA
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableString;
-import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
@@ -19,9 +19,9 @@ import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCo
  */
 public class NpcRegionConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
     /**
-     * Processor to get npc.
+     * Quest Type API.
      */
-    private final NpcProcessor npcProcessor;
+    private final QuestTypeAPI questTypeAPI;
 
     /**
      * Data used for primary server thread access.
@@ -31,11 +31,11 @@ public class NpcRegionConditionFactory implements PlayerConditionFactory, Player
     /**
      * Create a new factory for NPC Region Conditions.
      *
-     * @param npcProcessor the processor to get npc
+     * @param questTypeAPI the Quest Type API
      * @param data         the data for primary server thread access
      */
-    public NpcRegionConditionFactory(final NpcProcessor npcProcessor, final PrimaryServerThreadData data) {
-        this.npcProcessor = npcProcessor;
+    public NpcRegionConditionFactory(final QuestTypeAPI questTypeAPI, final PrimaryServerThreadData data) {
+        this.questTypeAPI = questTypeAPI;
         this.data = data;
     }
 
@@ -52,6 +52,6 @@ public class NpcRegionConditionFactory implements PlayerConditionFactory, Player
     private NullableConditionAdapter parseInstruction(final Instruction instruction) throws QuestException {
         final NpcID npcId = instruction.getID(NpcID::new);
         final VariableString region = instruction.get(VariableString::new);
-        return new NullableConditionAdapter(new NpcRegionCondition(npcProcessor, npcId, region));
+        return new NullableConditionAdapter(new NpcRegionCondition(questTypeAPI, npcId, region));
     }
 }

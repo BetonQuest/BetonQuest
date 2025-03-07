@@ -6,10 +6,10 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.variable.location.VariableVector;
-import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Bukkit;
@@ -48,9 +48,9 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
     private final List<HologramWrapper> holograms;
 
     /**
-     * Processor to get npcs.
+     * Quest Type API.
      */
-    private final NpcProcessor npcProcessor;
+    private final QuestTypeAPI questTypeAPI;
 
     /**
      * The Npc Registry to create identifier strings from Npcs.
@@ -67,13 +67,13 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
      *
      * @param loggerFactory   logger factory to use
      * @param log             the logger that will be used for logging
-     * @param npcProcessor    the processor to get npc
+     * @param questTypeAPI    the Quest Type API
      * @param npcTypeRegistry the registry to create identifier strings from Npcs
      */
     public NpcHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                           final NpcProcessor npcProcessor, final NpcTypeRegistry npcTypeRegistry) {
+                           final QuestTypeAPI questTypeAPI, final NpcTypeRegistry npcTypeRegistry) {
         super(loggerFactory, log);
-        this.npcProcessor = npcProcessor;
+        this.questTypeAPI = questTypeAPI;
         this.npcTypeRegistry = npcTypeRegistry;
         identifierToId = new HashMap<>();
         npcHolograms = new ArrayList<>();
@@ -110,7 +110,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
         npcIDs.forEach(npcID -> {
             final Npc<?> npc;
             try {
-                npc = npcProcessor.getNpc(npcID);
+                npc = questTypeAPI.getNpc(npcID);
             } catch (final QuestException exception) {
                 log.warn("Could not get Npc for id '" + npcID.getFullID() + "' at hologram creation: " + exception.getMessage(), exception);
                 return;
@@ -148,7 +148,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
                     final BetonHologram hologram = entry.getValue();
                     final Npc<?> npc;
                     try {
-                        npc = npcProcessor.getNpc(npcID);
+                        npc = questTypeAPI.getNpc(npcID);
                     } catch (final QuestException exception) {
                         log.warn("Could not get Npc for id '" + npcID.getFullID() + "' in hologram loop: " + exception.getMessage(), exception);
                         return;

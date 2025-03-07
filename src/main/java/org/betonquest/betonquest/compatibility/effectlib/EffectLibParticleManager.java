@@ -12,7 +12,6 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -61,11 +60,6 @@ public class EffectLibParticleManager {
     private final EffectManager manager;
 
     /**
-     * Processor to get npc.
-     */
-    private final NpcProcessor npcProcessor;
-
-    /**
      * All active {@link EffectLibRunnable}s managed by this class.
      */
     private final List<EffectLibRunnable> activeParticles = new ArrayList<>();
@@ -78,17 +72,14 @@ public class EffectLibParticleManager {
      * @param questTypeAPI    the Quest Type API
      * @param profileProvider the profile provider instance
      * @param manager         the effect manager starting and controlling particles
-     * @param npcProcessor    the processor to get npc
      */
     public EffectLibParticleManager(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                                    final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider, final EffectManager manager,
-                                    final NpcProcessor npcProcessor) {
+                                    final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider, final EffectManager manager) {
         this.loggerFactory = loggerFactory;
         this.log = log;
         this.questTypeAPI = questTypeAPI;
         this.profileProvider = profileProvider;
         this.manager = manager;
-        this.npcProcessor = npcProcessor;
         loadParticleConfiguration();
     }
 
@@ -133,7 +124,7 @@ public class EffectLibParticleManager {
 
                 final EffectConfiguration effect = new EffectConfiguration(effectClass, locations, npcs, conditions, settings, conditionsCheckInterval);
                 final EffectLibRunnable particleRunnable = new EffectLibRunnable(loggerFactory.create(EffectLibRunnable.class),
-                        questTypeAPI, profileProvider, manager, effect, npcProcessor);
+                        questTypeAPI, profileProvider, manager, effect);
 
                 activeParticles.add(particleRunnable);
                 particleRunnable.runTaskTimer(BetonQuest.getInstance(), 1, interval);
