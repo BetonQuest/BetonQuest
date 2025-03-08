@@ -9,7 +9,6 @@ import org.betonquest.betonquest.id.JournalMainPageID;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.message.ParsedSectionMessage;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID
         if (priority < 0) {
             throw new QuestException("Priority of journal main page needs to be at least 0!");
         }
-        final String rawConditions = GlobalVariableResolver.resolve(pack, section.getString("conditions"));
+        final String rawConditions = section.getString("conditions");
         final List<ConditionID> conditions;
         if (rawConditions == null || rawConditions.isEmpty()) {
             conditions = List.of();

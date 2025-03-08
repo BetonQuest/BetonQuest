@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,7 +44,7 @@ public class ParsedSectionMessage {
                 throw new QuestException("No message for default language!");
             }
         } else if (section.isString(path)) {
-            final String raw = GlobalVariableResolver.resolve(pack, section.getString(path));
+            final String raw = section.getString(path);
             if (raw == null) {
                 throw new QuestException("No string value for '" + path + "'!");
             }
@@ -63,7 +62,7 @@ public class ParsedSectionMessage {
         }
         final Map<String, VariableString> messages = new HashMap<>();
         for (final String key : subSection.getKeys(false)) {
-            final String raw = GlobalVariableResolver.resolve(pack, subSection.getString(key));
+            final String raw = subSection.getString(key);
             if (raw == null) {
                 throw new QuestException("No string value for key '" + key + "'!");
             }

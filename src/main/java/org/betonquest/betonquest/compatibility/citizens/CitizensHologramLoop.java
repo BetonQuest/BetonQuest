@@ -15,8 +15,9 @@ import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramLoop;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
 import org.betonquest.betonquest.compatibility.holograms.HologramWrapper;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableVector;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -53,11 +54,12 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
     /**
      * Starts a loop, which checks hologram conditions and shows them to players.
      *
-     * @param loggerFactory logger factory to use
-     * @param log           the logger that will be used for logging
+     * @param loggerFactory     logger factory to use
+     * @param log               the logger that will be used for logging
+     * @param variableProcessor the {@link VariableProcessor} to use
      */
-    public CitizensHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
-        super(loggerFactory, log);
+    public CitizensHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final VariableProcessor variableProcessor) {
+        super(loggerFactory, log, variableProcessor);
         npcHolograms = new ArrayList<>();
         holograms = initialize("npc_holograms");
         followTask = Bukkit.getServer().getScheduler().runTaskTimer(BetonQuest.getInstance(),
@@ -107,11 +109,10 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
     private List<Integer> getNPCs(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final List<Integer> npcIDs = new ArrayList<>();
         for (final String stringID : section.getStringList("npcs")) {
-            final String subst = GlobalVariableResolver.resolve(pack, stringID);
             try {
-                npcIDs.add(Integer.parseInt(subst));
+                npcIDs.add(new VariableNumber(variableProcessor, pack, stringID).getValue(null).intValue());
             } catch (final NumberFormatException e) {
-                throw new QuestException("Could not parse NPC ID '" + subst + "': " + e.getMessage(), e);
+                throw new QuestException("Could not parse NPC ID '" + stringID + "': " + e.getMessage(), e);
             }
         }
         return npcIDs;
