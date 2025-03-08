@@ -312,6 +312,14 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- from minebench repository -->
+    <dependency>
+      <groupId>de.themoep</groupId>
+      <artifactId>minedown-adventure</artifactId>
+      <version>1.7.3-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
     <!-- only dependencies from maven central that are MC Plugins -->
     <dependency>
       <groupId>com.elmakers.mine.bukkit</groupId>
@@ -452,6 +460,10 @@
       <url>https://ci.mg-dev.eu/plugin/repository/everything</url>
     </repository>
     <repository>
+      <id>betonquest-minebench-repo</id>
+      <url>https://repo.minebench.de/</url>
+    </repository>
+    <repository>
       <id>betonquest-minecraft-repo</id>
       <url>https://libraries.minecraft.net/</url>
     </repository>
@@ -547,6 +559,7 @@
                   <include>com.comphenix.packetwrapper</include>
                   <include>io.papermc:paperlib</include>
                   <include>com.cronutils:cron-utils</include>
+                  <include>de.themoep:minedown-adventure</include>
                 </includes>
               </artifactSet>
               <filters>
@@ -597,6 +610,10 @@
                 <relocation>
                   <pattern>com.cronutils</pattern>
                   <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.cronutils</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>de.themoep</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.de.themoep</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>

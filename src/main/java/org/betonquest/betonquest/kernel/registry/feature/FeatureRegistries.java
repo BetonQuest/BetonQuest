@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.registry.feature;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.message.MessageParserRegistry;
 import org.betonquest.betonquest.kernel.registry.FactoryRegistry;
 
 /**
@@ -10,12 +11,14 @@ import org.betonquest.betonquest.kernel.registry.FactoryRegistry;
  * @param interceptor     The Registry holding registered Interceptors.
  * @param notifyIO        The Registry holding registered NotifyIOs.
  * @param eventScheduling The Registry holding registered Event Schedulers.
+ * @param messageParser   The Registry holding registered Message Parsers.
  */
 public record FeatureRegistries(
         ConversationIORegistry conversationIO,
         InterceptorRegistry interceptor,
         NotifyIORegistry notifyIO,
-        ScheduleRegistry eventScheduling
+        ScheduleRegistry eventScheduling,
+        MessageParserRegistry messageParser
 ) {
 
     /**
@@ -29,7 +32,8 @@ public record FeatureRegistries(
                 new ConversationIORegistry(loggerFactory.create(ConversationIORegistry.class)),
                 new InterceptorRegistry(loggerFactory.create(FactoryRegistry.class)),
                 new NotifyIORegistry(loggerFactory.create(NotifyIORegistry.class)),
-                new ScheduleRegistry(loggerFactory.create(ScheduleRegistry.class))
+                new ScheduleRegistry(loggerFactory.create(ScheduleRegistry.class)),
+                new MessageParserRegistryImpl(loggerFactory.create(MessageParserRegistryImpl.class))
         );
     }
 }
