@@ -107,6 +107,7 @@ The separation is as follows:
   - `Interceptor`
   - `NotifyIO`
   - `Schedule`
+  - `MessageParser`
 
 These can be accessed through the `getQuestRegistries()` and `getFeatureRegistries()` methods on the plugin.
 
