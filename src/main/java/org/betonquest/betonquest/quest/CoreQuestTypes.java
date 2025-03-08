@@ -166,7 +166,6 @@ import org.betonquest.betonquest.quest.variable.item.ItemDurabilityVariableFacto
 import org.betonquest.betonquest.quest.variable.item.ItemVariableFactory;
 import org.betonquest.betonquest.quest.variable.location.LocationVariableFactory;
 import org.betonquest.betonquest.quest.variable.math.MathVariableFactory;
-import org.betonquest.betonquest.quest.variable.name.NpcNameVariableFactory;
 import org.betonquest.betonquest.quest.variable.name.PlayerNameVariableFactory;
 import org.betonquest.betonquest.quest.variable.npc.NpcVariableFactory;
 import org.betonquest.betonquest.quest.variable.objective.ObjectivePropertyVariableFactory;
@@ -441,7 +440,6 @@ public class CoreQuestTypes {
 
     private void registerVariables(final VariableTypeRegistry variables) {
         variables.register("condition", new ConditionVariableFactory(questTypeAPI, pluginMessage));
-        variables.register("conversation", new NpcNameVariableFactory());
         variables.registerCombined("eval", new EvalVariableFactory(variableProcessor));
         variables.register("globalpoint", new GlobalPointVariableFactory(globalData, loggerFactory.create(GlobalPointVariableFactory.class)));
         variables.register("globaltag", new GlobalTagVariableFactory(globalData, pluginMessage));
@@ -449,7 +447,7 @@ public class CoreQuestTypes {
         variables.register("itemdurability", new ItemDurabilityVariableFactory());
         variables.register("location", new LocationVariableFactory());
         variables.registerCombined("math", new MathVariableFactory(loggerFactory, variableProcessor));
-        variables.register("npc", new NpcVariableFactory(questTypeAPI));
+        variables.registerCombined("npc", new NpcVariableFactory(questTypeAPI));
         variables.register("objective", new ObjectivePropertyVariableFactory(questTypeAPI));
         variables.register("point", new PointVariableFactory(dataStorage, loggerFactory.create(PointVariableFactory.class)));
         variables.register("player", new PlayerNameVariableFactory());

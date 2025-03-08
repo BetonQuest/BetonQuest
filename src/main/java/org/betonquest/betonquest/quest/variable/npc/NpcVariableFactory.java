@@ -2,14 +2,19 @@ package org.betonquest.betonquest.quest.variable.npc;
 
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
+import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariableFactory;
+import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
+import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariableAdapter;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.variable.location.LocationFormationMode;
+import org.betonquest.betonquest.quest.variable.name.NpcNameVariable;
 
 /**
- * Factory to create {@link NpcVariable}s from {@link Instruction}s.
+ * Factory to create {@link NpcVariable}s and {@link NpcNameVariable}s from {@link Instruction}s.
  * <p>
  * Format:
  * {@code %<variableName>.<id>.<argument>.<mode>.<precision>%}
@@ -22,7 +27,7 @@ import org.betonquest.betonquest.quest.variable.location.LocationFormationMode;
  *
  * @see org.betonquest.betonquest.quest.variable.location.LocationVariable
  */
-public class NpcVariableFactory implements PlayerlessVariableFactory {
+public class NpcVariableFactory implements PlayerVariableFactory, PlayerlessVariableFactory {
 
     /**
      * Quest Type API.
@@ -40,6 +45,24 @@ public class NpcVariableFactory implements PlayerlessVariableFactory {
 
     @Override
     public PlayerlessVariable parsePlayerless(final Instruction instruction) throws QuestException {
+        return new NullableVariableAdapter(parseInstruction(instruction));
+    }
+
+    @Override
+    public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
+        return new NullableVariableAdapter(parseInstruction(instruction));
+    }
+
+    private NullableVariable parseInstruction(final Instruction instruction) throws QuestException {
+        if (!instruction.hasNext() || instruction.size() == 2 && "conversation".equals(instruction.getPart(1))) {
+            final NpcNameVariable npcNameVariable = new NpcNameVariable();
+            return profile -> {
+                if (profile == null) {
+                    throw new QuestException("Profile can't be null for conversation!");
+                }
+                return npcNameVariable.getValue(profile);
+            };
+        }
         final NpcID npcID = instruction.getID(NpcID::new);
         final Argument key = instruction.getEnum(Argument.class);
         LocationFormationMode locationFormationMode = null;
@@ -54,6 +77,7 @@ public class NpcVariableFactory implements PlayerlessVariableFactory {
                 decimalPlaces = Integer.parseInt(instruction.next());
             }
         }
-        return new NpcVariable(questTypeAPI, npcID, key, locationFormationMode, decimalPlaces);
+        final NpcVariable npcVariable = new NpcVariable(questTypeAPI, npcID, key, locationFormationMode, decimalPlaces);
+        return profile -> npcVariable.getValue();
     }
 }
