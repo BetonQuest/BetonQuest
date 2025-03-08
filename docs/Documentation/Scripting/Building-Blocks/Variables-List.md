@@ -110,15 +110,6 @@ variables:
 
 ## Other Variables
 
-### Conversation Variable
-
-When the player is in a conversation, this variable will contain the quester's name in the player's quest language.
-If the player is not in a conversation, the variable is empty.
-
-```
-%conversation%
-```
-
 ### Eval Variable
 
 **static**
@@ -223,7 +214,19 @@ braces `{ }`. Inside the curly braces you have to escape with `\`, so to have a 
 %math.calc:64\%32%
 ```
 
-### Npc Variable: `%npc.<id>.<argument>%`
+### Npc Variable
+
+#### Conversation Name
+
+When the player is in a conversation, this variable will contain the quester's name in the player's quest language.
+If the player is not in a conversation, the variable is empty.
+
+```
+%npc%
+%npc.conversation%
+```
+
+#### Npc Values: `%npc.<id>.<argument>%`
 
 **static**
 
