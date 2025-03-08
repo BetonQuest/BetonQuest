@@ -18,6 +18,7 @@ import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
 import org.betonquest.betonquest.kernel.registry.feature.NotifyIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.ScheduleRegistry;
 import org.betonquest.betonquest.message.parser.LegacyParser;
+import org.betonquest.betonquest.message.parser.MineDownMessageParser;
 import org.betonquest.betonquest.message.parser.MiniMessageParser;
 import org.betonquest.betonquest.notify.ActionBarNotifyIO;
 import org.betonquest.betonquest.notify.AdvancementNotifyIO;
@@ -123,5 +124,6 @@ public class CoreFeatureFactories {
                 })
                 .build();
         messageParserRegistry.registerParser("legacyminimessage", new MiniMessageParser(legacyMiniMessage));
+        messageParserRegistry.registerParser("minedown", new MineDownMessageParser());
     }
 }
