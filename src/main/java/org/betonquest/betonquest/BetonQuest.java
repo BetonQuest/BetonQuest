@@ -443,7 +443,7 @@ public class BetonQuest extends JavaPlugin {
         featureRegistries = FeatureRegistries.create(loggerFactory);
 
         questRegistry = QuestRegistry.create(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
-                featureRegistries, questTypeRegistries, pluginMessage);
+                featureRegistries, questTypeRegistries, pluginMessage, profileProvider);
 
         questTypeAPI = new QuestTypeAPI(questRegistry);
         featureAPI = new FeatureAPI(questRegistry);
