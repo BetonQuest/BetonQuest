@@ -8,9 +8,9 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
-import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.id.ConditionID;
+import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
@@ -118,10 +118,7 @@ public class EffectLibParticleManager {
                     continue;
                 }
 
-                final Set<Integer> npcs = new HashSet<>();
-                if (Compatibility.getHooked().contains("Citizens")) {
-                    npcs.addAll(loadNpcs(settings, pack));
-                }
+                final Set<NpcID> npcs = loadNpcs(settings, pack);
                 final List<VariableLocation> locations = loadLocations(pack, settings, key);
                 final List<ConditionID> conditions = loadConditions(pack, key, settings);
 
@@ -176,14 +173,14 @@ public class EffectLibParticleManager {
         return conditions;
     }
 
-    private Set<Integer> loadNpcs(final ConfigurationSection settings, final QuestPackage pack) {
-        final Set<Integer> npcs = new HashSet<>();
+    private Set<NpcID> loadNpcs(final ConfigurationSection settings, final QuestPackage pack) {
+        final Set<NpcID> npcs = new HashSet<>();
         if (settings.isList(NPCS_CONFIG_SECTION)) {
             final List<String> rawIds = settings.getStringList(NPCS_CONFIG_SECTION);
             for (final String rawId : rawIds) {
                 try {
-                    npcs.add(Integer.parseInt(GlobalVariableResolver.resolve(pack, rawId)));
-                } catch (final NumberFormatException exception) {
+                    npcs.add(new NpcID(pack, GlobalVariableResolver.resolve(pack, rawId)));
+                } catch (final QuestException exception) {
                     log.warn(pack, "Error while loading npc id '" + rawId + "': " + exception.getMessage(), exception);
                 }
             }
