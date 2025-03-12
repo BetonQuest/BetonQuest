@@ -26,4 +26,9 @@ public interface NpcReverseIdentifier {
      * @param npcId the id to register
      */
     void addID(NpcID npcId);
+
+    /**
+     * Resets all possible ID links.
+     */
+    void reset();
 }

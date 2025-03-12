@@ -57,4 +57,9 @@ public class CitizensReverseIdentifier implements NpcReverseIdentifier {
             idsByInstruction.computeIfAbsent(instruction, string -> new HashSet<>()).add(npcId);
         }
     }
+
+    @Override
+    public void reset() {
+        idsByInstruction.clear();
+    }
 }

@@ -55,6 +55,15 @@ public class NpcTypeRegistry extends FactoryRegistry<TypeFactory<NpcWrapper<?>>>
     }
 
     /**
+     * Resets all stored values from the reverse search.
+     */
+    public void resetIdentifier() {
+        for (final NpcReverseIdentifier reverseIdentifier : reverseIdentifiers) {
+            reverseIdentifier.reset();
+        }
+    }
+
+    /**
      * Gets the IDs used to get a Npc.
      *
      * @param npc     the npc to get the npc ids
