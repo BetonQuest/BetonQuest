@@ -12,7 +12,7 @@ public interface MessageParserRegistry {
      * @param name   the name of the parser
      * @param parser the parser to register
      */
-    void registerParser(String name, MessageParser parser);
+    void register(String name, MessageParser parser);
 
     /**
      * Get a parser by name.
@@ -21,5 +21,5 @@ public interface MessageParserRegistry {
      * @return the parser, or null if no parser with the given name is registered
      */
     @Nullable
-    MessageParser getParser(String name);
+    MessageParser get(String name);
 }

@@ -105,9 +105,9 @@ The separation is as follows:
 - **FeatureRegistries**, which cover more complex and varied creation patterns:
   - `ConversationIO`
   - `Interceptor`
+  - `MessageParser`
   - `NotifyIO`
   - `Schedule`
-  - `MessageParser`
 
 These can be accessed through the `getQuestRegistries()` and `getFeatureRegistries()` methods on the plugin.
 

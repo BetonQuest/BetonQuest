@@ -16,9 +16,9 @@ public class MineDownMessageParser implements MessageParser {
     private final Consumer<MineDown>[] mineDownOptions;
 
     /**
-     * Constructs a new mini message parser.
+     * Constructs a new minedown message parser.
      *
-     * @param mineDownOptions the mini modifications on the parsing mine down instance after initialization
+     * @param mineDownOptions the minedown modifications on the parsing mine down instance after initialization
      */
     public MineDownMessageParser(final Consumer<MineDown>... mineDownOptions) {
         this.mineDownOptions = mineDownOptions.clone();

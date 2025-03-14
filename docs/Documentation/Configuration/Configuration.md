@@ -263,5 +263,5 @@ items:
        This is invaluable for debugging issues that happened in the past without having debug enabled all the time.
        The downside is that depending on the amount of scripts and players this can be a lot of data occupying your memory.
        So if you have memory issues, you can reduce the time the history is stored in memory down to 0 minutes to disable it.
-* `messageParser` sets the default message parser.
+* `message_parser` sets the default message parser.
   For more information, see the [Message Formatting](../Features/Message-Formatting.md) page.

@@ -10,9 +10,9 @@ public interface MessageParser {
     /**
      * Parse a message into a component.
      *
-     * @param message The message to parse.
-     * @return The parsed component.
-     * @throws QuestException If the message could not be parsed.
+     * @param message the message to parse
+     * @return the parsed component
+     * @throws QuestException if the message could not be parsed
      */
     Component parse(String message) throws QuestException;
 }

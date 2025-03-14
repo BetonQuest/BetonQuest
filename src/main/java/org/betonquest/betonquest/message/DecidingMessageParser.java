@@ -34,7 +34,7 @@ public class DecidingMessageParser implements MessageParser {
     @Override
     public Component parse(final String message) throws QuestException {
         final MessageParserDecider.Result result = decider.chooseParser(message);
-        final MessageParser parser = registry.getParser(result.parserId());
+        final MessageParser parser = registry.get(result.parserId());
         if (parser == null) {
             throw new QuestException("No parser found for id " + result.parserId());
         }

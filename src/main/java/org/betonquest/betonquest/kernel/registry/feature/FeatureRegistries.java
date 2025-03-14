@@ -9,16 +9,16 @@ import org.betonquest.betonquest.kernel.registry.FactoryRegistry;
  *
  * @param conversationIO  The Registry holding registered conversation IOs.
  * @param interceptor     The Registry holding registered Interceptors.
+ * @param messageParser   The Registry holding registered Message Parsers.
  * @param notifyIO        The Registry holding registered NotifyIOs.
  * @param eventScheduling The Registry holding registered Event Schedulers.
- * @param messageParser   The Registry holding registered Message Parsers.
  */
 public record FeatureRegistries(
         ConversationIORegistry conversationIO,
         InterceptorRegistry interceptor,
+        MessageParserRegistry messageParser,
         NotifyIORegistry notifyIO,
-        ScheduleRegistry eventScheduling,
-        MessageParserRegistry messageParser
+        ScheduleRegistry eventScheduling
 ) {
 
     /**
@@ -31,9 +31,9 @@ public record FeatureRegistries(
         return new FeatureRegistries(
                 new ConversationIORegistry(loggerFactory.create(ConversationIORegistry.class)),
                 new InterceptorRegistry(loggerFactory.create(FactoryRegistry.class)),
+                new MessageParserRegistryImpl(loggerFactory.create(MessageParserRegistryImpl.class)),
                 new NotifyIORegistry(loggerFactory.create(NotifyIORegistry.class)),
-                new ScheduleRegistry(loggerFactory.create(ScheduleRegistry.class)),
-                new MessageParserRegistryImpl(loggerFactory.create(MessageParserRegistryImpl.class))
+                new ScheduleRegistry(loggerFactory.create(ScheduleRegistry.class))
         );
     }
 }

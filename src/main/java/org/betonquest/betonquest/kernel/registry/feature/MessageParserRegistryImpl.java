@@ -20,13 +20,8 @@ public class MessageParserRegistryImpl extends FactoryRegistry<MessageParser> im
     }
 
     @Override
-    public void registerParser(final String name, final MessageParser parser) {
-        register(name, parser);
-    }
-
-    @Override
     @Nullable
-    public MessageParser getParser(final String name) {
+    public MessageParser get(final String name) {
         return getFactory(name);
     }
 }

@@ -113,9 +113,9 @@ public class CoreFeatureFactories {
                 .useUnusualXRepeatedCharacterHexFormat()
                 .extractUrls()
                 .build();
-        messageParserRegistry.registerParser("legacy", new LegacyParser(legacySerializer));
+        messageParserRegistry.register("legacy", new LegacyParser(legacySerializer));
         final MiniMessage miniMessage = MiniMessage.miniMessage();
-        messageParserRegistry.registerParser("minimessage", new MiniMessageParser(miniMessage));
+        messageParserRegistry.register("minimessage", new MiniMessageParser(miniMessage));
         final MiniMessage legacyMiniMessage = MiniMessage.builder()
                 .preProcessor(input -> {
                     final TextComponent deserialize = legacySerializer.deserialize(ChatColor.translateAlternateColorCodes('&', input));
@@ -123,7 +123,7 @@ public class CoreFeatureFactories {
                     return serialize.replaceAll("\\\\<", "<");
                 })
                 .build();
-        messageParserRegistry.registerParser("legacyminimessage", new MiniMessageParser(legacyMiniMessage));
-        messageParserRegistry.registerParser("minedown", new MineDownMessageParser());
+        messageParserRegistry.register("legacyminimessage", new MiniMessageParser(legacyMiniMessage));
+        messageParserRegistry.register("minedown", new MineDownMessageParser());
     }
 }
