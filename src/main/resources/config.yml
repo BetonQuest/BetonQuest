@@ -115,3 +115,4 @@ items:
 profiles:
   initial_name: 'default'
 default_close: true
+message_parser: legacyminimessage

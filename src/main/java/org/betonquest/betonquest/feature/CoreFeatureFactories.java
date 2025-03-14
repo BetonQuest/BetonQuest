@@ -1,6 +1,10 @@
 package org.betonquest.betonquest.feature;
 
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.message.MessageParserRegistry;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.conversation.InventoryConvIO;
 import org.betonquest.betonquest.conversation.NonInterceptingInterceptor;
@@ -13,6 +17,9 @@ import org.betonquest.betonquest.kernel.registry.feature.FeatureRegistries;
 import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
 import org.betonquest.betonquest.kernel.registry.feature.NotifyIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.ScheduleRegistry;
+import org.betonquest.betonquest.message.parser.LegacyParser;
+import org.betonquest.betonquest.message.parser.MineDownMessageParser;
+import org.betonquest.betonquest.message.parser.MiniMessageParser;
 import org.betonquest.betonquest.notify.ActionBarNotifyIO;
 import org.betonquest.betonquest.notify.AdvancementNotifyIO;
 import org.betonquest.betonquest.notify.BossBarNotifyIO;
@@ -27,6 +34,7 @@ import org.betonquest.betonquest.schedule.impl.realtime.cron.RealtimeCronSchedul
 import org.betonquest.betonquest.schedule.impl.realtime.cron.RealtimeCronScheduler;
 import org.betonquest.betonquest.schedule.impl.realtime.daily.RealtimeDailySchedule;
 import org.betonquest.betonquest.schedule.impl.realtime.daily.RealtimeDailyScheduler;
+import org.bukkit.ChatColor;
 
 /**
  * Registers the stuff that is not built from Instructions.
@@ -94,5 +102,28 @@ public class CoreFeatureFactories {
                 loggerFactory.create(RealtimeDailyScheduler.class, "Schedules"), questTypeAPI, lastExecutionCache));
         eventSchedulingTypes.register("realtime-cron", RealtimeCronSchedule.class, new RealtimeCronScheduler(
                 loggerFactory.create(RealtimeCronScheduler.class, "Schedules"), questTypeAPI, lastExecutionCache));
+
+        final MessageParserRegistry messageParserRegistry = registries.messageParser();
+        registerMessageParsers(messageParserRegistry);
+    }
+
+    private void registerMessageParsers(final MessageParserRegistry messageParserRegistry) {
+        final LegacyComponentSerializer legacySerializer = LegacyComponentSerializer.builder()
+                .hexColors()
+                .useUnusualXRepeatedCharacterHexFormat()
+                .extractUrls()
+                .build();
+        messageParserRegistry.register("legacy", new LegacyParser(legacySerializer));
+        final MiniMessage miniMessage = MiniMessage.miniMessage();
+        messageParserRegistry.register("minimessage", new MiniMessageParser(miniMessage));
+        final MiniMessage legacyMiniMessage = MiniMessage.builder()
+                .preProcessor(input -> {
+                    final TextComponent deserialize = legacySerializer.deserialize(ChatColor.translateAlternateColorCodes('&', input));
+                    final String serialize = miniMessage.serialize(deserialize);
+                    return serialize.replaceAll("\\\\<", "<");
+                })
+                .build();
+        messageParserRegistry.register("legacyminimessage", new MiniMessageParser(legacyMiniMessage));
+        messageParserRegistry.register("minedown", new MineDownMessageParser());
     }
 }

@@ -105,6 +105,7 @@ The separation is as follows:
 - **FeatureRegistries**, which cover more complex and varied creation patterns:
   - `ConversationIO`
   - `Interceptor`
+  - `MessageParser`
   - `NotifyIO`
   - `Schedule`
 
