@@ -467,7 +467,8 @@ public class BetonQuest extends JavaPlugin {
         pluginManager.registerEvents(new JoinQuitListener(loggerFactory, questTypeAPI, playerDataStorage, pluginMessage,
                 profileProvider), this);
 
-        messageParser = new DecidingMessageParser(featureRegistries.messageParser(), new TagMessageParserDecider("legacyminimessage"));
+        final String defaultParser = config.getString("messageParser", "legacyminimessage");
+        messageParser = new DecidingMessageParser(featureRegistries.messageParser(), new TagMessageParserDecider(defaultParser));
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
                 questTypeAPI, pluginMessage, questRegistry.variables(), globalData, playerDataStorage, profileProvider)
                 .register(questTypeRegistries);
