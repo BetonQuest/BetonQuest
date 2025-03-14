@@ -9,13 +9,17 @@ import org.betonquest.betonquest.api.quest.QuestException;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class TitleNotifyIO extends NotifyIO {
+    /**
+     * The newline string to separate title and subtitle.
+     */
+    private static final String NEW_LINE = "\n";
+
     private final Duration fadeIn;
 
     private final Duration stay;
@@ -71,8 +75,20 @@ public class TitleNotifyIO extends NotifyIO {
         if (!(component instanceof final TextComponent text)) {
             return new ArrayList<>(List.of(component));
         }
-        final String[] segments = text.content().split("\n");
-        return Arrays.stream(segments)
+        final String content = text.content();
+        final List<String> segments = new ArrayList<>(List.of(content.split(NEW_LINE)));
+        if (segments.isEmpty()) {
+            segments.add("");
+            segments.add("");
+        } else {
+            if (content.startsWith(NEW_LINE)) {
+                segments.add(0, "");
+            }
+            if (content.endsWith(NEW_LINE)) {
+                segments.add("");
+            }
+        }
+        return segments.stream()
                 .map(segment -> Component.text(segment).style(text.style()))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
