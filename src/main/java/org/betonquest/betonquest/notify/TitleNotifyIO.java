@@ -57,17 +57,17 @@ public class TitleNotifyIO extends NotifyIO {
         if (self.children().isEmpty()) {
             return lines;
         }
-        Component parent = lines.remove(lines.size() - 1);
+        Component last = lines.remove(lines.size() - 1);
         for (final Component child : self.children()) {
             final List<Component> childSegments = splitComponent(child);
-            parent = parent.append(childSegments.get(0));
+            last = last.append(childSegments.get(0));
             for (int i = 1; i < childSegments.size(); i++) {
-                lines.add(parent);
-                parent = Component.empty().style(parent.style());
-                parent = parent.append(childSegments.get(i));
+                lines.add(last);
+                last = Component.empty().style(last.style());
+                last = last.append(childSegments.get(i));
             }
         }
-        lines.add(parent);
+        lines.add(last);
         return lines;
     }
 
