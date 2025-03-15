@@ -1,25 +1,31 @@
 package org.betonquest.betonquest.compatibility.worldguard;
 
-import org.betonquest.betonquest.api.Condition;
-import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 
 /**
- * Checks if the player is in specified region
+ * Checks if the player is in specified region.
  */
-@SuppressWarnings("PMD.CommentRequired")
-public class RegionCondition extends Condition {
+public class RegionCondition implements OnlineCondition {
 
-    private final String name;
+    /**
+     * Region name.
+     */
+    private final VariableString name;
 
-    public RegionCondition(final Instruction instruction) throws QuestException {
-        super(instruction, true);
-        name = instruction.next();
+    /**
+     * Creates a new region condition.
+     *
+     * @param name the name of the region
+     */
+    public RegionCondition(final VariableString name) {
+        this.name = name;
     }
 
     @Override
-    protected Boolean execute(final Profile profile) {
-        return WorldGuardIntegrator.isInsideRegion(profile.getOnlineProfile().get().getPlayer().getLocation(), name);
+    public boolean check(final OnlineProfile profile) throws QuestException {
+        return WorldGuardIntegrator.isInsideRegion(profile.getPlayer().getLocation(), name.getValue(profile));
     }
 }

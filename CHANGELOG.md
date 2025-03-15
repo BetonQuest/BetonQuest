@@ -13,6 +13,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Support for Message Parsing Formatter
   - `notify` event
   - `notifyall` event
+- `region` conditions now supports variables 
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations

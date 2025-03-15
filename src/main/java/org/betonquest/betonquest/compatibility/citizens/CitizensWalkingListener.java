@@ -7,7 +7,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.PlayerConversationEndEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerConversationStartEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,32 +16,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Prevents Citizens NPCs from walking around when in conversation with the
- * player
+ * Prevents Citizens NPCs from walking around when in conversation with the player.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class CitizensWalkingListener implements Listener {
 
-    @SuppressWarnings("NullAway.Init")
-    private static CitizensWalkingListener instance;
-
     private final Map<NPC, Pair<Integer, Location>> npcs = new HashMap<>();
 
     /**
-     * Creates new listener which prevents Citizens NPCs from walking around
-     * when in conversation
+     * Creates new listener which prevents Citizens NPCs from walking around when in conversation.
      */
-    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public CitizensWalkingListener() {
-        instance = this;
-        Bukkit.getServer().getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-
-    /**
-     * @return the currently active WalkingListener or null if citizens isn't hooked
-     */
-    public static CitizensWalkingListener getInstance() {
-        return instance;
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -104,6 +88,8 @@ public class CitizensWalkingListener implements Listener {
     }
 
     /**
+     * Check if the npc is in a conversation and thus should not be moved.
+     *
      * @param npc a npc to check for
      * @return true if the movement of the npc is paused because of a player talking with the npc
      */
@@ -112,7 +98,7 @@ public class CitizensWalkingListener implements Listener {
     }
 
     /**
-     * Sets a new target location to which the npc should move when the conversations end
+     * Sets a new target location to which the npc should move when the conversations end.
      * <p>
      * Check {@link #isMovementPaused(NPC)} before to make sure the npcs movement is currently paused
      *
