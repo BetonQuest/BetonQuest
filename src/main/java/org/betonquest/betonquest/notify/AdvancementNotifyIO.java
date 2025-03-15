@@ -36,6 +36,10 @@ public class AdvancementNotifyIO extends NotifyIO {
 
     @Override
     protected void notifyPlayer(final String message, final OnlineProfile onlineProfile) {
+        notifyPlayerObject(message, onlineProfile);
+    }
+
+    private void notifyPlayerObject(final Object message, final OnlineProfile onlineProfile) {
         final UUID uuid = UUID.randomUUID();
         final NamespacedKey rootKey = new NamespacedKey(BetonQuest.getInstance(), "notify/" + uuid + "-root");
         final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "notify/" + uuid + "-message");
@@ -54,16 +58,16 @@ public class AdvancementNotifyIO extends NotifyIO {
 
     @Override
     protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) {
-        notifyPlayer(GsonComponentSerializer.gson().serialize(message), onlineProfile);
+        notifyPlayerObject(GsonComponentSerializer.gson().serializeToTree(message), onlineProfile);
     }
 
     @SuppressWarnings("deprecation")
-    private void loadAdvancement(final String messageJson, final NamespacedKey rootKey, final NamespacedKey key) {
+    private void loadAdvancement(final Object message, final NamespacedKey rootKey, final NamespacedKey key) {
         new BukkitRunnable() {
             @Override
             public void run() {
                 Bukkit.getUnsafe().loadAdvancement(rootKey, generateJson(null, null));
-                Bukkit.getUnsafe().loadAdvancement(key, generateJson(messageJson, rootKey));
+                Bukkit.getUnsafe().loadAdvancement(key, generateJson(message, rootKey));
             }
         }.runTask(BetonQuest.getInstance());
     }
@@ -102,12 +106,12 @@ public class AdvancementNotifyIO extends NotifyIO {
         }
     }
 
-    private String generateJson(@Nullable final String messageJson, @Nullable final NamespacedKey root) {
+    private String generateJson(@Nullable final Object message, @Nullable final NamespacedKey root) {
         final JsonObject json = new JsonObject();
         json.add("criteria", getCriteria());
         if (root != null) {
             json.addProperty("parent", root.toString());
-            json.add("display", getDisplay(messageJson));
+            json.add("display", getDisplay(message));
         }
         return new GsonBuilder().setPrettyPrinting().create().toJson(json);
     }
@@ -124,10 +128,14 @@ public class AdvancementNotifyIO extends NotifyIO {
         return trigger;
     }
 
-    private JsonObject getDisplay(@Nullable final String messageJson) {
+    private JsonObject getDisplay(@Nullable final Object message) {
         final JsonObject display = new JsonObject();
         display.add("icon", getIcon());
-        display.addProperty("title", messageJson);
+        if (message instanceof final String messageString) {
+            display.addProperty("title", messageString);
+        } else if (message instanceof final JsonObject messageObject) {
+            display.add("title", messageObject);
+        }
         display.addProperty("description", "");
         display.addProperty("frame", this.frame);
         display.addProperty("announce_to_chat", false);
