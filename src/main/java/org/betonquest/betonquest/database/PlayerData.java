@@ -361,7 +361,7 @@ public class PlayerData implements TagData {
      */
     public Journal getJournal() {
         if (journal == null) {
-            journal = new Journal(pluginMessage, profile, profileLanguage, entries, BetonQuest.getInstance().getPluginConfig());
+            journal = new Journal(pluginMessage, profile, entries, BetonQuest.getInstance().getPluginConfig());
         }
         return journal;
     }
@@ -564,7 +564,9 @@ public class PlayerData implements TagData {
         } else {
             this.profileLanguage = lang;
         }
-        this.journal = null;
+        if (journal != null) {
+            journal.update();
+        }
         saver.add(new Record(UpdateType.UPDATE_PLAYER_LANGUAGE, lang, profileID));
     }
 

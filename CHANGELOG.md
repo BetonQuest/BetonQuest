@@ -13,6 +13,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Support for Message Parsing Formatter
   - `notify` event
   - `notifyall` event
+  - `npc` Variable
+  - Compass Names
+  - Journal
+  - Quest Cancler
+  - Conversation
 - `region` conditions now supports variables 
 ### Changed
 - Spigot is no longer supported, paper is now required 

@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Map;
@@ -61,13 +62,16 @@ public class ParsedMessage implements Message {
     }
 
     @Override
-    public Component asComponent(final Profile profile) throws QuestException {
-        final String language = dataStorage.get(profile).getLanguage();
-        final VariableString message;
-        if (messages.containsKey(language)) {
+    public Component asComponent(@Nullable final Profile profile) throws QuestException {
+        String language = null;
+        VariableString message = null;
+        if (profile != null) {
+            language = dataStorage.get(profile).getLanguage();
             message = messages.get(language);
-        } else {
-            message = messages.get(Config.getLanguage());
+        }
+        if (message == null) {
+            language = Config.getLanguage();
+            message = messages.get(language);
         }
         if (message == null) {
             throw new QuestException("No message in language " + language + " defined.");

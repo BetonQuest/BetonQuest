@@ -13,7 +13,7 @@ public class TagMessageParserDecider implements MessageParserDecider {
     /**
      * The pattern to match a tag in a message.
      */
-    private static final Pattern TAG_PATTERN = Pattern.compile("(@\\[(?<parser>[a-zA-Z]+?)])?(?<message>.*)");
+    private static final Pattern TAG_PATTERN = Pattern.compile("(@\\[(?<parser>[a-zA-Z]+?)])?(?<message>.*)", Pattern.DOTALL);
 
     /**
      * The default parser to use if no tag is found.

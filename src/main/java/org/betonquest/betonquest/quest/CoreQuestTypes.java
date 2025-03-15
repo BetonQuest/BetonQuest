@@ -435,7 +435,7 @@ public class CoreQuestTypes {
         variables.register("itemdurability", new ItemDurabilityVariableFactory());
         variables.register("location", new LocationVariableFactory());
         variables.registerCombined("math", new MathVariableFactory(variableProcessor));
-        variables.register("npc", new NpcNameVariableFactory(dataStorage));
+        variables.register("npc", new NpcNameVariableFactory());
         variables.register("objective", new ObjectivePropertyVariableFactory(questTypeAPI));
         variables.register("point", new PointVariableFactory(dataStorage, loggerFactory.create(PointVariableFactory.class)));
         variables.register("player", new PlayerNameVariableFactory());

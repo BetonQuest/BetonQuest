@@ -3,8 +3,10 @@ package org.betonquest.betonquest.kernel.processor.feature;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.message.MessageParser;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.QuestCanceler;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
@@ -27,6 +29,7 @@ import java.lang.reflect.Array;
 /**
  * Stores Quest Canceler.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCanceler> {
 
     /**
@@ -45,24 +48,39 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
     private final VariableProcessor variableProcessor;
 
     /**
+     * Message parser to parse messages.
+     */
+    private final MessageParser messageParser;
+
+    /**
+     * Player data storage to get the player language.
+     */
+    private final PlayerDataStorage playerDataStorage;
+
+    /**
      * Create a new Quest Canceler Processor to store them.
      *
      * @param log               the custom logger for this class
      * @param loggerFactory     the logger factory to create new class specific logger
      * @param pluginMessage     the {@link PluginMessage} instance
      * @param variableProcessor the variable processor to create new variables
+     * @param messageParser     the message parser to parse messages
+     * @param playerDataStorage the player data storage to get the player language
      */
     public CancelerProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                             final PluginMessage pluginMessage, final VariableProcessor variableProcessor) {
+                             final PluginMessage pluginMessage, final VariableProcessor variableProcessor,
+                             final MessageParser messageParser, final PlayerDataStorage playerDataStorage) {
         super(log, "Quest Canceler", "cancel");
         this.loggerFactory = loggerFactory;
         this.pluginMessage = pluginMessage;
         this.variableProcessor = variableProcessor;
+        this.messageParser = messageParser;
+        this.playerDataStorage = playerDataStorage;
     }
 
     @Override
     protected QuestCanceler loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
-        final ParsedSectionMessage names = new ParsedSectionMessage(variableProcessor, pack, section, "name");
+        final ParsedSectionMessage names = new ParsedSectionMessage(variableProcessor, messageParser, playerDataStorage, pack, section, "name");
         final String itemString = section.getString("item");
         final String rawItem = itemString == null ? pack.getConfig().getString("items.cancel_button") : itemString;
         final ItemID item = rawItem == null ? null : new ItemID(pack, rawItem);

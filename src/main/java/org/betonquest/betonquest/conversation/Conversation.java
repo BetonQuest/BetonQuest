@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.conversation;
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.tuple.Pair;
@@ -108,11 +109,6 @@ public class Conversation implements Listener {
     private final Player player;
 
     /**
-     * Conversation language.
-     */
-    private final String language;
-
-    /**
      * The location at which the conversation was started. Used for checking if the player has moved too far away.
      * For an NPC based conversation this would be the location of the NPC.
      */
@@ -216,7 +212,6 @@ public class Conversation implements Listener {
         this.player = onlineProfile.getPlayer();
         this.identifier = conversationID;
         this.pack = conversationID.getPackage();
-        this.language = plugin.getPlayerDataStorage().get(onlineProfile).getLanguage();
         this.center = center;
         this.blacklist = plugin.getPluginConfig().getStringList("cmd_blacklist");
         this.messagesDelaying = Boolean.parseBoolean(plugin.getPluginConfig().getString("display_chat_after_conversation"));
@@ -315,11 +310,11 @@ public class Conversation implements Listener {
             return;
         }
 
-        String text = data.getText(onlineProfile, language, nextNPCOption);
+        String text = data.getText(onlineProfile, nextNPCOption);
         text = ChatColor.translateAlternateColorCodes('&', text);
 
         // print option to the player
-        inOut.setNpcResponse(data.getPublicData().getQuester(log, language, onlineProfile), text);
+        inOut.setNpcResponse(LegacyComponentSerializer.legacySection().serialize(data.getPublicData().getQuester(log, onlineProfile)), text);
 
         new NPCEventRunner(nextNPCOption).runTask(BetonQuest.getInstance());
     }
@@ -376,7 +371,7 @@ public class Conversation implements Listener {
             availablePlayerOptions.put(optionsCount, option);
 
             // replace variables with their values
-            String text = data.getText(onlineProfile, language, option);
+            String text = data.getText(onlineProfile, option);
             text = ChatColor.translateAlternateColorCodes('&', text);
 
             inOut.addPlayerOption(text);
@@ -424,7 +419,7 @@ public class Conversation implements Listener {
             //only display status messages if conversationIO allows it
             if (conv.inOut.printMessages()) {
                 conv.inOut.print(pluginMessage.getMessage(onlineProfile, "conversation_end",
-                        new PluginMessage.Replacement("npc", data.getPublicData().getQuester(log, language, onlineProfile))));
+                        new PluginMessage.Replacement("npc", LegacyComponentSerializer.legacySection().serialize(data.getPublicData().getQuester(log, onlineProfile)))));
             }
             //play conversation end sound
             Config.playSound(onlineProfile, "end");
@@ -766,7 +761,7 @@ public class Conversation implements Listener {
 
                     if (conv.inOut.printMessages()) {
                         conv.inOut.print(pluginMessage.getMessage(onlineProfile, "conversation_start",
-                                new PluginMessage.Replacement("npc", data.getPublicData().getQuester(log, language, onlineProfile))));
+                                new PluginMessage.Replacement("npc", LegacyComponentSerializer.legacySection().serialize(data.getPublicData().getQuester(log, onlineProfile)))));
                     }
 
                     Config.playSound(onlineProfile, "start");

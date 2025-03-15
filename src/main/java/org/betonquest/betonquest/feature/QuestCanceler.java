@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.feature;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -137,9 +139,9 @@ public class QuestCanceler {
         }
         // done
         log.debug("Quest removed!");
-        final String questName = getName(onlineProfile);
+        final Component questName = getName(onlineProfile);
         final String message = pluginMessage.getMessage(onlineProfile, "quest_canceled",
-                new PluginMessage.Replacement("name", questName));
+                new PluginMessage.Replacement("name", LegacyComponentSerializer.legacySection().serialize(questName)));
         try {
             Notify.get(pack, "quest_cancelled,quest_canceled,info").sendNotify(message, onlineProfile);
         } catch (final QuestException exception) {
@@ -195,14 +197,13 @@ public class QuestCanceler {
      * @param profile the {@link Profile} of the player
      * @return the name of the quest canceler
      */
-    public String getName(final Profile profile) {
-        final String language = BetonQuest.getInstance().getPlayerDataStorage().get(profile).getLanguage();
+    public Component getName(final Profile profile) {
         try {
-            return names.getResolved(language, profile).replace("_", " ").replace("&", "§");
+            return names.asComponent(profile);
         } catch (final QuestException e) {
             log.warn(pack, "Could not resolve Quest name in canceler '" + pack.getQuestPath() + "." + cancelerID + "': "
                     + e.getMessage(), e);
-            return "Quest";
+            return Component.text("Quest");
         }
     }
 
@@ -222,7 +223,7 @@ public class QuestCanceler {
             }
         }
         final ItemMeta meta = stack.getItemMeta();
-        meta.setDisplayName(getName(profile));
+        meta.displayName(getName(profile));
         stack.setItemMeta(meta);
         return stack;
     }
