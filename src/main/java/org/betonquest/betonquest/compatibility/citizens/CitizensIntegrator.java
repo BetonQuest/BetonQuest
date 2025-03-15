@@ -32,10 +32,11 @@ import org.bukkit.scheduler.BukkitScheduler;
  */
 @SuppressWarnings("NullAway.Init")
 public class CitizensIntegrator implements Integrator {
+
     /**
-     * The active integrator instance.
+     * Handles NPC movement of the {@link CitizensMoveEvent}.
      */
-    private static CitizensIntegrator instance;
+    private static CitizensMoveController citizensMoveController;
 
     /**
      * The BetonQuest plugin instance.
@@ -48,16 +49,9 @@ public class CitizensIntegrator implements Integrator {
     private CitizensConversationStarter citizensConversationStarter;
 
     /**
-     * Handles NPC movement of the {@link CitizensMoveEvent}.
-     */
-    private CitizensMoveController citizensMoveController;
-
-    /**
      * The default Constructor.
      */
-    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public CitizensIntegrator() {
-        instance = this;
         plugin = BetonQuest.getInstance();
     }
 
@@ -67,16 +61,20 @@ public class CitizensIntegrator implements Integrator {
      * @return the move controller of this NPC integration
      */
     public static CitizensMoveController getCitizensMoveInstance() {
-        return instance.citizensMoveController;
+        return citizensMoveController;
     }
 
     @Override
     public void hook() {
+        final Server server = plugin.getServer();
+        final CitizensWalkingListener citizensWalkingListener = new CitizensWalkingListener();
+        server.getPluginManager().registerEvents(citizensWalkingListener, plugin);
+
         final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
-        citizensMoveController = new CitizensMoveController(loggerFactory.create(CitizensMoveController.class), plugin.getQuestTypeAPI());
+        citizensMoveController = new CitizensMoveController(loggerFactory.create(CitizensMoveController.class),
+                plugin.getQuestTypeAPI(), citizensWalkingListener);
         citizensConversationStarter = new CitizensConversationStarter(loggerFactory,
                 loggerFactory.create(CitizensConversationStarter.class), plugin.getPluginMessage(), citizensMoveController);
-        new CitizensWalkingListener();
 
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
         final ObjectiveTypeRegistry objectiveTypes = questRegistries.objective();
@@ -84,7 +82,6 @@ public class CitizensIntegrator implements Integrator {
         objectiveTypes.register("npcinteract", NPCInteractObjective.class);
         objectiveTypes.register("npcrange", NPCRangeObjective.class);
 
-        final Server server = plugin.getServer();
         final BukkitScheduler scheduler = server.getScheduler();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, scheduler, plugin);
 
