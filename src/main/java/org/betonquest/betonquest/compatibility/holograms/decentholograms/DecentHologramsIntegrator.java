@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.holograms.decentholograms;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -12,6 +11,7 @@ import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.kernel.processor.adapter.VariableAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -59,7 +59,7 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
         return matcher.replaceAll(match -> {
             final String group = match.group();
             try {
-                final Variable variable = BetonQuest.getInstance().getVariableProcessor().create(pack, group);
+                final VariableAdapter variable = BetonQuest.getInstance().getVariableProcessor().create(pack, group);
                 final Instruction instruction = variable.getInstruction();
                 return "%betonquest_" + instruction.getPackage().getQuestPath() + ":" + instruction + "%";
             } catch (final QuestException exception) {

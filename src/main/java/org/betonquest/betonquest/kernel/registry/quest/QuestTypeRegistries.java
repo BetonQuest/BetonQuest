@@ -28,7 +28,7 @@ public record QuestTypeRegistries(
                 new ConditionTypeRegistry(loggerFactory.create(ConditionTypeRegistry.class), loggerFactory),
                 new EventTypeRegistry(loggerFactory.create(EventTypeRegistry.class), loggerFactory),
                 new ObjectiveTypeRegistry(loggerFactory.create(ObjectiveTypeRegistry.class)),
-                new VariableTypeRegistry(loggerFactory.create(VariableTypeRegistry.class), loggerFactory)
+                new VariableTypeRegistry(loggerFactory.create(VariableTypeRegistry.class))
         );
     }
 }
