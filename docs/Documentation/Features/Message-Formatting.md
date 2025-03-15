@@ -6,7 +6,7 @@ icon: material/message-cog
     This feature is still in development and does not work for every feature at the moment.  
     Currently supported are:
     
-    - Comming soon
+    - Notify and NotifyAll Event
 
 Every string in BetonQuest can be formatted with a formatter.
 A formatter is a way to format a string with colors, styles, and more, while each formatter has its own syntax.

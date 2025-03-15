@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.conversation;
 
+import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.betonquest.betonquest.BetonQuest;
@@ -30,9 +31,6 @@ public class SimpleInterceptor implements Interceptor, Listener {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
-    /**
-     * Send message, bypassing Interceptor
-     */
     @Override
     public void sendMessage(final String message) {
         player.spigot().sendMessage(TextComponent.fromLegacyText(message));
@@ -41,6 +39,11 @@ public class SimpleInterceptor implements Interceptor, Listener {
     @Override
     public void sendMessage(final BaseComponent... message) {
         player.spigot().sendMessage(message);
+    }
+
+    @Override
+    public void sendMessage(final Component message) {
+        player.sendMessage(message);
     }
 
     /**

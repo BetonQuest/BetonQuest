@@ -8,6 +8,7 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import io.papermc.lib.PaperLib;
+import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.ArrayUtils;
@@ -109,9 +110,6 @@ public class PacketInterceptor implements Interceptor, Listener {
         return packets;
     }
 
-    /**
-     * Sends a message that bypasses the interceptor.
-     */
     @Override
     public void sendMessage(final String message) {
         sendMessage(TextComponent.fromLegacyText(message));
@@ -121,6 +119,12 @@ public class PacketInterceptor implements Interceptor, Listener {
     public void sendMessage(final BaseComponent... message) {
         final BaseComponent[] components = ArrayUtils.addAll(new TextComponent[]{new TextComponent(MESSAGE_PASSTHROUGH_TAG)}, message);
         player.spigot().sendMessage(components);
+    }
+
+    @Override
+    public void sendMessage(final Component message) {
+        final net.kyori.adventure.text.TextComponent component = Component.text(MESSAGE_PASSTHROUGH_TAG).append(message);
+        player.sendMessage(component);
     }
 
     @Override

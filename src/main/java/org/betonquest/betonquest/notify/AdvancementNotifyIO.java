@@ -3,6 +3,8 @@ package org.betonquest.betonquest.notify;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import io.papermc.lib.PaperLib;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -19,7 +21,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
 public class AdvancementNotifyIO extends NotifyIO {
 
     private final String frame;
@@ -34,6 +36,10 @@ public class AdvancementNotifyIO extends NotifyIO {
 
     @Override
     protected void notifyPlayer(final String message, final OnlineProfile onlineProfile) {
+        notifyPlayerObject(message, onlineProfile);
+    }
+
+    private void notifyPlayerObject(final Object message, final OnlineProfile onlineProfile) {
         final UUID uuid = UUID.randomUUID();
         final NamespacedKey rootKey = new NamespacedKey(BetonQuest.getInstance(), "notify/" + uuid + "-root");
         final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "notify/" + uuid + "-message");
@@ -50,8 +56,13 @@ public class AdvancementNotifyIO extends NotifyIO {
         }.runTaskLater(BetonQuest.getInstance(), 10);
     }
 
+    @Override
+    protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) {
+        notifyPlayerObject(GsonComponentSerializer.gson().serializeToTree(message), onlineProfile);
+    }
+
     @SuppressWarnings("deprecation")
-    private void loadAdvancement(final String message, final NamespacedKey rootKey, final NamespacedKey key) {
+    private void loadAdvancement(final Object message, final NamespacedKey rootKey, final NamespacedKey key) {
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -95,7 +106,7 @@ public class AdvancementNotifyIO extends NotifyIO {
         }
     }
 
-    private String generateJson(@Nullable final String message, @Nullable final NamespacedKey root) {
+    private String generateJson(@Nullable final Object message, @Nullable final NamespacedKey root) {
         final JsonObject json = new JsonObject();
         json.add("criteria", getCriteria());
         if (root != null) {
@@ -117,10 +128,14 @@ public class AdvancementNotifyIO extends NotifyIO {
         return trigger;
     }
 
-    private JsonObject getDisplay(@Nullable final String message) {
+    private JsonObject getDisplay(@Nullable final Object message) {
         final JsonObject display = new JsonObject();
         display.add("icon", getIcon());
-        display.addProperty("title", message);
+        if (message instanceof final String messageString) {
+            display.addProperty("title", messageString);
+        } else if (message instanceof final JsonObject messageObject) {
+            display.add("title", messageObject);
+        }
         display.addProperty("description", "");
         display.addProperty("frame", this.frame);
         display.addProperty("announce_to_chat", false);

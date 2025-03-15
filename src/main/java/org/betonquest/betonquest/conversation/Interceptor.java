@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.conversation;
 
+import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.chat.BaseComponent;
 
 /**
@@ -9,21 +10,28 @@ import net.md_5.bungee.api.chat.BaseComponent;
 public interface Interceptor {
 
     /**
-     * Send message to player bypassing Interceptor
+     * Send a message to player bypassing Interceptor.
      *
      * @param message the message
      */
     void sendMessage(String message);
 
     /**
-     * Send message to player bypassing Interceptor
+     * Send a message to player bypassing Interceptor.
      *
      * @param message the message
      */
     void sendMessage(BaseComponent... message);
 
     /**
-     * Ends the work of this interceptor
+     * Send a message to player bypassing Interceptor.
+     *
+     * @param message the message
+     */
+    void sendMessage(Component message);
+
+    /**
+     * Ends the work of this interceptor.
      */
     void end();
 }

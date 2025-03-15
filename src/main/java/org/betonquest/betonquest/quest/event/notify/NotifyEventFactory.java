@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.quest.event.notify;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.message.Message;
+import org.betonquest.betonquest.api.message.MessageParser;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -9,6 +11,7 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.message.ParsedMessage;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -44,60 +47,60 @@ public class NotifyEventFactory implements EventFactory {
     private final PrimaryServerThreadData data;
 
     /**
+     * The {@link MessageParser} to use for parsing messages.
+     */
+    private final MessageParser messageParser;
+
+    /**
      * Storage for player data.
      */
-    private final PlayerDataStorage dataStorage;
+    private final PlayerDataStorage playerDataStorage;
 
     /**
      * Creates a new factory for {@link NotifyEvent}.
      *
-     * @param loggerFactory the logger factory to use for creating the event logger
-     * @param data          the data for primary server thread access
-     * @param dataStorage   the storage providing player data
+     * @param loggerFactory     the logger factory to use for creating the event logger
+     * @param data              the data for primary server thread access
+     * @param messageParser     the message parser to use for parsing messages
+     * @param playerDataStorage the storage providing player data
      */
     public NotifyEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data,
-                              final PlayerDataStorage dataStorage) {
+                              final MessageParser messageParser, final PlayerDataStorage playerDataStorage) {
         this.loggerFactory = loggerFactory;
         this.data = data;
-        this.dataStorage = dataStorage;
+        this.messageParser = messageParser;
+        this.playerDataStorage = playerDataStorage;
     }
 
     @Override
     public Event parseEvent(final Instruction instruction) throws QuestException {
-        final Map<String, VariableString> translations = new HashMap<>();
-        final NotifyIO notifyIO = processInstruction(instruction, translations);
+        final String rawInstruction = String.join(" ", instruction.getValueParts());
+        final Matcher keyValueMatcher = KEY_VALUE_PATTERN.matcher(rawInstruction);
+
+        final Message message = getMessage(instruction, keyValueMatcher, rawInstruction);
+        final NotifyIO notifyIO = processInstruction(instruction, keyValueMatcher);
+
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
-                new NotifyEvent(notifyIO, translations, dataStorage),
+                new NotifyEvent(notifyIO, message),
                 loggerFactory.create(NotifyEvent.class),
                 instruction.getPackage()
         ), data);
     }
 
-    /**
-     * Processes the instruction and extracts the translations and returns the notifyIO to use.
-     *
-     * @param instruction  the instruction to process
-     * @param translations the map to put the translations into
-     * @return the notifyIO to use
-     * @throws QuestException if the instruction is invalid
-     */
-    protected NotifyIO processInstruction(final Instruction instruction, final Map<String, VariableString> translations) throws QuestException {
-        final String rawInstruction = String.join(" ", instruction.getValueParts());
-
-        final Matcher keyValueMatcher = KEY_VALUE_PATTERN.matcher(rawInstruction);
+    private Message getMessage(final Instruction instruction, final Matcher keyValueMatcher, final String rawInstruction) throws QuestException {
         final int indexEnd = keyValueMatcher.find() ? keyValueMatcher.start() : rawInstruction.length();
         keyValueMatcher.reset();
-
         final String langMessages = rawInstruction.substring(0, indexEnd);
+        return getLanguages(instruction, langMessages);
+    }
 
-        translations.putAll(getLanguages(instruction, langMessages));
+    private NotifyIO processInstruction(final Instruction instruction, final Matcher keyValueMatcher) {
         final Map<String, String> data = getData(keyValueMatcher);
-
         final String category = data.remove("category");
         return Notify.get(instruction.getPackage(), category, data);
     }
 
-    private Map<String, VariableString> getLanguages(final Instruction instruction, final String messages) throws QuestException {
+    private Message getLanguages(final Instruction instruction, final String messages) throws QuestException {
         final Map<String, VariableString> translations = new HashMap<>();
         final Matcher languageMatcher = LANGUAGE_PATTERN.matcher(messages);
 
@@ -119,7 +122,7 @@ public class NotifyEventFactory implements EventFactory {
         if (!translations.containsKey(defaultLanguageKey)) {
             throw new QuestException("No message defined for default language '" + defaultLanguageKey + "'!");
         }
-        return translations;
+        return new ParsedMessage(messageParser, translations, playerDataStorage);
     }
 
     private Map<String, String> getData(final Matcher keyValueMatcher) {
