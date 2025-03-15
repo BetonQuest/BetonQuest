@@ -46,14 +46,22 @@ public class CitizensMoveController implements Listener {
     private final QuestTypeAPI questTypeAPI;
 
     /**
+     * Walking listener to check if movement is blocked by a conversation.
+     */
+    private final CitizensWalkingListener citizensWalkingListener;
+
+    /**
      * Creates a new Citizens Move Controller.
      *
-     * @param log          logger instance for this class
-     * @param questTypeAPI the Quest Type API
+     * @param log                     logger instance for this class
+     * @param questTypeAPI            the Quest Type API
+     * @param citizensWalkingListener the walking listener for conversations
      */
-    public CitizensMoveController(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI) {
+    public CitizensMoveController(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI,
+                                  final CitizensWalkingListener citizensWalkingListener) {
         this.log = log;
         this.questTypeAPI = questTypeAPI;
+        this.citizensWalkingListener = citizensWalkingListener;
     }
 
     /**
@@ -198,8 +206,8 @@ public class CitizensMoveController implements Listener {
             stopNPCMoving(npc);
 
             if (npc.isSpawned()) {
-                if (CitizensWalkingListener.getInstance().isMovementPaused(npc)) {
-                    CitizensWalkingListener.getInstance().setNewTargetLocation(npc, firstLocation);
+                if (citizensWalkingListener.isMovementPaused(npc)) {
+                    citizensWalkingListener.setNewTargetLocation(npc, firstLocation);
                 } else {
                     npc.getNavigator().setTarget(firstLocation);
                 }
@@ -218,7 +226,7 @@ public class CitizensMoveController implements Listener {
             if (npc.getId() != npcId) {
                 return;
             }
-            if (CitizensWalkingListener.getInstance().isMovementPaused(npc)) {
+            if (citizensWalkingListener.isMovementPaused(npc)) {
                 return;
             }
             if (event instanceof NavigationStuckEvent) {
