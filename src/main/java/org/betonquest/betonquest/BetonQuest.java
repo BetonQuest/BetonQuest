@@ -390,17 +390,6 @@ public class BetonQuest extends JavaPlugin {
             return;
         }
 
-        try {
-            pluginMessage = new PluginMessage(this, configAccessorFactory);
-            for (final String language : pluginMessage.getLanguages()) {
-                log.debug("Loaded " + language + " language");
-            }
-        } catch (final QuestException e) {
-            log.error("Could not load the plugin messages!", e);
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
-
         final HistoryHandler debugHistoryHandler = HandlerFactory.createHistoryHandler(loggerFactory, this,
                 this.getServer().getScheduler(), config, new File(getDataFolder(), "/logs"), InstantSource.system());
         registerLogHandler(getServer(), debugHistoryHandler);
@@ -454,21 +443,30 @@ public class BetonQuest extends JavaPlugin {
 
         pluginManager.registerEvents(new CustomDropListener(loggerFactory.create(CustomDropListener.class)), this);
 
-        registerCommands(receiverSelector, debugHistoryHandler);
-
         questTypeRegistries = QuestTypeRegistries.create(loggerFactory);
         featureRegistries = FeatureRegistries.create(loggerFactory);
+        final String defaultParser = config.getString("messageParser", "legacyminimessage");
+        messageParser = new DecidingMessageParser(featureRegistries.messageParser(), new TagMessageParserDecider(defaultParser));
+
+        try {
+            pluginMessage = new PluginMessage(this, configAccessorFactory);
+            for (final String language : pluginMessage.getLanguages()) {
+                log.debug("Loaded " + language + " language");
+            }
+        } catch (final QuestException e) {
+            log.error("Could not load the plugin messages!", e);
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 
         questRegistry = QuestRegistry.create(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
-                featureRegistries, questTypeRegistries, pluginMessage);
+                featureRegistries, questTypeRegistries, pluginMessage, messageParser);
 
         questTypeAPI = new QuestTypeAPI(questRegistry);
         featureAPI = new FeatureAPI(questRegistry);
         pluginManager.registerEvents(new JoinQuitListener(loggerFactory, questTypeAPI, playerDataStorage, pluginMessage,
                 profileProvider), this);
 
-        final String defaultParser = config.getString("messageParser", "legacyminimessage");
-        messageParser = new DecidingMessageParser(featureRegistries.messageParser(), new TagMessageParserDecider(defaultParser));
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
                 questTypeAPI, pluginMessage, questRegistry.variables(), globalData, playerDataStorage, profileProvider)
                 .register(questTypeRegistries);
@@ -476,6 +474,8 @@ public class BetonQuest extends JavaPlugin {
         new CoreFeatureFactories(loggerFactory, lastExecutionCache, questTypeAPI).register(featureRegistries);
 
         new Compatibility(this, loggerFactory.create(Compatibility.class));
+
+        registerCommands(receiverSelector, debugHistoryHandler);
 
         // schedule quest data loading on the first tick, so all other
         // plugins can register their types

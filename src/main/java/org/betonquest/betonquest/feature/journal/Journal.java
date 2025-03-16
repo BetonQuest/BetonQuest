@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.feature.journal;
 
 import com.google.common.collect.Lists;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.PlayerJournalAddEvent;
@@ -59,8 +60,6 @@ public class Journal {
 
     private final ConfigAccessor config;
 
-    private final String lang;
-
     @Nullable
     private String mainPage;
 
@@ -69,14 +68,12 @@ public class Journal {
      *
      * @param pluginMessage the {@link PluginMessage} instance
      * @param profile       the {@link OnlineProfile} of the player whose journal is created
-     * @param lang          default language to use when generating the journal
      * @param list          list of pointers to journal entries
      * @param config        a {@link ConfigAccessor} that contains the plugin's configuration
      */
-    public Journal(final PluginMessage pluginMessage, final Profile profile, final String lang, final List<Pointer> list, final ConfigAccessor config) {
+    public Journal(final PluginMessage pluginMessage, final Profile profile, final List<Pointer> list, final ConfigAccessor config) {
         this.pluginMessage = pluginMessage;
         this.profile = profile;
-        this.lang = lang;
         this.pointers = list;
         this.config = config;
     }
@@ -204,7 +201,7 @@ public class Journal {
 
             String text;
             try {
-                text = journalEntry.getResolved(lang, profile);
+                text = LegacyComponentSerializer.legacySection().serialize(journalEntry.asComponent(profile));
             } catch (final QuestException e) {
                 log.warn(entryID.getPackage(), "Error while creating variable on journal page '" + entryID + "' in "
                         + profile + " journal: " + e.getMessage(), e);
@@ -234,7 +231,7 @@ public class Journal {
             }
             String text;
             try {
-                text = mainPageEntry.entry().getResolved(lang, profile);
+                text = LegacyComponentSerializer.legacySection().serialize(mainPageEntry.entry().asComponent(profile));
             } catch (final QuestException e) {
                 log.warn(entry.getKey().getPackage(), "Error while creating variable on main page in "
                         + profile + " journal: " + e.getMessage(), e);

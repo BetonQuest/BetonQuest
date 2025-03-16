@@ -4,8 +4,10 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.message.MessageParser;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.conversation.ConversationData;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
@@ -41,6 +43,16 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
     private final VariableProcessor variableProcessor;
 
     /**
+     * Message parser to parse messages.
+     */
+    private final MessageParser messageParser;
+
+    /**
+     * Player data storage to get the player language.
+     */
+    private final PlayerDataStorage playerDataStorage;
+
+    /**
      * Registry for available ConversationIOs.
      */
     private final ConversationIORegistry convIORegistry;
@@ -57,15 +69,21 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
      * @param loggerFactory       the logger factory to create new class specific logger
      * @param plugin              the plugin instance used for new conversation data
      * @param variableProcessor   the processor to create new variables
+     * @param messageParser       the message parser to parse messages
+     * @param playerDataStorage   the player data storage to get the player language
      * @param convIORegistry      the registry for available ConversationIOs
      * @param interceptorRegistry the registry for available Interceptors
      */
-    public ConversationProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuest plugin,
-                                 final VariableProcessor variableProcessor, final ConversationIORegistry convIORegistry, final InterceptorRegistry interceptorRegistry) {
+    public ConversationProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
+                                 final BetonQuest plugin, final VariableProcessor variableProcessor,
+                                 final MessageParser messageParser, final PlayerDataStorage playerDataStorage,
+                                 final ConversationIORegistry convIORegistry, final InterceptorRegistry interceptorRegistry) {
         super(log, "Conversation", "conversations");
         this.loggerFactory = loggerFactory;
         this.plugin = plugin;
         this.variableProcessor = variableProcessor;
+        this.messageParser = messageParser;
+        this.playerDataStorage = playerDataStorage;
         this.convIORegistry = convIORegistry;
         this.interceptorRegistry = interceptorRegistry;
     }
@@ -75,7 +93,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         final String convName = section.getName();
         log.debug(pack, String.format("Loading conversation '%s'.", convName));
 
-        final ParsedSectionMessage quester = new ParsedSectionMessage(variableProcessor, pack, section, "quester");
+        final ParsedSectionMessage quester = new ParsedSectionMessage(variableProcessor, messageParser, playerDataStorage, pack, section, "quester");
         final CreationHelper helper = new CreationHelper(pack, section);
         final boolean blockMovement = Boolean.parseBoolean(helper.opt("stop"));
         final String convIO = helper.parseConvIO();
@@ -84,7 +102,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         final ConversationData.PublicData publicData = new ConversationData.PublicData(convName, quester, blockMovement, finalEvents, convIO, interceptor);
 
         return new ConversationData(loggerFactory.create(ConversationData.class), plugin.getQuestTypeAPI(), plugin.getFeatureAPI(),
-                variableProcessor, pack, section, publicData);
+                variableProcessor, messageParser, playerDataStorage, pack, section, publicData);
     }
 
     @Override

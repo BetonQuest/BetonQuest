@@ -2,7 +2,9 @@ package org.betonquest.betonquest.kernel.processor.feature;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.message.MessageParser;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.kernel.processor.QuestProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
@@ -22,14 +24,29 @@ public class JournalEntryProcessor extends QuestProcessor<JournalEntryID, Parsed
     private final VariableProcessor variableProcessor;
 
     /**
+     * Message parser to parse messages.
+     */
+    private final MessageParser messageParser;
+
+    /**
+     * Player data storage to get the player language.
+     */
+    private final PlayerDataStorage playerDataStorage;
+
+    /**
      * Create a new QuestProcessor to store and execute journal entry logic.
      *
      * @param log               the custom logger for this class
      * @param variableProcessor the processor to create new variables
+     * @param messageParser     the message parser to parse messages
+     * @param playerDataStorage the player data storage to get the player language
      */
-    public JournalEntryProcessor(final BetonQuestLogger log, final VariableProcessor variableProcessor) {
+    public JournalEntryProcessor(final BetonQuestLogger log, final VariableProcessor variableProcessor,
+                                 final MessageParser messageParser, final PlayerDataStorage playerDataStorage) {
         super(log, "Journal Entry", "journal");
         this.variableProcessor = variableProcessor;
+        this.messageParser = messageParser;
+        this.playerDataStorage = playerDataStorage;
     }
 
     @Override
@@ -40,7 +57,7 @@ public class JournalEntryProcessor extends QuestProcessor<JournalEntryID, Parsed
         }
         for (final String key : section.getKeys(false)) {
             try {
-                values.put(getIdentifier(pack, key), new ParsedSectionMessage(variableProcessor, pack, section, key));
+                values.put(getIdentifier(pack, key), new ParsedSectionMessage(variableProcessor, messageParser, playerDataStorage, pack, section, key));
             } catch (final QuestException e) {
                 log.warn("Could not load " + readable + " '" + key + "' in pack '" + pack.getQuestPath() + "': " + e.getMessage(), e);
             }
