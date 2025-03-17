@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.kernel.processor.adapter.VariableAdapter;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,7 +44,7 @@ public class Variable<T> {
      */
     public Variable(final VariableProcessor variableProcessor, @Nullable final QuestPackage pack, final String input,
                     final QuestFunction<String, T> resolver) throws QuestException {
-        final Map<String, org.betonquest.betonquest.api.Variable> variables = getVariables(variableProcessor, pack, input);
+        final Map<String, VariableAdapter> variables = getVariables(variableProcessor, pack, input);
         if (variables.isEmpty()) {
             final T resolved = resolver.apply(input);
             value = profile -> resolved;
@@ -52,14 +53,14 @@ public class Variable<T> {
         }
     }
 
-    private Map<String, org.betonquest.betonquest.api.Variable> getVariables(final VariableProcessor variableProcessor,
-                                                                             @Nullable final QuestPackage pack,
-                                                                             final String input)
+    private Map<String, VariableAdapter> getVariables(final VariableProcessor variableProcessor,
+                                                      @Nullable final QuestPackage pack,
+                                                      final String input)
             throws QuestException {
-        final Map<String, org.betonquest.betonquest.api.Variable> variables = new HashMap<>();
+        final Map<String, VariableAdapter> variables = new HashMap<>();
         for (final String variable : resolveVariables(input)) {
             try {
-                final org.betonquest.betonquest.api.Variable variable1 = variableProcessor.create(pack, replaceEscapedPercent(variable));
+                final VariableAdapter variable1 = variableProcessor.create(pack, replaceEscapedPercent(variable));
                 variables.put(variable, variable1);
             } catch (final QuestException exception) {
                 throw new QuestException("Could not create variable '" + variable + "': "
@@ -75,13 +76,13 @@ public class Variable<T> {
                 .collect(Collectors.toSet());
     }
 
-    private String getString(final String input, final Map<String, org.betonquest.betonquest.api.Variable> variables,
+    private String getString(final String input, final Map<String, VariableAdapter> variables,
                              @Nullable final Profile profile) throws QuestException {
         final Matcher matcher = VARIABLE_PATTERN.matcher(input);
         final StringBuilder resolvedString = new StringBuilder();
         while (matcher.find()) {
             final String variable = matcher.group();
-            final org.betonquest.betonquest.api.Variable resolvedVariable = variables.get(variable);
+            final VariableAdapter resolvedVariable = variables.get(variable);
             if (resolvedVariable == null) {
                 throw new QuestException("Could not resolve variable '" + variable + "'");
             }
