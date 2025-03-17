@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
  * @param <S> playerless quest type
  * @param <W> adapter for created types
  */
-public abstract class PlayerPlayerlessQuestAdapterFactory<P, S, W> {
+public abstract class QuestAdapterFactory<P, S, W> {
     /**
      * The player type factory to be adapted.
      */
@@ -33,8 +33,8 @@ public abstract class PlayerPlayerlessQuestAdapterFactory<P, S, W> {
      * @param playerlessFactory the playerless factory to use
      * @throws IllegalArgumentException if no factory is given
      */
-    public PlayerPlayerlessQuestAdapterFactory(@Nullable final PlayerQuestFactory<P> playerFactory,
-                                               @Nullable final PlayerlessQuestFactory<S> playerlessFactory) {
+    public QuestAdapterFactory(@Nullable final PlayerQuestFactory<P> playerFactory,
+                               @Nullable final PlayerlessQuestFactory<S> playerlessFactory) {
         if (playerFactory == null && playerlessFactory == null) {
             throw new IllegalArgumentException("Either the player or playerless factory must be present!");
         }

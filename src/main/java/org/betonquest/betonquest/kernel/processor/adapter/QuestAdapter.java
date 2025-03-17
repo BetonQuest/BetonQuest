@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.kernel.processor.adapter;
 
-import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -9,11 +9,12 @@ import org.jetbrains.annotations.Nullable;
  * @param <P> the player variant
  * @param <L> the playerless variant
  */
-public class PlayerPlayerlessAdapter<P, L> {
+public class QuestAdapter<P, L> {
     /**
-     * Instruction used to create the types.
+     * Package where the types are from.
      */
-    protected final Instruction instruction;
+    @Nullable
+    protected final QuestPackage pack;
 
     /**
      * Player variant.
@@ -30,16 +31,16 @@ public class PlayerPlayerlessAdapter<P, L> {
     /**
      * Create a new Wrapper with instruction and at least one type.
      *
-     * @param instruction the instruction used to create the types
-     * @param player      the type requiring a profile for execution
-     * @param playerless  the type working without a profile
+     * @param pack       the package where the types are from
+     * @param player     the type requiring a profile for execution
+     * @param playerless the type working without a profile
      * @throws IllegalArgumentException if there is no type provided
      */
-    public PlayerPlayerlessAdapter(final Instruction instruction, @Nullable final P player, @Nullable final L playerless) {
+    public QuestAdapter(@Nullable final QuestPackage pack, @Nullable final P player, @Nullable final L playerless) {
         if (player == null && playerless == null) {
             throw new IllegalStateException("Cannot create a Wrapper without a value!");
         }
-        this.instruction = instruction;
+        this.pack = pack;
         this.player = player;
         this.playerless = playerless;
     }
@@ -54,16 +55,12 @@ public class PlayerPlayerlessAdapter<P, L> {
     }
 
     /**
-     * Get the instruction of the types.
+     * Get the pack where the content of this adapter is from.
      *
-     * @return the instruction used to create the types
+     * @return the source pack
      */
-    public Instruction getInstruction() {
-        return instruction;
-    }
-
-    @Override
-    public String toString() {
-        return instruction.toString();
+    @Nullable
+    public QuestPackage getPackage() {
+        return pack;
     }
 }

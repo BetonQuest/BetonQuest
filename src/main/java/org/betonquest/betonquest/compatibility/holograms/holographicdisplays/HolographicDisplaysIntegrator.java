@@ -70,7 +70,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
                 final VariableAdapter variable = BetonQuest.getInstance().getVariableProcessor().create(pack, group);
                 final Instruction instruction = variable.getInstruction();
                 final String prefix = variable.allowsPlayerless() ? "{bqg:" : "{bq:";
-                return prefix + instruction.getPackage().getQuestPath() + ":" + instruction + "}";
+                return prefix + variable.getPackage().getQuestPath() + ":" + instruction + "}";
             } catch (final QuestException exception) {
                 log.warn("Could not create variable '" + group + "' variable: " + exception.getMessage(), exception);
             }

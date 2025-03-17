@@ -61,7 +61,7 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
             try {
                 final VariableAdapter variable = BetonQuest.getInstance().getVariableProcessor().create(pack, group);
                 final Instruction instruction = variable.getInstruction();
-                return "%betonquest_" + instruction.getPackage().getQuestPath() + ":" + instruction + "%";
+                return "%betonquest_" + variable.getPackage().getQuestPath() + ":" + instruction + "%";
             } catch (final QuestException exception) {
                 log.warn("Could not create variable '" + group + "' variable: " + exception.getMessage(), exception);
             }

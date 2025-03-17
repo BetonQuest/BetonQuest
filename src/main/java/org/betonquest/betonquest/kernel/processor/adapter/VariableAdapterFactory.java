@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Wrapper for factories creating variables.
  */
-public class VariableAdapterFactory extends PlayerPlayerlessQuestAdapterFactory
+public class VariableAdapterFactory extends QuestAdapterFactory
         <PlayerVariable, PlayerlessVariable, VariableAdapter> implements TypeFactory<VariableAdapter> {
 
     /**

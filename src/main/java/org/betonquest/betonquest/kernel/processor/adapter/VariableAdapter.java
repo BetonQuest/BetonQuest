@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.kernel.processor.adapter;
 
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
@@ -10,7 +11,12 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Wrapper for player and playerless variables.
  */
-public class VariableAdapter extends PlayerPlayerlessAdapter<PlayerVariable, PlayerlessVariable> {
+public class VariableAdapter extends QuestAdapter<PlayerVariable, PlayerlessVariable> {
+
+    /**
+     * Instruction used to create the types.
+     */
+    private final Instruction instruction;
 
     /**
      * Create a new Wrapper for variables with instruction.
@@ -21,7 +27,8 @@ public class VariableAdapter extends PlayerPlayerlessAdapter<PlayerVariable, Pla
      * @throws IllegalArgumentException if there is no type provided
      */
     public VariableAdapter(final Instruction instruction, @Nullable final PlayerVariable player, @Nullable final PlayerlessVariable playerless) {
-        super(instruction, player, playerless);
+        super(instruction.getPackage(), player, playerless);
+        this.instruction = instruction;
     }
 
     /**
@@ -39,5 +46,24 @@ public class VariableAdapter extends PlayerPlayerlessAdapter<PlayerVariable, Pla
             return playerless.getValue();
         }
         return player.getValue(profile);
+    }
+
+    /**
+     * Get the instruction of the types.
+     *
+     * @return the instruction used to create the types
+     */
+    public Instruction getInstruction() {
+        return instruction;
+    }
+
+    @Override
+    public QuestPackage getPackage() {
+        return instruction.getPackage();
+    }
+
+    @Override
+    public String toString() {
+        return instruction.toString();
     }
 }
