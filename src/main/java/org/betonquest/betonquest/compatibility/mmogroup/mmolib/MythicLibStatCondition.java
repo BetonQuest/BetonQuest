@@ -1,15 +1,15 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmolib;
 
 import io.lumine.mythic.lib.api.player.MMOPlayerData;
-import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
  * A condition that checks the value of a MythicLib stat.
  */
-public class MythicLibStatCondition extends Condition {
+public class MythicLibStatCondition implements PlayerCondition {
 
     /**
      * The name of the stat to check.
@@ -19,7 +19,7 @@ public class MythicLibStatCondition extends Condition {
     /**
      * The required minimum target level of the stat.
      */
-    private final double targetLevel;
+    private final VariableNumber targetLevel;
 
     /**
      * Whether the actual level must be equal to the target level.
@@ -27,23 +27,23 @@ public class MythicLibStatCondition extends Condition {
     private final boolean mustBeEqual;
 
     /**
-     * Parses the instruction and creates a new condition.
+     * Create a new Stat Condition.
      *
-     * @param instruction the user-provided instruction
-     * @throws QuestException if the instruction is invalid
+     * @param stat        the stat to check
+     * @param targetLevel the required level
+     * @param equal       whether the level should be equal
      */
-    public MythicLibStatCondition(final Instruction instruction) throws QuestException {
-        super(instruction, true);
-
-        statName = instruction.next();
-        targetLevel = instruction.getDouble();
-        mustBeEqual = instruction.hasArgument("equal");
+    public MythicLibStatCondition(final String stat, final VariableNumber targetLevel, final boolean equal) {
+        this.statName = stat;
+        this.targetLevel = targetLevel;
+        this.mustBeEqual = equal;
     }
 
     @Override
-    protected Boolean execute(final Profile profile) throws QuestException {
+    public boolean check(final Profile profile) throws QuestException {
         final MMOPlayerData data = MMOPlayerData.get(profile.getPlayerUUID());
+        final double requiredLevel = targetLevel.getValue(profile).doubleValue();
         final double actualLevel = data.getStatMap().getStat(statName);
-        return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
+        return mustBeEqual ? actualLevel == requiredLevel : actualLevel >= requiredLevel;
     }
 }
