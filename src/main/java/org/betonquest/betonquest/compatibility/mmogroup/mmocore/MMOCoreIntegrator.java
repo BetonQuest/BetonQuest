@@ -2,15 +2,27 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.compatibility.mmogroup.mmocore.condition.MMOCoreAttributeConditionFactory;
+import org.betonquest.betonquest.compatibility.mmogroup.mmocore.condition.MMOCoreClassConditionFactory;
+import org.betonquest.betonquest.compatibility.mmogroup.mmocore.condition.MMOCoreProfessionLevelConditionFactory;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.ObjectiveTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Integrator for MMO CORE.
  */
 public class MMOCoreIntegrator implements Integrator {
+    /**
+     * Util class to get and validate attributes.
+     */
+    @Nullable
+    private MMOCoreUtils mmoCoreUtils;
 
     /**
      * The default constructor.
@@ -21,14 +33,16 @@ public class MMOCoreIntegrator implements Integrator {
 
     @Override
     public void hook() {
-        MMOCoreUtils.loadMMOCoreAttributeConfig();
+        mmoCoreUtils = new MMOCoreUtils(Bukkit.getPluginManager().getPlugin("MMOCore").getDataFolder());
 
         final BetonQuest plugin = BetonQuest.getInstance();
+        final Server server = plugin.getServer();
+        final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
         final ConditionTypeRegistry conditionTypes = questRegistries.condition();
-        conditionTypes.register("mmoclass", MMOCoreClassCondition.class);
-        conditionTypes.register("mmoattribute", MMOCoreAttributeCondition.class);
-        conditionTypes.register("mmoprofession", MMOCoreProfessionLevelCondition.class);
+        conditionTypes.register("mmoclass", new MMOCoreClassConditionFactory(data));
+        conditionTypes.register("mmoattribute", new MMOCoreAttributeConditionFactory(data, mmoCoreUtils));
+        conditionTypes.register("mmoprofession", new MMOCoreProfessionLevelConditionFactory(data));
 
         final ObjectiveTypeRegistry objectiveTypes = questRegistries.objective();
         objectiveTypes.register("mmoprofessionlevelup", MMOCoreProfessionObjective.class);
@@ -46,7 +60,9 @@ public class MMOCoreIntegrator implements Integrator {
 
     @Override
     public void reload() {
-        // Empty
+        if (mmoCoreUtils != null) {
+            mmoCoreUtils.reload(Bukkit.getPluginManager().getPlugin("MMOCore").getDataFolder());
+        }
     }
 
     @Override
