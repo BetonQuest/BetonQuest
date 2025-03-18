@@ -1,13 +1,18 @@
 package org.betonquest.betonquest.compatibility.magic;
 
 import com.elmakers.mine.bukkit.api.event.SpellInventoryEvent;
+import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.bukkit.Bukkit;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
+import org.bukkit.Server;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.PluginManager;
+
+import java.util.Objects;
 
 /**
  * Integrator for the Magic plugin.
@@ -33,8 +38,12 @@ public class MagicIntegrator implements Integrator, Listener {
 
     @Override
     public void hook() {
-        plugin.getQuestRegistries().condition().register("wand", WandCondition.class);
-        Bukkit.getPluginManager().registerEvents(this, plugin);
+        final Server server = plugin.getServer();
+        final PluginManager manager = server.getPluginManager();
+        final MagicAPI api = Objects.requireNonNull((MagicAPI) manager.getPlugin("Magic"));
+        final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
+        plugin.getQuestRegistries().condition().register("wand", new WandConditionFactory(plugin.getLoggerFactory(), api, data));
+        manager.registerEvents(this, plugin);
     }
 
     @Override
