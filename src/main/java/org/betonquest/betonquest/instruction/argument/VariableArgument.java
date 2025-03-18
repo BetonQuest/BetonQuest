@@ -2,6 +2,7 @@ package org.betonquest.betonquest.instruction.argument;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.instruction.variable.VariableEnum;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
@@ -30,6 +31,18 @@ public interface VariableArgument<T> {
      */
     VariableArgument<VariableString> STRING_REPLACE_UNDERSCORES = (variableProcessor, pack, input) ->
             new VariableString(variableProcessor, pack, input, true);
+
+    /**
+     * A variable interpreted as enum when resolved.
+     *
+     * @param enumClass the argument to parse the id
+     * @param <T>       the ID type
+     * @return the variables of the id
+     */
+    static <T extends Enum<T>> VariableArgument<VariableEnum<T>> ofEnum(final Class<T> enumClass) {
+        return (variableProcessor, pack, string)
+                -> new VariableEnum<>(variableProcessor, pack, string, enumClass);
+    }
 
     /**
      * Gets a {@link T} from string.
