@@ -7,17 +7,16 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
+
+import java.util.Objects;
 
 /**
  * Integrator for the Quests plugin.
  */
 public class QuestsIntegrator implements Integrator {
-    /**
-     * The Quests plugin instance.
-     */
-    @SuppressWarnings("NullAway.Init")
-    private static Quests questsInstance;
 
     /**
      * The BetonQuest plugin instance.
@@ -31,27 +30,23 @@ public class QuestsIntegrator implements Integrator {
         plugin = BetonQuest.getInstance();
     }
 
-    /**
-     * Gets the used Quests instance.
-     *
-     * @return the active Quests instance.
-     */
-    public static Quests getQuestsInstance() {
-        return questsInstance;
-    }
-
     @Override
     public void hook() {
-        questsInstance = (Quests) Bukkit.getPluginManager().getPlugin("Quests");
+        final Quests questsInstance = (Quests) Bukkit.getPluginManager().getPlugin("Quests");
+        Objects.requireNonNull(questsInstance);
+
+        final Server server = plugin.getServer();
+        final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
 
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
-        questRegistries.condition().register("quest", QuestsCondition.class);
-        questRegistries.event().register("quest", QuestsEvent.class);
+        questRegistries.condition().register("quest", new QuestsConditionFactory(questsInstance, data));
+        questRegistries.event().register("quest", new QuestsEventFactory(questsInstance, data));
 
         final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
         final QuestTypeAPI questTypeAPI = plugin.getQuestTypeAPI();
         final ProfileProvider profileProvider = plugin.getProfileProvider();
-        questsInstance.getCustomRewards().add(new EventReward(loggerFactory.create(EventReward.class), questTypeAPI, profileProvider));
+        questsInstance.getCustomRewards().add(new EventReward(
+                loggerFactory.create(EventReward.class), questTypeAPI, profileProvider));
         questsInstance.getCustomRequirements().add(new ConditionRequirement(
                 loggerFactory.create(ConditionRequirement.class), questTypeAPI, profileProvider));
     }

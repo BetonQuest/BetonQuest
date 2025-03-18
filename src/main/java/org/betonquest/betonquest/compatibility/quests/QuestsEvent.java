@@ -1,48 +1,58 @@
 package org.betonquest.betonquest.compatibility.quests;
 
+import me.pikamug.quests.Quests;
 import me.pikamug.quests.quests.Quest;
-import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.QuestEvent;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 
 /**
  * Starts a quests in Quests plugin.
  */
-@SuppressWarnings("PMD.CommentRequired")
-public class QuestsEvent extends QuestEvent {
+public class QuestsEvent implements Event {
+
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
+     * Quests instance.
      */
-    private final BetonQuestLogger log;
+    private final Quests quests;
 
-    private final String questName;
+    /**
+     * Name of quest to start.
+     */
+    private final VariableString questName;
 
+    /**
+     * If the quest start should be forced.
+     */
     private final boolean override;
 
-    public QuestsEvent(final Instruction instruction) throws QuestException {
-        super(instruction, true);
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        questName = instruction.next();
-        override = instruction.hasArgument("check-requirements");
+    /**
+     * Create a new start quest event.
+     *
+     * @param quests    active quests instance
+     * @param questName name of quest to start
+     * @param override  whether to force quest start
+     */
+    public QuestsEvent(final Quests quests, final VariableString questName, final boolean override) {
+        this.quests = quests;
+        this.questName = questName;
+        this.override = override;
     }
 
     @Override
-    protected Void execute(final Profile profile) {
+    public void execute(final Profile profile) throws QuestException {
+        final String questName = this.questName.getValue(profile);
         Quest quest = null;
-        for (final Quest q : QuestsIntegrator.getQuestsInstance().getLoadedQuests()) {
+        for (final Quest q : quests.getLoadedQuests()) {
             if (q.getName().replace(' ', '_').equalsIgnoreCase(questName)) {
                 quest = q;
                 break;
             }
         }
         if (quest == null) {
-            log.warn(instruction.getPackage(), "Quest '" + questName + "' is not defined");
-            return null;
+            throw new QuestException("Quest '" + questName + "' is not defined");
         }
-        QuestsIntegrator.getQuestsInstance().getQuester(profile.getProfileUUID()).takeQuest(quest, override);
-        return null;
+        quests.getQuester(profile.getProfileUUID()).takeQuest(quest, override);
     }
 }
