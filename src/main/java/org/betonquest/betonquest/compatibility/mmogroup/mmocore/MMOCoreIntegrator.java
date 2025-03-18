@@ -49,14 +49,14 @@ public class MMOCoreIntegrator implements Integrator {
 
     @Override
     public void hook() {
+        final BetonQuest plugin = BetonQuest.getInstance();
         try {
-            mmoCoreUtils = new MMOCoreUtils(BetonQuest.getInstance().getConfigAccessorFactory(), Bukkit.getPluginManager().getPlugin("MMOCore").getDataFolder());
+            mmoCoreUtils = new MMOCoreUtils(plugin.getConfigAccessorFactory(), Bukkit.getPluginManager().getPlugin("MMOCore").getDataFolder());
         } catch (FileNotFoundException | InvalidConfigurationException e) {
-            log.warn("Couldn't load the MMOCore attribute configuration file!", e);
+            log.warn("Couldn't load the MMOCore attribute configuration file! MMOCore won't work!", e);
             return;
         }
 
-        final BetonQuest plugin = BetonQuest.getInstance();
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
