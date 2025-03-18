@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.mmogroup.mmoitems.take;
+package org.betonquest.betonquest.compatibility.mmogroup.mmoitems.event;
 
 import net.Indyuce.mmoitems.api.Type;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
