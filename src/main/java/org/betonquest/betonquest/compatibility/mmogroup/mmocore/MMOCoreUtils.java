@@ -1,36 +1,56 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 
-import net.Indyuce.mmocore.api.player.PlayerData;
 import net.Indyuce.mmocore.api.player.attribute.PlayerAttribute;
-import net.Indyuce.mmocore.api.player.attribute.PlayerAttributes;
+import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
+import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.io.File;
-import java.util.UUID;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Allows to get an attribute from a loaded configuration.
+ */
 public final class MMOCoreUtils {
-    @SuppressWarnings("NullAway.Init")
-    private static Configuration mmoCoreAttributeConfig;
+    /**
+     * Configuration to get attributes.
+     */
+    private final FileConfigAccessor mmoCoreAttributeConfig;
 
-    private MMOCoreUtils() {
+    /**
+     * Creates a new Utils class.
+     *
+     * @param configAccessorFactory the factory to create the config accessor
+     * @param mmoCoreDataFolder     the folder where the attributes are stored
+     * @throws FileNotFoundException         if the file is not found
+     * @throws InvalidConfigurationException if the configuration is invalid
+     */
+    public MMOCoreUtils(final ConfigAccessorFactory configAccessorFactory, final File mmoCoreDataFolder) throws FileNotFoundException, InvalidConfigurationException {
+        mmoCoreAttributeConfig = configAccessorFactory.create(new File(mmoCoreDataFolder, "attributes.yml"));
     }
 
-    public static void loadMMOCoreAttributeConfig() {
-        mmoCoreAttributeConfig = YamlConfiguration.loadConfiguration(new File(Bukkit.getPluginManager().getPlugin("MMOCore").getDataFolder(), "attributes.yml"));
+    /**
+     * Reloads the backing config.
+     *
+     * @throws IOException if the config could not be reloaded
+     */
+    public void reload() throws IOException {
+        mmoCoreAttributeConfig.reload();
     }
 
-    public static int getMMOCoreAttribute(final UUID uuid, final String attribute) {
-        final PlayerAttributes attributes = PlayerData.get(uuid).getAttributes();
-        return attributes.getAttribute(new PlayerAttribute(mmoCoreAttributeConfig.getConfigurationSection(attribute)));
-    }
-
-    public static void isMMOConfigValidForAttribute(final String attributeName) throws QuestException {
-        if (!mmoCoreAttributeConfig.contains(attributeName)) {
-            throw new QuestException("Couldn't find the attribute \"" + attributeName + "\" in the MMOCore attribute config!");
+    /**
+     * Checks if an attribute is present and gets it.
+     *
+     * @param attributeName the name of the attribute to get
+     * @return the attribute with that name
+     * @throws QuestException when there is no such attribute
+     */
+    public PlayerAttribute getAttribute(final String attributeName) throws QuestException {
+        if (mmoCoreAttributeConfig.contains(attributeName)) {
+            return new PlayerAttribute(mmoCoreAttributeConfig.getConfigurationSection(attributeName));
         }
+        throw new QuestException("Couldn't find the attribute \"" + attributeName + "\" in the MMOCore attribute config!");
     }
 }
