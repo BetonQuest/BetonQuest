@@ -3,20 +3,16 @@ package org.betonquest.betonquest.compatibility.magic;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.Condition;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.util.Utils;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
@@ -25,58 +21,56 @@ import java.util.function.BiPredicate;
 /**
  * Checks if the player is holding a wand.
  */
-@SuppressWarnings("PMD.CommentRequired")
-public class WandCondition extends Condition {
+public class WandCondition implements OnlineCondition {
+    /**
+     * Magic API.
+     */
     private final MagicAPI api;
 
+    /**
+     * Execution of the wand type check.
+     */
     private final BiPredicate<Player, Profile> typeCheck;
 
-    private final Map<String, VariableNumber> spells = new HashMap<>();
+    /**
+     * Required spells on the wand.
+     */
+    private final Map<String, VariableNumber> spells;
 
+    /**
+     * Wand name.
+     */
     @Nullable
-    private final String name;
+    private final VariableString name;
 
+    /**
+     * Required Wand amount.
+     */
     @Nullable
     private final VariableNumber amount;
 
-    public WandCondition(final Instruction instruction) throws QuestException {
-        super(instruction, true);
-        final String string = instruction.next();
-        final CheckType type = switch (string) {
-            case "hand" -> CheckType.IN_HAND;
-            case "inventory" -> CheckType.IN_INVENTORY;
-            case "lost" -> CheckType.IS_LOST;
-            default -> throw new QuestException("Unknown check type '" + string + "'");
-        };
-        typeCheck = getCheck(type);
-        final String[] array = instruction.getArray(instruction.getOptional("spells"));
-        putSpells(array, instruction.getPackage());
-        name = instruction.getOptional("name");
-        api = Utils.getNN((MagicAPI) Bukkit.getPluginManager().getPlugin("Magic"), "Magic plugin not found!");
-        amount = instruction.get(instruction.getOptional("amount"), VariableNumber::new);
-    }
-
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    private void putSpells(final String[] spells, final QuestPackage questPackage) throws QuestException {
-        for (final String spell : spells) {
-            final String[] spellParts = spell.split(":");
-            if (spellParts.length != 2) {
-                throw new QuestException("Incorrect spell format");
-            }
-            final VariableNumber level;
-            try {
-                level = new VariableNumber(BetonQuest.getInstance().getVariableProcessor(), questPackage, spellParts[1]);
-            } catch (final QuestException e) {
-                throw new QuestException("Could not parse spell level", e);
-            }
-            this.spells.put(spellParts[0], level);
-        }
+    /**
+     * Create a new Magic Wand Condition.
+     *
+     * @param api    the magic api
+     * @param type   the type of wand check
+     * @param name   optional wand name
+     * @param spells the required spells on the wand
+     * @param amount optional required wand amount
+     */
+    public WandCondition(final MagicAPI api, final CheckType type, @Nullable final VariableString name,
+                         final Map<String, VariableNumber> spells, @Nullable final VariableNumber amount) {
+        this.api = api;
+        this.name = name;
+        this.spells = spells;
+        this.typeCheck = getCheck(type);
+        this.amount = amount;
     }
 
     @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.SwitchDensity"})
     private BiPredicate<Player, Profile> getCheck(final CheckType checkType) {
         return (player, profile) -> switch (checkType) {
-            case IS_LOST -> {
+            case LOST -> {
                 for (final LostWand lost : api.getLostWands()) {
                     final Player owner = Bukkit.getPlayer(UUID.fromString(lost.getOwnerId()));
                     if (owner == null) {
@@ -88,7 +82,7 @@ public class WandCondition extends Condition {
                 }
                 yield false;
             }
-            case IN_HAND -> {
+            case HAND -> {
                 final ItemStack wandItem = player.getInventory().getItemInMainHand();
                 if (!api.isWand(wandItem)) {
                     yield false;
@@ -96,7 +90,7 @@ public class WandCondition extends Condition {
                 final Wand wand1 = api.getWand(wandItem);
                 yield checkWand(wand1, profile);
             }
-            case IN_INVENTORY -> {
+            case INVENTORY -> {
                 int heldAmount = 0;
                 for (final ItemStack item : player.getInventory().getContents()) {
                     if (item == null || !api.isWand(item)) {
@@ -116,8 +110,8 @@ public class WandCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final Profile profile) {
-        final Player player = profile.getOnlineProfile().get().getPlayer();
+    public boolean check(final OnlineProfile profile) {
+        final Player player = profile.getPlayer();
         return typeCheck.test(player, profile);
     }
 
@@ -129,7 +123,7 @@ public class WandCondition extends Condition {
      */
     @SuppressWarnings("PMD.AvoidBranchingStatementAsLastInLoop")
     private boolean checkWand(final Wand wand, final Profile profile) {
-        if (name != null && !name.equalsIgnoreCase(wand.getTemplateKey())) {
+        if (name != null && !name.getString(profile).equalsIgnoreCase(wand.getTemplateKey())) {
             return false;
         }
         if (!spells.isEmpty()) {
@@ -145,9 +139,5 @@ public class WandCondition extends Condition {
             }
         }
         return true;
-    }
-
-    private enum CheckType {
-        IS_LOST, IN_HAND, IN_INVENTORY
     }
 }
