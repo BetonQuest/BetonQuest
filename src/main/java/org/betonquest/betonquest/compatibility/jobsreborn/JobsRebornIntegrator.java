@@ -7,6 +7,12 @@ import org.betonquest.betonquest.compatibility.jobsreborn.condition.FactoryCondi
 import org.betonquest.betonquest.compatibility.jobsreborn.condition.FactoryConditionHasJob;
 import org.betonquest.betonquest.compatibility.jobsreborn.condition.FactoryConditionJobFull;
 import org.betonquest.betonquest.compatibility.jobsreborn.condition.FactoryConditionJobLevel;
+import org.betonquest.betonquest.compatibility.jobsreborn.event.FactoryEventAddExp;
+import org.betonquest.betonquest.compatibility.jobsreborn.event.FactoryEventAddLevel;
+import org.betonquest.betonquest.compatibility.jobsreborn.event.FactoryEventDelLevel;
+import org.betonquest.betonquest.compatibility.jobsreborn.event.FactoryEventJoinJob;
+import org.betonquest.betonquest.compatibility.jobsreborn.event.FactoryEventLeaveJob;
+import org.betonquest.betonquest.compatibility.jobsreborn.event.FactoryEventSetLevel;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.ObjectiveTypeRegistry;
@@ -50,12 +56,12 @@ public class JobsRebornIntegrator implements Integrator {
         log.info("Registered Conditions [nujobs_canlevel,nujobs_hasjob,nujobs_jobfull,nujobs_joblevel]");
 
         final EventTypeRegistry eventTypes = questRegistries.event();
-        eventTypes.register("nujobs_addexp", EventAddExp.class);
-        eventTypes.register("nujobs_addlevel", EventAddLevel.class);
-        eventTypes.register("nujobs_dellevel", EventDelLevel.class);
-        eventTypes.register("nujobs_joinjob", EventJoinJob.class);
-        eventTypes.register("nujobs_leavejob", EventLeaveJob.class);
-        eventTypes.register("nujobs_setlevel", EventSetLevel.class);
+        eventTypes.register("nujobs_addexp", new FactoryEventAddExp(data));
+        eventTypes.register("nujobs_addlevel", new FactoryEventAddLevel(data));
+        eventTypes.register("nujobs_dellevel", new FactoryEventDelLevel(data));
+        eventTypes.register("nujobs_joinjob", new FactoryEventJoinJob(data));
+        eventTypes.register("nujobs_leavejob", new FactoryEventLeaveJob(data));
+        eventTypes.register("nujobs_setlevel", new FactoryEventSetLevel(data));
         log.info("Registered Events [nujobs_addexp,nujobs_addlevel,nujobs_dellevel,nujobs_joinjob,nujobs_leavejob,nujobs_setlevel]");
 
         final ObjectiveTypeRegistry objectiveTypes = questRegistries.objective();
