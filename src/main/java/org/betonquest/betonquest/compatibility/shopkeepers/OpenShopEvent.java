@@ -1,37 +1,30 @@
 package org.betonquest.betonquest.compatibility.shopkeepers;
 
-import com.nisovin.shopkeepers.api.ShopkeepersAPI;
 import com.nisovin.shopkeepers.api.shopkeeper.Shopkeeper;
-import org.betonquest.betonquest.api.QuestEvent;
-import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.util.Utils;
-
-import java.util.UUID;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 
 /**
  * This event opens Shopkeeper trade window.
  */
-@SuppressWarnings("PMD.CommentRequired")
-public class OpenShopEvent extends QuestEvent {
+public class OpenShopEvent implements OnlineEvent {
 
+    /**
+     * Shop to open.
+     */
     private final Shopkeeper shopkeeper;
 
-    public OpenShopEvent(final Instruction instruction) throws QuestException {
-        super(instruction, true);
-        final String string = instruction.next();
-        try {
-            shopkeeper = Utils.getNN(ShopkeepersAPI.getShopkeeperRegistry().getShopkeeperByUniqueId(UUID.fromString(string)),
-                    "Shopkeeper with this UUID does not exist: '" + string + "'");
-        } catch (final IllegalArgumentException e) {
-            throw new QuestException("Could not parse UUID: '" + string + "'", e);
-        }
+    /**
+     * Create a new open shop event.
+     *
+     * @param shopkeeper the shop to open
+     */
+    public OpenShopEvent(final Shopkeeper shopkeeper) {
+        this.shopkeeper = shopkeeper;
     }
 
     @Override
-    protected Void execute(final Profile profile) {
-        shopkeeper.openTradingWindow(profile.getOnlineProfile().get().getPlayer());
-        return null;
+    public void execute(final OnlineProfile profile) {
+        shopkeeper.openTradingWindow(profile.getPlayer());
     }
 }
