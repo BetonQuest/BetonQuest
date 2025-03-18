@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.compatibility.jobsreborn.condition;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
+import org.betonquest.betonquest.compatibility.jobsreborn.VariableJob;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
@@ -16,7 +16,7 @@ public class ConditionJobLevel implements PlayerCondition {
     /**
      * Job to check.
      */
-    private final Job job;
+    private final VariableJob job;
 
     /**
      * Minimum level in job.
@@ -35,7 +35,7 @@ public class ConditionJobLevel implements PlayerCondition {
      * @param nMinLevel the minimum required level in the job
      * @param nMaxLevel the maximum required level in the job
      */
-    public ConditionJobLevel(final Job job, final VariableNumber nMinLevel, final VariableNumber nMaxLevel) {
+    public ConditionJobLevel(final VariableJob job, final VariableNumber nMinLevel, final VariableNumber nMaxLevel) {
         this.job = job;
         this.nMinLevel = nMinLevel;
         this.nMaxLevel = nMaxLevel;
@@ -43,7 +43,7 @@ public class ConditionJobLevel implements PlayerCondition {
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
-        final JobProgression progression = Jobs.getPlayerManager().getJobsPlayer(profile.getPlayerUUID()).getJobProgression(job);
+        final JobProgression progression = Jobs.getPlayerManager().getJobsPlayer(profile.getPlayerUUID()).getJobProgression(job.getValue(profile));
         return progression != null
                 && progression.getLevel() >= nMinLevel.getValue(profile).intValue()
                 && progression.getLevel() <= nMaxLevel.getValue(profile).intValue();

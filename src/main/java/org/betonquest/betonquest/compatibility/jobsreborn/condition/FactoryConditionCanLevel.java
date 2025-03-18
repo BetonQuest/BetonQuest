@@ -1,14 +1,12 @@
 package org.betonquest.betonquest.compatibility.jobsreborn.condition;
 
-import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.container.Job;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
+import org.betonquest.betonquest.compatibility.jobsreborn.VariableJob;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
-import org.betonquest.betonquest.util.Utils;
 
 /**
  * Factory to create {@link ConditionCanLevel}s from {@link Instruction}s.
@@ -30,8 +28,7 @@ public class FactoryConditionCanLevel implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final String jobName = instruction.next();
-        final Job job = Utils.getNN(Jobs.getJob(jobName), "Jobs Reborn job \"" + jobName + "\" does not exist");
+        final VariableJob job = instruction.get(VariableJob::new);
         return new PrimaryServerThreadPlayerCondition(new ConditionCanLevel(job), data);
     }
 }
