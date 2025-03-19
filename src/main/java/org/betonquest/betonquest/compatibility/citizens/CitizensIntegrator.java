@@ -16,7 +16,7 @@ import org.betonquest.betonquest.compatibility.citizens.objective.NPCKillObjecti
 import org.betonquest.betonquest.compatibility.citizens.objective.NPCRangeObjective;
 import org.betonquest.betonquest.compatibility.citizens.variable.npc.CitizensVariableFactory;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
-import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
+import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEventFactory;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
@@ -26,6 +26,8 @@ import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.bukkit.Server;
 import org.bukkit.event.HandlerList;
 import org.bukkit.scheduler.BukkitScheduler;
+
+import java.util.Objects;
 
 /**
  * Integrator for Citizens.
@@ -107,7 +109,10 @@ public class CitizensIntegrator implements Integrator {
     public void postHook() {
         if (Compatibility.getHooked().contains("ProtocolLib")) {
             NPCHider.start(plugin.getLoggerFactory().create(NPCHider.class));
-            plugin.getQuestRegistries().event().register("updatevisibility", UpdateVisibilityNowEvent.class);
+            final Server server = plugin.getServer();
+            final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
+            plugin.getQuestRegistries().event().register("updatevisibility", new UpdateVisibilityNowEventFactory(
+                    Objects.requireNonNull(NPCHider.getInstance()), plugin.getLoggerFactory(), data));
         }
     }
 
